@@ -107,7 +107,7 @@ sdc.adb:17:28: warning: no Global contract available for "Argument"
 sdc.adb:19:07: warning: assuming "Set_Input" has no effect on global items
 sdc.adb:19:07: warning: no Global contract available for "Set_Input"
 sdc.adb:19:18: info: initialization of "File" proved
-sdc.adb:24:07: medium: precondition might fail (e.g. when Last = 200) [possible explanation: call at line 23 should mention V (for argument T) in a postcondition]
+sdc.adb:24:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible explanation: call at line 23 should mention V (for argument T) in a postcondition]
 sdc.adb:24:16: info: initialization of private part of "T" proved
 sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
 sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
@@ -148,7 +148,7 @@ tokens.adb:55:65: info: initialization of "Word" proved
 tokens.adb:59:19: medium: exception might be raised
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
-tokens.adb:77:30: medium: precondition might fail (e.g. when Last = 0)
+tokens.adb:77:30: medium: precondition might fail, cannot prove Size >= 2 (e.g. when Last = 0)
 tokens.adb:77:41: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
 tokens.ads:19:20: info: initialization of "V.Instr" proved

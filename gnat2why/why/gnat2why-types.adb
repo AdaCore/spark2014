@@ -590,7 +590,7 @@ package body Gnat2Why.Types is
       Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 

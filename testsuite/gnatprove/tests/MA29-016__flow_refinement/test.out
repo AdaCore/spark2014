@@ -26,7 +26,7 @@ fruit-pub_child.adb:27:07: info: precondition proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:27:41: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:41: info: range check proved (CVC4: 1 VC)
-fruit-pub_child.adb:28:07: medium: precondition might fail [possible explanation: call at line 27 should mention Price_Of_Apple and Price_Of_Orange and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a postcondition]
+fruit-pub_child.adb:28:07: medium: precondition might fail, cannot prove Oranges_To_Consume <= (Number_Of_Oranges) [possible explanation: call at line 27 should mention Price_Of_Apple and Price_Of_Orange and Fruit.Apples and Fruit.Oranges and Fruit.Priv_Child.Extra_Cost in a postcondition]
 fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:28:42: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:28:42: info: range check proved (CVC4: 1 VC)
@@ -61,7 +61,7 @@ levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:37:27: info: refined post proved (CVC4: 1 VC)
 levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-levels.adb:45:27: medium: refined postcondition might fail
+levels.adb:45:27: medium: refined postcondition might fail, cannot prove Read_Partial_0 + 1 > X0
 levels.adb:45:42: medium: overflow check might fail
 levels.adb:52:23: info: initialization of "A" proved
 levels.adb:66:15: medium: overflow check might fail [possible explanation: subprogram at levels.ads:25 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
@@ -74,7 +74,7 @@ levels.adb:88:30: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:99:10: info: initialization of "X2" constituent of "Abs_2" proved
 levels.adb:100:10: info: initialization of "Y2" constituent of "Abs_2" proved
 levels.adb:127:25: info: initialization of "A" proved
-levels.adb:127:25: medium: refined postcondition might fail
+levels.adb:127:25: medium: refined postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + Nested_2(Nested_2.read_partial_2)
 levels.adb:127:44: medium: overflow check might fail
 levels.adb:127:61: medium: overflow check might fail
 levels.adb:130:18: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention X1 and X0 in a precondition]
@@ -84,7 +84,7 @@ levels.adb:140:15: info: initialization of "X" proved
 levels.adb:140:17: medium: overflow check might fail [possible explanation: call at line 139 should mention Y (for argument Tmp) and X (for argument X) in a postcondition]
 levels.adb:140:19: info: initialization of "Tmp" proved
 levels.adb:147:25: info: initialization of "A" proved
-levels.adb:147:25: medium: refined postcondition might fail
+levels.adb:147:25: medium: refined postcondition might fail, cannot prove A = Read_Partial_0 + Nested_1.Read_Partial_1 + Nested_1(Nested_1.read_partial_1_inner)
 levels.adb:147:44: medium: overflow check might fail
 levels.adb:147:70: medium: overflow check might fail
 levels.adb:157:17: medium: overflow check might fail [possible explanation: subprogram at levels.ads:8 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]

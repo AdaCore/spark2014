@@ -1,5 +1,5 @@
 shared_ptr.ads:9:13: info: implicit function contract not available for proof ("Length" might not return)
 shared_ptr.ads:13:08: info: implicit function contract not available for proof ("Length" might not return)
 shared_ptr.ads:13:24: info: implicit function contract not available for proof ("To_String" might not return)
-shared_ptr.ads:13:24: medium: precondition might fail [possible explanation: subprogram at line 12 should mention This in a precondition]
+shared_ptr.ads:13:24: medium: precondition might fail, cannot prove Length (This) > 0 [possible explanation: subprogram at line 12 should mention This in a precondition]
 shared_ptr.ads:13:40: info: range check proved (CVC4: 1 VC)

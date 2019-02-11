@@ -15,7 +15,7 @@ ethernet_dissector.adb:25:31: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC)
+ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 4 VC)
 ethernet_dissector.adb:26:37: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:28:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC4: 1 VC)
@@ -31,7 +31,7 @@ ethernet_dissector.adb:33:39: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:39: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:34:45: info: initialization of "EtherType_Length_2" proved
 ethernet_dissector.adb:36:36: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC4: 1 VC)
@@ -46,7 +46,7 @@ ethernet_dissector.adb:45:59: info: initialization of "Offset" proved
 ethernet_dissector.adb:45:82: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:87: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:89: info: initialization of "Offset" proved
-ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC)
+ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 8 VC)
 ethernet_dissector.adb:46:37: info: initialization of "EtherType_Length_3" proved
 ethernet_dissector.adb:48:27: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:48:27: info: range check proved (CVC4: 4 VC)
@@ -60,12 +60,12 @@ ethernet_dissector.adb:49:28: info: initialization of "Length" proved
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:50:25: info: initialization of "Offset" proved
 ethernet_dissector.adb:50:32: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:50:66: info: initialization of "Length" proved
 ethernet_dissector.adb:50:88: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:53:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:53:99: info: initialization of "Length" proved
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:28: info: range check proved (CVC4: 4 VC)
@@ -119,7 +119,7 @@ ethernet_dissector.adb:25:31: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC)
+ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 4 VC)
 ethernet_dissector.adb:26:37: info: initialization of "EtherType_Length_1" proved
 ethernet_dissector.adb:28:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC4: 1 VC)
@@ -135,7 +135,7 @@ ethernet_dissector.adb:33:39: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:39: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:34:45: info: initialization of "EtherType_Length_2" proved
 ethernet_dissector.adb:36:36: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC4: 1 VC)
@@ -150,7 +150,7 @@ ethernet_dissector.adb:45:59: info: initialization of "Offset" proved
 ethernet_dissector.adb:45:82: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:87: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:89: info: initialization of "Offset" proved
-ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC)
+ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 8 VC)
 ethernet_dissector.adb:46:37: info: initialization of "EtherType_Length_3" proved
 ethernet_dissector.adb:48:27: info: length check proved (CVC4: 4 VC)
 ethernet_dissector.adb:48:27: info: range check proved (CVC4: 4 VC)
@@ -164,12 +164,12 @@ ethernet_dissector.adb:49:28: info: initialization of "Length" proved
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:50:25: info: initialization of "Offset" proved
 ethernet_dissector.adb:50:32: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:50:66: info: initialization of "Length" proved
 ethernet_dissector.adb:50:88: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:53:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC)
+ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 2 VC)
 ethernet_dissector.adb:53:99: info: initialization of "Length" proved
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:28: info: range check proved (CVC4: 4 VC)

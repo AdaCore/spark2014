@@ -313,7 +313,7 @@ sensfusion6_pack.adb:173:35: info: float overflow check proved (Interval), in ca
 sensfusion6_pack.adb:173:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:46: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:51: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:189:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:189:24: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:16: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:26: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
@@ -484,7 +484,7 @@ sensfusion6_pack.adb:229:51: info: initialization of "Qc" proved, in call inline
 sensfusion6_pack.adb:229:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:56: info: initialization of "Rad_Gx" proved
 sensfusion6_pack.adb:229:56: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:232:21: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:232:21: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:31: info: initialization of "Q0_Tmp" proved
 sensfusion6_pack.adb:232:31: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:38: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258

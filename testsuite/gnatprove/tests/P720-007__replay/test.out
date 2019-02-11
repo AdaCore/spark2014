@@ -1,29 +1,29 @@
 harness.adb:3:11: warning: subprogram "Harness" has no effect
-harness.adb:10:04: medium: precondition might fail
+harness.adb:10:04: medium: precondition might fail, cannot prove not Is_Full (R)
 harness.adb:10:10: info: initialization of "R.Data" proved
 harness.adb:10:10: info: initialization of "R.First" proved
 harness.adb:10:10: info: initialization of "R.Length" proved
-harness.adb:11:04: medium: precondition might fail
+harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R)
 harness.adb:11:10: info: initialization of "R.Data" proved
 harness.adb:11:10: info: initialization of "R.First" proved
 harness.adb:11:10: info: initialization of "R.Length" proved
-harness.adb:12:04: medium: precondition might fail
+harness.adb:12:04: medium: precondition might fail, cannot prove not Is_Empty (R)
 harness.adb:12:09: info: initialization of "R.Data" proved
 harness.adb:12:09: info: initialization of "R.First" proved
 harness.adb:12:09: info: initialization of "R.Length" proved
 harness.adb:13:19: info: initialization of "H" proved
 harness.adb:13:19: medium: assertion might fail, cannot prove H = X [possible explanation: subprogram at line 3 should mention X in a precondition]
-harness.adb:14:04: medium: precondition might fail
+harness.adb:14:04: medium: precondition might fail, cannot prove not Is_Full (R)
 harness.adb:14:10: info: initialization of "R.Data" proved
 harness.adb:14:10: info: initialization of "R.First" proved
 harness.adb:14:10: info: initialization of "R.Length" proved
-harness.adb:15:04: medium: precondition might fail
+harness.adb:15:04: medium: precondition might fail, cannot prove not Is_Empty (R)
 harness.adb:15:09: info: initialization of "R.Data" proved
 harness.adb:15:09: info: initialization of "R.First" proved
 harness.adb:15:09: info: initialization of "R.Length" proved
 harness.adb:16:19: info: initialization of "H" proved
 harness.adb:16:19: medium: assertion might fail, cannot prove H = Y [possible explanation: subprogram at line 3 should mention Y in a precondition]
-harness.adb:17:04: medium: precondition might fail
+harness.adb:17:04: medium: precondition might fail, cannot prove not Is_Empty (R)
 harness.adb:17:09: info: initialization of "R.Data" proved
 harness.adb:17:09: info: initialization of "R.First" proved
 harness.adb:17:09: info: initialization of "R.Length" proved
@@ -43,7 +43,7 @@ ring_buf.ads:40:30: info: initialization of "R.Length" proved
 ring_buf.ads:47:19: medium: postcondition might fail, cannot prove R.Length = R.Length'Old + 1
 ring_buf.ads:49:43: info: initialization of "Element" proved
 ring_buf.ads:52:15: medium: postcondition might fail, cannot prove R.Length = R.Length'Old - 1
-ring_buf.ads:52:52: medium: precondition might fail
+ring_buf.ads:52:52: medium: precondition might fail, cannot prove not Is_Empty (R)
 ring_buf.ads:52:67: info: initialization of "Element" proved
 harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:10:04: info: precondition proved (CVC4: 1 VC)

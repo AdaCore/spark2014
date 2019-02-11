@@ -29,10 +29,10 @@ main.adb:47:13: info: initialization of "Professionals.State" proved
 main.adb:47:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:47:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:47:20: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
-main.adb:54:07: medium: precondition might fail, in call inlined at main.adb:71
+main.adb:54:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:54:35: info: initialization of "Rambo" proved, in call inlined at main.adb:71
 main.adb:55:35: info: initialization of "Uni_Student" proved, in call inlined at main.adb:71
-main.adb:57:07: medium: precondition might fail, in call inlined at main.adb:71
+main.adb:57:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:57:35: info: initialization of "Dr_House" proved, in call inlined at main.adb:71
 main.adb:58:35: info: initialization of "Kenny" proved, in call inlined at main.adb:71
 main.adb:58:35: warning: unused assignment to "Kenny", in call inlined at main.adb:71

@@ -4929,7 +4929,7 @@ package body Gnat2Why.Expr is
       Params : constant Transformation_Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
       Result : constant W_Term_Id :=
@@ -8064,7 +8064,7 @@ package body Gnat2Why.Expr is
          Params_No_Ref : constant Transformation_Params :=
                            (File        => Params.File,
                             Phase       => Params.Phase,
-                            Gen_Marker  => False,
+                            Gen_Marker  => GM_None,
                             Ref_Allowed => False,
                             Old_Allowed => False);
 
@@ -12251,11 +12251,11 @@ package body Gnat2Why.Expr is
       --  printed for subterms.
 
       if Domain = EW_Pred
-        and then Local_Params.Gen_Marker
+        and then Local_Params.Gen_Marker /= GM_None
         and then Is_Terminal_Node (Expr)
       then
          Pretty_Label := New_Sub_VC_Marker (Expr);
-         Local_Params.Gen_Marker := False;
+         Local_Params.Gen_Marker := GM_None;
       end if;
 
       --  Expressions that cannot be translated to predicates directly are
@@ -13187,7 +13187,7 @@ package body Gnat2Why.Expr is
                     Warn_On_Dead_Branch (Else_Part, Else_Expr, Phase);
                end if;
 
-               Local_Params.Gen_Marker := False;
+               Local_Params.Gen_Marker := GM_None;
                Condition :=
                  +Transform_Expr (Cond,
                                   EW_Bool_Type,
@@ -13602,7 +13602,9 @@ package body Gnat2Why.Expr is
          declare
             Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Pretty_Label);
          begin
-            Label_Set.Include (New_Located_Label (Expr, Left_Most => True));
+            if Params.Gen_Marker = GM_All then
+               Label_Set.Include (New_Located_Label (Expr, Left_Most => True));
+            end if;
             T :=
               New_Label (Labels => Label_Set,
                          Def => T,
@@ -15071,7 +15073,7 @@ package body Gnat2Why.Expr is
                   Result := New_Ignore
                     (Prog =>
                        +Transform_Expr (Expr, EW_Prog, Params => Params));
-                  Params.Gen_Marker := True;
+                  Params.Gen_Marker := GM_All;
                   Result := Sequence
                     (Result,
                      New_Located_Assert
@@ -15420,7 +15422,7 @@ package body Gnat2Why.Expr is
 
       if Present (Expr) then
          Runtime := +Transform_Expr (Expr, EW_Prog, Params => Params);
-         Params.Gen_Marker := True;
+         Params.Gen_Marker := GM_All;
          Pred := +Transform_Expr (Expr, EW_Pred, Params => Params);
          return;
       else

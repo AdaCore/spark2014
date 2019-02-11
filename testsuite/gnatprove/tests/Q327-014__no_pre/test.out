@@ -15,7 +15,7 @@ dispatch.ads:19:73: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:23:20: info: postcondition proved (CVC4: 1 VC)
 dispatch.ads:23:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last))
 dispatch.ads:27:20: info: postcondition proved (CVC4: 1 VC)
-dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition
+dispatch.ads:27:20: medium: postcondition might be weaker than class-wide postcondition, cannot prove Incr5'Result.F = X.F + 1
 dispatch.ads:28:41: medium: overflow check might fail (e.g. when X = (F => Integer'Last))
 dispatch.ads:33:20: info: postcondition proved (CVC4: 2 VC)
 dispatch.ads:33:73: info: overflow check proved (CVC4: 1 VC)

@@ -2227,7 +2227,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 
@@ -2532,7 +2532,7 @@ package body Gnat2Why.Subprograms is
 
       Params := (File        => File,
                  Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => False,
+                 Gen_Marker  => GM_None,
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
@@ -2605,7 +2605,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Check : constant W_Pred_Id :=
@@ -2672,7 +2672,7 @@ package body Gnat2Why.Subprograms is
                      Params  : constant Transformation_Params :=
                        (File        => File,
                         Phase       => Generate_Contract_For_Body,
-                        Gen_Marker  => False,
+                        Gen_Marker  => GM_None,
                         Ref_Allowed => True,
                         Old_Allowed => True);
                      Barrier : constant Node_Id :=
@@ -3103,7 +3103,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
       begin
@@ -3136,7 +3136,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Pre_Node : constant Node_Id :=
@@ -3170,7 +3170,7 @@ package body Gnat2Why.Subprograms is
                   Params : constant Transformation_Params :=
                     (File        => File,
                      Phase       => Generate_Contract_For_Body,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => True,
                      Old_Allowed => True);
                   Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
@@ -3204,7 +3204,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
       begin
@@ -3261,7 +3261,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
       begin
@@ -3301,7 +3301,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Check : constant W_Pred_Id :=
@@ -3330,7 +3330,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
 
@@ -3423,14 +3423,14 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_Contract_For_Body,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Mark_Params : Transformation_Params := Params;
          Post_N    : Node_Id;
       begin
 
-         Mark_Params.Gen_Marker := True;
+         Mark_Params.Gen_Marker := GM_All;
 
          --  There might be no specific postcondition for E. In that case, the
          --  classwide or inherited postcondition is checked if present. Locate
@@ -3480,7 +3480,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
 
@@ -3551,7 +3551,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Post : W_Pred_Id :=
@@ -3592,7 +3592,7 @@ package body Gnat2Why.Subprograms is
          Params : constant Transformation_Params :=
            (File        => File,
             Phase       => Generate_VCs_For_Contract,
-            Gen_Marker  => False,
+            Gen_Marker  => GM_None,
             Ref_Allowed => True,
             Old_Allowed => True);
          Pre : W_Pred_Id :=
@@ -3610,7 +3610,7 @@ package body Gnat2Why.Subprograms is
                Params : constant Transformation_Params :=
                  (File        => File,
                   Phase       => Generate_Contract_For_Body,
-                  Gen_Marker  => False,
+                  Gen_Marker  => GM_None,
                   Ref_Allowed => True,
                   Old_Allowed => True);
                Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
@@ -3705,14 +3705,14 @@ package body Gnat2Why.Subprograms is
       Body_Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 
       Contract_Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Contract,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 
@@ -3997,7 +3997,7 @@ package body Gnat2Why.Subprograms is
 
       Params := (File        => File,
                  Phase       => Generate_VCs_For_Body,
-                 Gen_Marker  => False,
+                 Gen_Marker  => GM_None,
                  Ref_Allowed => True,
                  Old_Allowed => True);
 
@@ -4148,7 +4148,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => False,
          Old_Allowed => False);
 
@@ -4700,7 +4700,7 @@ package body Gnat2Why.Subprograms is
                   Params :=
                     (File        => File,
                      Phase       => Generate_Logic,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => False,
                      Old_Allowed => True);
 
@@ -4781,7 +4781,7 @@ package body Gnat2Why.Subprograms is
                   Params :=
                     (File        => File,
                      Phase       => Generate_Logic,
-                     Gen_Marker  => False,
+                     Gen_Marker  => GM_None,
                      Ref_Allowed => False,
                      Old_Allowed => False);
 
@@ -4940,7 +4940,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 
@@ -5603,7 +5603,7 @@ package body Gnat2Why.Subprograms is
       Params :=
         (File        => File,
          Phase       => Generate_Logic,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => False,
          Old_Allowed => False);
 
@@ -5728,7 +5728,7 @@ package body Gnat2Why.Subprograms is
             Params            : constant Transformation_Params :=
               (File        => File,
                Phase       => Generate_Logic,
-               Gen_Marker  => False,
+               Gen_Marker  => GM_None,
                Ref_Allowed => False,
                Old_Allowed => False);
             Def               : constant W_Expr_Id :=

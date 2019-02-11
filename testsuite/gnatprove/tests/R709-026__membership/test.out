@@ -14,5 +14,5 @@ member_alt.adb:15:35: info: initialization of "Z.F" proved, in call inlined at m
 member_alt.adb:18:14: warning: subprogram "Bad2" has no effect
 member_alt.adb:25:22: info: assertion proved (CVC4: 1 VC)
 member_alt.adb:25:22: info: initialization of "X.F" proved
-member_alt.adb:25:27: medium: precondition might fail
+member_alt.adb:25:27: medium: precondition might fail, cannot prove X /= 1
 member_alt.adb:25:35: info: precondition proved (CVC4: 1 VC)

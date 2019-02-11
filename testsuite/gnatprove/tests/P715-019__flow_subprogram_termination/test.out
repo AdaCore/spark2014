@@ -2,7 +2,7 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
-call_proc_no_body.adb:4:07: medium: precondition might fail
+call_proc_no_body.adb:4:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (4, 4)
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
@@ -200,7 +200,7 @@ functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram "Nested_Proc" might not terminate
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
-imported.adb:10:07: medium: precondition might fail
+imported.adb:10:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (3, 3)
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.ads:9:14: info: subprogram "Q_01" will terminate

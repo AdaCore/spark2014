@@ -3,10 +3,10 @@ nested_pkg.adb:20:07: info: initialization of "Bar" constituent of "State" prove
 nested_pkg.adb:29:25: medium: "Z.State" constituent of "Nested_Pkg.Foobar" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 nested_pkg.adb:47:25: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:49:25: info: assertion proved (CVC4: 1 VC)
-nested_pkg.adb:51:10: medium: precondition might fail [possible explanation: subprogram at line 43 should mention Bar and Foo in a precondition]
+nested_pkg.adb:51:10: medium: precondition might fail, cannot prove (Z.h) [possible explanation: subprogram at line 43 should mention Bar and Foo in a precondition]
 nested_pkg.adb:60:22: info: assertion proved (CVC4: 1 VC)
 nested_pkg.adb:62:22: info: assertion proved (CVC4: 1 VC)
-nested_pkg.adb:64:08: medium: precondition might fail [possible explanation: subprogram at line 56 should mention Bar and Foo in a precondition]
+nested_pkg.adb:64:08: medium: precondition might fail, cannot prove (Z.h) [possible explanation: subprogram at line 56 should mention Bar and Foo in a precondition]
 stack_asm.adb:26:24: medium: array index check might fail
 stack_asm.adb:33:25: medium: range check might fail [possible explanation: subprogram at stack_asm.ads:14 should mention The_Ptr in a precondition]
 stack_asm.adb:34:17: info: index check proved (CVC4: 2 VC)
@@ -23,7 +23,7 @@ stack_asm.ads:24:20: info: initialization of "The_Ptr" constituent of "State" pr
 stack_asm.ads:24:20: medium: postcondition might fail, cannot prove (Is_Empty)
 test.adb:7:41: info: initialization of "Stack_ASM.State" proved
 test.adb:13:23: info: initialization of "I" proved
-test.adb:17:21: medium: precondition might fail [possible explanation: subprogram at line 13 should mention Stack_Asm.The_Ptr and Stack_Asm.The_Stack in a precondition]
+test.adb:17:21: medium: precondition might fail, cannot prove not (Is_Empty) [possible explanation: subprogram at line 13 should mention Stack_Asm.The_Ptr and Stack_Asm.The_Stack in a precondition]
 test.adb:20:23: info: initialization of "I" proved
 test.adb:21:41: high: "Stack_ASM.State" is not an input in the Global contract of subprogram "Test_03" at line 20
 test.adb:21:41: high: "Stack_ASM.State" is not initialized
@@ -31,8 +31,8 @@ test.adb:21:41: high: either make "Stack_ASM.State" an input in the Global contr
 test.adb:24:21: high: "Stack_ASM.State" is not an input in the Global contract of subprogram "Test_03" at line 20
 test.adb:24:21: high: "Stack_ASM.State" is not initialized
 test.adb:24:21: high: either make "Stack_ASM.State" an input in the Global contract or initialize it before use
-test.adb:24:21: medium: precondition might fail
+test.adb:24:21: medium: precondition might fail, cannot prove not (Is_Empty)
 test.adb:27:23: info: initialization of "I" proved
 test.adb:28:41: info: initialization of "Stack_ASM.State" proved
 test.adb:32:21: info: initialization of "Stack_ASM.State" proved
-test.adb:32:21: medium: precondition might fail
+test.adb:32:21: medium: precondition might fail, cannot prove not (Is_Empty)

@@ -49,7 +49,7 @@ decadriver.adb:158:44: info: initialization of "Next_Idx" proved
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
 decadriver.adb:189:23: info: precondition proved (CVC4: 4 VC)
 decadriver.adb:197:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Set_Tx_Frame_Length"
-decadriver.adb:197:23: medium: precondition might fail (e.g. when Length = 1024)
+decadriver.adb:197:23: medium: precondition might fail, cannot prove Length < DW1000.Constants.tx_buffer_length (e.g. when Length = 1024)
 decadriver.adb:206:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Start_Tx"
 decadriver.adb:210:26: info: initialization of "Result" proved
 decadriver.adb:239:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"

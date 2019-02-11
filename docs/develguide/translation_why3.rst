@@ -3418,3 +3418,22 @@ AST. Counterexample label
 
 identifying subparts of formulas to be reported to user (“cannot prove ‘bla’”)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When a complex assertion cannot be proved, likely some parts of it actually
+*have* been proved, and it is worthwhile to show the user (one of) the unproved
+part(s). This is done as follows:
+
+- gnat2why adds special markers to the subparts of the translation of an
+  assertion, this is done in ``gnat2why-expr.Transform_Expr`` if the
+  Transformation_Params enable this functionality. These markers contain the
+  location of the subpart (using a regular ``GP_Sloc`` attribute) and the
+  Node_Id of the corresponding node of the GNAT tree (using a ``GP_Pretty_Ada``
+  attribute).
+- gnatwhy3 attempts proof of these parts individually. It stops at the first
+  unproved part, and returns the node of the ``GP_Pretty_Ada`` attribute as an
+  ``extra_info`` (name of the JSON field) of the VC.
+- gnat2why uses the ``extra_info`` to produce a message part of the form
+  "cannot prove <subpart>".  Usually, we also want to update the sloc of the
+  message to point to the subpart. This latter part is not done for types of
+  checks where the part to be proved is in some other location of the code:
+  precondition checks and Liskov-related checks.

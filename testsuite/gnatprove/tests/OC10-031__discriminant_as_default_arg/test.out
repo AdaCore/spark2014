@@ -1,3 +1,3 @@
 main.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-main.adb:5:08: medium: precondition might fail
+main.adb:5:08: medium: precondition might fail, cannot prove Arg /= D
 p.ads:7:13: info: range check proved (CVC4: 1 VC)

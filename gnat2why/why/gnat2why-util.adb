@@ -460,8 +460,18 @@ package body Gnat2Why.Util is
       Nodes  : Node_Lists.List;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Cur_Spec : W_Expr_Id;
+      Cur_Spec     : W_Expr_Id;
+      Local_Params : Transformation_Params := Params;
    begin
+
+      --  For specs we usually want the markers that identify subparts of
+      --  formulas, so we set this here. We do not set it to GM_All, as this
+      --  could cause side effects related to the location of checks. This
+      --  boolean is a no-op for Domains other than EW_Pred.
+
+      if Local_Params.Gen_Marker = GM_None then
+         Local_Params.Gen_Marker := GM_Node_Only;
+      end if;
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
@@ -471,7 +481,7 @@ package body Gnat2Why.Util is
       for Node of Nodes loop
          declare
             Why_Expr : constant W_Expr_Id :=
-              Transform_Expr (Node, EW_Bool_Type, Domain, Params);
+              Transform_Expr (Node, EW_Bool_Type, Domain, Local_Params);
          begin
             if Cur_Spec /= Why_Empty then
                Cur_Spec :=
