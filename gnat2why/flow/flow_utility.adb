@@ -524,7 +524,7 @@ package body Flow_Utility is
 
    function Expand_Abstract_States
      (Vars : Flow_Id_Sets.Set)
-         return Flow_Id_Sets.Set
+      return Flow_Id_Sets.Set
    is
       Expanded : Flow_Id_Sets.Set;
 
