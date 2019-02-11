@@ -63,3 +63,5 @@ fp_test_mult.ads:17:18: info: initialization of "U" proved
 fp_test_mult.ads:17:31: info: overflow check proved (CVC4: 1 VC)
 fp_test_mult.ads:17:35: info: initialization of "V" proved
 main.adb:7:32: medium: precondition might fail, cannot prove (A + B) > 0.0 (e.g. when C = 1/400)
+main.adb:9:04: warning: assuming "Put_Line" has no effect on global items
+main.adb:9:04: warning: no Global contract available for "Put_Line"

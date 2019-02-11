@@ -1,3 +1,7 @@
+mailstop.adb:7:18: warning: assuming "Put_Line" has no effect on global items
+mailstop.adb:7:18: warning: no Global contract available for "Put_Line"
+mailstop.adb:9:18: warning: assuming "Put_Line" has no effect on global items
+mailstop.adb:9:18: warning: no Global contract available for "Put_Line"
 names.adb:30:35: info: initialization of "Label_Length" proved
 names.adb:30:35: info: loop invariant initialization proved (CVC4: 1 VC)
 names.adb:30:35: info: loop invariant preservation proved (CVC4: 1 VC)

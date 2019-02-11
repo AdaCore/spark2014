@@ -22,13 +22,10 @@ is
    begin
       loop
          declare
-            S : String(1..1);
-            Last : Natural;
+            S : String := Get_Line;
             Found : Boolean := True;
          begin
-         Get_Line (S, Last);
-         Skip_Line;
-            if Last >= 1 then
+            if S'Length >= 1 then
                declare
                   C : Character := S (S'First);
                begin

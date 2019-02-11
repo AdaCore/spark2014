@@ -3,7 +3,7 @@ with Screen_Output; use Screen_Output;
 with Stack;
 with Tokens; use Tokens;
 with Ada.Text_IO; use Ada.Text_IO;
-with Ada.Command_Line; use Ada.Command_Line; with Set_Input_File;
+with Ada.Command_Line; use Ada.Command_Line;
 
 procedure Sdc
 with SPARK_Mode => On
@@ -15,7 +15,8 @@ begin
 
    if Argument_Count = 1 then
       Open (File, In_File, Argument (1));
-      Set_Input_File (File);
+
+      Set_Input (File);
    end if;
 
    loop

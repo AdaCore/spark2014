@@ -1,3 +1,4 @@
+put.adb:2:11: warning: subprogram "Put" has no effect
 put.adb:11:33: info: overflow check proved (CVC4: 1 VC)
 put.adb:16:14: info: initialization of "Int" proved
 put.adb:16:18: info: division check proved (CVC4: 1 VC)
@@ -18,6 +19,8 @@ put.adb:24:22: info: range check proved (CVC4: 1 VC)
 put.adb:25:10: medium: array index check might fail (e.g. when First = 0 and S = (others => '1')) [possible explanation: loop at line 13 should mention First in a loop invariant]
 put.adb:25:17: info: initialization of "First" proved
 put.adb:25:17: info: initialization of "S" proved
+put.adb:28:04: warning: assuming "Put" has no effect on global items
+put.adb:28:04: warning: no Global contract available for "Put"
 put.adb:28:09: info: initialization of "S" proved
 put.adb:28:09: info: range check proved (CVC4: 4 VC)
 put.adb:28:09: medium: "S" might not be initialized

@@ -1,5 +1,9 @@
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
+ints.adb:18:10: warning: assuming "Put" has no effect on global items
+ints.adb:18:10: warning: no Global contract available for "Put"
 ints.adb:18:19: low: range check might fail [possible explanation: subprogram at ints.ads:13 should mention Msg in a precondition]
+ints.adb:20:07: warning: assuming "Put_Line" has no effect on global items
+ints.adb:20:07: warning: no Global contract available for "Put_Line"
 ints.adb:20:34: info: range check proved (CVC4: 1 VC)
 ints.adb:20:59: info: range check proved (CVC4: 1 VC)
 ints.adb:21:29: info: range check proved (CVC4: 1 VC)
@@ -11,7 +15,11 @@ ints.adb:31:08: medium: overflow check might fail [possible explanation: subprog
 ints.adb:31:24: medium: overflow check might fail [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
 ints.adb:31:56: medium: overflow check might fail [possible explanation: subprogram at ints.ads:25 should mention Arg1 and Arg2 in a precondition]
 ints.adb:35:30: info: overflow check proved (CVC4: 1 VC)
+ints.adb:41:10: warning: assuming "Put" has no effect on global items
+ints.adb:41:10: warning: no Global contract available for "Put"
 ints.adb:41:19: low: range check might fail [possible explanation: subprogram at ints.ads:28 should mention Msg in a precondition]
+ints.adb:43:07: warning: assuming "Put_Line" has no effect on global items
+ints.adb:43:07: warning: no Global contract available for "Put_Line"
 ints.adb:43:34: info: range check proved (CVC4: 1 VC)
 ints.adb:43:59: info: range check proved (CVC4: 1 VC)
 ints.adb:44:29: info: range check proved (CVC4: 1 VC)
@@ -23,10 +31,11 @@ ints.adb:46:66: info: range check proved (CVC4: 1 VC)
 ints.adb:51:38: medium: overflow check might fail [possible explanation: subprogram at ints.ads:30 should mention Arg in a precondition]
 ints.ads:11:40: medium: overflow check might fail
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
+ints.ads:13:14: warning: subprogram "Display" has no effect
 ints.ads:16:34: medium: overflow check might fail
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 ints.ads:26:25: info: postcondition proved (CVC4: 1 VC)
-test_ints.adb:3:11: medium: "ada.text_io.file_system" might not be initialized after elaboration of main program "Test_Ints"
+ints.ads:28:25: warning: subprogram "Display" has no effect
 test_ints.adb:7:24: info: initialization of "I.Max" proved
 test_ints.adb:7:24: info: initialization of "I.Min" proved
 test_ints.adb:7:24: info: initialization of "I.Value" proved

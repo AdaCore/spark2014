@@ -1,13 +1,16 @@
-main.adb:4:04: warning: initialization of "X" has no effect
 main.adb:12:10: info: initialization of "I" proved
 main.adb:12:15: info: initialization of "N" proved
 main.adb:13:11: info: initialization of "I" proved
 main.adb:14:18: info: initialization of "I" proved
+main.adb:15:07: warning: assuming "Put_Line" has no effect on global items
+main.adb:15:07: warning: no Global contract available for "Put_Line"
 main.adb:15:24: info: range check proved (CVC4: 1 VC)
 main.adb:15:41: info: initialization of "I" proved
 main.adb:15:44: info: range check proved (CVC4: 1 VC)
 main.adb:15:54: info: range check proved (CVC4: 1 VC)
 main.adb:15:71: info: initialization of "Result" proved
+main.adb:16:07: warning: assuming "Put_Line" has no effect on global items
+main.adb:16:07: warning: no Global contract available for "Put_Line"
 main.adb:16:31: info: range check proved (CVC4: 1 VC)
 main.adb:16:48: info: initialization of "I" proved
 main.adb:16:51: info: range check proved (CVC4: 1 VC)

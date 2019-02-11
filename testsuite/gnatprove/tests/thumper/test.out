@@ -5,11 +5,15 @@ client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no ef
 client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.adb:34:17: warning: procedure "Make_Request" is not referenced
 client_timestamp_maker.adb:42:13: info: initialization of "Address_Status" proved
+client_timestamp_maker.adb:43:24: warning: assuming "Put_Line" has no effect on global items
+client_timestamp_maker.adb:43:24: warning: no Global contract available for "Put_Line"
 client_timestamp_maker.adb:46:61: info: initialization of "Request_Message.Data" proved
 client_timestamp_maker.adb:48:16: info: initialization of "Request_Message.Data" proved
 client_timestamp_maker.adb:48:16: info: initialization of "Request_Message.Size" proved
 client_timestamp_maker.adb:48:60: info: initialization of "Local_Host" proved
 client_timestamp_maker.adb:49:16: info: initialization of "Network_Status" proved
+client_timestamp_maker.adb:50:27: warning: assuming "Put_Line" has no effect on global items
+client_timestamp_maker.adb:50:27: warning: no Global contract available for "Put_Line"
 client_timestamp_maker.adb:60:07: medium: exception might be raised
 client_timestamp_maker.adb:68:07: medium: exception might be raised
 client_timestamp_maker.ads:17:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally

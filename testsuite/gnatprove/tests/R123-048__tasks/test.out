@@ -23,6 +23,8 @@ psu_monitoring.adb:197:22: medium: assertion might fail, cannot prove U_C1 in Fl
 psu_monitoring.adb:198:22: medium: assertion might fail, cannot prove I_L1 in Float_Signed1000 (e.g. when I_L1 = -1.4411521E+20)
 psu_monitoring.adb:199:22: medium: assertion might fail, cannot prove U_C2 in Float_Signed1000 (e.g. when U_C2 = -1.2800001E+5)
 psu_monitoring.adb:200:22: medium: assertion might fail, cannot prove I_L2 in Float_Signed1000 (e.g. when I_L2 = -1.0000001E+3)
+psu_monitoring.adb:217:10: warning: assuming "Put_Line" has no effect on global items
+psu_monitoring.adb:217:10: warning: no Global contract available for "Put_Line"
 psu_monitoring.adb:235:23: info: initialization of "next_time" proved
 psu_monitoring.adb:236:22: info: initialization of "next_time" proved
 psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC4: 1 VC)

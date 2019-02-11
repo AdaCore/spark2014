@@ -1,7 +1,7 @@
 with Ada.Text_IO; use Ada.Text_IO;
 
 procedure Foo
-  with Global => (In_Out => File_System)
+  with Global => null
 is
    F : File_Type;
 begin

@@ -7,3 +7,7 @@ main.adb:25:20: medium: overflow check might fail [possible explanation: subprog
 main.adb:25:42: medium: overflow check might fail [possible explanation: subprogram at line 14 should mention Side_2 in a precondition]
 main.adb:25:52: medium: overflow check might fail [possible explanation: subprogram at line 14 should mention Side_2 and Side_3 in a precondition]
 main.adb:25:62: medium: overflow check might fail [possible explanation: subprogram at line 14 should mention Side_3 in a precondition]
+main.adb:34:14: warning: assuming "Put_Line" has no effect on global items
+main.adb:34:14: warning: no Global contract available for "Put_Line"
+main.adb:36:14: warning: assuming "Put_Line" has no effect on global items
+main.adb:36:14: warning: no Global contract available for "Put_Line"

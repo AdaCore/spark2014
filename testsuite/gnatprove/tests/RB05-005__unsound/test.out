@@ -1,8 +1,13 @@
+main.adb:8:14: warning: subprogram "Test" has no effect
+main.adb:11:21: warning: assuming "Put_Line" has no effect on global items
+main.adb:11:21: warning: no Global contract available for "Put_Line"
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:19
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:20
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:21
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:22
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:23
+main.adb:13:21: warning: assuming "Put_Line" has no effect on global items
+main.adb:13:21: warning: no Global contract available for "Put_Line"
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:19
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:20
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:21
