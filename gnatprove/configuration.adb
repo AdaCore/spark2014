@@ -1490,7 +1490,7 @@ package body Configuration is
             exception
                when Constraint_Error =>
                   Abort_Msg ("error: wrong argument for --timeout, " &
-                               "must be auto or a non-negative integer",
+                               "must be a non-negative integer",
                              With_Help => False);
             end;
          end if;
