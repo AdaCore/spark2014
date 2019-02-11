@@ -449,8 +449,9 @@ package body Flow_Refinement is
       Partial.Clear;
 
       for Var of Vars loop
-         if Is_Constituent (Var) then
-            pragma Assert (Var.Kind = Direct_Mapping);
+         if Var.Kind = Direct_Mapping
+           and then Is_Constituent (Get_Direct_Mapping_Id (Var))
+         then
             declare
                Projected_Entity, Partial_Entity : Node_Sets.Set;
 
