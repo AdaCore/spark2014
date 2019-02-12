@@ -2540,6 +2540,18 @@ package body Gnat2Why.Subprograms is
 
       Loops.Exits.Before_Start_Of_Subprogram;
 
+      if Within_Protected_Type (E) then
+         declare
+            CPT : constant Entity_Id := Containing_Protected_Type (E);
+         begin
+            --  The Ada_Node is important here, because that's how we detect
+            --  occurrences of "self" in a term later.
+
+            Self_Name := Concurrent_Self_Ident (CPT);
+            Self_Is_Mutable := True;
+         end;
+      end if;
+
       --  Translate initial condition of E
 
       if Present (Init_Cond) then
@@ -2727,6 +2739,9 @@ package body Gnat2Why.Subprograms is
                   Post     => Post,
                   Def      => +Why_Body));
       end;
+
+      Self_Name := Why_Empty;
+      Self_Is_Mutable := False;
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory);

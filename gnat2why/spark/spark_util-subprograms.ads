@@ -93,7 +93,8 @@ package SPARK_Util.Subprograms is
 
                    when E_Function  |
                         E_Procedure |
-                        Entry_Kind  =>
+                        Entry_Kind  |
+                        E_Package   =>
                       Within_Protected_Type (E),
 
                    when others =>

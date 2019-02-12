@@ -1213,6 +1213,9 @@ package body Gnat2Why.Expr is
                                     Domain => EW_Term));
 
    begin
+
+      pragma Assert (L_Id /= Why_Empty);
+
       --  Assume dynamic property of E
 
       Context := Sequence
