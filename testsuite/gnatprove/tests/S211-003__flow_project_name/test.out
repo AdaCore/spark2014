@@ -1,0 +1,2 @@
+os_arch.ads:8:07: "os_task_list.os_task_list_rw" is referenced in Post but missing from the Global
+gnatprove: error during flow analysis and proof
