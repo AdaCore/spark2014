@@ -5,14 +5,14 @@ lsc-bignum.adb:443:48: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:443:50: info: initialization of "L" proved
 lsc-bignum.adb:444:13: info: index check proved (Z3: 2 VC)
 lsc-bignum.adb:444:25: info: initialization of "Aux1" proved
-lsc-bignum.adb:446:07: medium: precondition might fail
+lsc-bignum.adb:446:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
 lsc-bignum.adb:447:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:447:41: info: initialization of "L" proved
 lsc-bignum.adb:448:22: info: initialization of "Aux1" proved
-lsc-bignum.adb:451:07: medium: precondition might fail
+lsc-bignum.adb:451:07: medium: precondition might fail, cannot prove A_Last in A'range
 lsc-bignum.adb:452:39: medium: overflow check might fail
 lsc-bignum.adb:452:41: info: initialization of "L" proved
-lsc-bignum.adb:456:07: medium: precondition might fail
+lsc-bignum.adb:456:07: medium: precondition might fail, cannot prove B_First + (A_Last - A_First) in B'range
 lsc-bignum.adb:457:39: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:457:41: info: initialization of "L" proved
 lsc-bignum.adb:458:10: info: initialization of "Aux4" proved
@@ -69,7 +69,7 @@ lsc-bignum.adb:494:62: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:494:62: medium: overflow check might fail
 lsc-bignum.adb:495:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:496:47: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:498:10: medium: precondition might fail
+lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in B'range
 lsc-bignum.adb:500:13: info: initialization of "Aux4" proved
 lsc-bignum.adb:500:30: medium: overflow check might fail
 lsc-bignum.adb:500:30: medium: range check might fail
@@ -77,7 +77,7 @@ lsc-bignum.adb:500:40: medium: overflow check might fail
 lsc-bignum.adb:500:43: info: initialization of "L" proved
 lsc-bignum.adb:500:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:500:51: info: initialization of "Aux2" proved
-lsc-bignum.adb:503:10: medium: precondition might fail
+lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'range
 lsc-bignum.adb:503:16: info: initialization of "A" proved
 lsc-bignum.adb:503:36: info: initialization of "Aux4" proved
 lsc-bignum.adb:503:53: medium: overflow check might fail
@@ -153,7 +153,7 @@ lsc-bignum.adb:546:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:547:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:548:39: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:548:39: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:550:13: medium: precondition might fail
+lsc-bignum.adb:550:13: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First)
 lsc-bignum.adb:550:34: info: initialization of "I" proved
 lsc-bignum.adb:557:19: info: initialization of "L" proved
 lsc-bignum.adb:557:30: info: overflow check proved (Z3: 2 VC)
@@ -206,7 +206,7 @@ lsc-bignum.adb:585:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:585:45: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:588:31: info: initialization of "J" proved
 lsc-bignum.adb:588:62: info: initialization of "I" proved
-lsc-bignum.adb:590:19: medium: precondition might fail
+lsc-bignum.adb:590:19: medium: precondition might fail, cannot prove I / 32 <= Types.Word64 (A'Last - A_First)
 lsc-bignum.adb:590:40: info: initialization of "I" proved
 lsc-bignum.adb:590:58: info: initialization of "J" proved
 lsc-bignum.adb:591:47: info: initialization of "W" proved
@@ -267,7 +267,7 @@ lsc-bignum.adb:629:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:629:61: info: initialization of "S" proved
 lsc-bignum.adb:632:45: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:632:45: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:634:16: medium: precondition might fail
+lsc-bignum.adb:634:16: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
 lsc-bignum.adb:636:19: info: initialization of "Aux3" proved
 lsc-bignum.adb:636:37: info: initialization of "Aux3" proved
 lsc-bignum.adb:639:16: info: precondition proved (Z3: 9 VC)
@@ -318,7 +318,7 @@ lsc-bignum.adb:668:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:668:61: info: initialization of "S" proved
 lsc-bignum.adb:671:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:671:45: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:674:13: medium: precondition might fail
+lsc-bignum.adb:674:13: medium: precondition might fail, cannot prove C_First in C'range
 lsc-bignum.adb:676:16: info: initialization of "Aux3" proved
 lsc-bignum.adb:677:16: info: initialization of "Aux4" proved
 lsc-bignum.adb:677:33: medium: overflow check might fail
@@ -331,7 +331,7 @@ lsc-bignum.adb:677:80: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:680:13: info: precondition proved (Z3: 9 VC)
 lsc-bignum.adb:680:19: info: initialization of "A" proved
 lsc-bignum.adb:680:39: info: initialization of "Aux3" proved
-lsc-bignum.adb:684:13: medium: precondition might fail
+lsc-bignum.adb:684:13: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
 lsc-bignum.adb:686:16: info: initialization of "Aux3" proved
 lsc-bignum.adb:686:34: info: initialization of "Aux3" proved
 lsc-bignum.adb:689:13: info: precondition proved (Z3: 9 VC)
@@ -379,7 +379,7 @@ lsc-bignum.adb:717:20: info: initialization of "I" proved
 lsc-bignum.adb:717:38: info: initialization of "S" proved
 lsc-bignum.adb:719:15: info: initialization of "I" proved
 lsc-bignum.adb:719:33: info: initialization of "S" proved
-lsc-bignum.adb:722:07: medium: precondition might fail
+lsc-bignum.adb:722:07: medium: precondition might fail, cannot prove Num_Of_Big_Int (C, C_First, A_Last - A_First + 1) < Num_Of_Big_Int (M, M_First, A_Last - A_First + 1)
 lsc-bignum.adb:724:10: info: initialization of "Aux3" proved
 lsc-bignum.adb:724:28: info: initialization of "Aux1" proved
 lsc-bignum.ads:177:07: info: initialization of "A" proved

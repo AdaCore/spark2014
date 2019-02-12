@@ -158,7 +158,7 @@ basicmath_small.adb:904:07: warning: unused assignment to "OverflowFlag"
 basicmath_small.adb:904:07: warning: unused assignment to "RSI"
 basicmath_small.adb:904:07: warning: unused assignment to "SignFlag"
 basicmath_small.adb:904:07: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:918:07: medium: precondition might fail [possible explanation: postcondition of call at line 904 should mention RSI]
+basicmath_small.adb:918:07: medium: precondition might fail, cannot prove not X86.InRange64(X86.RSI,X86.RSP-7,15) [possible explanation: postcondition of call at line 904 should mention RSI]
 basicmath_small.adb:918:07: warning: unused assignment to "ZeroFlag"
 basicmath_small.adb:948:07: warning: unused assignment to "XMM0"
 basicmath_small.adb:948:07: warning: unused assignment to "XMM1"

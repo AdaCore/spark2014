@@ -1,5 +1,5 @@
 copy.adb:42:14: info: implicit function contract not available for proof ("Status" might not return)
-copy.adb:42:14: medium: precondition of main program might fail
+copy.adb:42:14: medium: precondition of main program might fail, cannot prove Status (Standard_Error) = success
 copy.adb:62:30: info: implicit function contract not available for proof ("Status" might not return)
 copy.adb:62:30: info: loop invariant initialization proved (CVC4: 3 VC)
 copy.adb:62:30: info: loop invariant preservation proved (CVC4: 3 VC)
@@ -333,16 +333,16 @@ spark-text_io-unbounded_io.ads:49:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:55:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:57:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:58:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:59:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:60:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:61:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io-unbounded_io.ads:62:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:63:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io-unbounded_io.ads:64:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:70:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:72:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:72:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -359,16 +359,16 @@ spark-text_io-unbounded_io.ads:75:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:81:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:83:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:84:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:85:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:86:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:87:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io-unbounded_io.ads:88:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:89:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io-unbounded_io.ads:90:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:97:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:97:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:97:33: info: precondition proved (CVC4: 1 VC)
@@ -377,10 +377,10 @@ spark-text_io-unbounded_io.ads:98:33: info: implicit function contract not avail
 spark-text_io-unbounded_io.ads:98:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:105:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:105:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail
+spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:106:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:106:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail
+spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:29:08: medium: initial condition might fail
 spark-text_io.ads:29:42: info: initialization of "Standard_Input" proved
 spark-text_io.ads:30:42: info: initialization of "Standard_Output" proved
@@ -446,16 +446,16 @@ spark-text_io.ads:233:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:239:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:240:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:241:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:241:24: medium: precondition might fail
+spark-text_io.ads:241:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:242:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:243:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:243:24: medium: precondition might fail
+spark-text_io.ads:243:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:244:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:245:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:245:24: medium: precondition might fail
+spark-text_io.ads:245:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:246:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:247:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:247:24: medium: precondition might fail
+spark-text_io.ads:247:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:255:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:255:52: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:257:20: info: implicit function contract not available for proof ("Mode" might not return)
@@ -475,13 +475,13 @@ spark-text_io.ads:266:25: info: implicit function contract not available for pro
 spark-text_io.ads:268:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:269:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:269:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:269:46: medium: precondition might fail
+spark-text_io.ads:269:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:270:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:270:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:270:46: medium: precondition might fail
+spark-text_io.ads:270:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:271:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:272:21: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:272:21: medium: precondition might fail
+spark-text_io.ads:272:21: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:279:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:279:52: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:280:38: info: implicit function contract not available for proof ("Mode" might not return)
@@ -501,13 +501,13 @@ spark-text_io.ads:289:24: info: implicit function contract not available for pro
 spark-text_io.ads:291:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:292:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:292:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:292:46: medium: precondition might fail
+spark-text_io.ads:292:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:293:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:293:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:293:46: medium: precondition might fail
+spark-text_io.ads:293:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:294:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:295:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:295:24: medium: precondition might fail
+spark-text_io.ads:295:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:318:38: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:318:52: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:318:52: info: precondition proved (CVC4: 1 VC)
@@ -526,16 +526,16 @@ spark-text_io.ads:322:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:328:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:329:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:330:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:330:24: medium: precondition might fail
+spark-text_io.ads:330:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:331:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:332:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:332:24: medium: precondition might fail
+spark-text_io.ads:332:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:333:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:334:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:334:24: medium: precondition might fail
+spark-text_io.ads:334:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:335:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:336:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:336:24: medium: precondition might fail
+spark-text_io.ads:336:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:342:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:344:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:344:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -568,16 +568,16 @@ spark-text_io.ads:371:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:377:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:378:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:379:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:379:24: medium: precondition might fail
+spark-text_io.ads:379:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:380:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:381:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:381:24: medium: precondition might fail
+spark-text_io.ads:381:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:382:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:383:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:383:24: medium: precondition might fail
+spark-text_io.ads:383:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:384:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:385:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:385:24: medium: precondition might fail
+spark-text_io.ads:385:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:390:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:392:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:392:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -600,19 +600,19 @@ spark-text_io.ads:424:54: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:425:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:427:39: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:427:53: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:427:53: medium: precondition might fail
+spark-text_io.ads:427:53: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:429:20: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:429:34: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:429:34: medium: precondition might fail
+spark-text_io.ads:429:34: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:430:20: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:430:34: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:430:34: medium: precondition might fail
+spark-text_io.ads:430:34: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:431:20: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:431:41: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:431:41: medium: precondition might fail
+spark-text_io.ads:431:41: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:432:20: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:432:41: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:432:41: medium: precondition might fail
+spark-text_io.ads:432:41: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:438:25: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:438:25: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:439:31: info: implicit function contract not available for proof ("Line_Length" might not return)
@@ -680,10 +680,10 @@ spark-text_io.ads:517:25: info: function contract not available for proof ("End_
 spark-text_io.ads:519:31: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:521:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:521:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:521:45: medium: precondition might fail
+spark-text_io.ads:521:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:522:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:522:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:522:45: medium: precondition might fail
+spark-text_io.ads:522:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:526:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:530:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:533:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -705,16 +705,16 @@ spark-text_io.ads:542:21: info: implicit function contract not available for pro
 spark-text_io.ads:544:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:545:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:546:23: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:546:23: medium: precondition might fail
+spark-text_io.ads:546:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:547:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:548:23: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:548:23: medium: precondition might fail
+spark-text_io.ads:548:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:549:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:550:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:550:24: medium: precondition might fail
+spark-text_io.ads:550:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:551:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:552:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:552:24: medium: precondition might fail
+spark-text_io.ads:552:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:561:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:561:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:561:33: info: precondition proved (CVC4: 1 VC)
@@ -723,10 +723,10 @@ spark-text_io.ads:562:33: info: implicit function contract not available for pro
 spark-text_io.ads:562:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:569:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:569:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:569:45: medium: precondition might fail
+spark-text_io.ads:569:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:570:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:570:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:570:45: medium: precondition might fail
+spark-text_io.ads:570:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:576:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:578:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:578:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -765,10 +765,10 @@ spark-text_io.ads:622:23: info: implicit function contract not available for pro
 spark-text_io.ads:626:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:628:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:628:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:628:45: medium: precondition might fail
+spark-text_io.ads:628:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:629:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:629:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:629:45: medium: precondition might fail
+spark-text_io.ads:629:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:631:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:636:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:639:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -790,16 +790,16 @@ spark-text_io.ads:648:21: info: implicit function contract not available for pro
 spark-text_io.ads:650:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:651:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:651:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:651:46: medium: precondition might fail
+spark-text_io.ads:651:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:652:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:652:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:652:46: medium: precondition might fail
+spark-text_io.ads:652:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:653:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:654:23: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:654:23: medium: precondition might fail
+spark-text_io.ads:654:23: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:655:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:656:23: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:656:23: medium: precondition might fail
+spark-text_io.ads:656:23: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:670:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:670:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:670:33: info: precondition proved (CVC4: 1 VC)
@@ -809,10 +809,10 @@ spark-text_io.ads:671:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:674:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:682:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:682:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:682:45: medium: precondition might fail
+spark-text_io.ads:682:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:683:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:683:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:683:45: medium: precondition might fail
+spark-text_io.ads:683:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:685:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:692:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:695:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -834,16 +834,16 @@ spark-text_io.ads:705:21: info: implicit function contract not available for pro
 spark-text_io.ads:707:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:708:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:709:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:709:24: medium: precondition might fail
+spark-text_io.ads:709:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:710:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:711:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:711:24: medium: precondition might fail
+spark-text_io.ads:711:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:712:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:713:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:713:24: medium: precondition might fail
+spark-text_io.ads:713:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:714:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:715:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:715:24: medium: precondition might fail
+spark-text_io.ads:715:24: medium: precondition might fail, cannot prove Is_Writable (File)
 use_enum_io.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_enum_io.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_enum_io.adb:37:30: info: loop invariant initialization proved (CVC4: 2 VC)

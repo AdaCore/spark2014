@@ -23,9 +23,9 @@ memcpy.adb:30:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
-memcpy.adb:110:16: medium: precondition might fail [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: unused assignment to "RAX"
-memcpy.adb:131:16: medium: precondition might fail [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
+memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: unused assignment to "RAX"
 memcpy.adb:151:21: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:151:32: info: initialization of "SaveStackPtr" proved

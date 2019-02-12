@@ -401,7 +401,7 @@ use_lists.ads:105:35: info: range check proved (Z3: 1 VC)
 use_lists.ads:106:13: info: precondition proved (Z3: 2 VC)
 use_lists.ads:106:39: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:106:39: info: range check proved (Z3: 1 VC)
-use_lists.ads:108:11: medium: precondition might fail
+use_lists.ads:108:11: medium: precondition might fail, cannot prove Has_Key (Container, Key)
 use_lists.ads:109:09: info: precondition proved (Z3: 1 VC)
 use_lists.ads:109:38: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:120:17: info: precondition proved (Z3: 1 VC)
