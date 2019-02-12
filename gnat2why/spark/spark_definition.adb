@@ -4357,7 +4357,7 @@ package body SPARK_Definition is
 
                --  Check that the discriminant constraint is in SPARK
 
-               if Elmt /= No_Elmt then
+               if Present (Elmt) then
                   Mark (Node (Elmt));
                   Next_Elmt (Elmt);
                end if;
