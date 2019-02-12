@@ -431,11 +431,7 @@ package body Flow_Utility is
    -- Expand_Abstract_State --
    ---------------------------
 
-   function Expand_Abstract_State
-     (F               : Flow_Id;
-      Erase_Constants : Boolean)
-      return Flow_Id_Sets.Set
-   is
+   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set is
    begin
       --  Abstract state is expanded as much as possible using refinement
       --  recorded in the ALI file.
@@ -462,7 +458,7 @@ package body Flow_Utility is
             then
                for C of Get_Constituents (State) loop
                   Expanded.Union
-                    (Expand_Abstract_State (Get_Flow_Id (C), Erase_Constants));
+                    (Expand_Abstract_State (Get_Flow_Id (C)));
                end loop;
             else
                Expanded := Flow_Id_Sets.To_Set (Magic_String_Id (State));
@@ -480,30 +476,14 @@ package body Flow_Utility is
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
                begin
-                  --  Entities translated as constants in Why3 should not
-                  --  be considered as effects for proof. This includes in
-                  --  particular formal parameters of mode IN.
-                  --  ??? For now, do not consider entities not in SPARK as
-                  --  constants.
+                  --  Entities in SPARK are represented by Entity_Id; those
+                  --  not in SPARK are represented by Entity_Name, because
+                  --  they behave as "blobs".
 
-                  if Erase_Constants
-                    and then Entity_In_SPARK (E)
-                    and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
-                  then
-                     return Flow_Id_Sets.Empty_Set;
-
-                  --  Otherwise the effect is significant for proof, keep it
-
-                  else
-                     --  Entities in SPARK are represented by Entity_Id; those
-                     --  not in SPARK are represented by Entity_Name, because
-                     --  they behave as "blobs".
-
-                     return Flow_Id_Sets.To_Set
-                       (if Entity_In_SPARK (E)
-                        then Change_Variant (F, Normal_Use)
-                        else Magic_String_Id (To_Entity_Name (E)));
-                  end if;
+                  return Flow_Id_Sets.To_Set
+                    (if Entity_In_SPARK (E)
+                     then Change_Variant (F, Normal_Use)
+                     else Magic_String_Id (To_Entity_Name (E)));
                end;
 
             when Magic_String =>
@@ -530,8 +510,7 @@ package body Flow_Utility is
 
    begin
       for Var of Vars loop
-         Expanded.Union
-           (Expand_Abstract_State (Var, Erase_Constants => False));
+         Expanded.Union (Expand_Abstract_State (Var));
       end loop;
 
       return Expanded;
@@ -1944,21 +1923,52 @@ package body Flow_Utility is
                                then Get_Body_Entity (Subprogram)
                                else Subprogram)));
 
-      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
-                        Expanded   : in out Flow_Id_Sets.Set);
-      --  Expand abstract states
+      function Only_Mutable
+        (Objects : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+      with Pre  => Erase_Constants,
+           Post => Flow_Id_Sets.Is_Subset (Subset => Only_Mutable'Result,
+                                           Of_Set => Objects);
+      --  Returns those of Objects that are mutable in Why3
 
-      ------------
-      -- Expand --
-      ------------
-      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
-                        Expanded   : in out Flow_Id_Sets.Set)
+      ------------------
+      -- Only_Mutable --
+      ------------------
+
+      function Only_Mutable
+        (Objects : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set
       is
+         Mutable : Flow_Id_Sets.Set;
+
       begin
-         for U of Unexpanded loop
-            Expanded.Union (Expand_Abstract_State (U, Erase_Constants));
+         for Object of Objects loop
+            if Object.Kind = Direct_Mapping then
+               --  Entities translated as constants in Why3 should not
+               --  be considered as effects for proof. This includes,
+               --  in particular, formal parameters of mode IN.
+
+               --  Otherwise the effect is significant for proof, keep it
+
+               if Gnat2Why.Util.Is_Mutable_In_Why
+                 (Get_Direct_Mapping_Id (Object))
+               then
+                  Mutable.Insert (Object);
+               end if;
+
+            --  ??? Entities not in SPARK are represented as Magic_String;
+            --  for now, consider them as mutable. The only other objects
+            --  represented as Magic_String are abstract, which are always
+            --  mutable.
+
+            else
+               pragma Assert (Object.Kind = Magic_String);
+               Mutable.Insert (Object);
+            end if;
          end loop;
-      end Expand;
+
+         return Mutable;
+      end Only_Mutable;
 
       E : Entity_Id;
       --  The entity whose Global contract will be queried from the flow
@@ -1988,16 +1998,18 @@ package body Flow_Utility is
          Globals             => Globals,
          Use_Deduced_Globals => True);
 
-      --  Reset outputs
-      Writes := Flow_Id_Sets.Empty_Set;
-      Reads  := Flow_Id_Sets.Empty_Set;
-
       --  Expand all variables; it is more efficent to process Proof_Ins and
       --  Reads separaterly, because they are disjoint and there is no point
       --  in computing their union.
-      Expand (Globals.Proof_Ins, Reads);
-      Expand (Globals.Inputs,    Reads);
-      Expand (Globals.Outputs,   Writes);
+      Reads := Flow_Id_Sets.Union (Expand_Abstract_States (Globals.Proof_Ins),
+                                   Expand_Abstract_States (Globals.Inputs));
+
+      Writes := Expand_Abstract_States (Globals.Outputs);
+
+      if Erase_Constants then
+         Reads  := Only_Mutable (Reads);
+         Writes := Only_Mutable (Writes);
+      end if;
    end Get_Proof_Globals;
 
    --------------

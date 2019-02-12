@@ -894,8 +894,8 @@ package body Gnat2Why.Subprograms is
 
                         declare
                            Reads : constant Flow_Id_Sets.Set :=
-                             Expand_Abstract_State (Input,
-                                                    Erase_Constants => False);
+                             Expand_Abstract_State (Input);
+
                         begin
 
                            --  Get the entity associated with the Flow_Ids
@@ -1315,7 +1315,7 @@ package body Gnat2Why.Subprograms is
                declare
                   K  : Flow_Id renames Dependency_Maps.Key (Cu);
                   FS : constant Flow_Id_Sets.Set :=
-                    Expand_Abstract_State (K, Erase_Constants => False);
+                    Expand_Abstract_State (K);
 
                   --  From the expansion of the LHS of an Initializes contract
                   --  we only get constants, variables and abstract states
