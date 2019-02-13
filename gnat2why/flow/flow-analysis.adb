@@ -3230,9 +3230,6 @@ package body Flow.Analysis is
    procedure Find_Input_Only_Used_In_Assertions
      (FA : in out Flow_Analysis_Graphs)
    is
-      Globals            : Global_Flow_Ids;
-      Only_Global_Inputs : Flow_Id_Sets.Set;
-
       function Only_Used_In_Assertions (Global_Inputs : Flow_Id_Sets.Set)
                                         return Flow_Id_Sets.Set
       with Post => Flow_Id_Sets.Is_Subset
@@ -3278,6 +3275,11 @@ package body Flow.Analysis is
 
          return Used_In_Assertions - Unused;
       end Only_Used_In_Assertions;
+
+      --  Local variables
+
+      Globals            : Global_Flow_Ids;
+      Only_Global_Inputs : Flow_Id_Sets.Set;
 
    --  Start of processing for Find_Input_Only_Used_In_Assertions
 
