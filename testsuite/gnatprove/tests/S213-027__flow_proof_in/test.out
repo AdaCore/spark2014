@@ -1,3 +1,2 @@
 repro-b.adb:5:04: info: initialization of "X" constituent of "State" proved
-repro-b.ads:9:31: medium: "Repro.State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 repro.adb:9:04: info: initialization of "Foo" constituent of "State" proved

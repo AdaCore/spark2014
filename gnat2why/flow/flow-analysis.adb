@@ -3167,24 +3167,65 @@ package body Flow.Analysis is
    procedure Find_Input_Only_Used_In_Assertions
      (FA : in out Flow_Analysis_Graphs)
    is
-      function Only_Used_In_Assertions (Global_Inputs : Flow_Id_Sets.Set)
-                                        return Flow_Id_Sets.Set
-      with Post => Flow_Id_Sets.Is_Subset
-          (Subset => Only_Used_In_Assertions'Result,
-           Of_Set => Global_Inputs);
-      --  Returns the global inputs that are only used in assertions
+      use type Node_Sets.Set;
+
+      function Only_Used_In_Assertions
+        (Global_Inputs : Node_Sets.Set)
+         return Node_Sets.Set
+      with Post => Node_Sets.Is_Subset
+                     (Subset => Only_Used_In_Assertions'Result,
+                      Of_Set => Global_Inputs);
+      --  Returns the subset of Global_Inputs that are only used in assertions
+
+      function Find_In
+        (User    : Node_Sets.Set;
+         Objects : Flow_Id_Sets.Set)
+        return Node_Sets.Set
+      with Post => Node_Sets.Is_Subset (Subset => Find_In'Result,
+                                        Of_Set => User);
+      --  Returns the subset of User globals that are represented by Objects,
+      --  either directly or by some of the encapsulating abstract states.
+
+      -------------
+      -- Find_In --
+      -------------
+
+      function Find_In
+        (User    : Node_Sets.Set;
+         Objects : Flow_Id_Sets.Set)
+         return Node_Sets.Set
+      is
+         Seen : Node_Sets.Set;
+
+      begin
+         for Object of Objects loop
+            if Object.Kind = Direct_Mapping then
+               declare
+                  Repr : constant Entity_Id :=
+                    Find_In (User, Get_Direct_Mapping_Id (Object));
+
+               begin
+                  if Present (Repr) then
+                     Seen.Include (Repr);
+                  end if;
+               end;
+            end if;
+         end loop;
+
+         return Seen;
+      end Find_In;
 
       -----------------------------
       -- Only_Used_In_Assertions --
       -----------------------------
 
-      function Only_Used_In_Assertions (Global_Inputs : Flow_Id_Sets.Set)
-                                        return Flow_Id_Sets.Set
+      function Only_Used_In_Assertions (Global_Inputs : Node_Sets.Set)
+                                        return Node_Sets.Set
       is
          use Flow_Graphs;
 
-         Used_In_Assertions : Flow_Id_Sets.Set := Global_Inputs;
-         Unused             : Flow_Id_Sets.Set := Global_Inputs;
+         Used_In_Assertions : Node_Sets.Set := Global_Inputs;
+         Unused             : Node_Sets.Set := Global_Inputs;
          --  After traversing the graph, those will remain with Global inputs
          --  used in assertions and those not used at all, respectively.
 
@@ -3194,15 +3235,16 @@ package body Flow.Analysis is
                declare
                   A : V_Attributes renames FA.Atr (V);
 
-                  Used_Vars : constant Flow_Id_Sets.Set :=
-                    To_Entire_Variables (A.Variables_Used);
+                  Used_Global_Inputs : constant Node_Sets.Set :=
+                    Find_In (Global_Inputs,
+                             To_Entire_Variables (A.Variables_Used));
 
                begin
                   if not A.Is_Assertion then
-                     Used_In_Assertions.Difference (Used_Vars);
+                     Used_In_Assertions.Difference (Used_Global_Inputs);
                   end if;
 
-                  Unused.Difference (Used_Vars);
+                  Unused.Difference (Used_Global_Inputs);
                end;
             end if;
          end loop;
@@ -3215,8 +3257,8 @@ package body Flow.Analysis is
 
       --  Local variables
 
-      Globals            : Global_Flow_Ids;
-      Only_Global_Inputs : Flow_Id_Sets.Set;
+      Raw_Globals        : Raw_Global_Nodes;
+      Only_Global_Inputs : Node_Sets.Set;
 
    --  Start of processing for Find_Input_Only_Used_In_Assertions
 
@@ -3224,14 +3266,9 @@ package body Flow.Analysis is
       if FA.Kind in Kind_Subprogram | Kind_Task
         and then Has_User_Supplied_Globals (FA.Analyzed_Entity)
       then
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
-                      Scope      => FA.B_Scope,
-                      Classwide  => False,
-                      Globals    => Globals);
+         Raw_Globals := Contract_Globals (FA.Spec_Entity);
 
-         Only_Global_Inputs :=
-           Change_Variant (Globals.Inputs,  Normal_Use) -
-           Change_Variant (Globals.Outputs, Normal_Use);
+         Only_Global_Inputs := Raw_Globals.Inputs - Raw_Globals.Outputs;
 
          for Input of Only_Used_In_Assertions (Only_Global_Inputs) loop
             Error_Msg_Flow
@@ -3239,8 +3276,9 @@ package body Flow.Analysis is
                Msg      => "& must be a Proof_In as it is only " &
                            "used in assertions",
                SRM_Ref  => "6.1.4(17)",
-               N        => Find_Global (FA.Spec_Entity, Input),
-               F1       => Input,
+               N        => Find_Global (FA.Spec_Entity,
+                                        Direct_Mapping_Id (Input)),
+               F1       => Direct_Mapping_Id (Input),
                Severity => Medium_Check_Kind);
          end loop;
       end if;
