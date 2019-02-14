@@ -852,19 +852,6 @@ package body Flow.Analysis is
       --  @param F is the Flow_Id that we want to check
       --  @return True iff F is or belongs to a concurrent object
 
-      function Find_In
-        (Globals : Node_Sets.Set;
-         E       : Entity_Id)
-         return Entity_Id
-      with Post => No (Find_In'Result)
-                   or else
-                   Globals.Contains (Find_In'Result);
-      --  If a E is represented by Globals ones, either directly or via an
-      --  abstract state, then return the representative global; otherwise,
-      --  return Empty.
-      --  ??? duplicates the same routine in Find_Ineffective_Imports_...,
-      --  which is a dual to the Find_Unwritten_Exports.
-
       ----------------------------------------
       -- Is_Or_Belongs_To_Concurrent_Object --
       ----------------------------------------
@@ -874,25 +861,6 @@ package body Flow.Analysis is
          return Boolean
       is
         (Is_Concurrent_Type (Get_Direct_Mapping_Id (F)));
-
-      -------------
-      -- Find_In --
-      -------------
-
-      function Find_In
-        (Globals : Node_Sets.Set;
-         E       : Entity_Id)
-         return Entity_Id
-      is
-      begin
-         if Globals.Contains (E) then
-            return E;
-         elsif Is_Constituent (E) then
-            return Find_In (Globals, Encapsulating_State (E));
-         else
-            return Empty;
-         end if;
-      end Find_In;
 
    --  Start of processing for Find_Unwritten_Exports
 
@@ -1075,18 +1043,6 @@ package body Flow.Analysis is
       --    bounds of an unconstrained array) to determine the final value of
       --    at least one export.
 
-      function Find_In
-        (Globals : Node_Sets.Set;
-         E       : Entity_Id)
-         return Entity_Id
-      with Post => No (Find_In'Result)
-                     or else
-                   Globals.Contains (Find_In'Result);
-      --  If a E is represented by Globals ones, either directly or via an
-      --  abstract state, then return the representative global; otherwise,
-      --  return Empty. ??? same as Find_In in Check_Generated_Refined_Global,
-      --  but for Entity_Ids.
-
       procedure Warn_On_Unused_Objects
         (Unused         : Flow_Id_Sets.Set;
          Unused_Globals : Node_Sets.Set)
@@ -1266,25 +1222,6 @@ package body Flow.Analysis is
             end;
          end loop;
       end Collect_Imports_And_Objects;
-
-      -------------
-      -- Find_In --
-      -------------
-
-      function Find_In
-        (Globals : Node_Sets.Set;
-         E       : Entity_Id)
-         return Entity_Id
-      is
-      begin
-         if Globals.Contains (E) then
-            return E;
-         elsif Is_Constituent (E) then
-            return Find_In (Globals, Encapsulating_State (E));
-         else
-            return Empty;
-         end if;
-      end Find_In;
 
       ----------------------------
       -- Warn_On_Unused_Objects --
@@ -3683,16 +3620,6 @@ package body Flow.Analysis is
       --  states, if they appear in the User contract; otherwise, return
       --  No_Element.
 
-      function Find_In
-        (User : Flow_Id_Sets.Set;
-         G    : Flow_Id)
-         return Flow_Id
-      with Pre  => Present (G),
-           Post => (if Present (Find_In'Result)
-                    then User.Contains (Find_In'Result));
-      --  Returns G or one of its enclosing abstract states if they appear in
-      --  in the User contract.
-
       function Strip_Proof_Ins
         (Deps : Dependency_Maps.Map)
          return Dependency_Maps.Map;
@@ -3801,25 +3728,6 @@ package body Flow.Analysis is
             end;
          end if;
       end Check;
-
-      -------------
-      -- Find_In --
-      -------------
-
-      function Find_In
-        (User : Flow_Id_Sets.Set;
-         G    : Flow_Id)
-         return Flow_Id
-      is
-      begin
-         if User.Contains (G) then
-            return G;
-         elsif Is_Constituent (G) then
-            return Find_In (User, Encapsulating_State (G));
-         else
-            return Null_Flow_Id;
-         end if;
-      end Find_In;
 
       --------------
       -- Find_Out --

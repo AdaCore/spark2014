@@ -5865,4 +5865,35 @@ package body Flow_Utility is
       end if;
    end Is_Opaque_For_Proof;
 
+   -------------
+   -- Find_In --
+   -------------
+
+   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id
+   is
+   begin
+      if User.Contains (G) then
+         return G;
+      elsif Is_Constituent (G) then
+         return Find_In (User, Encapsulating_State (G));
+      else
+         return Empty;
+      end if;
+   end Find_In;
+
+   -------------
+   -- Find_In --
+   -------------
+
+   function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id is
+   begin
+      if User.Contains (G) then
+         return G;
+      elsif Is_Constituent (G) then
+         return Find_In (User, Encapsulating_State (G));
+      else
+         return Null_Flow_Id;
+      end if;
+   end Find_In;
+
 end Flow_Utility;

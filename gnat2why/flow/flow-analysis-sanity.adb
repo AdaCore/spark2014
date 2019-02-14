@@ -1146,37 +1146,12 @@ package body Flow.Analysis.Sanity is
             when Kind_Package | Kind_Package_Body => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 
-      function Find_In (User : Node_Sets.Set; G : Entity_Id) return Node_Id
-      with Post => (if Present (Find_In'Result)
-                    then User.Contains (Find_In'Result));
-      --  If a global G is represented by User ones, either directly or via an
-      --  abstract state, then return the representative user global; otherwise
-      --  return the Empty node.
-      --  ??? This routine is copy pasted in several places. Should be
-      --  refactored.
-
       function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
                                     return Boolean
       with Pre => FA.Kind in Kind_Subprogram | Kind_Task
                   and then (Present (FA.Refined_Global_N)
                             or else Present (FA.Refined_Depends_N));
       --  Returns True if G can be found in the Global or Depends contract
-
-      -------------
-      -- Find_In --
-      -------------
-
-      function Find_In (User : Node_Sets.Set; G : Entity_Id) return Node_Id
-      is
-      begin
-         if User.Contains (G) then
-            return G;
-         elsif Is_Constituent (G) then
-            return Find_In (User, Encapsulating_State (G));
-         else
-            return Empty;
-         end if;
-      end Find_In;
 
       --------------------------
       -- In_Abstract_Contract --
@@ -1361,13 +1336,6 @@ package body Flow.Analysis.Sanity is
       procedure Error_Msg (Msg : String; Severity : Msg_Severity; F : Flow_Id);
       --  Wrapper to simplify reporting errors about missing and unused globals
 
-      function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id
-      with Post => (if Present (Find_In'Result)
-                    then User.Contains (Find_In'Result));
-      --  If a generated global G is represented by User ones, either directly
-      --  or via an abstract state, then return the representative user global;
-      --  otherwise, return Null_Flow_Id.
-
       -----------
       -- Check --
       -----------
@@ -1413,21 +1381,6 @@ package body Flow.Analysis.Sanity is
             F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
             Tag      => Global_Missing);
       end Error_Msg;
-
-      -------------
-      -- Find_In --
-      -------------
-
-      function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id is
-      begin
-         if User.Contains (G) then
-            return G;
-         elsif Is_Constituent (G) then
-            return Find_In (User, Encapsulating_State (G));
-         else
-            return Null_Flow_Id;
-         end if;
-      end Find_In;
 
       --  Local variables
 

@@ -798,6 +798,18 @@ is
    --  might be represented in the contract either directly or via its abstract
    --  state.
 
+   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id
+   with Post => (if Present (Find_In'Result)
+                 then User.Contains (Find_In'Result));
+   --  If a global G is represented by User ones, either directly or via an
+   --  abstract state, then return the representative user global; otherwise
+   --  return Empty.
+
+   function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id
+   with Post => (if Present (Find_In'Result)
+                 then User.Contains (Find_In'Result));
+   --  Same as above but for Flow_Ids; returns Null_Flow_Id instead of Empty
+
    procedure Map_Generic_In_Formals
      (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
    --  Map generic IN formal parameters, which are visible inside of generic
