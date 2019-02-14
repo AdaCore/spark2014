@@ -1,4 +1,4 @@
-with Repro.B;
+with Repro.B; pragma Elaborate (Repro, Repro.B);
 
 package body Repro.C
 with Refined_State => (CState => Y)

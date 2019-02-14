@@ -6166,7 +6166,7 @@ package body Flow.Control_Flow_Graph is
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   begin
-                     for Input of The_Ins loop
+                     for Input of Down_Project (The_Ins, FA.B_Scope) loop
                         Inputs_Seen.Insert (New_Item => Input,
                                             Position => Unused,
                                             Inserted => Inserted);
