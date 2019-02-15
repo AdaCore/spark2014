@@ -1,11 +1,29 @@
 a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at enum_example.adb:11
 a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at enum_example.adb:11
+a-tienio.ads:32:40: info: precondition proved (CVC4: 1 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:46:40: info: precondition proved (CVC4: 1 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:48:08: info: precondition proved (CVC4: 2 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:49:12: info: precondition proved (CVC4: 2 VC), in instantiation at enum_example.adb:11
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:8
 a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:9
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:9
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:8
 a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:9
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:9
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:8
 a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:9
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:9
+a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:76:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:76:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
 aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
@@ -25,59 +43,25 @@ aggregates.adb:29:24: info: initialization of "A" proved
 aggregates.adb:29:26: medium: float overflow check might fail
 aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
 aggregates.adb:29:28: info: initialization of "B" proved
-average.adb:10:15: warning: assuming "Put_Line" has no effect on global items
-average.adb:10:15: warning: no Global contract available for "Put_Line"
-average.adb:11:23: warning: assuming "Get" has no effect on global items
-average.adb:11:23: warning: no Global contract available for "Get"
-average.adb:12:23: warning: assuming "Get" has no effect on global items
-average.adb:12:23: warning: no Global contract available for "Get"
-average.adb:13:15: warning: assuming "New_Line" has no effect on global items
-average.adb:13:15: warning: no Global contract available for "New_Line"
 average.adb:15:16: info: initialization of "A" proved
 average.adb:15:18: info: range check proved (Interval)
-average.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
+average.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average.adb:15:20: info: initialization of "B" proved
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
 average.adb:15:23: info: float overflow check proved (Interval)
-average.adb:17:15: warning: assuming "Put" has no effect on global items
-average.adb:17:15: warning: no Global contract available for "Put"
-average.adb:18:21: warning: assuming "Put" has no effect on global items
-average.adb:18:21: warning: no Global contract available for "Put"
 average.adb:18:35: info: initialization of "M" proved
-average.adb:22:15: warning: assuming "New_Line" has no effect on global items
-average.adb:22:15: warning: no Global contract available for "New_Line"
 average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
-average_with_use.adb:10:04: warning: assuming "Put_Line" has no effect on global items
-average_with_use.adb:10:04: warning: no Global contract available for "Put_Line"
-average_with_use.adb:11:04: warning: assuming "Get" has no effect on global items
-average_with_use.adb:11:04: warning: no Global contract available for "Get"
-average_with_use.adb:12:04: warning: assuming "Get" has no effect on global items
-average_with_use.adb:12:04: warning: no Global contract available for "Get"
-average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global items
-average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
 average_with_use.adb:15:16: info: initialization of "A" proved
 average_with_use.adb:15:18: info: range check proved (Interval)
-average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
+average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average_with_use.adb:15:20: info: initialization of "B" proved
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
 average_with_use.adb:15:23: info: float overflow check proved (Interval)
-average_with_use.adb:17:04: warning: assuming "Put" has no effect on global items
-average_with_use.adb:17:04: warning: no Global contract available for "Put"
-average_with_use.adb:18:04: warning: assuming "Put" has no effect on global items
-average_with_use.adb:18:04: warning: no Global contract available for "Put"
 average_with_use.adb:18:09: info: initialization of "M" proved
-average_with_use.adb:19:04: warning: assuming "New_Line" has no effect on global items
-average_with_use.adb:19:04: warning: no Global contract available for "New_Line"
-bad_types.adb:7:21: warning: assuming "Get" has no effect on global items
-bad_types.adb:7:21: warning: no Global contract available for "Get"
-bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
-bad_types.adb:8:21: warning: no Global contract available for "Get"
 bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
-bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
+bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
+bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
 bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
-bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
-bad_types.adb:10:21: warning: no Global contract available for "Put"
 bad_types.adb:10:35: info: initialization of "Total" proved
 bingo_basket.adb:12:15: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
 bingo_basket.adb:12:24: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
@@ -126,14 +110,8 @@ bounded_queue_example.adb:16:25: info: initialization of private part of "My_Que
 bounded_queue_example.adb:18:38: info: unrolling loop
 bounded_queue_example.adb:19:07: medium: precondition might fail, cannot prove not Empty (Queue)
 bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
-bounded_queue_example.adb:20:07: warning: no Global contract available for "Put"
 bounded_queue_example.adb:20:12: info: initialization of "Value" proved
-bounded_queue_example.adb:21:07: warning: assuming "New_Line" has no effect on global items
-bounded_queue_example.adb:21:07: warning: no Global contract available for "New_Line"
 bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example.adb:24:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC4: 1 VC)
@@ -153,8 +131,6 @@ bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" pro
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
 bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:16:07: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v1.adb:16:32: info: initialization of "Value" proved
 bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Count" proved
 bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Front" proved
@@ -164,8 +140,6 @@ bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Count" pro
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Front" proved
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" proved
 bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
@@ -176,13 +150,9 @@ bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
 bounded_queue_example_v2.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:16:07: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v2.adb:16:32: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail
@@ -307,10 +277,6 @@ calculate.adb:3:21: info: initialization of "A" proved
 calculate.adb:12:11: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention C in a precondition]
 circle_demo.adb:14:14: info: precondition proved (CVC4: 1 VC)
 circle_demo.adb:14:50: info: initialization of "My_Circle" proved
-circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
 contains.adb:9:37: warning: assuming "Index" has no effect on global items
 contains.adb:9:37: warning: no Global contract available for "Index"
 contains.adb:10:56: info: initialization of "Search_String" proved
@@ -407,11 +373,9 @@ control_structures.adb:127:26: info: initialization of "E" proved
 control_structures.adb:131:11: info: initialization of "A" proved
 control_structures.adb:131:22: info: initialization of "B" proved
 control_structures.adb:137:19: info: initialization of "Letter" proved
-control_structures.adb:152:26: warning: assuming "Get" has no effect on global items
-control_structures.adb:152:26: warning: no Global contract available for "Get"
 control_structures.adb:153:17: info: initialization of "Value" proved
 control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail [possible explanation: call at line 152 should mention Item (for argument Value) in a postcondition]
+control_structures.adb:154:18: medium: overflow check might fail [possible explanation: postcondition of call at line 152 should mention Item (for argument Value)]
 control_structures.adb:154:20: info: initialization of "Value" proved
 control_structures.adb:158:14: info: initialization of "X" proved
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
@@ -427,23 +391,15 @@ control_structures.adb:160:33: info: initialization of "X" proved
 control_structures.adb:160:35: medium: divide by zero might fail
 control_structures.adb:160:35: medium: float overflow check might fail
 control_structures.adb:163:38: info: unrolling loop
-control_structures.adb:164:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:164:26: warning: no Global contract available for "Put"
 control_structures.adb:167:46: info: unrolling loop
-control_structures.adb:168:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:168:26: warning: no Global contract available for "Put"
 control_structures.adb:174:08: info: range check proved (CVC4: 2 VC)
 control_structures.adb:174:31: info: initialization of "A" proved
 control_structures.adb:174:36: info: initialization of "B" proved
 control_structures.adb:174:38: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:175:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:175:26: warning: no Global contract available for "Put"
 control_structures.adb:178:08: info: range check proved (CVC4: 2 VC)
 control_structures.adb:178:39: info: initialization of "A" proved
 control_structures.adb:178:44: info: initialization of "B" proved
 control_structures.adb:178:46: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:179:26: warning: no Global contract available for "Put"
 control_structures.adb:184:07: info: analyzing call to "Calculate_Valve" in context
 control_structures.adb:184:07: info: initialization of "Temperature" proved
 control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
@@ -588,21 +544,6 @@ dates.ads:78:14: info: postcondition proved (CVC4: 3 VC)
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
-display_control.adb:16:18: warning: assuming "Put" has no effect on global items
-display_control.adb:16:18: warning: no Global contract available for "Put"
-display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:18:18: warning: no Global contract available for "Flush"
-display_control.adb:23:18: warning: assuming "Put" has no effect on global items
-display_control.adb:23:18: warning: no Global contract available for "Put"
-display_control.adb:24:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:24:18: warning: no Global contract available for "Flush"
-display_control.adb:29:18: warning: assuming "Put" has no effect on global items
-display_control.adb:29:18: warning: no Global contract available for "Put"
-display_control.adb:30:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:30:18: warning: no Global contract available for "Flush"
-display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
-display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
-display_control.ads:11:14: warning: subprogram "Normal" has no effect
 display_manager.ads:10:44: info: initialization of "Value" proved
 double_list.adb:17:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:18:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
@@ -636,62 +577,24 @@ elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
 enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
 enum_example.adb:18:32: info: range check proved (CVC4: 1 VC)
-enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:26:04: warning: no Global contract available for "Put_Line"
-enum_example.adb:27:10: warning: assuming "Get" has no effect on global items
-enum_example.adb:27:10: warning: no Global contract available for "Get"
 enum_example.adb:28:26: info: initialization of "Today" proved
-enum_example.adb:29:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:29:04: warning: no Global contract available for "Put"
-enum_example.adb:30:10: info: initialization of "Default_Setting" proved
-enum_example.adb:30:10: info: initialization of "Default_Width" proved
-enum_example.adb:30:10: warning: assuming "Put" has no effect on global items
-enum_example.adb:30:10: warning: no Global contract available for "Put"
 enum_example.adb:30:25: info: initialization of "Tomorrow" proved
-enum_example.adb:33:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:33:04: warning: no Global contract available for "New_Line"
 enum_example.adb:35:07: info: initialization of "Today" proved
 enum_example.adb:35:15: info: initialization of "Tomorrow" proved
-enum_example.adb:36:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:36:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:38:04: warning: no Global contract available for "New_Line"
-enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
 enum_example.adb:41:47: info: unrolling loop
 enum_example.adb:42:13: info: initialization of "Default_Setting" proved
 enum_example.adb:42:13: info: initialization of "Default_Width" proved
-enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
-enum_example.adb:42:13: warning: no Global contract available for "Put"
-enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:43:07: warning: no Global contract available for "New_Line"
-enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:45:04: warning: no Global contract available for "New_Line"
 enum_example.adb:47:37: info: unrolling loop
-enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:50:04: warning: no Global contract available for "New_Line"
 enum_example.adb:53:49: info: unrolling loop
 enum_example.adb:54:16: info: initialization of "Count" proved
 enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
-enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:56:04: warning: no Global contract available for "Put"
 enum_example.adb:56:17: info: initialization of "Count" proved
 example.adb:10:07: info: initialization of "Changed" proved
 example.adb:13:10: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:21: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:27: info: overflow check proved (CVC4: 1 VC), in call inlined at example.adb:27
-example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
-example.adb:25:15: warning: no Global contract available for "Put_Line"
-example.adb:26:23: warning: assuming "Get" has no effect on global items
-example.adb:26:23: warning: no Global contract available for "Get"
 example.adb:27:04: info: analyzing call to "Bounded_Increment" in context
 example.adb:30:07: info: initialization of "Modified" proved
-example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
-example.adb:31:18: warning: no Global contract available for "Put_Line"
-example.adb:32:26: warning: assuming "Put" has no effect on global items
-example.adb:32:26: warning: no Global contract available for "Put"
 example.adb:32:41: info: initialization of "Value" proved
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
@@ -714,31 +617,15 @@ generic_examples.adb:70:23: info: initialization of "Result" proved, in instanti
 generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77 [possible explanation: loop at line 68 should mention Result in a loop invariant]
 generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:77:04: info: in instantiation at line 68
-generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:91:23: warning: no Global contract available for "Put"
 generic_examples.adb:91:29: info: initialization of "The_Count" proved
-generic_examples.adb:92:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:92:15: warning: no Global contract available for "New_Line"
 generic_examples.adb:95:40: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:97:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:97:23: warning: no Global contract available for "Put"
 generic_examples.adb:97:29: info: initialization of "The_Count" proved
-generic_examples.adb:98:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:98:15: warning: no Global contract available for "New_Line"
 generic_examples.adb:100:43: info: initialization of "My_Percents" proved
 generic_examples.adb:100:43: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:102:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:102:23: warning: no Global contract available for "Put"
 generic_examples.adb:102:29: info: initialization of "The_Count" proved
-generic_examples.adb:103:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:103:15: warning: no Global contract available for "New_Line"
 generic_examples.adb:106:31: info: initialization of "My_Percents" proved
 generic_examples.adb:106:31: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:109:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:109:23: warning: no Global contract available for "Put"
 generic_examples.adb:109:29: info: initialization of "The_Count" proved
-generic_examples.adb:110:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:110:15: warning: no Global contract available for "New_Line"
 generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
 generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
@@ -818,21 +705,12 @@ generic_searchers.ads:17:41: info: initialization of "Result" proved, in instant
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: range check proved (Interval), in call inlined at good_types.adb:22
-good_types.adb:20:11: warning: assuming "Get" has no effect on global items
-good_types.adb:20:11: warning: no Global contract available for "Get"
-good_types.adb:21:11: warning: assuming "Get" has no effect on global items
-good_types.adb:21:11: warning: no Global contract available for "Get"
 good_types.adb:22:13: info: initialization of "Room_Length" proved
 good_types.adb:22:25: info: float overflow check proved (Interval)
-good_types.adb:22:25: medium: range check might fail [possible explanation: call at line 20 should mention Item (for argument Room_Length) in a postcondition]
+good_types.adb:22:25: medium: range check might fail [possible explanation: postcondition of call at line 20 should mention Item (for argument Room_Length)]
 good_types.adb:22:31: info: float overflow check proved (Interval)
 good_types.adb:22:33: info: analyzing call to "To_Feet" in context
 good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
-good_types.adb:23:11: info: initialization of "Default_Aft" proved
-good_types.adb:23:11: info: initialization of "Default_Exp" proved
-good_types.adb:23:11: info: initialization of "Default_Fore" proved
-good_types.adb:23:11: warning: assuming "Put" has no effect on global items
-good_types.adb:23:11: warning: no Global contract available for "Put"
 good_types.adb:23:25: info: initialization of "Total" proved
 hierarchical_state_demo-a_pack.adb:5:04: info: initialization of "Total" constituent of "State" proved
 hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved (CVC4: 1 VC)
@@ -938,19 +816,11 @@ operator_overload.adb:30:10: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P2.X_Coord" proved
 operator_overload.adb:30:10: info: initialization of "P2.Y_Coord" proved
-operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: initialization of "P1.X_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P1.Y_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P2.X_Coord" proved
 operator_overload.adb:37:07: info: initialization of "P2.Y_Coord" proved
-operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
 overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at overflow.ads:3 should mention A and B in a precondition]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
@@ -976,18 +846,10 @@ palindrome.adb:16:14: info: initialization of "Left_Index" proved
 palindrome.adb:16:14: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
 palindrome.adb:16:28: info: initialization of "Right_Index" proved
 palindrome.adb:16:28: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:26:14: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
-palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
-palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
 palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:32:07: medium: range check might fail [possible explanation: call at line 29 should mention Item (for argument Line) in a postcondition]
+palindrome.adb:32:07: info: range check proved (CVC4: 4 VC)
 palindrome.adb:32:22: info: initialization of "Line" proved
 palindrome.adb:32:33: info: initialization of "Count" proved
-palindrome.adb:33:18: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:33:18: warning: no Global contract available for "Put_Line"
-palindrome.adb:35:18: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:35:18: warning: no Global contract available for "Put_Line"
 parent-public1.adb:11:20: info: initialization of "Temp" proved
 parent.adb:6:22: medium: overflow check might fail [possible explanation: subprogram at parent.ads:3 should mention Value in a precondition]
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)
@@ -1059,10 +921,6 @@ scrabble.adb:22:14: info: initialization of "Total_Score" proved
 search_demo.adb:21:04: info: precondition proved (CVC4: 1 VC)
 search_demo.adb:21:17: info: initialization of "Search_Array" proved
 search_demo.adb:22:11: info: initialization of "Found" proved
-search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global items
-search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
-search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
-search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
 search_demo.adb:25:63: info: range check proved (CVC4: 1 VC)
 search_demo.adb:25:79: info: initialization of "Result_Index" proved
 searchers.adb:18:30: info: initialization of "Low_Index" proved
@@ -1367,26 +1225,29 @@ stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
 stacks.ads:10:19: info: initialization of "Item" proved
 stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
 stacks.ads:17:10: info: range check proved (CVC4: 2 VC)
+string_examples.adb:13:09: warning: unused assignment
+string_examples.adb:15:06: warning: unused assignment
 string_examples.adb:15:09: info: initialization of "Address" proved
 string_examples.adb:15:09: medium: length check might fail
 string_examples.adb:16:09: info: length check proved (CVC4: 4 VC)
 string_examples.adb:17:12: info: initialization of "Name" proved
 string_examples.adb:17:12: info: length check proved (CVC4: 4 VC)
+string_examples.adb:19:06: warning: unused assignment
 string_examples.adb:19:09: info: initialization of "Name" proved
 string_examples.adb:20:09: info: initialization of "Address" proved
 string_examples.adb:20:09: info: range check proved (CVC4: 4 VC)
+string_examples.adb:21:09: warning: unused assignment
 string_examples.adb:21:12: info: initialization of "Name" proved
 string_examples.adb:21:17: info: length check proved (CVC4: 4 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
 string_examples.adb:22:19: info: initialization of "Address" proved
+string_examples.adb:22:19: warning: unused assignment
 string_examples.adb:22:22: info: initialization of "Name" proved
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
 string_examples.adb:25:12: info: initialization of "Count" proved
 string_examples.adb:25:19: info: initialization of "Name" proved
 string_examples.adb:25:19: info: length check proved (CVC4: 4 VC)
 string_examples.adb:25:22: info: length check proved (CVC4: 4 VC)
-string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
-string_examples.adb:26:01: warning: no Global contract available for "Put"
 string_examples.adb:26:06: info: initialization of "Name" proved
 string_examples.adb:26:06: info: range check proved (CVC4: 4 VC)
 string_examples.adb:26:17: info: initialization of "Count" proved

@@ -352,206 +352,94 @@ driver.adb:72:15: warning: unused assignment
 driver.adb:73:20: medium: precondition might fail, cannot prove not Is_Open (The_File)
 driver.adb:74:22: high: "ZoneFile" is not initialized
 driver.adb:79:41: info: initialization of "ZoneFile" proved
-driver.adb:80:21: warning: assuming "Put" has no effect on global items
-driver.adb:80:21: warning: no Global contract available for "Put"
-driver.adb:81:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:81:21: warning: no Global contract available for "New_Line"
-driver.adb:82:21: warning: assuming "Put" has no effect on global items
-driver.adb:82:21: warning: no Global contract available for "Put"
-driver.adb:83:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:83:21: warning: no Global contract available for "New_Line"
 driver.adb:86:40: info: initialization of "ZoneFile" proved
 driver.adb:86:40: warning: unused assignment to "ZoneFile"
 driver.adb:93:07: info: initialization of "Success" proved
 driver.adb:95:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:98:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:98:18: warning: no Global contract available for "Put_Line"
 driver.adb:98:43: info: initialization of "NumFound" proved
 driver.adb:98:53: info: range check proved (CVC4: 1 VC)
 driver.adb:99:11: info: range check proved (CVC4: 2 VC)
 driver.adb:99:35: info: initialization of "NumFound" proved
-driver.adb:100:21: warning: assuming "Put" has no effect on global items
-driver.adb:100:21: warning: no Global contract available for "Put"
-driver.adb:101:21: warning: assuming "Put" has no effect on global items
-driver.adb:101:21: warning: no Global contract available for "Put"
 driver.adb:102:30: info: initialization of "ReturnedARecords" proved
 driver.adb:102:48: info: index check proved (CVC4: 2 VC)
-driver.adb:103:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:103:21: warning: no Global contract available for "New_Line"
 driver.adb:107:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:110:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:110:18: warning: no Global contract available for "Put_Line"
 driver.adb:110:44: info: initialization of "NumFound" proved
 driver.adb:110:54: info: range check proved (CVC4: 1 VC)
 driver.adb:112:11: info: range check proved (CVC4: 2 VC)
 driver.adb:112:35: info: initialization of "NumFound" proved
-driver.adb:113:21: warning: assuming "Put" has no effect on global items
-driver.adb:113:21: warning: no Global contract available for "Put"
-driver.adb:114:21: warning: assuming "Put" has no effect on global items
-driver.adb:114:21: warning: no Global contract available for "Put"
 driver.adb:115:30: info: initialization of "ReturnedAAAARecords" proved
 driver.adb:115:51: info: index check proved (CVC4: 2 VC)
-driver.adb:116:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:116:21: warning: no Global contract available for "New_Line"
 driver.adb:120:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:123:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:123:18: warning: no Global contract available for "Put_Line"
 driver.adb:123:44: info: initialization of "NumFound" proved
 driver.adb:123:54: info: range check proved (CVC4: 1 VC)
 driver.adb:125:11: info: range check proved (CVC4: 2 VC)
 driver.adb:125:35: info: initialization of "NumFound" proved
-driver.adb:126:21: warning: assuming "Put" has no effect on global items
-driver.adb:126:21: warning: no Global contract available for "Put"
-driver.adb:127:21: warning: assuming "Put" has no effect on global items
-driver.adb:127:21: warning: no Global contract available for "Put"
 driver.adb:127:27: info: initialization of "ReturnedCNameRecords" proved
 driver.adb:127:49: info: index check proved (CVC4: 2 VC)
-driver.adb:128:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:128:21: warning: no Global contract available for "New_Line"
 driver.adb:132:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:135:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:135:18: warning: no Global contract available for "Put_Line"
 driver.adb:135:44: info: initialization of "NumFound" proved
 driver.adb:135:54: info: range check proved (CVC4: 1 VC)
 driver.adb:137:11: info: range check proved (CVC4: 2 VC)
 driver.adb:137:35: info: initialization of "NumFound" proved
-driver.adb:138:21: warning: assuming "Put" has no effect on global items
-driver.adb:138:21: warning: no Global contract available for "Put"
-driver.adb:139:21: warning: assuming "Put" has no effect on global items
-driver.adb:139:21: warning: no Global contract available for "Put"
 driver.adb:139:27: info: initialization of "ReturnedDNSKeyRecords" proved
 driver.adb:139:50: info: index check proved (CVC4: 2 VC)
-driver.adb:140:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:140:21: warning: no Global contract available for "New_Line"
 driver.adb:144:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:147:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:147:18: warning: no Global contract available for "Put_Line"
 driver.adb:147:44: info: initialization of "NumFound" proved
 driver.adb:147:54: info: range check proved (CVC4: 1 VC)
 driver.adb:149:11: info: range check proved (CVC4: 2 VC)
 driver.adb:149:35: info: initialization of "NumFound" proved
-driver.adb:150:21: warning: assuming "Put" has no effect on global items
-driver.adb:150:21: warning: no Global contract available for "Put"
-driver.adb:151:21: warning: assuming "Put" has no effect on global items
-driver.adb:151:21: warning: no Global contract available for "Put"
 driver.adb:152:30: info: initialization of "ReturnedMXRecords" proved
 driver.adb:152:49: info: index check proved (CVC4: 2 VC)
-driver.adb:153:21: warning: assuming "Put" has no effect on global items
-driver.adb:153:21: warning: no Global contract available for "Put"
-driver.adb:154:21: warning: assuming "Put" has no effect on global items
-driver.adb:154:21: warning: no Global contract available for "Put"
 driver.adb:154:27: info: initialization of "ReturnedMXRecords" proved
 driver.adb:154:46: info: index check proved (CVC4: 2 VC)
-driver.adb:155:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:155:21: warning: no Global contract available for "New_Line"
 driver.adb:159:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:162:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:162:18: warning: no Global contract available for "Put_Line"
 driver.adb:162:43: info: initialization of "NumFound" proved
 driver.adb:162:53: info: range check proved (CVC4: 1 VC)
 driver.adb:164:11: info: range check proved (CVC4: 2 VC)
 driver.adb:164:35: info: initialization of "NumFound" proved
-driver.adb:165:21: warning: assuming "Put" has no effect on global items
-driver.adb:165:21: warning: no Global contract available for "Put"
-driver.adb:166:21: warning: assuming "Put" has no effect on global items
-driver.adb:166:21: warning: no Global contract available for "Put"
 driver.adb:167:46: info: initialization of "ReturnedSrvRecords" proved
 driver.adb:167:66: info: index check proved (CVC4: 2 VC)
-driver.adb:168:21: warning: assuming "Put" has no effect on global items
-driver.adb:168:21: warning: no Global contract available for "Put"
-driver.adb:169:21: warning: assuming "Put" has no effect on global items
-driver.adb:169:21: warning: no Global contract available for "Put"
 driver.adb:170:30: info: initialization of "ReturnedSrvRecords" proved
 driver.adb:170:50: info: index check proved (CVC4: 2 VC)
-driver.adb:171:21: warning: assuming "Put" has no effect on global items
-driver.adb:171:21: warning: no Global contract available for "Put"
-driver.adb:172:21: warning: assuming "Put" has no effect on global items
-driver.adb:172:21: warning: no Global contract available for "Put"
 driver.adb:173:46: info: initialization of "ReturnedSrvRecords" proved
 driver.adb:173:66: info: index check proved (CVC4: 2 VC)
-driver.adb:174:21: warning: assuming "Put" has no effect on global items
-driver.adb:174:21: warning: no Global contract available for "Put"
-driver.adb:175:21: warning: assuming "Put" has no effect on global items
-driver.adb:175:21: warning: no Global contract available for "Put"
 driver.adb:175:27: info: initialization of "ReturnedSrvRecords" proved
 driver.adb:175:47: info: index check proved (CVC4: 2 VC)
-driver.adb:176:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:176:21: warning: no Global contract available for "New_Line"
 driver.adb:180:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:183:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:183:18: warning: no Global contract available for "Put_Line"
 driver.adb:183:44: info: initialization of "NumFound" proved
 driver.adb:183:54: info: range check proved (CVC4: 1 VC)
 driver.adb:185:11: info: range check proved (CVC4: 2 VC)
 driver.adb:185:35: info: initialization of "NumFound" proved
-driver.adb:186:21: warning: assuming "Put" has no effect on global items
-driver.adb:186:21: warning: no Global contract available for "Put"
-driver.adb:187:21: warning: assuming "Put" has no effect on global items
-driver.adb:187:21: warning: no Global contract available for "Put"
 driver.adb:187:27: info: initialization of "ReturnedNSecRecords" proved
 driver.adb:187:48: info: index check proved (CVC4: 2 VC)
-driver.adb:188:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:188:21: warning: no Global contract available for "New_Line"
 driver.adb:192:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:195:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:195:18: warning: no Global contract available for "Put_Line"
 driver.adb:195:44: info: initialization of "NumFound" proved
 driver.adb:195:54: info: range check proved (CVC4: 1 VC)
 driver.adb:196:11: info: range check proved (CVC4: 2 VC)
 driver.adb:196:35: info: initialization of "NumFound" proved
-driver.adb:197:21: warning: assuming "Put" has no effect on global items
-driver.adb:197:21: warning: no Global contract available for "Put"
-driver.adb:198:21: warning: assuming "Put" has no effect on global items
-driver.adb:198:21: warning: no Global contract available for "Put"
 driver.adb:198:27: info: initialization of "ReturnedNSRecords" proved
 driver.adb:198:46: info: index check proved (CVC4: 2 VC)
-driver.adb:199:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:199:21: warning: no Global contract available for "New_Line"
 driver.adb:203:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:210:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:210:18: warning: no Global contract available for "Put_Line"
 driver.adb:210:44: info: initialization of "NumFound" proved
 driver.adb:210:54: info: range check proved (CVC4: 1 VC)
 driver.adb:212:11: info: range check proved (CVC4: 2 VC)
 driver.adb:212:35: info: initialization of "NumFound" proved
-driver.adb:213:21: warning: assuming "Put" has no effect on global items
-driver.adb:213:21: warning: no Global contract available for "Put"
-driver.adb:214:21: warning: assuming "Put" has no effect on global items
-driver.adb:214:21: warning: no Global contract available for "Put"
 driver.adb:214:27: info: initialization of "ReturnedPtrRecords" proved
 driver.adb:214:47: info: index check proved (CVC4: 2 VC)
-driver.adb:215:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:215:21: warning: no Global contract available for "New_Line"
 driver.adb:219:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:222:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:222:18: warning: no Global contract available for "Put_Line"
 driver.adb:222:44: info: initialization of "NumFound" proved
 driver.adb:222:54: info: range check proved (CVC4: 1 VC)
 driver.adb:224:11: info: range check proved (CVC4: 2 VC)
 driver.adb:224:35: info: initialization of "NumFound" proved
-driver.adb:225:21: warning: assuming "Put" has no effect on global items
-driver.adb:225:21: warning: no Global contract available for "Put"
-driver.adb:226:21: warning: assuming "Put" has no effect on global items
-driver.adb:226:21: warning: no Global contract available for "Put"
 driver.adb:226:27: info: initialization of "ReturnedRRSigRecords" proved
 driver.adb:226:49: info: index check proved (CVC4: 2 VC)
-driver.adb:227:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:227:21: warning: no Global contract available for "New_Line"
 driver.adb:231:17: info: precondition proved (CVC4: 1 VC)
-driver.adb:234:18: warning: assuming "Put_Line" has no effect on global items
-driver.adb:234:18: warning: no Global contract available for "Put_Line"
 driver.adb:234:44: info: initialization of "NumFound" proved
 driver.adb:234:54: info: range check proved (CVC4: 1 VC)
 driver.adb:236:11: info: range check proved (CVC4: 2 VC)
 driver.adb:236:35: info: initialization of "NumFound" proved
-driver.adb:237:21: warning: assuming "Put" has no effect on global items
-driver.adb:237:21: warning: no Global contract available for "Put"
-driver.adb:238:21: warning: assuming "Put" has no effect on global items
-driver.adb:238:21: warning: no Global contract available for "Put"
 driver.adb:238:27: info: initialization of "ReturnedSOARecords" proved
 driver.adb:238:47: info: index check proved (CVC4: 2 VC)
-driver.adb:239:21: warning: assuming "New_Line" has no effect on global items
-driver.adb:239:21: warning: no Global contract available for "New_Line"
 parser_utilities.adb:63:20: info: initialization of "Class" proved
 parser_utilities.adb:64:20: info: initialization of "Class" proved
 parser_utilities.adb:65:24: info: initialization of "Class" proved
