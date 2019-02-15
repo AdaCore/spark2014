@@ -2132,7 +2132,9 @@ package body Flow.Analysis is
       is
       begin
          Dead_Code.Exclude (V);
-         TV := Flow_Graphs.Continue;
+         TV := (if FA.Atr (V).Execution = Barrier
+                then Flow_Graphs.Skip_Children
+                else Flow_Graphs.Continue);
       end Flag_Live;
 
    --  Start of processing for Find_Dead_Code
