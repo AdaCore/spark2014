@@ -1583,7 +1583,7 @@ package body Flow.Analysis is
          if Present (E)
            and then V_Use /= Flow_Graphs.Null_Vertex
            and then Is_Compilation_Unit (Scope (E))
-           and then Scope (E) not in FA.Analyzed_Entity | FA.Spec_Entity
+           and then Scope (E) /= FA.Spec_Entity
          then
             declare
                Current_Unit : constant Node_Id :=
@@ -1604,9 +1604,8 @@ package body Flow.Analysis is
                -------------------
 
                procedure Check_Clauses (CUnit : Node_Id) is
-                  Clause : Node_Id;
+                  Clause : Node_Id := First (Context_Items (CUnit));
                begin
-                  Clause := First (Context_Items (CUnit));
                   while Present (Clause) loop
                      if Nkind (Clause) = N_With_Clause
                        and then Library_Unit (Clause) = Other_Unit
