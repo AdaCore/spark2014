@@ -16,8 +16,8 @@ string_search.adb:14:51: info: index check proved (CVC4: 8 VC)
 string_search.adb:14:68: info: index check proved (CVC4: 8 VC)
 string_search.adb:14:68: info: overflow check proved (CVC4: 4 VC)
 string_search.adb:17:17: info: initialization of "Diff" proved
-string_search.adb:22:13: info: loop invariant initialization proved (Z3: 1 VC)
-string_search.adb:22:13: info: loop invariant preservation proved (CVC4: 1 VC)
+string_search.adb:22:13: info: loop invariant initialization proved (CVC4: 1 VC)
+string_search.adb:22:13: info: loop invariant preservation proved (Z3: 1 VC)
 string_search.adb:30:29: info: range check proved (CVC4: 1 VC)
 string_search.adb:30:37: info: overflow check proved (CVC4: 1 VC)
 string_search.adb:30:45: info: range check proved (CVC4: 1 VC)
@@ -71,7 +71,7 @@ string_search.adb:67:84: info: overflow check proved (CVC4: 4 VC), in call inlin
 string_search.adb:67:88: info: index check proved (CVC4: 8 VC), in call inlined at string_search.adb:85
 string_search.adb:67:88: info: overflow check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
 string_search.adb:69:16: info: loop invariant initialization proved (Z3: 2 VC), in call inlined at string_search.adb:85
-string_search.adb:69:16: info: loop invariant preservation proved (Z3: 2 VC), in call inlined at string_search.adb:85
+string_search.adb:69:16: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in call inlined at string_search.adb:85
 string_search.adb:75:07: info: precondition proved (CVC4: 1 VC)
 string_search.adb:79:13: info: initialization of "I" proved
 string_search.adb:79:26: info: range check proved (CVC4: 2 VC)

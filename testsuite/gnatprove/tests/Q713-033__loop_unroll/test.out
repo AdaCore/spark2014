@@ -12,7 +12,7 @@ binary_search.adb:37:22: info: initialization of "Med" proved
 binary_search.adb:37:26: info: range check proved (CVC4: 10 VC)
 binary_search.adb:39:20: info: initialization of "Med" proved
 binary_search.ads:21:33: info: index check proved (CVC4: 2 VC)
-binary_search.ads:23:14: info: postcondition proved (CVC4: 2 VC)
+binary_search.ads:23:14: info: postcondition proved (CVC4: 1 VC; Z3: 1 VC)
 binary_search.ads:23:57: info: index check proved (CVC4: 2 VC)
 langley.adb:7:14: info: postcondition proved (CVC4: 1 VC)
 langley.adb:7:63: info: overflow check proved (CVC4: 1 VC)

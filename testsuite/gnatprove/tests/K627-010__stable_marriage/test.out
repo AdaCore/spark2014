@@ -22,8 +22,8 @@ stable_marriage.adb:54:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:54:21: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:55:16: info: initialization of "Result" proved
 stable_marriage.adb:55:28: info: index check proved (CVC4: 4 VC)
-stable_marriage.adb:57:13: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:57:13: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:57:13: info: loop invariant initialization proved (CVC4: 2 VC)
+stable_marriage.adb:57:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:58:29: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:59:28: info: index check proved (CVC4: 4 VC)
 stable_marriage.adb:59:50: info: initialization of "Result" proved
@@ -35,8 +35,8 @@ stable_marriage.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:74:21: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:75:16: info: initialization of "Result" proved
 stable_marriage.adb:75:28: info: index check proved (CVC4: 4 VC)
-stable_marriage.adb:77:13: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:77:13: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:77:13: info: loop invariant initialization proved (CVC4: 2 VC)
+stable_marriage.adb:77:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:78:29: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:79:28: info: index check proved (CVC4: 4 VC)
 stable_marriage.adb:79:50: info: initialization of "Result" proved
@@ -46,14 +46,14 @@ stable_marriage.adb:89:19: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:90:14: info: initialization of "Inverted" proved
 stable_marriage.adb:97:19: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:98:14: info: initialization of "Inverted" proved
-stable_marriage.adb:107:07: medium: precondition might fail
+stable_marriage.adb:107:07: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:110:13: info: loop invariant initialization proved (CVC4: 1 VC)
 stable_marriage.adb:110:13: info: loop invariant preservation proved (CVC4: 1 VC)
 stable_marriage.adb:110:21: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:111:16: info: initialization of "Result" proved
 stable_marriage.adb:111:34: info: index check proved (CVC4: 4 VC)
-stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC4: 1 VC)
-stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC4: 1 VC)
+stable_marriage.adb:113:13: info: loop invariant initialization proved (CVC4: 2 VC)
+stable_marriage.adb:113:13: info: loop invariant preservation proved (CVC4: 2 VC)
 stable_marriage.adb:114:29: info: range check proved (CVC4: 4 VC)
 stable_marriage.adb:115:35: info: index check proved (CVC4: 4 VC)
 stable_marriage.adb:116:29: info: initialization of "Result" proved
@@ -131,14 +131,14 @@ stable_marriage.adb:329:13: info: initialization of "Accepted" proved
 stable_marriage.adb:330:24: info: initialization of "G2" proved
 stable_marriage.adb:330:27: info: initialization of "G1" proved
 stable_marriage.adb:333:25: info: assertion proved (CVC4: 1 VC)
-stable_marriage.adb:336:13: info: assertion proved (CVC4: 1 VC)
-stable_marriage.adb:344:13: info: assertion proved (CVC4: 1 VC)
+stable_marriage.adb:336:13: info: assertion proved (CVC4: 2 VC)
+stable_marriage.adb:344:13: info: assertion proved (CVC4: 2 VC)
 stable_marriage.adb:346:29: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:348:51: info: index check proved (CVC4: 2 VC)
+stable_marriage.adb:351:13: info: assertion proved (CVC4: 3 VC)
 stable_marriage.adb:352:24: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:354:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:355:54: info: index check proved (CVC4: 2 VC)
-stable_marriage.adb:356:28: medium: assertion might fail, cannot prove not (Is_Preferred_1 (G1_Id, Result (Ranking_1 (G1_Id) (Rank)), Ranking_2 (Ranking_1 (G1_Id) (Rank))))
 stable_marriage.adb:356:33: info: precondition proved (CVC4: 1 VC)
 stable_marriage.adb:357:61: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:358:59: info: index check proved (CVC4: 2 VC)

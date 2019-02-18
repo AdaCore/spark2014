@@ -18,8 +18,8 @@ binary_search.adb:26:13: info: loop invariant initialization proved (altergo: 1 
 binary_search.adb:26:13: info: loop invariant preservation proved (altergo: 1 VC)
 binary_search.adb:26:41: info: initialization of "Left" proved
 binary_search.adb:26:56: info: index check proved (altergo: 4 VC)
-binary_search.adb:28:13: info: loop invariant initialization proved (altergo: 1 VC)
-binary_search.adb:28:13: info: loop invariant preservation proved (altergo: 1 VC)
+binary_search.adb:28:13: info: loop invariant initialization proved (altergo: 2 VC)
+binary_search.adb:28:13: info: loop invariant preservation proved (altergo: 2 VC)
 binary_search.adb:29:27: info: initialization of "Right" proved
 binary_search.adb:29:45: info: index check proved (altergo: 4 VC)
 binary_search.adb:30:10: info: loop variant proved (altergo: 1 VC)

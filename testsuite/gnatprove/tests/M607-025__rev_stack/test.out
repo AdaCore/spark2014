@@ -26,7 +26,7 @@ list.adb:28:43: info: index check proved (Z3: 4 VC)
 list.adb:28:43: info: overflow check proved (Z3: 2 VC)
 list.adb:28:50: info: precondition proved (Z3: 4 VC)
 list.adb:28:62: info: range check proved (Z3: 2 VC)
-list.adb:34:13: info: loop invariant initialization proved (Z3: 3 VC)
+list.adb:34:13: info: loop invariant initialization proved (Z3: 4 VC)
 list.adb:34:13: info: loop invariant preservation proved (Z3: 4 VC)
 list.adb:34:30: info: initialization of private part of "Res" proved
 list.adb:34:40: info: overflow check proved (Z3: 2 VC)
