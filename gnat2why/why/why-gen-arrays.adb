@@ -643,7 +643,7 @@ package body Why.Gen.Arrays is
       Emit
         (File,
          Why.Gen.Binders.New_Function_Decl
-           (Domain      => EW_Term,
+           (Domain      => EW_Pterm,
             Name        => To_Local (Convert_Id),
             Binders     => (1 => A_Binder),
             Location    => No_Location,
@@ -1019,7 +1019,7 @@ package body Why.Gen.Arrays is
 
       Emit (Section,
             Why.Gen.Binders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (To_String_Id),
                Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set,
@@ -1027,7 +1027,7 @@ package body Why.Gen.Arrays is
                Return_Type => Str_Typ));
       Emit (Section,
             Why.Gen.Binders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (Of_String_Id),
                Location    => No_Location,
                Labels      => Name_Id_Sets.Empty_Set,
@@ -1499,7 +1499,7 @@ package body Why.Gen.Arrays is
          Emit
            (Section,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (Symbols.Bool_Eq),
                Binders     => Args,
                Return_Type => +EW_Bool_Type,
@@ -1564,7 +1564,7 @@ package body Why.Gen.Arrays is
             Emit
               (Section,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => Eq_Name,
                   Binders     => Args,
                   Return_Type => +EW_Bool_Type,
@@ -1736,7 +1736,7 @@ package body Why.Gen.Arrays is
       begin
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => New_Identifier (Attr_Name),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,

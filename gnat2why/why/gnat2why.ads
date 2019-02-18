@@ -341,7 +341,7 @@
 --      Should be used either to for projection functions or together with
 --      label "model" or "model_projected".
 --
---  "model_vc"
+--  "vc:annotation"
 --      This label identifies the construct that triggers the VC and it is not
 --      postcondition.
 --

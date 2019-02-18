@@ -545,6 +545,10 @@ package body VC_Kinds is
          return Cnt_Record;
       end if;
 
+      if E = "Proj" then
+         return Cnt_Projection;
+      end if;
+
       return Cnt_Invalid;
    end From_JSON;
 
@@ -556,7 +560,7 @@ package body VC_Kinds is
         Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
                         Name        => Get (Get (V, "name")),
                         Labels      =>
-                          From_JSON_Labels (Get (Get (V, "labels"))),
+                          From_JSON_Labels (Get (Get (V, "attrs"))),
                         Value       => Cnt_Value,
                         Val_Str     => (Nul => False,
                                         Str => Null_Unbounded_String));
@@ -694,6 +698,11 @@ package body VC_Kinds is
                return (T  => Cnt_Record,
                        Fi => Field_Value_List);
             end;
+
+         when Cnt_Projection =>
+            --  All projections that gets to here should be removed. They are
+            --  mostly to_reps.
+            return Get_Typed_Cntexmp_Value (Get (V, "value"));
 
          when Cnt_Array     =>
             declare

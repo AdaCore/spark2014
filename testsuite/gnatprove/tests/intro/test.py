@@ -1,3 +1,3 @@
 from test_support import *
 
-prove_all(no_fail=True, steps = 400, prover=["altergo"])
+prove_all(no_fail=True, steps = 800, prover=["altergo"])

@@ -294,9 +294,9 @@ package VC_Kinds is
 
    Model_Trace_Label   : constant String := "model_trace:";
    Model_Proj_Label    : constant String := "model_projected";
-   Model_VC_Label      : constant String := "model_vc";
+   VC_Annotation_Label : constant String := "vc:annotation";
    Model_VC_Post_Label : constant String := "model_vc_post";
-   Branch_Id_Label     : constant String := "branch_id:";
+   Branch_Id_Label     : constant String := "branch_id=";
 
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
@@ -342,6 +342,7 @@ package VC_Kinds is
       Cnt_Unparsed,
       Cnt_Array,
       Cnt_Record,
+      Cnt_Projection,
       Cnt_Invalid);
    --  Counterexamples are typed.
    --  Matching on this types in the code should make debugging easier.
@@ -386,18 +387,20 @@ package VC_Kinds is
 
    type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
       case T is
-         when Cnt_Integer   => I  : Unbounded_String;
-         when Cnt_Decimal   => D  : Unbounded_String;
-         when Cnt_Float     => F  : Float_Value_Ptr;
-         when Cnt_Boolean   => Bo : Boolean;
-         when Cnt_Bitvector => B  : Unbounded_String;
-         when Cnt_Unparsed  => U  : Unbounded_String;
-         when Cnt_Record    =>
-            Fi                    : Cntexmp_Value_Array.Map;
-         when Cnt_Array     =>
-            Array_Indices         : Cntexmp_Value_Array.Map;
-            Array_Others          : Cntexmp_Value_Ptr;
-         when Cnt_Invalid   => S  : Unbounded_String;
+         when Cnt_Integer    => I  : Unbounded_String;
+         when Cnt_Decimal    => D  : Unbounded_String;
+         when Cnt_Float      => F  : Float_Value_Ptr;
+         when Cnt_Boolean    => Bo : Boolean;
+         when Cnt_Bitvector  => B  : Unbounded_String;
+         when Cnt_Unparsed   => U  : Unbounded_String;
+         when Cnt_Record     =>
+            Fi : Cntexmp_Value_Array.Map;
+         when Cnt_Projection => Er : Unbounded_String;
+            --  Cnt_projection is an error case anywhere after vc_kinds
+         when Cnt_Array      =>
+            Array_Indices : Cntexmp_Value_Array.Map;
+            Array_Others  : Cntexmp_Value_Ptr;
+         when Cnt_Invalid    => S  : Unbounded_String;
       end case;
    end record;
    --  Counterexample values

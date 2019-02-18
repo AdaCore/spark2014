@@ -100,7 +100,7 @@ package body Why.Gen.Decl is
 
       --  disable inlining of projection functions
       Emit (Section,
-            New_Meta_Declaration (Name      => NID ("inline : no"),
+            New_Meta_Declaration (Name      => NID ("inline:no"),
                                   Parameter => NID ("function " &
                                       Projection_Fun)));
    end Emit_Projection_Metas;

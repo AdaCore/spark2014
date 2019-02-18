@@ -905,12 +905,12 @@ package body Configuration is
       Compile_Lib ("number", "Gcd");
       Compile_Lib ("number", "Prime");
       Compile_Lib ("number", "Coprime");
-      Compile_Lib ("set", "Set");
       Compile_Lib ("map", "Map");
       Compile_Lib ("map", "Const");
       Compile_Lib ("map", "Occ");
       Compile_Lib ("map", "MapPermut");
       Compile_Lib ("map", "MapInjection");
+      Compile_Lib ("set", "Set");
       Compile_Lib ("list", "List");
       Compile_Lib ("list", "Length");
       Compile_Lib ("list", "Mem");
@@ -929,7 +929,6 @@ package body Configuration is
       Compile_Lib ("list", "Distinct");
       Compile_Lib ("list", "NumOcc");
       Compile_Lib ("list", "Permut");
-      Compile_Lib ("seq", "Seq");
       Compile_Lib ("bv", "Pow2int");
       Compile_Lib ("bv", "BV_Gen");
       Compile_Lib ("spark", "SPARK_Raising_Order");

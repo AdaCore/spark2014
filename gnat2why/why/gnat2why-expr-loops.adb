@@ -1030,9 +1030,13 @@ package body Gnat2Why.Expr.Loops is
                           Reverse_Present (LParam_Spec);
                         Exit_Index : constant W_Expr_Id :=
                           (if Is_Reverse then +Low_Id else +High_Id);
+                        Eq_Symb    : constant W_Identifier_Id :=
+                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                                MF_BVs (Loop_Index_Type).Prog_Eq
+                           else Why_Eq);
                         Exit_Cond  : constant W_Expr_Id :=
                           New_Call (Domain => EW_Prog,
-                                    Name   => Why_Eq,
+                                    Name   => Eq_Symb,
                                     Typ    => EW_Bool_Type,
                                     Args   => (+Index_Deref, +Exit_Index));
                      begin

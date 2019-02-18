@@ -618,7 +618,8 @@ package body Gnat2Why.Types is
 
       if Has_DIC (E) and then Needs_DIC_Check_At_Decl (E) then
          Why_Body := Sequence
-           (Why_Body,
+           (New_Ignore (Ada_Node => E,
+                        Prog     => Why_Body),
             Check_Type_With_DIC (Params => Params,
                                  N      => E));
       end if;
@@ -627,19 +628,14 @@ package body Gnat2Why.Types is
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
 
-      declare
-         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
-      begin
-         Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain   => EW_Prog,
-                  Name     => Def_Name,
-                  Binders  => (1 => Unit_Param),
-                  Location => No_Location,
-                  Labels   => Label_Set,
-                  Def      => +Why_Body));
-      end;
+      Emit (File,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain   => EW_Prog,
+               Name     => Def_Name,
+               Binders  => (1 => Unit_Param),
+               Location => No_Location,
+               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Def      => +Why_Body));
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
@@ -749,7 +745,7 @@ package body Gnat2Why.Types is
             Emit
               (File,
                Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Dummy)),
                   Binders     => (1 .. 0 => <>),
                   Labels      => Name_Id_Sets.Empty_Set,

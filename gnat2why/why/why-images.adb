@@ -55,7 +55,7 @@ package body Why.Images is
    function Img (Name : Name_Id) return String is
    begin
       if Name = No_Name then
-         return "[no name]";
+         return "<no name>";
       else
          return Get_Name_String (Name);
       end if;
@@ -107,10 +107,10 @@ package body Why.Images is
               Get_Physical_Line_Number (Value);
 
             Sloc_Tag : constant String :=
-              "#""" & File & """" &
+              "[#""" & File & """" &
               Physical_Line_Number'Image (Line) & " " &
               "0" & " " &  --  dummy column1 0
-              "0" & "#";   --  dummy column2 0
+              "0" & "]";   --  dummy column2 0
          begin
             P (O, Sloc_Tag);
          end;
@@ -455,7 +455,7 @@ package body Why.Images is
    begin
       case Value is
          when EW_Import        =>
-            P (O, "import");
+            P (O, "      "); --  import is now the default
 
          when EW_Export        =>
             P (O, "export");
@@ -527,10 +527,16 @@ package body Why.Images is
    procedure P
      (O         : Output_Id;
       Value     : Name_Id_Set;
-      As_String : Boolean := False) is
+      As_Labels : Boolean := False) is
    begin
       for Name of Value loop
-         P (O, Name, As_String);
+         if As_Labels then
+            P (O, "[@");
+         end if;
+         P (O, Name);
+         if As_Labels then
+            P (O, "]");
+         end if;
          P (O, " ");
       end loop;
    end P;

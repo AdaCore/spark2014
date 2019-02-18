@@ -293,6 +293,14 @@ package body Gnat2Why.Counter_Examples is
          when Array_Value =>
             CNT_Element.Val_Str := Refine_Array_Components (CNT_Element);
          when Simple_Value =>
+
+            --  If a problem was found while constructing the value, it may be
+            --  null.
+
+            if CNT_Element.Value = null then
+               return Dont_Display;
+            end if;
+
             declare
                Refined_Value : constant CNT_Unbounded_String :=
                  Refine_Value (CNT_Element.Value,
@@ -933,6 +941,13 @@ package body Gnat2Why.Counter_Examples is
                return (Nul => True,
                        Str => Cnt_Value.S);
 
+            when Cnt_Projection =>
+               pragma Assert (False);
+               --  This case should never happen: we never built a
+               --  Cnt_Projection ever.
+               return (Nul => True,
+                       Str => Cnt_Value.Er);
+
             when Cnt_Record | Cnt_Array =>
                pragma Assert (False);
                return Dont_Display;
@@ -1232,7 +1247,13 @@ package body Gnat2Why.Counter_Examples is
       begin
          case Ptr.K is
             when Simple_Value =>
-               pragma Assert (Val.T not in Cnt_Record | Cnt_Array);
+
+               --  Counterexample should not be an array or a record
+
+               if Val.T in Cnt_Record | Cnt_Array then
+                  return;
+               end if;
+
                Ptr.Value := Val;
             when Array_Value =>
 
@@ -2250,7 +2271,7 @@ package body Gnat2Why.Counter_Examples is
             begin
 
                if Str'Length > 10 and then
-                 Str (Str'First .. Str'First + 9) = "branch_id:"
+                 Str (Str'First .. Str'First + 9) = "branch_id="
                then
 
                   declare

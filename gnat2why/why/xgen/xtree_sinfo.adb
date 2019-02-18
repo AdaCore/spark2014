@@ -467,6 +467,8 @@ package body Xtree_Sinfo is
                  "Post", "W_Pred", Id_Lone);
       New_Field (W_Any_Expr,
                  "Return_Type", "W_Type", Id_One);
+      New_Field (W_Any_Expr,
+                 "Labels", "Name_Id_Set");
 
       ------------------
       -- W_Assignment --

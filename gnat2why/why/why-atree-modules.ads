@@ -346,6 +346,8 @@ package Why.Atree.Modules is
       Rotate_Left    : W_Identifier_Id;
       Rotate_Right   : W_Identifier_Id;
       Two_Power_Size : W_Identifier_Id;
+      Prog_Eq        : W_Identifier_Id;
+      Prog_Neq       : W_Identifier_Id;
    end record;
 
    type M_BV_Conv_Type is record
@@ -529,7 +531,7 @@ package Why.Atree.Modules is
 
    Model_Trace       : Name_Id;
    Model_Projected   : Name_Id;
-   Model_VC          : Name_Id;
+   VC_Annotation     : Name_Id;
    Model_VC_Post     : Name_Id;
    GP_Already_Proved : Name_Id;
    Keep_On_Simp      : Name_Id;

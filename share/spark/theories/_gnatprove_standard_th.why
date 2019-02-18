@@ -1,16 +1,9 @@
 theory Main_Main
-  use import bool.Bool
+  use        bool.Bool
 
   (* special private type for private types not in SPARK and hidden extension
   components *)
   type __private
-
-  (* equality over private types *)
-  function private__bool_eq __private __private : bool
-
-  (* dummy value for the null extension when the dynamic type matches the
-  static type *)
-  function __null_ext__ : __private
 
   (* special type for representation of fixed_point types *)
   type __fixed = int
@@ -18,8 +11,8 @@ theory Main_Main
 end
 
 theory Integer
-  use import int.Int
-  use import bool.Bool
+  use        int.Int
+  use        bool.Bool
 
   function bool_eq int int : bool
   function bool_ne int int : bool
@@ -64,7 +57,7 @@ theory Integer
 end
 
 theory Floating_Func
-  use import bool.Bool
+  use        bool.Bool
 
   type t
 
@@ -83,16 +76,16 @@ theory Floating_Func
   function bool_neq (x: t) (y: t) : bool = not (eq x y)
 end
 
-theory Boolean_Func
-  use import bool.Bool
-
-  function to_int (b : bool) : int =
-   if b = True then 1 else 0
-
-  function of_int (i : int) : bool =
-   if i = 0 then False else True
+module Boolean_Func
+  use        bool.Bool
 
   function bool_eq (x : bool) (y : bool) : bool =
     if x = y then True else False
+
+  function to_int (b : bool) : int =
+   if b then 1 else 0
+
+  function of_int (i : int) : bool =
+   if i = 0 then False else True
 
 end
