@@ -2987,31 +2987,29 @@ package body Flow_Generated_Globals.Phase_2 is
    function Refinement_Exists (AS : Entity_Id) return Boolean is
      (State_Comp_Map.Contains (To_Entity_Name (AS)));
 
-   function Refinement_Exists (AS : Entity_Name) return Boolean
-     renames State_Comp_Map.Contains;
-
    ------------------------------
    -- GG_Expand_Abstract_State --
    ------------------------------
 
-   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set
-   is
-   begin
-      if GG_Is_Abstract_State (AS)
-        and then Refinement_Exists (AS)
-      then
-         declare
-            Constituents : Name_Sets.Set;
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set is
+      Constituents : Name_Sets.Set;
 
-         begin
-            for Constituent of Get_Constituents (AS) loop
-               Constituents.Union (GG_Expand_Abstract_State (Constituent));
-            end loop;
-            return Constituents;
-         end;
+   begin
+      if State_Comp_Map.Contains (AS) then
+         for C of State_Comp_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+      elsif State_Part_Map.Contains (AS) then
+         for C of State_Part_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+
+         Constituents.Insert (AS);
       else
-         return Name_Sets.To_Set (AS);
+         Constituents.Insert (AS);
       end if;
+
+      return Constituents;
    end GG_Expand_Abstract_State;
 
    --------------------------
