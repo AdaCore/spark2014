@@ -568,7 +568,8 @@ package body Gnat2Why.Expr is
    function Transform_Function_Call
      (Expr   : Node_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
+      Params : Transformation_Params) return W_Expr_Id
+   with Pre => Nkind (Expr) in N_Function_Call | N_Op;
    --  Transform a function call
 
    function Transform_Enum_Literal
@@ -13897,7 +13898,7 @@ package body Gnat2Why.Expr is
          --  When the call is dispatching, use the Dispatch variant of
          --  the program function, which has the appropriate contract.
 
-        (if Nkind (Expr) in N_Subprogram_Call
+        (if Nkind (Expr) = N_Function_Call
          and then Present (Controlling_Argument (Expr))
          then Dispatch
 
