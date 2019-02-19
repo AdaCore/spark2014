@@ -1,2 +1,2 @@
 priv_disp.ads:9:20: info: postcondition proved (CVC4: 1 VC)
-priv_disp.ads:9:20: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at priv_disp.ads:16 (e.g. when Get_F'Result = -1 and X = (F => 0, G => -1))
+priv_disp.ads:9:20: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at priv_disp.ads:16 (e.g. when Get_F'Result = 0 and X = (F => 1, G => 0))

@@ -40,7 +40,7 @@ decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:135:47: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 1)
+decadriver.adb:156:35: medium: predicate check might fail
 decadriver.adb:156:44: info: initialization of "Next_Idx" proved
 decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:157:44: info: initialization of "Next_Idx" proved

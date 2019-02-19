@@ -11,7 +11,7 @@ p.adb:15:21: warning: assuming "To_String" has no effect on global items
 p.adb:15:21: warning: no Global contract available for "To_String"
 p.adb:15:31: info: initialization of "Unb_Str" proved
 p.adb:17:26: info: initialization of "X" proved
-p.adb:18:13: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
+p.adb:18:13: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 0)
 p.adb:18:13: medium: range check might fail
 p.adb:18:21: info: initialization of "S" proved
 p.adb:19:26: info: initialization of "X" proved

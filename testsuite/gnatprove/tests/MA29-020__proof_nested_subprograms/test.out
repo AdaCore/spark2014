@@ -1,5 +1,5 @@
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash = (others => 0) and Hash'First = 9 and N = 7)
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 9223372036854775808 and N = 7)
 skein.adb:35:34: info: initialization of "Hash" proved, in call inlined at skein.adb:139
 skein.adb:36:70: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:139
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139
@@ -49,7 +49,7 @@ skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
 skein.adb:115:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
+skein.adb:115:52: medium: range check might fail (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
 skein.adb:118:19: warning: unused assignment
 skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
 skein.adb:121:27: info: initialization of "Byte_Count" proved

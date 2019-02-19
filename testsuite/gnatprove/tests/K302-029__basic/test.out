@@ -8,4 +8,4 @@ pack.ads:7:48: medium: postcondition might fail, cannot prove X = true
 pack.ads:9:14: warning: subprogram "P4" has no effect
 pack.ads:9:48: medium: postcondition might fail, cannot prove X = true
 pack.ads:10:14: warning: subprogram "P5" has no effect
-pack.ads:10:48: medium: postcondition might fail, cannot prove X = true (e.g. when X = False)
+pack.ads:10:48: medium: postcondition might fail, cannot prove X = true

@@ -4,7 +4,7 @@ term.adb:28:17: info: range check proved (CVC4: 1 VC)
 term.ads:2:09: high: C must be initialized at elaboration
 term.ads:4:14: info: postcondition proved (CVC4: 2 VC)
 term.ads:4:65: warning: unreachable branch (CVC4: 1 VC)
-term.ads:7:14: medium: postcondition might fail, cannot prove false
+term.ads:7:14: medium: postcondition might fail, cannot prove false (e.g. when X = 1)
 term.ads:11:12: info: range check proved (CVC4: 2 VC)
 term.ads:13:13: medium: function "Loop_If_C_Is_Neg" does not return on some paths
 term.ads:15:14: warning: subprogram "Still_Do_Not_Loop" has no effect

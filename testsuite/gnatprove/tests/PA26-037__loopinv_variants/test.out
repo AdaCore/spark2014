@@ -16,7 +16,7 @@ simple_loops.adb:30:30: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_loops.adb:30:30: info: loop invariant preservation proved (CVC4: 1 VC)
 simple_loops.adb:36:33: info: loop invariant initialization proved (CVC4: 4 VC)
 simple_loops.adb:36:47: info: initialization of "Prop" proved
-simple_loops.adb:36:47: medium: loop invariant might fail after first iteration, cannot prove Prop (e.g. when J = 2 and Prop = False)
+simple_loops.adb:36:47: medium: loop invariant might fail after first iteration, cannot prove Prop (e.g. when Prop = False)
 simple_loops.adb:37:18: info: initialization of "Prop" proved
 simple_loops.adb:39:30: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_loops.adb:39:30: info: loop invariant preservation proved (CVC4: 1 VC)

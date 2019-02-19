@@ -1,9 +1,9 @@
-port.adb:29:16: medium: range check might fail (e.g. when X = 0)
+port.adb:29:16: medium: range check might fail
 port.adb:29:19: info: initialization of "Tmp" proved
 port.adb:39:10: info: initialization of "T" proved
 port.adb:39:10: warning: attribute Valid is assumed to return True
 port.adb:40:15: info: initialization of "T" proved
-port.adb:54:16: medium: range check might fail (e.g. when T = 0)
+port.adb:54:16: medium: range check might fail
 port.adb:54:19: info: initialization of "Tmp" proved
 port.adb:55:10: info: initialization of "T" proved
 port.adb:55:10: warning: attribute Valid is assumed to return True
