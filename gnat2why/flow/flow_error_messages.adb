@@ -518,6 +518,8 @@ package body Flow_Error_Messages is
                F : Flow_Id renames FA.PDG.Get_Key (V);
 
             begin
+               --  ??? we should only print vertices whose Atr.Is_Program_Node
+               --  is True (taking into account various special-cases).
                if F.Kind = Direct_Mapping then
                   Ada.Text_IO.Put_Line
                     (FD, Vertex_Sloc_Location (FA.PDG, FA.Atr, V));

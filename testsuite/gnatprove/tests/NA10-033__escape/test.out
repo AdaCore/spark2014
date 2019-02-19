@@ -13,7 +13,6 @@ escape.adb:15:10: info: range check proved (CVC4: 2 VC)
 escape.adb:18:27: info: cannot unroll loop (too many loop iterations)
 escape.adb:19:21: medium: array index check might fail (e.g. when Result'Last = 1 and TI = 2) [possible explanation: loop at line 18 should mention TI in a loop invariant]
 escape.adb:19:25: info: initialization of "TI" proved
-escape.adb:19:25: medium: "Result" might not be initialized
 escape.adb:20:19: info: initialization of "TI" proved
 escape.adb:20:22: medium: overflow check might fail (e.g. when TI = Positive'Last) [possible explanation: loop at line 18 should mention TI in a loop invariant]
 escape.adb:22:24: medium: array index check might fail (e.g. when Result'Last = 2 and TI = 3) [possible explanation: loop at line 18 should mention TI in a loop invariant]

@@ -8,7 +8,6 @@ dynamic_1d.adb:14:04: info: in inlined body at line 6
 dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect
 dynamic_2d.adb:4:21: medium: "S" might not be initialized in "Flush"
 dynamic_2d.adb:8:26: info: initialization of "X" proved, in call inlined at dynamic_2d.adb:16
-dynamic_2d.adb:8:26: medium: "S" might not be initialized
 dynamic_2d.adb:13:26: medium: length check might fail
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)

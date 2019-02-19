@@ -2173,6 +2173,494 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
+   procedure Find_Use_Of_Uninitialized_Variables_NOK
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      type Msg_Kind is (Unknown, Err);
+
+      procedure Emit_Message
+        (Var    : Flow_Id;
+         Vertex : Flow_Graphs.Vertex_Id;
+         Kind   : Msg_Kind)
+      with Pre => not Is_Internal (Var);
+      --  Produces an appropriately worded low/high message for variable Var
+      --  when used at Vertex.
+
+      function Might_Be_Initialized
+        (Var       : Flow_Id;
+         V_Initial : Flow_Graphs.Vertex_Id;
+         V_Use     : Flow_Graphs.Vertex_Id)
+         return Boolean
+      with Pre => Var.Variant = Normal_Use and then not Synthetic (Var);
+      --  Returns True if Var, when accessed as uninitialized in V_Use,
+      --  might be in fact initialized; returns False if it is definitely
+      --  uninitialized there.
+
+      procedure Scan_Children
+        (Var                  : Flow_Id;
+         Start                : Flow_Graphs.Vertex_Id;
+         Possibly_Initialized : Boolean;
+         Visited              : in out Vertex_Sets.Set)
+      with Pre  => Var.Variant = Normal_Use
+                   and then Start /= Flow_Graphs.Null_Vertex,
+           Post => Vertex_Sets.Is_Subset (Subset => Visited'Old,
+                                          Of_Set => Visited);
+      --  Detect uses of Var, which is an not-yet-initializes object, by
+      --  looking at the PDG vertices originating from Start. For arrays this
+      --  routine might be called recursively and then Possibly_Initialized
+      --  is True iff some elements of the array have been written. Visited
+      --  contains vertices that have been already examined; it is to prevent
+      --  infinite recursive calls.
+
+      function Is_Array (F : Flow_Id) return Boolean;
+      --  Returns True iff F represents an array and thus requires special
+      --  handling.
+
+      function Is_Empty_Record_Object (F : Flow_Id) return Boolean;
+      --  Returns True iff F is a record that carries no data
+
+      function Is_Init_By_Proof (F : Flow_Id) return Boolean;
+      --  Returns True iff F is annotated with Has_Init_By_Proof
+
+      ------------------
+      -- Emit_Message --
+      ------------------
+
+      procedure Emit_Message
+        (Var    : Flow_Id;
+         Vertex : Flow_Graphs.Vertex_Id;
+         Kind   : Msg_Kind)
+      is
+         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
+
+         V_Initial    : constant Flow_Graphs.Vertex_Id :=
+           FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
+
+         N            : Node_Or_Entity_Id;
+         Msg          : Unbounded_String;
+
+         V_Error      : constant Flow_Graphs.Vertex_Id := Vertex;
+         V_Goal       : Flow_Graphs.Vertex_Id;
+         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
+
+         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
+         Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
+         Default_Init : constant Boolean := Is_Default_Initialized
+                                               (Var, FA.B_Scope);
+         Is_Function  : constant Boolean := Is_Function_Entity (Var);
+
+         function Mark_Definition_Free_Path
+           (To        : Flow_Graphs.Vertex_Id;
+            Var       : Flow_Id;
+            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            return Vertex_Sets.Set;
+         --  Returns the path From -> To which does not define Var. If
+         --  V_Allowed is set, then the path that we return is allowed to
+         --  contain V_Allowed even if V_Allowed does set Var.
+
+         -------------------------------
+         -- Mark_Definition_Free_Path --
+         -------------------------------
+
+         function Mark_Definition_Free_Path
+           (To        : Flow_Graphs.Vertex_Id;
+            Var       : Flow_Id;
+            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            return Vertex_Sets.Set
+         is
+            Path_Found : Boolean := False;
+            Path       : Vertex_Sets.Set;
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction);
+            --  Visitor procedure for Shortest_Path
+
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
+            --  Step procedure for Shortest_Path
+
+            ----------------------
+            -- Are_We_There_Yet --
+            ----------------------
+
+            procedure Are_We_There_Yet
+              (V           : Flow_Graphs.Vertex_Id;
+               Instruction : out Flow_Graphs.Traversal_Instruction)
+            is
+            begin
+               if V = To then
+                  Instruction := Flow_Graphs.Found_Destination;
+                  Path_Found  := True;
+               elsif V /= V_Allowed
+                 and then FA.Atr (V).Variables_Defined.Contains (Var)
+               then
+                  Instruction := Flow_Graphs.Skip_Children;
+               else
+                  Instruction := Flow_Graphs.Continue;
+               end if;
+            end Are_We_There_Yet;
+
+            -------------
+            -- Add_Loc --
+            -------------
+
+            procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
+               F : Flow_Id renames FA.CFG.Get_Key (V);
+            begin
+               if V /= To and then F.Kind = Direct_Mapping then
+                  Path.Insert (V);
+               end if;
+            end Add_Loc;
+
+         --  Start of processing for Mark_Definition_Free_Path
+
+         begin
+            FA.CFG.Shortest_Path (Start         => FA.Start_Vertex,
+                                  Allow_Trivial => False,
+                                  Search        => Are_We_There_Yet'Access,
+                                  Step          => Add_Loc'Access);
+
+            --  When dealing with an exceptional path it is possible for
+            --  Path_Found to be false.
+            --  ??? this actually should work now, except for array objects
+            pragma Assert (if not Path_Found then Is_Array (Var));
+
+            return (if Path_Found
+                    then Path
+                    else Vertex_Sets.Empty_Set);
+         end Mark_Definition_Free_Path;
+
+      --  Start of processing for Emit_Message
+
+      begin
+         --  Assemble appropriate message for failed initialization. We deal
+         --  with a bunch of special cases first, but if they don't trigger we
+         --  create the standard message.
+
+         if Is_Function then
+            Msg := To_Unbounded_String ("function & does not return on ");
+--              if Has_Only_Infinite_Execution (Vertex) then
+--                 Append (Msg, "any path");
+--              else
+--                 Append (Msg, "some paths");
+--              end if;
+            Append (Msg, "some paths");
+         else
+            Msg := To_Unbounded_String ("&");
+            if Kind = Err then
+               Append (Msg, " is not");
+            else
+               Append (Msg, " might not be");
+            end if;
+            if Default_Init then
+               Append (Msg, " set");
+            elsif Has_Async_Readers (Var) then
+               Append (Msg, " written");
+            else
+               Append (Msg, " initialized");
+            end if;
+            if Is_Final_Use and not Is_Global then
+               Append (Msg, " in &");
+            end if;
+         end if;
+
+         if not Is_Final_Use then
+            V_Goal    := V_Error;
+            V_Allowed := Vertex;
+
+            N := First_Variable_Use
+              (N        => Error_Location (FA.PDG, FA.Atr, V_Error),
+               Scope    => FA.B_Scope,
+               Var      => Var,
+               Precise  => True,
+               Targeted => True);
+
+         elsif Is_Global then
+            V_Goal := FA.Helper_End_Vertex;
+            N      := Find_Global (FA.Spec_Entity, Var);
+         else
+            V_Goal := V_Error;
+            N      := FA.Atr (Vertex).Error_Location;
+         end if;
+
+         declare
+            Path : constant Vertex_Sets.Set :=
+              Mark_Definition_Free_Path (To        => V_Goal,
+                                         Var       => Var,
+                                         V_Allowed => V_Allowed);
+
+         begin
+            Error_Msg_Flow
+              (FA       => FA,
+               Path     => Path,
+               Msg      => To_String (Msg),
+               N        => N,
+               F1       => Var,
+               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               Tag      => Uninitialized,
+               Severity => (case Kind is
+                            when Unknown => (if Default_Init
+                                             then Low_Check_Kind
+                                             else Medium_Check_Kind),
+                            when Err     => (if Default_Init
+                                             then Medium_Check_Kind
+                                             else High_Check_Kind)),
+               Vertex   => Vertex);
+
+            --  ??? only when Is_Final_Use ?
+            if Is_Constituent (Var)
+              and then FA.Kind in Kind_Package | Kind_Package_Body
+              and then Present (FA.Initializes_N)
+            then
+               Error_Msg_Flow
+                 (FA           => FA,
+                  Msg          => "initialization of & is specified @",
+                  N            => N,
+                  F1           => Direct_Mapping_Id
+                                    (Encapsulating_State
+                                       (Get_Direct_Mapping_Id (Var))),
+                  F2           => Direct_Mapping_Id (FA.Initializes_N),
+                  Tag          => Uninitialized,
+                  Severity     => (case Kind is
+                                      when Unknown => Medium_Check_Kind,
+                                      when Err     => High_Check_Kind),
+                  Vertex       => Vertex,
+                  Continuation => True);
+            end if;
+         end;
+
+         --  In case of a subprogram with an output global which is actually
+         --  used as an input in its body, we add more information to the error
+         --  message.
+         if Kind = Err
+           and then not Default_Init
+           and then Is_Global
+         then
+            Error_Msg_Flow (FA           => FA,
+                            Msg          => "& is not an input " &
+                              "in the Global contract of subprogram " &
+                              "#",
+                            Severity     => High_Check_Kind,
+                            N            => N,
+                            F1           => Var,
+                            F2           =>
+                              Direct_Mapping_Id (FA.Spec_Entity),
+                            Tag          => Uninitialized,
+                            Continuation => True);
+
+            declare
+               Msg : constant String :=
+                 "either make & an input in the Global contract or " &
+                 (if Has_Async_Readers (Var)
+                  then "write to it before use"
+                  else "initialize it before use");
+
+            begin
+               Error_Msg_Flow (FA           => FA,
+                               Msg          => Msg,
+                               Severity     => High_Check_Kind,
+                               N            => N,
+                               F1           => Var,
+                               Tag          => Uninitialized,
+                               Continuation => True);
+            end;
+         end if;
+      end Emit_Message;
+
+      --------------
+      -- Is_Array --
+      --------------
+
+      function Is_Array (F : Flow_Id) return Boolean is
+        (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = Normal_Part
+         and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
+         and then Is_Array_Type (Get_Type (F, FA.B_Scope)));
+
+      ----------------------------
+      -- Is_Empty_Record_Object --
+      ----------------------------
+
+      function Is_Empty_Record_Object (F : Flow_Id) return Boolean is
+        (F.Kind in Direct_Mapping | Record_Field
+         and then F.Facet = Normal_Part
+         and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
+         and then Is_Empty_Record_Type (Get_Type (F, FA.B_Scope)));
+
+      ----------------------
+      -- Is_Init_By_Proof --
+      ----------------------
+
+      function Is_Init_By_Proof (F : Flow_Id) return Boolean is
+        (F.Kind in Direct_Mapping | Record_Field
+         and then Ekind (Get_Direct_Mapping_Id (F)) /= E_Abstract_State
+         and then Entity_In_SPARK (Get_Direct_Mapping_Id (F))
+         and then Has_Init_By_Proof (Get_Type (Entire_Variable (F),
+                                               FA.B_Scope)));
+
+      --------------------------
+      -- Might_Be_Initialized --
+      --------------------------
+
+      function Might_Be_Initialized
+        (Var       : Flow_Id;
+         V_Initial : Flow_Graphs.Vertex_Id;
+         V_Use     : Flow_Graphs.Vertex_Id)
+         return Boolean
+      is
+         Is_Uninitialized : Boolean := False with Ghost;
+
+      begin
+         for V_Def of
+           FA.DDG.Get_Collection (V_Use, Flow_Graphs.In_Neighbours)
+         loop
+            declare
+               Def_Atr : V_Attributes renames FA.Atr (V_Def);
+
+            begin
+               if V_Def = V_Initial then
+                  --  We're using the initial value
+                  pragma Assert (not Def_Atr.Is_Initialized);
+                  Is_Uninitialized := True;
+
+               elsif V_Def = V_Use then
+                  --  This is a self-assignment
+                  null;
+
+               elsif Def_Atr.Variables_Defined.Contains (Var)
+                 or else Def_Atr.Volatiles_Read.Contains (Var)
+               then
+                  --  We're using a previously written value
+                  if not FA.CFG.Non_Trivial_Path_Exists (V_Use, V_Def) then
+                     return True;
+                  end if;
+               end if;
+            end;
+         end loop;
+
+         pragma Assert (Is_Uninitialized);
+
+         return False;
+      end Might_Be_Initialized;
+
+      -------------------
+      -- Scan_Children --
+      -------------------
+
+      procedure Scan_Children
+        (Var     : Flow_Id;
+         Start   : Flow_Graphs.Vertex_Id;
+         Possibly_Initialized : Boolean;
+         Visited : in out Vertex_Sets.Set)
+      is
+         Position : Vertex_Sets.Cursor;
+         Inserted : Boolean;
+
+      begin
+         for Child of FA.PDG.Get_Collection (Start, Flow_Graphs.Out_Neighbours)
+         loop
+            declare
+               Child_Key : Flow_Id      renames FA.DDG.Get_Key (Child);
+               Child_Atr : V_Attributes renames FA.Atr (Child);
+
+            begin
+               --  Ignore final uses of non-exported objects
+
+               if Child_Key.Variant = Final_Value
+                 and then not
+                   (Child_Atr.Is_Export
+                      and then
+                    (if Ekind (FA.Spec_Entity) = E_Package
+                     then Child_Key.Kind in Direct_Mapping | Record_Field
+                       and then Scope (Get_Direct_Mapping_Id (Child_Key)) =
+                                  FA.Spec_Entity))
+               then
+                  null;
+               else
+                  if Is_Array (Var) then
+
+                     Visited.Insert (New_Item => Child,
+                                     Position => Position,
+                                     Inserted => Inserted);
+
+                     if not Inserted then
+                        null;
+
+                     --  Emit check if the array object is genuinely used
+
+                     elsif Child_Atr.Variables_Explicitly_Used.Contains (Var)
+                     then
+                        Emit_Message
+                          (Var    => Var,
+                           Vertex => Child,
+                           Kind   =>
+                             (if Possibly_Initialized
+                                or else
+                                 Might_Be_Initialized (Var       => Var,
+                                                       V_Initial => Start,
+                                                       V_Use     => Child)
+                              then Unknown
+                              else Err));
+
+                     --  Otherwise, it is a partial assignment, e.g.
+                     --     Arr (X) := Y;
+                     --  which is modellled as:
+                     --     Arr := (X => Y, others => Arr ("others"));
+                     --  and we keep looking for genuine reads of the array.
+
+                     else
+                        Scan_Children
+                          (Var,
+                           Start   => Child,
+                           Possibly_Initialized => True,
+                           Visited => Visited);
+                     end if;
+
+                  else
+                     if Child_Atr.Variables_Used.Contains (Var) then
+                        Emit_Message
+                          (Var    => Var,
+                           Vertex => Child,
+                           Kind   =>
+                             (if Might_Be_Initialized (Var       => Var,
+                                                       V_Initial => Start,
+                                                       V_Use     => Child)
+                              then Unknown
+                              else Err));
+                     end if;
+                  end if;
+               end if;
+            end;
+         end loop;
+      end Scan_Children;
+
+   --  Start of processing for Find_Use_Of_Uninitialized_Variables_NOK
+
+   begin
+      for Parent of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Parent_Key : Flow_Id      renames FA.DDG.Get_Key (Parent);
+            Parent_Atr : V_Attributes renames FA.Atr (Parent);
+
+            Visited : Vertex_Sets.Set;
+
+         begin
+            if Parent_Key.Variant = Initial_Value
+              and then not Parent_Atr.Is_Initialized
+              and then not Synthetic (Parent_Key)
+              and then not Is_Empty_Record_Object (Parent_Key)
+              and then not Is_Init_By_Proof (Parent_Key)
+            then
+               Scan_Children
+                 (Var     => Change_Variant (Parent_Key, Normal_Use),
+                  Start   => Parent,
+                  Possibly_Initialized => False,
+                  Visited => Visited);
+            end if;
+         end;
+      end loop;
+   end Find_Use_Of_Uninitialized_Variables_NOK;
+
    procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
@@ -2390,6 +2878,10 @@ package body Flow.Analysis is
                V_Error := Vertex;
          end case;
 
+         if Kind /= Init then
+            return;
+         end if;
+
          --  Assemble appropriate message for failed initialization. We deal
          --  with a bunch of special cases first, but if they don't trigger we
          --  create the standard message.
@@ -2530,11 +3022,10 @@ package body Flow.Analysis is
 
             declare
                Msg : constant String :=
+                 "either make & an input in the Global contract or " &
                  (if Has_Async_Readers (Var)
-                  then "either make & an input in the Global contract or " &
-                    "write to it before use"
-                  else "either make & an input in the Global contract or " &
-                    "initialize it before use");
+                  then "write to it before use"
+                  else "initialize it before use");
 
             begin
                Error_Msg_Flow (FA           => FA,
@@ -2916,6 +3407,8 @@ package body Flow.Analysis is
       if FA.Has_Only_Exceptional_Paths then
          return;
       end if;
+
+      Find_Use_Of_Uninitialized_Variables_NOK (FA);
 
       --  We look at all vertices except for:
       --     * exceptional ones and

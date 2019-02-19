@@ -44,4 +44,4 @@ global_illegal_3.adb:125:11: info: data dependencies proved
 global_illegal_3.adb:125:34: low: unused global "X"
 global_illegal_3.adb:133:11: info: data dependencies proved
 global_illegal_3.adb:133:32: info: initialization of "Arr2" proved
-global_illegal_3.adb:136:15: medium: "Arr2" might not be initialized
+global_illegal_3.adb:133:32: medium: "Arr2" might not be initialized

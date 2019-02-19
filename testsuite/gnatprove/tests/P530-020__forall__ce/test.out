@@ -5,6 +5,7 @@ counterex_forall.adb:12:43: medium: loop invariant might fail after first iterat
 counterex_forall.adb:12:43: medium: loop invariant might fail in first iteration, cannot prove R (I) = (I = C + 1) (e.g. when C = 1 and I = 1)
 counterex_forall.adb:12:58: medium: overflow check might fail (e.g. when C = Integer'Last) [possible explanation: subprogram at counterex_forall.ads:10 should mention C in a precondition]
 counterex_forall.adb:14:14: info: initialization of "R" proved
+counterex_forall.adb:14:14: medium: "R" might not be initialized
 counterex_forall.adb:19:25: info: cannot unroll loop (too many loop iterations)
 counterex_forall.adb:21:22: high: "R" is not initialized
 counterex_forall.adb:21:28: medium: overflow check might fail (e.g. when R = (others => Integer'Last) and X = 1 and Y = 1) [possible explanation: loop invariant at line 22 should mention R]

@@ -1,5 +1,4 @@
 foo.adb:9:14: warning: subprogram "Test_01_E" has no effect
-foo.adb:13:19: medium: "My_A" might not be initialized, in call inlined at foo.adb:16
 foo.adb:19:25: info: initialization of "R" proved
 foo.adb:27:12: info: initialization of "My_A" proved
 foo.adb:27:12: medium: "My_A" might not be initialized

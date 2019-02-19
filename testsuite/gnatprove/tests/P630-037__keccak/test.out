@@ -237,12 +237,14 @@ keccak-keccakf.adb:221:19: info: initialization of "AR" proved, in instantiation
 keccak-keccakf.ads:73:19: info: initialization of "A" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:74:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:88:20: info: initialization of "AR" proved, in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.ads:88:20: medium: "AR" might not be initialized in "Theta", in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:89:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:93:18: info: initialization of "AR" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:94:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:98:17: info: initialization of "AR" proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:99:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:103:23: info: initialization of "AR" proved, in instantiation at keccak-keccak_1600.ads:45
+keccak-keccakf.ads:103:23: medium: "AR" might not be initialized in "Chi_Iota", in instantiation at keccak-keccak_1600.ads:45
 keccak-keccakf.ads:105:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:45
 keccak-padding.ads:52:34: medium: range check might fail (e.g. when First_Block'First = 0 and First_Block'Last = 2147483647)
 keccak-padding.ads:54:34: info: range check proved (CVC4: 1 VC)

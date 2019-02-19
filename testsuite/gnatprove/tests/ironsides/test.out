@@ -78,7 +78,6 @@ dns_table_pkg.adb:91:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:91:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:92:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:92:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:92:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:92:59: info: initialization of "Bucket" proved
 dns_table_pkg.adb:113:16: info: initialization of "HowMany" proved
 dns_table_pkg.adb:113:16: info: loop invariant initialization proved (CVC4: 4 VC)
@@ -110,7 +109,6 @@ dns_table_pkg.adb:183:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:183:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:184:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:184:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:184:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:184:62: info: initialization of "Bucket" proved
 dns_table_pkg.adb:203:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:207:16: info: initialization of "HowMany" proved
@@ -124,7 +122,6 @@ dns_table_pkg.adb:213:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:213:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:214:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:214:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:214:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:214:63: info: initialization of "Bucket" proved
 dns_table_pkg.adb:233:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:237:16: info: initialization of "HowMany" proved
@@ -138,7 +135,6 @@ dns_table_pkg.adb:243:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:243:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:244:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:244:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:244:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:244:64: info: initialization of "Bucket" proved
 dns_table_pkg.adb:262:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:267:16: info: initialization of "HowMany" proved
@@ -152,7 +148,6 @@ dns_table_pkg.adb:273:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:273:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:274:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:274:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:274:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:274:60: info: initialization of "Bucket" proved
 dns_table_pkg.adb:289:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:294:16: info: initialization of "HowMany" proved
@@ -166,7 +161,6 @@ dns_table_pkg.adb:300:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:300:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:301:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:301:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:301:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:301:61: info: initialization of "Bucket" proved
 dns_table_pkg.adb:319:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:324:16: info: initialization of "HowMany" proved
@@ -180,7 +174,6 @@ dns_table_pkg.adb:330:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:330:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:331:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:331:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:331:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:331:60: info: initialization of "Bucket" proved
 dns_table_pkg.adb:346:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:350:16: info: initialization of "HowMany" proved
@@ -194,7 +187,6 @@ dns_table_pkg.adb:356:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:356:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:357:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:357:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:357:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:357:62: info: initialization of "Bucket" proved
 dns_table_pkg.adb:375:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:380:16: info: initialization of "HowMany" proved
@@ -208,7 +200,6 @@ dns_table_pkg.adb:386:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:386:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:387:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:387:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:387:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:387:61: info: initialization of "Bucket" proved
 dns_table_pkg.adb:405:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:409:16: info: initialization of "HowMany" proved
@@ -222,7 +213,6 @@ dns_table_pkg.adb:415:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:415:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:416:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:416:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:416:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:416:63: info: initialization of "Bucket" proved
 dns_table_pkg.adb:434:26: info: initialization of "Lower_DomainName" proved
 dns_table_pkg.adb:439:16: info: initialization of "HowMany" proved
@@ -236,7 +226,6 @@ dns_table_pkg.adb:445:27: info: initialization of "HowMany" proved
 dns_table_pkg.adb:445:35: info: range check proved (CVC4: 1 VC)
 dns_table_pkg.adb:446:33: info: index check proved (CVC4: 2 VC)
 dns_table_pkg.adb:446:42: info: initialization of "HowMany" proved
-dns_table_pkg.adb:446:42: medium: "ReturnedRecords" might not be initialized
 dns_table_pkg.adb:446:61: info: initialization of "Bucket" proved
 dns_table_pkg.adb:462:26: info: initialization of "Lower_Key" proved
 dns_table_pkg.adb:466:29: info: initialization of "Bucket" proved

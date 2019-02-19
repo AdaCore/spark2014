@@ -1,4 +1,3 @@
-array_arith.adb:12:12: medium: "X" might not be initialized
 array_arith.adb:13:12: info: initialization of "X" proved
 array_arith.adb:14:12: info: initialization of "X" proved
 array_arith.adb:15:12: info: initialization of "X" proved
@@ -38,7 +37,6 @@ array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at 
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:39
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:40
 array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:41
-array_arith.adb:32:12: medium: "X" might not be initialized
 array_arith.adb:33:12: info: initialization of "X" proved
 array_arith.adb:34:12: info: initialization of "X" proved
 array_arith.adb:35:12: info: initialization of "X" proved
@@ -48,7 +46,6 @@ array_arith.adb:38:12: info: initialization of "X" proved
 array_arith.adb:39:12: info: initialization of "X" proved
 array_arith.adb:40:12: info: initialization of "X" proved
 array_arith.adb:41:13: info: initialization of "X" proved
-array_arith.adb:50:15: medium: "X" might not be initialized, in call inlined at array_arith.adb:66
 array_arith.adb:50:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
 array_arith.adb:51:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
 array_arith.adb:51:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
@@ -80,19 +77,26 @@ array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at ar
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:83
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:84
 array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:85
-array_arith.adb:73:12: medium: "X" might not be initialized, in call inlined at array_arith.adb:76
 array_arith.ads:8:20: info: initialization of "X" proved
+array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
 array_arith.ads:9:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:9:35: info: initialization of "X" proved
+array_arith.ads:9:35: medium: "X" might not be initialized
 array_arith.ads:11:21: info: initialization of "X" proved
+array_arith.ads:11:21: medium: "X" might not be initialized in "Init2"
 array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:12:35: info: initialization of "X" proved
+array_arith.ads:12:35: medium: "X" might not be initialized
 array_arith.ads:14:21: info: initialization of "X" proved
+array_arith.ads:14:21: medium: "X" might not be initialized in "Init3"
 array_arith.ads:15:35: info: initialization of "X" proved
+array_arith.ads:15:35: medium: "X" might not be initialized
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 2 and X = (others => 0))
 array_arith.ads:17:20: info: initialization of "X" proved
+array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: info: initialization of "X" proved
+array_arith.ads:18:35: medium: "X" might not be initialized
 ident.adb:9:42: info: initialization of "Y" proved
 ident.adb:46:25: info: initialization of "X" proved
 ident.adb:50:22: info: initialization of "Res" proved

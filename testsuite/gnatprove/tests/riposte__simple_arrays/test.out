@@ -5,9 +5,11 @@ simple_arrays.adb:26:11: info: flow dependencies proved
 simple_arrays.adb:27:22: info: initialization of "A" proved
 simple_arrays.adb:27:22: info: postcondition proved (CVC4: 1 VC)
 simple_arrays.adb:34:55: info: initialization of "A" proved
+simple_arrays.adb:34:55: medium: "A" might not be initialized in "Array_Equality_On_Individual_Assignment"
 simple_arrays.adb:36:11: info: flow dependencies proved
 simple_arrays.adb:37:22: info: initialization of "A" proved
 simple_arrays.adb:37:22: info: postcondition proved (CVC4: 1 VC)
+simple_arrays.adb:37:22: medium: "A" might not be initialized
 simple_arrays.adb:43:13: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_arrays.adb:43:13: info: loop invariant preservation proved (CVC4: 1 VC)
 simple_arrays.adb:43:21: info: range check proved (CVC4: 4 VC)

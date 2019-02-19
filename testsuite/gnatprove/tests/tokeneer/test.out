@@ -991,11 +991,11 @@ certificatestore.adb:223:29: info: initialization of "Str" proved
 certificatestore.adb:223:29: info: length check proved (CVC4: 4 VC)
 certificatestore.adb:223:29: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:223:36: info: initialization of "Length" proved
-certificatestore.adb:226:10: info: range check proved (CVC4: 4 VC)
-certificatestore.adb:226:15: info: initialization of "Length" proved
-certificatestore.adb:226:42: info: initialization of "Text" proved
-certificatestore.adb:226:42: info: length check proved (CVC4: 4 VC)
-certificatestore.adb:226:45: info: length check proved (CVC4: 4 VC)
+certificatestore.adb:224:10: info: range check proved (CVC4: 4 VC)
+certificatestore.adb:224:15: info: initialization of "Length" proved
+certificatestore.adb:224:42: info: initialization of "Text" proved
+certificatestore.adb:224:42: info: length check proved (CVC4: 4 VC)
+certificatestore.adb:224:45: info: length check proved (CVC4: 4 VC)
 certificatestore.adb:232:10: info: initialization of "Opened" proved
 certificatestore.adb:244:40: info: initialization of "RawNext" proved
 certificatestore.adb:245:40: info: initialization of "Stop" proved

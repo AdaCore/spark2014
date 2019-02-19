@@ -1362,7 +1362,6 @@ no_higher_event_1.adb:351:23: info: initialization of "No_Higher_No_Higher_Below
 no_higher_event_1.adb:351:53: info: initialization of "Bus_Selector15_out1" proved
 no_higher_event_1.adb:355:23: info: initialization of "No_Higher_No_Higher_Below_15" proved
 no_higher_event_1.adb:355:53: info: initialization of "Bus_Selector16_out1" proved
-no_higher_event_1.adb:359:28: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.adb:359:31: info: initialization of "No_Higher_Event_Than_SYNC_Switch_Pressed" proved
 no_higher_event_1.adb:360:28: info: initialization of "Bus_Creator_out1" proved
 no_higher_event_1.adb:360:31: info: initialization of "No_Higher_Event_Than_GA_Switch_Pressed" proved
@@ -1395,6 +1394,7 @@ no_higher_event_1.adb:373:32: info: initialization of "No_Higher_Event_Than_ALTS
 no_higher_event_1.adb:378:26: info: unrolling loop
 no_higher_event_1.adb:379:18: info: initialization of "O" proved
 no_higher_event_1.adb:379:21: info: initialization of "Bus_Creator_out1" proved
+no_higher_event_1.adb:379:21: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.ads:19:43: info: initialization of "O" proved
 offside_fd_on_implies_modes_on.adb:46:26: info: initialization of "Offside_FD_On_out1" proved
 offside_fd_on_implies_modes_on.adb:50:21: info: initialization of "NOT1_out1" proved

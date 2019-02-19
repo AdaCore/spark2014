@@ -1,4 +1,3 @@
-array_arith.adb:12:12: medium: "X" might not be initialized
 array_arith.adb:13:12: info: initialization of "X" proved
 array_arith.adb:14:12: info: initialization of "X" proved
 array_arith.adb:15:12: info: initialization of "X" proved
@@ -10,7 +9,6 @@ array_arith.adb:20:12: info: initialization of "X" proved
 array_arith.adb:21:13: info: initialization of "X" proved
 array_arith.adb:29:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 26 should mention Y and One in a precondition]
 array_arith.adb:29:19: medium: range check might fail (e.g. when One = -1 and Y = 0) [possible explanation: subprogram at line 26 should mention Y and One in a precondition]
-array_arith.adb:32:12: medium: "X" might not be initialized
 array_arith.adb:32:15: info: initialization of "One" proved
 array_arith.adb:33:12: info: initialization of "X" proved
 array_arith.adb:33:15: info: initialization of "One" proved
@@ -35,7 +33,6 @@ array_arith.adb:63:19: medium: range check might fail (e.g. when One = -1 and Y 
 array_arith.adb:66:07: high: "X" is not initialized
 array_arith.adb:66:07: info: initialization of "One" proved
 array_arith.adb:70:29: info: initialization of "Y" proved
-array_arith.adb:76:19: medium: "X" might not be initialized
 array_arith.adb:77:19: info: initialization of "X" proved
 array_arith.adb:78:19: info: initialization of "X" proved
 array_arith.adb:79:19: info: initialization of "X" proved
@@ -46,16 +43,22 @@ array_arith.adb:83:19: info: initialization of "X" proved
 array_arith.adb:84:19: info: initialization of "X" proved
 array_arith.adb:85:19: info: initialization of "X" proved
 array_arith.ads:8:20: info: initialization of "X" proved
+array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
 array_arith.ads:9:35: info: initialization of "X" proved
+array_arith.ads:9:35: medium: "X" might not be initialized
 array_arith.ads:9:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) (e.g. when J = 3 and X = (1 => 0, 10 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, others => 4))
 array_arith.ads:11:21: info: initialization of "X" proved
+array_arith.ads:11:21: medium: "X" might not be initialized in "Init2"
 array_arith.ads:12:35: info: initialization of "X" proved
+array_arith.ads:12:35: medium: "X" might not be initialized
 array_arith.ads:12:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 2 and X = (others => 0))
 array_arith.ads:14:21: info: initialization of "X" proved
 array_arith.ads:15:35: info: initialization of "X" proved
 array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 1 and X = (others => 0)) [possible explanation: call at array_arith.adb:66 should mention X in a postcondition]
 array_arith.ads:17:20: info: initialization of "X" proved
+array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
 array_arith.ads:18:35: info: initialization of "X" proved
+array_arith.ads:18:35: medium: "X" might not be initialized
 array_arith.ads:18:35: medium: postcondition might fail, cannot prove X(J) = 0 (e.g. when J = 4 and X = (1 => 0, 10 => 0, 2 => 0, 3 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, others => 1)) [possible explanation: call at array_arith.adb:85 should mention Y (for argument X) in a postcondition]
 ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:43:25: info: initialization of "X" proved

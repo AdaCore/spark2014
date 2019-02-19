@@ -9,18 +9,18 @@ assign_all_arr_incr.adb:4:21: info: unrolling loop
 assign_all_arr_incr.adb:5:22: medium: overflow check might fail [CWE 190] (e.g. when J = 1 and X = (others => Integer'Last)) [possible explanation: subprogram at line 2 should mention X in a precondition]
 assign_all_arr_incr_unk.adb:4:21: info: cannot unroll loop (too many loop iterations)
 assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190] (e.g. when J = -1 and X = (-1 => Integer'First, others => -1)) [possible explanation: loop at line 4 should mention X in a loop invariant]
-assign_arr.adb:4:13: medium: "X" might not be initialized [CWE 457]
 assign_arr.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.adb:5:13: info: initialization of "X" proved
 assign_arr.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.ads:3:22: info: initialization of "X" proved
+assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
 assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 120] (e.g. when X'First = 2)
-assign_arr_unk.adb:4:13: medium: "X" might not be initialized [CWE 457]
 assign_arr_unk.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 120] (e.g. when X'Last = 1)
 assign_arr_unk.adb:5:13: info: initialization of "X" proved
 assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.ads:3:22: info: initialization of "X" proved
+assign_arr_unk.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
 assign_pos.adb:1:23: info: initialization of "X" proved
 assign_pos.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when Y = Positive'Last) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 assign_rec.adb:4:16: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_rec.ads:9 should mention Y in a precondition]
@@ -41,8 +41,8 @@ bad_assign_all_arr_unk.adb:4:21: info: cannot unroll loop (too many loop iterati
 bad_assign_all_arr_unk.adb:5:21: medium: array index check might fail [CWE 120]
 bad_assign_all_arr_unk.adb:5:21: medium: overflow check might fail [CWE 190] (e.g. when J = 2147483647)
 bad_assign_arr.adb:2:27: info: initialization of "X" proved
+bad_assign_arr.adb:2:27: medium: "X" might not be initialized in "Bad_Assign_Arr" [CWE 457]
 bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] [possible explanation: subprogram at line 2 should mention Y in a precondition]
-bad_assign_arr.adb:4:10: medium: "X" might not be initialized [CWE 457]
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 1 VC)
 bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 120] (e.g. when Y = 1) [possible explanation: subprogram at line 2 should mention Y in a precondition]
 bad_assign_arr.adb:5:15: info: initialization of "X" proved
@@ -92,13 +92,11 @@ concat.adb:2:34: medium: "Z" might not be initialized in "Concat" [CWE 457]
 concat.adb:5:21: info: cannot unroll loop (too many loop iterations)
 concat.adb:6:10: medium: array index check might fail [CWE 120] (e.g. when K = 0 and Z'First = 1) [possible explanation: loop at line 5 should mention K in a loop invariant]
 concat.adb:6:13: info: initialization of "K" proved
-concat.adb:6:13: medium: "Z" might not be initialized [CWE 457]
 concat.adb:7:12: info: initialization of "K" proved
 concat.adb:7:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [possible explanation: loop at line 5 should mention K in a loop invariant]
 concat.adb:9:21: info: cannot unroll loop (too many loop iterations)
 concat.adb:10:10: medium: array index check might fail [CWE 120] (e.g. when K = -1 and Z'First = 0) [possible explanation: loop at line 9 should mention K in a loop invariant]
 concat.adb:10:13: info: initialization of "K" proved
-concat.adb:10:13: medium: "Z" might not be initialized [CWE 457]
 concat.adb:11:12: info: initialization of "K" proved
 concat.adb:11:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [possible explanation: loop at line 9 should mention K in a loop invariant]
 concat_op.adb:2:37: info: initialization of "Z" proved
