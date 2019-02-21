@@ -373,12 +373,6 @@ is
                             Type_Kind;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
-   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set
-   with Post => (for all E of Expand_Abstract_State'Result =>
-                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
-   --  If F represents abstract state, return the set of all its components.
-   --  Otherwise return F.
-
    function Expand_Abstract_States
      (Vars : Flow_Id_Sets.Set)
       return Flow_Id_Sets.Set;

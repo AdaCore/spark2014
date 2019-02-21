@@ -755,7 +755,9 @@ package body Flow.Analysis is
                  To_Entire_Variables
                    (Get_Variables
                       (Expr,
-                       Scope                => Get_Flow_Scope (Expr),
+                       Scope                => (if Refined
+                                                then FA.B_Scope
+                                                else FA.S_Scope),
                        Fold_Functions       => False,
                        Reduced              => True,
                        Use_Computed_Globals => True))

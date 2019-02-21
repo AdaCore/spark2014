@@ -40,6 +40,7 @@ with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 
+with Common_Iterators;           use Common_Iterators;
 with Flow_Refinement;            use Flow_Refinement;
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
@@ -396,6 +397,9 @@ package body Flow_Generated_Globals.Phase_2 is
                                 return Boolean;
    --  Returns True iff all constituents of State that are visible when
    --  up-projecting to Scop are among Outputs.
+
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
+   --  Returns the constituents of AS if it is an abstract state, AS otherwise
 
    ----------------------------------------------------------------------
    --  Debug routines
@@ -2983,31 +2987,29 @@ package body Flow_Generated_Globals.Phase_2 is
    function Refinement_Exists (AS : Entity_Id) return Boolean is
      (State_Comp_Map.Contains (To_Entity_Name (AS)));
 
-   function Refinement_Exists (AS : Entity_Name) return Boolean
-     renames State_Comp_Map.Contains;
-
    ------------------------------
    -- GG_Expand_Abstract_State --
    ------------------------------
 
-   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set
-   is
-   begin
-      if GG_Is_Abstract_State (AS)
-        and then Refinement_Exists (AS)
-      then
-         declare
-            Constituents : Name_Sets.Set;
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set is
+      Constituents : Name_Sets.Set;
 
-         begin
-            for Constituent of Get_Constituents (AS) loop
-               Constituents.Union (GG_Expand_Abstract_State (Constituent));
-            end loop;
-            return Constituents;
-         end;
+   begin
+      if State_Comp_Map.Contains (AS) then
+         for C of State_Comp_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+      elsif State_Part_Map.Contains (AS) then
+         for C of State_Part_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+
+         Constituents.Insert (AS);
       else
-         return Name_Sets.To_Set (AS);
+         Constituents.Insert (AS);
       end if;
+
+      return Constituents;
    end GG_Expand_Abstract_State;
 
    --------------------------
@@ -3580,5 +3582,83 @@ package body Flow_Generated_Globals.Phase_2 is
         (Projected or Partial) -
         (Projected_Vars.Inputs or Projected_Vars.Outputs);
    end Up_Project;
+
+   ---------------------------
+   -- Expand_Abstract_State --
+   ---------------------------
+
+   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set is
+   begin
+      --  Abstract state is expanded as much as possible using refinement
+      --  recorded in the ALI file.
+
+      if Is_Abstract_State (F) then
+         declare
+            State : constant Entity_Name :=
+              (if F.Kind = Direct_Mapping
+               then To_Entity_Name (F.Node)
+               else F.Name);
+
+            Expanded : Flow_Id_Sets.Set;
+
+         begin
+            if State_Comp_Map.Contains (State) then
+               for C of State_Comp_Map (State) loop
+                  Expanded.Union (Expand_Abstract_State (Get_Flow_Id (C)));
+               end loop;
+            elsif State_Part_Map.Contains (State) then
+               for C of State_Part_Map (State) loop
+                  Expanded.Union (Expand_Abstract_State (Get_Flow_Id (C)));
+               end loop;
+
+               Expanded.Insert (Magic_String_Id (State));
+            else
+               --  Expand Part_Of constituents that are not known to "generated
+               --  globals" machinery, e.g. because they appear in the (down
+               --  projected) Pre/Post of subprograms from external units.
+
+               if F.Kind = Direct_Mapping then
+                  for C of Iter (Part_Of_Constituents (F.Node)) loop
+                     Expanded.Union
+                       (Expand_Abstract_State (Direct_Mapping_Id (C)));
+                  end loop;
+               end if;
+
+               Expanded.Insert (Magic_String_Id (State));
+            end if;
+
+            return Expanded;
+         end;
+
+      --  Other objects are merely converted to the proof view convention
+
+      else
+         case F.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+               begin
+                  --  Entities in SPARK are represented by Entity_Id; those
+                  --  not in SPARK are represented by Entity_Name, because
+                  --  they behave as "blobs".
+
+                  return Flow_Id_Sets.To_Set
+                    (if Entity_In_SPARK (E)
+                     then Change_Variant (F, Normal_Use)
+                     else Magic_String_Id (To_Entity_Name (E)));
+               end;
+
+            when Magic_String =>
+               return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+            when Null_Value =>
+               return Flow_Id_Sets.Empty_Set;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end if;
+   end Expand_Abstract_State;
 
 end Flow_Generated_Globals.Phase_2;

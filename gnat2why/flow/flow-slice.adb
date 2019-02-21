@@ -96,11 +96,10 @@ package body Flow.Slice is
    --  Start of processing for Internal_Dependency
 
    begin
-      Flow_Graphs.DFS (G             => FA.PDG,
-                       Start         => V_Final,
-                       Include_Start => False,
-                       Visitor       => Visitor'Access,
-                       Reversed      => True);
+      FA.PDG.DFS (Start         => V_Final,
+                  Include_Start => False,
+                  Visitor       => Visitor'Access,
+                  Reversed      => True);
       return Deps;
    end Internal_Dependency;
 

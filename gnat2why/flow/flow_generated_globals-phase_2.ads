@@ -139,12 +139,11 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre => Ekind (AS) = E_Abstract_State;
    --  Returns True iff a refinement has been specified for abstract state AS
 
-   function Refinement_Exists (AS : Entity_Name) return Boolean
-   with Pre => GG_Is_Abstract_State (AS);
-   --  Returns True iff a refinement has been specified for abstract state AS
-
-   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
-   --  Returns the constituents of AS if it is an abstract state, AS otherwise
+   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set
+   with Post => (for all E of Expand_Abstract_State'Result =>
+                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
+   --  If F represents abstract state, return the set of all its components.
+   --  Otherwise return F.
 
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then

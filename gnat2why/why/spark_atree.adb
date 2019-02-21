@@ -570,7 +570,7 @@ package body SPARK_Atree is
                      Prefix_Type := Etype (Pref);
                   end if;
 
-                  if Einfo.Is_Record_Type (Prefix_Type) then
+                  if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
                      Check_Type := Etype (Nlists.First (Choices (Par)));
 

@@ -437,10 +437,12 @@ package body Configuration is
    procedure Handle_Switch
      (Switch    : String;
       Parameter : String;
-      Section   : String) is
+      Section   : String)
+   is
+      pragma Unreferenced (Parameter);
    begin
       if Section = "cargs" then
-         CL_Switches.Cargs_List.Append (Switch & Separator & Parameter);
+         CL_Switches.Cargs_List.Append (Switch);
 
       elsif Switch (Switch'First) /= '-' then
 

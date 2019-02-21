@@ -569,7 +569,8 @@ package body Gnat2Why.Expr is
    function Transform_Function_Call
      (Expr   : Node_Id;
       Domain : EW_Domain;
-      Params : Transformation_Params) return W_Expr_Id;
+      Params : Transformation_Params) return W_Expr_Id
+   with Pre => Nkind (Expr) in N_Function_Call | N_Op;
    --  Transform a function call
 
    function Transform_Enum_Literal
@@ -675,9 +676,10 @@ package body Gnat2Why.Expr is
    function Has_Visibility_On_Refined
      (Expr : Node_Id;
       E    : Entity_Id)
-      return Boolean;
-   --  Return True if the Expression can "see" the implementation of entity E
-   --  (e.g. the Refined_Post, or the full view, etc.)
+      return Boolean
+   with Pre => Ekind (E) in E_Function | E_Procedure | E_Entry
+               and then Entity_Body_In_SPARK (E);
+   --  Return True if node Expr can "see" the Refined_Post of entity E
 
    -------------------
    -- Apply_Modulus --
@@ -4952,10 +4954,7 @@ package body Gnat2Why.Expr is
       E    : Entity_Id)
       return Boolean
    is
-      Our_Scope : constant Flow_Scope := Get_Flow_Scope (Expr);
-   begin
-      return Is_Visible (E, Our_Scope);
-   end Has_Visibility_On_Refined;
+    (Subprogram_Refinement_Is_Visible (E, Get_Flow_Scope (Expr)));
 
    ----------------------------
    -- Insert_Invariant_Check --
@@ -13906,7 +13905,7 @@ package body Gnat2Why.Expr is
          --  When the call is dispatching, use the Dispatch variant of
          --  the program function, which has the appropriate contract.
 
-        (if Nkind (Expr) in N_Subprogram_Call
+        (if Nkind (Expr) = N_Function_Call
          and then Present (Controlling_Argument (Expr))
          then Dispatch
 
