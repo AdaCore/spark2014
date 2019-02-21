@@ -6963,25 +6963,21 @@ package body SPARK_Definition is
 
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
         with Static_Predicate =>
-          SPARK_Pragma_Scope_With_Type_Decl in
-            E_Abstract_State     |
-            E_Constant           |
-            E_Variable           |
-            E_Protected_Body     |
-            E_Protected_Type     |
-            E_Task_Body          |
-            E_Task_Type          |
-            E_Entry              |
-            E_Entry_Family       |
-            E_Function           |
-            E_Generic_Function   |
-            E_Generic_Procedure  |
-            E_Operator           |
-            E_Procedure          |
-            E_Subprogram_Body    |
-            E_Generic_Package    |
-            E_Package            |
-            E_Package_Body;
+          SPARK_Pragma_Scope_With_Type_Decl in E_Abstract_State
+                                             | E_Constant
+                                             | E_Variable
+                                             | E_Protected_Body
+                                             | E_Protected_Type
+                                             | E_Task_Body
+                                             | E_Task_Type
+                                             | E_Entry
+                                             | E_Entry_Family
+                                             | E_Function
+                                             | E_Operator
+                                             | E_Procedure
+                                             | E_Subprogram_Body
+                                             | E_Package
+                                             | E_Package_Body;
 
    --  Start of processing for SPARK_Pragma_Of_Entity
 
@@ -7096,8 +7092,7 @@ package body SPARK_Definition is
 
          when E_Package_Body =>
             if List_Containing (Parent (Def)) =
-              Statements (
-                          Handled_Statement_Sequence (Package_Body (Def_Scop)))
+              Statements (Handled_Statement_Sequence (Package_Body (Def_Scop)))
             then
                return SPARK_Aux_Pragma (Def_Scop);
             end if;
