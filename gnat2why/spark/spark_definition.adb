@@ -7093,6 +7093,10 @@ package body SPARK_Definition is
               Private_Declarations (Package_Specification (Def_Scop))
             then
                return SPARK_Aux_Pragma (Def_Scop);
+            else
+               pragma Assert
+                 (List_Containing (Parent (Def)) =
+                    Visible_Declarations (Package_Specification (Def_Scop)));
             end if;
 
          when E_Package_Body =>
@@ -7100,7 +7104,19 @@ package body SPARK_Definition is
               Statements (Handled_Statement_Sequence (Package_Body (Def_Scop)))
             then
                return SPARK_Aux_Pragma (Def_Scop);
+            else
+               pragma Assert
+                 (List_Containing (Parent (Def)) =
+                    Declarations (Package_Body (Def_Scop)));
             end if;
+
+         --  Similar correction could be needed for concurrent types too, but
+         --  types and named numbers can't be nested there.
+
+         when E_Protected_Type
+            | E_Task_Type
+         =>
+            raise Program_Error;
 
          when others =>
             null;
