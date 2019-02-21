@@ -7056,7 +7056,9 @@ package body SPARK_Definition is
            SPARK_Pragma_Of_Entity (Enclosing_Package_Or_Subprogram (E));
       end if;
 
-      if Is_Formal (E) then
+      if Is_Formal (E)
+        or else Ekind (E) = E_Discriminant
+      then
          return SPARK_Pragma (Scope (E));
       end if;
 
@@ -7066,8 +7068,11 @@ package body SPARK_Definition is
       --  SPARK_Mode pragma.
 
       declare
+         pragma Assert (Is_Type (E) or else Is_Named_Number (E));
+
          Def : Entity_Id := E;
          --  Entity which defines type E
+
          Def_Scop : Entity_Id := Lexical_Scope (E);
          --  Immediate scope of the entity that defines E
       begin
