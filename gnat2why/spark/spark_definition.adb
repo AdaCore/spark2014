@@ -7053,7 +7053,7 @@ package body SPARK_Definition is
                  and then Is_Quantified_Loop_Param (E))
       then
          return
-           SPARK_Pragma_Of_Entity (Enclosing_Package_Or_Subprogram (E));
+           SPARK_Pragma_Of_Entity (Enclosing_Unit (E));
       end if;
 
       if Is_Formal (E)
