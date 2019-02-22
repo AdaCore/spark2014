@@ -1,0 +1,2 @@
+lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
+lemmas.ads:15:14: info: postcondition proved (Coq: 1 VC)
