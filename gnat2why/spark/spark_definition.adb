@@ -4750,6 +4750,19 @@ package body SPARK_Definition is
                   Mark (Default_Aspect_Component_Value (E));
                end if;
 
+               --  Mark the equality function for Component_Typ if it is used
+               --  for the predefined equality of E.
+
+               if Is_Record_Type
+                 (Get_Full_Type_Without_Checking (Component_Typ))
+                 and then Present
+                   (Get_User_Defined_Eq (Base_Type (Component_Typ)))
+               then
+                  Mark_Entity
+                    (Ultimate_Alias
+                       (Get_User_Defined_Eq (Base_Type (Component_Typ))));
+               end if;
+
                --  Check use of pragma Annotate Init_By_Proof
 
                if Has_Init_By_Proof (Component_Typ)
@@ -4896,6 +4909,19 @@ package body SPARK_Definition is
                      then
                         if not In_SPARK (Comp_Type) then
                            Mark_Violation (Comp, From => Comp_Type);
+                        end if;
+
+                        --  Mark the equality function for Comp_Type if it is
+                        --  used for the predefined equality of E.
+
+                        if Is_Record_Type
+                          (Get_Full_Type_Without_Checking (Comp_Type))
+                          and then Present
+                            (Get_User_Defined_Eq (Base_Type (Comp_Type)))
+                        then
+                           Mark_Entity
+                             (Ultimate_Alias
+                                (Get_User_Defined_Eq (Base_Type (Comp_Type))));
                         end if;
 
                         --  Mark default value of component or discriminant
