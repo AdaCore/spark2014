@@ -1,3 +1,4 @@
 test_rotate.adb:13:14: info: postcondition proved (CVC4: 1 VC)
+test_rotate.adb:15:06: info: data dependencies proved
 test_rotate.adb:19:39: info: range check proved (CVC4: 1 VC)
 test_rotate.adb:25:09: info: precondition proved (CVC4: 3 VC)

@@ -1,7 +1,9 @@
 aco-math-very_longs.adb:21:54: info: initialization of "Digit" proved
 aco-math-very_longs.adb:21:77: info: initialization of "Valid" proved
+aco-math-very_longs.adb:23:08: info: flow dependencies proved
 aco-math-very_longs.adb:39:52: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:39:76: info: initialization of "Carry" proved
+aco-math-very_longs.adb:41:08: info: flow dependencies proved
 aco-math-very_longs.adb:43:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible explanation: loop at line 51 should mention Result in a loop invariant]
 aco-math-very_longs.adb:49:26: info: length check proved (CVC4: 4 VC)
 aco-math-very_longs.adb:49:29: info: length check proved (CVC4: 4 VC)
@@ -17,6 +19,7 @@ aco-math-very_longs.adb:56:32: info: initialization of "Result.Long_Digits" prov
 aco-math-very_longs.adb:56:50: info: initialization of "Sum" proved
 aco-math-very_longs.adb:62:58: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:62:82: info: initialization of "Borrow" proved
+aco-math-very_longs.adb:64:08: info: flow dependencies proved
 aco-math-very_longs.adb:66:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length (e.g. when L = (Octet_Length => 1, Long_Digits => (others => 0)) and L.Long_Digits'First = 1 and L.Long_Digits'Last = 1 and Result = (Octet_Length => 2, Long_Digits => ?)) [possible explanation: loop at line 74 should mention Result in a loop invariant]
 aco-math-very_longs.adb:72:26: info: length check proved (CVC4: 4 VC)
 aco-math-very_longs.adb:72:29: info: length check proved (CVC4: 4 VC)
@@ -183,6 +186,7 @@ aco-math-very_longs.adb:339:17: info: initialization of "Digit_Index" proved
 aco-math-very_longs.adb:350:30: info: unrolling loop
 aco-math-very_longs.adb:355:17: info: initialization of "Distance" proved
 aco-math-very_longs.adb:359:56: info: initialization of "Result.Long_Digits" proved
+aco-math-very_longs.adb:361:11: info: flow dependencies proved
 aco-math-very_longs.adb:362:60: medium: overflow check might fail (e.g. when Number = (Octet_Length => Digit_Index_Type'Last, Long_Digits => (others => 0)) and Number.Long_Digits'First = 1 and Number.Long_Digits'Last = 2147483647)
 aco-math-very_longs.adb:368:29: info: length check proved (CVC4: 4 VC)
 aco-math-very_longs.adb:368:32: info: length check proved (CVC4: 4 VC)
@@ -200,6 +204,7 @@ aco-math-very_longs.adb:374:29: info: initialization of "New_Overflow" proved
 aco-math-very_longs.adb:376:47: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:376:54: info: initialization of "Result.Long_Digits" proved
 aco-math-very_longs.adb:376:57: info: initialization of "Old_Overflow" proved
+aco-math-very_longs.adb:382:11: info: flow dependencies proved
 aco-math-very_longs.adb:389:44: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:390:77: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:390:84: info: initialization of "Overflow_Mask" proved
@@ -209,6 +214,7 @@ aco-math-very_longs.adb:392:32: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:392:57: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:392:63: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:393:29: info: initialization of "New_Overflow" proved
+aco-math-very_longs.adb:400:11: info: flow dependencies proved
 aco-math-very_longs.adb:407:52: info: cannot unroll loop (too many loop iterations)
 aco-math-very_longs.adb:408:48: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:408:55: info: initialization of "Overflow_Mask" proved
@@ -218,7 +224,9 @@ aco-math-very_longs.adb:410:32: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:410:57: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:410:91: info: initialization of "Old_Overflow" proved
 aco-math-very_longs.adb:411:29: info: initialization of "New_Overflow" proved
+aco-math-very_longs.adb:417:11: info: data dependencies proved
 aco-math-very_longs.adb:417:55: info: initialization of "Q_Hat" proved
+aco-math-very_longs.adb:418:11: info: flow dependencies proved
 aco-math-very_longs.adb:423:68: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:423:72: medium: array index check might fail (e.g. when J = 4 and N = 1 and U = (Octet_Length => ?, Long_Digits => (others => 0)) and U.Long_Digits'First = 1 and U.Long_Digits'Last = 3) [possible explanation: subprogram at line 415 should mention J and N in a precondition]
 aco-math-very_longs.adb:423:114: medium: overflow check might fail (e.g. when J = Digit_Index_Type'Last and N = 1) [possible explanation: subprogram at line 415 should mention J and N in a precondition]
@@ -244,7 +252,9 @@ aco-math-very_longs.adb:437:86: info: initialization of "R_Hat" proved
 aco-math-very_longs.adb:437:128: info: overflow check proved (CVC4: 1 VC)
 aco-math-very_longs.adb:437:133: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:438:25: info: initialization of "Q_Hat" proved
+aco-math-very_longs.adb:446:11: info: data dependencies proved
 aco-math-very_longs.adb:446:59: info: initialization of "Current_Borrow" proved
+aco-math-very_longs.adb:447:11: info: flow dependencies proved
 aco-math-very_longs.adb:456:14: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:456:61: info: cannot unroll loop (dynamic loop bounds)
 aco-math-very_longs.adb:457:63: info: index check proved (CVC4: 2 VC)
@@ -275,6 +285,8 @@ aco-math-very_longs.adb:477:95: info: initialization of "Carry" proved
 aco-math-very_longs.adb:477:104: info: initialization of "Current_Borrow" proved
 aco-math-very_longs.adb:477:120: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:478:28: info: initialization of "Future_Borrow" proved
+aco-math-very_longs.adb:483:11: info: data dependencies proved
+aco-math-very_longs.adb:484:11: info: flow dependencies proved
 aco-math-very_longs.adb:489:31: medium: array index check might fail (e.g. when J = 2 and Quotient = (Octet_Length => ?, Long_Digits => (others => 0)) and Quotient.Long_Digits'First = 1 and Quotient.Long_Digits'Last = 1) [possible explanation: subprogram at line 481 should mention J in a precondition]
 aco-math-very_longs.adb:489:47: medium: range check might fail (e.g. when Q_Hat = 256) [possible explanation: subprogram at line 481 should mention Q_Hat in a precondition]
 aco-math-very_longs.adb:493:34: info: index check proved (CVC4: 2 VC)
@@ -390,5 +402,6 @@ aco-math-very_longs.ads:75:96: info: initialization of "Remainder.Long_Digits" p
 aco-math-very_longs.ads:81:45: medium: overflow check might fail (e.g. when Divisor = (Octet_Length => 1073741824, Long_Digits => (others => 0)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1073741824)
 aco-math-very_longs.ads:90:16: info: postcondition proved (CVC4: 1 VC)
 aco-math-very_longs.ads:96:16: info: postcondition proved (CVC4: 1 VC)
+aco-math-very_longs.ads:102:08: info: flow dependencies proved
 aco-math-very_longs.ads:110:10: info: range check proved (CVC4: 2 VC)
 aco-math-very_longs.ads:114:67: info: index check proved (CVC4: 2 VC)

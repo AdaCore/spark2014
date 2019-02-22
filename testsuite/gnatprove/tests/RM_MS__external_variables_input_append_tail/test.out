@@ -11,3 +11,5 @@ input_port_14.adb:29:23: info: initialization of "First_Read" proved
 input_port_14.adb:29:47: info: initialization of "Input_Value" proved
 input_port_14.adb:29:61: info: initialization of "Second_Read" proved
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
+input_port_14.ads:6:11: info: data dependencies proved
+input_port_14.ads:7:11: info: flow dependencies proved

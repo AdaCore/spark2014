@@ -18,10 +18,13 @@ base32.adb:53:14: info: precondition proved (CVC4: 1 VC)
 base32.adb:53:22: info: initialization of "B" proved
 base32.adb:53:22: info: predicate check proved (CVC4: 1 VC)
 base32.adb:53:22: info: range check proved (CVC4: 1 VC)
+base32.ads:18:12: info: flow dependencies proved
 base32.ads:25:43: info: division check proved (CVC4: 1 VC)
 base32.ads:31:31: info: division check proved (CVC4: 1 VC)
 base32.ads:42:11: info: range check proved (CVC4: 1 VC)
 base32.ads:54:16: info: range check proved (CVC4: 1 VC)
+base32.ads:61:08: info: flow dependencies proved
 base32.ads:63:11: info: range check proved (CVC4: 1 VC)
+base32.ads:70:08: info: flow dependencies proved
 base32.ads:71:24: info: division check proved (CVC4: 1 VC)
 base32.ads:71:39: info: range check proved (CVC4: 1 VC)

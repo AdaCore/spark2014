@@ -184,4 +184,11 @@ cc1311a.adb:452:17: medium: precondition might fail, cannot prove false
 cc1311a.adb:457:17: medium: precondition might fail, cannot prove false
 cc1311a.adb:467:17: medium: precondition might fail, cannot prove false
 cc1311a.adb:474:17: medium: precondition might fail, cannot prove false
+report.ads:115:18: info: data dependencies proved
+report.ads:121:18: info: data dependencies proved
+report.ads:127:18: info: data dependencies proved
+report.ads:132:18: info: data dependencies proved
+report.ads:137:18: info: data dependencies proved
+report.ads:142:18: info: data dependencies proved
+report.ads:148:22: info: data dependencies proved
 gnatprove: error during flow analysis and proof

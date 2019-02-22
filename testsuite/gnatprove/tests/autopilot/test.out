@@ -17,6 +17,7 @@ ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:29:47: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:30:14: info: initialization of "Average" proved, in call inlined at ap-altitude-pitch-rate.adb:58
+ap-altitude-pitch-rate.adb:35:11: info: flow dependencies proved
 ap-altitude-pitch-rate.adb:38:30: info: unrolling loop
 ap-altitude-pitch-rate.adb:40:24: info: index check proved (CVC4: 20 VC)
 ap-altitude-pitch-rate.adb:58:18: info: analyzing call to "History_Average" in context
@@ -33,7 +34,10 @@ ap-altitude-pitch-rate.adb:70:14: info: division check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:70:14: info: range check proved (CVC4: 1 VC)
 ap-altitude-pitch-rate.adb:75:47: info: initialization of "Average" proved
 ap-altitude-pitch-rate.adb:75:55: info: division check proved (CVC4: 1 VC)
+ap-altitude-pitch-rate.ads:6:08: info: flow dependencies proved
 ap-altitude-pitch-rate.ads:9:29: info: initialization of "Present_Pitchrate" proved
+ap-altitude-pitch-rate.ads:10:11: info: data dependencies proved
+ap-altitude-pitch-rate.ads:11:11: info: flow dependencies proved
 ap-altitude-pitch.adb:28:69: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:29:10: info: initialization of "Result" proved
@@ -75,8 +79,15 @@ ap-altitude-pitch.adb:104:28: info: analyzing call to "Calc_Elevator_Move" in co
 ap-altitude-pitch.adb:104:28: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch.adb:104:28: info: initialization of "Target_Pitchrate" proved
 ap-altitude-pitch.adb:106:31: info: initialization of "Elevator_Movement" proved
+ap-altitude-pitch.ads:5:08: info: flow dependencies proved
+ap-altitude-pitch.ads:12:11: info: data dependencies proved
+ap-altitude-pitch.ads:14:11: info: flow dependencies proved
 ap-altitude.adb:7:04: info: initialization of "Target_Altitude" constituent of "State" proved
 ap-altitude.adb:8:04: info: initialization of "Switch_Pressed_Before" constituent of "State" proved
+ap-altitude.ads:5:08: info: flow dependencies proved
+ap-altitude.ads:12:11: info: data dependencies proved
+ap-altitude.ads:14:11: info: flow dependencies proved
+ap-heading-roll-rate.ads:5:08: info: flow dependencies proved
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:28:10: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
@@ -115,6 +126,10 @@ ap-heading-roll.adb:97:27: info: analyzing call to "Calc_Aileron_Move" in contex
 ap-heading-roll.adb:97:27: info: initialization of "Present_Rollrate" proved
 ap-heading-roll.adb:97:27: info: initialization of "Target_Rollrate" proved
 ap-heading-roll.adb:100:30: info: initialization of "Aileron_Movement" proved
+ap-heading-roll.ads:5:08: info: flow dependencies proved
+ap-heading-roll.ads:11:11: info: data dependencies proved
+ap-heading-roll.ads:13:11: info: flow dependencies proved
+ap-heading-yaw-rate.ads:5:08: info: flow dependencies proved
 ap-heading-yaw.adb:25:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:27:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:31:14: info: initialization of "Target_Angle" proved
@@ -123,6 +138,12 @@ ap-heading-yaw.adb:36:49: info: initialization of "Surfaces.Rudder" proved
 ap-heading-yaw.adb:47:26: info: analyzing call to "Calc_Rudder_Move" in context
 ap-heading-yaw.adb:47:26: info: initialization of "Present_Sliprate" proved
 ap-heading-yaw.adb:48:28: info: initialization of "Rudder_Movement" proved
+ap-heading-yaw.ads:5:08: info: flow dependencies proved
+ap-heading-yaw.ads:9:11: info: data dependencies proved
+ap-heading-yaw.ads:11:11: info: flow dependencies proved
+ap-heading.ads:5:08: info: flow dependencies proved
+ap-heading.ads:14:11: info: data dependencies proved
+ap-heading.ads:17:11: info: flow dependencies proved
 ap.adb:72:12: info: initialization of "Master_Switch" proved
 ap.adb:74:34: info: initialization of "Altitude_Switch" proved
 ap.adb:75:34: info: initialization of "Heading_Switch" proved
@@ -137,6 +158,11 @@ ap.adb:95:25: info: initialization of "Present_Heading" proved
 ap.adb:96:25: info: initialization of "Target_Heading" proved
 ap.adb:97:25: info: initialization of "Bank" proved
 ap.adb:98:25: info: initialization of "Slip" proved
+ap.ads:5:08: info: flow dependencies proved
+ap.ads:8:11: info: data dependencies proved
+ap.ads:20:11: info: flow dependencies proved
+main.adb:4:08: info: data dependencies proved
+main.adb:16:08: info: flow dependencies proved
 scale.adb:19:20: info: overflow check proved (CVC4: 1 VC)
 scale.adb:19:32: info: division check proved (CVC4: 1 VC)
 scale.adb:19:32: info: overflow check proved (CVC4: 1 VC)
@@ -177,3 +203,4 @@ scale.adb:79:38: info: initialization of "V" proved
 scale.adb:79:38: info: range check proved (CVC4: 1 VC)
 scale.adb:80:14: info: initialization of "Ans" proved
 scale.ads:16:19: info: postcondition proved (CVC4: 2 VC)
+surfaces.ads:5:08: info: flow dependencies proved

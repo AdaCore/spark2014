@@ -1,2 +1,3 @@
+test_type.ads:1:36: info: flow dependencies proved
 test_type.ads:5:09: info: invariant check proved on default value (CVC4: 1 VC)
 test_type.ads:10:04: medium: invariant check might fail (e.g. when X = (F => -1))

@@ -1,4 +1,8 @@
+x86.ads:20:06: info: data dependencies proved
 x86.ads:21:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:24:06: info: data dependencies proved
 x86.ads:25:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:29:06: info: data dependencies proved
 x86.ads:30:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:35:06: info: data dependencies proved
 x86.ads:36:14: info: postcondition proved (CVC4: 1 VC)

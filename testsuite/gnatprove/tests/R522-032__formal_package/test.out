@@ -1,1 +1,2 @@
 hw-gfx-dp_training.ads:10:14: warning: subprogram "Train_DP" has no effect, in instantiation at hw-gfx-gma-pch-dp.adb:9
+hw-gfx-gma-pch-dp.ads:4:22: info: data dependencies proved

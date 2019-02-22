@@ -556,6 +556,14 @@ package body Flow_Error_Messages is
 
       if not Suppressed then
          FA.Errors_Or_Warnings := True;
+
+         if Tag in Data_Dependency_Tag then
+            FA.Data_Dependency_Errors := True;
+         end if;
+
+         if Tag in Flow_Dependency_Tag then
+            FA.Flow_Dependency_Errors := True;
+         end if;
       end if;
    end Error_Msg_Flow;
 

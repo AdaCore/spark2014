@@ -55,6 +55,7 @@ simple_trajectory.ads:16:19: info: float overflow check proved (Interval)
 simple_trajectory.ads:20:16: info: range check proved (Interval)
 simple_trajectory.ads:20:19: info: float overflow check proved (Interval)
 simple_trajectory.ads:34:33: info: initialization of "New_Speed" proved
+simple_trajectory.ads:35:09: info: data dependencies proved
 simple_trajectory.ads:38:19: info: postcondition proved (altergo: 1 VC)
 simple_trajectory.ads:38:32: info: range check proved (CVC4: 1 VC)
 simple_trajectory.ads:38:37: info: initialization of "New_Speed" proved

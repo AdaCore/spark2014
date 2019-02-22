@@ -1,5 +1,6 @@
 very_longs-divide.adb:47:14: info: initialization of "Distance" proved
 very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:54:08: info: flow dependencies proved
 very_longs-divide.adb:64:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:65:32: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:66:35: info: initialization of "Result.Long_Digits" proved
@@ -7,15 +8,21 @@ very_longs-divide.adb:66:60: info: initialization of "Old_Overflow" proved
 very_longs-divide.adb:67:26: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:69:51: info: initialization of "Result.Long_Digits" proved
 very_longs-divide.adb:69:54: info: initialization of "Old_Overflow" proved
+very_longs-divide.adb:75:11: info: flow dependencies proved
 very_longs-divide.adb:83:64: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:85:60: info: initialization of "Old_Overflow" proved
 very_longs-divide.adb:86:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:93:11: info: flow dependencies proved
 very_longs-divide.adb:101:52: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:104:48: info: initialization of "Old_Overflow" proved
 very_longs-divide.adb:105:26: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:111:08: "Dividend" is referenced in Pre but missing from the Global
+very_longs-divide.adb:111:08: info: data dependencies proved
+very_longs-divide.adb:112:08: info: flow dependencies proved
 very_longs-divide.adb:113:35: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(13))
+very_longs-divide.adb:147:08: info: data dependencies proved
 very_longs-divide.adb:147:53: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:148:08: info: flow dependencies proved
 very_longs-divide.adb:158:74: info: initialization of "Carry" proved
 very_longs-divide.adb:159:31: info: initialization of "Product" proved
 very_longs-divide.adb:161:29: info: initialization of "Product" proved
@@ -29,6 +36,8 @@ very_longs-divide.adb:175:56: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:181:54: info: initialization of "Carry" proved
 very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
 very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
+very_longs-divide.adb:187:08: info: data dependencies proved
+very_longs-divide.adb:188:08: info: flow dependencies proved
 very_longs-divide.adb:202:65: info: initialization of "Carry" proved
 very_longs-divide.adb:203:68: info: initialization of "Sum" proved
 very_longs-divide.adb:204:34: info: initialization of "Sum" proved
@@ -59,8 +68,10 @@ very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" pr
 very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
+very_longs.adb:34:11: info: flow dependencies proved
 very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
+very_longs.adb:52:08: info: flow dependencies proved
 very_longs.adb:74:21: info: initialization of "L_Digit" proved
 very_longs.adb:74:31: info: initialization of "R_Digit" proved
 very_longs.adb:74:41: info: initialization of "Carry" proved
@@ -69,6 +80,7 @@ very_longs.adb:76:32: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:76:50: info: initialization of "Sum" proved
 very_longs.adb:83:28: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:83:52: info: initialization of "Borrow" proved
+very_longs.adb:85:08: info: flow dependencies proved
 very_longs.adb:107:25: info: initialization of "L_Digit" proved
 very_longs.adb:107:35: info: initialization of "R_Digit" proved
 very_longs.adb:107:46: info: initialization of "Borrow" proved
@@ -134,6 +146,8 @@ very_longs.adb:350:61: info: initialization of "Carry" proved
 very_longs.adb:352:14: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
+very_longs.ads:20:10: info: flow dependencies proved
 very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
 very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:70:10: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

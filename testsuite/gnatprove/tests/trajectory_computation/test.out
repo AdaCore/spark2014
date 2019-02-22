@@ -171,6 +171,7 @@ complex_trajectory.ads:36:45: info: range check proved (Interval)
 complex_trajectory.ads:36:50: info: float overflow check proved (Interval)
 complex_trajectory.ads:36:58: info: float overflow check proved (Interval)
 complex_trajectory.ads:44:32: info: initialization of "Average" proved
+complex_trajectory.ads:45:09: info: data dependencies proved
 complex_trajectory.ads:48:19: medium: postcondition might fail, cannot prove Invariant (N + 1, Speed, Distance)
 complex_trajectory.ads:48:32: info: range check proved (CVC4: 1 VC)
 complex_trajectory_overflow.adb:14:46: info: float overflow check proved (Interval)
@@ -239,6 +240,7 @@ complex_trajectory_overflow.ads:19:66: info: float overflow check proved (Interv
 complex_trajectory_overflow.ads:22:64: info: range check proved (Interval)
 complex_trajectory_overflow.ads:22:67: info: float overflow check proved (Interval)
 complex_trajectory_overflow.ads:38:32: info: initialization of "Average" proved
+complex_trajectory_overflow.ads:39:09: info: data dependencies proved
 complex_trajectory_overflow.ads:42:19: info: postcondition proved (CVC4: 1 VC)
 complex_trajectory_overflow.ads:42:32: info: range check proved (CVC4: 1 VC)
 simple_trajectory.adb:13:46: info: float overflow check proved (Interval)
@@ -299,6 +301,7 @@ simple_trajectory.ads:19:66: info: float overflow check proved (Interval)
 simple_trajectory.ads:22:64: info: range check proved (Interval)
 simple_trajectory.ads:22:67: info: float overflow check proved (Interval)
 simple_trajectory.ads:37:29: info: initialization of "New_Speed" proved
+simple_trajectory.ads:38:09: info: data dependencies proved
 simple_trajectory.ads:41:19: info: postcondition proved (CVC4: 1 VC)
 simple_trajectory.ads:41:32: info: range check proved (CVC4: 1 VC)
 simple_trajectory.ads:41:37: info: initialization of "New_Speed" proved

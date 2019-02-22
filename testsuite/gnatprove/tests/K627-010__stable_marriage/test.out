@@ -185,11 +185,14 @@ stable_marriage.adb:396:10: info: initialization of "Unmatched_G2_Set" proved
 stable_marriage.adb:396:10: info: precondition proved (CVC4: 4 VC)
 stable_marriage.adb:399:14: info: initialization of "Result" proved
 stable_marriage.ads:21:14: medium: postcondition might fail
+stable_marriage.ads:26:06: info: flow dependencies proved
 stable_marriage.ads:30:49: medium: postcondition might fail, cannot prove R1 (Rank1) /= R1 (Rank2)
 stable_marriage.ads:33:14: medium: postcondition might fail
+stable_marriage.ads:38:06: info: flow dependencies proved
 stable_marriage.ads:42:49: medium: postcondition might fail, cannot prove R2 (Rank1) /= R2 (Rank2)
 stable_marriage.ads:51:34: medium: postcondition might fail, cannot prove R1 (Invert_1'Result (G1)) = G1
 stable_marriage.ads:57:34: medium: postcondition might fail, cannot prove R2 (Invert_2'Result (G2)) = G2
+stable_marriage.ads:60:06: info: flow dependencies proved
 stable_marriage.ads:65:45: medium: postcondition might fail, cannot prove G2_To_G1 (G21) /= G2_To_G1 (G22)
 stable_marriage.ads:71:36: medium: postcondition might fail, cannot prove G2_To_G1 (Invert_Map'Result (G1)) = G1
 stable_marriage.ads:77:14: info: postcondition proved (CVC4: 2 VC)

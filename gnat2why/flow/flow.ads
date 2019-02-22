@@ -220,6 +220,12 @@ package Flow is
       --  entity. This is initialized to False and set to True when an error
       --  or a warning is found.
 
+      Data_Dependency_Errors : Boolean;
+      Flow_Dependency_Errors : Boolean;
+      --  True if either data or flow dependency error has been reported for
+      --  this entity; such errors can be reported from various routines and
+      --  those flags are an easy to access summary.
+
       Direct_Calls : Node_Sets.Set;
       --  Contains subprograms called and package elaborations
 

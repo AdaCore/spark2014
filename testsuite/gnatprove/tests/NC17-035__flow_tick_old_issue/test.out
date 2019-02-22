@@ -1,3 +1,4 @@
+tick_old_implies_input.ads:5:11: info: data dependencies proved
 tick_old_implies_input.ads:5:32: info: initialization of "G" proved
 tick_old_implies_input.ads:6:21: info: initialization of "G" proved
 tick_old_implies_input.ads:6:21: medium: postcondition might fail, cannot prove G = G'Old + 1

@@ -4,6 +4,8 @@ fsb.adb:17:20: medium: overflow check might fail (e.g. when S = Integer'First an
 fsb.adb:24:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:15 should mention X and Y in a precondition]
 fsb.adb:31:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at fsb.ads:19 should mention X and Y in a precondition]
 fsb.adb:31:20: medium: overflow check might fail (e.g. when S = Integer'First and X = -1 and Y = 0) [possible explanation: subprogram at fsb.ads:19 should mention X and Y and S in a precondition]
+fsb.ads:16:11: info: data dependencies proved
+fsb.ads:20:11: info: data dependencies proved
 p.adb:15:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:20:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.adb:21:26: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
@@ -21,4 +23,6 @@ p.adb:104:14: info: initialization of "X.F1" proved
 p.adb:124:22: info: initialization of "Q.F1" proved
 p.ads:25:25: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
 p.ads:32:28: default initialization cannot depend on variable input "S" (SPARK RM 4.4(2))
+p.ads:40:11: info: flow dependencies proved
+p.ads:46:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

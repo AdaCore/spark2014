@@ -1,2 +1,3 @@
 abstraction.adb:3:04: medium: constant without variable input "C" cannot appear in Refined_State (SPARK RM 7.2.2(16))
+abstraction.ads:4:03: info: flow dependencies proved
 abstraction.ads:6:14: warning: subprogram "P" has no effect

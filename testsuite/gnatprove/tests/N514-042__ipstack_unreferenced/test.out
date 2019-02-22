@@ -1,3 +1,4 @@
 unref.adb:1:18: info: initialization of "Y" proved
 unref.adb:4:19: info: initialization of "X" proved
 unref.adb:4:22: info: initialization of "Y" proved
+unref.adb:5:06: info: data dependencies proved

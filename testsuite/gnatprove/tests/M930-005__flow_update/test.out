@@ -8,6 +8,7 @@ update_uninitialized.adb:30:31: info: range check proved (CVC4: 1 VC)
 update_uninitialized.adb:30:40: medium: "Element" might not be initialized
 update_uninitialized.ads:9:33: info: initialization of "Element" proved
 update_uninitialized.ads:13:33: info: initialization of "Element" proved
+update_uninitialized_2.adb:16:11: info: data dependencies proved
 update_uninitialized_2.adb:16:32: medium: "Z" might not be initialized
 update_uninitialized_2.adb:19:25: high: "Z" is not an input in the Global contract of subprogram "P" at line 15
 update_uninitialized_2.adb:19:25: high: "Z" is not initialized
@@ -22,3 +23,4 @@ update_uninitialized_3.adb:16:08: warning: unused assignment
 update_uninitialized_3.adb:17:28: info: initialization of "A" constituent of "State" proved
 update_uninitialized_3.adb:17:36: high: "B" constituent of "State" is not initialized
 update_uninitialized_3.adb:17:36: high: initialization of "Update_Uninitialized_3.State" is specified at update_uninitialized_3.ads:4
+update_uninitialized_3.ads:4:08: info: flow dependencies proved

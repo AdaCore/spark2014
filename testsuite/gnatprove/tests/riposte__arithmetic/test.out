@@ -19,9 +19,11 @@ arithmetic.adb:37:14: info: initialization of "R" proved
 arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:46:14: info: initialization of "R" proved
+arithmetic.adb:53:11: info: flow dependencies proved
 arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 323 and Double_A = 2 and Double_B = 2)
 arithmetic.adb:59:31: medium: overflow check might fail (e.g. when Double_A = 2 and Double_B = 2)
 arithmetic.adb:59:45: info: initialization of "C" proved
+arithmetic.adb:65:11: info: flow dependencies proved
 arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 12166397)
 arithmetic.adb:71:24: medium: overflow check might fail (e.g. when A = 2 and B = 2)
 arithmetic.adb:71:31: info: initialization of "C" proved
@@ -110,8 +112,10 @@ arithmetic.adb:257:17: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:257:22: medium: divide by zero might fail (e.g. when A = -1 and B = -2 and C = 1)
 arithmetic.adb:257:30: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:257:37: medium: overflow check might fail (e.g. when A = Byte'First+2 and B = Byte'Last and C = -3)
+arithmetic.adb:262:11: info: flow dependencies proved
 arithmetic.adb:266:22: info: assertion proved (Z3: 1 VC)
 arithmetic.adb:266:26: info: division check proved (CVC4: 1 VC)
+arithmetic.adb:273:11: info: flow dependencies proved
 arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0 (e.g. when A = 2)
 arithmetic.adb:277:26: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:283:19: info: postcondition proved (CVC4: 4 VC)

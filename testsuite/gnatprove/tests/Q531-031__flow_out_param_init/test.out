@@ -1,2 +1,3 @@
 conditional_init.adb:11:23: medium: "X.Value" might not be initialized in "Test_01"
 conditional_init.adb:12:23: low: "Y.Value" might not be set in "Test_01"
+conditional_init.adb:14:09: info: data dependencies proved

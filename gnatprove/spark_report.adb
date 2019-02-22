@@ -496,7 +496,6 @@ procedure SPARK_Report is
                   Increment (Summary (Category).Justified);
                end if;
             elsif Severe = "info" then
-               --  Ignore flow info messages for now.
                if Category /= No_Entry then
                   Increment (Summary (Category).Flow);
                end if;

@@ -109,3 +109,17 @@ instr.adb:114:49: info: initialization of "V" proved
 instr.adb:114:51: info: division check proved (CodePeer)
 instr.adb:115:07: warning: assuming "Put" has no effect on global items
 instr.adb:115:07: warning: no Global contract available for "Put"
+instr.ads:18:06: info: data dependencies proved
+instr.ads:20:06: info: data dependencies proved
+instr.ads:30:06: info: data dependencies proved
+instr.ads:33:06: info: data dependencies proved
+instr.ads:35:06: info: data dependencies proved
+instr.ads:46:06: info: data dependencies proved
+instr.ads:48:06: info: data dependencies proved
+instr.ads:50:06: info: data dependencies proved
+instr.ads:55:06: info: data dependencies proved
+instr.ads:66:06: info: data dependencies proved
+instr.ads:71:06: info: data dependencies proved
+instr.ads:73:06: info: data dependencies proved
+instr.ads:76:06: info: data dependencies proved
+instr.ads:81:06: info: data dependencies proved

@@ -33,6 +33,8 @@ linted-controls.ads:37:41: info: initialization of "C.Left" proved
 linted-controls.ads:37:41: info: initialization of "C.Right" proved
 linted-controls.ads:37:41: info: initialization of "C.X_Tilt" proved
 linted-controls.ads:37:41: info: initialization of "C.Z_Tilt" proved
+linted-controls.ads:38:07: info: data dependencies proved
+linted-controls.ads:39:07: info: flow dependencies proved
 linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
 linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
 linted-io_pool.adb:77:04: instantiation error at linted-circ_bufs.adb:55

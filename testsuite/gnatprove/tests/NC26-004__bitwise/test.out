@@ -1,4 +1,6 @@
 x86.adb:7:22: info: assertion proved (CVC4: 1 VC)
 x86.adb:13:22: info: assertion proved (CVC4: 1 VC)
+x86.ads:16:06: info: data dependencies proved
 x86.ads:17:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:20:06: info: data dependencies proved
 x86.ads:21:14: info: postcondition proved (CVC4: 2 VC)

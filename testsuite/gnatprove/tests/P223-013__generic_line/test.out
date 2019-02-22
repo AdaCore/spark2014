@@ -1,1 +1,2 @@
+main.adb:10:09: info: data dependencies proved, in instantiation at main.adb:23
 main.adb:10:30: info: initialization of "Dummy" proved, in instantiation at main.adb:23

@@ -1,3 +1,4 @@
+p-child.ads:3:08: info: flow dependencies proved
 p.adb:5:04: info: initialization of "A" constituent of "State1" proved
 p.adb:5:07: info: initialization of "B" constituent of "State1" proved
 p.ads:1:43: low: initialization of "P.State2" through "Child.C" constituent of "P.State2" must be listed in the Initializes contract (SPARK RM 7.1.5(9))

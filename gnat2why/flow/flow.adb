@@ -48,8 +48,8 @@ with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with Lib;                              use Lib;
 with Namet;                            use Namet;
-with Osint;                            use Osint;
 with Opt;                              use Opt;
+with Osint;                            use Osint;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
@@ -59,6 +59,7 @@ with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
+with VC_Kinds;                         use VC_Kinds;
 with Why;
 
 use type Ada.Containers.Count_Type;
@@ -1106,6 +1107,8 @@ package body Flow is
       FA.TDG                                  := Create;
       FA.PDG                                  := Create;
       FA.Errors_Or_Warnings                   := False;
+      FA.Data_Dependency_Errors               := False;
+      FA.Flow_Dependency_Errors               := False;
       FA.Has_Potentially_Nonterminating_Loops := False;
       FA.Has_Only_Nonblocking_Statements      := True;
       FA.Has_Only_Exceptional_Paths           := False;
@@ -1524,6 +1527,48 @@ package body Flow is
             end if;
 
          end if;
+
+         --  If no data/flow dependency errors has been detected, then emit an
+         --  message with severity "info" and a fake "wrong" tag corresponding
+         --  to the proved dependency; in summary table those messages will
+         --  appear as "proved" by flow.
+
+         case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+               if Present (FA.Global_N)
+                 and then not FA.Data_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "data dependencies proved",
+                     N        => FA.Global_N,
+                     Tag      => Global_Wrong,
+                     Severity => Info_Kind);
+               end if;
+
+               if Present (FA.Depends_N)
+                 and then not FA.Flow_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "flow dependencies proved",
+                     N        => FA.Depends_N,
+                     Tag      => Depends_Wrong,
+                     Severity => Info_Kind);
+               end if;
+
+            when Kind_Package | Kind_Package_Body =>
+               if Present (FA.Initializes_N)
+                 and then not FA.Flow_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "flow dependencies proved",
+                     N        => FA.Initializes_N,
+                     Tag      => Depends_Wrong,
+                     Severity => Info_Kind);
+               end if;
+         end case;
       end loop;
 
       --  Finally check concurrent accesses. This check is done for the whole

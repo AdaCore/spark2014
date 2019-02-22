@@ -17,3 +17,6 @@ refined_depends_illegal_2.adb:16:42: info: initialization of "X" constituent of 
 refined_depends_illegal_2.adb:16:45: info: initialization of "Y" constituent of "State" proved
 refined_depends_illegal_2.adb:18:31: medium: missing dependency "Y constituent of State => Par"
 refined_depends_illegal_2.adb:22:14: medium: overflow check might fail (e.g. when Par = Integer'Last) [possible explanation: subprogram at refined_depends_illegal_2.ads:12 should mention Par in a precondition]
+refined_depends_illegal_2.ads:4:08: info: flow dependencies proved
+refined_depends_illegal_2.ads:9:11: info: flow dependencies proved
+refined_depends_illegal_2.ads:15:11: info: data dependencies proved

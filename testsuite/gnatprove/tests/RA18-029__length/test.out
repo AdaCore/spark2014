@@ -1,3 +1,4 @@
+memassign.adb:21:06: info: data dependencies proved
 memassign.adb:28:07: info: range check proved (CVC4: 4 VC)
 memassign.adb:28:30: info: length check proved (CVC4: 4 VC)
 memassign.adb:28:33: info: length check proved (CVC4: 4 VC)
@@ -6,6 +7,7 @@ memassign.adb:29:07: info: range check proved (CVC4: 4 VC)
 memassign.adb:29:38: info: length check proved (CVC4: 4 VC)
 memassign.adb:29:41: info: length check proved (CVC4: 4 VC)
 memassign.adb:29:41: info: range check proved (CVC4: 4 VC)
+memassign2.adb:14:06: info: data dependencies proved
 memassign2.adb:19:22: info: assertion proved (CVC4: 1 VC)
 memassign2.adb:20:22: info: assertion proved (CVC4: 1 VC)
 memassign2.adb:21:07: info: range check proved (CVC4: 4 VC)

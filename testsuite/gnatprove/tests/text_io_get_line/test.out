@@ -120,6 +120,7 @@ textio-get_line.adb:234:22: info: initialization of "Last" proved
 textio-get_line.adb:234:40: info: initialization of "ch" proved
 textio-get_line.adb:234:40: info: range check proved (CVC4: 1 VC)
 textio.adb:10:38: info: initialization of "Ch" proved
+textio.adb:11:06: info: data dependencies proved
 textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 textio.adb:12:14: info: postcondition proved (CVC4: 6 VC)
 textio.adb:20:17: info: initialization of "Ch" proved
@@ -131,6 +132,7 @@ textio.adb:106:20: info: range check proved (CVC4: 1 VC)
 textio.adb:138:07: info: precondition proved (CVC4: 1 VC)
 textio.adb:145:39: info: initialization of "Result" proved
 textio.adb:145:60: info: initialization of "Num" proved
+textio.adb:146:09: info: data dependencies proved
 textio.adb:152:23: info: index check proved (CVC4: 2 VC)
 textio.adb:152:54: info: index check proved (CVC4: 2 VC)
 textio.adb:154:35: info: initialization of "Num" proved
@@ -170,6 +172,7 @@ textio.ads:6:21: warning: no procedure exists that can initialize abstract state
 textio.ads:12:07: warning: "File" is not modified, could be IN
 textio.ads:13:07: info: initialization of "Item" proved
 textio.ads:14:07: info: initialization of "Last" proved
+textio.ads:16:06: info: data dependencies proved
 textio.ads:26:32: info: contract case proved (CVC4: 2 VC)
 textio.ads:27:11: info: initialization of "Last" proved
 textio.ads:32:16: medium: contract case might fail
@@ -179,6 +182,7 @@ textio.ads:35:20: info: index check proved (CVC4: 2 VC)
 textio.ads:35:54: info: index check proved (CVC4: 2 VC)
 textio.ads:42:07: info: initialization of "Item" proved
 textio.ads:43:07: info: initialization of "Last" proved
+textio.ads:45:06: info: data dependencies proved
 textio.ads:55:32: info: contract case proved (CVC4: 2 VC)
 textio.ads:56:11: info: initialization of "Last" proved
 textio.ads:61:16: info: contract case proved (CVC4: 5 VC)

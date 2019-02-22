@@ -3,3 +3,4 @@ parent-child-grandchild.adb:10:51: info: initialization of "Nf.Flag" proved
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.Idx" proved
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.The_P.X" proved
 parent-child-grandchild.adb:10:51: info: initialization of "Nf.The_P.Y" proved
+parent-child-grandchild.adb:13:11: info: data dependencies proved

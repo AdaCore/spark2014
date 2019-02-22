@@ -1,3 +1,4 @@
 interval_reasoning.adb:3:14: high: all paths in "Propagation_Loop" raise exceptions or do not terminate normally
+interval_reasoning.adb:4:11: info: flow dependencies proved
 interval_reasoning.adb:5:22: warning: precondition is always False (CVC4: 1 VC)
 interval_reasoning.adb:8:07: info: assertion proved (CVC4: 1 VC)

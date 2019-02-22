@@ -1,15 +1,20 @@
 test.adb:138:22: info: range check proved (CVC4: 1 VC)
+test.adb:140:07: info: data dependencies proved
+test.adb:150:07: info: data dependencies proved
 test.adb:152:15: info: postcondition proved (CVC4: 1 VC)
 test.adb:152:151: info: range check proved (CVC4: 1 VC)
 test.adb:156:29: info: range check proved (CVC4: 1 VC)
 test.adb:167:51: info: range check proved (CVC4: 1 VC)
+test.adb:169:07: info: data dependencies proved
 test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry"
 test.adb:221:44: info: precondition proved (CVC4: 1 VC)
+test.adb:224:07: info: data dependencies proved
 test.adb:228:14: info: precondition proved (CVC4: 1 VC)
 test.adb:257:15: info: postcondition proved (Z3: 4 VC)
 test.adb:262:26: info: precondition proved (CVC4: 1 VC)
 test.adb:265:36: info: precondition proved (CVC4: 1 VC)
 test.adb:267:34: info: precondition proved (CVC4: 1 VC)
+test.adb:302:07: info: data dependencies proved
 test.adb:304:15: info: postcondition proved (CVC4: 1 VC)
 test.adb:304:131: info: range check proved (CVC4: 1 VC)
 test.adb:304:197: info: range check proved (CVC4: 1 VC)

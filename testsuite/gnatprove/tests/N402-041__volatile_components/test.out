@@ -44,7 +44,17 @@ vc4.adb:80:27: info: initialization of "T2" proved
 vc4.adb:82:13: info: initialization of "T1" proved
 vc4.adb:82:18: info: initialization of "T2" proved
 vc4.ads:31:29: info: initialization of "R" proved
+vc4.ads:32:11: info: data dependencies proved
+vc4.ads:33:11: info: flow dependencies proved
 vc4.ads:35:29: info: initialization of "R" proved
+vc4.ads:36:11: info: data dependencies proved
+vc4.ads:37:11: info: flow dependencies proved
 vc4.ads:40:29: info: initialization of "R" proved
+vc4.ads:41:11: info: data dependencies proved
+vc4.ads:42:11: info: flow dependencies proved
 vc4.ads:45:29: info: initialization of "R" proved
+vc4.ads:46:11: info: data dependencies proved
+vc4.ads:47:11: info: flow dependencies proved
 vc4.ads:50:18: info: initialization of "R" proved
+vc4.ads:51:11: info: data dependencies proved
+vc4.ads:52:11: info: flow dependencies proved

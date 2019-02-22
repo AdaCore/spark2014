@@ -1,4 +1,5 @@
 test_pack.adb:7:32: medium: float overflow check might fail (e.g. when Measured = 1.4869167E+38 and Pid = (Desired => -1.9159068E+38, Error => -1.9159068E+38))
+test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)
 wibble.adb:11:03: medium: precondition might fail, cannot prove Pid.Desired >= Float'First + Measured (e.g. when X = (Desired => -1.2498740E+0, Error => 0.0))

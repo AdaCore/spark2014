@@ -1,1 +1,2 @@
+default_init.ads:2:06: info: flow dependencies proved
 default_init.ads:14:04: high: "R.Content" is not initialized in "Default_Init"

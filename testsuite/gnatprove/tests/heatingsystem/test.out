@@ -1,6 +1,12 @@
 actuator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 actuator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+actuator.ads:5:11: info: data dependencies proved
+actuator.ads:6:11: info: flow dependencies proved
+actuator.ads:10:11: info: data dependencies proved
+actuator.ads:11:11: info: flow dependencies proved
 advancebutton-raw.ads:7:20: info: initialization of "Pressed" proved
+advancebutton-raw.ads:8:11: info: data dependencies proved
+advancebutton-raw.ads:9:11: info: flow dependencies proved
 advancebutton.adb:10:04: info: initialization of "AdvanceMode" constituent of "State" proved
 advancebutton.adb:11:04: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:12:04: info: initialization of "AdvTimer" constituent of "State" proved
@@ -17,15 +23,35 @@ advancebutton.adb:86:34: info: range check proved (altergo: 1 VC)
 advancebutton.adb:98:41: info: initialization of "AdvPressed" constituent of "State" proved
 advancebutton.adb:105:21: info: initialization of "Pressed" proved
 advancebutton.adb:106:21: info: initialization of "Pressed" proved
+advancebutton.ads:20:08: info: flow dependencies proved
+advancebutton.ads:27:11: info: data dependencies proved
+advancebutton.ads:30:11: info: data dependencies proved
+advancebutton.ads:31:11: info: flow dependencies proved
+advancebutton.ads:34:11: info: data dependencies proved
+advancebutton.ads:35:11: info: flow dependencies proved
 advancebutton.ads:37:27: info: initialization of "Result" proved
+advancebutton.ads:38:11: info: data dependencies proved
+advancebutton.ads:40:11: info: flow dependencies proved
 advancebutton.ads:45:26: info: initialization of "Result" proved
+advancebutton.ads:46:11: info: data dependencies proved
+advancebutton.ads:48:11: info: flow dependencies proved
 advancebutton.ads:55:26: info: initialization of "Result" proved
+advancebutton.ads:56:11: info: data dependencies proved
+advancebutton.ads:57:11: info: flow dependencies proved
 clock.ads:7:19: info: initialization of "Time" proved
+clock.ads:8:10: info: data dependencies proved
+clock.ads:9:10: info: flow dependencies proved
 display.adb:13:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+display.ads:10:11: info: data dependencies proved
+display.ads:11:11: info: flow dependencies proved
+heatingsystem_dfa.adb:12:08: info: data dependencies proved
 heatingsystem_dfa.adb:16:39: info: initialization of "Actuator.Outputs" proved
 heatingsystem_dfa.adb:17:38: info: initialization of "Display.Outputs" proved
 heatingsystem_dfa.adb:18:40: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:21:08: info: flow dependencies proved
+heatingsystem_dfa.adb:55:11: info: data dependencies proved
 heatingsystem_dfa.adb:55:40: info: initialization of "Display.Outputs" proved
+heatingsystem_dfa.adb:56:11: info: flow dependencies proved
 heatingsystem_dfa.adb:65:20: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:66:23: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:66:42: info: division check proved (altergo: 1 VC)
@@ -36,16 +62,22 @@ heatingsystem_dfa.adb:70:46: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:71:39: info: initialization of "Minute" proved
 heatingsystem_dfa.adb:71:46: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:72:22: info: initialization of "TheDisplay" proved
+heatingsystem_dfa.adb:78:11: info: data dependencies proved
+heatingsystem_dfa.adb:80:11: info: flow dependencies proved
 heatingsystem_dfa.adb:100:16: info: initialization of "SlowAdvance" proved
 heatingsystem_dfa.adb:101:49: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:105:16: info: initialization of "ChangeToFastMode" proved
 heatingsystem_dfa.adb:111:16: info: initialization of "FastAdvance" proved
 heatingsystem_dfa.adb:112:54: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:116:16: info: initialization of "ChangeToSlowMode" proved
+heatingsystem_dfa.adb:126:11: info: data dependencies proved
+heatingsystem_dfa.adb:127:11: info: flow dependencies proved
 heatingsystem_dfa.adb:129:22: info: postcondition proved (altergo: 1 VC)
 heatingsystem_dfa.adb:129:48: info: division check proved (altergo: 1 VC)
 heatingsystem_dfa.adb:132:30: info: division check proved (altergo: 1 VC)
+heatingsystem_dfa.adb:138:11: info: data dependencies proved
 heatingsystem_dfa.adb:140:40: info: initialization of "Display.Outputs" proved
+heatingsystem_dfa.adb:144:11: info: flow dependencies proved
 heatingsystem_dfa.adb:163:23: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:168:23: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:171:32: info: index check proved (altergo: 2 VC)
@@ -56,8 +88,16 @@ heatingsystem_dfa.adb:173:23: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:173:39: info: initialization of "SwitchPosition" proved
 heatingsystem_dfa.adb:173:42: info: initialization of "Timer" proved
 heatingsystem_dfa.adb:176:22: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:180:11: info: data dependencies proved
 heatingsystem_dfa.adb:185:42: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:188:11: info: flow dependencies proved
+heatingsystem_dfa.adb:211:14: info: data dependencies proved
+heatingsystem_dfa.adb:212:14: info: flow dependencies proved
+heatingsystem_dfa.adb:223:14: info: data dependencies proved
+heatingsystem_dfa.adb:224:14: info: flow dependencies proved
+heatingsystem_dfa.adb:243:14: info: data dependencies proved
 heatingsystem_dfa.adb:245:45: info: initialization of "Indicator.Outputs" proved
+heatingsystem_dfa.adb:248:14: info: flow dependencies proved
 heatingsystem_dfa.adb:272:17: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:275:12: info: initialization of "ModeSetting" proved
 heatingsystem_dfa.adb:281:37: info: initialization of "CurrentTime" proved
@@ -71,6 +111,16 @@ heatingsystem_dfa.adb:304:07: info: initialization of "HeatingIsOn" proved
 heatingsystem_dfa.adb:304:07: info: initialization of "OnOffTime" proved
 indicator.adb:14:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
 indicator.adb:22:41: info: initialization of "Output_Ext" constituent of "Outputs" proved
+indicator.ads:5:11: info: data dependencies proved
+indicator.ads:6:11: info: flow dependencies proved
+indicator.ads:10:11: info: data dependencies proved
+indicator.ads:11:11: info: flow dependencies proved
 modeswitch.ads:6:20: info: initialization of "Value" proved
+modeswitch.ads:7:11: info: data dependencies proved
+modeswitch.ads:8:11: info: flow dependencies proved
 programswitch.ads:6:20: info: initialization of "Value" proved
+programswitch.ads:7:11: info: data dependencies proved
+programswitch.ads:8:11: info: flow dependencies proved
 thermostat.ads:16:25: info: initialization of "Result" proved
+thermostat.ads:17:11: info: data dependencies proved
+thermostat.ads:18:11: info: flow dependencies proved

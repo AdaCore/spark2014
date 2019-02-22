@@ -5,6 +5,7 @@ types_and_subtypes_illegal_2.adb:9:41: medium: constant without variable input "
 types_and_subtypes_illegal_2.adb:12:14: info: overflow check proved (CVC4: 1 VC)
 types_and_subtypes_illegal_2.adb:12:18: info: overflow check proved (CVC4: 1 VC)
 types_and_subtypes_illegal_2.ads:4:34: medium: constant without variable input "A" cannot appear in Initializes
+types_and_subtypes_illegal_2.ads:9:11: info: data dependencies proved
 types_and_subtypes_illegal_2.ads:9:21: medium: constant without variable input "A" cannot appear in Globals
 types_and_subtypes_illegal_2.ads:11:14: medium: constant without variable input "A" cannot appear in Globals
 types_and_subtypes_illegal_2.ads:11:14: medium: constant without variable input "B" cannot appear in Globals

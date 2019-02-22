@@ -2,15 +2,23 @@ x86.adb:7:28: info: range check proved (CVC4: 2 VC)
 x86.adb:17:59: info: division check proved (CVC4: 1 VC)
 x86.adb:27:29: info: range check proved (CVC4: 2 VC)
 x86.adb:37:29: info: range check proved (CVC4: 2 VC)
+x86.ads:19:06: info: data dependencies proved
 x86.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:20:41: info: range check proved (CVC4: 2 VC)
+x86.ads:23:06: info: data dependencies proved
 x86.ads:24:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:27:06: info: data dependencies proved
 x86.ads:28:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:28:72: info: division check proved (CVC4: 1 VC)
+x86.ads:31:06: info: data dependencies proved
 x86.ads:32:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:36:06: info: data dependencies proved
 x86.ads:37:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:37:42: info: range check proved (CVC4: 2 VC)
+x86.ads:40:06: info: data dependencies proved
 x86.ads:41:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:44:06: info: data dependencies proved
 x86.ads:45:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:45:45: info: range check proved (CVC4: 2 VC)
+x86.ads:48:06: info: data dependencies proved
 x86.ads:49:16: info: postcondition proved (CVC4: 1 VC)

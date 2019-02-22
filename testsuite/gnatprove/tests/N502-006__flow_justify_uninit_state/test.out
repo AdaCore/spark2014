@@ -4,3 +4,4 @@ foo.adb:13:49: high: "Data" constituent of "State" is not initialized
 foo.adb:13:49: high: either make "Data" constituent of "State" an input in the Global contract or initialize it before use
 foo.adb:13:49: low: unused global "Data" constituent of "State"
 foo.adb:18:07: warning: no check message justified by this pragma
+foo.ads:6:07: info: data dependencies proved

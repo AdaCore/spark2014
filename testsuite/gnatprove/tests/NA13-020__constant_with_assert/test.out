@@ -1,4 +1,6 @@
+main.adb:8:04: info: data dependencies proved
 main.adb:8:37: info: initialization of "The_Sink" proved
+main.adb:9:04: info: flow dependencies proved
 skp-subjects.adb:400:09: info: assertion proved (CVC4: 1 VC)
 skp-subjects.adb:402:09: info: assertion proved (CVC4: 1 VC)
 skp-subjects.adb:413:23: info: refined post proved (CVC4: 1 VC)
@@ -17,6 +19,8 @@ skp-subjects.adb:434:10: info: assertion proved (CVC4: 1 VC)
 skp-subjects.adb:435:50: info: division check proved (CVC4: 1 VC)
 skp-subjects.adb:437:10: info: assertion proved (CVC4: 1 VC)
 skp-subjects.adb:438:50: info: division check proved (CVC4: 1 VC)
+skp-subjects.ads:48:07: info: data dependencies proved
 skp-subjects.ads:49:17: info: postcondition proved (CVC4: 1 VC)
 skp-subjects.ads:49:42: info: division check proved (CVC4: 1 VC)
+skp-subjects.ads:56:07: info: data dependencies proved
 skp-subjects.ads:57:17: info: postcondition proved (CVC4: 1 VC)

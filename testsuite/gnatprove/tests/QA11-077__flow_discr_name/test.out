@@ -19,3 +19,4 @@ p.ads:2:14: info: initialization of "X.C" proved
 p.ads:3:14: info: initialization of "Y.C" proved
 p.ads:5:14: info: initialization of "X.C" proved
 p.ads:5:14: info: initialization of "Y.C" proved
+p.ads:7:33: info: data dependencies proved, in instantiation at main2.adb:4

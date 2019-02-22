@@ -3,3 +3,4 @@ pack.adb:10:51: info: initialization of "Nf.Flag" proved
 pack.adb:10:51: info: initialization of "Nf.Idx" proved
 pack.adb:10:51: info: initialization of "Nf.The_P.X" proved
 pack.adb:10:51: info: initialization of "Nf.The_P.Y" proved
+pack.adb:13:11: info: data dependencies proved

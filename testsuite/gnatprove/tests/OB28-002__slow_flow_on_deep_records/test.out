@@ -96,6 +96,7 @@ iommu.adb:174:14: info: initialization of "Value.Unused" proved
 iommu.adb:190:14: info: initialization of "Value.MAX" proved
 iommu.adb:190:14: info: initialization of "Value.MIN" proved
 iommu.adb:190:14: info: initialization of "Value.Reserved" proved
+iommu.ads:10:04: info: flow dependencies proved
 iommu.ads:389:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Version"
 iommu.ads:393:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Capability"
 iommu.ads:397:13: "IOMMU.State" cannot act as global item of nonvolatile function "Read_Extended_Capability"

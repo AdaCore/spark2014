@@ -1,2 +1,6 @@
+foo.adb:19:10: info: data dependencies proved
 foo.adb:19:30: low: unused global "Y" constituent of "State"
 foo.ads:2:26: warning: no procedure exists that can initialize abstract state "Foo.State"
+foo.ads:6:10: info: data dependencies proved
+foo.ads:9:10: info: data dependencies proved
+foo.ads:13:10: info: data dependencies proved

@@ -28,6 +28,7 @@ counter.ads:24:25: info: index check proved (CVC4: 2 VC)
 counter.ads:27:38: info: index check proved (CVC4: 2 VC)
 counter.ads:31:11: info: postcondition proved (CVC4: 4 VC)
 counter.ads:40:14: info: postcondition proved (CVC4: 1 VC)
+counter.ads:41:06: info: data dependencies proved
 failsafe.adb:4:04: info: initialization of "Counter" constituent of "Failsafe_State" proved
 failsafe.adb:12:23: info: initialization of "Res" proved
 failsafe.adb:12:27: info: range check proved (CVC4: 2 VC)
@@ -58,6 +59,7 @@ failsafe.adb:67:66: info: range check proved (CVC4: 1 VC)
 failsafe.adb:68:78: info: range check proved (CVC4: 2 VC)
 failsafe.adb:73:78: info: range check proved (CVC4: 2 VC)
 failsafe.adb:76:25: info: assertion proved (CVC4: 1 VC)
+failsafe.ads:5:03: info: flow dependencies proved
 failsafe.ads:19:07: info: initialization of "Battery_Level_At" proved
 failsafe.ads:20:07: info: initialization of "Current_Time" proved
 failsafe.ads:23:09: info: disjoint contract cases proved (CVC4: 1 VC)

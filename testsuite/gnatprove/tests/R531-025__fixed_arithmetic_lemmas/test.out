@@ -1,14 +1,17 @@
 spark-fixed_point_arithmetic_lemmas.ads:48:14: info: subprogram "GNAT_Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at test_fixed_points.adb:6
+spark-fixed_point_arithmetic_lemmas.ads:53:06: info: data dependencies proved, in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:55:19: info: division check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:55:19: info: overflow check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:55:35: info: division check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:55:35: info: overflow check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:67:14: info: subprogram "GNAT_Lemma_Div_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at test_fixed_points.adb:6
+spark-fixed_point_arithmetic_lemmas.ads:72:06: info: data dependencies proved, in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:75:18: info: division check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:75:18: info: overflow check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:75:34: info: division check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:75:34: info: overflow check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:88:14: info: subprogram "GNAT_Lemma_Mult_Then_Div_Is_Ident" will terminate, terminating annotation has been proved, in instantiation at test_fixed_points.adb:6
+spark-fixed_point_arithmetic_lemmas.ads:92:06: info: data dependencies proved, in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:93:38: info: division check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:93:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
 spark-fixed_point_arithmetic_lemmas.ads:94:15: info: postcondition proved (CVC4: 1 VC), in instantiation at test_fixed_points.adb:6
@@ -17,16 +20,19 @@ spark-fixed_point_arithmetic_lemmas.ads:94:28: info: overflow check proved (CVC4
 test_fixed_points.adb:14:13: info: precondition proved (CVC4: 1 VC)
 test_fixed_points.adb:23:13: info: precondition proved (CVC4: 2 VC)
 test_fixed_points.adb:31:13: info: precondition proved (CVC4: 2 VC)
+test_fixed_points.ads:16:06: info: data dependencies proved
 test_fixed_points.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 test_fixed_points.ads:18:19: info: division check proved (CVC4: 1 VC)
 test_fixed_points.ads:18:19: info: overflow check proved (CVC4: 1 VC)
 test_fixed_points.ads:18:35: info: division check proved (CVC4: 1 VC)
 test_fixed_points.ads:18:35: info: overflow check proved (CVC4: 1 VC)
+test_fixed_points.ads:25:06: info: data dependencies proved
 test_fixed_points.ads:28:14: info: postcondition proved (CVC4: 1 VC)
 test_fixed_points.ads:28:18: info: division check proved (CVC4: 1 VC)
 test_fixed_points.ads:28:18: info: overflow check proved (CVC4: 1 VC)
 test_fixed_points.ads:28:34: info: division check proved (CVC4: 1 VC)
 test_fixed_points.ads:28:34: info: overflow check proved (CVC4: 1 VC)
+test_fixed_points.ads:34:06: info: data dependencies proved
 test_fixed_points.ads:35:38: info: division check proved (CVC4: 1 VC)
 test_fixed_points.ads:35:38: info: overflow check proved (CVC4: 1 VC)
 test_fixed_points.ads:35:45: info: overflow check proved (CVC4: 1 VC)

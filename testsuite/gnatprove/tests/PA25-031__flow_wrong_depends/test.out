@@ -1,2 +1,3 @@
 p.ads:7:11: global Output "P.State_A" of "Proc" not written
+p.ads:7:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

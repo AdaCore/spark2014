@@ -234,6 +234,24 @@ package VC_Kinds is
      Flow_Tag_Kind'Succ (Empty_Tag) .. Flow_Tag_Kind'Last;
    --  Non-empty tags
 
+   subtype Data_Dependency_Tag is Flow_Tag_Kind with
+     Static_Predicate => Data_Dependency_Tag in
+         Global_Missing
+       | Global_Wrong
+       | Export_Depends_On_Proof_In
+       | Illegal_Update
+       | Not_Constant_After_Elaboration;
+   --  Tags reported as data dependency errors
+
+   subtype Flow_Dependency_Tag is Flow_Tag_Kind with
+     Static_Predicate => Flow_Dependency_Tag in
+         Depends_Null
+       | Depends_Missing
+       | Depends_Missing_Clause
+       | Depends_Wrong
+       | Initializes_Wrong;
+   --  Tags reported as flow dependency errors
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty

@@ -1,4 +1,6 @@
 hw-gfx-dp_aux_ch.adb:31:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:53:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:66:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:83:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:84:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:85:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
@@ -79,10 +81,12 @@ hw-gfx-dp_info.adb:72:52: info: initialization of "Data" proved, in instantiatio
 hw-gfx-dp_info.adb:73:52: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:74:51: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:92:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:94:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:116:44: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:119:12: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:138:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:156:21: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:200:10: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:214:22: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:215:23: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:216:26: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
@@ -327,6 +331,7 @@ hw-gfx-framebuffer_filler.adb:37:33: info: initialization of "Line_Start" proved
 hw-gfx-framebuffer_filler.adb:39:36: info: initialization of "Line_Start" proved
 hw-gfx-framebuffer_filler.adb:40:33: info: initialization of "Line_Start" proved
 hw-gfx-framebuffer_filler.adb:42:24: info: initialization of "Line_Start" proved
+hw-gfx-gma-config.ads:17:04: info: flow dependencies proved
 hw-gfx-gma-config.ads:141:04: info: initialization of "Config.Valid_Port_GPU" constituent of "GMA.Config_State" proved
 hw-gfx-gma-config.ads:258:05: info: initialization of "Config.Raw_Clock" constituent of "GMA.Config_State" proved
 hw-gfx-gma-config_helpers.adb:89:07: info: initialization of "Success" proved
@@ -517,6 +522,8 @@ hw-gfx-gma-display_probing.ads:24:07: info: initialization of "Configs" proved
 hw-gfx-gma-dp_aux_request.adb:161:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.adb:162:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.adb:163:07: info: initialization of "Success" proved
+hw-gfx-gma-dp_aux_request.adb:165:07: info: data dependencies proved
+hw-gfx-gma-dp_aux_request.adb:167:07: info: flow dependencies proved
 hw-gfx-gma-dp_aux_request.adb:197:61: info: initialization of "Count" proved
 hw-gfx-gma-dp_aux_request.adb:198:25: info: initialization of "Value" proved
 hw-gfx-gma-dp_aux_request.adb:201:61: info: initialization of "Value" proved
@@ -585,9 +592,12 @@ hw-gfx-gma-panel.adb:293:14: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:325:10: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:332:10: info: initialization of "Was_On" proved
 hw-gfx-gma-panel.adb:375:23: info: initialization of "Reg" proved
+hw-gfx-gma-panel.ads:25:07: info: data dependencies proved
 hw-gfx-gma-panel.ads:29:14: info: initialization of "Delays_US" constituent of "Panel_State" proved
 hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
+hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
+hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
 hw-gfx-gma-pch-dp.ads:20:07: info: initialization of "Success" proved
 hw-gfx-gma-pch-fdi.adb:188:17: info: initialization of "Success" proved
@@ -611,10 +621,14 @@ hw-gfx-gma-pch-vga.adb:153:52: info: initialization of "Div_Sel" proved
 hw-gfx-gma-pch-vga.adb:154:52: info: initialization of "Phase_Inc" proved
 hw-gfx-gma-pch-vga.adb:155:49: info: initialization of "Phase_Dir" proved
 hw-gfx-gma-pch-vga.adb:162:53: info: initialization of "Aux_Div" proved
+hw-gfx-gma-pipe_setup.adb:205:07: info: data dependencies proved
+hw-gfx-gma-pipe_setup.adb:206:07: info: flow dependencies proved
 hw-gfx-gma-pipe_setup.adb:242:55: info: initialization of "Offset" proved
 hw-gfx-gma-pipe_setup.adb:244:55: info: initialization of "Stride" proved
 hw-gfx-gma-pipe_setup.adb:250:20: info: initialization of "PRI" proved
 hw-gfx-gma-pipe_setup.adb:257:28: info: initialization of "PRI" proved
+hw-gfx-gma-pipe_setup.adb:286:07: info: data dependencies proved
+hw-gfx-gma-pipe_setup.adb:287:07: info: flow dependencies proved
 hw-gfx-gma-pipe_setup.adb:334:37: info: initialization of "Reg8" proved
 hw-gfx-gma-pipe_setup.adb:378:10: info: initialization of "X" proved
 hw-gfx-gma-pipe_setup.adb:378:25: info: initialization of "Y" proved
@@ -657,6 +671,7 @@ hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.P2" proved
 hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.Reference_Clock" proved
 hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.VCO" proved
 hw-gfx-gma-plls.adb:184:08: info: initialization of "Valid" proved
+hw-gfx-gma-plls.adb:186:07: info: data dependencies proved
 hw-gfx-gma-plls.adb:199:46: info: initialization of "M" proved
 hw-gfx-gma-plls.adb:200:19: info: initialization of "VCO" proved
 hw-gfx-gma-plls.adb:200:25: info: initialization of "P" proved
@@ -680,6 +695,7 @@ hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.P2" proved
 hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.Reference_Clock" proved
 hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.VCO" proved
 hw-gfx-gma-plls.adb:257:08: info: initialization of "Valid" proved
+hw-gfx-gma-plls.adb:259:07: info: data dependencies proved
 hw-gfx-gma-plls.adb:303:42: info: initialization of "P2" proved
 hw-gfx-gma-plls.adb:309:22: info: initialization of "Registers_Valid" proved
 hw-gfx-gma-plls.adb:311:25: info: initialization of "Current_Clock.Dotclock" proved
@@ -698,6 +714,7 @@ hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.P1" proved
 hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.P2" proved
 hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.Reference_Clock" proved
 hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.VCO" proved
+hw-gfx-gma-plls.adb:356:07: info: data dependencies proved
 hw-gfx-gma-plls.adb:369:35: info: initialization of "FP" proved
 hw-gfx-gma-plls.adb:370:35: info: initialization of "FP" proved
 hw-gfx-gma-plls.adb:384:23: info: initialization of "Encoded_P2" proved
@@ -723,6 +740,7 @@ hw-gfx-gma-plls.adb:509:17: info: initialization of "PLL" proved
 hw-gfx-gma-plls.adb:510:16: info: initialization of "Success" proved
 hw-gfx-gma-plls.adb:511:27: info: initialization of "PLL" proved
 hw-gfx-gma-plls.ads:25:14: info: initialization of "PLLs" constituent of "State" proved
+hw-gfx-gma-plls.ads:27:07: info: data dependencies proved
 hw-gfx-gma-plls.ads:31:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.ads:32:07: info: initialization of "Success" proved
 hw-gfx-gma-port_detect.adb:88:39: info: initialization of "Internal_Detected" proved
@@ -747,10 +765,22 @@ hw-gfx-gma-registers.adb:349:16: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:350:24: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:367:17: info: initialization of "Value" proved
 hw-gfx-gma-registers.adb:368:24: info: initialization of "Value" proved
+hw-gfx-gma-registers.ads:24:04: info: flow dependencies proved
+hw-gfx-gma-registers.ads:1635:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1636:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1644:08: info: initialization of "Value" proved
+hw-gfx-gma-registers.ads:1647:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1648:07: info: flow dependencies proved
+hw-gfx-gma-registers.ads:1658:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1659:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1666:08: info: initialization of "Result" proved
 hw-gfx-gma-registers.ads:1710:07: info: initialization of "Success" proved
+hw-gfx-gma-registers.ads:1720:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1721:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1728:07: global Output "Registers.Address_State" constituent of "GMA.State" of "Set_Register_Base" not written
+hw-gfx-gma-registers.ads:1729:07: info: flow dependencies proved
+hw-gfx-gma-transcoder.adb:153:07: info: data dependencies proved
+hw-gfx-gma-transcoder.adb:154:07: info: flow dependencies proved
 hw-gfx-gma-transcoder.adb:172:30: info: initialization of "Data_M" proved
 hw-gfx-gma-transcoder.adb:175:30: info: initialization of "Data_N" proved
 hw-gfx-gma-transcoder.adb:179:30: info: initialization of "Link_M" proved
@@ -1220,9 +1250,12 @@ hw-gfx-gma.adb:755:10: info: initialization of "Success" proved
 hw-gfx-gma.adb:761:16: info: initialization of "Linear_FB" proved
 hw-gfx-gma.adb:762:41: info: initialization of "Linear_FB" proved
 hw-gfx-gma.adb:784:13: info: initialization of "Valid" proved
+hw-gfx-gma.ads:27:04: info: flow dependencies proved
 hw-gfx-gma.ads:98:07: info: initialization of "Success" proved
+hw-gfx-gma.ads:100:07: info: data dependencies proved
 hw-gfx-gma.ads:104:15: info: initialization of "Success" proved
 hw-gfx-gma.ads:104:25: info: initialization of "Initialized" constituent of "Init_State" proved
+hw-gfx-gma.ads:107:07: info: data dependencies proved
 hw-gfx-gma.ads:140:07: info: initialization of "Success" proved
 hw-gfx-gma.ads:144:29: info: initialization of "Linear_FB" proved
 hw-mmio_range.ads:26:07: info: initialization of "GTT.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:54
@@ -1230,6 +1263,12 @@ hw-mmio_range.ads:26:07: info: initialization of "MM16.Base_Address" constituent
 hw-mmio_range.ads:26:07: info: initialization of "MM32.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "MM8.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "Regs.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:41
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-framebuffer_filler.adb:25
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-gma-registers.adb:41
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-gma-registers.adb:54
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-framebuffer_filler.adb:25
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-registers.adb:41
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-registers.adb:54
@@ -1258,6 +1297,7 @@ hw-pci-dev.adb:97:13: info: initialization of "Base" proved, in instantiation at
 hw-pci-dev.adb:98:32: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:100:39: info: initialization of "Backup" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.adb:103:29: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.ads:20:04: info: flow dependencies proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:23:21: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:24:22: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:27:22: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
@@ -1265,8 +1305,10 @@ hw-pci-dev.ads:42:07: info: initialization of "Addr" proved, in instantiation at
 hw-pci-dev.ads:49:29: info: initialization of "Length" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:53:26: info: initialization of "Success" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:24:23: info: initialization of "MM.Address_State" constituent of "Dev.Address_State" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-pci-mmconf.ads:25:04: info: flow dependencies proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:28:21: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:29:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:32:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:44:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-time-timer.ads:21:07: info: flow dependencies proved
 gnatprove: error during analysis of data and information flow

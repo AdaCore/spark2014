@@ -41,8 +41,12 @@ test.adb:103:07: warning: statement has no effect
 test.adb:104:12: warning: unused assignment
 test.adb:106:12: warning: unused assignment
 test.adb:116:40: info: initialization of "Export" proved
+test.adb:120:14: info: data dependencies proved
 test.adb:120:36: info: initialization of "Temp" proved
+test.adb:121:14: info: flow dependencies proved
+test.adb:128:15: info: data dependencies proved
 test.adb:128:37: info: initialization of "Temp" proved
+test.adb:129:15: info: flow dependencies proved
 test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
 test.adb:137:17: info: initialization of "Temp" proved
@@ -55,6 +59,7 @@ test.adb:173:25: info: assertion proved (CVC4: 1 VC), in instantiation at test.a
 test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:185:39: warning: unused variable "Par2"
 test.adb:187:13: warning: unused variable "Z"
+test.adb:190:15: info: data dependencies proved
 test.adb:190:29: low: unused global "Y"
 test.adb:199:14: info: initialization of "X" proved
 test.adb:199:14: info: initialization of "Y" proved

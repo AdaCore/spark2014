@@ -28,14 +28,43 @@ pumpunit.adb:142:36: info: initialization of "cur_pump.Price" constituent of "Ch
 pumpunit.adb:142:36: info: initialization of "cur_pump.Remaining" constituent of "Children" proved
 pumpunit.adb:142:36: info: initialization of "cur_pump.Resevoir" constituent of "Children" proved
 pumpunit.adb:169:33: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:9:04: info: flow dependencies proved
 pumpunit.ads:10:05: info: initial condition proved (CVC4: 1 VC)
 pumpunit.ads:10:26: info: initialization of "cur_state" constituent of "State" proved
+pumpunit.ads:17:06: info: data dependencies proved
+pumpunit.ads:18:06: info: flow dependencies proved
+pumpunit.ads:22:06: info: data dependencies proved
+pumpunit.ads:23:06: info: flow dependencies proved
+pumpunit.ads:27:06: info: data dependencies proved
+pumpunit.ads:28:06: info: flow dependencies proved
+pumpunit.ads:32:06: info: data dependencies proved
+pumpunit.ads:33:06: info: flow dependencies proved
+pumpunit.ads:37:06: info: data dependencies proved
+pumpunit.ads:38:06: info: flow dependencies proved
+pumpunit.ads:41:06: info: data dependencies proved
+pumpunit.ads:42:06: info: flow dependencies proved
+pumpunit.ads:45:06: info: data dependencies proved
+pumpunit.ads:46:06: info: flow dependencies proved
+pumpunit.ads:49:06: info: data dependencies proved
+pumpunit.ads:50:06: info: flow dependencies proved
+pumpunit.ads:60:11: info: data dependencies proved
+pumpunit.ads:61:06: info: flow dependencies proved
 pumpunit.ads:62:62: info: overflow check proved (CVC4: 1 VC)
 pumpunit.ads:64:15: info: postcondition proved (CVC4: 3 VC)
 pumpunit.ads:64:73: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:68:11: info: data dependencies proved
+pumpunit.ads:69:06: info: flow dependencies proved
 pumpunit.ads:71:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:74:11: info: data dependencies proved
+pumpunit.ads:75:06: info: flow dependencies proved
 pumpunit.ads:79:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:82:11: info: data dependencies proved
+pumpunit.ads:83:06: info: flow dependencies proved
 pumpunit.ads:85:14: info: postcondition proved (CVC4: 1 VC)
+pumpunit.ads:89:08: info: data dependencies proved
+pumpunit.ads:90:08: info: flow dependencies proved
 pumpunit.ads:92:59: info: overflow check proved (CVC4: 1 VC)
 pumpunit.ads:93:31: medium: postcondition might fail, cannot prove get_total = get_total'Old + (get_outstanding)
 pumpunit.ads:93:57: info: overflow check proved (CVC4: 1 VC)
+pumpunit.ads:98:11: info: data dependencies proved
+pumpunit.ads:99:06: info: flow dependencies proved

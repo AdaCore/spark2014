@@ -1,13 +1,16 @@
 p.ads:5:14: high: possible data race when accessing variable "p.x"
 p.ads:5:14: high: with task "p.po1"
 p.ads:5:14: high: with task "p.po2"
+p.ads:6:28: info: data dependencies proved
 p.ads:7:37: medium: this interrupt might be reserved
+p.ads:11:28: info: data dependencies proved
 p.ads:12:37: medium: this interrupt might be reserved
 q.ads:3:14: high: possible data race when accessing variable "p.x"
 q.ads:3:14: high: with task "p.po1"
 q.ads:3:14: high: with task "p.po2"
 q.ads:3:14: high: with task "q.po3"
 q.ads:4:45: medium: this interrupt might be reserved
+r.ads:8:26: info: data dependencies proved
 r.ads:8:69: medium: this interrupt might be reserved
 r.ads:11:33: info: range check proved (CVC4: 1 VC)
 r.ads:14:42: info: range check proved (CVC4: 1 VC)

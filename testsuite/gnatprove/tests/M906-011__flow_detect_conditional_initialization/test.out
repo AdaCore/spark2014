@@ -4,16 +4,19 @@ uninitialized.adb:24:04: warning: analyzing unreferenced procedure "Init_Var_War
 uninitialized.adb:24:29: info: initialization of "X" proved
 uninitialized.adb:29:12: medium: "X" might not be initialized
 uninitialized.adb:29:14: info: overflow check proved (CVC4: 1 VC)
+uninitialized.adb:34:11: info: data dependencies proved
 uninitialized.adb:34:32: info: initialization of "Var" constituent of "State" proved
 uninitialized.adb:40:17: high: "Var" constituent of "State" is not an input in the Global contract of subprogram "Init_Var_Error" at line 33
 uninitialized.adb:40:17: high: "Var" constituent of "State" is not initialized
 uninitialized.adb:40:17: high: either make "Var" constituent of "State" an input in the Global contract or initialize it before use
 uninitialized.adb:40:21: info: overflow check proved (CVC4: 1 VC)
+uninitialized.adb:46:11: info: data dependencies proved
 uninitialized.adb:46:32: medium: "Var" constituent of "State" might not be initialized
 uninitialized.adb:55:04: warning: analyzing unreferenced procedure "Init_Arr_Warn"
 uninitialized.adb:55:29: info: initialization of "An_Arr" proved
 uninitialized.adb:57:24: info: unrolling loop
 uninitialized.adb:58:21: info: initialization of "An_Arr" proved
+uninitialized.adb:64:11: info: data dependencies proved
 uninitialized.adb:64:32: info: initialization of "Arr" constituent of "State" proved
 uninitialized.adb:67:24: info: unrolling loop
 uninitialized.adb:68:21: high: "Arr" constituent of "State" is not an input in the Global contract of subprogram "Init_Arr_Error" at line 63
@@ -21,6 +24,7 @@ uninitialized.adb:68:21: high: "Arr" constituent of "State" is not initialized
 uninitialized.adb:68:21: high: either make "Arr" constituent of "State" an input in the Global contract or initialize it before use
 uninitialized.adb:68:28: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:68:28: medium: array index check might fail
+uninitialized.adb:74:11: info: data dependencies proved
 uninitialized.adb:74:32: info: initialization of "Rec.Arr" constituent of "State" proved
 uninitialized.adb:74:32: info: initialization of "Rec.Boo" constituent of "State" proved
 uninitialized.adb:80:22: medium: "Rec.Boo" constituent of "State" might not be initialized

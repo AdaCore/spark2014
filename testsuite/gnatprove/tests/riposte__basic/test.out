@@ -17,6 +17,7 @@ basic.adb:45:16: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:22: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:28: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:34: info: overflow check proved (CVC4: 1 VC)
+basic.adb:51:11: info: flow dependencies proved
 basic.adb:53:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:53:32: info: overflow check proved (CVC4: 1 VC)
 basic.adb:57:14: info: overflow check proved (CVC4: 1 VC)
@@ -24,6 +25,7 @@ basic.adb:58:30: info: assertion proved (CVC4: 2 VC)
 basic.adb:58:41: info: overflow check proved (CVC4: 1 VC)
 basic.adb:58:60: info: overflow check proved (CVC4: 1 VC)
 basic.adb:59:14: info: overflow check proved (CVC4: 1 VC)
+basic.adb:63:11: info: flow dependencies proved
 basic.adb:65:22: medium: postcondition might fail, cannot prove X = X'Old + 5 (e.g. when X = 7 and X'Old = 1)
 basic.adb:65:32: info: overflow check proved (CVC4: 1 VC)
 basic.adb:69:14: info: overflow check proved (CVC4: 1 VC)
@@ -37,6 +39,7 @@ basic.adb:88:19: medium: postcondition might fail, cannot prove Int_Min_B'Result
 basic.adb:97:14: info: initialization of "R" proved
 basic.adb:101:19: info: postcondition proved (CVC4: 1 VC)
 basic.adb:110:14: info: initialization of "R" proved
+basic.adb:114:11: info: flow dependencies proved
 basic.adb:117:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:120:22: info: assertion proved
 basic.adb:121:22: info: assertion proved (CVC4: 1 VC)

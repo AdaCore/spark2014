@@ -1,1 +1,2 @@
 missing_global.ads:4:18: info: initialization of "X" proved
+missing_global.ads:5:11: info: data dependencies proved

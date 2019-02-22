@@ -1,11 +1,13 @@
 conversions_of_records.adb:25:26: info: initialization of "Y1" proved
 conversions_of_records.adb:26:26: info: initialization of "Y2" proved
+conversions_of_records.adb:27:09: info: flow dependencies proved
 conversions_of_records.adb:32:23: info: initialization of "R.F" proved
 conversions_of_records.adb:32:23: info: initialization of "R.X" proved
 conversions_of_records.adb:33:23: info: initialization of "R.F" proved
 conversions_of_records.adb:33:23: info: initialization of "R.X" proved
 conversions_of_records.adb:38:26: info: initialization of "Y1" proved
 conversions_of_records.adb:39:26: info: initialization of "Y2" proved
+conversions_of_records.adb:40:09: info: flow dependencies proved
 conversions_of_records.adb:45:20: info: initialization of "R.F" proved
 conversions_of_records.adb:45:20: info: initialization of "R.X" proved
 conversions_of_records.adb:46:20: info: initialization of "R.F" proved

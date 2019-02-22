@@ -45,6 +45,9 @@ main.adb:70:04: info: in inlined body at line 31
 main.adb:70:04: info: unrolling loop
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
+people.ads:8:08: info: flow dependencies proved
+people.ads:13:11: info: data dependencies proved
+people.ads:21:11: info: data dependencies proved
 professionals.adb:69:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
 professionals.adb:69:14: info: initialization of "Tmp.Profession" proved
 professionals.adb:69:14: info: initialization of "Tmp.Skilled_In" proved
@@ -56,6 +59,9 @@ professionals.adb:84:14: info: initialization of private part of "Tmp" proved
 professionals.adb:94:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
 professionals.adb:156:28: info: unrolling loop
 professionals.adb:206:72: medium: overflow check might fail
+professionals.ads:50:11: info: data dependencies proved
+professionals.ads:59:11: info: data dependencies proved
+professionals.ads:63:11: info: data dependencies proved
 professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
 simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G1 and G2 in a precondition]
 simple_oo_with_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G2 and G3 in a precondition]
@@ -67,9 +73,13 @@ simple_oo_with_contracts.adb:19:22: medium: assertion might fail, cannot prove G
 simple_oo_with_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
 simple_oo_with_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2 [possible explanation: subprogram at simple_oo_with_contracts.ads:38 should mention Par and G2 in a precondition]
 simple_oo_with_contracts.adb:27:33: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:38 should mention Par in a precondition]
+simple_oo_with_contracts.ads:9:11: info: data dependencies proved
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:20:11: info: data dependencies proved
 simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:30:11: info: data dependencies proved
 simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:39:11: info: data dependencies proved
 simple_oo_without_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention G1 and G2 in a precondition]
 simple_oo_without_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention G2 and G3 in a precondition]
 simple_oo_without_contracts.adb:6:19: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention Par and G3 in a precondition]

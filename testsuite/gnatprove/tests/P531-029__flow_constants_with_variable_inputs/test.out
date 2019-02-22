@@ -1,1 +1,2 @@
 p.ads:4:35: info: initialization of "b" proved
+p.ads:4:57: info: flow dependencies proved

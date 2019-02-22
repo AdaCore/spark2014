@@ -2,12 +2,14 @@ full.adb:9:16: info: overflow check proved (CVC4: 1 VC)
 full.adb:14:12: info: precondition proved (CVC4: 1 VC)
 full.ads:11:20: info: postcondition proved (CVC4: 1 VC)
 full.ads:11:36: info: overflow check proved (CVC4: 1 VC)
+full.ads:14:12: info: data dependencies proved
 full.ads:16:22: info: postcondition proved (CVC4: 1 VC)
 my_pack.adb:15:07: info: precondition proved (CVC4: 1 VC)
+my_pack.ads:14:12: info: data dependencies proved
 my_pack.ads:16:22: info: postcondition proved (CVC4: 1 VC)
 my_pack.ads:16:36: info: overflow check proved (CVC4: 1 VC)
-
 max steps used for successful proof: 1
+
 
 
 
@@ -32,7 +34,7 @@ max steps used for successful proof: 1
 =========================
 Analyzed 2 units
 Assertions . . . . . . .
-Data Dependencies . . . . . . .
+Data Dependencies 2 2 . . . . .
 Flow Dependencies . . . . . . .
 Functional Contracts 5 . . . 5 . .
 Initialization . . . . . . .
@@ -41,7 +43,7 @@ Non-Aliasing . . . . . . .
 Run-time Checks 3 . . . 3 . .
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 Summary of SPARK analysis
-Total 8 . . . 8 (100%) . .
+Total 10 2 (20%) . . 8 (80%) . .
 absence of run-time errors of Full fully established
 absence of run-time errors of Full.Bump fully established
 absence of run-time errors of Full.Id fully established

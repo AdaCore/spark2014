@@ -1,2 +1,4 @@
+arr.adb:11:11: info: data dependencies proved
 arr.adb:11:32: info: initialization of "Buffer" proved
+arr.adb:22:11: info: data dependencies proved
 arr.adb:22:32: info: initialization of "Buffer" proved

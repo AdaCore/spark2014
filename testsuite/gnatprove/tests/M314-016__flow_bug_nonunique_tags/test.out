@@ -29,6 +29,7 @@ segway.ads:23:16: high: either make "State" an input in the Global contract or i
 segway.ads:24:17: medium: "Speed" might not be initialized
 segway.ads:24:17: medium: "State" might not be initialized
 segway.ads:24:17: medium: postcondition might fail, cannot prove (Speed_Is_Valid)
+segway.ads:25:09: info: data dependencies proved
 segway.ads:25:31: medium: "Speed" might not be initialized
 segway.ads:25:38: medium: "State" might not be initialized
 segway.ads:29:17: info: postcondition proved (CVC4: 2 VC)

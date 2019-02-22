@@ -3,3 +3,4 @@ p.adb:7:58: info: initialization of "Y" constituent of "State2" proved
 p.ads:1:35: low: initialization of "P.State1" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))
 p.ads:1:51: low: initialization of "P.State3" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))
 p.ads:1:51: warning: no procedure exists that can initialize abstract state "P.State3"
+p.ads:4:25: info: data dependencies proved

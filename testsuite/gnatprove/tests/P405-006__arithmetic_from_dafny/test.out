@@ -175,12 +175,15 @@ mul_lemmas.adb:90:30: info: initialization of "Res1" proved
 mul_lemmas.adb:90:38: info: initialization of "Res2" proved
 mul_lemmas.adb:94:17: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:95:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:99:06: info: data dependencies proved
 mul_lemmas.adb:100:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:100:24: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:101:14: info: postcondition proved (CVC4: 1 VC)
+mul_lemmas.adb:108:06: info: data dependencies proved
 mul_lemmas.adb:109:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:109:25: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:110:14: info: postcondition proved (CVC4: 1 VC)
+mul_lemmas.adb:117:06: info: data dependencies proved
 mul_lemmas.adb:118:16: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:118:24: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:119:14: info: postcondition proved (CVC4: 1 VC)
@@ -207,6 +210,7 @@ mul_lemmas.adb:151:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:152:15: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:152:20: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:153:17: info: overflow check proved (CVC4: 1 VC)
+mul_lemmas.adb:157:06: info: data dependencies proved
 mul_lemmas.adb:158:32: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:158:40: info: overflow check proved (CVC4: 1 VC)
 mul_lemmas.adb:159:14: info: postcondition proved (CVC4: 1 VC)

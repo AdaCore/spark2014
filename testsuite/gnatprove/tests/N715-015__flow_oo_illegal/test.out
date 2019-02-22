@@ -26,19 +26,31 @@ gnatprove: error during flow analysis and proof
 root.adb:4:04: info: initialization of "Counter" constituent of "State" proved
 root.adb:11:29: info: overflow check proved (CVC4: 1 VC)
 root.adb:43:40: info: initialization of "Counter" constituent of "State" proved
+root.ads:3:08: info: flow dependencies proved
+root.ads:6:11: info: data dependencies proved
+root.ads:19:11: info: data dependencies proved
+root.ads:26:11: info: data dependencies proved
 root.ads:28:52: info: initialization of "O.X" proved
+root.ads:29:11: info: data dependencies proved
+root.ads:32:11: info: data dependencies proved
 simple_illegal_with_contracts.adb:50:13: info: initialization of "IO" proved
+simple_illegal_with_contracts.ads:16:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:19:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:25:14: "PI" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:26:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:28:32: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:34:14: "I" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:35:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:37:34: info: initialization of "O" proved
 simple_illegal_with_contracts.ads:43:14: "I" is an Output of overriding subprogram, but it is not an Output of overridden subprogram "P" at line 15 (SPARK RM 6.1.6)
+simple_illegal_with_contracts.ads:44:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:45:35: info: initialization of "I" proved
 simple_illegal_with_contracts.ads:45:38: info: initialization of "IO" proved
 simple_illegal_with_contracts.ads:45:42: info: initialization of "O" proved
+simple_illegal_with_contracts.ads:52:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:54:35: info: initialization of "IO" proved
 simple_illegal_with_contracts.ads:54:39: info: initialization of "O" proved
+simple_illegal_with_contracts.ads:61:11: info: data dependencies proved
 simple_illegal_with_contracts.ads:62:34: info: initialization of "O" proved
 gnatprove: error during flow analysis and proof
 simple_illegal_without_contracts.adb:50:13: info: initialization of "IO" proved

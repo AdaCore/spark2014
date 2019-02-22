@@ -1,3 +1,4 @@
 ext.adb:8:10: warning: unused assignment
 ext.ads:7:14: info: initialization of "V1" proved
 ext.ads:7:14: info: initialization of "V2" proved
+ext.ads:8:06: info: flow dependencies proved

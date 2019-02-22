@@ -1,2 +1,4 @@
+p.ads:2:16: info: flow dependencies proved
 p.ads:7:22: high: "Var" must be mentioned as an input of the Initializes aspect of "P" (SPARK RM 7.1.5(11))
+p.ads:10:24: info: flow dependencies proved
 p.ads:15:25: high: "Var" must be mentioned as an input of the Initializes aspect of "Nested" (SPARK RM 7.1.5(11))

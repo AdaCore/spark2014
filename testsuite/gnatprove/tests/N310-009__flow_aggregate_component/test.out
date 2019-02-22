@@ -1,1 +1,3 @@
 flow_aggregate_bug.adb:15:20: info: initialization of "Output" proved
+flow_aggregate_bug.adb:16:11: info: data dependencies proved
+flow_aggregate_bug.adb:17:11: info: flow dependencies proved

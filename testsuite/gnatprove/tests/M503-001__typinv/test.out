@@ -18,7 +18,10 @@ globals.adb:57:15: info: overflow check proved (CVC4: 1 VC)
 globals.ads:1:09: info: invariant check proved (CVC4: 2 VC)
 globals.ads:8:14: info: initialization of "Y" constituent of "State_Y" proved
 globals.ads:8:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:9:11: info: data dependencies proved
 globals.ads:11:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:12:11: info: data dependencies proved
+globals.ads:15:11: info: data dependencies proved
 globals.ads:17:14: info: initialization of "X" constituent of "State_X" proved
 globals.ads:17:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:19:14: info: invariant check proved (CVC4: 1 VC)
@@ -28,8 +31,11 @@ globals.ads:25:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:31:09: info: invariant check proved on default value (CVC4: 1 VC)
 globals.ads:32:23: info: range check proved (CVC4: 1 VC)
 globals.ads:37:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:38:11: info: data dependencies proved
 globals.ads:38:32: info: initialization of "X" constituent of "State_X" proved
 globals.ads:40:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:41:11: info: data dependencies proved
+globals.ads:44:11: info: data dependencies proved
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)
 inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" is recursive)

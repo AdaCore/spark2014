@@ -22,6 +22,9 @@ p.ads:54:18: subtype constraint cannot depend on variable input "B" (SPARK RM 4.
 p.ads:55:18: subtype constraint cannot depend on variable input "A" (SPARK RM 4.4(2))
 p.ads:56:18: subtype constraint cannot depend on variable input "A" (SPARK RM 4.4(2))
 p.ads:56:18: subtype constraint cannot depend on variable input "B" (SPARK RM 4.4(2))
+p.ads:62:11: info: flow dependencies proved
 p.ads:65:19: info: initialization of "L" proved
+p.ads:66:11: info: flow dependencies proved
 p.ads:69:19: info: initialization of "L" proved
+p.ads:70:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

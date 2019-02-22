@@ -44,6 +44,7 @@ logic.adb:111:30: info: assertion proved (CVC4: 1 VC)
 logic.adb:112:22: info: assertion proved (CVC4: 3 VC)
 logic.adb:114:30: info: assertion proved (CVC4: 1 VC)
 logic.adb:115:22: info: assertion proved (CVC4: 2 VC)
+logic.adb:119:11: info: flow dependencies proved
 logic.adb:121:22: info: postcondition proved (CVC4: 2 VC)
 logic.adb:128:19: info: postcondition proved (CVC4: 4 VC)
 logic.adb:135:04: warning: analyzing unreferenced procedure "Implies_Test_1"

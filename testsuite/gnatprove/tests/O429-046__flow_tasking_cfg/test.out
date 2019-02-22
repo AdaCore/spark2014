@@ -24,6 +24,7 @@ prot.adb:19:45: medium: overflow check might fail [possible explanation: subprog
 prot.adb:25:33: medium: overflow check might fail
 prot.adb:25:37: medium: overflow check might fail
 prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
+prot.ads:3:08: info: flow dependencies proved
 prot.ads:5:04: info: initialization of "Visible" proved
 prot.ads:8:22: info: initialization of "X" proved
 prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved

@@ -1,3 +1,4 @@
+communication.ads:4:03: info: flow dependencies proved
 communication.ads:8:04: indicator Part_Of is required in this context: constant with variable input "Max" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
 extra.adb:8:07: medium: "B" needs to be a constituent of some state abstraction
 extra.ads:1:54: warning: no procedure exists that can initialize abstract state "Extra.S"

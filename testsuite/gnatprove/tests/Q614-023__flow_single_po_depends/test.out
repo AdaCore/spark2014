@@ -1,1 +1,3 @@
 test.adb:8:28: info: overflow check proved (CVC4: 1 VC)
+test.ads:6:14: info: data dependencies proved
+test.ads:7:14: info: flow dependencies proved

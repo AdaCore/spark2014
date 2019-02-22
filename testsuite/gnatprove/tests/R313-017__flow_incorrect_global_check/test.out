@@ -1,3 +1,4 @@
+bsp-pci_express-ps.adb:8:12: info: data dependencies proved
 bsp-pci_express-ps.adb:9:49: low: unused global "PCI_Express.Platform_Buffer"
 bsp-pci_express-ps.adb:9:49: warning: "PCI_Express.Platform_Buffer" is not modified, could be INPUT
 bsp-pci_express-ps.ads:2:28: warning: no procedure exists that can initialize abstract state "PS.State" constituent of "PCI_Express.State"

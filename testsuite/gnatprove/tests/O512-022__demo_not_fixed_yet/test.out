@@ -52,6 +52,7 @@ random_numbers.adb:15:27: info: initialization of "Seed" constituent of "State" 
 random_numbers.adb:16:27: side effects of function "Pop" are not modeled in SPARK
 random_numbers.adb:19:19: info: initialization of "Seed" constituent of "State" proved
 random_numbers.adb:28:29: info: division check proved (CVC4: 1 VC)
+random_numbers.ads:7:03: info: flow dependencies proved
 random_numbers.ads:9:14: info: initialization of "Seed" constituent of "State" proved
 random_numbers.ads:9:14: warning: "asm_stack.stack_top" is not modified, could be INPUT
 random_numbers.ads:9:22: info: initialization of "Res" proved

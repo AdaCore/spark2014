@@ -225,28 +225,49 @@ decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPRS" proved
 decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPUTE" proved
 decadriver.ads:81:19: info: initialization of "Size" proved
 decadriver.ads:82:19: info: initialization of "Error" proved
+decadriver.ads:83:12: info: flow dependencies proved
 decadriver.ads:88:17: info: postcondition proved (CVC4: 3 VC)
 decadriver.ads:88:21: info: initialization of "Error" proved
 decadriver.ads:90:23: info: initialization of "Size" proved
 decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Frames_Count'Result <= 2 (e.g. when Pending_Frames_Count'Result = 3)
 decadriver.ads:115:28: info: initialization of "Result" proved
+decadriver.ads:116:14: info: data dependencies proved
+decadriver.ads:117:09: info: flow dependencies proved
 decadriver.ads:120:17: info: postcondition proved (CVC4: 2 VC)
 decadriver.ads:120:38: info: initialization of "Result" proved
 decadriver.ads:121:07: warning: no check message justified by this pragma
+decadriver.ads:128:14: info: data dependencies proved
+decadriver.ads:129:09: info: flow dependencies proved
 decadriver.ads:131:07: warning: no check message justified by this pragma
+decadriver.ads:144:14: info: flow dependencies proved
 decadriver.ads:150:34: medium: predicate check might fail
+decadriver.ads:180:14: info: data dependencies proved
+decadriver.ads:181:09: info: flow dependencies proved
 decadriver.ads:187:21: info: range check proved (CVC4: 1 VC)
 decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:188:07: warning: no check message justified by this pragma
+decadriver.ads:195:14: info: data dependencies proved
+decadriver.ads:196:09: info: flow dependencies proved
 decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:203:07: warning: no check message justified by this pragma
 decadriver.ads:210:27: info: initialization of "Result" proved
+decadriver.ads:211:14: info: data dependencies proved
+decadriver.ads:212:09: info: flow dependencies proved
 decadriver.ads:222:07: warning: no check message justified by this pragma
 decadriver.ads:242:19: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
+decadriver.ads:250:14: info: data dependencies proved
+decadriver.ads:251:09: info: flow dependencies proved
 decadriver.ads:281:07: warning: no check message justified by this pragma
+decadriver.ads:287:14: info: data dependencies proved
+decadriver.ads:288:09: info: flow dependencies proved
 decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
 decadriver.ads:294:07: warning: no check message justified by this pragma
+decadriver.ads:305:14: info: data dependencies proved
+decadriver.ads:306:09: info: flow dependencies proved
 decadriver.ads:318:07: warning: no check message justified by this pragma
+decadriver.ads:327:14: info: flow dependencies proved
 decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 decadriver.ads:332:49: medium: this interrupt might be reserved
+decadriver.ads:333:09: info: data dependencies proved
+decadriver.ads:336:09: info: flow dependencies proved
 decadriver.ads:346:07: warning: no check message justified by this pragma
