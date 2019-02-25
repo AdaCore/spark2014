@@ -47,8 +47,8 @@ is
       Res  : Uint)
    is
    begin
-      pragma Assert (Res <= Arg1);  --  MANUAL PROOF
-      pragma Assert (Arg1 - Res < Arg2); -- MANUAL PROOF
+      pragma Assert (Res <= Arg1);  --  proved by altergo now
+      pragma Assert (Arg1 - Res < Arg2); -- proved by altergo now
    end Lemma_Div_Then_Mult_Bounds;
 
    procedure Lemma_Mult_Is_Monotonic

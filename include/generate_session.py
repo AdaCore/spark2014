@@ -3,6 +3,7 @@
 import os
 import shutil
 import difflib
+import sys
 
 
 def run(cmd):
@@ -112,7 +113,14 @@ def diff_all(gen_ctx):
                     copy_file(ctx_file, v_file)
 
 
-def kill_and_regenerate_all():
+def kill_and_regenerate(check):
+    list_of_check = []
+    if check:
+        list_of_check.append(check)
+    else:
+        with open("manual_proof.in") as f:
+            for i in f:
+                list_of_check.append(i)
     print ""
     print "--------------------------"
     print "Cleanup previous artifacts"
@@ -136,9 +144,8 @@ def kill_and_regenerate_all():
 #   coq files inside the session. This cannot be done in one step because
 #   if coq files are already present, it will create new ones (not
 #   check the present coq files).
-    with open("manual_proof.in") as f:
-        for i in f:
-            run_manual(i)
+    for i in list_of_check:
+        run_manual(i)
 #   Make the diff between generated .v and .ctx files. If there are differences
 #   between them not in the proof, you are sure to fail
     diff_all(False)
@@ -153,9 +160,8 @@ def kill_and_regenerate_all():
 #   Do *not* remove this call as it is used to check that coq proofs are
 #   correct after regeneration. And ability to generate session is *necessary*
 #   as there is no way to extend a session in gnatprove.
-    with open("manual_proof.in") as v:
-        for i in v:
-            run_manual(i)
+    for i in list_of_check:
+        run_manual(i)
     print ""
     print "---------------------------------------------"
     print "Prove remaining checks with automatic provers"
@@ -182,4 +188,12 @@ def kill_and_regenerate_all():
     run_options(opt="--output-msg-only --report=provers")
 
 
-kill_and_regenerate_all()
+def choose_mode():
+    if len(sys.argv) == 1:
+        kill_and_regenerate(None)
+    else:
+        if len(sys.argv) == 2:
+            kill_and_regenerate(sys.argv[1])
+
+
+choose_mode()
