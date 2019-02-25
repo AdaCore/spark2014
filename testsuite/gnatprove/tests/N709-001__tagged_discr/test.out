@@ -54,7 +54,7 @@ tagged_discr.ads:58:20: info: initialization of "V.XX" proved
 tagged_discr.ads:58:20: info: initialization of "V.Y" proved
 tagged_discr.ads:58:20: info: initialization of "V.YY" proved
 tagged_discr.ads:58:20: info: initialization of "V.Z" proved
-tagged_discr.ads:59:14: info: postcondition proved (CVC4: 1 VC)
+tagged_discr.ads:59:14: info: postcondition proved (Z3: 1 VC)
 tagged_discr.ads:59:23: info: initialization of "V.W" proved
 tagged_discr.ads:59:23: info: initialization of "V.X" proved
 tagged_discr.ads:59:23: info: initialization of "V.XX" proved

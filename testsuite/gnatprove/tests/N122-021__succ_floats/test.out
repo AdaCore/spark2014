@@ -28,7 +28,7 @@ succ_floats.adb:18:24: medium: overflow check might fail (e.g. when X = 3.402823
 succ_floats.adb:20:22: info: assertion proved (CVC4: 1 VC)
 succ_floats.adb:20:34: info: initialization of "X" proved
 succ_floats.adb:20:34: info: overflow check proved (CVC4: 1 VC)
-succ_floats.adb:22:19: medium: assertion might fail, cannot prove Float'Pred (X) > 0.0
+succ_floats.adb:22:19: info: assertion proved (Z3: 1 VC)
 succ_floats.adb:22:31: info: initialization of "X" proved
 succ_floats.adb:22:31: info: overflow check proved (CVC4: 1 VC)
 succ_floats.adb:26:24: info: initialization of "X" proved
