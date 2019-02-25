@@ -2550,6 +2550,18 @@ package body Gnat2Why.Subprograms is
             Self_Name := Concurrent_Self_Ident (CPT);
             Self_Is_Mutable := True;
          end;
+
+         --  Declare global variable to hold the state of a protected object
+
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Ada_Node => Containing_Protected_Type (E),
+               Name     => Self_Name,
+               Labels   => Name_Id_Sets.Empty_Set,
+               Location => Safe_First_Sloc (E),
+               Ref_Type =>
+                 Type_Of_Node (Containing_Protected_Type (E))));
       end if;
 
       --  Translate initial condition of E
@@ -2739,6 +2751,8 @@ package body Gnat2Why.Subprograms is
                   Post     => Post,
                   Def      => +Why_Body));
       end;
+
+      --  Cleanup
 
       Self_Name := Why_Empty;
       Self_Is_Mutable := False;
