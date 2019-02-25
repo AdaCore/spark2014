@@ -353,9 +353,9 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      E          : constant Entity_Id :=
+      E         : constant Entity_Id :=
         Unique_Defining_Entity (Unit (GNAT_Root));
-      Base_Name  : constant String :=
+      Base_Name : constant String :=
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
 

@@ -99,7 +99,7 @@ package body Gnat2Why.External_Axioms is
                case Nkind (N) is
                   when N_Package_Declaration =>
                      Process_Decls
-                       (Decls  => Visible_Declarations_Of_Package
+                       (Decls => Visible_Declarations_Of_Package
                           (Unique_Defining_Entity (N)));
                   when others =>
                      null;
@@ -116,7 +116,7 @@ package body Gnat2Why.External_Axioms is
       --  Process declarations
 
       Process_Decls
-        (Decls  => Visible_Declarations_Of_Package (Package_Entity));
+        (Decls => Visible_Declarations_Of_Package (Package_Entity));
    end Process_External_Entities;
 
    --------------------------------

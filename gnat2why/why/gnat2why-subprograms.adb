@@ -2636,8 +2636,8 @@ package body Gnat2Why.Subprograms is
 
       --  Translate public and private declarations of the package
 
-      if Present (Priv_Decls) and then
-        Private_Spec_In_SPARK (E)
+      if Present (Priv_Decls)
+        and then Private_Spec_In_SPARK (E)
       then
          Why_Body := Transform_Declarations_Block (Priv_Decls, Why_Body);
       end if;
@@ -2938,8 +2938,8 @@ package body Gnat2Why.Subprograms is
 
       --  Translate public and private declarations of the package
 
-      if Present (Priv_Decls) and then
-        Private_Spec_In_SPARK (E)
+      if Present (Priv_Decls)
+        and then Private_Spec_In_SPARK (E)
       then
          --  Check for absence of runtime error in protected components initial
          --  values.
