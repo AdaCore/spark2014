@@ -94,8 +94,6 @@ is
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then
-               Nkind (C1) = N_Defining_Identifier and then
-               Nkind (C2) = N_Defining_Identifier and then
                (Ekind (C1) in E_Component | E_Discriminant
                 or else Is_Part_Of_Concurrent_Object (C1))
                 and then
