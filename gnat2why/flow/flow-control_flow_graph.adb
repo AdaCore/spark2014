@@ -2753,27 +2753,22 @@ package body Flow.Control_Flow_Graph is
                   Low  : constant Node_Id := Low_Bound (Param_Range);
                   High : constant Node_Id := High_Bound (Param_Range);
 
-                  Object : constant Entity_Id :=
-                    (if F.Kind = Direct_Mapping
-                     then Get_Direct_Mapping_Id (F)
-                     else F.Component.Last_Element);
-                  --  The object being assigned
-
-                  pragma Assert
-                    (if F.Kind = Direct_Mapping
-                     then Is_Assignable (Object)
-                     else Ekind (Object) = E_Component);
-
                begin
                   return Nkind (Low) = N_Attribute_Reference
                     and then Get_Attribute_Id (Attribute_Name (Low)) =
                              Attribute_First
-                    and then Entity (Prefix (Low)) = Object
+                    and then (if Nkind (Prefix (Low)) in N_Identifier
+                                                       | N_Expanded_Name
+                              then Direct_Mapping_Id (Entity (Prefix (Low)))
+                              else Record_Field_Id (Prefix (Low))) = F
 
                     and then Nkind (High) = N_Attribute_Reference
                     and then Get_Attribute_Id (Attribute_Name (High)) =
                              Attribute_Last
-                    and then Entity (Prefix (High)) = Object
+                    and then (if Nkind (Prefix (High)) in N_Identifier
+                                                        | N_Expanded_Name
+                              then Direct_Mapping_Id (Entity (Prefix (High)))
+                              else Record_Field_Id (Prefix (High))) = F
 
                     and then
                       (if Multi_Dim
