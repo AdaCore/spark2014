@@ -526,11 +526,6 @@ package body Gnat2Why.Driver is
          --  like potentially blocking and termination statuses).
          --
          --  This functionality should be moved out of Compute_Global_Effects
-         --
-         --  Also, we use frontend globals for
-         --  SPARK_Frame_Conditions.Is_Protected_Operation
-         --
-         --  Also this functionality should be moved (to generated globals)
          Compute_Global_Effects;
          Timing_Phase_Completed (Timing, "globals (basic)");
 
