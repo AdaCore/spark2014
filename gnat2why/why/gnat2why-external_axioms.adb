@@ -74,33 +74,29 @@ package body Gnat2Why.External_Axioms is
             --  the declaration won't come from source but its original node
             --  will.
 
-            if Comes_From_Source (Original_Node (N))
-              and then Nkind (N) in
-                  N_Full_Type_Declaration
-                | N_Private_Extension_Declaration
-                | N_Private_Type_Declaration
-                | N_Subtype_Declaration
-                | N_Object_Declaration
-            then
-               Process (Defining_Identifier (N));
-
-            elsif Comes_From_Source (Original_Node (N))
-              and then Nkind (N) in
-                  N_Subprogram_Declaration
-                | N_Subprogram_Instantiation
-            then
-               Process (Unique_Defining_Entity (N));
-            end if;
-
-            --  Call Process_Decls recursively on Package_Declaration and
-            --  Package_Instantiation.
-
             if Comes_From_Source (Original_Node (N)) then
                case Nkind (N) is
+                  when N_Full_Type_Declaration
+                     | N_Private_Extension_Declaration
+                     | N_Private_Type_Declaration
+                     | N_Subtype_Declaration
+                     | N_Object_Declaration
+                  =>
+                     Process (Defining_Identifier (N));
+
+                  when N_Subprogram_Declaration
+                     | N_Subprogram_Instantiation
+                  =>
+                     Process (Unique_Defining_Entity (N));
+
+                  --  Call Process_Decls recursively on Package_Declaration and
+                  --  Package_Instantiation.
+
                   when N_Package_Declaration =>
                      Process_Decls
                        (Decls => Visible_Declarations_Of_Package
                           (Unique_Defining_Entity (N)));
+
                   when others =>
                      null;
                end case;
