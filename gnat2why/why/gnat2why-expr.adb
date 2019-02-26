@@ -13523,13 +13523,17 @@ package body Gnat2Why.Expr is
                   begin
                      pragma Assert (Is_Constrained (Constr_Ty));
 
-                     Call := +Sequence
-                       (Left  => Compute_Default_Check
+                     Call := New_Binding
+                       (Name    => New_Identifier (Name => "_"),
+                        Domain  => EW_Prog,
+                        Def     =>
+                          +Compute_Default_Check
                           (Ada_Node => Expr,
                            Ty       => Constr_Ty,
                            Params   => Body_Params),
-                        Right   => New_Binding
+                        Context => New_Binding
                           (Name    => Alloc_Id,
+                           Domain  => EW_Prog,
                            Def     => Call,
                            Context => New_Binding
                              (Name    => Value_Id,
