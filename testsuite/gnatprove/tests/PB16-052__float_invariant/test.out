@@ -42,7 +42,7 @@ attempt_3.adb:20:17: info: range check proved (Interval)
 attempt_3.adb:20:20: info: float overflow check proved (Interval)
 attempt_3.adb:32:33: info: initialization of "New_Speed" proved
 attempt_3.adb:33:33: info: initialization of "Average" proved
-attempt_3.adb:38:19: info: postcondition proved (altergo: 1 VC)
+attempt_3.adb:38:19: info: postcondition proved (CVC4: 1 VC)
 attempt_3.adb:38:32: info: range check proved (CVC4: 1 VC)
 attempt_3.adb:38:37: info: initialization of "New_Speed" proved
 attempt_3.adb:40:48: info: float overflow check proved (Interval)
@@ -60,8 +60,8 @@ attempt_3.adb:54:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:55:22: medium: assertion might fail, cannot prove Old_Speed + 1.0 <= High_Bound(N) + 1.0
 attempt_3.adb:55:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:55:55: info: float overflow check proved (CodePeer)
+attempt_3.adb:56:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:56:22: info: initialization of "New_Speed" proved
-attempt_3.adb:56:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N) + 1.0
 attempt_3.adb:56:49: info: float overflow check proved (CodePeer)
 attempt_3.adb:59:48: info: range check proved (Interval)
 attempt_3.adb:59:51: info: float overflow check proved (Interval)
@@ -92,8 +92,8 @@ attempt_3.adb:66:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:22: info: assertion proved (CodePeer)
 attempt_3.adb:69:36: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:57: info: range check proved (CodePeer)
+attempt_3.adb:70:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:70:22: info: initialization of "New_Speed" proved
-attempt_3.adb:70:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N+1)
 attempt_3.adb:70:47: info: range check proved (CodePeer)
 attempt_3.adb:74:22: info: initialization of "New_Speed" proved
 attempt_3.adb:74:22: medium: assertion might fail, cannot prove New_Speed >= Old_Speed - 1.0
@@ -102,7 +102,7 @@ attempt_3.adb:75:22: info: assertion proved (CodePeer)
 attempt_3.adb:76:22: medium: assertion might fail, cannot prove Old_Speed - 1.0 >= Low_Bound(N) - 1.0
 attempt_3.adb:76:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:76:54: info: float overflow check proved (CodePeer)
-attempt_3.adb:77:22: info: assertion proved (Z3: 1 VC)
+attempt_3.adb:77:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:77:22: info: initialization of "New_Speed" proved
 attempt_3.adb:77:48: info: float overflow check proved (CodePeer)
 attempt_3.adb:79:22: info: assertion proved (CodePeer)
@@ -114,7 +114,7 @@ attempt_3.adb:79:65: info: float overflow check proved (Interval)
 attempt_3.adb:80:22: info: assertion proved (CodePeer)
 attempt_3.adb:80:35: info: float overflow check proved (CodePeer)
 attempt_3.adb:80:55: info: range check proved (CodePeer)
-attempt_3.adb:81:22: info: assertion proved (Z3: 1 VC)
+attempt_3.adb:81:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:81:22: info: initialization of "New_Speed" proved
 attempt_3.adb:81:46: info: range check proved (CodePeer)
 attempt_3.adb:83:31: info: float overflow check proved (CodePeer)
