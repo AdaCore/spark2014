@@ -1,5 +1,5 @@
 member_alt.adb:9:14: warning: subprogram "Bad" has no effect
-member_alt.adb:14:22: info: assertion proved (CVC4: 1 VC), in call inlined at member_alt.adb:28
+member_alt.adb:14:22: info: assertion proved (altergo: 1 VC), in call inlined at member_alt.adb:28
 member_alt.adb:14:22: info: initialization of "X.F" proved
 member_alt.adb:14:22: info: initialization of "X.F" proved, in call inlined at member_alt.adb:28
 member_alt.adb:14:26: info: initialization of "Y.F" proved

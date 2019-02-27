@@ -36,9 +36,9 @@ area_math.adb:254:30: info: index check proved (CVC4: 4 VC)
 area_math.adb:254:37: info: initialization of "Result.Size" proved
 area_math.adb:254:37: info: initialization of "Result.To" proved
 area_math.adb:254:40: info: initialization of "Next" proved
-area_math.adb:256:28: info: assertion proved (CVC4: 2 VC)
 area_math.adb:256:41: info: initialization of "Prev" proved
 area_math.adb:256:49: info: initialization of "Next" proved
+area_math.adb:256:57: medium: assertion might fail, cannot prove B < Result
 area_math.adb:256:61: info: initialization of "Result.From" proved
 area_math.adb:256:61: info: initialization of "Result.Size" proved
 area_math.adb:256:61: info: initialization of "Result.To" proved
@@ -123,6 +123,6 @@ area_math.ads:26:24: info: predicate check proved (CVC4: 1 VC)
 area_math.ads:33:50: info: index check proved (CVC4: 2 VC)
 area_math.ads:33:62: info: index check proved (CVC4: 2 VC)
 area_math.ads:48:22: info: overflow check proved (CVC4: 1 VC)
-area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E)
+area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E) (e.g. when B = 0 and E = (Max => 2, Size => 2, From => (1 => 1, others => 0), To => (1 => 0, others => 4294967295)) and E.From'First = 1 and E.From'Last = 2 and E.To'First = 1 and E.To'Last = 2)
 area_math.ads:53:36: info: overflow check proved (CVC4: 1 VC)
 area_math.ads:54:35: info: overflow check proved (CVC4: 1 VC)

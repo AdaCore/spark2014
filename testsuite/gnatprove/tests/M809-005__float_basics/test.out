@@ -85,7 +85,7 @@ generic_float_tests.adb:131:32: medium: float overflow check might fail, in inst
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:134:14: warning: subprogram "Substract_Identity_1" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:138:23: info: assertion proved (CVC4: 2 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:138:23: medium: assertion might fail, cannot prove (X - Y = 0.0) = (X = Y), in instantiation at foo.ads:15
+generic_float_tests.adb:138:23: info: assertion proved (CVC4: 2 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:138:25: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:141:14: warning: subprogram "Substract_Identity_2" has no effect, in instantiation at foo.ads:10
@@ -260,14 +260,14 @@ generic_float_tests.adb:300:24: info: initialization of "M" proved, in instantia
 generic_float_tests.adb:300:24: info: initialization of "M" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:301:19: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:301:19: info: initialization of "M" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:301:30: medium: postcondition might fail, cannot prove M <= Y, in instantiation at foo.ads:10
-generic_float_tests.adb:301:30: medium: postcondition might fail, cannot prove M <= Y, in instantiation at foo.ads:15
+generic_float_tests.adb:301:19: info: postcondition proved (CVC4: 3 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:301:19: info: postcondition proved (CVC4: 3 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:308:24: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:308:24: info: initialization of "M" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:309:19: info: initialization of "M" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:309:19: info: initialization of "M" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:309:19: medium: postcondition might fail, cannot prove M >= X, in instantiation at foo.ads:15
-generic_float_tests.adb:309:42: medium: postcondition might fail, cannot prove M = X or M = Y, in instantiation at foo.ads:10
+generic_float_tests.adb:309:19: info: postcondition proved (CVC4: 3 VC), in instantiation at foo.ads:10
+generic_float_tests.adb:309:19: info: postcondition proved (CVC4: 3 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:316:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:316:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:318:19: info: initialization of "Y" proved, in instantiation at foo.ads:10
@@ -277,7 +277,7 @@ generic_float_tests.adb:318:19: info: postcondition proved (CVC4: 1 VC), in inst
 generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:10
 generic_float_tests.adb:324:14: warning: subprogram "Test_Floor_2" has no effect, in instantiation at foo.ads:15
 generic_float_tests.adb:328:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:328:22: medium: assertion might fail, cannot prove FT'Floor (X) <= FT'floor, in instantiation at foo.ads:15
+generic_float_tests.adb:328:22: info: assertion proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:328:50: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:328:50: info: float overflow check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:331:14: warning: subprogram "Test_Floor_3" has no effect, in instantiation at foo.ads:10
@@ -361,7 +361,7 @@ generic_float_tests.adb:389:34: info: contract case proved (CVC4: 2 VC), in inst
 generic_float_tests.adb:389:37: info: initialization of "I" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:389:37: info: initialization of "I" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:392:21: info: range check proved (CVC4: 1 VC), in instantiation at foo.ads:10
-generic_float_tests.adb:392:21: medium: range check might fail, in instantiation at foo.ads:15
+generic_float_tests.adb:392:21: info: range check proved (CVC4: 1 VC), in instantiation at foo.ads:15
 generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:396:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:398:19: info: initialization of "Y" proved, in instantiation at foo.ads:10
@@ -506,14 +506,14 @@ generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, i
 generic_interval_tests.adb:92:14: warning: subprogram "Test_11" has no effect, in instantiation at bar.ads:8
 generic_interval_tests.adb:97:12: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:97:12: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:98:25: info: assertion proved (CVC4: 1 VC), in instantiation at bar.ads:8
-generic_interval_tests.adb:98:25: medium: assertion might fail, cannot prove X < 0.0, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:127:23: info: initialization of "Z" proved, in instantiation at bar.ads:8
 generic_interval_tests.adb:129:20: info: initialization of "Z" proved, in instantiation at bar.ads:12
 generic_interval_tests.adb:129:20: info: initialization of "Z" proved, in instantiation at bar.ads:8
-generic_interval_tests.adb:129:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bar.ads:12
-generic_interval_tests.adb:129:20: info: postcondition proved (CVC4: 3 VC), in instantiation at bar.ads:8
+generic_interval_tests.adb:129:20: info: postcondition proved (CVC4: 1 VC), in instantiation at bar.ads:12
+generic_interval_tests.adb:129:20: info: postcondition proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:132:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:12
 generic_interval_tests.adb:132:14: info: float overflow check proved (CVC4: 1 VC), in instantiation at bar.ads:8
 generic_interval_tests.adb:136:23: info: initialization of "Z" proved, in instantiation at bar.ads:12
@@ -577,8 +577,8 @@ homothetical.adb:12:24: medium: float overflow check might fail
 homothetical.adb:13:17: info: precondition proved (CVC4: 1 VC)
 homothetical.adb:13:28: medium: float overflow check might fail
 homothetical.adb:41:33: info: loop invariant initialization proved (CVC4: 1 VC)
+homothetical.adb:41:33: info: loop invariant preservation proved (CVC4: 1 VC)
 homothetical.adb:42:35: info: initialization of "kvp" proved
-homothetical.adb:42:35: medium: loop invariant might fail after first iteration, cannot prove kvp (J) > 0.0
 homothetical.adb:42:40: info: index check proved (CVC4: 4 VC)
 homothetical.adb:44:17: info: initialization of "kvp" proved
 homothetical.adb:44:20: info: precondition proved (CVC4: 3 VC)
@@ -605,7 +605,7 @@ homothetical.adb:64:33: medium: float overflow check might fail
 homothetical.adb:64:35: info: initialization of "kvp" proved
 homothetical.adb:65:19: info: initialization of "kamax" proved
 homothetical.adb:65:22: info: initialization of "upsilon" proved
-homothetical.adb:65:33: medium: float overflow check might fail
+homothetical.adb:65:33: info: float overflow check proved (CVC4: 2 VC)
 homothetical.ads:17:17: info: initialization of "kvmax" proved
 homothetical.ads:18:17: info: initialization of "kamax" proved
 homothetical.ads:25:17: info: initialization of "kvmax" proved
