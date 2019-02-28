@@ -107,12 +107,12 @@ package body Gnat2Why_Args is
       procedure Read_File_Specific_Info (V : JSON_Value) is
          R : JSON_Value;
       begin
-         if Source_File /= "" and then Has_Field (V, Source_File) then
+         if Has_Field (V, Source_File) then
             R := Get (V, Source_File);
          elsif Has_Field (V, "Ada") then
             R := Get (V, "Ada");
          else
-            return;
+            raise Program_Error;
          end if;
          Local_Proof_Warnings := Get_Opt_Bool (R, Proof_Warnings_Name);
          Local_No_Loop_Unrolling :=
@@ -137,9 +137,6 @@ package body Gnat2Why_Args is
    --  Start of processing for Init
 
    begin
-      if Args_File = "" then
-         return;
-      end if;
       Ada.Text_IO.Open (File, In_File, Args_File);
 
       while not End_Of_File (File) loop
