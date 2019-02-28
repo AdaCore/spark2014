@@ -255,11 +255,11 @@ package Gnat2Why_Args is
 
 private
 
-   Local_Proof_Warnings    : Boolean := False;
-   Local_No_Inlining       : Boolean := False;
-   Local_Info_Messages     : Boolean := False;
-   Local_No_Loop_Unrolling : Boolean := False;
-   Local_Why3_Args         : String_Lists.List := String_Lists.Empty_List;
+   Local_Proof_Warnings    : Boolean;
+   Local_No_Inlining       : Boolean;
+   Local_Info_Messages     : Boolean;
+   Local_No_Loop_Unrolling : Boolean;
+   Local_Why3_Args         : String_Lists.List;
 
    function Proof_Warnings return Boolean is (Local_Proof_Warnings);
    function No_Inlining return Boolean is (Local_No_Inlining);

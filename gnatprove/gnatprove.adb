@@ -162,7 +162,7 @@ procedure Gnatprove with SPARK_Mode is
       (Translation_Phase : Boolean;
        Obj_Dir           : String;
        Proj_Name         : String) return String;
-   --  Set the environment variable which passes some options to gnat2why.
+   --  Create a file with extra options for gnat2why and return its pathname.
    --  Translation_Phase is False for globals generation, and True for
    --  translation to Why.
 
@@ -898,71 +898,72 @@ procedure Gnatprove with SPARK_Mode is
    is
       use Ada.Strings.Unbounded;
    begin
-      --  Always set debug flags
+      --  Always set debug options
 
       Gnat2Why_Args.Debug_Mode := Debug;
       Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       Gnat2Why_Args.Flow_Generate_Contracts :=
         not CL_Switches.No_Global_Generation;
 
-      --  In the translation phase, set a number of values
+      --  Options needed in both phases
 
-      if Translation_Phase then
-         Gnat2Why_Args.Global_Gen_Mode := False;
-         Gnat2Why_Args.Warning_Mode := Warning_Mode;
-         Gnat2Why_Args.Check_Mode := Configuration.Mode = GPM_Check;
-         Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
-         Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
-         Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
-         Gnat2Why_Args.Flow_Termination_Proof := CL_Switches.Flow_Termination;
-         Gnat2Why_Args.Flow_Show_GG := CL_Switches.Flow_Show_GG;
-         Gnat2Why_Args.Proof_Generate_Guards :=
-           not CL_Switches.No_Axiom_Guard;
-         for FSC in Configuration.File_Specific_Map.Iterate loop
-            declare
-               R  : Gnat2Why_Args.File_Specific;
-               FS : File_Specific renames
-                 Configuration.File_Specific_Map (FSC);
-            begin
-               R.Proof_Warnings := FS.Proof_Warnings;
-               R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
-               R.Info_Messages := FS.Info;
-               R.No_Inlining := FS.No_Inlining;
-               R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
-               Gnat2Why_Args.File_Specific_Map.Insert
-                 (File_Specific_Maps.Key (FSC), R);
-            end;
-         end loop;
-         Gnat2Why_Args.Ide_Mode := IDE_Mode;
-         Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
-         Gnat2Why_Args.Limit_Units := CL_Switches.U;
-         Gnat2Why_Args.Limit_Subp :=
-           Ada.Strings.Unbounded.To_Unbounded_String
-             (CL_Switches.Limit_Subp.all);
-         Gnat2Why_Args.Limit_Line :=
-           Ada.Strings.Unbounded.To_Unbounded_String
-             (CL_Switches.Limit_Line.all);
-         Gnat2Why_Args.Limit_Region :=
-           Ada.Strings.Unbounded.To_Unbounded_String
-             (CL_Switches.Limit_Region.all);
-         Gnat2Why_Args.Report_Mode := Report;
-         Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
-         Gnat2Why_Args.CWE := CL_Switches.CWE;
+      Gnat2Why_Args.Global_Gen_Mode := not Translation_Phase;
 
-         if CodePeer then
-            Gnat2Why_Args.CP_Res_Dir :=
-              To_Unbounded_String
+      Gnat2Why_Args.File_Specific_Map.Clear;
+      --  ??? This is needed because below we populate a global container
+      --  and this function is called once for each phase.
+
+      for FSC in Configuration.File_Specific_Map.Iterate loop
+         declare
+            R  : Gnat2Why_Args.File_Specific;
+            FS : File_Specific renames
+              Configuration.File_Specific_Map (FSC);
+         begin
+            R.Proof_Warnings := FS.Proof_Warnings;
+            R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
+            R.Info_Messages := FS.Info;
+            R.No_Inlining := FS.No_Inlining;
+            R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
+            Gnat2Why_Args.File_Specific_Map.Insert
+              (File_Specific_Maps.Key (FSC), R);
+         end;
+      end loop;
+
+      --  ??? The following are only needed in translation phase
+
+      Gnat2Why_Args.Warning_Mode := Warning_Mode;
+      Gnat2Why_Args.Check_Mode := Configuration.Mode = GPM_Check;
+      Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
+      Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
+      Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
+      Gnat2Why_Args.Flow_Termination_Proof := CL_Switches.Flow_Termination;
+      Gnat2Why_Args.Flow_Show_GG := CL_Switches.Flow_Show_GG;
+      Gnat2Why_Args.Proof_Generate_Guards :=
+        not CL_Switches.No_Axiom_Guard;
+      Gnat2Why_Args.Ide_Mode := IDE_Mode;
+      Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
+      Gnat2Why_Args.Limit_Units := CL_Switches.U;
+      Gnat2Why_Args.Limit_Subp :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (CL_Switches.Limit_Subp.all);
+      Gnat2Why_Args.Limit_Line :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (CL_Switches.Limit_Line.all);
+      Gnat2Why_Args.Limit_Region :=
+        Ada.Strings.Unbounded.To_Unbounded_String
+          (CL_Switches.Limit_Region.all);
+      Gnat2Why_Args.Report_Mode := Report;
+      Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
+      Gnat2Why_Args.CWE := CL_Switches.CWE;
+
+      if CodePeer then
+         Gnat2Why_Args.CP_Res_Dir :=
+           To_Unbounded_String
+             (Compose
                 (Compose
-                   (Compose
-                      (Compose (Obj_Dir, "codepeer"),
-                       Base_Name (Proj_Name) & ".output"),
-                    "sam"));
-         end if;
-
-      --  In the globals generation phase, only set Global_Gen_Mode
-
-      else
-         Gnat2Why_Args.Global_Gen_Mode := True;
+                   (Compose (Obj_Dir, "codepeer"),
+                    Base_Name (Proj_Name) & ".output"),
+                 "sam"));
       end if;
 
       return Gnat2Why_Args.Set (Obj_Dir);
