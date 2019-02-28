@@ -894,7 +894,8 @@ procedure Gnatprove with SPARK_Mode is
    function Pass_Extra_Options_To_Gnat2why
       (Translation_Phase : Boolean;
        Obj_Dir           : String;
-       Proj_Name         : String) return String is
+       Proj_Name         : String) return String
+   is
       use Ada.Strings.Unbounded;
    begin
       --  Always set debug flags
@@ -920,7 +921,8 @@ procedure Gnatprove with SPARK_Mode is
          for FSC in Configuration.File_Specific_Map.Iterate loop
             declare
                R  : Gnat2Why_Args.File_Specific;
-               FS : File_Specific renames File_Specific_Maps.Element (FSC);
+               FS : File_Specific renames
+                 Configuration.File_Specific_Map (FSC);
             begin
                R.Proof_Warnings := FS.Proof_Warnings;
                R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
