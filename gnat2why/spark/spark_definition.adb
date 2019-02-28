@@ -2760,12 +2760,13 @@ package body SPARK_Definition is
         and then
           (not Location_In_Standard_Library (Sloc (N))
             or else Unit_In_Standard_Library (Main_Unit))
+        and then Emit_Warning_Info_Messages
+        and then SPARK_Pragma_Is (Opt.On)
+
       then
          case N_Binary_Op'(Nkind (N)) is
             when N_Op_Add | N_Op_Subtract =>
-               if Emit_Warning_Info_Messages
-                 and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
+               if Nkind (Left_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -2773,9 +2774,7 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Emit_Warning_Info_Messages
-                 and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
+               if Nkind (Right_Opnd (N)) in N_Op_Add | N_Op_Subtract
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -2784,9 +2783,7 @@ package body SPARK_Definition is
                end if;
 
             when N_Op_Multiply | N_Op_Divide | N_Op_Mod | N_Op_Rem =>
-               if Emit_Warning_Info_Messages
-                 and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind (Left_Opnd (N)) in N_Multiplying_Operator
+               if Nkind (Left_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Left_Opnd (N)) = 0
                then
                   Error_Msg_F
@@ -2794,9 +2791,7 @@ package body SPARK_Definition is
                      Left_Opnd (N));
                end if;
 
-               if Emit_Warning_Info_Messages
-                 and then SPARK_Pragma_Is (Opt.On)
-                 and then Nkind (Right_Opnd (N)) in N_Multiplying_Operator
+               if Nkind (Right_Opnd (N)) in N_Multiplying_Operator
                  and then Paren_Count (Right_Opnd (N)) = 0
                then
                   Error_Msg_F
