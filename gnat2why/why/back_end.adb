@@ -38,7 +38,6 @@ with Osint;
 with SPARK_Definition;
 with Stringt;
 with System;
-with Types; use Types;
 
 package body Back_End is
 
@@ -161,9 +160,8 @@ package body Back_End is
       --  Read extra options for gnat2why
 
       declare
-         Args_File   : constant String :=
-           (if Opt.SPARK_Switches_File_Name = null then ""
-            else Opt.SPARK_Switches_File_Name.all);
+         Args_File   : String renames
+           Opt.SPARK_Switches_File_Name.all;
          Source_File : constant String :=
            Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
       begin
