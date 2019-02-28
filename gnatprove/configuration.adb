@@ -89,7 +89,7 @@ package body Configuration is
    --  recognized switches are automatic, so this procedure should only be
    --  called for unknown switches and for switches in section -cargs.
 
-   procedure Prepare_Prover_Lib;
+   procedure Prepare_Prover_Lib (Obj_Dir : String);
    --  Deal with the why3 libraries manual provers might need.
    --  Copies needed sources into gnatprove and builds the library.
    --  For the moment, only Coq is handled.
@@ -791,7 +791,7 @@ package body Configuration is
    -- Prepare_Prover_Lib --
    ------------------------
 
-   procedure Prepare_Prover_Lib is
+   procedure Prepare_Prover_Lib (Obj_Dir : String) is
 
       Provers        : constant String_Lists.List :=
         File_Specific_Map.Element ("Ada").Provers;
@@ -802,7 +802,7 @@ package body Configuration is
           (Compose (SPARK_Install.Share_Why3, "libs"),
            Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
-        (Compose (Phase2_Subdir.Display_Full_Name, "why3_libs"),
+        (Compose (Obj_Dir, "why3_libs"),
          Name => Prover_Name);
 
       procedure Compile_Lib (Dir, File : String);
@@ -1986,12 +1986,12 @@ package body Configuration is
             Socket_Name := new String'(
                (if Socket_Dir = "" then Socket_Base
                 else Compose (Socket_Dir, Socket_Base)));
+            if Is_Coq_Prover then
+               Prepare_Prover_Lib (Proj_Type.Artifacts_Dir.Display_Full_Name);
+            end if;
          end;
       end;
 
-      if Is_Coq_Prover then
-         Prepare_Prover_Lib;
-      end if;
       Sanitize_File_List (Tree);
 
    exception

@@ -99,9 +99,8 @@ package body Gnat2Why.Driver is
    -- Local Subprograms --
    -----------------------
 
-   procedure Compute_Global_Effects;
+   procedure Prescan_ALI_Files;
    --  Pre-scan ALI files, so they can be easily iterated
-   --  ??? the current name comes from historic design
 
    procedure Complete_Declaration (E : Entity_Id);
    --  Generate completion for every subprogram or type entity in List_Entities
@@ -236,11 +235,11 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
-   ----------------------------
-   -- Compute_Global_Effects --
-   ----------------------------
+   -----------------------
+   -- Prescan_ALI_Files --
+   -----------------------
 
-   procedure Compute_Global_Effects is
+   procedure Prescan_ALI_Files is
       Main_Lib_File : File_Name_Type;
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
@@ -272,7 +271,7 @@ package body Gnat2Why.Driver is
       Free (Text);
 
       Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
-   end Compute_Global_Effects;
+   end Prescan_ALI_Files;
 
    ---------------------
    -- Do_Generate_VCs --
@@ -353,9 +352,9 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      E          : constant Entity_Id :=
+      E         : constant Entity_Id :=
         Unique_Defining_Entity (Unit (GNAT_Root));
-      Base_Name  : constant String :=
+      Base_Name : constant String :=
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
 
@@ -519,23 +518,17 @@ package body Gnat2Why.Driver is
             end if;
          end;
 
-         --  ??? we don't really need frontend globals in phase 2, but
-         --  Compute_Global_Effects populates a table with ALI files and that
-         --  table is used in GG_Read (which needs to be called even if
-         --  --no-global-generation switch is used to get non-global effects,
-         --  like potentially blocking and termination statuses).
-         --
-         --  This functionality should be moved out of Compute_Global_Effects
-         --
-         --  Also, we use frontend globals for
-         --  SPARK_Frame_Conditions.Is_Protected_Operation
-         --
-         --  Also this functionality should be moved (to generated globals)
-         Compute_Global_Effects;
-         Timing_Phase_Completed (Timing, "globals (basic)");
-
          --  Register mappings from entity names to entity ids
          Register_All_Entities;
+
+         --  Populate a table with ALI files which is used in GG_Read
+         --  (which needs to be called even if --no-global-generation switch
+         --  is used to get non-global effects, like potentially blocking and
+         --  termination statuses).
+         --
+         --  This functionality should be moved out of Compute_Global_Effects
+         Prescan_ALI_Files;
+         Timing_Phase_Completed (Timing, "globals (basic)");
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);

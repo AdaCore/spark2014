@@ -1105,7 +1105,7 @@ package body Flow is
       FA.CDG                                  := Create;
       FA.TDG                                  := Create;
       FA.PDG                                  := Create;
-      FA.No_Errors_Or_Warnings                := True;
+      FA.Errors_Or_Warnings                   := False;
       FA.Has_Potentially_Nonterminating_Loops := False;
       FA.Has_Only_Nonblocking_Statements      := True;
       FA.Has_Only_Exceptional_Paths           := False;
@@ -1433,7 +1433,7 @@ package body Flow is
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
-                  if FA.No_Errors_Or_Warnings then
+                  if not FA.Errors_Or_Warnings then
                      Register_Claim (Claim'(E    => FA.Analyzed_Entity,
                                             Kind => Claim_Effects));
                   end if;

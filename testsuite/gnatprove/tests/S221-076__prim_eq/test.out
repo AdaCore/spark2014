@@ -1,0 +1,10 @@
+use_my_eq.adb:8:19: info: initialization of "X.Content" proved
+use_my_eq.adb:8:23: info: initialization of "Y.Content" proved
+use_my_eq.adb:9:19: info: assertion proved (CVC4: 1 VC)
+use_my_eq.adb:9:28: info: initialization of "X.Content" proved
+use_my_eq.adb:9:39: info: initialization of "Y.Content" proved
+use_my_eq_arr.adb:6:19: info: initialization of "W" proved
+use_my_eq_arr.adb:6:23: info: initialization of "Z" proved
+use_my_eq_arr.adb:7:19: info: assertion proved (CVC4: 1 VC)
+use_my_eq_arr.adb:7:28: info: initialization of "W" proved
+use_my_eq_arr.adb:7:35: info: initialization of "Z" proved

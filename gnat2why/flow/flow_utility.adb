@@ -2745,7 +2745,7 @@ package body Flow_Utility is
                | E_Subprogram_Body
                | E_Task_Body
                | E_Void
-               =>
+            =>
                raise Program_Error;
 
          end case;

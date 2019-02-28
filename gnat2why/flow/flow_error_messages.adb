@@ -551,11 +551,11 @@ package body Flow_Error_Messages is
                       Tracefile    => Tracefile,
                       Continuation => Continuation);
 
-      --  Set the No_Errors_Or_Warnings flag to False for this entity if we are
+      --  Set the Errors_Or_Warnings flag to True for this entity if we are
       --  with anything but a suppressed warning.
 
       if not Suppressed then
-         FA.No_Errors_Or_Warnings := False;
+         FA.Errors_Or_Warnings := True;
       end if;
    end Error_Msg_Flow;
 

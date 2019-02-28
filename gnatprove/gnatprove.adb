@@ -122,7 +122,9 @@ procedure Gnatprove with SPARK_Mode is
    function Report_File_Is_Empty (Filename : String) return Boolean;
    --  Check if the given file is empty
 
-   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List;
+   function Compute_Why3_Args (Obj_Dir : String;
+                               FS      : File_Specific)
+                               return String_Lists.List;
    --  Compute the list of arguments of gnatwhy3. This list is passed first to
    --  gnat2why, which then passes it to gnatwhy3.
 
@@ -329,7 +331,9 @@ procedure Gnatprove with SPARK_Mode is
    -- Compute_Why3_Args --
    -----------------------
 
-   function Compute_Why3_Args (FS : File_Specific) return String_Lists.List
+   function Compute_Why3_Args (Obj_Dir : String;
+                               FS      : File_Specific)
+                               return String_Lists.List
    is
 
       Args    : String_Lists.List;
@@ -377,8 +381,12 @@ procedure Gnatprove with SPARK_Mode is
          Gnatwhy3 : constant String :=
            Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
       begin
-         Set_Directory (Phase2_Subdir.Display_Full_Name);
+         --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
+         Set_Directory (Obj_Dir);
          if Verbose then
+            Ada.Text_IO.Put
+              ("Changing to object directory: """ & Obj_Dir & """");
+            Ada.Text_IO.New_Line;
             Ada.Text_IO.Put (Gnatwhy3 & " ");
             for Arg of Args loop
                Ada.Text_IO.Put (Arg.all & " ");
@@ -392,6 +400,11 @@ procedure Gnatprove with SPARK_Mode is
             Free (Args (It));
          end loop;
          Set_Directory (Old_Dir);
+         if Verbose then
+            Ada.Text_IO.Put
+              ("Changing back to directory: """ & Old_Dir & """");
+            Ada.Text_IO.New_Line;
+         end if;
          if not Res then
             Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error,
                                   "Failed to compile shared");
@@ -913,7 +926,7 @@ procedure Gnatprove with SPARK_Mode is
                R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
                R.Info_Messages := FS.Info;
                R.No_Inlining := FS.No_Inlining;
-               R.Why3_Args := Compute_Why3_Args (FS);
+               R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
                Gnat2Why_Args.File_Specific_Map.Insert
                  (File_Specific_Maps.Key (FSC), R);
             end;

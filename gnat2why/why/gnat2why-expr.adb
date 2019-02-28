@@ -10474,28 +10474,75 @@ package body Gnat2Why.Expr is
                   Prefix_Expr := +Transform_Expr (Domain => Domain,
                                                   Expr   => Pref,
                                                   Params => Params);
-                  T := New_Ada_Record_Update
-                    (Name     => +Prefix_Expr,
-                     Domain   => Domain,
-                     Updates  =>
-                       Transform_Record_Component_Associations
-                         (Domain              => Domain,
-                          Typ                 => Pref_Typ,
-                          Assocs              =>
-                            Component_Associations (Aggr),
-                          Params              => Params,
-                          In_Attribute_Update => True));
 
-                  --  If the target type has a direct or inherited predicate,
-                  --  generate a corresponding check.
+                  --  As discriminants may occur as bounds in types of
+                  --  discriminant dependent components, store them in the
+                  --  symbol table.
 
-                  if Domain = EW_Prog
-                    and then Has_Predicates (Pref_Typ)
-                  then
-                     T := +Insert_Predicate_Check (Ada_Node => Expr,
-                                                   Check_Ty => Pref_Typ,
-                                                   W_Expr   => +T);
-                  end if;
+                  declare
+                     Num_Discrs : constant Natural :=
+                       Count_Discriminants (Pref_Typ);
+                     Tmps       : W_Identifier_Array (1 .. Num_Discrs);
+                     Vals       : W_Expr_Array (1 .. Num_Discrs);
+                  begin
+                     Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+                     if Num_Discrs > 0 then
+                        declare
+                           D : Entity_Id := First_Discriminant (Pref_Typ);
+                        begin
+                           for I in 1 .. Num_Discrs loop
+                              Tmps (I) := New_Temp_Identifier
+                                (Typ => EW_Abstract (Etype (D)));
+                              Vals (I) := New_Ada_Record_Access
+                                (Ada_Node => Empty,
+                                 Domain   => EW_Term,
+                                 Name     => Prefix_Expr,
+                                 Field    => D,
+                                 Ty       => Pref_Typ);
+
+                              Insert_Entity (D, Tmps (I));
+
+                              Next_Discriminant (D);
+                           end loop;
+                           pragma Assert (No (D));
+                        end;
+                     end if;
+
+                     T := New_Ada_Record_Update
+                       (Name     => +Prefix_Expr,
+                        Domain   => Domain,
+                        Updates  =>
+                          Transform_Record_Component_Associations
+                            (Domain              => Domain,
+                             Typ                 => Pref_Typ,
+                             Assocs              =>
+                               Component_Associations (Aggr),
+                             Params              => Params,
+                             In_Attribute_Update => True));
+
+                     --  If the target type has a direct or inherited
+                     --  predicate, generate a corresponding check.
+
+                     if Domain = EW_Prog
+                       and then Has_Predicates (Pref_Typ)
+                     then
+                        T := +Insert_Predicate_Check (Ada_Node => Expr,
+                                                      Check_Ty => Pref_Typ,
+                                                      W_Expr   => +T);
+                     end if;
+
+                     --  Add bindings for discriminants
+
+                     for I in 1 .. Num_Discrs loop
+                        T := New_Binding
+                          (Domain  => Domain,
+                           Name    => Tmps (I),
+                           Def     => Vals (I),
+                           Context => T,
+                           Typ     => EW_Abstract (Pref_Typ));
+                     end loop;
+                     Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+                  end;
 
                else
                   pragma Assert (Is_Array_Type (Pref_Typ));

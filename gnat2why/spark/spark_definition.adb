@@ -4750,6 +4750,19 @@ package body SPARK_Definition is
                   Mark (Default_Aspect_Component_Value (E));
                end if;
 
+               --  Mark the equality function for Component_Typ if it is used
+               --  for the predefined equality of E.
+
+               if Is_Record_Type
+                 (Get_Full_Type_Without_Checking (Component_Typ))
+                 and then Present
+                   (Get_User_Defined_Eq (Base_Type (Component_Typ)))
+               then
+                  Mark_Entity
+                    (Ultimate_Alias
+                       (Get_User_Defined_Eq (Base_Type (Component_Typ))));
+               end if;
+
                --  Check use of pragma Annotate Init_By_Proof
 
                if Has_Init_By_Proof (Component_Typ)
@@ -4896,6 +4909,19 @@ package body SPARK_Definition is
                      then
                         if not In_SPARK (Comp_Type) then
                            Mark_Violation (Comp, From => Comp_Type);
+                        end if;
+
+                        --  Mark the equality function for Comp_Type if it is
+                        --  used for the predefined equality of E.
+
+                        if Is_Record_Type
+                          (Get_Full_Type_Without_Checking (Comp_Type))
+                          and then Present
+                            (Get_User_Defined_Eq (Base_Type (Comp_Type)))
+                        then
+                           Mark_Entity
+                             (Ultimate_Alias
+                                (Get_User_Defined_Eq (Base_Type (Comp_Type))));
                         end if;
 
                         --  Mark default value of component or discriminant
@@ -6963,25 +6989,21 @@ package body SPARK_Definition is
 
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
         with Static_Predicate =>
-          SPARK_Pragma_Scope_With_Type_Decl in
-            E_Abstract_State     |
-            E_Constant           |
-            E_Variable           |
-            E_Protected_Body     |
-            E_Protected_Type     |
-            E_Task_Body          |
-            E_Task_Type          |
-            E_Entry              |
-            E_Entry_Family       |
-            E_Function           |
-            E_Generic_Function   |
-            E_Generic_Procedure  |
-            E_Operator           |
-            E_Procedure          |
-            E_Subprogram_Body    |
-            E_Generic_Package    |
-            E_Package            |
-            E_Package_Body;
+          SPARK_Pragma_Scope_With_Type_Decl in E_Abstract_State
+                                             | E_Constant
+                                             | E_Variable
+                                             | E_Protected_Body
+                                             | E_Protected_Type
+                                             | E_Task_Body
+                                             | E_Task_Type
+                                             | E_Entry
+                                             | E_Entry_Family
+                                             | E_Function
+                                             | E_Operator
+                                             | E_Procedure
+                                             | E_Subprogram_Body
+                                             | E_Package
+                                             | E_Package_Body;
 
    --  Start of processing for SPARK_Pragma_Of_Entity
 
@@ -7057,10 +7079,12 @@ package body SPARK_Definition is
                  and then Is_Quantified_Loop_Param (E))
       then
          return
-           SPARK_Pragma_Of_Entity (Enclosing_Package_Or_Subprogram (E));
+           SPARK_Pragma_Of_Entity (Enclosing_Unit (E));
       end if;
 
-      if Is_Formal (E) then
+      if Is_Formal (E)
+        or else Ekind (E) = E_Discriminant
+      then
          return SPARK_Pragma (Scope (E));
       end if;
 
@@ -7070,8 +7094,11 @@ package body SPARK_Definition is
       --  SPARK_Mode pragma.
 
       declare
+         pragma Assert (Is_Type (E) or else Is_Named_Number (E));
+
          Def : Entity_Id := E;
          --  Entity which defines type E
+
          Def_Scop : Entity_Id := Lexical_Scope (E);
          --  Immediate scope of the entity that defines E
       begin
@@ -7092,15 +7119,30 @@ package body SPARK_Definition is
               Private_Declarations (Package_Specification (Def_Scop))
             then
                return SPARK_Aux_Pragma (Def_Scop);
+            else
+               pragma Assert
+                 (List_Containing (Parent (Def)) =
+                    Visible_Declarations (Package_Specification (Def_Scop)));
             end if;
 
          when E_Package_Body =>
             if List_Containing (Parent (Def)) =
-              Statements (
-                          Handled_Statement_Sequence (Package_Body (Def_Scop)))
+              Statements (Handled_Statement_Sequence (Package_Body (Def_Scop)))
             then
                return SPARK_Aux_Pragma (Def_Scop);
+            else
+               pragma Assert
+                 (List_Containing (Parent (Def)) =
+                    Declarations (Package_Body (Def_Scop)));
             end if;
+
+         --  Similar correction could be needed for concurrent types too, but
+         --  types and named numbers can't be nested there.
+
+         when E_Protected_Type
+            | E_Task_Type
+         =>
+            raise Program_Error;
 
          when others =>
             null;
