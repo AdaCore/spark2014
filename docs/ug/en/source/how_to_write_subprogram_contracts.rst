@@ -763,6 +763,17 @@ If every subprogram in a package is terminating, the package itself can be
 annotated with the terminating annotation. If the annotation is located on a
 generic package, then it should be valid for every instance of the package.
 
+An aspect can be used instead of a pragma for both packages and subprograms:
+
+.. code-block:: ada
+
+   package Pack with
+      Annotate => (GNATprove, Terminating)
+   is
+      procedure Proc with
+        Annotate => (GNATprove, Terminating);
+   ...
+
 If a subprogram in |SPARK| is explicitly annotated as terminating, flow analysis
 will attempt to make sure that all the paths through the subprogram effectively
 return. In effect, it will look for while loops with no loop variants, recursive

@@ -6238,8 +6238,35 @@ package body SPARK_Definition is
       if Inserted then
          declare
             Spec : constant Node_Id := Package_Specification (E);
-            Cur  : Node_Id := First (Visible_Declarations (Spec));
+            Decl : constant Node_Id := Package_Spec (E);
+            Cur  : Node_Id;
+
          begin
+            --  First handle GNATprove annotations at the beginning of the
+            --  package spec.
+
+            Cur := First (Visible_Declarations (Spec));
+            while Present (Cur) loop
+               if Is_Pragma_Annotate_GNATprove (Cur) then
+                  Mark_Pragma_Annotate (Cur,
+                                        Spec,
+                                        Consider_Next => False);
+               elsif Decl_Starts_Pragma_Annotate_Range (Cur) then
+                  exit;
+               end if;
+               Next (Cur);
+            end loop;
+
+            --  Then handle GNATprove annotations that follow the package spec,
+            --  typically corresponding to aspects in the source code.
+
+            if Nkind (Atree.Parent (Decl)) = N_Compilation_Unit then
+               Cur :=
+                 First (Pragmas_After (Aux_Decls_Node (Atree.Parent (Decl))));
+            else
+               Cur := Next (Decl);
+            end if;
+
             while Present (Cur) loop
                if Is_Pragma_Annotate_GNATprove (Cur) then
                   Mark_Pragma_Annotate (Cur,
@@ -6386,6 +6413,7 @@ package body SPARK_Definition is
       Preceding : Node_Id;
       Cur       : Node_Id := First (L);
       Is_Parent : Boolean := True;
+
    begin
       --  We delay the initialization after checking that we really have a list
 
