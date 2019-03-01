@@ -73,11 +73,6 @@ project GNAT2Why is
          "flow-analysis-sanity.adb",
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
-         "flow_generated_globals-partial.adb",
-         "flow_generated_globals-phase_2.adb",
-         "flow_utility.adb",
-         "flow_visibility.adb",
-         "gnat2why-expr.adb",
          "graphs.adb",
          "why-atree-sprint.adb");
 

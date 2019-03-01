@@ -8631,7 +8631,7 @@ package body Gnat2Why.Expr is
          -- Local subprograms --
          -----------------------
 
-         type Transform_Rec_Func is access function
+         type Transform_Rec_Func is not null access function
            (Dim  : Pos;
             Expr : Node_Id) return W_Expr_Id;
          --  Type of callback used to refer to either one of the recursive
@@ -13810,10 +13810,9 @@ package body Gnat2Why.Expr is
       Params  : Transformation_Params;
       No_Init : Boolean := False) return W_Expr_Id
    is
-      Exp_Type_Set  : Boolean := False;
-      Expected_Type : W_Type_Id;
-   begin
+      Expected_Type : W_Type_Id := Why_Empty;
 
+   begin
       --  For record fields, use the type of the field access (that is, the
       --  type of the field in the Retyps of the record type) to avoid
       --  conversions.
@@ -13828,9 +13827,9 @@ package body Gnat2Why.Expr is
          begin
             Expected_Type :=
               (if Is_Part_Of_Protected_Object (Field) then
-                    EW_Abstract (Etype (Field))
+                 EW_Abstract (Etype (Field))
                else
-                  EW_Abstract (Etype (Search_Component_In_Type (Ty, Field))));
+                 EW_Abstract (Etype (Search_Component_In_Type (Ty, Field))));
 
             --  If No_Init is set, use the wrapper type as the expected kind if
             --  any to avoid introducing an initialization check.
@@ -13838,8 +13837,6 @@ package body Gnat2Why.Expr is
             if No_Init then
                Expected_Type := EW_Init_Wrapper (Expected_Type);
             end if;
-
-            Exp_Type_Set := True;
          end;
 
       elsif No_Init then
@@ -13857,7 +13854,6 @@ package body Gnat2Why.Expr is
                   if B.Init.Present then
                      Expected_Type := EW_Init_Wrapper
                        (Get_Why_Type_From_Item (B));
-                     Exp_Type_Set := True;
                   end if;
                end if;
             end;
@@ -13868,13 +13864,12 @@ package body Gnat2Why.Expr is
             Expected_Type :=
               EW_Init_Wrapper
                 (Component_Type (Retysp (Etype (Prefix (Expr)))), EW_Abstract);
-            Exp_Type_Set := True;
          end if;
       end if;
 
       --  Otherwise, use type of node
 
-      if not Exp_Type_Set then
+      if No (Expected_Type) then
          Expected_Type := Type_Of_Node (Expr);
       end if;
 
@@ -17435,7 +17430,7 @@ package body Gnat2Why.Expr is
                     Kind => Definition_Theory,
                     Defined_Entity => N);
 
-      if Params.File = Why_Sections (Decl_File).Kind then
+      if Params.File = Decl_File then
          Why_Sections (Decl_File).Cur_Theory := Save_Theory;
       end if;
    end Transform_String_Literal;
