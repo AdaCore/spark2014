@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfdlli.ads:1362:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1377:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1392:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1414:14: info: precondition proved (Z3: 2 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1414:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1420:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1469:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1476:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1575:54: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:6
@@ -429,7 +430,6 @@ my_lists.adb:29:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:29:30: info: initialization of private part of "L" proved
 my_lists.adb:30:21: info: initialization of private part of "L" proved
 my_lists.adb:32:07: medium: assertion might fail
-my_lists.adb:33:30: info: assertion proved (Z3: 2 VC)
 my_lists.adb:33:30: info: initialization of "C.Node" proved
 my_lists.adb:33:57: info: initialization of private part of "L" proved
 my_lists.adb:34:07: info: precondition proved (Z3: 2 VC)
@@ -511,7 +511,6 @@ my_lists.adb:66:15: info: initialization of private part of "L" proved
 my_lists.adb:66:18: info: initialization of "D.Node" proved
 my_lists.adb:68:14: info: initialization of private part of "L" proved
 my_lists.adb:71:07: medium: assertion might fail
-my_lists.adb:72:30: info: assertion proved (Z3: 3 VC)
 my_lists.adb:72:30: info: initialization of "C.Node" proved
 my_lists.adb:72:57: info: initialization of private part of "L" proved
 my_lists.adb:72:76: info: initialization of private part of "K" proved
@@ -610,7 +609,6 @@ my_lists.adb:121:25: info: initialization of private part of "L" proved
 my_lists.adb:121:29: info: initialization of private part of "K" proved
 my_lists.adb:121:32: info: initialization of "C.Node" proved
 my_lists.adb:123:07: medium: assertion might fail
-my_lists.adb:124:30: info: assertion proved (Z3: 1 VC)
 my_lists.adb:124:38: info: initialization of private part of "L" proved
 my_lists.adb:126:37: info: initialization of private part of "L" proved
 my_lists.adb:127:07: info: precondition proved (Z3: 1 VC)
@@ -1145,7 +1143,7 @@ my_ordered_sets.adb:61:28: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:61:37: info: initialization of private part of "K" proved
 my_ordered_sets.adb:61:39: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:61:42: info: initialization of private part of "L" proved
-my_ordered_sets.adb:62:25: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:62:25: medium: assertion might fail, cannot prove Equivalent_Sets (M and L, K and L)
 my_ordered_sets.adb:62:42: info: initialization of private part of "M" proved
 my_ordered_sets.adb:62:51: info: initialization of private part of "K" proved
 my_ordered_sets.adb:62:57: info: initialization of private part of "L" proved
@@ -1600,7 +1598,7 @@ my_sets.adb:168:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:168:36: info: initialization of private part of "L" proved
 my_sets.adb:169:18: info: initialization of private part of "L" proved
 my_sets.adb:170:16: info: initialization of private part of "L" proved
-my_sets.adb:171:22: info: assertion proved (Z3: 1 VC)
+my_sets.adb:171:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
 my_sets.adb:171:32: info: initialization of private part of "L" proved
 my_sets.adb:172:16: info: initialization of private part of "L" proved
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
@@ -1794,7 +1792,7 @@ my_vectors.adb:106:21: info: initialization of private part of "K" proved
 my_vectors.adb:107:07: info: precondition proved (Z3: 1 VC)
 my_vectors.adb:107:14: info: initialization of private part of "L" proved
 my_vectors.adb:107:17: info: initialization of private part of "K" proved
-my_vectors.adb:108:22: info: assertion proved (Z3: 1 VC)
+my_vectors.adb:108:22: info: assertion proved (CVC4: 1 VC)
 my_vectors.adb:108:33: info: initialization of private part of "L" proved
 my_vectors.adb:110:14: info: initialization of private part of "L" proved
 my_vectors.adb:111:07: medium: assertion might fail

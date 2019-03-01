@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_container.ads:7
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at formal_container.ads:7
@@ -185,8 +186,8 @@ test_vdll.adb:141:44: info: initialization of private part of "L3" proved
 test_vdll.adb:142:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:142:36: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:142:53: info: initialization of private part of "L3" proved
-test_vdll.adb:143:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:143:19: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:143:19: medium: assertion might fail, cannot prove Test_Element (L3, Next (L3, First (L3)), 4)
 test_vdll.adb:143:37: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:143:54: info: initialization of private part of "L3" proved
 test_vdll.adb:146:19: info: assertion proved (CVC4: 1 VC)
@@ -208,14 +209,14 @@ test_vdll.adb:166:11: info: discriminant check proved (CVC4: 1 VC)
 test_vdll.adb:166:11: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:166:17: info: initialization of private part of "L1" proved
 test_vdll.adb:167:18: info: initialization of private part of "L4" proved
-test_vdll.adb:168:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:168:19: medium: assertion might fail, cannot prove Length (L4) = 1 [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
 test_vdll.adb:168:27: info: initialization of private part of "L4" proved
 test_vdll.adb:171:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:171:43: info: initialization of private part of "L4" proved
 test_vdll.adb:172:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:172:19: medium: assertion might fail, cannot prove Test_Element (L4, First (L4), 4) [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
 test_vdll.adb:172:44: info: initialization of private part of "L4" proved
-test_vdll.adb:175:19: info: assertion proved (CVC4: 1 VC)
+test_vdll.adb:175:19: medium: assertion might fail, cannot prove not Has_Element (L4, Next (L1, First (L1))) [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
 test_vdll.adb:175:36: info: initialization of private part of "L4" proved
 test_vdll.adb:175:40: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:175:57: info: initialization of private part of "L1" proved
@@ -223,7 +224,7 @@ test_vdll.adb:178:19: info: assertion proved (CVC4: 1 VC)
 test_vdll.adb:178:19: info: precondition proved (CVC4: 1 VC)
 test_vdll.adb:178:25: info: initialization of private part of "L4" proved
 test_vdll.adb:186:12: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element [possible explanation: call at line 167 should mention Container (for argument L4) in a postcondition]
-test_vdll.adb:187:18: info: precondition proved (CVC4: 1 VC)
+test_vdll.adb:187:18: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element
 test_vdll.adb:187:28: info: initialization of private part of "L1" proved
 test_vdll.adb:188:35: info: initialization of private part of "L4" proved
 test_vdll.adb:189:30: info: assertion proved (CVC4: 1 VC)
