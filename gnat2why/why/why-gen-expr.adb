@@ -270,7 +270,11 @@ package body Why.Gen.Expr is
             return Get_Typ (W_Call_Id (E));
 
          when W_Binding =>
-            return Get_Typ (W_Binding_Id (E));
+            if Get_Typ (W_Binding_Id (E)) = Why_Empty then
+               return Get_Type (Get_Context (W_Binding_Id (E)));
+            else
+               return Get_Typ (W_Binding_Id (E));
+            end if;
 
          when W_Elsif =>
             return Get_Typ (W_Elsif_Id (E));
