@@ -48,7 +48,7 @@ reference an object from another units:
 .. code-block:: ada
 
    package Other is
-      function Proxy;
+      function Proxy return Boolean;
    end;
 
    package body Other is
