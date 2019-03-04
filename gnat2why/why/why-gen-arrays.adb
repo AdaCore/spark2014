@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                       Copyright (C) 2010-2019, AdaCore                   --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -216,7 +216,8 @@ package body Why.Gen.Arrays is
            New_Call
              (Domain => Domain,
               Name   => E_Symb (Ty, WNE_To_Array),
-              Args   => (1 => Expr));
+              Args   => (1 => Expr),
+              Typ    => EW_Split (Ty));
       end if;
       Arg_Ind := Arg_Ind + 1;
    end Add_Map_Arg;
