@@ -26,6 +26,7 @@
 
 with Ada.Directories;           use Ada.Directories;
 with Ada.Text_IO;               use Ada.Text_IO;
+with Call;                      use Call;
 with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
@@ -130,23 +131,11 @@ package body Gnat2Why_Args is
          end if;
       end Read_File_Specific_Info;
 
-      File_Text : Unbounded_String := Null_Unbounded_String;
-      File      : File_Type;
-      V         : JSON_Value;
+      V : constant JSON_Value := Read (Read_File_Into_String (Args_File));
 
    --  Start of processing for Init
 
    begin
-      Ada.Text_IO.Open (File, In_File, Args_File);
-
-      while not End_Of_File (File) loop
-         Append (File_Text, Get_Line (File));
-      end loop;
-
-      Ada.Text_IO.Close (File);
-
-      V := Read (File_Text);
-
       Global_Gen_Mode         := Get_Opt_Bool (V, Global_Gen_Mode_Name);
       Check_Mode              := Get_Opt_Bool (V, Check_Mode_Name);
       Check_All_Mode          := Get_Opt_Bool (V, Check_All_Mode_Name);
