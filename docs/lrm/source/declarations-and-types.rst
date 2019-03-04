@@ -792,53 +792,55 @@ a class-wide type might be an owning type).]
      not in the Moved state and is not declared at a statically deeper
      accessibility level than that of the target object.
 
-?. An the point of a dereference of an object, the object shall not be in the
-   Moved or Borrowed state.
-
 .. _tu-access_types-09:
 
-9. At the point of a read of an object, or of passing an object as an actual
-   parameter of mode **in** or **in out**, or of a call where the object is a
-   global input of the callee, neither the object nor any of its reachable
-   elements shall be in the Moved or Borrowed state.
-
-   At the point of a return statement, or at any other point where a call
-   completes normally (e.g., the end of a procedure body), no outputs of the
-   callee being returned from shall be in the Moved state.
-
-   In the case where the input or output in question is a state abstraction,
-   these rules also apply to any constituents (direct or indirect) of that
-   state abstraction.
+9. An the point of a dereference of an object, the object shall not be in the
+   Moved or Borrowed state.
 
 .. _tu-access_types-10:
 
-10. If the state of a name that denotes a managed object is Observed, the name
-    shall not be moved, borrowed, or assigned.
+10. At the point of a read of an object, or of passing an object as an actual
+    parameter of mode **in** or **in out**, or of a call where the object is a
+    global input of the callee, neither the object nor any of its reachable
+    elements shall be in the Moved or Borrowed state.
+
+    At the point of a return statement, or at any other point where a call
+    completes normally (e.g., the end of a procedure body), no outputs of the
+    callee being returned from shall be in the Moved state.
+
+    In the case where the input or output in question is a state abstraction,
+    these rules also apply to any constituents (direct or indirect) of that
+    state abstraction.
 
 .. _tu-access_types-11:
 
-11. If the state of a name that denotes a managed object is Borrowed, the name
-    shall not be moved, borrowed, observed, or assigned.
+11. If the state of a name that denotes a managed object is Observed, the name
+    shall not be moved, borrowed, or assigned.
 
 .. _tu-access_types-12:
 
-12. At the point of a call, any name that denotes a managed object that is a
+12. If the state of a name that denotes a managed object is Borrowed, the name
+    shall not be moved, borrowed, observed, or assigned.
+
+.. _tu-access_types-13:
+
+13. At the point of a call, any name that denotes a managed object that is a
     global output of the callee (i.e., an output other than a parameter of the
     callee or a function result) shall not be in the Observed or Borrowed
     state.  Similarly, any name that denotes a managed object that is a global
     input of the callee shall not be in the Moved or Borrowed state.
 
-.. _tu-access_types-13:
+.. _tu-access_types-14:
 
-13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
+14. The prefix of an Old or Loop_Entry attribute reference shall not be of an
     owning or observing type unless the prefix is a function_call and the
     called function is not a traversal function.
 
 .. centered:: **Verification Rules**
 
-.. _tu-access_types-14:
+.. _tu-access_types-15:
 
-14. When an owning access object other than a borrower, an observer,
+15. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
