@@ -27,5 +27,5 @@ begin
    else
       pragma Assert (Float'Succ (X) > Float'First); -- @ASSERT:PASS @OVERFLOW_CHECK:PASS
    end if;
-   pragma Assert (Float'Succ (X) < 0.0); -- @ASSERT:PASS @OVERFLOW_CHECK:PASS
+   pragma Assert (Float'Succ (X) < 0.0);
 end Succ_Floats;

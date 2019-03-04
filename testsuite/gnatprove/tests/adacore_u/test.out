@@ -1,9 +1,9 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
 aliasing.adb:26:23: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:23: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
+aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
@@ -11,7 +11,7 @@ search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
 search_array.adb:12:07: medium: exception might be raised
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
-use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL') [possible explanation: subprogram at use_access.ads:4 should mention W in a precondition]
+use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 1) [possible explanation: subprogram at use_access.ads:4 should mention W in a precondition]
 use_access.adb:3:45: medium: array index check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 0)
 gnatprove: error during flow analysis and proof
 p.adb:13:41: info: index check proved (CVC4: 2 VC)
@@ -32,7 +32,7 @@ p.adb:56:07: info: raise statement proved unreachable (CVC4: 1 VC)
 p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC4: 2 VC)
 p.adb:70:14: info: discriminant check proved (CVC4: 2 VC)
-p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = 0 and Beginning = 0)
+p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = -2147483648)
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:88:30: medium: overflow check might fail (e.g. when Beginning = Integer'Last)
 p.adb:89:20: info: postcondition proved (CVC4: 2 VC)
@@ -40,7 +40,7 @@ p.adb:89:41: medium: overflow check might fail (e.g. when A = (others => 1) and 
 p.adb:93:16: info: index check proved (CVC4: 2 VC)
 p.adb:94:23: info: index check proved (CVC4: 2 VC)
 p.adb:99:42: info: range check proved (CVC4: 1 VC)
-p.adb:99:42: medium: overflow check might fail (e.g. when Beginning = Integer'First and Current_Index = 0 and Size_Of_Seq = 0)
+p.adb:99:42: medium: overflow check might fail (e.g. when Beginning = Integer'First and Current_Index = 0)
 p.adb:107:33: info: initialization of "Beginning" proved
 p.adb:107:33: info: loop invariant initialization proved (CVC4: 2 VC)
 p.adb:107:33: info: loop invariant preservation proved (CVC4: 2 VC)
@@ -131,18 +131,18 @@ stacks.adb:8:22: info: range check proved (CVC4: 1 VC)
 stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
-communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1) [possible explanation: subprogram at communication.ads:9 should mention Address in a precondition]
+communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [possible explanation: subprogram at communication.ads:9 should mention Address in a precondition]
 communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
-communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => ?, First => Positive'Last, Length => 1)) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:22:43: info: overflow check proved (CVC4: 1 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and Max = 1) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC4: 1 VC)
 communication.adb:25:32: info: index check proved (CVC4: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:26:34: info: overflow check proved (CVC4: 1 VC)
-communication.adb:35:30: medium: array index check might fail (e.g. when B = (First => 1, others => ?) and E = 0) [possible explanation: subprogram at communication.ads:18 should mention B in a precondition]
+communication.adb:35:30: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 1) and B.Content'First = 1 and B.Content'Last = 0) [possible explanation: subprogram at communication.ads:18 should mention B in a precondition]
 communication.adb:36:34: info: range check proved (CVC4: 1 VC)
 communication.adb:39:30: info: index check proved (CVC4: 2 VC)
 communication.adb:40:34: info: range check proved (CVC4: 1 VC)
@@ -276,7 +276,7 @@ p_max_array.adb:47:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p_max_array.adb:47:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p_max_array.adb:47:39: info: overflow check proved (CVC4: 2 VC)
 p_max_array.adb:47:49: info: overflow check proved (CVC4: 2 VC)
-p_max_array.adb:49:13: info: loop invariant initialization proved (CVC4: 1 VC)
+p_max_array.adb:49:13: info: loop invariant initialization proved (CVC4: 2 VC)
 p_max_array.adb:49:13: info: loop invariant preservation proved (CVC4: 2 VC)
 p_max_array.adb:49:40: info: overflow check proved (CVC4: 2 VC)
 p_max_array.adb:50:35: info: index check proved (CVC4: 4 VC)
@@ -299,7 +299,7 @@ p_max_array.adb:56:25: info: index check proved (CVC4: 2 VC)
 p_max_array.adb:56:25: info: initialization of "J" proved
 p_max_array.adb:58:15: info: initialization of "J" proved
 p_max_array.adb:58:17: info: overflow check proved (CVC4: 1 VC)
-p_max_array.ads:10:14: info: postcondition proved (altergo: 2 VC)
+p_max_array.ads:10:14: info: postcondition proved (Z3: 2 VC)
 p_max_array.ads:11:24: info: index check proved (CVC4: 2 VC)
 p_max_array.ads:11:34: info: overflow check proved (CVC4: 1 VC)
 p_max_array.ads:11:44: info: index check proved (CVC4: 2 VC)
@@ -349,8 +349,8 @@ ring_buffer.adb:35:33: info: loop invariant preservation proved (CVC4: 1 VC)
 ring_buffer.adb:35:53: info: range check proved (CVC4: 2 VC)
 ring_buffer.adb:35:62: info: initialization of "R" proved
 ring_buffer.adb:35:70: info: overflow check proved (CVC4: 2 VC)
-ring_buffer.adb:37:13: info: loop invariant initialization proved (CVC4: 1 VC)
-ring_buffer.adb:37:13: info: loop invariant preservation proved (CVC4: 1 VC)
+ring_buffer.adb:37:13: info: loop invariant initialization proved (CVC4: 2 VC)
+ring_buffer.adb:37:13: info: loop invariant preservation proved (CVC4: 2 VC)
 ring_buffer.adb:38:34: info: overflow check proved (CVC4: 2 VC)
 ring_buffer.adb:39:34: info: precondition proved (CVC4: 4 VC)
 ring_buffer.adb:39:39: info: initialization of "R" proved
@@ -362,8 +362,8 @@ ring_buffer.adb:44:33: info: loop invariant preservation proved (CVC4: 1 VC)
 ring_buffer.adb:44:53: info: range check proved (CVC4: 2 VC)
 ring_buffer.adb:44:62: info: initialization of "R" proved
 ring_buffer.adb:44:78: info: overflow check proved (CVC4: 2 VC)
-ring_buffer.adb:46:13: info: loop invariant initialization proved (CVC4: 2 VC)
-ring_buffer.adb:46:13: info: loop invariant preservation proved (CVC4: 2 VC)
+ring_buffer.adb:46:13: info: loop invariant initialization proved (CVC4: 3 VC)
+ring_buffer.adb:46:13: info: loop invariant preservation proved (CVC4: 3 VC)
 ring_buffer.adb:48:35: info: precondition proved (CVC4: 4 VC)
 ring_buffer.adb:48:53: info: range check proved (CVC4: 2 VC)
 ring_buffer.adb:50:35: info: precondition proved (CVC4: 4 VC)
@@ -396,7 +396,7 @@ ring_buffer.ads:21:68: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:25:04: info: initialization of "Model" proved
 ring_buffer.ads:31:14: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:34:28: info: range check proved (CVC4: 1 VC)
-ring_buffer.ads:35:14: info: postcondition proved (altergo: 1 VC)
+ring_buffer.ads:35:14: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:38:44: info: range check proved (CVC4: 1 VC)
 ring_buffer.ads:39:14: info: postcondition proved (CVC4: 2 VC)
 ring_buffer.ads:41:25: info: initialization of "E" proved
@@ -405,23 +405,23 @@ ring_buffer.ads:43:60: info: initialization of "E" proved
 ring_buffer.ads:49:24: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:51:26: info: contract case proved (CVC4: 2 VC)
 ring_buffer.ads:52:26: info: contract case proved (CVC4: 3 VC)
-protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-5643/src/Concurrency/spark.adc:1
 protected_complex.adb:7:24: violation of restriction "Pure_Barriers"
-rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-5643/src/Concurrency/spark.adc:1
 rendezvous.adb:3:04: violation of restriction "No_Task_Hierarchy"
-rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-5643/src/Concurrency/spark.adc:1
 rendezvous.adb:4:07: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 abstract_ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
-abstract_ints.adb:33:08: medium: overflow check might fail [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
-abstract_ints.adb:33:24: medium: overflow check might fail (e.g. when Arg1 = (Min => Integer'First, Max => Integer'First, Value => Integer'First, Precision => 0) and Arg2 = (Min => Integer'First, Max => Integer'First, Value => 1, Precision => 0)) [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
-abstract_ints.adb:33:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => 1)) [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
+abstract_ints.adb:33:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at abstract_ints.ads:21 should mention Arg1 and Arg2 in a precondition]
 abstract_ints.adb:37:30: info: overflow check proved (CVC4: 1 VC)
-abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Precision => Natural'Last, others => ?)) [possible explanation: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
+abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
 abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
-abstract_ints.ads:23:25: info: postcondition proved (CVC4: 1 VC)
+abstract_ints.ads:23:25: info: postcondition proved (altergo: 1 VC)
 abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [possible explanation: subprogram at line 9 should mention Arg in a precondition]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
@@ -432,39 +432,39 @@ distributed_file_system.ads:20:20: medium: class-wide precondition might be stro
 distributed_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
 ints.adb:29:10: info: precondition proved (CVC4: 1 VC)
-ints.adb:34:34: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+ints.adb:34:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 ints.adb:35:14: info: postcondition proved (CVC4: 1 VC)
 ints.adb:38:21: info: precondition proved (CVC4: 1 VC)
-ints.adb:42:08: medium: overflow check might fail [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
-ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => Integer'First, Max => Integer'First, Value => Integer'First, Precision => 0) and Arg2 = (Min => Integer'First, Max => Integer'First, Value => 1, Precision => 0)) [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
-ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => 1)) [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
+ints.adb:42:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at ints.ads:23 should mention Arg1 and Arg2 in a precondition]
 ints.adb:46:30: info: overflow check proved (CVC4: 1 VC)
-ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Precision => Natural'Last, others => ?)) [possible explanation: subprogram at ints.ads:29 should mention Arg in a precondition]
-ints.ads:11:40: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+ints.adb:64:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at ints.ads:29 should mention Arg in a precondition]
+ints.ads:11:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
-ints.ads:16:34: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+ints.ads:16:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 ints.ads:24:25: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
-predicate_ints.adb:31:39: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => Integer'First) and Arg2 = (Min => 0, Max => 0, Value => -1))
+predicate_ints.adb:31:39: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => -1) and Arg2 = (Min => 0, Max => 0, Value => Integer'First))
 predicate_ints.adb:43:10: info: precondition proved (CVC4: 1 VC)
-predicate_ints.adb:48:34: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+predicate_ints.adb:48:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.adb:49:14: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.adb:52:21: info: precondition proved (CVC4: 1 VC)
-predicate_ints.adb:56:08: medium: overflow check might fail [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
-predicate_ints.adb:56:24: medium: overflow check might fail (e.g. when Arg1 = (Min => Integer'First, Max => Integer'First, Value => Integer'First, Precision => 0) and Arg2 = (Min => Integer'First, Max => Integer'First, Value => 1, Precision => 0)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
-predicate_ints.adb:56:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => 1)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:08: medium: overflow check might fail (e.g. when Arg1 = (Min => -1, Max => -1, Value => -1, Precision => 0) and Arg2 = (Min => -1, Max => -1, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:24: medium: overflow check might fail (e.g. when Arg1 = (Min => -2, Max => -2, Value => -2, Precision => 0) and Arg2 = (Min => -2, Max => -2, Value => Integer'Last, Precision => 0)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
+predicate_ints.adb:56:56: medium: overflow check might fail (e.g. when Arg1 = (Min => 0, Max => 0, Value => 0, Precision => 1) and Arg2 = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at predicate_ints.ads:28 should mention Arg1 and Arg2 in a precondition]
 predicate_ints.adb:60:30: info: overflow check proved (CVC4: 1 VC)
 predicate_ints.adb:78:25: info: precondition proved (CVC4: 2 VC)
 predicate_ints.adb:79:24: info: range check proved (CVC4: 1 VC)
-predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Precision => Natural'Last, others => ?)) [possible explanation: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
-predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
+predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.ads:17:21: info: initialization of "Arg.Max" proved
 predicate_ints.ads:17:21: info: initialization of "Arg.Min" proved
 predicate_ints.ads:17:21: info: initialization of "Arg.Value" proved
 predicate_ints.ads:17:21: info: initialization of extension of "Arg" proved
-predicate_ints.ads:21:34: medium: overflow check might fail (e.g. when Arg = (Max => -2147483639, others => ?))
+predicate_ints.ads:21:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.ads:22:14: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.ads:29:25: info: postcondition proved (CVC4: 1 VC)
 synchronized_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
@@ -522,16 +522,16 @@ resources.adb:6:24: info: unrolling loop
 resources.adb:7:15: info: initialization of "D" proved
 resources.ads:9:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC4: 2 VC)
-resources.ads:10:36: info: overflow check proved (CVC4: 1 VC)
+resources.ads:10:36: info: overflow check proved (altergo: 1 VC)
 resources.ads:10:38: info: implicit function contract not available for proof ("Sum" is recursive)
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
 resources.ads:15:14: info: implicit function contract not available for proof ("Sum" is recursive)
-resources.ads:15:14: info: postcondition proved (CVC4: 1 VC)
+resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 5 => 5, 6 => 6, others => 4))
 resources.ads:15:19: info: initialization of "D" proved
 resources.ads:18:14: info: implicit function contract not available for proof ("Sum" is recursive)
 resources.ads:19:14: info: implicit function contract not available for proof ("Sum" is recursive)
-resources.ads:19:14: info: postcondition proved (CVC4: 1 VC)
+resources.ads:19:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, others => 1))
 use_vectors.adb:5:07: info: initialization of "S" proved
 use_vectors.adb:8:15: info: precondition proved (CVC4: 4 VC)
 use_vectors.adb:8:20: info: initialization of "S" proved

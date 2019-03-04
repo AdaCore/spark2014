@@ -3,3 +3,4 @@ Darwin SKIP test too slow
 assertions SKIP minor proof diff probably due to timeout
 inverse-prover SKIP test too slow
 ALL RLIMIT 1500
+ALL XFAIL S304-022 reupdate the session when possible

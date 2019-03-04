@@ -6,3 +6,4 @@ Darwin SKIP too slow
 NT SKIP hanging prover processes on windows (QA16-002)
 ALL RLIMIT 5000
 ALL TIMING
+ALL XFAIL S304-022 reupdate the sessions
