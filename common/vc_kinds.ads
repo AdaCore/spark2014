@@ -287,7 +287,6 @@ package VC_Kinds is
    GP_Sloc_Marker           : constant String := "GP_Sloc:";
    GP_Subp_Marker           : constant String := "GP_Subp:";
    GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
-   Keep_On_Simp_Marker      : constant String := "keep_on_simp";
 
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.

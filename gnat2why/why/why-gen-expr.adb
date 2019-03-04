@@ -3269,7 +3269,6 @@ package body Why.Gen.Expr is
       end if;
 
       Set.Insert (New_Shape_Label (Node => N));
-      Set.Insert (Keep_On_Simp);
       if Reason = VC_Postcondition then
          Set.Insert (Model_VC_Post);
       else

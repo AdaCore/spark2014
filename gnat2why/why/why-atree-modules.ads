@@ -534,7 +534,6 @@ package Why.Atree.Modules is
    VC_Annotation     : Name_Id;
    Model_VC_Post     : Name_Id;
    GP_Already_Proved : Name_Id;
-   Keep_On_Simp      : Name_Id;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package
