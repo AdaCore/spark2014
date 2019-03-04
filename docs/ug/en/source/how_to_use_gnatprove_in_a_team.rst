@@ -260,6 +260,24 @@ this placement of a justification is ineffective on subprograms analyzed
 only in the context of their calls (see details in
 :ref:`Contextual Analysis of Subprograms Without Contracts`).
 
+An aspect on a package or subprogram declaration/body can be used instead of a
+pragma at the beginning of the corresponding declaration list inside the
+declaration/body:
+
+.. code-block:: ada
+
+   package Pack with
+     Annotate => (GNATprove, False_Positive,
+                  "divide by zero", "reviewed by John Smith")
+   is
+      ...
+
+   procedure Proc with
+     Annotate => (GNATprove, False_Positive,
+                  "divide by zero", "reviewed by John Smith")
+   is
+      ...
+
 As a point of caution, the following placements of pragma Annotate will apply
 the pragma to a possibly large range of source lines:
 

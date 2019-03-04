@@ -1,0 +1,3 @@
+acc.adb:12:13: cannot use global variable "Global_Int" of deep type
+acc.adb:12:13: without prior declaration in a Global aspect
+gnatprove: error during generation of Global contracts

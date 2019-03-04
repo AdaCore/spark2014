@@ -2729,53 +2729,45 @@ package body Flow.Control_Flow_Graph is
                  List_Length (Expressions (N)) > 1;
                Current_Dim : Pos := 1;
 
-               function Matches_Object_Range
-                 (Param_Range : Node_Id)
-                  return Boolean;
-               --  Returns True iff the range of the loop parameter matches the
-               --  range of the assigned array, e.g.:
+               function Matches_Object_Bound
+                 (Bound : Node_Id;
+                  Attr  : Attribute_Id)
+                  return Boolean
+                 with Pre => Attr in Attribute_First | Attribute_Last;
+               --  Returns True iff the bound of the loop parameter's range
+               --  ('First or 'Last) matches that same bound of the assigned
+               --  array, e.g.:
                --
                --  for J in S'Range loop
                --     S (J) := ...;
                --  end loop;
                --
                --  Note: the 'Range in code like this will be expanded into
-               --  'First and 'Last and this is what we actually detect.
+               --  'First or 'Last (depending on the value of Attr) and this
+               --  is what we actually detect.
 
                --------------------------
-               -- Matches_Object_Range --
+               -- Matches_Object_Bound --
                --------------------------
 
-               function Matches_Object_Range
-                 (Param_Range : Node_Id)
+               function Matches_Object_Bound
+                 (Bound : Node_Id;
+                  Attr  : Attribute_Id)
                   return Boolean
                is
-                  Low  : constant Node_Id := Low_Bound (Param_Range);
-                  High : constant Node_Id := High_Bound (Param_Range);
-
                begin
-                  return Nkind (Low) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (Low)) =
-                             Attribute_First
-                    and then (if Nkind (Prefix (Low)) in N_Identifier
-                                                       | N_Expanded_Name
-                              then Direct_Mapping_Id (Entity (Prefix (Low)))
-                              else Record_Field_Id (Prefix (Low))) = F
-
-                    and then Nkind (High) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (High)) =
-                             Attribute_Last
-                    and then (if Nkind (Prefix (High)) in N_Identifier
-                                                        | N_Expanded_Name
-                              then Direct_Mapping_Id (Entity (Prefix (High)))
-                              else Record_Field_Id (Prefix (High))) = F
-
+                  return Nkind (Bound) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Bound)) = Attr
+                      and then (if Nkind (Prefix (Bound)) in N_Identifier
+                                                           | N_Expanded_Name
+                                then
+                                   Direct_Mapping_Id (Entity (Prefix (Bound)))
+                                else Record_Field_Id (Prefix (Bound))) = F
                     and then
                       (if Multi_Dim
-                       then Intval (First (Expressions (Low))) = Current_Dim
-                              and then
-                            Intval (First (Expressions (High))) = Current_Dim);
-               end Matches_Object_Range;
+                       then
+                          Intval (First (Expressions (Bound))) = Current_Dim);
+               end Matches_Object_Bound;
 
             begin
                while Present (Param_Expr) loop
@@ -2807,12 +2799,14 @@ package body Flow.Control_Flow_Graph is
                         if (Compile_Time_Compare (Low_Bound (Param_Range),
                                                   Low_Bound (Index_Range),
                                                   True) = EQ
-                              and then
-                            Compile_Time_Compare (High_Bound (Param_Range),
-                                                  High_Bound (Index_Range),
-                                                  True) = EQ)
-                          or else
-                            Matches_Object_Range (Param_Range)
+                            or else Matches_Object_Bound
+                              (Low_Bound (Param_Range), Attribute_First))
+                          and then
+                            (Compile_Time_Compare (High_Bound (Param_Range),
+                                                   High_Bound (Index_Range),
+                                                   True) = EQ
+                             or else Matches_Object_Bound
+                               (High_Bound (Param_Range), Attribute_Last))
                         then
                            null;
 

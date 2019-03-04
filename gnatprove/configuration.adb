@@ -1924,7 +1924,7 @@ package body Configuration is
          end;
 
          for FS_Entry of Prj_Attr.Prove.Proof_Switches_Indices.all loop
-            if FS_Entry.all /= "Ada" and then FS_Entry.all /= "ada" then
+            if FS_Entry.all not in "Ada" | "ada" then
                Check_File_Part_Of_Project (Tree, FS_Entry.all);
                declare
                   FS             : File_Specific;

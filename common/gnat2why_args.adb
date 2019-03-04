@@ -121,7 +121,7 @@ package body Gnat2Why_Args is
          Local_Info_Messages := Get_Opt_Bool (R, Info_Messages_Name);
          if Has_Field (R, Why3_Args_Name) then
             declare
-               Ar  : constant JSON_Array := Get (R, Why3_Args_Name);
+               Ar : constant JSON_Array := Get (R, Why3_Args_Name);
             begin
                for Var_Index in Positive range 1 .. Length (Ar) loop
                   Local_Why3_Args.Append (Get (Get (Ar, Var_Index)));
@@ -145,6 +145,9 @@ package body Gnat2Why_Args is
       while not End_Of_File (File) loop
          Append (File_Text, Get_Line (File));
       end loop;
+
+      Ada.Text_IO.Close (File);
+
       V := Read (File_Text);
 
       Global_Gen_Mode         := Get_Opt_Bool (V, Global_Gen_Mode_Name);

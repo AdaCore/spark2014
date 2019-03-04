@@ -197,22 +197,23 @@ package Gnat2Why_Args is
    type File_Specific is record
       --  Generate warnings by generating VCs and calling provers. As it is
       --  costly, it is not enabled by default.
-      Proof_Warnings    : Boolean := False;
+      Proof_Warnings    : Boolean;
 
       --  Do not inline local functions to prove their code in the calling
-      --  context
-      No_Inlining       : Boolean := False;
+      --  context.
+      No_Inlining       : Boolean;
 
       --  Issue info messages related to gnatprove usage
-      Info_Messages     : Boolean := False;
+      Info_Messages     : Boolean;
 
       --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
       --  executable name is not hardcoded and is passed as a first argument
       --  of this list.
 
-      Why3_Args         : String_Lists.List := String_Lists.Empty_List;
+      Why3_Args         : String_Lists.List;
 
-      No_Loop_Unrolling : Boolean := False;  --  Prevent loop unrolling
+      --  Prevent loop unrolling
+      No_Loop_Unrolling : Boolean;
    end record;
 
    package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps

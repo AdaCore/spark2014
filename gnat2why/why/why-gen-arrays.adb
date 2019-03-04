@@ -231,7 +231,8 @@ package body Why.Gen.Arrays is
            New_Call
              (Domain => Domain,
               Name   => E_Symb (Ty, WNE_To_Array),
-              Args   => (1 => Expr));
+              Args   => (1 => Expr),
+              Typ    => EW_Split (Ty));
       end if;
       Arg_Ind := Arg_Ind + 1;
    end Add_Map_Arg;
