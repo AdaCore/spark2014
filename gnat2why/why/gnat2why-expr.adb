@@ -13606,7 +13606,8 @@ package body Gnat2Why.Expr is
                                            Domain => EW_Pred)),
                                  Right => +Alloc_Id),
                               Typ     => Call_Ty),
-                           Typ     => Call_Ty));
+                           Typ     => Call_Ty),
+                        Typ     => Call_Ty);
                   end;
 
                --  Initialized allocator
