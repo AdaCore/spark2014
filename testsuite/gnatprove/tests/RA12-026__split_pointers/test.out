@@ -1,6 +1,3 @@
 split_pointers.adb:25:14: insufficient permission for "X" when returning from "Test_In_Out"
 split_pointers.adb:25:14: object was moved at line 31
-split_pointers.adb:68:28: expression not allowed as source of move
-split_pointers.adb:69:19: expression not allowed as source of move
-split_pointers.adb:70:19: expression not allowed as source of move
 gnatprove: error during generation of Global contracts
