@@ -81,7 +81,7 @@ package body Formal_Vectors with SPARK_Mode is
    procedure Append (V : in out Vector; E : Element_Type) is
    begin
       Resize (V);
-      V.Content (V.Top + 1) := new Element_Type'(E);
+      V.Content (V.Top + 1) := new Element_Type'(Copy (E));
       V.Top := V.Top + 1;
    end Append;
 
