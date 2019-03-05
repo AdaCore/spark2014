@@ -44,8 +44,19 @@ rewrite BV_Gen.mod1_out.
 (* no overflow in (arg1 / arg2) * arg2 *)
 { exact no_ovfl_div_mul. }
 
-(* res <= arg1 *)
-unfold ule.
-exact res_le_arg1.
 
+(* 2 different checks have the same generated Coq file *)
+(* First proof *)
+
+try (unfold ule; exact res_le_arg1);
+(* Second proof *)
+(try unfold ult; try intros;
+try rewrite to_uint_sub_bounded; [| omega];
+try rewrite Heq;
+try rewrite to_uint_mul;
+try rewrite to_uint_udiv;
+try unfold EuclideanDivision.div;
+try case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith];
+try rewrite BV_Gen.mod1_out; eauto;
+try rewrite <- Zmod_eq_full; try apply Z_mod_lt; omega).
 Qed.

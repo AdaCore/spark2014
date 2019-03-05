@@ -226,7 +226,7 @@ Parameter to_int: t -> Z.
 
 Axiom to_int_def :
   forall (x:t),
-  ((is_signed_positive x) -> ((to_int x) = (t'int x))) /\ 
+  ((is_signed_positive x) -> ((to_int x) = (t'int x))) /\
   (~ (is_signed_positive x) ->
    ((to_int x) = (-(4294967296%Z - (t'int x))%Z)%Z)).
 

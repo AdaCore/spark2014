@@ -4,8 +4,6 @@
 <why3session shape_version="5">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
-<prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
 <file>
 <path name=".."/>
 <path name=".."/>
@@ -44,16 +42,14 @@
   <goal name="VC def.2" expl="postcondition">
   </goal>
   <goal name="VC def.3" expl="assertion" proved="true">
-  <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="568"/></proof>
+  <proof prover="0" edited="../../Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="assertion" proved="true">
-  <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1328"/></proof>
+  <proof prover="0" edited="../../Coq/spark-mod64_arithmetic_lemmas/Spark__mod64_arithmetic_lemmas__lemma_div_then_mult_bounds__pragargs__cmp1.v"><result status="valid"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
   </goal>
