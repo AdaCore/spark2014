@@ -40,14 +40,6 @@ package Why.Gen.Pointers is
    --  @param P the Why section to insert the declaration
    --  @param E the type entity to translate
 
-   procedure Declare_Allocation_Function (E : Entity_Id; File : W_Section_Id)
-   with
-     Pre => Is_Access_Type (E);
-   --  Generate program functions called when allocating deep objects.
-   --  The allocation function called depends on the type of the
-   --  allocated object (elementary/composite) and whether it is initilized
-   --  or not.
-
    procedure Create_Rep_Pointer_Theory_If_Needed
      (P : W_Section_Id;
       E : Entity_Id);

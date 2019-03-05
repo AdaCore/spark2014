@@ -84,112 +84,6 @@ package body Why.Gen.Pointers is
                                 (Name => To_Name (WNE_Rec_Rep))));
    end Declare_Ada_Pointer;
 
-   ---------------------------------
-   -- Declare_Allocation_Function --
-   ---------------------------------
-
-   procedure Declare_Allocation_Function (E : Entity_Id; File : W_Section_Id)
-   is
-      Ty_Name  : constant W_Name_Id := To_Name (WNE_Rec_Rep);
-      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
-      Result   : constant W_Identifier_Id := New_Result_Ident (Why_Empty);
-      N_Des_Ty : constant W_Type_Id :=
-        Type_Of_Node (Directly_Designated_Type (E));
-      Des_Ty   : constant Node_Id := Directly_Designated_Type (E);
-
-      New_Uninitialized_Name : constant W_Identifier_Id :=
-        To_Local (E_Symb (E, WNE_Uninit_Allocator));
-
-      New_Initialized_Name : constant W_Identifier_Id :=
-        To_Local (E_Symb (E, WNE_Init_Allocator));
-
-      No_Init_Ident : constant W_Identifier_Id :=
-        New_Identifier (Name => "__void_param", Typ => EW_Unit_Type);
-
-      Init_Ident : constant W_Identifier_Id :=
-        New_Identifier (Name => "__init_val", Typ  => N_Des_Ty);
-
-      R_No_Init_Binder : constant Binder_Array :=
-        (1 => (B_Name => No_Init_Ident, others => <>));
-
-      R_Init_Binder : constant Binder_Array :=
-        (1 => (B_Name => Init_Ident, others => <>));
-
-      Result_Null : constant W_Term_Id :=
-        +New_Pointer_Is_Null_Access (E, +Result);
-
-      Result_Address : constant W_Term_Id :=
-        +New_Pointer_Address_Access (E, +Result);
-
-      Result_Value : constant W_Term_Id :=
-        +New_Pointer_Value_Access (E, E, +Result, EW_Term);
-
-      Post_Null : constant W_Expr_Id :=
-        New_Not (Domain => EW_Prog, Right => +Result_Null);
-
-      Next_Address : constant W_Identifier_Id := New_Identifier
-        (Domain => EW_Prog,
-         Name   => "__next_pointer_address",
-         Module => E_Module (Etype (E)),
-         Typ    => EW_Int_Type);
-
-      Post_Address : constant W_Pred_Id := +New_Comparison
-        (Symbol => Why_Eq,
-         Domain => EW_Prog,
-         Left   => +Result_Address,
-         Right  => New_Deref (Ada_Node => E,
-                              Right    => Next_Address,
-                              Typ      => EW_Int_Type));
-
-      Post_Value : constant W_Pred_Id := +New_Comparison
-        (Symbol => Why_Eq,
-         Domain => EW_Prog,
-         Left   => +Result_Value,
-         Right  => Insert_Simple_Conversion (Domain  => EW_Prog,
-                                             Expr    => +Init_Ident,
-                                             To      => EW_Abstract (Des_Ty)));
-
-      Initialized_Post : constant W_Pred_Id := +New_And_Expr
-        (Domain => EW_Prog,
-         Left   => New_And_Then_Expr (Left   => +Post_Null,
-                                      Right  => +Post_Address,
-                                      Domain => EW_Prog),
-         Right  => +Post_Value);
-
-      Uninitialized_Post : constant W_Pred_Id := +New_And_Then_Expr
-        (Domain => EW_Prog,
-         Left   => +Post_Null,
-         Right  => +Post_Address);
-
-      Address_Effects : constant W_Effects_Id :=
-        New_Effects (Writes => (1 => +Next_Address));
-
-   begin
-
-      Emit (File,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => New_Uninitialized_Name,
-               Binders     => R_No_Init_Binder,
-               Return_Type => Abstr_Ty,
-               Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Post        => Uninitialized_Post,
-               Effects     => Address_Effects));
-
-      Emit (File,
-            New_Function_Decl
-              (Domain      => EW_Prog,
-               Name        => New_Initialized_Name,
-               Binders     => R_Init_Binder,
-               Return_Type => Abstr_Ty,
-               Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
-               Post        => Initialized_Post,
-               Effects     => Address_Effects));
-
-   end Declare_Allocation_Function;
-
    ------------------------------
    -- Declare_Rep_Pointer_Type --
    ------------------------------
@@ -214,6 +108,9 @@ package body Why.Gen.Pointers is
       procedure Declare_Access_Function;
       --  Generate the predicate related to the access to a pointer value
       --  (cannot access a null pointer).
+
+      procedure Declare_Allocation_Function;
+      --  Generate program functions called when allocating deep objects.
 
       ---------------------
       -- Local Variables --
@@ -340,6 +237,118 @@ package body Why.Gen.Pointers is
 
          end;
       end Declare_Access_Function;
+
+      ---------------------------------
+      -- Declare_Allocation_Function --
+      ---------------------------------
+
+      procedure Declare_Allocation_Function
+      is
+         Result   : constant W_Identifier_Id := New_Result_Ident (Why_Empty);
+         N_Des_Ty : constant W_Type_Id :=
+           Type_Of_Node (Directly_Designated_Type (E));
+         Des_Ty   : constant Node_Id := Directly_Designated_Type (E);
+
+         New_Uninitialized_Name : constant W_Identifier_Id :=
+           To_Local (E_Symb (E, WNE_Uninit_Allocator));
+
+         New_Initialized_Name : constant W_Identifier_Id :=
+           To_Local (E_Symb (E, WNE_Init_Allocator));
+
+         No_Init_Ident : constant W_Identifier_Id :=
+           New_Identifier (Name => "__void_param", Typ => EW_Unit_Type);
+
+         Init_Ident : constant W_Identifier_Id :=
+           New_Identifier (Name => "__init_val", Typ  => N_Des_Ty);
+
+         R_No_Init_Binder : constant Binder_Array :=
+           (1 => (B_Name => No_Init_Ident, others => <>));
+
+         R_Init_Binder : constant Binder_Array :=
+           (1 => (B_Name => Init_Ident, others => <>));
+
+         Result_Null : constant W_Term_Id :=
+           +New_Pointer_Is_Null_Access (E, +Result, Local => True);
+
+         Result_Address : constant W_Term_Id :=
+           +New_Pointer_Address_Access (E, +Result, Local => True);
+
+         Result_Value : constant W_Term_Id :=
+           +New_Pointer_Value_Access (E, E, +Result, EW_Term, Local => True);
+
+         Post_Null : constant W_Expr_Id :=
+           New_Not (Domain => EW_Prog, Right => +Result_Null);
+
+         Next_Address : constant W_Identifier_Id := New_Identifier
+           (Name => "__next_pointer_address",
+            Typ  => EW_Int_Type);
+
+         Post_Address : constant W_Pred_Id := +New_Comparison
+           (Symbol => Why_Eq,
+            Domain => EW_Prog,
+            Left   => +Result_Address,
+            Right  => New_Deref (Ada_Node => E,
+                                 Right    => Next_Address,
+                                 Typ      => EW_Int_Type));
+
+         Post_Value : constant W_Pred_Id := +New_Comparison
+           (Symbol => Why_Eq,
+            Domain => EW_Prog,
+            Left   => +Result_Value,
+            Right  => Insert_Simple_Conversion
+              (Domain  => EW_Prog,
+               Expr    => +Init_Ident,
+               To      => EW_Abstract (Des_Ty)));
+
+         Initialized_Post : constant W_Pred_Id := +New_And_Expr
+           (Domain => EW_Prog,
+            Left   => New_And_Then_Expr (Left   => +Post_Null,
+                                         Right  => +Post_Address,
+                                         Domain => EW_Prog),
+            Right  => +Post_Value);
+
+         Uninitialized_Post : constant W_Pred_Id := +New_And_Then_Expr
+           (Domain => EW_Prog,
+            Left   => +Post_Null,
+            Right  => +Post_Address);
+
+         Address_Effects : constant W_Effects_Id :=
+           New_Effects (Writes => (1 => +Next_Address));
+
+      begin
+
+         --  Counter for abstract pointer addresses as global variable
+         --  ??? should be incremented
+         Emit (P,
+               New_Global_Ref_Declaration
+                 (Name     => Next_Address,
+                  Labels   => Name_Id_Sets.Empty_Set,
+                  Ref_Type => EW_Int_Type,
+                  Location => No_Location));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => New_Uninitialized_Name,
+                  Binders     => R_No_Init_Binder,
+                  Return_Type => Abstr_Ty,
+                  Location    => No_Location,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Post        => Uninitialized_Post,
+                  Effects     => Address_Effects));
+
+         Emit (P,
+               New_Function_Decl
+                 (Domain      => EW_Prog,
+                  Name        => New_Initialized_Name,
+                  Binders     => R_Init_Binder,
+                  Return_Type => Abstr_Ty,
+                  Location    => No_Location,
+                  Labels      => Name_Id_Sets.Empty_Set,
+                  Post        => Initialized_Post,
+                  Effects     => Address_Effects));
+
+      end Declare_Allocation_Function;
 
       ---------------------------------------
       -- Declare_Conversion_Check_Function --
@@ -585,16 +594,6 @@ package body Why.Gen.Pointers is
             Name => Ty_Name);
 
          Emit (P, New_Havoc_Declaration (Ty_Name));
-
-         --  Counter for abstract pointer addresses as global variable
-         --  ??? should be incremented
-         Emit (P,
-               New_Global_Ref_Declaration
-                 (Name     => +New_Identifier
-                    (Name => "__next_pointer_address"),
-                  Labels   => Name_Id_Sets.Empty_Set,
-                  Ref_Type => EW_Int_Type,
-                  Location => No_Location));
       end Declare_Pointer_Type;
 
       -------------------------------
@@ -687,6 +686,7 @@ package body Why.Gen.Pointers is
       Declare_Pointer_Type;
       Declare_Access_Function;
       Declare_Equality_Function;
+      Declare_Allocation_Function;
 
       if not Is_Root then
          Declare_Conversion_Functions;

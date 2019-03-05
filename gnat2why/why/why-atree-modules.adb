@@ -2641,7 +2641,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Init_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Init_Allocator)),
-                     Module => AM,
+                     Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
 
@@ -2649,7 +2649,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Uninit_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Uninit_Allocator)),
-                     Module => AM,
+                     Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
 

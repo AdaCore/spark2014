@@ -547,14 +547,6 @@ package body Gnat2Why.Types is
          Create_Axioms_For_Scalar_Bounds (File, E);
       end if;
 
-      --  If E is an access type, we declare the new Why program function in
-      --  this module since we make use of the default initial assumption
-      --  when the allocator is uninitialized.
-
-      if Is_Access_Type (E) then
-         Declare_Allocation_Function (E, File);
-      end if;
-
       Close_Theory (File,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
