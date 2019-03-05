@@ -394,10 +394,10 @@ procedure Gnatprove with SPARK_Mode is
             Ada.Text_IO.New_Line;
          end if;
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
-                            Args => Args,
-                            Success => Res);
-         for It in Args'Range loop
-            Free (Args (It));
+                            Args         => Args,
+                            Success      => Res);
+         for Arg of Args loop
+            Free (Arg);
          end loop;
          Set_Directory (Old_Dir);
          if Verbose then
@@ -415,9 +415,8 @@ procedure Gnatprove with SPARK_Mode is
    --  Start of processing for Compute_Why3_Args
 
    begin
-
-      --  the first "argument" is in fact the command name itself, because in
-      --  some cases we might want to change it
+      --  The first "argument" is in fact the command name itself, because in
+      --  some cases we might want to change it.
 
       if CL_Switches.Memcached_Server /= null
         and then CL_Switches.Memcached_Server.all /= ""
