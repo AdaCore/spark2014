@@ -13287,6 +13287,8 @@ package body Gnat2Why.Expr is
                --  For array conversions, if target and source types have
                --  different component type, we may need to generate an
                --  appropriate conversion theory.
+               --  Also generate the theory for the reverse conversion as it
+               --  may be needed if Expr is a left value.
 
                if Has_Array_Type (Etype (Expr)) then
                   declare
@@ -13304,6 +13306,10 @@ package body Gnat2Why.Expr is
                           (Current_File => Local_Params.File,
                            From         => Source_Typ,
                            To           => Target_Typ);
+                        Create_Array_Conversion_Theory_If_Needed
+                          (Current_File => Local_Params.File,
+                           From         => Target_Typ,
+                           To           => Source_Typ);
                      end if;
                   end;
 

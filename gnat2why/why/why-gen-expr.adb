@@ -597,6 +597,11 @@ package body Why.Gen.Expr is
          Split_To            : constant W_Type_Id :=
            (if not Need_Reconstruction then To
             else EW_Split (To_Ent));
+         Need_Elt_Conv       : constant Boolean :=
+           Retysp (Component_Type (To_Ent)) /=
+             Retysp (Component_Type (From_Ent));
+         --  We need an element conversion if To and From do not have the
+         --  same elements.
 
       begin
          --  Insert sliding if needed
@@ -620,7 +625,8 @@ package body Why.Gen.Expr is
                  (Domain => Domain,
                   Name   => Get_Array_Theory (From_Ent).Slide,
                   Args   => Args,
-                  Typ    => Split_To);
+                  Typ    => (if Is_Static_Array_Type (From_Ent) then From
+                             else EW_Split (From_Ent)));
             end;
 
             --  If reconstruction is needed, fill the Args array.
@@ -671,9 +677,7 @@ package body Why.Gen.Expr is
          --  2. To_Ent and From_Ent do not have the same component type, apply
          --  the appropriate conversion.
 
-         if Retysp (Component_Type (To_Ent)) /=
-           Retysp (Component_Type (From_Ent))
-         then
+         if Need_Elt_Conv then
             T := Insert_Single_Conversion
               (Ada_Node => Empty,
                Domain   => Domain,
