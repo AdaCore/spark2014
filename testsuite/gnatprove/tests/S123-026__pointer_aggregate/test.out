@@ -1,0 +1,8 @@
+alias_aggregate.adb:12:15: insufficient permission for "Y" when returning from "Local"
+alias_aggregate.adb:12:15: object was moved at line 13
+alias_aggregate.adb:13:57: insufficient permission for "Y"
+alias_aggregate.adb:13:57: object was moved at line 13
+alias_aggregate.adb:18:15: insufficient permission for "Y" when returning from "Local2"
+alias_aggregate.adb:18:15: object was moved at line 19
+alias_aggregate.adb:19:36: singleton choice required to prevent aliasing
+gnatprove: error during generation of Global contracts
