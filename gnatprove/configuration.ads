@@ -294,7 +294,7 @@ package Configuration is
    --  The name of a why3 configuration file to be used in a single run of
    --  gnatprove.
 
-   Socket_Name : GNAT.Strings.String_Access := null;
+   Socket_Name : GNAT.Strings.String_Access;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.
 
