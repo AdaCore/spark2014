@@ -923,7 +923,16 @@ procedure Gnatprove with SPARK_Mode is
             R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
             R.Info_Messages := FS.Info;
             R.No_Inlining := FS.No_Inlining;
-            R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
+
+            --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
+            --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
+            --  called, which happens just before this routine is called with
+            --  Translation_Phase set to True.
+
+            if Translation_Phase then
+               R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
+            end if;
+
             Gnat2Why_Args.File_Specific_Map.Insert
               (File_Specific_Maps.Key (FSC), R);
          end;
