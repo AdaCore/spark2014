@@ -654,7 +654,6 @@ procedure Gnatprove with SPARK_Mode is
          use String_Lists;
          Args     : String_Lists.List;
          Del_Succ : Boolean;
-         pragma Unreferenced (Del_Succ);
          Id       : Process_Descriptor;
       begin
          Args.Append ("--subdirs=" & Phase2_Subdir.Display_Full_Name);
@@ -695,6 +694,7 @@ procedure Gnatprove with SPARK_Mode is
          end;
          Close (Id);
          GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
+         pragma Assert (Del_Succ);
       end;
    end Flow_Analysis_And_Proof;
 
