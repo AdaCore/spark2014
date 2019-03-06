@@ -1,5 +1,5 @@
 strlit.adb:4:07: warning: initialization of "X" has no effect
 strlit.adb:5:07: warning: initialization of "Y" has no effect
+strlit.adb:6:07: warning: initialization of "Z" has no effect
 strlit.adb:7:07: warning: initialization of "F" has no effect
-strlit.adb:9:15: info: range check proved (CVC4: 1 VC)
 strlit.ads:5:20: info: postcondition proved (CVC4: 1 VC)
