@@ -19,7 +19,7 @@ procedure Subtype_Check with SPARK_Mode is
 
    procedure Wrong with Pre => True is
       subtype Small_Nat_Array_3 is Nat_Array (Zero .. 10);
-      Z : Small_Nat_Array_Access := new Small_Nat_Array_3;--@PREDICATE_CHECK:FAIL
+      Z : Small_Nat_Array_Access := new Small_Nat_Array_3;--@LENGTH_CHECK:FAIL
    begin
       null;
    end Wrong;
@@ -28,7 +28,7 @@ procedure Subtype_Check with SPARK_Mode is
       subtype Even_Nat_Array is Nat_Array with
         Predicate => Even_Nat_Array'Length mod 2 = 0;
       type Even_Nat_Array_Access is access Even_Nat_Array;
-      X : Even_Nat_Array_Access := new Small_Nat_Array; --@LENGTH_CHECK:FAIL
+      X : Even_Nat_Array_Access := new Small_Nat_Array; --@PREDICATE_CHECK:FAIL
    begin
       null;
    end Wrong_2;

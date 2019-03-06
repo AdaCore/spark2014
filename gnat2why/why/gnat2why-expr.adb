@@ -13592,7 +13592,7 @@ package body Gnat2Why.Expr is
                              (Name    => Value_Id,
                               Domain  => Domain,
                               Def     => Insert_Checked_Conversion
-                                (Ada_Node => Expr,
+                                (Ada_Node => New_Expr,
                                  Domain   => Domain,
                                  Expr     => New_Any_Expr
                                    (Post        => Pred,
@@ -13630,7 +13630,7 @@ package body Gnat2Why.Expr is
                     (Name     => +Func_New_Initialized_Name,
                      Domain   => Domain,
                      Args     => (1 => +Transform_Expr
-                                  (Expr          => Expression (New_Expr),
+                                  (Expr          => New_Expr,
                                    Expected_Type => Type_Of_Node (Des_Ty),
                                    Domain        => Domain,
                                    Params        => Local_Params)),

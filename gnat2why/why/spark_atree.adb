@@ -223,7 +223,19 @@ package body SPARK_Atree is
            Einfo.E_In_Out_Parameter | Einfo.E_Out_Parameter)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Range
-         and then Sinfo.Do_Range_Check (Atree.Parent (N))));
+         and then Sinfo.Do_Range_Check (Atree.Parent (N)))
+      or else
+
+      --  Do_Range_Check flag is not set on allocators. Do the check if the
+      --  designated subtype and the provided subtype do not match.
+
+        (Atree.Nkind (Atree.Parent (N)) = N_Allocator
+         and then Einfo.Directly_Designated_Type
+           (if Present (Einfo.Full_View (Etype (Atree.Parent (N))))
+            then Einfo.Full_View (Etype (Atree.Parent (N)))
+            else Etype (Atree.Parent (N)))
+         /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
+             else Entity (N))));
 
    -----------------------
    -- Do_Division_Check --
@@ -730,6 +742,12 @@ package body SPARK_Atree is
 
          when N_Case_Expression_Alternative =>
             Check_Type := Etype (Atree.Parent (Par));
+
+         when N_Allocator =>
+            Check_Type := Einfo.Directly_Designated_Type
+              (if Present (Einfo.Full_View (Etype (Par)))
+               then Einfo.Full_View (Etype (Par))
+               else Etype (Par));
 
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
