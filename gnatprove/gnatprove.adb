@@ -937,6 +937,14 @@ procedure Gnatprove with SPARK_Mode is
          end;
       end loop;
 
+      --  ??? apparently setting this option for both phases causes gprbuild to
+      --  rerun phase 1 when we try to reuse the ALI file generated with "-u"
+      --  switch without using this switch.
+
+      if Translation_Phase then
+         Gnat2Why_Args.Limit_Units := CL_Switches.U;
+      end if;
+
       --  ??? The following are only needed in translation phase
 
       Gnat2Why_Args.Warning_Mode := Warning_Mode;
@@ -950,7 +958,6 @@ procedure Gnatprove with SPARK_Mode is
         not CL_Switches.No_Axiom_Guard;
       Gnat2Why_Args.Ide_Mode := IDE_Mode;
       Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
-      Gnat2Why_Args.Limit_Units := CL_Switches.U;
       Gnat2Why_Args.Limit_Subp :=
         Ada.Strings.Unbounded.To_Unbounded_String
           (CL_Switches.Limit_Subp.all);
