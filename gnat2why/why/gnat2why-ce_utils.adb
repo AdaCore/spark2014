@@ -39,7 +39,14 @@ package body Gnat2Why.CE_Utils is
    is
       Fst_Found, Lst_Found : Boolean := False;
       Current              : Node_Id := N;
+
    begin
+      --  Initialize outputs with dummy values that will be rewritten in the
+      --  loop, to facilitate static analysis.
+
+      Fst := Uint_0;
+      Lst := Uint_0;
+
       loop
          declare
             Rng  : constant Node_Id := Get_Range (Current);

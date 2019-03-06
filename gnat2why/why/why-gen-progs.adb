@@ -253,8 +253,13 @@ package body Why.Gen.Progs is
    -- Sequence_Append --
    ---------------------
 
-   procedure Sequence_Append (Seq : in out W_Statement_Sequence_Id;
-                              Elt : W_Prog_Id) is
+   procedure Sequence_Append
+     (Seq : in out W_Statement_Sequence_Id;
+      Elt : W_Prog_Id)
+   is
+      --  CodePeer does not understand the Unmodified pragma and issues a false
+      --  alarm otherwise.
+      pragma Annotate (CodePeer, Skip_Analysis);
       pragma Unmodified (Seq);
    begin
       if not Is_Void (Elt) then

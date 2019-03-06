@@ -8706,8 +8706,11 @@ package body Gnat2Why.Expr is
                if Dim < Num_Dim and then not In_Attribute_Update then
                   pragma Assert (Nkind (Expr) = N_Aggregate);
                   return Callback (Dim + 1, Expr);
-               else
+                  pragma Annotate
+                    (CodePeer, False_Positive, "validity check",
+                     "false alarm on implicit result of callback");
 
+               else
                   --  Whenever possible, take advantage of the why3 construct
                   --  for range constants.
 

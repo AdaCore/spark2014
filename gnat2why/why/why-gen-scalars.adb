@@ -212,6 +212,10 @@ package body Why.Gen.Scalars is
       Typ_Result   : Entity_Id;
       Expr         : Node_Id)
    is
+      --  CodePeer does not understand the raise expressions inside and issues
+      --  false alarms otherwise.
+      pragma Annotate (CodePeer, Skip_Analysis);
+
       use Name_Id_Fixed_Point_Mult_Div_Map;
 
       File        : constant W_Section_Id := WF_Pure;
@@ -1201,6 +1205,10 @@ package body Why.Gen.Scalars is
    function Get_Fixed_Point_Mult_Div_Theory_Name
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
    is
+      --  CodePeer does not understand the raise expressions inside and issues
+      --  false alarms otherwise.
+      pragma Annotate (CodePeer, Skip_Analysis);
+
       L_Small   : constant Ureal := Small_Value (Typ_Left);
       R_Small   : constant Ureal :=
         (if Has_Fixed_Point_Type (Typ_Right) then
