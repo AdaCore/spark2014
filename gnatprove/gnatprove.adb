@@ -1022,7 +1022,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       declare
-         Steps : constant Integer := File_Specific_Map.Element ("Ada").Steps;
+         Steps : constant Integer := File_Specific_Map ("Ada").Steps;
       begin
          if Steps /= 0 then
             Args.Append ("-steps=" & Image (Steps / 10, Min_Width => 1));

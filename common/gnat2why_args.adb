@@ -255,7 +255,12 @@ package body Gnat2Why_Args is
          use File_Specific_Maps;
       begin
          for C in File_Specific_Map.Iterate loop
-            Set_Field (FS, Key (C), To_JSON (Element (C)));
+            declare
+               File : String renames Key (C);
+               Opts : File_Specific renames File_Specific_Map (C);
+            begin
+               Set_Field (FS, File, To_JSON (Opts));
+            end;
          end loop;
          Set_Field (Obj, File_Specific_Name, FS);
       end;
