@@ -5,7 +5,7 @@ member.adb:16:04: warning: analyzing unreferenced procedure "Bad_2"
 member.adb:16:14: warning: subprogram "Bad_2" has no effect
 member.adb:19:10: info: initialization of "A" proved
 member.adb:20:10: medium: assertion might fail
-member.adb:26:19: info: assertion proved (Z3: 2 VC)
+member.adb:26:19: info: assertion proved (CVC4: 1 VC; Z3: 2 VC)
 member.adb:27:19: info: assertion proved (CVC4: 1 VC)
 member.adb:28:19: info: assertion proved (CVC4: 1 VC)
 member.adb:29:19: info: assertion proved (CVC4: 1 VC)

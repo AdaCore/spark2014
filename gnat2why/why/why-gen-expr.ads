@@ -92,7 +92,8 @@ package Why.Gen.Expr is
    --  label [If_Node] , which is then dereferenced to yield the value of the
    --  condition.
    --  [C] becomes
-   --  [("node_id:If_Node" spark__branch).bool__content < - C; spark__branch]
+   --  [spark__branch.bool__content < - C;
+   --  ("node_id:If_Node" spark__branch).bool__content]
 
    function New_Ada_Equality
      (Typ         : Entity_Id;

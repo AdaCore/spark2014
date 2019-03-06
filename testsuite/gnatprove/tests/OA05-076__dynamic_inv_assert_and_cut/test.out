@@ -65,8 +65,8 @@ lsc-bignum.adb:493:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:493:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:494:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:494:58: medium: overflow check might fail
+lsc-bignum.adb:494:62: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:494:62: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:494:62: medium: overflow check might fail
 lsc-bignum.adb:495:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:496:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:498:10: medium: precondition might fail, cannot prove B_First in B'range
@@ -80,8 +80,8 @@ lsc-bignum.adb:500:51: info: initialization of "Aux2" proved
 lsc-bignum.adb:503:10: medium: precondition might fail, cannot prove B_First in B'range
 lsc-bignum.adb:503:16: info: initialization of "A" proved
 lsc-bignum.adb:503:36: info: initialization of "Aux4" proved
+lsc-bignum.adb:503:53: info: range check proved (Z3: 1 VC)
 lsc-bignum.adb:503:53: medium: overflow check might fail
-lsc-bignum.adb:503:53: medium: range check might fail
 lsc-bignum.adb:503:57: medium: overflow check might fail
 lsc-bignum.adb:503:60: info: initialization of "L" proved
 lsc-bignum.adb:503:62: info: overflow check proved (Z3: 1 VC)
@@ -109,8 +109,8 @@ lsc-bignum.adb:518:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:518:67: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:519:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:519:58: medium: overflow check might fail
+lsc-bignum.adb:519:62: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:519:62: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:519:62: medium: overflow check might fail
 lsc-bignum.adb:520:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:521:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:524:34: info: overflow check proved (Z3: 1 VC)
@@ -131,8 +131,8 @@ lsc-bignum.adb:536:29: info: initialization of "Aux3" proved
 lsc-bignum.adb:536:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:537:43: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:538:49: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:538:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:538:59: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:538:59: medium: overflow check might fail
 lsc-bignum.adb:540:39: info: initialization of "I" proved
 lsc-bignum.adb:541:24: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:542:43: info: overflow check proved (Z3: 2 VC)
@@ -147,8 +147,8 @@ lsc-bignum.adb:544:59: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:544:67: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:545:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:545:58: medium: overflow check might fail
+lsc-bignum.adb:545:62: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:545:62: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:545:62: medium: overflow check might fail
 lsc-bignum.adb:546:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:547:47: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:548:39: info: overflow check proved (Z3: 2 VC)
@@ -169,8 +169,8 @@ lsc-bignum.adb:565:35: info: initialization of "Aux3" proved
 lsc-bignum.adb:565:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:566:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:567:55: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:567:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:567:65: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:567:65: medium: overflow check might fail
 lsc-bignum.adb:569:45: info: initialization of "I" proved
 lsc-bignum.adb:570:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:571:49: info: overflow check proved (Z3: 2 VC)
@@ -185,8 +185,8 @@ lsc-bignum.adb:573:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:573:73: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:574:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:574:64: medium: overflow check might fail
+lsc-bignum.adb:574:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:574:68: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:574:68: medium: overflow check might fail
 lsc-bignum.adb:575:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:576:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:577:19: medium: loop invariant might fail after first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
@@ -197,8 +197,8 @@ lsc-bignum.adb:577:79: info: initialization of "S" proved
 lsc-bignum.adb:577:81: medium: overflow check might fail
 lsc-bignum.adb:577:81: medium: range check might fail
 lsc-bignum.adb:578:54: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:578:64: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:578:64: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:578:64: medium: overflow check might fail
 lsc-bignum.adb:581:47: info: initialization of "J" proved
 lsc-bignum.adb:582:21: info: division check proved (Z3: 2 VC)
 lsc-bignum.adb:582:63: info: overflow check proved (Z3: 2 VC)
@@ -222,7 +222,7 @@ lsc-bignum.adb:598:20: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:600:17: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:600:41: info: initialization of "S" proved
 lsc-bignum.adb:603:19: info: initialization of "L" proved
-lsc-bignum.adb:603:19: info: loop invariant preservation proved (Z3: 11 VC)
+lsc-bignum.adb:603:19: info: loop invariant preservation proved (Z3: 12 VC)
 lsc-bignum.adb:603:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:604:35: info: initialization of "Aux1" proved
 lsc-bignum.adb:604:55: info: overflow check proved (Z3: 2 VC)
@@ -237,8 +237,8 @@ lsc-bignum.adb:611:35: info: initialization of "Aux3" proved
 lsc-bignum.adb:611:55: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:612:49: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:613:55: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:613:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:613:65: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:613:65: medium: overflow check might fail
 lsc-bignum.adb:615:45: info: initialization of "I" proved
 lsc-bignum.adb:617:30: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:618:49: info: overflow check proved (Z3: 2 VC)
@@ -253,14 +253,14 @@ lsc-bignum.adb:620:65: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:620:73: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:621:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:621:64: medium: overflow check might fail
+lsc-bignum.adb:621:68: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:621:68: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:621:68: medium: overflow check might fail
 lsc-bignum.adb:622:34: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:623:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:624:41: info: initialization of "W" proved
 lsc-bignum.adb:625:54: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:625:64: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:625:64: info: range check proved (Z3: 2 VC)
-lsc-bignum.adb:625:64: medium: overflow check might fail
 lsc-bignum.adb:628:47: info: initialization of "S" proved
 lsc-bignum.adb:629:21: info: division check proved (Z3: 2 VC)
 lsc-bignum.adb:629:53: info: overflow check proved (Z3: 2 VC)
@@ -288,8 +288,8 @@ lsc-bignum.adb:650:35: info: initialization of "Aux3" proved
 lsc-bignum.adb:650:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:651:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:652:55: info: overflow check proved (Z3: 1 VC)
+lsc-bignum.adb:652:65: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:652:65: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:652:65: medium: overflow check might fail
 lsc-bignum.adb:654:45: info: initialization of "I" proved
 lsc-bignum.adb:656:30: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:657:49: info: overflow check proved (Z3: 1 VC)
@@ -304,14 +304,14 @@ lsc-bignum.adb:659:65: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:659:73: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:660:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:660:64: medium: overflow check might fail
+lsc-bignum.adb:660:68: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:660:68: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:660:68: medium: overflow check might fail
 lsc-bignum.adb:661:34: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:662:53: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:663:41: info: initialization of "W" proved
 lsc-bignum.adb:664:54: info: overflow check proved (Z3: 1 VC)
+lsc-bignum.adb:664:64: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:664:64: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:664:64: medium: overflow check might fail
 lsc-bignum.adb:667:47: info: initialization of "S" proved
 lsc-bignum.adb:668:21: info: division check proved (Z3: 1 VC)
 lsc-bignum.adb:668:53: info: overflow check proved (Z3: 1 VC)
@@ -352,8 +352,8 @@ lsc-bignum.adb:701:29: info: initialization of "Aux3" proved
 lsc-bignum.adb:701:49: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:702:43: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:703:49: info: overflow check proved (Z3: 1 VC)
+lsc-bignum.adb:703:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:703:59: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:703:59: medium: overflow check might fail
 lsc-bignum.adb:704:65: info: initialization of "I" proved
 lsc-bignum.adb:705:39: info: initialization of "S" proved
 lsc-bignum.adb:706:24: info: overflow check proved (Z3: 1 VC)
@@ -369,8 +369,8 @@ lsc-bignum.adb:709:59: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:709:67: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:710:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:710:58: medium: overflow check might fail
+lsc-bignum.adb:710:62: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:710:62: info: range check proved (Z3: 1 VC)
-lsc-bignum.adb:710:62: medium: overflow check might fail
 lsc-bignum.adb:711:28: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:712:47: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.adb:715:39: info: overflow check proved (Z3: 1 VC)
@@ -426,8 +426,8 @@ lsc-bignum.ads:250:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:250:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:250:55: info: range check proved (Z3: 1 VC)
 lsc-bignum.ads:251:45: info: overflow check proved (Z3: 1 VC)
+lsc-bignum.ads:251:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:251:55: info: range check proved (Z3: 1 VC)
-lsc-bignum.ads:251:55: medium: overflow check might fail
 lsc-bignum.ads:252:45: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:252:55: info: overflow check proved (Z3: 1 VC)
 lsc-bignum.ads:252:55: info: range check proved (Z3: 1 VC)

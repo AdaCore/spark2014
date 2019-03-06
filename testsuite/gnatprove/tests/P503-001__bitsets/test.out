@@ -4,7 +4,7 @@ bitsets.adb:41:15: info: initialization of "Res" proved, in instantiation at tes
 bitsets.adb:42:14: info: initialization of "Res" proved, in instantiation at test_main.adb:5
 bitsets.adb:56:16: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5
 bitsets.adb:61:14: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.ads:19:09: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
+bitsets.ads:19:09: info: postcondition proved (CVC4: 3 VC), in instantiation at test_main.adb:5
 bitsets.ads:24:09: info: postcondition proved (CVC4: 3 VC), in instantiation at test_main.adb:5
 bitsets.ads:30:09: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
 bitsets.ads:34:20: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
@@ -33,5 +33,5 @@ test_main.adb:19:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:19:36: info: initialization of "S" proved
 test_main.adb:20:19: info: assertion proved (CVC4: 1 VC)
 test_main.adb:20:36: info: initialization of "S" proved
-test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (1 => False, 10 => False, 2 => False, 4 => False, 5 => False, 6 => False, 7 => False, 9 => False, others => True))
+test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (3 => True, 8 => True, others => False))
 test_main.adb:22:36: info: initialization of "S" proved

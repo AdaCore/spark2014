@@ -1,7 +1,7 @@
 test_annotate.adb:5:14: info: postcondition proved (CVC4: 1 VC)
 test_annotate.adb:6:04: info: Inline_For_Proof annotation proved (CVC4: 1 VC)
 test_annotate.adb:17:14: info: postcondition proved (CVC4: 1 VC)
-test_annotate.adb:18:04: medium: Inline_For_Proof annotation might be incorrect (e.g. when F_3'Result = 0 and X = 1)
+test_annotate.adb:18:04: medium: Inline_For_Proof annotation might be incorrect (e.g. when F_3'Result = 0 and X = -1)
 test_annotate.adb:32:14: info: postcondition proved (CVC4: 1 VC)
 test_annotate.adb:33:04: info: Inline_For_Proof annotation proved (CVC4: 1 VC)
 test_annotate.adb:41:19: info: assertion proved (CVC4: 1 VC)

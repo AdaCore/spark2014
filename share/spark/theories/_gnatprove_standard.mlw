@@ -1,6 +1,13 @@
 module Main
   use export "_gnatprove_standard_th".Main_Main
 
+  (* equality over private types *)
+  val function private__bool_eq __private __private : bool
+
+  (* dummy value for the null extension when the dynamic type matches the
+  static type *)
+  val constant __null_ext__ : __private
+
   (* exception used to simulate return statements *)
   exception Return__exc
 
@@ -9,49 +16,49 @@ module Main
      interfere with other variables, i.e., writes through pointers, aliased
      variables etc. *)
   type __type_of_heap
-  type __type_of_heap__ref = { mutable __type_of_heap__content "model_trace:" : __type_of_heap }
+  type __type_of_heap__ref = { mutable __type_of_heap__content [@model_trace:] : __type_of_heap }
   val __HEAP : __type_of_heap__ref
 
   (* the return type for the functions that correspond to 'Image *)
   type __image
 
   (* Mutable records holding references over builtin types *)
-  type int__ref  = { mutable int__content "model_trace:"  : int  }
-  type bool__ref = { mutable bool__content "model_trace:" : bool }
-  type __fixed__ref = { mutable __fixed__content "model_trace:" : __fixed }
-  type real__ref = { mutable real__content "model_trace:" : real }
-  type __private__ref = { mutable __private__content "model_trace:" : __private }
+  type int__ref  = { mutable int__content [@model_trace:]  : int  }
+  type bool__ref = { mutable bool__content [@model_trace:] : bool }
+  type __fixed__ref = { mutable __fixed__content [@model_trace:] : __fixed }
+  type real__ref = { mutable real__content [@model_trace:] : real }
+  type __private__ref = { mutable __private__content [@model_trace:] : __private }
 
   (* Projections from records holding references over builtin types to builtin types *)
   function int__ref___projection
     (a : int__ref)  : int =
     a.int__content
   meta "model_projection" function int__ref___projection
-  meta "inline : no" function int__ref___projection
-
+  meta "inline:no" function int__ref___projection
+ 
   function __fixed__ref___projection
     (a : __fixed__ref)  : __fixed =
     a.__fixed__content
   meta "model_projection" function __fixed__ref___projection
-  meta "inline : no" function __fixed__ref___projection
+  meta "inline:no" function __fixed__ref___projection
 
   function bool__ref___projection
     (a : bool__ref)  : bool =
     a.bool__content
   meta "model_projection" function bool__ref___projection
-  meta "inline : no" function bool__ref___projection
+  meta "inline:no" function bool__ref___projection
 
   function real__ref___projection
     (a : real__ref)  : real =
     a.real__content
   meta "model_projection" function real__ref___projection
-  meta "inline : no" function real__ref___projection
+  meta "inline:no" function real__ref___projection
 
   function __private__ref___projection
     (a : __private__ref)  : __private =
     a.__private__content
   meta "model_projection" function __private__ref___projection
-  meta "inline : no" function __private__ref___projection
+  meta "inline:no" function __private__ref___projection
 
   (* Program function that sets the value of its parameter to any possible
      value allowed by its type. *)
@@ -69,18 +76,34 @@ module Main
   (* Counterexample branching-if variable. The model_trace is intentionally not
      a node_id. We use another label to recognize the node_id corresponding to
      values but we still need to trigger counterexample on this.  *)
-  val spark__branch "model_trace:0000": bool__ref
+  val spark__branch [@model_trace:0000]: bool__ref
 end
 
 module Compatible_Tags
   (* A prediacte to check compatibility between tags *)
-  predicate __compatible_tags (from_tag : int) (to_tag : int)
+  val predicate __compatible_tags (from_tag : int) (to_tag : int)
   axiom __compatible_tags_refl :
     forall tag : int. __compatible_tags tag tag
 end
 
 module Integer
   use export "_gnatprove_standard_th".Integer
+
+  val bool_eq (x y : int) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : int) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : int) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : int) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : int) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : int) : bool
+  ensures { result = bool_ge x y }
+
+  val length (x y : int) : int
+  ensures { result = length x y }
 end
 
 module Int_Power
@@ -88,12 +111,12 @@ module Int_Power
 end
 
 module Int_Minmax
-  use import int.Int
-  use int.MinMax
+  use int.Int
+  use int.MinMax as MinMax
 
-  function int_max (x y : int) : int = MinMax.max x y
+  let function int_max (x y : int) : int = MinMax.max x y
 
-  function int_min (x y : int) : int = MinMax.min x y
+  let function int_min (x y : int) : int = MinMax.min x y
 
 end
 
@@ -102,27 +125,37 @@ module Int_Abs
 end
 
 module Int_Division
-  use import int.Int
-  use int.ComputerDivision
-  use int.EuclideanDivision
+  use int.Int
+  use int.ComputerDivision as ComputerDivision
+  use int.EuclideanDivision as EuclideanDivision
 
   (* Ada division and rem operator correspond to what Why3 calls "computer
   division". Ada mod operator does not correspond to any predefined operator
   in Why3. *)
   function div (x y : int) : int = ComputerDivision.div x y
+  val div (x:int) (y:int) : int
+     ensures { result = div x y }
   function euclid_div (x y : int) : int = EuclideanDivision.div x y
+  val euclid_div (x:int) (y:int) : int
+     ensures { result = euclid_div x y }
 
   function rem (x y : int) : int = ComputerDivision.mod x y
+  val rem (x:int) (y:int) : int
+     ensures { result = rem x y }
 
   (* This is the formula I found after playing with mod and euclidean mod *)
   function mod (x y : int) : int =
     if y > 0 then EuclideanDivision.mod x y else EuclideanDivision.mod x y + y
+  val mod (x:int) (y:int) : int
+     ensures { result = mod x y }
 
   (* This function is used for the (implicit) modulo operation on modular
   types. The modulus is always positive, and in that case, the Ada mod or
   Euclidean mod are OK. We take the Euclidean one because it is better
   supported. *)
   function math_mod (x y : int) : int = EuclideanDivision.mod x y
+  val math_mod (x y:int) : int
+    ensures { result = EuclideanDivision.mod x y }
 
   (* These program functions are there to generate division checks *)
 
@@ -158,7 +191,7 @@ module Floating_power
 
   type t
 
-  use import int.Int
+  use int.Int
   predicate is_finite t
   predicate is_zero t
   predicate eq t t
@@ -166,7 +199,7 @@ module Floating_power
   function of_int int : t
   function ( * ) t t   : t
   function div   t t   : t
-  function power t int : t
+  val function power t int : t
 
   axiom Power_0 : forall x: t. is_finite x -> eq (power x 0) (of_int 1)
 
@@ -204,8 +237,8 @@ module Floating_next_prev
   predicate gt t t
   predicate ge t t
 
-  function next_representable (x : t) : t
-  function prev_representable (x : t) : t
+  val function next_representable (x : t) : t
+  val function prev_representable (x : t) : t
 
   (* Note that Succ (-0) > +0 *)
 
@@ -260,6 +293,9 @@ module Floating
   val rem_ (x:t) (y:t) : t
      requires { not (is_zero y) }
      ensures { result = rem x y }
+     
+  val neq (x : t) (y : t) : bool
+   ensures { result <-> neq x y }
 end
 
 module Float32RNE
@@ -279,6 +315,40 @@ module Float32RNE
   function floor    (x:t) : t = roundToIntegral RTN x
   function rounding (x:t) : t = roundToIntegral RNA x
   function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
 end
 
 module Float64RNE
@@ -298,6 +368,40 @@ module Float64RNE
   function floor    (x:t) : t = roundToIntegral RTN x
   function rounding (x:t) : t = roundToIntegral RNA x
   function truncate (x:t) : t = roundToIntegral RTZ x
+
+  val mul_rne (x y : t) : t
+    ensures { result = mul RNE x y }
+  val div_rne (x y : t) : t
+    ensures { result = div RNE x y }
+  val add_rne (x y : t) : t
+    ensures { result = add RNE x y }
+  val sub_rne (x y : t) : t
+    ensures { result = sub RNE x y }
+
+  val sqrt_rne (x : t) : t
+    ensures { result = sqrt RNE x }
+
+  val of_int_rne (x:int) : t
+    ensures { result = of_int RNE x }
+  val to_int_rna (x:t) : int
+    ensures { result = to_int RNA x }
+
+  val ceil     (x:t) : t
+    ensures { result = roundToIntegral RTP x }
+  val floor    (x:t) : t
+    ensures { result = roundToIntegral RTN x }
+  val rounding (x:t) : t
+    ensures { result = roundToIntegral RNA x }
+  val truncate (x:t) : t
+    ensures { result = roundToIntegral RTZ x }
+
+  val min (x:t) (y:t) : t
+     ensures { result = min x y }
+  val max (x:t) (y:t) : t
+     ensures { result = max x y }
+
+  val constant _zeroF : t
+    ensures { result = zeroF }
 end
 
 module Float32_power
@@ -377,11 +481,12 @@ module Float32
     predicate eq = eq,
     function div_rne = div_rne
 
-  constant one : t = (1.0:t)
+  val constant one : t
+  ensures { result = (1.0:t) }
   axiom one_is_int: is_int one
   axiom one_of_int: one = of_int RNA 1
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 end
@@ -401,11 +506,12 @@ module Float64
     predicate eq = eq,
     function div_rne = div_rne
 
-  constant one : t = (1.0:t)
+  val constant one : t
+  ensures { result = (1.0:t) }
   axiom one_is_int: is_int one
   axiom one_of_int: one = of_int RNA 1
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 end
@@ -416,6 +522,11 @@ module FloatConv
   function to_float64_rne (x:Float32.t) : Float64.t = to_float64 RNE x
   function to_float32_rne (x:Float64.t) : Float32.t = to_float32 RNE x
 
+  val to_float64_rne (x:Float32.t) : Float64.t
+  ensures { result = to_float64 RNE x }
+  val to_float32_rne (x:Float64.t) : Float32.t
+  ensures { result = to_float32 RNE x }
+
   val range_check_ (f l x : Float64.t) : Float64.t
     requires { (Float64.(.<=) f x) /\ (Float64.(.<=) x l) }
     ensures { result = x }
@@ -423,27 +534,59 @@ end
 
 module Float32_BV_Converter
   use export ieee_float.Float32_BV_Converter
-  use import ieee_float.Float32
+  use        ieee_float.Float32
 
   function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
   function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
   function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
   function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
 
   function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
   function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
   function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
   function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
 
   function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
   function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
   function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
   function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
 
   function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
   function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
   function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
   function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
 
   val range_check_ (f l n : t) : t
     requires {f .<= n .<= l}
@@ -452,27 +595,59 @@ end
 
 module Float64_BV_Converter
   use export ieee_float.Float64_BV_Converter
-  use import ieee_float.Float64
+  use        ieee_float.Float64
 
   function of_ubv8_rne  (x:BV8.t)  : t = of_ubv8  RNE x
   function of_ubv16_rne (x:BV16.t) : t = of_ubv16 RNE x
   function of_ubv32_rne (x:BV32.t) : t = of_ubv32 RNE x
   function of_ubv64_rne (x:BV64.t) : t = of_ubv64 RNE x
+  val of_ubv8_rne  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RNE x }
+  val of_ubv16_rne (x:BV16.t) : t
+  ensures { result = of_ubv16 RNE x }
+  val of_ubv32_rne (x:BV32.t) : t
+  ensures { result = of_ubv32 RNE x }
+  val of_ubv64_rne (x:BV64.t) : t
+  ensures { result = of_ubv64 RNE x }
 
   function of_ubv8_rtp  (x:BV8.t)  : t = of_ubv8  RTP x
   function of_ubv16_rtp (x:BV16.t) : t = of_ubv16 RTP x
   function of_ubv32_rtp (x:BV32.t) : t = of_ubv32 RTP x
   function of_ubv64_rtp (x:BV64.t) : t = of_ubv64 RTP x
+  val of_ubv8_rtp  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTP x }
+  val of_ubv16_rtp (x:BV16.t) : t
+  ensures { result = of_ubv16 RTP x }
+  val of_ubv32_rtp (x:BV32.t) : t
+  ensures { result = of_ubv32 RTP x }
+  val of_ubv64_rtp (x:BV64.t) : t
+  ensures { result = of_ubv64 RTP x }
 
   function of_ubv8_rtn  (x:BV8.t)  : t = of_ubv8  RTN x
   function of_ubv16_rtn (x:BV16.t) : t = of_ubv16 RTN x
   function of_ubv32_rtn (x:BV32.t) : t = of_ubv32 RTN x
   function of_ubv64_rtn (x:BV64.t) : t = of_ubv64 RTN x
+  val of_ubv8_rtn  (x:BV8.t)  : t
+  ensures { result = of_ubv8  RTN x }
+  val of_ubv16_rtn (x:BV16.t) : t
+  ensures { result = of_ubv16 RTN x }
+  val of_ubv32_rtn (x:BV32.t) : t
+  ensures { result = of_ubv32 RTN x }
+  val of_ubv64_rtn (x:BV64.t) : t
+  ensures { result = of_ubv64 RTN x }
 
   function to_ubv8_rna  (x:t) : BV8.t  = to_ubv8  RNA x
   function to_ubv16_rna (x:t) : BV16.t = to_ubv16 RNA x
   function to_ubv32_rna (x:t) : BV32.t = to_ubv32 RNA x
   function to_ubv64_rna (x:t) : BV64.t = to_ubv64 RNA x
+  val to_ubv8_rna  (x:t) : BV8.t
+  ensures { result = to_ubv8  RNA x }
+  val to_ubv16_rna (x:t) : BV16.t
+  ensures { result = to_ubv16 RNA x }
+  val to_ubv32_rna (x:t) : BV32.t
+  ensures { result = to_ubv32 RNA x }
+  val to_ubv64_rna (x:t) : BV64.t
+  ensures { result = to_ubv64 RNA x }
 
   val range_check_ (f l n : t) : t
     requires {f .<= n .<= l}
@@ -482,21 +657,29 @@ end
 module Boolean
   use export bool.Bool
   use export bool.Ite
-  use import int.Int
-  use import Main
+  use        int.Int
+  use        Main
 
   use export "_gnatprove_standard_th".Boolean_Func
 
   (* Boolean logical connectors, functions for conversion of booleans, etc *)
 
-  function last : int = 1
-  function first : int = 0
+  val to_int (b : bool) : int
+  ensures { result = to_int b }
+
+  val of_int (i : int) : bool
+  ensures { result = of_int i }
+
+  let function last : int = 1
+  let function first : int = 0
 
   predicate in_range (x : int) = x = 0 \/ x = 1
+  val in_range (x : int) : bool
+  ensures { result <-> in_range x }
 
-  predicate dynamic_property "inline" (f l x : int) = in_range x
+  predicate dynamic_property [@inline] (f l x : int) = in_range x
 
-  function attr__ATTRIBUTE_IMAGE bool : __image
+  val function attr__ATTRIBUTE_IMAGE bool : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
@@ -517,6 +700,9 @@ module Boolean
   val check_not_first (n : int) : int
     requires { n <> first }
     ensures { result = n }
+
+  val bool_eq (x : bool) (y : bool) : bool
+    ensures { result = if x = y then True else False }
 
 end
 
@@ -561,23 +747,27 @@ end
 
 module Array__1
   use map.Map
-
-  use import bool.Bool
+  use bool.Bool
 
   clone Array__Index as I1
 
   type component_type
 
   type map = Map.map I1.t component_type
-  type map__ref = { mutable map__content "model_trace:" : map }
+  type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  function get "inline" (a : map) (i : I1.t) : component_type = Map.get a i
-  function set "inline" (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
+  function get [@inline] (a : map) (i : I1.t) : component_type = Map.get a i
+  function set [@inline] (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
 
-  function slide map I1.t I1.t : map
-  meta "encoding : lskept" function slide
+  val get (a : map) (i : I1.t) : component_type
+    ensures { result = Map.get a i }
+  val set (a : map) (i : I1.t) (v : component_type) : map
+    ensures { result = Map.set a i v }
+
+  val function slide map I1.t I1.t : map
+  meta "encoding:lskept" function slide
 
   axiom slide_eq :
     forall a : map.
@@ -611,8 +801,8 @@ module Array__1__Concat
      interested in the second argument, a shift must be made depending on the
      original "first" value. *)
 
-  function concat map Index.t Index.t map Index.t Index.t : map
-  meta "encoding : lskept" function concat
+  val function concat map Index.t Index.t map Index.t Index.t : map
+  meta "encoding:lskept" function concat
 
   axiom concat_def :
     forall a b : map.
@@ -628,8 +818,8 @@ module Array__1__Concat
      is the first index of the new array. The right operand is slided so that it
      starts at a_first + 1. *)
 
-  function concat_singleton_left component_type Index.t map Index.t Index.t : map
-  meta "encoding : lskept" function concat_singleton_left
+  val function concat_singleton_left component_type Index.t map Index.t Index.t : map
+  meta "encoding:lskept" function concat_singleton_left
 
   axiom concat_singleton_left_def :
     forall a : component_type.
@@ -644,8 +834,8 @@ module Array__1__Concat
 
   (* Special case of concatenation when the right operand is a component. *)
 
-  function concat_singleton_right map Index.t Index.t component_type : map
-  meta "encoding : lskept" function concat_singleton_right
+  val function concat_singleton_right map Index.t Index.t component_type : map
+  meta "encoding:lskept" function concat_singleton_right
 
   axiom concat_singleton_right_def :
     forall a : map.
@@ -661,8 +851,8 @@ module Array__1__Concat
   (* Special case of concatenation when both operands are components. a_first
      is the first index of the resulting array. *)
 
-  function concat_singletons component_type Index.t component_type : map
-  meta "encoding : lskept" function concat_singletons
+  val function concat_singletons component_type Index.t component_type : map
+  meta "encoding:lskept" function concat_singletons
 
   axiom concat_singletons_def :
     forall a b : component_type.
@@ -675,8 +865,8 @@ module Array__1__Concat
   (* An array containing the value v at index i. It is used for the result of
      the concatenation of an empty array with a component. *)
 
-   function singleton component_type Index.t : map
-   meta "encoding : lskept" function singleton
+   val function singleton component_type Index.t : map
+   meta "encoding:lskept" function singleton
 
    axiom singleton_def :
     forall v : component_type.
@@ -685,7 +875,7 @@ module Array__1__Concat
 end
 
 module Array__2
-  use import bool.Bool
+  use bool.Bool
 
   clone Array__Index as I1
   clone Array__Index as I2
@@ -693,14 +883,14 @@ module Array__2
   type component_type
 
   type map
-  type map__ref = { mutable map__content "model_trace:" : map }
+  type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  function get map I1.t I2.t : component_type
-  meta "encoding : lskept" function get
-  function set map I1.t I2.t component_type : map
-  meta "encoding : lskept" function set
+  val function get map I1.t I2.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t component_type : map
+  meta "encoding:lskept" function set
 
   axiom Select_eq :
     forall m : map.
@@ -715,8 +905,8 @@ module Array__2
     forall a : component_type [get (set m i j a) i2 j2| set m i j a, get m i2 j2].
     not (i = i2 /\ j = j2) -> get (set m i j a) i2 j2 = get m i2 j2
 
-  function slide map I1.t I1.t I2.t I2.t : map
-  meta "encoding : lskept" function slide
+  val function slide map I1.t I1.t I2.t I2.t : map
+  meta "encoding:lskept" function slide
 
   axiom slide_def :
     forall a : map.
@@ -730,7 +920,7 @@ module Array__2
 end
 
 module Array__3
-  use import bool.Bool
+  use bool.Bool
 
   clone Array__Index as I1
   clone Array__Index as I2
@@ -739,14 +929,14 @@ module Array__3
   type component_type
 
   type map
-  type map__ref = { mutable map__content "model_trace:" : map }
+  type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  function get map I1.t I2.t I3.t : component_type
-  meta "encoding : lskept" function get
-  function set map I1.t I2.t I3.t component_type : map
-  meta "encoding : lskept" function set
+  val function get map I1.t I2.t I3.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t I3.t component_type : map
+  meta "encoding:lskept" function set
 
   axiom Select_eq :
     forall m : map.
@@ -764,8 +954,8 @@ module Array__3
     not (i = i2 /\ j = j2 /\ k = k2) ->
       get (set m i j k a) i2 j2 k2 = get m i2 j2 k2
 
-  function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
-  meta "encoding : lskept" function slide
+  val function slide map I1.t I1.t I2.t I2.t I3.t I3.t : map
+  meta "encoding:lskept" function slide
 
   axiom slide_def :
     forall a : map.
@@ -785,7 +975,7 @@ module Array__3
 end
 
 module Array__4
-  use import bool.Bool
+  use bool.Bool
 
   clone Array__Index as I1
   clone Array__Index as I2
@@ -795,14 +985,14 @@ module Array__4
   type component_type
 
   type map
-  type map__ref = { mutable map__content "model_trace:" : map }
+  type map__ref = { mutable map__content [@model_trace:] : map }
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  function get map I1.t I2.t I3.t I4.t : component_type
-  meta "encoding : lskept" function get
-  function set map I1.t I2.t I3.t I4.t component_type : map
-  meta "encoding : lskept" function set
+  val function get map I1.t I2.t I3.t I4.t : component_type
+  meta "encoding:lskept" function get
+  val function set map I1.t I2.t I3.t I4.t component_type : map
+  meta "encoding:lskept" function set
 
   axiom Select_eq :
     forall m : map.
@@ -824,8 +1014,8 @@ module Array__4
     not (i = i2 /\ j = j2 /\ k = k2 /\ l = l2) ->
       get (set m i j k l a) i2 j2 k2 l2 = get m i2 j2 k2 l2
 
-  function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
-  meta "encoding : lskept" function slide
+  val function slide map I1.t I1.t I2.t I2.t I3.t I3.t I4.t I4.t : map
+  meta "encoding:lskept" function slide
 
   axiom slide_def :
     forall a : map.
@@ -850,7 +1040,7 @@ end
 module BVAda
   type t
 
-  function abs "inline" (x : t) : t = x
+  let function abs [@inline] (x : t) : t = x
 
   predicate ult t t
   predicate ule t t
@@ -859,7 +1049,7 @@ module BVAda
 
   function to_uint t : int
 
-  use import bool.Bool
+  use bool.Bool
   function bool_eq (x: t) (y: t) : bool = x = y
   function bool_ne (x: t) (y: t) : bool = x <> y
   function bool_lt (x: t) (y: t) : bool = ult x y
@@ -867,12 +1057,28 @@ module BVAda
   function bool_gt (x: t) (y: t) : bool = ugt x y
   function bool_ge (x: t) (y: t) : bool = uge x y
 
-  use import int.Int
+  val bool_eq (x y : t) : bool
+  ensures { result = bool_eq x y }
+  val bool_ne (x y : t) : bool
+  ensures { result = bool_ne x y }
+  val bool_lt (x y : t) : bool
+  ensures { result = bool_lt x y }
+  val bool_le (x y : t) : bool
+  ensures { result = bool_le x y }
+  val bool_gt (x y : t) : bool
+  ensures { result = bool_gt x y }
+  val bool_ge (x y : t) : bool
+  ensures { result = bool_ge x y }
+
+  val neq (v1: t) (v2: t) : bool
+    ensures { result <-> v1 <> v2 }
+
+  use int.Int
   function one : t
 
   function (*) t t : t
 
-  function power t int : t
+  val function power t int : t
 
   axiom Power_0 : forall x: t. power x 0 = one
 
@@ -894,7 +1100,12 @@ module BVAda
   function bv_min (x y : t) : t = if ule x y then x else y
   function bv_max (x y : t) : t = if ule x y then y else x
 
-  use int.MinMax
+  val bv_min (x y : t) : t
+  ensures { result = if ule x y then x else y }
+  val bv_max (x y : t) : t
+  ensures { result = if ule x y then y else x }
+
+  use int.MinMax as MinMax
 
   lemma bv_min_to_uint: forall x y.
     to_uint (bv_min x y) = MinMax.min (to_uint x) (to_uint y)
@@ -907,7 +1118,7 @@ end
 module BV8
   use export bv.BV8
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -932,12 +1143,20 @@ module BV8
   val urem_ (x : t) (y : t) : t
     requires{ y <> zeros }
     ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int [@inline] (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
 end
 
 module BV16
   use export bv.BV16
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -962,12 +1181,20 @@ module BV16
   val urem_ (x : t) (y : t) : t
     requires{ y <> zeros }
     ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int [@inline] (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
 end
 
 module BV32
   use export bv.BV32
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -992,12 +1219,20 @@ module BV32
   val urem_ (x : t) (y : t) : t
     requires{ y <> zeros }
     ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int [@inline] (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
 end
 
 module BV64
   use export bv.BV64
 
-  type t__ref = { mutable t__content "model_trace:" : t }
+  type t__ref = { mutable t__content [@model_trace:] : t }
   val t__havoc (x : t__ref) : unit
      writes { x }
 
@@ -1022,6 +1257,14 @@ module BV64
   val urem_ (x : t) (y : t) : t
     requires{ y <> zeros }
     ensures{ result = urem x y }
+
+  val constant _two_power_size : int
+    ensures{ result = two_power_size }
+
+  function t_int [@inline] (x : t) : int = t'int x
+
+  val t_int (x : t) : int
+    ensures { result = t'int x }
 end
 
 module BVConv_32_64

@@ -640,8 +640,8 @@ parser_utilities.adb:650:27: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:662:11: info: range check proved (CVC4: 2 VC)
 parser_utilities.adb:662:38: info: initialization of "EndIdx" proved
 parser_utilities.adb:664:12: info: initialization of "ContainsOnlyNumbers" proved
-parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 6 VC)
-parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 6 VC)
+parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 8 VC)
+parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 8 VC)
 parser_utilities.adb:669:13: info: initialization of "EndIdx" proved
 parser_utilities.adb:671:22: info: initialization of "EndIdx" proved
 parser_utilities.adb:672:17: info: initialization of "ContainsOnlyNumbers" proved
@@ -816,8 +816,8 @@ parser_utilities.adb:1024:14: info: range check proved (CVC4: 2 VC)
 parser_utilities.adb:1024:33: info: initialization of "BegIdx" proved
 parser_utilities.adb:1024:43: info: initialization of "EndIdx" proved
 parser_utilities.adb:1026:16: info: initialization of "BegIdx" proved
-parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:1026:16: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1026:16: info: loop invariant initialization proved (CVC4: 6 VC)
+parser_utilities.adb:1026:16: info: loop invariant preservation proved (CVC4: 6 VC)
 parser_utilities.adb:1026:25: info: initialization of "BegIdx" proved
 parser_utilities.adb:1027:16: info: initialization of "EndIdx" proved
 parser_utilities.adb:1027:25: info: initialization of "EndIdx" proved
@@ -857,8 +857,8 @@ parser_utilities.adb:1094:14: info: range check proved (CVC4: 2 VC)
 parser_utilities.adb:1094:33: info: initialization of "BegIdx" proved
 parser_utilities.adb:1094:43: info: initialization of "EndIdx" proved
 parser_utilities.adb:1096:16: info: initialization of "BegIdx" proved
-parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC4: 4 VC)
-parser_utilities.adb:1096:16: info: loop invariant preservation proved (CVC4: 4 VC)
+parser_utilities.adb:1096:16: info: loop invariant initialization proved (CVC4: 6 VC)
+parser_utilities.adb:1096:16: info: loop invariant preservation proved (CVC4: 6 VC)
 parser_utilities.adb:1096:25: info: initialization of "BegIdx" proved
 parser_utilities.adb:1097:16: info: initialization of "EndIdx" proved
 parser_utilities.adb:1097:25: info: initialization of "EndIdx" proved
@@ -966,7 +966,7 @@ parser_utilities.adb:1323:14: info: initialization of "RetVal" proved
 parser_utilities.ads:59:07: info: initialization of "T" proved
 parser_utilities.ads:66:07: info: initialization of "EndIdx" proved
 parser_utilities.ads:67:07: info: initialization of "T" proved
-parser_utilities.ads:70:20: info: postcondition proved (CVC4: 5 VC)
+parser_utilities.ads:70:20: info: postcondition proved (CVC4: 6 VC)
 parser_utilities.ads:70:30: info: initialization of "EndIdx" proved
 parser_utilities.ads:73:24: info: initialization of "T" proved
 parser_utilities.ads:74:32: info: range check proved (CVC4: 2 VC)
@@ -1598,10 +1598,10 @@ spark_dns_main.adb:39:20: info: range check proved (CVC4: 2 VC)
 spark_dns_main.adb:43:34: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: unused assignment to "ZoneFile"
 spark_dns_main.adb:45:11: info: initialization of "Success" proved
-task_limit.adb:42:16: info: refined post proved (CVC4: 5 VC)
+task_limit.adb:42:16: info: refined post proved (CVC4: 7 VC)
 task_limit.adb:44:55: info: initialization of "Success" proved
 task_limit.adb:50:38: info: range check proved (CVC4: 1 VC)
-task_limit.adb:64:16: info: refined post proved (CVC4: 3 VC)
+task_limit.adb:64:16: info: refined post proved (CVC4: 5 VC)
 task_limit.adb:71:38: info: range check proved (CVC4: 1 VC)
 task_limit.ads:25:23: info: range check proved (CVC4: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved
@@ -1953,8 +1953,8 @@ zone_file_parser.adb:305:29: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:307:52: info: initialization of "BegIdx" proved
 zone_file_parser.adb:308:52: info: initialization of "EndIdx" proved
 zone_file_parser.adb:313:19: info: initialization of "BegIdx" proved
-zone_file_parser.adb:313:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:313:19: info: loop invariant preservation proved (CVC4: 3 VC)
+zone_file_parser.adb:313:19: info: loop invariant initialization proved (CVC4: 6 VC)
+zone_file_parser.adb:313:19: info: loop invariant preservation proved (CVC4: 6 VC)
 zone_file_parser.adb:313:28: info: initialization of "BegIdx" proved
 zone_file_parser.adb:314:19: info: initialization of "EndIdx" proved
 zone_file_parser.adb:314:28: info: initialization of "EndIdx" proved
@@ -1988,8 +1988,8 @@ zone_file_parser.adb:385:29: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:387:52: info: initialization of "BegIdx" proved
 zone_file_parser.adb:388:52: info: initialization of "EndIdx" proved
 zone_file_parser.adb:393:19: info: initialization of "BegIdx" proved
-zone_file_parser.adb:393:19: info: loop invariant initialization proved (CVC4: 3 VC)
-zone_file_parser.adb:393:19: info: loop invariant preservation proved (CVC4: 3 VC)
+zone_file_parser.adb:393:19: info: loop invariant initialization proved (CVC4: 6 VC)
+zone_file_parser.adb:393:19: info: loop invariant preservation proved (CVC4: 6 VC)
 zone_file_parser.adb:393:28: info: initialization of "BegIdx" proved
 zone_file_parser.adb:394:19: info: initialization of "EndIdx" proved
 zone_file_parser.adb:394:28: info: initialization of "EndIdx" proved

@@ -293,6 +293,14 @@ package body Gnat2Why.Counter_Examples is
          when Array_Value =>
             CNT_Element.Val_Str := Refine_Array_Components (CNT_Element);
          when Simple_Value =>
+
+            --  If a problem was found while constructing the value, it may be
+            --  null.
+
+            if CNT_Element.Value = null then
+               return Dont_Display;
+            end if;
+
             declare
                Refined_Value : constant CNT_Unbounded_String :=
                  Refine_Value (CNT_Element.Value,
@@ -933,6 +941,13 @@ package body Gnat2Why.Counter_Examples is
                return (Nul => True,
                        Str => Cnt_Value.S);
 
+            when Cnt_Projection =>
+               pragma Assert (False);
+               --  This case should never happen: we never built a
+               --  Cnt_Projection ever.
+               return (Nul => True,
+                       Str => Cnt_Value.Er);
+
             when Cnt_Record | Cnt_Array =>
                pragma Assert (False);
                return Dont_Display;
@@ -1088,7 +1103,12 @@ package body Gnat2Why.Counter_Examples is
 
             if Val.K = Record_Value then
                for C in Val.Fields.Iterate loop
-                  if Is_Visible_In_Type (Val.Ent_Ty, Key (C)) then
+                  --  ??? newsystem followup ticket: This Get_Component_Set
+                  --  corresponds to a check for ill formed counterexamples
+                  --  (this should be solved in Why3).
+                  if Get_Component_Set (Val.Ent_Ty).Contains (Key (C))
+                    and then Is_Visible_In_Type (Val.Ent_Ty, Key (C))
+                  then
                      Add_Attributes
                        (Name => Name & "." & Source_Name (Key (C)),
                         Val  => Element (C));
@@ -1232,7 +1252,13 @@ package body Gnat2Why.Counter_Examples is
       begin
          case Ptr.K is
             when Simple_Value =>
-               pragma Assert (Val.T not in Cnt_Record | Cnt_Array);
+
+               --  Counterexample should not be an array or a record
+
+               if Val.T in Cnt_Record | Cnt_Array then
+                  return;
+               end if;
+
                Ptr.Value := Val;
             when Array_Value =>
 
@@ -1664,16 +1690,29 @@ package body Gnat2Why.Counter_Examples is
                           (Part, Elt.Value);
                      end if;
                   else
-                     pragma Assert (Current_Cnt_Value.K = Record_Value);
-                     if not
-                       Current_Cnt_Value.Fields.Contains (Part_Entity)
-                     then
-                        Current_Cnt_Value.Fields.Insert
-                          (Part_Entity, New_Item (Ent_Ty));
-                     end if;
+                     if Current_Cnt_Value.K /= Record_Value then
 
-                     Current_Cnt_Value :=
-                       Current_Cnt_Value.Fields.Element (Part_Entity);
+                        --  ??? newsystem followup ticket: This case should not
+                        --  be necessary but it happens that with attributes
+                        --  of array on subrecords, the order returned by
+                        --  gnatwhy3 for the components is not correct.
+                        --  For example, "2654.2552.2100'Last" instead of
+                        --  "2654.2100.2552'Last". This is due to a combination
+                        --  of factor inside Why3 involving handling of record
+                        --  with one element in eval_match and new treatment of
+                        --  record for counterexamples.
+                        goto Next_Model_Element;
+                     else
+                        if not
+                          Current_Cnt_Value.Fields.Contains (Part_Entity)
+                        then
+                           Current_Cnt_Value.Fields.Insert
+                          (Part_Entity, New_Item (Ent_Ty));
+                        end if;
+
+                        Current_Cnt_Value :=
+                          Current_Cnt_Value.Fields.Element (Part_Entity);
+                     end if;
                   end if;
 
                   --  If we have reached an attribute, iteration should be over
@@ -2250,7 +2289,7 @@ package body Gnat2Why.Counter_Examples is
             begin
 
                if Str'Length > 10 and then
-                 Str (Str'First .. Str'First + 9) = "branch_id:"
+                 Str (Str'First .. Str'First + 9) = "branch_id="
                then
 
                   declare

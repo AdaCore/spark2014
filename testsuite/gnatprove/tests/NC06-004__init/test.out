@@ -20,7 +20,7 @@ shapes5.adb:26:36: info: range check proved (CVC4: 1 VC)
 shapes5.adb:28:10: info: initialization of "R" proved
 shapes5.adb:28:17: info: float overflow check proved (Interval)
 shapes5.adb:29:17: info: float overflow check proved (Interval)
-shapes5.adb:29:17: medium: range check might fail [possible explanation: subprogram at shapes5.ads:10 should mention Y in a precondition]
+shapes5.adb:29:17: info: range check proved (CVC4: 1 VC)
 shapes5.adb:31:21: info: initialization of "R" proved
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:42:41: info: float overflow check proved (Interval)

@@ -527,6 +527,7 @@ package body Why.Inter is
 
    begin
       Add_With_Clause (P, M_Main.Module, EW_Import);
+      Add_With_Clause (P, Int_Module, EW_Import);
 
       case Kind is
          --  case 1: a standalone theory with no imports

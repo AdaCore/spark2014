@@ -1,7 +1,7 @@
-twodim.adb:8:16: medium: divide by zero might fail
+twodim.adb:8:16: medium: divide by zero might fail (e.g. when I = 1 and K = 1)
 twodim.adb:8:25: medium: array index check might fail (e.g. when K = One_Twenty'Last)
-twodim.adb:8:29: medium: overflow check might fail
+twodim.adb:8:29: medium: overflow check might fail (e.g. when I = 1 and K = 1)
 twodim.adb:11:04: warning: analyzing unreferenced function "G"
-twodim.adb:13:15: medium: range check might fail (e.g. when M'First(1) = -2147483647 and M'First(2) = 1 and M'Last(1) = 0 and M'Last(2) = 0)
-twodim.adb:13:27: medium: overflow check might fail
-twodim.adb:13:30: medium: range check might fail (e.g. when M'First(1) = 1 and M'First(2) = -2147483647 and M'Last(1) = 0 and M'Last(2) = 0)
+twodim.adb:13:15: medium: range check might fail (e.g. when M'First(1) = 0 and M'First(2) = 0 and M'Last(1) = 2147483647 and M'Last(2) = 0)
+twodim.adb:13:27: medium: overflow check might fail (e.g. when M'First(1) = 0 and M'First(2) = 0 and M'Last(1) = 0 and M'Last(2) = 2147483646)
+twodim.adb:13:30: medium: range check might fail (e.g. when M'First(1) = 1 and M'First(2) = 0 and M'Last(1) = 0 and M'Last(2) = 2147483647)

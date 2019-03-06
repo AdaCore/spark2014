@@ -142,6 +142,7 @@ package body Gnat2Why.Expr is
                                         +True_Term)),
                          Op    => EW_Equivalent,
                          Right => +W),
+                    Labels      => Name_Id_Sets.Empty_Set,
                     Return_Type => EW_Bool_Type));
 
    --  @param W a Why3 pred expression
@@ -1902,8 +1903,8 @@ package body Gnat2Why.Expr is
 
             Tmp_Def : constant W_Prog_Id :=
               New_Any_Expr (Ada_Node    => N,
-                            Pre         => True_Pred,
                             Post        => Tmp_Post,
+                            Labels      => Name_Id_Sets.Empty_Set,
                             Return_Type => Type_Of_Node (Ty));
 
          begin
@@ -1972,8 +1973,8 @@ package body Gnat2Why.Expr is
            Params      => Params);
       Tmp_Def   : constant W_Prog_Id :=
         New_Any_Expr (Ada_Node    => N,
-                      Pre         => True_Pred,
                       Post        => Tmp_Post,
+                      Labels      => Name_Id_Sets.Empty_Set,
                       Return_Type => Type_Of_Node (Ty));
 
       Inv_RTE   : W_Prog_Id;
@@ -2135,13 +2136,10 @@ package body Gnat2Why.Expr is
             --  that they are correct.
 
             Check_Range :=
-              +New_VC_Expr (Ada_Node => N,
-                            Domain   => EW_Prog,
-                            Reason   => VC_Range_Check,
-                            Expr     =>
-                              +New_Any_Statement (Ada_Node => N,
-                                                  Pre      => Precond,
-                                                  Post     => True_Pred));
+              +New_Any_Statement (Ada_Node => N,
+                                  Pre      => Precond,
+                                  Reason   => VC_Range_Check,
+                                  Post     => True_Pred);
 
             if Comes_From_Source (Original_Node (Low))
               and then not Is_OK_Static_Expression (Low)
@@ -3118,7 +3116,7 @@ package body Gnat2Why.Expr is
                            Name    => Binder.Main.B_Name,
                            Def     =>
                              New_Any_Expr
-                               (Pre         => True_Pred,
+                               (Labels      => Name_Id_Sets.Empty_Set,
                                 Post        => True_Pred,
                                 Return_Type => Get_Typ (Binder.Main.B_Name)),
                            Context =>
@@ -3420,7 +3418,7 @@ package body Gnat2Why.Expr is
                      Name     => Tmp_Exp,
                      Def      =>
                        New_Any_Expr (Ada_Node    => Ty_Ext,
-                                     Pre         => True_Pred,
+                                     Labels      => Name_Id_Sets.Empty_Set,
                                      Post        => Post,
                                      Return_Type => EW_Abstract (Ty_Ext)),
                      Context  => +Checks);
@@ -3473,7 +3471,7 @@ package body Gnat2Why.Expr is
 
             Default_Init_Prog : constant W_Prog_Id :=
               New_Any_Expr (Ada_Node    => Ty_Ext,
-                            Pre         => True_Pred,
+                            Labels      => Name_Id_Sets.Empty_Set,
                             Post        => Default_Init_Pred,
                             Return_Type => EW_Abstract (Ty_Ext));
 
@@ -8315,7 +8313,7 @@ package body Gnat2Why.Expr is
                 & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
          Emit (Decl_File,
-               New_Function_Decl (Domain      => EW_Term,
+               New_Function_Decl (Domain      => EW_Pterm,
                                   Name        => To_Local (Func),
                                   Labels      => Name_Id_Sets.Empty_Set,
                                   Location    => No_Location,
@@ -10947,12 +10945,6 @@ package body Gnat2Why.Expr is
                when N_Op_Ge => return MF_BVs (Ty).Bool_Ge;
                when N_Op_Le => return MF_BVs (Ty).Bool_Le;
             end case;
-         elsif Op in N_Op_Eq | N_Op_Ne then
-            return
-              New_Identifier
-                (Module => Get_Module (Get_Name (Ty)),
-                 Name => (if Op = N_Op_Eq then "bool_eq" else "bool_ne"),
-                 Typ    => EW_Bool_Type);
          else
             raise Program_Error;
          end if;
@@ -10980,8 +10972,18 @@ package body Gnat2Why.Expr is
          case Op is
             when N_Op_Gt => return MF_BVs (Ty).Ugt;
             when N_Op_Lt => return MF_BVs (Ty).Ult;
-            when N_Op_Eq => return Why_Eq;
-            when N_Op_Ne => return Why_Neq;
+            when N_Op_Eq =>
+               if Domain = EW_Pred then
+                  return Why_Eq;
+               else
+                  return MF_BVs (Ty).Prog_Eq;
+               end if;
+            when N_Op_Ne =>
+               if Domain = EW_Pred then
+                  return Why_Neq;
+               else
+                  return MF_BVs (Ty).Prog_Neq;
+               end if;
             when N_Op_Ge => return MF_BVs (Ty).Uge;
             when N_Op_Le => return MF_BVs (Ty).Ule;
          end case;
@@ -11569,12 +11571,15 @@ package body Gnat2Why.Expr is
                                         EW_Prog,
                                         Body_Params);
                   begin
-                     R := Sequence
-                       (Do_Range_Check (Ada_Node   => Value,
-                                        W_Expr     => W_Value,
-                                        Ty         => Etype (Discr),
-                                        Check_Kind => RCK_Range),
-                        R);
+                     R :=
+                       New_Binding
+                         (Name    => New_Identifier (Name => "_"),
+                          Def     =>
+                            +Do_Range_Check (Ada_Node   => Value,
+                                             W_Expr     => W_Value,
+                                             Ty         => Etype (Discr),
+                                             Check_Kind => RCK_Range),
+                          Context => +R);
                      Next_Discriminant (Discr);
                      Next_Elmt (Elmt);
                   end;
@@ -12183,7 +12188,8 @@ package body Gnat2Why.Expr is
 
       else
          R := New_Comparison
-           (Symbol => Why_Eq,
+           (Symbol => Transform_Compare_Op
+              (N_Op_Eq, Base_Why_Type_No_Bool (Choice), Domain),
             Left   => Expr,
             Right  => Transform_Expr
               (Expr          => Choice,
@@ -13570,13 +13576,17 @@ package body Gnat2Why.Expr is
                   begin
                      pragma Assert (Is_Constrained (Constr_Ty));
 
-                     Call := +Sequence
-                       (Left  => Compute_Default_Check
+                     Call := New_Binding
+                       (Name    => New_Identifier (Name => "_"),
+                        Domain  => EW_Prog,
+                        Def     =>
+                          +Compute_Default_Check
                           (Ada_Node => Expr,
                            Ty       => Constr_Ty,
                            Params   => Body_Params),
-                        Right   => New_Binding
+                        Context => New_Binding
                           (Name    => Alloc_Id,
+                           Domain  => EW_Prog,
                            Def     => Call,
                            Context => New_Binding
                              (Name    => Value_Id,
@@ -13586,6 +13596,7 @@ package body Gnat2Why.Expr is
                                  Domain   => Domain,
                                  Expr     => New_Any_Expr
                                    (Post        => Pred,
+                                    Labels      => Name_Id_Sets.Empty_Set,
                                     Return_Type => Get_Typ (Res_Id)),
                                  To       => Get_Typ (Value_Id)),
                               Context => +Sequence
@@ -13601,7 +13612,8 @@ package body Gnat2Why.Expr is
                                            Domain => EW_Pred)),
                                  Right => +Alloc_Id),
                               Typ     => Call_Ty),
-                           Typ     => Call_Ty));
+                           Typ     => Call_Ty),
+                        Typ     => Call_Ty);
                   end;
 
                --  Initialized allocator
@@ -17349,7 +17361,7 @@ package body Gnat2Why.Expr is
       Emit
         (Decl_File,
          New_Function_Decl
-           (Domain      => EW_Term,
+           (Domain      => EW_Pterm,
             Name        => Id,
             Location    => No_Location,
             Labels      => Name_Id_Sets.Empty_Set,
@@ -17908,7 +17920,8 @@ package body Gnat2Why.Expr is
                        (Ada_Node  => N,
                         Domain    => EW_Prog,
                         Condition =>
-                          New_Any_Expr (Return_Type => EW_Bool_Type),
+                          New_Any_Expr (Labels      => Name_Id_Sets.Empty_Set,
+                                        Return_Type => EW_Bool_Type),
                         Then_Part => +Stmt));
 
          return

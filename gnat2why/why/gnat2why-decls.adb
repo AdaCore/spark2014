@@ -79,7 +79,7 @@ package body Gnat2Why.Decls is
 
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Why_Id
                  (E, No_Comp => True, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
@@ -92,7 +92,7 @@ package body Gnat2Why.Decls is
       if Is_Object (E) then
          Emit (File,
                Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                   Binders     => (1 .. 0 => <>),
                   Labels      => Name_Id_Sets.Empty_Set,
@@ -338,7 +338,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        =>
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
@@ -355,7 +355,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Get_Counterexample_Labels
@@ -371,7 +371,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Tag.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Name_Id_Sets.Empty_Set,
@@ -413,7 +413,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
@@ -425,7 +425,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
@@ -476,7 +476,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Address),
                      Labels      => Name_Id_Sets.Empty_Set,
                      Binders     => (1 .. 0 => <>),
@@ -486,7 +486,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Is_Null),
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
@@ -528,7 +528,7 @@ package body Gnat2Why.Decls is
 
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                Binders     => (1 .. 0 => <>),
                Location    => No_Location,

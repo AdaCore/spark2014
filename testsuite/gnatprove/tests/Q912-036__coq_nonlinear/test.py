@@ -10,17 +10,17 @@ import glob
 # Any change here should be reflected in the SPARK User's Guide.
 
 proof = """
-subst o o1 result1 r11 r12 r21 r22 r23 r13.
+subst.
 apply Z.quot_le_compat_l.
   apply Zle_trans with (m:=1%Z).
     (* 0 <= x *)
-    apply Zle_0_1.
+  - apply Zle_0_1.
     (* 1 <= x *)
-    unfold in_range1 in h1.
-    apply h1.
+  - unfold dynamic_invariant1, in_range1 in h1.
+    apply h1. intuition.
   (* 0 < z <= y *)
-  unfold in_range1 in h3.
-  omega.
+  - unfold dynamic_invariant1, in_range1 in h3.
+    intuition.
 Qed.
 """
 

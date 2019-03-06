@@ -331,7 +331,7 @@ package body Why.Gen.Expr is
             end;
 
          when others =>
-            raise Program_Error;
+            return Why_Empty;
       end case;
 
    end Get_Type;
@@ -1241,11 +1241,18 @@ package body Why.Gen.Expr is
                                                2 => W_Last,
                                                3 => W_Int_Tmp),
                                   Reason   => To_VC_Kind (Check_Kind),
-                                  Typ      => Get_Type (W_Expr));
+                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
                                        Tmp     => W_Tmp,
-                                       Context => +Sequence (Result, +W_Tmp));
+                                       Context =>
+                                         New_Binding
+                                           (Domain   => EW_Prog,
+                                            Name     =>
+                                              New_Identifier (Name => "_"),
+                                            Def      => +Result,
+                                            Context  => +W_Tmp,
+                                            Typ      => Get_Type (W_Expr)));
                end;
 
             --  If the bounds are static, the range checking function knows
@@ -1360,11 +1367,18 @@ package body Why.Gen.Expr is
                                   Name     => W_Fun,
                                   Progs    => W_Args,
                                   Reason   => To_VC_Kind (Check_Kind),
-                                  Typ      => Get_Type (W_Expr));
+                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
                                        Tmp     => W_Tmp,
-                                       Context => +Sequence (Result, +W_Tmp));
+                                       Context =>
+                                         New_Binding
+                                           (Domain   => EW_Prog,
+                                            Name     =>
+                                              New_Identifier (Name => "_"),
+                                            Def      => +Result,
+                                            Context  => +W_Tmp,
+                                            Typ      => Get_Type (W_Expr)));
                end;
 
             --  If the bounds are static, the range checking function knows
@@ -1460,7 +1474,7 @@ package body Why.Gen.Expr is
                Result :=
                  +Binding_For_Temp (Domain  => EW_Prog,
                                     Tmp     => W_Tmp,
-                                    Context => +Sequence (Result, +W_Tmp));
+                                    Context => +Result);
             end;
 
          --  If the bounds are static, the range checking function knows them
@@ -2108,32 +2122,49 @@ package body Why.Gen.Expr is
                         Name     => Eq_Str,
                         Typ      => EW_Bool_Type,
                         Ada_Node => Typ);
-      Is_Pred  : Boolean := False;
       T        : W_Expr_Id;
 
    begin
       if Is_Scalar_Type (Typ) then
          declare
+            BT       : constant W_Type_Id := Base_Why_Type (Why_Type);
             Left_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
                  Expr => Left,
-                 To   => Base_Why_Type (Why_Type));
+                 To   => BT);
             Right_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
                  Expr => Right,
-                 To   => Base_Why_Type (Why_Type));
+                 To   => BT);
 
          begin
             if Use_Predef then
-               T :=
-                 New_Call
-                   (Name   => Why_Eq,
-                    Domain => Domain,
-                    Typ    => EW_Bool_Type,
-                    Args   => (Left_Int, Right_Int));
-               Is_Pred := True;
+               if Why_Type_Is_Float (BT) then
+                  T :=
+                    New_Call
+                      (Name   => MF_Floats (BT).Eq,
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               elsif Why_Type_Is_BitVector (BT) then
+                  T :=
+                    New_Call
+                      (Name   => (if Domain in EW_Prog | EW_Pterm then
+                                    MF_BVs (BT).Prog_Eq
+                                  else Why_Eq),
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               else
+                  T :=
+                    New_Call
+                      (Name   => Why_Eq,
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               end if;
 
             else
                T :=
@@ -2155,16 +2186,7 @@ package body Why.Gen.Expr is
               Typ   => EW_Bool_Type);
       end if;
 
-      if Is_Pred then
-         return T;
-      else
-         return
-           New_Call
-             (Name   => Why_Eq,
-              Domain => Domain,
-              Typ    => EW_Bool_Type,
-              Args   => (T, Bool_True (EW_Term)));
-      end if;
+      return T;
    end New_Ada_Equality;
 
    ------------------
@@ -2763,11 +2785,16 @@ package body Why.Gen.Expr is
 
          Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then
                           ASCII.Back_Slash & ASCII.Back_Slash
+
+                       --  Do not print ] in comment as it causes the label to
+                       --  end.
+
+                       elsif Src_Buff (Pointer) = ASCII.R_Bracket then ""
                        else Src_Buff (Pointer) & "");
          Pointer := Pointer + 1;
       end loop;
 
-      Buf := Buf & ASCII.LF;
+      Buf := Buf & " ";
       Buf := Buf & (1 .. Column - 1 => ' ') & "^ "
         & Str_Loc (9 .. Str_Loc'Last) & ':' & VC_Kind'Image (Reason);
       return NID (Prefix & To_String (Buf));
@@ -2791,17 +2818,25 @@ package body Why.Gen.Expr is
    begin
       return
         +Sequence
-          (New_Assignment (Ada_Node => If_Node,
-                           Name     =>
-                             +M_Main.Spark_CE_Branch,
-                           Labels   => Node_Label,
-                           Value    => +Condition,
-                           Typ      => EW_Bool_Type),
-           New_Record_Access (Name  =>
+        (+Insert_Cnt_Loc_Label
+           (Ada_Node => If_Node,
+            E        =>
+              New_Assignment (Ada_Node => If_Node,
+                              Name     =>
                                 +M_Main.Spark_CE_Branch,
-                              Field =>
-                                +New_Identifier (Name => "bool__content"),
-                              Typ   => EW_Bool_Type));
+                              Labels   => Node_Label,
+                              Value    => +Condition,
+                              Typ      => EW_Bool_Type)),
+         New_Record_Access (Name  =>
+                                New_Label
+                              (Ada_Node => If_Node,
+                               Domain   => EW_Prog,
+                               Labels   => Node_Label,
+                               Def      => +M_Main.Spark_CE_Branch,
+                               Typ      => Get_Typ (M_Main.Spark_CE_Branch)),
+                            Field =>
+                              +New_Identifier (Name => "bool__content"),
+                            Typ   => EW_Bool_Type));
    end New_Counterexample_Assign;
 
    -----------------
@@ -3242,11 +3277,10 @@ package body Why.Gen.Expr is
       end if;
 
       Set.Insert (New_Shape_Label (Node => N));
-      Set.Insert (Keep_On_Simp);
       if Reason = VC_Postcondition then
          Set.Insert (Model_VC_Post);
       else
-         Set.Insert (Model_VC);
+         Set.Insert (VC_Annotation);
       end if;
       return Set;
    end New_VC_Labels;

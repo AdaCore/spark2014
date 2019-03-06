@@ -2,25 +2,22 @@
 (* Beware! Only edit allowed sections below    *)
 Require Import BuiltIn.
 Require BuiltIn.
-Require bool.Bool.
 Require int.Int.
 Require int.Abs.
 Require int.EuclideanDivision.
 Require int.ComputerDivision.
-
-(* Why3 assumption *)
-Definition unit := unit.
+Require bool.Bool.
 
 Axiom us_private : Type.
 Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
+(* Why3 assumption *)
+Definition us_fixed := Z.
+
 Parameter private__bool_eq: us_private -> us_private -> bool.
 
 Parameter us_null_ext__: us_private.
-
-(* Why3 assumption *)
-Definition us_fixed := Z.
 
 Axiom us_type_of_heap : Type.
 Parameter us_type_of_heap_WhyType : WhyType us_type_of_heap.
@@ -33,10 +30,10 @@ Axiom us_type_of_heap__ref_WhyType : WhyType us_type_of_heap__ref.
 Existing Instance us_type_of_heap__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_type_of_heap__content
-  (v:us_type_of_heap__ref): us_type_of_heap :=
+Definition us_type_of_heap__content (v:us_type_of_heap__ref) :
+    us_type_of_heap :=
   match v with
-  | (mk___type_of_heap__ref x) => x
+  | mk___type_of_heap__ref x => x
   end.
 
 Axiom us_image : Type.
@@ -50,9 +47,9 @@ Axiom int__ref_WhyType : WhyType int__ref.
 Existing Instance int__ref_WhyType.
 
 (* Why3 assumption *)
-Definition int__content (v:int__ref): Z :=
+Definition int__content (v:int__ref) : Z :=
   match v with
-  | (mk_int__ref x) => x
+  | mk_int__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -62,9 +59,21 @@ Axiom bool__ref_WhyType : WhyType bool__ref.
 Existing Instance bool__ref_WhyType.
 
 (* Why3 assumption *)
-Definition bool__content (v:bool__ref): bool :=
+Definition bool__content (v:bool__ref) : bool :=
   match v with
-  | (mk_bool__ref x) => x
+  | mk_bool__ref x => x
+  end.
+
+(* Why3 assumption *)
+Inductive us_fixed__ref :=
+  | mk___fixed__ref : Z -> us_fixed__ref.
+Axiom us_fixed__ref_WhyType : WhyType us_fixed__ref.
+Existing Instance us_fixed__ref_WhyType.
+
+(* Why3 assumption *)
+Definition us_fixed__content (v:us_fixed__ref) : Z :=
+  match v with
+  | mk___fixed__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -74,9 +83,9 @@ Axiom real__ref_WhyType : WhyType real__ref.
 Existing Instance real__ref_WhyType.
 
 (* Why3 assumption *)
-Definition real__content (v:real__ref): R :=
+Definition real__content (v:real__ref) : R :=
   match v with
-  | (mk_real__ref x) => x
+  | mk_real__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -86,68 +95,56 @@ Axiom us_private__ref_WhyType : WhyType us_private__ref.
 Existing Instance us_private__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_private__content (v:us_private__ref): us_private :=
+Definition us_private__content (v:us_private__ref) : us_private :=
   match v with
-  | (mk___private__ref x) => x
+  | mk___private__ref x => x
   end.
 
 (* Why3 assumption *)
-Definition int__ref___projection (a:int__ref): Z := (int__content a).
+Definition int__ref___projection (a:int__ref) : Z := int__content a.
 
 (* Why3 assumption *)
-Definition bool__ref___projection (a:bool__ref): bool := (bool__content a).
+Definition us_fixed__ref___projection (a:us_fixed__ref) : Z :=
+  us_fixed__content a.
 
 (* Why3 assumption *)
-Definition real__ref___projection (a:real__ref): R := (real__content a).
+Definition bool__ref___projection (a:bool__ref) : bool := bool__content a.
 
 (* Why3 assumption *)
-Definition us_private__ref___projection (a:us_private__ref): us_private :=
-  (us_private__content a).
+Definition real__ref___projection (a:real__ref) : R := real__content a.
+
+(* Why3 assumption *)
+Definition us_private__ref___projection (a:us_private__ref) : us_private :=
+  us_private__content a.
+
+Parameter arg1: Z.
+
+Parameter attr__ATTRIBUTE_ADDRESS: Z.
+
+Parameter arg2: Z.
+
+Parameter attr__ATTRIBUTE_ADDRESS1: Z.
 
 Axiom int__ : Type.
 Parameter int___WhyType : WhyType int__.
 Existing Instance int___WhyType.
 
+Parameter int__'int: int__ -> Z.
+
+Axiom int__'axiom :
+  forall (i:int__),
+  ((-2147483648%Z)%Z <= (int__'int i))%Z /\ ((int__'int i) <= 2147483647%Z)%Z.
+
 (* Why3 assumption *)
-Definition in_range (x:Z): Prop :=
+Definition in_range (x:Z) : Prop :=
   ((-2147483648%Z)%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
 
 Parameter bool_eq: Z -> Z -> bool.
 
-Parameter bool_ne: Z -> Z -> bool.
-
-Parameter bool_lt: Z -> Z -> bool.
-
-Parameter bool_le: Z -> Z -> bool.
-
-Parameter bool_gt: Z -> Z -> bool.
-
-Parameter bool_ge: Z -> Z -> bool.
-
-Axiom bool_eq_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_eq x y) = true) <-> (x = y).
-
-Axiom bool_ne_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_ne x y) = true) <-> ~ (x = y).
-
-Axiom bool_lt_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_lt x y) = true) <-> (x < y)%Z.
-
-Axiom bool_int__le_axiom : forall (x:Z),
-                            forall (y:Z),
-                             ((bool_le x y) = true) <-> (x <= y)%Z.
-
-Axiom bool_gt_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_gt x y) = true) <-> (y < x)%Z.
-
-Axiom bool_ge_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_ge x y) = true) <-> (y <= x)%Z.
-
-Parameter bool_eq1: Z -> Z -> bool.
-
-Axiom bool_eq_def : forall (x:Z) (y:Z),
-                     ((x = y) -> ((bool_eq1 x y) = true))
-                     /\ ((~ (x = y)) -> ((bool_eq1 x y) = false)).
+Axiom bool_eq_def :
+  forall (x:Z) (y:Z),
+  ((x = y) -> ((bool_eq x y) = true)) /\
+  (~ (x = y) -> ((bool_eq x y) = false)).
 
 Parameter attr__ATTRIBUTE_IMAGE: Z -> us_image.
 
@@ -166,33 +163,28 @@ Axiom int____ref_WhyType : WhyType int____ref.
 Existing Instance int____ref_WhyType.
 
 (* Why3 assumption *)
-Definition int____content (v:int____ref): int__ :=
+Definition int____content (v:int____ref) : int__ :=
   match v with
-  | (mk_int____ref x) => x
+  | mk_int____ref x => x
   end.
 
 (* Why3 assumption *)
-Definition int____ref___projection (a:int____ref): int__ :=
-  (int____content a).
+Definition int____ref_int____content__projection (a:int____ref) : int__ :=
+  int____content a.
 
 (* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_135:Z) (temp___is_init_132:bool)
-  (temp___skip_constant_133:bool) (temp___do_toplevel_134:bool): Prop :=
-  ((temp___is_init_132 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
-  (in_range temp___expr_135).
-
-Parameter arg1: Z.
-
-Parameter attr__ATTRIBUTE_ADDRESS: Z.
-
-Parameter arg2: Z.
-
-Parameter attr__ATTRIBUTE_ADDRESS1: Z.
+Definition dynamic_invariant (temp___expr_158:Z) (temp___is_init_154:bool)
+    (temp___skip_constant_155:bool) (temp___do_toplevel_156:bool)
+    (temp___do_typ_inv_157:bool) : Prop :=
+  ((temp___is_init_154 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
+  in_range temp___expr_158.
 
 (* Why3 goal *)
-Theorem WP_parameter_def : ((in_range arg1)
-                            /\ ((in_range arg2) /\ ~ (arg2 = 0%Z))) ->
-                           (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF                                                   *)
-                           (*               ^ spark-arithmetic_lemmas.ads:64:15:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
-                           ((ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z) = (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z).
+Theorem VC_def :
+  (dynamic_invariant arg1 true false true true) ->
+  (dynamic_invariant arg2 true false true true) -> ~ (arg2 = 0%Z) ->
+  (*      Post => (-Arg1) mod (-Arg2) = -(Arg1 mod Arg2);  --  MANUAL PROOF               ^ spark-arithmetic_lemmas.ads:86:15:instantiated:spark-integer_arithmetic_lemmas.ads:31:1:VC_POSTCONDITION *)
+  ((ZArith.BinInt.Z.modulo (-arg1)%Z (-arg2)%Z) =
+   (-(ZArith.BinInt.Z.modulo arg1 arg2))%Z).
+Proof.
 #include "lemma_mod_symmetry.prf"

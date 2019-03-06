@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at sorted_lists.ads:14
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:14
 a-cfdlli.ads:1575:54: info: overflow check proved (CVC4: 1 VC), in instantiation at sorted_lists.ads:18
@@ -32,7 +33,7 @@ sorted_lists.adb:14:27: info: initialization of "Current.Node" proved
 sorted_lists.adb:17:07: info: precondition proved (CVC4: 2 VC)
 sorted_lists.adb:17:26: info: initialization of "Current.Node" proved
 sorted_lists.ads:22:25: info: initialization of "Position.Node" proved
-sorted_lists.ads:25:08: info: postcondition proved (CVC4: 4 VC; Z3: 1 VC)
+sorted_lists.ads:25:08: info: postcondition proved (CVC4: 5 VC; Z3: 1 VC)
 sorted_lists.ads:25:32: info: initialization of "Position.Node" proved
 sorted_lists.ads:26:06: info: precondition proved (CVC4: 1 VC)
 sorted_lists.ads:27:26: info: precondition proved (CVC4: 1 VC)

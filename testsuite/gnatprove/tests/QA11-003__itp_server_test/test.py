@@ -19,6 +19,13 @@ MESS_NOTIF = "mess_notif"
 RLIMIT = "\nrlimit: Real time limit (8 s) exceeded\n"
 TASK_MONITOR = "Task_Monitor"
 
+# Node above the split transformation
+CST_NODE = 94
+# Node corresponding to the split transformation
+CST_SPLIT = 95
+# Goal on which we apply z3 etc
+CST_GOAL = 99
+
 """ This tests is a commandline test for the itp server. It launches a server as
 a background process, and then pass it request in JSON. The output to be checked
 are notifications written in JSON"""
@@ -54,8 +61,8 @@ def launch_server(limit_line, input_file):
     task_monitor = 0
     next_unproven = 0
     node_change = 0
-    children_96 = 0
-    children_97 = 0
+    children_CST_NODE = 0
+    children_CST_SPLIT = 0
     children = 0
     for i in l:
         try:
@@ -66,10 +73,10 @@ def launch_server(limit_line, input_file):
                 node_change = node_change + 1
             elif notif_type == NEW_NODE:
                 children = children + 1
-                if j[PARENT_ID] == 97:
-                    children_96 = children_96 + 1
-                elif j[PARENT_ID] == 98:
-                    children_97 = children_97 + 1
+                if j[PARENT_ID] == CST_SPLIT:
+                    children_CST_NODE = children_CST_NODE + 1
+                elif j[PARENT_ID] == CST_GOAL:
+                    children_CST_SPLIT = children_CST_SPLIT + 1
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing
                 next_unproven = next_unproven + 1
@@ -96,10 +103,10 @@ def launch_server(limit_line, input_file):
             elif i != "\n" and i != " ":
                 nb_unparsed = nb_unparsed + 1
                 print ("UNPARSED NOTIFICATION " + i)
-    if children_96 == 1:
-        print ("Children 96 OK")
-    if children_97 == 3:
-        print ("Children 97 OK")
+    if children_CST_NODE == 1:
+        print ("Children CST_NODE OK")
+    if children_CST_SPLIT == 3:
+        print ("Children CST_SPLIT OK")
     if children == 5:
         print ("Children OK")
     print ("Unparsed JSON = " + str(nb_unparsed))

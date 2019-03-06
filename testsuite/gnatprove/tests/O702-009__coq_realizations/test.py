@@ -79,7 +79,6 @@ def compile_coq_files():
             os.path.join("list", "Distinct"),
             os.path.join("list", "NumOcc"),
             os.path.join("list", "Permut"),
-            os.path.join("seq", "Seq"),
             os.path.join("bv", "Pow2int"),
             os.path.join("bv", "BV_Gen")
             ]

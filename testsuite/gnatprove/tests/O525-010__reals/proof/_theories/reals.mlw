@@ -1,16 +1,18 @@
 module Reals__real
- use import "real".RealInfix
- use import "int".Int
+ use "real".RealInfix
+ use "int".Int
 
  type real__ = real
 
  function bool_eq (a : real__) (b : real__) : bool = a = b
+ val bool_eq (a : real__) (b : real__) : bool
+  ensures { result <-> (a = b) }
 
- function user_eq (a : real__) (b : real__) : bool
+ val function user_eq (a : real__) (b : real__) : bool
 
- function value__size : int
+ val function value__size : int
 
- function object__size (a : real__) : int
+ val function object__size (a : real__) : int
 
  axiom value__size_axiom :
   value__size >= 0
@@ -25,53 +27,58 @@ module Reals__real
 end
 
 module Reals__zero
- constant zero : real = 0.0
+ val constant zero : real
+ ensures { result = 0.0 }
 end
 
 module Reals__Oadd
- use import real.RealInfix
- function oadd__logic (x : real) (y : real) : real = x +. y
- function oadd (x : real) (y : real) : real = x +. y
+ use real.RealInfix
+ let function oadd__logic (x : real) (y : real) : real = x +. y
+ let function oadd (x : real) (y : real) : real = x +. y
 end
 
 module Reals__Osubtract
- use import real.RealInfix
- function osubtract__logic (x : real) (y : real) : real = x -. y
- function osubtract (x : real) (y : real) : real = x -. y
+ use real.RealInfix
+ let function osubtract__logic (x : real) (y : real) : real = x -. y
+ let function osubtract (x : real) (y : real) : real = x -. y
 end
 
 module Reals__Omultiply
- use import real.RealInfix
- function omultiply__logic (x : real) (y : real) : real = x *. y
- function omultiply (x : real) (y : real) : real = x *. y
+ use real.RealInfix
+ let function omultiply__logic (x : real) (y : real) : real = x *. y
+ let function omultiply (x : real) (y : real) : real = x *. y
 end
 
 module Reals__Odivide
- use import real.RealInfix
+ use real.RealInfix
  function odivide__logic (x : real) (y : real) : real = x /. y
+ val odivide__logic (x : real) (y : real) : real
+ ensures { result = (x /. y) }
  function odivide (x : real) (y : real) : real = x /. y
+ val odivide (x : real) (y : real) : real
+ ensures { result = (x /. y) }
 end
 
 module Reals__Olt
- use import real.RealInfix
+ use real.RealInfix
  function olt__logic (x : real) (y : real) : bool = x <. y
  function olt (x : real) (y : real) : bool = x <. y
 end
 
 module Reals__Ole
- use import real.RealInfix
- function ole__logic (x : real) (y : real) : bool = x <=. y
- function ole (x : real) (y : real) : bool = x <=. y
+ use real.RealInfix
+ let function ole__logic (x : real) (y : real) : bool = x <=. y
+ let function ole (x : real) (y : real) : bool = x <=. y
 end
 
 module Reals__Ogt
- use import real.RealInfix
- function ogt__logic (x : real) (y : real) : bool = x >. y
- function ogt (x : real) (y : real) : bool = x >. y
+ use real.RealInfix
+ let function ogt__logic (x : real) (y : real) : bool = x >. y
+ let function ogt (x : real) (y : real) : bool = x >. y
 end
 
 module Reals__Oge
- use import real.RealInfix
- function oge__logic (x : real) (y : real) : bool = x >=. y
- function oge (x : real) (y : real) : bool = x >=. y
+ use real.RealInfix
+ let function oge__logic (x : real) (y : real) : bool = x >=. y
+ let function oge (x : real) (y : real) : bool = x >=. y
 end

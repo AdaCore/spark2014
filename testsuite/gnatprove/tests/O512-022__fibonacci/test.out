@@ -124,7 +124,7 @@ fib.adb:115:19: info: initialization of "k2" proved
 fib.adb:115:22: info: division check proved (CVC4: 1 VC)
 fib.adb:116:19: info: initialization of "b2" proved
 fib.adb:116:22: medium: overflow check might fail
-fib.adb:118:28: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+fib.adb:118:28: medium: assertion might fail, cannot prove (p2 * b2) * (b2 ** (k2 - 1)) = a2 ** n2
 fib.adb:118:29: info: initialization of "p2" proved
 fib.adb:118:34: info: initialization of "b2" proved
 fib.adb:118:48: info: initialization of "k2" proved

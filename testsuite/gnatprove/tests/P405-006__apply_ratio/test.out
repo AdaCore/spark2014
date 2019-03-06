@@ -26,7 +26,7 @@ math.adb:29:13: info: loop invariant initialization proved
 math.adb:29:13: info: loop invariant preservation proved
 math.adb:29:48: info: index check proved
 math.adb:29:66: info: index check proved
-math.adb:29:69: medium: overflow check might fail
+math.adb:29:69: info: overflow check proved
 math.adb:29:75: info: division check proved
 math.adb:31:13: info: loop invariant initialization proved
 math.adb:31:13: info: loop invariant preservation proved

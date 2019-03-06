@@ -10,8 +10,8 @@ basicmath_small.adb:185:32: info: loop invariant initialization proved (CVC4: 1 
 basicmath_small.adb:185:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:224:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:224:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:225:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:225:32: info: loop invariant initialization proved (CVC4: 2 VC)
+basicmath_small.adb:225:32: info: loop invariant preservation proved (CVC4: 2 VC)
 basicmath_small.adb:281:10: info: initialization of "CarryFlag" proved
 basicmath_small.adb:281:10: info: initialization of "OverflowFlag" proved
 basicmath_small.adb:281:10: info: initialization of "SignFlag" proved
@@ -23,8 +23,8 @@ basicmath_small.adb:304:37: info: initialization of "XMM4" proved
 basicmath_small.adb:307:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:314:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:314:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:315:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:315:32: info: loop invariant initialization proved (CVC4: 2 VC)
+basicmath_small.adb:315:32: info: loop invariant preservation proved (CVC4: 2 VC)
 basicmath_small.adb:332:37: info: initialization of "XMM7" proved
 basicmath_small.adb:334:10: info: initialization of "R12" proved
 basicmath_small.adb:334:10: warning: unused assignment to "ZeroFlag"
@@ -33,8 +33,8 @@ basicmath_small.adb:349:55: info: initialization of "XMM5" proved
 basicmath_small.adb:352:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:359:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:359:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:360:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:360:32: info: loop invariant initialization proved (CVC4: 2 VC)
+basicmath_small.adb:360:32: info: loop invariant preservation proved (CVC4: 2 VC)
 basicmath_small.adb:381:55: info: initialization of "XMM7" proved
 basicmath_small.adb:383:10: info: initialization of "R13" proved
 basicmath_small.adb:383:10: warning: unused assignment to "ZeroFlag"
@@ -43,8 +43,8 @@ basicmath_small.adb:398:55: info: initialization of "XMM6" proved
 basicmath_small.adb:401:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:408:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:408:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC4: 1 VC)
-basicmath_small.adb:409:32: info: loop invariant preservation proved (CVC4: 1 VC)
+basicmath_small.adb:409:32: info: loop invariant initialization proved (CVC4: 2 VC)
+basicmath_small.adb:409:32: info: loop invariant preservation proved (CVC4: 2 VC)
 basicmath_small.adb:434:55: info: initialization of "XMM7" proved
 basicmath_small.adb:436:10: info: initialization of "R14" proved
 basicmath_small.adb:436:10: warning: unused assignment to "XMM7"
@@ -54,7 +54,7 @@ basicmath_small.adb:451:55: info: initialization of "XMM7" proved
 basicmath_small.adb:454:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:461:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:461:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC4: 1 VC)
+basicmath_small.adb:462:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:471:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:482:10: info: initialization of "RSI" proved
 basicmath_small.adb:482:10: info: precondition proved (CVC4: 1 VC)
@@ -67,14 +67,14 @@ basicmath_small.adb:508:35: info: initialization of "SignFlag" proved
 basicmath_small.adb:515:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:522:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:522:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC4: 1 VC)
+basicmath_small.adb:523:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:528:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:546:26: info: initialization of "XMM1" proved
 basicmath_small.adb:549:44: info: initialization of "XMM1" proved
 basicmath_small.adb:569:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:576:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:576:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC4: 1 VC)
+basicmath_small.adb:577:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:582:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
 basicmath_small.adb:599:27: info: initialization of "XMM1" proved
 basicmath_small.adb:602:44: info: initialization of "XMM1" proved
@@ -232,7 +232,7 @@ basicmath_small.ads:67:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:67:74: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:68:31: warning: unused initial value of "RBP"
 basicmath_small.ads:68:40: warning: unused initial value of "RDI"
-basicmath_small.ads:69:14: info: postcondition proved (CVC4: 2 VC)
+basicmath_small.ads:69:14: info: postcondition proved (CVC4: 3 VC)
 basicmath_small.ads:79:31: info: initialization of "XMM0" proved
 basicmath_small.ads:79:41: info: initialization of "XMM1" proved
 basicmath_small.ads:79:51: info: initialization of "XMM2" proved
@@ -246,7 +246,7 @@ basicmath_small.ads:81:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:81:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:81:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:81:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:84:14: info: postcondition proved (CVC4: 2 VC)
+basicmath_small.ads:84:14: info: postcondition proved (CVC4: 3 VC)
 basicmath_small.ads:97:31: info: initialization of "XMM0" proved
 basicmath_small.ads:97:41: info: initialization of "XMM1" proved
 basicmath_small.ads:97:51: info: initialization of "XMM2" proved
@@ -262,7 +262,7 @@ basicmath_small.ads:99:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:99:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:99:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:99:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:102:14: info: postcondition proved (CVC4: 2 VC)
+basicmath_small.ads:102:14: info: postcondition proved (CVC4: 3 VC)
 basicmath_small.ads:120:33: info: initialization of "XMM0" proved
 basicmath_small.ads:120:43: info: initialization of "XMM1" proved
 basicmath_small.ads:120:53: info: initialization of "XMM2" proved
@@ -279,7 +279,7 @@ basicmath_small.ads:122:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:122:45: info: initialization of "SignFlag" proved
 basicmath_small.ads:122:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:122:74: info: initialization of "OverflowFlag" proved
-basicmath_small.ads:124:14: info: postcondition proved (CVC4: 2 VC)
+basicmath_small.ads:124:14: info: postcondition proved (CVC4: 3 VC)
 basicmath_small.ads:145:31: info: initialization of "RSI" proved
 basicmath_small.ads:146:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:146:45: info: initialization of "SignFlag" proved

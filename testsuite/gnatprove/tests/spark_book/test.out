@@ -386,7 +386,7 @@ control_structures.adb:159:19: info: initialization of "Approx" proved
 control_structures.adb:159:26: medium: float overflow check might fail
 control_structures.adb:160:21: info: float overflow check proved (Interval)
 control_structures.adb:160:24: info: initialization of "Approx" proved
-control_structures.adb:160:31: medium: float overflow check might fail
+control_structures.adb:160:31: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:160:33: info: initialization of "X" proved
 control_structures.adb:160:35: medium: divide by zero might fail
 control_structures.adb:160:35: medium: float overflow check might fail
@@ -425,8 +425,8 @@ datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
 datebook.adb:162:50: info: initialization of "Index" proved
 datebook.adb:165:20: info: range check proved (CVC4: 2 VC)
 datebook.adb:166:35: info: initialization of "Index" proved
-datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 2 VC)
-datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 2 VC)
+datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 3 VC)
+datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 3 VC)
 datebook.adb:169:35: info: initialization of "Index" proved
 datebook.adb:169:73: info: range check proved (CVC4: 2 VC)
 datebook.adb:170:30: info: initialization of "Index" proved
@@ -480,8 +480,8 @@ datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
 datebooks.adb:115:42: info: initialization of "I" proved
 datebooks.adb:118:20: info: range check proved (CVC4: 2 VC)
 datebooks.adb:118:64: info: initialization of "I" proved
-datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 2 VC)
-datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 2 VC)
+datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 3 VC)
+datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 3 VC)
 datebooks.adb:120:27: info: initialization of "I" proved
 datebooks.adb:120:61: info: range check proved (CVC4: 2 VC)
 datebooks.adb:121:26: info: initialization of "I" proved
@@ -512,7 +512,7 @@ datebooks.ads:57:93: info: initialization of "Status" proved
 dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at dates.adb:49
 dates.adb:20:14: info: initialization of "Result" proved
 dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved (CVC4: 12 VC)
+dates.adb:28:08: info: postcondition proved (CVC4: 24 VC)
 dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
 dates.adb:54:14: info: initialization of "Length" proved
 dates.adb:65:14: info: initialization of "Result" proved
@@ -802,7 +802,7 @@ operator_overload.adb:16:59: info: float overflow check proved (CVC4: 1 VC), in 
 operator_overload.adb:17:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:43: info: float overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
@@ -825,7 +825,7 @@ overflow.adb:7:15: medium: overflow check might fail [possible explanation: subp
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
 palindrome.adb:9:22: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
-palindrome.adb:9:22: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:9:22: info: range check proved (CVC4: 8 VC), in call inlined at palindrome.adb:32
 palindrome.adb:9:26: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
 palindrome.adb:11:20: info: initialization of "Left_Index" proved
 palindrome.adb:11:20: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
@@ -1151,7 +1151,7 @@ simple_math.adb:17:14: info: initialization of "Q" proved
 simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
 sorted_arrays2.ads:18:18: info: function contract not available for proof ("Is_Sorted" might not return)
-sorters.adb:21:19: info: postcondition proved (CVC4: 4 VC)
+sorters.adb:21:19: info: postcondition proved (CVC4: 5 VC)
 sorters.adb:22:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:28: info: index check proved (CVC4: 2 VC)
@@ -1180,7 +1180,7 @@ sorters.adb:58:14: info: initialization of "Min" proved
 sorters.adb:63:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:68:50: info: overflow check proved (CVC4: 1 VC)
 sorters.adb:69:22: info: length check proved (CVC4: 8 VC)
-sorters.adb:69:25: info: length check proved (CVC4: 6 VC)
+sorters.adb:69:25: info: length check proved (CVC4: 8 VC)
 sorters.adb:70:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:70:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:72:13: info: initialization of "Smallest" proved
@@ -1191,7 +1191,7 @@ sorters.adb:78:61: info: initialization of "Values_Last" proved
 sorters.adb:80:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:80:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:82:13: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:82:13: info: loop invariant preservation proved (CVC4: 1 VC)
+sorters.adb:83:18: medium: loop invariant might fail after first iteration, cannot prove Values (Current) <= Values (J)
 sorters.adb:83:26: info: index check proved (CVC4: 4 VC)
 sorters.adb:83:46: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)

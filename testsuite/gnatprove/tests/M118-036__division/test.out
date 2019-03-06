@@ -31,8 +31,8 @@ t3q3.adb:44:07: info: initialization of "Q" proved
 t3q3.adb:45:05: info: precondition proved (CVC4: 1 VC)
 t3q3.adb:45:07: info: initialization of "P" proved
 t3q3.adb:45:10: info: initialization of "R" proved
-t3q3.adb:46:05: medium: precondition might fail, cannot prove J /= 0
+t3q3.adb:46:05: medium: precondition might fail, cannot prove J /= 0 (e.g. when Q = 0)
 t3q3.adb:46:07: info: initialization of "P" proved
 t3q3.adb:46:10: info: initialization of "Q" proved
 t3q3.adb:46:16: warning: unused assignment to "R"
-t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old (e.g. when Y = 0 and Y'Old = 2)
+t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old (e.g. when Y = 3 and Y'Old = 2)

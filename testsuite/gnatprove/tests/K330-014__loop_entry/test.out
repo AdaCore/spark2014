@@ -31,7 +31,7 @@ optional.adb:31:36: info: initialization of "TA" proved
 optional.adb:31:36: info: loop invariant initialization proved (CVC4: 3 VC)
 optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)
 utils.adb:10:29: info: range check proved (CodePeer)
-utils.adb:10:34: medium: overflow check might fail [possible explanation: subprogram at utils.ads:2 should mention Val in a precondition]
+utils.adb:10:34: medium: overflow check might fail (e.g. when Val = 1) [possible explanation: subprogram at utils.ads:2 should mention Val in a precondition]
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 while_loops.adb:14:29: info: initialization of "Counter" proved
 while_loops.adb:18:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)

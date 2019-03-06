@@ -15,7 +15,7 @@ package body Swap_Ranges with
          pragma Loop_Invariant
            (B'Loop_Entry (B'First .. L) = A (A'First .. K)); --@LOOP_INVARIANT_PRESERV:FAIL
          pragma Loop_Invariant
-           (A'Loop_Entry (A'First .. K) = B (B'First .. L)); --@LOOP_INVARIANT_PRESERV:FAIL
+           (A'Loop_Entry (A'First .. K) = B (B'First .. L)); -- provable from the previous one
          pragma Loop_Invariant
            (if
               L < B'Last
@@ -25,7 +25,7 @@ package body Swap_Ranges with
            (if
               K < A'Last
             then
-               A'Loop_Entry (K + 1 .. A'Last) = A (K + 1 .. A'Last)); --@LOOP_INVARIANT_PRESERV:FAIL
+               A'Loop_Entry (K + 1 .. A'Last) = A (K + 1 .. A'Last)); -- provable from the previous one
       end loop;
    end Swap_Ranges_With_Error;
 

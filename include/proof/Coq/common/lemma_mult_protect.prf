@@ -5,7 +5,7 @@ Open Scope Z_scope.
 Require Import SPARK.
 
 (* rewrite hypotheses *)
-unfold in_range in arg1_type, arg2_type, upper_bound_type.
+unfold dynamic_invariant, in_range in arg1_type, arg2_type, upper_bound_type.
 destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub), upper_bound_type as (upper_bound_lb, upper_bound_ub).
 
 (* split on cases of pre *)

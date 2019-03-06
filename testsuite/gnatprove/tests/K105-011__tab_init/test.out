@@ -1,4 +1,4 @@
-tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = Integer'First and I = 2 and T = (others => Integer'First)) [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
+tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -1073741824 and I = 3 and T = (2 => Integer'First, others => -1073741824)) [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
 tab_init.adb:6:33: info: loop invariant proved (CodePeer)
 tab_init.adb:6:64: info: initialization of "T" proved
 tab_init.adb:6:64: medium: "T" might not be initialized

@@ -78,8 +78,8 @@ test_arith.adb:150:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:153:20: info: division check proved (CVC4: 1 VC)
 test_arith.adb:154:07: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:157:66: info: initialization of "R" proved
+test_arith.adb:158:14: info: postcondition proved (CVC4: 4 VC)
 test_arith.adb:161:17: info: initialization of "R" proved
-test_arith.adb:161:17: medium: postcondition might fail, cannot prove R in X - Y + 1 .. X
 test_arith.adb:164:15: info: division check proved (CVC4: 1 VC)
 test_arith.adb:165:07: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:165:41: info: initialization of "R" proved

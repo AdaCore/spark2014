@@ -930,7 +930,7 @@ package body Why.Gen.Scalars is
 
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        =>
                        To_Local (E_Symb (E, WNE_Attr_Modulus)),
                      Binders     => (1 .. 0 => <>),
@@ -952,7 +952,7 @@ package body Why.Gen.Scalars is
          begin
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        =>
                        To_Local (E_Symb (E, WNE_Small_Num)),
                      Binders     => (1 .. 0 => <>),
@@ -962,7 +962,7 @@ package body Why.Gen.Scalars is
                      Def         => +Num_Small));
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        =>
                        To_Local (E_Symb (E, WNE_Small_Den)),
                      Binders     => (1 .. 0 => <>),
@@ -985,7 +985,7 @@ package body Why.Gen.Scalars is
       if not (Type_Is_Modeled_As_Base (E) and then Is_Itype (E)) then
          Emit (Section,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        =>
                     To_Local (E_Symb (E, WNE_Attr_First)),
                   Items       => Get_Binders_From_Expression
@@ -996,7 +996,7 @@ package body Why.Gen.Scalars is
                   Def         => +First));
          Emit (Section,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        =>
                     To_Local (E_Symb (E, WNE_Attr_Last)),
                   Items       => Get_Binders_From_Expression

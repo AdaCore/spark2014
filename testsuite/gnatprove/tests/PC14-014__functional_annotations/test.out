@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfdlli.ads:1362:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1377:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1392:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1414:14: info: precondition proved (Z3: 2 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1414:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1420:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1469:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1476:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfhama.ads:679:39: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
@@ -452,7 +453,7 @@ use_maps.adb:34:22: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:25: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:51: info: precondition proved (Z3: 4 VC)
 use_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:37:13: info: loop invariant preservation proved (Z3: 1 VC)
+use_maps.adb:37:13: info: loop invariant preservation proved (CVC4: 1 VC)
 use_maps.adb:37:27: info: precondition proved (Z3: 2 VC)
 use_maps.adb:37:48: info: initialization of "Cu.Node" proved
 use_maps.adb:38:44: info: precondition proved (Z3: 4 VC)
@@ -647,7 +648,7 @@ use_maps.ads:82:15: info: precondition proved (Z3: 2 VC)
 use_maps.ads:82:40: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:93:14: info: postcondition proved (Z3: 5 VC)
+use_maps.ads:93:14: info: postcondition proved (Z3: 6 VC)
 use_maps.ads:93:43: info: overflow check proved (Z3: 1 VC)
 use_maps.ads:94:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:94:11: info: precondition proved (Z3: 2 VC)
@@ -913,7 +914,7 @@ use_ordered_maps.ads:80:15: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:80:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:80:40: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:90:34: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 5 VC)
+use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 6 VC)
 use_ordered_maps.ads:91:43: info: overflow check proved (Z3: 1 VC)
 use_ordered_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
@@ -1169,12 +1170,12 @@ use_ordered_sets.ads:84:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:84:07: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:84:27: info: division check proved (Z3: 1 VC)
 use_ordered_sets.ads:85:29: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.ads:87:09: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+use_ordered_sets.ads:87:08: medium: postcondition might fail, cannot prove E.Get (Elements (S), 2 * I - 1) = E.Get (Elements (S)'Old, I)
+use_ordered_sets.ads:87:09: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:87:31: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:43: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:88:12: medium: postcondition might fail, cannot prove E.Get (Elements (S), 2 * I) = E.Get (Elements (S)'Old, I) + 1
 use_ordered_sets.ads:88:13: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:88:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:88:35: info: range check proved (Z3: 1 VC)

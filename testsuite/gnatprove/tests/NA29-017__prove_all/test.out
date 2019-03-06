@@ -2,7 +2,7 @@ sorting.adb:28:18: medium: overflow check might fail
 sorting.adb:28:37: medium: overflow check might fail
 sorting.adb:30:18: medium: overflow check might fail
 sorting.adb:30:37: medium: overflow check might fail
-sorting.adb:31:15: info: postcondition proved (CVC4: 2 VC)
+sorting.adb:31:15: info: postcondition proved (CVC4: 4 VC)
 sorting.adb:31:24: info: range check proved (CVC4: 2 VC)
 sorting.adb:32:38: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:33:16: info: index check proved (CVC4: 2 VC)
@@ -13,8 +13,8 @@ sorting.adb:34:42: medium: overflow check might fail
 sorting.adb:35:16: info: index check proved (CVC4: 2 VC)
 sorting.adb:35:28: info: index check proved (CVC4: 2 VC)
 sorting.adb:38:09: info: range check proved (CVC4: 2 VC)
-sorting.adb:41:10: info: loop invariant initialization proved (CVC4: 1 VC)
-sorting.adb:41:10: info: loop invariant preservation proved (CVC4: 2 VC)
+sorting.adb:41:10: info: loop invariant initialization proved (CVC4: 4 VC)
+sorting.adb:41:10: info: loop invariant preservation proved (CVC4: 4 VC)
 sorting.adb:41:18: info: range check proved (CVC4: 4 VC)
 sorting.adb:42:41: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:43:19: info: index check proved (CVC4: 4 VC)
@@ -28,7 +28,7 @@ sorting.adb:47:18: info: index check proved (CVC4: 2 VC)
 sorting.adb:47:18: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:47:37: info: index check proved (CVC4: 2 VC)
 sorting.adb:47:37: info: overflow check proved (CVC4: 1 VC)
-sorting.adb:49:10: info: assertion proved (CVC4: 2 VC)
+sorting.adb:49:10: info: assertion proved (CVC4: 4 VC)
 sorting.adb:49:18: info: range check proved (CVC4: 2 VC)
 sorting.adb:50:41: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:50:46: info: overflow check proved (CVC4: 1 VC)
@@ -116,7 +116,7 @@ sorting.adb:127:65: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:69: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:127:71: info: initialization of "L" proved
 sorting.adb:134:13: info: initialization of "I" proved
-sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 5 VC; altergo: 1 VC)
+sorting.adb:134:13: info: loop invariant initialization proved (CVC4: 8 VC; altergo: 1 VC)
 sorting.adb:135:33: medium: loop invariant might fail after first iteration, cannot prove I mod (L * 2) = 0
 sorting.adb:135:35: info: division check proved (CVC4: 2 VC)
 sorting.adb:135:40: info: initialization of "L" proved
@@ -124,7 +124,7 @@ sorting.adb:135:42: medium: overflow check might fail
 sorting.adb:137:22: medium: overflow check might fail
 sorting.adb:137:26: medium: overflow check might fail
 sorting.adb:138:36: info: overflow check proved (CVC4: 2 VC)
-sorting.adb:138:36: info: range check proved (CVC4: 1 VC; altergo: 1 VC)
+sorting.adb:138:36: info: range check proved (CVC4: 2 VC)
 sorting.adb:138:40: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:138:44: info: overflow check proved (CVC4: 2 VC)
 sorting.adb:138:56: info: range check proved (CVC4: 2 VC)
@@ -150,7 +150,7 @@ sorting.adb:147:39: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:41: info: initialization of "L" proved
 sorting.adb:147:44: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:147:46: info: initialization of "I" proved
-sorting.adb:148:10: medium: precondition might fail, cannot prove Sorted (A, A_First, Length1) [possible explanation: loop invariant at line 133 should mention K]
+sorting.adb:148:10: medium: precondition might fail, cannot prove Sorted (A, A_First + Length1, Length2) [possible explanation: loop invariant at line 133 should mention K]
 sorting.adb:148:31: info: overflow check proved (CVC4: 1 VC)
 sorting.adb:148:33: info: initialization of "I" proved
 sorting.adb:148:36: info: initialization of "L" proved

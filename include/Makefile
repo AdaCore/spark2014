@@ -10,6 +10,7 @@ ALL_COQ=$(sort $(patsubst %.ctx,%.v,$(ALL_CTX)))
 # for this but we don't know what to use to replace it. This is a hack.
 %.v: %.ctx
 	sed -e 's/\\ $$/\\ (\* non escaped EOL for cpp parsing \*)/g' $< | \
+sed -e 's/\\$$/\\ (\* non escaped EOL for cpp parsing \*)/g' | \
 cpp -w -I proof/Coq/common | sed -e 's/^#.*$$//g' > $@
 
 clean:

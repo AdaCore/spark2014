@@ -2,4 +2,4 @@ invertinjection.adb:7:13: info: loop invariant initialization proved (CVC4: 1 VC
 invertinjection.adb:7:13: info: loop invariant preservation proved (CVC4: 1 VC)
 invertinjection.adb:7:58: info: index check proved (CVC4: 4 VC)
 invertinjection.adb:10:22: info: assertion proved (CVC4: 1 VC)
-invertinjection.ads:15:71: medium: postcondition might fail, cannot prove I = J (e.g. when B = (1 => Element'Last, 2 => Element'Last, others => 1) and I = 1 and J = 2)
+invertinjection.ads:15:71: medium: postcondition might fail, cannot prove I = J (e.g. when I = 1 and J = 2)

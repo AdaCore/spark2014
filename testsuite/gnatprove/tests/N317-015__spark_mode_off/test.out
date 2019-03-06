@@ -1,1 +1,1 @@
-spark_modes.ads:5:14: medium: postcondition might fail, cannot prove B = true (e.g. when B = False)
+spark_modes.ads:5:14: medium: postcondition might fail, cannot prove B = true

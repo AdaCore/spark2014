@@ -32,8 +32,8 @@ hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 
 hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 VC)
 hermes-der-decode.adb:133:41: info: initialization of "Result" proved
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 2 VC)
-hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
-hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 5 VC)
+hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 5 VC)
 hermes-der-decode.adb:135:56: info: initialization of "Result" proved
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
@@ -64,7 +64,7 @@ hermes-der-decode.adb:180:29: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:180:31: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:186:29: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:186:31: info: initialization of "Length_Of_Length" proved
-hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 4 VC)
+hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 5 VC)
 hermes-der-decode.adb:187:44: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:187:49: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:214:52: info: initialization of "Stop" proved
@@ -185,7 +185,7 @@ hermes-der-encode.adb:82:34: info: initialization of "Result" proved
 hermes-der-encode.adb:82:50: info: initialization of "Value" proved
 hermes-der-encode.adb:82:50: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:83:20: info: initialization of "Result" proved
-hermes-der-encode.adb:83:20: info: range check proved (CVC4: 2 VC)
+hermes-der-encode.adb:83:20: info: range check proved (CVC4: 4 VC)
 hermes-der-encode.adb:87:34: info: initialization of "Result" proved
 hermes-der-encode.adb:88:38: info: initialization of "Result" proved
 hermes-der-encode.adb:88:54: info: initialization of "Value" proved

@@ -23,14 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Common_Containers;       use Common_Containers;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
-with Why.Atree.Modules;       use Why.Atree.Modules;
 with Why.Atree.Mutators;      use Why.Atree.Mutators;
-with Why.Conversions;         use Why.Conversions;
-with Why.Gen.Expr;            use Why.Gen.Expr;
 with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Preds;           use Why.Gen.Preds;
 
 package body Why.Gen.Progs is
 
@@ -59,17 +58,37 @@ package body Why.Gen.Progs is
    -----------------------
 
    function New_Any_Statement
+     (Ada_Node    : Node_Id;
+      Pre         : W_Pred_Id;
+      Post        : W_Pred_Id;
+      Reason      : VC_Kind;
+      Return_Type : W_Type_Id := Why_Empty)
+      return W_Prog_Id is
+   begin
+      return
+        +Insert_Cnt_Loc_Label
+          (Ada_Node,
+           New_Any_Expr
+             (Ada_Node    => Ada_Node,
+              Pre         => Pre,
+              Post        => Post,
+              Labels      => New_VC_Labels (Ada_Node, Reason),
+              Return_Type =>
+                (if Return_Type = Why_Empty then EW_Unit_Type
+                 else Return_Type)));
+   end New_Any_Statement;
+
+   function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
-      Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Type_Id := Why_Empty)
       return W_Prog_Id is
    begin
       return
         New_Any_Expr
-          (Ada_Node => Ada_Node,
-           Pre      => Pre,
-           Post     => Post,
+          (Ada_Node    => Ada_Node,
+           Post        => Post,
+           Labels      => Name_Id_Sets.Empty_Set,
            Return_Type =>
              (if Return_Type = Why_Empty then EW_Unit_Type
               else Return_Type));
@@ -105,8 +124,9 @@ package body Why.Gen.Progs is
    begin
       return
         New_Any_Expr
-          (Ada_Node => Ada_Node,
-           Effects  => Effects,
+          (Ada_Node    => Ada_Node,
+           Effects     => Effects,
+           Labels      => Name_Id_Sets.Empty_Set,
            Return_Type => EW_Unit_Type);
    end New_Havoc_Statement;
 
@@ -120,7 +140,8 @@ package body Why.Gen.Progs is
       Call : constant W_Prog_Id :=
         New_Binding
           (Ada_Node => Ada_Node,
-           Name     => New_Identifier (Domain => EW_Prog, Name => "_"),
+           Name     => New_Identifier
+             (Domain => EW_Prog, Name => "_", Typ => Get_Type (+Prog)),
            Def      => +Prog,
            Context  => +Void,
            Typ      => EW_Unit_Type);
@@ -181,6 +202,7 @@ package body Why.Gen.Progs is
       return
         New_Any_Expr
           (Post        => Pred,
+           Labels      => Name_Id_Sets.Empty_Set,
            Return_Type => +T);
    end New_Simpl_Any_Prog;
 

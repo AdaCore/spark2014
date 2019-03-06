@@ -11,7 +11,7 @@ admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
 admin.ads:118:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:118:36: info: initialization of "TheAdmin.RolePresent" proved
-admin.ads:137:21: info: postcondition proved (CVC4: 3 VC)
+admin.ads:137:21: info: postcondition proved (CVC4: 1 VC)
 admin.ads:138:28: info: precondition proved (CVC4: 2 VC)
 admin.ads:151:21: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:151:21: info: initialization of "TheAdmin.RolePresent" proved
@@ -118,7 +118,7 @@ admintoken.ads:76:26: info: initialization of "IDCert.Contents" constituent of "
 admintoken.ads:76:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:77:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:77:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.ads:111:22: info: postcondition proved (CVC4: 2 VC)
+admintoken.ads:111:22: info: postcondition proved (CVC4: 6 VC)
 admintoken.ads:128:07: info: initialization of "Description" proved
 admintoken.ads:129:07: info: initialization of "TokenOK" proved
 admintoken.ads:158:22: info: initialization of "TokenOK" proved
@@ -195,7 +195,7 @@ auditlog.adb:365:45: info: predicate check proved (CVC4: 1 VC)
 auditlog.adb:365:45: info: range check proved (CVC4: 1 VC)
 auditlog.adb:367:32: info: initialization of "Archive" proved
 auditlog.adb:369:30: info: initialization of "Archive" proved
-auditlog.adb:394:22: info: postcondition proved (CVC4: 1 VC)
+auditlog.adb:394:22: info: postcondition proved (CVC4: 2 VC)
 auditlog.adb:403:32: info: initialization of "TheFile" proved
 auditlog.adb:405:52: info: initialization of "OK" proved
 auditlog.adb:406:30: info: initialization of "TheFile" proved
@@ -217,7 +217,7 @@ auditlog.adb:542:14: info: initialization of "OK" proved
 auditlog.adb:585:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:585:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:586:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:587:22: info: postcondition proved (CVC4: 6 VC)
+auditlog.adb:587:22: info: postcondition proved (CVC4: 8 VC)
 auditlog.adb:588:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:588:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:589:42: info: overflow check proved (CVC4: 1 VC)
@@ -1532,18 +1532,18 @@ configuration.adb:108:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:108:55: info: range check proved (CVC4: 1 VC)
 configuration.adb:109:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:109:64: info: division check proved (CVC4: 1 VC)
-configuration.adb:109:72: info: range check proved (Z3: 1 VC)
-configuration.adb:110:12: info: range check proved (Z3: 1 VC)
+configuration.adb:109:72: info: range check proved (CVC4: 1 VC)
+configuration.adb:110:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:110:63: info: division check proved (CVC4: 1 VC)
-configuration.adb:110:71: info: range check proved (Z3: 1 VC)
-configuration.adb:111:12: info: range check proved (Z3: 1 VC)
+configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
+configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:116:26: info: initialization of "Str" proved
-configuration.adb:116:26: info: range check proved (CVC4: 2 VC; Z3: 2 VC)
+configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:38: info: initialization of "LocalText" proved
 configuration.adb:118:38: info: length check proved (CVC4: 4 VC)
 configuration.adb:118:41: info: initialization of "Str" proved
-configuration.adb:118:41: info: length check proved (CVC4: 3 VC; Z3: 1 VC)
+configuration.adb:118:41: info: length check proved (CVC4: 4 VC)
 configuration.adb:121:17: info: initialization of "LocalText" proved
 configuration.adb:144:10: info: initialization of "DataValid" proved
 configuration.adb:147:40: info: initialization of "TheLatchUnlockDuration" proved
@@ -1785,7 +1785,7 @@ enclave.adb:356:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:395:33: info: initialization of "Status" constituent of "State" proved
 enclave.adb:438:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:444:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:447:06: info: postcondition proved (CVC4: 8 VC)
+enclave.adb:447:06: info: postcondition proved (CVC4: 12 VC)
 enclave.adb:447:07: info: initialization of "Status" constituent of "State" proved
 enclave.adb:461:13: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:461:18: info: precondition proved (CVC4: 1 VC)
@@ -1806,7 +1806,7 @@ enclave.adb:631:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:639:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:641:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:645:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:648:06: info: postcondition proved (CVC4: 12 VC)
+enclave.adb:648:06: info: postcondition proved (CVC4: 17 VC)
 enclave.adb:659:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:665:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:670:18: info: precondition proved (CVC4: 1 VC)
@@ -1825,7 +1825,7 @@ enclave.adb:836:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:844:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:846:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:900:27: info: precondition proved (CVC4: 1 VC)
-enclave.adb:902:06: info: postcondition proved (CVC4: 7 VC)
+enclave.adb:902:06: info: postcondition proved (CVC4: 9 VC)
 enclave.adb:913:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:943:26: info: initialization of "TheCurrentFloppy" proved
 enclave.adb:947:13: info: initialization of "ConfigDataOK" proved
@@ -1835,7 +1835,7 @@ enclave.adb:1005:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1014:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1020:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1029:06: info: initialization of "Status" constituent of "State" proved
-enclave.adb:1029:06: info: postcondition proved (CVC4: 17 VC)
+enclave.adb:1029:06: info: postcondition proved (CVC4: 22 VC)
 enclave.adb:1051:13: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1051:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1053:11: warning: unreachable branch (CVC4: 1 VC)
@@ -1846,7 +1846,7 @@ enclave.adb:1065:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1076:12: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1139:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1154:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1163:06: info: postcondition proved (CVC4: 20 VC)
+enclave.adb:1163:06: info: postcondition proved (CVC4: 25 VC)
 enclave.adb:1172:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1180:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1190:10: warning: unreachable branch (CVC4: 1 VC)
@@ -1859,7 +1859,7 @@ enclave.adb:1220:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1332:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1351:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1357:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1366:06: info: postcondition proved (CVC4: 24 VC)
+enclave.adb:1366:06: info: postcondition proved (CVC4: 33 VC)
 enclave.adb:1390:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1411:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1413:11: warning: unreachable branch (CVC4: 1 VC)
@@ -1867,10 +1867,10 @@ enclave.adb:1417:14: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1417:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1422:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1425:17: info: precondition proved (CVC4: 3 VC)
-enclave.adb:1427:13: info: precondition proved (CVC4: 9 VC)
+enclave.adb:1427:13: info: precondition proved (CVC4: 12 VC)
 enclave.adb:1430:13: info: precondition proved (CVC4: 4 VC)
-enclave.adb:1433:13: info: precondition proved (CVC4: 8 VC)
-enclave.adb:1436:13: info: precondition proved (CVC4: 12 VC)
+enclave.adb:1433:13: info: precondition proved (CVC4: 11 VC)
+enclave.adb:1436:13: info: precondition proved (CVC4: 14 VC)
 enclave.adb:1452:41: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1454:30: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1455:37: info: initialization of "Status" constituent of "State" proved
@@ -1884,22 +1884,22 @@ enclave.adb:1582:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1621:31: info: refined post proved (CVC4: 5 VC)
 enclave.adb:1636:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1655:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1838:06: info: refined post proved (CVC4: 24 VC)
+enclave.adb:1838:06: info: refined post proved (CVC4: 35 VC)
 enclave.adb:1857:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1863:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1888:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1894:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1898:42: info: range check proved (CVC4: 1 VC)
 enclave.adb:1900:12: info: initialization of "LocalStatus" proved
-enclave.adb:1903:13: info: precondition proved (CVC4: 7 VC)
-enclave.adb:1908:13: info: precondition proved (CVC4: 13 VC)
-enclave.adb:1991:06: info: refined post proved (CVC4: 16 VC)
+enclave.adb:1903:13: info: precondition proved (CVC4: 10 VC)
+enclave.adb:1908:13: info: precondition proved (CVC4: 17 VC)
+enclave.adb:1991:06: info: refined post proved (CVC4: 25 VC)
 enclave.adb:2019:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2029:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2035:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2130:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2136:22: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2139:09: info: postcondition proved (CVC4: 14 VC)
+enclave.adb:2139:09: info: postcondition proved (CVC4: 21 VC)
 enclave.adb:2148:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2154:22: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2158:21: info: precondition proved (CVC4: 1 VC)
@@ -1916,7 +1916,7 @@ enclave.adb:2199:24: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2203:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2209:24: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2213:34: info: initialization of "KeyedData.Text" proved
-enclave.adb:2226:10: info: precondition proved (CVC4: 9 VC)
+enclave.adb:2226:10: info: precondition proved (CVC4: 12 VC)
 enclave.ads:116:22: info: postcondition proved (CVC4: 3 VC)
 enclave.ads:116:56: info: initialization of "Status" constituent of "State" proved
 enclave.ads:209:22: info: postcondition proved (CVC4: 3 VC)
@@ -1924,7 +1924,7 @@ enclave.ads:251:22: info: postcondition proved (CVC4: 5 VC)
 enclave.ads:432:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:442:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:448:26: info: precondition proved (CVC4: 1 VC)
-enclave.ads:457:13: info: postcondition proved (CVC4: 24 VC)
+enclave.ads:457:13: info: postcondition proved (CVC4: 35 VC)
 enclave.ads:486:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:496:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:502:26: info: precondition proved (CVC4: 1 VC)
@@ -1932,7 +1932,7 @@ enclave.ads:515:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:565:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:591:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:597:35: info: precondition proved (CVC4: 1 VC)
-enclave.ads:602:13: info: postcondition proved (CVC4: 16 VC)
+enclave.ads:602:13: info: postcondition proved (CVC4: 25 VC)
 enclave.ads:631:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:641:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:647:35: info: precondition proved (CVC4: 1 VC)
@@ -1947,7 +1947,7 @@ enrolment.adb:74:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:76:17: info: initialization of "Result" proved
 enrolment.adb:94:35: info: initialization of "KeyAdded" proved
 enrolment.adb:95:35: info: initialization of "Description" proved
-enrolment.adb:124:25: info: postcondition proved (CVC4: 3 VC)
+enrolment.adb:124:25: info: postcondition proved (CVC4: 5 VC)
 enrolment.adb:124:39: info: initialization of "KeyAdded" proved
 enrolment.adb:146:16: info: initialization of "Stop" proved
 enrolment.adb:152:25: info: initialization of "TheCert" proved
@@ -2058,8 +2058,8 @@ keystore.adb:201:10: info: initialization of "RetValIni" proved
 keystore.adb:203:51: info: division check proved (CVC4: 1 VC)
 keystore.adb:206:24: info: initialization of "LoopMax" proved
 keystore.adb:208:16: info: initialization of "LoopMax" proved
-keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 8 VC)
-keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 8 VC)
+keystore.adb:208:16: info: loop invariant initialization proved (CVC4: 9 VC)
+keystore.adb:208:16: info: loop invariant preservation proved (CVC4: 9 VC)
 keystore.adb:208:56: info: division check proved (CVC4: 2 VC)
 keystore.adb:209:30: info: initialization of "LoopMax" proved
 keystore.adb:211:20: info: initialization of "BytesLeft" proved
@@ -2211,7 +2211,7 @@ keystore.ads:174:20: info: initialization of "Signature.SigData" proved
 keystore.ads:174:20: info: initialization of "Signature.SigLength" proved
 keystore.ads:175:20: info: initialization of "Signed" proved
 keystore.ads:204:22: info: initialization of "Added" proved
-keystore.ads:229:22: info: postcondition proved (CVC4: 3 VC)
+keystore.ads:229:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:229:23: info: initialization of "Added" proved
 keystore.ads:247:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:247:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
@@ -2606,21 +2606,21 @@ tismain.adb:266:18: info: precondition proved (CVC4: 1 VC)
 tismain.adb:569:20: info: precondition proved (CVC4: 1 VC)
 tismain.adb:575:21: info: precondition proved (CVC4: 1 VC)
 tismain.adb:582:20: info: precondition proved (CVC4: 1 VC)
-tismain.adb:615:08: info: postcondition proved (CVC4: 22 VC)
+tismain.adb:615:08: info: postcondition proved (CVC4: 32 VC)
 tismain.adb:630:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:636:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:643:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:716:17: info: precondition proved (CVC4: 2 VC)
-tismain.adb:719:17: info: precondition proved (CVC4: 3 VC)
+tismain.adb:719:17: info: precondition proved (CVC4: 4 VC)
 tismain.adb:723:19: info: precondition proved (CVC4: 6 VC)
-tismain.adb:727:17: info: precondition proved (CVC4: 19 VC)
-tismain.adb:734:17: info: precondition proved (CVC4: 14 VC)
+tismain.adb:727:17: info: precondition proved (CVC4: 28 VC)
+tismain.adb:734:17: info: precondition proved (CVC4: 23 VC)
 tismain.adb:755:39: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:756:34: info: initialization of "SystemFault" proved
 tismain.adb:1105:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1111:26: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1118:25: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1145:13: info: postcondition proved (CVC4: 21 VC)
+tismain.adb:1145:13: info: postcondition proved (CVC4: 32 VC)
 tismain.adb:1149:19: info: initialization of "SystemFault" proved
 tismain.adb:1161:51: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1183:25: info: precondition proved (CVC4: 1 VC)
@@ -2629,7 +2629,7 @@ tismain.adb:1196:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1230:14: info: initialization of "SystemFault" proved
 tismain.adb:1233:17: info: initialization of "SystemFault" proved
 tismain.adb:1235:13: info: initialization of "Clock.CurrentTime" proved
-tismain.adb:1235:13: info: precondition proved (CVC4: 21 VC)
+tismain.adb:1235:13: info: precondition proved (CVC4: 31 VC)
 tismain.adb:1259:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1260:38: info: initialization of "Door.State" proved
 tismain.adb:1261:39: info: initialization of "Latch.Output" proved
@@ -2645,8 +2645,8 @@ tismain.adb:1319:40: info: initialization of "Screen.Output" proved
 tismain.adb:1320:34: info: initialization of "TheAdmin" proved
 tismain.adb:1363:39: info: initialization of "TheAdmin" proved
 tismain.adb:1391:24: info: initialization of "Latch.State" proved
-tismain.adb:1396:10: info: loop invariant initialization proved (CVC4: 19 VC)
-tismain.adb:1396:10: info: loop invariant preservation proved (CVC4: 19 VC)
+tismain.adb:1396:10: info: loop invariant initialization proved (CVC4: 29 VC)
+tismain.adb:1396:10: info: loop invariant preservation proved (CVC4: 29 VC)
 tismain.adb:1396:23: info: initialization of "Enclave.State" proved
 tismain.adb:1396:57: info: initialization of "KeyStore.State" proved
 tismain.adb:1400:15: info: initialization of "Latch.State" proved
@@ -2671,10 +2671,10 @@ tismain.adb:1446:07: info: initialization of "Screen.State" proved
 tismain.adb:1446:07: info: initialization of "TheAdmin" proved
 tismain.adb:1446:07: info: initialization of "TheStats" proved
 tismain.adb:1446:07: info: initialization of "UserToken.State" proved
-tismain.adb:1446:07: info: precondition proved (CVC4: 19 VC)
+tismain.adb:1446:07: info: precondition proved (CVC4: 29 VC)
 tismain.adb:1448:35: info: initialization of "Enclave.State" proved
 tismain.adb:1450:17: info: initialization of "ShutdownCompleted" proved
-tismain.adb:1453:10: info: assertion proved (CVC4: 20 VC)
+tismain.adb:1453:10: info: assertion proved (CVC4: 31 VC)
 tismain.adb:1453:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1454:23: info: initialization of "Enclave.State" proved
 tismain.adb:1454:57: info: initialization of "KeyStore.State" proved
@@ -2702,7 +2702,7 @@ tismain.adb:1540:10: info: initialization of "Door.State" proved
 tismain.adb:1540:10: info: initialization of "Latch.State" proved
 tismain.adb:1540:10: info: initialization of "Screen.State" proved
 tismain.adb:1540:10: info: initialization of "TheStats" proved
-tismain.adb:1546:10: info: assertion proved (CVC4: 21 VC)
+tismain.adb:1546:10: info: assertion proved (CVC4: 32 VC)
 tismain.adb:1546:14: info: initialization of "ShutdownCompleted" proved
 tismain.adb:1546:40: info: initialization of "SystemFault" proved
 tismain.adb:1548:23: info: initialization of "Enclave.State" proved
@@ -2794,13 +2794,13 @@ tokenreader.ads:168:07: info: initialization of "Success" proved
 updates.ads:46:29: info: initialization of "SystemFault" proved
 updates.ads:51:39: info: initialization of "Alarm.Output" proved
 updates.ads:52:39: info: initialization of "Latch.Output" proved
-updates.ads:79:22: info: postcondition proved (CVC4: 2 VC)
+updates.ads:79:22: info: postcondition proved (CVC4: 3 VC)
 updates.ads:82:25: info: initialization of "SystemFault" proved
 updates.ads:95:24: info: initialization of "SystemFault" proved
 updates.ads:100:39: info: initialization of "Alarm.Output" proved
 updates.ads:101:39: info: initialization of "Latch.Output" proved
 updates.ads:102:40: info: initialization of "Screen.Output" proved
-updates.ads:143:22: info: postcondition proved (CVC4: 2 VC)
+updates.ads:143:22: info: postcondition proved (CVC4: 3 VC)
 updates.ads:146:25: info: initialization of "SystemFault" proved
 userentry.adb:56:04: info: initialization of "Status" constituent of "State" proved
 userentry.adb:58:04: info: initialization of "FingerTimeout.Day" constituent of "State" proved
