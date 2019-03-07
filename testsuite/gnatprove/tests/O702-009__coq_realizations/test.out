@@ -1,6 +1,39 @@
+Copying coq repository
+Compiling coq stdlib
+Coq stdlib compiled
+Launch why3realize
+Generate realization for Integer
 
+Generate realization for Int_Power
 
+Generate realization for Int_Minmax
 
+Generate realization for Int_Abs
 
+Generate realization for Int_Division
 
+Generate realization for Array__1
 
+Generate realization for Array__1__Concat
+
+Generate realization for Rep_Proj_Base
+
+Generate realization for Rep_Proj_BVGen
+
+Generate realization for Rep_Proj_Int
+
+Generate realization for Rep_Proj_ltBVGen
+
+Check realizations
+Run Coqc on realization file: Integer
+Run Coqc on realization file: Int_Power
+Run Coqc on realization file: Int_Minmax
+Run Coqc on realization file: Int_Abs
+Run Coqc on realization file: Int_Division
+Run Coqc on realization file: Array__1
+Run Coqc on realization file: Array__1__Concat
+Run Coqc on realization file: Rep_Proj_Base
+Run Coqc on realization file: Rep_Proj_BVGen
+Run Coqc on realization file: Rep_Proj_Int
+Run Coqc on realization file: Rep_Proj_ltBVGen
+The realizations checks were run
