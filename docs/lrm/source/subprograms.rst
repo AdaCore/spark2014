@@ -1423,7 +1423,7 @@ calls.
 
    * the corresponding formal parameter shall be immutable; and
 
-   * if the ``global_item``'s mode is Output or In_Out, then the parameter's
+   * if the ``global_item``'s mode is Output or In_Out, then the
      corresponding formal parameter shall be of a by-copy type that is not an
      access type.
 
