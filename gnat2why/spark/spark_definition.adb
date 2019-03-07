@@ -4898,10 +4898,11 @@ package body SPARK_Definition is
 
                begin
                   while Present (Comp) loop
+                     pragma Assert (Ekind (Comp) = E_Component);
+
                      Comp_Type := Etype (Comp);
 
                      if not Is_Tag (Comp)
-                       and then Is_Object (Comp)
                        --  Ignore components which are declared in a part with
                        --  SPARK_Mode => Off.
                        and then Component_Is_Visible_In_SPARK (Comp)
