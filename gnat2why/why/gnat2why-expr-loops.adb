@@ -1468,7 +1468,8 @@ package body Gnat2Why.Expr.Loops is
 
       function Variant_Part_Does_Progress
         (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id;
+         Name    : W_Identifier_Id;
+         Domain  : EW_Domain) return W_Expr_Id;
       --  Given a node Variant corresponding to a decreasing or increasing
       --  part in a loop variant, and a name Name to designate that expression,
       --  returns the Why term that corresponds to progress.
@@ -1504,7 +1505,8 @@ package body Gnat2Why.Expr.Loops is
 
       function Variant_Part_Does_Progress
         (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id
+         Name    : W_Identifier_Id;
+         Domain  : EW_Domain) return W_Expr_Id
       is
          Expr : constant Node_Id := Expression (Variant);
          WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
@@ -1516,14 +1518,16 @@ package body Gnat2Why.Expr.Loops is
             else (if Why_Type_Is_BitVector (WTyp)
               then MF_BVs (WTyp).Ugt
               else Int_Infix_Gt));
+         Sub_Domain : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
       begin
          return
-           +New_Comparison
+           New_Comparison
            (Symbol => Cmp,
-            Left   => Variant_Expr (Expr, EW_Term),
+            Left   => Variant_Expr (Expr, Sub_Domain),
             Right  => New_Deref (Right => +Name,
                                  Typ   => WTyp),
-            Domain => EW_Pred);
+            Domain => Domain);
       end Variant_Part_Does_Progress;
 
       ---------------------------------
@@ -1572,7 +1576,9 @@ package body Gnat2Why.Expr.Loops is
               New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Expr));
 
             Pred_Progress : constant W_Pred_Id :=
-              Variant_Part_Does_Progress (Variant, Name);
+              +Variant_Part_Does_Progress (Variant, Name, EW_Pred);
+            Prog_Progress : constant W_Prog_Id :=
+              +Variant_Part_Does_Progress (Variant, Name, EW_Pterm);
             Pred_Constant : constant W_Pred_Id :=
               Variant_Part_Stays_Constant (Variant, Name);
             Prog : constant W_Prog_Id :=
@@ -1595,7 +1601,7 @@ package body Gnat2Why.Expr.Loops is
                  Sequence (Prog,
                    +W_Expr_Id'(New_Conditional (Ada_Node  => Variant,
                                                 Domain    => EW_Prog,
-                                                Condition => +Pred_Progress,
+                                                Condition => +Prog_Progress,
                                                 Then_Part => +Check_Prog))));
 
             Progress_Pred :=
