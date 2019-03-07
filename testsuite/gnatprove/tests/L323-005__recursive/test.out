@@ -11,10 +11,10 @@ p.ads:7:36: medium: postcondition might fail, cannot prove false
 p.ads:9:14: medium: subprogram "Down" might not terminate, terminating annotation could be incorrect
 p.ads:10:30: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:10:38: info: range check proved (CVC4: 1 VC)
-p.ads:10:43: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X in a precondition]
+p.ads:10:43: medium: overflow check might fail (e.g. when X = 3) [possible explanation: subprogram at line 9 should mention X in a precondition]
 p.ads:13:15: warning: subprogram "Use_Down" has no effect
 p.ads:15:15: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:15:15: info: postcondition proved (CVC4: 1 VC)
 p.ads:15:26: info: implicit function contract not available for proof ("Down" is recursive)
 p.ads:15:34: info: range check proved (CVC4: 1 VC)
-p.ads:15:39: medium: overflow check might fail
+p.ads:15:39: medium: overflow check might fail (e.g. when X = 3)
