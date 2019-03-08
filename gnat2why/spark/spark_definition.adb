@@ -6832,20 +6832,19 @@ package body SPARK_Definition is
          Mark_Violation (N, From => T); -- ?? N? similar below
       end if;
 
-      if Nkind (N) = N_Subtype_Indication then
+      Cstr := Constraint (N);
 
-         Cstr := Constraint (N);
-         case Nkind (Cstr) is
-            when N_Range_Constraint =>
-               null;
+      case Nkind (Cstr) is
+         when N_Range_Constraint =>
+            null;
 
-            when N_Index_Or_Discriminant_Constraint =>
+         when N_Index_Or_Discriminant_Constraint =>
 
-               if Is_Array_Type (T) then
-                  Cstr := First (Constraints (Cstr));
-                  while Present (Cstr) loop
+            if Is_Array_Type (T) then
+               Cstr := First (Constraints (Cstr));
+               while Present (Cstr) loop
 
-                     case Nkind (Cstr) is
+                  case Nkind (Cstr) is
                      when N_Identifier | N_Expanded_Name =>
                         if not Retysp_In_SPARK (Entity (Cstr)) then
                            Mark_Violation (N, From => Entity (Cstr));
@@ -6862,26 +6861,25 @@ package body SPARK_Definition is
 
                      when others =>
                         raise Program_Error;
-                     end case;
-                     Next (Cstr);
-                  end loop;
+                  end case;
+                  Next (Cstr);
+               end loop;
 
                --  Note that a discriminant association that has no selector
                --  name list appears directly as an expression in the tree.
 
-               else
-                  null;
-               end if;
-
-            when N_Digits_Constraint
-               | N_Delta_Constraint
-            =>
+            else
                null;
+            end if;
 
-            when others =>  --  TO DO ???
-               raise Program_Error;
-         end case;
-      end if;
+         when N_Digits_Constraint
+            | N_Delta_Constraint
+            =>
+            null;
+
+         when others =>  --  TO DO ???
+            raise Program_Error;
+      end case;
    end Mark_Subtype_Indication;
 
    -------------------
