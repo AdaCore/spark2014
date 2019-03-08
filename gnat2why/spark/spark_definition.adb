@@ -926,7 +926,6 @@ package body SPARK_Definition is
      with Pre => Ekind (E) in Object_Kind | E_Function | E_Procedure;
 
    procedure Mark_Component_Association       (N : Node_Id);
-   procedure Mark_Component_Declaration       (N : Node_Id);
    procedure Mark_Handled_Statements          (N : Node_Id);
    procedure Mark_Identifier_Or_Expanded_Name (N : Node_Id);
    procedure Mark_If_Expression               (N : Node_Id);
@@ -1500,9 +1499,6 @@ package body SPARK_Definition is
 
          when N_Iterated_Component_Association =>
             Mark_Violation ("iterated associations", N);
-
-         when N_Component_Declaration =>
-            Mark_Component_Declaration (N);
 
          when N_Delay_Relative_Statement
             | N_Delay_Until_Statement
@@ -2284,6 +2280,7 @@ package body SPARK_Definition is
             | N_Compilation_Unit
             | N_Compilation_Unit_Aux
             | N_Component_Clause
+            | N_Component_Declaration
             | N_Component_Definition
             | N_Component_List
             | N_Constrained_Array_Definition
@@ -3250,23 +3247,6 @@ package body SPARK_Definition is
          Mark (Expression (N));
       end if;
    end Mark_Component_Association;
-
-   --------------------------------
-   -- Mark_Component_Declaration --
-   --------------------------------
-
-   procedure Mark_Component_Declaration (N : Node_Id) is
-      Def : constant Node_Id := Component_Definition (N);
-
-   begin
-      pragma Assert (Is_Protected_Component (Defining_Identifier (N)));
-
-      if Present (Access_Definition (Def)) then
-         Mark_Violation ("access type", Def);
-      else
-         Mark_Subtype_Indication (Subtype_Indication (Def));
-      end if;
-   end Mark_Component_Declaration;
 
    --------------------------------------
    -- Mark_Concurrent_Type_Declaration --
