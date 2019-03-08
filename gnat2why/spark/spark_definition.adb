@@ -2071,16 +2071,9 @@ package body SPARK_Definition is
                      declare
                         T_Def : constant Node_Id := Type_Definition (N);
                      begin
-                        case Nkind (T_Def) is
-                        when N_Subtype_Indication =>
-                           Mark (T_Def);
-
-                        when N_Derived_Type_Definition =>
+                        if Nkind (T_Def) = N_Derived_Type_Definition then
                            Mark (Subtype_Indication (T_Def));
-
-                        when others =>
-                           null;
-                        end case;
+                        end if;
                      end;
                   end if;
                end if;
