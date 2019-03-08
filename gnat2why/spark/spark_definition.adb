@@ -6604,9 +6604,8 @@ package body SPARK_Definition is
                --  Refined_Post aspect if present.
                if Nkind (N) = N_Subprogram_Body then
                   declare
-                     C : constant Entity_Id :=
-                       Contract (Defining_Entity (Specification (N)));
-                     --  ??? Def_E
+                     C : constant Node_Id := Contract (Def_E);
+
                   begin
                      if Present (C) then
                         declare
