@@ -6566,30 +6566,30 @@ package body SPARK_Definition is
 
                --  Mark Actual_Subtypes of parameters if any
 
-               declare
-                  Formals    : constant List_Id :=
-                    (if Nkind (N) = N_Task_Body
-                     then No_List
-                     else Parameter_Specifications
-                       (if Nkind (N) = N_Entry_Body
-                        then Entry_Body_Formal_Part (N)
-                        else Specification (N)));
-                  Param_Spec : Node_Id;
-                  Formal     : Node_Id;
-                  Sub        : Node_Id;
-               begin
-                  Param_Spec := First (Formals);
-                  while Present (Param_Spec) loop
-                     Formal := Defining_Identifier (Param_Spec);
-                     Sub := Actual_Subtype (Formal);
-                     if Present (Sub)
-                       and then not In_SPARK (Sub)
-                     then
-                        Mark_Violation (Formal, From => Sub);
-                     end if;
-                     Next (Param_Spec);
-                  end loop;
-               end;
+               if Nkind (N) /= N_Task_Body then
+                  declare
+                     Formals    : constant List_Id :=
+                       Parameter_Specifications
+                         (if Nkind (N) = N_Entry_Body
+                          then Entry_Body_Formal_Part (N)
+                          else Specification (N));
+                     Param_Spec : Node_Id;
+                     Formal     : Entity_Id;
+                     Sub        : Entity_Id;
+                  begin
+                     Param_Spec := First (Formals);
+                     while Present (Param_Spec) loop
+                        Formal := Defining_Identifier (Param_Spec);
+                        Sub := Actual_Subtype (Formal);
+                        if Present (Sub)
+                          and then not In_SPARK (Sub)
+                        then
+                           Mark_Violation (Formal, From => Sub);
+                        end if;
+                        Next (Param_Spec);
+                     end loop;
+                  end;
+               end if;
 
                --  Mark entry barrier
 
