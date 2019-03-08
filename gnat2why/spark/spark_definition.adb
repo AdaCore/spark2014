@@ -4271,7 +4271,7 @@ package body SPARK_Definition is
          then
             for Iface of Iter (Interfaces (E)) loop
                if not In_SPARK (Iface) then
-                     Mark_Violation (E, From => Iface);
+                  Mark_Violation (E, From => Iface);
                end if;
             end loop;
          end if;
