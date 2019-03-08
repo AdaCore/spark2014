@@ -3259,6 +3259,8 @@ package body SPARK_Definition is
       Def : constant Node_Id := Component_Definition (N);
 
    begin
+      pragma Assert (Is_Protected_Component (Defining_Identifier (N)));
+
       if Present (Access_Definition (Def)) then
          Mark_Violation ("access type", Def);
       else
