@@ -4595,61 +4595,73 @@ package body SPARK_Definition is
                --  Invariants cannot be specified on completion of private
                --  extension in SPARK.
 
-               if Is_Full_View (E)
-                 and then Present (Parent (Partial_View (E)))
-                 and then Nkind (Parent (Partial_View (E))) =
-                 N_Private_Extension_Declaration
-               then
-                  Mark_Violation
-                    ("type invariant on completion of "
-                     & "private_type_extension", E, "SPARK RM 7.3.2(2)");
+               declare
+                  E_Partial_View : constant Entity_Id :=
+                    (if Present (Invariant_Procedure (E))
+                     then Etype (First_Formal (Invariant_Procedure (E)))
+                     else Empty);
+                  --  Partial view of E. Do not use the Partial_Views from
+                  --  SPARK_Util as it may not have been constructed yet.
 
-               --  We currently do not support invariants on type declared in a
-               --  nested package. This restriction results in simplifications
-               --  in invariant checks on subprogram parameters/global
-               --  variables, as well as in determining which are the type
-               --  invariants which are visible at a given program point.
+               begin
+                  if Present (E_Partial_View)
+                    and then Present (Parent (E_Partial_View))
+                    and then Nkind (Parent (E_Partial_View)) =
+                      N_Private_Extension_Declaration
+                  then
+                     Mark_Violation
+                       ("type invariant on completion of "
+                        & "private_type_extension", E, "SPARK RM 7.3.2(2)");
 
-               elsif not Is_Compilation_Unit (Enclosing_Unit (E)) then
-                  Mark_Unsupported
-                    ("type invariant not immediately in a compilation unit",
-                     E);
+                  --  We currently do not support invariants on type
+                  --  declared in a nested package. This restriction results
+                  --  in simplifications in invariant checks on subprogram
+                  --  parameters/global variables, as well as in determining
+                  --  which are the type invariants which are visible at a
+                  --  given program point.
 
-               elsif Is_Child_Unit (Enclosing_Unit (E)) then
-                  Mark_Unsupported ("type invariant in child unit", E);
+                  elsif not Is_Compilation_Unit (Enclosing_Unit (E)) then
+                     Mark_Unsupported
+                       ("type invariant not immediately in a compilation unit",
+                        E);
 
-               --  We currently do not support invariants on protected types.
-               --  To support them, we would probably need some new RM wording
-               --  in SPARK or new syntax in Ada (see P826-030).
+                  elsif Is_Child_Unit (Enclosing_Unit (E)) then
+                     Mark_Unsupported ("type invariant in child unit", E);
 
-               elsif Is_Protected_Type (E) then
-                  Mark_Unsupported ("type invariant on protected types", E);
+                  --  We currently do not support invariants on protected
+                  --  types. To support them, we would probably need some
+                  --  new RM wording in SPARK or new syntax in Ada (see
+                  --  P826-030).
 
-               --  We currently do not support invariants on tagged types. To
-               --  support them, we would need to introduce checks for type
-               --  invariants of childs on dispatching calls to root primitives
-               --  (see SPARK RM 7.3.2(8) and test
-               --  P801-002__invariant_on_tagged_types).
+                  elsif Is_Protected_Type (E) then
+                     Mark_Unsupported ("type invariant on protected types", E);
 
-               elsif Is_Tagged_Type (E) then
-                  Mark_Unsupported ("type invariant on tagged types", E);
-               else
+                  --  We currently do not support invariants on tagged
+                  --  types. To support them, we would need to introduce
+                  --  checks for type invariants of childs on dispatching
+                  --  calls to root primitives (see SPARK RM 7.3.2(8) and
+                  --  test P801-002__invariant_on_tagged_types).
 
-                  --  Add the type invariant to delayed aspects to be marked
-                  --  later.
+                  elsif Is_Tagged_Type (E) then
+                     Mark_Unsupported ("type invariant on tagged types", E);
+                  else
 
-                  pragma Assert (Present (Invariant_Procedure (E)));
+                     --  Add the type invariant to delayed aspects to be marked
+                     --  later.
 
-                  declare
-                     Delayed_Mapping : constant Node_Id :=
-                       (if Present (Current_SPARK_Pragma)
-                        then Current_SPARK_Pragma
-                        else E);
-                  begin
-                     Delayed_Type_Aspects.Include (Invariant_Procedure (E),
-                                                   Delayed_Mapping);
-                  end;
-               end if;
+                     pragma Assert (Present (Invariant_Procedure (E)));
+
+                     declare
+                        Delayed_Mapping : constant Node_Id :=
+                          (if Present (Current_SPARK_Pragma)
+                           then Current_SPARK_Pragma
+                           else E);
+                     begin
+                        Delayed_Type_Aspects.Include (Invariant_Procedure (E),
+                                                      Delayed_Mapping);
+                     end;
+                  end if;
+               end;
             end if;
          end if;
 
