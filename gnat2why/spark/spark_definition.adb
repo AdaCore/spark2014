@@ -2082,8 +2082,6 @@ package body SPARK_Definition is
                            null;
                         end case;
                      end;
-                  elsif Nkind (N) = N_Subtype_Declaration then
-                     Mark (Subtype_Indication (N));
                   end if;
                end if;
             end;
@@ -4257,8 +4255,10 @@ package body SPARK_Definition is
          declare
             Anc_Subt : constant Entity_Id := Ancestor_Subtype (E);
          begin
-            if Anc_Subt /= Empty then
-               Mark_Entity (Anc_Subt);
+            if Present (Anc_Subt)
+              and then not In_SPARK (Anc_Subt)
+            then
+               Mark_Violation (E, From => Anc_Subt);
             end if;
          end;
 
