@@ -4314,39 +4314,40 @@ package body SPARK_Definition is
 
          --  Mark discriminants if any
 
-         declare
-            Disc : Entity_Id :=
-              (if Has_Discriminants (E)
-               or else Has_Unknown_Discriminants (E)
-               then First_Discriminant (E)
-               else Empty);
-            Elmt : Elmt_Id :=
-              (if Present (Disc) and then Is_Constrained (E) then
-                    First_Elmt (Discriminant_Constraint (E))
-               else No_Elmt);
-         begin
-            while Present (Disc) loop
+         if Has_Discriminants (E)
+           or else Has_Unknown_Discriminants (E)
+         then
+            declare
+               Disc : Entity_Id := First_Discriminant (E);
+               Elmt : Elmt_Id :=
+                 (if Present (Disc) and then Is_Constrained (E) then
+                       First_Elmt (Discriminant_Constraint (E))
+                  else No_Elmt);
 
-               --  Check that the type of the discriminant is in SPARK
+            begin
+               while Present (Disc) loop
 
-               if not In_SPARK (Etype (Disc)) then
-                  Mark_Violation (Disc, From => Etype (Disc));
-               end if;
+                  --  Check that the type of the discriminant is in SPARK
 
-               --  Check that the default expression is in SPARK
+                  if not In_SPARK (Etype (Disc)) then
+                     Mark_Violation (Disc, From => Etype (Disc));
+                  end if;
 
-               Mark_Default_Expression (Disc);
+                  --  Check that the default expression is in SPARK
 
-               --  Check that the discriminant constraint is in SPARK
+                  Mark_Default_Expression (Disc);
 
-               if Present (Elmt) then
-                  Mark (Node (Elmt));
-                  Next_Elmt (Elmt);
-               end if;
+                  --  Check that the discriminant constraint is in SPARK
 
-               Next_Discriminant (Disc);
-            end loop;
-         end;
+                  if Present (Elmt) then
+                     Mark (Node (Elmt));
+                     Next_Elmt (Elmt);
+                  end if;
+
+                  Next_Discriminant (Disc);
+               end loop;
+            end;
+         end if;
 
          --  Type declarations may refer to private types whose full view has
          --  not been declared yet. However, it is this full view which may
