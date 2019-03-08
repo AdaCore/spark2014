@@ -1515,7 +1515,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                      declare
                         D : constant Node_Id := Element (Prev);
                      begin
-                        exit when Nkind (D) not in N_Declaration;
+                        exit when Nkind (D) not in
+                          N_Declaration | N_Ignored_In_SPARK;
 
                         if Nkind (D) = N_Object_Declaration
                           and then Ekind (Defining_Identifier (D)) = E_Constant
