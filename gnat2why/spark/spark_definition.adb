@@ -2050,7 +2050,7 @@ package body SPARK_Definition is
          =>
             declare
                E  : constant Entity_Id := Defining_Entity (N);
-               BT : constant Entity_Id := Base_Type (E);
+
             begin
                --  Store correspondence from completions of private types, so
                --  that Is_Full_View can be used for dealing correctly with
@@ -2066,9 +2066,7 @@ package body SPARK_Definition is
                   Set_Partial_View (Full_View (E), E);
                end if;
 
-               if In_SPARK (E) and then
-                 (not Is_Itype (BT) or else In_SPARK (BT))
-               then
+               if In_SPARK (E) then
                   if Nkind (N) = N_Full_Type_Declaration then
                      declare
                         T_Def : constant Node_Id := Type_Definition (N);
