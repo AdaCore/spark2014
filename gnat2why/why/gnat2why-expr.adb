@@ -11790,9 +11790,6 @@ package body Gnat2Why.Expr is
 
             begin
                Ent := Retysp (Ent);
-               if Present (Base) then
-                  Base := Retysp (Base);
-               end if;
 
                --  Check for absence of run-time errors in type declaration
                --  when the entity is in SPARK, and the type declaration is
@@ -11805,6 +11802,10 @@ package body Gnat2Why.Expr is
                  and then not Is_Type_Renaming (Decl)
                  and then not Is_Actual_Subtype (Ent)
                then
+                  if Present (Base) then
+                     Base := Retysp (Base);
+                  end if;
+
                   case Ekind (Ent) is
                   when Scalar_Kind =>
 
