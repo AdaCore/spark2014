@@ -343,7 +343,7 @@ package SPARK_Util is
    --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    protected object.
 
-   function Is_Predefined_Initialized_Variable (E : Entity_Id) return Boolean;
+   function Is_Predefined_Initialized_Entity (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True if E is predefined and initialized variable (see below)
    --

@@ -1292,7 +1292,7 @@ package body Flow_Generated_Globals.Phase_2 is
                when EK_Remote_States =>
                   Serialize (State_Abstractions);
 
-               when EK_Predef_Init_Vars =>
+               when EK_Predef_Init_Entities =>
                   Serialize (Initialized_Vars_And_States);
 
                when EK_Ghost_Entities =>

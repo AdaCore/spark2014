@@ -29,7 +29,7 @@ package Flow_Generated_Globals.ALI_Serialization is
    type ALI_Entry_Kind is (EK_End_Marker,
                            EK_State_Map,
                            EK_Remote_States,
-                           EK_Predef_Init_Vars,
+                           EK_Predef_Init_Entities,
                            EK_Ghost_Entities,
                            EK_CAE_Entities,
                            EK_Volatiles,

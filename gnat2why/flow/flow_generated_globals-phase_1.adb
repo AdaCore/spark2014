@@ -53,11 +53,11 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
-   Predefined_Initialized_Variables : Node_Sets.Set;
-   --  Variables in predefined units that are known to be initialized. We
-   --  attach them to units where they are used as inputs or proof_ins, because
-   --  in phase 2 we might only know them by Entity_Name (which is not enough
-   --  to decide their initialization status).
+   Predefined_Initialized_Entities : Node_Sets.Set;
+   --  Variables and abstract states in predefined units that are known to be
+   --  initialized. We attach them to units where they are used as inputs or
+   --  proof_ins, because in phase 2 we might only know them by Entity_Name
+   --  (which is not enough to decide their initialization status).
 
    Ghost_Entities : Node_Sets.Set;
    --  Entities marked with a Ghost aspect
@@ -189,11 +189,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  processing local variables for a run-time check that they do not
       --  represent remote states.
 
-      procedure Process_Predefined_Variables (Objects : Node_Sets.Set);
+      procedure Process_Predefined_Entities (Objects : Node_Sets.Set);
       --  Similarly to registering so called "remote states", i.e. states that
       --  are pulled from other compilation units and might only be known by
-      --  Entity_Name in phase 2, we need to register variables in predefined
-      --  units to know their initialization status.
+      --  Entity_Name in phase 2, we need to register variables and abstract
+      --  states in predefined units to know their initialization status.
       --
       --  ??? this routine repeats conversion from Entity_Name to Entity_Id,
       --  which is already done in Process_Volatiles_And_States; however, those
@@ -254,20 +254,20 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Serialize;
 
-      ----------------------------------
-      -- Process_Predefined_Variables --
-      ----------------------------------
+      ---------------------------------
+      -- Process_Predefined_Entities --
+      ---------------------------------
 
-      procedure Process_Predefined_Variables (Objects : Node_Sets.Set) is
+      procedure Process_Predefined_Entities (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-              and then Is_Predefined_Initialized_Variable (E)
+              and then Is_Predefined_Initialized_Entity (E)
             then
-               Predefined_Initialized_Variables.Include (E);
+               Predefined_Initialized_Entities.Include (E);
             end if;
          end loop;
-      end Process_Predefined_Variables;
+      end Process_Predefined_Entities;
 
       ----------------------------------
       -- Process_Volatiles_And_States --
@@ -434,8 +434,8 @@ package body Flow_Generated_Globals.Phase_1 is
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
 
-         Process_Predefined_Variables (Globals.Proper.Proof_Ins);
-         Process_Predefined_Variables (Globals.Proper.Inputs);
+         Process_Predefined_Entities (Globals.Proper.Proof_Ins);
+         Process_Predefined_Entities (Globals.Proper.Inputs);
       end if;
    end GG_Register_Global_Info;
 
@@ -661,9 +661,9 @@ package body Flow_Generated_Globals.Phase_1 is
          Terminate_GG_Line;
       end if;
 
-      if not Predefined_Initialized_Variables.Is_Empty then
-         New_GG_Line (EK_Predef_Init_Vars);
-         Serialize (Predefined_Initialized_Variables);
+      if not Predefined_Initialized_Entities.Is_Empty then
+         New_GG_Line (EK_Predef_Init_Entities);
+         Serialize (Predefined_Initialized_Entities);
          Terminate_GG_Line;
       end if;
 
