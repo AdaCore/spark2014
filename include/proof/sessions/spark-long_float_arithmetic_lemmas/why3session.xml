@@ -144,9 +144,7 @@
   <proof prover="1" timelimit="5"><result status="valid" steps="4779"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="timeout"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="2366"/></proof>
+  <proof prover="1" timelimit="5"><result status="valid" steps="13443"/></proof>
   </goal>
   <goal name="VC def.5" expl="postcondition">
   </goal>
