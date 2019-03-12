@@ -18,6 +18,7 @@ request/notifications.
              server will notify. Conversely, there is no way to know when the
              user will click on which task.
 
+.. _Python plugin to GPS:
 
 Python plugin to GPS
 --------------------

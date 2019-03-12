@@ -19,10 +19,10 @@ The SPARK tool is a tool that consists of several executables:
 * the provers: Process prover input files and return proof results.
 * spark_report: A tool to generate a report file for the analysis results.
 
-.. _Gnatprove:
+.. _gnatprove:
 
 *********
-Gnatprove
+gnatprove
 *********
 
 The gnatprove executable is the main entry point; it is the executable
@@ -239,3 +239,37 @@ Explanation for all fields:
    package of the project file.
  - proof_switches: the switches for each index of the ``Proof_Switches``
    attribute in the ``Prove`` package.
+
+***************
+IDE Integration
+***************
+
+GNATprove can be called both from the command-line and from within one of the
+two IDEs developed at AdaCore: GPS or GNATbench (a plugin of Eclipse).
+
+A general principle is that as little logic as possible should be put in the
+IDE support, as:
+ - the support may be IDE-specific which entails duplication,
+ - we may drop some IDE and add support for others in the future,
+ - most features should be usable from the command-line, and
+ - it is easier to test features from the command-line.
+
+As an example, the generation of counterexample is attempted for all unproved
+checks, and when successful a corresponding trace is added in the
+:file:`.spark` file which lists the lines of code and values of variables which
+constitute the counterexample in JSON format. The IDE integration consists
+simply in displaying that information when requested by the user.
+
+The IDE integration consists mostly in the following files inside ``gps``
+repository, under ``share/plug-ins``:
+ - file :file:`spark2014.py` defines the GPS integration
+ - file :file:`spark2014/gnatprove.xml` defines the pop-up panels and Build
+   Targets (shared between GPS and GNATbench)
+ - file :file:`spark2014/gnatprove_menus.xml` defines the menus (shared between
+   GPS and GNATbench)
+ - file :file:`spark2014/itp_lib.py` defines the interactive proof support in
+   GPS
+
+In addition to the above XML files, the GNATbench integration consists in code
+mapping the menus to actions inside Eclipse. The GNATbench integration is more
+basic than the GPS one.
