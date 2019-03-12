@@ -30,5 +30,6 @@ Contents:
    gps_integration
    manual_proof
    counterexamples
+   tool_interaction
    gui_ce_json
    miscellaneous
