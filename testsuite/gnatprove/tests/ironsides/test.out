@@ -22,6 +22,8 @@ dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.Res3"
 dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.TC" proved
 dns_network_receive.ads:29:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:31:07: info: initialization of "Failure" proved
+dns_network_receive.ads:32:09: info: data dependencies proved
+dns_network_receive.ads:33:09: info: flow dependencies proved
 dns_network_receive.ads:39:11: info: postcondition proved (CVC4: 3 VC)
 dns_network_receive.ads:39:19: info: initialization of "Failure" proved
 dns_network_receive.ads:40:14: info: initialization of "Number_Bytes" proved
@@ -44,6 +46,8 @@ dns_network_receive.ads:47:07: info: initialization of "Packet.Header.TC" proved
 dns_network_receive.ads:48:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:49:07: info: initialization of "Reply_Address" proved
 dns_network_receive.ads:50:07: info: initialization of "Failure" proved
+dns_network_receive.ads:51:09: info: data dependencies proved
+dns_network_receive.ads:52:09: info: flow dependencies proved
 dns_network_receive.ads:58:11: info: postcondition proved (CVC4: 3 VC)
 dns_network_receive.ads:58:19: info: initialization of "Failure" proved
 dns_network_receive.ads:59:14: info: initialization of "Number_Bytes" proved
@@ -305,40 +309,89 @@ dns_table_pkg.adb:708:46: info: initialization of "Bucket" proved
 dns_table_pkg.adb:711:26: info: initialization of "Success" proved
 dns_table_pkg.ads:56:24: info: range check proved (CVC4: 2 VC)
 dns_table_pkg.ads:61:10: info: initialization of "Success" proved
+dns_table_pkg.ads:62:12: info: data dependencies proved
+dns_table_pkg.ads:63:12: info: flow dependencies proved
 dns_table_pkg.ads:69:10: info: initialization of "Success" proved
+dns_table_pkg.ads:70:12: info: data dependencies proved
+dns_table_pkg.ads:71:12: info: flow dependencies proved
 dns_table_pkg.ads:77:10: info: initialization of "Success" proved
+dns_table_pkg.ads:78:12: info: data dependencies proved
+dns_table_pkg.ads:79:12: info: flow dependencies proved
 dns_table_pkg.ads:85:10: info: initialization of "Success" proved
+dns_table_pkg.ads:86:12: info: data dependencies proved
+dns_table_pkg.ads:87:12: info: flow dependencies proved
 dns_table_pkg.ads:93:10: info: initialization of "Success" proved
+dns_table_pkg.ads:94:12: info: data dependencies proved
+dns_table_pkg.ads:95:12: info: flow dependencies proved
 dns_table_pkg.ads:101:10: info: initialization of "Success" proved
+dns_table_pkg.ads:102:12: info: data dependencies proved
+dns_table_pkg.ads:103:12: info: flow dependencies proved
 dns_table_pkg.ads:109:10: info: initialization of "Success" proved
+dns_table_pkg.ads:110:12: info: data dependencies proved
+dns_table_pkg.ads:111:12: info: flow dependencies proved
 dns_table_pkg.ads:117:10: info: initialization of "Success" proved
+dns_table_pkg.ads:118:12: info: data dependencies proved
+dns_table_pkg.ads:119:12: info: flow dependencies proved
 dns_table_pkg.ads:125:10: info: initialization of "Success" proved
+dns_table_pkg.ads:126:12: info: data dependencies proved
+dns_table_pkg.ads:127:12: info: flow dependencies proved
 dns_table_pkg.ads:133:10: info: initialization of "Success" proved
+dns_table_pkg.ads:134:12: info: data dependencies proved
+dns_table_pkg.ads:135:12: info: flow dependencies proved
 dns_table_pkg.ads:141:10: info: initialization of "Success" proved
+dns_table_pkg.ads:142:12: info: data dependencies proved
+dns_table_pkg.ads:143:12: info: flow dependencies proved
 dns_table_pkg.ads:148:10: medium: "ReturnedRecords" might not be initialized in "QueryARecords"
 dns_table_pkg.ads:149:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:150:12: info: data dependencies proved
+dns_table_pkg.ads:151:12: info: flow dependencies proved
 dns_table_pkg.ads:159:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:160:12: info: data dependencies proved
+dns_table_pkg.ads:161:12: info: flow dependencies proved
 dns_table_pkg.ads:166:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:167:12: info: data dependencies proved
+dns_table_pkg.ads:168:12: info: flow dependencies proved
 dns_table_pkg.ads:173:10: medium: "ReturnedRecords" might not be initialized in "QueryAAAARecords"
 dns_table_pkg.ads:174:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:175:12: info: data dependencies proved
+dns_table_pkg.ads:176:12: info: flow dependencies proved
 dns_table_pkg.ads:183:10: medium: "ReturnedRecords" might not be initialized in "QueryCNameRecords"
 dns_table_pkg.ads:184:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:185:12: info: data dependencies proved
+dns_table_pkg.ads:186:12: info: flow dependencies proved
 dns_table_pkg.ads:193:10: medium: "ReturnedRecords" might not be initialized in "QueryDNSKeyRecords"
 dns_table_pkg.ads:194:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:195:12: info: data dependencies proved
+dns_table_pkg.ads:196:12: info: flow dependencies proved
 dns_table_pkg.ads:203:10: medium: "ReturnedRecords" might not be initialized in "QueryMXRecords"
 dns_table_pkg.ads:204:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:205:12: info: data dependencies proved
+dns_table_pkg.ads:206:12: info: flow dependencies proved
 dns_table_pkg.ads:213:10: medium: "ReturnedRecords" might not be initialized in "QuerySRVRecords"
 dns_table_pkg.ads:214:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:215:12: info: data dependencies proved
+dns_table_pkg.ads:216:12: info: flow dependencies proved
 dns_table_pkg.ads:223:10: medium: "ReturnedRecords" might not be initialized in "QueryNSRecords"
 dns_table_pkg.ads:224:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:225:12: info: data dependencies proved
+dns_table_pkg.ads:226:12: info: flow dependencies proved
 dns_table_pkg.ads:233:10: medium: "ReturnedRecords" might not be initialized in "QueryNSecRecords"
 dns_table_pkg.ads:234:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:235:12: info: data dependencies proved
+dns_table_pkg.ads:236:12: info: flow dependencies proved
 dns_table_pkg.ads:243:10: medium: "ReturnedRecords" might not be initialized in "QueryPTRRecords"
 dns_table_pkg.ads:244:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:245:12: info: data dependencies proved
+dns_table_pkg.ads:246:12: info: flow dependencies proved
 dns_table_pkg.ads:253:10: medium: "ReturnedRecords" might not be initialized in "QueryRRSIGRecords"
 dns_table_pkg.ads:254:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:255:12: info: data dependencies proved
+dns_table_pkg.ads:256:12: info: flow dependencies proved
 dns_table_pkg.ads:263:10: medium: "ReturnedRecords" might not be initialized in "QuerySOARecords"
 dns_table_pkg.ads:264:10: info: initialization of "HowMany" proved
+dns_table_pkg.ads:265:12: info: data dependencies proved
+dns_table_pkg.ads:266:12: info: flow dependencies proved
+dns_types.ads:149:09: info: flow dependencies proved
 dns_types.ads:151:06: info: postcondition proved (CVC4: 1 VC)
 dns_types.ads:151:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
 dns_types.ads:152:37: info: implicit function contract not available for proof ("Byte_Swap_US" might not return)
@@ -963,9 +1016,14 @@ parser_utilities.adb:1316:13: info: initialization of "NumDigitsInByte" proved
 parser_utilities.adb:1317:13: info: initialization of "ByteTotal" proved
 parser_utilities.adb:1319:20: info: initialization of "GrandTotal" proved
 parser_utilities.adb:1323:14: info: initialization of "RetVal" proved
+parser_utilities.ads:42:09: info: flow dependencies proved
+parser_utilities.ads:48:09: info: flow dependencies proved
+parser_utilities.ads:53:09: info: flow dependencies proved
 parser_utilities.ads:59:07: info: initialization of "T" proved
+parser_utilities.ads:60:09: info: flow dependencies proved
 parser_utilities.ads:66:07: info: initialization of "EndIdx" proved
 parser_utilities.ads:67:07: info: initialization of "T" proved
+parser_utilities.ads:68:09: info: flow dependencies proved
 parser_utilities.ads:70:20: info: postcondition proved (CVC4: 6 VC)
 parser_utilities.ads:70:30: info: initialization of "EndIdx" proved
 parser_utilities.ads:73:24: info: initialization of "T" proved
@@ -973,20 +1031,27 @@ parser_utilities.ads:74:32: info: range check proved (CVC4: 2 VC)
 parser_utilities.ads:75:29: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:75:46: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:78:07: info: initialization of "Value" proved
+parser_utilities.ads:83:09: info: flow dependencies proved
 parser_utilities.ads:85:29: info: range check proved (CVC4: 2 VC)
 parser_utilities.ads:86:37: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:86:65: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:89:07: info: initialization of "Value" proved
+parser_utilities.ads:94:09: info: flow dependencies proved
 parser_utilities.ads:96:29: info: range check proved (CVC4: 2 VC)
 parser_utilities.ads:97:37: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:97:64: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:100:07: info: initialization of "Value" proved
+parser_utilities.ads:105:09: info: flow dependencies proved
 parser_utilities.ads:107:29: info: range check proved (CVC4: 2 VC)
 parser_utilities.ads:108:37: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:108:65: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:114:07: info: initialization of "RetVal" proved
+parser_utilities.ads:116:09: info: flow dependencies proved
 parser_utilities.ads:119:07: info: initialization of "TimeVal" proved
+parser_utilities.ads:122:09: info: flow dependencies proved
 parser_utilities.ads:132:07: info: initialization of "AllDone" proved
+parser_utilities.ads:134:09: info: flow dependencies proved
+parser_utilities.ads:142:09: info: flow dependencies proved
 process_dns_request.ads:130:50: medium: range check might fail
 process_dns_request.ads:223:50: info: range check proved (CVC4: 1 VC)
 process_first_line_of_record.adb:102:38: info: initialization of "CurrentIPV4" proved
@@ -1044,6 +1109,8 @@ process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.Signe
 process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.TTLInSeconds" proved
 process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.TypeCovered" proved
 process_first_line_of_record.ads:54:07: info: initialization of "RecordSuccessfullyInserted" proved
+process_first_line_of_record.ads:56:09: info: data dependencies proved
+process_first_line_of_record.ads:57:09: info: flow dependencies proved
 protected_spark_io_05.adb:32:04: low: initialization of "File_System_Standard_Input" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
 protected_spark_io_05.adb:35:04: low: initialization of "File_System_Standard_Output" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
 protected_spark_io_05.ads:50:23: info: range check proved (CVC4: 2 VC)
@@ -1115,6 +1182,7 @@ rr_type.adb:166:44: info: initialization of "LengthOfDomainName" proved
 rr_type.adb:166:44: info: initialization of "WireVersion" proved
 rr_type.adb:167:14: info: initialization of "WireVersion" proved
 rr_type.adb:172:39: info: precondition proved (CVC4: 1 VC)
+rr_type.ads:77:09: info: flow dependencies proved
 rr_type.ads:81:06: info: postcondition proved (CVC4: 1 VC)
 rr_type.ads:83:18: info: range check proved (CVC4: 2 VC)
 rr_type.ads:85:18: info: index check proved (CVC4: 2 VC)
@@ -1125,6 +1193,7 @@ rr_type.ads:96:18: info: index check proved (CVC4: 2 VC)
 rr_type.ads:102:06: info: postcondition proved (CVC4: 2 VC)
 rr_type.ads:109:17: info: range check proved (CVC4: 1 VC)
 rr_type.ads:112:17: info: range check proved (CVC4: 1 VC)
+spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:29:08: medium: initial condition might fail
 spark-text_io.ads:29:42: high: "Standard_Input" is not initialized
 spark-text_io.ads:30:42: high: "Standard_Output" is not initialized
@@ -1135,12 +1204,16 @@ spark-text_io.ads:34:29: info: implicit function contract not available for proo
 spark-text_io.ads:80:04: high: "Standard_Input" is not initialized in "Text_IO"
 spark-text_io.ads:81:04: high: "Standard_Output" is not initialized in "Text_IO"
 spark-text_io.ads:82:04: high: "Standard_Error" is not initialized in "Text_IO"
+spark-text_io.ads:106:11: info: data dependencies proved
+spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:134:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:135:11: info: data dependencies proved
 spark-text_io.ads:139:12: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:139:12: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:139:43: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:139:43: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:140:11: info: data dependencies proved
 spark-text_io.ads:150:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:151:25: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:152:25: info: implicit function contract not available for proof ("Name" might not return)
@@ -1588,9 +1661,12 @@ spark-text_io.ads:699:24: medium: precondition might fail, cannot prove Is_Writa
 spark-text_io.ads:700:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:701:24: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:701:24: medium: precondition might fail, cannot prove Is_Writable (File)
+spark_ada_command_line.ads:63:08: info: flow dependencies proved
 spark_dns_main.adb:27:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+spark_dns_main.adb:28:08: info: data dependencies proved
 spark_dns_main.adb:29:46: info: initialization of "TCP_DNS_Package.Startup_Suspension" proved
 spark_dns_main.adb:30:46: info: initialization of "UDP_DNS_Package.Startup_Suspension" proved
+spark_dns_main.adb:32:08: info: flow dependencies proved
 spark_dns_main.adb:39:20: info: range check proved (CVC4: 2 VC)
 spark_dns_main.adb:43:34: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: unused assignment to "ZoneFile"
@@ -1602,6 +1678,10 @@ task_limit.adb:64:16: info: refined post proved (CVC4: 5 VC)
 task_limit.adb:71:38: info: range check proved (CVC4: 1 VC)
 task_limit.ads:25:23: info: range check proved (CVC4: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved
+task_limit.ads:30:14: info: data dependencies proved
+task_limit.ads:31:14: info: flow dependencies proved
+task_limit.ads:36:14: info: data dependencies proved
+task_limit.ads:37:14: info: flow dependencies proved
 tcp_dns_package.ads:45:23: info: range check proved (CVC4: 2 VC)
 udp_dns_package.ads:47:23: info: range check proved (CVC4: 2 VC)
 zone_file_io.adb:50:07: warning: initialization of "CurrentLine" has no effect
@@ -1849,6 +1929,8 @@ zone_file_io.adb:410:47: info: overflow check proved (CVC4: 1 VC)
 zone_file_io.adb:411:34: info: initialization of "CurrentLine" proved
 zone_file_io.adb:414:26: info: initialization of "LineCount" proved
 zone_file_io.ads:26:07: info: initialization of "Success" proved
+zone_file_io.ads:27:09: info: data dependencies proved
+zone_file_io.ads:28:09: info: flow dependencies proved
 zone_file_parser.adb:59:23: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:61:39: info: initialization of "BegIdx" proved
 zone_file_parser.adb:67:13: info: initialization of "FoundType" proved
@@ -1886,6 +1968,7 @@ zone_file_parser.adb:134:16: info: initialization of "FoundType" proved
 zone_file_parser.adb:137:32: info: precondition proved (CVC4: 2 VC)
 zone_file_parser.adb:139:54: info: initialization of "BegIdx" proved
 zone_file_parser.adb:140:54: info: initialization of "EndIdx" proved
+zone_file_parser.adb:155:11: info: flow dependencies proved
 zone_file_parser.adb:166:27: info: range check proved (CVC4: 1 VC)
 zone_file_parser.adb:167:26: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:169:42: info: initialization of "BegIdx" proved
@@ -2701,6 +2784,7 @@ zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Key" proved
 zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.KeyLength" proved
 zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Protocol" proved
 zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.TTLInSeconds" proved
+zone_file_parser.ads:38:09: info: flow dependencies proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.Algorithm" proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.Class" proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.KeyTag" proved
@@ -2713,26 +2797,40 @@ zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SignatureLength" 
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SignerName" proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.TTLInSeconds" proved
 zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.TypeCovered" proved
+zone_file_parser.ads:45:09: info: flow dependencies proved
+zone_file_parser.ads:52:09: info: flow dependencies proved
+zone_file_parser.ads:60:09: info: flow dependencies proved
 zone_file_parser.ads:64:07: info: initialization of "NewDomainName" proved
+zone_file_parser.ads:68:09: info: flow dependencies proved
 zone_file_parser.ads:72:07: info: initialization of "NewDomainName" proved
 zone_file_parser.ads:73:07: info: initialization of "RRString" proved
+zone_file_parser.ads:77:09: info: flow dependencies proved
 zone_file_parser.ads:82:07: info: initialization of "NumberOfRecordTypes" proved
 zone_file_parser.ads:83:07: info: initialization of "RecordTypes" proved
 zone_file_parser.ads:84:07: info: initialization of "NumberOfBlocks" proved
 zone_file_parser.ads:85:07: info: initialization of "BlockNumbers" proved
 zone_file_parser.ads:86:07: info: initialization of "BlockLengths" proved
 zone_file_parser.ads:87:07: info: initialization of "BitMaps" proved
+zone_file_parser.ads:90:09: info: flow dependencies proved
 zone_file_parser.ads:98:20: info: postcondition proved (CVC4: 2 VC)
 zone_file_parser.ads:98:37: info: initialization of "NumberOfBlocks" proved
 zone_file_parser.ads:101:07: info: initialization of "NewIPV4" proved
+zone_file_parser.ads:105:09: info: flow dependencies proved
 zone_file_parser.ads:109:07: info: initialization of "NewIPV6" proved
+zone_file_parser.ads:113:09: info: flow dependencies proved
 zone_file_parser.ads:117:07: info: initialization of "NewPref" proved
 zone_file_parser.ads:118:07: info: initialization of "NewDomainName" proved
+zone_file_parser.ads:122:09: info: flow dependencies proved
 zone_file_parser.ads:126:07: info: initialization of "NewPref" proved
 zone_file_parser.ads:127:07: info: initialization of "NewWeight" proved
 zone_file_parser.ads:128:07: info: initialization of "NewPort" proved
 zone_file_parser.ads:129:07: info: initialization of "NewDomainName" proved
+zone_file_parser.ads:133:09: info: flow dependencies proved
 zone_file_parser.ads:140:07: info: initialization of "NewNameServer" proved
 zone_file_parser.ads:141:07: info: initialization of "NewEmail" proved
+zone_file_parser.ads:145:09: info: flow dependencies proved
 zone_file_parser.ads:149:07: info: initialization of "NewSerialNumber" proved
+zone_file_parser.ads:153:09: info: flow dependencies proved
 zone_file_parser.ads:157:07: info: initialization of "NewTimeSpec" proved
+zone_file_parser.ads:161:09: info: flow dependencies proved
+zone_file_parser.ads:171:09: info: flow dependencies proved

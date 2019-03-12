@@ -6,27 +6,45 @@ admin.adb:94:33: info: loop invariant preservation proved (CVC4: 1 VC)
 admin.adb:100:36: info: index check proved (CVC4: 2 VC)
 admin.adb:106:14: info: initialization of "TheOp" proved
 admin.adb:171:64: info: range check proved (CVC4: 1 VC)
+admin.ads:43:11: info: data dependencies proved
+admin.ads:56:11: info: data dependencies proved
+admin.ads:68:11: info: data dependencies proved
+admin.ads:80:11: info: data dependencies proved
+admin.ads:91:11: info: data dependencies proved
+admin.ads:104:11: info: data dependencies proved
 admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:116:11: info: data dependencies proved
+admin.ads:117:11: info: flow dependencies proved
 admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
 admin.ads:118:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:118:36: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:135:11: info: data dependencies proved
 admin.ads:137:21: info: postcondition proved (CVC4: 1 VC)
 admin.ads:138:28: info: precondition proved (CVC4: 2 VC)
 admin.ads:151:21: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:151:21: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:153:11: info: data dependencies proved
+admin.ads:154:11: info: flow dependencies proved
 admin.ads:155:22: info: postcondition proved (CVC4: 3 VC)
 admin.ads:155:35: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:155:35: info: initialization of "TheAdmin.RolePresent" proved
 admin.ads:168:22: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:168:22: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:169:11: info: data dependencies proved
 admin.ads:170:21: info: postcondition proved (CVC4: 2 VC)
 admin.ads:170:36: info: initialization of "TheAdmin.CurrentOp" proved
 admin.ads:170:36: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:184:11: info: data dependencies proved
+admin.ads:185:11: info: flow dependencies proved
 admin.ads:188:22: info: postcondition proved (CVC4: 4 VC)
 admin.ads:191:28: info: precondition proved (CVC4: 1 VC)
+admin.ads:203:11: info: data dependencies proved
+admin.ads:204:11: info: flow dependencies proved
 admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
+admin.ads:220:11: info: data dependencies proved
 admin.ads:274:27: info: index check proved (CVC4: 2 VC)
+admintoken-interfac.ads:28:08: info: flow dependencies proved
 admintoken.adb:48:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.adb:48:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
 admintoken.adb:49:42: info: initialization of "IDCert.Contents" constituent of "State" proved
@@ -52,8 +70,10 @@ admintoken.adb:176:37: info: length check proved (CVC4: 4 VC)
 admintoken.adb:176:40: info: length check proved (CVC4: 4 VC)
 admintoken.adb:182:23: info: range check proved (CVC4: 4 VC)
 admintoken.adb:186:17: info: initialization of "Result" proved
+admintoken.adb:199:14: info: data dependencies proved
 admintoken.adb:205:37: info: initialization of "Description" proved
 admintoken.adb:206:37: info: initialization of "IDValid" proved
+admintoken.adb:211:14: info: flow dependencies proved
 admintoken.adb:242:13: info: initialization of "CertFound" proved
 admintoken.adb:245:28: info: initialization of "RawCert" proved
 admintoken.adb:249:16: info: initialization of "ExtractOK" proved
@@ -68,7 +88,9 @@ admintoken.adb:268:51: info: initialization of "TokenIDMatches" proved
 admintoken.adb:269:28: info: precondition proved (CVC4: 1 VC)
 admintoken.adb:270:20: info: initialization of "Verified" proved
 admintoken.adb:272:15: info: precondition proved (CVC4: 1 VC)
+admintoken.adb:289:14: info: data dependencies proved
 admintoken.adb:297:36: info: initialization of "AuthValid" proved
+admintoken.adb:303:14: info: flow dependencies proved
 admintoken.adb:341:13: info: initialization of "CertFound" proved
 admintoken.adb:343:28: info: initialization of "RawCert" proved
 admintoken.adb:347:16: info: initialization of "ExtractOK" proved
@@ -113,20 +135,36 @@ admintoken.adb:502:42: info: initialization of "TokenPresence" constituent of "S
 admintoken.adb:503:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:519:47: info: initialization of "AuthCertContents" proved
 admintoken.adb:523:43: info: initialization of "IDCertContents" proved
+admintoken.ads:41:08: info: flow dependencies proved
+admintoken.ads:51:11: info: data dependencies proved
+admintoken.ads:55:11: info: data dependencies proved
+admintoken.ads:59:11: info: data dependencies proved
+admintoken.ads:72:11: info: data dependencies proved
+admintoken.ads:74:11: info: flow dependencies proved
 admintoken.ads:76:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:76:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:76:26: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:77:26: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:77:26: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:94:11: info: data dependencies proved
+admintoken.ads:101:11: info: flow dependencies proved
 admintoken.ads:111:22: info: postcondition proved (CVC4: 6 VC)
 admintoken.ads:128:07: info: initialization of "Description" proved
 admintoken.ads:129:07: info: initialization of "TokenOK" proved
+admintoken.ads:130:11: info: data dependencies proved
+admintoken.ads:140:11: info: flow dependencies proved
 admintoken.ads:158:22: info: initialization of "TokenOK" proved
 admintoken.ads:158:22: info: postcondition proved (CVC4: 4 VC)
 admintoken.ads:158:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:158:33: info: initialization of "IDCert.Valid" constituent of "State" proved
 admintoken.ads:159:33: info: initialization of "AuthCert.Contents" constituent of "State" proved
 admintoken.ads:159:33: info: initialization of "AuthCert.Valid" constituent of "State" proved
+admintoken.ads:172:11: info: data dependencies proved
+admintoken.ads:184:11: info: data dependencies proved
+admintoken.ads:197:11: info: data dependencies proved
+admintoken.ads:210:11: info: data dependencies proved
+admintoken.ads:225:11: info: data dependencies proved
+admintoken.ads:226:11: info: flow dependencies proved
 admintoken.ads:227:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:227:26: info: initialization of "IDCert.Contents" constituent of "State" proved
 admintoken.ads:227:26: info: initialization of "IDCert.Valid" constituent of "State" proved
@@ -135,8 +173,16 @@ admintoken.ads:228:26: info: initialization of "AuthCert.Valid" constituent of "
 admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
 alarm.adb:45:30: info: refined post proved (CVC4: 2 VC)
+alarm.ads:26:08: info: flow dependencies proved
+alarm.ads:43:11: info: data dependencies proved
+alarm.ads:57:11: info: data dependencies proved
+alarm.ads:60:11: info: flow dependencies proved
 alarm.ads:71:22: info: postcondition proved (CVC4: 2 VC)
+alarmapi.ads:29:28: info: data dependencies proved
+alarmapi.ads:38:30: info: data dependencies proved
 auditlog.adb:85:18: info: range check proved (CVC4: 1 VC)
+auditlog.adb:98:11: info: data dependencies proved
+auditlog.adb:100:11: info: flow dependencies proved
 auditlog.adb:127:35: info: range check proved (CVC4: 1 VC)
 auditlog.adb:127:47: info: cannot unroll loop (too many loop iterations)
 auditlog.adb:128:40: info: index check proved (CVC4: 2 VC)
@@ -150,6 +196,8 @@ auditlog.adb:134:46: info: index check proved (CVC4: 2 VC)
 auditlog.adb:134:46: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:138:14: info: initialization of "LocalDesc" proved
 auditlog.adb:154:07: info: initialization of "Description" proved
+auditlog.adb:155:11: info: data dependencies proved
+auditlog.adb:156:11: info: flow dependencies proved
 auditlog.adb:179:13: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:180:24: info: range check proved (CVC4: 1 VC)
 auditlog.adb:180:36: info: range check proved (CVC4: 1 VC)
@@ -158,6 +206,7 @@ auditlog.adb:182:13: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:184:16: info: range check proved (CVC4: 1 VC)
 auditlog.adb:184:27: info: range check proved (CVC4: 1 VC)
 auditlog.adb:184:36: info: range check proved (CVC4: 1 VC)
+auditlog.adb:185:14: info: data dependencies proved
 auditlog.adb:198:54: info: initialization of "OK" proved
 auditlog.adb:200:13: info: initialization of "OK" proved
 auditlog.adb:207:16: info: initialization of "TimeCount" proved
@@ -166,6 +215,9 @@ auditlog.adb:229:54: info: initialization of "OK" proved
 auditlog.adb:233:22: info: initialization of "FirstTime" proved
 auditlog.adb:233:22: info: initialization of "LastTime" proved
 auditlog.adb:233:22: info: initialization of "TimeOK" proved
+auditlog.adb:252:11: info: data dependencies proved
+auditlog.adb:253:11: info: flow dependencies proved
+auditlog.adb:275:14: info: data dependencies proved
 auditlog.adb:290:23: info: length check proved (CVC4: 4 VC)
 auditlog.adb:290:23: info: range check proved (CVC4: 4 VC)
 auditlog.adb:290:35: info: initialization of "Offset" proved
@@ -190,17 +242,22 @@ auditlog.adb:326:16: info: initialization of "TimeCount" proved
 auditlog.adb:336:53: info: initialization of "OK" proved
 auditlog.adb:340:22: info: initialization of "LastTime" proved
 auditlog.adb:340:22: info: initialization of "TimeOK" proved
+auditlog.adb:357:11: info: flow dependencies proved
 auditlog.adb:365:22: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:365:45: info: predicate check proved (CVC4: 1 VC)
 auditlog.adb:365:45: info: range check proved (CVC4: 1 VC)
 auditlog.adb:367:32: info: initialization of "Archive" proved
 auditlog.adb:369:30: info: initialization of "Archive" proved
+auditlog.adb:386:11: info: data dependencies proved
+auditlog.adb:389:11: info: flow dependencies proved
 auditlog.adb:394:22: info: postcondition proved (CVC4: 2 VC)
 auditlog.adb:403:32: info: initialization of "TheFile" proved
 auditlog.adb:405:52: info: initialization of "OK" proved
 auditlog.adb:406:30: info: initialization of "TheFile" proved
 auditlog.adb:408:52: info: initialization of "OK" proved
 auditlog.adb:410:26: info: initialization of "TheFile" proved
+auditlog.adb:433:11: info: data dependencies proved
+auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:463:10: info: range check proved (CVC4: 4 VC)
 auditlog.adb:463:68: info: initialization of "ElementText" proved
 auditlog.adb:463:68: info: length check proved (CVC4: 4 VC)
@@ -214,6 +271,8 @@ auditlog.adb:485:52: info: initialization of "Now.Month" proved
 auditlog.adb:485:52: info: initialization of "Now.Year" proved
 auditlog.adb:511:35: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:542:14: info: initialization of "OK" proved
+auditlog.adb:564:11: info: data dependencies proved
+auditlog.adb:568:11: info: flow dependencies proved
 auditlog.adb:585:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:585:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:586:42: info: overflow check proved (CVC4: 1 VC)
@@ -221,10 +280,14 @@ auditlog.adb:587:22: info: postcondition proved (CVC4: 8 VC)
 auditlog.adb:588:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:588:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:589:42: info: overflow check proved (CVC4: 1 VC)
+auditlog.adb:620:14: info: data dependencies proved
+auditlog.adb:623:14: info: flow dependencies proved
 auditlog.adb:633:25: info: postcondition proved (CVC4: 4 VC)
 auditlog.adb:643:28: info: initialization of "TheFile" proved
 auditlog.adb:648:52: info: initialization of "TheFile" proved
 auditlog.adb:650:127: info: range check proved (CVC4: 1 VC)
+auditlog.adb:669:14: info: data dependencies proved
+auditlog.adb:673:14: info: flow dependencies proved
 auditlog.adb:686:25: info: postcondition proved (CVC4: 3 VC)
 auditlog.adb:707:10: info: analyzing call to "SetCurrentFileToNextFreeFile" in context
 auditlog.adb:707:10: info: in inlined body at line 695
@@ -236,7 +299,9 @@ auditlog.adb:735:10: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:744:10: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:752:70: info: range check proved (CVC4: 1 VC)
 auditlog.adb:768:07: info: initialization of "Description" proved
+auditlog.adb:769:11: info: data dependencies proved
 auditlog.adb:769:35: info: initialization of "AuditAlarm" constituent of "State" proved
+auditlog.adb:773:11: info: flow dependencies proved
 auditlog.adb:784:73: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:785:22: info: postcondition proved (CVC4: 4 VC)
 auditlog.adb:790:73: info: overflow check proved (CVC4: 1 VC)
@@ -248,6 +313,8 @@ auditlog.adb:804:22: info: initialization of "Head" proved
 auditlog.adb:807:51: info: initialization of "Head" proved
 auditlog.adb:811:76: info: range check proved (CVC4: 1 VC)
 auditlog.adb:813:70: info: range check proved (CVC4: 1 VC)
+auditlog.adb:838:11: info: data dependencies proved
+auditlog.adb:843:11: info: flow dependencies proved
 auditlog.adb:858:69: info: range check proved (CVC4: 1 VC)
 auditlog.adb:858:74: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:859:39: info: overflow check proved (CVC4: 1 VC)
@@ -278,12 +345,16 @@ auditlog.adb:920:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:921:32: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
 auditlog.adb:921:60: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
 auditlog.adb:941:32: info: initialization of "LogFileEntries" proved
+auditlog.adb:942:13: info: data dependencies proved
 auditlog.adb:942:36: info: initialization of "FileAges" proved
 auditlog.adb:943:36: info: initialization of "LogFilesStatus" constituent of "State" proved
+auditlog.adb:946:13: info: flow dependencies proved
+auditlog.adb:968:16: info: data dependencies proved
 auditlog.adb:969:39: info: initialization of "FileH" proved
 auditlog.adb:970:39: info: initialization of "FirstTime" proved
 auditlog.adb:971:39: info: initialization of "NumberEntries" proved
 auditlog.adb:972:39: info: initialization of "Status" proved
+auditlog.adb:974:16: info: flow dependencies proved
 auditlog.adb:990:37: info: predicate check proved (CVC4: 1 VC)
 auditlog.adb:990:37: info: range check proved (CVC4: 1 VC)
 auditlog.adb:991:37: info: initialization of "FileH" proved
@@ -445,11 +516,24 @@ auditlog.adb:1428:10: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:1436:07: info: invariant check proved (CVC4: 1 VC)
 auditlog.adb:1436:07: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:1459:30: info: unrolling loop
+auditlog.ads:27:08: info: flow dependencies proved
 auditlog.ads:47:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:48:11: info: data dependencies proved
+auditlog.ads:51:11: info: flow dependencies proved
 auditlog.ads:67:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:71:11: info: data dependencies proved
+auditlog.ads:75:11: info: flow dependencies proved
 auditlog.ads:96:14: info: invariant check proved (CVC4: 1 VC)
 auditlog.ads:97:26: info: initialization of "Archive" proved
+auditlog.ads:98:11: info: data dependencies proved
+auditlog.ads:102:11: info: flow dependencies proved
 auditlog.ads:121:14: info: invariant check proved (CVC4: 1 VC)
+auditlog.ads:122:11: info: data dependencies proved
+auditlog.ads:126:11: info: flow dependencies proved
+auditlog.ads:143:11: info: data dependencies proved
+auditlog.ads:144:11: info: flow dependencies proved
+auditlog.ads:156:11: info: data dependencies proved
+auditlog.ads:168:11: info: data dependencies proved
 auditlog.ads:277:46: info: range check proved (CVC4: 1 VC)
 auditlog.ads:277:51: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
@@ -465,6 +549,7 @@ bio.adb:128:33: info: initialization of "Result" proved, in call inlined at bio.
 bio.adb:129:25: info: analyzing call to "ValueOf" in context
 bio.adb:134:14: info: initialization of "Result" proved
 bio.adb:134:14: info: initialization of "Result" proved, in call inlined at bio.adb:190
+bio.adb:151:11: info: data dependencies proved
 bio.adb:172:17: info: postcondition proved (CVC4: 1 VC)
 bio.adb:174:38: info: range check proved (CVC4: 1 VC)
 bio.adb:175:12: info: range check proved (CVC4: 1 VC)
@@ -488,8 +573,14 @@ bio.adb:271:35: info: predicate check proved (CVC4: 1 VC)
 bio.adb:271:35: info: range check proved (CVC4: 1 VC)
 bio.adb:272:35: info: initialization of "NumericReturn" proved
 bio.ads:40:20: info: initialization of "FingerPresent" proved
+bio.ads:41:11: info: data dependencies proved
+bio.ads:42:11: info: flow dependencies proved
 bio.ads:56:22: info: initialization of "MatchResult" proved
 bio.ads:57:22: info: initialization of "AchievedFAR" proved
+bio.ads:58:11: info: data dependencies proved
+bio.ads:63:11: info: flow dependencies proved
+bio.ads:86:11: info: data dependencies proved
+bio.ads:87:11: info: flow dependencies proved
 cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-auth.adb:45:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -519,6 +610,8 @@ cert-attr-auth.adb:97:32: info: initialization of "Raw.Hour" proved
 cert-attr-auth.adb:97:32: info: initialization of "Raw.Minute" proved
 cert-attr-auth.adb:97:32: info: initialization of "Raw.Month" proved
 cert-attr-auth.adb:97:32: info: initialization of "Raw.Year" proved
+cert-attr-auth.adb:98:14: info: data dependencies proved
+cert-attr-auth.adb:99:14: info: flow dependencies proved
 cert-attr-auth.adb:114:54: info: initialization of "TheYear" proved
 cert-attr-auth.adb:115:54: info: initialization of "TheMonth" proved
 cert-attr-auth.adb:116:54: info: initialization of "TheDay" proved
@@ -546,6 +639,8 @@ cert-attr-auth.adb:136:48: info: initialization of "LocalContents.Privilege.Role
 cert-attr-auth.adb:136:48: info: initialization of "LocalContents.SerialNumber" proved
 cert-attr-auth.adb:136:48: info: initialization of "LocalContents.SigAlgId" proved
 cert-attr-auth.adb:182:21: info: initialization of "IsVerified" proved
+cert-attr-auth.ads:57:11: info: data dependencies proved
+cert-attr-auth.ads:69:11: info: data dependencies proved
 cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -566,7 +661,11 @@ cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.Month" pro
 cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-auth.ads:81:23: info: initialization of "Contents.Role" proved
 cert-attr-auth.ads:82:23: info: initialization of "Success" proved
+cert-attr-auth.ads:83:11: info: data dependencies proved
+cert-attr-auth.ads:84:11: info: flow dependencies proved
 cert-attr-auth.ads:97:25: info: initialization of "RawCert" proved
+cert-attr-auth.ads:98:11: info: data dependencies proved
+cert-attr-auth.ads:99:11: info: flow dependencies proved
 cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -586,7 +685,10 @@ cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.MilliSec"
 cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-auth.ads:118:07: info: initialization of "Contents.Role" proved
+cert-attr-auth.ads:119:11: info: flow dependencies proved
 cert-attr-auth.ads:139:20: info: initialization of "IsVerified" proved
+cert-attr-auth.ads:140:11: info: data dependencies proved
+cert-attr-auth.ads:146:11: info: flow dependencies proved
 cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -606,6 +708,8 @@ cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.MilliSec"
 cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-auth.ads:168:21: info: initialization of "Contents.Role" proved
+cert-attr-auth.ads:169:11: info: data dependencies proved
+cert-attr-auth.ads:170:11: info: flow dependencies proved
 cert-attr-auth.ads:171:22: info: postcondition proved (CVC4: 1 VC)
 cert-attr-auth.ads:171:30: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-auth.ads:171:30: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
@@ -674,6 +778,8 @@ cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.Length" pr
 cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.Pad" proved
 cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.RequiredMaxFAR" proved
 cert-attr-ianda.ads:67:23: info: initialization of "Success" proved
+cert-attr-ianda.ads:68:11: info: data dependencies proved
+cert-attr-ianda.ads:69:11: info: flow dependencies proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -695,6 +801,8 @@ cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.ID" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Length" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Pad" proved
 cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.RequiredMaxFAR" proved
+cert-attr-ianda.ads:81:11: info: data dependencies proved
+cert-attr-ianda.ads:82:11: info: flow dependencies proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.ID" proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.Name" proved
 cert-attr-priv.adb:60:35: info: initialization of "LocalContents.Issuer.NameLength" proved
@@ -739,6 +847,8 @@ cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.Month" pro
 cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:76:23: info: initialization of "Contents.Role" proved
 cert-attr-priv.ads:77:23: info: initialization of "Success" proved
+cert-attr-priv.ads:78:11: info: data dependencies proved
+cert-attr-priv.ads:79:11: info: flow dependencies proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
@@ -758,6 +868,8 @@ cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" 
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
 cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
+cert-attr-priv.ads:92:11: info: data dependencies proved
+cert-attr-priv.ads:93:11: info: flow dependencies proved
 cert-attr.adb:38:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:39:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:40:09: info: range check proved (CVC4: 1 VC)
@@ -816,6 +928,8 @@ cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.AlgorithmI
 cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
 cert-id.ads:78:23: info: initialization of "Success" proved
+cert-id.ads:79:11: info: data dependencies proved
+cert-id.ads:80:11: info: flow dependencies proved
 cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.ID" proved
 cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.Name" proved
 cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.NameLength" proved
@@ -835,6 +949,8 @@ cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
 cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
+cert-id.ads:93:11: info: data dependencies proved
+cert-id.ads:94:11: info: flow dependencies proved
 cert.adb:63:09: info: range check proved (CVC4: 1 VC)
 cert.adb:64:09: info: range check proved (CVC4: 1 VC)
 cert.adb:65:09: info: range check proved (CVC4: 1 VC)
@@ -851,12 +967,21 @@ cert.adb:116:14: info: initialization of "LocalRawData.RawData" proved
 cert.adb:136:14: info: initialization of "LocalSig.SigData" proved
 cert.adb:136:14: info: initialization of "LocalSig.SigLength" proved
 cert.adb:170:11: info: initialization of "IsKnown" proved
+cert.ads:103:11: info: data dependencies proved
+cert.ads:116:11: info: data dependencies proved
 cert.ads:141:26: info: initialization of "IsKnown" proved
+cert.ads:142:11: info: data dependencies proved
+cert.ads:147:11: info: flow dependencies proved
 cert.ads:169:20: info: initialization of "IsVerified" proved
+cert.ads:170:11: info: data dependencies proved
+cert.ads:175:11: info: flow dependencies proved
 certificatestore.adb:46:04: info: initialization of "StoreFile" constituent of "FileState" proved
 certificatestore.adb:190:35: info: initialization of "Success" proved
+certificatestore.adb:191:11: info: data dependencies proved
+certificatestore.adb:192:11: info: flow dependencies proved
 certificatestore.adb:213:32: info: initialization of "Text" proved
 certificatestore.adb:214:32: info: initialization of "Length" proved
+certificatestore.adb:215:14: info: flow dependencies proved
 certificatestore.adb:222:23: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:222:31: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:223:10: info: range check proved (CVC4: 4 VC)
@@ -890,6 +1015,13 @@ certificatestore.adb:355:41: info: initialization of "Overflow" constituent of "
 certificatestore.adb:360:15: info: initialization of "Exists" proved
 certificatestore.adb:360:26: info: initialization of "Written" proved
 certificatestore.adb:361:18: info: precondition proved (CVC4: 1 VC)
+certificatestore.ads:29:08: info: flow dependencies proved
+certificatestore.ads:45:11: info: data dependencies proved
+certificatestore.ads:51:11: info: flow dependencies proved
+certificatestore.ads:72:11: info: data dependencies proved
+certificatestore.ads:78:11: info: flow dependencies proved
+certificatestore.ads:96:11: info: data dependencies proved
+certificatestore.ads:109:11: info: data dependencies proved
 certprocessing.adb:43:34: info: initialization of "LocalData.SerialNumber" proved
 certprocessing.adb:44:34: info: initialization of "LocalData.SigAlgId" proved
 certprocessing.adb:45:34: info: initialization of "LocalData.Issuer.ID" proved
@@ -1020,6 +1152,8 @@ certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Mi
 certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Month" proved
 certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Year" proved
 certprocessing.ads:115:07: info: initialization of "ExtractSuccess" proved
+certprocessing.ads:116:11: info: data dependencies proved
+certprocessing.ads:117:11: info: flow dependencies proved
 certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Day" proved
 certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Hour" proved
 certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Minute" proved
@@ -1042,6 +1176,8 @@ certprocessing.ads:132:07: info: initialization of "PrivCert.Privilege.Role" pro
 certprocessing.ads:132:07: info: initialization of "PrivCert.SerialNumber" proved
 certprocessing.ads:132:07: info: initialization of "PrivCert.SigAlgId" proved
 certprocessing.ads:133:07: info: initialization of "ExtractSuccess" proved
+certprocessing.ads:134:11: info: data dependencies proved
+certprocessing.ads:135:11: info: flow dependencies proved
 certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Day" proved
 certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Hour" proved
 certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Minute" proved
@@ -1066,6 +1202,8 @@ certprocessing.ads:150:07: info: initialization of "IACert.Template.Length" prov
 certprocessing.ads:150:07: info: initialization of "IACert.Template.Pad" proved
 certprocessing.ads:150:07: info: initialization of "IACert.Template.RequiredMaxFAR" proved
 certprocessing.ads:151:07: info: initialization of "ExtractSuccess" proved
+certprocessing.ads:152:11: info: data dependencies proved
+certprocessing.ads:153:11: info: flow dependencies proved
 certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Day" proved
 certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Hour" proved
 certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Minute" proved
@@ -1088,15 +1226,26 @@ certprocessing.ads:168:07: info: initialization of "AuthCert.Privilege.Role" pro
 certprocessing.ads:168:07: info: initialization of "AuthCert.SerialNumber" proved
 certprocessing.ads:168:07: info: initialization of "AuthCert.SigAlgId" proved
 certprocessing.ads:169:07: info: initialization of "ExtractSuccess" proved
+certprocessing.ads:170:11: info: data dependencies proved
+certprocessing.ads:171:11: info: flow dependencies proved
 certprocessing.ads:185:20: info: initialization of "RawData.DataLength" proved
 certprocessing.ads:185:20: info: initialization of "RawData.RawData" proved
 certprocessing.ads:186:20: info: initialization of "ObtainSuccess" proved
+certprocessing.ads:188:11: info: data dependencies proved
+certprocessing.ads:189:11: info: flow dependencies proved
 certprocessing.ads:203:20: info: initialization of "SignatureData.SigData" proved
 certprocessing.ads:203:20: info: initialization of "SignatureData.SigLength" proved
 certprocessing.ads:204:20: info: initialization of "ObtainSuccess" proved
+certprocessing.ads:206:11: info: data dependencies proved
+certprocessing.ads:207:11: info: flow dependencies proved
 certprocessing.ads:223:07: info: initialization of "UnsignedRawAuthCert" proved
+certprocessing.ads:224:11: info: data dependencies proved
+certprocessing.ads:225:11: info: flow dependencies proved
 certprocessing.ads:240:07: info: initialization of "SignedRawAuthCert" proved
+certprocessing.ads:241:11: info: data dependencies proved
+certprocessing.ads:242:11: info: flow dependencies proved
 certtypes.ads:63:21: info: range check proved (CVC4: 1 VC)
+clock.adb:49:11: info: flow dependencies proved
 clock.adb:59:11: info: range check proved (CVC4: 2 VC)
 clock.adb:59:54: info: cannot unroll loop (too many loop iterations)
 clock.adb:60:12: info: index check proved (CVC4: 2 VC)
@@ -1164,16 +1313,22 @@ clock.adb:297:50: info: division check proved (CVC4: 1 VC)
 clock.adb:298:32: info: division check proved (CVC4: 1 VC)
 clock.adb:302:14: info: initialization of "LocalText" proved
 clock.ads:55:17: info: range check proved (CVC4: 1 VC)
+clock.ads:103:11: info: data dependencies proved
+clock.ads:105:11: info: flow dependencies proved
+clock.ads:117:11: info: data dependencies proved
+clock.ads:130:11: info: data dependencies proved
 clock.ads:192:07: info: initialization of "TheTime.Day" proved
 clock.ads:192:07: info: initialization of "TheTime.MilliSec" proved
 clock.ads:192:07: info: initialization of "TheTime.Month" proved
 clock.ads:192:07: info: initialization of "TheTime.Year" proved
 clock.ads:193:07: info: initialization of "Success" proved
+clock.ads:194:11: info: flow dependencies proved
 clock.ads:212:07: info: initialization of "Year" proved
 clock.ads:213:07: info: initialization of "Month" proved
 clock.ads:214:07: info: initialization of "Day" proved
 clock.ads:215:07: info: initialization of "Hour" proved
 clock.ads:216:07: info: initialization of "Min" proved
+clock.ads:217:11: info: flow dependencies proved
 commontypes.ads:61:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:63:12: info: range check proved (CVC4: 1 VC)
 commontypes.ads:65:12: info: range check proved (CVC4: 1 VC)
@@ -1184,21 +1339,27 @@ commontypes.ads:75:19: info: range check proved (CVC4: 1 VC)
 commontypes.ads:81:15: info: range check proved (CVC4: 1 VC)
 configdata.adb:165:04: info: initialization of "ConfigFile" constituent of "FileState" proved
 configdata.adb:207:30: info: initialization of "Value" proved
+configdata.adb:208:14: info: data dependencies proved
 configdata.adb:209:36: info: initialization of "Success" proved
+configdata.adb:210:14: info: flow dependencies proved
 configdata.adb:229:13: info: initialization of "Success" proved
 configdata.adb:230:13: info: initialization of "RawDuration" proved
 configdata.adb:233:32: info: initialization of "RawDuration" proved
 configdata.adb:233:44: info: overflow check proved (CVC4: 1 VC)
 configdata.adb:233:44: info: range check proved (CVC4: 1 VC)
 configdata.adb:256:31: info: initialization of "Value" proved
+configdata.adb:257:14: info: data dependencies proved
 configdata.adb:258:36: info: initialization of "Success" proved
+configdata.adb:259:14: info: flow dependencies proved
 configdata.adb:267:13: info: initialization of "Success" proved
 configdata.adb:268:13: info: initialization of "RawSize" proved
 configdata.adb:271:43: info: initialization of "RawSize" proved
 configdata.adb:271:51: info: overflow check proved (CVC4: 1 VC)
 configdata.adb:271:51: info: range check proved (CVC4: 1 VC)
 configdata.adb:293:28: info: initialization of "Value" proved
+configdata.adb:294:14: info: data dependencies proved
 configdata.adb:295:36: info: initialization of "Success" proved
+configdata.adb:296:14: info: flow dependencies proved
 configdata.adb:306:36: info: unrolling loop
 configdata.adb:308:16: info: initialization of "Stop" proved
 configdata.adb:313:20: info: range check proved (CVC4: 12 VC)
@@ -1213,7 +1374,9 @@ configdata.adb:317:63: info: index check proved (CVC4: 12 VC)
 configdata.adb:323:16: info: initialization of "Matched" proved
 configdata.adb:329:21: info: initialization of "Matched" proved
 configdata.adb:342:34: info: initialization of "TheDuration" proved
+configdata.adb:343:14: info: data dependencies proved
 configdata.adb:344:36: info: initialization of "Success" proved
+configdata.adb:345:14: info: flow dependencies proved
 configdata.adb:355:13: info: initialization of "Success" proved
 configdata.adb:356:12: info: initialization of "RawHours" proved
 configdata.adb:361:16: info: initialization of "Success" proved
@@ -1228,45 +1391,65 @@ configdata.adb:366:50: info: overflow check proved (CVC4: 1 VC)
 configdata.adb:366:68: info: initialization of "RawMinutes" proved
 configdata.adb:366:68: info: range check proved (CVC4: 1 VC)
 configdata.adb:386:26: info: initialization of "Value" proved
+configdata.adb:387:14: info: data dependencies proved
 configdata.adb:388:36: info: initialization of "Success" proved
+configdata.adb:389:14: info: flow dependencies proved
 configdata.adb:397:13: info: initialization of "Success" proved
 configdata.adb:399:13: info: initialization of "RawFar" proved
 configdata.adb:400:38: info: initialization of "RawFar" proved
 configdata.adb:400:38: info: range check proved (CVC4: 1 VC)
+configdata.adb:423:14: info: data dependencies proved
 configdata.adb:424:37: info: initialization of "Success" proved
 configdata.adb:425:37: info: initialization of "TheAlarmSilentDuration" proved
+configdata.adb:426:14: info: flow dependencies proved
 configdata.adb:435:13: info: initialization of "Stop" proved
 configdata.adb:436:12: info: initialization of "TheTitle" proved
+configdata.adb:455:14: info: data dependencies proved
 configdata.adb:456:37: info: initialization of "Success" proved
 configdata.adb:457:37: info: initialization of "TheLatchUnlockDuration" proved
+configdata.adb:458:14: info: flow dependencies proved
 configdata.adb:467:13: info: initialization of "Stop" proved
 configdata.adb:468:12: info: initialization of "TheTitle" proved
+configdata.adb:487:14: info: data dependencies proved
 configdata.adb:488:37: info: initialization of "Success" proved
 configdata.adb:489:37: info: initialization of "TheFingerWaitDuration" proved
+configdata.adb:490:14: info: flow dependencies proved
 configdata.adb:499:13: info: initialization of "Stop" proved
 configdata.adb:500:12: info: initialization of "TheTitle" proved
+configdata.adb:518:14: info: data dependencies proved
 configdata.adb:519:37: info: initialization of "Success" proved
 configdata.adb:520:37: info: initialization of "TheTokenRemovalDuration" proved
+configdata.adb:521:14: info: flow dependencies proved
 configdata.adb:531:13: info: initialization of "Stop" proved
 configdata.adb:532:12: info: initialization of "TheTitle" proved
+configdata.adb:551:14: info: data dependencies proved
 configdata.adb:552:37: info: initialization of "Success" proved
 configdata.adb:553:37: info: initialization of "TheEnclaveClearance" proved
+configdata.adb:554:14: info: flow dependencies proved
 configdata.adb:563:13: info: initialization of "Stop" proved
 configdata.adb:564:12: info: initialization of "TheTitle" proved
+configdata.adb:583:14: info: data dependencies proved
 configdata.adb:584:37: info: initialization of "Success" proved
 configdata.adb:585:37: info: initialization of "TheWorkingHoursStart" proved
+configdata.adb:586:14: info: flow dependencies proved
 configdata.adb:595:13: info: initialization of "Stop" proved
 configdata.adb:596:12: info: initialization of "TheTitle" proved
+configdata.adb:615:14: info: data dependencies proved
 configdata.adb:616:37: info: initialization of "Success" proved
 configdata.adb:617:37: info: initialization of "TheWorkingHoursEnd" proved
+configdata.adb:618:14: info: flow dependencies proved
 configdata.adb:627:13: info: initialization of "Stop" proved
 configdata.adb:628:12: info: initialization of "TheTitle" proved
+configdata.adb:647:14: info: data dependencies proved
 configdata.adb:648:37: info: initialization of "Success" proved
 configdata.adb:649:37: info: initialization of "TheMaxAuthDuration" proved
+configdata.adb:650:14: info: flow dependencies proved
 configdata.adb:659:13: info: initialization of "Stop" proved
 configdata.adb:660:12: info: initialization of "TheTitle" proved
+configdata.adb:679:14: info: data dependencies proved
 configdata.adb:680:37: info: initialization of "Success" proved
 configdata.adb:681:37: info: initialization of "TheAccessPolicy" proved
+configdata.adb:682:14: info: flow dependencies proved
 configdata.adb:693:13: info: initialization of "Stop" proved
 configdata.adb:694:12: info: initialization of "TheTitle" proved
 configdata.adb:698:37: info: unrolling loop
@@ -1282,20 +1465,28 @@ configdata.adb:707:24: info: initialization of "RawAccessPolicy" proved
 configdata.adb:707:40: info: index check proved (CVC4: 4 VC)
 configdata.adb:714:19: info: initialization of "Matched" proved
 configdata.adb:720:24: info: initialization of "Matched" proved
+configdata.adb:738:14: info: data dependencies proved
 configdata.adb:739:37: info: initialization of "Success" proved
 configdata.adb:740:37: info: initialization of "TheMinEntryClass" proved
+configdata.adb:741:14: info: flow dependencies proved
 configdata.adb:751:13: info: initialization of "Stop" proved
 configdata.adb:752:12: info: initialization of "TheTitle" proved
+configdata.adb:771:14: info: data dependencies proved
 configdata.adb:772:37: info: initialization of "Success" proved
 configdata.adb:773:37: info: initialization of "TheMinPreservedLogSize" proved
+configdata.adb:774:14: info: flow dependencies proved
 configdata.adb:783:13: info: initialization of "Stop" proved
 configdata.adb:784:12: info: initialization of "TheTitle" proved
+configdata.adb:803:14: info: data dependencies proved
 configdata.adb:804:37: info: initialization of "Success" proved
 configdata.adb:805:37: info: initialization of "TheAlarmThresholdSize" proved
+configdata.adb:806:14: info: flow dependencies proved
 configdata.adb:816:13: info: initialization of "Stop" proved
 configdata.adb:817:12: info: initialization of "TheTitle" proved
+configdata.adb:836:14: info: data dependencies proved
 configdata.adb:837:37: info: initialization of "Success" proved
 configdata.adb:838:37: info: initialization of "TheSystemMaxFar" proved
+configdata.adb:839:14: info: flow dependencies proved
 configdata.adb:849:13: info: initialization of "Stop" proved
 configdata.adb:850:12: info: initialization of "TheTitle" proved
 configdata.adb:866:10: info: initialization of "Success" proved
@@ -1406,6 +1597,7 @@ configdata.adb:1200:41: info: initialization of "MinEntryClass" constituent of "
 configdata.adb:1201:41: info: initialization of "MinPreservedLogSize" constituent of "State" proved
 configdata.adb:1202:41: info: initialization of "AlarmThresholdSize" constituent of "State" proved
 configdata.adb:1203:41: info: initialization of "SystemMaxFar" constituent of "State" proved
+configdata.adb:1246:14: info: data dependencies proved
 configdata.adb:1246:37: info: initialization of "LatchUnlockDuration" constituent of "State" proved
 configdata.adb:1247:37: info: initialization of "AlarmSilentDuration" constituent of "State" proved
 configdata.adb:1248:37: info: initialization of "FingerWaitDuration" constituent of "State" proved
@@ -1419,6 +1611,7 @@ configdata.adb:1255:37: info: initialization of "MinEntryClass" constituent of "
 configdata.adb:1256:37: info: initialization of "MinPreservedLogSize" constituent of "State" proved
 configdata.adb:1257:37: info: initialization of "AlarmThresholdSize" constituent of "State" proved
 configdata.adb:1258:37: info: initialization of "SystemMaxFar" constituent of "State" proved
+configdata.adb:1259:14: info: flow dependencies proved
 configdata.adb:1296:32: info: predicate check proved (CVC4: 1 VC)
 configdata.adb:1296:32: info: range check proved (CVC4: 1 VC)
 configdata.adb:1301:10: info: initialization of "OK" proved
@@ -1466,9 +1659,16 @@ configdata.adb:1581:37: info: initialization of "DayStart.Year" proved
 configdata.adb:1595:14: info: initialization of "Result" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 1 VC)
+configdata.ads:30:08: info: flow dependencies proved
 configdata.ads:40:17: info: range check proved (CVC4: 1 VC)
 configdata.ads:49:21: info: range check proved (CVC4: 1 VC)
+configdata.ads:66:11: info: data dependencies proved
+configdata.ads:68:11: info: flow dependencies proved
+configdata.ads:96:11: info: data dependencies proved
+configdata.ads:97:11: info: flow dependencies proved
 configdata.ads:122:07: info: initialization of "Success" proved
+configdata.ads:137:11: info: data dependencies proved
+configdata.ads:138:11: info: flow dependencies proved
 configdata.ads:164:07: info: initialization of "TheLatchUnlockDuration" proved
 configdata.ads:165:07: info: initialization of "TheAlarmSilentDuration" proved
 configdata.ads:166:07: info: initialization of "TheFingerWaitDuration" proved
@@ -1482,6 +1682,8 @@ configdata.ads:173:07: info: initialization of "TheMinEntryClass" proved
 configdata.ads:174:07: info: initialization of "TheMinPreservedLogSize" proved
 configdata.ads:175:07: info: initialization of "TheAlarmThresholdSize" proved
 configdata.ads:176:07: info: initialization of "TheSystemMaxFar" proved
+configdata.ads:178:11: info: data dependencies proved
+configdata.ads:179:11: info: flow dependencies proved
 configdata.ads:205:07: info: initialization of "Success" proved
 configdata.ads:206:07: info: initialization of "TheLatchUnlockDuration" proved
 configdata.ads:207:07: info: initialization of "TheAlarmSilentDuration" proved
@@ -1496,6 +1698,9 @@ configdata.ads:215:07: info: initialization of "TheMinEntryClass" proved
 configdata.ads:216:07: info: initialization of "TheMinPreservedLogSize" proved
 configdata.ads:217:07: info: initialization of "TheAlarmThresholdSize" proved
 configdata.ads:218:07: info: initialization of "TheSystemMaxFar" proved
+configdata.ads:220:11: info: data dependencies proved
+configdata.ads:221:11: info: flow dependencies proved
+configdata.ads:247:11: info: data dependencies proved
 configdata.ads:260:08: info: initialization of "NotBefore.Day" proved
 configdata.ads:260:08: info: initialization of "NotBefore.MilliSec" proved
 configdata.ads:260:08: info: initialization of "NotBefore.Month" proved
@@ -1504,6 +1709,17 @@ configdata.ads:261:08: info: initialization of "NotAfter.Day" proved
 configdata.ads:261:08: info: initialization of "NotAfter.MilliSec" proved
 configdata.ads:261:08: info: initialization of "NotAfter.Month" proved
 configdata.ads:261:08: info: initialization of "NotAfter.Year" proved
+configdata.ads:262:11: info: data dependencies proved
+configdata.ads:263:11: info: flow dependencies proved
+configdata.ads:280:11: info: data dependencies proved
+configdata.ads:292:11: info: data dependencies proved
+configdata.ads:304:11: info: data dependencies proved
+configdata.ads:316:11: info: data dependencies proved
+configdata.ads:328:11: info: data dependencies proved
+configdata.ads:340:11: info: data dependencies proved
+configdata.ads:352:11: info: data dependencies proved
+configdata.ads:364:11: info: data dependencies proved
+configuration.adb:82:14: info: data dependencies proved
 configuration.adb:99:57: info: division check proved (CVC4: 1 VC)
 configuration.adb:99:63: info: range check proved (CVC4: 1 VC)
 configuration.adb:100:12: info: range check proved (CVC4: 1 VC)
@@ -1589,9 +1805,14 @@ configuration.adb:181:40: info: initialization of "TheSystemMaxFar" proved
 configuration.adb:183:17: info: initialization of "Success" proved
 configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
 configuration.adb:193:18: info: precondition proved (CVC4: 1 VC)
+configuration.ads:46:11: info: data dependencies proved
 configuration.ads:46:43: info: initialization of "ConfigData.State" proved
+configuration.ads:48:11: info: flow dependencies proved
 configuration.ads:67:07: info: initialization of "DataValid" proved
+configuration.ads:68:11: info: data dependencies proved
+configuration.ads:74:11: info: flow dependencies proved
 cryptotypes.ads:33:17: info: range check proved (CVC4: 1 VC)
+display-interfac.ads:24:08: info: flow dependencies proved
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:191
@@ -1681,6 +1902,18 @@ display.adb:312:42: info: initialization of "CurrentDisplay" constituent of "Sta
 display.adb:313:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
 display.adb:314:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
 display.adb:314:42: info: initialization of "Sizes.Top" constituent of "State" proved
+display.ads:29:08: info: flow dependencies proved
+display.ads:98:11: info: data dependencies proved
+display.ads:103:11: info: flow dependencies proved
+display.ads:123:11: info: data dependencies proved
+display.ads:128:11: info: flow dependencies proved
+display.ads:148:11: info: data dependencies proved
+display.ads:154:11: info: flow dependencies proved
+display.ads:173:11: info: data dependencies proved
+display.ads:174:11: info: flow dependencies proved
+displayapi.ads:25:03: info: flow dependencies proved
+door.adb:59:11: info: data dependencies proved
+door.adb:68:11: info: flow dependencies proved
 door.adb:88:22: info: postcondition proved (CVC4: 4 VC)
 door.adb:113:23: info: initialization of "LocalAlarm" proved
 door.adb:114:18: info: precondition proved (CVC4: 1 VC)
@@ -1742,18 +1975,32 @@ door.adb:405:42: info: initialization of "AlarmTimeout.Year" constituent of "Sta
 door.adb:406:42: info: initialization of "CurrentDoor" constituent of "State" proved
 door.adb:407:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:408:47: info: initialization of "Latch.State" proved
+door.ads:48:11: info: data dependencies proved
+door.ads:61:11: info: data dependencies proved
+door.ads:73:11: info: data dependencies proved
 door.ads:87:20: info: initialization of "SystemFault" proved
+door.ads:88:11: info: data dependencies proved
+door.ads:96:11: info: flow dependencies proved
 door.ads:116:22: info: postcondition proved (CVC4: 7 VC)
+door.ads:139:11: info: data dependencies proved
+door.ads:146:11: info: flow dependencies proved
 door.ads:164:22: info: postcondition proved (CVC4: 6 VC)
 door.ads:167:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.ads:167:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.ads:167:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.ads:167:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.ads:184:11: info: data dependencies proved
+door.ads:191:11: info: flow dependencies proved
 door.ads:208:22: info: postcondition proved (CVC4: 5 VC)
 door.ads:211:48: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
 door.ads:211:48: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
 door.ads:211:48: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
 door.ads:211:48: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.ads:227:11: info: data dependencies proved
+door.ads:228:11: info: flow dependencies proved
+door.ads:241:11: info: data dependencies proved
+door.ads:243:11: info: flow dependencies proved
+doorapi.adb:26:11: info: data dependencies proved
 doorapi.adb:51:10: info: initialization of "CommsIsOK" proved
 doorapi.adb:53:63: info: initialization of "InMsg.Data" proved
 doorapi.adb:53:63: info: initialization of "InMsg.Length" proved
@@ -1763,10 +2010,17 @@ doorapi.adb:64:47: info: initialization of "StateDict" proved
 doorapi.adb:70:13: info: initialization of "IsOp" proved
 doorapi.adb:71:16: info: initialization of "IsClosed" proved
 doorapi.adb:79:14: info: initialization of "DoorState" proved
+enclave.adb:56:11: info: data dependencies proved
 enclave.adb:62:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:70:14: info: initialization of "Result" proved
+enclave.adb:90:11: info: data dependencies proved
+enclave.adb:107:11: info: data dependencies proved
+enclave.adb:124:11: info: data dependencies proved
+enclave.adb:133:11: info: flow dependencies proved
 enclave.adb:146:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:180:11: info: data dependencies proved
 enclave.adb:183:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:190:11: info: flow dependencies proved
 enclave.adb:207:22: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:207:23: info: initialization of "Status" constituent of "State" proved
 enclave.adb:219:16: info: precondition proved (CVC4: 1 VC)
@@ -1775,14 +2029,22 @@ enclave.adb:224:10: info: initialization of "DataOK" proved
 enclave.adb:231:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:243:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:247:28: info: initialization of "Description" proved
+enclave.adb:266:11: info: data dependencies proved
+enclave.adb:274:11: info: flow dependencies proved
 enclave.adb:286:22: info: postcondition proved (CVC4: 1 VC)
+enclave.adb:314:11: info: data dependencies proved
+enclave.adb:315:11: info: flow dependencies proved
+enclave.adb:337:11: info: data dependencies proved
 enclave.adb:339:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:343:11: info: flow dependencies proved
 enclave.adb:351:22: info: initialization of "Status" constituent of "State" proved
 enclave.adb:351:22: info: postcondition proved (CVC4: 2 VC)
 enclave.adb:353:29: info: assertion proved (CVC4: 1 VC)
 enclave.adb:353:29: info: initialization of "Status" constituent of "State" proved
 enclave.adb:356:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:389:11: info: data dependencies proved
 enclave.adb:395:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:401:11: info: flow dependencies proved
 enclave.adb:438:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:444:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:447:06: info: postcondition proved (CVC4: 12 VC)
@@ -1798,10 +2060,14 @@ enclave.adb:494:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:504:48: info: precondition proved (CVC4: 3 VC)
 enclave.adb:510:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:514:31: info: initialization of "Description" proved
+enclave.adb:537:11: info: data dependencies proved
 enclave.adb:539:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:544:11: info: flow dependencies proved
 enclave.adb:554:23: info: initialization of "Status" constituent of "State" proved
 enclave.adb:554:23: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:558:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:589:11: info: data dependencies proved
+enclave.adb:600:11: info: flow dependencies proved
 enclave.adb:631:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:639:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:641:10: warning: unreachable branch (CVC4: 1 VC)
@@ -1813,9 +2079,13 @@ enclave.adb:670:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:672:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:675:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:676:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:695:14: info: data dependencies proved
+enclave.adb:705:14: info: flow dependencies proved
 enclave.adb:723:25: info: postcondition proved (CVC4: 1 VC)
 enclave.adb:737:37: info: initialization of "TheLog" proved
+enclave.adb:759:14: info: data dependencies proved
 enclave.adb:763:36: info: initialization of "Status" constituent of "State" proved
+enclave.adb:770:14: info: flow dependencies proved
 enclave.adb:788:26: info: initialization of "Status" constituent of "State" proved
 enclave.adb:788:26: info: postcondition proved (CVC4: 4 VC)
 enclave.adb:801:16: info: initialization of "WriteOK" proved
@@ -1824,13 +2094,17 @@ enclave.adb:823:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:836:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:844:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:846:10: info: precondition proved (CVC4: 1 VC)
+enclave.adb:868:11: info: data dependencies proved
+enclave.adb:878:11: info: flow dependencies proved
 enclave.adb:900:27: info: precondition proved (CVC4: 1 VC)
 enclave.adb:902:06: info: postcondition proved (CVC4: 9 VC)
 enclave.adb:913:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:943:26: info: initialization of "TheCurrentFloppy" proved
 enclave.adb:947:13: info: initialization of "ConfigDataOK" proved
 enclave.adb:954:15: info: precondition proved (CVC4: 1 VC)
+enclave.adb:973:11: info: data dependencies proved
 enclave.adb:977:33: info: initialization of "Status" constituent of "State" proved
+enclave.adb:984:11: info: flow dependencies proved
 enclave.adb:1005:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1014:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1020:19: info: precondition proved (CVC4: 1 VC)
@@ -1844,6 +2118,8 @@ enclave.adb:1057:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1062:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1065:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1076:12: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1095:11: info: data dependencies proved
+enclave.adb:1107:11: info: flow dependencies proved
 enclave.adb:1139:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1154:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1163:06: info: postcondition proved (CVC4: 25 VC)
@@ -1856,6 +2132,8 @@ enclave.adb:1202:11: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1205:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1206:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1220:18: info: precondition proved (CVC4: 1 VC)
+enclave.adb:1249:11: info: data dependencies proved
+enclave.adb:1266:11: info: flow dependencies proved
 enclave.adb:1332:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1351:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1357:19: info: precondition proved (CVC4: 1 VC)
@@ -1875,6 +2153,7 @@ enclave.adb:1452:41: info: initialization of "Status" constituent of "State" pro
 enclave.adb:1454:30: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1455:37: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1489:27: info: refined post proved (CVC4: 2 VC)
+enclave.adb:1505:14: info: data dependencies proved
 enclave.adb:1565:31: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1572:39: info: range check proved (CVC4: 1 VC)
 enclave.adb:1574:12: info: initialization of "LocalStatus" proved
@@ -1897,6 +2176,10 @@ enclave.adb:1991:06: info: refined post proved (CVC4: 25 VC)
 enclave.adb:2019:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2029:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2035:19: info: precondition proved (CVC4: 1 VC)
+enclave.adb:2056:14: info: data dependencies proved
+enclave.adb:2077:14: info: data dependencies proved
+enclave.adb:2095:14: info: data dependencies proved
+enclave.adb:2104:14: info: flow dependencies proved
 enclave.adb:2130:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2136:22: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2139:09: info: postcondition proved (CVC4: 21 VC)
@@ -1917,10 +2200,29 @@ enclave.adb:2203:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2209:24: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2213:34: info: initialization of "KeyedData.Text" proved
 enclave.adb:2226:10: info: precondition proved (CVC4: 12 VC)
+enclave.ads:62:11: info: data dependencies proved
+enclave.ads:66:11: info: data dependencies proved
+enclave.ads:70:11: info: data dependencies proved
+enclave.ads:74:11: info: data dependencies proved
+enclave.ads:78:11: info: data dependencies proved
+enclave.ads:82:11: info: data dependencies proved
+enclave.ads:86:11: info: data dependencies proved
+enclave.ads:100:11: info: data dependencies proved
+enclave.ads:113:11: info: data dependencies proved
+enclave.ads:115:11: info: flow dependencies proved
 enclave.ads:116:22: info: postcondition proved (CVC4: 3 VC)
 enclave.ads:116:56: info: initialization of "Status" constituent of "State" proved
+enclave.ads:131:11: info: data dependencies proved
+enclave.ads:146:11: info: data dependencies proved
+enclave.ads:159:11: info: data dependencies proved
+enclave.ads:177:11: info: data dependencies proved
+enclave.ads:188:11: info: flow dependencies proved
 enclave.ads:209:22: info: postcondition proved (CVC4: 3 VC)
+enclave.ads:226:11: info: data dependencies proved
+enclave.ads:232:11: info: flow dependencies proved
 enclave.ads:251:22: info: postcondition proved (CVC4: 5 VC)
+enclave.ads:291:11: info: data dependencies proved
+enclave.ads:312:11: info: flow dependencies proved
 enclave.ads:432:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:442:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:448:26: info: precondition proved (CVC4: 1 VC)
@@ -1929,6 +2231,8 @@ enclave.ads:486:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:496:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:502:26: info: precondition proved (CVC4: 1 VC)
 enclave.ads:515:25: info: precondition proved (CVC4: 1 VC)
+enclave.ads:531:11: info: data dependencies proved
+enclave.ads:539:11: info: flow dependencies proved
 enclave.ads:565:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:591:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:597:35: info: precondition proved (CVC4: 1 VC)
@@ -1936,6 +2240,9 @@ enclave.ads:602:13: info: postcondition proved (CVC4: 25 VC)
 enclave.ads:631:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:641:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:647:35: info: precondition proved (CVC4: 1 VC)
+enclave.ads:662:11: info: data dependencies proved
+enclave.ads:668:11: info: flow dependencies proved
+enrolment.adb:63:14: info: data dependencies proved
 enrolment.adb:67:66: info: range check proved (CVC4: 1 VC)
 enrolment.adb:68:66: info: range check proved (CVC4: 1 VC)
 enrolment.adb:68:74: info: range check proved (CVC4: 1 VC)
@@ -1947,6 +2254,8 @@ enrolment.adb:74:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:76:17: info: initialization of "Result" proved
 enrolment.adb:94:35: info: initialization of "KeyAdded" proved
 enrolment.adb:95:35: info: initialization of "Description" proved
+enrolment.adb:96:14: info: data dependencies proved
+enrolment.adb:104:14: info: flow dependencies proved
 enrolment.adb:124:25: info: postcondition proved (CVC4: 5 VC)
 enrolment.adb:124:39: info: initialization of "KeyAdded" proved
 enrolment.adb:146:16: info: initialization of "Stop" proved
@@ -2019,14 +2328,26 @@ enrolment.adb:258:41: info: range check proved (CVC4: 1 VC)
 enrolment.adb:262:14: info: initialization of "DataOK" proved
 enrolment.ads:55:24: info: initialization of "DataOK" proved
 enrolment.ads:56:24: info: initialization of "Description" proved
+enrolment.ads:57:11: info: data dependencies proved
+enrolment.ads:63:11: info: flow dependencies proved
 enrolment.ads:78:22: info: initialization of "DataOK" proved
 enrolment.ads:78:22: info: postcondition proved (CVC4: 2 VC)
+floppy.ads:26:08: info: flow dependencies proved
 iandatypes.ads:36:12: info: range check proved (CVC4: 1 VC)
 keyboard.adb:75:32: info: initialization of "LocalLength" proved
 keyboard.adb:76:32: info: initialization of "LocalData" proved
+keyboard.ads:48:11: info: data dependencies proved
+keyboard.ads:49:11: info: flow dependencies proved
+keyboard.ads:61:11: info: data dependencies proved
+keyboard.ads:62:11: info: flow dependencies proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
 keyboard.ads:77:20: info: initialization of "Data.Length" proved
 keyboard.ads:77:20: info: initialization of "Data.Text" proved
+keyboard.ads:78:11: info: data dependencies proved
+keyboard.ads:79:11: info: flow dependencies proved
+keyboard.ads:91:11: info: data dependencies proved
+keyboard.ads:92:11: info: flow dependencies proved
+keystore-interfac.ads:24:08: info: flow dependencies proved
 keystore-interfac.ads:96:20: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:35: info: range check proved (CVC4: 1 VC)
 keystore.adb:97:39: info: range check proved (CVC4: 1 VC)
@@ -2044,6 +2365,8 @@ keystore.adb:122:22: info: initialization of "TheDigest.Pad" proved
 keystore.adb:122:22: info: initialization of "TheDigest.SignReturn" proved
 keystore.adb:122:22: info: initialization of "TheDigest.VerifyReturn" proved
 keystore.adb:123:22: info: initialization of "Success" proved
+keystore.adb:124:11: info: data dependencies proved
+keystore.adb:129:11: info: flow dependencies proved
 keystore.adb:172:42: info: range check proved (CVC4: 1 VC)
 keystore.adb:172:53: info: overflow check proved (CVC4: 1 VC)
 keystore.adb:172:69: info: overflow check proved (CVC4: 1 VC)
@@ -2098,6 +2421,8 @@ keystore.adb:268:48: info: initialization of "RetValFin" proved
 keystore.adb:268:59: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:268:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:287:07: info: initialization of "Handles" proved
+keystore.adb:288:11: info: data dependencies proved
+keystore.adb:293:11: info: flow dependencies proved
 keystore.adb:316:10: info: initialization of "RetValIni" proved
 keystore.adb:321:13: info: initialization of "RetValIni" proved
 keystore.adb:326:20: info: initialization of "RetValIni" proved
@@ -2116,6 +2441,8 @@ keystore.adb:347:48: info: initialization of "RetValFin" proved
 keystore.adb:347:59: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:347:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:365:33: info: initialization of "IssuerKey" proved
+keystore.adb:366:11: info: data dependencies proved
+keystore.adb:371:11: info: flow dependencies proved
 keystore.adb:398:29: info: initialization of "IssuerTemplate.AttrMask" proved
 keystore.adb:398:29: info: initialization of "IssuerTemplate.IsPublic" proved
 keystore.adb:398:29: info: initialization of "IssuerTemplate.KeyID" proved
@@ -2128,6 +2455,8 @@ keystore.adb:402:10: info: initialization of "ActualCount" proved
 keystore.adb:405:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:416:20: info: initialization of "Handles" proved
 keystore.adb:432:26: info: initialization of "PrivateKeyHandle" proved
+keystore.adb:433:11: info: data dependencies proved
+keystore.adb:438:11: info: flow dependencies proved
 keystore.adb:462:29: info: initialization of "PrivateTemplate.AttrMask" proved
 keystore.adb:462:29: info: initialization of "PrivateTemplate.IsPublic" proved
 keystore.adb:462:29: info: initialization of "PrivateTemplate.KeyID" proved
@@ -2205,14 +2534,30 @@ keystore.adb:823:41: info: initialization of "ThisTISInfo.IsPresent" constituent
 keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
 keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
 keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.ads:31:08: info: flow dependencies proved
+keystore.ads:49:11: info: data dependencies proved
+keystore.ads:55:11: info: flow dependencies proved
 keystore.ads:76:40: info: initialization of "IsPresent" proved
+keystore.ads:77:11: info: data dependencies proved
+keystore.ads:82:11: info: flow dependencies proved
+keystore.ads:103:11: info: data dependencies proved
+keystore.ads:115:11: info: data dependencies proved
+keystore.ads:127:11: info: data dependencies proved
 keystore.ads:142:28: info: initialization of "Verified" proved
+keystore.ads:143:11: info: data dependencies proved
+keystore.ads:148:11: info: flow dependencies proved
 keystore.ads:174:20: info: initialization of "Signature.SigData" proved
 keystore.ads:174:20: info: initialization of "Signature.SigLength" proved
 keystore.ads:175:20: info: initialization of "Signed" proved
+keystore.ads:176:11: info: data dependencies proved
+keystore.ads:181:11: info: flow dependencies proved
 keystore.ads:204:22: info: initialization of "Added" proved
+keystore.ads:205:11: info: data dependencies proved
+keystore.ads:211:11: info: flow dependencies proved
 keystore.ads:229:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:229:23: info: initialization of "Added" proved
+keystore.ads:243:11: info: data dependencies proved
+keystore.ads:245:11: info: flow dependencies proved
 keystore.ads:247:22: info: postcondition proved (CVC4: 1 VC)
 keystore.ads:247:26: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
 keystore.ads:247:26: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
@@ -2247,15 +2592,30 @@ latch.adb:170:42: info: initialization of "LatchTimeout.Day" constituent of "Sta
 latch.adb:170:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
 latch.adb:170:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.adb:170:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.ads:29:08: info: flow dependencies proved
+latch.ads:40:11: info: data dependencies proved
+latch.ads:44:11: info: data dependencies proved
+latch.ads:48:11: info: data dependencies proved
+latch.ads:61:11: info: data dependencies proved
+latch.ads:62:11: info: flow dependencies proved
+latch.ads:75:11: info: data dependencies proved
+latch.ads:88:11: info: data dependencies proved
+latch.ads:94:11: info: flow dependencies proved
 latch.ads:102:22: info: postcondition proved (CVC4: 3 VC)
 latch.ads:116:28: info: initialization of "SystemFault" proved
+latch.ads:117:11: info: data dependencies proved
+latch.ads:123:11: info: flow dependencies proved
 latch.ads:131:22: info: postcondition proved (CVC4: 1 VC)
 latch.ads:131:50: info: initialization of "SystemFault" proved
+latch.ads:144:11: info: data dependencies proved
+latch.ads:145:11: info: flow dependencies proved
 latch.ads:146:22: info: initialization of "LatchTimeout.Day" constituent of "State" proved
 latch.ads:146:22: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
 latch.ads:146:22: info: initialization of "LatchTimeout.Month" constituent of "State" proved
 latch.ads:146:22: info: initialization of "LatchTimeout.Year" constituent of "State" proved
 latch.ads:146:22: info: postcondition proved (CVC4: 1 VC)
+latch.ads:159:11: info: data dependencies proved
+latch.ads:160:11: info: flow dependencies proved
 latchapi.adb:111:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:115:20: info: initialization of "IsLocked" proved
 latchapi.adb:115:36: info: initialization of "ReadBackOK" proved
@@ -2266,19 +2626,29 @@ latchapi.ads:32:21: info: initialization of "Failed" proved
 latchapi.ads:42:19: info: initialization of "Failed" proved
 poll.adb:36:11: info: initialization of "Clock.CurrentTime" proved
 poll.ads:49:24: info: initialization of "SystemFault" proved
+poll.ads:50:11: info: data dependencies proved
 poll.ads:57:38: info: initialization of "Clock.CurrentTime" proved
+poll.ads:67:11: info: flow dependencies proved
 poll.ads:113:13: info: postcondition proved (CVC4: 13 VC)
 poll.ads:115:45: info: initialization of "Clock.CurrentTime" proved
 privtypes.ads:44:14: info: range check proved (CVC4: 1 VC)
 screen.adb:156:28: info: initialization of "OK" proved
+screen.adb:157:11: info: data dependencies proved
+screen.adb:160:11: info: flow dependencies proved
 screen.adb:192:07: info: initialization of "OK" proved
+screen.adb:193:11: info: data dependencies proved
+screen.adb:196:11: info: flow dependencies proved
 screen.adb:223:16: info: initialization of "ConsoleOK" proved
 screen.adb:241:16: info: initialization of "OK" proved
 screen.adb:241:22: info: initialization of "ConsoleOK" proved
 screen.adb:256:31: info: initialization of "OK" proved
+screen.adb:257:11: info: data dependencies proved
 screen.adb:257:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
+screen.adb:258:11: info: flow dependencies proved
 screen.adb:280:33: info: initialization of "OK" proved
+screen.adb:281:11: info: data dependencies proved
 screen.adb:281:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
+screen.adb:282:11: info: flow dependencies proved
 screen.adb:306:13: info: initialization of "OK" proved
 screen.adb:306:20: info: initialization of "ConsoleOK" proved
 screen.adb:312:13: info: initialization of "OK" proved
@@ -2304,6 +2674,8 @@ screen.adb:366:20: info: initialization of "ConsoleOK" proved
 screen.adb:372:13: info: initialization of "OK" proved
 screen.adb:372:20: info: initialization of "ConsoleOK" proved
 screen.adb:387:31: info: initialization of "OK" proved
+screen.adb:388:11: info: data dependencies proved
+screen.adb:391:12: info: flow dependencies proved
 screen.adb:442:17: info: initialization of "Str" proved
 screen.adb:442:20: info: initialization of "ValueStr" proved
 screen.adb:442:37: info: index check proved (CVC4: 2 VC)
@@ -2437,9 +2809,13 @@ screen.adb:677:32: info: initialization of "NewConfig.TokenRemove" proved
 screen.adb:677:32: info: initialization of "NewConfig.WorkEnd" proved
 screen.adb:677:32: info: initialization of "NewConfig.WorkStart" proved
 screen.adb:697:26: info: initialization of "OK" proved
+screen.adb:698:11: info: data dependencies proved
 screen.adb:698:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
+screen.adb:699:11: info: flow dependencies proved
 screen.adb:720:32: info: initialization of "OK" proved
+screen.adb:721:11: info: data dependencies proved
 screen.adb:721:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
+screen.adb:722:11: info: flow dependencies proved
 screen.adb:736:13: info: initialization of "OK" proved
 screen.adb:736:20: info: initialization of "ConsoleOK" proved
 screen.adb:742:13: info: initialization of "OK" proved
@@ -2447,6 +2823,8 @@ screen.adb:742:20: info: initialization of "ConsoleOK" proved
 screen.adb:748:13: info: initialization of "OK" proved
 screen.adb:748:20: info: initialization of "ConsoleOK" proved
 screen.adb:763:30: info: initialization of "OK" proved
+screen.adb:764:11: info: data dependencies proved
+screen.adb:766:11: info: flow dependencies proved
 screen.adb:794:10: info: range check proved (CVC4: 4 VC)
 screen.adb:794:32: info: overflow check proved (CVC4: 1 VC)
 screen.adb:794:37: info: initialization of "Result" proved
@@ -2468,7 +2846,9 @@ screen.adb:834:52: info: initialization of "FailBio" proved
 screen.adb:838:16: info: initialization of "OK" proved
 screen.adb:838:23: info: initialization of "ConsoleOK" proved
 screen.adb:855:32: info: initialization of "OK" proved
+screen.adb:856:11: info: data dependencies proved
 screen.adb:857:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
+screen.adb:858:11: info: flow dependencies proved
 screen.adb:864:48: info: initialization of "TheTime.Day" proved
 screen.adb:864:48: info: initialization of "TheTime.MilliSec" proved
 screen.adb:864:48: info: initialization of "TheTime.Month" proved
@@ -2535,6 +2915,13 @@ screen.adb:1110:19: info: initialization of "ScreenOK" proved
 screen.adb:1110:32: info: initialization of "WriteOK" proved
 screen.adb:1112:14: info: initialization of "ScreenOK" proved
 screen.adb:1114:18: info: precondition proved (CVC4: 1 VC)
+screen.ads:67:11: info: data dependencies proved
+screen.ads:72:11: info: flow dependencies proved
+screen.ads:95:11: info: data dependencies proved
+screen.ads:102:11: info: flow dependencies proved
+screen.ads:137:11: info: data dependencies proved
+screen.ads:143:11: info: flow dependencies proved
+spark_io.ads:18:08: info: flow dependencies proved
 stats.adb:49:57: info: overflow check proved (CVC4: 1 VC)
 stats.adb:64:51: info: overflow check proved (CVC4: 1 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 1 VC)
@@ -2544,10 +2931,17 @@ stats.ads:44:20: info: initialization of "TheStats.FailBio" proved
 stats.ads:44:20: info: initialization of "TheStats.FailEntry" proved
 stats.ads:44:20: info: initialization of "TheStats.SuccessBio" proved
 stats.ads:44:20: info: initialization of "TheStats.SuccessEntry" proved
+stats.ads:45:11: info: flow dependencies proved
+stats.ads:57:11: info: flow dependencies proved
+stats.ads:69:11: info: flow dependencies proved
+stats.ads:81:11: info: flow dependencies proved
+stats.ads:93:11: info: flow dependencies proved
 stats.ads:105:28: info: initialization of "SuccessEntry" proved
 stats.ads:106:28: info: initialization of "FailEntry" proved
 stats.ads:107:28: info: initialization of "SuccessBio" proved
 stats.ads:108:28: info: initialization of "FailBio" proved
+stats.ads:109:11: info: flow dependencies proved
+tismain.adb:53:08: info: data dependencies proved
 tismain.adb:60:41: info: initialization of "AdminToken.State" proved
 tismain.adb:61:39: info: initialization of "AuditLog.State" proved
 tismain.adb:62:47: info: initialization of "CertificateStore.State" proved
@@ -2563,6 +2957,8 @@ tismain.adb:71:36: info: initialization of "Latch.State" proved
 tismain.adb:72:37: info: initialization of "Screen.Output" proved
 tismain.adb:73:37: info: initialization of "Screen.State" proved
 tismain.adb:74:40: info: initialization of "UserToken.State" proved
+tismain.adb:87:08: info: flow dependencies proved
+tismain.adb:163:11: info: data dependencies proved
 tismain.adb:166:44: info: initialization of "AdminToken.State" proved
 tismain.adb:167:42: info: initialization of "AuditLog.State" proved
 tismain.adb:168:50: info: initialization of "CertificateStore.State" proved
@@ -2579,6 +2975,7 @@ tismain.adb:178:40: info: initialization of "Screen.State" proved
 tismain.adb:179:34: info: initialization of "TheAdmin" proved
 tismain.adb:180:34: info: initialization of "TheStats" proved
 tismain.adb:181:43: info: initialization of "UserToken.State" proved
+tismain.adb:187:11: info: flow dependencies proved
 tismain.adb:222:22: info: postcondition proved (CVC4: 12 VC)
 tismain.adb:222:35: info: initialization of "Enclave.State" proved
 tismain.adb:223:33: info: initialization of "KeyStore.State" proved
@@ -2603,6 +3000,8 @@ tismain.adb:259:18: info: precondition proved (CVC4: 1 VC)
 tismain.adb:266:18: info: initialization of "AuditLog.State" proved
 tismain.adb:266:18: info: initialization of "ConfigData.State" proved
 tismain.adb:266:18: info: precondition proved (CVC4: 1 VC)
+tismain.adb:285:11: info: data dependencies proved
+tismain.adb:316:11: info: flow dependencies proved
 tismain.adb:569:20: info: precondition proved (CVC4: 1 VC)
 tismain.adb:575:21: info: precondition proved (CVC4: 1 VC)
 tismain.adb:582:20: info: precondition proved (CVC4: 1 VC)
@@ -2610,13 +3009,17 @@ tismain.adb:615:08: info: postcondition proved (CVC4: 32 VC)
 tismain.adb:630:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:636:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:643:22: info: precondition proved (CVC4: 1 VC)
+tismain.adb:684:14: info: data dependencies proved
+tismain.adb:692:14: info: flow dependencies proved
 tismain.adb:716:17: info: precondition proved (CVC4: 2 VC)
 tismain.adb:719:17: info: precondition proved (CVC4: 4 VC)
 tismain.adb:723:19: info: precondition proved (CVC4: 6 VC)
 tismain.adb:727:17: info: precondition proved (CVC4: 28 VC)
 tismain.adb:734:17: info: precondition proved (CVC4: 23 VC)
+tismain.adb:748:11: info: data dependencies proved
 tismain.adb:755:39: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:756:34: info: initialization of "SystemFault" proved
+tismain.adb:785:11: info: flow dependencies proved
 tismain.adb:1105:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1111:26: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1118:25: info: precondition proved (CVC4: 1 VC)
@@ -2630,19 +3033,23 @@ tismain.adb:1230:14: info: initialization of "SystemFault" proved
 tismain.adb:1233:17: info: initialization of "SystemFault" proved
 tismain.adb:1235:13: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:1235:13: info: precondition proved (CVC4: 31 VC)
+tismain.adb:1256:11: info: data dependencies proved
 tismain.adb:1259:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1260:38: info: initialization of "Door.State" proved
 tismain.adb:1261:39: info: initialization of "Latch.Output" proved
 tismain.adb:1262:39: info: initialization of "Latch.State" proved
 tismain.adb:1263:40: info: initialization of "Screen.Output" proved
 tismain.adb:1264:34: info: initialization of "TheAdmin" proved
+tismain.adb:1270:11: info: flow dependencies proved
 tismain.adb:1296:14: info: initialization of "Door.State" proved
 tismain.adb:1296:14: info: initialization of "Latch.State" proved
 tismain.adb:1298:39: info: initialization of "TheAdmin" proved
+tismain.adb:1313:11: info: data dependencies proved
 tismain.adb:1317:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1318:39: info: initialization of "Latch.Output" proved
 tismain.adb:1319:40: info: initialization of "Screen.Output" proved
 tismain.adb:1320:34: info: initialization of "TheAdmin" proved
+tismain.adb:1328:11: info: flow dependencies proved
 tismain.adb:1363:39: info: initialization of "TheAdmin" proved
 tismain.adb:1391:24: info: initialization of "Latch.State" proved
 tismain.adb:1396:10: info: loop invariant initialization proved (CVC4: 29 VC)
@@ -2719,6 +3126,8 @@ tokenreader-interfac.ads:84:21: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:97:40: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:116:39: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:135:37: info: range check proved (CVC4: 1 VC)
+tokenreader.adb:166:14: info: data dependencies proved
+tokenreader.adb:170:14: info: flow dependencies proved
 tokenreader.adb:174:47: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:175:12: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:175:55: info: range check proved (CVC4: 1 VC)
@@ -2732,7 +3141,11 @@ tokenreader.adb:189:07: info: initialization of "Result" proved
 tokenreader.adb:189:07: info: initialization of "TheCodeName" proved
 tokenreader.adb:190:14: info: initialization of "Result" proved
 tokenreader.adb:208:41: info: initialization of "ReaderStatus" constituent of "State" proved
+tokenreader.adb:234:14: info: data dependencies proved
+tokenreader.adb:235:14: info: flow dependencies proved
+tokenreader.adb:252:14: info: data dependencies proved
 tokenreader.adb:252:36: info: initialization of "ReaderStatus" constituent of "State" proved
+tokenreader.adb:253:14: info: flow dependencies proved
 tokenreader.adb:269:44: info: initialization of "NumberReaders" proved
 tokenreader.adb:272:10: info: initialization of "ResponseCode" proved
 tokenreader.adb:274:13: info: initialization of "NumberReaders" proved
@@ -2762,12 +3175,30 @@ tokenreader.adb:338:15: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:338:31: info: predicate check proved (CVC4: 1 VC)
 tokenreader.adb:338:31: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:339:31: info: initialization of "ResponseCode" proved
+tokenreader.adb:388:14: info: data dependencies proved
+tokenreader.adb:391:14: info: flow dependencies proved
+tokenreader.adb:416:14: info: data dependencies proved
+tokenreader.adb:419:14: info: flow dependencies proved
+tokenreader.adb:441:14: info: data dependencies proved
+tokenreader.adb:444:14: info: flow dependencies proved
+tokenreader.adb:467:14: info: data dependencies proved
+tokenreader.adb:471:14: info: flow dependencies proved
+tokenreader.adb:488:16: info: data dependencies proved
+tokenreader.adb:491:16: info: flow dependencies proved
 tokenreader.adb:516:22: info: initialization of "ResponseCode" proved
 tokenreader.adb:519:22: info: initialization of "TheCardHandle" proved
+tokenreader.adb:545:14: info: data dependencies proved
+tokenreader.adb:549:14: info: flow dependencies proved
+tokenreader.adb:569:16: info: data dependencies proved
+tokenreader.adb:572:16: info: flow dependencies proved
 tokenreader.adb:590:13: info: initialization of "ResponseCode" proved
 tokenreader.adb:592:39: info: initialization of "RawCardState" proved
 tokenreader.adb:594:18: info: initialization of "CardState" proved
 tokenreader.adb:601:19: info: initialization of "TheATR" proved
+tokenreader.adb:623:14: info: data dependencies proved
+tokenreader.adb:625:14: info: flow dependencies proved
+tokenreader.adb:642:13: info: data dependencies proved
+tokenreader.adb:645:13: info: flow dependencies proved
 tokenreader.adb:664:10: info: initialization of "ResponseCode" proved
 tokenreader.adb:666:37: info: initialization of "RawNewState" proved
 tokenreader.adb:667:10: info: initialization of "NewState" proved
@@ -2788,18 +3219,34 @@ tokenreader.adb:803:16: info: initialization of "ResponseCode" proved
 tokenreader.adb:822:49: info: initialization of "Interfac.ReaderOutput" constituent of "TokenReader.Output" proved
 tokenreader.adb:839:20: info: initialization of "StatusOK" proved
 tokenreader.adb:840:16: info: initialization of "ResponseCode" proved
+tokenreader.ads:32:08: info: flow dependencies proved
+tokenreader.ads:52:11: info: data dependencies proved
+tokenreader.ads:58:11: info: flow dependencies proved
+tokenreader.ads:78:11: info: data dependencies proved
+tokenreader.ads:85:11: info: flow dependencies proved
+tokenreader.ads:106:11: info: data dependencies proved
+tokenreader.ads:117:11: info: data dependencies proved
+tokenreader.ads:128:11: info: data dependencies proved
 tokenreader.ads:142:30: info: initialization of "RawCert" proved
 tokenreader.ads:143:30: info: initialization of "Found" proved
+tokenreader.ads:144:11: info: data dependencies proved
+tokenreader.ads:147:11: info: flow dependencies proved
 tokenreader.ads:168:07: info: initialization of "Success" proved
+tokenreader.ads:169:11: info: data dependencies proved
+tokenreader.ads:172:11: info: flow dependencies proved
 updates.ads:46:29: info: initialization of "SystemFault" proved
+updates.ads:47:11: info: data dependencies proved
 updates.ads:51:39: info: initialization of "Alarm.Output" proved
 updates.ads:52:39: info: initialization of "Latch.Output" proved
+updates.ads:55:11: info: flow dependencies proved
 updates.ads:79:22: info: postcondition proved (CVC4: 3 VC)
 updates.ads:82:25: info: initialization of "SystemFault" proved
 updates.ads:95:24: info: initialization of "SystemFault" proved
+updates.ads:96:11: info: data dependencies proved
 updates.ads:100:39: info: initialization of "Alarm.Output" proved
 updates.ads:101:39: info: initialization of "Latch.Output" proved
 updates.ads:102:40: info: initialization of "Screen.Output" proved
+updates.ads:108:11: info: flow dependencies proved
 updates.ads:143:22: info: postcondition proved (CVC4: 3 VC)
 updates.ads:146:25: info: initialization of "SystemFault" proved
 userentry.adb:56:04: info: initialization of "Status" constituent of "State" proved
@@ -2811,9 +3258,14 @@ userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Day" constitue
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.MilliSec" constituent of "State" proved
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Month" constituent of "State" proved
 userentry.adb:59:04: info: initialization of "TokenRemovalTimeout.Year" constituent of "State" proved
+userentry.adb:79:11: info: data dependencies proved
+userentry.adb:95:11: info: data dependencies proved
 userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:102:11: info: flow dependencies proved
 userentry.adb:116:15: info: precondition proved (CVC4: 1 VC)
+userentry.adb:152:11: info: data dependencies proved
 userentry.adb:159:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:166:11: info: flow dependencies proved
 userentry.adb:216:13: info: initialization of "AuthCertOK" proved
 userentry.adb:220:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:229:21: info: precondition proved (CVC4: 1 VC)
@@ -2823,10 +3275,17 @@ userentry.adb:257:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:277:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:287:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:291:34: info: initialization of "Description" proved
+userentry.adb:319:11: info: data dependencies proved
+userentry.adb:329:11: info: flow dependencies proved
 userentry.adb:361:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:375:16: info: initialization of "FingerPresence" proved
 userentry.adb:379:24: info: precondition proved (CVC4: 1 VC)
+userentry.adb:416:11: info: data dependencies proved
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:424:11: info: flow dependencies proved
+userentry.adb:457:14: info: data dependencies proved
+userentry.adb:471:17: info: data dependencies proved
+userentry.adb:473:17: info: flow dependencies proved
 userentry.adb:476:15: info: range check proved (CVC4: 1 VC)
 userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
 userentry.adb:482:45: info: length check proved (CVC4: 4 VC)
@@ -2849,18 +3308,26 @@ userentry.adb:533:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:537:32: info: initialization of "AchievedFAR" proved
 userentry.adb:548:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:552:32: info: initialization of "AchievedFAR" proved
+userentry.adb:583:11: info: data dependencies proved
 userentry.adb:588:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:597:11: info: flow dependencies proved
 userentry.adb:651:19: info: precondition proved (CVC4: 1 VC)
 userentry.adb:658:13: info: initialization of "UpdateOK" proved
 userentry.adb:663:13: info: initialization of "UpdateOK" proved
 userentry.adb:667:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:682:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:712:11: info: data dependencies proved
 userentry.adb:715:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:721:11: info: flow dependencies proved
 userentry.adb:753:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:772:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:804:11: info: data dependencies proved
+userentry.adb:815:11: info: flow dependencies proved
 userentry.adb:859:13: info: postcondition proved (CVC4: 4 VC)
 userentry.adb:887:21: info: precondition proved (CVC4: 1 VC)
+userentry.adb:921:11: info: data dependencies proved
 userentry.adb:923:33: info: initialization of "Status" constituent of "State" proved
+userentry.adb:928:11: info: flow dependencies proved
 userentry.adb:941:15: info: precondition proved (CVC4: 1 VC)
 userentry.adb:1027:47: info: initialization of "NewMsg" proved
 userentry.adb:1183:13: info: refined post proved (CVC4: 4 VC)
@@ -2870,10 +3337,23 @@ userentry.adb:1203:13: info: precondition proved (CVC4: 1 VC)
 userentry.adb:1207:13: info: precondition proved (CVC4: 1 VC)
 userentry.adb:1211:13: info: precondition proved (CVC4: 5 VC)
 userentry.adb:1228:41: info: initialization of "Status" constituent of "State" proved
+userentry.ads:39:08: info: flow dependencies proved
+userentry.ads:75:11: info: data dependencies proved
+userentry.ads:89:11: info: data dependencies proved
+userentry.ads:102:12: info: data dependencies proved
+userentry.ads:114:11: info: data dependencies proved
+userentry.ads:121:11: info: flow dependencies proved
+userentry.ads:142:11: info: data dependencies proved
+userentry.ads:160:11: info: flow dependencies proved
 userentry.ads:264:13: info: postcondition proved (CVC4: 4 VC)
+userentry.ads:288:11: info: data dependencies proved
+userentry.ads:294:11: info: flow dependencies proved
+usertoken-interfac.ads:33:08: info: flow dependencies proved
+usertoken.adb:118:11: info: data dependencies proved
 usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:119:11: info: flow dependencies proved
 usertoken.adb:128:43: info: initialization of "IDCertContents" proved
 usertoken.adb:143:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
 usertoken.adb:143:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
@@ -2917,9 +3397,11 @@ usertoken.adb:380:42: info: initialization of "IDCert.Contents" constituent of "
 usertoken.adb:380:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:380:42: info: initialization of "IDCert.Valid" constituent of "State" proved
 usertoken.adb:381:42: info: initialization of "TokenTry" constituent of "State" proved
+usertoken.adb:424:14: info: data dependencies proved
 usertoken.adb:430:36: info: initialization of "IDCert.Contents" constituent of "State" proved
 usertoken.adb:430:36: info: initialization of "IDCert.IDStatus" constituent of "State" proved
 usertoken.adb:430:36: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:434:14: info: flow dependencies proved
 usertoken.adb:469:13: info: initialization of "CertFound" proved
 usertoken.adb:472:28: info: initialization of "RawCert" proved
 usertoken.adb:476:16: info: initialization of "ExtractOK" proved
@@ -2937,7 +3419,9 @@ usertoken.adb:499:20: info: initialization of "Verified" proved
 usertoken.adb:505:46: info: initialization of "IDValid" proved
 usertoken.adb:506:46: info: initialization of "IDStatus" proved
 usertoken.adb:507:46: info: initialization of "IDCertContents" proved
+usertoken.adb:520:14: info: data dependencies proved
 usertoken.adb:526:36: info: initialization of "AuthValid" proved
+usertoken.adb:531:14: info: flow dependencies proved
 usertoken.adb:566:13: info: initialization of "CertFound" proved
 usertoken.adb:568:28: info: initialization of "RawCert" proved
 usertoken.adb:572:16: info: initialization of "ExtractOK" proved
@@ -2992,14 +3476,18 @@ usertoken.adb:700:17: info: initialization of "Result" proved, in call inlined a
 usertoken.adb:700:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:961
 usertoken.adb:700:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:964
 usertoken.adb:700:17: info: initialization of "Result" proved, in call inlined at usertoken.adb:988
+usertoken.adb:714:14: info: data dependencies proved
 usertoken.adb:715:36: info: initialization of "Description" proved
+usertoken.adb:717:14: info: flow dependencies proved
 usertoken.adb:728:53: info: initialization of "IDCertContents" proved
 usertoken.adb:730:46: info: initialization of "Current" proved
 usertoken.adb:732:20: info: initialization of "Current" proved
 usertoken.adb:740:31: info: analyzing call to "MakeDescription" in context
 usertoken.adb:743:18: info: analyzing call to "MakeDescription" in context
 usertoken.adb:746:18: info: analyzing call to "MakeDescription" in context
+usertoken.adb:763:14: info: data dependencies proved
 usertoken.adb:770:36: info: initialization of "PrivValid" proved
+usertoken.adb:776:14: info: flow dependencies proved
 usertoken.adb:816:13: info: initialization of "CertFound" proved
 usertoken.adb:818:28: info: initialization of "RawCert" proved
 usertoken.adb:822:16: info: initialization of "ExtractOK" proved
@@ -3018,7 +3506,9 @@ usertoken.adb:850:23: info: initialization of "Verified" proved
 usertoken.adb:852:18: info: analyzing call to "MakeDescription" in context
 usertoken.adb:853:23: info: initialization of "Current" proved
 usertoken.adb:855:18: info: analyzing call to "MakeDescription" in context
+usertoken.adb:870:14: info: data dependencies proved
 usertoken.adb:877:36: info: initialization of "IandAValid" proved
+usertoken.adb:883:14: info: flow dependencies proved
 usertoken.adb:923:13: info: initialization of "CertFound" proved
 usertoken.adb:925:28: info: initialization of "RawCert" proved
 usertoken.adb:929:16: info: initialization of "ExtractOK" proved
@@ -3068,8 +3558,27 @@ usertoken.adb:1080:24: info: initialization of "NotAfter.Year" proved
 usertoken.adb:1082:60: info: initialization of "IDCertContents" proved
 usertoken.adb:1084:24: info: initialization of "Clearance.Class" proved
 usertoken.adb:1088:47: info: initialization of "AuthCertContents" proved
+usertoken.ads:45:09: info: flow dependencies proved
+usertoken.ads:62:11: info: data dependencies proved
+usertoken.ads:68:11: info: flow dependencies proved
+usertoken.ads:91:11: info: data dependencies proved
+usertoken.ads:98:11: info: flow dependencies proved
 usertoken.ads:121:30: info: initialization of "Success" proved
+usertoken.ads:122:11: info: data dependencies proved
+usertoken.ads:130:11: info: flow dependencies proved
+usertoken.ads:155:11: info: data dependencies proved
+usertoken.ads:167:11: info: data dependencies proved
 usertoken.ads:181:36: info: initialization of "AuthCertOK" proved
+usertoken.ads:182:11: info: data dependencies proved
+usertoken.ads:192:11: info: flow dependencies proved
 usertoken.ads:225:07: info: initialization of "Description" proved
 usertoken.ads:226:07: info: initialization of "TokenOK" proved
+usertoken.ads:227:11: info: data dependencies proved
+usertoken.ads:236:11: info: flow dependencies proved
 usertoken.ads:265:27: info: initialization of "Success" proved
+usertoken.ads:266:11: info: data dependencies proved
+usertoken.ads:274:11: info: flow dependencies proved
+usertoken.ads:298:11: info: data dependencies proved
+usertoken.ads:310:11: info: data dependencies proved
+usertoken.ads:322:11: info: data dependencies proved
+usertoken.ads:323:11: info: flow dependencies proved

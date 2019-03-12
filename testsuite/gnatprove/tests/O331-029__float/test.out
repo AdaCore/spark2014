@@ -594,6 +594,7 @@ sensfusion6_pack.adb:316:41: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:316:46: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:316:48: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:316:56: info: float overflow check proved (Interval)
+sensfusion6_pack.ads:8:03: info: flow dependencies proved
 sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved

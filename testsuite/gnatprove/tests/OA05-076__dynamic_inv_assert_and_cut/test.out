@@ -387,6 +387,7 @@ lsc-bignum.ads:188:07: info: initialization of "Aux1" proved
 lsc-bignum.ads:190:07: info: initialization of "Aux2" proved
 lsc-bignum.ads:192:07: info: initialization of "Aux3" proved
 lsc-bignum.ads:194:07: info: initialization of "Aux4" proved
+lsc-bignum.ads:200:08: info: flow dependencies proved
 lsc-bignum.ads:224:18: medium: overflow check might fail
 lsc-bignum.ads:224:28: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.ads:229:18: medium: overflow check might fail

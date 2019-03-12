@@ -149,14 +149,17 @@ bitwalker.ads:15:28: info: division check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:15:28: info: index check proved (CVC4_More_Axioms: 2 VC)
 bitwalker.ads:15:39: info: division check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:18:31: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:19:06: info: data dependencies proved
 bitwalker.ads:20:16: info: postcondition proved (CVC4_More_Axioms: 2 VC)
 bitwalker.ads:20:39: info: precondition proved (CVC4_More_Axioms: 2 VC)
+bitwalker.ads:28:06: info: data dependencies proved
 bitwalker.ads:29:16: info: postcondition proved (CVC4_More_Axioms: 5 VC)
 bitwalker.ads:31:26: info: precondition proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:31:54: info: precondition proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:33:26: info: precondition proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:33:52: info: range check proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:42:34: info: range check proved (CVC4_More_Axioms: 1 VC)
+bitwalker.ads:43:08: info: data dependencies proved
 bitwalker.ads:44:08: info: complete contract cases proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:44:08: info: disjoint contract cases proved (CVC4_More_Axioms: 1 VC)
 bitwalker.ads:45:36: info: range check proved (CVC4_More_Axioms: 1 VC)

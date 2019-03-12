@@ -196,10 +196,15 @@ basicmath_small.adb:1101:07: warning: initialization of "ra6" has no effect
 basicmath_small.adb:1101:29: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:1102:07: warning: initialization of "ra7" has no effect
 basicmath_small.adb:1102:29: info: range check proved (CVC4: 1 VC)
+basicmath_small.ads:17:09: info: data dependencies proved
 basicmath_small.ads:18:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:21:09: info: data dependencies proved
 basicmath_small.ads:22:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:25:09: info: data dependencies proved
 basicmath_small.ads:26:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:29:09: info: data dependencies proved
 basicmath_small.ads:30:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:33:06: info: data dependencies proved
 basicmath_small.ads:33:31: info: initialization of "RSI" proved
 basicmath_small.ads:34:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:34:45: info: initialization of "SignFlag" proved
@@ -209,18 +214,21 @@ basicmath_small.ads:35:31: low: unused global "RBP"
 basicmath_small.ads:35:31: warning: "RBP" is not modified, could be INPUT
 basicmath_small.ads:35:40: warning: unused initial value of "RDI"
 basicmath_small.ads:46:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:50:06: info: data dependencies proved
 basicmath_small.ads:50:31: info: initialization of "XMM0" proved
 basicmath_small.ads:50:41: info: initialization of "XMM1" proved
 basicmath_small.ads:50:51: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:51:41: low: unused global "RBP"
 basicmath_small.ads:51:41: warning: "RBP" is not modified, could be INPUT
 basicmath_small.ads:57:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:61:06: info: data dependencies proved
 basicmath_small.ads:61:31: info: initialization of "XMM0" proved
 basicmath_small.ads:61:41: info: initialization of "XMM1" proved
 basicmath_small.ads:61:51: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:62:41: low: unused global "RBP"
 basicmath_small.ads:62:41: warning: "RBP" is not modified, could be INPUT
 basicmath_small.ads:68:24: medium: postcondition might fail, cannot prove X86.Memory(i) = X86.Memory'Old(i)
+basicmath_small.ads:72:09: info: data dependencies proved
 basicmath_small.ads:72:31: low: unused global "Dummy_Var"
 basicmath_small.ads:72:31: warning: "Dummy_Var" is not modified, could be INPUT
 basicmath_small.ads:72:74: warning: unused initial value of "CarryFlag"
@@ -249,16 +257,19 @@ basicmath_small.ads:80:60: low: unused global "GS"
 basicmath_small.ads:80:68: low: unused global "SS"
 basicmath_small.ads:80:76: low: unused global "DS"
 basicmath_small.ads:81:18: medium: postcondition might fail, cannot prove X86.RSP = (X86.RSP'Old + 8)
+basicmath_small.ads:97:09: info: data dependencies proved
 basicmath_small.ads:98:30: low: unused global "StackAddressSize"
 basicmath_small.ads:98:64: low: unused global "FS"
 basicmath_small.ads:98:72: low: unused global "GS"
 basicmath_small.ads:98:80: low: unused global "RDI"
 basicmath_small.ads:99:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:101:09: info: data dependencies proved
 basicmath_small.ads:102:30: low: unused global "StackAddressSize"
 basicmath_small.ads:102:64: low: unused global "FS"
 basicmath_small.ads:102:72: low: unused global "GS"
 basicmath_small.ads:102:80: low: unused global "RDI"
 basicmath_small.ads:103:17: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:106:06: info: data dependencies proved
 basicmath_small.ads:106:31: info: initialization of "RCX" proved
 basicmath_small.ads:107:31: info: initialization of "ZeroFlag" proved
 basicmath_small.ads:107:45: info: initialization of "SignFlag" proved
@@ -266,6 +277,7 @@ basicmath_small.ads:107:59: info: initialization of "CarryFlag" proved
 basicmath_small.ads:107:74: info: initialization of "OverflowFlag" proved
 basicmath_small.ads:108:66: warning: "RSP" is not modified, could be INPUT
 basicmath_small.ads:109:14: info: postcondition proved (CVC4: 1 VC)
+basicmath_small.ads:112:03: info: data dependencies proved
 basicmath_small.ads:112:40: low: unused global "Exit_Called"
 basicmath_small.ads:112:40: warning: "Exit_Called" is not modified, could be INPUT
 basicmath_small.ads:112:67: warning: unused initial value of "RCX"
