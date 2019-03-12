@@ -1801,7 +1801,7 @@ Here is the representative type introduced for it:
 .. code-block:: whyml
 
    type __rep =
-     { p__ptr__is_null_pointer : bool; 
+     { p__ptr__is_null_pointer : bool;
        p__ptr__pointer_address : int;
        p__ptr__pointer_value   : natural }
 
@@ -1819,15 +1819,15 @@ are these declarations for the ``Ptr`` type defined above:
 .. code-block:: whyml
 
    function __null_pointer : __rep
- 
+
    axiom __null_pointer__def_axiom :
       __null_pointer.rec__p__ptr__is_null_pointer = True
- 
+
    val rec__p__ptr__pointer_value_
      (a : __rep) : Standard__natural.natural
     requires { not a.rec__p__ptr__is_null_pointer }
     ensures  { result = a.rec__p__ptr__pointer_value }
- 
+
    function bool_eq  (a : __rep) (b : __rep) : bool =
       a.rec__p__ptr__is_null_pointer = b.rec__p__ptr__is_null_pointer
    /\ (not a.rec__p__ptr__is_null_pointer ->
@@ -1863,14 +1863,14 @@ Here are the program functions introduced for initialized and uninitialized
 allocators for ``Ptr``:
 
 .. code-block:: whyml
- 
- val __next_pointer_address  : int__ref 
+
+ val __next_pointer_address  : int__ref
  val __new_uninitialized_allocator (_ : unit) : __rep
   requires { true }
   ensures  { not result.rec__p__ptr__is_null_pointer
 		&& result.rec__p__ptr__pointer_address = __next_pointer_address.int__content }
   writes   { __next_pointer_address }
- 
+
  val __new_initialized_allocator (__init_val : int) : __rep
   requires { true }
   ensures  { not result.rec__p__ptr__is_null_pointer
@@ -1906,17 +1906,17 @@ and a subtype of this access type only storing arrays ranging from 1 to 5:
 Here are the conversion functions and range check predicate generated for ``S``:
 
 .. code-block:: whyml
- 
+
  function to_base (a : __rep) : p__arr_ptr.arr_ptr =
   { p__arr_ptr.rec__p__arr_ptr__pointer_value = of_array a.rec__p__arr_ptr__pointer_value 1 5;
     p__arr_ptr.rec__p__arr_ptr__pointer_address = a.rec__p__arr_ptr__pointer_address;
     p__arr_ptr.rec__p__ptr__is_null_pointer = a.rec__p__arr_ptr__is_null_pointer }
- 
+
  function of_base (r : p__arr_ptr.arr_ptr) : __rep =
   { rec__p__arr_ptr__pointer_value = to_array r.p__arr_ptr.rec__p__arr_ptr__pointer_value;
     rec__p__arr_ptr__pointer_address = r.p__arr_ptr.rec__p__ptr__pointer_address;
     rec__p__arr_ptr__is_null_pointer = r.p__arr_ptr.rec__p__ptr__is_null_pointer }
- 
+
  predicate in_range (first : int) (last : int) (r : p__arr_ptr.arr_ptr)  =
   not r.p__arr_ptr.rec__p__ptr__is_null_pointer ->
    first r.p__arr_ptr.rec__p__ptr__pointer_value = first
@@ -3443,10 +3443,10 @@ Conversions
 ^^^^^^^^^^^
 
 ***********************
-GNAT2why Implementation
+gnat2why Implementation
 ***********************
 
-This section should describe the design of GNAT2why, so that
+This section should describe the design of ``gnat2why``, so that
 developers can enter into the code base more easily.
 
 Design
@@ -3469,6 +3469,36 @@ Completion of Entities
 
 Generation of Checks
 --------------------
+
+Warnings by Proof
+^^^^^^^^^^^^^^^^^
+
+When the switch ``--proof-warnings`` is used, GNATprove attempts to issue
+warnings about various suspicious conditions in the code, like unreachable
+branches, using the capability of provers. To that end, it generates VCs of
+special kinds denoted as ``VC_Warning_Kind``, so that proof of these VCs
+triggers a warning, and absence of proof is ignored. To control the cost of
+this feature, proof is attempted with only one prover (the first prover passed
+currently), and with a very short timeout (1 sec currently). The control of
+these conditions is done in :file:`gnat_config.ml`, see the use of
+``opt_warn_prover`` and ``opt_warn_timeout``.
+
+At the location where a warning could be issued, ``gnat2why`` generates an
+assertion of the suitable kind, checking for the bad condition against which we
+want to defend. For example, it's checking ``False`` for the warning on
+unreachable branches. The assertion is isolated in an ignore block.
+
+In fact, the case of unreachable branches and code is treated specially, as
+it's necessary to generate a call to ``absurd`` instead of an assertion of
+``False``, for the VCgen to correctly handle this case. It turns out that
+putting this call inside an ignore block is also not enough for its effects to
+be ignored, so we additionally isolate it in an if-expression (see
+``Warn_On_Dead_Branch`` in :file:`gnat2why-expr.adb`).
+
+The decision to ignore unproved VCs that correspond to warnings is done in
+``Emit_Proof_Result`` in :file:`gnat2why-error_messages.adb`. Otherwise, the
+proper classification of this message as a warning is done in
+``Error_Msg_Proof`` in :file:`gnat2why-flow_error_messages.adb`.
 
 Handling of Imports (Close_Theory)
 ----------------------------------
