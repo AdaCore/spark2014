@@ -14037,6 +14037,57 @@ package body Gnat2Why.Expr is
             Typ      => Get_Typ (Why_Name));
       end if;
 
+      --  There are no tag checks on dispatching equality. Instead, the
+      --  operator returns False. Take care of this special case by
+      --  constructing the expression:
+      --  if x.tag = y.tag then f x y else false
+
+      if Selector = Dispatch and then Is_Rewritten_Op_Eq (Expr) then
+         declare
+            Tags   : W_Expr_Array (1 .. 2);
+            Tag_Id : Positive := 1;
+            procedure One_Param (Formal : Entity_Id; Actual : Node_Id);
+            --  Compute the tag expression for each parameter and store it
+            --  inside Tags.
+
+            ---------------
+            -- One_Param --
+            ---------------
+
+            procedure One_Param (Formal : Entity_Id; Actual : Node_Id) is
+               pragma Unreferenced (Formal);
+               pragma Assert (Is_Controlling_Actual (Actual));
+               Tmp : constant W_Expr_Id :=
+                 Transform_Expr (Actual, EW_Term, Params);
+            begin
+               Tags (Tag_Id) :=
+                 New_Tag_Access
+                   (Ada_Node => Actual,
+                    Domain   => EW_Term,
+                    Name     => Tmp,
+                    Ty       => Get_Ada_Node (+Get_Type (Tmp)));
+               Tag_Id := Tag_Id + 1;
+            end One_Param;
+
+            procedure Iterate_Call is new Iterate_Call_Parameters (One_Param);
+
+         begin
+            Iterate_Call (Expr);
+
+            T := New_Conditional
+              (Ada_Node  => Expr,
+               Domain    => Domain,
+               Condition => New_Comparison
+                 (Symbol => Why_Eq,
+                  Left   => Tags (1),
+                  Right  => Tags (2),
+                  Domain => Domain),
+               Then_Part => T,
+               Else_Part => New_Literal (Value => EW_False, Domain => Domain),
+               Typ       => EW_Bool_Type);
+         end;
+      end if;
+
       if Domain = EW_Prog then
 
          --  Insert invariant check if needed
@@ -14055,7 +14106,7 @@ package body Gnat2Why.Expr is
 
          --  Insert tag check if needed
 
-         if Selector = Dispatch then
+         if Selector = Dispatch and then not Is_Rewritten_Op_Eq (Expr) then
             T := +Sequence (Compute_Tag_Check (Expr, Params),
                             +T);
          end if;

@@ -510,6 +510,11 @@ package SPARK_Atree is
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
 
+   function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean;
+   --  Return true if N is a function call and its original node is an equality
+   --  operation. This is used to handle specifically dispatching calls to
+   --  primitive equality.
+
    function Is_Tag_Indeterminate (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
 

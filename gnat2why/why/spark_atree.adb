@@ -952,6 +952,14 @@ package body SPARK_Atree is
    function Is_OK_Static_Range (N : Node_Id) return Boolean renames
      Sem_Eval.Is_OK_Static_Range;
 
+   ------------------------
+   -- Is_Rewritten_Op_Eq --
+   ------------------------
+
+   function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean is
+     (Nkind (N) = N_Function_Call
+      and then Nkind (Original_Node (N)) in N_Op_Eq | N_Op_Ne);
+
    --------------------------
    -- Is_Static_Expression --
    --------------------------
