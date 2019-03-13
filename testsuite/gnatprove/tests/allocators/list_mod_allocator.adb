@@ -137,6 +137,12 @@ is
             end loop;
          end;
 
+         --  Part of the Model_Is_Well_Formed predicate which is repeated here
+         --  to help the provers with the postcondition
+         pragma Assert (for all R in Valid_Resource =>
+                          (case Data (R).Stat is
+                              when Available => not Contains (Alloc, R),
+                              when Allocated => not Contains (Avail, R) and Contains (Alloc, R)));
          return T'(Available => Avail, Allocated => Alloc);
       end Model;
 

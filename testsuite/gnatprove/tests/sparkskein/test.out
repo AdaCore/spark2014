@@ -153,7 +153,7 @@ skein.adb:732:13: info: initialization of "Msg_Byte_Count" proved
 skein.adb:735:29: info: initialization of "Msg_Byte_Count" proved
 skein.adb:735:49: info: division check proved (CVC4: 1 VC)
 skein.adb:735:49: info: range check proved (CVC4: 1 VC)
-skein.adb:737:13: info: precondition proved (CVC4: 6 VC)
+skein.adb:737:13: info: precondition proved (CVC4: 5 VC; Z3: 1 VC)
 skein.adb:740:35: info: initialization of "Current_Msg_Offset" proved
 skein.adb:741:35: info: initialization of "Block_Count" proved
 skein.adb:744:29: info: initialization of "Block_Count" proved

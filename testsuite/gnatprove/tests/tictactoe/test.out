@@ -2,7 +2,7 @@ game.adb:14:10: info: initialization of "Player_Turn" proved
 game.adb:16:10: info: precondition proved (CVC4: 2 VC)
 game.adb:19:10: info: precondition proved (CVC4: 2 VC)
 game.adb:23:26: info: initialization of "Player_Turn" proved
-tictactoe.adb:13:14: info: postcondition proved (Z3: 1 VC)
+tictactoe.adb:13:14: info: postcondition proved (CVC4: 1 VC)
 tictactoe.adb:31:16: info: initialization of "Last" proved
 tictactoe.adb:33:36: info: initialization of "S" proved
 tictactoe.adb:36:24: info: initialization of "C" proved

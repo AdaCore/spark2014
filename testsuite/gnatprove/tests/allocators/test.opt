@@ -5,4 +5,3 @@ assertions SKIP minor proof diff
 !large SKIP part of large testsuite
 inverse-prover SKIP get a funny DIFF related to ordering of messages
 ALL RLIMIT 2000
-ALL XFAIL S304-022 session to be reupdated. failure in mailserver
