@@ -2,6 +2,7 @@ skein.adb:108:35: info: range check proved (altergo: 1 VC)
 skein.adb:115:35: info: range check proved (altergo: 1 VC)
 skein.adb:121:35: info: range check proved (altergo: 1 VC)
 skein.adb:128:35: info: range check proved (altergo: 1 VC)
+skein.adb:193:11: info: data dependencies proved
 skein.adb:223:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:857
 skein.adb:224:13: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:857
 skein.adb:224:29: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:857
@@ -23,6 +24,7 @@ skein.adb:255:47: info: index check proved (CVC4: 16 VC), in call inlined at ske
 skein.adb:256:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
 skein.adb:257:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
 skein.adb:258:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
+skein.adb:286:11: info: data dependencies proved
 skein.adb:296:19: info: postcondition proved (CVC4: 4 VC)
 skein.adb:318:23: info: initialization of "KS" proved, in call inlined at skein.adb:566
 skein.adb:320:30: info: initialization of "KS" proved, in call inlined at skein.adb:566
@@ -40,6 +42,7 @@ skein.adb:345:49: info: initialization of "TS" proved, in call inlined at skein.
 skein.adb:346:30: info: initialization of "X" proved
 skein.adb:346:30: info: initialization of "X" proved, in call inlined at skein.adb:584
 skein.adb:346:49: info: initialization of "TS" proved, in call inlined at skein.adb:584
+skein.adb:350:14: info: data dependencies proved
 skein.adb:357:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:530
 skein.adb:357:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:539
 skein.adb:360:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:530
@@ -294,6 +297,7 @@ skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
 skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
 skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.ads:173:30: info: initialization of "Ctx.X" proved
+skein.ads:175:11: info: data dependencies proved
 skein.ads:176:19: info: postcondition proved (CVC4: 4 VC)
 skein.ads:176:36: info: initialization of "Ctx.B" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Byte_Count" proved
@@ -307,9 +311,16 @@ skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
 skein.ads:176:36: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
 skein.ads:176:36: info: initialization of "Ctx.X" proved
+skein.ads:183:11: info: data dependencies proved
 skein.ads:190:19: info: postcondition proved (CVC4: 3 VC)
 skein.ads:195:31: info: initialization of "Hash" proved
+skein.ads:196:11: info: data dependencies proved
 skein.ads:201:46: info: division check proved (CVC4: 1 VC)
+skein.ads:205:11: info: data dependencies proved
+skein.ads:216:11: info: data dependencies proved
+skein.ads:217:11: info: flow dependencies proved
+skein.ads:223:11: info: data dependencies proved
+skein.ads:224:11: info: flow dependencies proved
 skein.ads:226:28: info: range check proved (altergo: 1 VC)
 skein.ads:371:51: info: predicate check proved (CVC4: 1 VC)
 skein.ads:371:52: info: predicate check proved (CVC4: 1 VC)

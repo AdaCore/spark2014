@@ -85,6 +85,7 @@ list_allocator.adb:106:30: info: loop invariant preservation proved (CVC4: 1 VC)
 list_allocator.adb:107:30: info: loop invariant initialization proved (CVC4: 1 VC)
 list_allocator.adb:107:30: info: loop invariant preservation proved (CVC4: 1 VC)
 list_allocator.adb:107:62: info: initialization of "Data" constituent of "State" proved
+list_allocator.ads:10:03: info: flow dependencies proved
 list_allocator.ads:11:03: info: initial condition proved (CVC4: 2 VC)
 list_allocator.ads:11:24: info: initialization of "Data" constituent of "State" proved
 list_allocator.ads:11:42: info: initialization of "First_Available" constituent of "State" proved
@@ -309,6 +310,7 @@ list_mod_allocator.adb:240:07: info: assertion proved (Z3: 1 VC)
 list_mod_allocator.adb:240:49: info: initialization of "Data" constituent of "State" proved
 list_mod_allocator.adb:240:49: info: initialization of "First_Available" constituent of "State" proved
 list_mod_allocator.adb:240:49: info: precondition proved (CVC4: 1 VC)
+list_mod_allocator.ads:10:03: info: flow dependencies proved
 list_mod_allocator.ads:11:03: info: initial condition proved (CVC4: 2 VC)
 list_mod_allocator.ads:11:24: info: initialization of "Data" constituent of "State" proved
 list_mod_allocator.ads:11:42: info: initialization of "First_Available" constituent of "State" proved
@@ -370,6 +372,7 @@ simple_allocator.adb:67:13: info: loop invariant preservation proved (CVC4: 2 VC
 simple_allocator.adb:68:53: info: index check proved (CVC4: 4 VC)
 simple_allocator.adb:75:44: info: index check proved (CVC4: 2 VC)
 simple_allocator.adb:76:16: info: index check proved (CVC4: 2 VC)
+simple_allocator.ads:9:03: info: flow dependencies proved
 simple_allocator.ads:10:03: info: initial condition proved (CVC4: 1 VC)
 simple_allocator.ads:10:24: info: initialization of "Data" constituent of "State" proved
 simple_allocator.ads:52:44: info: postcondition proved (CVC4: 1 VC)

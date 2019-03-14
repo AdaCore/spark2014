@@ -157,6 +157,7 @@ binary_trees.adb:270:50: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:270:50: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:271:24: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:271:24: info: precondition proved (CVC4: 2 VC)
+binary_trees.adb:285:06: info: data dependencies proved
 binary_trees.adb:300:23: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:300:23: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:303:08: info: postcondition proved (CVC4: 2 VC)
@@ -220,6 +221,7 @@ binary_trees.adb:352:38: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:352:45: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:352:45: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:352:63: info: index check proved (CVC4: 4 VC)
+binary_trees.adb:367:06: info: data dependencies proved
 binary_trees.adb:369:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:371:08: info: postcondition proved (CVC4: 4 VC)
 binary_trees.adb:372:14: info: invariant check proved (CVC4: 1 VC)
@@ -262,6 +264,7 @@ binary_trees.adb:391:87: info: overflow check proved (CVC4: 2 VC)
 binary_trees.adb:397:07: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:407:07: info: initialization of "F_Old.C" proved
 binary_trees.adb:407:07: info: initialization of "F_Old.S" proved
+binary_trees.adb:414:09: info: data dependencies proved
 binary_trees.adb:428:25: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:431:20: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:431:20: info: precondition proved (CVC4: 1 VC)
@@ -508,6 +511,7 @@ binary_trees.adb:636:10: info: precondition proved (CVC4: 16 VC)
 binary_trees.adb:636:10: medium: invariant check might fail
 binary_trees.adb:650:07: info: initialization of "F_Old.C" proved
 binary_trees.adb:650:07: info: initialization of "F_Old.S" proved
+binary_trees.adb:657:09: info: data dependencies proved
 binary_trees.adb:672:29: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:675:25: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:676:20: info: invariant check proved (CVC4: 1 VC)
@@ -777,6 +781,7 @@ binary_trees.adb:888:10: info: precondition proved (CVC4: 18 VC)
 binary_trees.adb:888:10: medium: invariant check might fail
 binary_trees.adb:902:07: info: initialization of "F_Old.C" proved
 binary_trees.adb:902:07: info: initialization of "F_Old.S" proved
+binary_trees.adb:909:09: info: data dependencies proved
 binary_trees.adb:922:24: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:922:24: info: precondition proved (CVC4: 1 VC)
 binary_trees.adb:926:20: info: invariant check proved (CVC4: 1 VC)
@@ -895,6 +900,7 @@ binary_trees.adb:1072:07: info: precondition proved (CVC4: 18 VC)
 binary_trees.adb:1072:07: medium: invariant check might fail
 binary_trees.adb:1082:07: info: initialization of "F_Old.C" proved
 binary_trees.adb:1082:07: info: initialization of "F_Old.S" proved
+binary_trees.adb:1089:09: info: data dependencies proved
 binary_trees.adb:1102:11: info: postcondition proved (CVC4: 4 VC)
 binary_trees.adb:1103:26: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:1104:16: info: invariant check proved (CVC4: 1 VC)
@@ -957,6 +963,7 @@ binary_trees.ads:74:47: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:75:33: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:75:33: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:85:29: medium: postcondition might fail, cannot prove J = I
+binary_trees.ads:93:06: info: data dependencies proved
 binary_trees.ads:94:14: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:97:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:97:17: info: precondition proved (CVC4: 1 VC)
@@ -974,6 +981,7 @@ binary_trees.ads:107:27: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:107:58: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:107:58: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:107:81: info: overflow check proved (CVC4: 1 VC)
+binary_trees.ads:114:06: info: data dependencies proved
 binary_trees.ads:116:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:117:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:118:14: info: postcondition proved (CVC4: 1 VC)
@@ -1200,6 +1208,7 @@ binary_trees.ads:405:65: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:409:42: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:409:42: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:418:09: info: invariant check proved on default value (CVC4: 1 VC)
+binary_trees.ads:427:06: info: data dependencies proved
 red_black_trees.adb:35:20: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:37:37: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:38:40: info: precondition proved (CVC4: 2 VC)
@@ -1774,6 +1783,7 @@ search_trees.adb:114:30: info: initialization of "KI" proved
 search_trees.adb:115:19: info: range check proved (CVC4: 1 VC)
 search_trees.adb:115:30: info: initialization of "KJ" proved
 search_trees.adb:118:14: info: initialization of "KI" proved
+search_trees.adb:135:06: info: data dependencies proved
 search_trees.adb:141:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:142:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:144:23: info: precondition proved (CVC4: 1 VC)
@@ -1911,6 +1921,7 @@ search_trees.adb:308:56: info: overflow check proved (CVC4: 1 VC)
 search_trees.adb:310:25: medium: assertion might fail, cannot prove Values (J) < Values (K)
 search_trees.adb:314:22: info: assertion proved (CVC4: 1 VC)
 search_trees.adb:314:22: info: precondition proved (CVC4: 1 VC)
+search_trees.adb:332:06: info: data dependencies proved
 search_trees.adb:338:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:339:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:340:17: info: precondition proved (CVC4: 1 VC)
@@ -2045,6 +2056,7 @@ search_trees.adb:506:28: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:507:36: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:507:59: info: overflow check proved (CVC4: 1 VC)
 search_trees.adb:509:25: medium: assertion might fail, cannot prove Values (J) < Values (I)
+search_trees.adb:524:06: info: data dependencies proved
 search_trees.adb:531:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:534:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:534:36: info: precondition proved (CVC4: 1 VC)
@@ -2076,6 +2088,7 @@ search_trees.adb:557:28: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:558:36: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:558:60: info: overflow check proved (CVC4: 1 VC)
 search_trees.adb:561:25: medium: assertion might fail, cannot prove Values (J) > Values (I)
+search_trees.adb:573:06: info: data dependencies proved
 search_trees.adb:576:42: info: range check proved (CVC4: 1 VC)
 search_trees.adb:578:42: info: range check proved (CVC4: 1 VC)
 search_trees.adb:579:17: info: precondition proved (CVC4: 1 VC)
@@ -2093,6 +2106,7 @@ search_trees.adb:586:45: info: range check proved (CVC4: 1 VC)
 search_trees.adb:589:08: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:589:08: info: postcondition proved (CVC4: 1 VC)
 search_trees.adb:589:22: info: invariant check proved (CVC4: 1 VC)
+search_trees.adb:605:06: info: data dependencies proved
 search_trees.adb:612:40: info: range check proved (CVC4: 1 VC)
 search_trees.adb:613:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:613:43: info: range check proved (CVC4: 1 VC)
@@ -2729,6 +2743,7 @@ search_trees.adb:1211:32: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1225:07: info: initialization of "T_Old.Root" proved
 search_trees.adb:1225:07: info: initialization of "T_Old.Struct" proved
 search_trees.adb:1225:07: info: initialization of "T_Old.Values" proved
+search_trees.adb:1232:09: info: data dependencies proved
 search_trees.adb:1243:20: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1243:46: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1250:26: info: precondition proved (CVC4: 1 VC)
@@ -3323,7 +3338,9 @@ tree_model.ads:46:28: info: range check proved (CVC4: 1 VC)
 tree_model.ads:46:44: info: precondition proved (CVC4: 2 VC)
 tree_model.ads:46:52: info: range check proved (CVC4: 1 VC)
 tree_model.ads:59:16: info: precondition proved (CVC4: 2 VC)
+tree_model.ads:63:06: info: data dependencies proved
 tree_model.ads:67:14: info: postcondition proved (CVC4: 1 VC)
+tree_model.ads:71:06: info: data dependencies proved
 tree_model.ads:73:17: info: precondition proved (CVC4: 1 VC)
 tree_model.ads:76:14: info: postcondition proved (CVC4: 1 VC)
 tree_model.ads:76:14: info: precondition proved (CVC4: 1 VC)
