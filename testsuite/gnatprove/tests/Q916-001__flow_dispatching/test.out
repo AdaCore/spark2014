@@ -26,7 +26,6 @@ ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 ints.ads:16:34: medium: overflow check might fail
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 ints.ads:26:25: info: postcondition proved (CVC4: 1 VC)
-test_ints.adb:3:11: medium: "ada.text_io.file_system" might not be initialized after elaboration of main program "Test_Ints"
 test_ints.adb:7:24: info: initialization of "I.Max" proved
 test_ints.adb:7:24: info: initialization of "I.Min" proved
 test_ints.adb:7:24: info: initialization of "I.Value" proved
