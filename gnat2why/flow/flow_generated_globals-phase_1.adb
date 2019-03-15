@@ -194,11 +194,6 @@ package body Flow_Generated_Globals.Phase_1 is
       --  are pulled from other compilation units and might only be known by
       --  Entity_Name in phase 2, we need to register variables and abstract
       --  states in predefined units to know their initialization status.
-      --
-      --  ??? this routine repeats conversion from Entity_Name to Entity_Id,
-      --  which is already done in Process_Volatiles_And_States; however, those
-      --  conversion will be eliminated by rewriting front-end globals to
-      --  work on Entity_Id, not by refactoring those two routines.
 
       procedure Process_Ghost (Objects : Node_Sets.Set);
       --  Picks ghost entities from Objects and stores them in the appropriate
