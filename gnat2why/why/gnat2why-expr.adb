@@ -11793,15 +11793,15 @@ package body Gnat2Why.Expr is
                --  "Base" with the "Parent_Type".
 
             begin
-               --  Check for absence of run-time errors in type declaration
-               --  when the entity is in SPARK, and the type declaration is
-               --  not simply a renaming of an existing type. This avoids
-               --  duplicating checks for every such renaming. Do not generate
-               --  checks for actual subtypes as they should be correct by
-               --  construction.
+               --  Check for absence of run-time errors when the type
+               --  declaration is not simply a renaming of an existing type.
+               --  This avoids duplicating checks for every such renaming. Do
+               --  not generate checks for actual subtypes as they should be
+               --  correct by construction.
 
-               if Entity_In_SPARK (Ent)
-                 and then not Is_Type_Renaming (Decl)
+               pragma Assert (Entity_In_SPARK (Ent));
+
+               if not Is_Type_Renaming (Decl)
                  and then not Is_Actual_Subtype (Ent)
                then
                   Base := Get_Parent_Type_If_Check_Needed (Decl);
@@ -11975,8 +11975,7 @@ package body Gnat2Why.Expr is
                --  that default values of the type and all its subtypes respect
                --  the invariant.
 
-               if Entity_In_SPARK (Ent)
-                 and then Nkind (Decl) = N_Full_Type_Declaration
+               if Nkind (Decl) = N_Full_Type_Declaration
                  and then Invariant_Check_Needed (Ent)
                then
                   R := Sequence
