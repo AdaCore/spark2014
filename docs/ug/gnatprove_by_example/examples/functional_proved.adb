@@ -1,49 +1,49 @@
 package body Functional_Proved with
   SPARK_Mode
 is
-   Max : Natural := 0;  --  max value seen
-   Snd : Natural := 0;  --  second max value seen
+   Max1 : Natural := 0;  --  max value seen
+   Max2 : Natural := 0;  --  second max value seen
 
    function Invariant return Boolean is
-     (if Max = 0 then Snd = 0 else Snd < Max);
+     (if Max1 = 0 then Max2 = 0 else Max2 < Max1);
 
-   function Max_Value_Seen return Integer is (Max);
+   function Max_Value_Seen return Integer is (Max1);
 
-   function Second_Max_Value_Seen return Integer is (Snd);
+   function Second_Max_Value_Seen return Integer is (Max2);
 
    procedure Update (X : Natural) with
-     Pre  => X > Snd and then      --  support of maintenance
-             Invariant,            --  invariant checking
-     Post => Invariant and then    --  invariant checking
-             (if X > Max'Old then  --  complete functional
-                Snd = Max'Old and Max = X
-              elsif X < Max'Old then
-                Snd = X and Max = Max'Old
+     Pre  => X > Max2 and then      --  support of maintenance
+             Invariant,             --  invariant checking
+     Post => Invariant and then     --  invariant checking
+             (if X > Max1'Old then  --  complete functional
+                Max2 = Max1'Old and Max1 = X
+              elsif X < Max1'Old then
+                Max2 = X and Max1 = Max1'Old
               else
-                Snd = Snd'Old and Max = Max'Old)
+                Max2 = Max2'Old and Max1 = Max1'Old)
    is
    begin
-      if X > Max then
-         Snd := Max;
-         Max := X;
-      elsif X < Max then
-         Snd := X;
+      if X > Max1 then
+         Max2 := Max1;
+         Max1 := X;
+      elsif X < Max1 then
+         Max2 := X;
       end if;
    end Update;
 
    procedure Seen_One (X : Integer) is
    begin
-      if X > Snd then
+      if X > Max2 then
          Update (X);
       end if;
    end Seen_One;
 
    procedure Seen_Two (X, Y : Natural) is
    begin
-      if X > Max then
-         Max := Y;
-         Snd := X;
-      elsif X > Snd then
+      if X > Max1 then
+         Max1 := Y;
+         Max2 := X;
+      elsif X > Max2 then
          Update (Y);
          Seen_One (X);
       else
