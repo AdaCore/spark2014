@@ -37,7 +37,14 @@ endif
 
 all: build
 
-setup:
+setup_precheck:
+	@if [ ! -d gnat_src ]; \
+	then \
+	  echo "error: missing directory or link \"gnat_src\" to GNAT sources"; \
+	  false; \
+	fi
+
+setup: setup_precheck
 	$(MAKE) -C why/xgen
 	mkdir -p obj obj-tools ../install/bin
 	sed -e "s^@ADAINCLUDE@^$(adainclude)^" \
