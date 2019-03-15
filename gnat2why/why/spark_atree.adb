@@ -998,9 +998,7 @@ package body SPARK_Atree is
             return not Cstr_Subtype_Indication (Decl);
 
          when N_Full_Type_Declaration =>
-            if Nkind (Type_Definition (Decl)) =
-              N_Derived_Type_Definition
-            then
+            if Nkind (Type_Definition (Decl)) = N_Derived_Type_Definition then
                declare
                   Def : constant Node_Id := Type_Definition (Decl);
                begin
