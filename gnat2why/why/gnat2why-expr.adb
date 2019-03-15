@@ -11785,12 +11785,14 @@ package body Gnat2Why.Expr is
             | N_Full_Type_Declaration
          =>
             declare
-               Ent  : Entity_Id := Unique_Defining_Entity (Decl);
-               Base : Entity_Id := Get_Parent_Type_If_Check_Needed (Decl);
+               Ent  : constant Entity_Id :=
+                 Retysp (Unique_Defining_Entity (Decl));
+
+               Base : Entity_Id;
+               --  ??? this name is rather unfortunate, because we will assign
+               --  "Base" with the "Parent_Type".
 
             begin
-               Ent := Retysp (Ent);
-
                --  Check for absence of run-time errors in type declaration
                --  when the entity is in SPARK, and the type declaration is
                --  not simply a renaming of an existing type. This avoids
@@ -11802,6 +11804,8 @@ package body Gnat2Why.Expr is
                  and then not Is_Type_Renaming (Decl)
                  and then not Is_Actual_Subtype (Ent)
                then
+                  Base := Get_Parent_Type_If_Check_Needed (Decl);
+
                   if Present (Base) then
                      Base := Retysp (Base);
                   end if;
