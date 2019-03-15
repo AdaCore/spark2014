@@ -17,7 +17,7 @@ nonlinear.adb:33:24: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:33:29: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:33:33: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:33:38: info: range check proved (CVC4: 1 VC)
-nonlinear.adb:33:46: medium: overflow check might fail [possible explanation: subprogram at nonlinear.ads:14 should mention X in a precondition]
+nonlinear.adb:33:46: medium: overflow check might fail (e.g. when X = 2) [possible explanation: subprogram at nonlinear.ads:14 should mention X in a precondition]
 nonlinear.adb:33:51: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:39:16: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:39:20: info: overflow check proved (CVC4: 1 VC)
