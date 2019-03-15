@@ -87,3 +87,65 @@ entitled `GNATprove Mode` in ``sinfo.ads``.
 *************************
 Marking Phase in gnat2why
 *************************
+
+This phase consists in checking that all the code marked as ``SPARK_Mode =>
+On`` is indeed valid SPARK code. It issues errors if violations of SPARK
+legality rules are encountered, which prevents further analysis. Otherwise,
+analysis continues on the list of subprogram/package bodies that have been
+selected as a result.
+
+The entry point for the marking phase is procedure ``Mark_Compilation_Unit`` in
+:file:`spark_definition.adb`. It calls the main recursive procedure ``Mark``
+which considers all possible nodes in the GNAT AST. When an entity is
+encountered, its SPARK status is queried with function ``In_SPARK`` which marks
+the entity by calling procedure ``Mark_Entity`` before returning its SPARK
+status.
+
+During the traversal of the AST, marking maintains a global variable
+``Current_SPARK_Pragma`` to denote the currently applicable ``SPARK_Mode``
+pragma if any. This is queried in function ``SPARK_Pragma_Is`` to know when the
+code is subject to ``SPARK_Mode => On`` or ``SPARK_Mode => Off``.
+
+Marking Entities
+================
+
+Function ``Mark_Entity`` uses a stack of entities currently considered by
+marking, to avoid infinite loops. Querying the status of an entity in the stack
+immediately returns. The function works as follows:
+ - It includes the entity in the set of marked entities.
+ - If the entity is not subject to ``SPARK_Mode => Off``, it includes it in the
+   set of SPARK entities.
+ - It then marks the entity according to its type. This is where it may call
+   itself recursively. For example, for a variable to be in SPARK, its type
+   should be in SPARK. If violations of SPARK legality rules are detected, the
+   presence of a violation and its origin are recorded.
+ - If a violation was detected, remove the entity from the set of SPARK
+   entities. Otherwise add it to a list for analysis.
+
+Marking types is more subtle, as a type may be in SPARK even if is derived in
+some way (not talking about the relation between parent and derived types here)
+from a non-SPARK type. This is the case whenever the non-SPARK type is in
+private part of a package subject to ``SPARK_Mode => Off``, while the SPARK
+type is either subject to ``SPARK_Mode => On`` or not subject to that pragma.
+For this reason, one should in general call ``Retysp_In_SPARK`` to query
+whether the `representative` type is in SPARK, rather than calling ``In_SPARK``
+directly on a type.
+
+Recording Violations
+====================
+
+When a violation of SPARK legality rules is detected, procedure
+``Mark_Violation`` is called. This procedure records the presence of a
+violation, and may issue an error if two conditions are respected:
+ - the Boolean ``Emit_Messages`` is True, which corresponds to the main call to
+   ``gnat2why``, and not the call for generating cross-references
+ - the code is subject to ``SPARK_Mode => On``
+
+There are in fact two variants of this procedure, depending on whether this is
+a primitive violation (say, use of a feature forbidden in SPARK Reference
+Manual) or whether this corresponds to the use of a non-SPARK entity. This
+allows to attach to each non-SPARK entity a primitive reason for the violation,
+which is used to issue better error messages. This is particularly useful when
+``SPARK_Mode`` is used only on a part of the code, as the reason for an entity
+not being in SPARK may be in a part of the code not subject to ``SPARK_Mode =>
+On``, hence no error is issued where the primitive violation occurs.
