@@ -2066,7 +2066,17 @@ package body SPARK_Definition is
                   Set_Partial_View (Full_View (E), E);
                end if;
 
-               Mark_Entity (E);
+               if In_SPARK (E) then
+                  if Nkind (N) = N_Full_Type_Declaration then
+                     declare
+                        T_Def : constant Node_Id := Type_Definition (N);
+                     begin
+                        if Nkind (T_Def) = N_Derived_Type_Definition then
+                           Mark (Subtype_Indication (T_Def));
+                        end if;
+                     end;
+                  end if;
+               end if;
             end;
 
          when N_Task_Type_Declaration
