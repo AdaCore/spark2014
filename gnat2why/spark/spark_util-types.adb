@@ -139,7 +139,7 @@ package body SPARK_Util.Types is
             --  it is in SPARK and we reach it, or it is not in SPARK and we
             --  return at this point.
 
-            elsif Ekind (Typ) in Private_Kind
+            elsif Is_Private_Type (Typ)
               and then Present (Underlying_Full_View (Typ))
             then
                if Entity_In_SPARK (Underlying_Full_View (Typ)) then
@@ -560,7 +560,7 @@ package body SPARK_Util.Types is
 
       --  Return True if Ty is a private type
 
-      return Ekind (Ty) in Private_Kind;
+      return Is_Private_Type (Ty);
    end Has_Private_Fields;
 
    ----------------------------
