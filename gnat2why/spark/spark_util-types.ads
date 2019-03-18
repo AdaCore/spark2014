@@ -180,15 +180,6 @@ package SPARK_Util.Types is
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
 
-   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id;
-   --  Find the aspect specification Predicate or Dynamic_Predicate or
-   --  Static_Predicate associated with entity Typ. Return Empty if Typ does
-   --  not have any of these aspects. Typ might still inherit the aspect in
-   --  such cases.
-   --  This is only used to give better locations for error messages. To get
-   --  the predicate expression, use the procedure generated to check the
-   --  predicate.
-
    function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id with
      Pre => Is_Type (E) and then Has_DIC (E);
    --  @param E a type with a DIC

@@ -23,7 +23,6 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
@@ -292,28 +291,6 @@ package body SPARK_Util.Types is
 
       return Count;
    end Count_Non_Inherited_Discriminants;
-
-   ---------------------------
-   -- Find_Predicate_Aspect --
-   ---------------------------
-
-   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id is
-      N : Node_Id;
-
-   begin
-      N := Find_Aspect (Typ, Aspect_Predicate);
-      if Present (N) then
-         return N;
-      end if;
-
-      N := Find_Aspect (Typ, Aspect_Dynamic_Predicate);
-      if Present (N) then
-         return N;
-      end if;
-
-      N := Find_Aspect (Typ, Aspect_Static_Predicate);
-      return N;
-   end Find_Predicate_Aspect;
 
    ------------------------------------
    -- Get_Full_Type_Without_Checking --
