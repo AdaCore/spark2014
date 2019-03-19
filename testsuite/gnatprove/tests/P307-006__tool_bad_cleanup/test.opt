@@ -1,1 +1,1 @@
-!packaged XFAIL this test only works in official packages (R913-001)
+!packaged SKIP this test only works in official packages (R913-001)
