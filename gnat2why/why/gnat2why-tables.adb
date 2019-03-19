@@ -276,13 +276,13 @@ package body Gnat2Why.Tables is
 
    function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean is
       Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
-      C_I_Map : constant Component_Info_Map :=
+      C_I_Map : Component_Info_Map renames
         Comp_Info (Rec_Ty).Variant_Info;
       Curs    : constant Component_Info_Maps.Cursor :=
         C_I_Map.Find (Search_Component_In_Type (Rec_Ty, Comp));
    begin
       return Component_Info_Maps.Has_Element (Curs)
-        and then Present (Component_Info_Maps.Element (Curs).Parent_Variant);
+        and then Present (C_I_Map (Curs).Parent_Variant);
    end Has_Variant_Info;
 
    -------------------------
