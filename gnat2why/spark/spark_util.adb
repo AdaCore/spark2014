@@ -622,10 +622,10 @@ package body SPARK_Util is
             return Entity_In_SPARK (Full_View (Ty));
          end if;
 
-      --  Components of a concurrent type are visible except if the type full
+      --  Components of a protected type are visible except if the type full
       --  view is not in SPARK.
 
-      elsif Is_Concurrent_Type (Ty) then
+      elsif Is_Protected_Type (Ty) then
 
          return not Full_View_Not_In_SPARK (Ty);
 
