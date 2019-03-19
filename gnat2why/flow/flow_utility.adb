@@ -351,11 +351,6 @@ package body Flow_Utility is
         or else Has_Discriminants (E)
       then
          declare
-            Ptr : Entity_Id;
-            T   : Entity_Id          := E;
-            L   : Node_Lists.List    := Node_Lists.Empty_List;
-            S   : Component_Sets.Set := Component_Sets.Empty_Set;
-
             function Up (E : Entity_Id) return Entity_Id with Pure_Function;
             --  Get parent type, but don't consider record subtypes' ancestors
 
@@ -378,6 +373,13 @@ package body Flow_Utility is
                   return A;
                end if;
             end Up;
+
+            --  Local variables
+
+            Ptr : Entity_Id;
+            T   : Entity_Id          := E;
+            L   : Node_Lists.List    := Node_Lists.Empty_List;
+            S   : Component_Sets.Set := Component_Sets.Empty_Set;
 
          begin
             loop
