@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                    Copyright (C) 2018-2019, AdaCore                      --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -69,6 +69,7 @@ package SPARK_Atree is
          --  the renaming objects are not removed from the tree. We can safely
          --  ignore them.
 
+                                      | N_Exception_Declaration
                                       | N_Object_Renaming_Declaration
                                       | N_Number_Declaration
                                       | N_Use_Package_Clause
