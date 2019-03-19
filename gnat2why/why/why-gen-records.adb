@@ -222,7 +222,7 @@ package body Why.Gen.Records is
          Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
          Count     : Natural := 0;
       begin
-         for Field of Get_Component_Set (Ty_Ext) loop
+         for Field of Fields loop
 
             --  Only consider components and part of variables
 
