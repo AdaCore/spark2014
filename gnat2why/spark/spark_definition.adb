@@ -3094,8 +3094,7 @@ package body SPARK_Definition is
             --  case (scope not marked SPARK_Mode(On)), the type entity was
             --  stored as value in the Delayed_Type_Aspects map.
 
-            elsif (Is_Type (Delayed_Mapping)
-                   and then Retysp_In_SPARK (Delayed_Mapping))
+            elsif Retysp_In_SPARK (Delayed_Mapping)
               or else Entity_In_SPARK (Delayed_Mapping)
             then
                Current_SPARK_Pragma := Empty;
