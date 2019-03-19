@@ -19,5 +19,4 @@ badpre.adb:5:11: info: postcondition proved (Z3: 1 VC)
 only Alt-Ergo
 ----------------
 badpre.adb:2:11: warning: subprogram "Badpre" has no effect
-badpre.adb:4:11: warning: precondition is always False (altergo: 1 VC)
-badpre.adb:5:11: info: postcondition proved (altergo: 1 VC)
+badpre.adb:5:11: medium: postcondition might fail, cannot prove false

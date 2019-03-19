@@ -1143,10 +1143,10 @@ red_black_trees.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:81:13: info: loop invariant initialization proved (CVC4: 7 VC)
 red_black_trees.adb:87:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:88:26: info: precondition proved (CVC4: 4 VC)
+red_black_trees.adb:89:20: medium: loop invariant might fail after first iteration, cannot prove Res (I).Depth = 1 + Extended_Index_Type'max
 red_black_trees.adb:89:38: info: overflow check proved (CVC4: 2 VC)
 red_black_trees.adb:90:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:91:26: info: precondition proved (CVC4: 4 VC)
-red_black_trees.adb:92:20: medium: loop invariant might fail after first iteration, cannot prove Res (I).Count = (if T.Color (I) = Black then 1 else 0) + Res (Peek (T.Struct, I, Left)).Count
 red_black_trees.adb:94:23: info: overflow check proved (CVC4: 2 VC)
 red_black_trees.adb:94:30: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:99:13: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -1319,11 +1319,11 @@ red_black_trees.adb:332:25: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:332:25: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:332:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:332:44: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:334:13: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:334:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:334:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:335:18: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:335:18: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
+red_black_trees.adb:335:18: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (X).Status, in call inlined at red_black_trees.adb:440
 red_black_trees.adb:336:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:336:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:336:17: medium: loop invariant might fail after first iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:440
@@ -1331,6 +1331,7 @@ red_black_trees.adb:336:17: medium: loop invariant might fail after first iterat
 red_black_trees.adb:336:17: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (X).Count = Nb_Blacks (T_Old) (Y).Count, in call inlined at red_black_trees.adb:495
 red_black_trees.adb:336:43: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:336:43: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
+red_black_trees.adb:338:13: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:338:13: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:338:13: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:338:16: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
@@ -1338,7 +1339,6 @@ red_black_trees.adb:338:16: info: precondition proved (CVC4: 2 VC), in call inli
 red_black_trees.adb:339:18: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:339:18: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:339:18: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (Y).Status, in call inlined at red_black_trees.adb:440
-red_black_trees.adb:339:18: medium: loop invariant might fail in first iteration, cannot prove Nb_Blacks (T) (Y).Status, in call inlined at red_black_trees.adb:495
 red_black_trees.adb:340:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:340:17: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:340:43: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:440
@@ -1889,7 +1889,7 @@ search_trees.adb:557:23: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:557:28: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:558:36: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:558:60: info: overflow check proved (CVC4: 1 VC)
-search_trees.adb:560:25: medium: assertion might fail, cannot prove Values (J) < Values (I)
+search_trees.adb:561:25: medium: assertion might fail, cannot prove Values (J) > Values (I)
 search_trees.adb:573:06: info: data dependencies proved
 search_trees.adb:576:42: info: range check proved (CVC4: 1 VC)
 search_trees.adb:578:42: info: range check proved (CVC4: 1 VC)
@@ -2594,12 +2594,12 @@ search_trees.ads:136:23: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:136:34: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:136:34: info: precondition proved (CVC4: 2 VC)
 search_trees.ads:140:17: info: invariant check proved (CVC4: 1 VC)
-search_trees.ads:140:17: medium: postcondition might fail, cannot prove Parent (T, I) = Peek (T'Old, I, Right)
 search_trees.ads:140:33: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:140:33: info: precondition proved (CVC4: 2 VC)
 search_trees.ads:141:17: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:141:17: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:145:17: info: invariant check proved (CVC4: 1 VC)
+search_trees.ads:145:17: medium: postcondition might fail, cannot prove Parent (T, Peek (T'Old, I, Right)) = Parent (T'Old, I)
 search_trees.ads:145:28: info: invariant check proved (CVC4: 2 VC)
 search_trees.ads:145:28: info: precondition proved (CVC4: 4 VC)
 search_trees.ads:145:28: info: range check proved (CVC4: 2 VC)
@@ -2620,8 +2620,8 @@ search_trees.ads:151:34: info: precondition proved (CVC4: 4 VC)
 search_trees.ads:151:34: info: range check proved (CVC4: 2 VC)
 search_trees.ads:152:23: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:152:34: info: invariant check proved (CVC4: 2 VC)
+search_trees.ads:152:34: info: precondition proved (CVC4: 4 VC)
 search_trees.ads:152:34: info: range check proved (CVC4: 2 VC)
-search_trees.ads:152:34: medium: precondition might fail, cannot prove Model (T) (I).K
 search_trees.ads:152:47: info: invariant check proved (CVC4: 4 VC)
 search_trees.ads:152:47: info: precondition proved (CVC4: 8 VC)
 search_trees.ads:152:47: info: range check proved (CVC4: 4 VC)
@@ -2760,8 +2760,8 @@ search_trees.ads:246:47: info: range check proved (CVC4: 4 VC)
 search_trees.ads:247:29: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:247:29: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:247:42: info: invariant check proved (CVC4: 2 VC)
+search_trees.ads:247:42: info: precondition proved (CVC4: 4 VC)
 search_trees.ads:247:42: info: range check proved (CVC4: 2 VC)
-search_trees.ads:247:42: medium: precondition might fail, cannot prove Model (T) (I).K
 search_trees.ads:247:55: info: invariant check proved (CVC4: 4 VC)
 search_trees.ads:247:55: info: precondition proved (CVC4: 8 VC)
 search_trees.ads:247:55: info: range check proved (CVC4: 4 VC)

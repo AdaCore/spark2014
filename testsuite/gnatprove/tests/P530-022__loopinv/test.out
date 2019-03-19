@@ -59,22 +59,22 @@ x86.adb:602:07: info: initialization of "Retval" proved
 x86.adb:614:07: info: initialization of "Retval" proved
 x86.adb:626:07: info: initialization of "Retval" proved
 x86.adb:644:07: info: initialization of "Mem" proved
-x86.adb:660:17: info: postcondition proved (Z3: 1 VC)
+x86.adb:660:17: info: postcondition proved (altergo: 1 VC)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
-x86.adb:691:16: info: precondition proved (CVC4: 6 VC; Z3: 1 VC; altergo: 1 VC)
+x86.adb:691:16: info: precondition proved (CVC4: 6 VC; altergo: 2 VC)
 x86.adb:693:36: info: loop invariant initialization proved (CVC4: 2 VC)
-x86.adb:695:41: medium: loop invariant might fail after first iteration, cannot prove HasMem64(Memory, RDI_Start+(J*8), RAX)
+x86.adb:693:36: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
 x86.adb:714:25: info: assertion proved (CVC4: 3 VC; Z3: 1 VC)
-x86.adb:722:25: info: assertion proved (CVC4: 3 VC; Z3: 1 VC)
+x86.adb:722:25: info: assertion proved (CVC4: 3 VC; altergo: 1 VC)
 x86.adb:725:10: info: precondition proved (CVC4: 14 VC; Z3: 1 VC; altergo: 1 VC)
 x86.adb:726:10: info: precondition proved (CVC4: 4 VC)
 x86.adb:730:39: medium: loop invariant might fail after first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:730:39: medium: loop invariant might fail in first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:731:32: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:731:32: info: loop invariant preservation proved (CVC4: 1 VC)
-x86.adb:732:32: info: loop invariant initialization proved (Z3: 1 VC)
+x86.adb:732:32: info: loop invariant initialization proved (altergo: 1 VC)
 x86.adb:732:32: info: loop invariant preservation proved (Z3: 1 VC)
 x86.adb:733:32: info: loop invariant initialization proved (CVC4: 1 VC)
 x86.adb:733:32: info: loop invariant preservation proved (Z3: 1 VC)

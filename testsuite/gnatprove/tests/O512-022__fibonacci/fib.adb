@@ -107,7 +107,7 @@ package body Fib is pragma SPARK_Mode (On);
       b2 := a2;
       k2 := n2;
       while (k2 > 0) loop
-         pragma Loop_Invariant (a2 ** n2 = p2 * (b2 ** k2) and then k1 >= 0 and then --@LOOP_INVARIANT_PRESERV:FAIL
+         pragma Loop_Invariant (a2 ** n2 = p2 * (b2 ** k2) and then k1 >= 0 and then
                           p2 <= a2 ** n2 and then b2 <= a2 ** n2);  -- @LOOP_INVARIANT_INIT:FAIL
          pragma Loop_Variant (Decreases => k2);
          if (k2 rem 2 = 0) then
