@@ -1,1 +1,1 @@
-ALL XFAIL to be solved in newsystem ticket. Adding @mlw_proxy_symbol would solve the problem
+ALL XFAIL S306-038 to be solved in newsystem ticket. Adding @mlw_proxy_symbol would solve the problem
