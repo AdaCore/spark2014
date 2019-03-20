@@ -22,6 +22,4 @@ p.adb:24:41: warning: no Global contract available for "Sin"
 p.adb:30:12: info: initialization of "Default_Aft" proved
 p.adb:30:12: info: initialization of "Default_Exp" proved
 p.adb:30:12: info: initialization of "Default_Fore" proved
-p.adb:41:10: high: call to potentially blocking subprogram "p.proxy2.local_elementary_functions.sin" in protected operation "S2"
-p.adb:46:10: high: call to potentially blocking subprogram "p.global_elementary_functions.sin" in protected operation "S3"
 p.adb:51:10: high: call to potentially blocking subprogram "Proxy4" in protected operation "Print"

@@ -672,11 +672,16 @@ package body Flow_Generated_Globals.Partial is
             (Has_No_Body_Yet (E) and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
-         --  status is meaningless; for others conservatively assume that they
-         --  are blocking.
+         --  status is meaningless. Otherwise, it is either a user instance of
+         --  a predefined unit for which we generate contracts but it is the
+         --  Ada RM that decides is its blocking status; or we conservatively
+         --  assume it to be potentially blocking.
+
          Contr.Nonblocking :=
            (if Is_Callee (E)
-            then False
+            then (if In_Predefined_Unit (E)
+                  then not Is_Predefined_Potentially_Blocking (E)
+                  else False)
             else Meaningless);
 
          --  In a contract it is syntactically not allowed to suspend on a
