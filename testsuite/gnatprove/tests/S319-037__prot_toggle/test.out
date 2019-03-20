@@ -1,0 +1,1 @@
+simple.adb:7:20: medium: postcondition might fail, cannot prove Is_Set = not Is_Set'old
