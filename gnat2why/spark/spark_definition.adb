@@ -877,7 +877,8 @@ package body SPARK_Definition is
    --  calling Mark_Entity, which is very cheap.
 
    function Retysp_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Is_Type (E);
+     Pre => Is_Type (E),
+     Post => (if not Retysp_In_SPARK'Result then not Entity_In_SPARK (E));
    --  Returns whether the representive type of the entity E is in SPARK;
    --  computes this information by calling Mark_Entity, which is very cheap.
    --  Theoretically, it is equivalent to In_SPARK (Retyps (E)) except that
@@ -3094,9 +3095,7 @@ package body SPARK_Definition is
             --  case (scope not marked SPARK_Mode(On)), the type entity was
             --  stored as value in the Delayed_Type_Aspects map.
 
-            elsif Retysp_In_SPARK (Delayed_Mapping)
-              or else Entity_In_SPARK (Delayed_Mapping)
-            then
+            elsif Retysp_In_SPARK (Delayed_Mapping) then
                Current_SPARK_Pragma := Empty;
 
                Mark_Delayed_Aspect := True;
