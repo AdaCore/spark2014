@@ -1,1 +1,3 @@
 account5.adb:13:14: warning: subprogram "Get_Next_Account_Created" has no effect
+account5.ads:15:06: info: data dependencies proved
+account5.ads:16:06: info: flow dependencies proved

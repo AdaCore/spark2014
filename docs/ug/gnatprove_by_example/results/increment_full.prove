@@ -1,3 +1,5 @@
+increment_full.adb:3:03: info: data dependencies proved
+increment_full.adb:4:03: info: flow dependencies proved
 increment_full.adb:6:14: info: postcondition proved
 increment_full.adb:6:24: info: overflow check proved
 increment_full.adb:9:11: info: overflow check proved
