@@ -2,4 +2,4 @@ from test_support import *
 
 # Do not use Z3, as the step limit fluctuates too much between platforms, thus
 # making it impossible to share a common expected output when Z3 is used.
-prove_all(prover=["cvc4", "altergo"],opt=["-U"], procs=4, counterexample=False)
+prove_all(prover=["cvc4", "altergo"],opt=["-U"], counterexample=False, steps=400)

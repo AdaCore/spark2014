@@ -40,7 +40,7 @@ aggregates.adb:15:38: medium: float overflow check might fail, in call inlined a
 aggregates.adb:17:14: info: initialization of "Approx" proved
 aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:29:24: info: initialization of "A" proved
-aggregates.adb:29:26: medium: float overflow check might fail
+aggregates.adb:29:26: info: float overflow check proved (CVC4: 1 VC)
 aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
 aggregates.adb:29:28: info: initialization of "B" proved
 average.adb:15:16: info: initialization of "A" proved
@@ -872,7 +872,7 @@ operator_overload.adb:16:59: info: float overflow check proved (CVC4: 1 VC), in 
 operator_overload.adb:17:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
-operator_overload.adb:17:43: info: float overflow check proved (altergo: 1 VC), in call inlined at operator_overload.adb:37
+operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
@@ -1292,7 +1292,7 @@ sqrt.adb:5:19: info: initialization of "Approx" proved
 sqrt.adb:5:26: medium: float overflow check might fail
 sqrt.adb:6:21: info: float overflow check proved (Interval)
 sqrt.adb:6:24: info: initialization of "Approx" proved
-sqrt.adb:6:31: medium: float overflow check might fail
+sqrt.adb:6:31: info: float overflow check proved (CVC4: 1 VC)
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail
 sqrt.adb:8:11: info: initialization of "Approx" proved
