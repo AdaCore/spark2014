@@ -1,6 +1,6 @@
 """
 This module contains utility functions for both the testsuite and running
-GNAtprove on examples in the User's Guide.
+GNATprove on examples in the User's Guide.
 """
 
 
