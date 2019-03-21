@@ -4512,21 +4512,23 @@ package body SPARK_Definition is
                                         SRM_Reference => "SPARK RM 9.4");
                      end if;
 
+                     --  If the private part is marked On, then the full view
+                     --  of the type is forced to be SPARK. Violations found
+                     --  during marking of the private part are not reverted.
+
+                     if SPARK_Pragma_Is (Opt.On) then
+                        Fullview_In_SPARK := True;
+
                      --  If a violation has been found while marking the
                      --  private components of the protected type, then its
                      --  full view is not in SPARK. The type itself can still
                      --  be in SPARK if no SPARK_Mode has been specified.
 
-                     if not SPARK_Pragma_Is (Opt.On) then
+                     else
+                        pragma Assert (SPARK_Pragma_Is (Opt.None));
+
                         Fullview_In_SPARK := not Violation_Detected;
                         Violation_Detected := Save_Violation_Detected;
-
-                     --  If the private part is marked On, then the full view
-                     --  of the type is forced to be SPARK. Violations found
-                     --  during marking of the private part are not reverted.
-
-                     else
-                        Fullview_In_SPARK := True;
                      end if;
                   end;
 
