@@ -45,7 +45,7 @@ with Assumption_Types;                    use Assumption_Types;
 with Call;                                use Call;
 with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
-with GNAT.OS_Lib;                         use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with GNATCOLL.JSON;                       use GNATCOLL.JSON;
 with GNATCOLL.Utils;                      use GNATCOLL.Utils;
 with Platform;                            use Platform;
@@ -698,7 +698,9 @@ procedure SPARK_Report is
 
       use Ada.Command_Line;
 
-      Source_Dirs : access String := null;
+      type String_Ptr is access String;
+      Source_Dirs : String_Ptr := null;
+
    begin
       for Index in 1 .. Argument_Count loop
          declare
