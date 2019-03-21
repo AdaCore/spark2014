@@ -4477,9 +4477,7 @@ package body SPARK_Definition is
 
                      --  Mark Part_Of variables of single protected objects
 
-                     if Ekind (E) = E_Protected_Type
-                       and then Is_Single_Concurrent_Type (E)
-                     then
+                     if Is_Single_Concurrent_Type (E) then
                         for Part of
                           Iter (Part_Of_Constituents (Anonymous_Object (E)))
                         loop
