@@ -732,11 +732,14 @@ package body Gnat2Why.Driver is
 
       Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
 
+      --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
+      --  messages.
+
       Parse_Why3_Results
         (GNAT.Expect.Get_Command_Output
            (Command,
             Call.Argument_List_Of_String_List (Why3_Args),
-            Err_To_Out => False,
+            Err_To_Out => True,
             Input      => "",
             Status     => Status'Access),
          Timing);

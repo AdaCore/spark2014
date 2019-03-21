@@ -869,10 +869,25 @@ package body Gnat2Why.Error_Messages is
                else Create_Object));
       end Parse_Why3_Prove_Result;
 
+      Fatal_Error_String : constant String := "Fatal error: out of memory";
+
    --  Start of processing for Parse_Why3_Results
 
    begin
+
+      --  In the case of an Out of memory in the ocaml runtime, the message
+      --  above in Fatal_Error_String is printed. We detect this situation
+      --  here.
+
+      if S'Length >= Fatal_Error_String'Length
+        and then S (S'First .. S'First + Fatal_Error_String'Length - 1) =
+                 Fatal_Error_String
+      then
+         Handle_Error (Fatal_Error_String, Internal => False);
+      end if;
+
       Mark_Subprograms_With_No_VC_As_Proved;
+
       declare
          File : constant JSON_Value := Read (S, "");
          Results : constant JSON_Array := Get (Get (File, "results"));
