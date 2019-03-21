@@ -1673,7 +1673,10 @@ package body Gnat2Why.Counter_Examples is
                         Is_Attribute := False;
                         Ent_Ty := Retysp (Directly_Designated_Type
                                           (Current_Cnt_Value.Ent_Ty));
-                        Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
+                        --  Don't erase potential attributes here
+                        if Current_Cnt_Value.Ptr_Val = null then
+                           Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
+                        end if;
                         Current_Cnt_Value := Current_Cnt_Value.Ptr_Val;
                      elsif Part = Is_Null_Label then
                         pragma Assert (Current_Cnt_Value.K = Access_Value);
