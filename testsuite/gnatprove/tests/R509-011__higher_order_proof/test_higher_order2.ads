@@ -1,15 +1,7 @@
--------------------------------------------------------------------------------
---                                    README                                 --
---                                                                           --
---  This test aims at proving the correctness of Fold when bodies are hidden --
---  Everything should be proved but the axioms in the three Fold theories    --
---  (7 unproved checks in SPARK.Higher_Order.Fold.ads)                       --
--------------------------------------------------------------------------------
-
 with SPARK.Higher_Order;
 with SPARK.Higher_Order.Fold;
 with Test_Types; use Test_Types;
-package Test_Higher_Order with SPARK_Mode is
+package Test_Higher_Order2 with SPARK_Mode is
 
    function Ind_Prop (A : My_Array; X : Integer; I : My_Index) return Boolean
      with Pre => I in A'Range;
@@ -25,7 +17,23 @@ package Test_Higher_Order with SPARK_Mode is
    --  F is always called on A (I), X when Ind_Prop (A, X, I) is True.
    --  It is called in the same conditions in Prove_Ind and Prove_Last.
 
-   package My_Fold_Right is new SPARK.Higher_Order.Fold.Fold_Right
+
+   function Value (X : Integer) return My_Small;
+   --  Value cannot have a pre as it is called from Add_Value without any
+   --  constraint.
+
+   package My_Sum is new SPARK.Higher_Order.Fold.Sum
+     (Index_Type  => Small_Index,
+      Element_In  => Integer,
+      Array_Type  => Small_Array,
+      Element_Out => My_Small,
+      Value       => Value);
+
+   function F (X : Integer; K : My_Index; I : Integer) return Integer;
+   --  F is always called on A (I), I, X when Ind_Prop (A, X, I) is True.
+   --  It is called in the same conditions in Prove_Ind and Prove_Last.
+
+   package My_Fold_Left_I is new SPARK.Higher_Order.Fold.Fold_Left_I
      (Index_Type  => My_Index,
       Element_In  => Integer,
       Array_Type  => My_Array,
@@ -34,13 +42,4 @@ package Test_Higher_Order with SPARK_Mode is
       Final_Prop  => Final_Prop,
       F           => F);
 
-   package My_Fold_Left is new SPARK.Higher_Order.Fold.Fold_Left
-     (Index_Type  => My_Index,
-      Element_In  => Integer,
-      Array_Type  => My_Array,
-      Element_Out => Integer,
-      Ind_Prop    => Ind_Prop,
-      Final_Prop  => Final_Prop,
-      F           => F);
-
-end Test_Higher_Order;
+end Test_Higher_Order2;

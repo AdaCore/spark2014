@@ -152,7 +152,11 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
                     Fold_Count.Acc.Fold (A2, 0) (K, A1'First (2))
                else
                     Fold_Count.Acc.Fold (A1, 0) (K, A1'First (2)) =
-                    Fold_Count.Acc.Fold (A2, 0) (K, A1'First (2)) + C);
+                   Fold_Count.Acc.Fold (A2, 0) (K, A1'First (2)) + C);
+            pragma Assert
+              (if K > A1'First (1) then
+                    In_Range (A2, (Fold_Count.Acc.Fold (A2, 0)
+                 (K - 1, A1'Last (2))), K, A1'First (2)));
             for L in A1'Range (2) loop
                pragma Loop_Invariant
                  (if K < I or else (K = I and then L < J) then
@@ -296,6 +300,12 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
                   Acc := R (I, J);
                end loop;
             end loop;
+            pragma Assert
+              (for all K in A'Range (1) =>
+                   (if K > A'First (1) then
+                           Ind_Prop (A, R (K - 1, A'Last (2)), K, A'First (2))
+                    and then R (K, A'First (2)) =
+                      F (A (K, A'First (2)), R (K - 1, A'Last (2)))));
          end return;
       end Fold;
 
@@ -797,6 +807,7 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
           Off
 #end if;
       is
+
          function In_Range
            (A : Array_Type; K : Index_1; L : Index_2) return Boolean
          is
@@ -830,6 +841,24 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
          --  If (I, J) has already been encountered, it is safe to subtract
          --  A (I, J) from Fold_Sum.Acc.Fold (A, 0) (K, L).
 
+         function Update_Sum (K : Index_1; L : Index_2) return Boolean is
+           (if K < I or else (K = I and then L < J) then
+                 Fold_Sum.Acc.Fold (A1, 0) (K, L) =
+                Fold_Sum.Acc.Fold (A2, 0) (K, L)
+            else
+               Fold_Sum.Acc.Fold (A1, 0) (K, L) -
+                Value (A1 (I, J)) =
+              Fold_Sum.Acc.Fold (A2, 0) (K, L) -
+                Value (A2 (I, J)))
+          with Pre => K in A1'Range (1) and then L in A1'Range (2)
+           and then I in A1'Range (1) and then J in A1'Range (2)
+           and then A1'First (1) = A2'First (1)
+           and then A1'Last (1) = A2'Last (1)
+           and then A1'First (2) = A2'First (2)
+           and then A1'Last (2) = A2'Last (2)
+           and then In_Range (A1, K, L) and then In_Range (A2, K, L);
+         --  The property we want to show at position I, J
+
          procedure In_Range_Ind (A : Array_Type; K : Index_1; L : Index_2)
          with
            Pre  => K in A'Range (1) and then L in A'Range (2)
@@ -840,12 +869,55 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
               elsif K < A'Last (1) then In_Range (A, K + 1, A'First (2)));
          --  In_Range is inductive
 
+         procedure Prove_Next_Col (K : Index_1; L : Index_2) with
+           Pre => K in A1'Range (1) and then L in A1'Range (2)
+           and then I in A1'Range (1) and then J in A1'Range (2)
+           and then A1'First (1) = A2'First (1)
+           and then A1'Last (1) = A2'Last (1)
+           and then A1'First (2) = A2'First (2)
+           and then A1'Last (2) = A2'Last (2)
+           and then In_Range (A1, K, L) and then In_Range (A2, K, L)
+           and then (if K /= I or else L /= J then
+                       Value (A1 (K, L)) = Value (A2 (K, L)))
+           and then
+             (L = A1'First (2) or else
+                (In_Range (A1, K, L - 1) and then In_Range (A2, K, L - 1)
+                 and then Update_Sum (K, L - 1))),
+           Post => L = A1'First (2) or else Update_Sum (K, L);
+         --  Prove the next iteration of the inner loop
+
          ------------------
          -- In_Range_Ind --
          ------------------
 
          procedure In_Range_Ind (A : Array_Type; K : Index_1; L : Index_2) is
-            null;
+         null;
+
+         --------------------
+         -- Prove_Next_Col --
+         --------------------
+
+         procedure Prove_Next_Col (K : Index_1; L : Index_2) is
+         begin
+            if L = A1'First (2) then
+               return;
+            else
+               pragma Assert
+                 (Fold_Sum.Acc.Fold (A1, 0) (K, L) =
+                    Fold_Sum.Acc.Fold (A1, 0) (K, L - 1) + Value (A1 (K, L)));
+               pragma Assert
+                 (Fold_Sum.Acc.Fold (A2, 0) (K, L) =
+                    Fold_Sum.Acc.Fold (A2, 0) (K, L - 1) + Value (A2 (K, L)));
+               if K < I or else (K = I and then L < J) then
+                  pragma Assert (Fold_Sum.Acc.Fold (A1, 0) (K, L) =
+                                   Fold_Sum.Acc.Fold (A2, 0) (K, L));
+               else
+                  pragma Assert
+                    (Fold_Sum.Acc.Fold (A1, 0) (K, L) - Value (A1 (I, J)) =
+                         Fold_Sum.Acc.Fold (A2, 0) (K, L) - Value (A2 (I, J)));
+               end if;
+            end if;
+         end Prove_Next_Col;
 
       begin
          for K in A1'Range (1) loop
@@ -874,6 +946,9 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
                          Value (A2 (I, J)));
                In_Range_Ind (A1, K, L);
                In_Range_Ind (A2, K, L);
+               if L /= A1'Last (2) then
+                  Prove_Next_Col (K, L + 1);
+               end if;
             end loop;
          end loop;
 

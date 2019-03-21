@@ -3,4 +3,3 @@ inverse-prover SKIP ordering issue
 Darwin SKIP platform differences
 NT SKIP platform differences
 ALL RLIMIT 1500
-ALL XFAIL S304-022 to be updated as large test
