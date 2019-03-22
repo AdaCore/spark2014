@@ -8,6 +8,8 @@ known_satellites.adb:46:16: "SatelliteArray" is not allowed in SPARK (due to ext
 known_satellites.adb:46:16: violation of aspect SPARK_Mode at line 5
 known_satellites.adb:53:08: "SatelliteArray" is not allowed in SPARK (due to extended precision floating point type)
 known_satellites.adb:53:08: violation of aspect SPARK_Mode at line 5
+spacecraft-ctors.adb:19:06: "Satellite" is not allowed in SPARK
+spacecraft-ctors.adb:19:06: violation of aspect SPARK_Mode at line 3
 spacecraft.ads:6:04: extended precision floating point type is not yet supported
 spacecraft.ads:6:04: extended precision floating point type is not yet supported
 spacecraft.ads:6:04: extended precision floating point type is not yet supported

@@ -876,6 +876,10 @@ package body SPARK_Definition is
    --  Returns whether the entity E is in SPARK; computes this information by
    --  calling Mark_Entity, which is very cheap.
 
+   function Most_Underlying_Type_In_SPARK (Id : Entity_Id) return Boolean
+   with Pre => Is_Type (Id);
+   --  Mark the Retysp of Id and check that it is not completely private
+
    function Retysp_In_SPARK (E : Entity_Id) return Boolean with
      Pre => Is_Type (E),
      Post => (if not Retysp_In_SPARK'Result then not Entity_In_SPARK (E));
@@ -959,11 +963,6 @@ package body SPARK_Definition is
      with Pre => Ekind (E) = E_Package;
    --  Mark pragma Annotate that could appear at the beginning of a declaration
    --  list of a package.
-
-   procedure Mark_Most_Underlying_Type_In_SPARK (Id : Entity_Id; N : Node_Id)
-   with Pre => Is_Type (Id) and then Nkind (N) in N_Subexpr;
-   --  The most underlying type for type Id should be in SPARK, otherwise mark
-   --  node N as not in SPARK.
 
    function Emit_Warning_Info_Messages return Boolean is
      (Emit_Messages and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String);
@@ -1415,19 +1414,25 @@ package body SPARK_Definition is
             Mark_Subprogram_Declaration (N);
 
          when N_Aggregate =>
-            if not Is_Update_Aggregate (N)
-              and then not Is_Special_Multidim_Update_Aggr (N)
-            then
-               Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
-            elsif Is_Update_Aggregate (N)
+            if Is_Update_Aggregate (N)
               and then Is_Update_Unconstr_Multidim_Aggr (N)
             then
                Mark_Unsupported
                  ("attribute """ & Standard_Ada_Case ("Update")
                   & """ of unconstrained multidimensional array", N);
+
+            --  Special aggregates for indexes of updates of multidim arrays do
+            --  not have a type, see comment on
+            --  Is_Special_Multidim_Update_Aggr.
+
+            elsif not Is_Special_Multidim_Update_Aggr (N)
+              and then not Most_Underlying_Type_In_SPARK (Etype (N))
+            then
+               Mark_Violation (N, From => Etype (N));
+            else
+               Mark_List (Expressions (N));
+               Mark_List (Component_Associations (N));
             end if;
-            Mark_List (Expressions (N));
-            Mark_List (Component_Associations (N));
 
          when N_Allocator =>
             --  Allow allocators in the special mode -gnatdF
@@ -1528,9 +1533,10 @@ package body SPARK_Definition is
             Mark_Extended_Return_Statement (N);
 
          when N_Extension_Aggregate =>
-            Mark_Most_Underlying_Type_In_SPARK (Etype (N), N);
+            if not Most_Underlying_Type_In_SPARK (Etype (N)) then
+               Mark_Violation (N, From => Etype (N));
 
-            if Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
+            elsif Nkind (Ancestor_Part (N)) in N_Identifier | N_Expanded_Name
               and then Is_Type (Entity (Ancestor_Part (N)))
             then
                --  The ancestor part of an aggregate can be either an
@@ -1539,11 +1545,11 @@ package body SPARK_Definition is
 
                Mark_Unsupported
                  ("extension aggregate with subtype ancestor part", N);
+            else
+               Mark (Ancestor_Part (N));
+               Mark_List (Expressions (N));
+               Mark_List (Component_Associations (N));
             end if;
-
-            Mark (Ancestor_Part (N));
-            Mark_List (Expressions (N));
-            Mark_List (Component_Associations (N));
 
          when N_Free_Statement =>
             Mark_Violation ("free statement", N);
@@ -1564,9 +1570,12 @@ package body SPARK_Definition is
             Mark_If_Statement (N);
 
          when N_Indexed_Component =>
-            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
-            Mark (Prefix (N));
-            Mark_List (Expressions (N));
+            if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
+               Mark_Violation (N, From => Etype (Prefix (N)));
+            else
+               Mark (Prefix (N));
+               Mark_List (Expressions (N));
+            end if;
 
          when N_Iterator_Specification =>
 
@@ -1764,11 +1773,7 @@ package body SPARK_Definition is
             --  exception is the access to discrimants to a private type whose
             --  full view is not in SPARK.
 
-            if not Is_Private_Type (Etype (Prefix (N)))
-              or else Retysp_In_SPARK (Etype (Prefix (N)))
-            then
-               Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
-            elsif Ekind (Entity (Selector_Name (N))) /= E_Discriminant then
+            if not Retysp_In_SPARK (Etype (Prefix (N))) then
                Mark_Violation (N, From  => Etype (Prefix (N)));
             end if;
 
@@ -1779,10 +1784,12 @@ package body SPARK_Definition is
             Mark (Prefix (N));
 
          when N_Slice =>
-            Mark_Most_Underlying_Type_In_SPARK (Etype (Prefix (N)), N);
-            Mark (Prefix (N));
-            Mark (Discrete_Range (N));
-
+            if not Most_Underlying_Type_In_SPARK (Etype (Prefix (N))) then
+               Mark_Violation (N, From => Etype (Prefix (N)));
+            else
+               Mark (Prefix (N));
+               Mark (Discrete_Range (N));
+            end if;
          when N_Subprogram_Body =>
 
             --  For expression functions that have a unique declaration, the
@@ -3158,23 +3165,14 @@ package body SPARK_Definition is
             Scop : constant Flow_Scope := Get_Flow_Scope (N);
             --  Visibility scope for deciding default initialization
 
-            Typ : Entity_Id := Etype (Parent (N));
+            Typ : constant Entity_Id := Retysp (Etype (Parent (N)));
             --  Type of the aggregate; ultimately this will be either an array
-            --  or a record, and we will deal with them separately.
+            --  or a record.
 
             pragma Assert (Is_Record_Type (Typ)
-                           or else Is_Array_Type (Typ)
-                           or else Is_Private_Type (Typ));
+                           or else Is_Array_Type (Typ));
 
          begin
-            --  For a private type we switch to its full view (if in SPARK)
-
-            if Is_Private_Type (Typ)
-              and then not Full_View_Not_In_SPARK (Typ)
-            then
-               Typ := Full_View (Typ);
-            end if;
-
             case Ekind (Typ) is
                when Record_Kind =>
                   declare
@@ -6908,19 +6906,14 @@ package body SPARK_Definition is
       Mark (Right_Opnd (N));
    end Mark_Unary_Op;
 
-   ----------------------------------------
-   -- Mark_Most_Underlying_Type_In_SPARK --
-   ----------------------------------------
+   -----------------------------------
+   -- Most_Underlying_Type_In_SPARK --
+   -----------------------------------
 
-   procedure Mark_Most_Underlying_Type_In_SPARK
-     (Id : Entity_Id;
-      N  : Node_Id)
-   is
-   begin
-      if not Retysp_In_SPARK (Id) then
-         Mark_Violation (N, From => Retysp (Id));
-      end if;
-   end Mark_Most_Underlying_Type_In_SPARK;
+   function Most_Underlying_Type_In_SPARK (Id : Entity_Id) return Boolean is
+     (Retysp_In_SPARK (Id)
+      and then (Retysp_Kind (Id) not in Private_Kind
+                or else Retysp_Kind (Id) in Record_Kind));
 
    -----------------------
    -- Queue_For_Marking --
