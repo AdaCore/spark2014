@@ -1113,7 +1113,7 @@ package body Gnat2Why.Expr is
             end case;
          end;
 
-      elsif not Is_Partial_View (Defining_Identifier (N))
+      elsif not Is_Partial_View (Lvalue)
         and then not Is_Imported (Lvalue)
       then
 
@@ -1129,8 +1129,7 @@ package body Gnat2Why.Expr is
             L_Deref         : constant W_Expr_Id :=
               Reconstruct_Item (Binder, Ref_Allowed => True);
 
-            Constrained_Ty  : constant Entity_Id :=
-              Etype (Defining_Identifier (N));
+            Constrained_Ty  : constant Entity_Id := Etype (Lvalue);
             --  Type of the fullview
 
             Default_Checks  : W_Prog_Id :=
