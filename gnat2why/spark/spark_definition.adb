@@ -841,6 +841,10 @@ package body SPARK_Definition is
 
          Violation_Detected := True;
 
+         if Emit_Messages then
+            Add_Violation_Root_Cause (N, "tasking configuration");
+         end if;
+
          --  If SPARK_Mode is On, raise an error
 
          if Emit_Messages and then SPARK_Pragma_Is (Opt.On) then
