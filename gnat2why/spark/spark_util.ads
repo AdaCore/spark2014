@@ -111,7 +111,7 @@ package SPARK_Util is
    --     constant
 
    function Is_Partial_View (E : Entity_Id) return Boolean;
-   --  @param E type or constant
+   --  @param E any entity
    --  @return True iff E is the partial view of a private type or deferred
    --     constant
 
