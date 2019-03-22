@@ -2378,11 +2378,7 @@ package body SPARK_Definition is
                      return False;
                   end if;
 
-               when N_Call_Marker
-                  | N_Null_Statement
-                  | N_Freeze_Entity
-                  | N_Variable_Reference_Marker
-               =>
+               when N_Ignored_In_SPARK =>
                   null;
 
                when N_Pragma =>

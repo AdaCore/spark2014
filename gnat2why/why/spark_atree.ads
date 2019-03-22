@@ -58,25 +58,6 @@ package SPARK_Atree is
    subtype N_Subprogram_Call          is Sinfo.N_Subprogram_Call;
    subtype N_Subprogram_Instantiation is Sinfo.N_Subprogram_Instantiation;
 
-   subtype N_Ignored_In_SPARK is Node_Kind with
-     Predicate => N_Ignored_In_SPARK in N_Call_Marker
-                                      | N_Implicit_Label_Declaration
-                                      | N_Null_Statement
-                                      | N_Freeze_Entity
-                                      | N_Variable_Reference_Marker
-                                      | N_Label
-
-         --  Renamings are replaced by the renamed object in the frontend, but
-         --  the renaming objects are not removed from the tree. We can safely
-         --  ignore them.
-
-                                      | N_Exception_Declaration
-                                      | N_Object_Renaming_Declaration
-                                      | N_Number_Declaration
-                                      | N_Use_Package_Clause
-                                      | N_Use_Type_Clause
-                                      | N_Validate_Unchecked_Conversion;
-
    N_Aggregate                      : Node_Kind renames Sinfo.N_Aggregate;
    N_And_Then                       : Node_Kind renames Sinfo.N_And_Then;
    N_Assignment_Statement           : Node_Kind renames
