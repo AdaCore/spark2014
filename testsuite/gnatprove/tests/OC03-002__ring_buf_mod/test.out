@@ -33,7 +33,7 @@ ring_buf.adb:15:37: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:16:28: info: range check proved (CVC4: 1 VC)
 ring_buf.adb:24:28: info: range check proved (CVC4: 1 VC)
 ring_buf.ads:41:11: info: range check proved (CVC4: 4 VC)
-ring_buf.ads:41:42: medium: range check might fail [possible explanation: subprogram at line 38 should mention R in a precondition]
+ring_buf.ads:41:42: medium: range check might fail (e.g. when R = (Data => (others => 0), First => 65535, Length => Length_Type'Last-1)) [possible explanation: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:42:10: info: range check proved (CVC4: 4 VC)
 ring_buf.ads:43:47: medium: range check might fail (e.g. when R = (Data => (others => 0), First => 65535, Length => Length_Type'Last)) [possible explanation: subprogram at line 38 should mention R in a precondition]
 ring_buf.ads:45:13: info: range check proved (CVC4: 4 VC)

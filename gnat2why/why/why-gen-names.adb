@@ -636,10 +636,11 @@ package body Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Typ      : W_Type_Id := Why_Empty)
+                            Typ      : W_Type_Id := Why_Empty;
+                            Is_Temp  : Boolean := False)
                             return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Typ);
+      return New_Identifier (Ada_Node, EW_Term, Name, Typ, Is_Temp);
    end New_Identifier;
 
    function New_Identifier
@@ -647,17 +648,19 @@ package body Why.Gen.Names is
       Name      : String;
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why_Empty) return W_Identifier_Id is
+      Typ       : W_Type_Id := Why_Empty;
+      Is_Temp   : Boolean := False) return W_Identifier_Id is
    begin
       return New_Identifier
-        (Ada_Node, EW_Term, Name, Namespace, Module, Typ);
+        (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Is_Temp);
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Typ      : W_Type_Id := Why_Empty)
+      Typ      : W_Type_Id := Why_Empty;
+      Is_Temp  : Boolean := False)
       return W_Identifier_Id is
    begin
       return
@@ -665,7 +668,8 @@ package body Why.Gen.Names is
           (Ada_Node => Ada_Node,
            Domain   => Domain,
            Symbol   => NID (Name),
-           Typ      => Typ);
+           Typ      => Typ,
+           Is_Temp  => Is_Temp);
    end New_Identifier;
 
    function New_Identifier
@@ -674,7 +678,8 @@ package body Why.Gen.Names is
       Name      : String;
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why_Empty)
+      Typ       : W_Type_Id := Why_Empty;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id is
    begin
       return
@@ -683,7 +688,8 @@ package body Why.Gen.Names is
                         Symbol    => NID (Name),
                         Namespace => Namespace,
                         Module    => Module,
-                        Typ       => Typ);
+                        Typ       => Typ,
+                        Is_Temp   => Is_Temp);
    end New_Identifier;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
@@ -701,7 +707,8 @@ package body Why.Gen.Names is
       Namespace : Name_Id := No_Name;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
-      Infix     : Boolean := False)
+      Infix     : Boolean := False;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id is
    begin
       return
@@ -712,7 +719,8 @@ package body Why.Gen.Names is
                                               Namespace => Namespace,
                                               Infix     => Infix,
                                               Module    => Module),
-                        Typ      => Typ);
+                        Typ      => Typ,
+                        Is_Temp  => Is_Temp);
    end New_Identifier;
 
    ---------
@@ -744,7 +752,8 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Name     => New_Temp_Identifier (Base_Name),
-                             Typ      => Typ);
+                             Typ      => Typ,
+                             Is_Temp  => True);
    end New_Temp_Identifier;
 
    --------------------------

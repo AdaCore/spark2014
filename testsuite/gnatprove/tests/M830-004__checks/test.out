@@ -31,7 +31,7 @@ do_checks.adb:126:60: medium: overflow check might fail (e.g. when B'First = 0 a
 do_checks.adb:137:25: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:150:25: info: range check proved (CVC4: 2 VC)
 do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
-do_checks.adb:162:39: medium: length check might fail [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:162:39: medium: length check might fail (e.g. when Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:162:40: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:168:38: info: length check proved (CVC4: 4 VC)
 do_checks.adb:168:39: info: range check proved (CVC4: 2 VC)

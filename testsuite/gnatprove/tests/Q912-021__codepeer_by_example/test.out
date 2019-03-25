@@ -162,4 +162,4 @@ sum_all_arr.adb:8:11: info: initialization of "Sum" proved
 top_down.adb:2:21: info: initialization of "Y" proved
 top_down.adb:6:13: medium: array index check might fail [CWE 120] [possible explanation: subprogram at line 4 should mention X in a precondition]
 top_down.adb:13:09: info: initialization of "A" proved
-top_down.adb:13:12: medium: array index check might fail [CWE 120]
+top_down.adb:13:12: medium: array index check might fail [CWE 120] (e.g. when A = (others => 1))

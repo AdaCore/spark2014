@@ -66,7 +66,8 @@ package Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Typ      : W_Type_Id := Why.Types.Why_Empty)
+                            Typ      : W_Type_Id := Why.Types.Why_Empty;
+                            Is_Temp  : Boolean := False)
        return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
@@ -75,13 +76,15 @@ package Why.Gen.Names is
       Name      : String;
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp   : Boolean := False) return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
+      Typ      : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp  : Boolean := False)
       return W_Identifier_Id;
 
    function New_Identifier
@@ -90,7 +93,8 @@ package Why.Gen.Names is
       Name      : String;
       Namespace : Name_Id := No_Name;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why.Types.Why_Empty)
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id;
@@ -102,7 +106,8 @@ package Why.Gen.Names is
       Namespace : Name_Id := No_Name;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
-      Infix     : Boolean := False)
+      Infix     : Boolean := False;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id;
 
    function New_Temp_Identifier (Base_Name : String := "") return String;

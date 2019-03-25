@@ -308,6 +308,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(let ");
       Print_Node (+Name);
+      --  Trick simplify_intros transformation into believing that this should
+      --  be simplified
+      if Get_Is_Temp (Name) then
+         P (O, " [@mlw:proxy_symbol] [@introduced]");
+      end if;
       P (O, " = ");
       Print_Node (+Def);
       PL (O, " in (");
@@ -337,6 +342,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Print_Node (+Name);
+      --  Trick simplify_intros transformation into believing that this should
+      --  be simplified
+      if Get_Is_Temp (Name) then
+         P (O, " [@mlw:proxy_symbol] [@introduced]");
+      end if;
       P (O, " = { ");
       pragma Assert (Get_Typ (Name) /= Why_Empty);
       Print_Node (+Get_Typ (Name));
