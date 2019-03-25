@@ -38,6 +38,7 @@ with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
+with Gnat2Why_Args;               use Gnat2Why_Args;
 with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
@@ -114,8 +115,14 @@ package body Gnat2Why.Counter_Examples is
      (Array_Value, Record_Value, Simple_Value, Index_Value, Access_Value);
    --  Kind for counterexample elements, see below
 
+   function Make_Trivial (Nul : Boolean;
+                          Str : Unbounded_String)
+                          return CNT_Unbounded_String is
+     (Nul => Nul and not Gnat2Why_Args.Debug_Trivial,
+      Str => Str);
+
    Dont_Display : constant CNT_Unbounded_String :=
-     (Nul => True, Str => To_Unbounded_String ("@not_display"));
+     Make_Trivial (Nul => True, Str => To_Unbounded_String ("@not_display"));
 
    type CNT_Element (K : CNT_Element_Kind) is record
       Ent_Ty     : Entity_Id;
@@ -352,7 +359,7 @@ package body Gnat2Why.Counter_Examples is
             V : constant CNT_Unbounded_String := Refine (Value.Ptr_Val);
          begin
             Value.Val_Str :=
-              (Nul => V.Nul, Str => "(all => " & V.Str & ")");
+              Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")");
          end;
       end if;
       return Value.Val_Str;
@@ -419,7 +426,7 @@ package body Gnat2Why.Counter_Examples is
       end if;
       Append (S, ")");
 
-      return (Nul => Nul, Str => S);
+      return Make_Trivial (Nul => Nul, Str => S);
    end Refine_Array_Components;
 
    ----------------------
@@ -433,20 +440,25 @@ package body Gnat2Why.Counter_Examples is
    begin
       case Why3_Type is
          when Cnt_Integer =>
-            return (Nul => CNT_Element.I = "0", Str => CNT_Element.I);
+            return Make_Trivial
+              (Nul => CNT_Element.I = "0", Str => CNT_Element.I);
 
          when Cnt_Bitvector =>
-            return (Nul => CNT_Element.B = "0", Str => CNT_Element.B);
+            return Make_Trivial
+              (Nul => CNT_Element.B = "0", Str => CNT_Element.B);
 
          when Cnt_Boolean =>
-            return (Nul => CNT_Element.Bo = False,
-                    Str => To_Unbounded_String (CNT_Element.Bo));
+            return Make_Trivial (Nul => CNT_Element.Bo = False,
+                                 Str => To_Unbounded_String
+                                   (CNT_Element.Bo));
 
          when Cnt_Unparsed =>
-            return (Nul => CNT_Element.U = "0", Str => CNT_Element.U);
+            return Make_Trivial (Nul => CNT_Element.U = "0",
+                                 Str => CNT_Element.U);
 
          when others =>
-            return (Nul => True, Str => Null_Unbounded_String);
+            return Make_Trivial (Nul => True,
+                                 Str => Null_Unbounded_String);
       end case;
 
    end Refine_Attribute;
@@ -540,15 +552,17 @@ package body Gnat2Why.Counter_Examples is
       --  E = A (<value>)
 
       if Is_Array_Type (Value.Cnt_Typ) then
-         return (Nul => Refined_Value.Nul,
-                 Str => Value.Cnt_Nam & " (" & Refined_Value.Str  & ")");
+         return Make_Trivial (Nul => Refined_Value.Nul,
+                              Str => Value.Cnt_Nam & " (" &
+                                Refined_Value.Str  & ")");
 
       --  E = Element (C, <value>)
 
       else
-         return (Nul => Refined_Value.Nul,
-                 Str => Refine_Container_Iterator_Value
-                          (Refined_Value.Str, Value.Cnt_Typ, Value.Cnt_Nam));
+         return Make_Trivial (Nul => Refined_Value.Nul,
+                              Str => Refine_Container_Iterator_Value
+                                (Refined_Value.Str,
+                                 Value.Cnt_Typ, Value.Cnt_Nam));
       end if;
    end Refine_Iterator_Value;
 
@@ -615,7 +629,8 @@ package body Gnat2Why.Counter_Examples is
       begin
          Ordered_Values.Insert
            (Get_Loc_Info (Comp),
-            (Nul => Val.Nul, Str => Comp_Name & " => " & Val.Str & Expl));
+            Make_Trivial (Nul => Val.Nul,
+                          Str => Comp_Name & " => " & Val.Str & Expl));
          Fields_Discrs_With_Value :=
            Fields_Discrs_With_Value + 1;
       end Get_Value_Of_Component;
@@ -733,7 +748,8 @@ package body Gnat2Why.Counter_Examples is
 
          if not Need_Others and then Present (First_Unseen) then
             Get_Value_Of_Component
-              (First_Unseen, (Nul => True, Str => To_Unbounded_String ("?")),
+              (First_Unseen,
+               Make_Trivial (Nul => True, Str => To_Unbounded_String ("?")),
                Visibility_Map.Element (First_Unseen));
          end if;
 
@@ -758,7 +774,7 @@ package body Gnat2Why.Counter_Examples is
          end if;
          Append (Value, ")");
 
-         return (Nul => Nul, Str => Value);
+         return Make_Trivial (Nul => Nul, Str => Value);
       end;
    end Refine_Record_Components;
 
@@ -802,8 +818,9 @@ package body Gnat2Why.Counter_Examples is
                --  integers like: "subype only_true := True .. True".
 
                if Is_Boolean_Type (AST_Type) then
-                  return (Nul => Cnt_Value.I = "0",
-                          Str => To_Unbounded_String (Cnt_Value.I /= "0"));
+                  return Make_Trivial (Nul => Cnt_Value.I = "0",
+                                       Str => To_Unbounded_String
+                                         (Cnt_Value.I /= "0"));
 
                elsif Is_Enumeration_Type (AST_Type) then
                   declare
@@ -837,10 +854,10 @@ package body Gnat2Why.Counter_Examples is
                         --  character we are interested in. Just retrieve it
                         --  directly at Name_Buffer(2).
 
-                        return (Nul => Nul,
-                                Str => "'" & To_Unbounded_String
-                                  (Char_To_String_Representation
-                                     (Name_Buffer (2))) & "'");
+                        return Make_Trivial (Nul => Nul,
+                                             Str => "'" & To_Unbounded_String
+                                               (Char_To_String_Representation
+                                                  (Name_Buffer (2))) & "'");
 
                         --  For all enumeration types that are not character,
                         --  call Get_Enum_Lit_From_Pos to get a corresponding
@@ -848,7 +865,7 @@ package body Gnat2Why.Counter_Examples is
                         --  correctly capitalized enumeration value.
 
                      else
-                        return
+                        return Make_Trivial
                           (Nul => Nul,
                            Str => To_Unbounded_String (Source_Name (Enum)));
                      end if;
@@ -861,9 +878,11 @@ package body Gnat2Why.Counter_Examples is
                   exception
                      when Constraint_Error =>
                         if Is_Index then
-                           return (Nul => True, Str => Null_Unbounded_String);
+                           return Make_Trivial (Nul => True,
+                                                Str => Null_Unbounded_String);
                         else
-                           return (Nul => Nul, Str => Cnt_Value.I);
+                           return Make_Trivial (Nul => Nul,
+                                                Str => Cnt_Value.I);
                         end if;
                   end;
 
@@ -871,13 +890,15 @@ package body Gnat2Why.Counter_Examples is
                   --  don't want to print those.
 
                elsif Is_Floating_Point_Type (AST_Type) then
-                  return (Nul => True, Str => Null_Unbounded_String);
+                  return Make_Trivial (Nul => True,
+                                       Str => Null_Unbounded_String);
 
                elsif Is_Fixed_Point_Type (AST_Type) then
-                  return (Nul => Cnt_Value.I = "0",
-                          Str => To_Unbounded_String
-                            (Print_Fixed (Small_Value (AST_Type),
-                             To_String (Cnt_Value.I))));
+                  return Make_Trivial
+                    (Nul => Cnt_Value.I = "0",
+                     Str => To_Unbounded_String
+                       (Print_Fixed (Small_Value (AST_Type),
+                        To_String (Cnt_Value.I))));
 
                --  Only integer types are expected in that last case
 
@@ -891,16 +912,18 @@ package body Gnat2Why.Counter_Examples is
                      package Pr is new Gen_Print (Bound_Type => 10,
                                                   Bound_Value => 5);
                   begin
-                     return (Nul => Cnt_Value.I = "0",
-                             Str => To_Unbounded_String (
-                               Pr.Print_Discrete
-                                 (To_String (Cnt_Value.I), AST_Type)));
+                     return Make_Trivial
+                       (Nul => Cnt_Value.I = "0",
+                        Str => To_Unbounded_String (
+                          Pr.Print_Discrete
+                            (To_String (Cnt_Value.I), AST_Type)));
                   end;
                end if;
 
             when Cnt_Boolean =>
-               return (Nul => not Cnt_Value.Bo,
-                       Str => To_Unbounded_String (Cnt_Value.Bo));
+               return Make_Trivial
+                 (Nul => not Cnt_Value.Bo,
+                  Str => To_Unbounded_String (Cnt_Value.Bo));
 
             when Cnt_Bitvector =>
 
@@ -909,16 +932,17 @@ package body Gnat2Why.Counter_Examples is
                --  inside translated arrays_of_records.
 
                if Is_Boolean_Type (AST_Type) then
-                  return (Nul => Cnt_Value.B = "0",
-                          Str => To_Unbounded_String (Cnt_Value.B /= "0"));
+                  return Make_Trivial
+                    (Nul => Cnt_Value.B = "0",
+                     Str => To_Unbounded_String (Cnt_Value.B /= "0"));
                end if;
 
-               return (Nul => Cnt_Value.B = "0",
-                       Str => Cnt_Value.B);
+               return Make_Trivial (Nul => Cnt_Value.B = "0",
+                                    Str => Cnt_Value.B);
 
             when Cnt_Decimal =>
-               return (Nul => Cnt_Value.D = "0.0",
-                       Str => Cnt_Value.D);
+               return Make_Trivial (Nul => Cnt_Value.D = "0.0",
+                                    Str => Cnt_Value.D);
 
             when Cnt_Float =>
 
@@ -926,27 +950,27 @@ package body Gnat2Why.Counter_Examples is
                declare
                   S : constant Unbounded_String := Print_Float (Cnt_Value.all);
                begin
-                  return (Nul => S = "0.0", Str => S);
+                  return Make_Trivial (Nul => S = "0.0", Str => S);
                end;
 
             when Cnt_Unparsed =>
-               return (Nul => Cnt_Value.U = "0",
-                       Str => Cnt_Value.U);
+               return Make_Trivial (Nul => Cnt_Value.U = "0",
+                                    Str => Cnt_Value.U);
 
             --  This case only happens when the why3 counterexamples are
             --  incorrect. Ideally, this case should be removed but it
             --  still happens in practice.
 
             when Cnt_Invalid =>
-               return (Nul => True,
-                       Str => Cnt_Value.S);
+               return Make_Trivial (Nul => True,
+                                    Str => Cnt_Value.S);
 
             when Cnt_Projection =>
                pragma Assert (False);
                --  This case should never happen: we never built a
                --  Cnt_Projection ever.
-               return (Nul => True,
-                       Str => Cnt_Value.Er);
+               return Make_Trivial (Nul => True,
+                                    Str => Cnt_Value.Er);
 
             when Cnt_Record | Cnt_Array =>
                pragma Assert (False);
@@ -994,7 +1018,7 @@ package body Gnat2Why.Counter_Examples is
    --  Start of processing for Refine_Value
 
    begin
-      return (Nul => Res.Nul, Str => Trim (Res.Str, Both));
+      return Make_Trivial (Nul => Res.Nul, Str => Trim (Res.Str, Both));
    end Refine_Value;
 
    -----------------------

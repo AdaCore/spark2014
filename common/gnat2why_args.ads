@@ -108,6 +108,11 @@ package Gnat2Why_Args is
    --  This will enable additional tracing output and will call graphviz on
    --  each dumped graph.
 
+   Debug_Trivial : Boolean := False;
+
+   --  This will disable the simplification of trivial counterexamples in order
+   --  to allow analysis of missing counterexamples.
+
    Flow_Advanced_Debug : Boolean := False;
 
    --  The SPARK RM does not make global contracts optional, rather this is a

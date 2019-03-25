@@ -78,6 +78,7 @@ package Configuration is
       CWE                  : aliased Boolean;
       D                    : aliased Boolean;
       Debug_Save_VCs       : aliased Boolean;
+      Debug_Trivial        : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
       F                    : aliased Boolean;
       File_List            : String_Lists.List;

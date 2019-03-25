@@ -900,6 +900,7 @@ procedure Gnatprove with SPARK_Mode is
       --  Always set debug options
 
       Gnat2Why_Args.Debug_Mode := Debug;
+      Gnat2Why_Args.Debug_Trivial := CL_Switches.Debug_Trivial;
       Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
       Gnat2Why_Args.Flow_Generate_Contracts :=
         not CL_Switches.No_Global_Generation;

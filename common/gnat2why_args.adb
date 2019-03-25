@@ -51,6 +51,7 @@ package body Gnat2Why_Args is
    Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";
    Prove_Mode_Name              : constant String := "prove_mode";
    Debug_Mode_Name              : constant String := "debug";
+   Debug_Trivial_Name           : constant String := "debug_trivial";
    Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
    Flow_Generate_Contracts_Name : constant String :=
      "flow_generate_contracts";
@@ -142,6 +143,7 @@ package body Gnat2Why_Args is
       Flow_Analysis_Mode      := Get_Opt_Bool (V, Flow_Analysis_Mode_Name);
       Prove_Mode              := Get_Opt_Bool (V, Prove_Mode_Name);
       Debug_Mode              := Get_Opt_Bool (V, Debug_Mode_Name);
+      Debug_Trivial           := Get_Opt_Bool (V, Debug_Trivial_Name);
       Flow_Advanced_Debug     := Get_Opt_Bool (V, Flow_Advanced_Debug_Name);
       Flow_Generate_Contracts := Get_Opt_Bool (V,
                                                Flow_Generate_Contracts_Name);
@@ -234,6 +236,7 @@ package body Gnat2Why_Args is
       Set_Field (Obj, Flow_Analysis_Mode_Name, Flow_Analysis_Mode);
       Set_Field (Obj, Prove_Mode_Name, Prove_Mode);
       Set_Field (Obj, Debug_Mode_Name, Debug_Mode);
+      Set_Field (Obj, Debug_Trivial_Name, Debug_Trivial);
       Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Advanced_Debug);
       Set_Field (Obj, Flow_Generate_Contracts_Name, Flow_Generate_Contracts);
       Set_Field (Obj, Flow_Termination_Name, Flow_Termination_Proof);

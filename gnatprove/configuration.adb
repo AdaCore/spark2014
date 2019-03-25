@@ -595,6 +595,10 @@ package body Configuration is
             Long_Switch => "--debug-save-vcs");
          Define_Switch
            (Config,
+            CL_Switches.Debug_Trivial'Access,
+            Long_Switch => "--debug-trivial");
+         Define_Switch
+           (Config,
             CL_Switches.Flow_Debug'Access,
             Long_Switch => "--flow-debug");
          Define_Switch
