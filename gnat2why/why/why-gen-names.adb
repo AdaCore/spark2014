@@ -918,6 +918,9 @@ package body Why.Gen.Names is
             | WNE_Of_Rep
             | WNE_Private_Eq
             | WNE_Private_Type
+            | WNE_Pointer_Close
+            | WNE_Pointer_Open
+            | WNE_Pointer_Value_Abstr
             | WNE_Refined_Func_Guard
             | WNE_Range_Check_Fun
             | WNE_Range_Check_Fun_BV_Int

@@ -1,0 +1,5 @@
+incomplete_types.ads:4:21: warning: unused variable "X"
+incomplete_types.ads:4:24: warning: unused variable "Y"
+incomplete_types.ads:9:43: medium: discriminant check might fail
+incomplete_types.ads:13:21: warning: unused variable "X"
+incomplete_types.ads:13:24: warning: unused variable "Y"

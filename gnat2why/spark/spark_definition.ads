@@ -188,6 +188,16 @@ package SPARK_Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
+   function Has_Incomplete_Access (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  Return True if E is the full view of an incomplete type
+
+   function Get_Incomplete_Access (E : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (E) and then Has_Incomplete_Access (E),
+     Post => Present (Get_Incomplete_Access'Result)
+     and then Is_Access_Type (Get_Incomplete_Access'Result);
+   --  Return an access type to E
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------

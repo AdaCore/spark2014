@@ -461,6 +461,25 @@ package SPARK_Atree.Entities is
    function String_Literal_Low_Bound (Typ : Entity_Id) return Node_Id with
      Pre => Ekind (Typ) = E_String_Literal_Subtype;
 
+   -----------------------
+   --  For Access Types --
+   -----------------------
+
+   function Designates_Incomplete_Type (N : Node_Id) return Boolean with
+     Pre => Is_Access_Type (N);
+   --  Returns True if N is an access type which designates an incomplete type.
+
+   function Directly_Designated_Type (N : Node_Id) return Node_Id with
+     Pre => Is_Access_Type (N);
+   --  If N designates an incomplete type, return its full view, else return
+   --  the designated type.
+
+   function Can_Never_Be_Null (N : Node_Id) return Boolean renames
+     Einfo.Can_Never_Be_Null;
+
+   function Is_Access_Constant (N : Node_Id) return Boolean renames
+     Einfo.Is_Access_Constant;
+
    ------------------
    --  For Objects --
    ------------------
@@ -604,19 +623,6 @@ package SPARK_Atree.Entities is
      Pre => Ekind (Pack) = E_Package;
    --  @param E a package entity
    --  @return the list of visible declarations of the package
-
-   -----------------------
-   --  For Access Types --
-   -----------------------
-
-   function Directly_Designated_Type (N : Node_Id) return Node_Id renames
-     Einfo.Directly_Designated_Type;
-
-   function Can_Never_Be_Null (N : Node_Id) return Boolean renames
-     Einfo.Can_Never_Be_Null;
-
-   function Is_Access_Constant (N : Node_Id) return Boolean renames
-     Einfo.Is_Access_Constant;
 
    -------------------------
    --  For other entities --

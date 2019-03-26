@@ -152,12 +152,33 @@ package body SPARK_Atree.Entities is
    function Default_Aspect_Value (Typ : Entity_Id) return Node_Id is
      (Einfo.Default_Aspect_Value (SPARK_Util.Types.Base_Retysp (Typ)));
 
+   --------------------------------
+   -- Designates_Incomplete_Type --
+   --------------------------------
+
+   function Designates_Incomplete_Type (N : Node_Id) return Boolean is
+     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (N)));
+
    -------------------
    -- DIC_Procedure --
    -------------------
 
    function DIC_Procedure (Typ : Entity_Id) return Entity_Id renames
      Einfo.DIC_Procedure;
+
+   ------------------------------
+   -- Directly_Designated_Type --
+   ------------------------------
+
+   function Directly_Designated_Type (N : Node_Id) return Node_Id is
+      Des_Ty : constant Entity_Id := Einfo.Directly_Designated_Type (N);
+   begin
+      if Is_Incomplete_Type (Des_Ty) then
+         return Einfo.Full_View (Des_Ty);
+      else
+         return Des_Ty;
+      end if;
+   end Directly_Designated_Type;
 
    ----------------------
    -- Discriminal_Link --

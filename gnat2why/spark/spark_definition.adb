@@ -137,6 +137,10 @@ package body SPARK_Definition is
    --  When processing delayed aspect type (e.g. Predicate) this is set to the
    --  delayed type itself; used to reference the type in the error message.
 
+   Current_Incomplete_Type : Entity_Id := Empty;
+   --  When processing incomplete types, this is set to the access type to the
+   --  incomplete type; used to reference the type in the error message.
+
    Inside_Actions : Boolean := False;
    --  Set to True when traversing actions (statements introduced by the
    --  compiler inside expressions), which require a special translation.
@@ -207,6 +211,16 @@ package body SPARK_Definition is
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
 
+   Access_To_Incomplete_Types : Node_Sets.Set;
+   --  Stores access types designating incomplete types. We cannot mark
+   --  them when they are encountered as it might pull entities in an
+   --  inappropiate order. We mark them at the end and raise an error if they
+   --  are not in SPARK.
+
+   Access_To_Incomplete_Views : Node_Maps.Map;
+   --  Links full views of incomplete types to an access type designating the
+   --  incomplete type.
+
    Loop_Entity_Set : Hashed_Node_Sets.Set;
    --  Set of entities defined in loops before the invariant, which may require
    --  a special translation. See gnat2why.ads for details.
@@ -238,6 +252,12 @@ package body SPARK_Definition is
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      renames Full_Views_Not_In_SPARK.Contains;
+
+   function Has_Incomplete_Access (E : Entity_Id) return Boolean is
+     (Access_To_Incomplete_Views.Contains (Retysp (E)));
+
+   function Get_Incomplete_Access (E : Entity_Id) return Entity_Id is
+     (Access_To_Incomplete_Views.Element (Retysp (E)));
 
    function Is_Loop_Entity (E : Entity_Id) return Boolean
      renames Loop_Entity_Set.Contains;
@@ -839,6 +859,12 @@ package body SPARK_Definition is
                           then "aspect"
                           else "pragma") &
                          " SPARK_Mode #", N);
+         elsif Present (Current_Incomplete_Type) then
+            Error_Msg_Sloc := Sloc (Current_Incomplete_Type);
+
+            Error_Msg_FE
+              ("\\access to incomplete type & is required to be in SPARK",
+               N, Current_Incomplete_Type);
          else
             pragma Assert (Present (Current_Delayed_Aspect_Type));
             Error_Msg_Sloc := Sloc (Current_Delayed_Aspect_Type);
@@ -3146,6 +3172,73 @@ package body SPARK_Definition is
 
       --  Ensure that global variables are restored to their initial values
       pragma Assert (No (Current_Delayed_Aspect_Type));
+
+      --  Mark full views of incomplete types and make sure that they are in
+      --  SPARK (otherwise an error is raised). Also populate the
+      --  Incomplete_Views map.
+
+      for E of Access_To_Incomplete_Types loop
+         if Entity_In_SPARK (E) then
+            declare
+               Save_SPARK_Pragma : constant Node_Id :=
+                 Current_SPARK_Pragma;
+               Des_Ty            : constant Entity_Id :=
+                 Full_View (Directly_Designated_Type (E));
+
+            begin
+               --  Get the appropriate SPARK pragma for the access type
+
+               Current_SPARK_Pragma := SPARK_Pragma_Of_Entity (E);
+
+               --  As the access type has already been found to be in SPARK,
+               --  force the reporting of errors by setting the
+               --  Current_Incomplete_Type.
+
+               if not SPARK_Pragma_Is (Opt.On) then
+                  Current_Incomplete_Type := E;
+                  Current_SPARK_Pragma := Empty;
+               end if;
+
+               if not Retysp_In_SPARK (Des_Ty) then
+                  Mark_Violation (E, From => Des_Ty);
+
+               --  We do not support initialization by proof on access types
+               --  yet
+
+               elsif Has_Init_By_Proof (Des_Ty) then
+                  Mark_Unsupported
+                    ("access to a type with initialization by proof", E);
+               else
+
+                  --  Attempt to insert the view in the incomplete views map if
+                  --  the designated type is not already present (which can
+                  --  happen if there are several access types designating the
+                  --  same incomplete type).
+
+                  declare
+                     Pos : Node_Maps.Cursor;
+                     Ins : Boolean;
+                  begin
+                     Access_To_Incomplete_Views.Insert
+                       (Retysp (Des_Ty), E, Pos, Ins);
+
+                     pragma Assert
+                       (Is_Access_Type (Node_Maps.Element (Pos))
+                        and then Is_Incomplete_Type
+                          (Directly_Designated_Type
+                               (Node_Maps.Element (Pos))));
+                  end;
+               end if;
+
+               Current_SPARK_Pragma := Save_SPARK_Pragma;
+               Violation_Detected := False;
+            end;
+         end if;
+      end loop;
+      Access_To_Incomplete_Types.Clear;
+
+      --  ??? what if new delayed aspects / incomplete types are encountered
+      --  during this second phase of marking?
    end Mark_Compilation_Unit;
 
    --------------------------------
@@ -4989,6 +5082,19 @@ package body SPARK_Definition is
 
             elsif not SPARK_Pragma_Is (Opt.On) then
                Mark_Violation ("access type without ownership", E);
+
+            --  Store the type in the Incomplete_Type map to be marked later.
+
+            elsif Is_Incomplete_Type (Directly_Designated_Type (E)) then
+               if No (Full_View (Directly_Designated_Type (E))) then
+                  Mark_Unsupported
+                    ("incomplete type with deferred full view",
+                     Directly_Designated_Type (E));
+                  Mark_Violation (E, From => Directly_Designated_Type (E));
+               else
+                  Access_To_Incomplete_Types.Insert (E);
+               end if;
+
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
                Mark_Violation (E, From => Directly_Designated_Type (E));
 
@@ -5073,6 +5179,7 @@ package body SPARK_Definition is
             end if;
 
          elsif Is_Incomplete_Type (E) then
+            pragma Assert (From_Limited_With (E));
             Mark_Unsupported
               ("incomplete type", E,
                Cont_Msg =>
@@ -6933,13 +7040,15 @@ package body SPARK_Definition is
    ---------------------
 
    function SPARK_Pragma_Is (Mode : Opt.SPARK_Mode_Type) return Boolean is
-     (if Present (Current_Delayed_Aspect_Type)
-        and then In_SPARK (Current_Delayed_Aspect_Type)
+     (if Present (Current_Incomplete_Type)
+      or else (Present (Current_Delayed_Aspect_Type)
+               and then In_SPARK (Current_Delayed_Aspect_Type))
       then Mode = Opt.On
       --  Force SPARK_Mode => On for expressions of a delayed aspects, if the
       --  type bearing this aspect was marked in SPARK, as we have assumed
       --  it when marking everything between their declaration and freezing
-      --  point, so we cannot revert that.
+      --  point, so we cannot revert that. Also force it for completion of
+      --  incomplete types.
 
       elsif Present (Current_SPARK_Pragma)
       then Get_SPARK_Mode_From_Annotation (Current_SPARK_Pragma) = Mode

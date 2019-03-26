@@ -92,6 +92,7 @@ package body Why.Atree.Modules is
    Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Init_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
@@ -173,6 +174,32 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Axiom_Module;
+
+   --------------------
+   -- E_Compl_Module --
+   --------------------
+
+   function E_Compl_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Compl_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Name,
+                 Name     => NID (Full_Name (E) & "__compl"));
+         begin
+            Compl_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Compl_Module;
 
    -------------------
    -- E_Init_Module --
@@ -417,6 +444,10 @@ package body Why.Atree.Modules is
         New_Module
           (File     => Ada_Model_File,
            Name     => NID ("Rep_Proj_BV64"));
+      Access_To_Incomp_Ty :=
+        New_Module
+          (File     => Ada_Model_File,
+           Name     => NID ("Access_to_incomplete_type"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
@@ -2565,26 +2596,24 @@ package body Why.Atree.Modules is
 
          elsif Has_Access_Type (E) then
             declare
+               Is_Incompl     : constant Boolean :=
+                 Designates_Incomplete_Type (E);
                Root           : constant Entity_Id := Root_Pointer_Type (E);
                Root_Ty        : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
                Full_Name_Node : constant String := Full_Name (Root);
+               M_C            : constant W_Module_Id :=
+                 (if Is_Incompl then E_Compl_Module (Repr_Pointer_Type (E))
+                  else M);
                Des_Ty         : constant W_Type_Id :=
                  EW_Abstract (Directly_Designated_Type (Retysp (E)));
 
             begin
                Insert_Symbol
-                 (E, WNE_Rec_Rep,
-                  New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Rep)),
-                     Module => M,
-                     Domain => EW_Term));
-
-               Insert_Symbol
                  (E, WNE_Null_Pointer,
                   New_Identifier
                     (Symbol => NID ("__null_pointer"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term));
 
                Insert_Symbol
@@ -2610,7 +2639,7 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
                        Full_Name_Node & "__pointer_value"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Des_Ty));
 
@@ -2618,14 +2647,14 @@ package body Why.Atree.Modules is
                  (E, WNE_To_Base,
                   New_Identifier
                     (Symbol => NID ("to_base"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Root_Ty));
                Insert_Symbol
                  (E, WNE_Of_Base,
                   New_Identifier
                     (Symbol => NID ("of_base"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
 
@@ -2634,13 +2663,13 @@ package body Why.Atree.Modules is
                     (E, WNE_Range_Check_Fun,
                      New_Identifier
                        (Symbol => NID ("range_check_"),
-                        Module => M,
+                        Module => M_C,
                         Domain => EW_Term,
                         Typ    => Root_Ty));
                   Insert_Symbol
                     (E, WNE_Range_Pred,
                      New_Identifier
-                       (Module => M,
+                       (Module => M_C,
                         Domain => EW_Term,
                         Symbol => NID ("in_range"),
                         Typ    => EW_Bool_Type));
@@ -2650,7 +2679,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Init_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Init_Allocator)),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
 
@@ -2658,7 +2687,7 @@ package body Why.Atree.Modules is
                  (E, WNE_Uninit_Allocator,
                   New_Identifier
                     (Symbol => NID (To_String (WNE_Uninit_Allocator)),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
 
@@ -2666,9 +2695,46 @@ package body Why.Atree.Modules is
                  (E, WNE_Assign_Null_Check,
                   New_Identifier
                     (Symbol => NID ("assign_null_check"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
+
+               if Is_Incompl then
+                  Insert_Symbol
+                    (E, WNE_Private_Type,
+                     New_Identifier
+                       (Symbol => NID ("__main_type"),
+                        Module => M,
+                        Domain => EW_Term));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Value_Abstr,
+                     New_Identifier
+                       (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                          Full_Name_Node & "__pointer_value_abstr"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => New_Named_Type
+                          (Name => New_Name
+                               (Symbol => NID ("__main_type"),
+                                Module => M))));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Open,
+                     New_Identifier
+                       (Symbol => NID ("__open"),
+                        Module => M_C,
+                        Domain => EW_Term,
+                        Typ    => Des_Ty));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Close,
+                     New_Identifier
+                       (Symbol => NID ("__close"),
+                        Module => M_C,
+                        Domain => EW_Term,
+                        Typ    => New_Named_Type
+                          (Name => New_Name
+                               (Symbol => NID ("__main_type"),
+                                Module => M))));
+               end if;
             end;
          end if;
       end Insert_Type_Symbols;

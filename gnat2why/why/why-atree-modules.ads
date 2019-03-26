@@ -102,6 +102,7 @@ package Why.Atree.Modules is
    Rep_Proj_16            : W_Module_Id;
    Rep_Proj_32            : W_Module_Id;
    Rep_Proj_64            : W_Module_Id;
+   Access_To_Incomp_Ty    : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -551,6 +552,12 @@ package Why.Atree.Modules is
    --  @param S a symbol which is allowed for that type entity
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
+
+   function E_Compl_Module (E : Entity_Id) return W_Module_Id;
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__compl"). Memoization may be used. Returns Empty when it is called
+   --  with a node which is not an entity, and no module is known for this
+   --  entity.
 
    function E_Rep_Module (E : Entity_Id) return W_Module_Id;
    --  Returns the module where File = No_Name and Name = (Full_Name (E) &

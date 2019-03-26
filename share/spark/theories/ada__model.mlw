@@ -2052,3 +2052,17 @@ module Constr_Array_4
 
   val function user_eq (x : __t) (y : __t) : bool
 end
+
+module Access_to_incomplete_type
+  type abstr_ty
+  type comp_ty
+
+  val function __open (x : abstr_ty) : comp_ty
+  val function __close (x : comp_ty) : abstr_ty
+
+  axiom close_open:
+    forall x : abstr_ty [__open x]. __close (__open x) = x
+
+  axiom open_close:
+    forall x : comp_ty [__close x]. __open (__close x) = x
+end

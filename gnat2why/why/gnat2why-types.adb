@@ -840,6 +840,16 @@ package body Gnat2Why.Types is
 
          Close_Theory (File, Kind => Standalone_Theory);
       end if;
+
+      --  After translating the full view of an incomplete type, complete the
+      --  representation of the corresponding access type representative
+      --  theory.
+
+      if Has_Incomplete_Access (E) then
+         Create_Rep_Pointer_Theory_If_Needed (File, Get_Incomplete_Access (E));
+         Declare_Rep_Pointer_Compl
+           (File, Repr_Pointer_Type (Get_Incomplete_Access (E)));
+      end if;
    end Translate_Type;
 
 end Gnat2Why.Types;

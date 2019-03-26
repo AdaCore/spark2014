@@ -4367,7 +4367,9 @@ package body Gnat2Why.Expr is
             Right  => +Invariant_For_Record (Expr, Ty_Ext),
             Domain => EW_Pred);
 
-      elsif Is_Access_Type (Ty_Ext) then
+      elsif Is_Access_Type (Ty_Ext)
+        and then not Designates_Incomplete_Type (Ty_Ext)
+      then
 
          --  Generates:
          --  (not <Expr>.is_null -> Dynamic_Invariant <Expr>.value)
@@ -17867,7 +17869,9 @@ package body Gnat2Why.Expr is
                Variables_In_Dynamic_Invariant (Etype (Field), Variables);
             end if;
          end loop;
-      elsif Is_Access_Type (Ty_Ext) then
+      elsif Is_Access_Type (Ty_Ext)
+        and then not Designates_Incomplete_Type (Ty_Ext)
+      then
          Variables_In_Dynamic_Invariant
            (Directly_Designated_Type (Ty_Ext), Variables);
       end if;

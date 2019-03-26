@@ -1,0 +1,23 @@
+update_lists.adb:4:22: warning: unused initial value of "Target"
+update_lists.adb:6:07: high: "Rover" must be listed in the Global aspect of "Update_Lists" (SPARK RM 6.1.4(13)), in call inlined at update_lists.adb:18
+update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
+update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:36
+update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:24
+update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
+update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
+update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:44
+update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:24
+update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
+update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
+update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:44
+update_lists.adb:15:04: high: "Prev" must be listed in the Global aspect of "Update_Lists" (SPARK RM 6.1.4(13))
+update_lists.adb:18:04: info: analyzing call to "Assign" in context
+update_lists.adb:20:15: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:24:13: info: analyzing call to "Assign" in context
+update_lists.adb:27:13: info: analyzing call to "Assign" in context
+update_lists.adb:33:13: info: analyzing call to "Assign" in context
+update_lists.adb:36:13: info: analyzing call to "Assign" in context
+update_lists.adb:37:13: info: analyzing call to "Assign" in context
+update_lists.adb:40:13: info: analyzing call to "Assign" in context
+update_lists.adb:43:10: info: analyzing call to "Assign" in context
+update_lists.adb:44:10: info: analyzing call to "Assign" in context

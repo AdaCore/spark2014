@@ -359,6 +359,9 @@ package Why.Gen.Names is
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
       WNE_Uninit_Allocator,       --  "__new_uninitialized_allocator"
       WNE_Assign_Null_Check,      --  "__assign_null_check"
+      WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
+      WNE_Pointer_Open,           --  "__open"
+      WNE_Pointer_Close,          --  "__close"
 
       --  Names related to initialization checks
       WNE_Init_Value,             --  "rec__value"
