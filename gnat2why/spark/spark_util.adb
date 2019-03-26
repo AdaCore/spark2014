@@ -656,6 +656,7 @@ package body SPARK_Util is
         or else (Full_View_Not_In_SPARK (Ty)
                  and then Get_First_Ancestor_In_SPARK (Ty) = Ty)
       then
+         pragma Assert (if not Entity_In_SPARK (Ty) then Entity_Marked (Ty));
 
          return False;
 
@@ -671,6 +672,7 @@ package body SPARK_Util is
                then Full_View (Orig_Rec)
                else Orig_Rec);
          begin
+            pragma Assert (Entity_Marked (Pview_Rec));
             return Entity_In_SPARK (Pview_Rec);
          end;
       end if;
