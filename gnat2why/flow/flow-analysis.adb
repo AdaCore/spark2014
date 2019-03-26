@@ -1867,9 +1867,9 @@ package body Flow.Analysis is
       function Is_In_Pragma_Un (S : Flow_Id_Sets.Set)
                                 return Boolean
       is
-        (for some E of S =>
-           E.Kind in Direct_Mapping | Record_Field
-             and then Has_Pragma_Un (Get_Direct_Mapping_Id (E)));
+        (for some F of S =>
+           F.Kind in Direct_Mapping | Record_Field
+             and then Has_Pragma_Un (Get_Direct_Mapping_Id (F)));
 
       ----------------------------
       -- Is_Package_Elaboration --
