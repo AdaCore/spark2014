@@ -1,3 +1,4 @@
 Darwin SKIP small proof diff on Darwin
 NT SKIP small proof diff on Windows
+assertions SKIP small proof diff with assertions
 ALL RLIMIT 1500
