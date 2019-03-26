@@ -3401,8 +3401,7 @@ package body SPARK_Definition is
 
          --  Local borrowers of access to variable types are not supported yet
 
-         if Ekind (E) not in Formal_Kind
-           and then Ekind (E) /= E_Constant
+         if Ekind (E) = E_Variable
            and then Is_Access_Type (T)
            and then not Is_Access_Constant (T)
            and then Is_Anonymous_Access_Type (T)
