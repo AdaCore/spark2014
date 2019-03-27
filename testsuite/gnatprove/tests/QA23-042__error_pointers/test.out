@@ -1,0 +1,151 @@
+n01.adb:27:11: insufficient permission on dereference from "X"
+n01.adb:27:11: object was moved at line 23
+n03.adb:31:18: insufficient permission for "X"
+n03.adb:31:18: object was moved at line 27
+n04.adb:37:07: cannot use global variable "Y" of deep type
+n04.adb:37:07: without prior declaration in a Global aspect
+n04.adb:37:12: source of borrow must be variable "Y"
+n05.adb:37:22: insufficient permission on dereference from "X"
+n05.adb:37:22: object was declared as not writeable at line 31
+n06.adb:39:22: insufficient permission on dereference from "X"
+n06.adb:39:22: object was declared as not writeable at line 33
+n07.adb:10:16: anonymous access type for result only allowed for traveral functions
+n07.adb:25:09: expression must be part of stand-alone object or parameter
+n07.adb:25:09: incorrect borrow or observe (SPARK RM 3.10(3))
+n08.adb:21:18: insufficient permission on dereference from "A"
+n08.adb:21:18: object was declared as not writeable at line 16
+n08.adb:23:22: insufficient permission on dereference from "A"
+n08.adb:23:22: object was declared as not writeable at line 16
+n08b.adb:28:26: expected type universal integer
+n08b.adb:28:26: found type "ACI" defined at line 12
+n08b.adb:30:22: expected type "ACI" defined at line 12
+n08b.adb:30:22: found type access to "ACI" defined at line 30
+n08b.adb:39:43: expected type "ACI" defined at line 12
+n08b.adb:39:43: found type universal integer
+n08b.adb:39:52: expected type "ACI" defined at line 12
+n08b.adb:39:52: found type universal integer
+n08b.adb:40:15: add "all" to type "AM" defined at line 16
+n08b.adb:40:15: result must be general access type
+n08b.adb:43:39: expected type "Standard.Integer"
+n08b.adb:43:39: found type "ACI" defined at line 12
+n08b.adb:44:43: expected type "Standard.Integer"
+n08b.adb:44:43: found type "ACI" defined at line 12
+n08b.adb:45:51: expected type "Standard.Integer"
+n08b.adb:45:51: found type "ACI" defined at line 12
+n08b.adb:46:51: expected type "Standard.Integer"
+n08b.adb:46:51: found type "ACI" defined at line 12
+n08b.adb:53:39: expected type "Standard.Integer"
+n08b.adb:53:39: found type "ACI" defined at line 12
+n08b.adb:54:43: expected type "Standard.Integer"
+n08b.adb:54:43: found type "ACI" defined at line 12
+n08b.adb:55:51: expected type "Standard.Integer"
+n08b.adb:55:51: found type "ACI" defined at line 12
+n08b.adb:56:51: expected type "Standard.Integer"
+n08b.adb:56:51: found type "ACI" defined at line 12
+n09.adb:16:19: insufficient permission on dereference from "A"
+n09.adb:16:19: object was declared as not writeable at line 11
+n09b.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
+n09b.adb:11:17: object was moved at line 20
+n09c.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
+n09c.adb:11:17: object was moved at line 18
+n10.adb:12:17: insufficient permission for "A" when returning from "Modify"
+n10.adb:12:17: object was moved at line 19
+n10.adb:20:21: insufficient permission for "A"
+n10.adb:20:21: object was moved at line 19
+n11.adb:11:17: insufficient permission for "A" when returning from "Modify"
+n11.adb:11:17: object was moved at line 17
+n11.adb:18:37: expression must be part of stand-alone object or parameter
+n11.adb:18:37: incorrect borrow or observe (SPARK RM 3.10(3))
+n12.adb:13:17: insufficient permission for "A" when returning from "Modify"
+n12.adb:13:17: object was moved at line 19
+n12.adb:20:28: insufficient permission for "A"
+n12.adb:20:28: object was moved at line 19
+n13.adb:25:20: insufficient permission for "A"
+n13.adb:25:20: object was moved at line 19
+n14.adb:12:17: insufficient permission for "T0" when returning from "Modify"
+n14.adb:12:17: object was moved at line 18
+n14.adb:21:37: expression must be part of stand-alone object or parameter
+n14.adb:21:37: incorrect borrow or observe (SPARK RM 3.10(3))
+n15.adb:12:17: insufficient permission for "T0" when returning from "Modify"
+n15.adb:12:17: object was moved at line 18
+n15.adb:21:37: expression must be part of stand-alone object or parameter
+n15.adb:21:37: incorrect borrow or observe (SPARK RM 3.10(3))
+n15.adb:27:21: insufficient permission for "T0"
+n15.adb:27:21: object was moved at line 18
+n16.adb:13:17: insufficient permission for "T0" when returning from "Modify"
+n16.adb:13:17: object was moved at line 19
+n16.adb:23:23: insufficient permission on dereference from "T0"
+n16.adb:23:23: object was moved at line 19
+pointers.adb:46:10: insufficient permission on dereference from "XX"
+pointers.adb:46:10: object was declared as not writeable at pointers.ads:31
+pointers.adb:46:20: insufficient permission on dereference from "YY"
+pointers.adb:46:20: object was declared as not writeable at pointers.ads:31
+pointers.adb:50:27: insufficient permission on dereference from "XX"
+pointers.adb:50:27: object was declared as not writeable at pointers.ads:34
+pointers.adb:52:10: insufficient permission on dereference from "XX"
+pointers.adb:52:10: object was declared as not writeable at pointers.ads:34
+pointers.adb:52:20: insufficient permission on dereference from "YY"
+pointers.adb:52:20: object was declared as not writeable at pointers.ads:34
+pointers.adb:53:10: insufficient permission on dereference from "YY"
+pointers.adb:53:10: object was declared as not writeable at pointers.ads:34
+pointers.adb:98:11: insufficient permission on dereference from "CXX"
+pointers.adb:98:11: object was declared as not writeable at pointers.ads:63
+pointers.adb:98:22: insufficient permission on dereference from "CYY"
+pointers.adb:98:22: object was declared as not writeable at pointers.ads:63
+pointers.adb:102:32: insufficient permission on dereference from "CXX"
+pointers.adb:102:32: object was declared as not writeable at pointers.ads:66
+pointers.adb:104:11: insufficient permission on dereference from "CXX"
+pointers.adb:104:11: object was declared as not writeable at pointers.ads:66
+pointers.adb:104:22: insufficient permission on dereference from "CYY"
+pointers.adb:104:22: object was declared as not writeable at pointers.ads:66
+pointers.adb:105:11: insufficient permission on dereference from "CYY"
+pointers.adb:105:11: object was declared as not writeable at pointers.ads:66
+pointers.adb:118:13: insufficient permission on dereference from "X"
+pointers.adb:118:13: object was moved at line 116
+pointers.adb:124:16: insufficient permission on dereference from "CCXX"
+pointers.adb:124:16: object was declared as not writeable at pointers.ads:79
+pointers.adb:128:29: insufficient permission on dereference from "CCXX"
+pointers.adb:128:29: object was declared as not writeable at pointers.ads:82
+pointers.adb:130:16: insufficient permission on dereference from "CCXX"
+pointers.adb:130:16: object was declared as not writeable at pointers.ads:82
+pointers.adb:131:16: insufficient permission on dereference from "CCYY"
+pointers.adb:131:16: object was declared as not writeable at pointers.ads:82
+pointers.ads:8:14: insufficient permission for "Y" when returning from "Bad_Swap"
+pointers.ads:8:14: object was moved at pointers.adb:8
+pointers.ads:14:14: insufficient permission for "Y" when returning from "Bad_Swap"
+pointers.ads:14:14: object was moved at pointers.adb:20
+pointers.ads:24:14: insufficient permission for "Y" when returning from "Bad_Swap2"
+pointers.ads:24:14: object was moved at pointers.adb:34
+pointers.ads:40:14: insufficient permission for "Y" when returning from "Bad_Swap3"
+pointers.ads:40:14: object was moved at pointers.adb:60
+pointers.ads:46:14: insufficient permission for "CY" when returning from "Bad_Swap3"
+pointers.ads:46:14: object was moved at pointers.adb:72
+pointers.ads:56:14: insufficient permission for "Y" when returning from "Bad_Swap4"
+pointers.ads:56:14: object was moved at pointers.adb:86
+pointers.ads:74:14: insufficient permission for "X" when returning from "Swap5"
+pointers.ads:74:14: object was moved at pointers.adb:116
+pointers2.adb:31:16: insufficient permission for "Y"
+pointers2.adb:31:16: object was moved at line 30
+pointers2.adb:37:12: insufficient permission for "Y"
+pointers2.adb:37:12: object was moved at line 36
+pointers2.ads:6:14: insufficient permission for "Y" when returning from "Bad_Swap"
+pointers2.ads:6:14: object was moved at pointers2.adb:6
+pointers2.ads:12:14: insufficient permission for "Y" when returning from "Bad_Swap_Global"
+pointers2.ads:12:14: object was moved at pointers2.adb:18
+pointers2.ads:18:14: insufficient permission for "Y" when returning from "Bad_Borrow"
+pointers2.ads:18:14: object was moved at pointers2.adb:30
+pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
+pointers2.ads:20:14: object was moved at pointers2.adb:36
+spark02.adb:18:17: insufficient permission for "x"
+spark02.adb:18:17: object was declared as not writeable at line 10
+spark02.adb:32:11: illegal target for assignment
+spark02.adb:35:11: name expected here for move/borrow/observe
+spark03.adb:9:10: cannot use global variable "S" of deep type
+spark03.adb:9:10: without prior declaration in a Global aspect
+spark03b.adb:9:07: add "null => An_Item" dependency to ignore this input
+spark03b.adb:9:07: parameter "An_Item" is missing from input dependence list
+spark03b.adb:10:19: "S" is undefined (more references follow)
+spark03b.adb:30:04: volatile variable "A" must be declared at library level (SPARK RM 7.1.3(3))
+spark03c.adb:9:10: cannot use global variable "S" of deep type
+spark03c.adb:9:10: without prior declaration in a Global aspect
+gnatprove: error during generation of Global contracts
