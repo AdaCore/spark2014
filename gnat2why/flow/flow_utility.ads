@@ -446,6 +446,7 @@ is
    --     - array slice
    --     - record component
    --     - unchecked conversion (for scalars)
+   --     - pointer dereference
    --
    --  Note that the expression(s) in the index or slice can be much more
    --  general and thus will be processed by Get_Variables.
