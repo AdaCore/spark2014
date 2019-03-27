@@ -575,10 +575,21 @@ package body Flow_Utility is
                   Indent;
                end if;
 
-               T         := Get_Type (F, Scope);
+               T := Get_Type (F, Scope);
+               --  ??? between this initial assignment to T and a CASE
+               --  statement below that branches on the kind of type we have
+               --  different loops that extract the "underlying" type, e.g. for
+               --  class-wide, access and derived types; I think those loops
+               --  should be somehow combined, because the class-wide/access/
+               --  derived types can be combined too.
+
                Classwide := Is_Class_Wide_Type (T);
                while Is_Class_Wide_Type (T) loop
                   T := Get_Type (Etype (T), Scope);
+               end loop;
+
+               while Is_Access_Type (T) loop
+                  T := Get_Type (Directly_Designated_Type (T), Scope);
                end loop;
 
                pragma Assert (Is_Type (T));
@@ -749,19 +760,11 @@ package body Flow_Utility is
 
                      Results := Flow_Id_Sets.To_Set (F);
 
-                  when Access_Kind =>
-                     --  ??? Pointers come only from globals (hopefully). They
-                     --  should be removed when generating globals and here
-                     --  we should only get the __HEAP entity name should.
-                     Debug ("processing access type");
-
-                     Results := Flow_Id_Sets.To_Set (F);
-
-                  when E_Exception_Type
+                  when Access_Kind
+                     | E_Exception_Type
                      | E_Subprogram_Type
                      | Incomplete_Kind
                   =>
-
                      raise Program_Error;
 
                end case;
