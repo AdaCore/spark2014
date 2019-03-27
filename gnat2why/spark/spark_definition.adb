@@ -2364,10 +2364,9 @@ package body SPARK_Definition is
       ------------------------
 
       function Acceptable_Actions (L : List_Id) return Boolean is
-         N : Node_Id;
+         N : Node_Id := First (L);
 
       begin
-         N := First (L);
          while Present (N) loop
             --  Only actions that consist in N_Object_Declaration nodes for
             --  constants are translated. All types are accepted and
@@ -3438,11 +3437,10 @@ package body SPARK_Definition is
          ---------------------------------------------
 
          procedure Declare_In_Package_With_External_Axioms (Decls : List_Id) is
-            Decl : Node_Id;
+            Decl : Node_Id := First (Decls);
             Id   : Entity_Id;
-         begin
-            Decl := First (Decls);
 
+         begin
             --  Declare entities for types
 
             while Present (Decl) and then not Comes_From_Source (Decl) loop
@@ -3912,9 +3910,9 @@ package body SPARK_Definition is
                  Expression (First (Pragma_Argument_Associations (Prag)));
                Case_Guard    : Node_Id;
                Conseq        : Node_Id;
-               Contract_Case : Node_Id;
+               Contract_Case : Node_Id :=
+                 First (Component_Associations (Aggr));
             begin
-               Contract_Case := First (Component_Associations (Aggr));
                while Present (Contract_Case) loop
                   Case_Guard := First (Choices (Contract_Case));
                   Conseq     := Expression (Contract_Case);
@@ -5541,10 +5539,9 @@ package body SPARK_Definition is
       Mark_Stmt_Or_Decl_List (Then_Statements (N));
 
       declare
-         Part : Node_Id;
+         Part : Node_Id := First (Elsif_Parts (N));
 
       begin
-         Part := First (Elsif_Parts (N));
          while Present (Part) loop
             Mark_Actions (N, Condition_Actions (Part));
             Mark (Condition (Part));
@@ -5614,9 +5611,8 @@ package body SPARK_Definition is
    ---------------
 
    procedure Mark_List (L : List_Id) is
-      N : Node_Id;
+      N : Node_Id := First (L);
    begin
-      N := First (L);
       while Present (N) loop
          Mark (N);
          Next (N);
@@ -5872,11 +5868,10 @@ package body SPARK_Definition is
 
          when Pragma_Loop_Variant =>
             declare
-               Variant : Node_Id;
+               Variant : Node_Id := First (Pragma_Argument_Associations (N));
+
             begin
                --  Process all increasing / decreasing expressions
-
-               Variant := First (Pragma_Argument_Associations (N));
                while Present (Variant) loop
                   Mark (Expression (Variant));
                   Next (Variant);
@@ -6221,13 +6216,13 @@ package body SPARK_Definition is
          declare
             Spec : constant Node_Id := Package_Specification (E);
             Decl : constant Node_Id := Package_Spec (E);
-            Cur  : Node_Id;
+
+            Cur  : Node_Id := First (Visible_Declarations (Spec));
 
          begin
             --  First handle GNATprove annotations at the beginning of the
             --  package spec.
 
-            Cur := First (Visible_Declarations (Spec));
             while Present (Cur) loop
                if Is_Pragma_Annotate_GNATprove (Cur) then
                   Mark_Pragma_Annotate (Cur,
@@ -6568,11 +6563,10 @@ package body SPARK_Definition is
                          (if Nkind (N) = N_Entry_Body
                           then Entry_Body_Formal_Part (N)
                           else Specification (N));
-                     Param_Spec : Node_Id;
                      Formal     : Entity_Id;
                      Sub        : Entity_Id;
+                     Param_Spec : Node_Id := First (Formals);
                   begin
-                     Param_Spec := First (Formals);
                      while Present (Param_Spec) loop
                         Formal := Defining_Identifier (Param_Spec);
                         Sub := Actual_Subtype (Formal);
