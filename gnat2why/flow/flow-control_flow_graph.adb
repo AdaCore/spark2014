@@ -1453,7 +1453,7 @@ package body Flow.Control_Flow_Graph is
 
       Partial         : Boolean;
       View_Conversion : Boolean;
-      Map_Root        : Flow_Id;
+      LHS_Root        : Flow_Id;
 
       LHS_Type : constant Entity_Id := Get_Type (Name (N), FA.B_Scope);
       RHS_Type : constant Entity_Id := Get_Type (Expression (N), FA.B_Scope);
@@ -1483,7 +1483,7 @@ package body Flow.Control_Flow_Graph is
            (Name (N),
             Partial_Definition => Partial,
             View_Conversion    => View_Conversion,
-            Map_Root           => Map_Root,
+            Map_Root           => LHS_Root,
             Seq                => Unused);
       end;
 
@@ -1497,10 +1497,10 @@ package body Flow.Control_Flow_Graph is
             Missing      : Flow_Id_Sets.Set;
             Verts        : Vertex_Lists.List;
 
-            M : constant Flow_Id_Maps.Map :=
+            RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
                 (Expression (N),
-                 Map_Root                     => Map_Root,
+                 Map_Root                     => LHS_Root,
                  Map_Type                     => LHS_Type,
                  Scope                        => FA.B_Scope,
                  Fold_Functions               => True,
@@ -1508,18 +1508,18 @@ package body Flow.Control_Flow_Graph is
                  Expand_Synthesized_Constants => False);
 
          begin
-            Missing := Flatten_Variable (Map_Root, FA.B_Scope);
+            Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
             if Is_Class_Wide_Type (LHS_Type)
-              and then Map_Root.Kind = Direct_Mapping
+              and then LHS_Root.Kind = Direct_Mapping
             then
-               Missing.Insert (Map_Root'Update (Facet => Extension_Part));
+               Missing.Insert (LHS_Root'Update (Facet => Extension_Part));
             end if;
 
             --  Split out the assignment over a number of vertices
-            for C in M.Iterate loop
+            for C in RHS_Map.Iterate loop
                declare
                   Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                  Inputs : Flow_Id_Sets.Set renames M (C);
+                  Inputs : Flow_Id_Sets.Set renames RHS_Map (C);
 
                begin
                   Missing.Delete (Output);
