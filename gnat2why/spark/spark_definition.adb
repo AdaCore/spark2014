@@ -1490,10 +1490,12 @@ package body SPARK_Definition is
             Mark_List (Alternatives (N));
 
          when N_Case_Expression_Alternative =>
+            Mark_List (Discrete_Choices (N));
             Mark_Actions (N, Actions (N));
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
+            Mark_List (Discrete_Choices (N));
             Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Code_Statement =>
