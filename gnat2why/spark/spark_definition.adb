@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                      Copyright (C) 2011-2018, AdaCore                    --
---                   Copyright (C) 2016-2018, Altran UK Limited             --
+--                      Copyright (C) 2011-2019, AdaCore                    --
+--                   Copyright (C) 2016-2019, Altran UK Limited             --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1454,10 +1454,12 @@ package body SPARK_Definition is
             Mark_List (Alternatives (N));
 
          when N_Case_Expression_Alternative =>
+            Mark_List (Discrete_Choices (N));
             Mark_Actions (N, Actions (N));
             Mark (Expression (N));
 
          when N_Case_Statement_Alternative =>
+            Mark_List (Discrete_Choices (N));
             Mark_Stmt_Or_Decl_List (Statements (N));
 
          when N_Code_Statement =>
