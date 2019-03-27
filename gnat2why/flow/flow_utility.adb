@@ -630,9 +630,9 @@ package body Flow_Utility is
                      Debug ("processing private type");
 
                      if Has_Discriminants (T) then
-                        for Ptr of Components (T) loop
-                           if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                              Results.Include (Add_Component (F, Ptr));
+                        for C of Components (T) loop
+                           if Is_Visible (Get_Root_Component (C), Scope) then
+                              Results.Include (Add_Component (F, C));
                            else
                               Contains_Non_Visible := True;
                            end if;
