@@ -445,7 +445,7 @@ observing type. A generic formal private type is not an owning type
 [redundant: , although the corresponding actual parameter in an instance
 of the generic might be an owning type].
 A tagged type shall not be an owning type.
-A type which is not a by-reference type shall not be an owning type.
+A composite type which is not a by-reference type shall not be an owning type.
 [Redundant: The requirement than an owning type must be a by-reference
 type is imposed in part in order to avoid problematic scenarios involving
 a parameter of an owning type passed by value in the case where the
@@ -805,12 +805,21 @@ a class-wide type might be an owning type).]
     elements shall be in the Moved or Borrowed state.
 
     At the point of a return statement, or at any other point where a call
-    completes normally (e.g., the end of a procedure body), no outputs of the
-    callee being returned from shall be in the Moved state.
+    completes normally (e.g., the end of a procedure body), no inputs or
+    outputs of the callee being returned from shall be in the Moved state.
+    In the case of an input of the callee which is not also an output,
+    this rule may be enforced at the point of the move operation (because
+    there is no way for the moved input to transition out of the Moved
+    state), even in the case of a subprogram which never returns.
 
-    In the case where the input or output in question is a state abstraction,
-    these rules also apply to any constituents (direct or indirect) of that
-    state abstraction.
+    Similarly, at the end of the elaboration of both the declaration and of
+    the body of a package, no reachable element of an object denoted by the
+    name of an initialization_item of the package's Initializes aspect or by
+    an input occuring in the input_list of such an initialization_item
+    shall be in the Moved state.
+
+    The source of a move operation shall not be a part of a library-level
+    constant without variable inputs.
 
 .. _tu-access_types-11:
 
