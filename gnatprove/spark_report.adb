@@ -601,6 +601,15 @@ procedure SPARK_Report is
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
          Handle_SPARK_File (Item);
+      exception
+         when others =>
+            Ada.Text_IO.Put_Line
+               (Ada.Text_IO.Standard_Error,
+                "spark_report: error when processing file " & Item &
+                ", skipping");
+            Ada.Text_IO.Put_Line
+               (Ada.Text_IO.Standard_Error,
+                "spark_report: try cleaning proofs to remove this error");
       end Local_Handle_SPARK_File;
 
       procedure Iterate_SPARK is new
