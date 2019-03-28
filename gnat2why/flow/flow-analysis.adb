@@ -1869,7 +1869,9 @@ package body Flow.Analysis is
       is
         (for some F of S =>
            F.Kind in Direct_Mapping | Record_Field
-             and then Has_Pragma_Un (Get_Direct_Mapping_Id (F)));
+             and then (Has_Pragma_Un (Get_Direct_Mapping_Id (F))
+                         or else
+                       Has_Junk_Name (Get_Direct_Mapping_Id (F))));
 
       ----------------------------
       -- Is_Package_Elaboration --

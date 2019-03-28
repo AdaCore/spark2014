@@ -8,7 +8,6 @@ outer.adb:22:18: info: initialization of "Nested.State" proved
 outer.adb:22:18: info: initialization of "Used" proved
 outer.adb:29:10: info: initialization of "Used" proved
 outer.adb:30:10: low: initialization of "Unused" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
-outer.adb:30:10: warning: initialization of "Unused" has no effect
 outer.adb:36:10: low: initialization of "Nested_Var" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 outer.adb:37:10: low: initialization of "Nested_Var2" must be mentioned in the Initializes contract of "Nested" (SPARK RM 7.1.5(9))
 outer.adb:39:51: medium: overflow check might fail [possible explanation: subprogram at line 32 should mention Nested_Var and Nested_Var2 in a precondition]
