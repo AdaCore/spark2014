@@ -1,0 +1,8 @@
+project Test is
+
+   package Compiler is
+      for Switches ("ada") use ("-gnato13");
+   end Compiler;
+
+end Test;
+
