@@ -572,8 +572,13 @@ package body Gnat2Why.Driver is
                Run_Gnatwhy3;
             end if;
 
+            --  If the analysis is requested for a specific piece of code, we
+            --  do not warn about useless pragma Annotate, because it's likely
+            --  to be a false positive.
+
             if Gnat2Why_Args.Limit_Line = Null_Unbounded_String
               and then Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
             then
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;

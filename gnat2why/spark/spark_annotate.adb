@@ -26,12 +26,10 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
-with Ada.Strings.Unbounded;        use Ada.Strings.Unbounded;
 with Aspects;                      use Aspects;
 with Common_Containers;
 with Einfo;                        use Einfo;
 with Errout;                       use Errout;
-with Gnat2Why_Args;
 with GNAT.Regpat;                  use GNAT.Regpat;
 with Namet;                        use Namet;
 with Nlists;                       use Nlists;
@@ -586,13 +584,6 @@ package body SPARK_Annotate is
 
    procedure Generate_Useless_Pragma_Annotate_Warnings is
    begin
-      --  If the analysis is requested for a specific subprogram/task, we do
-      --  not issue this warning, because it's likely to be a false positive.
-
-      if Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
-         return;
-      end if;
-
       --  Check whether we may issue a warning on the pragma before doing it
 
       for Prag of Pragma_Set loop
