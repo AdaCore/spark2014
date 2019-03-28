@@ -156,8 +156,8 @@ package body SPARK_Atree.Entities is
    -- Designates_Incomplete_Type --
    --------------------------------
 
-   function Designates_Incomplete_Type (N : Node_Id) return Boolean is
-     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (N)));
+   function Designates_Incomplete_Type (E : Entity_Id) return Boolean is
+     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (E)));
 
    -------------------
    -- DIC_Procedure --
@@ -170,8 +170,8 @@ package body SPARK_Atree.Entities is
    -- Directly_Designated_Type --
    ------------------------------
 
-   function Directly_Designated_Type (N : Node_Id) return Node_Id is
-      Des_Ty : constant Entity_Id := Einfo.Directly_Designated_Type (N);
+   function Directly_Designated_Type (E : Entity_Id) return Node_Id is
+      Des_Ty : constant Entity_Id := Einfo.Directly_Designated_Type (E);
    begin
       if Is_Incomplete_Type (Des_Ty) then
          return Einfo.Full_View (Des_Ty);

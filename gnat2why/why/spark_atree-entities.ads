@@ -465,19 +465,19 @@ package SPARK_Atree.Entities is
    --  For Access Types --
    -----------------------
 
-   function Designates_Incomplete_Type (N : Node_Id) return Boolean with
-     Pre => Is_Access_Type (N);
-   --  Returns True if N is an access type which designates an incomplete type.
+   function Designates_Incomplete_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Access_Type (E);
+   --  Returns True if E is an access type which designates an incomplete type
 
-   function Directly_Designated_Type (N : Node_Id) return Node_Id with
-     Pre => Is_Access_Type (N);
-   --  If N designates an incomplete type, return its full view, else return
+   function Directly_Designated_Type (E : Entity_Id) return Node_Id with
+     Pre => Is_Access_Type (E);
+   --  If E designates an incomplete type, return its full view, else return
    --  the designated type.
 
-   function Can_Never_Be_Null (N : Node_Id) return Boolean renames
+   function Can_Never_Be_Null (E : Entity_Id) return Boolean renames
      Einfo.Can_Never_Be_Null;
 
-   function Is_Access_Constant (N : Node_Id) return Boolean renames
+   function Is_Access_Constant (E : Entity_Id) return Boolean renames
      Einfo.Is_Access_Constant;
 
    ------------------

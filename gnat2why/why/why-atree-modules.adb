@@ -398,56 +398,56 @@ package body Why.Atree.Modules is
            Name => NID ("Dynamic_Floating_Point"));
       Rep_Proj_Float32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Float32"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_Float32"));
       Rep_Proj_Float64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Float64"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_Float64"));
       Rep_Proj_Fixed :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Fixed"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_Fixed"));
       Rep_Proj_Int :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Int"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_Int"));
       Rep_Proj_Lt8 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV8"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_ltBV8"));
       Rep_Proj_Lt16 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV16"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_ltBV16"));
       Rep_Proj_Lt32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV32"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_ltBV32"));
       Rep_Proj_Lt64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV64"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_ltBV64"));
       Rep_Proj_8 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV8"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_BV8"));
       Rep_Proj_16 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV16"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_BV16"));
       Rep_Proj_32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV32"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_BV32"));
       Rep_Proj_64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV64"));
+          (File => Ada_Model_File,
+           Name => NID ("Rep_Proj_BV64"));
       Access_To_Incomp_Ty :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Access_to_incomplete_type"));
+          (File => Ada_Model_File,
+           Name => NID ("Access_to_incomplete_type"));
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
