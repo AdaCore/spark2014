@@ -1,7 +1,6 @@
 test_trigo.adb:10:06: warning: unused assignment
 test_trigo.adb:11:10: info: initialization of "F" proved
 test_trigo.adb:11:19: warning: statement has no effect
-test_trigo.adb:12:13: warning: unused assignment
 test_trigo.adb:12:21: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:12:27: info: initialization of "F" proved
 test_trigo.adb:13:09: warning: unused assignment
@@ -10,7 +9,6 @@ test_trigo.adb:13:24: info: overflow check proved (CVC4: 1 VC)
 test_trigo.adb:18:06: warning: unused assignment
 test_trigo.adb:19:10: info: initialization of "F" proved
 test_trigo.adb:19:19: warning: statement has no effect
-test_trigo.adb:20:13: warning: unused assignment
 test_trigo.adb:20:21: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:20:27: info: initialization of "F" proved
 test_trigo.adb:21:09: warning: unused assignment
@@ -19,7 +17,6 @@ test_trigo.adb:21:24: info: overflow check proved (CVC4: 1 VC)
 test_trigo.adb:26:06: warning: unused assignment
 test_trigo.adb:27:10: info: initialization of "F" proved
 test_trigo.adb:27:19: warning: statement has no effect
-test_trigo.adb:28:13: warning: unused assignment
 test_trigo.adb:28:21: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
 test_trigo.adb:28:27: info: initialization of "F" proved
 test_trigo.adb:29:09: warning: unused assignment
