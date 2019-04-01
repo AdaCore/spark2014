@@ -5151,8 +5151,8 @@ package body SPARK_Definition is
 
                   end;
 
-               --  We have a concurrent subtype or derived type. It is in SPARK
-               --  if its Etype is in SPARK.
+               --  We have a concurrent subtype or derived type. Propagate its
+               --  full view status from its base type.
 
                else
                   pragma Assert
@@ -5160,14 +5160,6 @@ package body SPARK_Definition is
                      or else (Nkind (Parent (E)) = N_Full_Type_Declaration
                        and then Nkind (Type_Definition (Parent (E))) =
                          N_Derived_Type_Definition));
-
-                  if not In_SPARK (Etype (E)) then
-                     Mark_Violation (E, From => Etype (E));
-                  end if;
-
-                  --  A concurrent type may have a type with full_view not in
-                  --  SPARK as an etype. In this case, the subype (or derived
-                  --  type) has fullview not in SPARK.
 
                   if Full_View_Not_In_SPARK (Etype (E)) then
                      Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
