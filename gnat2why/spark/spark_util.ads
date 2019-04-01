@@ -55,6 +55,7 @@ package SPARK_Util is
                                       | N_Freeze_Entity
                                       | N_Variable_Reference_Marker
                                       | N_Label
+                                      | N_Incomplete_Type_Declaration
 
          --  Renamings are replaced by the renamed object in the frontend, but
          --  the renaming objects are not removed from the tree. We can safely

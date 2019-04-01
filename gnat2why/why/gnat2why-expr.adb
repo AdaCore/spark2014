@@ -3974,6 +3974,48 @@ package body Gnat2Why.Expr is
       Include_Type_Inv : W_Term_Id := True_Term;
       Use_Pred         : Boolean := True) return W_Pred_Id
    is
+      T               : W_Pred_Id;
+      New_Incompl_Acc : Ada_To_Why_Ident.Map;
+   begin
+      Compute_Dynamic_Invariant
+        (Expr             => Expr,
+         Ty               => Ty,
+         Params           => Params,
+         Initialized      => Initialized,
+         Only_Var         => Only_Var,
+         Top_Predicate    => Top_Predicate,
+         Include_Type_Inv => Include_Type_Inv,
+         Use_Pred         => Use_Pred,
+         New_Preds_Module => Why_Empty,
+         T                => T,
+         Loc_Incompl_Acc  => Ada_To_Why_Ident.Empty_Map,
+         New_Incompl_Acc  => New_Incompl_Acc,
+         Expand_Incompl   => True);
+
+      pragma Assert (New_Incompl_Acc.Is_Empty);
+      return T;
+   end Compute_Dynamic_Invariant;
+
+   procedure Compute_Dynamic_Invariant
+     (Expr             : W_Term_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params;
+      Initialized      : W_Term_Id;
+      Only_Var         : W_Term_Id;
+      Top_Predicate    : W_Term_Id;
+      Include_Type_Inv : W_Term_Id;
+      Use_Pred         : Boolean;
+      New_Preds_Module : W_Module_Id;
+      T                : out W_Pred_Id;
+      Loc_Incompl_Acc  : Ada_To_Why_Ident.Map;
+      New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
+      Expand_Incompl   : Boolean)
+   is
+
+      function Invariant_For_Access
+        (Expr : W_Expr_Id; Ty : Entity_Id) return W_Pred_Id;
+      --  Generates:
+      --  (not <Expr>.is_null -> Dynamic_Invariant <Expr>.value)
 
       function Invariant_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id; E : Entity_Id)
@@ -3989,6 +4031,52 @@ package body Gnat2Why.Expr is
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
          return W_Pred_Id
         is (Invariant_For_Comp (C_Expr, C_Ty, Empty));
+
+      --------------------------
+      -- Invariant_For_Access --
+      --------------------------
+
+      function Invariant_For_Access
+        (Expr : W_Expr_Id; Ty : Entity_Id) return W_Pred_Id
+      is
+         Value_Dyn_Inv : W_Pred_Id;
+      begin
+
+         --  ??? we can assume the value of constrained attribute if any
+
+         Compute_Dynamic_Invariant
+           (Expr             => +New_Pointer_Value_Access
+              (Ada_Node => Empty,
+               E        => Ty,
+               Name     => +Expr,
+               Domain   => EW_Term),
+            Ty               => Directly_Designated_Type (Ty),
+            Only_Var         => False_Term,
+            Top_Predicate    => True_Term,
+            Include_Type_Inv => Include_Type_Inv,
+            Initialized      => True_Term,
+            Params           => Params,
+            Use_Pred         => Use_Pred,
+            New_Preds_Module => New_Preds_Module,
+            T                => Value_Dyn_Inv,
+            Loc_Incompl_Acc  => Loc_Incompl_Acc,
+            New_Incompl_Acc  => New_Incompl_Acc,
+            Expand_Incompl   => False);
+         --  Do not expand incomplete types inside access types to avoid
+         --  hitting circularity.
+
+         if Value_Dyn_Inv /= True_Pred then
+            return New_Conditional
+              (Condition =>
+                 New_Not (Domain => EW_Pred,
+                          Right  => New_Pointer_Is_Null_Access
+                            (E    => Ty,
+                             Name => +Expr)),
+               Then_Part => +Value_Dyn_Inv);
+         else
+            return True_Pred;
+         end if;
+      end Invariant_For_Access;
 
       ------------------------
       -- Invariant_For_Comp --
@@ -4010,8 +4098,7 @@ package body Gnat2Why.Expr is
          --  Also discriminants and components of protected types are always
          --  initialized.
 
-         T_Comp :=
-           +Compute_Dynamic_Invariant
+         Compute_Dynamic_Invariant
            (Expr             => C_Expr,
             Ty               => C_Ty,
             Initialized      =>
@@ -4023,7 +4110,12 @@ package body Gnat2Why.Expr is
             Top_Predicate    => True_Term,
             Include_Type_Inv => Include_Type_Inv,
             Params           => Params,
-            Use_Pred         => Use_Pred);
+            Use_Pred         => Use_Pred,
+            New_Preds_Module => New_Preds_Module,
+            T                => T_Comp,
+            Loc_Incompl_Acc  => Loc_Incompl_Acc,
+            New_Incompl_Acc  => New_Incompl_Acc,
+            Expand_Incompl   => Expand_Incompl);
 
          --  If elements of a composite type have default discriminants and are
          --  not constrained then 'Constrained returns false on them.
@@ -4055,8 +4147,6 @@ package body Gnat2Why.Expr is
 
       function Invariant_For_Record is new Build_Predicate_For_Record
         (Invariant_For_Comp, Invariant_For_Comp);
-
-      T : W_Pred_Id;
 
       --  If Ty's fullview is in SPARK, go to its underlying type to check its
       --  kind.
@@ -4109,10 +4199,11 @@ package body Gnat2Why.Expr is
             Args (5) := +Include_Type_Inv;
             Args (6 .. Num_B) := Vars;
 
-            return New_Call (Name => E_Symb (E => Ty_Ext,
+            T := New_Call (Name => E_Symb (E => Ty_Ext,
                                              S => WNE_Dynamic_Invariant),
                              Args => Args,
                              Typ  => EW_Bool_Type);
+            return;
          end;
       end if;
 
@@ -4369,48 +4460,120 @@ package body Gnat2Why.Expr is
             Domain => EW_Pred);
 
       elsif Is_Access_Type (Ty_Ext)
-        and then not Designates_Incomplete_Type (Ty_Ext)
+        and then Type_Needs_Dynamic_Invariant
+          (Directly_Designated_Type (Ty_Ext))
       then
 
-         --  Generates:
-         --  (not <Expr>.is_null -> Dynamic_Invariant <Expr>.value)
+         --  For types designating an incomplete type, we cannot always assume
+         --  the dynamic property of the designated type as they may be
+         --  recursive. If Expand_Incompl is false, we use specific dynamic
+         --  predicates stored in Incompl_Access_Dyn_Inv_Map. If there is no
+         --  such predicate and New_Preds_Module is not empty, generate a new
+         --  temp for them and store them inside New_Incompl_Acc. Otherwise,
+         --  emit an info message to state that we may be missing some
+         --  information. Usually, the first time a dynamic predicate will
+         --  be computed for a type, it will be declared, so
+         --  New_Preds_Module should not be empty and predicates will be
+         --  created which can be reused later. The fall back case might happen
+         --  for Itypes for which we do not generate a predicate.
 
-         --  ??? we can assume the value of constrained attribute if any
+         if Designates_Incomplete_Type (Ty_Ext)
+           and then not Expand_Incompl
+         then
 
-         declare
-            Value_Dyn_Inv : constant W_Pred_Id :=
-              Compute_Dynamic_Invariant
-                (Expr             => +New_Pointer_Value_Access
-                   (Ada_Node => Empty,
-                    E        => Ty_Ext,
-                    Name     => +Expr,
-                    Domain   => EW_Term),
-                 Ty               => Directly_Designated_Type (Ty_Ext),
-                 Only_Var         => False_Term,
-                 Top_Predicate    => True_Term,
-                 Include_Type_Inv => Include_Type_Inv,
-                 Params           => Params,
-                 Use_Pred         => Use_Pred);
+            --  Search the dynamic invariant for Ty_Ext in the local maps first
+            --  so that we get the local name if there is one.
 
-         begin
-            if Value_Dyn_Inv /= True_Pred then
-               T := +New_And_Then_Expr
-                 (Left        => +T,
-                  Right       =>
-                    New_Conditional
-                      (Domain      => EW_Pred,
-                       Condition   =>
-                         New_Not (Domain => EW_Pred,
-                                  Right  => New_Pointer_Is_Null_Access
-                                    (E    => Ty_Ext,
-                                     Name => +Expr)),
-                       Then_Part   => +Value_Dyn_Inv),
-                  Domain      => EW_Pred);
-            end if;
-         end;
+            declare
+               use Ada_To_Why_Ident;
+               Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor :=
+                 Loc_Incompl_Acc.Find (Ty_Ext);
+               Inserted    : Boolean;
+
+            begin
+               pragma Assert
+                 (not (Has_Element (Dyn_Inv_Pos)
+                  and then New_Incompl_Acc.Contains (Ty_Ext)));
+
+               if not Has_Element (Dyn_Inv_Pos) then
+                  Dyn_Inv_Pos := New_Incompl_Acc.Find (Ty_Ext);
+
+                  --  Search in the global map
+
+                  if not Has_Element (Dyn_Inv_Pos) then
+                     Dyn_Inv_Pos := Incompl_Access_Dyn_Inv_Map.Find (Ty_Ext);
+
+                     --  If it was not found and we are allowed to introduce
+                     --  new declarations (New_Preds_Module is set), introduce
+                     --  it. We store it both inside Incompl_Access_Dyn_Inv_Map
+                     --  and inside New_Incompl_Acc for further treatment.
+
+                     if not Has_Element (Dyn_Inv_Pos)
+                       and then New_Preds_Module /= Why_Empty
+                     then
+                        declare
+                           Pred_Name : constant W_Identifier_Id :=
+                             New_Identifier
+                               (Name      => New_Temp_Identifier
+                                  (Base_Name => "dynamic_invariant"),
+                                Module    => New_Preds_Module,
+                                Typ       => EW_Bool_Type);
+                        begin
+                           Incompl_Access_Dyn_Inv_Map.Insert
+                             (Ty_Ext, Pred_Name);
+                           New_Incompl_Acc.Insert
+                             (Ty_Ext, To_Local (Pred_Name),
+                              Dyn_Inv_Pos, Inserted);
+                        end;
+                     end if;
+                  end if;
+               end if;
+
+               --  If we have a predicate, call it
+
+               if Has_Element (Dyn_Inv_Pos) then
+                  Variables_In_Dynamic_Invariant
+                    (Directly_Designated_Type (Ty_Ext), Variables);
+
+                  declare
+                     Vars  : constant W_Expr_Array :=
+                       Get_Args_From_Variables (Variables, Params.Ref_Allowed);
+                     Num_B : constant Positive := 5 + Vars'Length;
+                     Args  : W_Expr_Array (1 .. Num_B);
+
+                  begin
+                     Args (1) := +Init_Expr;
+                     Args (2) := +Init_Flag;
+                     Args (3) := +Only_Var;
+                     Args (4) := +Top_Predicate;
+                     Args (5) := +Include_Type_Inv;
+                     Args (6 .. Num_B) := Vars;
+                     T := +New_And_Then_Expr
+                       (Left        => +T,
+                        Right       =>
+                          New_Call (Name   => Element (Dyn_Inv_Pos),
+                                    Args   => Args,
+                                    Typ    => EW_Bool_Type,
+                                    Domain => EW_Pred),
+                        Domain      => EW_Pred);
+                  end;
+
+               --  If we have no predicate for Ty_Ext, we drop the predicate of
+               --  the designated type. Warn the user if --info is set.
+
+               elsif Debug.Debug_Flag_Underscore_F then
+                  Error_Msg_N
+                    ("info: ?subtype constraints on designated type not" &
+                       " available for proof", Ty_Ext);
+               end if;
+            end;
+         else
+            T := +New_And_Then_Expr
+              (Left   => +T,
+               Right  => +Invariant_For_Access (+Expr, Ty_Ext),
+               Domain => EW_Pred);
+         end if;
       end if;
-
-      return T;
    end Compute_Dynamic_Invariant;
 
    -------------------------------
@@ -17780,144 +17943,175 @@ package body Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
-      Ty_Ext : constant Entity_Id := Retysp (Ty);
-   begin
 
-      --  Dynamic property of the type itself
+      procedure Variables_In_Dynamic_Invariant
+        (Ty          : Entity_Id;
+         Variables   : in out Flow_Id_Sets.Set;
+         Incompl_Acc : in out Entity_Sets.Set);
+      --  Auxiliary function with an additional parameter storing access types
+      --  to incomplete types already encountered (to avoid looping on
+      --  recursive data-structures.
 
-      if Type_Is_Modeled_As_Base (Ty_Ext) then
+      ------------------------------------
+      -- Variables_In_Dynamic_Invariant --
+      ------------------------------------
 
-         --  If a scalar type is not modeled as base, then its bounds are
-         --  constants.
-         --  Otherwise, variables may occur in their expressions.
+      procedure Variables_In_Dynamic_Invariant
+        (Ty          : Entity_Id;
+         Variables   : in out Flow_Id_Sets.Set;
+         Incompl_Acc : in out Entity_Sets.Set)
+      is
+         Ty_Ext : constant Entity_Id := Retysp (Ty);
+      begin
 
-         declare
-            Rng : constant Node_Id := Get_Range (Ty_Ext);
-         begin
-            Variables.Union (Get_Variables_For_Proof (Low_Bound (Rng),
-                                                      Ty_Ext));
-            Variables.Union (Get_Variables_For_Proof (High_Bound (Rng),
-                                                      Ty_Ext));
-         end;
-      elsif Is_Array_Type (Ty_Ext)
-        and then not Is_Static_Array_Type (Ty_Ext)
-      then
+         --  Dynamic property of the type itself
 
-         --  Variables coming from the bounds of the index types
+         if Type_Is_Modeled_As_Base (Ty_Ext) then
 
-         declare
-            Index : Node_Id := First_Index (Ty_Ext);
-         begin
-            while Present (Index) loop
-               if Type_Is_Modeled_As_Base (Etype (Index)) then
-                  declare
-                     Rng : constant Node_Id := Get_Range (Etype (Index));
-                  begin
-                     Variables.Union (Get_Variables_For_Proof
-                                      (Low_Bound (Rng), Ty_Ext));
-                     Variables.Union (Get_Variables_For_Proof
-                                      (High_Bound (Rng), Ty_Ext));
-                  end;
-               end if;
-               Next_Index (Index);
-            end loop;
-         end;
+            --  If a scalar type is not modeled as base, then its bounds are
+            --  constants.
+            --  Otherwise, variables may occur in their expressions.
 
-         --  If the array is constrained, also assume the value of its bounds
+            declare
+               Rng : constant Node_Id := Get_Range (Ty_Ext);
+            begin
+               Variables.Union (Get_Variables_For_Proof (Low_Bound (Rng),
+                                Ty_Ext));
+               Variables.Union (Get_Variables_For_Proof (High_Bound (Rng),
+                                Ty_Ext));
+            end;
+         elsif Is_Array_Type (Ty_Ext)
+           and then not Is_Static_Array_Type (Ty_Ext)
+         then
 
-         if Is_Constrained (Ty_Ext) then
+            --  Variables coming from the bounds of the index types
+
             declare
                Index : Node_Id := First_Index (Ty_Ext);
             begin
                while Present (Index) loop
-                  declare
-                     Rng       : constant Node_Id := Get_Range (Index);
-                  begin
-                     Variables.Union
-                       (Get_Variables_For_Proof (Low_Bound (Rng), Ty_Ext));
-                     Variables.Union
-                       (Get_Variables_For_Proof (High_Bound (Rng), Ty_Ext));
-                  end;
+                  if Type_Is_Modeled_As_Base (Etype (Index)) then
+                     declare
+                        Rng : constant Node_Id := Get_Range (Etype (Index));
+                     begin
+                        Variables.Union (Get_Variables_For_Proof
+                                         (Low_Bound (Rng), Ty_Ext));
+                        Variables.Union (Get_Variables_For_Proof
+                                         (High_Bound (Rng), Ty_Ext));
+                     end;
+                  end if;
                   Next_Index (Index);
+               end loop;
+            end;
+
+            --  If the array is constrained, also assume the value of its
+            --  bounds.
+
+            if Is_Constrained (Ty_Ext) then
+               declare
+                  Index : Node_Id := First_Index (Ty_Ext);
+               begin
+                  while Present (Index) loop
+                     declare
+                        Rng       : constant Node_Id := Get_Range (Index);
+                     begin
+                        Variables.Union
+                          (Get_Variables_For_Proof (Low_Bound (Rng), Ty_Ext));
+                        Variables.Union
+                          (Get_Variables_For_Proof (High_Bound (Rng), Ty_Ext));
+                     end;
+                     Next_Index (Index);
+                  end loop;
+               end;
+            end if;
+
+         elsif Count_Discriminants (Ty_Ext) > 0 then
+
+            --  Variables coming from the record's discriminants
+
+            declare
+               Discr : Entity_Id := First_Discriminant (Ty_Ext);
+               Elmt  : Elmt_Id :=
+                 (if Is_Constrained (Ty_Ext) then
+                       First_Elmt (Discriminant_Constraint (Ty_Ext))
+                  else No_Elmt);
+            begin
+               while Present (Discr) loop
+                  if Is_Constrained (Ty_Ext) then
+                     Variables.Union (Get_Variables_For_Proof (Node (Elmt),
+                                      Ty_Ext));
+                     Next_Elmt (Elmt);
+                  end if;
+
+                  Variables_In_Dynamic_Invariant
+                    (Etype (Discr), Variables, Incompl_Acc);
+                  Next_Discriminant (Discr);
                end loop;
             end;
          end if;
 
-      elsif Count_Discriminants (Ty_Ext) > 0 then
+         --  Variables in the predicate of the type
 
-         --  Variables coming from the record's discriminants
+         if Has_Predicates (Ty_Ext) then
+            Variables_In_Dynamic_Predicate (Ty_Ext, Variables);
+         end if;
+
+         --  Dynamic Invariant of Ty_Ext's components
+
+         if Is_Array_Type (Ty_Ext)
+           and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
+         then
+
+            Variables_In_Dynamic_Invariant
+              (Component_Type (Ty_Ext), Variables, Incompl_Acc);
+
+         elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
+
+            for Field of Get_Component_Set (Ty_Ext) loop
+               if not Is_Type (Field) then
+                  Variables_In_Dynamic_Invariant
+                    (Etype (Field), Variables, Incompl_Acc);
+               end if;
+            end loop;
+         elsif Is_Access_Type (Ty_Ext)
+           and then (not Designates_Incomplete_Type (Ty_Ext)
+                     or else not Incompl_Acc.Contains (Ty_Ext))
+         then
+            if Designates_Incomplete_Type (Ty_Ext) then
+               Incompl_Acc.Insert (Ty_Ext);
+            end if;
+
+            Variables_In_Dynamic_Invariant
+              (Directly_Designated_Type (Ty_Ext), Variables, Incompl_Acc);
+         end if;
+
+         --  External type invariant of Ty_Ext and its parents if any
 
          declare
-            Discr : Entity_Id := First_Discriminant (Ty_Ext);
-            Elmt  : Elmt_Id :=
-              (if Is_Constrained (Ty_Ext) then
-                    First_Elmt (Discriminant_Constraint (Ty_Ext))
-               else No_Elmt);
+            Current : Entity_Id := Ty_Ext;
+            Parent  : Entity_Id;
          begin
-            while Present (Discr) loop
-               if Is_Constrained (Ty_Ext) then
-                  Variables.Union (Get_Variables_For_Proof (Node (Elmt),
-                                   Ty_Ext));
-                  Next_Elmt (Elmt);
+            loop
+               if Has_Invariants_In_SPARK (Current)
+                 and then not Has_Visible_Type_Invariants (Current)
+               then
+                  Variables_In_Type_Invariant (Current, Variables);
                end if;
 
-               Variables_In_Dynamic_Invariant (Etype (Discr), Variables);
-               Next_Discriminant (Discr);
+               if Full_View_Not_In_SPARK (Current) then
+                  Parent := Get_First_Ancestor_In_SPARK (Current);
+               else
+                  Parent := Retysp (Etype (Current));
+               end if;
+               exit when Current = Parent;
+               Current := Parent;
             end loop;
          end;
-      end if;
+      end Variables_In_Dynamic_Invariant;
 
-      --  Variables in the predicate of the type
-
-      if Has_Predicates (Ty_Ext) then
-         Variables_In_Dynamic_Predicate (Ty_Ext, Variables);
-      end if;
-
-      --  Dynamic Invariant of Ty_Ext's components
-
-      if Is_Array_Type (Ty_Ext)
-        and then Ekind (Ty_Ext) /= E_String_Literal_Subtype
-      then
-
-         Variables_In_Dynamic_Invariant (Component_Type (Ty_Ext), Variables);
-
-      elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
-
-         for Field of Get_Component_Set (Ty_Ext) loop
-            if not Is_Type (Field) then
-               Variables_In_Dynamic_Invariant (Etype (Field), Variables);
-            end if;
-         end loop;
-      elsif Is_Access_Type (Ty_Ext)
-        and then not Designates_Incomplete_Type (Ty_Ext)
-      then
-         Variables_In_Dynamic_Invariant
-           (Directly_Designated_Type (Ty_Ext), Variables);
-      end if;
-
-      --  External type invariant of Ty_Ext and its parents if any
-
-      declare
-         Current : Entity_Id := Ty_Ext;
-         Parent  : Entity_Id;
-      begin
-         loop
-            if Has_Invariants_In_SPARK (Current)
-              and then not Has_Visible_Type_Invariants (Current)
-            then
-               Variables_In_Type_Invariant (Current, Variables);
-            end if;
-
-            if Full_View_Not_In_SPARK (Current) then
-               Parent := Get_First_Ancestor_In_SPARK (Current);
-            else
-               Parent := Retysp (Etype (Current));
-            end if;
-            exit when Current = Parent;
-            Current := Parent;
-         end loop;
-      end;
-
+      Incompl_Acc : Entity_Sets.Set;
+   begin
+      Variables_In_Dynamic_Invariant (Ty, Variables, Incompl_Acc);
    end Variables_In_Dynamic_Invariant;
 
    ---------------------------------

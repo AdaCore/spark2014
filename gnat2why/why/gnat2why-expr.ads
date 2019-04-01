@@ -208,10 +208,7 @@ package Gnat2Why.Expr is
       Only_Var         : W_Term_Id := True_Term;
       Top_Predicate    : W_Term_Id := True_Term;
       Include_Type_Inv : W_Term_Id := True_Term;
-      Use_Pred         : Boolean := True) return W_Pred_Id
-   with Post => (if not Use_Pred
-                   and Compute_Dynamic_Invariant'Result /= True_Pred then
-                   Type_Needs_Dynamic_Invariant (Ty));
+      Use_Pred         : Boolean := True) return W_Pred_Id;
    --  @param Expr Why3 expression on which to express the dynamic invariant
    --  @param Ty type of expression [Expr]
    --  @param Initialized true term iff Expr is known to be initialized
@@ -225,6 +222,39 @@ package Gnat2Why.Expr is
    --  @param Use_Pred True iff the named predicate should be used
    --  @result Why3 predicate expressing the dynamic invariant of type [Ty]
    --     over [Expr].
+
+   package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Node_Id,
+      Element_Type    => W_Identifier_Id,
+      Hash            => Node_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   procedure Compute_Dynamic_Invariant
+     (Expr             : W_Term_Id;
+      Ty               : Entity_Id;
+      Params           : Transformation_Params;
+      Initialized      : W_Term_Id;
+      Only_Var         : W_Term_Id;
+      Top_Predicate    : W_Term_Id;
+      Include_Type_Inv : W_Term_Id;
+      Use_Pred         : Boolean;
+      New_Preds_Module : W_Module_Id;
+      T                : out W_Pred_Id;
+      Loc_Incompl_Acc  : Ada_To_Why_Ident.Map;
+      New_Incompl_Acc  : in out Ada_To_Why_Ident.Map;
+      Expand_Incompl   : Boolean)
+   with Post => (if not Use_Pred and T /= True_Pred then
+                   Type_Needs_Dynamic_Invariant (Ty));
+   --  Same as above except that the result is stored inside the out parameter
+   --  T. Additional parameters are:
+   --  @param New_Preds_Module the module that should be used to store new
+   --    predicate symbols if there is one.
+   --  @param Loc_Incompl_Acc the set of predicate names from the local scope.
+   --  @param New_Incompl_Acc new predicate symbols introduced for the type,
+   --    they are also in the local scope.
+   --  @param Expand_Incompl true if dynamic predicates for values of
+   --    incomplete types should be expanded.
 
    function Compute_Top_Level_Type_Invariant
      (Expr     : W_Term_Id;
@@ -521,13 +551,6 @@ package Gnat2Why.Expr is
    --  It should be equal to empty when we are not generating code for a
    --  protected subprogram.
 
-   package Ada_To_Why_Ident is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Node_Id,
-      Element_Type    => W_Identifier_Id,
-      Hash            => Node_Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
-
    package Loop_Entry_Nodes is new Ada.Containers.Hashed_Maps
      (Key_Type        => Node_Id,
       Element_Type    => Ada_To_Why_Ident.Map,
@@ -596,5 +619,8 @@ private
    Loop_Entry_Map : Loop_Entry_Nodes.Map;
 
    function Map_For_Old return Ada_To_Why_Ident.Map is (Old_Map);
+
+   Incompl_Access_Dyn_Inv_Map : Ada_To_Why_Ident.Map;
+   --  Map storing predicates for invariants of access to incomplete types
 
 end Gnat2Why.Expr;

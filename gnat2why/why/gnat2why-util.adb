@@ -1113,6 +1113,10 @@ package body Gnat2Why.Util is
       --  recursively on component types of arrays or records. Top_Level should
       --  be False in recursive calls.
 
+      Incompl_Access_Seen : Entity_Sets.Set;
+      --  Set of all the access to incomplete type seen so far. Used to avoid
+      --  looping on recursive data structures.
+
       -----------------------------------------------
       -- Has_Potentially_Inherited_Type_Invariants --
       -----------------------------------------------
@@ -1236,6 +1240,20 @@ package body Gnat2Why.Util is
                end if;
             end loop;
          elsif Is_Access_Type (Ty_Ext) then
+
+            --  Access types designating incomplete types can lead to recursive
+            --  data structures. If the type has already been encountered, we
+            --  know that it does not need a dynamic invariant or it would
+            --  have been seen.
+
+            if Designates_Incomplete_Type (Ty_Ext) then
+               if Incompl_Access_Seen.Contains (Ty_Ext) then
+                  return False;
+               else
+                  Incompl_Access_Seen.Insert (Ty_Ext);
+               end if;
+            end if;
+
             return Type_Needs_Dynamic_Invariant
               (Directly_Designated_Type (Ty_Ext), False);
          end if;
