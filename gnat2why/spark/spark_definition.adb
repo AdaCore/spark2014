@@ -4507,170 +4507,6 @@ package body SPARK_Definition is
                   end if;
                end;
             end if;
-
-         --  To know whether the fullview of a protected type with no
-         --  SPARK_Mode is in SPARK, we need to mark its components.
-
-         elsif Nkind (Parent (E)) in N_Protected_Type_Declaration
-                                   | N_Task_Type_Declaration
-         then
-            declare
-               Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
-               Fullview_In_SPARK : Boolean;
-
-               Type_Decl : constant Node_Id := Parent (E);
-               Type_Def  : constant Node_Id :=
-                 (if Nkind (Type_Decl) = N_Protected_Type_Declaration
-                  then Protected_Definition (Type_Decl)
-                  else Task_Definition (Type_Decl));
-
-            begin
-               Mark_List (Interface_List (Type_Decl));
-
-               --  Traverse the visible and private declarations of the
-               --  type to mark pragmas and representation clauses.
-
-               if Present (Type_Def) then
-                  Mark_Aspect_Clauses_And_Pragmas_In_List
-                    (Visible_Declarations (Type_Def));
-
-                  declare
-                     Save_SPARK_Pragma : constant Node_Id :=
-                       Current_SPARK_Pragma;
-
-                  begin
-                     Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                     if SPARK_Pragma_Is (Opt.On) then
-                        Mark_Aspect_Clauses_And_Pragmas_In_List
-                          (Private_Declarations (Type_Def));
-                     end if;
-
-                     Current_SPARK_Pragma := Save_SPARK_Pragma;
-                  end;
-               end if;
-
-               --  Components of protected objects may be subjected to a
-               --  different SPARK_Mode.
-
-               Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-
-               --  Ignore components which are declared in a part with
-               --  SPARK_Mode => Off.
-
-               if Ekind (E) = E_Protected_Type
-                 and then not SPARK_Pragma_Is (Opt.Off)
-               then
-                  declare
-                     Save_Violation_Detected : constant Boolean :=
-                       Violation_Detected;
-
-                     Comp : Entity_Id := First_Component (E);
-
-                  begin
-                     while Present (Comp) loop
-
-                        --  Mark type and default value of component
-
-                        if In_SPARK (Etype (Comp)) then
-                           Mark_Default_Expression (Comp);
-                        else
-                           Mark_Violation (Comp, From => Etype (Comp));
-                        end if;
-
-                        --  Initialization by proof of protected components
-                        --  is not supported yet.
-
-                        if Has_Init_By_Proof (Etype (Comp)) then
-                           Mark_Unsupported
-                             ("protected component with initialization by"
-                              & " proof", E);
-                        end if;
-
-                        Next_Component (Comp);
-                     end loop;
-
-                     --  Mark Part_Of variables of single protected objects
-
-                     if Is_Single_Concurrent_Type (E) then
-                        for Part of
-                          Iter (Part_Of_Constituents (Anonymous_Object (E)))
-                        loop
-                           Mark_Entity (Part);
-
-                           --  Initialization by proof of Part_Of variables
-                           --  is not supported yet.
-
-                           if Ekind (Part) = E_Variable
-                             and then Retysp_In_SPARK (Etype (Part))
-                             and then Has_Init_By_Proof (Etype (Part))
-                           then
-                              Mark_Unsupported
-                                ("Part_Of variable with initialization by"
-                                 & " proof", Part);
-                           end if;
-                        end loop;
-                     end if;
-
-                     --  Protected types need full default initialization. No
-                     --  check needed if the private view of the type is not in
-                     --  SPARK.
-
-                     if Default_Initialization (E, Get_Flow_Scope (E)) not in
-                       Full_Default_Initialization | No_Possible_Initialization
-                     then
-                        Mark_Violation ("protected type "
-                                        & "with no default initialization",
-                                        E,
-                                        SRM_Reference => "SPARK RM 9.4");
-                     end if;
-
-                     --  If the private part is marked On, then the full view
-                     --  of the type is forced to be SPARK. Violations found
-                     --  during marking of the private part are not reverted.
-
-                     if SPARK_Pragma_Is (Opt.On) then
-                        Fullview_In_SPARK := True;
-
-                     --  If a violation has been found while marking the
-                     --  private components of the protected type, then its
-                     --  full view is not in SPARK. The type itself can still
-                     --  be in SPARK if no SPARK_Mode has been specified.
-
-                     else
-                        pragma Assert (SPARK_Pragma_Is (Opt.None));
-
-                        Fullview_In_SPARK := not Violation_Detected;
-                        Violation_Detected := Save_Violation_Detected;
-                     end if;
-                  end;
-
-               --  Tasks are considered as always having a private part which
-               --  is not visible to the prover.
-
-               else
-                  Fullview_In_SPARK := False;
-               end if;
-
-               Current_SPARK_Pragma := Save_SPARK_Pragma;
-
-               --  If the protected type is in SPARK but not its full view,
-               --  store it in Full_Views_Not_In_SPARK.
-
-               if not Violation_Detected and then not Fullview_In_SPARK then
-                  Full_Views_Not_In_SPARK.Insert
-                    (E, (if Is_Nouveau_Type (E) then E
-                         else Retysp (Etype (E))));
-               end if;
-            end;
-
-         end if;
-
-         --  Record position of where to insert concurrent type on Entity_List.
-         --  The order is: concurrent components, type, operations; this
-         --  reflects dependencies between Why declarations.
-
-         if Ekind (E) in E_Protected_Type | E_Task_Type then
-            Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
 
          --  Now mark the type itself
@@ -5139,32 +4975,191 @@ package body SPARK_Definition is
 
          elsif Is_Concurrent_Type (E) then
 
-            if Is_SPARK_Tasking_Configuration then
+            --  To reference or declare a concurrent type we must be in a
+            --  proper tasking configuration.
 
-               --  Declarations of base protected types are already marked
+            if not Is_SPARK_Tasking_Configuration then
+               Mark_Violation_In_Tasking (E);
 
-               if Nkind (Parent (E)) in N_Protected_Type_Declaration
+            --  To know whether the fullview of a protected type with no
+            --  SPARK_Mode is in SPARK, we need to mark its components.
+
+            elsif Nkind (Parent (E)) in N_Protected_Type_Declaration
                                       | N_Task_Type_Declaration
-               then
-                  null;
+            then
+               declare
+                  Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
+                  Fullview_In_SPARK : Boolean;
 
-               --  We have a concurrent subtype or derived type. Propagate its
-               --  full view status from its base type.
+                  Type_Decl : constant Node_Id := Parent (E);
+                  Type_Def  : constant Node_Id :=
+                    (if Nkind (Type_Decl) = N_Protected_Type_Declaration
+                     then Protected_Definition (Type_Decl)
+                     else Task_Definition (Type_Decl));
 
-               else
-                  pragma Assert
-                    (Ekind (E) in E_Protected_Subtype | E_Task_Subtype
-                     or else (Nkind (Parent (E)) = N_Full_Type_Declaration
-                       and then Nkind (Type_Definition (Parent (E))) =
-                         N_Derived_Type_Definition));
+               begin
+                  Mark_List (Interface_List (Type_Decl));
 
-                  if Full_View_Not_In_SPARK (Etype (E)) then
-                     Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+                  --  Traverse the visible and private declarations of the
+                  --  type to mark pragmas and representation clauses.
+
+                  if Present (Type_Def) then
+                     Mark_Aspect_Clauses_And_Pragmas_In_List
+                       (Visible_Declarations (Type_Def));
+
+                     declare
+                        Save_SPARK_Pragma : constant Node_Id :=
+                          Current_SPARK_Pragma;
+
+                     begin
+                        Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+                        if SPARK_Pragma_Is (Opt.On) then
+                           Mark_Aspect_Clauses_And_Pragmas_In_List
+                             (Private_Declarations (Type_Def));
+                        end if;
+
+                        Current_SPARK_Pragma := Save_SPARK_Pragma;
+                     end;
                   end if;
-               end if;
+
+                  --  Components of protected objects may be subjected to a
+                  --  different SPARK_Mode.
+
+                  Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+
+                  --  Ignore components which are declared in a part with
+                  --  SPARK_Mode => Off.
+
+                  if Ekind (E) = E_Protected_Type
+                    and then not SPARK_Pragma_Is (Opt.Off)
+                  then
+                     declare
+                        Save_Violation_Detected : constant Boolean :=
+                          Violation_Detected;
+
+                        Comp : Entity_Id := First_Component (E);
+
+                     begin
+                        while Present (Comp) loop
+
+                           --  Mark type and default value of component
+
+                           if In_SPARK (Etype (Comp)) then
+                              Mark_Default_Expression (Comp);
+                           else
+                              Mark_Violation (Comp, From => Etype (Comp));
+                           end if;
+
+                           --  Initialization by proof of protected components
+                           --  is not supported yet.
+
+                           if Has_Init_By_Proof (Etype (Comp)) then
+                              Mark_Unsupported
+                                ("protected component with initialization by"
+                                 & " proof", E);
+                           end if;
+
+                           Next_Component (Comp);
+                        end loop;
+
+                        --  Mark Part_Of variables of single protected objects
+
+                        if Is_Single_Concurrent_Type (E) then
+                           for Part of
+                             Iter (Part_Of_Constituents (Anonymous_Object (E)))
+                           loop
+                              Mark_Entity (Part);
+
+                              --  Initialization by proof of Part_Of variables
+                              --  is not supported yet.
+
+                              if Ekind (Part) = E_Variable
+                                and then Retysp_In_SPARK (Etype (Part))
+                                and then Has_Init_By_Proof (Etype (Part))
+                              then
+                                 Mark_Unsupported
+                                   ("Part_Of variable with initialization by"
+                                    & " proof", Part);
+                              end if;
+                           end loop;
+                        end if;
+
+                        --  Protected types need full default initialization.
+                        --  No check needed if the private view of the type is
+                        --  not in SPARK.
+
+                        if Default_Initialization (E, Get_Flow_Scope (E))
+                          not in Full_Default_Initialization
+                               | No_Possible_Initialization
+                        then
+                           Mark_Violation ("protected type "
+                                           & "with no default initialization",
+                                           E,
+                                           SRM_Reference => "SPARK RM 9.4");
+                        end if;
+
+                        --  If the private part is marked On, then the full
+                        --  view of the type is forced to be SPARK. Violations
+                        --  found during marking of the private part are not
+                        --  reverted.
+
+                        if SPARK_Pragma_Is (Opt.On) then
+                           Fullview_In_SPARK := True;
+
+                           --  If a violation has been found while marking the
+                           --  private components of the protected type, then
+                           --  its full view is not in SPARK. The type itself
+                           --  can still be in SPARK if no SPARK_Mode has been
+                           --  specified.
+
+                        else
+                           pragma Assert (SPARK_Pragma_Is (Opt.None));
+
+                           Fullview_In_SPARK := not Violation_Detected;
+                           Violation_Detected := Save_Violation_Detected;
+                        end if;
+                     end;
+
+                     --  Tasks are considered as always having a private part
+                     --  which is not visible to the prover.
+
+                  else
+                     Fullview_In_SPARK := False;
+                  end if;
+
+                  Current_SPARK_Pragma := Save_SPARK_Pragma;
+
+                  --  If the protected type is in SPARK but not its full view,
+                  --  store it in Full_Views_Not_In_SPARK.
+
+                  if not Violation_Detected and then not Fullview_In_SPARK then
+                     Full_Views_Not_In_SPARK.Insert
+                       (E, (if Is_Nouveau_Type (E) then E
+                        else Retysp (Etype (E))));
+                  end if;
+               end;
+
+            --  We have a concurrent subtype or derived type. Propagate its
+            --  full view status from its base type.
 
             else
-               Mark_Violation_In_Tasking (E);
+               pragma Assert
+                 (Ekind (E) in E_Protected_Subtype | E_Task_Subtype
+                    or else (Nkind (Parent (E)) = N_Full_Type_Declaration
+                               and then Nkind (Type_Definition (Parent (E))) =
+                               N_Derived_Type_Definition));
+
+               if Full_View_Not_In_SPARK (Etype (E)) then
+                  Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+               end if;
+            end if;
+
+            --  Record where to insert concurrent type on Entity_List. The
+            --  order, which reflects dependencies between Why declarations,
+            --  is: concurrent components, type, operations.
+
+            if Ekind (E) in E_Protected_Type | E_Task_Type then
+               Current_Concurrent_Insert_Pos := Entity_List.Last;
             end if;
 
          elsif Is_Incomplete_Type (E) then
