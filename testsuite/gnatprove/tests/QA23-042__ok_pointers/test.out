@@ -1,6 +1,3 @@
-n02.adb:16:04: warning: initialization of "XA" has no effect
-n02.adb:17:04: warning: initialization of "XB" has no effect
-n02.adb:18:04: warning: initialization of "X" has no effect
 n02.adb:18:33: info: initialization of "XA" proved
 n02.adb:18:42: info: initialization of "XB" proved
 n02.adb:19:23: info: initialization of "X" proved

@@ -1,7 +1,15 @@
 update_lists.adb:4:22: warning: unused initial value of "Target"
-update_lists.adb:6:07: high: "Rover" must be listed in the Global aspect of "Update_Lists" (SPARK RM 6.1.4(13)), in call inlined at update_lists.adb:18
 update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
 update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:36
+update_lists.adb:6:14: info: initialization of "Prev" proved, in call inlined at update_lists.adb:27
+update_lists.adb:6:14: info: initialization of "Rover" proved, in call inlined at update_lists.adb:36
+update_lists.adb:6:17: info: initialization of "Next_Rover" proved, in call inlined at update_lists.adb:40
+update_lists.adb:6:17: info: initialization of "Prev" proved, in call inlined at update_lists.adb:44
+update_lists.adb:6:17: info: initialization of "Rover" proved, in call inlined at update_lists.adb:24
+update_lists.adb:6:17: info: initialization of "Rover" proved, in call inlined at update_lists.adb:27
+update_lists.adb:6:17: info: initialization of "Rover" proved, in call inlined at update_lists.adb:33
+update_lists.adb:6:17: info: initialization of "Rover" proved, in call inlined at update_lists.adb:37
+update_lists.adb:6:17: info: initialization of "Rover" proved, in call inlined at update_lists.adb:43
 update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:24
 update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
 update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
@@ -10,9 +18,19 @@ update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in 
 update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
 update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
 update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:44
-update_lists.adb:15:04: high: "Prev" must be listed in the Global aspect of "Update_Lists" (SPARK RM 6.1.4(13))
+update_lists.adb:12:14: info: initialization of "Prev" proved, in call inlined at update_lists.adb:44
+update_lists.adb:12:14: info: initialization of "Rover" proved, in call inlined at update_lists.adb:24
+update_lists.adb:12:14: info: initialization of "Rover" proved, in call inlined at update_lists.adb:27
+update_lists.adb:12:14: info: initialization of "Rover" proved, in call inlined at update_lists.adb:33
+update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:36
+update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:37
+update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:40
+update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:43
 update_lists.adb:18:04: info: analyzing call to "Assign" in context
+update_lists.adb:19:10: info: initialization of "Rover" proved
+update_lists.adb:20:10: info: initialization of "Rover" proved
 update_lists.adb:20:15: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:22:13: info: initialization of "Prev" proved
 update_lists.adb:24:13: info: analyzing call to "Assign" in context
 update_lists.adb:27:13: info: analyzing call to "Assign" in context
 update_lists.adb:33:13: info: analyzing call to "Assign" in context

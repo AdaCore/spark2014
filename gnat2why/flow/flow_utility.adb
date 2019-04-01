@@ -742,18 +742,11 @@ package body Flow_Utility is
                         Results.Include (F'Update (Facet => Extension_Part));
                      end if;
 
-                  when Array_Kind
+                  when Access_Kind
+                     | Array_Kind
                      | Scalar_Kind
                   =>
-                     Debug ("processing scalar or array type");
-
-                     Results := Flow_Id_Sets.To_Set (F);
-
-                  when Access_Kind =>
-                     --  ??? Pointers come only from globals (hopefully). They
-                     --  should be removed when generating globals and here
-                     --  we should only get the __HEAP entity name should.
-                     Debug ("processing access type");
+                     Debug ("processing access or array or scalar type");
 
                      Results := Flow_Id_Sets.To_Set (F);
 
@@ -761,7 +754,6 @@ package body Flow_Utility is
                      | E_Subprogram_Type
                      | Incomplete_Kind
                   =>
-
                      raise Program_Error;
 
                end case;
@@ -869,13 +861,10 @@ package body Flow_Utility is
             when N_Type_Conversion =>
                View_Conversion := True;
 
-            when N_Unchecked_Type_Conversion
-               | N_Explicit_Dereference
-            =>
+            when N_Unchecked_Type_Conversion =>
                null;
-               --  ??? should not be null for derefrence?
 
-            when N_Indexed_Component | N_Slice =>
+            when N_Indexed_Component | N_Slice | N_Explicit_Dereference =>
                Partial_Definition := True;
                exit;
          end case;
@@ -4146,11 +4135,15 @@ package body Flow_Utility is
       while Nkind (Ptr) in Valid_Assignment_Kinds loop
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
             --  ??? Check the return for dereference
-            when N_Identifier | N_Expanded_Name | N_Explicit_Dereference =>
+            when N_Identifier | N_Expanded_Name =>
                return True;
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                Ptr := Expression (Ptr);
-            when N_Indexed_Component | N_Slice | N_Selected_Component =>
+            when N_Indexed_Component
+               | N_Slice
+               | N_Selected_Component
+               | N_Explicit_Dereference
+            =>
                Ptr := Prefix (Ptr);
          end case;
       end loop;
