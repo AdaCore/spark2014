@@ -17965,25 +17965,11 @@ package body Gnat2Why.Expr is
                       and then Is_Predicate_Function (Enclosing_Subp)))
       then
          Stmt :=
-           +New_VC_Expr
+           New_Located_Assert
              (Ada_Node => N,
-              Expr     => +New_Identifier (Name => "absurd"),
+              Pred     => False_Pred,
               Reason   => VC_Unreachable_Branch,
-              Domain   => EW_Prog);
-
-         --  ??? Enclose the call to "absurd" in an if-expression, so that the
-         --  VCgen of Why3 does not discard the code that follows. Ideally this
-         --  should not be needed as the call to "absurd" is enclosed in an
-         --  "ignore" block.
-
-         Stmt :=
-           +W_Expr_Id'(New_Conditional
-                       (Ada_Node  => N,
-                        Domain    => EW_Prog,
-                        Condition =>
-                          New_Any_Expr (Labels      => Name_Id_Sets.Empty_Set,
-                                        Return_Type => EW_Bool_Type),
-                        Then_Part => +Stmt));
+              Kind     => EW_Check);
 
          return
            +Sequence
