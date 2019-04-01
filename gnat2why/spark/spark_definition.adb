@@ -1281,13 +1281,9 @@ package body SPARK_Definition is
            (N : Node_Id) return Traverse_Result
          is
          begin
-            case Nkind (N) is
-               when N_Object_Declaration =>
-                  Loop_Entity_Set.Include (Defining_Entity (N));
-
-               when others =>
-                  null;
-            end case;
+            if Nkind (N) = N_Object_Declaration then
+               Loop_Entity_Set.Include (Defining_Entity (N));
+            end if;
 
             return OK;
          end Handle_Object_Declaration;
