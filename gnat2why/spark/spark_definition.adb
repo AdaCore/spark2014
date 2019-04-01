@@ -4511,7 +4511,9 @@ package body SPARK_Definition is
          --  To know whether the fullview of a protected type with no
          --  SPARK_Mode is in SPARK, we need to mark its components.
 
-         elsif Ekind (E) in E_Protected_Type | E_Task_Type then
+         elsif Nkind (Parent (E)) in N_Protected_Type_Declaration
+                                   | N_Task_Type_Declaration
+         then
             declare
                Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
                Fullview_In_SPARK : Boolean;
@@ -4631,9 +4633,13 @@ package body SPARK_Definition is
                end if;
             end;
 
-            --  Record position of where to insert concurrent type on the
-            --  Entity_List.
+         end if;
 
+         --  Record position of where to insert concurrent type on Entity_List.
+         --  The order is: concurrent components, type, operations; this
+         --  reflects dependencies between Why declarations.
+
+         if Ekind (E) in E_Protected_Type | E_Task_Type then
             Current_Concurrent_Insert_Pos := Entity_List.Last;
          end if;
 
@@ -5164,7 +5170,7 @@ package body SPARK_Definition is
                   --  type) has fullview not in SPARK.
 
                   if Full_View_Not_In_SPARK (Etype (E)) then
-                     Full_Views_Not_In_SPARK.Include (E, Retysp (Etype (E)));
+                     Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
                   end if;
                end if;
 
