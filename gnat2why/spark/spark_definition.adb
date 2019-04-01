@@ -5107,10 +5107,8 @@ package body SPARK_Definition is
 
                --  Only mark declarations of base protected types
 
-               if Ekind (E) in E_Protected_Type | E_Task_Type
-                 and then
-                   Nkind (Parent (E)) in N_Protected_Type_Declaration
-                                       | N_Task_Type_Declaration
+               if Nkind (Parent (E)) in N_Protected_Type_Declaration
+                                      | N_Task_Type_Declaration
                then
 
                   declare
@@ -5162,8 +5160,8 @@ package body SPARK_Definition is
                   end if;
 
                   --  A concurrent type may have a type with full_view not in
-                  --  SPARK as an etype. In this case, the subype has fullview
-                  --  not in SPARK.
+                  --  SPARK as an etype. In this case, the subype (or derived
+                  --  type) has fullview not in SPARK.
 
                   if Full_View_Not_In_SPARK (Etype (E)) then
                      Full_Views_Not_In_SPARK.Include (E, Retysp (Etype (E)));
