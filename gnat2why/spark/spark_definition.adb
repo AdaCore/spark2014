@@ -4518,7 +4518,37 @@ package body SPARK_Definition is
                Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
                Fullview_In_SPARK : Boolean;
 
+               Type_Decl : constant Node_Id := Parent (E);
+               Type_Def  : constant Node_Id :=
+                 (if Nkind (Type_Decl) = N_Protected_Type_Declaration
+                  then Protected_Definition (Type_Decl)
+                  else Task_Definition (Type_Decl));
+
             begin
+               Mark_List (Interface_List (Type_Decl));
+
+               --  Traverse the visible and private declarations of the
+               --  type to mark pragmas and representation clauses.
+
+               if Present (Type_Def) then
+                  Mark_Aspect_Clauses_And_Pragmas_In_List
+                    (Visible_Declarations (Type_Def));
+
+                  declare
+                     Save_SPARK_Pragma : constant Node_Id :=
+                       Current_SPARK_Pragma;
+
+                  begin
+                     Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
+                     if SPARK_Pragma_Is (Opt.On) then
+                        Mark_Aspect_Clauses_And_Pragmas_In_List
+                          (Private_Declarations (Type_Def));
+                     end if;
+
+                     Current_SPARK_Pragma := Save_SPARK_Pragma;
+                  end;
+               end if;
+
                --  Components of protected objects may be subjected to a
                --  different SPARK_Mode.
 
@@ -5111,45 +5141,12 @@ package body SPARK_Definition is
 
             if Is_SPARK_Tasking_Configuration then
 
-               --  Only mark declarations of base protected types
+               --  Declarations of base protected types are already marked
 
                if Nkind (Parent (E)) in N_Protected_Type_Declaration
                                       | N_Task_Type_Declaration
                then
-
-                  declare
-                     Type_Decl : constant Node_Id := Parent (E);
-                     Type_Def  : constant Node_Id :=
-                       (if Ekind (E) = E_Protected_Type
-                        then Protected_Definition (Type_Decl)
-                        else Task_Definition (Type_Decl));
-
-                  begin
-                     Mark_List (Interface_List (Type_Decl));
-
-                     --  Traverse the visible and private declarations of the
-                     --  type to mark pragmas and representation clauses.
-
-                     if Present (Type_Def) then
-                        Mark_Aspect_Clauses_And_Pragmas_In_List
-                          (Visible_Declarations (Type_Def));
-
-                        declare
-                           Save_SPARK_Pragma : constant Node_Id :=
-                             Current_SPARK_Pragma;
-
-                        begin
-                           Current_SPARK_Pragma := SPARK_Aux_Pragma (E);
-                           if SPARK_Pragma_Is (Opt.On) then
-                              Mark_Aspect_Clauses_And_Pragmas_In_List
-                                (Private_Declarations (Type_Def));
-                           end if;
-
-                           Current_SPARK_Pragma := Save_SPARK_Pragma;
-                        end;
-                     end if;
-
-                  end;
+                  null;
 
                --  We have a concurrent subtype or derived type. Propagate its
                --  full view status from its base type.
