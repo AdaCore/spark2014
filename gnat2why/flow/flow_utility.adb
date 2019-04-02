@@ -5500,17 +5500,17 @@ package body Flow_Utility is
 
             when N_Indexed_Component =>
                declare
-                  Ptr  : Node_Id := First (Expressions (N));
+                  Expr : Node_Id := First (Expressions (N));
                   A, B : Flow_Id_Sets.Set;
 
                begin
-                  while Present (Ptr) loop
-                     A := Get_Vars_Wrapper (Ptr, Fold => False);
-                     B := Get_Vars_Wrapper (Ptr, Fold => True);
+                  while Present (Expr) loop
+                     A := Get_Vars_Wrapper (Expr, Fold => False);
+                     B := Get_Vars_Wrapper (Expr, Fold => True);
                      Vars_Used.Union (B);
                      Vars_Proof.Union (A - B);
 
-                     Next (Ptr);
+                     Next (Expr);
                   end loop;
                end;
                Process_Type_Conversions := False;
