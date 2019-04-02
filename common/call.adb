@@ -28,6 +28,7 @@ with Ada.Direct_IO;
 with Ada.IO_Exceptions;
 with Ada.Text_IO;
 with GNAT.Directory_Operations;
+with GNATCOLL.Mmap;
 with GNATCOLL.Utils;
 
 package body Call is
@@ -196,6 +197,35 @@ package body Call is
          Ada.Text_IO.Put (Arg.all);
       end loop;
    end Print_Command_Line;
+
+   -------------------------
+   -- Read_File_Into_JSON --
+   -------------------------
+
+   function Read_File_Into_JSON (Fn : String) return JSON_Value
+   is
+      use GNATCOLL.Mmap;
+      File   : Mapped_File;
+      Region : Mapped_Region;
+
+      Result : JSON_Value;
+   begin
+      File := Open_Read (Fn);
+
+      Read (File, Region);
+
+      declare
+         S : String (1 .. Integer (Length (File)));
+         for S'Address use Data (Region).all'Address;
+         --  A fake string directly mapped onto the file contents
+
+      begin
+         Result := Read (S, Fn);
+      end;
+
+      Free (Region);
+      return Result;
+   end Read_File_Into_JSON;
 
    ---------------------------
    -- Read_File_Into_String --

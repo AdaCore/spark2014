@@ -635,8 +635,7 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-      Dict      : constant JSON_Value :=
-        Read (Read_File_Into_String (Fn), Fn);
+      Dict      : constant JSON_Value := Read_File_Into_JSON (Fn);
       Basename  : constant String := Ada.Directories.Base_Name (Fn);
       Unit      : constant Unit_Type := Mk_Unit (Basename);
       Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
