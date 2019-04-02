@@ -144,12 +144,13 @@ package Why.Gen.Arrays is
    --  unconstrained arrays.
 
    procedure Add_Attr_Arg
-     (Domain  : EW_Domain;
+ (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
-      Arg_Ind : in out Positive)
+      Arg_Ind : in out Positive;
+      Params  : Transformation_Params := Body_Params)
    with Pre => Is_Constrained (Ty);
    --  This variant of Add_Attr_Arg will only work for constrained types
 
@@ -241,7 +242,8 @@ package Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr : W_Expr_Id;
       Right_Ty : Entity_Id;
-      Domain   : EW_Domain := EW_Pred) return W_Expr_Id
+      Domain   : EW_Domain := EW_Pred;
+      Params   : Transformation_Params := Body_Params) return W_Expr_Id
    with Pre => Is_Constrained (Right_Ty);
    --  same as above but takes the bounds of a type for Right
 

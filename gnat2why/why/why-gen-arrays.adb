@@ -263,13 +263,14 @@ package body Why.Gen.Arrays is
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
-      Arg_Ind : in out Positive)
+      Arg_Ind : in out Positive;
+      Params  : Transformation_Params := Body_Params)
    is
    begin
       Args (Arg_Ind) :=
         Insert_Conversion_To_Rep_No_Bool
           (Domain,
-           Get_Array_Attr (Domain, Ty, Attr, Dim));
+           Get_Array_Attr (Domain, Ty, Attr, Dim, Params));
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -2458,7 +2459,8 @@ package body Why.Gen.Arrays is
    function New_Bounds_Equality
      (Left_Arr : W_Expr_Id;
       Right_Ty : Entity_Id;
-      Domain   : EW_Domain := EW_Pred) return W_Expr_Id
+      Domain   : EW_Domain := EW_Pred;
+      Params   : Transformation_Params := Body_Params) return W_Expr_Id
    is
       Dim          : constant Positive :=
         Positive (Number_Dimensions (Right_Ty));
@@ -2467,9 +2469,10 @@ package body Why.Gen.Arrays is
    begin
       for I in 1 .. Dim loop
          Add_Attr_Arg
-           (EW_Term, Right_Bounds, Right_Ty, Attribute_First, I, Count);
+           (EW_Term, Right_Bounds, Right_Ty,
+            Attribute_First, I, Count, Params);
          Add_Attr_Arg
-           (EW_Term, Right_Bounds, Right_Ty, Attribute_Last,  I, Count);
+           (EW_Term, Right_Bounds, Right_Ty, Attribute_Last, I, Count, Params);
       end loop;
 
       return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim, Domain);

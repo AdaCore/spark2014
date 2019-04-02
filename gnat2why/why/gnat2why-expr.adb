@@ -3815,7 +3815,8 @@ package body Gnat2Why.Expr is
          then
             Assumption :=
               +New_And_Expr
-                (Left   => +New_Bounds_Equality (Expr, Ty_Ext),
+                (Left   => +New_Bounds_Equality
+                   (Expr, Ty_Ext, Params => Params),
                  Right  => +Assumption,
                  Domain => EW_Pred);
          end if;
@@ -17619,6 +17620,24 @@ package body Gnat2Why.Expr is
             --  otherwise, use its Component_Type default value.
 
             Variables_In_Default_Init (Component_Type (Ty_Ext), Variables);
+         end if;
+
+         --  Add variables for bounds of dynamically constrained types
+
+         if Is_Constrained (Ty_Ext)
+           and then not Is_Static_Array_Type (Ty_Ext)
+         then
+            declare
+               Index : Node_Id := First_Index (Ty_Ext);
+            begin
+               while Present (Index) loop
+                  Variables.Union (Get_Variables_For_Proof
+                                   (Low_Bound (Get_Range (Index)), Ty_Ext));
+                  Variables.Union (Get_Variables_For_Proof
+                                   (High_Bound (Get_Range (Index)), Ty_Ext));
+                  Next_Index (Index);
+               end loop;
+            end;
          end if;
 
       elsif Is_Record_Type (Ty_Ext) or else Is_Private_Type (Ty_Ext) then
