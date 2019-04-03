@@ -192,7 +192,7 @@ package Flow is
       --  vertex set of the other record fields; only used in phase 2.
 
       All_Vars : Flow_Id_Sets.Set;
-      --  Variables used in the body
+      --  Flattened variables accessible in the body
 
       Loops : Node_Sets.Set;
       --  Loops (identified by labels)
@@ -224,7 +224,7 @@ package Flow is
       Flow_Dependency_Errors : Boolean;
       --  True if either data or flow dependency error has been reported for
       --  this entity; such errors can be reported from various routines and
-      --  those flags are an easy to access summary.
+      --  those flags are for maintaining a summary.
 
       Direct_Calls : Node_Sets.Set;
       --  Contains subprograms called and package elaborations

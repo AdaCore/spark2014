@@ -1341,7 +1341,7 @@ package body Flow.Control_Flow_Graph is
                              Final_Atr,
                              FA);
 
-         FA.All_Vars.Include (F);
+         FA.All_Vars.Insert (F);
       end Process;
 
    --  Start of processing for Create_Initial_And_Final_Vertices
@@ -1417,7 +1417,7 @@ package body Flow.Control_Flow_Graph is
                              Final_Atr,
                              FA);
 
-         FA.All_Vars.Include (F);
+         FA.All_Vars.Insert (F);
       end Process;
 
       FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, FA.B_Scope);
