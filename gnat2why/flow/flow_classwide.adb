@@ -406,7 +406,7 @@ package body Flow_Classwide is
                end loop;
             end if;
 
-            for F of To_Ordered_Flow_Id_Set (Tmp) loop
+            for F of Tmp loop
                Error_Msg_Flow
                  (E          => E,
                   Msg        =>

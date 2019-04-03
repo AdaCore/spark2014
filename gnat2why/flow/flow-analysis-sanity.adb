@@ -134,7 +134,7 @@ package body Flow.Analysis.Sanity is
       --  formals of a generic instance.
 
       procedure Check_Variable_Inputs
-        (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+        (Flow_Ids : Flow_Id_Sets.Set;
          Err_Desc : String;
          Err_Node : Node_Id)
       with Pre => (for all F of Flow_Ids => F.Kind in Direct_Mapping
@@ -144,25 +144,23 @@ package body Flow.Analysis.Sanity is
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
 
-      function Variables (N : Node_Id) return Ordered_Flow_Id_Sets.Set
+      function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
-        (To_Ordered_Flow_Id_Set
-           (Get_Variables (N,
-                           Scope                        => FA.B_Scope,
-                           Fold_Functions               => False,
-                           Use_Computed_Globals         => True,
-                           Expand_Synthesized_Constants => True)));
+        (Get_Variables (N,
+                        Scope                        => FA.B_Scope,
+                        Fold_Functions               => False,
+                        Use_Computed_Globals         => True,
+                        Expand_Synthesized_Constants => True));
       --  A helpful wrapper around Get_Variables as it is used in this sanity
       --  checking procedure.
 
-      function Variables (L : List_Id) return Ordered_Flow_Id_Sets.Set
+      function Variables (L : List_Id) return Flow_Id_Sets.Set
       is
-        (To_Ordered_Flow_Id_Set
-           (Get_Variables (L,
-                           Scope                        => FA.B_Scope,
-                           Fold_Functions               => False,
-                           Use_Computed_Globals         => True,
-                           Expand_Synthesized_Constants => True)));
+        (Get_Variables (L,
+                        Scope                        => FA.B_Scope,
+                        Fold_Functions               => False,
+                        Use_Computed_Globals         => True,
+                        Expand_Synthesized_Constants => True));
       --  As above
 
       -----------------------------------
@@ -766,7 +764,7 @@ package body Flow.Analysis.Sanity is
       ---------------------------
 
       procedure Check_Variable_Inputs
-        (Flow_Ids : Ordered_Flow_Id_Sets.Set;
+        (Flow_Ids : Flow_Id_Sets.Set;
          Err_Desc : String;
          Err_Node : Node_Id)
       is
@@ -1009,15 +1007,12 @@ package body Flow.Analysis.Sanity is
          declare
             A : V_Attributes renames FA.Atr (V);
 
-            Written_Vars : constant Ordered_Flow_Id_Sets.Set :=
-              To_Ordered_Flow_Id_Set (A.Variables_Defined);
-
             F                    : Flow_Id;
             Corresp_Final_Vertex : Flow_Graphs.Vertex_Id;
             Final_Atr            : V_Attributes;
 
          begin
-            for Var of Written_Vars loop
+            for Var of A.Variables_Defined loop
                F := Change_Variant (Var, Normal_Use);
 
                if FA.Kind in Kind_Package | Kind_Package_Body
@@ -1215,8 +1210,8 @@ package body Flow.Analysis.Sanity is
          declare
             A : V_Attributes renames FA.Atr (V);
 
-            Variables_Referenced : constant Ordered_Flow_Id_Sets.Set :=
-              To_Ordered_Flow_Id_Set (A.Variables_Used or A.Variables_Defined);
+            Variables_Referenced : constant Flow_Id_Sets.Set :=
+              A.Variables_Used or A.Variables_Defined;
 
          begin
             for Var of Variables_Referenced loop
