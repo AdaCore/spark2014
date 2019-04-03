@@ -144,7 +144,7 @@ package Why.Gen.Arrays is
    --  unconstrained arrays.
 
    procedure Add_Attr_Arg
- (Domain  : EW_Domain;
+     (Domain  : EW_Domain;
       Args    : in out W_Expr_Array;
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
