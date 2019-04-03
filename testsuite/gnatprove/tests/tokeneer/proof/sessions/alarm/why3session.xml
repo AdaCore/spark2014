@@ -36,7 +36,7 @@
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
-  <goal name="VC def.6" expl="unreachable point">
+  <goal name="VC def.6" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="38"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition">
@@ -53,7 +53,7 @@
   </goal>
   <goal name="VC def.12" expl="precondition">
   </goal>
-  <goal name="VC def.13" expl="unreachable point">
+  <goal name="VC def.13" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="35"/></proof>
   </goal>
   <goal name="VC def.14" expl="postcondition">

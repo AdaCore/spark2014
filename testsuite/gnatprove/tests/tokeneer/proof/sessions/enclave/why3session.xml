@@ -193,7 +193,7 @@
   </goal>
   <goal name="VC def.2" expl="precondition">
   </goal>
-  <goal name="VC def.3" expl="unreachable point">
+  <goal name="VC def.3" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="55"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
@@ -293,7 +293,7 @@
   </goal>
   <goal name="VC def.1" expl="precondition">
   </goal>
-  <goal name="VC def.2" expl="unreachable point">
+  <goal name="VC def.2" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="49"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
@@ -399,7 +399,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="85"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -408,7 +408,7 @@
   </goal>
   <goal name="VC def.4" expl="precondition">
   </goal>
-  <goal name="VC def.5" expl="unreachable point">
+  <goal name="VC def.5" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="96"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
@@ -418,7 +418,7 @@
   </goal>
   <goal name="VC def.8" expl="precondition">
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="123"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -426,7 +426,7 @@
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="111"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -435,7 +435,7 @@
   </goal>
   <goal name="VC def.15" expl="precondition">
   </goal>
-  <goal name="VC def.16" expl="unreachable point">
+  <goal name="VC def.16" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="123"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
@@ -448,7 +448,7 @@
   </goal>
   <goal name="VC def.21" expl="precondition">
   </goal>
-  <goal name="VC def.22" expl="unreachable point">
+  <goal name="VC def.22" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="235"/></proof>
   </goal>
   <goal name="VC def.23" expl="postcondition">
@@ -456,7 +456,7 @@
   <goal name="VC def.24" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.25" expl="unreachable point">
+  <goal name="VC def.25" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="220"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
@@ -465,7 +465,7 @@
   </goal>
   <goal name="VC def.28" expl="precondition">
   </goal>
-  <goal name="VC def.29" expl="unreachable point">
+  <goal name="VC def.29" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="254"/></proof>
   </goal>
   <goal name="VC def.30" expl="postcondition">
@@ -476,7 +476,7 @@
   </goal>
   <goal name="VC def.33" expl="precondition">
   </goal>
-  <goal name="VC def.34" expl="unreachable point">
+  <goal name="VC def.34" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="262"/></proof>
   </goal>
   <goal name="VC def.35" expl="postcondition">
@@ -487,7 +487,7 @@
   </goal>
   <goal name="VC def.38" expl="precondition">
   </goal>
-  <goal name="VC def.39" expl="unreachable point">
+  <goal name="VC def.39" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="360"/></proof>
   </goal>
   <goal name="VC def.40" expl="postcondition">
@@ -498,7 +498,7 @@
   </goal>
   <goal name="VC def.43" expl="precondition">
   </goal>
-  <goal name="VC def.44" expl="unreachable point">
+  <goal name="VC def.44" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="317"/></proof>
   </goal>
   <goal name="VC def.45" expl="postcondition">
@@ -509,7 +509,7 @@
   </goal>
   <goal name="VC def.48" expl="precondition">
   </goal>
-  <goal name="VC def.49" expl="unreachable point">
+  <goal name="VC def.49" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="475"/></proof>
   </goal>
   <goal name="VC def.50" expl="postcondition">
@@ -655,7 +655,7 @@
   </goal>
   <goal name="VC def.106" expl="precondition">
   </goal>
-  <goal name="VC def.107" expl="unreachable point">
+  <goal name="VC def.107" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="908"/></proof>
   </goal>
   <goal name="VC def.108" expl="postcondition">
@@ -667,7 +667,7 @@
   </goal>
   <goal name="VC def.111" expl="precondition">
   </goal>
-  <goal name="VC def.112" expl="unreachable point">
+  <goal name="VC def.112" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1567"/></proof>
   </goal>
   <goal name="VC def.113" expl="postcondition">
@@ -675,12 +675,12 @@
   <goal name="VC def.114" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.115" expl="unreachable point">
+  <goal name="VC def.115" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1432"/></proof>
   </goal>
   <goal name="VC def.116" expl="postcondition">
   </goal>
-  <goal name="VC def.117" expl="unreachable point">
+  <goal name="VC def.117" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1664"/></proof>
   </goal>
   <goal name="VC def.118" expl="postcondition">
@@ -689,14 +689,14 @@
   </goal>
   <goal name="VC def.120" expl="precondition">
   </goal>
-  <goal name="VC def.121" expl="unreachable point">
+  <goal name="VC def.121" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1497"/></proof>
   </goal>
   <goal name="VC def.122" expl="postcondition">
   </goal>
   <goal name="VC def.123" expl="precondition">
   </goal>
-  <goal name="VC def.124" expl="unreachable point">
+  <goal name="VC def.124" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1571"/></proof>
   </goal>
   <goal name="VC def.125" expl="postcondition">
@@ -709,7 +709,7 @@
   </goal>
   <goal name="VC def.129" expl="precondition">
   </goal>
-  <goal name="VC def.130" expl="unreachable point">
+  <goal name="VC def.130" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1178"/></proof>
   </goal>
   <goal name="VC def.131" expl="postcondition">
@@ -718,7 +718,7 @@
   </goal>
   <goal name="VC def.133" expl="precondition">
   </goal>
-  <goal name="VC def.134" expl="unreachable point">
+  <goal name="VC def.134" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1410"/></proof>
   </goal>
   <goal name="VC def.135" expl="postcondition">
@@ -727,7 +727,7 @@
   </goal>
   <goal name="VC def.137" expl="precondition">
   </goal>
-  <goal name="VC def.138" expl="unreachable point">
+  <goal name="VC def.138" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1489"/></proof>
   </goal>
   <goal name="VC def.139" expl="postcondition">
@@ -736,7 +736,7 @@
   </goal>
   <goal name="VC def.141" expl="precondition">
   </goal>
-  <goal name="VC def.142" expl="unreachable point">
+  <goal name="VC def.142" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1318"/></proof>
   </goal>
   <goal name="VC def.143" expl="postcondition">
@@ -746,7 +746,7 @@
   </goal>
   <goal name="VC def.145" expl="precondition">
   </goal>
-  <goal name="VC def.146" expl="unreachable point">
+  <goal name="VC def.146" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1525"/></proof>
   </goal>
   <goal name="VC def.147" expl="postcondition">
@@ -754,7 +754,7 @@
   <goal name="VC def.148" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.149" expl="unreachable point">
+  <goal name="VC def.149" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1288"/></proof>
   </goal>
   <goal name="VC def.150" expl="postcondition">
@@ -763,7 +763,7 @@
   </goal>
   <goal name="VC def.152" expl="precondition">
   </goal>
-  <goal name="VC def.153" expl="unreachable point">
+  <goal name="VC def.153" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="951"/></proof>
   </goal>
   <goal name="VC def.154" expl="postcondition">
@@ -776,7 +776,7 @@
   </goal>
   <goal name="VC def.158" expl="precondition">
   </goal>
-  <goal name="VC def.159" expl="unreachable point">
+  <goal name="VC def.159" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1630"/></proof>
   </goal>
   <goal name="VC def.160" expl="postcondition">
@@ -910,7 +910,7 @@
   </goal>
   <goal name="VC def.207" expl="precondition">
   </goal>
-  <goal name="VC def.208" expl="unreachable point">
+  <goal name="VC def.208" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="801"/></proof>
   </goal>
   <goal name="VC def.209" expl="postcondition">
@@ -922,7 +922,7 @@
   </goal>
   <goal name="VC def.212" expl="precondition">
   </goal>
-  <goal name="VC def.213" expl="unreachable point">
+  <goal name="VC def.213" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="817"/></proof>
   </goal>
   <goal name="VC def.214" expl="postcondition">
@@ -935,7 +935,7 @@
   </goal>
   <goal name="VC def.218" expl="precondition">
   </goal>
-  <goal name="VC def.219" expl="unreachable point">
+  <goal name="VC def.219" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1093"/></proof>
   </goal>
   <goal name="VC def.220" expl="postcondition">
@@ -944,7 +944,7 @@
   </goal>
   <goal name="VC def.222" expl="precondition">
   </goal>
-  <goal name="VC def.223" expl="unreachable point">
+  <goal name="VC def.223" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1076"/></proof>
   </goal>
   <goal name="VC def.224" expl="postcondition">
@@ -953,7 +953,7 @@
   </goal>
   <goal name="VC def.226" expl="precondition">
   </goal>
-  <goal name="VC def.227" expl="unreachable point">
+  <goal name="VC def.227" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="970"/></proof>
   </goal>
   <goal name="VC def.228" expl="postcondition">
@@ -963,7 +963,7 @@
   </goal>
   <goal name="VC def.230" expl="precondition">
   </goal>
-  <goal name="VC def.231" expl="unreachable point">
+  <goal name="VC def.231" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1175"/></proof>
   </goal>
   <goal name="VC def.232" expl="postcondition">
@@ -971,7 +971,7 @@
   <goal name="VC def.233" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.234" expl="unreachable point">
+  <goal name="VC def.234" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="970"/></proof>
   </goal>
   <goal name="VC def.235" expl="postcondition">
@@ -980,7 +980,7 @@
   </goal>
   <goal name="VC def.237" expl="precondition">
   </goal>
-  <goal name="VC def.238" expl="unreachable point">
+  <goal name="VC def.238" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1084"/></proof>
   </goal>
   <goal name="VC def.239" expl="postcondition">
@@ -993,7 +993,7 @@
   </goal>
   <goal name="VC def.243" expl="precondition">
   </goal>
-  <goal name="VC def.244" expl="unreachable point">
+  <goal name="VC def.244" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1175"/></proof>
   </goal>
   <goal name="VC def.245" expl="postcondition">
@@ -1001,7 +1001,7 @@
   <goal name="VC def.246" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.247" expl="unreachable point">
+  <goal name="VC def.247" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1218"/></proof>
   </goal>
   <goal name="VC def.248" expl="postcondition">
@@ -1010,7 +1010,7 @@
   </goal>
   <goal name="VC def.250" expl="precondition">
   </goal>
-  <goal name="VC def.251" expl="unreachable point">
+  <goal name="VC def.251" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1075"/></proof>
   </goal>
   <goal name="VC def.252" expl="postcondition">
@@ -1021,7 +1021,7 @@
   </goal>
   <goal name="VC def.255" expl="precondition">
   </goal>
-  <goal name="VC def.256" expl="unreachable point">
+  <goal name="VC def.256" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1085"/></proof>
   </goal>
   <goal name="VC def.257" expl="postcondition">
@@ -1032,7 +1032,7 @@
   </goal>
   <goal name="VC def.260" expl="precondition">
   </goal>
-  <goal name="VC def.261" expl="unreachable point">
+  <goal name="VC def.261" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1187"/></proof>
   </goal>
   <goal name="VC def.262" expl="postcondition">
@@ -1049,7 +1049,7 @@
   </goal>
   <goal name="VC def.268" expl="precondition">
   </goal>
-  <goal name="VC def.269" expl="unreachable point">
+  <goal name="VC def.269" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1148"/></proof>
   </goal>
   <goal name="VC def.270" expl="postcondition">
@@ -1185,7 +1185,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="79"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -1194,7 +1194,7 @@
   </goal>
   <goal name="VC def.4" expl="precondition">
   </goal>
-  <goal name="VC def.5" expl="unreachable point">
+  <goal name="VC def.5" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="90"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
@@ -1204,7 +1204,7 @@
   </goal>
   <goal name="VC def.8" expl="precondition">
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="117"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -1212,7 +1212,7 @@
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="106"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -1221,7 +1221,7 @@
   </goal>
   <goal name="VC def.15" expl="precondition">
   </goal>
-  <goal name="VC def.16" expl="unreachable point">
+  <goal name="VC def.16" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="133"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
@@ -1232,7 +1232,7 @@
   </goal>
   <goal name="VC def.20" expl="precondition">
   </goal>
-  <goal name="VC def.21" expl="unreachable point">
+  <goal name="VC def.21" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="140"/></proof>
   </goal>
   <goal name="VC def.22" expl="postcondition">
@@ -1243,7 +1243,7 @@
   </goal>
   <goal name="VC def.25" expl="precondition">
   </goal>
-  <goal name="VC def.26" expl="unreachable point">
+  <goal name="VC def.26" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="204"/></proof>
   </goal>
   <goal name="VC def.27" expl="postcondition">
@@ -1256,7 +1256,7 @@
   </goal>
   <goal name="VC def.31" expl="precondition">
   </goal>
-  <goal name="VC def.32" expl="unreachable point">
+  <goal name="VC def.32" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="277"/></proof>
   </goal>
   <goal name="VC def.33" expl="postcondition">
@@ -1265,7 +1265,7 @@
   </goal>
   <goal name="VC def.35" expl="precondition">
   </goal>
-  <goal name="VC def.36" expl="unreachable point">
+  <goal name="VC def.36" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="184"/></proof>
   </goal>
   <goal name="VC def.37" expl="postcondition">
@@ -1274,7 +1274,7 @@
   </goal>
   <goal name="VC def.39" expl="precondition">
   </goal>
-  <goal name="VC def.40" expl="unreachable point">
+  <goal name="VC def.40" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="162"/></proof>
   </goal>
   <goal name="VC def.41" expl="postcondition">
@@ -1282,7 +1282,7 @@
   <goal name="VC def.42" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.43" expl="unreachable point">
+  <goal name="VC def.43" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="148"/></proof>
   </goal>
   <goal name="VC def.44" expl="postcondition">
@@ -1291,7 +1291,7 @@
   </goal>
   <goal name="VC def.46" expl="precondition">
   </goal>
-  <goal name="VC def.47" expl="unreachable point">
+  <goal name="VC def.47" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="155"/></proof>
   </goal>
   <goal name="VC def.48" expl="postcondition">
@@ -1361,7 +1361,7 @@
   </goal>
   <goal name="VC def.74" expl="precondition">
   </goal>
-  <goal name="VC def.75" expl="unreachable point">
+  <goal name="VC def.75" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="331"/></proof>
   </goal>
   <goal name="VC def.76" expl="postcondition">
@@ -1370,7 +1370,7 @@
   </goal>
   <goal name="VC def.78" expl="precondition">
   </goal>
-  <goal name="VC def.79" expl="unreachable point">
+  <goal name="VC def.79" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="356"/></proof>
   </goal>
   <goal name="VC def.80" expl="postcondition">
@@ -1380,7 +1380,7 @@
   </goal>
   <goal name="VC def.82" expl="precondition">
   </goal>
-  <goal name="VC def.83" expl="unreachable point">
+  <goal name="VC def.83" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="461"/></proof>
   </goal>
   <goal name="VC def.84" expl="postcondition">
@@ -1388,7 +1388,7 @@
   <goal name="VC def.85" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.86" expl="unreachable point">
+  <goal name="VC def.86" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="360"/></proof>
   </goal>
   <goal name="VC def.87" expl="postcondition">
@@ -1397,7 +1397,7 @@
   </goal>
   <goal name="VC def.89" expl="precondition">
   </goal>
-  <goal name="VC def.90" expl="unreachable point">
+  <goal name="VC def.90" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="356"/></proof>
   </goal>
   <goal name="VC def.91" expl="postcondition">
@@ -1410,7 +1410,7 @@
   </goal>
   <goal name="VC def.95" expl="precondition">
   </goal>
-  <goal name="VC def.96" expl="unreachable point">
+  <goal name="VC def.96" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="470"/></proof>
   </goal>
   <goal name="VC def.97" expl="postcondition">
@@ -1418,12 +1418,12 @@
   <goal name="VC def.98" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.99" expl="unreachable point">
+  <goal name="VC def.99" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="435"/></proof>
   </goal>
   <goal name="VC def.100" expl="postcondition">
   </goal>
-  <goal name="VC def.101" expl="unreachable point">
+  <goal name="VC def.101" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="348"/></proof>
   </goal>
   <goal name="VC def.102" expl="postcondition">
@@ -1432,7 +1432,7 @@
   </goal>
   <goal name="VC def.104" expl="precondition">
   </goal>
-  <goal name="VC def.105" expl="unreachable point">
+  <goal name="VC def.105" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="444"/></proof>
   </goal>
   <goal name="VC def.106" expl="postcondition">
@@ -1443,7 +1443,7 @@
   </goal>
   <goal name="VC def.109" expl="precondition">
   </goal>
-  <goal name="VC def.110" expl="unreachable point">
+  <goal name="VC def.110" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="727"/></proof>
   </goal>
   <goal name="VC def.111" expl="postcondition">
@@ -1456,7 +1456,7 @@
   </goal>
   <goal name="VC def.115" expl="precondition">
   </goal>
-  <goal name="VC def.116" expl="unreachable point">
+  <goal name="VC def.116" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="701"/></proof>
   </goal>
   <goal name="VC def.117" expl="postcondition">
@@ -1465,7 +1465,7 @@
   </goal>
   <goal name="VC def.119" expl="precondition">
   </goal>
-  <goal name="VC def.120" expl="unreachable point">
+  <goal name="VC def.120" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="469"/></proof>
   </goal>
   <goal name="VC def.121" expl="postcondition">
@@ -1553,7 +1553,7 @@
   </goal>
   <goal name="VC def.150" expl="precondition">
   </goal>
-  <goal name="VC def.151" expl="unreachable point">
+  <goal name="VC def.151" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="371"/></proof>
   </goal>
   <goal name="VC def.152" expl="postcondition">
@@ -1562,7 +1562,7 @@
   </goal>
   <goal name="VC def.154" expl="precondition">
   </goal>
-  <goal name="VC def.155" expl="unreachable point">
+  <goal name="VC def.155" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="342"/></proof>
   </goal>
   <goal name="VC def.156" expl="postcondition">
@@ -1572,7 +1572,7 @@
   </goal>
   <goal name="VC def.158" expl="precondition">
   </goal>
-  <goal name="VC def.159" expl="unreachable point">
+  <goal name="VC def.159" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="624"/></proof>
   </goal>
   <goal name="VC def.160" expl="postcondition">
@@ -1580,7 +1580,7 @@
   <goal name="VC def.161" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.162" expl="unreachable point">
+  <goal name="VC def.162" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="342"/></proof>
   </goal>
   <goal name="VC def.163" expl="postcondition">
@@ -1589,7 +1589,7 @@
   </goal>
   <goal name="VC def.165" expl="precondition">
   </goal>
-  <goal name="VC def.166" expl="unreachable point">
+  <goal name="VC def.166" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="374"/></proof>
   </goal>
   <goal name="VC def.167" expl="postcondition">
@@ -1602,7 +1602,7 @@
   </goal>
   <goal name="VC def.171" expl="precondition">
   </goal>
-  <goal name="VC def.172" expl="unreachable point">
+  <goal name="VC def.172" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="477"/></proof>
   </goal>
   <goal name="VC def.173" expl="postcondition">
@@ -1610,7 +1610,7 @@
   <goal name="VC def.174" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.175" expl="unreachable point">
+  <goal name="VC def.175" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="367"/></proof>
   </goal>
   <goal name="VC def.176" expl="postcondition">
@@ -1619,7 +1619,7 @@
   </goal>
   <goal name="VC def.178" expl="precondition">
   </goal>
-  <goal name="VC def.179" expl="unreachable point">
+  <goal name="VC def.179" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="406"/></proof>
   </goal>
   <goal name="VC def.180" expl="postcondition">
@@ -1630,7 +1630,7 @@
   </goal>
   <goal name="VC def.183" expl="precondition">
   </goal>
-  <goal name="VC def.184" expl="unreachable point">
+  <goal name="VC def.184" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="392"/></proof>
   </goal>
   <goal name="VC def.185" expl="postcondition">
@@ -1645,7 +1645,7 @@
   </goal>
   <goal name="VC def.190" expl="precondition">
   </goal>
-  <goal name="VC def.191" expl="unreachable point">
+  <goal name="VC def.191" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="451"/></proof>
   </goal>
   <goal name="VC def.192" expl="postcondition">
@@ -1662,7 +1662,7 @@
   </goal>
   <goal name="VC def.198" expl="precondition">
   </goal>
-  <goal name="VC def.199" expl="unreachable point">
+  <goal name="VC def.199" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="477"/></proof>
   </goal>
   <goal name="VC def.200" expl="postcondition">
@@ -1671,7 +1671,7 @@
   </goal>
   <goal name="VC def.202" expl="precondition">
   </goal>
-  <goal name="VC def.203" expl="unreachable point">
+  <goal name="VC def.203" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="464"/></proof>
   </goal>
   <goal name="VC def.204" expl="postcondition">
@@ -1934,7 +1934,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="79"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -1943,7 +1943,7 @@
   </goal>
   <goal name="VC def.4" expl="precondition">
   </goal>
-  <goal name="VC def.5" expl="unreachable point">
+  <goal name="VC def.5" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="90"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
@@ -1953,7 +1953,7 @@
   </goal>
   <goal name="VC def.8" expl="precondition">
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="117"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -1961,7 +1961,7 @@
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="105"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -1970,7 +1970,7 @@
   </goal>
   <goal name="VC def.15" expl="precondition">
   </goal>
-  <goal name="VC def.16" expl="unreachable point">
+  <goal name="VC def.16" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="117"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
@@ -2030,7 +2030,7 @@
   </goal>
   <goal name="VC def.41" expl="precondition">
   </goal>
-  <goal name="VC def.42" expl="unreachable point">
+  <goal name="VC def.42" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="412"/></proof>
   </goal>
   <goal name="VC def.43" expl="postcondition">
@@ -2039,7 +2039,7 @@
   </goal>
   <goal name="VC def.45" expl="precondition">
   </goal>
-  <goal name="VC def.46" expl="unreachable point" proved="true">
+  <goal name="VC def.46" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="39"/></proof>
   </goal>
   <goal name="VC def.47" expl="postcondition">
@@ -2049,7 +2049,7 @@
   </goal>
   <goal name="VC def.49" expl="precondition">
   </goal>
-  <goal name="VC def.50" expl="unreachable point" proved="true">
+  <goal name="VC def.50" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="31"/></proof>
   </goal>
   <goal name="VC def.51" expl="postcondition">
@@ -2057,7 +2057,7 @@
   <goal name="VC def.52" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.53" expl="unreachable point" proved="true">
+  <goal name="VC def.53" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="31"/></proof>
   </goal>
   <goal name="VC def.54" expl="postcondition">
@@ -2066,7 +2066,7 @@
   </goal>
   <goal name="VC def.56" expl="precondition">
   </goal>
-  <goal name="VC def.57" expl="unreachable point">
+  <goal name="VC def.57" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="422"/></proof>
   </goal>
   <goal name="VC def.58" expl="postcondition">
@@ -2079,7 +2079,7 @@
   </goal>
   <goal name="VC def.62" expl="precondition">
   </goal>
-  <goal name="VC def.63" expl="unreachable point">
+  <goal name="VC def.63" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="394"/></proof>
   </goal>
   <goal name="VC def.64" expl="postcondition">
@@ -2152,21 +2152,21 @@
 <theory name="Enclave__archivelogop__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="unreachable point">
+  <goal name="VC def.0" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="29"/></proof>
   </goal>
   <goal name="VC def.1" expl="postcondition">
   </goal>
   <goal name="VC def.2" expl="precondition">
   </goal>
-  <goal name="VC def.3" expl="unreachable point">
+  <goal name="VC def.3" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="82"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
-  <goal name="VC def.6" expl="unreachable point">
+  <goal name="VC def.6" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="93"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition">
@@ -2174,14 +2174,14 @@
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="96"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
   </goal>
   <goal name="VC def.11" expl="precondition">
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="102"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -2192,14 +2192,14 @@
   </goal>
   <goal name="VC def.16" expl="precondition">
   </goal>
-  <goal name="VC def.17" expl="unreachable point">
+  <goal name="VC def.17" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="241"/></proof>
   </goal>
   <goal name="VC def.18" expl="postcondition">
   </goal>
   <goal name="VC def.19" expl="precondition">
   </goal>
-  <goal name="VC def.20" expl="unreachable point">
+  <goal name="VC def.20" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="241"/></proof>
   </goal>
   <goal name="VC def.21" expl="postcondition">
@@ -2207,21 +2207,21 @@
   <goal name="VC def.22" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.23" expl="unreachable point" proved="true">
+  <goal name="VC def.23" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="18"/></proof>
   </goal>
   <goal name="VC def.24" expl="postcondition">
   </goal>
   <goal name="VC def.25" expl="precondition">
   </goal>
-  <goal name="VC def.26" expl="unreachable point">
+  <goal name="VC def.26" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="242"/></proof>
   </goal>
   <goal name="VC def.27" expl="postcondition">
   </goal>
   <goal name="VC def.28" expl="precondition">
   </goal>
-  <goal name="VC def.29" expl="unreachable point">
+  <goal name="VC def.29" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="154"/></proof>
   </goal>
   <goal name="VC def.30" expl="postcondition">
@@ -2230,7 +2230,7 @@
   </goal>
   <goal name="VC def.32" expl="precondition">
   </goal>
-  <goal name="VC def.33" expl="unreachable point">
+  <goal name="VC def.33" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="154"/></proof>
   </goal>
   <goal name="VC def.34" expl="postcondition">
@@ -2259,7 +2259,7 @@
   </goal>
   <goal name="VC def.44" expl="precondition">
   </goal>
-  <goal name="VC def.45" expl="unreachable point" proved="true">
+  <goal name="VC def.45" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="24"/></proof>
   </goal>
   <goal name="VC def.46" expl="postcondition">
@@ -2273,7 +2273,7 @@
   </goal>
   <goal name="VC def.50" expl="precondition">
   </goal>
-  <goal name="VC def.51" expl="unreachable point">
+  <goal name="VC def.51" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="288"/></proof>
   </goal>
   <goal name="VC def.52" expl="postcondition">
@@ -2281,7 +2281,7 @@
   <goal name="VC def.53" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.54" expl="unreachable point" proved="true">
+  <goal name="VC def.54" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="VC def.55" expl="postcondition">
@@ -2290,7 +2290,7 @@
   </goal>
   <goal name="VC def.57" expl="precondition">
   </goal>
-  <goal name="VC def.58" expl="unreachable point" proved="true">
+  <goal name="VC def.58" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="24"/></proof>
   </goal>
   <goal name="VC def.59" expl="postcondition">
@@ -2301,14 +2301,14 @@
   </goal>
   <goal name="VC def.62" expl="precondition">
   </goal>
-  <goal name="VC def.63" expl="unreachable point">
+  <goal name="VC def.63" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="276"/></proof>
   </goal>
   <goal name="VC def.64" expl="postcondition">
   </goal>
   <goal name="VC def.65" expl="precondition">
   </goal>
-  <goal name="VC def.66" expl="unreachable point">
+  <goal name="VC def.66" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="273"/></proof>
   </goal>
   <goal name="VC def.67" expl="postcondition">
@@ -2485,21 +2485,21 @@
 <theory name="Enclave__updateconfigdataop__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="unreachable point">
+  <goal name="VC def.0" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="29"/></proof>
   </goal>
   <goal name="VC def.1" expl="postcondition">
   </goal>
   <goal name="VC def.2" expl="precondition">
   </goal>
-  <goal name="VC def.3" expl="unreachable point">
+  <goal name="VC def.3" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="82"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
-  <goal name="VC def.6" expl="unreachable point">
+  <goal name="VC def.6" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="93"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition">
@@ -2541,14 +2541,14 @@
   </goal>
   <goal name="VC def.24" expl="precondition">
   </goal>
-  <goal name="VC def.25" expl="unreachable point">
+  <goal name="VC def.25" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="123"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
   </goal>
   <goal name="VC def.27" expl="precondition">
   </goal>
-  <goal name="VC def.28" expl="unreachable point">
+  <goal name="VC def.28" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="129"/></proof>
   </goal>
   <goal name="VC def.29" expl="postcondition">
@@ -2599,7 +2599,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="82"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -2607,21 +2607,21 @@
   <goal name="VC def.3" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.4" expl="unreachable point">
+  <goal name="VC def.4" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="85"/></proof>
   </goal>
   <goal name="VC def.5" expl="postcondition">
   </goal>
   <goal name="VC def.6" expl="precondition">
   </goal>
-  <goal name="VC def.7" expl="unreachable point">
+  <goal name="VC def.7" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="99"/></proof>
   </goal>
   <goal name="VC def.8" expl="postcondition">
   </goal>
   <goal name="VC def.9" expl="precondition">
   </goal>
-  <goal name="VC def.10" expl="unreachable point">
+  <goal name="VC def.10" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="99"/></proof>
   </goal>
   <goal name="VC def.11" expl="postcondition">
@@ -2632,14 +2632,14 @@
   </goal>
   <goal name="VC def.14" expl="precondition">
   </goal>
-  <goal name="VC def.15" expl="unreachable point">
+  <goal name="VC def.15" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.16" expl="postcondition">
   </goal>
   <goal name="VC def.17" expl="precondition">
   </goal>
-  <goal name="VC def.18" expl="unreachable point">
+  <goal name="VC def.18" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.19" expl="postcondition">
@@ -2647,21 +2647,21 @@
   <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.21" expl="unreachable point">
+  <goal name="VC def.21" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.22" expl="postcondition">
   </goal>
   <goal name="VC def.23" expl="precondition">
   </goal>
-  <goal name="VC def.24" expl="unreachable point">
+  <goal name="VC def.24" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.25" expl="postcondition">
   </goal>
   <goal name="VC def.26" expl="precondition">
   </goal>
-  <goal name="VC def.27" expl="unreachable point">
+  <goal name="VC def.27" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.28" expl="postcondition">
@@ -2670,7 +2670,7 @@
   </goal>
   <goal name="VC def.30" expl="precondition">
   </goal>
-  <goal name="VC def.31" expl="unreachable point">
+  <goal name="VC def.31" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="150"/></proof>
   </goal>
   <goal name="VC def.32" expl="postcondition">
@@ -2715,7 +2715,7 @@
   </goal>
   <goal name="VC def.50" expl="precondition">
   </goal>
-  <goal name="VC def.51" expl="unreachable point">
+  <goal name="VC def.51" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="527"/></proof>
   </goal>
   <goal name="VC def.52" expl="postcondition">
@@ -2727,7 +2727,7 @@
   </goal>
   <goal name="VC def.55" expl="precondition">
   </goal>
-  <goal name="VC def.56" expl="unreachable point">
+  <goal name="VC def.56" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="602"/></proof>
   </goal>
   <goal name="VC def.57" expl="postcondition">
@@ -2736,7 +2736,7 @@
   </goal>
   <goal name="VC def.59" expl="precondition">
   </goal>
-  <goal name="VC def.60" expl="unreachable point" proved="true">
+  <goal name="VC def.60" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.61" expl="postcondition">
@@ -2746,7 +2746,7 @@
   </goal>
   <goal name="VC def.63" expl="precondition">
   </goal>
-  <goal name="VC def.64" expl="unreachable point" proved="true">
+  <goal name="VC def.64" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.65" expl="postcondition">
@@ -2754,7 +2754,7 @@
   <goal name="VC def.66" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.67" expl="unreachable point" proved="true">
+  <goal name="VC def.67" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="13"/></proof>
   </goal>
   <goal name="VC def.68" expl="postcondition">
@@ -2763,7 +2763,7 @@
   </goal>
   <goal name="VC def.70" expl="precondition">
   </goal>
-  <goal name="VC def.71" expl="unreachable point">
+  <goal name="VC def.71" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="591"/></proof>
   </goal>
   <goal name="VC def.72" expl="postcondition">
@@ -2776,7 +2776,7 @@
   </goal>
   <goal name="VC def.76" expl="precondition">
   </goal>
-  <goal name="VC def.77" expl="unreachable point">
+  <goal name="VC def.77" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="523"/></proof>
   </goal>
   <goal name="VC def.78" expl="postcondition">
@@ -2879,21 +2879,21 @@
 <theory name="Enclave__shutdownop__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="unreachable point">
+  <goal name="VC def.0" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
   </goal>
   <goal name="VC def.1" expl="postcondition">
   </goal>
   <goal name="VC def.2" expl="precondition">
   </goal>
-  <goal name="VC def.3" expl="unreachable point">
+  <goal name="VC def.3" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="76"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="precondition">
   </goal>
-  <goal name="VC def.6" expl="unreachable point">
+  <goal name="VC def.6" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="87"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition">
@@ -2901,7 +2901,7 @@
   <goal name="VC def.8" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="13"/></proof>
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="90"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -2918,14 +2918,14 @@
   </goal>
   <goal name="VC def.16" expl="precondition">
   </goal>
-  <goal name="VC def.17" expl="unreachable point">
+  <goal name="VC def.17" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="265"/></proof>
   </goal>
   <goal name="VC def.18" expl="postcondition">
   </goal>
   <goal name="VC def.19" expl="precondition">
   </goal>
-  <goal name="VC def.20" expl="unreachable point">
+  <goal name="VC def.20" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="271"/></proof>
   </goal>
   <goal name="VC def.21" expl="postcondition">
@@ -2936,14 +2936,14 @@
   </goal>
   <goal name="VC def.24" expl="precondition">
   </goal>
-  <goal name="VC def.25" expl="unreachable point">
+  <goal name="VC def.25" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="489"/></proof>
   </goal>
   <goal name="VC def.26" expl="postcondition">
   </goal>
   <goal name="VC def.27" expl="precondition">
   </goal>
-  <goal name="VC def.28" expl="unreachable point">
+  <goal name="VC def.28" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="356"/></proof>
   </goal>
   <goal name="VC def.29" expl="postcondition">
@@ -2952,7 +2952,7 @@
   </goal>
   <goal name="VC def.31" expl="precondition">
   </goal>
-  <goal name="VC def.32" expl="unreachable point">
+  <goal name="VC def.32" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="356"/></proof>
   </goal>
   <goal name="VC def.33" expl="postcondition">
@@ -3004,7 +3004,7 @@
   </goal>
   <goal name="VC def.55" expl="precondition">
   </goal>
-  <goal name="VC def.56" expl="unreachable point" proved="true">
+  <goal name="VC def.56" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="159"/></proof>
   </goal>
   <goal name="VC def.57" expl="postcondition">
@@ -3018,7 +3018,7 @@
   </goal>
   <goal name="VC def.61" expl="precondition">
   </goal>
-  <goal name="VC def.62" expl="unreachable point">
+  <goal name="VC def.62" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="448"/></proof>
   </goal>
   <goal name="VC def.63" expl="postcondition">
@@ -3026,7 +3026,7 @@
   <goal name="VC def.64" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.65" expl="unreachable point" proved="true">
+  <goal name="VC def.65" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="VC def.66" expl="postcondition">
@@ -3035,7 +3035,7 @@
   </goal>
   <goal name="VC def.68" expl="precondition">
   </goal>
-  <goal name="VC def.69" expl="unreachable point" proved="true">
+  <goal name="VC def.69" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="19"/></proof>
   </goal>
   <goal name="VC def.70" expl="postcondition">
@@ -3048,7 +3048,7 @@
   </goal>
   <goal name="VC def.74" expl="precondition">
   </goal>
-  <goal name="VC def.75" expl="unreachable point" proved="true">
+  <goal name="VC def.75" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="179"/></proof>
   </goal>
   <goal name="VC def.76" expl="postcondition">
@@ -3073,7 +3073,7 @@
   </goal>
   <goal name="VC def.86" expl="precondition">
   </goal>
-  <goal name="VC def.87" expl="unreachable point">
+  <goal name="VC def.87" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="596"/></proof>
   </goal>
   <goal name="VC def.88" expl="postcondition">
@@ -3081,7 +3081,7 @@
   <goal name="VC def.89" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.90" expl="unreachable point">
+  <goal name="VC def.90" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1124"/></proof>
   </goal>
   <goal name="VC def.91" expl="postcondition">
@@ -3096,35 +3096,35 @@
   </goal>
   <goal name="VC def.96" expl="precondition">
   </goal>
-  <goal name="VC def.97" expl="unreachable point">
+  <goal name="VC def.97" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="646"/></proof>
   </goal>
   <goal name="VC def.98" expl="postcondition">
   </goal>
   <goal name="VC def.99" expl="precondition">
   </goal>
-  <goal name="VC def.100" expl="unreachable point">
+  <goal name="VC def.100" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="504"/></proof>
   </goal>
   <goal name="VC def.101" expl="postcondition">
   </goal>
   <goal name="VC def.102" expl="precondition">
   </goal>
-  <goal name="VC def.103" expl="unreachable point">
+  <goal name="VC def.103" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="502"/></proof>
   </goal>
   <goal name="VC def.104" expl="postcondition">
   </goal>
   <goal name="VC def.105" expl="precondition">
   </goal>
-  <goal name="VC def.106" expl="unreachable point">
+  <goal name="VC def.106" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="520"/></proof>
   </goal>
   <goal name="VC def.107" expl="postcondition">
   </goal>
   <goal name="VC def.108" expl="precondition">
   </goal>
-  <goal name="VC def.109" expl="unreachable point">
+  <goal name="VC def.109" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="607"/></proof>
   </goal>
   <goal name="VC def.110" expl="postcondition">
@@ -3217,7 +3217,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="85"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -3226,7 +3226,7 @@
   </goal>
   <goal name="VC def.4" expl="precondition">
   </goal>
-  <goal name="VC def.5" expl="unreachable point">
+  <goal name="VC def.5" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="96"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
@@ -3236,7 +3236,7 @@
   </goal>
   <goal name="VC def.8" expl="precondition">
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="123"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -3244,7 +3244,7 @@
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="111"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -3253,7 +3253,7 @@
   </goal>
   <goal name="VC def.15" expl="precondition">
   </goal>
-  <goal name="VC def.16" expl="unreachable point">
+  <goal name="VC def.16" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="123"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
@@ -3282,7 +3282,7 @@
   </goal>
   <goal name="VC def.29" expl="precondition">
   </goal>
-  <goal name="VC def.30" expl="unreachable point">
+  <goal name="VC def.30" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="436"/></proof>
   </goal>
   <goal name="VC def.31" expl="postcondition">
@@ -3290,7 +3290,7 @@
   <goal name="VC def.32" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.33" expl="unreachable point">
+  <goal name="VC def.33" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="420"/></proof>
   </goal>
   <goal name="VC def.34" expl="postcondition">
@@ -3452,14 +3452,14 @@
   </goal>
   <goal name="VC def.90" expl="precondition">
   </goal>
-  <goal name="VC def.91" expl="unreachable point">
+  <goal name="VC def.91" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="893"/></proof>
   </goal>
   <goal name="VC def.92" expl="postcondition">
   </goal>
   <goal name="VC def.93" expl="precondition">
   </goal>
-  <goal name="VC def.94" expl="unreachable point">
+  <goal name="VC def.94" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="896"/></proof>
   </goal>
   <goal name="VC def.95" expl="postcondition">
@@ -3469,7 +3469,7 @@
   </goal>
   <goal name="VC def.97" expl="precondition">
   </goal>
-  <goal name="VC def.98" expl="unreachable point">
+  <goal name="VC def.98" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="894"/></proof>
   </goal>
   <goal name="VC def.99" expl="postcondition">
@@ -3478,7 +3478,7 @@
   </goal>
   <goal name="VC def.101" expl="precondition">
   </goal>
-  <goal name="VC def.102" expl="unreachable point" proved="true">
+  <goal name="VC def.102" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="42"/></proof>
   </goal>
   <goal name="VC def.103" expl="postcondition">
@@ -3488,7 +3488,7 @@
   </goal>
   <goal name="VC def.105" expl="precondition">
   </goal>
-  <goal name="VC def.106" expl="unreachable point">
+  <goal name="VC def.106" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1125"/></proof>
   </goal>
   <goal name="VC def.107" expl="postcondition">
@@ -3496,7 +3496,7 @@
   <goal name="VC def.108" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.109" expl="unreachable point" proved="true">
+  <goal name="VC def.109" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="71"/></proof>
   </goal>
   <goal name="VC def.110" expl="postcondition">
@@ -3505,7 +3505,7 @@
   </goal>
   <goal name="VC def.112" expl="precondition">
   </goal>
-  <goal name="VC def.113" expl="unreachable point">
+  <goal name="VC def.113" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="963"/></proof>
   </goal>
   <goal name="VC def.114" expl="postcondition">
@@ -3518,7 +3518,7 @@
   </goal>
   <goal name="VC def.118" expl="precondition">
   </goal>
-  <goal name="VC def.119" expl="unreachable point">
+  <goal name="VC def.119" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="792"/></proof>
   </goal>
   <goal name="VC def.120" expl="postcondition">
@@ -3543,7 +3543,7 @@
   </goal>
   <goal name="VC def.130" expl="precondition">
   </goal>
-  <goal name="VC def.131" expl="unreachable point">
+  <goal name="VC def.131" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1004"/></proof>
   </goal>
   <goal name="VC def.132" expl="postcondition">
@@ -3551,12 +3551,12 @@
   <goal name="VC def.133" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.134" expl="unreachable point">
+  <goal name="VC def.134" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1180"/></proof>
   </goal>
   <goal name="VC def.135" expl="postcondition">
   </goal>
-  <goal name="VC def.136" expl="unreachable point">
+  <goal name="VC def.136" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="897"/></proof>
   </goal>
   <goal name="VC def.137" expl="postcondition">
@@ -3565,7 +3565,7 @@
   </goal>
   <goal name="VC def.139" expl="precondition">
   </goal>
-  <goal name="VC def.140" expl="unreachable point">
+  <goal name="VC def.140" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="743"/></proof>
   </goal>
   <goal name="VC def.141" expl="postcondition">
@@ -3578,7 +3578,7 @@
   </goal>
   <goal name="VC def.145" expl="precondition">
   </goal>
-  <goal name="VC def.146" expl="unreachable point">
+  <goal name="VC def.146" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="938"/></proof>
   </goal>
   <goal name="VC def.147" expl="postcondition">
@@ -3738,7 +3738,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="79"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -3747,7 +3747,7 @@
   </goal>
   <goal name="VC def.4" expl="precondition">
   </goal>
-  <goal name="VC def.5" expl="unreachable point">
+  <goal name="VC def.5" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="90"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
@@ -3757,7 +3757,7 @@
   </goal>
   <goal name="VC def.8" expl="precondition">
   </goal>
-  <goal name="VC def.9" expl="unreachable point">
+  <goal name="VC def.9" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="117"/></proof>
   </goal>
   <goal name="VC def.10" expl="postcondition">
@@ -3765,7 +3765,7 @@
   <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.12" expl="unreachable point">
+  <goal name="VC def.12" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="105"/></proof>
   </goal>
   <goal name="VC def.13" expl="postcondition">
@@ -3774,7 +3774,7 @@
   </goal>
   <goal name="VC def.15" expl="precondition">
   </goal>
-  <goal name="VC def.16" expl="unreachable point">
+  <goal name="VC def.16" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="117"/></proof>
   </goal>
   <goal name="VC def.17" expl="postcondition">
@@ -3832,7 +3832,7 @@
   <goal name="VC def.40" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="53"/></proof>
   </goal>
-  <goal name="VC def.41" expl="unreachable point" proved="true">
+  <goal name="VC def.41" expl="check" proved="true">
   <proof prover="0" timelimit="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.42" expl="postcondition">
@@ -3841,7 +3841,7 @@
   </goal>
   <goal name="VC def.44" expl="precondition">
   </goal>
-  <goal name="VC def.45" expl="unreachable point">
+  <goal name="VC def.45" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1098"/></proof>
   </goal>
   <goal name="VC def.46" expl="postcondition">
@@ -3852,7 +3852,7 @@
   </goal>
   <goal name="VC def.49" expl="precondition">
   </goal>
-  <goal name="VC def.50" expl="unreachable point">
+  <goal name="VC def.50" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1237"/></proof>
   </goal>
   <goal name="VC def.51" expl="postcondition">
@@ -3867,7 +3867,7 @@
   </goal>
   <goal name="VC def.56" expl="precondition">
   </goal>
-  <goal name="VC def.57" expl="unreachable point">
+  <goal name="VC def.57" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1193"/></proof>
   </goal>
   <goal name="VC def.58" expl="postcondition">
@@ -3875,14 +3875,14 @@
   <goal name="VC def.59" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.60" expl="unreachable point">
+  <goal name="VC def.60" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1220"/></proof>
   </goal>
   <goal name="VC def.61" expl="postcondition">
   </goal>
   <goal name="VC def.62" expl="precondition">
   </goal>
-  <goal name="VC def.63" expl="unreachable point">
+  <goal name="VC def.63" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="928"/></proof>
   </goal>
   <goal name="VC def.64" expl="postcondition">
@@ -3891,7 +3891,7 @@
   </goal>
   <goal name="VC def.66" expl="precondition">
   </goal>
-  <goal name="VC def.67" expl="unreachable point">
+  <goal name="VC def.67" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="923"/></proof>
   </goal>
   <goal name="VC def.68" expl="postcondition">
@@ -3901,7 +3901,7 @@
   </goal>
   <goal name="VC def.70" expl="precondition">
   </goal>
-  <goal name="VC def.71" expl="unreachable point">
+  <goal name="VC def.71" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1415"/></proof>
   </goal>
   <goal name="VC def.72" expl="postcondition">
@@ -3909,7 +3909,7 @@
   <goal name="VC def.73" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.74" expl="unreachable point">
+  <goal name="VC def.74" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="1221"/></proof>
   </goal>
   <goal name="VC def.75" expl="postcondition">
@@ -3918,7 +3918,7 @@
   </goal>
   <goal name="VC def.77" expl="precondition">
   </goal>
-  <goal name="VC def.78" expl="unreachable point">
+  <goal name="VC def.78" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="948"/></proof>
   </goal>
   <goal name="VC def.79" expl="postcondition">

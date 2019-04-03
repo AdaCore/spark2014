@@ -157,7 +157,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0"><result status="unknown" steps="35"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -194,7 +194,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0"><result status="unknown" steps="35"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">
@@ -231,7 +231,7 @@
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition">
   </goal>
-  <goal name="VC def.1" expl="unreachable point">
+  <goal name="VC def.1" expl="check">
   <proof prover="0"><result status="unknown" steps="35"/></proof>
   </goal>
   <goal name="VC def.2" expl="postcondition">

@@ -520,12 +520,12 @@
 <theory name="Keystore__digest__getblock__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="unreachable point">
+  <goal name="VC def.0" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="VC def.1" expl="postcondition">
   </goal>
-  <goal name="VC def.2" expl="unreachable point">
+  <goal name="VC def.2" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="14"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">

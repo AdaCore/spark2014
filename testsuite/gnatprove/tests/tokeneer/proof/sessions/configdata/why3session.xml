@@ -72,7 +72,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="14714"/></proof>
   <proof prover="2"><result status="unknown" steps="169"/></proof>
-  <proof prover="3"><result status="unknown" steps="223"/></proof>
+  <proof prover="3"><result status="unknown" steps="226"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>
@@ -91,7 +91,7 @@
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="15259"/></proof>
   <proof prover="2"><result status="unknown" steps="146"/></proof>
-  <proof prover="3"><result status="unknown" steps="183"/></proof>
+  <proof prover="3"><result status="unknown" steps="186"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition">
   </goal>

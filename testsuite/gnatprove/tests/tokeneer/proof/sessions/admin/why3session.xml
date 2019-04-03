@@ -201,7 +201,7 @@
   <goal name="VC def.13" expl="unreachable point">
   <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
-  <goal name="VC def.14" expl="unreachable point">
+  <goal name="VC def.14" expl="check">
   <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.15" expl="postcondition">
@@ -213,7 +213,7 @@
   </goal>
   <goal name="VC def.18" expl="postcondition">
   </goal>
-  <goal name="VC def.19" expl="unreachable point">
+  <goal name="VC def.19" expl="check">
   <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.20" expl="postcondition">

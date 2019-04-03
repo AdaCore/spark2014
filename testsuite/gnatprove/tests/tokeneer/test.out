@@ -178,6 +178,10 @@ alarm.ads:43:11: info: data dependencies proved
 alarm.ads:57:11: info: data dependencies proved
 alarm.ads:60:11: info: flow dependencies proved
 alarm.ads:71:22: info: postcondition proved (CVC4: 2 VC)
+alarmapi.adb:38:29: info: length check proved (CVC4: 4 VC)
+alarmapi.adb:38:29: info: precondition proved (CVC4: 4 VC)
+alarmapi.adb:65:29: info: length check proved (CVC4: 4 VC)
+alarmapi.adb:65:29: info: precondition proved (CVC4: 4 VC)
 alarmapi.ads:29:28: info: data dependencies proved
 alarmapi.ads:38:30: info: data dependencies proved
 auditlog.adb:85:18: info: range check proved (CVC4: 1 VC)
@@ -2001,6 +2005,8 @@ door.ads:228:11: info: flow dependencies proved
 door.ads:241:11: info: data dependencies proved
 door.ads:243:11: info: flow dependencies proved
 doorapi.adb:26:11: info: data dependencies proved
+doorapi.adb:33:29: info: length check proved (CVC4: 4 VC)
+doorapi.adb:33:29: info: precondition proved (CVC4: 4 VC)
 doorapi.adb:51:10: info: initialization of "CommsIsOK" proved
 doorapi.adb:53:63: info: initialization of "InMsg.Data" proved
 doorapi.adb:53:63: info: initialization of "InMsg.Length" proved
@@ -2616,9 +2622,13 @@ latch.ads:146:22: info: initialization of "LatchTimeout.Year" constituent of "St
 latch.ads:146:22: info: postcondition proved (CVC4: 1 VC)
 latch.ads:159:11: info: data dependencies proved
 latch.ads:160:11: info: flow dependencies proved
+latchapi.adb:95:37: info: length check proved (CVC4: 4 VC)
+latchapi.adb:95:37: info: precondition proved (CVC4: 4 VC)
 latchapi.adb:111:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:115:20: info: initialization of "IsLocked" proved
 latchapi.adb:115:36: info: initialization of "ReadBackOK" proved
+latchapi.adb:132:37: info: length check proved (CVC4: 4 VC)
+latchapi.adb:132:37: info: precondition proved (CVC4: 4 VC)
 latchapi.adb:149:10: info: initialization of "CommsIsOK" proved
 latchapi.adb:152:24: info: initialization of "IsLocked" proved
 latchapi.adb:152:40: info: initialization of "ReadBackOK" proved

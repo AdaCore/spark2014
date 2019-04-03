@@ -97,9 +97,9 @@ package body LatchAPI is
             Position => 1,
             New_Item => "door.unlock()"),
          Length => 13);
-      pragma Annotate (GNATprove, False_Positive,
-                       "length check might fail",
-                       "Call to Overwrite will return here a string of the expected length");
+
+
+
       IsLocked, CommsIsOK, ReadBackOK  : Boolean;
 
    begin
@@ -134,10 +134,10 @@ package body LatchAPI is
             Position => 1,
             New_Item => "door.lock()"),
          Length => 11);
-      pragma Annotate (GNATprove, False_Positive,
-                       "length check might fail",
-                       "Call to Overwrite will return here a string of the expected length");
-      IsLocked, CommsIsOK, ReadBackOK : Boolean;
+
+
+
+     IsLocked, CommsIsOK, ReadBackOK : Boolean;
 
    begin
       TcpIp.SendAndReceive
