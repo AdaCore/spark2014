@@ -1347,16 +1347,12 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      declare
-         FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
-      begin
-         for Tmp of FS loop
-            Process (Tmp);
-            if Has_Bounds (Tmp, FA.B_Scope) then
-               Process (Tmp'Update (Facet => The_Bounds));
-            end if;
-         end loop;
-      end;
+      for Comp of Flatten_Variable (E, FA.B_Scope) loop
+         Process (Comp);
+         if Has_Bounds (Comp, FA.B_Scope) then
+            Process (Comp'Update (Facet => The_Bounds));
+         end if;
+      end loop;
 
       if Extensions_Visible (E, FA.B_Scope) then
          Process (Direct_Mapping_Id (E, Facet => Extension_Part));
@@ -1420,15 +1416,13 @@ package body Flow.Control_Flow_Graph is
          FA.All_Vars.Insert (F);
       end Process;
 
-      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, FA.B_Scope);
-
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      for Tmp of FS loop
-         Process (Tmp);
-         if Has_Bounds (Tmp, FA.B_Scope) then
-            Process (Tmp'Update (Facet => The_Bounds));
+      for Comp of Flatten_Variable (F, FA.B_Scope) loop
+         Process (Comp);
+         if Has_Bounds (Comp, FA.B_Scope) then
+            Process (Comp'Update (Facet => The_Bounds));
          end if;
       end loop;
 
