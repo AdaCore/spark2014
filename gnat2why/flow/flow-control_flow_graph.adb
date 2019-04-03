@@ -1140,8 +1140,8 @@ package body Flow.Control_Flow_Graph is
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
          --  important root node (in this example r). This is important for
-         --  discriminated null records which have no other way of
-         --  producing this otherwise.
+         --  discriminated null records which have no other way of producing
+         --  this otherwise.
          declare
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
@@ -1205,7 +1205,7 @@ package body Flow.Control_Flow_Graph is
 
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
-                  if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
+                  if not FA.CFG.Contains (F) then
                      --  Create vertex
                      Add_Vertex
                        (FA,
