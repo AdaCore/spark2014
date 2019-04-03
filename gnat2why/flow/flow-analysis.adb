@@ -88,11 +88,11 @@ package body Flow.Analysis is
    function Find_Global
      (S : Entity_Id;
       F : Flow_Id) return Node_Or_Entity_Id
-   with Pre => Ekind (S) in Entry_Kind     |
-                            E_Function     |
-                            E_Package      |
-                            E_Procedure    |
-                            E_Task_Type;
+   with Pre => Ekind (S) in Entry_Kind
+                          | E_Function
+                          | E_Package
+                          | E_Procedure
+                          | E_Task_Type;
    --  Find the global F in the Global, Refined_Global, or Initializes aspect
    --  of S. If it is not there (perhaps because it comes from computed
    --  globals) just return S which is a good fallback location for error
