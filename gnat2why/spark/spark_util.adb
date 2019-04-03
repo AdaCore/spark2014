@@ -23,28 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Csets;                              use Csets;
-with Errout;                             use Errout;
-with Flow_Utility;                       use Flow_Utility;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Csets;                  use Csets;
+with Errout;                 use Errout;
+with Flow_Utility;           use Flow_Utility;
 with Gnat2Why_Args;
 with Lib.Xref;
+with Opt;
+with Osint;
 with Output;
-with Pprint;                             use Pprint;
-with Sem_Ch12;                           use Sem_Ch12;
-with Sem_Eval;                           use Sem_Eval;
-with Sem_Prag;                           use Sem_Prag;
-with Sem_Type;                           use Sem_Type;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
-with Stand;                              use Stand;
-with Stringt;                            use Stringt;
-with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
-with Flow_Types;                         use Flow_Types;
-with Flow_Refinement;                    use Flow_Refinement;
+with Pprint;                 use Pprint;
+with Sem_Ch12;               use Sem_Ch12;
+with Sem_Eval;               use Sem_Eval;
+with Sem_Prag;               use Sem_Prag;
+with Sem_Type;               use Sem_Type;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with Stand;                  use Stand;
+with Stringt;                use Stringt;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
+with Flow_Refinement;        use Flow_Refinement;
 
 package body SPARK_Util is
 
@@ -147,6 +149,23 @@ package body SPARK_Util is
               then Element (Primitive)
               else Empty);
    end Dispatching_Contract;
+
+   ---------------------------
+   -- Append_Multiple_Index --
+   ---------------------------
+
+   function Append_Multiple_Index (S : String) return String is
+   begin
+      if Opt.Multiple_Unit_Index = 0 then
+         return S;
+      end if;
+      declare
+         Int_Str : constant String := Int'Image (Opt.Multiple_Unit_Index);
+      begin
+         return S & Osint.Multi_Unit_Index_Character &
+           Int_Str (Int_Str'First + 1 .. Int_Str'Last);
+      end;
+   end Append_Multiple_Index;
 
    ------------
    -- Append --

@@ -677,8 +677,14 @@ package SPARK_Util is
 
    function String_Value (Str_Id : String_Id) return String;
 
+   function Append_Multiple_Index (S : String) return String;
+   --  If the current file contains multiple units, add a suffix to S that
+   --  corresponds to the currently analyzed unit.
+
    function Unit_Name return String is
-     (File_Name_Without_Suffix (Get_Name_String (Unit_File_Name (Main_Unit))));
+     (Append_Multiple_Index
+        (File_Name_Without_Suffix
+             (Get_Name_String (Unit_File_Name (Main_Unit)))));
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));

@@ -1,2 +1,2 @@
-c.ada:2:14: warning: subprogram "Foo" has no effect
-c.ada:14:14: warning: subprogram "Bar" has no effect
+c.ada:10:14: medium: overflow check might fail [possible explanation: call at line 9 should mention X (for argument X) in a postcondition]
+c.ada:21:14: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention X in a precondition]

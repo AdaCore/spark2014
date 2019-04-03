@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Exp_Util;                           use Exp_Util;
-with Opt;                                use Opt;
-with Sem_Prag;                           use Sem_Prag;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
+with Exp_Util;         use Exp_Util;
+with Opt;              use Opt;
+with Sem_Prag;         use Sem_Prag;
+with SPARK_Util.Types; use SPARK_Util.Types;
 
 package body SPARK_Util.External_Axioms is
 
