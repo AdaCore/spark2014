@@ -139,7 +139,7 @@ check messages and information messages.
   cannot be suppressed and must be fixed to proceed with analysis.
 
 * Warnings are issued for any suspicious situation like unused values of
-  variables, useless assignements, etc. Warnings are prefixed with the text
+  variables, useless assignments, etc. Warnings are prefixed with the text
   ``"warning: "`` and can be suppressed with ``pragma Warnings``, see section
   :ref:`Suppressing Warnings`.
 
