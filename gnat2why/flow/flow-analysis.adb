@@ -2245,7 +2245,6 @@ package body Flow.Analysis is
 
          V_Error      : constant Flow_Graphs.Vertex_Id := Vertex;
          V_Goal       : Flow_Graphs.Vertex_Id;
-         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
          Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
@@ -2254,22 +2253,19 @@ package body Flow.Analysis is
          Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
          function Mark_Definition_Free_Path
-           (To        : Flow_Graphs.Vertex_Id;
-            Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id)
+           (To  : Flow_Graphs.Vertex_Id;
+            Var : Flow_Id)
             return Vertex_Sets.Set;
-         --  Returns the path From -> To which does not define Var. If
-         --  V_Allowed is non-null, then the path that we return is allowed
-         --  to contain V_Allowed even if V_Allowed does set Var.
+         --  Returns a path from Start towards To (where Var is read) that does
+         --  not define Var.
 
          -------------------------------
          -- Mark_Definition_Free_Path --
          -------------------------------
 
          function Mark_Definition_Free_Path
-           (To        : Flow_Graphs.Vertex_Id;
-            Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id)
+           (To  : Flow_Graphs.Vertex_Id;
+            Var : Flow_Id)
             return Vertex_Sets.Set
          is
             Path_Found : Boolean := False;
@@ -2295,9 +2291,7 @@ package body Flow.Analysis is
                if V = To then
                   Instruction := Flow_Graphs.Found_Destination;
                   Path_Found  := True;
-               elsif V /= V_Allowed
-                 and then FA.Atr (V).Variables_Defined.Contains (Var)
-               then
+               elsif FA.Atr (V).Variables_Defined.Contains (Var) then
                   Instruction := Flow_Graphs.Skip_Children;
                else
                   Instruction := Flow_Graphs.Continue;
@@ -2369,8 +2363,7 @@ package body Flow.Analysis is
          end if;
 
          if not Is_Final_Use then
-            V_Goal    := V_Error;
-            V_Allowed := Vertex;
+            V_Goal := V_Error;
 
             N := First_Variable_Use
               (N        => Error_Location (FA.PDG, FA.Atr, V_Error),
@@ -2389,9 +2382,8 @@ package body Flow.Analysis is
 
          declare
             Path : constant Vertex_Sets.Set :=
-              Mark_Definition_Free_Path (To        => V_Goal,
-                                         Var       => Var,
-                                         V_Allowed => V_Allowed);
+              Mark_Definition_Free_Path (To  => V_Goal,
+                                         Var => Var);
 
          begin
             Error_Msg_Flow
