@@ -2256,11 +2256,11 @@ package body Flow.Analysis is
          function Mark_Definition_Free_Path
            (To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            V_Allowed : Flow_Graphs.Vertex_Id)
             return Vertex_Sets.Set;
          --  Returns the path From -> To which does not define Var. If
-         --  V_Allowed is set, then the path that we return is allowed to
-         --  contain V_Allowed even if V_Allowed does set Var.
+         --  V_Allowed is non-null, then the path that we return is allowed
+         --  to contain V_Allowed even if V_Allowed does set Var.
 
          -------------------------------
          -- Mark_Definition_Free_Path --
@@ -2269,7 +2269,7 @@ package body Flow.Analysis is
          function Mark_Definition_Free_Path
            (To        : Flow_Graphs.Vertex_Id;
             Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
+            V_Allowed : Flow_Graphs.Vertex_Id)
             return Vertex_Sets.Set
          is
             Path_Found : Boolean := False;
@@ -2442,8 +2442,7 @@ package body Flow.Analysis is
          then
             Error_Msg_Flow (FA           => FA,
                             Msg          => "& is not an input " &
-                              "in the Global contract of subprogram " &
-                              "#",
+                              "in the Global contract of subprogram #",
                             Severity     => High_Check_Kind,
                             N            => N,
                             F1           => Var,
