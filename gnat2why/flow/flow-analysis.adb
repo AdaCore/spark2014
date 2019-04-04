@@ -54,8 +54,6 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
 with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
-with Why;
-
 package body Flow.Analysis is
 
    Debug_Trace_Depends     : constant Boolean := False;
@@ -2196,6 +2194,12 @@ package body Flow.Analysis is
       --  might be in fact initialized; returns False if it is definitely
       --  uninitialized there.
 
+      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
+                                            return Boolean;
+      pragma Unreferenced (Has_Only_Infinite_Execution);
+      --  Returns True iff every path from V_Final going backwards in the CFG
+      --  contains an infinite loop.
+
       procedure Scan_Children
         (Var                  : Flow_Id;
          Start                : Flow_Graphs.Vertex_Id;
@@ -2467,6 +2471,57 @@ package body Flow.Analysis is
          end if;
       end Emit_Message;
 
+      ---------------------------------
+      -- Has_Only_Infinite_Execution --
+      ---------------------------------
+
+      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
+                                            return Boolean
+      is
+         Only_Inf_Exec : Boolean := True;
+
+         procedure Vertex_Has_Infinite_Execution
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction);
+
+         -----------------------------------
+         -- Vertex_Has_Infinite_Execution --
+         -----------------------------------
+
+         procedure Vertex_Has_Infinite_Execution
+           (V  : Flow_Graphs.Vertex_Id;
+            TV : out Flow_Graphs.Simple_Traversal_Instruction)
+         is
+         begin
+            if V = FA.Start_Vertex then
+               --  If we reach the start vertex (remember that we are going
+               --  backwards) it means that there is at least one path without
+               --  an infinite loop and we can set Only_Inf_Exec to false and
+               --  abort the traversal.
+               Only_Inf_Exec := False;
+               TV := Flow_Graphs.Abort_Traversal;
+
+            elsif FA.Atr (V).Execution = Infinite_Loop then
+               --  If we find a vertex with Infinite_Loop execution then we set
+               --  Only_Inf_Exec to true and jump to another path.
+               TV := Flow_Graphs.Skip_Children;
+
+            else
+               TV := Flow_Graphs.Continue;
+            end if;
+         end Vertex_Has_Infinite_Execution;
+
+      --  Start of processing for Has_Only_Infinite_Execution
+
+      begin
+         FA.CFG.DFS (Start         => V_Final,
+                     Include_Start => True,
+                     Visitor       => Vertex_Has_Infinite_Execution'Access,
+                     Reversed      => True);
+
+         return Only_Inf_Exec;
+      end Has_Only_Infinite_Execution;
+
       --------------
       -- Is_Array --
       --------------
@@ -2667,27 +2722,10 @@ package body Flow.Analysis is
       function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Returns True iff V should be considered for uninitialized variables
 
-      procedure Emit_Message (Var              : Flow_Id;
-                              Vertex           : Flow_Graphs.Vertex_Id;
-                              Is_Initialized   : Boolean;
-                              Is_Uninitialized : Boolean)
-      with Pre => (Is_Initialized or Is_Uninitialized)
-                  and then not Is_Internal (Var);
-      --  Produces an appropriately worded info/low/high message for the given
-      --  variable Var at the given location Vertex.
-      --
-      --  Is_Initialized should be set if there is at least one sensible read
-      --
-      --  Is_Uninitialized should be set if there is at least one read from an
-      --  uninitialized variable.
-      --
-      --  They can be both set, in which case we're most likely going to
-      --  produce a medium check, but this is not always the case in loops.
-
-      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
-                                            return Boolean;
-      --  Returns True iff every path from V_Final going backwards in the CFG
-      --  contains an infinite loop.
+      procedure Emit_Message (Var    : Flow_Id;
+                              Vertex : Flow_Graphs.Vertex_Id)
+      with Pre => not Is_Internal (Var);
+      --  Produces an info message for variable Var at location Vertex
 
       function Expand_Initializes return Node_Sets.Set
       with Pre  => FA.Kind in Kind_Package | Kind_Package_Body
@@ -2701,15 +2739,6 @@ package body Flow.Analysis is
       --  In other words, this routine down-projects the LHS of the Initializes
       --  contract to the scope of the private part or body of the current
       --  package (depending on the SPARK_Mode barrier).
-
-      procedure Might_Be_Defined_In_Other_Path
-        (V_Initial : Flow_Graphs.Vertex_Id;
-         V_Use     : Flow_Graphs.Vertex_Id;
-         Found     : out Boolean;
-         V_Error   : out Flow_Graphs.Vertex_Id);
-      --  Sets Found when the variable corresponding to V_Initial is defined on
-      --  a path that leads to V_Use. V_Error is the vertex where the message
-      --  should be emitted.
 
       ---------------------
       -- Consider_Vertex --
@@ -2740,184 +2769,19 @@ package body Flow.Analysis is
       -- Emit_Message --
       ------------------
 
-      procedure Emit_Message (Var              : Flow_Id;
-                              Vertex           : Flow_Graphs.Vertex_Id;
-                              Is_Initialized   : Boolean;
-                              Is_Uninitialized : Boolean)
+      procedure Emit_Message (Var    : Flow_Id;
+                              Vertex : Flow_Graphs.Vertex_Id)
       is
-         type Msg_Kind is (Init, Unknown, Err);
+         V_Key : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
-         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
-
-         V_Initial    : constant Flow_Graphs.Vertex_Id :=
+         V_Initial : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
 
-         Kind         : Msg_Kind :=
-           (if Is_Initialized and Is_Uninitialized then Unknown
-            elsif Is_Initialized                   then Init
-            else                                        Err);
-
-         N            : Node_Or_Entity_Id;
-         Msg          : Unbounded_String;
-
-         V_Error      : Flow_Graphs.Vertex_Id;
-         V_Goal       : Flow_Graphs.Vertex_Id;
-         V_Allowed    : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-
-         Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
-         Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
-         Default_Init : constant Boolean := Is_Default_Initialized
-                                               (Var, FA.B_Scope);
-         Is_Function  : constant Boolean := Is_Function_Entity (Var);
-
-         function Definition_Free_Path
-           (From      : Flow_Graphs.Vertex_Id;
-            To        : Flow_Graphs.Vertex_Id;
-            Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
-            return Vertex_Sets.Set;
-         --  Returns the path From -> To which does not define Var. If
-         --  V_Allowed is set, then the path that we return is allowed to
-         --  contain V_Allowed even if V_Allowed does set Var.
-
-         --------------------------
-         -- Definition_Free_Path --
-         --------------------------
-
-         function Definition_Free_Path
-           (From      : Flow_Graphs.Vertex_Id;
-            To        : Flow_Graphs.Vertex_Id;
-            Var       : Flow_Id;
-            V_Allowed : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex)
-            return Vertex_Sets.Set
-         is
-            Path_Found : Boolean := False;
-            Path       : Vertex_Sets.Set;
-
-            procedure Are_We_There_Yet
-              (V           : Flow_Graphs.Vertex_Id;
-               Instruction : out Flow_Graphs.Traversal_Instruction);
-            --  Visitor procedure for Shortest_Path
-
-            procedure Add_Loc (V : Flow_Graphs.Vertex_Id);
-            --  Step procedure for Shortest_Path
-
-            ----------------------
-            -- Are_We_There_Yet --
-            ----------------------
-
-            procedure Are_We_There_Yet
-              (V           : Flow_Graphs.Vertex_Id;
-               Instruction : out Flow_Graphs.Traversal_Instruction)
-            is
-            begin
-               if V = To then
-                  Instruction := Flow_Graphs.Found_Destination;
-                  Path_Found  := True;
-               elsif V /= V_Allowed
-                 and then FA.Atr (V).Variables_Defined.Contains (Var)
-               then
-                  Instruction := Flow_Graphs.Skip_Children;
-               else
-                  Instruction := Flow_Graphs.Continue;
-               end if;
-            end Are_We_There_Yet;
-
-            -------------
-            -- Add_Loc --
-            -------------
-
-            procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-               F : Flow_Id renames FA.CFG.Get_Key (V);
-            begin
-               if V /= To and then F.Kind = Direct_Mapping then
-                  Path.Insert (V);
-               end if;
-            end Add_Loc;
-
-         --  Start of processing for Mark_Definition_Free_Path
-
-         begin
-            FA.CFG.Shortest_Path (Start         => From,
-                                  Allow_Trivial => False,
-                                  Search        => Are_We_There_Yet'Access,
-                                  Step          => Add_Loc'Access);
-
-            --  When dealing with an exceptional path it is possible for
-            --  Path_Found to be false.
-
-            return (if Path_Found
-                    then Path
-                    else Vertex_Sets.Empty_Set);
-         end Definition_Free_Path;
-
-      --  Start of processing for Emit_Message
+         N : Node_Or_Entity_Id;
 
       begin
-         case Kind is
-            when Unknown | Err =>
-               declare
-                  Defined_Elsewhere : Boolean;
-
-               begin
-                  Might_Be_Defined_In_Other_Path
-                    (V_Initial => V_Initial,
-                     V_Use     => Vertex,
-                     Found     => Defined_Elsewhere,
-                     V_Error   => V_Error);
-
-                  if not Defined_Elsewhere then
-
-                     --  Upgrade check to high if a more detailed path analysis
-                     --  shows we can't feasibly set it.
-
-                     Kind := Err;
-                  end if;
-               end;
-            when others =>
-               V_Error := Vertex;
-         end case;
-
-         if Kind /= Init then
-            return;
-         end if;
-
-         --  Assemble appropriate message for failed initialization. We deal
-         --  with a bunch of special cases first, but if they don't trigger we
-         --  create the standard message.
-
-         if Kind = Init then
-            Msg := To_Unbounded_String ("initialization of & proved");
-         elsif Is_Function then
-            Msg := To_Unbounded_String ("function & does not return on ");
-            if Has_Only_Infinite_Execution (Vertex) then
-               Append (Msg, "any path");
-            else
-               Append (Msg, "some paths");
-            end if;
-         else
-            Msg := To_Unbounded_String ("&");
-            if Kind = Err then
-               Append (Msg, " is not");
-            else
-               Append (Msg, " might not be");
-            end if;
-            if Default_Init then
-               Append (Msg, " set");
-            elsif Has_Async_Readers (Var) then
-               Append (Msg, " written");
-            else
-               Append (Msg, " initialized");
-            end if;
-            if Is_Final_Use and not Is_Global then
-               Append (Msg, " in &");
-            end if;
-         end if;
-
-         if not Is_Final_Use then
-            V_Goal    := V_Error;
-            V_Allowed := Vertex;
-            N         := Error_Location (FA.PDG, FA.Atr, V_Error);
+         if V_Key.Variant /= Final_Value then
+            N := Error_Location (FA.PDG, FA.Atr, Vertex);
 
             --  When the message is a failed check we produce a more precise
             --  location (but this can be very expensive, see the test for
@@ -2925,7 +2789,7 @@ package body Flow.Analysis is
             --  message AND we use --report=fail (the default), we don't do
             --  this refinement.
 
-            if not (Kind = Init and Gnat2Why_Args.Report_Mode = GPR_Fail) then
+            if Gnat2Why_Args.Report_Mode /= GPR_Fail then
                N := First_Variable_Use
                  (N        => N,
                   Scope    => FA.B_Scope,
@@ -2934,109 +2798,20 @@ package body Flow.Analysis is
                   Targeted => True);
             end if;
 
-         elsif Is_Global then
-            V_Goal := FA.Helper_End_Vertex;
-            N      := Find_Global (FA.Spec_Entity, Var);
+         elsif FA.Atr (V_Initial).Is_Global then
+            N := Find_Global (FA.Spec_Entity, Var);
          else
-            V_Goal := V_Error;
-            N      := FA.Atr (Vertex).Error_Location;
+            N := FA.Atr (Vertex).Error_Location;
          end if;
 
-         --  We special case this, so we don't emit "X" is initialized messages
-         --  for the "variable" that represents the function's result.
-
-         if Kind = Init
-           and then Is_Function
-         then
-            pragma Assert (Get_Direct_Mapping_Id (Var) = FA.Analyzed_Entity);
-            return;
-         end if;
-
-         declare
-            Path : constant Vertex_Sets.Set :=
-              Definition_Free_Path (From      => FA.Start_Vertex,
-                                    To        => V_Goal,
-                                    Var       => Var,
-                                    V_Allowed => V_Allowed);
-
-         begin
-            Error_Msg_Flow
-              (FA       => FA,
-               Path     => Path,
-               Msg      => To_String (Msg),
-               N        => N,
-               F1       => Var,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
-               Tag      => Uninitialized,
-               Severity => (case Kind is
-                            when Init    => Info_Kind,
-                            when Unknown => (if Default_Init
-                                             then Low_Check_Kind
-                                             else Medium_Check_Kind),
-                            when Err     => (if Default_Init
-                                             then Medium_Check_Kind
-                                             else High_Check_Kind)),
-               Vertex   => Vertex);
-
-            if Is_Constituent (Var)
-              and then Kind in Unknown | Err
-              and then FA.Kind in Kind_Package | Kind_Package_Body
-              and then Present (FA.Initializes_N)
-            then
-               Error_Msg_Flow
-                 (FA           => FA,
-                  Msg          => "initialization of & is specified @",
-                  N            => N,
-                  F1           => Direct_Mapping_Id
-                                    (Encapsulating_State
-                                       (Get_Direct_Mapping_Id (Var))),
-                  F2           => Direct_Mapping_Id (FA.Initializes_N),
-                  Tag          => Uninitialized,
-                  Severity     => (case Kind is
-                                      when Init    => Info_Kind,
-                                      when Unknown => Medium_Check_Kind,
-                                      when Err     => High_Check_Kind),
-                  Vertex       => Vertex,
-                  Continuation => True);
-            end if;
-         end;
-
-         --  In case of a subprogram with an output global which is actually
-         --  used as an input in its body, we add more information to the error
-         --  message.
-         if Kind = Err
-           and then not Default_Init
-           and then Is_Global
-         then
-            Error_Msg_Flow (FA           => FA,
-                            Msg          => "& is not an input " &
-                              "in the Global contract of subprogram " &
-                              "#",
-                            Severity     => High_Check_Kind,
-                            N            => N,
-                            F1           => Var,
-                            F2           =>
-                              Direct_Mapping_Id (FA.Spec_Entity),
-                            Tag          => Uninitialized,
-                            Continuation => True);
-
-            declare
-               Msg : constant String :=
-                 "either make & an input in the Global contract or " &
-                 (if Has_Async_Readers (Var)
-                  then "write to it before use"
-                  else "initialize it before use");
-
-            begin
-               Error_Msg_Flow (FA           => FA,
-                               Msg          => Msg,
-                               Severity     => High_Check_Kind,
-                               N            => N,
-                               F1           => Var,
-                               Tag          => Uninitialized,
-                               Continuation => True);
-            end;
-         end if;
+         Error_Msg_Flow
+           (FA       => FA,
+            Msg      => "initialization of & proved",
+            N        => N,
+            F1       => Var,
+            Tag      => Uninitialized,
+            Severity => Info_Kind,
+            Vertex   => Vertex);
       end Emit_Message;
 
       ------------------------
@@ -3083,304 +2858,6 @@ package body Flow.Analysis is
          return Results;
       end Expand_Initializes;
 
-      ---------------------------------
-      -- Has_Only_Infinite_Execution --
-      ---------------------------------
-
-      function Has_Only_Infinite_Execution (V_Final : Flow_Graphs.Vertex_Id)
-                                            return Boolean
-      is
-         Only_Inf_Exec : Boolean := True;
-
-         procedure Vertex_Has_Infinite_Execution
-           (V  : Flow_Graphs.Vertex_Id;
-            TV : out Flow_Graphs.Simple_Traversal_Instruction);
-
-         -----------------------------------
-         -- Vertex_Has_Infinite_Execution --
-         -----------------------------------
-
-         procedure Vertex_Has_Infinite_Execution
-           (V  : Flow_Graphs.Vertex_Id;
-            TV : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-         begin
-            if V = FA.Start_Vertex then
-               --  If we reach the start vertex (remember that we are going
-               --  backwards) it means that there is at least one path without
-               --  an infinite loop and we can set Only_Inf_Exec to false and
-               --  abort the traversal.
-               Only_Inf_Exec := False;
-               TV := Flow_Graphs.Abort_Traversal;
-
-            elsif FA.Atr (V).Execution = Infinite_Loop then
-               --  If we find a vertex with Infinite_Loop execution then we set
-               --  Only_Inf_Exec to true and jump to another path.
-               TV := Flow_Graphs.Skip_Children;
-
-            else
-               TV := Flow_Graphs.Continue;
-            end if;
-         end Vertex_Has_Infinite_Execution;
-
-      --  Start of processing for Has_Only_Infinite_Execution
-
-      begin
-         FA.CFG.DFS (Start         => V_Final,
-                     Include_Start => True,
-                     Visitor       => Vertex_Has_Infinite_Execution'Access,
-                     Reversed      => True);
-
-         return Only_Inf_Exec;
-      end Has_Only_Infinite_Execution;
-
-      ------------------------------------
-      -- Might_Be_Defined_In_Other_Path --
-      ------------------------------------
-
-      procedure Might_Be_Defined_In_Other_Path
-        (V_Initial : Flow_Graphs.Vertex_Id;
-         V_Use     : Flow_Graphs.Vertex_Id;
-         Found     : out Boolean;
-         V_Error   : out Flow_Graphs.Vertex_Id)
-      is
-         The_Var : constant Flow_Id :=
-           Change_Variant (FA.PDG.Get_Key (V_Initial), Normal_Use);
-
-         The_Var_Is_Array : constant Boolean :=
-           (if Is_Abstract_State (The_Var)
-              or else The_Var.Facet /= Normal_Part
-            then False
-            else Is_Array_Type (Get_Type (The_Var, FA.B_Scope)));
-         --  True if The_Var refers to an array
-
-         Use_Vertex_Points_To_Itself : constant Boolean :=
-           (for some V of FA.PDG.Get_Collection (V_Use,
-                                                 Flow_Graphs.Out_Neighbours)
-              => V = V_Use);
-         --  True if V_Use belongs to V_Use's Out_Neighbours
-
-         Use_Execution_Is_Unconditional : constant Boolean :=
-           (for some V of FA.PDG.Get_Collection (V_Use,
-                                                 Flow_Graphs.In_Neighbours)
-              => V = FA.Start_Vertex);
-         --  True if FA.Start_Vertex is among the In_Neighbours of V_Use in the
-         --  PDG (in other words, there is no control dependence on V).
-
-         function Find_Explicit_Use_Vertex return Flow_Graphs.Vertex_Id;
-         --  Find a vertex that explicitly uses The_Var and hangs off vertex
-         --  V_Use in the CFG. If such a node does NOT exist, then Null_Vertex
-         --  is returned.
-
-         function Start_To_V_Def_Without_V_Use
-           (V_Def : Flow_Graphs.Vertex_Id)
-            return Boolean;
-         --  Returns True if there exists a path in the CFG from Start to V_Def
-         --  that does not cross V_Use.
-
-         procedure Vertex_Defines_Variable
-           (V  : Flow_Graphs.Vertex_Id;
-            TV : out Flow_Graphs.Simple_Traversal_Instruction);
-         --  Checks if V defines the The_Var
-         --
-         --  Sets Found
-
-         ------------------------------
-         -- Find_Explicit_Use_Vertex --
-         ------------------------------
-
-         function Find_Explicit_Use_Vertex return Flow_Graphs.Vertex_Id is
-            V_Exp_Use : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
-
-            procedure Found_V_Exp_Use
-              (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction)
-            with Pre => V /= Flow_Graphs.Null_Vertex;
-            --  Stops the DFS search when we reach a vertex that contains
-            --  The_Var in its Variables_Explicitly_Used set.
-
-            ---------------------
-            -- Found_V_Exp_Use --
-            ---------------------
-
-            procedure Found_V_Exp_Use
-              (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction)
-            is
-            begin
-               if V = V_Use then
-                  TV := Flow_Graphs.Skip_Children;
-               elsif FA.Atr (V).Variables_Defined.Contains (The_Var) then
-                  TV := Flow_Graphs.Skip_Children;
-               elsif FA.CFG.Get_Key (V).Variant /= Final_Value
-                 and then
-                   FA.Atr (V).Variables_Explicitly_Used.Contains (The_Var)
-               then
-                  V_Exp_Use := V;
-                  TV := Flow_Graphs.Abort_Traversal;
-               else
-                  TV := Flow_Graphs.Continue;
-               end if;
-            end Found_V_Exp_Use;
-
-         --  Start of processing for Find_Explicit_Use_Vertex
-
-         begin
-            FA.CFG.DFS (Start         => V_Use,
-                        Include_Start => False,
-                        Visitor       => Found_V_Exp_Use'Access,
-                        Reversed      => False);
-
-            return V_Exp_Use;
-         end Find_Explicit_Use_Vertex;
-
-         ----------------------------------
-         -- Start_To_V_Def_Without_V_Use --
-         ----------------------------------
-
-         function Start_To_V_Def_Without_V_Use
-           (V_Def : Flow_Graphs.Vertex_Id)
-            return Boolean
-         is
-            Path_Exists : Boolean := False;
-
-            procedure Found_V_Def
-              (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction);
-            --  Stops the DFS search when we reach V_Def and skips the children
-            --  of V_Use.
-
-            -----------------
-            -- Found_V_Def --
-            -----------------
-
-            procedure Found_V_Def
-              (V  : Flow_Graphs.Vertex_Id;
-               TV : out Flow_Graphs.Simple_Traversal_Instruction)
-            is
-            begin
-               if V = V_Use then
-                  TV := Flow_Graphs.Skip_Children;
-               elsif V = V_Def then
-                  Path_Exists := True;
-                  TV := Flow_Graphs.Abort_Traversal;
-               else
-                  TV := Flow_Graphs.Continue;
-               end if;
-            end Found_V_Def;
-
-         --  Start_To_V_Def_Without_V_Use
-
-         begin
-            FA.CFG.DFS (Start         => FA.Start_Vertex,
-                        Include_Start => False,
-                        Visitor       => Found_V_Def'Access,
-                        Reversed      => False);
-
-            return Path_Exists;
-         end Start_To_V_Def_Without_V_Use;
-
-         -----------------------------
-         -- Vertex_Defines_Variable --
-         -----------------------------
-
-         procedure Vertex_Defines_Variable
-           (V  : Flow_Graphs.Vertex_Id;
-            TV : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-         begin
-            if V = FA.Start_Vertex or else V = V_Use then
-
-               --  If we reach the start vertex (remember, this traversal is
-               --  going backwards through the CFG) or ourselves, then we
-               --  should look for another path.
-
-               TV := Flow_Graphs.Skip_Children;
-
-            else
-               TV := Flow_Graphs.Continue;
-               if FA.Atr (V).Variables_Defined.Contains (The_Var) then
-
-                  --  OK, so this vertex V does define The_Var. There are a few
-                  --  cases where we can possibly issue a warning instead of an
-                  --  error.
-
-                  if Start_To_V_Def_Without_V_Use (V_Def => V) then
-                     --  There is a path from start -> this definition V that
-                     --  does not use V (but subsequenty reaches V).
-
-                     Found := True;
-                     TV    := Flow_Graphs.Abort_Traversal;
-
-                  elsif not Use_Execution_Is_Unconditional then
-                     --  If the execution of v_use is predicated on something
-                     --  else, then there might be a path that defines the_var
-                     --  first.
-
-                     Found := True;
-                     TV    := Flow_Graphs.Abort_Traversal;
-                  end if;
-               end if;
-
-            end if;
-
-         end Vertex_Defines_Variable;
-
-      --  Start of processing for Might_Be_Defined_In_Other_Path
-
-      begin
-         --  Initialize V_Error to V_Use; we shall change it later if required.
-         --  Ditto for Found.
-
-         Found   := False;
-         V_Error := V_Use;
-
-         --  Check if there might be some path that defines the variable before
-         --  we use it.
-
-         FA.CFG.DFS (Start         => V_Use,
-                     Include_Start => False,
-                     Visitor       => Vertex_Defines_Variable'Access,
-                     Reversed      => True);
-
-         --  Arrays that are partially defined have an implicit dependency on
-         --  themselves. For this check, we cannot depend on the Variables_Used
-         --  because they capture this implicit dependency. Instead, we use
-         --  Variables_Explicitly_Used.
-
-         if not Found and then Use_Vertex_Points_To_Itself then
-            case The_Var.Kind is
-               when Direct_Mapping | Record_Field =>
-                  --  Check if node corresponds to an array.
-                  if The_Var_Is_Array
-                    and then not FA.Atr (V_Use).
-                      Variables_Explicitly_Used.Contains (The_Var)
-                  then
-                     --  We set Found and we then check if there exists a
-                     --  vertex that explicitly uses The_Var, if so, we set
-                     --  V_Error to that vertex.
-
-                     Found := True;
-
-                     declare
-                        Tmp_V : constant Flow_Graphs.Vertex_Id :=
-                          Find_Explicit_Use_Vertex;
-                     begin
-                        if Tmp_V /= Flow_Graphs.Null_Vertex then
-                           V_Error := Tmp_V;
-                        end if;
-                     end;
-                  end if;
-
-               when Magic_String | Synthetic_Null_Export =>
-                  null;
-
-               when Null_Value =>
-                  raise Why.Unexpected_Node;
-            end case;
-         end if;
-      end Might_Be_Defined_In_Other_Path;
-
       --  Local variables
 
       Expanded_Initializes : constant Node_Sets.Set :=
@@ -3419,8 +2896,8 @@ package body Flow.Analysis is
             --  For each used variable...
             for Var_Used of FA.Atr (V).Variables_Used loop
                declare
-                  Is_Uninitialized : Boolean := False;
-                  Is_Initialized   : Boolean := False;
+                  Is_Uninitialized : Boolean;
+                  Is_Initialized   : Boolean;
 
                   Initial_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
                     FA.DDG.Get_Vertex
@@ -3453,6 +2930,10 @@ package body Flow.Analysis is
                     --  the inlined subprogram.
                     or else
                       Is_Internal (Var_Used)
+
+                    --  Skip object that represents the function 'Result
+                    or else
+                      Is_Function_Entity (Var_Used)
 
                     --  Skip annoying message about initialization of records
                     --  that carry no data.
@@ -3492,6 +2973,9 @@ package body Flow.Analysis is
                      --  they define it. We record initialized / uninitialized
                      --  reads accordingly.
 
+                     Is_Uninitialized := False;
+                     Is_Initialized   := False;
+
                      for V_Def of
                        FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
                      loop
@@ -3526,10 +3010,12 @@ package body Flow.Analysis is
                         Print_Flow_Id (Var_Used);
                      end if;
 
-                     Emit_Message (Var              => Var_Used,
-                                   Vertex           => V,
-                                   Is_Initialized   => Is_Initialized,
-                                   Is_Uninitialized => Is_Uninitialized);
+                     --  Only OK messages are emitted here
+
+                     if Is_Initialized and not Is_Uninitialized then
+                        Emit_Message (Var    => Var_Used,
+                                      Vertex => V);
+                     end if;
                   end if;
                end;
             end loop;
