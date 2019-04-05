@@ -7209,10 +7209,16 @@ package body SPARK_Definition is
                     Visible_Declarations (Package_Specification (Def_Scop)));
             end if;
 
+         --  For package bodies, the entity is declared either immediately in
+         --  the package body declarations or in an arbitrarily nested DECLARE
+         --  block of the package body statements.
+
          when E_Package_Body =>
             if List_Containing (Parent (Def)) =
-              Statements (Handled_Statement_Sequence (Package_Body (Def_Scop)))
+              Declarations (Package_Body (Def_Scop))
             then
+               return SPARK_Pragma (Def_Scop);
+            else
                return SPARK_Aux_Pragma (Def_Scop);
             end if;
 
