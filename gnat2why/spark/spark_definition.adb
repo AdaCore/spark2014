@@ -7214,10 +7214,6 @@ package body SPARK_Definition is
               Statements (Handled_Statement_Sequence (Package_Body (Def_Scop)))
             then
                return SPARK_Aux_Pragma (Def_Scop);
-            else
-               pragma Assert
-                 (List_Containing (Parent (Def)) =
-                    Declarations (Package_Body (Def_Scop)));
             end if;
 
          --  Similar correction could be needed for concurrent types too, but
