@@ -151,8 +151,16 @@ codepeer-run:
 	$(MAKE) --no-print-directory -C gnatprove codepeer-run
 
 codepeer: codepeer-run
-	@$(MAKE) --no-print-directory -C gnat2why codepeer > testsuite/codepeer_analysis_results.txt
-	@$(MAKE) --no-print-directory -C gnatprove codepeer >> testsuite/codepeer_analysis_results.txt
+	mkdir -p out
+	codepeer --version | tee out/version.out
+	@echo "version:XFAIL:always fails" > out/results
+	@$(MAKE) --no-print-directory -C gnat2why codepeer 2>&1 | tee out/codepeer.out
+	@$(MAKE) --no-print-directory -C gnatprove codepeer 2>&1 | tee --append out/codepeer.out
+	@if [ -s out/codepeer.out ]; then \
+	  echo "codepeer:FAILED:unexpected messages" >> out/results; \
+	else \
+	  echo "codepeer:PASSED" >> out/results; \
+	fi
 
 gnatprove:
 	$(MAKE) -C gnatprove build
