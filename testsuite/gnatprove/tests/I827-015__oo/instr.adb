@@ -101,11 +101,11 @@ package body Instr is
    end Seconds;
 
    procedure Display_Value (X : Chronometer) is
-   V : Integer;
+      V : Integer;
    begin
       Instrument (X).Display_Value;
 
-      V :=  X.Seconds + X.Minutes * 60 + X.Hours   * 3600;
+      V := X.Seconds + X.Minutes * 60 + X.Hours * 3600;
 
       Put ("<<");
       Put (Character'Val (Character'Pos ('0') + (V / 1000) mod 10));
