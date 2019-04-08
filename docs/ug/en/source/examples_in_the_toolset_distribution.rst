@@ -205,6 +205,23 @@ automatically using |GNATprove|.
 See the relevant sections for more details on :ref:`Ghost Code` and
 :ref:`Manual Proof Using Ghost Code`.
 
+.. rubric:: ``cartesian_trees``
+
+This program is a solution to the second challenge of VerifyThis 2019. For
+a sequence of distinct numbers ``S``, the Cartesian tree of ``S`` is the only
+binary tree ``T`` such that ``T`` contains a node per element of ``S``, ``T``
+has the heap property, and symmetrical traversal of ``T`` encounters elements
+in the order of ``S``. The challenge is split in two parts, first construct
+all nearest smaller neighbors to the left/right of each element of a sequence
+using a stack, and then construct the Cartesian tree of the sequence using these
+neighbors.
+
+Computation of the nearest smaller neighbors is fairly straightforward in SPARK.
+It still features a relatively involved loop invariant. On the other hand,
+showing that the tree constructed by the algorithm in the second part is the
+Cartesian tree of the input sequence is rather involved. It uses ghost code
+to manually guide automatic solvers (see :ref:`Manual Proof Using Ghost Code`).
+
 .. rubric:: ``database``
 
 This program implements a toy interface to a bank account database, with

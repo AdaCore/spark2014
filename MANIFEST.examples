@@ -27,6 +27,7 @@ autopilot
 binary_search
 binary_search_unconstrained
 bitwalker
+cartesian_trees
 crazyflie
 database
 euclidian_division
