@@ -13,6 +13,6 @@ test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
-test.ads:6:04: warning: in instantiation at a-strbou.ads:838
+test.ads:6:04: warning: in instantiation at a-strbou.ads:848
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 gnatprove: error during flow analysis and proof
