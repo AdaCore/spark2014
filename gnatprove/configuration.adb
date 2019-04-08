@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                       Copyright (C) 2010-2019, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -186,8 +186,44 @@ package body Configuration is
 
    procedure Clean_Up (Tree : Project_Tree) is
 
+      procedure Clean_Up_One_Directory (Dir : Virtual_File);
+      --  Remove a generated "gnatprove" sub-directory
+
       function Is_Externally_Built (Project : Project_Type) return Boolean;
       --  Returns True if the project is externally built
+
+      ----------------------------
+      -- Clean_Up_One_Directory --
+      ----------------------------
+
+      procedure Clean_Up_One_Directory (Dir : Virtual_File) is
+         Name_Dir : constant String := +Base_Dir_Name (Dir);
+         Rm_Dir   : constant String := Dir.Display_Full_Name;
+
+      begin
+         --  Directory might not exist, for example if there are no source
+         --  files and no explicit object directory is specified. Do nothing
+         --  in that case.
+
+         if Dir /= GNATCOLL.VFS.No_File then
+            pragma Assert (Name_Dir = Name_GNATprove);
+            if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
+               if CL_Switches.V then
+                  Ada.Text_IO.Put
+                    ("Deleting directory " & Rm_Dir & "...");
+               end if;
+               GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
+               if CL_Switches.V then
+                  Ada.Text_IO.Put_Line (" done");
+               end if;
+            end if;
+         end if;
+      exception
+         when GNAT.Directory_Operations.Directory_Error =>
+            if CL_Switches.V then
+               Ada.Text_IO.Put_Line (" failed, please delete manually");
+            end if;
+      end Clean_Up_One_Directory;
 
       -------------------------
       -- Is_Externally_Built --
@@ -200,6 +236,8 @@ package body Configuration is
       begin
          return Val = "true";
       end Is_Externally_Built;
+
+      --  Local variables
 
       Proj_Type : constant Project_Type := Root_Project (Tree);
       Iter      : Project_Iterator := Proj_Type.Start;
@@ -215,35 +253,9 @@ package body Configuration is
          --  Externally built projects should never be cleaned up
 
          if not Is_Externally_Built (Project) then
-            declare
-               Obj_Dir  : constant Virtual_File := Project.Artifacts_Dir;
-               Name_Dir : constant String := +Base_Dir_Name (Obj_Dir);
-               Rm_Dir   : constant String := Obj_Dir.Display_Full_Name;
-
-            begin
-               --  Object directory might not exist, for example if there
-               --  are no source files and no explicit object directory is
-               --  specified. Do nothing in that case.
-
-               if Obj_Dir /= GNATCOLL.VFS.No_File then
-                  pragma Assert (Name_Dir = Name_GNATprove);
-                  if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-                     if CL_Switches.V then
-                        Ada.Text_IO.Put
-                          ("Deleting directory " & Rm_Dir & "...");
-                     end if;
-                     GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
-                     if CL_Switches.V then
-                        Ada.Text_IO.Put_Line (" done");
-                     end if;
-                  end if;
-               end if;
-            exception
-               when GNAT.Directory_Operations.Directory_Error =>
-                  if CL_Switches.V then
-                     Ada.Text_IO.Put_Line (" failed, please delete manually");
-                  end if;
-            end;
+            Clean_Up_One_Directory (Project.Artifacts_Dir);
+            Clean_Up_One_Directory (Project.Library_Directory);
+            Clean_Up_One_Directory (Project.Library_Ali_Directory);
          end if;
 
          Next (Iter);
