@@ -1,4 +1,2 @@
-inits_aspect.adb:5:04: info: initialization of "X" constituent of "S" proved
 inits_aspect.ads:8:04: low: initialization of "Y" must be mentioned in the Initializes contract of "Inits_Aspect" (SPARK RM 7.1.5(9))
-inits_pragma.adb:6:04: info: initialization of "X" constituent of "S" proved
 inits_pragma.ads:9:04: low: initialization of "Y" must be mentioned in the Initializes contract of "Inits_Pragma" (SPARK RM 7.1.5(9))

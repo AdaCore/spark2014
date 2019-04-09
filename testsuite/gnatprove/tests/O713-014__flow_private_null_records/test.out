@@ -1,7 +1,2 @@
-use_private_type.adb:8:19: info: initialization of "PR" proved
-use_private_type.adb:8:19: info: initialization of extension of "PR" proved
-use_private_type.adb:8:19: info: initialization of private part of "PR" proved
 use_private_type.adb:8:19: medium: assertion might fail, cannot prove PR in Root
-use_private_type.adb:9:19: info: initialization of extension of "PR_D" proved
-use_private_type.adb:9:19: info: initialization of private part of "PR_D" proved
 use_private_type.adb:9:19: medium: assertion might fail, cannot prove PR_D in Root_D

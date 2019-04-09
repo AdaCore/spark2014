@@ -1,6 +1,5 @@
 original.ads:2:11: info: postcondition proved (CVC4: 2 VC)
+report.adb:6:07: info: initialization of "X" proved
 report.adb:9:22: info: assertion proved (CVC4: 1 VC)
-report.adb:9:22: info: initialization of "X" proved
 report.adb:12:22: info: assertion proved (CVC4: 1 VC)
-report.adb:12:26: info: initialization of "X" proved
 report.ads:3:16: warning: subprogram "Result" has no effect

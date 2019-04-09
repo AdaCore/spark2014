@@ -26,5 +26,3 @@ float_expon.adb:17:37: info: float overflow check proved (Interval)
 float_expon.adb:17:40: info: float overflow check proved (Interval)
 float_expon.adb:17:46: info: float overflow check proved (Interval)
 float_expon.adb:17:49: info: float overflow check proved (Interval)
-float_expon.adb:22:16: info: initialization of "V" proved
-float_expon.adb:23:16: info: initialization of "V" proved

@@ -1,3 +1,2 @@
 bot.ads:8:14: warning: subprogram "B" has no effect
-top.ads:4:14: info: initialization of "Loc" proved
 top.ads:4:17: warning: unused variable "X"

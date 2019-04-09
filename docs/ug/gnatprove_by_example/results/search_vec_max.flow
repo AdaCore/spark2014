@@ -1,10 +1,2 @@
 search_vec_max.adb:3:38: info: initialization of "Pos" proved
 search_vec_max.adb:3:57: info: initialization of "Max" proved
-search_vec_max.adb:6:80: info: initialization of "Max" proved
-search_vec_max.adb:8:11: info: initialization of "Pos" proved
-search_vec_max.adb:16:27: info: initialization of "Max" proved
-search_vec_max.adb:20:85: info: initialization of "Max" proved
-search_vec_max.adb:21:85: info: initialization of "Max" proved
-search_vec_max.adb:22:30: info: initialization of "Pos" proved
-search_vec_max.adb:23:42: info: initialization of "Pos" proved
-search_vec_max.adb:23:49: info: initialization of "Max" proved

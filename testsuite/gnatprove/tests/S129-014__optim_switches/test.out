@@ -1,2 +1,1 @@
-main.adb:5:09: info: initialization of "X" proved
 main.adb:5:11: info: overflow check proved (CVC4: 1 VC)

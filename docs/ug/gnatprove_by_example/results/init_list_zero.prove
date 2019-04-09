@@ -1,12 +1,8 @@
 init_list_zero.adb:6:11: info: postcondition proved
 init_list_zero.adb:6:12: info: precondition proved
-init_list_zero.adb:10:26: info: initialization of "Cu.Node" proved
 init_list_zero.adb:11:30: info: loop invariant initialization proved
 init_list_zero.adb:11:30: info: loop invariant preservation proved
 init_list_zero.adb:11:49: info: precondition proved
-init_list_zero.adb:11:70: info: initialization of "Cu.Node" proved
 init_list_zero.adb:12:32: info: precondition proved
 init_list_zero.adb:13:07: info: precondition proved
-init_list_zero.adb:13:27: info: initialization of "Cu.Node" proved
 init_list_zero.adb:14:07: info: precondition proved
-init_list_zero.adb:14:16: info: initialization of "Cu.Node" proved

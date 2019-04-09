@@ -8,9 +8,6 @@ a-ngelfu.ads:127:36: medium: divide by zero might fail, in instantiation at p.ad
 a-ngelfu.ads:127:36: medium: divide by zero might fail, in instantiation at p.adb:7
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at p.adb:16
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at p.adb:7
-a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at p.adb:28
-a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at p.adb:28
-a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at p.adb:28
 a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.adb:28
 a-tiflio.ads:76:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.adb:28
 a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at p.adb:28
@@ -19,7 +16,4 @@ p.adb:19:40: warning: assuming "Sin" has no effect on global items
 p.adb:19:40: warning: no Global contract available for "Sin"
 p.adb:24:41: warning: assuming "Sin" has no effect on global items
 p.adb:24:41: warning: no Global contract available for "Sin"
-p.adb:30:12: info: initialization of "Default_Aft" proved
-p.adb:30:12: info: initialization of "Default_Exp" proved
-p.adb:30:12: info: initialization of "Default_Fore" proved
 p.adb:51:10: high: call to potentially blocking subprogram "Proxy4" in protected operation "Print"

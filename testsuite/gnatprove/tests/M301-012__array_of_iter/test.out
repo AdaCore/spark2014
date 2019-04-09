@@ -1,18 +1,11 @@
 iter_array.adb:5:19: info: assertion proved (CVC4: 1 VC)
-iter_array.adb:5:43: info: initialization of "X" proved
 iter_array.adb:6:19: info: assertion proved (CVC4: 1 VC)
-iter_array.adb:6:32: info: initialization of "X" proved
 iter_array.adb:8:15: info: unrolling loop
-iter_array.adb:9:09: info: initialization of "X" proved
 iter_array.adb:11:19: info: assertion proved (CVC4: 1 VC)
-iter_array.adb:11:32: info: initialization of "X" proved
-iter_array.adb:17:12: info: initialization of "X" proved
 iter_array.adb:19:30: info: loop invariant initialization proved (CVC4: 1 VC)
 iter_array.adb:19:30: info: loop invariant preservation proved (CVC4: 1 VC)
-iter_array.adb:19:53: info: initialization of "X" proved
 iter_array.adb:19:55: info: index check proved (CVC4: 4 VC)
 iter_array.adb:21:19: info: assertion proved (CVC4: 1 VC)
-iter_array.adb:21:32: info: initialization of "X" proved
 iter_multi_array.adb:6:27: iterator specification over array of dimension 2 is not yet supported
 iter_multi_array.adb:11:27: iterator specification over array of dimension 2 is not yet supported
 iter_multi_array.adb:30:27: iterator specification over array of dimension 2 is not yet supported

@@ -1,8 +1,6 @@
 nonlinear.adb:2:42: info: initialization of "R1" proved
 nonlinear.adb:2:46: info: initialization of "R2" proved
-nonlinear.adb:5:11: info: initialization of "R1" proved
 nonlinear.adb:5:11: info: postcondition proved (CVC4: 1 VC)
-nonlinear.adb:5:17: info: initialization of "R2" proved
 nonlinear.adb:8:12: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:8:12: info: range check proved (CVC4: 1 VC)
 nonlinear.adb:9:12: info: division check proved (CVC4: 1 VC)

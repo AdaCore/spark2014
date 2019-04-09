@@ -1,4 +1,1 @@
-invariants.adb:27:04: info: initialization of "The_Stack.Content" proved
-invariants.adb:27:04: info: initialization of "The_Stack.Max" proved
-invariants.adb:27:04: info: initialization of "The_Stack.Size" proved
 invariants.ads:47:04: medium: type "Stack_2" is not fully initialized

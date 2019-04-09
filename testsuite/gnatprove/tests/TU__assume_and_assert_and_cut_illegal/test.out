@@ -1,6 +1,6 @@
 assume_and_assert_and_cut_illegal.adb:2:04: warning: analyzing unreferenced procedure "Prover_Forgets_After_Assert_And_Cut"
 assume_and_assert_and_cut_illegal.adb:2:14: warning: subprogram "Prover_Forgets_After_Assert_And_Cut" has no effect
+assume_and_assert_and_cut_illegal.adb:9:07: info: initialization of "X" proved
+assume_and_assert_and_cut_illegal.adb:9:10: info: initialization of "Y" proved
 assume_and_assert_and_cut_illegal.adb:13:30: info: assertion proved (CVC4: 1 VC)
-assume_and_assert_and_cut_illegal.adb:13:30: info: initialization of "X" proved
-assume_and_assert_and_cut_illegal.adb:14:22: info: initialization of "Y" proved
 assume_and_assert_and_cut_illegal.adb:14:22: medium: assertion might fail, cannot prove Y = 0 (e.g. when Y = -1)

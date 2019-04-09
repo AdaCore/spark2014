@@ -23,7 +23,7 @@ arrays_multidim.adb:122:11: info: flow dependencies proved
 arrays_multidim.adb:124:22: medium: postcondition might fail, cannot prove A(I, J) /= 23 (e.g. when I = 0 and J = 1)
 arrays_multidim.adb:133:11: info: flow dependencies proved
 arrays_multidim.adb:135:22: medium: postcondition might fail, cannot prove A /= A'old
-arrays_multidim.adb:141:18: info: initialization of "Tmp" proved
+arrays_multidim.adb:137:07: info: initialization of "Tmp" proved
 arrays_multidim.adb:150:11: info: flow dependencies proved
 arrays_multidim.adb:151:22: medium: postcondition might fail, cannot prove A(I, J, K) = V
 arrays_multidim.adb:161:11: info: flow dependencies proved
@@ -34,4 +34,4 @@ arrays_multidim.adb:180:11: info: flow dependencies proved
 arrays_multidim.adb:182:22: medium: postcondition might fail, cannot prove A(I, J, K) /= 23 (e.g. when I = 0 and J = 1 and K = 0)
 arrays_multidim.adb:192:11: info: flow dependencies proved
 arrays_multidim.adb:194:22: medium: postcondition might fail, cannot prove A /= A'old
-arrays_multidim.adb:200:21: info: initialization of "Tmp" proved
+arrays_multidim.adb:196:07: info: initialization of "Tmp" proved

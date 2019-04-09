@@ -5,12 +5,8 @@ extension.ads:9:04: info: implicit function contract not available for proof ("L
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 main.adb:16:04: info: initialization of "N" proved
 main.adb:18:30: high: "Tag_V" is not initialized
-main.adb:21:15: info: initialization of "Tag_V" proved
 main.adb:26:30: info: precondition proved (CVC4: 1 VC)
-main.adb:26:89: info: initialization of "N" proved
-main.adb:29:21: info: initialization of "Tag_V" proved
 main.adb:30:30: info: precondition proved (CVC4: 1 VC)
-main.adb:30:47: info: initialization of "Tag_V" proved
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)

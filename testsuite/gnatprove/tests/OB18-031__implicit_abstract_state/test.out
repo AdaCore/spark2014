@@ -1,2 +1,1 @@
-interfering_volatile_attribute.adb:7:20: info: initialization of "X" proved
 interfering_volatile_attribute.ads:3:10: info: nontermination of task proved (CVC4: 1 VC)

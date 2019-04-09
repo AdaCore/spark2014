@@ -1,8 +1,6 @@
 odometer.adb:22:20: info: overflow check proved (CodePeer)
 odometer.adb:22:40: info: overflow check proved (CodePeer)
-odometer.ads:6:14: info: initialization of "Trip" proved
 odometer.ads:7:20: info: postcondition proved (CVC4: 1 VC)
-odometer.ads:7:21: info: initialization of "Trip" proved
 odometer.ads:14:20: info: postcondition proved (CVC4: 2 VC)
 odometer.ads:14:37: info: overflow check proved (CodePeer)
 odometer.ads:14:68: info: overflow check proved (CodePeer)

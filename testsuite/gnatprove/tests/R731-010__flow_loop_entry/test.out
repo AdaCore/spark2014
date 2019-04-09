@@ -11,4 +11,3 @@ Generated contracts for main
 main.adb:5:14: warning: subprogram "Test" has no effect
 main.adb:7:23: info: unrolling loop
 main.adb:8:25: medium: assertion might fail, cannot prove J >= X'loop_entry
-main.adb:12:04: info: initialization of "X" proved

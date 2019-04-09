@@ -1,3 +1,1 @@
-c45532o.adb:14:31: info: initialization of "A" proved
 c45532o.adb:14:33: info: overflow check proved (CVC4: 1 VC)
-c45532o.adb:14:35: info: initialization of "B" proved

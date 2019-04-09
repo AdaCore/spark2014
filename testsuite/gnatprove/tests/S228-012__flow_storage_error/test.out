@@ -4,4 +4,4 @@ test.adb:8:21: warning: unused variable "Success"
 test.adb:12:26: warning: unused variable "T"
 test.adb:16:07: warning: statement has no effect
 test.adb:16:24: high: "Arr" is not initialized
-test.adb:29:10: info: initialization of "Success" proved
+test.adb:26:07: info: initialization of "Success" proved

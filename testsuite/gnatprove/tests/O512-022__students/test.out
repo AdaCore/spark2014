@@ -1,42 +1,29 @@
-students.adb:14:21: info: initialization of "Tuition" proved
+students.adb:6:07: info: initialization of "Tuition" proved
+students.adb:7:07: info: initialization of "Fees" proved
 students.adb:14:29: info: overflow check proved (CVC4: 1 VC)
 students.adb:14:29: info: range check proved (CVC4: 1 VC)
 students.adb:14:38: info: division check proved (CVC4: 1 VC)
 students.adb:14:38: info: overflow check proved (CVC4: 1 VC)
 students.adb:17:22: info: assertion proved (CVC4: 1 VC)
-students.adb:17:22: info: initialization of "Tuition" proved
-students.adb:30:18: info: initialization of "Fees" proved
 students.adb:30:23: info: overflow check proved (CVC4: 1 VC)
 students.adb:30:23: info: range check proved (CVC4: 1 VC)
-students.adb:33:39: info: initialization of "Fees" proved
 students.adb:33:44: info: overflow check proved (CVC4: 1 VC)
 students.adb:33:44: info: range check proved (CVC4: 1 VC)
-students.adb:34:35: info: initialization of "Fees" proved
 students.adb:34:40: info: overflow check proved (CVC4: 1 VC)
 students.adb:34:40: info: range check proved (CVC4: 1 VC)
-students.adb:35:34: info: initialization of "Fees" proved
 students.adb:35:39: info: overflow check proved (CVC4: 1 VC)
 students.adb:35:39: info: range check proved (CVC4: 1 VC)
-students.adb:40:39: info: initialization of "Fees" proved
 students.adb:40:44: info: overflow check proved (CVC4: 1 VC)
 students.adb:40:44: info: range check proved (CVC4: 1 VC)
-students.adb:41:35: info: initialization of "Fees" proved
 students.adb:41:40: info: overflow check proved (CVC4: 1 VC)
 students.adb:41:40: info: range check proved (CVC4: 1 VC)
-students.adb:42:34: info: initialization of "Fees" proved
 students.adb:42:39: info: overflow check proved (CVC4: 1 VC)
 students.adb:42:39: info: range check proved (CVC4: 1 VC)
-students.adb:47:20: info: initialization of "Grants" proved
 students.adb:47:27: info: overflow check proved (CVC4: 1 VC)
 students.adb:47:27: info: range check proved (CVC4: 1 VC)
-students.adb:50:23: info: initialization of "Grants" proved
 students.adb:50:30: info: overflow check proved (CVC4: 1 VC)
 students.adb:50:30: info: range check proved (CVC4: 1 VC)
-students.adb:54:17: info: initialization of "Tuition" proved
 students.adb:54:25: info: overflow check proved (CVC4: 1 VC)
-students.adb:54:27: info: initialization of "Fees" proved
 students.adb:54:33: info: overflow check proved (CVC4: 1 VC)
-students.adb:54:35: info: initialization of "Grants" proved
 students.adb:54:43: info: overflow check proved (CVC4: 1 VC)
 students.adb:54:43: info: range check proved (CVC4: 1 VC)
-students.adb:54:45: info: initialization of "Insurance" proved

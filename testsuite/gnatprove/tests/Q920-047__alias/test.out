@@ -1,3 +1,2 @@
-ex7.adb:5:15: info: initialization of "S" proved
 ex7.adb:5:18: info: initialization of "Str" proved
 ex7.adb:11:06: high: formal parameter "Str" and global "S" are aliased (SPARK RM 6.4.2)

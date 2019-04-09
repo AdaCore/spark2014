@@ -1,8 +1,3 @@
-depends_legal_2.adb:14:04: info: initialization of "Rec1.A" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.B" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.X" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.Y" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.Z" constituent of "State" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.A" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.B" proved
 depends_legal_2.adb:17:18: info: initialization of "Par1.X" proved

@@ -5,8 +5,10 @@ sort.adb:18:18: info: index check proved
 sort.adb:18:35: info: index check proved
 sort.adb:20:48: info: index check proved
 sort.adb:20:65: info: index check proved
+sort.adb:22:07: info: initialization of "Temp" proved
 sort.adb:25:07: info: range check proved
 sort.adb:25:53: info: length check proved
+sort.adb:26:07: info: initialization of "Interm" proved
 sort.adb:26:07: info: range check proved
 sort.adb:31:09: info: precondition proved
 sort.adb:31:23: info: range check proved
@@ -33,35 +35,29 @@ sort.adb:50:45: info: index check proved
 sort.adb:51:14: info: length check proved
 sort.adb:51:17: info: length check proved
 sort.adb:53:15: info: index check proved
-sort.adb:53:21: info: initialization of "Temp" proved
 sort.adb:53:21: info: range check proved
 sort.adb:56:22: info: assertion proved
 sort.adb:56:22: info: precondition proved
-sort.adb:56:30: info: initialization of "Interm" proved
 sort.adb:56:38: info: range check proved
 sort.adb:56:47: info: index check proved
-sort.adb:57:07: info: initialization of "Interm" proved
 sort.adb:57:07: info: precondition proved
 sort.adb:65:16: info: postcondition proved
 sort.adb:67:35: info: index check proved
 sort.adb:67:55: info: index check proved
+sort.adb:69:07: info: initialization of "Min" proved
 sort.adb:71:20: info: range check proved
 sort.adb:73:38: info: index check proved
-sort.adb:73:38: info: initialization of "Min" proved
 sort.adb:74:20: info: range check proved
-sort.adb:77:13: info: initialization of "Min" proved
 sort.adb:77:13: info: loop invariant initialization proved
 sort.adb:77:13: info: loop invariant preservation proved
 sort.adb:79:28: info: index check proved
 sort.adb:79:44: info: index check proved
-sort.adb:81:14: info: initialization of "Min" proved
+sort.adb:85:07: info: initialization of "Smallest" proved
 sort.adb:91:50: info: overflow check proved
 sort.adb:92:22: info: precondition proved
 sort.adb:92:40: info: range check proved
-sort.adb:94:13: info: initialization of "Smallest" proved
 sort.adb:95:13: info: precondition proved
 sort.adb:96:29: info: range check proved
-sort.adb:97:29: info: initialization of "Smallest" proved
 sort.adb:101:13: info: loop invariant initialization proved
 sort.adb:101:13: info: loop invariant preservation proved
 sort.adb:102:31: info: overflow check proved

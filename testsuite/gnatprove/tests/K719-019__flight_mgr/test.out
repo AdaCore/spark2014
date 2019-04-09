@@ -9,8 +9,6 @@ flight_manager.adb:36:21: medium: "Result.X_Speed" might not be initialized
 flight_manager.adb:36:53: medium: float overflow check might fail (e.g. when Position_X = -3.4028235E+38 and Target_X = 1.3864927E+31) [possible explanation: subprogram at flight_manager.ads:7 should mention Position_X and Target_X in a precondition]
 flight_manager.adb:37:21: medium: "Result.Y_Speed" might not be initialized
 flight_manager.adb:37:53: medium: float overflow check might fail (e.g. when Position_Y = 0.0 and Target_Y = 0.0) [possible explanation: subprogram at flight_manager.ads:7 should mention Position_Y and Target_Y in a precondition]
-flight_manager.adb:39:14: info: initialization of "Result.X_Speed" proved
-flight_manager.adb:39:14: info: initialization of "Result.Y_Speed" proved
 flight_manager.ads:10:17: medium: postcondition might fail, cannot prove ((Position_X + Set_Engine_Speed'Result.X_Speed) - Target_X) < (Position_X + Set_Engine_Speed'Result.X_Speed) (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.7499999E+0, Y_Speed => 1.7499999E+0) and Target_X = 0.0)
 flight_manager.ads:10:30: info: float overflow check proved (CVC4: 1 VC)
 flight_manager.ads:10:65: medium: float overflow check might fail (e.g. when Position_X = 0.0 and Set_Engine_Speed'Result = (X_Speed => 1.0312499E+0, Y_Speed => 1.0312499E+0) and Target_X = 0.0)

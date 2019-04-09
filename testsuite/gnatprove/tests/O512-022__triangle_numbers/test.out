@@ -1,12 +1,9 @@
-triangle.adb:7:17: info: initialization of "Tmp" proved
 triangle.adb:7:21: info: overflow check proved (CVC4: 2 VC)
-triangle.adb:8:33: info: initialization of "Tmp" proved
 triangle.adb:8:33: info: loop invariant initialization proved (CVC4: 1 VC)
 triangle.adb:8:33: info: loop invariant preservation proved (CVC4: 1 VC)
 triangle.adb:8:41: info: overflow check proved (CVC4: 2 VC)
 triangle.adb:8:46: info: overflow check proved (CVC4: 2 VC)
 triangle.adb:8:51: info: division check proved (CVC4: 2 VC)
-triangle.adb:10:14: info: initialization of "Tmp" proved
 triangle.ads:6:10: info: postcondition proved (CVC4: 1 VC)
 triangle.ads:6:31: info: overflow check proved (CVC4: 1 VC)
 triangle.ads:6:36: info: overflow check proved (CVC4: 1 VC)

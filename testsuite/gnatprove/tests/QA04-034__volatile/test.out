@@ -1,24 +1,10 @@
-hw-dbc-transfer_rings.adb:119:13: info: initialization of "Toggle" proved
-hw-dbc-transfer_rings.adb:120:38: info: initialization of "Toggle" proved
-hw-dbc-transfer_rings.adb:121:13: info: initialization of "Toggle" proved
-hw-dbc-transfer_rings.adb:124:20: info: initialization of "Toggle" proved
-hw-dbc-transfer_rings.adb:128:31: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:177:07: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:178:07: info: initialization of "Invalid" proved
 hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC4: 1 VC)
 hw-dbc-transfer_rings.adb:185:39: info: division check proved (CVC4: 1 VC)
 hw-dbc-transfer_rings.adb:185:39: info: range check proved (CVC4: 2 VC)
-hw-dbc-transfer_rings.adb:189:16: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:193:16: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:196:21: info: initialization of "Invalid" proved
-hw-dbc-transfer_rings.adb:196:32: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:202:14: info: initialization of "Invalid" proved
-hw-dbc-transfer_rings.adb:203:41: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:219:50: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:254:31: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:255:39: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:256:36: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:258:34: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:259:33: info: initialization of "Current" proved
-hw-dbc-transfer_rings.adb:260:33: info: initialization of "Current" proved
+hw-dbc-transfer_rings.adb:250:07: info: initialization of "Current" proved
 hw-dbc-transfer_rings.adb:275:07: info: precondition proved (CVC4: 3 VC)
 hw-dbc-transfer_rings.ads:17:24: warning: no procedure exists that can initialize abstract state "Transfer_Rings.State" constituent of "DbC.State"
 hw-dbc-transfer_rings.ads:55:19: info: division check proved (CVC4: 1 VC)

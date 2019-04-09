@@ -1,4 +1,3 @@
 check_file.adb:3:11: warning: subprogram "Check_File" has no effect
 check_file.adb:7:04: warning: analyzing unreferenced procedure "Check_End_Of_Line"
-check_file.adb:7:14: info: initialization of "Col_Count" proved
 check_file.adb:7:33: warning: unused variable "Expect_End_Of_Page"

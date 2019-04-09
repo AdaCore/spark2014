@@ -1,14 +1,11 @@
 use_stack.adb:4:24: info: initial condition proved (CVC4: 1 VC)
-use_stack.adb:4:45: info: initialization of "Top" proved
 use_stack.adb:12:22: info: initialization of "E" proved
 use_stack.adb:14:17: info: postcondition proved (CVC4: 2 VC)
 use_stack.adb:14:33: info: precondition proved (CVC4: 1 VC)
-use_stack.adb:14:44: info: initialization of "E" proved
 use_stack.adb:17:17: info: postcondition proved (CVC4: 2 VC)
 use_stack.adb:17:34: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:20:17: info: postcondition proved (CVC4: 2 VC)
 use_stack.adb:22:15: info: range check proved (CVC4: 2 VC)
-use_stack.adb:25:07: info: initialization of "Top" proved
 use_stack.adb:25:30: info: range check proved (CVC4: 1 VC)
 use_stack.adb:30:50: info: index check proved (CVC4: 2 VC)
 use_stack.adb:32:49: info: index check proved (CVC4: 2 VC)
@@ -22,11 +19,6 @@ use_stack.adb:51:36: info: loop invariant initialization proved (CVC4: 1 VC)
 use_stack.adb:51:36: info: loop invariant preservation proved (CVC4: 1 VC)
 use_stack.adb:51:68: info: index check proved (CVC4: 4 VC)
 use_stack.adb:59:04: high: "Content" is not initialized
-use_stack.adb:59:04: info: initialization of "Top" proved
 use_stack.adb:59:04: info: precondition proved (CVC4: 1 VC)
-use_stack.adb:59:10: info: initialization of "E" proved
-use_stack.adb:60:04: info: initialization of "Content" proved
-use_stack.adb:60:04: info: initialization of "Top" proved
 use_stack.adb:60:04: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:61:19: info: assertion proved (CVC4: 1 VC)
-use_stack.adb:61:19: info: initialization of "E" proved

@@ -1,4 +1,3 @@
-div_zero.adb:6:09: info: initialization of "C" proved
 div_zero.adb:6:11: medium: divide by zero might fail
 div_zero.adb:6:11: medium: overflow check might fail
 gene.adb:8:19: info: division check proved (CVC4: 1 VC), in instantiation at main.adb:4

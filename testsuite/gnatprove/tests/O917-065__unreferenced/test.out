@@ -1,5 +1,4 @@
 unref.adb:4:28: info: initialization of "X" proved
-unref.adb:5:19: info: initialization of "X" proved
 unref.adb:5:19: info: postcondition proved (CVC4: 1 VC)
 unref.adb:11:30: info: initialization of "X" proved
 unref.adb:21:07: warning: statement has no effect

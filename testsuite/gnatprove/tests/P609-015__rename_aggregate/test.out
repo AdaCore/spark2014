@@ -1,4 +1,2 @@
-rename_aggregate.adb:9:47: info: initialization of "A" proved
-rename_aggregate.adb:11:10: info: initialization of "A" proved
 rename_aggregate.adb:12:15: info: cannot unroll loop (too many loop iterations)
 rename_aggregate.adb:13:22: medium: assertion might fail, cannot prove E = 1

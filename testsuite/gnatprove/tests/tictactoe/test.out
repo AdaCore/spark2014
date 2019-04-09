@@ -1,54 +1,33 @@
-game.adb:14:10: info: initialization of "Player_Turn" proved
 game.adb:16:10: info: precondition proved (CVC4: 2 VC)
 game.adb:19:10: info: precondition proved (CVC4: 2 VC)
-game.adb:23:26: info: initialization of "Player_Turn" proved
 tictactoe.adb:13:14: info: postcondition proved (CVC4: 1 VC)
-tictactoe.adb:31:16: info: initialization of "Last" proved
-tictactoe.adb:33:36: info: initialization of "S" proved
-tictactoe.adb:36:24: info: initialization of "C" proved
-tictactoe.adb:59:22: info: initialization of "Found" proved
-tictactoe.adb:59:47: info: initialization of "P.X" proved
-tictactoe.adb:59:52: info: initialization of "P.Y" proved
+tictactoe.adb:21:07: info: initialization of "P.X" proved
+tictactoe.adb:21:07: info: initialization of "P.Y" proved
+tictactoe.adb:25:13: info: initialization of "S" proved
+tictactoe.adb:26:13: info: initialization of "Last" proved
 tictactoe.adb:67:07: info: precondition proved (CVC4: 2 VC)
-tictactoe.adb:67:12: info: initialization of "P.X" proved
-tictactoe.adb:67:12: info: initialization of "P.Y" proved
+tictactoe.adb:95:07: info: initialization of "Score" proved
 tictactoe.adb:97:07: warning: initialization of "P" has no effect
 tictactoe.adb:100:61: info: unrolling loop
 tictactoe.adb:102:33: info: unrolling loop
 tictactoe.adb:105:30: info: unrolling loop
-tictactoe.adb:107:29: info: initialization of "P.X" proved
-tictactoe.adb:107:34: info: initialization of "P.Y" proved
-tictactoe.adb:108:28: info: initialization of "Score" proved
 tictactoe.adb:108:34: info: overflow check proved (CVC4: 48 VC)
-tictactoe.adb:109:32: info: initialization of "P.X" proved
-tictactoe.adb:109:37: info: initialization of "P.Y" proved
-tictactoe.adb:110:28: info: initialization of "Score" proved
 tictactoe.adb:110:34: info: overflow check proved (CVC4: 48 VC)
-tictactoe.adb:114:16: info: initialization of "Score" proved
-tictactoe.adb:114:24: info: initialization of "Target_Scores" proved
 tictactoe.adb:115:28: info: unrolling loop
-tictactoe.adb:126:10: info: initialization of "Found" proved
 tictactoe.adb:127:10: info: precondition proved (CVC4: 2 VC)
-tictactoe.adb:127:16: info: initialization of "P.X" proved
-tictactoe.adb:127:16: info: initialization of "P.Y" proved
 tictactoe.adb:131:22: info: assertion proved (CVC4: 1 VC)
 tictactoe.adb:133:31: info: unrolling loop
 tictactoe.adb:134:37: info: unrolling loop
 tictactoe.adb:136:16: info: precondition proved (CVC4: 18 VC)
 tictactoe.adb:145:28: info: unrolling loop
 tictactoe.adb:146:23: info: unrolling loop
+tictactoe.adb:161:07: info: initialization of "Score" proved
+tictactoe.adb:162:07: info: initialization of "P.X" proved
+tictactoe.adb:162:07: info: initialization of "P.Y" proved
 tictactoe.adb:164:30: info: unrolling loop
 tictactoe.adb:167:27: info: unrolling loop
-tictactoe.adb:170:26: info: initialization of "P.X" proved
-tictactoe.adb:170:31: info: initialization of "P.Y" proved
-tictactoe.adb:171:25: info: initialization of "Score" proved
 tictactoe.adb:171:31: info: overflow check proved (CVC4: 24 VC)
-tictactoe.adb:172:29: info: initialization of "P.X" proved
-tictactoe.adb:172:34: info: initialization of "P.Y" proved
-tictactoe.adb:173:25: info: initialization of "Score" proved
 tictactoe.adb:173:31: info: overflow check proved (CVC4: 24 VC)
-tictactoe.adb:177:13: info: initialization of "Score" proved
-tictactoe.adb:179:16: info: initialization of "Score" proved
 tictactoe.ads:16:26: info: overflow check proved (CVC4: 1 VC)
 tictactoe.ads:17:50: info: overflow check proved (CVC4: 1 VC)
 tictactoe.ads:18:50: info: overflow check proved (CVC4: 1 VC)

@@ -1,9 +1,9 @@
 unconstr_call.adb:7:19: info: index check proved (CVC4: 2 VC)
+unconstr_call.adb:14:07: info: initialization of "Tmp" proved
 unconstr_call.adb:17:21: info: index check proved (CVC4: 2 VC)
 unconstr_call.adb:18:14: info: index check proved (CVC4: 2 VC)
 unconstr_call.adb:18:29: info: index check proved (CVC4: 2 VC)
 unconstr_call.adb:19:14: info: index check proved (CVC4: 2 VC)
-unconstr_call.adb:19:24: info: initialization of "Tmp" proved
 unconstr_call.adb:23:04: warning: analyzing unreferenced procedure "Test_1"
 unconstr_call.adb:23:22: warning: "Z" is not modified, could be IN
 unconstr_call.adb:28:04: warning: analyzing unreferenced procedure "Test_2"

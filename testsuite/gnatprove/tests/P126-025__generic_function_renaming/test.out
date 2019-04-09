@@ -1,3 +1,2 @@
 c.adb:9:19: info: assertion proved (CVC4: 1 VC)
-c.adb:9:19: info: initialization of "X" proved
 s.ads:5:58: info: postcondition proved (CVC4: 1 VC), in instantiation at c.adb:5

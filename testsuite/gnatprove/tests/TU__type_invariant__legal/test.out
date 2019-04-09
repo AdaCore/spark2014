@@ -22,26 +22,18 @@ type_invariant_legal_2.adb:31:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:32:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:41:11: warning: unused assignment
 type_invariant_legal_2.adb:41:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:41:19: info: initialization of "X" proved
 type_invariant_legal_2.adb:42:11: warning: unused assignment
 type_invariant_legal_2.adb:42:14: info: precondition proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:42:20: info: initialization of "X" proved
 type_invariant_legal_2.adb:43:11: warning: unused assignment
 type_invariant_legal_2.adb:43:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:43:21: info: initialization of "X" proved
 type_invariant_legal_2.adb:44:11: warning: unused assignment
-type_invariant_legal_2.adb:44:22: info: initialization of "X" proved
 type_invariant_legal_2.adb:52:11: warning: unused assignment
 type_invariant_legal_2.adb:52:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:52:19: info: initialization of "X" proved
 type_invariant_legal_2.adb:53:11: warning: unused assignment
 type_invariant_legal_2.adb:53:14: info: precondition proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:53:20: info: initialization of "X" proved
 type_invariant_legal_2.adb:54:11: warning: unused assignment
 type_invariant_legal_2.adb:54:14: info: invariant check proved (CVC4: 1 VC)
-type_invariant_legal_2.adb:54:21: info: initialization of "X" proved
 type_invariant_legal_2.adb:55:11: warning: unused assignment
-type_invariant_legal_2.adb:55:22: info: initialization of "X" proved
 type_invariant_legal_2.adb:62:09: warning: unused assignment
 type_invariant_legal_2.adb:62:14: info: range check proved (CVC4: 1 VC)
 type_invariant_legal_2.adb:63:11: warning: unused assignment
@@ -98,30 +90,22 @@ type_invariant_legal_4.adb:34:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:35:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:39:56: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:43:11: warning: unused assignment
-type_invariant_legal_4.adb:43:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:43:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:44:11: warning: unused assignment
-type_invariant_legal_4.adb:44:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:44:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:44:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:45:11: warning: unused assignment
-type_invariant_legal_4.adb:45:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:45:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:46:11: warning: unused assignment
-type_invariant_legal_4.adb:46:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:46:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:54:11: warning: unused assignment
-type_invariant_legal_4.adb:54:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:54:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:55:11: warning: unused assignment
-type_invariant_legal_4.adb:55:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:55:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:55:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:56:11: warning: unused assignment
-type_invariant_legal_4.adb:56:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:56:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:57:11: warning: unused assignment
-type_invariant_legal_4.adb:57:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_4.adb:57:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.adb:64:09: warning: unused assignment
 type_invariant_legal_4.adb:64:14: info: range check proved (CVC4: 1 VC)
@@ -157,7 +141,6 @@ type_invariant_legal_4.ads:15:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.ads:15:27: info: data dependencies proved
 type_invariant_legal_4.ads:16:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_4.ads:19:09: medium: invariant check might fail on default value
-type_invariant_legal_4.ads:21:04: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:6:40: info: data dependencies proved
 type_invariant_legal_5.adb:7:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:7:41: info: data dependencies proved
@@ -177,30 +160,22 @@ type_invariant_legal_5.adb:35:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:36:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:40:56: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:45:11: warning: unused assignment
-type_invariant_legal_5.adb:45:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:45:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:46:11: warning: unused assignment
-type_invariant_legal_5.adb:46:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:46:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:46:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:47:11: warning: unused assignment
-type_invariant_legal_5.adb:47:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:47:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:48:11: warning: unused assignment
-type_invariant_legal_5.adb:48:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:48:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:56:11: warning: unused assignment
-type_invariant_legal_5.adb:56:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:56:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:57:11: warning: unused assignment
-type_invariant_legal_5.adb:57:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:57:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:57:14: info: precondition proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:58:11: warning: unused assignment
-type_invariant_legal_5.adb:58:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:58:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:59:11: warning: unused assignment
-type_invariant_legal_5.adb:59:14: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.adb:59:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.adb:66:09: warning: unused assignment
 type_invariant_legal_5.adb:66:14: info: range check proved (CVC4: 1 VC)
@@ -239,7 +214,6 @@ type_invariant_legal_5.ads:18:27: info: data dependencies proved
 type_invariant_legal_5.ads:19:14: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_5.ads:19:30: info: data dependencies proved
 type_invariant_legal_5.ads:22:09: medium: invariant check might fail on default value
-type_invariant_legal_5.ads:24:04: info: initialization of "X" constituent of "State" proved
 type_invariant_legal_5.ads:26:38: info: data dependencies proved
 type_invariant_legal_5.ads:27:40: info: data dependencies proved
 type_invariant_legal_6.adb:6:14: warning: subprogram "Priv_In" has no effect
@@ -253,18 +227,14 @@ type_invariant_legal_6.adb:32:07: warning: statement has no effect
 type_invariant_legal_6.adb:32:14: warning: unused assignment to "X"
 type_invariant_legal_6.adb:33:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:33:07: warning: statement has no effect
-type_invariant_legal_6.adb:33:19: info: initialization of "X" proved
 type_invariant_legal_6.adb:33:19: warning: unused assignment to "X"
 type_invariant_legal_6.adb:35:07: medium: invariant check might fail (e.g. when X = 0)
-type_invariant_legal_6.adb:35:19: info: initialization of "X" proved
 type_invariant_legal_6.adb:40:07: warning: statement has no effect
 type_invariant_legal_6.adb:40:14: warning: unused assignment to "X"
 type_invariant_legal_6.adb:41:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:41:07: warning: statement has no effect
-type_invariant_legal_6.adb:41:19: info: initialization of "X" proved
 type_invariant_legal_6.adb:41:19: warning: unused assignment to "X"
 type_invariant_legal_6.adb:43:07: medium: invariant check might fail (e.g. when X = 0)
-type_invariant_legal_6.adb:43:19: info: initialization of "X" proved
 type_invariant_legal_6.adb:48:07: info: invariant check proved (CVC4: 1 VC)
 type_invariant_legal_6.adb:48:07: warning: statement has no effect
 type_invariant_legal_6.adb:48:19: warning: unused assignment to "X"

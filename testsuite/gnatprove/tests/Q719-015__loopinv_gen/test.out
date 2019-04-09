@@ -1,1 +1,1 @@
-loop9_bug.adb:5:10: info: initialization of "Bad" proved
+loop9_bug.adb:5:17: info: initialization of "Bad" proved

@@ -3,4 +3,3 @@ state.adb:14:14: medium: overflow check might fail [possible explanation: subpro
 state.ads:8:03: info: flow dependencies proved
 state.ads:13:06: info: data dependencies proved
 state.ads:15:06: info: flow dependencies proved
-state.ads:18:04: info: initialization of "S" constituent of "State" proved

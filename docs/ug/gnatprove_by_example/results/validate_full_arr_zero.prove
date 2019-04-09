@@ -1,7 +1,5 @@
 validate_full_arr_zero.adb:3:46: info: initialization of "Success" proved
-validate_full_arr_zero.adb:5:11: info: initialization of "Success" proved
 validate_full_arr_zero.adb:5:11: info: postcondition proved
-validate_full_arr_zero.adb:15:30: info: initialization of "Success" proved
 validate_full_arr_zero.adb:15:30: info: loop invariant initialization proved
 validate_full_arr_zero.adb:15:30: info: loop invariant preservation proved
 validate_full_arr_zero.adb:15:72: info: index check proved

@@ -1,3 +1,2 @@
-task_int_prio.adb:7:19: info: initialization of "X" proved
 task_int_prio.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
 task_int_prio.ads:7:34: medium: range check might fail (e.g. when X = -1)

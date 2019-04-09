@@ -7,7 +7,6 @@ p.adb:6:35: low: unused global "Low"
 p.adb:6:40: low: unused global "High"
 p.adb:12:12: medium: predicate check might fail
 p.adb:16:11: info: data dependencies proved
-p.adb:21:07: info: initialization of "Y" proved
 p.adb:21:16: medium: predicate check might fail
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved

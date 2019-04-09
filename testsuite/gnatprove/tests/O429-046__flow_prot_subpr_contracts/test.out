@@ -3,7 +3,6 @@ prot.adb:15:33: medium: overflow check might fail
 prot.adb:15:37: medium: overflow check might fail
 prot.adb:25:29: medium: overflow check might fail
 prot.adb:35:27: medium: overflow check might fail
-prot.adb:41:17: info: initialization of "Visible" proved
 prot.ads:8:14: info: data dependencies proved
 prot.ads:11:14: info: data dependencies proved
 prot.ads:17:09: medium: the task might terminate, which is not allowed in SPARK

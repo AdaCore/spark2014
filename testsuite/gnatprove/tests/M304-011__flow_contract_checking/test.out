@@ -1,9 +1,7 @@
+test.adb:9:07: info: initialization of "Temp" proved
 test.adb:11:07: warning: statement has no effect
 test.adb:12:15: warning: unused assignment
-test.adb:15:14: info: initialization of "Temp" proved
-test.adb:26:13: info: initialization of "Temp" proved
 test.adb:27:23: info: overflow check proved (CVC4: 1 VC)
-test.adb:27:25: info: initialization of "Temp" proved
 test.adb:70:14: medium: overflow check might fail [possible explanation: subprogram at test.ads:22 should mention X and Z in a precondition]
 test.adb:95:16: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]
 test.adb:95:20: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]

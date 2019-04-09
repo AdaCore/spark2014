@@ -1,4 +1,4 @@
 client.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+client.adb:4:04: info: initialization of "X" proved
 client.adb:8:19: info: assertion proved (CVC4: 1 VC)
-client.adb:8:19: info: initialization of "X" proved
 p.adb:12:52: warning: statement has no effect

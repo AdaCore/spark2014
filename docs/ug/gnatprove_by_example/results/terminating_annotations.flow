@@ -1,14 +1,3 @@
-terminating_annotations.adb:15:13: info: initialization of "Y" proved
-terminating_annotations.adb:16:15: info: initialization of "Y" proved
-terminating_annotations.adb:18:14: info: initialization of "Y" proved
-terminating_annotations.adb:44:19: info: initialization of "Y" proved
-terminating_annotations.adb:45:21: info: initialization of "Y" proved
-terminating_annotations.adb:46:25: info: initialization of "Y" proved
-terminating_annotations.adb:47:20: info: initialization of "Y" proved
-terminating_annotations.adb:49:13: info: initialization of "Y" proved
-terminating_annotations.adb:50:44: info: initialization of "Y" proved
-terminating_annotations.adb:51:15: info: initialization of "Y" proved
-terminating_annotations.adb:53:14: info: initialization of "Y" proved
 terminating_annotations.ads:3:13: medium: subprogram "F_Rec" might not terminate, terminating annotation could be incorrect
 terminating_annotations.ads:6:13: medium: subprogram "F_While" might not terminate, terminating annotation could be incorrect
 terminating_annotations.ads:13:13: medium: subprogram "F_Call" might not terminate, terminating annotation could be incorrect

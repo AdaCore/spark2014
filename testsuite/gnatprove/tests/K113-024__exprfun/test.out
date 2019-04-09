@@ -1,2 +1,2 @@
-expr.adb:6:14: info: initialization of "R" proved
+expr.adb:3:07: info: initialization of "R" proved
 expr.ads:3:17: info: postcondition proved (CVC4: 1 VC)

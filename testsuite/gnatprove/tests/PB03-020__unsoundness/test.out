@@ -1,7 +1,4 @@
-fix.adb:6:13: info: initialization of "X" proved
 fix.adb:6:15: info: division check proved (CVC4: 1 VC)
 fix.adb:6:15: info: overflow check proved (CVC4: 1 VC)
 fix.adb:6:15: info: range check proved (CVC4: 1 VC)
-fix.adb:6:17: info: initialization of "Y" proved
-fix.adb:8:19: info: initialization of "Z" proved
 fix.adb:8:19: medium: assertion might fail, cannot prove Z = 1.5 (e.g. when Z = 7/4)

@@ -1,6 +1,6 @@
-use_ghost.adb:7:10: info: initialization of "Success" proved
+use_ghost.adb:4:07: info: initialization of "Success" proved
 use_ghost.ads:10:20: info: initialization of "X" proved
-use_ghost2.adb:7:10: info: initialization of "Success" proved
+use_ghost2.adb:4:07: info: initialization of "Success" proved
 use_ghost2.ads:10:20: info: initialization of "X" proved
-use_ghost3.adb:7:10: info: initialization of "Success" proved
+use_ghost3.adb:4:07: info: initialization of "Success" proved
 use_ghost3.ads:10:20: info: initialization of "X" proved

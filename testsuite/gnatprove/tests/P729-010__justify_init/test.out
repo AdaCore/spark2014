@@ -2,7 +2,5 @@ justify_once.adb:11:21: high: "A" is not initialized
 justify_once.adb:13:21: high: "A" is not initialized
 justify_once.adb:15:21: high: "A" is not initialized
 justify_once.adb:17:21: high: "A" is not initialized
-justify_once.adb:19:14: info: initialization of "A" proved
 justify_once.adb:19:14: medium: "A" might not be initialized
 justify_once.adb:28:15: high: "P" is not initialized
-justify_once.adb:29:14: info: initialization of "P" proved

@@ -1,4 +1,3 @@
 formal_parameters_legal.adb:8:04: warning: analyzing unreferenced procedure "Formal_Not_Fully_Initialized"
 formal_parameters_legal.adb:13:50: info: initialization of "Arr" proved
 formal_parameters_legal.adb:14:19: info: postcondition proved (CVC4: 1 VC)
-formal_parameters_legal.adb:14:46: info: initialization of "Arr" proved

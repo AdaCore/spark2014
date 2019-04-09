@@ -17,50 +17,34 @@ test.adb:33:13: warning: statement has no effect
 test.adb:35:12: warning: unused assignment
 test.adb:40:04: warning: analyzing unreferenced procedure "While_Loop"
 test.adb:41:26: info: initialization of "Y" proved
-test.adb:45:18: info: initialization of "Y" proved
-test.adb:46:15: info: initialization of "Y" proved
 test.adb:46:17: medium: overflow check might fail
 test.adb:50:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Correct"
-test.adb:56:13: info: initialization of "D" proved
-test.adb:57:15: info: initialization of "C" proved
+test.adb:52:07: info: initialization of "C" proved
+test.adb:52:10: info: initialization of "D" proved
+test.adb:52:13: info: initialization of "Q" proved
+test.adb:52:16: info: initialization of "R" proved
+test.adb:52:19: info: initialization of "W" proved
+test.adb:52:22: info: initialization of "X" proved
+test.adb:52:25: info: initialization of "Y" proved
 test.adb:57:17: medium: divide by zero might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
 test.adb:57:17: medium: overflow check might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
-test.adb:57:19: info: initialization of "D" proved
-test.adb:57:27: info: initialization of "C" proved
 test.adb:57:29: medium: divide by zero might fail [possible explanation: loop at line 56 should mention C in a loop invariant]
-test.adb:57:33: info: initialization of "D" proved
-test.adb:58:15: info: initialization of "X" proved
 test.adb:58:17: medium: overflow check might fail [possible explanation: loop at line 56 should mention Q and X and Y in a loop invariant]
-test.adb:58:19: info: initialization of "Q" proved
 test.adb:58:21: medium: overflow check might fail [possible explanation: loop at line 56 should mention Q and Y in a loop invariant]
-test.adb:58:23: info: initialization of "Y" proved
-test.adb:59:15: info: initialization of "D" proved
-test.adb:59:23: info: initialization of "R" proved
-test.adb:60:15: info: initialization of "Y" proved
-test.adb:60:23: info: initialization of "W" proved
-test.adb:62:10: info: initialization of "Y" proved
-test.adb:63:15: info: initialization of "Y" proved
 test.adb:63:17: medium: overflow check might fail [possible explanation: loop at line 56 should mention Y in a loop invariant]
-test.adb:65:14: info: initialization of "Y" proved
 test.adb:68:04: warning: analyzing unreferenced function "Bergeretti_Fig9_Incorrect"
-test.adb:74:13: info: initialization of "D" proved
-test.adb:75:15: info: initialization of "C" proved
+test.adb:70:07: info: initialization of "C" proved
+test.adb:70:10: info: initialization of "D" proved
+test.adb:70:13: info: initialization of "Q" proved
+test.adb:70:19: info: initialization of "W" proved
+test.adb:70:22: info: initialization of "X" proved
+test.adb:70:25: info: initialization of "Y" proved
 test.adb:75:17: medium: divide by zero might fail [possible explanation: loop at line 74 should mention C in a loop invariant]
 test.adb:75:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention C in a loop invariant]
-test.adb:75:19: info: initialization of "D" proved
-test.adb:76:15: info: initialization of "X" proved
 test.adb:76:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention Q and X and Y in a loop invariant]
-test.adb:76:19: info: initialization of "Q" proved
 test.adb:76:21: medium: overflow check might fail [possible explanation: loop at line 74 should mention Q and Y in a loop invariant]
-test.adb:76:23: info: initialization of "Y" proved
-test.adb:77:15: info: initialization of "D" proved
 test.adb:77:23: high: "R" is not initialized
-test.adb:78:15: info: initialization of "Y" proved
-test.adb:78:23: info: initialization of "W" proved
-test.adb:80:10: info: initialization of "Y" proved
-test.adb:81:15: info: initialization of "Y" proved
 test.adb:81:17: medium: overflow check might fail [possible explanation: loop at line 74 should mention Y in a loop invariant]
-test.adb:83:14: info: initialization of "Y" proved
 test.adb:86:04: warning: analyzing unreferenced procedure "Stable_Test_01"
 test.adb:86:30: info: initialization of "X" proved
 test.adb:89:39: info: cannot unroll loop (too many loop iterations)
@@ -82,6 +66,5 @@ test.adb:130:17: info: range check proved (CVC4: 1 VC)
 test.adb:130:17: medium: overflow check might fail [possible explanation: loop at line 129 should mention X in a loop invariant]
 test.adb:134:17: medium: range check might fail [possible explanation: loop at line 129 should mention X in a loop invariant]
 test.adb:138:04: warning: analyzing unreferenced function "Loop_Stability"
-test.adb:145:20: info: initialization of "A" proved
-test.adb:147:14: info: initialization of "A" proved
+test.adb:141:07: info: initialization of "A" proved
 test.adb:147:14: warning: unreachable code (CVC4: 1 VC)

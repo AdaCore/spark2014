@@ -23,7 +23,6 @@ alias.ads:6:11: info: data dependencies proved
 alias.ads:8:11: info: data dependencies proved
 alias.ads:15:11: info: data dependencies proved
 alias.ads:17:11: info: data dependencies proved
-alias.ads:20:28: info: initialization of "G" proved
 alias.ads:21:04: info: range check proved (CVC4: 2 VC)
 alias.ads:23:11: info: data dependencies proved
 alias.ads:25:11: info: data dependencies proved

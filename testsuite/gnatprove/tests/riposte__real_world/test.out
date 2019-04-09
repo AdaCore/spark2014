@@ -1,5 +1,5 @@
 real_world.adb:11:19: info: postcondition proved (CVC4: 12 VC)
-real_world.adb:36:14: info: initialization of "R" proved
+real_world.adb:26:07: info: initialization of "R" proved
 real_world.adb:44:22: info: assertion proved (CVC4: 1 VC)
 real_world.adb:45:21: info: range check proved (CVC4: 1 VC)
 real_world.adb:54:11: info: flow dependencies proved

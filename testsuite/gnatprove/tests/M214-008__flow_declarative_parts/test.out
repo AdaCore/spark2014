@@ -14,11 +14,9 @@ test.adb:71:15: info: range check proved (CVC4: 2 VC)
 test.adb:78:24: info: initialization of "S" proved
 test.adb:79:09: info: data dependencies proved
 test.adb:82:09: info: length check proved (CVC4: 4 VC)
-test.adb:86:24: info: initialization of "A" proved
 test.adb:87:09: info: data dependencies proved
 test.adb:88:09: info: flow dependencies proved
 test.adb:90:33: high: "A" is not initialized
-test.adb:96:24: info: initialization of "A" proved
 test.adb:97:09: info: data dependencies proved
 test.adb:98:09: info: flow dependencies proved
 test.adb:100:31: high: "A" is not initialized

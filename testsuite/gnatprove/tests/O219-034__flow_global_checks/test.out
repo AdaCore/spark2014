@@ -14,7 +14,6 @@ foo.adb:49:09: info: data dependencies proved
 foo.adb:49:31: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:49:31: high: "X" is not initialized
 foo.adb:49:31: high: either make "X" an input in the Global contract or initialize it before use
-foo.adb:49:34: info: initialization of "Y" proved
 foo.adb:49:37: info: initialization of "Z.F" proved
 foo.adb:49:40: info: initialization of "W" proved
 foo.adb:52:12: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
@@ -34,6 +33,6 @@ foo.adb:73:38: info: initialization of "M" proved
 foo.adb:74:29: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 foo.adb:75:32: medium: export "M" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
 foo.adb:75:32: medium: export "N" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
+foo.adb:77:07: info: initialization of "Tmp1" proved
 foo.adb:80:22: medium: assertion might fail, cannot prove X = 12 [possible explanation: subprogram at line 72 should mention X in a precondition]
 foo.adb:83:12: warning: unused assignment
-foo.adb:84:15: info: initialization of "Tmp1" proved

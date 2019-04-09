@@ -1,20 +1,11 @@
 p_warn.ads:6:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:6:19: info: initialization of "X1" proved
 p_warn.ads:6:21: warning: attribute "Img" has an implementation-defined length
 p_warn.ads:7:19: info: assertion proved (CVC4: 1 VC)
 p_warn.ads:7:26: warning: attribute "Image" has an implementation-defined length
-p_warn.ads:7:34: info: initialization of "X1" proved
 p_warn.ads:11:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:11:19: info: initialization of "X2" proved
 p_warn.ads:12:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:12:34: info: initialization of "X2" proved
 p_warn.ads:16:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:16:19: info: initialization of "X3" proved
 p_warn.ads:17:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:17:44: info: initialization of "X3" proved
 p_warn.ads:21:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:21:19: info: initialization of "X4" proved
 p_warn.ads:22:19: info: assertion proved (CVC4: 1 VC)
-p_warn.ads:22:46: info: initialization of "X4" proved
 p_warn.ads:23:19: medium: assertion might fail, cannot prove Short_Short_Integer'Image (X4)'Length = 2 (e.g. when X4 = 1)
-p_warn.ads:23:46: info: initialization of "X4" proved

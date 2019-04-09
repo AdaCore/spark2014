@@ -9,61 +9,27 @@ floats.adb:21:16: info: assertion proved (CodePeer)
 floats.adb:22:16: info: assertion proved (CodePeer)
 floats.adb:23:16: info: assertion proved (CodePeer)
 floats.adb:24:16: info: assertion proved (CodePeer)
-floats.adb:26:06: info: initialization of "c" proved
-floats.adb:27:06: info: initialization of "c" proved
 floats.adb:27:25: info: float overflow check proved (Interval)
-floats.adb:28:06: info: initialization of "c" proved
 floats.adb:28:25: info: float overflow check proved (Interval)
-floats.adb:29:06: info: initialization of "c" proved
 floats.adb:29:25: info: float overflow check proved (Interval)
 floats.adb:31:16: info: assertion proved (CodePeer)
-floats.adb:31:16: info: initialization of "c" proved
 floats.adb:32:16: info: assertion proved (CodePeer)
-floats.adb:32:16: info: initialization of "c" proved
 floats.adb:33:16: info: assertion proved (CodePeer)
-floats.adb:33:16: info: initialization of "c" proved
 floats.adb:34:16: info: assertion proved (CodePeer)
-floats.adb:34:16: info: initialization of "c" proved
 floats.adb:35:16: info: assertion proved (CodePeer)
-floats.adb:35:37: info: initialization of "c" proved
-floats.adb:37:06: info: initialization of "b" proved
-floats.adb:38:06: info: initialization of "b" proved
 floats.adb:38:25: info: float overflow check proved (Interval)
-floats.adb:39:06: info: initialization of "b" proved
 floats.adb:39:25: info: float overflow check proved (Interval)
-floats.adb:40:06: info: initialization of "b" proved
 floats.adb:40:25: info: float overflow check proved (Interval)
 floats.adb:42:16: info: assertion proved (CodePeer)
-floats.adb:42:16: info: initialization of "b" proved
 floats.adb:43:16: info: assertion proved (CodePeer)
-floats.adb:43:16: info: initialization of "b" proved
 floats.adb:44:16: info: assertion proved (CodePeer)
-floats.adb:44:16: info: initialization of "b" proved
 floats.adb:45:16: info: assertion proved (CodePeer)
-floats.adb:45:16: info: initialization of "b" proved
 floats.adb:46:16: info: assertion proved (CodePeer)
-floats.adb:46:37: info: initialization of "b" proved
-floats.adb:48:06: info: initialization of "d" proved
-floats.adb:48:09: info: initialization of "c" proved
 floats.adb:48:14: info: float overflow check proved (CodePeer)
-floats.adb:48:16: info: initialization of "b" proved
-floats.adb:49:06: info: initialization of "d" proved
-floats.adb:49:09: info: initialization of "c" proved
 floats.adb:49:14: info: float overflow check proved (CodePeer)
-floats.adb:49:16: info: initialization of "b" proved
-floats.adb:50:06: info: initialization of "d" proved
-floats.adb:50:09: info: initialization of "c" proved
 floats.adb:50:14: info: float overflow check proved (CodePeer)
-floats.adb:50:16: info: initialization of "b" proved
-floats.adb:51:06: info: initialization of "d" proved
-floats.adb:51:09: info: initialization of "c" proved
 floats.adb:51:14: info: float overflow check proved (CodePeer)
-floats.adb:51:16: info: initialization of "b" proved
 floats.adb:53:16: info: assertion proved (CodePeer)
-floats.adb:53:16: info: initialization of "d" proved
 floats.adb:54:16: info: assertion proved (CodePeer)
-floats.adb:54:16: info: initialization of "d" proved
 floats.adb:55:16: info: assertion proved (CodePeer)
-floats.adb:55:16: info: initialization of "d" proved
 floats.adb:56:16: info: assertion proved (CodePeer)
-floats.adb:56:16: info: initialization of "d" proved

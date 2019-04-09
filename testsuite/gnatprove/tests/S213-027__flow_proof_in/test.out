@@ -1,7 +1,5 @@
-repro-b.adb:5:04: info: initialization of "X" constituent of "State" proved
 repro-b.ads:4:03: info: flow dependencies proved
 repro-b.ads:9:06: info: data dependencies proved
-repro.adb:9:04: info: initialization of "Foo" constituent of "State" proved
 repro.ads:6:03: info: flow dependencies proved
 repro.ads:14:09: info: data dependencies proved
 repro.ads:17:09: info: data dependencies proved

@@ -1,12 +1,4 @@
-main.adb:6:21: info: initialization of "X" proved
 main.adb:7:19: info: assertion proved (CVC4: 1 VC)
-main.adb:7:19: info: initialization of "X" proved
-main.adb:8:22: info: initialization of "X" proved
 main.adb:9:19: info: assertion proved (CVC4: 1 VC)
-main.adb:9:19: info: initialization of "X" proved
-main.adb:10:23: info: initialization of "X" proved
 main.adb:11:19: info: assertion proved (CVC4: 1 VC)
-main.adb:11:19: info: initialization of "X" proved
-main.adb:12:22: info: initialization of "X" proved
 main.adb:13:19: info: assertion proved (CVC4: 1 VC)
-main.adb:13:19: info: initialization of "X" proved

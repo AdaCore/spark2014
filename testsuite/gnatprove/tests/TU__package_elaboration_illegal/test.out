@@ -2,5 +2,3 @@ initialize_remote_stuff.adb:18:08: high: cannot write "Var" during elaboration o
 initialize_remote_stuff.adb:19:04: high: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(6))
 initialize_remote_stuff.adb:20:04: high: cannot write "Var" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(6))
 initialize_remote_stuff.adb:21:04: high: cannot write "Remote.State" during elaboration of "Initialize_Remote_Stuff" (SPARK RM 7.7.1(6))
-initialize_remote_stuff.ads:7:14: info: initialization of "Var" proved
-initialize_remote_stuff.ads:9:14: info: initialization of "Remote.State" proved

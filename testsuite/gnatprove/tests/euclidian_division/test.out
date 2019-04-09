@@ -1,25 +1,17 @@
 linear_div.adb:6:04: info: initialization of "Quotient" proved
 linear_div.adb:7:04: info: initialization of "Remainder" proved
-linear_div.adb:10:11: info: initialization of "Quotient" proved
 linear_div.adb:10:11: info: postcondition proved (CVC4: 4 VC)
-linear_div.adb:11:17: info: initialization of "Remainder" proved
-linear_div.adb:19:10: info: initialization of "Remainder" proved
-linear_div.adb:21:10: info: initialization of "Remainder" proved
 linear_div.adb:21:10: info: loop invariant initialization proved (CVC4: 3 VC)
 linear_div.adb:21:10: info: loop invariant preservation proved (CVC4: 3 VC)
-linear_div.adb:22:16: info: initialization of "Quotient" proved
-linear_div.adb:24:19: info: initialization of "Quotient" proved
 linear_div.adb:24:28: info: overflow check proved (CVC4: 1 VC)
-linear_div.adb:25:20: info: initialization of "Remainder" proved
 linear_div.adb:25:30: info: overflow check proved (CVC4: 1 VC)
 random_testing.adb:9:27: info: initialization of "Result" proved
-random_testing.adb:10:16: info: initialization of "Result" proved
 random_testing.adb:10:16: medium: postcondition might fail, cannot prove Result (e.g. when Result = False)
+random_testing.adb:12:04: info: initialization of "M" proved
+random_testing.adb:12:07: info: initialization of "N" proved
+random_testing.adb:13:07: info: initialization of "R" proved
 random_testing.adb:15:04: info: precondition proved (CVC4: 1 VC)
 random_testing.adb:16:04: info: precondition proved (CVC4: 1 VC)
 random_testing.adb:17:04: info: precondition proved (CVC4: 2 VC)
-random_testing.adb:17:16: info: initialization of "M" proved
-random_testing.adb:17:19: info: initialization of "N" proved
 random_testing.adb:17:21: info: overflow check proved (CVC4: 1 VC)
 random_testing.adb:17:26: warning: unused assignment to "Q"
-random_testing.adb:20:07: info: initialization of "R" proved

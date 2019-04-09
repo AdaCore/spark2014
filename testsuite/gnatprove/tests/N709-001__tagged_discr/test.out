@@ -6,20 +6,12 @@ classwide.ads:35:22: info: initialization of "V.Y" proved
 classwide.ads:35:22: info: initialization of "V.Z" proved
 classwide.ads:35:22: info: initialization of extension of "V" proved
 classwide.ads:36:14: medium: postcondition might fail, cannot prove C_Is_Zero (V)
-classwide.ads:36:25: info: initialization of "V.X" proved
-classwide.ads:36:25: info: initialization of "V.Y" proved
-classwide.ads:36:25: info: initialization of "V.Z" proved
-classwide.ads:36:25: info: initialization of extension of "V" proved
 classwide.ads:37:06: info: data dependencies proved
 classwide.ads:39:22: info: initialization of "V.X" proved
 classwide.ads:39:22: info: initialization of "V.Y" proved
 classwide.ads:39:22: info: initialization of "V.Z" proved
 classwide.ads:39:22: info: initialization of extension of "V" proved
-classwide.ads:40:14: info: initialization of extension of "V" proved
 classwide.ads:40:14: info: postcondition proved (CVC4: 1 VC)
-classwide.ads:40:25: info: initialization of "V.X" proved
-classwide.ads:40:25: info: initialization of "V.Y" proved
-classwide.ads:40:25: info: initialization of "V.Z" proved
 classwide.ads:41:06: info: data dependencies proved
 classwide.ads:44:22: warning: unused initial value of "V"
 classwide.ads:45:14: info: postcondition proved (CVC4: 1 VC)
@@ -48,19 +40,12 @@ tagged_discr.ads:22:20: info: initialization of "V.X" proved
 tagged_discr.ads:22:20: info: initialization of "V.Y" proved
 tagged_discr.ads:22:20: info: initialization of "V.Z" proved
 tagged_discr.ads:24:19: info: postcondition proved (CVC4: 1 VC)
-tagged_discr.ads:24:28: info: initialization of "V.X" proved
-tagged_discr.ads:24:28: info: initialization of "V.Y" proved
-tagged_discr.ads:24:28: info: initialization of "V.Z" proved
 tagged_discr.ads:27:14: info: postcondition proved (CVC4: 1 VC)
 tagged_discr.ads:40:20: info: initialization of "V.W" proved
 tagged_discr.ads:40:20: info: initialization of "V.X" proved
 tagged_discr.ads:40:20: info: initialization of "V.Y" proved
 tagged_discr.ads:40:20: info: initialization of "V.Z" proved
 tagged_discr.ads:41:14: info: postcondition proved (CVC4: 1 VC)
-tagged_discr.ads:41:23: info: initialization of "V.W" proved
-tagged_discr.ads:41:23: info: initialization of "V.X" proved
-tagged_discr.ads:41:23: info: initialization of "V.Y" proved
-tagged_discr.ads:41:23: info: initialization of "V.Z" proved
 tagged_discr.ads:44:14: info: postcondition proved (CVC4: 1 VC)
 tagged_discr.ads:58:20: info: initialization of "V.W" proved
 tagged_discr.ads:58:20: info: initialization of "V.X" proved
@@ -69,10 +54,4 @@ tagged_discr.ads:58:20: info: initialization of "V.Y" proved
 tagged_discr.ads:58:20: info: initialization of "V.YY" proved
 tagged_discr.ads:58:20: info: initialization of "V.Z" proved
 tagged_discr.ads:59:14: info: postcondition proved (Z3: 1 VC)
-tagged_discr.ads:59:23: info: initialization of "V.W" proved
-tagged_discr.ads:59:23: info: initialization of "V.X" proved
-tagged_discr.ads:59:23: info: initialization of "V.XX" proved
-tagged_discr.ads:59:23: info: initialization of "V.Y" proved
-tagged_discr.ads:59:23: info: initialization of "V.YY" proved
-tagged_discr.ads:59:23: info: initialization of "V.Z" proved
 tagged_discr.ads:62:14: info: postcondition proved (CVC4: 1 VC)

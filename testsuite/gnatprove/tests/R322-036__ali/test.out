@@ -1,5 +1,5 @@
 ------------------
 ------------------
-a~main.adb:11:12: info: initialization of "X" proved
+a~main.adb:8:07: info: initialization of "X" proved
 a~main.adb:11:14: info: division check proved (CVC4: 1 VC)
 a~main.ads:5:17: info: initialization of "Y" proved

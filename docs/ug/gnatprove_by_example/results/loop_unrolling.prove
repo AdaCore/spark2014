@@ -1,8 +1,4 @@
-loop_unrolling.adb:7:16: info: initialization of "A" proved
-loop_unrolling.adb:15:20: info: initialization of "Result" proved
 loop_unrolling.adb:15:27: info: overflow check proved
-loop_unrolling.adb:17:14: info: initialization of "Result" proved
 loop_unrolling.ads:7:20: info: initialization of "A" proved
 loop_unrolling.ads:8:14: info: postcondition proved
-loop_unrolling.ads:8:37: info: initialization of "A" proved
 loop_unrolling.ads:12:14: info: postcondition proved

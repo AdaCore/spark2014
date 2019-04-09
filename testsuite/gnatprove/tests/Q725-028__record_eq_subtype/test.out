@@ -1,5 +1,1 @@
-record_subty.adb:17:19: info: initialization of "X.C.A" proved
-record_subty.adb:17:19: info: initialization of "X.C.B" proved
 record_subty.adb:17:19: medium: assertion might fail, cannot prove X /= Y (e.g. when X = (C => (A => 1, B => 1)) and Y = (C => (A => 1, B => 2)))
-record_subty.adb:17:24: info: initialization of "Y.C.A" proved
-record_subty.adb:17:24: info: initialization of "Y.C.B" proved

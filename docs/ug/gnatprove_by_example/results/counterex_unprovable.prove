@@ -1,9 +1,7 @@
 counterex_unprovable.adb:7:16: info: overflow check proved
 counterex_unprovable.adb:7:16: info: range check proved
 counterex_unprovable.adb:12:12: info: precondition proved
-counterex_unprovable.adb:19:20: info: initialization of "Result" proved
 counterex_unprovable.adb:19:27: info: range check proved
-counterex_unprovable.adb:21:12: info: initialization of "Result" proved
 counterex_unprovable.ads:8:14: info: overflow check proved
 counterex_unprovable.ads:9:14: info: overflow check proved
 counterex_unprovable.ads:9:14: info: postcondition proved

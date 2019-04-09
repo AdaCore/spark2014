@@ -1,17 +1,10 @@
 p.adb:3:14: warning: "Y" is not modified, could be IN
 p.adb:3:14: warning: unused variable "Y"
-p.adb:10:10: info: initialization of "Last" proved
-p.adb:12:18: info: initialization of "Unb_Str" proved
+p.adb:7:04: info: initialization of "Buffer" proved
 p.adb:12:26: warning: assuming "&" has no effect on global items
 p.adb:12:26: warning: no Global contract available for "&"
-p.adb:12:28: info: initialization of "Buffer" proved
 p.adb:12:28: info: range check proved (CVC4: 4 VC)
-p.adb:12:38: info: initialization of "Last" proved
 p.adb:15:21: warning: assuming "To_String" has no effect on global items
 p.adb:15:21: warning: no Global contract available for "To_String"
-p.adb:15:31: info: initialization of "Unb_Str" proved
-p.adb:17:26: info: initialization of "X" proved
 p.adb:18:13: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 0)
 p.adb:18:13: medium: range check might fail
-p.adb:18:21: info: initialization of "S" proved
-p.adb:19:26: info: initialization of "X" proved

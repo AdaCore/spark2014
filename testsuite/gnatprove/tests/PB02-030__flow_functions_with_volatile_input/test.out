@@ -1,10 +1,7 @@
 legal.adb:7:20: info: initialization of "X" proved
 legal.adb:11:20: info: initialization of "X" proved
-legal.adb:41:17: info: initialization of "Tmp" proved
 legal.adb:59:13: "V1" cannot act as global item of nonvolatile function "Test_01"
-legal.adb:63:14: info: initialization of "Tmp" proved
 legal.adb:67:13: function with output global "V2" is not allowed in SPARK
-legal.adb:80:14: info: initialization of "Tmp" proved
 legal.adb:84:13: function with output global "V2" is not allowed in SPARK
 legal.adb:101:13: function with output global "PO_V3" is not allowed in SPARK
 legal.adb:111:13: function with output global "PO_V3" is not allowed in SPARK

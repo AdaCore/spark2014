@@ -1,20 +1,13 @@
-search_ter_p.adb:11:17: info: initialization of "Result.Exists" proved
-search_ter_p.adb:11:17: info: initialization of "Result.Value" proved
 search_ter_p.adb:14:34: info: overflow check proved (CVC4: 1 VC)
 search_ter_p.adb:14:38: info: overflow check proved (CVC4: 1 VC)
 search_ter_p.adb:14:41: info: range check proved (CVC4: 1 VC)
 search_ter_p.adb:15:13: info: precondition proved (CVC4: 8 VC)
-search_ter_p.adb:19:20: info: initialization of "Result.Exists" proved
-search_ter_p.adb:19:20: info: initialization of "Result.Value" proved
 search_ter_p.adb:21:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_ter_p.adb:21:33: info: loop invariant preservation proved (CVC4: 1 VC)
 search_ter_p.adb:21:37: info: precondition proved (CVC4: 6 VC)
 search_ter_p.adb:22:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_ter_p.adb:22:33: info: loop invariant preservation proved (CVC4: 1 VC)
-search_ter_p.adb:22:37: info: initialization of "Result.Exists" proved
 search_ter_p.adb:23:10: info: loop variant proved (CVC4: 1 VC)
-search_ter_p.adb:26:14: info: initialization of "Result.Exists" proved
-search_ter_p.adb:26:14: info: initialization of "Result.Value" proved
 search_ter_p.ads:11:07: info: range check proved (CVC4: 4 VC)
 search_ter_p.ads:11:17: info: overflow check proved (CVC4: 1 VC)
 search_ter_p.ads:11:21: info: overflow check proved (CVC4: 1 VC)

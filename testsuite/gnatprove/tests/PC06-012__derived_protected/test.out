@@ -1,7 +1,7 @@
-my_types.adb:14:18: info: initialization of "X" proved
+my_types.adb:11:07: info: initialization of "X" proved
 my_types.adb:14:20: medium: overflow check might fail (e.g. when X = Integer'Last)
-my_types.adb:21:18: info: initialization of "X" proved
+my_types.adb:18:07: info: initialization of "X" proved
 my_types.adb:21:20: medium: overflow check might fail (e.g. when X = Integer'Last)
-my_types.adb:28:18: info: initialization of "X" proved
+my_types.adb:25:07: info: initialization of "X" proved
 my_types.adb:28:20: medium: overflow check might fail (e.g. when X = Integer'Last)
 my_types.ads:8:17: info: postcondition proved (CVC4: 1 VC)

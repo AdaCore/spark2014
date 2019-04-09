@@ -1,11 +1,6 @@
 init_inline.adb:1:24: info: initialization of "Y" proved
-init_inline.adb:8:14: info: initialization of "Y" proved
 init_inline.adb:13:04: high: "X.C" is not initialized
 test.adb:6:37: info: initialization of "Success" proved
 test.adb:18:07: medium: "Done" might not be initialized in "Test2"
 test.adb:19:07: info: initialization of "Success" proved
-test.adb:24:10: info: initialization of "Success" proved
-test.adb:24:10: info: initialization of "Success" proved, in call inlined at test.adb:33
-test.adb:34:18: info: initialization of "Success" proved
-test.adb:34:30: info: initialization of "Done" proved
 test.ads:6:34: info: initialization of "Success" proved

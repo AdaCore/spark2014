@@ -1,9 +1,6 @@
-simple_test.adb:13:12: info: initialization of "C" proved
+simple_test.adb:4:07: info: initialization of "B" proved
 simple_test.adb:13:14: info: overflow check proved (CVC4: 1 VC)
-simple_test.adb:13:16: info: initialization of "B" proved
 simple_test.adb:15:22: info: assertion proved (CVC4: 1 VC)
-simple_test.adb:15:22: info: initialization of "C" proved
-simple_test.adb:17:14: info: initialization of "C" proved
 simple_test.ads:5:14: info: postcondition proved (CVC4: 1 VC)
 simple_test.ads:5:31: info: overflow check proved (CVC4: 1 VC)
 simple_test.ads:5:37: info: overflow check proved (CVC4: 1 VC)

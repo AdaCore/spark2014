@@ -1,16 +1,14 @@
+data_initialization.adb:16:07: info: initialization of "X1.Val" proved
+data_initialization.adb:16:15: info: initialization of "X3.Num" proved
 data_initialization.adb:23:07: high: "G3.Num" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
 data_initialization.adb:23:07: high: "G3.Num" is not initialized
 data_initialization.adb:23:07: high: "G3.Val" is not an input in the Global contract of subprogram "Call_Proc" at data_initialization.ads:20
 data_initialization.adb:23:07: high: "G3.Val" is not initialized
 data_initialization.adb:23:07: high: either make "G3.Num" an input in the Global contract or initialize it before use
 data_initialization.adb:23:07: high: either make "G3.Val" an input in the Global contract or initialize it before use
-data_initialization.adb:23:07: info: initialization of "G1.Num" proved
-data_initialization.adb:23:07: info: initialization of "G1.Val" proved
 data_initialization.adb:23:13: high: "X1.Num" is not initialized
-data_initialization.adb:23:13: info: initialization of "X1.Val" proved
 data_initialization.adb:23:17: warning: unused assignment to "X2"
 data_initialization.adb:23:21: high: "X3.Val" is not initialized
-data_initialization.adb:23:21: info: initialization of "X3.Num" proved
 data_initialization.adb:23:21: warning: unused assignment to "X3"
 data_initialization.ads:12:07: warning: unused variable "P1"
 data_initialization.ads:13:07: high: "P2.Num" is not initialized in "Proc"
@@ -30,5 +28,3 @@ data_initialization.ads:21:28: info: initialization of "G1.Num" proved
 data_initialization.ads:21:28: info: initialization of "G1.Val" proved
 data_initialization.ads:21:32: info: initialization of "G2.Num" proved
 data_initialization.ads:21:32: info: initialization of "G2.Val" proved
-data_initialization.ads:21:36: info: initialization of "G3.Num" proved
-data_initialization.ads:21:36: info: initialization of "G3.Val" proved

@@ -1,6 +1,1 @@
-simple_loops.adb:8:30: info: initialization of "Prop" proved
-simple_loops.adb:14:30: info: initialization of "Prop" proved
-simple_loops.adb:20:30: info: initialization of "Prop" proved
-simple_loops.adb:21:15: info: initialization of "Prop" proved
-simple_loops.adb:26:44: info: initialization of "Prop" proved
-simple_loops.adb:27:15: info: initialization of "Prop" proved
+simple_loops.adb:4:04: info: initialization of "Prop" proved

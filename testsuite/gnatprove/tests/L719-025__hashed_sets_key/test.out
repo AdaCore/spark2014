@@ -21,5 +21,4 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
 p.adb:4:27: info: precondition proved (CVC4: 1 VC)
 p.adb:6:07: info: precondition proved (CVC4: 1 VC)
-p.adb:6:22: info: initialization of "E" proved
 p.ads:26:14: info: postcondition proved (CVC4: 1 VC)

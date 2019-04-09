@@ -1,5 +1,3 @@
-functional_imported.adb:7:04: info: initialization of "Max" constituent of "Max_And_Snd" proved
-functional_imported.adb:10:04: info: initialization of "Snd" constituent of "Max_And_Snd" proved
 functional_imported.adb:40:10: info: precondition proved
 functional_imported.adb:41:10: info: precondition proved
 functional_imported.adb:43:10: info: precondition proved

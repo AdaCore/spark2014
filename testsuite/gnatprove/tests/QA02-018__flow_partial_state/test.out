@@ -1,5 +1,4 @@
 p.ads:3:08: info: flow dependencies proved
-p.ads:7:04: info: initialization of "X" constituent of "State" proved
 p.ads:11:38: high: "P.State" must be listed in the Global aspect of "Read1" (SPARK RM 6.1.4(13))
 p.ads:11:56: "P.State" is referenced in expression function but missing from the Global
 p.ads:11:56: info: data dependencies proved

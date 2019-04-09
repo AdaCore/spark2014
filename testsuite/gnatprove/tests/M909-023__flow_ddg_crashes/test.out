@@ -1,4 +1,1 @@
-foo.adb:8:16: info: initialization of "Y" proved, in call inlined at foo.adb:22
-foo.adb:13:10: info: initialization of "Y" proved, in call inlined at foo.adb:23
 foo.adb:18:04: warning: analyzing unreferenced procedure "Do_Test"
-foo.adb:18:14: info: initialization of "Y" proved

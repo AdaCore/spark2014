@@ -1,10 +1,5 @@
 test.ads:7:13: medium: subprogram "Bar" might not terminate, terminating annotation could be incorrect
-types.adb:9:13: info: initialization of "I" proved, in instantiation at test.ads:7
 types.adb:9:23: info: range check proved (CVC4: 2 VC), in instantiation at test.ads:7
-types.adb:11:20: info: initialization of "Result" proved, in instantiation at test.ads:7
 types.adb:11:55: info: index check proved (CVC4: 2 VC), in instantiation at test.ads:7
 types.adb:11:55: info: overflow check proved (CVC4: 1 VC), in instantiation at test.ads:7
-types.adb:11:57: info: initialization of "I" proved, in instantiation at test.ads:7
-types.adb:12:15: info: initialization of "I" proved, in instantiation at test.ads:7
 types.adb:12:17: info: overflow check proved (CVC4: 1 VC), in instantiation at test.ads:7
-types.adb:14:14: info: initialization of "Result" proved, in instantiation at test.ads:7

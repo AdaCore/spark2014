@@ -1,5 +1,4 @@
 unsound.adb:4:24: info: unrolling loop
 unsound.adb:6:13: warning: analyzing unreferenced procedure "Dummy"
 unsound.adb:6:23: warning: subprogram "Dummy" has no effect
-unsound.adb:11:19: info: initialization of "X" proved
 unsound.ads:3:26: info: initialization of "X" proved

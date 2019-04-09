@@ -1,4 +1,0 @@
-exchange.adb:5:09: info: initialization of "tmp" proved, in instantiation at cab.adb:5, in instantiation at req_n522.adb:11
-req_n522.adb:15:12: info: initialization of "xa" proved
-req_n522.adb:15:16: info: initialization of "xb" proved
-req_n522.adb:15:20: info: initialization of "xc" proved

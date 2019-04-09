@@ -1,4 +1,1 @@
 counterex.adb:1:58: info: initialization of "R" proved
-counterex.adb:8:12: info: initialization of "R" proved
-counterex.adb:10:15: info: initialization of "R" proved
-counterex.adb:11:25: info: initialization of "R" proved

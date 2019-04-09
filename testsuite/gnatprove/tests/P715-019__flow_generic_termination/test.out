@@ -8,5 +8,4 @@ a-cofuse.ads:159:06: "S" is referenced in Post but missing from the Global, in i
 term.ads:7:13: warning: subprogram "Eq" might not terminate
 term.ads:13:13: info: subprogram "Hash" will terminate
 term.ads:13:19: warning: unused variable "X"
-term.ads:20:04: info: initialization of private part of "S" proved
 gnatprove: error during flow analysis and proof

@@ -1,10 +1,8 @@
 test_type-test.ads:1:27: info: invariant check proved (CVC4: 1 VC)
 test_type-test.ads:2:04: info: invariant check proved (CVC4: 1 VC)
 test_type-test.ads:5:16: info: overflow check proved (CVC4: 1 VC)
-test_type-test.ads:7:04: info: initialization of "Test.Y.F" constituent of "Test_Type.A_State" proved
 test_type-test.ads:7:13: info: precondition proved (CVC4: 1 VC)
 test_type-test.ads:8:19: medium: assertion might fail, cannot prove X = Y (e.g. when Y = (F => -1))
-test_type-test.ads:8:23: info: initialization of "Test.Y.F" constituent of "Test_Type.A_State" proved
 test_type.ads:3:13: info: invariant check proved (CVC4: 1 VC)
 test_type.ads:6:09: info: invariant check proved on default value (CVC4: 1 VC)
 test_type.ads:12:16: info: overflow check proved (CVC4: 1 VC)

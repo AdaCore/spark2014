@@ -1,4 +1,3 @@
 badjustif.adb:21:24: info: unrolling loop
-badjustif.adb:22:15: info: initialization of "X" proved
 badjustif.adb:22:17: info: overflow check proved (CVC4: 10 VC)
 badjustif.ads:5:14: warning: subprogram "P2" has no effect

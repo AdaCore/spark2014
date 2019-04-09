@@ -1,3 +1,5 @@
+sgs.adb:6:07: info: initialization of "R1" proved
+sgs.adb:7:07: info: initialization of "R2" proved
 sgs.adb:9:22: info: assertion proved (CVC4: 1 VC)
 sgs.adb:10:22: info: assertion proved (CVC4: 1 VC)
 sgs.adb:12:22: info: assertion proved (CVC4: 1 VC)
@@ -5,13 +7,9 @@ sgs.adb:13:22: info: assertion proved (CVC4: 1 VC)
 sgs.adb:15:22: info: assertion proved (CVC4: 2 VC)
 sgs.adb:18:13: info: range check proved (CVC4: 1 VC)
 sgs.adb:19:22: info: assertion proved (CVC4: 1 VC)
-sgs.adb:19:22: info: initialization of "R1" proved
 sgs.adb:20:22: info: assertion proved (CVC4: 1 VC)
-sgs.adb:20:22: info: initialization of "R1" proved
 sgs.adb:21:22: info: assertion proved (CVC4: 1 VC)
-sgs.adb:21:22: info: initialization of "R2" proved
 sgs.adb:22:22: info: assertion proved (CVC4: 1 VC)
-sgs.adb:22:22: info: initialization of "R2" proved
 sgs.ads:5:53: info: range check proved (Interval)
 sgs.ads:10:14: warning: subprogram "F" has no effect
 sgs.ads:13:17: info: postcondition proved (CVC4: 2 VC)

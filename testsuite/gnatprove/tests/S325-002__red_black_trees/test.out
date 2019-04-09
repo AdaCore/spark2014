@@ -6,35 +6,14 @@ red_black_trees.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), i
 red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50
-red_black_trees.adb:6:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50
-red_black_trees.adb:7:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:7:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:8:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50
-red_black_trees.adb:8:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:12:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
@@ -43,35 +22,14 @@ red_black_trees.adb:14:07: info: pointer dereference check proved (CVC4: 1 VC), 
 red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44
-red_black_trees.adb:14:17: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44
-red_black_trees.adb:15:18: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:15:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:16:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44
-red_black_trees.adb:16:12: info: initialization of "Tnew" proved, in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:21:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
 red_black_trees.adb:22:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
 red_black_trees.adb:23:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73

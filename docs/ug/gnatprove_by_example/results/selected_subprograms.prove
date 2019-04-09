@@ -1,2 +1,2 @@
+selected_subprograms.adb:7:07: info: initialization of "X" proved
 selected_subprograms.adb:10:22: info: assertion proved
-selected_subprograms.adb:10:22: info: initialization of "X" proved

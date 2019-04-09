@@ -3,10 +3,6 @@ foo.adb:20:26: info: initialization of "E" proved
 foo.adb:20:29: info: initialization of "F" proved
 foo.adb:21:09: info: data dependencies proved
 foo.adb:22:09: info: flow dependencies proved
-foo.adb:28:14: info: initialization of "Tmp.X" proved
-foo.adb:30:12: info: initialization of "Tmp.X" proved
-foo.adb:31:12: info: initialization of "Tmp.Y" proved
-foo.adb:32:12: info: initialization of "Tmp.Z" proved
 foo.adb:37:23: info: initialization of "W" proved
 foo.adb:38:09: info: data dependencies proved
 foo.adb:39:09: info: flow dependencies proved

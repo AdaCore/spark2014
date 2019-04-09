@@ -3,4 +3,3 @@ buf_read.adb:47:24: info: range check proved (CVC4: 1 VC)
 buf_read.adb:50:29: info: range check proved (CVC4: 1 VC)
 buf_read.ads:7:25: info: initialization of "C" proved
 buf_read.ads:9:20: info: postcondition proved (CVC4: 2 VC)
-buf_read.ads:9:28: info: initialization of "C" proved

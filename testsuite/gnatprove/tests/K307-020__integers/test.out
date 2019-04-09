@@ -1,7 +1,7 @@
+casing.adb:4:07: info: initialization of "Res" proved
 casing.adb:9:34: info: overflow check proved (CodePeer)
-casing.adb:11:14: info: initialization of "Res" proved
+casing.adb:15:07: info: initialization of "Res" proved
 casing.adb:21:30: info: overflow check proved (CodePeer)
-casing.adb:22:14: info: initialization of "Res" proved
 casing.ads:5:20: info: postcondition proved (CVC4: 1 VC)
 casing.ads:5:34: info: overflow check proved (CVC4: 1 VC)
 casing.ads:9:20: info: postcondition proved (CVC4: 1 VC)

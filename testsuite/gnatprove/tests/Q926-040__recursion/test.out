@@ -1,18 +1,14 @@
+recursion.adb:9:07: info: initialization of "count" proved
+recursion.adb:10:07: info: initialization of "current_increment" proved
 recursion.adb:12:14: info: index check proved (CVC4: 2 VC)
-recursion.adb:19:19: info: initialization of "current_increment" proved
-recursion.adb:25:19: info: initialization of "current_increment" proved
 recursion.adb:25:37: info: overflow check proved (CVC4: 1 VC)
 recursion.adb:25:39: info: precondition proved (CVC4: 3 VC)
 recursion.adb:25:71: info: range check proved (CVC4: 1 VC)
-recursion.adb:33:14: info: initialization of "count" proved
-recursion.adb:43:32: info: initialization of "count" proved
 recursion.adb:43:32: info: loop invariant initialization proved (CVC4: 1 VC)
 recursion.adb:43:32: info: loop invariant preservation proved (CVC4: 1 VC)
 recursion.adb:43:47: info: overflow check proved (CVC4: 2 VC)
 recursion.adb:43:59: info: overflow check proved (CVC4: 2 VC)
-recursion.adb:53:22: info: initialization of "count" proved
 recursion.adb:53:28: info: overflow check proved (CVC4: 1 VC)
-recursion.adb:57:14: info: initialization of "count" proved
 recursion.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 recursion.ads:18:53: info: overflow check proved (CVC4: 1 VC)
 recursion.ads:18:65: info: overflow check proved (CVC4: 1 VC)

@@ -7,18 +7,12 @@ polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
 polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
 polyorb_hi-output.ads:45:08: info: flow dependencies proved
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:51:07: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:51:07: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:49:04: warning: formal object "Task_Deadline" is not referenced
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:37

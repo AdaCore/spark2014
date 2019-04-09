@@ -1,21 +1,17 @@
+main.adb:7:04: info: initialization of "Max" proved
 main.adb:10:09: medium: range check might fail
-main.adb:14:38: info: initialization of "Max" proved
 main.adb:15:18: info: range check proved (CVC4: 1 VC)
-main.adb:28:16: info: initialization of "Last" proved
-main.adb:28:34: info: initialization of "Cmd" proved
+main.adb:22:13: info: initialization of "Cmd" proved
+main.adb:23:13: info: initialization of "Last" proved
+main.adb:24:13: info: initialization of "V" proved
 main.adb:28:34: info: range check proved (CVC4: 4 VC)
 main.adb:29:16: high: private part of "S" is not initialized
 main.adb:29:17: medium: precondition might fail, cannot prove not S.Is_Empty (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
-main.adb:31:16: info: initialization of private part of "S" proved
 main.adb:34:38: info: range check proved (CVC4: 4 VC)
-main.adb:35:21: info: initialization of "Cmd" proved
 main.adb:35:21: info: range check proved (CVC4: 4 VC)
-main.adb:35:31: info: initialization of "Last" proved
 main.adb:35:41: warning: unused assignment to "Pos"
 main.adb:36:16: high: private part of "S" is not initialized
 main.adb:36:17: medium: precondition might fail, cannot prove not S.Is_Full (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
-main.adb:36:40: info: initialization of "V" proved
-main.adb:38:16: info: initialization of private part of "S" proved
 stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:12:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CVC4: 1 VC)

@@ -2,17 +2,12 @@ p.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 p.adb:12:19: info: postcondition proved (CVC4: 2 VC)
 p.adb:16:04: warning: analyzing unreferenced procedure "Sub"
 p.adb:16:14: warning: subprogram "Sub" has no effect
+p.adb:17:07: info: initialization of "Z" proved
 p.adb:22:22: info: postcondition proved (CVC4: 1 VC)
 p.adb:27:22: info: postcondition proved (CVC4: 2 VC)
 p.adb:32:22: info: assertion proved (CVC4: 1 VC)
-p.adb:32:22: info: initialization of "Z" proved
-p.adb:33:12: info: initialization of "Z" proved
 p.adb:34:22: info: assertion proved (CVC4: 1 VC)
-p.adb:34:22: info: initialization of "Z" proved
 p.adb:36:22: info: assertion proved (CVC4: 1 VC)
-p.adb:36:26: info: initialization of "Z" proved
-p.adb:37:12: info: initialization of "Z" proved
 p.adb:38:22: info: assertion proved (CVC4: 1 VC)
-p.adb:38:26: info: initialization of "Z" proved
 p.ads:9:19: info: postcondition proved (CVC4: 1 VC)
 p.ads:14:19: info: postcondition proved (CVC4: 2 VC)

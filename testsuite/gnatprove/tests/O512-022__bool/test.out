@@ -1,18 +1,4 @@
 bool.adb:4:14: info: postcondition proved (CVC4: 4 VC)
 bool.adb:15:14: info: postcondition proved (CVC4: 9 VC)
-bool.adb:29:34: info: initialization of "X" proved
-bool.adb:29:37: info: initialization of "Y" proved
-bool.adb:29:50: info: initialization of "X" proved
-bool.adb:29:53: info: initialization of "Y" proved
-bool.adb:30:34: info: initialization of "X" proved
-bool.adb:30:37: info: initialization of "Y" proved
-bool.adb:30:50: info: initialization of "X" proved
-bool.adb:30:53: info: initialization of "Y" proved
-bool.adb:31:34: info: initialization of "X" proved
-bool.adb:31:37: info: initialization of "Y" proved
-bool.adb:31:50: info: initialization of "X" proved
-bool.adb:31:53: info: initialization of "Y" proved
-bool.adb:32:34: info: initialization of "X" proved
-bool.adb:32:37: info: initialization of "Y" proved
-bool.adb:32:50: info: initialization of "X" proved
-bool.adb:32:53: info: initialization of "Y" proved
+bool.adb:27:04: info: initialization of "X" proved
+bool.adb:27:07: info: initialization of "Y" proved

@@ -1,5 +1,3 @@
-error.ads:7:14: info: initialization of "MyState" proved
-error.ads:9:14: info: initialization of "MyState" proved
 stacks.adb:10:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:11:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CodePeer)

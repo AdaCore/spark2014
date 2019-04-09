@@ -1,6 +1,1 @@
-map_list_incr.adb:13:26: info: initialization of "Cu.Node" proved
-map_list_incr.adb:16:50: info: initialization of "Cu.Node" proved
-map_list_incr.adb:19:45: info: initialization of "Cu.Node" proved
-map_list_incr.adb:21:27: info: initialization of "Cu.Node" proved
-map_list_incr.adb:21:43: info: initialization of "Cu.Node" proved
-map_list_incr.adb:22:16: info: initialization of "Cu.Node" proved
+no output

@@ -26,6 +26,4 @@ sv.adb:13:48: info: division check proved (CVC4: 1 VC)
 sv.adb:13:48: info: range check proved (CVC4: 1 VC)
 sv.adb:15:07: info: precondition proved (CVC4: 3 VC)
 sv.adb:17:40: info: range check proved (CVC4: 1 VC)
-sv.adb:18:53: info: initialization of "Res" proved
-sv.adb:19:14: info: initialization of "Res" proved
 sv.ads:17:14: info: postcondition proved (CVC4: 1 VC)

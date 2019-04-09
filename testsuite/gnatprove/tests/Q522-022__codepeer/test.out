@@ -1,11 +1,11 @@
+proof.adb:9:07: info: initialization of "T" proved
 proof.adb:11:15: info: precondition proved (CVC4: 4 VC)
 proof.adb:12:17: info: float overflow check proved (Interval)
 proof.adb:13:16: info: float overflow check proved (CodePeer)
-proof.adb:13:18: info: initialization of "T" proved
 proof.adb:14:18: info: range check proved (Interval)
+proof.adb:23:07: info: initialization of "T" proved
 proof.adb:25:15: info: precondition proved (CVC4: 4 VC)
 proof.adb:26:17: info: float overflow check proved (Interval)
 proof.adb:27:16: info: float overflow check proved (CodePeer)
-proof.adb:27:18: info: initialization of "T" proved
 proof.adb:28:18: info: range check proved (Interval)
 proof.ads:11:14: info: float overflow check proved (CVC4: 1 VC)

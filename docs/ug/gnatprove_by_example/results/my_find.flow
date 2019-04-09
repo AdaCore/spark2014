@@ -1,5 +1,1 @@
-my_find.adb:7:26: info: initialization of "Cu.Node" proved
-my_find.adb:8:70: info: initialization of "Cu.Node" proved
-my_find.adb:11:22: info: initialization of "Cu.Node" proved
-my_find.adb:12:17: info: initialization of "Cu.Node" proved
-my_find.adb:15:16: info: initialization of "Cu.Node" proved
+no output

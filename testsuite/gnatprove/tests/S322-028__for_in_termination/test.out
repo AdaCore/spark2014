@@ -31,17 +31,10 @@ bounded_table.ads:58:15: info: precondition proved (CVC4: 1 VC), in instantiatio
 bounded_table.ads:60:13: info: subprogram "Index_Of" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 repro_main.adb:4:11: info: subprogram "Repro_Main" will terminate, terminating annotation has been proved
 repro_main.adb:16:13: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:16:29: info: initialization of "Table" proved
 repro_main.adb:17:13: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:17:29: info: initialization of "Table" proved
 repro_main.adb:18:13: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:18:29: info: initialization of "Table" proved
 repro_main.adb:19:13: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:19:29: info: initialization of "Table" proved
 repro_main.adb:20:13: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:20:29: info: initialization of "Table" proved
 repro_main.adb:22:08: info: precondition proved (CVC4: 1 VC)
-repro_main.adb:22:13: info: initialization of "Table" proved
 repro_main.adb:23:38: info: precondition proved (CVC4: 2 VC)
-repro_main.adb:23:47: info: initialization of "Table" proved
 repro_main.adb:24:07: info: loop variant proved (CVC4: 1 VC)

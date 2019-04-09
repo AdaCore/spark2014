@@ -51,22 +51,16 @@ for_loops_on_lists.adb:46:10: info: precondition proved (CVC4: 1 VC)
 for_loops_on_lists.adb:46:34: info: precondition proved (CVC4: 1 VC)
 for_loops_on_lists.adb:46:50: info: range check proved (CVC4: 1 VC)
 for_loops_on_lists.adb:55:11: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.adb:57:24: info: initialization of "Count_0" proved
 for_loops_on_lists.adb:57:32: medium: overflow check might fail (e.g. when Count_0 = Natural'Last)
 for_loops_on_lists.adb:60:13: info: loop invariant initialization proved (CVC4: 2 VC)
 for_loops_on_lists.adb:60:13: info: loop invariant preservation proved (CVC4: 2 VC)
-for_loops_on_lists.adb:60:16: info: initialization of "Count_0" proved
 for_loops_on_lists.adb:60:34: info: precondition proved (CVC4: 2 VC)
 for_loops_on_lists.adb:60:54: info: precondition proved (CVC4: 2 VC)
 for_loops_on_lists.adb:62:13: info: loop invariant initialization proved (CVC4: 2 VC)
 for_loops_on_lists.adb:62:13: info: loop invariant preservation proved (CVC4: 2 VC)
-for_loops_on_lists.adb:62:16: info: initialization of "Count_1" proved
 for_loops_on_lists.adb:62:34: info: precondition proved (CVC4: 2 VC)
 for_loops_on_lists.adb:62:54: info: precondition proved (CVC4: 2 VC)
-for_loops_on_lists.adb:64:24: info: initialization of "Count_1" proved
 for_loops_on_lists.adb:64:32: medium: overflow check might fail (e.g. when Count_1 = Natural'Last)
-for_loops_on_lists.adb:67:14: info: initialization of "Count_1" proved
-for_loops_on_lists.adb:67:35: info: initialization of "Count_0" proved
 for_loops_on_lists.ads:10:14: info: postcondition proved (CVC4: 1 VC)
 for_loops_on_lists.ads:11:19: info: precondition proved (CVC4: 1 VC)
 for_loops_on_lists.ads:13:18: info: precondition proved (CVC4: 1 VC)
@@ -77,7 +71,6 @@ for_loops_on_lists.ads:16:49: info: precondition proved (CVC4: 2 VC)
 for_loops_on_lists.ads:18:46: info: initialization of "C.Node" proved
 for_loops_on_lists.ads:19:14: info: postcondition proved (CVC4: 4 VC)
 for_loops_on_lists.ads:19:42: info: precondition proved (CVC4: 1 VC)
-for_loops_on_lists.ads:19:54: info: initialization of "C.Node" proved
 for_loops_on_lists.ads:21:41: info: precondition proved (CVC4: 1 VC)
 for_loops_on_lists.ads:22:18: info: precondition proved (CVC4: 2 VC)
 for_loops_on_lists.ads:23:25: info: precondition proved (CVC4: 2 VC)

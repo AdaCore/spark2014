@@ -69,7 +69,6 @@ info_flow_tests.adb:137:25: info: initialization of "X" proved
 info_flow_tests.adb:138:12: info: data dependencies proved
 info_flow_tests.adb:140:18: medium: range check might fail
 info_flow_tests.adb:141:19: medium: range check might fail
-info_flow_tests.adb:143:15: info: initialization of "V" proved
 info_flow_tests.adb:153:23: info: initialization of "C" proved
 info_flow_tests.adb:159:12: info: data dependencies proved
 info_flow_tests.adb:161:18: medium: range check might fail

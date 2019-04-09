@@ -1,3 +1,0 @@
-a.ads:2:14: info: initialization of "c.x" proved
-b.ads:2:14: info: initialization of "c.x" proved
-c.ads:2:14: info: initialization of "X" proved

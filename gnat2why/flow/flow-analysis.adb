@@ -35,7 +35,6 @@ with Sem_Warn;                    use Sem_Warn;
 with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
-with Gnat2Why_Args;               use Gnat2Why_Args;
 with SPARK_Annotate;              use SPARK_Annotate;
 with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
@@ -58,9 +57,6 @@ package body Flow.Analysis is
 
    Debug_Trace_Depends     : constant Boolean := False;
    --  Enable this to show the specified and computed dependency relation
-
-   Debug_Trace_Check_Reads : constant Boolean := False;
-   --  Enable this to show in/unin status of each vertex/variable examines
 
    use type Ada.Containers.Count_Type;
    use type Flow_Graphs.Vertex_Id;
@@ -2171,18 +2167,28 @@ package body Flow.Analysis is
    -- Find_Use_Of_Uninitialized_Variables --
    -----------------------------------------
 
-   procedure Find_Use_Of_Uninitialized_Variables_NOK
+   procedure Find_Use_Of_Uninitialized_Variables
      (FA : in out Flow_Analysis_Graphs)
    is
       type Msg_Kind is (Unknown, Err);
 
-      procedure Emit_Message
+      procedure Emit_Check_Message
         (Var    : Flow_Id;
          Vertex : Flow_Graphs.Vertex_Id;
-         Kind   : Msg_Kind)
-      with Pre => not Is_Internal (Var);
+         Kind   : Msg_Kind;
+         OK     : in out Boolean)
+      with Pre  => not Is_Internal (Var),
+           Post => not OK;
       --  Produces an appropriately worded low/high message for variable Var
       --  when used at Vertex.
+
+      procedure Emit_Info_Message
+        (Var       : Flow_Id;
+         V_Initial : Flow_Graphs.Vertex_Id)
+      with Pre => not Is_Internal (Var)
+                  and then V_Initial /= Flow_Graphs.Null_Vertex;
+      --  Produces an appropriately worded info message for variable Var
+      --  introduced by V_Initial vertex.
 
       function Might_Be_Initialized
         (Var       : Flow_Id;
@@ -2204,17 +2210,20 @@ package body Flow.Analysis is
         (Var                  : Flow_Id;
          Start                : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
-         Visited              : in out Vertex_Sets.Set)
+         Visited              : in out Vertex_Sets.Set;
+         OK                   : in out Boolean)
       with Pre  => Var.Variant = Normal_Use
                    and then Start /= Flow_Graphs.Null_Vertex,
            Post => Vertex_Sets.Is_Subset (Subset => Visited'Old,
-                                          Of_Set => Visited);
+                                          Of_Set => Visited)
+                   and then (if not OK'Old then not OK);
       --  Detect uses of Var, which is an not-yet-initializes object, by
       --  looking at the PDG vertices originating from Start. For arrays this
       --  routine might be called recursively and then Possibly_Initialized
       --  is True iff some elements of the array have been written. Visited
       --  contains vertices that have been already examined; it is to prevent
-      --  infinite recursive calls.
+      --  infinite recursive calls. If any message is emitted, then OK will
+      --  become False; otherwise, if will be unmodified.
 
       function Is_Array (F : Flow_Id) return Boolean;
       --  Returns True iff F represents an array and thus requires special
@@ -2226,14 +2235,15 @@ package body Flow.Analysis is
       function Is_Init_By_Proof (F : Flow_Id) return Boolean;
       --  Returns True iff F is annotated with Has_Init_By_Proof
 
-      ------------------
-      -- Emit_Message --
-      ------------------
+      ------------------------
+      -- Emit_Check_Message --
+      ------------------------
 
-      procedure Emit_Message
+      procedure Emit_Check_Message
         (Var    : Flow_Id;
          Vertex : Flow_Graphs.Vertex_Id;
-         Kind   : Msg_Kind)
+         Kind   : Msg_Kind;
+         OK     : in out Boolean)
       is
          V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
 
@@ -2460,7 +2470,58 @@ package body Flow.Analysis is
                                Continuation => True);
             end;
          end if;
-      end Emit_Message;
+
+         OK := False;
+      end Emit_Check_Message;
+
+      -----------------------
+      -- Emit_Info_Message --
+      -----------------------
+
+      procedure Emit_Info_Message
+        (Var       : Flow_Id;
+         V_Initial : Flow_Graphs.Vertex_Id)
+      is
+         N : Node_Or_Entity_Id;
+
+      begin
+         if FA.Atr (V_Initial).Is_Global then
+            --  When the Global contract is generated we don't emit any
+            --  message, because it won't be obvious what such a message
+            --  actually means.
+            if FA.Is_Generative then
+               N := Empty;
+            else
+               N := Find_Global (FA.Spec_Entity, Var);
+            end if;
+         else
+            declare
+               E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+
+            begin
+               --  When variable has an explicit initialization expression,
+               --  then it is obviously initialized, so skip the info message.
+               if Ekind (E) = E_Variable
+                 and then (Present (Expression (Declaration_Node (E))))
+               then
+                  N := Empty;
+               else
+                  N := FA.Atr (V_Initial).Error_Location;
+               end if;
+            end;
+         end if;
+
+         if Present (N) then
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "initialization of & proved",
+               N        => N,
+               F1       => Var,
+               Tag      => Uninitialized,
+               Severity => Info_Kind,
+               Vertex   => V_Initial);
+         end if;
+      end Emit_Info_Message;
 
       ---------------------------------
       -- Has_Only_Infinite_Execution --
@@ -2597,7 +2658,8 @@ package body Flow.Analysis is
         (Var     : Flow_Id;
          Start   : Flow_Graphs.Vertex_Id;
          Possibly_Initialized : Boolean;
-         Visited : in out Vertex_Sets.Set)
+         Visited : in out Vertex_Sets.Set;
+         OK      : in out Boolean)
       is
          Position : Vertex_Sets.Cursor;
          Inserted : Boolean;
@@ -2636,7 +2698,7 @@ package body Flow.Analysis is
 
                      elsif Child_Atr.Variables_Explicitly_Used.Contains (Var)
                      then
-                        Emit_Message
+                        Emit_Check_Message
                           (Var    => Var,
                            Vertex => Child,
                            Kind   =>
@@ -2646,7 +2708,8 @@ package body Flow.Analysis is
                                                        V_Initial => Start,
                                                        V_Use     => Child)
                               then Unknown
-                              else Err));
+                              else Err),
+                           OK     => OK);
 
                      --  Otherwise, it is a partial assignment, e.g.
                      --     Arr (X) := Y;
@@ -2659,12 +2722,13 @@ package body Flow.Analysis is
                           (Var,
                            Start   => Child,
                            Possibly_Initialized => True,
-                           Visited => Visited);
+                           Visited => Visited,
+                           OK      => OK);
                      end if;
 
                   else
                      if Child_Atr.Variables_Used.Contains (Var) then
-                        Emit_Message
+                        Emit_Check_Message
                           (Var    => Var,
                            Vertex => Child,
                            Kind   =>
@@ -2672,7 +2736,8 @@ package body Flow.Analysis is
                                                        V_Initial => Start,
                                                        V_Use     => Child)
                               then Unknown
-                              else Err));
+                              else Err),
+                           OK     => OK);
                      end if;
                   end if;
                end if;
@@ -2680,190 +2745,11 @@ package body Flow.Analysis is
          end loop;
       end Scan_Children;
 
-   --  Start of processing for Find_Use_Of_Uninitialized_Variables_NOK
-
-   begin
-      for Parent of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            Parent_Key : Flow_Id      renames FA.DDG.Get_Key (Parent);
-            Parent_Atr : V_Attributes renames FA.Atr (Parent);
-
-            Visited : Vertex_Sets.Set;
-
-         begin
-            if Parent_Key.Variant = Initial_Value
-              and then not Parent_Atr.Is_Initialized
-              and then not Synthetic (Parent_Key)
-              and then not Is_Empty_Record_Object (Parent_Key)
-              and then not Is_Init_By_Proof (Parent_Key)
-            then
-               Scan_Children
-                 (Var     => Change_Variant (Parent_Key, Normal_Use),
-                  Start   => Parent,
-                  Possibly_Initialized => False,
-                  Visited => Visited);
-            end if;
-         end;
-      end loop;
-   end Find_Use_Of_Uninitialized_Variables_NOK;
-
-   procedure Find_Use_Of_Uninitialized_Variables
-     (FA : in out Flow_Analysis_Graphs)
-   is
-      function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean;
-      --  Returns True iff V should be considered for uninitialized variables
-
-      procedure Emit_Message (Var    : Flow_Id;
-                              Vertex : Flow_Graphs.Vertex_Id)
-      with Pre => not Is_Internal (Var);
-      --  Produces an info message for variable Var at location Vertex
-
-      function Expand_Initializes return Node_Sets.Set
-      with Pre  => FA.Kind in Kind_Package | Kind_Package_Body
-                   and then Present (FA.Initializes_N),
-           Post => (for all E of Expand_Initializes'Result =>
-                      Ekind (E) in E_Abstract_State | E_Constant | E_Variable);
-      --  Returns entities that appear (either directly or as immediate
-      --  constituents of an abstract state) on the LHS of the Initializes
-      --  contract of the currently analyzed package.
-      --
-      --  In other words, this routine down-projects the LHS of the Initializes
-      --  contract to the scope of the private part or body of the current
-      --  package (depending on the SPARK_Mode barrier).
-
-      ---------------------
-      -- Consider_Vertex --
-      ---------------------
-
-      function Consider_Vertex (V : Flow_Graphs.Vertex_Id) return Boolean is
-         V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
-         V_Atr : V_Attributes renames FA.Atr (V);
-      begin
-         --  Ignore synthetic null output
-         if V_Key.Kind = Synthetic_Null_Export then
-            return False;
-         end if;
-
-         --  Ignore final values that do not correspond to OUT mode parameters,
-         --  Output globals, etc.
-         if V_Key.Variant = Final_Value
-           and then not V_Atr.Is_Export
-         then
-            return False;
-         end if;
-
-         --  If we reach this point then the Vertex must be considered
-         return True;
-      end Consider_Vertex;
-
-      ------------------
-      -- Emit_Message --
-      ------------------
-
-      procedure Emit_Message (Var    : Flow_Id;
-                              Vertex : Flow_Graphs.Vertex_Id)
-      is
-         V_Key : Flow_Id renames FA.PDG.Get_Key (Vertex);
-
-         V_Initial : constant Flow_Graphs.Vertex_Id :=
-           FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
-
-         N : Node_Or_Entity_Id;
-
-      begin
-         if V_Key.Variant /= Final_Value then
-            N := Error_Location (FA.PDG, FA.Atr, Vertex);
-
-            --  When the message is a failed check we produce a more precise
-            --  location (but this can be very expensive, see the test for
-            --  Q824-007 for a good example). So, if the message is an info
-            --  message AND we use --report=fail (the default), we don't do
-            --  this refinement.
-
-            if Gnat2Why_Args.Report_Mode /= GPR_Fail then
-               N := First_Variable_Use
-                 (N        => N,
-                  Scope    => FA.B_Scope,
-                  Var      => Var,
-                  Precise  => True,
-                  Targeted => True);
-            end if;
-
-         elsif FA.Atr (V_Initial).Is_Global then
-            N := Find_Global (FA.Spec_Entity, Var);
-         else
-            N := FA.Atr (Vertex).Error_Location;
-         end if;
-
-         Error_Msg_Flow
-           (FA       => FA,
-            Msg      => "initialization of & proved",
-            N        => N,
-            F1       => Var,
-            Tag      => Uninitialized,
-            Severity => Info_Kind,
-            Vertex   => Vertex);
-      end Emit_Message;
-
-      ------------------------
-      -- Expand_Initializes --
-      ------------------------
-
-      function Expand_Initializes return Node_Sets.Set is
-         Results : Node_Sets.Set;
-
-         Initializes : constant Dependency_Maps.Map :=
-           Parse_Initializes (FA.Spec_Entity, FA.S_Scope);
-         --  Initializes aspect parsed into Flow_Ids
-
-      begin
-         for Clause in Initializes.Iterate loop
-            declare
-               E : constant Entity_Id :=
-                 Get_Direct_Mapping_Id (Dependency_Maps.Key (Clause));
-            begin
-               --  ??? here we basically down-project items on the LHS to the
-               --  FA.B_Scope, but we can't reuse the Down_Project routine yet,
-               --  as it trumps over the SPARK_Mode barrier (which is explained
-               --  in a ??? comment there).
-
-               if Ekind (E) = E_Abstract_State then
-                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
-                     if not Has_Null_Refinement (E) then
-                        for C of Iter (Refinement_Constituents (E)) loop
-                           Results.Insert (C);
-                        end loop;
-                     end if;
-                  elsif Private_Spec_In_SPARK (FA.Spec_Entity) then
-                     for C of Iter (Part_Of_Constituents (E)) loop
-                        Results.Insert (C);
-                     end loop;
-                  end if;
-               else
-                  pragma Assert (Ekind (E) in E_Constant | E_Variable);
-                  Results.Insert (E);
-               end if;
-            end;
-         end loop;
-
-         return Results;
-      end Expand_Initializes;
-
       --  Local variables
 
-      Expanded_Initializes : constant Node_Sets.Set :=
-        (if FA.Kind in Kind_Package | Kind_Package_Body
-           and then Present (FA.Initializes_N)
-         then Expand_Initializes
-         else Node_Sets.Empty_Set);
-      --  Objects that appear (either directly or via an abstract state) in LHS
-      --  of the Initializes contract of the currently analyzed pacakge, if
-      --  any.
-      --
-      --  Note: expanding the Initializes contract is much simpler and more
-      --  robust than locating an object there (or rather an abstract state
-      --  that contains such an object). Also, expansion saves us from dealing
-      --  with anomalies like Part_Of in private child units.
+      Used : Flow_Id_Sets.Set;
+      --  Objects that are genuinely used by the analysed routine; only for
+      --  those we want the "info: initialization proved" messages.
 
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
@@ -2876,143 +2762,87 @@ package body Flow.Analysis is
          return;
       end if;
 
-      Find_Use_Of_Uninitialized_Variables_NOK (FA);
+      --  We only want to emit info messages about objects that are actually
+      --  used by the analysed subprogram. Here we prescan the flow graph to
+      --  collect them.
 
-      --  We look at all vertices except for:
-      --     * exceptional ones and
-      --     * synthetic null output
-      for V of FA.DDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
+            V_Atr : V_Attributes renames FA.Atr (V);
+         begin
+            --  Ignore synthetic null output; this is an auxilary object
+            if Synthetic (V_Key)
 
-         if Consider_Vertex (V) then
-            --  For each used variable...
-            for Var_Used of FA.Atr (V).Variables_Used loop
-               declare
-                  Is_Uninitialized : Boolean;
-                  Is_Initialized   : Boolean;
+              --  Ignore 'Final objects that do not correspond to OUT mode
+              --  parameters, Output globals, etc.
 
-                  Initial_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
-                    FA.DDG.Get_Vertex
-                      (Change_Variant (Var_Used, Initial_Value));
+              or else (V_Key.Variant = Final_Value
+                       and then not V_Atr.Is_Export)
 
-                  Final_Value_Of_Var_Used : Flow_Graphs.Vertex_Id renames
-                    FA.DDG.Get_Vertex
-                      (Change_Variant (Var_Used, Final_Value));
+              --  Ignore own objects of the analysed pacakge, but only for
+              --  packages with a generated Initializes contract.
 
-               begin
-                  if FA.Atr (Initial_Value_Of_Var_Used).Is_Initialized
-
-                    --  Skip this check for objects written when elaborating a
-                    --  package, unless they appear in the explicit Initializes
-                    --  contract. For them we either emit an "info:
-                    --  initialization proved" message here, or an error in
-                    --  Check_Initializes_Contract.
-                    or else
-                      (Final_Value_Of_Var_Used = V
-                         and then
-                       FA.Kind in Kind_Package | Kind_Package_Body
-                         and then
-                       not Expanded_Initializes.Contains
-                              (Get_Direct_Mapping_Id (Var_Used)))
-
-                    --  Skip messages about initialization of internal objects,
-                    --  assuming that they are created by the frontend inlining
-                    --  and if they would cause access to an uninitialized
-                    --  objects then we should get an error when analyzing
-                    --  the inlined subprogram.
-                    or else
-                      Is_Internal (Var_Used)
-
-                    --  Skip object that represents the function 'Result
-                    or else
-                      Is_Function_Entity (Var_Used)
-
-                    --  Skip annoying message about initialization of records
-                    --  that carry no data.
-
-                    or else
-                      (Var_Used.Kind in Direct_Mapping | Record_Field
-                       and then
-                         ((Is_Type (Etype (Get_Direct_Mapping_Id (Var_Used)))
-                             and then
-                           (Is_Empty_Record_Type
-                              (Etype (Get_Direct_Mapping_Id (Var_Used)))))
-                            or else
-                            (Var_Used.Kind = Record_Field
-                             and then Var_Used.Facet = Normal_Part
-                             and then
-                             Is_Empty_Record_Type
-                               (Get_Type (Var_Used, FA.B_Scope)))))
-
-                    --  Ignore objects whose type is annotated as Init_By_Proof
-
-                    or else
-                      (Var_Used.Kind in Direct_Mapping | Record_Field
-                       and then Ekind (Get_Direct_Mapping_Id (Var_Used)) /=
-                                  E_Abstract_State
-                       and then Entity_In_SPARK
-                         (Get_Direct_Mapping_Id (Var_Used))
-                       and then Has_Init_By_Proof
-                         (Get_Type (Entire_Variable (Var_Used),
-                                    FA.B_Scope)))
-
-                  then
-                     --  ... we either do nothing because it is safe, or...
-                     null;
-
-                  else
-                     --  ... we check the in-neighbours in the DDG and see if
-                     --  they define it. We record initialized / uninitialized
-                     --  reads accordingly.
-
-                     Is_Uninitialized := False;
-                     Is_Initialized   := False;
-
-                     for V_Def of
-                       FA.DDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-                     loop
-                        declare
-                           Def_Atr : V_Attributes renames FA.Atr (V_Def);
-
-                        begin
-                           if V_Def = Initial_Value_Of_Var_Used then
-                              --  We're using the initial value
-                              pragma Assert (not Def_Atr.Is_Initialized);
-                              Is_Uninitialized := True;
-
-                           elsif Def_Atr.Variables_Defined.Contains (Var_Used)
-                             or else Def_Atr.Volatiles_Read.Contains (Var_Used)
-                           then
-                              --  We're using a previously written value
-                              Is_Initialized := True;
-                           end if;
-                        end;
-                     end loop;
-
-                     --  Some debug output before we issue the message
-                     if Debug_Trace_Check_Reads then
-                        Write_Str ("@" & FA.DDG.Vertex_To_Natural (V)'Img);
-                        if Is_Initialized then
-                           Write_Str (" INIT");
-                        end if;
-                        if Is_Uninitialized then
-                           Write_Str (" DIRTY");
-                        end if;
-                        Write_Str (" :");
-                        Print_Flow_Id (Var_Used);
-                     end if;
-
-                     --  Only OK messages are emitted here
-
-                     if Is_Initialized and not Is_Uninitialized then
-                        Emit_Message (Var    => Var_Used,
-                                      Vertex => V);
-                     end if;
-                  end if;
-               end;
-            end loop;
-         end if;
+              or else (V_Key.Variant = Final_Value
+                       and then V_Atr.Is_Export
+                       and then Ekind (FA.Spec_Entity) = E_Package
+                       and then No (FA.Initializes_N))
+            then
+               null;
+            else
+               Used.Union (V_Atr.Variables_Explicitly_Used);
+            end if;
+         end;
       end loop;
 
+      for Parent of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Parent_Key : Flow_Id      renames FA.DDG.Get_Key (Parent);
+            Parent_Atr : V_Attributes renames FA.Atr (Parent);
+
+            Visited : Vertex_Sets.Set;
+
+            OK : Boolean;
+            --  This flag will be initially True, but will become False if
+            --  any check is emitted when scanning the flow graph. If no such
+            --  checks are emitted, then all uses of the considered object are
+            --  safe and we will get a single info message.
+
+         begin
+            if Parent_Key.Variant = Initial_Value
+              and then not Parent_Atr.Is_Initialized
+              and then not Synthetic (Parent_Key)
+              and then not Is_Empty_Record_Object (Parent_Key)
+              and then not Is_Init_By_Proof (Parent_Key)
+            then
+               OK := True;
+
+               Scan_Children
+                 (Var     => Change_Variant (Parent_Key, Normal_Use),
+                  Start   => Parent,
+                  Possibly_Initialized => False,
+                  Visited => Visited,
+                  OK      => OK);
+
+               --  If no checks have been emitted, then emit an info message,
+               --  except for:
+               --  * an auxiliary 'Result object
+               --  * internal objects created by the frontend, because they
+               --    are always initialized-by-construction
+               --  * local objects that are never used by a subprogram,
+               --    because we don't care about them.
+
+               if OK
+                 and then not Is_Function_Entity (Parent_Key)
+                 and then Used.Contains
+                                 (Change_Variant (Parent_Key, Normal_Use))
+                 and then not Is_Internal (Parent_Key)
+               then
+                  Emit_Info_Message (Var => Parent_Key, V_Initial => Parent);
+               end if;
+            end if;
+         end;
+      end loop;
    end Find_Use_Of_Uninitialized_Variables;
 
    --------------------------

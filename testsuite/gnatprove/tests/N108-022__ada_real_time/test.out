@@ -1,6 +1,4 @@
-rt.adb:10:22: info: initialization of "T1" proved
+rt.adb:4:07: info: initialization of "T1" proved
+rt.adb:4:11: info: initialization of "T2" proved
 rt.adb:10:22: medium: assertion might fail, cannot prove T1 = T2
-rt.adb:10:27: info: initialization of "T2" proved
-rt.adb:12:12: info: initialization of "T1" proved
-rt.adb:12:17: info: initialization of "T2" proved
 rt.ads:8:18: info: initialization of "X" proved

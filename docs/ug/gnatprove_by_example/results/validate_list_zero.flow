@@ -1,6 +1,1 @@
 validate_list_zero.adb:4:43: info: initialization of "Success" proved
-validate_list_zero.adb:6:11: info: initialization of "Success" proved
-validate_list_zero.adb:10:26: info: initialization of "Cu.Node" proved
-validate_list_zero.adb:11:70: info: initialization of "Cu.Node" proved
-validate_list_zero.adb:13:22: info: initialization of "Cu.Node" proved
-validate_list_zero.adb:17:16: info: initialization of "Cu.Node" proved

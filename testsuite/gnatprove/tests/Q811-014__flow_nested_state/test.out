@@ -1,6 +1,6 @@
 pkg.adb:8:19: info: assertion proved (CVC4: 1 VC)
-pkg.adb:8:25: info: initialization of "Nested.State" proved
+pkg.ads:3:42: info: initialization of "Nested.State" proved
 pkg.ads:4:48: medium: postcondition might fail, cannot prove Get'Result
+proc.adb:3:42: info: initialization of "Nested.State" proved
 proc.adb:4:48: medium: postcondition might fail, cannot prove Get'Result
 proc.adb:14:19: info: assertion proved (CVC4: 1 VC)
-proc.adb:14:25: info: initialization of "Nested.State" proved

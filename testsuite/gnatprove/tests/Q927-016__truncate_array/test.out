@@ -1,3 +1,1 @@
-array_cntx.ads:10:19: info: initialization of "V1" proved
 array_cntx.ads:10:19: medium: assertion might fail, cannot prove V1 > V2 (e.g. when V1 = (others => 1) and V2 = (18446744073709551615 => 0, others => 1))
-array_cntx.ads:10:24: info: initialization of "V2" proved

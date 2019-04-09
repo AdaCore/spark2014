@@ -3,5 +3,3 @@ test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)
 wibble.adb:11:03: medium: precondition might fail, cannot prove Pid.Desired >= Float'First + Measured (e.g. when X = (Desired => -1.2498740E+0, Error => 0.0))
-wibble.adb:11:15: info: initialization of "X.Desired" proved
-wibble.adb:11:15: info: initialization of "X.Error" proved

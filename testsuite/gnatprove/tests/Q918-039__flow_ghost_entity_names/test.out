@@ -1,5 +1,1 @@
-p.adb:2:11: info: initialization of "q.f" proved
-p.adb:2:11: info: initialization of "q.g" proved
 p.adb:2:11: medium: ghost procedure "P" cannot have non-ghost global output "q.g" (SPARK RM 6.9(20))
-q.ads:2:14: info: initialization of "G" proved
-q.ads:3:14: info: initialization of "F" proved

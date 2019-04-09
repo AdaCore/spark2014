@@ -1,4 +1,1 @@
-init_list_zero.adb:10:26: info: initialization of "Cu.Node" proved
-init_list_zero.adb:11:70: info: initialization of "Cu.Node" proved
-init_list_zero.adb:13:27: info: initialization of "Cu.Node" proved
-init_list_zero.adb:14:16: info: initialization of "Cu.Node" proved
+no output

@@ -1,95 +1,70 @@
-nose_gear.adb:157:41: info: initialization of "NGRotations_out1" proved
-nose_gear.adb:161:43: info: initialization of "NGClickTime_out1" proved
-nose_gear.adb:165:43: info: initialization of "Millisecs_out1" proved
-nose_gear.adb:169:42: info: initialization of "Old_NGRotations_out1" proved
-nose_gear.adb:173:44: info: initialization of "Old_NGClickTime_out1" proved
-nose_gear.adb:177:44: info: initialization of "Old_NGClickTime_out1" proved
-nose_gear.adb:181:49: info: initialization of "Millisecs_out1" proved
-nose_gear.adb:185:48: info: initialization of "Old_NGClickTime_out1" proved
-nose_gear.adb:189:23: info: initialization of "Validity_Period_out1" proved
-nose_gear.adb:189:48: info: initialization of "Update_Period_OS_interrupt_out1" proved
-nose_gear.adb:193:21: info: initialization of "To_int32_Right_out1" proved
+nose_gear.adb:52:07: info: initialization of "Old_NGClickTime_out1" proved
+nose_gear.adb:53:07: info: initialization of "Old_NGRotations_out1" proved
+nose_gear.adb:54:07: info: initialization of "Old_estimatedGroundVelocity_out1" proved
+nose_gear.adb:55:07: info: initialization of "Max_uint16_out1" proved
+nose_gear.adb:56:07: info: initialization of "Max_uint16_1_out1" proved
+nose_gear.adb:57:07: info: initialization of "Max_uint16_2_out1" proved
+nose_gear.adb:58:07: info: initialization of "Millisecs_out1" proved
+nose_gear.adb:59:07: info: initialization of "NGClickTime_out1" proved
+nose_gear.adb:60:07: info: initialization of "NGRotations_out1" proved
+nose_gear.adb:61:07: info: initialization of "Wheel_Circunference_out1" proved
+nose_gear.adb:62:07: info: initialization of "ms_in_hour_out1" proved
+nose_gear.adb:63:07: info: initialization of "ms_in_our1_out1" proved
+nose_gear.adb:64:07: info: initialization of "Update_Period_OS_interrupt_out1" proved
+nose_gear.adb:65:07: info: initialization of "Validity_Period_out1" proved
+nose_gear.adb:66:07: info: initialization of "To_int32_Left_out1" proved
+nose_gear.adb:67:07: info: initialization of "To_int32_Left_1_out1" proved
+nose_gear.adb:68:07: info: initialization of "To_int32_Left_2_out1" proved
+nose_gear.adb:69:07: info: initialization of "To_int32_Right_out1" proved
+nose_gear.adb:70:07: info: initialization of "To_int32_Right_1_out1" proved
+nose_gear.adb:71:07: info: initialization of "To_int32_Right_2_out1" proved
+nose_gear.adb:72:07: info: initialization of "Data_Type_Conversion1_out1" proved
+nose_gear.adb:73:07: info: initialization of "Data_Type_Conversion_out1" proved
+nose_gear.adb:74:07: info: initialization of "Sum1_2_out1" proved
+nose_gear.adb:75:07: info: initialization of "Sum1_out1" proved
+nose_gear.adb:76:07: info: initialization of "Sum1_1_out1" proved
+nose_gear.adb:77:07: info: initialization of "Sum2_out1" proved
+nose_gear.adb:78:07: info: initialization of "Sum2_1_out1" proved
+nose_gear.adb:79:07: info: initialization of "Sum1_1_1_out1" proved
+nose_gear.adb:80:07: info: initialization of "Sum_out1" proved
+nose_gear.adb:81:07: info: initialization of "Sum2_2_out1" proved
+nose_gear.adb:82:07: info: initialization of "Compare_To_Constant_out1" proved
+nose_gear.adb:83:07: info: initialization of "Sum_1_out1" proved
+nose_gear.adb:84:07: info: initialization of "Sum_2_out1" proved
+nose_gear.adb:85:07: info: initialization of "Sum_3_out1" proved
+nose_gear.adb:86:07: info: initialization of "Left_out1" proved
+nose_gear.adb:87:07: info: initialization of "Left_1_out1" proved
+nose_gear.adb:88:07: info: initialization of "Left_2_out1" proved
+nose_gear.adb:89:07: info: initialization of "To_uint16_Result_out1" proved
+nose_gear.adb:90:07: info: initialization of "To_uint16_Result_1_out1" proved
+nose_gear.adb:91:07: info: initialization of "To_uint16_Result_2_out1" proved
+nose_gear.adb:92:07: info: initialization of "Distance_km_out1" proved
+nose_gear.adb:93:07: info: initialization of "Elapsed_Time_h_out1" proved
+nose_gear.adb:94:07: info: initialization of "Relational_Operator_out1" proved
+nose_gear.adb:95:07: info: initialization of "Avoid_Div_by_Zero_out1" proved
+nose_gear.adb:97:07: info: initialization of "Speed_out1" proved
+nose_gear.adb:98:07: info: initialization of "Old_output_if_new_invalid_out1" proved
 nose_gear.adb:193:42: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:193:45: info: initialization of "To_int32_Left_out1" proved
-nose_gear.adb:197:23: info: initialization of "To_int32_Right_1_out1" proved
 nose_gear.adb:197:46: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:197:49: info: initialization of "To_int32_Left_1_out1" proved
-nose_gear.adb:201:21: info: initialization of "To_int32_Left_out1" proved
 nose_gear.adb:201:41: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:201:44: info: initialization of "To_int32_Right_out1" proved
-nose_gear.adb:205:23: info: initialization of "To_int32_Left_1_out1" proved
 nose_gear.adb:205:45: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:205:48: info: initialization of "To_int32_Right_1_out1" proved
-nose_gear.adb:210:25: info: initialization of "To_int32_Right_2_out1" proved
 nose_gear.adb:210:48: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:210:51: info: initialization of "To_int32_Left_2_out1" proved
-nose_gear.adb:214:20: info: initialization of "Data_Type_Conversion1_out1" proved
 nose_gear.adb:214:48: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:214:51: info: initialization of "Data_Type_Conversion_out1" proved
-nose_gear.adb:218:23: info: initialization of "To_int32_Left_2_out1" proved
 nose_gear.adb:218:45: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:218:48: info: initialization of "To_int32_Right_2_out1" proved
-nose_gear.adb:222:48: info: initialization of "Sum_out1" proved
 nose_gear.adb:222:48: info: range check proved (Interval)
-nose_gear.adb:226:22: info: initialization of "Max_uint16_out1" proved
 nose_gear.adb:226:39: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:226:42: info: initialization of "Sum1_out1" proved
-nose_gear.adb:230:22: info: initialization of "Max_uint16_1_out1" proved
 nose_gear.adb:230:41: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:230:44: info: initialization of "Sum1_1_out1" proved
-nose_gear.adb:234:22: info: initialization of "Max_uint16_2_out1" proved
 nose_gear.adb:234:41: info: overflow check proved (CVC4: 1 VC)
-nose_gear.adb:234:44: info: initialization of "Sum1_1_1_out1" proved
-nose_gear.adb:239:11: info: initialization of "Sum2_out1" proved
-nose_gear.adb:240:23: info: initialization of "Sum2_out1" proved
-nose_gear.adb:242:23: info: initialization of "Sum_1_out1" proved
-nose_gear.adb:249:11: info: initialization of "Sum2_1_out1" proved
-nose_gear.adb:250:25: info: initialization of "Sum2_1_out1" proved
-nose_gear.adb:253:25: info: initialization of "Sum_2_out1" proved
-nose_gear.adb:261:11: info: initialization of "Sum2_2_out1" proved
-nose_gear.adb:262:25: info: initialization of "Sum2_2_out1" proved
-nose_gear.adb:264:25: info: initialization of "Sum_3_out1" proved
-nose_gear.adb:270:45: info: initialization of "Left_out1" proved
 nose_gear.adb:270:45: info: range check proved (CVC4: 1 VC)
 nose_gear.adb:273:22: info: assertion proved (CVC4: 1 VC)
-nose_gear.adb:273:22: info: initialization of "Left_1_out1" proved
-nose_gear.adb:275:47: info: initialization of "Left_1_out1" proved
 nose_gear.adb:275:47: info: range check proved (CVC4: 1 VC)
-nose_gear.adb:279:47: info: initialization of "Left_2_out1" proved
 nose_gear.adb:279:47: info: range check proved (CVC4: 1 VC)
-nose_gear.adb:283:40: info: initialization of "To_uint16_Result_out1" proved
 nose_gear.adb:283:40: info: range check proved (Interval)
 nose_gear.adb:283:64: info: float overflow check proved (CVC4: 1 VC)
-nose_gear.adb:283:67: info: initialization of "Wheel_Circunference_out1" proved
-nose_gear.adb:287:43: info: initialization of "To_uint16_Result_1_out1" proved
 nose_gear.adb:287:43: info: range check proved (Interval)
 nose_gear.adb:287:69: info: division check proved (CVC4: 1 VC)
 nose_gear.adb:287:69: info: float overflow check proved (CVC4: 1 VC)
-nose_gear.adb:287:72: info: initialization of "ms_in_hour_out1" proved
-nose_gear.adb:291:36: info: initialization of "To_uint16_Result_2_out1" proved
-nose_gear.adb:291:65: info: initialization of "Sum1_2_out1" proved
-nose_gear.adb:296:11: info: initialization of "To_uint16_Result_1_out1" proved
-nose_gear.adb:297:36: info: initialization of "Elapsed_Time_h_out1" proved
-nose_gear.adb:299:36: info: initialization of "ms_in_our1_out1" proved
-nose_gear.adb:305:45: info: initialization of "Relational_Operator_out1" proved
-nose_gear.adb:309:38: info: initialization of "Relational_Operator_out1" proved
-nose_gear.adb:309:67: info: initialization of "Compare_To_Constant_out1" proved
-nose_gear.adb:313:22: info: initialization of "Distance_km_out1" proved
 nose_gear.adb:313:40: info: division check proved (CVC4: 1 VC)
 nose_gear.adb:313:40: info: float overflow check proved (CVC4: 1 VC)
-nose_gear.adb:313:43: info: initialization of "Avoid_Div_by_Zero_out1" proved
-nose_gear.adb:322:10: info: initialization of "Relational_Operator_out1" proved
-nose_gear.adb:323:44: info: initialization of "Speed_out1" proved
-nose_gear.adb:325:44: info: initialization of "Old_estimatedGroundVelocity_out1" proved
-nose_gear.adb:331:34: info: initialization of "Old_output_if_new_invalid_out1" proved
-nose_gear.adb:335:45: info: initialization of "Old_output_if_new_invalid_out1" proved
-nose_gear.adb:339:33: info: initialization of "NGRotations_out1" proved
-nose_gear.adb:343:33: info: initialization of "NGClickTime_out1" proved
-nose_gear.ads:17:14: info: initialization of "Old_NGClickTime_memory" proved
-nose_gear.ads:17:14: info: initialization of "Old_NGRotations_memory" proved
-nose_gear.ads:17:14: info: initialization of "Old_estimatedGroundVelocity_memory" proved
-nose_gear.ads:19:14: info: initialization of "Old_NGClickTime_memory" proved
-nose_gear.ads:19:14: info: initialization of "Old_NGRotations_memory" proved
-nose_gear.ads:19:14: info: initialization of "Old_estimatedGroundVelocity_memory" proved
 nose_gear.ads:25:08: info: initialization of "estimatedGroundVelocity" proved
 nose_gear.ads:26:08: info: initialization of "estimatedGroundVelocityIsAvailable" proved

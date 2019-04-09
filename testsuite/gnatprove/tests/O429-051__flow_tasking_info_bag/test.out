@@ -1,5 +1,2 @@
 p.adb:7:24: warning: statement has no effect
 p.adb:30:07: warning: initialization of "X" has no effect
-p.adb:37:21: info: initialization of "Nonatomic_Int" proved
-p.ads:40:14: info: initialization of "CAE_Not" proved
-p.ads:40:14: info: initialization of "Nonatomic_Int" proved

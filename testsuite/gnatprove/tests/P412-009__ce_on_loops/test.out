@@ -1,4 +1,3 @@
-counter_example_loop_index.adb:14:33: info: initialization of "J" proved
 counter_example_loop_index.adb:14:33: info: loop invariant initialization proved (CVC4: 1 VC)
 counter_example_loop_index.adb:14:33: medium: loop invariant might fail after first iteration, cannot prove J = 0 (e.g. when J = 1)
 counter_example_loop_index.ads:8:14: warning: subprogram "P" has no effect

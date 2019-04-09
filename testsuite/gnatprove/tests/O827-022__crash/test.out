@@ -1,2 +1,2 @@
 pck.adb:2:04: warning: analyzing unreferenced procedure "Exchange_No_Post"
-pck.adb:8:12: info: initialization of "T" proved
+pck.adb:4:07: info: initialization of "T" proved

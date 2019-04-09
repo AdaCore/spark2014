@@ -7,74 +7,22 @@ a-cforse.ads:1428:06: "moth.config.read_only_conf" is referenced in Post but mis
 a-cforse.ads:1428:06: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
 moth-config.ads:37:08: info: data dependencies proved
 moth-config.ads:45:07: info: data dependencies proved
-moth-mailbox.adb:176:26: info: initialization of "mbx_mask" proved
-moth-mailbox.adb:184:14: info: initialization of "mbx_mask" proved
 moth-mailbox.adb:192:07: info: initialization of "status" proved
 moth-mailbox.adb:229:07: info: initialization of "status" proved
-moth-mailbox.adb:244:13: info: initialization of "ret" proved
-moth-mailbox.adb:245:23: info: initialization of "ret" proved
-moth-mailbox.adb:247:16: info: initialization of "status" proved
-moth-mailbox.adb:248:19: info: initialization of "ret" proved
-moth-mailbox.adb:363:64: info: initialization of "mbx_index" proved
-moth-scheduler.adb:134:14: info: initialization of private part of "Model.Ready" proved
-moth-scheduler.adb:135:30: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:136:32: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:138:39: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:139:39: info: initialization of private part of "Model.Ready" proved
-moth-scheduler.adb:140:29: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:141:41: info: initialization of private part of "Model.Ready" proved
-moth-scheduler.adb:142:50: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:144:49: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:146:30: info: initialization of "Model.Idle" proved
-moth-scheduler.adb:186:10: info: initialization of "index_id" proved
-moth-scheduler.adb:192:16: info: initialization of "index_id" proved
-moth-scheduler.adb:195:16: info: initialization of "index_id" proved
-moth-scheduler.adb:204:56: info: initialization of "index_id" proved
-moth-scheduler.adb:206:40: info: initialization of "index_id" proved
-moth-scheduler.adb:208:42: info: initialization of "index_id" proved
-moth-scheduler.adb:220:37: info: initialization of "index_id" proved
-moth-scheduler.adb:221:40: info: initialization of "index_id" proved
-moth-scheduler.adb:226:39: info: initialization of "index_id" proved
-moth-scheduler.adb:290:14: info: initialization of "current_task" proved
+moth-mailbox.adb:237:07: info: initialization of "ret" proved
+moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
 moth-scheduler.adb:290:24: info: initialization of "task_id" proved
-moth-scheduler.adb:293:30: info: initialization of "task_id" proved
-moth-scheduler.adb:322:23: info: initialization of "task_id" proved
-moth-scheduler.adb:358:68: info: initialization of "task_id" proved
-moth-scheduler.adb:361:36: info: initialization of "task_id" proved
-moth-scheduler.adb:363:10: info: initialization of "tmp_mask" proved
-moth-scheduler.adb:364:29: info: initialization of "task_id" proved
-moth-scheduler.adb:364:32: info: initialization of "tmp_mask" proved
-moth-scheduler.adb:366:22: info: initialization of "tmp_mask" proved
-moth-scheduler.adb:366:72: info: initialization of "task_id" proved
-moth-scheduler.adb:368:13: info: initialization of "tmp_mask" proved
-moth-scheduler.adb:371:37: info: initialization of "task_id" proved
-moth-scheduler.adb:376:34: info: initialization of "task_id" proved
-moth-scheduler.adb:393:36: info: initialization of "task_id" proved
-moth-scheduler.adb:396:31: info: initialization of "task_id" proved
-moth-scheduler.adb:412:36: info: initialization of "task_id" proved
-moth-scheduler.adb:442:32: info: initialization of "prev_id" proved
-moth-scheduler.adb:457:28: info: initialization of "task_id" proved
-moth-scheduler.adb:460:29: info: initialization of "prev_id" proved
-moth-scheduler.adb:460:38: info: initialization of "task_id" proved
+moth-scheduler.adb:354:07: info: initialization of "tmp_mask" proved
 moth.ads:114:10: info: flow dependencies proved
-moth.ads:116:20: info: initialization of private part of "Model.Ready" proved
-moth.ads:117:20: info: initialization of "Model.Idle" proved
 moth.ads:141:10: info: initialization of "Model.Idle" proved
 moth.ads:141:10: info: initialization of private part of "Model.Ready" proved
 moth.ads:190:23: info: initialization of "task_id" proved
-moth.ads:198:49: info: initialization of "task_id" proved
 moth.ads:205:24: info: initialization of "task_id" proved
-moth.ads:210:49: info: initialization of "task_id" proved
 moth.ads:217:28: info: initialization of "task_id" proved
-moth.ads:222:49: info: initialization of "task_id" proved
-moth.ads:242:17: info: initialization of "current_task" proved
-moth.ads:242:17: info: initialization of "mbx_mask" proved
 moth.ads:242:23: info: initialization of "task_id" proved
 moth.ads:292:26: info: initialization of "status" proved
 moth.ads:293:26: info: initialization of "mbx_entry.msg" proved
 moth.ads:293:26: info: initialization of "mbx_entry.sender_id" proved
 moth.ads:303:23: info: initialization of "status" proved
-moth.ads:323:14: info: initialization of "current_task" proved
-moth.ads:323:14: info: initialization of "mbx_mask" proved
 moth.ads:323:20: info: initialization of "task_id" proved
 gnatprove: error during flow analysis and proof

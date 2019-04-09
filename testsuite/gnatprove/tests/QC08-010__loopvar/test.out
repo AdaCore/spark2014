@@ -1,7 +1,3 @@
-loopvar.adb:4:10: info: initialization of "X" proved
 loopvar.adb:5:07: info: loop variant proved (CVC4: 1 VC)
-loopvar.adb:5:41: info: initialization of "X" proved
-loopvar.adb:6:12: info: initialization of "X" proved
 loopvar.adb:6:14: info: overflow check proved (CVC4: 1 VC)
-loopvar.adb:7:22: info: initialization of "X" proved
 loopvar.adb:7:22: medium: assertion might fail, cannot prove X > 0 (e.g. when X = 0)

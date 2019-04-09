@@ -26,78 +26,11 @@ ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 ints.ads:16:34: medium: overflow check might fail
 ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 ints.ads:26:25: info: postcondition proved (CVC4: 1 VC)
-test_ints.adb:7:24: info: initialization of "I.Max" proved
-test_ints.adb:7:24: info: initialization of "I.Min" proved
-test_ints.adb:7:24: info: initialization of "I.Value" proved
-test_ints.adb:9:04: info: initialization of "I.Max" proved
-test_ints.adb:9:04: info: initialization of "I.Min" proved
-test_ints.adb:9:04: info: initialization of "I.Value" proved
-test_ints.adb:10:04: info: initialization of "AI.Max" proved
-test_ints.adb:10:04: info: initialization of "AI.Min" proved
-test_ints.adb:10:04: info: initialization of "AI.Precision" proved
-test_ints.adb:10:04: info: initialization of "AI.Value" proved
 test_ints.adb:12:04: info: precondition proved (CVC4: 1 VC)
-test_ints.adb:12:10: info: initialization of "I.Max" proved
-test_ints.adb:12:10: info: initialization of "I.Min" proved
-test_ints.adb:12:10: info: initialization of "I.Value" proved
-test_ints.adb:13:04: info: initialization of "I.Max" proved
-test_ints.adb:13:04: info: initialization of "I.Min" proved
-test_ints.adb:13:04: info: initialization of "I.Value" proved
 test_ints.adb:13:05: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
 test_ints.adb:15:04: info: precondition proved (CVC4: 1 VC)
-test_ints.adb:15:10: info: initialization of "AI.Max" proved
-test_ints.adb:15:10: info: initialization of "AI.Min" proved
-test_ints.adb:15:10: info: initialization of "AI.Precision" proved
-test_ints.adb:15:10: info: initialization of "AI.Value" proved
 test_ints.adb:16:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10 [possible explanation: call at line 15 should mention Arg (for argument AI) in a postcondition]
-test_ints.adb:16:14: info: initialization of "AI.Max" proved
-test_ints.adb:16:14: info: initialization of "AI.Min" proved
-test_ints.adb:16:14: info: initialization of "AI.Value" proved
-test_ints.adb:18:04: info: initialization of "I.Max" proved
-test_ints.adb:18:04: info: initialization of "I.Min" proved
-test_ints.adb:18:04: info: initialization of "I.Value" proved
-test_ints.adb:19:04: info: initialization of "AI.Max" proved
-test_ints.adb:19:04: info: initialization of "AI.Min" proved
-test_ints.adb:19:04: info: initialization of "AI.Precision" proved
-test_ints.adb:19:04: info: initialization of "AI.Value" proved
-test_ints.adb:22:35: info: initialization of "I.Max" proved
-test_ints.adb:22:35: info: initialization of "I.Min" proved
-test_ints.adb:22:35: info: initialization of "I.Value" proved
-test_ints.adb:24:07: info: initialization of "IC.Max" proved
-test_ints.adb:24:07: info: initialization of "IC.Min" proved
-test_ints.adb:24:07: info: initialization of "IC.Value" proved
-test_ints.adb:24:07: info: initialization of extension of "IC" proved
 test_ints.adb:24:09: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:25:07: info: initialization of "IC.Max" proved
-test_ints.adb:25:07: info: initialization of "IC.Min" proved
-test_ints.adb:25:07: info: initialization of "IC.Value" proved
-test_ints.adb:25:07: info: initialization of extension of "IC" proved
-test_ints.adb:29:35: info: initialization of "AI.Max" proved
-test_ints.adb:29:35: info: initialization of "AI.Min" proved
-test_ints.adb:29:35: info: initialization of "AI.Precision" proved
-test_ints.adb:29:35: info: initialization of "AI.Value" proved
-test_ints.adb:31:07: info: initialization of "IC.Max" proved
-test_ints.adb:31:07: info: initialization of "IC.Min" proved
-test_ints.adb:31:07: info: initialization of "IC.Value" proved
-test_ints.adb:31:07: info: initialization of extension of "IC" proved
 test_ints.adb:31:09: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:32:07: info: initialization of "IC.Max" proved
-test_ints.adb:32:07: info: initialization of "IC.Min" proved
-test_ints.adb:32:07: info: initialization of "IC.Value" proved
-test_ints.adb:32:07: info: initialization of extension of "IC" proved
 test_ints.adb:35:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:35:25: info: initialization of "I.Max" proved
-test_ints.adb:35:25: info: initialization of "I.Min" proved
-test_ints.adb:35:25: info: initialization of "I.Value" proved
 test_ints.adb:36:04: medium: precondition might fail, cannot prove Arg.Value < Arg.Max - 10
-test_ints.adb:36:25: info: initialization of "AI.Max" proved
-test_ints.adb:36:25: info: initialization of "AI.Min" proved
-test_ints.adb:36:25: info: initialization of "AI.Precision" proved
-test_ints.adb:36:25: info: initialization of "AI.Value" proved
-test_ints.adb:38:04: info: initialization of "I.Max" proved
-test_ints.adb:38:04: info: initialization of "I.Min" proved
-test_ints.adb:38:04: info: initialization of "I.Value" proved
-test_ints.adb:39:04: info: initialization of "AI.Max" proved
-test_ints.adb:39:04: info: initialization of "AI.Min" proved
-test_ints.adb:39:04: info: initialization of "AI.Precision" proved
-test_ints.adb:39:04: info: initialization of "AI.Value" proved

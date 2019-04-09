@@ -1,4 +1,4 @@
+overflow_modulus.adb:7:04: info: initialization of "X" proved
+overflow_modulus.adb:8:04: info: initialization of "Y" proved
 overflow_modulus.adb:11:19: info: assertion proved (CVC4: 1 VC)
-overflow_modulus.adb:11:19: info: initialization of "X" proved
 overflow_modulus.adb:13:19: info: assertion proved (CVC4: 1 VC)
-overflow_modulus.adb:13:19: info: initialization of "Y" proved

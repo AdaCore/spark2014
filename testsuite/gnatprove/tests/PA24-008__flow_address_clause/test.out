@@ -1,2 +1,2 @@
-utils.adb:17:14: info: initialization of "Reg" proved
+utils.adb:12:07: info: initialization of "Reg" proved
 utils.ads:9:07: warning: unused variable "Address"

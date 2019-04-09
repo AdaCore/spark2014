@@ -1,2 +1,1 @@
-case_stmt.adb:18:09: info: initialization of "C" proved
-case_stmt.adb:29:04: info: initialization of "Res" proved
+case_stmt.adb:16:04: info: initialization of "Res" proved

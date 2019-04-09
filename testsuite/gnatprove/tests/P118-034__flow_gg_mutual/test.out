@@ -108,10 +108,6 @@ Generated contracts for do_a_b_c_b_a
 Generated contracts for a
    Initializes =>
       A.State_A
-a.ads:4:14: info: initialization of "Flag_A_0" constituent of "State_A" proved
-a.ads:5:14: info: initialization of "Flag_A_1" constituent of "State_A" proved
-a.ads:6:14: info: initialization of "Flag_A_2" constituent of "State_A" proved
-a.ads:8:14: info: initialization of "Flag_A_4" constituent of "State_A" proved
 Generated contracts for terminal_b
    Global =>
       In_Out =>
@@ -169,10 +165,6 @@ Generated contracts for do_b_c_b_a
 Generated contracts for b
    Initializes =>
       B.State_B
-b.ads:4:14: info: initialization of "Flag_B_0" constituent of "State_B" proved
-b.ads:5:14: info: initialization of "Flag_B_1" constituent of "State_B" proved
-b.ads:6:14: info: initialization of "Flag_B_2" constituent of "State_B" proved
-b.ads:7:14: info: initialization of "Flag_B_3" constituent of "State_B" proved
 Generated contracts for terminal_c
    Global =>
       In_Out =>
@@ -205,6 +197,3 @@ Generated contracts for do_c_b_a
 Generated contracts for c
    Initializes =>
       C.State_C
-c.ads:4:14: info: initialization of "Flag_C_0" constituent of "State_C" proved
-c.ads:5:14: info: initialization of "Flag_C_1" constituent of "State_C" proved
-c.ads:6:14: info: initialization of "Flag_C_2" constituent of "State_C" proved

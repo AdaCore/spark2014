@@ -1,2 +1,2 @@
-f.adb:15:14: info: initialization of "Y" proved
+f.adb:12:07: info: initialization of "Y" proved
 f.ads:11:17: info: postcondition proved (CVC4: 2 VC)

@@ -1,13 +1,4 @@
-chars.adb:10:22: info: initialization of "X" proved
-chars.adb:10:26: info: initialization of "Y" proved
-chars.adb:11:23: info: initialization of "WX" proved
-chars.adb:11:28: info: initialization of "WY" proved
-chars.adb:12:24: info: initialization of "WWX" proved
-chars.adb:12:30: info: initialization of "WWY" proved
 chars.adb:13:07: warning: initialization of "F" has no effect
 chars.adb:14:07: warning: initialization of "WF" has no effect
 chars.adb:15:07: warning: initialization of "WWF" has no effect
-chars.adb:17:15: info: initialization of "Z" proved
-chars.adb:17:26: info: initialization of "WZ" proved
-chars.adb:17:38: info: initialization of "WWZ" proved
 chars.ads:3:20: info: postcondition proved (CVC4: 1 VC)

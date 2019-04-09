@@ -20,16 +20,10 @@ a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at queue.ads:19
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at queue.ads:19
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at queue.ads:19
-queue.adb:6:07: info: initialization of private part of "R" proved
 queue.adb:6:19: info: precondition proved (CVC4: 1 VC)
 queue.adb:8:07: info: precondition proved (CVC4: 1 VC)
-queue.adb:8:20: info: initialization of private part of "R" proved
-queue.adb:9:14: info: initialization of private part of "R" proved
-queue.adb:13:07: info: initialization of private part of "R" proved
 queue.adb:13:19: info: precondition proved (CVC4: 1 VC)
 queue.adb:15:07: info: precondition proved (CVC4: 1 VC)
-queue.adb:15:16: info: initialization of private part of "R" proved
-queue.adb:16:14: info: initialization of private part of "R" proved
 queue.adb:21:14: info: precondition proved (CVC4: 1 VC)
 queue.ads:24:19: info: postcondition proved (CVC4: 1 VC)
 queue.ads:24:19: info: precondition proved (CVC4: 1 VC)

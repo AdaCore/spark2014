@@ -4,11 +4,9 @@ fxp_div.adb:22:30: info: range check proved (CVC4: 1 VC)
 fxp_div.adb:23:60: info: division check proved (CVC4: 1 VC)
 fxp_div.adb:31:19: info: overflow check proved (CVC4: 1 VC)
 fxp_div.adb:34:29: info: precondition proved (CVC4: 3 VC)
-fxp_div2.adb:8:47: info: initialization of "X" proved
 fxp_div2.adb:8:49: info: division check proved (CVC4: 1 VC)
 fxp_div2.adb:8:49: info: overflow check proved (CVC4: 1 VC)
 fxp_div2.adb:8:49: info: range check proved (CVC4: 1 VC)
-fxp_div2.adb:9:47: info: initialization of "X" proved
 fxp_div2.adb:9:49: info: division check proved (CVC4: 1 VC)
 fxp_div2.adb:9:49: info: overflow check proved (CVC4: 1 VC)
 fxp_div2.adb:9:49: info: range check proved (CVC4: 1 VC)

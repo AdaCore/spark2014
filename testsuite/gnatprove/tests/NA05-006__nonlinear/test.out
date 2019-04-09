@@ -1,10 +1,7 @@
 fait.adb:1:33: info: initialization of "R" proved
 fait.adb:1:36: info: initialization of "K" proved
 fait.adb:1:39: info: initialization of "Q" proved
-fait.adb:4:11: info: initialization of "Q" proved
 fait.adb:4:24: medium: postcondition might fail, cannot prove Q <= -J (e.g. when J = 1 and Q = 0)
 fait.adb:4:29: info: overflow check proved (CVC4: 1 VC)
 fait.adb:6:08: info: overflow check proved (CVC4: 1 VC)
-fait.adb:7:07: info: initialization of "R" proved
 fait.adb:7:08: info: overflow check proved (CVC4: 1 VC)
-fait.adb:8:07: info: initialization of "K" proved

@@ -1,5 +1,0 @@
-shift_main.adb:32:09: info: initialization of "A" proved
-shift_main.adb:33:09: info: initialization of "A" proved
-shift_main.adb:34:09: info: initialization of "A" proved
-shift_main.adb:35:09: info: initialization of "A" proved
-shift_main.adb:36:09: info: initialization of "A" proved

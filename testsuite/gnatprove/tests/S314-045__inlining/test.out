@@ -2,22 +2,10 @@ compiler.adb:27:40: info: data dependencies proved
 compiler.adb:46:10: info: data dependencies proved
 compiler.adb:49:24: info: cannot unroll loop (too many loop iterations)
 compiler.adb:50:18: medium: range check might fail
-compiler.adb:108:14: info: initialization of "i" proved, in call inlined at compiler.adb:971
-compiler.adb:108:14: info: initialization of "i" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:108:14: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023
-compiler.adb:108:14: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:108:14: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031
-compiler.adb:108:14: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
 compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
 compiler.adb:108:14: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:108:25: info: initialization of "i" proved, in call inlined at compiler.adb:971
-compiler.adb:108:25: info: initialization of "i" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:108:25: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023
-compiler.adb:108:25: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:108:25: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031
-compiler.adb:108:25: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
 compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:108:25: info: range check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
@@ -70,237 +58,10 @@ compiler.adb:109:14: medium: array index check might fail, in call inlined at co
 compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:312
 compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
 compiler.adb:109:14: medium: array index check might fail, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "J" proved
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1013
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1023
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1031
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1037
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1126
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1149
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1154
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:118
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:119
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:120
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:121
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:122
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:123
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:124
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1248
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:125
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:1250
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:126
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:127
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:128
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:129
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:130
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:131
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:132
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:133
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:134
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:135
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:136
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:137
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:138
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:139
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:140
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:141
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:142
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:143
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:144
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:145
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:146
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:147
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:149
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:150
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:151
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:153
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:312
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:679
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:698
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:699
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:768
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:769
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:770
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:788
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:797
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:798
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:799
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:817
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:849
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:856
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:877
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:907
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:908
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:915
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:916
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:925
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:952
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:971
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:979
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:982
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:995
-compiler.adb:109:17: info: initialization of "J" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "Result" proved
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1013
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1023
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1031
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1037
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1126
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1149
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1154
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:118
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:119
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:120
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:121
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:122
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:123
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:124
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1248
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:125
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:1250
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:126
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:127
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:128
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:129
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:130
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:131
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:132
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:133
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:134
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:135
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:136
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:137
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:138
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:139
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:140
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:141
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:142
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:143
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:144
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:145
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:146
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:147
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:149
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:150
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:151
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:153
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:312
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:679
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:698
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:699
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:768
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:769
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:770
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:788
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:797
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:798
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:799
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:817
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:849
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:856
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:877
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:907
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:908
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:915
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:916
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:925
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:952
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:971
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:979
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:982
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:995
-compiler.adb:109:17: info: initialization of "Result" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
 compiler.adb:109:20: info: index check proved (CVC4: 6 VC), in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:109:20: info: initialization of "Inline" proved, in call inlined at compiler.adb:312
-compiler.adb:109:20: info: initialization of "i" proved, in call inlined at compiler.adb:971
-compiler.adb:109:20: info: initialization of "i" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:109:20: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023
-compiler.adb:109:20: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:109:20: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031
-compiler.adb:109:20: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
 compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:109:20: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
@@ -310,116 +71,6 @@ compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at c
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:312
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
 compiler.adb:109:22: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:110:12: info: initialization of "J" proved
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1013
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1023
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1031
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1037
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1126
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1149
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1154
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:118
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:119
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:120
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:121
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:122
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:123
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:124
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1248
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:125
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:1250
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:126
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:127
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:128
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:129
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:130
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:131
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:132
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:133
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:134
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:135
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:136
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:137
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:138
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:139
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:140
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:141
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:142
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:143
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:144
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:145
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:146
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:147
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:149
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:150
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:151
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:153
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:312
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:679
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:698
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:699
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:768
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:769
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:770
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:788
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:797
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:798
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:799
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:817
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:849
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:856
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:877
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:907
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:908
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:915
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:916
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:925
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:952
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:971
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:979
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:982
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:995
-compiler.adb:110:12: info: initialization of "J" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
 compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
 compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
 compiler.adb:110:14: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:312
@@ -468,238 +119,17 @@ compiler.adb:110:14: info: overflow check proved (CVC4: 6 VC), in call inlined a
 compiler.adb:110:14: info: overflow check proved (CVC4: 6 VC), in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
 compiler.adb:110:14: info: overflow check proved (CVC4: 7 VC), in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
 compiler.adb:110:14: info: overflow check proved (CVC4: 7 VC), in call inlined at compiler.adb:1154
-compiler.adb:111:10: info: initialization of "J" proved
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1013
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1023
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1031
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1037
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1126
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1149
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1154
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:118
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:119
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:120
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:121
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:122
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:123
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:124
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1248
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:125
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:1250
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:126
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:127
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:128
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:129
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:130
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:131
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:132
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:133
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:134
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:135
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:136
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:137
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:138
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:139
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:140
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:141
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:142
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:143
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:144
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:145
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:146
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:147
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:149
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:150
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:151
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:153
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:312
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:679
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:698
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:699
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:768
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:769
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:770
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:788
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:797
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:798
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:799
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:817
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:849
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:856
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:877
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:907
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:908
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:915
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:916
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:925
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:952
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:971
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:979
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:982
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:995
-compiler.adb:111:10: info: initialization of "J" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
-compiler.adb:113:10: info: initialization of "Result" proved
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1013
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1013, in call inlined at compiler.adb:1163
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1023
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1023, in call inlined at compiler.adb:1163
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1031
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1031, in call inlined at compiler.adb:1163
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1037
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1037, in call inlined at compiler.adb:1163
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1126
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1149
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1154
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:118
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:119
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:120
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:121
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:122
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:123
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:124
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1248
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:125
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:1250
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:126
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:127
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:128
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:129
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:130
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:131
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:132
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:133
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:134
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:135
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:136
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:137
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:138
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:139
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:140
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:141
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:142
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:143
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:144
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:145
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:146
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:147
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:149
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:150
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:151
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:153
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:312
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:1129
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:690
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:639, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:1129
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:690
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:653, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:679
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:698
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:699
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:768
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:786
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:791
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:768, in call inlined at compiler.adb:796
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:769
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:786
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:791
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:769, in call inlined at compiler.adb:796
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:770
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:786
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:791
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:770, in call inlined at compiler.adb:796
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:788
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:797
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:798
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:799
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:817
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:817, in call inlined at compiler.adb:1138
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:849
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:849, in call inlined at compiler.adb:1157
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:856
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:856, in call inlined at compiler.adb:1157
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:877
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:877, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:907
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:907, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:908
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:908, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:915
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:915, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:916
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:916, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:925
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:925, in call inlined at compiler.adb:1159
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:952
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:952, in call inlined at compiler.adb:1161
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:971
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:971, in call inlined at compiler.adb:1161
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:979
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:979, in call inlined at compiler.adb:1161
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:982
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:982, in call inlined at compiler.adb:1161
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:995
-compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
 compiler.adb:159:13: warning: subprogram "Error" has no effect
 compiler.adb:300:20: info: initialization of "ch" proved
 compiler.adb:302:03: info: data dependencies proved
 compiler.adb:312:22: info: cannot unroll loop (too many loop iterations)
 compiler.adb:312:22: info: in inlined body at line 108
 compiler.adb:313:29: medium: range check might fail
-compiler.adb:315:18: info: initialization of "Inline" proved
 compiler.adb:323:21: medium: array index check might fail [possible explanation: subprogram at line 300 should mention char_pos in a precondition]
 compiler.adb:324:26: medium: range check might fail [possible explanation: subprogram at line 300 should mention char_pos in a precondition]
+compiler.adb:335:03: info: initialization of "result" proved
+compiler.adb:335:03: info: initialization of "result" proved, in call inlined at compiler.adb:452
 compiler.adb:338:50: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:452
-compiler.adb:343:10: info: initialization of "result" proved
-compiler.adb:343:10: info: initialization of "result" proved, in call inlined at compiler.adb:452
 compiler.adb:348:27: medium: array index check might fail, in call inlined at compiler.adb:443
 compiler.adb:389:20: info: range check proved (CVC4: 60 VC), in call inlined at compiler.adb:479
 compiler.adb:389:29: info: index check proved (CVC4: 30 VC), in call inlined at compiler.adb:479
@@ -723,211 +153,65 @@ compiler.adb:409:34: info: range check proved (CVC4: 4 VC), in call inlined at c
 compiler.adb:410:34: info: range check proved (CVC4: 4 VC), in call inlined at compiler.adb:479
 compiler.adb:411:34: info: range check proved (CVC4: 4 VC), in call inlined at compiler.adb:479
 compiler.adb:418:22: info: initialization of "sym" proved
-compiler.adb:427:16: info: initialization of "ch" proved
-compiler.adb:428:15: info: initialization of "ch_type" proved
-compiler.adb:431:06: info: initialization of "ch" proved
-compiler.adb:433:25: info: initialization of "ch" proved
-compiler.adb:437:18: info: initialization of "ch" proved
-compiler.adb:437:45: info: initialization of "ch" proved
-compiler.adb:437:72: info: initialization of "ch" proved
+compiler.adb:419:03: info: initialization of "ch" proved
+compiler.adb:420:03: info: initialization of "ch_type" proved
+compiler.adb:421:03: info: initialization of "start_Index" proved
+compiler.adb:421:16: info: initialization of "stop_index" proved
+compiler.adb:422:03: info: initialization of "i" proved
 compiler.adb:438:12: medium: array index check might fail [possible explanation: loop at line 435 should mention i in a loop invariant]
-compiler.adb:438:15: info: initialization of "i" proved
-compiler.adb:438:18: info: initialization of "ch" proved
-compiler.adb:439:12: info: initialization of "i" proved
 compiler.adb:439:14: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:441:10: info: initialization of "i" proved
 compiler.adb:441:12: medium: range check might fail [possible explanation: loop at line 435 should mention i in a loop invariant]
-compiler.adb:442:08: info: initialization of "ch" proved
 compiler.adb:442:43: medium: range check might fail [possible explanation: loop at line 435 should mention char_pos in a loop invariant]
 compiler.adb:443:37: medium: range check might fail [possible explanation: loop at line 435 should mention line in a loop invariant]
-compiler.adb:443:54: info: initialization of "i" proved
-compiler.adb:444:08: info: initialization of "sym" proved
-compiler.adb:445:16: info: initialization of "i" proved
 compiler.adb:445:18: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:445:35: info: cannot unroll loop (too many loop iterations)
 compiler.adb:452:20: medium: overflow check might fail [possible explanation: loop at line 451 should mention number in a loop invariant]
 compiler.adb:452:29: medium: overflow check might fail [possible explanation: loop at line 451 should mention number in a loop invariant]
-compiler.adb:452:31: info: initialization of "ch" proved
-compiler.adb:454:17: info: initialization of "ch" proved
-compiler.adb:456:08: info: initialization of "ch" proved
 compiler.adb:456:43: medium: range check might fail [possible explanation: loop at line 451 should mention char_pos in a loop invariant]
-compiler.adb:460:19: info: initialization of "start_Index" proved
-compiler.adb:462:08: info: initialization of "ch" proved
-compiler.adb:465:10: info: initialization of "ch" proved
-compiler.adb:465:37: info: initialization of "ch" proved
-compiler.adb:466:23: info: initialization of "start_Index" proved
 compiler.adb:466:35: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:468:12: info: initialization of "ch" proved
 compiler.adb:468:47: medium: range check might fail [possible explanation: call at line 464 should mention char_pos in a postcondition]
-compiler.adb:473:35: info: initialization of "start_Index" proved
 compiler.adb:473:35: medium: array index check might fail
-compiler.adb:474:08: info: initialization of "stop_index" proved
-compiler.adb:474:21: info: initialization of "start_Index" proved
 compiler.adb:477:41: info: index check proved (CVC4: 2 VC)
-compiler.adb:477:41: info: initialization of "stop_index" proved
 compiler.adb:479:12: info: range check proved (CVC4: 4 VC)
 compiler.adb:479:63: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:479:65: info: initialization of "stop_index" proved
 compiler.adb:479:76: info: overflow check proved (CVC4: 1 VC)
-compiler.adb:479:78: info: initialization of "start_Index" proved
-compiler.adb:480:08: info: initialization of "sym" proved
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1197 [possible explanation: loop at line 1193 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1200 [possible explanation: loop at line 1198 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1207 [possible explanation: loop at line 1193 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1210 [possible explanation: loop at line 1208 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1219 [possible explanation: loop at line 1215 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1237 [possible explanation: loop at line 1227 should mention table_index in a loop invariant]
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:518:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:519:34: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:527:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:530:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:531:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1197
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1200
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1207
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1210
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1219
-compiler.adb:531:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1237
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1197
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1200
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1207
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1210
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1219
-compiler.adb:532:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1237
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1197
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1200
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1219
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1237
 compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207 [possible explanation: loop at line 1193 should mention varcount in a loop invariant]
 compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210 [possible explanation: loop at line 1208 should mention varcount in a loop invariant]
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:535:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1197
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1200
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1207
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1210
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1219
-compiler.adb:535:40: info: initialization of "varcount" proved, in call inlined at compiler.adb:1237
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1197
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1200
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1207
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1210
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1219
-compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1237
 compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237 [possible explanation: loop at line 1227 should mention varcount in a loop invariant]
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1210
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1219
-compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
 compiler.adb:540:14: warning: unused assignment to "sym", in call inlined at compiler.adb:1219
-compiler.adb:553:15: info: initialization of "i" proved
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:1055
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:1101
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:703
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:880
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:964
-compiler.adb:553:15: info: initialization of "i" proved, in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
-compiler.adb:554:10: info: initialization of "i" proved
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:1055
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:1101
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:703
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:880
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:964
-compiler.adb:554:10: info: initialization of "i" proved, in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1055
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1101
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:703
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
 compiler.adb:554:12: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
-compiler.adb:556:10: info: initialization of "i" proved
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:1055
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:1101
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:703
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:880
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:964
-compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
 compiler.adb:577:21: medium: postcondition might fail, cannot prove Code(Code_Index).Instruction = instruction
 compiler.adb:590:28: medium: range check might fail [possible explanation: subprogram at line 569 should mention code_index in a precondition]
-compiler.adb:635:06: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:635:06: info: initialization of "sym" proved, in call inlined at compiler.adb:858
-compiler.adb:638:22: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:638:22: info: initialization of "sym" proved, in call inlined at compiler.adb:858
-compiler.adb:643:22: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:643:22: info: initialization of "sym" proved, in call inlined at compiler.adb:858
-compiler.adb:644:08: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:644:08: info: initialization of "sym" proved, in call inlined at compiler.adb:858
-compiler.adb:645:20: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:645:20: info: initialization of "sym" proved, in call inlined at compiler.adb:858
-compiler.adb:647:24: info: initialization of "sym" proved, in call inlined at compiler.adb:819
-compiler.adb:647:24: info: initialization of "sym" proved, in call inlined at compiler.adb:858
+compiler.adb:632:03: info: initialization of "saved_sym" proved
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:1129
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:690
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858
+compiler.adb:632:03: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
 compiler.adb:652:29: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1129
 compiler.adb:652:29: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:690
 compiler.adb:652:29: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
 compiler.adb:652:29: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:652:29: info: initialization of "saved_sym" proved
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:1129
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:690
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858
-compiler.adb:652:29: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:1129
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:690
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
 compiler.adb:653:41: info: index check proved (CVC4: 2 VC), in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
-compiler.adb:653:41: info: initialization of "saved_sym" proved
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:1129
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:690
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:819, in call inlined at compiler.adb:1138
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858
-compiler.adb:653:41: info: initialization of "saved_sym" proved, in call inlined at compiler.adb:858, in call inlined at compiler.adb:1157
+compiler.adb:672:03: info: initialization of "i" proved
 compiler.adb:679:28: info: in inlined body at line 108
 compiler.adb:679:28: info: unrolling loop
 compiler.adb:690:07: info: in inlined body at line 108
@@ -940,26 +224,13 @@ compiler.adb:698:28: info: in inlined body at line 108
 compiler.adb:698:28: info: unrolling loop
 compiler.adb:699:28: info: in inlined body at line 108
 compiler.adb:699:28: info: unrolling loop
-compiler.adb:704:10: info: initialization of "i" proved
-compiler.adb:705:23: info: initialization of "i" proved
-compiler.adb:711:42: info: initialization of "i" proved
-compiler.adb:711:65: info: initialization of "i" proved
 compiler.adb:718:19: medium: overflow check might fail [possible explanation: subprogram at line 666 should mention level and symbol_table in a precondition]
-compiler.adb:718:34: info: initialization of "i" proved
-compiler.adb:719:26: info: initialization of "i" proved
-compiler.adb:720:26: info: initialization of "i" proved
 compiler.adb:733:19: medium: overflow check might fail [possible explanation: subprogram at line 666 should mention level and symbol_table in a precondition]
-compiler.adb:733:34: info: initialization of "i" proved
-compiler.adb:734:26: info: initialization of "i" proved
-compiler.adb:735:26: info: initialization of "i" proved
-compiler.adb:768:08: info: initialization of "prev_sym" proved
-compiler.adb:768:08: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:786
-compiler.adb:768:08: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:791
-compiler.adb:768:08: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:796
-compiler.adb:769:11: info: initialization of "prev_sym" proved
-compiler.adb:769:11: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:786
-compiler.adb:769:11: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:791
-compiler.adb:769:11: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:796
+compiler.adb:761:03: info: initialization of "prev_sym" proved
+compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:786
+compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:791
+compiler.adb:761:03: info: initialization of "prev_sym" proved, in call inlined at compiler.adb:796
+compiler.adb:781:03: info: initialization of "prev_sym" proved
 compiler.adb:786:05: info: in inlined body at line 108
 compiler.adb:786:05: info: in inlined body at line 108
 compiler.adb:786:05: info: in inlined body at line 108
@@ -969,7 +240,6 @@ compiler.adb:786:05: info: in inlined body at line 770
 compiler.adb:786:05: info: unrolling loop
 compiler.adb:786:05: info: unrolling loop
 compiler.adb:786:05: info: unrolling loop
-compiler.adb:787:08: info: initialization of "prev_sym" proved
 compiler.adb:788:28: info: in inlined body at line 108
 compiler.adb:788:28: info: unrolling loop
 compiler.adb:791:05: info: in inlined body at line 108
@@ -990,119 +260,50 @@ compiler.adb:796:05: info: in inlined body at line 770
 compiler.adb:796:05: info: unrolling loop
 compiler.adb:796:05: info: unrolling loop
 compiler.adb:796:05: info: unrolling loop
-compiler.adb:797:08: info: initialization of "prev_sym" proved
 compiler.adb:797:51: info: in inlined body at line 108
 compiler.adb:797:51: info: unrolling loop
-compiler.adb:798:11: info: initialization of "prev_sym" proved
 compiler.adb:798:53: info: in inlined body at line 108
 compiler.adb:798:53: info: unrolling loop
 compiler.adb:799:31: info: in inlined body at line 108
 compiler.adb:799:31: info: unrolling loop
 compiler.adb:811:03: info: initialization of "sym" proved
-compiler.adb:822:06: info: initialization of "sym" proved
-compiler.adb:824:19: info: initialization of "sym" proved
-compiler.adb:827:18: info: initialization of "cx1" proved
-compiler.adb:827:18: info: initialization of "cx1" proved, in call inlined at compiler.adb:1138
-compiler.adb:828:06: info: initialization of "sym" proved
-compiler.adb:830:21: info: initialization of "sym" proved
-compiler.adb:832:18: info: initialization of "cx2" proved
-compiler.adb:832:18: info: initialization of "cx2" proved, in call inlined at compiler.adb:1138
+compiler.adb:815:03: info: initialization of "cx1" proved
+compiler.adb:815:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1138
+compiler.adb:815:08: info: initialization of "cx2" proved
+compiler.adb:815:08: info: initialization of "cx2" proved, in call inlined at compiler.adb:1138
 compiler.adb:842:03: info: initialization of "sym" proved
-compiler.adb:852:21: info: initialization of "sym" proved
-compiler.adb:853:15: info: initialization of "sym" proved
-compiler.adb:855:06: info: initialization of "sym" proved
-compiler.adb:859:21: info: initialization of "cx1" proved
-compiler.adb:859:21: info: initialization of "cx1" proved, in call inlined at compiler.adb:1157
+compiler.adb:846:03: info: initialization of "cx1" proved
+compiler.adb:846:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1157
 compiler.adb:869:03: info: initialization of "sym" proved
-compiler.adb:879:06: info: initialization of "sym" proved
-compiler.adb:881:19: info: initialization of "i" proved
-compiler.adb:881:19: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:883:06: info: initialization of "sym" proved
-compiler.adb:885:20: info: initialization of "sym" proved
+compiler.adb:873:03: info: initialization of "i" proved
+compiler.adb:873:03: info: initialization of "i" proved, in call inlined at compiler.adb:1159
+compiler.adb:874:03: info: initialization of "cx1" proved
+compiler.adb:874:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1159
+compiler.adb:874:08: info: initialization of "cx2" proved
+compiler.adb:874:08: info: initialization of "cx2" proved, in call inlined at compiler.adb:1159
+compiler.adb:875:03: info: initialization of "upwards" proved
+compiler.adb:875:03: info: initialization of "upwards" proved, in call inlined at compiler.adb:1159
 compiler.adb:889:13: medium: overflow check might fail, in call inlined at compiler.adb:1159 [possible explanation: subprogram at line 602 should mention symbol_table in a precondition]
-compiler.adb:889:28: info: initialization of "i" proved
-compiler.adb:889:28: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:890:20: info: initialization of "i" proved
-compiler.adb:890:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:891:20: info: initialization of "i" proved
-compiler.adb:891:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:893:06: info: initialization of "sym" proved
-compiler.adb:894:14: info: initialization of "sym" proved
-compiler.adb:896:20: info: initialization of "sym" proved
 compiler.adb:903:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
-compiler.adb:903:28: info: initialization of "i" proved
-compiler.adb:903:28: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:904:20: info: initialization of "i" proved
-compiler.adb:904:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:905:20: info: initialization of "i" proved
-compiler.adb:905:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:907:06: info: initialization of "upwards" proved
-compiler.adb:907:06: info: initialization of "upwards" proved, in call inlined at compiler.adb:1159
-compiler.adb:912:06: info: initialization of "sym" proved
-compiler.adb:914:19: info: initialization of "sym" proved
-compiler.adb:915:06: info: initialization of "upwards" proved
-compiler.adb:915:06: info: initialization of "upwards" proved, in call inlined at compiler.adb:1159
 compiler.adb:921:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
-compiler.adb:921:28: info: initialization of "i" proved
-compiler.adb:921:28: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:922:20: info: initialization of "i" proved
-compiler.adb:922:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:923:20: info: initialization of "i" proved
-compiler.adb:923:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
 compiler.adb:929:13: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1159
-compiler.adb:929:28: info: initialization of "i" proved
-compiler.adb:929:28: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:930:20: info: initialization of "i" proved
-compiler.adb:930:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:931:20: info: initialization of "i" proved
-compiler.adb:931:20: info: initialization of "i" proved, in call inlined at compiler.adb:1159
-compiler.adb:933:21: info: initialization of "cx1" proved
-compiler.adb:933:21: info: initialization of "cx1" proved, in call inlined at compiler.adb:1159
-compiler.adb:934:18: info: initialization of "cx2" proved
-compiler.adb:934:18: info: initialization of "cx2" proved, in call inlined at compiler.adb:1159
 compiler.adb:945:03: info: initialization of "sym" proved
-compiler.adb:956:20: info: initialization of "sym" proved
-compiler.adb:957:06: info: initialization of "sym" proved
-compiler.adb:959:09: info: initialization of "sym" proved
-compiler.adb:962:08: info: initialization of "sym" proved
-compiler.adb:963:08: info: initialization of "sym" proved
-compiler.adb:965:23: info: initialization of "i" proved
-compiler.adb:965:23: info: initialization of "i" proved, in call inlined at compiler.adb:1161
-compiler.adb:970:24: info: initialization of "i" proved
-compiler.adb:970:24: info: initialization of "i" proved, in call inlined at compiler.adb:1161
-compiler.adb:984:08: info: initialization of "sym" proved
-compiler.adb:988:21: info: initialization of "sym" proved
-compiler.adb:989:20: info: initialization of "cx1" proved
-compiler.adb:989:20: info: initialization of "cx1" proved, in call inlined at compiler.adb:1161
-compiler.adb:990:08: info: initialization of "sym" proved
-compiler.adb:992:23: info: initialization of "cx0" proved
-compiler.adb:992:23: info: initialization of "cx0" proved, in call inlined at compiler.adb:1161
-compiler.adb:994:18: info: initialization of "cx0" proved
-compiler.adb:994:18: info: initialization of "cx0" proved, in call inlined at compiler.adb:1161
+compiler.adb:949:03: info: initialization of "i" proved
+compiler.adb:949:03: info: initialization of "i" proved, in call inlined at compiler.adb:1161
+compiler.adb:950:03: info: initialization of "cx0" proved
+compiler.adb:950:03: info: initialization of "cx0" proved, in call inlined at compiler.adb:1161
+compiler.adb:950:08: info: initialization of "cx1" proved
+compiler.adb:950:08: info: initialization of "cx1" proved, in call inlined at compiler.adb:1161
 compiler.adb:1006:03: info: initialization of "sym" proved
-compiler.adb:1015:09: info: initialization of "sym" proved
-compiler.adb:1016:21: info: initialization of "num_to_spawn" proved
-compiler.adb:1016:21: info: initialization of "num_to_spawn" proved, in call inlined at compiler.adb:1163
+compiler.adb:1011:03: info: initialization of "cx1" proved
+compiler.adb:1011:03: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
 compiler.adb:1016:34: medium: overflow check might fail, in call inlined at compiler.adb:1163
-compiler.adb:1025:21: info: initialization of "sym" proved
-compiler.adb:1033:20: info: initialization of "cx1" proved
-compiler.adb:1033:20: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
-compiler.adb:1034:08: info: initialization of "sym" proved
-compiler.adb:1056:10: info: initialization of "i" proved
+compiler.adb:1047:03: info: initialization of "i" proved
+compiler.adb:1048:03: info: initialization of "cx1" proved
+compiler.adb:1048:08: info: initialization of "cx2" proved
 compiler.adb:1069:21: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1069:36: info: initialization of "i" proved
-compiler.adb:1070:28: info: initialization of "i" proved
-compiler.adb:1071:28: info: initialization of "i" proved
 compiler.adb:1088:21: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1088:36: info: initialization of "i" proved
-compiler.adb:1089:28: info: initialization of "i" proved
-compiler.adb:1090:28: info: initialization of "i" proved
-compiler.adb:1102:10: info: initialization of "i" proved
-compiler.adb:1103:23: info: initialization of "i" proved
 compiler.adb:1108:17: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
-compiler.adb:1108:32: info: initialization of "i" proved
-compiler.adb:1109:24: info: initialization of "i" proved
-compiler.adb:1110:24: info: initialization of "i" proved
 compiler.adb:1126:28: info: in inlined body at line 108
 compiler.adb:1126:28: info: unrolling loop
 compiler.adb:1129:07: info: in inlined body at line 108
@@ -1111,8 +312,6 @@ compiler.adb:1129:07: info: in inlined body at line 639
 compiler.adb:1129:07: info: in inlined body at line 653
 compiler.adb:1129:07: info: unrolling loop
 compiler.adb:1129:07: info: unrolling loop
-compiler.adb:1135:25: info: initialization of "cx1" proved
-compiler.adb:1136:22: info: initialization of "cx2" proved
 compiler.adb:1138:19: info: in inlined body at line 108
 compiler.adb:1138:19: info: in inlined body at line 108
 compiler.adb:1138:19: info: in inlined body at line 108
@@ -1126,7 +325,6 @@ compiler.adb:1138:19: info: unrolling loop
 compiler.adb:1138:19: info: unrolling loop
 compiler.adb:1149:33: info: in inlined body at line 108
 compiler.adb:1149:33: info: unrolling loop
-compiler.adb:1154:12: info: initialization of "newln" proved
 compiler.adb:1154:45: info: in inlined body at line 108
 compiler.adb:1154:45: info: unrolling loop
 compiler.adb:1157:24: info: in inlined body at line 108
@@ -1188,32 +386,24 @@ compiler.adb:1163:24: info: in inlined body at line 108
 compiler.adb:1163:24: info: in inlined body at line 108
 compiler.adb:1163:24: info: unrolling loop
 compiler.adb:1163:24: info: unrolling loop
-compiler.adb:1188:24: info: initialization of "table_index" proved
-compiler.adb:1189:33: info: initialization of "table_index" proved
+compiler.adb:1182:03: info: initialization of "varcount" proved
+compiler.adb:1183:03: info: initialization of "size" proved
+compiler.adb:1184:03: info: initialization of "start_table_index" proved
 compiler.adb:1197:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1200:22: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1207:18: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1210:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1219:19: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
 compiler.adb:1221:30: medium: overflow check might fail [possible explanation: subprogram at line 1176 should mention level in a precondition]
-compiler.adb:1221:35: info: initialization of "table_index" proved
 compiler.adb:1234:29: medium: range check might fail [possible explanation: call at line 1232 should mention number in a postcondition]
-compiler.adb:1237:09: info: initialization of "size" proved
 compiler.adb:1237:20: high: formal parameter "name" and global "line" are aliased (SPARK RM 6.4.2)
-compiler.adb:1245:50: info: initialization of "start_table_index" proved
-compiler.adb:1246:38: info: initialization of "start_table_index" proved
-compiler.adb:1248:21: info: initialization of "varcount" proved
 compiler.adb:1248:31: info: in inlined body at line 108
 compiler.adb:1248:31: info: unrolling loop
-compiler.adb:1249:31: info: initialization of "table_index" proved
 compiler.adb:1250:24: info: in inlined body at line 108
 compiler.adb:1250:24: info: unrolling loop
 compiler.adb:1253:49: info: range check proved (CVC4: 1 VC)
 compiler.adb:1263:03: warning: initialization of "sym" has no effect
-compiler.adb:1268:15: info: initialization of "sym" proved
 compiler.adb:1268:15: warning: unused assignment to "sym"
-compiler.adb:1268:20: info: initialization of "level" proved
-compiler.adb:1268:27: info: initialization of "table_index" proved
 compiler.adb:1315:21: info: initialization of "new_thread" proved
 compiler.adb:1339:46: info: unrolling loop
 compiler.adb:1351:19: medium: range check might fail
@@ -1223,18 +413,13 @@ compiler.adb:1385:15: info: ceiling priority protocol is respected (CVC4: 1 VC)
 compiler.adb:1386:27: info: initialization of "Success" proved
 compiler.adb:1418:13: info: ceiling priority protocol is respected (CVC4: 1 VC)
 compiler.adb:1418:13: medium: the task might terminate, which is not allowed in SPARK
+compiler.adb:1422:05: info: initialization of "Success" proved
+compiler.adb:1423:05: info: initialization of "Time" proved
+compiler.adb:1425:05: info: initialization of "Ready" proved
 compiler.adb:1428:27: info: unrolling loop
-compiler.adb:1430:10: info: initialization of "Success" proved
-compiler.adb:1435:08: info: initialization of "Which" proved
 compiler.adb:1440:27: info: index check proved (CVC4: 2 VC)
-compiler.adb:1441:10: info: initialization of "Ready" proved
-compiler.adb:1442:21: info: initialization of "Which" proved
 compiler.adb:1442:21: info: range check proved (CVC4: 1 VC)
-compiler.adb:1445:19: info: initialization of "Time" proved
-compiler.adb:1446:23: info: initialization of "Time" proved
-compiler.adb:1468:34: info: initialization of "Which" proved
 compiler.adb:1470:19: info: range check proved (CVC4: 1 VC)
-compiler.adb:1470:21: info: initialization of "S" proved
 compiler.adb:1470:30: info: overflow check proved (CVC4: 1 VC)
 compiler.adb:1470:30: medium: array index check might fail
 compiler.adb:1470:35: info: range check proved (CVC4: 1 VC)
@@ -1247,53 +432,25 @@ compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in c
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1788
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1796
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1804
-compiler.adb:1495:09: info: initialization of "base1" proved
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1781
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1788
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1796
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1804
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1815
-compiler.adb:1495:09: info: initialization of "base1" proved, in call inlined at compiler.adb:1853
-compiler.adb:1496:14: info: initialization of "lev" proved
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1781
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1788
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1796
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1804
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1815
-compiler.adb:1496:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1853
+compiler.adb:1492:03: info: initialization of "new_base" proved
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1781
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1788
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1796
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1804
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1815
+compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1853
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1781
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1788
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1796
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1804
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1815
 compiler.adb:1496:18: medium: overflow check might fail, in call inlined at compiler.adb:1853
-compiler.adb:1498:11: info: initialization of "lev" proved
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1781
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1788
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1796
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1804
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1815
-compiler.adb:1498:11: info: initialization of "lev" proved, in call inlined at compiler.adb:1853
-compiler.adb:1500:31: info: initialization of "base1" proved
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1781
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1788
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1796
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1804
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1815
-compiler.adb:1500:31: info: initialization of "base1" proved, in call inlined at compiler.adb:1853
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1781 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1788 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1796 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1804 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1815 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1500:31: medium: range check might fail, in call inlined at compiler.adb:1853 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
-compiler.adb:1502:33: info: initialization of "base1" proved
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1781
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1788
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1796
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1804
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1815
-compiler.adb:1502:33: info: initialization of "base1" proved, in call inlined at compiler.adb:1853
 compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1781 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1788 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
 compiler.adb:1502:33: medium: range check might fail, in call inlined at compiler.adb:1796 [possible explanation: loop at line 1498 should mention Processors in a loop invariant]
@@ -1306,263 +463,103 @@ compiler.adb:1502:63: medium: range check might fail, in call inlined at compile
 compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1804
 compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1815
 compiler.adb:1502:63: medium: range check might fail, in call inlined at compiler.adb:1853
-compiler.adb:1503:16: info: initialization of "new_base" proved
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1781
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1788
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1796
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1804
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1815
-compiler.adb:1503:16: info: initialization of "new_base" proved, in call inlined at compiler.adb:1853
-compiler.adb:1504:10: info: initialization of "base1" proved
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1781
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1788
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1796
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1804
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1815
-compiler.adb:1504:10: info: initialization of "base1" proved, in call inlined at compiler.adb:1853
-compiler.adb:1504:24: info: initialization of "new_stack" proved
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1781
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1788
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1796
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1804
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1815
-compiler.adb:1504:24: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1853
-compiler.adb:1505:16: info: initialization of "lev" proved
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1781
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1788
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1796
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1804
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1815
-compiler.adb:1505:16: info: initialization of "lev" proved, in call inlined at compiler.adb:1853
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1781
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1788
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1796
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1804
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1815
 compiler.adb:1505:20: medium: overflow check might fail, in call inlined at compiler.adb:1853
-compiler.adb:1507:14: info: initialization of "lev" proved
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1781
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1788
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1796
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1804
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1815
-compiler.adb:1507:14: info: initialization of "lev" proved, in call inlined at compiler.adb:1853
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1781
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1788
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1796
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1804
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1815
 compiler.adb:1507:18: info: overflow check proved (CVC4: 1 VC), in call inlined at compiler.adb:1853
-compiler.adb:1509:16: info: initialization of "new_stack" proved
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1781
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1788
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1796
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1804
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1815
-compiler.adb:1509:16: info: initialization of "new_stack" proved, in call inlined at compiler.adb:1853
-compiler.adb:1509:27: info: initialization of "base1" proved
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1781
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1788
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1796
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1804
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1815
-compiler.adb:1509:27: info: initialization of "base1" proved, in call inlined at compiler.adb:1853
-compiler.adb:1529:35: info: initialization of "Codes" proved, in call inlined at compiler.adb:1861
-compiler.adb:1529:57: info: initialization of "Spawn_Data" proved, in call inlined at compiler.adb:1861
-compiler.adb:1561:12: info: initialization of "Success" proved
 compiler.adb:1567:44: medium: range check might fail
 compiler.adb:1583:14: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
 compiler.adb:1584:18: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
 compiler.adb:1585:18: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
 compiler.adb:1601:46: medium: range check might fail
-compiler.adb:1636:15: info: initialization of "Codes" proved
-compiler.adb:1636:21: info: initialization of "Progreg" proved
-compiler.adb:1637:18: info: initialization of "Progreg" proved
+compiler.adb:1618:05: info: initialization of "Spawn_Data" proved
+compiler.adb:1619:05: info: initialization of "Code.data" proved
+compiler.adb:1619:05: info: initialization of "Code.instruction" proved
+compiler.adb:1619:05: info: initialization of "Code.level" proved
+compiler.adb:1624:05: info: initialization of "Caller.location" proved
+compiler.adb:1624:05: info: initialization of "Caller.stack" proved
+compiler.adb:1625:05: info: initialization of "New_Thread" proved
+compiler.adb:1626:05: info: initialization of "Tmp_Data" proved
+compiler.adb:1627:05: info: initialization of "Ready" proved
 compiler.adb:1637:26: medium: range check might fail [possible explanation: loop at line 1633 should mention Progreg in a loop invariant]
-compiler.adb:1640:12: info: initialization of "Code.instruction" proved
-compiler.adb:1644:18: info: initialization of "Top" proved
 compiler.adb:1644:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1645:47: info: initialization of "Top" proved
-compiler.adb:1645:52: info: initialization of "Code.data" proved
-compiler.adb:1649:16: info: initialization of "Code.data" proved
-compiler.adb:1653:58: info: initialization of "Basereg" proved
 compiler.adb:1653:66: info: range check proved (CVC4: 1 VC)
-compiler.adb:1654:65: info: initialization of "Top" proved
 compiler.adb:1654:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1654:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
 compiler.adb:1655:30: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1655:65: info: initialization of "Top" proved
 compiler.adb:1655:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1655:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1659:30: info: initialization of "Top" proved
 compiler.adb:1659:35: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1659:59: info: initialization of "Top" proved
-compiler.adb:1663:20: info: initialization of "Top" proved
 compiler.adb:1663:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1665:30: info: initialization of "Top" proved
-compiler.adb:1665:58: info: initialization of "Top" proved
 compiler.adb:1666:24: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1666:65: info: range check proved (CVC4: 1 VC)
-compiler.adb:1670:20: info: initialization of "Top" proved
 compiler.adb:1670:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1672:30: info: initialization of "Top" proved
-compiler.adb:1673:53: info: initialization of "Top" proved
 compiler.adb:1674:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1674:71: info: range check proved (CVC4: 1 VC)
-compiler.adb:1678:20: info: initialization of "Top" proved
 compiler.adb:1678:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1680:30: info: initialization of "Top" proved
-compiler.adb:1680:58: info: initialization of "Top" proved
 compiler.adb:1681:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1681:71: info: range check proved (CVC4: 1 VC)
-compiler.adb:1685:20: info: initialization of "Top" proved
 compiler.adb:1685:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1687:30: info: initialization of "Top" proved
-compiler.adb:1688:53: info: initialization of "Top" proved
 compiler.adb:1689:30: medium: divide by zero might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1689:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1689:71: info: range check proved (CVC4: 1 VC)
-compiler.adb:1694:30: info: initialization of "Top" proved
-compiler.adb:1694:58: info: initialization of "Top" proved
 compiler.adb:1694:75: info: division check proved (CVC4: 1 VC)
-compiler.adb:1698:20: info: initialization of "Top" proved
 compiler.adb:1698:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1700:30: info: initialization of "Top" proved
-compiler.adb:1703:58: info: initialization of "Top" proved
 compiler.adb:1704:76: info: range check proved (CVC4: 1 VC)
-compiler.adb:1710:20: info: initialization of "Top" proved
 compiler.adb:1710:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1712:30: info: initialization of "Top" proved
-compiler.adb:1715:58: info: initialization of "Top" proved
 compiler.adb:1716:77: info: range check proved (CVC4: 1 VC)
-compiler.adb:1722:20: info: initialization of "Top" proved
 compiler.adb:1722:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1724:30: info: initialization of "Top" proved
-compiler.adb:1727:58: info: initialization of "Top" proved
 compiler.adb:1728:76: info: range check proved (CVC4: 1 VC)
-compiler.adb:1734:20: info: initialization of "Top" proved
 compiler.adb:1734:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1736:29: info: initialization of "Top" proved
-compiler.adb:1739:57: info: initialization of "Top" proved
 compiler.adb:1740:72: info: range check proved (CVC4: 1 VC)
-compiler.adb:1746:20: info: initialization of "Top" proved
 compiler.adb:1746:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1748:30: info: initialization of "Top" proved
-compiler.adb:1750:57: info: initialization of "Top" proved
 compiler.adb:1751:72: info: range check proved (CVC4: 1 VC)
-compiler.adb:1757:20: info: initialization of "Top" proved
 compiler.adb:1757:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1759:30: info: initialization of "Top" proved
-compiler.adb:1761:57: info: initialization of "Top" proved
 compiler.adb:1762:73: info: range check proved (CVC4: 1 VC)
-compiler.adb:1768:48: info: initialization of "Top" proved
-compiler.adb:1769:17: info: initialization of "Tmp_Data" proved
-compiler.adb:1770:20: info: initialization of "Top" proved
 compiler.adb:1770:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1780:18: info: initialization of "Top" proved
 compiler.adb:1780:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1781:16: info: initialization of "Code.level" proved
-compiler.adb:1781:28: info: initialization of "Basereg" proved
 compiler.adb:1781:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1783:15: info: initialization of "Caller.location" proved
-compiler.adb:1783:15: info: initialization of "Code.data" proved
 compiler.adb:1783:43: medium: range check might fail [possible explanation: loop at line 1633 should mention Caller and Code in a loop invariant]
 compiler.adb:1783:61: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1784:47: info: initialization of "Top" proved
-compiler.adb:1784:52: info: initialization of "Tmp_Data" proved
-compiler.adb:1788:16: info: initialization of "Code.level" proved
-compiler.adb:1788:28: info: initialization of "Basereg" proved
 compiler.adb:1788:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1790:15: info: initialization of "Caller.location" proved
-compiler.adb:1790:15: info: initialization of "Code.data" proved
-compiler.adb:1790:15: info: initialization of "Top" proved
 compiler.adb:1790:61: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1791:27: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
 compiler.adb:1791:64: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1793:47: info: initialization of "Top" proved
-compiler.adb:1793:52: info: initialization of "Tmp_Data" proved
-compiler.adb:1796:16: info: initialization of "Code.level" proved
-compiler.adb:1796:28: info: initialization of "Basereg" proved
 compiler.adb:1796:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1797:46: info: initialization of "Top" proved
-compiler.adb:1799:28: info: initialization of "Caller.location" proved
 compiler.adb:1799:44: medium: range check might fail [possible explanation: loop at line 1633 should mention Caller and Code in a loop invariant]
-compiler.adb:1799:58: info: initialization of "Code.data" proved
 compiler.adb:1799:62: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1799:70: info: initialization of "Tmp_Data" proved
-compiler.adb:1800:18: info: initialization of "Top" proved
 compiler.adb:1800:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1804:16: info: initialization of "Code.level" proved
-compiler.adb:1804:28: info: initialization of "Basereg" proved
 compiler.adb:1804:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1805:46: info: initialization of "Top" proved
-compiler.adb:1807:28: info: initialization of "Caller.location" proved
-compiler.adb:1807:58: info: initialization of "Code.data" proved
 compiler.adb:1807:62: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
 compiler.adb:1808:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
-compiler.adb:1808:65: info: initialization of "Top" proved
 compiler.adb:1808:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
 compiler.adb:1808:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1809:30: info: initialization of "Tmp_Data" proved
-compiler.adb:1811:18: info: initialization of "Top" proved
 compiler.adb:1811:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1815:16: info: initialization of "Code.level" proved
-compiler.adb:1815:28: info: initialization of "Basereg" proved
 compiler.adb:1815:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1816:47: info: initialization of "Top" proved
 compiler.adb:1816:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1816:56: info: initialization of "Caller.location" proved
-compiler.adb:1817:47: info: initialization of "Top" proved
 compiler.adb:1817:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1817:56: info: initialization of "Basereg" proved
-compiler.adb:1818:47: info: initialization of "Top" proved
 compiler.adb:1818:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1818:56: info: initialization of "Progreg" proved
-compiler.adb:1819:47: info: initialization of "Top" proved
 compiler.adb:1819:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1820:47: info: initialization of "Top" proved
 compiler.adb:1820:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1820:56: info: initialization of "Caller.stack" proved
-compiler.adb:1821:22: info: initialization of "Top" proved
 compiler.adb:1821:26: info: range check proved (CVC4: 1 VC)
-compiler.adb:1822:34: info: initialization of "Code.data" proved
 compiler.adb:1822:38: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1826:38: info: initialization of "Top" proved
 compiler.adb:1826:43: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Code and Top in a loop invariant]
 compiler.adb:1826:43: medium: range check might fail [possible explanation: loop at line 1633 should mention Code and Top in a loop invariant]
-compiler.adb:1826:45: info: initialization of "Code.data" proved
-compiler.adb:1830:34: info: initialization of "Code.data" proved
 compiler.adb:1830:38: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1834:46: info: initialization of "Top" proved
-compiler.adb:1835:14: info: initialization of "Tmp_Data" proved
-compiler.adb:1836:36: info: initialization of "Code.data" proved
 compiler.adb:1836:40: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1838:18: info: initialization of "Top" proved
 compiler.adb:1838:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1844:18: info: initialization of "Top" proved
 compiler.adb:1844:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1845:46: info: initialization of "Top" proved
 compiler.adb:1845:62: info: range check proved (CVC4: 1 VC)
-compiler.adb:1846:47: info: initialization of "Top" proved
-compiler.adb:1846:52: info: initialization of "Tmp_Data" proved
-compiler.adb:1853:16: info: initialization of "Code.level" proved
-compiler.adb:1853:28: info: initialization of "Basereg" proved
 compiler.adb:1853:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
-compiler.adb:1855:26: info: initialization of "Caller.location" proved
-compiler.adb:1855:43: info: initialization of "Basereg" proved
-compiler.adb:1856:39: info: initialization of "Caller.stack" proved
-compiler.adb:1857:32: info: initialization of "Progreg" proved
-compiler.adb:1859:22: info: initialization of "Code.data" proved
 compiler.adb:1859:26: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1860:45: info: initialization of "New_Thread" proved
-compiler.adb:1861:11: info: initialization of "New_Thread" proved
 compiler.adb:1869:45: medium: array index check might fail [possible explanation: loop at line 1633 should mention Processors in a loop invariant]
-compiler.adb:1882:23: info: initialization of "Time" proved
-compiler.adb:1882:30: info: initialization of "Period" proved
-compiler.adb:1883:27: info: initialization of "Time" proved
-compiler.adb:1885:18: info: initialization of "Ready" proved
-compiler.adb:1892:18: info: initialization of "Top" proved
 compiler.adb:1892:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1893:47: info: initialization of "Top" proved
-compiler.adb:1897:17: info: initialization of "Progreg" proved
-compiler.adb:1912:57: info: initialization of "Spawn_Data" proved
+compiler.adb:1906:05: info: initialization of "Spawn_Data" proved

@@ -3,12 +3,9 @@ p.adb:3:18: warning: unused variable "Y"
 p.adb:5:15: info: postcondition proved (CVC4: 2 VC)
 p.adb:9:23: info: assertion proved (CVC4: 1 VC)
 p.adb:10:23: info: assertion proved (CVC4: 1 VC)
-p.adb:14:19: info: initialization of "X" proved
 p.adb:14:19: info: range check proved (CVC4: 4 VC)
 p.adb:17:20: info: assertion proved (CVC4: 1 VC)
 p.adb:18:20: info: assertion proved (CVC4: 1 VC)
 p.adb:19:05: info: precondition proved (CVC4: 2 VC)
-p.adb:19:08: info: initialization of "Y" proved
 p.adb:20:05: info: precondition proved (CVC4: 2 VC)
-p.adb:20:08: info: initialization of "X" proved
 p.adb:20:08: info: range check proved (CVC4: 4 VC)

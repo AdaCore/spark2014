@@ -1,25 +1,5 @@
-arrays.adb:6:14: info: initialization of "Arr" proved
-arrays.adb:7:14: info: initialization of "Arr" proved
-arrays.adb:8:14: info: initialization of "Arr" proved
 arrays.adb:8:26: info: overflow check proved (CVC4: 1 VC)
-arrays.adb:9:14: info: initialization of "Arr" proved
-arrays.adb:32:14: info: initialization of "Arr" proved
-arrays.adb:33:14: info: initialization of "Arr" proved
-arrays.adb:34:14: info: initialization of "Arr" proved
-arrays.adb:35:14: info: initialization of "Arr" proved
-arrays.adb:36:14: info: initialization of "Arr" proved
-arrays.adb:47:14: info: initialization of "Arr" proved
-arrays.adb:48:14: info: initialization of "Arr" proved
-arrays.adb:54:14: info: initialization of "Arr" proved
-arrays.adb:55:14: info: initialization of "Arr" proved
-arrays.adb:56:14: info: initialization of "Arr" proved
-arrays.adb:57:14: info: initialization of "Arr" proved
-arrays.adb:63:12: info: initialization of "A" proved
-arrays.adb:69:12: info: initialization of "A" proved
-arrays.adb:77:15: info: initialization of "Tmp" proved
-arrays.adb:83:14: info: initialization of "Arr" proved
-arrays.adb:84:14: info: initialization of "Arr" proved
-arrays.adb:85:14: info: initialization of "Arr" proved
+arrays.adb:73:07: info: initialization of "Tmp" proved
 arrays.adb:90:10: info: index check proved (CVC4: 2 VC)
 arrays.ads:14:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:16:51: info: overflow check proved (CVC4: 1 VC)
@@ -31,10 +11,8 @@ arrays.ads:45:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:49:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:53:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:56:29: info: initialization of "A" proved
-arrays.ads:57:19: info: initialization of "A" proved
 arrays.ads:57:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:60:30: info: initialization of "A" proved
-arrays.ads:61:19: info: initialization of "A" proved
 arrays.ads:61:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:65:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:69:19: info: postcondition proved (CVC4: 1 VC)

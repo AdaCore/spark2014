@@ -93,13 +93,6 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Find_Use_Of_Uninitialized_Variables_NOK
-     (FA : in out Flow_Analysis_Graphs);
-   --  ??? this routine has been separated from the above one; it only emits
-   --  checks about initialization not being OK and the original routine only
-   --  emits info messages. Separating those two is a temporary measure to make
-   --  the development and review easier.
-
    procedure Find_Input_Only_Used_In_Assertions
      (FA : in out Flow_Analysis_Graphs);
    --  Detect global inputs that are only used in assertions (and therefore

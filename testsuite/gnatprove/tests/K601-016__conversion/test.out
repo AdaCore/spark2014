@@ -1,3 +1,2 @@
-sub.adb:4:18: info: initialization of "Y" proved
 sub.adb:4:18: info: range check proved (CodePeer)
 sub.ads:6:14: warning: subprogram "P" has no effect

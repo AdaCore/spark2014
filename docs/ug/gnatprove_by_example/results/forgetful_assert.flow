@@ -1,5 +1,1 @@
 forgetful_assert.adb:1:29: info: initialization of "X" proved
-forgetful_assert.adb:7:19: info: initialization of "X" proved
-forgetful_assert.adb:9:27: info: initialization of "X" proved
-forgetful_assert.adb:11:19: info: initialization of "X" proved
-forgetful_assert.adb:12:19: info: initialization of "X" proved

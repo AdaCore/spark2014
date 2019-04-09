@@ -1,5 +1,3 @@
-nested.adb:31:20: info: initialization of "Helper_1.H_1" proved
-nested.adb:36:07: info: initialization of "B_2" constituent of "State_B" proved
-nested.adb:37:14: info: initialization of "A_2" constituent of "State_A" proved
+nested.adb:15:28: info: initialization of "Helper_1.H_1" proved
 nested.ads:3:23: warning: no procedure exists that can initialize abstract state "Nested.State_B"
 nested.ads:6:26: info: initialization of "X" proved

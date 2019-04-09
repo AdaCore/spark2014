@@ -1,7 +1,5 @@
 nested_pkg.adb:10:11: info: flow dependencies proved
 nested_pkg.adb:13:38: info: data dependencies proved
-nested_pkg.adb:19:07: info: initialization of "Foo" constituent of "State" proved
-nested_pkg.adb:20:07: info: initialization of "Bar" constituent of "State" proved
 nested_pkg.adb:29:14: info: data dependencies proved
 nested_pkg.adb:29:25: medium: "Z.State" constituent of "Nested_Pkg.Foobar" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
 nested_pkg.adb:44:14: info: data dependencies proved
@@ -26,10 +24,8 @@ stack_asm.ads:11:10: info: data dependencies proved
 stack_asm.ads:15:10: info: data dependencies proved
 stack_asm.ads:16:20: medium: postcondition might fail, cannot prove not (Is_Empty)
 stack_asm.ads:19:10: info: data dependencies proved
-stack_asm.ads:20:20: info: initialization of "The_Ptr" constituent of "State" proved
 stack_asm.ads:20:20: medium: postcondition might fail, cannot prove (Is_Empty)
 stack_asm.ads:23:10: info: data dependencies proved
-stack_asm.ads:24:20: info: initialization of "The_Ptr" constituent of "State" proved
 stack_asm.ads:24:20: medium: postcondition might fail, cannot prove (Is_Empty)
 test.adb:7:11: info: data dependencies proved
 test.adb:7:41: info: initialization of "Stack_ASM.State" proved
@@ -48,5 +44,4 @@ test.adb:24:21: medium: precondition might fail, cannot prove not (Is_Empty)
 test.adb:27:23: info: initialization of "I" proved
 test.adb:28:11: info: data dependencies proved
 test.adb:28:41: info: initialization of "Stack_ASM.State" proved
-test.adb:32:21: info: initialization of "Stack_ASM.State" proved
 test.adb:32:21: medium: precondition might fail, cannot prove not (Is_Empty)

@@ -1,11 +1,9 @@
 ic.adb:13:11: info: flow dependencies proved
-ic.adb:14:32: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
 ic.adb:16:07: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
 ic.adb:23:11: info: flow dependencies proved
 ic.adb:24:36: "Test_02.Y" constituent of "IC.State_B" must be initialized at elaboration
 ic.adb:26:07: info: initialization of "Test_02.X" constituent of "IC.State_A" proved
 ic.adb:31:11: info: flow dependencies proved
-ic.adb:32:32: info: initialization of "Test_03.X" constituent of "IC.State_A" proved
 ic.adb:34:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized
 ic.adb:34:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:34:07: info: initialization of "Test_03.X" constituent of "IC.State_A" proved
@@ -26,10 +24,6 @@ ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in t
 ic.adb:116:06: "Test_01.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
 ic.adb:116:06: info: data dependencies proved
 ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
-ic.adb:125:14: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:126:21: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:132:14: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:133:41: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
 ic.ads:3:08: info: flow dependencies proved
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
@@ -49,7 +43,6 @@ pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"
 pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
-pkg_a.ads:10:04: info: initialization of "Z" proved
 pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:12:04: low: initialization of "W" must be mentioned in the Initializes contract of "Pkg_A" (SPARK RM 7.1.5(9))
 pkg_a.ads:13:04: info: initialization of "Q" proved
@@ -66,10 +59,8 @@ pkg_e.adb:6:03: high: "X" constituent of "Meant_To_Be_Init" is not initialized i
 pkg_e.adb:6:03: high: initialization of "Pkg_E.Meant_To_Be_Init" is specified at pkg_e.ads:4
 pkg_e.adb:7:03: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.adb:14:06: warning: unused assignment
-pkg_e.adb:14:09: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.ads:3:27: warning: no procedure exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
 pkg_e.ads:8:03: high: "Vis_A" is not initialized in "Pkg_E"
-pkg_e.ads:9:03: info: initialization of "Vis_B" proved
 pkg_e.ads:11:03: low: initialization of "Vis_D" must be mentioned in the Initializes contract of "Pkg_E" (SPARK RM 7.1.5(9))
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved
 uninitialized.ads:6:11: info: data dependencies proved

@@ -1,3 +1,1 @@
 seqs.adb:6:19: info: assertion proved (CVC4: 1 VC)
-seqs.adb:6:27: info: initialization of "X" proved
-seqs.adb:6:30: info: initialization of "Y" proved

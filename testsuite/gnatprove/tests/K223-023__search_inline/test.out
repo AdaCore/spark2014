@@ -2,7 +2,6 @@ search.adb:8:13: info: loop invariant initialization proved (CVC4: 1 VC)
 search.adb:8:13: info: loop invariant preservation proved (CVC4: 1 VC)
 search.adb:8:21: info: range check proved (CVC4: 4 VC)
 search.adb:8:62: info: index check proved (CVC4: 4 VC)
-search.adb:14:14: info: initialization of "Pos" proved
 search.ads:6:10: info: postcondition proved (CVC4: 4 VC)
 search.ads:9:24: medium: array index check might fail (e.g. when Search'Result = 0)
 search.ads:10:54: info: overflow check proved (CodePeer)

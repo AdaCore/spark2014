@@ -1,4 +1,3 @@
-sccs.adb:3:14: info: initialization of "B" proved
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: statement has no effect

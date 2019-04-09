@@ -2,29 +2,19 @@ basicmath_small.adb:28:32: info: loop invariant initialization proved (CVC4: 1 V
 basicmath_small.adb:28:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:29:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:38:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:49:10: info: initialization of "RSI" proved
 basicmath_small.adb:49:10: info: precondition proved (CVC4: 1 VC)
 basicmath_small.adb:49:10: warning: unused assignment to "CarryFlag"
 basicmath_small.adb:49:10: warning: unused assignment to "OverflowFlag"
 basicmath_small.adb:49:10: warning: unused assignment to "SignFlag"
 basicmath_small.adb:49:10: warning: unused assignment to "ZeroFlag"
-basicmath_small.adb:55:13: info: initialization of "RSI" proved
-basicmath_small.adb:75:35: info: initialization of "SignFlag" proved
-basicmath_small.adb:82:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:89:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:89:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:90:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:95:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:113:26: info: initialization of "XMM1" proved
-basicmath_small.adb:116:44: info: initialization of "XMM1" proved
-basicmath_small.adb:136:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:143:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:143:32: info: loop invariant preservation proved (CVC4: 1 VC)
 basicmath_small.adb:144:32: info: loop invariant initialization proved (CVC4: 2 VC)
 basicmath_small.adb:149:37: medium: loop invariant might fail after first iteration, cannot prove X86.Memory(i) = X86.Memory'Loop_Entry(i)
-basicmath_small.adb:166:27: info: initialization of "XMM1" proved
-basicmath_small.adb:169:44: info: initialization of "XMM1" proved
-basicmath_small.adb:189:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:195:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:195:39: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:196:07: warning: initialization of "ra0" has no effect
@@ -167,17 +157,6 @@ basicmath_small.adb:964:07: warning: unused assignment to "RBP"
 basicmath_small.adb:964:07: warning: unused assignment to "RBX"
 basicmath_small.adb:1042:32: info: loop invariant initialization proved (CVC4: 1 VC)
 basicmath_small.adb:1042:32: info: loop invariant preservation proved (CVC4: 1 VC)
-basicmath_small.adb:1053:27: info: initialization of "RCX" proved
-basicmath_small.adb:1056:47: info: initialization of "RCX" proved
-basicmath_small.adb:1059:24: info: initialization of "RCX" proved
-basicmath_small.adb:1065:41: info: initialization of "RCX" proved
-basicmath_small.adb:1066:41: info: initialization of "RCX" proved
-basicmath_small.adb:1067:41: info: initialization of "RCX" proved
-basicmath_small.adb:1068:35: info: initialization of "SignFlag" proved
-basicmath_small.adb:1069:37: info: initialization of "RCX" proved
-basicmath_small.adb:1075:21: info: initialization of "CarryFlag" proved
-basicmath_small.adb:1078:37: info: initialization of "RCX" proved
-basicmath_small.adb:1088:24: info: initialization of "ZeroFlag" proved
 basicmath_small.adb:1094:07: warning: initialization of "SaveStackPtr" has no effect
 basicmath_small.adb:1094:39: info: range check proved (CVC4: 1 VC)
 basicmath_small.adb:1095:07: warning: initialization of "ra0" has no effect

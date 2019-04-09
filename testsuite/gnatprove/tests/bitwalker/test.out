@@ -17,26 +17,22 @@ bitwalker.adb:44:32: info: precondition proved (CVC4: 1 VC)
 bitwalker.adb:58:16: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:58:29: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:58:35: info: range check proved (Z3: 1 VC)
+bitwalker.adb:64:10: info: initialization of "Flag" proved
 bitwalker.adb:68:16: info: loop invariant initialization proved (Z3: 2 VC)
 bitwalker.adb:68:16: info: loop invariant preservation proved (Z3: 2 VC)
 bitwalker.adb:69:18: info: precondition proved (Z3: 4 VC)
 bitwalker.adb:69:56: info: range check proved (Z3: 2 VC)
 bitwalker.adb:70:18: info: precondition proved (Z3: 2 VC)
-bitwalker.adb:70:23: info: initialization of "Retval" proved
 bitwalker.adb:70:31: info: range check proved (Z3: 2 VC)
 bitwalker.adb:73:16: info: loop invariant initialization proved (altergo: 1 VC)
 bitwalker.adb:73:16: info: loop invariant preservation proved (Z3: 1 VC)
 bitwalker.adb:74:22: info: precondition proved (Z3: 2 VC)
-bitwalker.adb:74:27: info: initialization of "Retval" proved
 bitwalker.adb:74:35: info: range check proved (Z3: 2 VC)
 bitwalker.adb:76:21: info: precondition proved (Z3: 2 VC)
 bitwalker.adb:76:48: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:77:23: info: precondition proved (Z3: 1 VC)
-bitwalker.adb:77:34: info: initialization of "Retval" proved
 bitwalker.adb:77:56: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:77:56: info: range check proved (Z3: 1 VC)
-bitwalker.adb:77:61: info: initialization of "Flag" proved
-bitwalker.adb:80:17: info: initialization of "Retval" proved
 bitwalker.adb:89:54: info: range check proved (CVC4: 2 VC)
 bitwalker.adb:94:52: info: range check proved (CVC4: 1 VC)
 bitwalker.adb:96:22: info: assertion proved (CVC4: 1 VC)
@@ -53,6 +49,7 @@ bitwalker.adb:111:26: info: precondition proved (Z3: 1 VC)
 bitwalker.adb:111:46: info: division check proved (Z3: 1 VC)
 bitwalker.adb:111:46: info: index check proved (Z3: 2 VC)
 bitwalker.adb:111:57: info: division check proved (Z3: 1 VC)
+bitwalker.adb:119:07: info: initialization of "Flag" proved
 bitwalker.adb:121:16: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:121:28: info: range check proved (Z3: 1 VC)
 bitwalker.adb:121:36: info: overflow check proved (Z3: 1 VC)
@@ -80,7 +77,6 @@ bitwalker.adb:141:47: info: overflow check proved (Z3: 1 VC)
 bitwalker.adb:141:47: info: range check proved (Z3: 1 VC)
 bitwalker.adb:143:10: info: precondition proved (Z3: 2 VC)
 bitwalker.adb:144:31: info: overflow check proved (Z3: 1 VC)
-bitwalker.adb:145:25: info: initialization of "Flag" proved
 bitwalker.adb:147:25: info: assertion proved (Z3: 2 VC)
 bitwalker.adb:147:25: info: precondition proved (Z3: 2 VC)
 bitwalker.adb:148:25: info: precondition proved (Z3: 1 VC)
@@ -121,26 +117,23 @@ bitwalker.adb:178:24: medium: assertion might fail, cannot prove Nth (X, J) = Nt
 bitwalker.adb:178:32: info: range check proved (Z3: 1 VC)
 bitwalker.adb:178:37: info: precondition proved (Z3: 1 VC)
 bitwalker.adb:178:59: info: range check proved (Z3: 1 VC)
+bitwalker.adb:186:07: info: initialization of "Value" proved
 bitwalker.adb:190:16: info: precondition proved (Z3: 4 VC)
 bitwalker.adb:192:12: info: precondition proved (Z3: 3 VC)
-bitwalker.adb:192:27: info: initialization of "Value" proved
 bitwalker.adb:194:07: info: precondition proved (Z3: 5 VC)
-bitwalker.adb:194:31: info: initialization of "Value" proved
 bitwalker.adb:196:22: info: assertion proved (Z3: 1 VC)
-bitwalker.adb:196:22: info: initialization of "Result" proved
 bitwalker.adb:199:10: info: assertion proved (Z3: 2 VC)
 bitwalker.adb:200:12: info: precondition proved (Z3: 2 VC)
 bitwalker.adb:200:31: info: range check proved (Z3: 1 VC)
 bitwalker.adb:200:36: info: precondition proved (Z3: 2 VC)
 bitwalker.adb:200:58: info: range check proved (Z3: 1 VC)
+bitwalker.adb:209:07: info: initialization of "PokeResult" proved
 bitwalker.adb:212:12: info: precondition proved (Z3: 3 VC)
 bitwalker.adb:214:07: info: precondition proved (Z3: 5 VC)
 bitwalker.adb:216:22: info: assertion proved (Z3: 1 VC)
-bitwalker.adb:216:22: info: initialization of "PokeResult" proved
 bitwalker.adb:218:17: info: precondition proved (Z3: 4 VC)
 bitwalker.adb:220:22: info: precondition proved (Z3: 1 VC)
 bitwalker.adb:220:22: medium: assertion might fail, cannot prove Eq (Result, Value)
-bitwalker.adb:220:26: info: initialization of "Result" proved
 bitwalker.ads:12:14: medium: postcondition might fail, cannot prove PeekBit8'Result = Nth (Byte, 7 - Left)
 bitwalker.ads:12:32: info: precondition proved (CVC4: 1 VC)
 bitwalker.ads:12:45: info: range check proved (CVC4: 1 VC)
@@ -189,7 +182,6 @@ bitwalker.ads:85:13: info: precondition proved (Z3: 2 VC)
 bitwalker.ads:90:20: info: initialization of "Result" proved
 bitwalker.ads:93:24: info: range check proved (Z3: 1 VC)
 bitwalker.ads:96:16: info: postcondition proved (Z3: 19 VC)
-bitwalker.ads:96:17: info: initialization of "Result" proved
 bitwalker.ads:97:56: info: range check proved (Z3: 1 VC)
 bitwalker.ads:99:61: info: range check proved (Z3: 1 VC)
 bitwalker.ads:102:60: info: range check proved (Z3: 1 VC)
@@ -215,7 +207,6 @@ bitwalker.ads:131:55: info: range check proved (Z3: 1 VC)
 bitwalker.ads:135:28: info: initialization of "Result" proved
 bitwalker.ads:140:18: info: range check proved (Z3: 1 VC)
 bitwalker.ads:142:33: info: range check proved (Z3: 1 VC)
-bitwalker.ads:144:12: info: initialization of "Result" proved
 bitwalker.ads:144:12: info: postcondition proved (Z3: 3 VC)
 bitwalker.ads:145:39: info: range check proved (Z3: 1 VC)
 bitwalker.ads:146:15: info: precondition proved (Z3: 2 VC)
@@ -223,5 +214,4 @@ bitwalker.ads:146:39: info: precondition proved (Z3: 2 VC)
 bitwalker.ads:151:28: info: initialization of "Result" proved
 bitwalker.ads:156:18: info: range check proved (Z3: 1 VC)
 bitwalker.ads:158:29: info: range check proved (Z3: 1 VC)
-bitwalker.ads:161:11: info: initialization of "Result" proved
 bitwalker.ads:161:11: info: postcondition proved (Z3: 1 VC)

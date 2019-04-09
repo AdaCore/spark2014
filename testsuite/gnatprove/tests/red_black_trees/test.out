@@ -12,18 +12,13 @@ binary_trees.adb:17:08: info: postcondition proved (CVC4: 2 VC)
 binary_trees.adb:21:07: info: initialization of "S" proved
 binary_trees.adb:24:33: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:24:33: info: loop invariant preservation proved (CVC4: 1 VC)
-binary_trees.adb:24:41: info: initialization of "S" proved
 binary_trees.adb:26:13: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:26:13: info: loop invariant preservation proved (CVC4: 1 VC)
-binary_trees.adb:26:50: info: initialization of "S" proved
 binary_trees.adb:26:53: info: range check proved (CVC4: 2 VC)
 binary_trees.adb:27:33: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:27:33: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:27:33: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:27:46: info: initialization of "S" proved
 binary_trees.adb:28:15: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:28:20: info: initialization of "S" proved
-binary_trees.adb:30:14: info: initialization of "S" proved
 binary_trees.adb:41:44: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:59:33: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:60:42: info: index check proved (CVC4: 2 VC)
@@ -37,118 +32,69 @@ binary_trees.adb:109:27: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:113:36: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:113:36: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:113:73: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:124:07: info: initialization of "Unseen" proved
+binary_trees.adb:128:07: info: initialization of "R" proved
 binary_trees.adb:128:07: info: predicate check proved on default value (CVC4: 1 VC)
 binary_trees.adb:129:39: info: range check proved (CVC4: 1 VC)
-binary_trees.adb:134:19: info: initialization of "ToDo" proved
 binary_trees.adb:135:15: info: predicate check proved (CVC4: 1 VC)
-binary_trees.adb:135:18: info: initialization of "R" proved
-binary_trees.adb:140:13: info: initialization of "I" proved
-binary_trees.adb:142:33: info: initialization of "ToDo" proved
 binary_trees.adb:142:33: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:142:33: info: loop invariant preservation proved (CVC4: 1 VC)
 binary_trees.adb:142:39: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:142:39: info: initialization of "I" proved
 binary_trees.adb:146:13: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:146:13: info: loop invariant preservation proved (CVC4: 2 VC)
-binary_trees.adb:147:18: info: initialization of "ToDo" proved
-binary_trees.adb:147:32: info: initialization of "R" proved
 binary_trees.adb:152:13: info: loop invariant initialization proved (CVC4: 3 VC)
-binary_trees.adb:153:18: info: initialization of "ToDo" proved
 binary_trees.adb:155:36: medium: loop invariant might fail after first iteration, cannot prove not (R (J).A < R (K).A)
-binary_trees.adb:155:51: info: initialization of "R" proved
-binary_trees.adb:158:33: info: initialization of "R" proved
 binary_trees.adb:158:33: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:158:33: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:162:13: info: loop invariant initialization proved (CVC4: 3 VC)
 binary_trees.adb:162:13: info: loop invariant preservation proved (CVC4: 3 VC)
-binary_trees.adb:164:24: info: initialization of "R" proved
 binary_trees.adb:164:34: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:170:13: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:170:13: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:172:38: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:172:57: info: range check proved (CVC4: 2 VC)
-binary_trees.adb:173:28: info: initialization of "R" proved
 binary_trees.adb:180:13: info: loop invariant initialization proved (CVC4: 3 VC)
 binary_trees.adb:180:13: info: loop invariant preservation proved (CVC4: 3 VC)
 binary_trees.adb:182:63: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:183:33: info: initialization of "ToDo" proved
 binary_trees.adb:183:46: info: index check proved (CVC4: 4 VC)
-binary_trees.adb:184:26: info: initialization of "R" proved
 binary_trees.adb:189:13: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:189:13: info: loop invariant preservation proved (CVC4: 2 VC)
-binary_trees.adb:190:18: info: initialization of "R" proved
-binary_trees.adb:190:54: info: initialization of "ToDo" proved
 binary_trees.adb:190:67: info: index check proved (CVC4: 4 VC)
 binary_trees.adb:194:13: info: loop invariant initialization proved (CVC4: 3 VC)
-binary_trees.adb:197:22: info: initialization of "R" proved
 binary_trees.adb:198:24: medium: loop invariant might fail after first iteration, cannot prove J = K
-binary_trees.adb:202:33: info: initialization of "R" proved
 binary_trees.adb:202:33: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:202:33: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:207:13: info: loop invariant initialization proved (CVC4: 1 VC)
 binary_trees.adb:207:13: info: loop invariant preservation proved (CVC4: 1 VC)
-binary_trees.adb:208:23: info: initialization of "R" proved
-binary_trees.adb:208:49: info: initialization of "Unseen" proved
 binary_trees.adb:213:13: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:213:13: info: loop invariant preservation proved (CVC4: 2 VC)
-binary_trees.adb:214:26: info: initialization of "Unseen" proved
-binary_trees.adb:214:44: info: initialization of "R" proved
-binary_trees.adb:214:55: info: initialization of "ToDo" proved
 binary_trees.adb:217:10: info: loop variant proved (CVC4: 1 VC)
-binary_trees.adb:217:52: info: initialization of "Unseen" proved
 binary_trees.adb:220:20: info: precondition proved (CVC4: 1 VC)
-binary_trees.adb:220:28: info: initialization of "Unseen" proved
-binary_trees.adb:220:36: info: initialization of "I" proved
 binary_trees.adb:220:36: info: range check proved (CVC4: 1 VC)
+binary_trees.adb:223:13: info: initialization of "J" proved
 binary_trees.adb:226:23: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:226:23: info: initialization of "I" proved
-binary_trees.adb:227:16: info: initialization of "J" proved
 binary_trees.adb:228:31: medium: assertion might fail, cannot prove Length (Unseen) > 0
-binary_trees.adb:228:39: info: initialization of "Unseen" proved
 binary_trees.adb:229:19: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:229:21: info: predicate check proved (CVC4: 1 VC)
-binary_trees.adb:229:25: info: initialization of "J" proved
-binary_trees.adb:229:25: info: initialization of "R" proved
 binary_trees.adb:230:19: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:230:21: info: predicate check proved (CVC4: 1 VC)
 binary_trees.adb:230:28: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:230:33: info: initialization of "R" proved
 binary_trees.adb:230:41: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:230:41: info: initialization of "J" proved
 binary_trees.adb:230:43: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:231:22: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:231:25: info: initialization of "J" proved
-binary_trees.adb:231:25: info: initialization of "ToDo" proved
 binary_trees.adb:235:23: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:235:23: info: initialization of "I" proved
-binary_trees.adb:236:16: info: initialization of "J" proved
 binary_trees.adb:237:31: medium: assertion might fail, cannot prove Length (Unseen) > 0
-binary_trees.adb:237:39: info: initialization of "Unseen" proved
 binary_trees.adb:238:19: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:238:21: info: predicate check proved (CVC4: 1 VC)
-binary_trees.adb:238:25: info: initialization of "J" proved
-binary_trees.adb:238:25: info: initialization of "R" proved
 binary_trees.adb:239:19: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:239:21: info: predicate check proved (CVC4: 1 VC)
 binary_trees.adb:239:28: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:239:33: info: initialization of "R" proved
 binary_trees.adb:239:41: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:239:41: info: initialization of "J" proved
 binary_trees.adb:239:43: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:240:22: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:240:25: info: initialization of "J" proved
-binary_trees.adb:240:25: info: initialization of "ToDo" proved
 binary_trees.adb:245:16: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:245:19: info: initialization of "I" proved
-binary_trees.adb:245:19: info: initialization of "ToDo" proved
-binary_trees.adb:246:21: info: initialization of "ToDo" proved
 binary_trees.adb:252:10: info: assertion proved (CVC4: 3 VC)
 binary_trees.adb:254:60: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:255:30: info: initialization of "ToDo" proved
 binary_trees.adb:255:43: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:256:23: info: initialization of "R" proved
-binary_trees.adb:258:14: info: initialization of "R" proved
 binary_trees.adb:269:13: info: loop invariant initialization proved (CVC4: 2 VC)
 binary_trees.adb:269:13: info: loop invariant preservation proved (CVC4: 2 VC)
 binary_trees.adb:270:18: info: invariant check proved (CVC4: 2 VC)
@@ -262,8 +208,6 @@ binary_trees.adb:391:64: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:391:64: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:391:87: info: overflow check proved (CVC4: 2 VC)
 binary_trees.adb:397:07: info: precondition proved (CVC4: 2 VC)
-binary_trees.adb:407:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:407:07: info: initialization of "F_Old.S" proved
 binary_trees.adb:414:09: info: data dependencies proved
 binary_trees.adb:428:25: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:431:20: info: invariant check proved (CVC4: 1 VC)
@@ -491,26 +435,16 @@ binary_trees.adb:608:38: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:608:43: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:608:43: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:608:53: info: range check proved (CVC4: 4 VC)
-binary_trees.adb:615:10: info: initialization of "V" proved
 binary_trees.adb:621:25: info: assertion proved (CVC4: 1 VC)
 binary_trees.adb:621:30: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:621:30: info: initialization of "V" proved
 binary_trees.adb:622:15: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:622:27: info: initialization of "V" proved
 binary_trees.adb:623:15: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:623:25: info: initialization of "V" proved
 binary_trees.adb:627:10: info: assertion proved (CVC4: 2 VC)
 binary_trees.adb:629:29: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:631:10: info: assertion proved (CVC4: 2 VC)
 binary_trees.adb:633:29: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:635:10: info: initialization of "V" proved
-binary_trees.adb:636:10: info: initialization of "F_Old.C" proved
-binary_trees.adb:636:10: info: initialization of "F_Old.S" proved
-binary_trees.adb:636:10: info: initialization of "V" proved
 binary_trees.adb:636:10: info: precondition proved (CVC4: 16 VC)
 binary_trees.adb:636:10: medium: invariant check might fail
-binary_trees.adb:650:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:650:07: info: initialization of "F_Old.S" proved
 binary_trees.adb:657:09: info: data dependencies proved
 binary_trees.adb:672:29: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:675:25: info: index check proved (CVC4: 2 VC)
@@ -775,12 +709,8 @@ binary_trees.adb:874:35: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:874:49: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:885:15: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:886:15: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:888:10: info: initialization of "F_Old.C" proved
-binary_trees.adb:888:10: info: initialization of "F_Old.S" proved
 binary_trees.adb:888:10: info: precondition proved (CVC4: 18 VC)
 binary_trees.adb:888:10: medium: invariant check might fail
-binary_trees.adb:902:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:902:07: info: initialization of "F_Old.S" proved
 binary_trees.adb:909:09: info: data dependencies proved
 binary_trees.adb:922:24: info: invariant check proved (CVC4: 1 VC)
 binary_trees.adb:922:24: info: precondition proved (CVC4: 1 VC)
@@ -884,22 +814,13 @@ binary_trees.adb:1044:39: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1044:39: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:1044:49: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:1049:16: info: range check proved (CVC4: 1 VC)
-binary_trees.adb:1053:24: info: initialization of "V" proved
-binary_trees.adb:1054:22: info: initialization of "V" proved
-binary_trees.adb:1057:26: info: initialization of "V" proved
-binary_trees.adb:1059:27: info: initialization of "V" proved
 binary_trees.adb:1062:18: info: range check proved (CVC4: 1 VC)
 binary_trees.adb:1065:10: info: assertion proved (CVC4: 2 VC)
 binary_trees.adb:1067:32: info: index check proved (CVC4: 2 VC)
 binary_trees.adb:1069:10: info: assertion proved (CVC4: 2 VC)
 binary_trees.adb:1071:32: info: index check proved (CVC4: 2 VC)
-binary_trees.adb:1072:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:1072:07: info: initialization of "F_Old.S" proved
-binary_trees.adb:1072:07: info: initialization of "V" proved
 binary_trees.adb:1072:07: info: precondition proved (CVC4: 18 VC)
 binary_trees.adb:1072:07: medium: invariant check might fail
-binary_trees.adb:1082:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:1082:07: info: initialization of "F_Old.S" proved
 binary_trees.adb:1089:09: info: data dependencies proved
 binary_trees.adb:1102:11: info: postcondition proved (CVC4: 4 VC)
 binary_trees.adb:1103:26: info: index check proved (CVC4: 2 VC)
@@ -929,9 +850,6 @@ binary_trees.adb:1136:72: info: precondition proved (CVC4: 2 VC)
 binary_trees.adb:1136:82: info: range check proved (CVC4: 4 VC)
 binary_trees.adb:1140:18: info: range check proved (CVC4: 1 VC)
 binary_trees.adb:1141:16: info: range check proved (CVC4: 1 VC)
-binary_trees.adb:1142:07: info: initialization of "F_Old.C" proved
-binary_trees.adb:1142:07: info: initialization of "F_Old.S" proved
-binary_trees.adb:1142:07: info: initialization of "Root" proved
 binary_trees.adb:1142:07: info: invariant check proved (CVC4: 2 VC)
 binary_trees.adb:1142:07: info: precondition proved (CVC4: 6 VC)
 binary_trees.ads:14:09: info: default initial condition proved (CVC4: 1 VC)
@@ -998,7 +916,6 @@ binary_trees.ads:137:08: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:137:08: info: postcondition proved (CVC4: 27 VC)
 binary_trees.ads:137:19: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:140:17: info: invariant check proved (CVC4: 1 VC)
-binary_trees.ads:143:17: info: initialization of "V" proved
 binary_trees.ads:143:21: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:144:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:149:25: info: invariant check proved (CVC4: 1 VC)
@@ -1140,7 +1057,6 @@ binary_trees.ads:323:19: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:326:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:326:17: info: precondition proved (CVC4: 1 VC)
 binary_trees.ads:329:17: info: invariant check proved (CVC4: 1 VC)
-binary_trees.ads:329:34: info: initialization of "V" proved
 binary_trees.ads:333:23: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:333:50: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:334:29: info: invariant check proved (CVC4: 1 VC)
@@ -1187,7 +1103,6 @@ binary_trees.ads:384:14: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:384:14: info: postcondition proved (CVC4: 14 VC)
 binary_trees.ads:384:25: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:387:21: info: invariant check proved (CVC4: 1 VC)
-binary_trees.ads:387:40: info: initialization of "Root" proved
 binary_trees.ads:388:17: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:391:45: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:391:61: info: invariant check proved (CVC4: 1 VC)
@@ -1219,17 +1134,13 @@ red_black_trees.adb:47:22: medium: postcondition might fail, cannot prove Nb_Bla
 red_black_trees.adb:49:18: info: overflow check proved (CVC4: 1 VC)
 red_black_trees.adb:49:38: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:57:36: info: precondition proved (CVC4: 1 VC)
-red_black_trees.adb:66:33: info: initialization of "Res" proved
 red_black_trees.adb:66:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:66:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:70:13: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:70:13: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:70:40: info: initialization of "Res" proved
 red_black_trees.adb:74:13: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:74:13: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:75:15: info: initialization of "Res" proved
 red_black_trees.adb:81:13: info: loop invariant initialization proved (CVC4: 7 VC)
-red_black_trees.adb:85:21: info: initialization of "Res" proved
 red_black_trees.adb:87:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:88:26: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:89:38: info: overflow check proved (CVC4: 2 VC)
@@ -1242,34 +1153,26 @@ red_black_trees.adb:99:13: info: loop invariant initialization proved (CVC4: 2 V
 red_black_trees.adb:99:13: info: loop invariant preservation proved (CVC4: 2 VC)
 red_black_trees.adb:101:30: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:102:30: info: precondition proved (CVC4: 4 VC)
-red_black_trees.adb:103:19: info: initialization of "Res" proved
-red_black_trees.adb:108:36: info: initialization of "Res" proved
 red_black_trees.adb:108:36: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:108:36: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:112:16: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:112:16: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:112:43: info: initialization of "Res" proved
 red_black_trees.adb:117:16: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:117:16: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:118:18: info: initialization of "Res" proved
 red_black_trees.adb:118:23: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:118:46: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:120:16: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:120:16: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:121:18: info: initialization of "Res" proved
 red_black_trees.adb:121:23: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:121:46: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:127:16: info: loop invariant initialization proved (CVC4: 2 VC)
 red_black_trees.adb:127:16: info: loop invariant preservation proved (CVC4: 2 VC)
-red_black_trees.adb:128:34: info: initialization of "Res" proved
 red_black_trees.adb:131:16: info: loop invariant initialization proved (CVC4: 2 VC)
 red_black_trees.adb:131:16: info: loop invariant preservation proved (CVC4: 2 VC)
 red_black_trees.adb:132:25: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:132:34: info: initialization of "Res" proved
 red_black_trees.adb:132:39: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:133:35: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:138:16: info: loop invariant initialization proved (CVC4: 5 VC)
-red_black_trees.adb:142:23: info: initialization of "Res" proved
 red_black_trees.adb:142:23: medium: loop invariant might fail after first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count)
 red_black_trees.adb:143:29: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:144:29: info: precondition proved (CVC4: 4 VC)
@@ -1282,7 +1185,6 @@ red_black_trees.adb:156:16: info: loop invariant initialization proved (CVC4: 2 
 red_black_trees.adb:156:16: info: loop invariant preservation proved (CVC4: 2 VC)
 red_black_trees.adb:158:33: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:159:33: info: precondition proved (CVC4: 4 VC)
-red_black_trees.adb:160:24: info: initialization of "Res" proved
 red_black_trees.adb:162:16: info: loop invariant initialization proved (CVC4: 2 VC)
 red_black_trees.adb:162:16: info: loop invariant preservation proved (CVC4: 2 VC)
 red_black_trees.adb:163:25: info: index check proved (CVC4: 4 VC)
@@ -1290,18 +1192,10 @@ red_black_trees.adb:164:33: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:164:49: info: range check proved (CVC4: 2 VC)
 red_black_trees.adb:165:33: info: precondition proved (CVC4: 4 VC)
 red_black_trees.adb:165:49: info: range check proved (CVC4: 2 VC)
-red_black_trees.adb:166:24: info: initialization of "Res" proved
 red_black_trees.adb:166:29: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:176:21: info: initialization of "Res" proved
 red_black_trees.adb:176:26: info: precondition proved (CVC4: 2 VC)
-red_black_trees.adb:178:21: info: initialization of "Res" proved
 red_black_trees.adb:178:26: info: precondition proved (CVC4: 2 VC)
-red_black_trees.adb:181:36: info: initialization of "Res" proved
-red_black_trees.adb:182:37: info: initialization of "Res" proved
-red_black_trees.adb:184:39: info: initialization of "Res" proved
 red_black_trees.adb:184:56: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:186:39: info: initialization of "Res" proved
-red_black_trees.adb:193:14: info: initialization of "Res" proved
 red_black_trees.adb:199:22: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:200:27: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
@@ -1481,25 +1375,16 @@ red_black_trees.adb:351:29: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:351:29: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:353:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:353:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:495
-red_black_trees.adb:359:07: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:359:07: info: initialization of "T_Old.Struct" proved
+red_black_trees.adb:358:07: info: initialization of "X" proved
+red_black_trees.adb:358:10: info: initialization of "Y" proved
 red_black_trees.adb:362:07: info: precondition proved (CVC4: 1 VC)
-red_black_trees.adb:363:10: info: initialization of "X" proved
 red_black_trees.adb:364:10: info: analyzing call to "Prove_Same_Nb_Blacks" in context
-red_black_trees.adb:364:10: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:364:10: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:367:16: info: index check proved (CVC4: 2 VC)
-red_black_trees.adb:367:19: info: initialization of "X" proved
 red_black_trees.adb:368:07: info: analyzing call to "Prove_Same_Nb_Blacks" in context
-red_black_trees.adb:368:07: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:368:07: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:371:10: info: assertion proved (CVC4: 2 VC)
-red_black_trees.adb:372:21: info: initialization of "X" proved
 red_black_trees.adb:375:33: info: index check proved (CVC4: 2 VC)
-red_black_trees.adb:380:13: info: initialization of "X" proved
 red_black_trees.adb:380:18: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:380:71: info: range check proved (CVC4: 2 VC)
-red_black_trees.adb:381:33: info: initialization of "X" proved
 red_black_trees.adb:381:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:381:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:382:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1512,15 +1397,12 @@ red_black_trees.adb:384:33: info: loop invariant initialization proved (CVC4: 1 
 red_black_trees.adb:384:33: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:384:33: medium: loop invariant might fail after first iteration, cannot prove Model (T.Struct) (X).K
 red_black_trees.adb:384:51: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:384:51: info: initialization of "X" proved
 red_black_trees.adb:385:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:385:33: info: loop invariant preservation proved (CVC4: 1 VC)
-red_black_trees.adb:385:43: info: initialization of "X" proved
 red_black_trees.adb:386:33: info: loop invariant initialization proved (CVC4: 1 VC)
 red_black_trees.adb:386:33: medium: loop invariant might fail after first iteration, cannot prove Color (T, Root (T.Struct)) = Black
 red_black_trees.adb:386:43: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:388:13: info: loop invariant initialization proved (CVC4: 2 VC)
-red_black_trees.adb:389:24: info: initialization of "X" proved
 red_black_trees.adb:392:36: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:393:21: medium: loop invariant might fail after first iteration, cannot prove T.Color (I) = Black
 red_black_trees.adb:394:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1529,147 +1411,96 @@ red_black_trees.adb:395:33: info: loop invariant initialization proved (CVC4: 1 
 red_black_trees.adb:395:33: info: loop invariant preservation proved (CVC4: 1 VC)
 red_black_trees.adb:398:13: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:398:33: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:398:51: info: initialization of "X" proved
 red_black_trees.adb:398:51: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:402:18: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:402:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:402:52: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:402:70: info: initialization of "X" proved
 red_black_trees.adb:402:70: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:403:26: info: initialization of "Y" proved
 red_black_trees.adb:409:25: info: index check proved (CVC4: 2 VC)
-red_black_trees.adb:409:28: info: initialization of "Y" proved
 red_black_trees.adb:410:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:410:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:410:47: info: initialization of "X" proved
 red_black_trees.adb:411:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:411:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:411:47: info: initialization of "Y" proved
-red_black_trees.adb:415:39: info: initialization of "Y" proved
 red_black_trees.adb:415:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:416:16: info: analyzing call to "Prove_Same_Nb_Blacks_Swap" in context
-red_black_trees.adb:416:16: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:416:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:416:53: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:416:71: info: initialization of "Y" proved
 red_black_trees.adb:416:71: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:424:19: info: initialization of "X" proved
 red_black_trees.adb:424:23: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:424:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:424:57: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:425:42: info: initialization of "X" proved
 red_black_trees.adb:425:42: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:426:19: info: precondition proved (CVC4: 3 VC)
-red_black_trees.adb:426:42: info: initialization of "X" proved
 red_black_trees.adb:426:42: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:427:19: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate" in context
-red_black_trees.adb:427:19: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:427:19: info: initialization of "T_Old.Struct" proved
-red_black_trees.adb:427:58: info: initialization of "X" proved
 red_black_trees.adb:427:58: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:431:31: info: assertion proved (CVC4: 1 VC)
 red_black_trees.adb:431:49: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:431:67: info: initialization of "X" proved
 red_black_trees.adb:431:67: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:432:31: info: assertion proved (CVC4: 1 VC)
 red_black_trees.adb:432:31: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:433:31: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:433:49: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:433:67: info: initialization of "X" proved
 red_black_trees.adb:433:67: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:437:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:437:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:437:47: info: initialization of "X" proved
 red_black_trees.adb:438:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:438:43: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:438:61: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:438:66: info: initialization of "X" proved
 red_black_trees.adb:439:16: info: precondition proved (CVC4: 3 VC)
 red_black_trees.adb:439:40: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:439:58: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:439:76: info: initialization of "X" proved
 red_black_trees.adb:439:76: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:440:16: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate_Swap" in context
-red_black_trees.adb:440:16: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:440:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:441:29: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:441:51: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:441:59: info: initialization of "T_Old.Struct" proved
-red_black_trees.adb:441:73: info: initialization of "X" proved
 red_black_trees.adb:441:73: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:445:31: info: assertion proved (CVC4: 1 VC)
-red_black_trees.adb:445:59: info: initialization of "X" proved
 red_black_trees.adb:445:59: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:450:42: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:451:27: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:457:18: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:457:34: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:457:52: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:457:70: info: initialization of "X" proved
 red_black_trees.adb:457:70: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:458:26: info: initialization of "Y" proved
 red_black_trees.adb:464:25: info: index check proved (CVC4: 2 VC)
-red_black_trees.adb:464:28: info: initialization of "Y" proved
 red_black_trees.adb:465:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:465:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:465:47: info: initialization of "X" proved
 red_black_trees.adb:466:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:466:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:466:47: info: initialization of "Y" proved
-red_black_trees.adb:470:39: info: initialization of "Y" proved
 red_black_trees.adb:470:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:471:16: info: analyzing call to "Prove_Same_Nb_Blacks_Swap" in context
-red_black_trees.adb:471:16: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:471:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:471:53: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:471:71: info: initialization of "Y" proved
 red_black_trees.adb:471:71: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:479:19: info: initialization of "X" proved
 red_black_trees.adb:479:23: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:479:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:479:57: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:480:42: info: initialization of "X" proved
 red_black_trees.adb:480:42: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:481:19: info: precondition proved (CVC4: 3 VC)
-red_black_trees.adb:481:43: info: initialization of "X" proved
 red_black_trees.adb:481:43: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:482:19: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate" in context
-red_black_trees.adb:482:19: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:482:19: info: initialization of "T_Old.Struct" proved
-red_black_trees.adb:482:58: info: initialization of "X" proved
 red_black_trees.adb:482:58: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:486:31: info: assertion proved (CVC4: 1 VC)
 red_black_trees.adb:486:49: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:486:67: info: initialization of "X" proved
 red_black_trees.adb:486:67: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:487:31: info: assertion proved (CVC4: 1 VC)
 red_black_trees.adb:487:31: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:488:31: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:488:49: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:488:67: info: initialization of "X" proved
 red_black_trees.adb:488:67: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:492:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:492:43: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:492:47: info: initialization of "X" proved
 red_black_trees.adb:493:25: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:493:43: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:493:61: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:493:66: info: initialization of "X" proved
 red_black_trees.adb:494:16: info: precondition proved (CVC4: 3 VC)
 red_black_trees.adb:494:39: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:494:57: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:494:75: info: initialization of "X" proved
 red_black_trees.adb:494:75: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:495:16: info: analyzing call to "Prove_Same_Nb_Blacks_Rotate_Swap" in context
-red_black_trees.adb:495:16: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:495:16: info: initialization of "T_Old.Struct" proved
 red_black_trees.adb:496:29: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:496:51: info: range check proved (CVC4: 1 VC)
-red_black_trees.adb:496:59: info: initialization of "T_Old.Struct" proved
-red_black_trees.adb:496:73: info: initialization of "X" proved
 red_black_trees.adb:496:73: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:500:31: info: assertion proved (CVC4: 1 VC)
-red_black_trees.adb:500:59: info: initialization of "X" proved
 red_black_trees.adb:500:59: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:505:42: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:506:27: medium: assertion might fail, cannot prove T.Color (I) = Black
@@ -1678,8 +1509,6 @@ red_black_trees.adb:516:32: info: index check proved (CVC4: 2 VC)
 red_black_trees.adb:517:18: medium: assertion might fail, cannot prove T.Color (I) = Black
 red_black_trees.adb:521:16: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:522:07: info: analyzing call to "Prove_Same_Nb_Blacks" in context
-red_black_trees.adb:522:07: info: initialization of "T_Old.Color" proved
-red_black_trees.adb:522:07: info: initialization of "T_Old.Struct" proved
 red_black_trees.ads:22:14: info: postcondition proved (CVC4: 2 VC)
 red_black_trees.ads:22:18: info: invariant check proved (CVC4: 1 VC)
 red_black_trees.ads:25:14: info: postcondition proved (CVC4: 2 VC)
@@ -1701,28 +1530,21 @@ search_trees.adb:12:36: info: range check proved (CVC4: 1 VC)
 search_trees.adb:17:29: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:17:47: info: range check proved (CVC4: 1 VC)
 search_trees.adb:19:07: info: initialization of "S" proved
-search_trees.adb:22:17: info: initialization of "S" proved
 search_trees.adb:26:13: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:26:31: info: range check proved (CVC4: 2 VC)
-search_trees.adb:27:35: info: initialization of "S" proved
 search_trees.adb:29:18: info: precondition proved (CVC4: 4 VC)
-search_trees.adb:29:23: info: initialization of "S" proved
 search_trees.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_trees.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
-search_trees.adb:31:41: info: initialization of "S" proved
 search_trees.adb:33:13: info: loop invariant initialization proved (CVC4: 2 VC)
 search_trees.adb:33:13: info: loop invariant preservation proved (CVC4: 2 VC)
 search_trees.adb:34:19: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:34:37: info: range check proved (CVC4: 2 VC)
 search_trees.adb:34:45: info: index check proved (CVC4: 4 VC)
-search_trees.adb:34:65: info: initialization of "S" proved
 search_trees.adb:34:78: info: index check proved (CVC4: 4 VC)
 search_trees.adb:36:13: info: loop invariant initialization proved (CVC4: 2 VC)
 search_trees.adb:36:13: info: loop invariant preservation proved (CVC4: 2 VC)
-search_trees.adb:37:29: info: initialization of "S" proved
 search_trees.adb:39:25: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:39:43: info: range check proved (CVC4: 2 VC)
-search_trees.adb:41:14: info: initialization of "S" proved
 search_trees.adb:51:14: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:52:22: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:53:22: info: precondition proved (CVC4: 1 VC)
@@ -1748,41 +1570,21 @@ search_trees.adb:93:33: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:93:64: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:93:102: info: overflow check proved (CVC4: 1 VC)
 search_trees.adb:96:35: info: precondition proved (CVC4: 1 VC)
-search_trees.adb:100:13: info: initialization of "KI" proved
-search_trees.adb:100:19: info: initialization of "KJ" proved
 search_trees.adb:101:10: info: loop variant proved (CVC4: 1 VC)
-search_trees.adb:101:55: info: initialization of "KI" proved
-search_trees.adb:101:87: info: initialization of "KJ" proved
 search_trees.adb:102:33: info: loop invariant initialization proved (CVC4: 2 VC)
 search_trees.adb:102:33: info: loop invariant preservation proved (CVC4: 2 VC)
-search_trees.adb:102:36: info: initialization of "KI" proved
 search_trees.adb:103:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_trees.adb:103:33: info: loop invariant preservation proved (CVC4: 1 VC)
-search_trees.adb:103:36: info: initialization of "KJ" proved
 search_trees.adb:104:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_trees.adb:104:33: info: loop invariant preservation proved (CVC4: 1 VC)
-search_trees.adb:104:36: info: initialization of "KJ" proved
 search_trees.adb:106:13: info: loop invariant initialization proved (CVC4: 2 VC)
 search_trees.adb:106:13: info: loop invariant preservation proved (CVC4: 2 VC)
-search_trees.adb:106:27: info: initialization of "KI" proved
-search_trees.adb:106:59: info: initialization of "KJ" proved
 search_trees.adb:108:13: info: loop invariant initialization proved (CVC4: 2 VC)
 search_trees.adb:108:13: info: loop invariant preservation proved (CVC4: 2 VC)
-search_trees.adb:108:27: info: initialization of "KJ" proved
-search_trees.adb:108:59: info: initialization of "KI" proved
-search_trees.adb:109:24: info: initialization of "KI" proved
-search_trees.adb:109:44: info: initialization of "KJ" proved
 search_trees.adb:110:19: info: range check proved (CVC4: 1 VC)
-search_trees.adb:110:30: info: initialization of "KI" proved
-search_trees.adb:111:47: info: initialization of "KI" proved
-search_trees.adb:112:13: info: initialization of "KJ" proved
 search_trees.adb:112:19: info: range check proved (CVC4: 1 VC)
-search_trees.adb:112:30: info: initialization of "KJ" proved
 search_trees.adb:114:19: info: range check proved (CVC4: 1 VC)
-search_trees.adb:114:30: info: initialization of "KI" proved
 search_trees.adb:115:19: info: range check proved (CVC4: 1 VC)
-search_trees.adb:115:30: info: initialization of "KJ" proved
-search_trees.adb:118:14: info: initialization of "KI" proved
 search_trees.adb:135:06: info: data dependencies proved
 search_trees.adb:141:17: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:142:17: info: precondition proved (CVC4: 1 VC)
@@ -2143,179 +1945,91 @@ search_trees.adb:658:16: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:658:34: info: range check proved (CVC4: 1 VC)
 search_trees.adb:659:22: info: precondition proved (CVC4: 3 VC)
 search_trees.adb:659:44: info: range check proved (CVC4: 1 VC)
-search_trees.adb:675:07: info: initialization of "T_Old.Root" proved
-search_trees.adb:675:07: info: initialization of "T_Old.Struct" proved
-search_trees.adb:675:07: info: initialization of "T_Old.Values" proved
-search_trees.adb:676:07: info: initialization of "F_Old" proved
-search_trees.adb:680:07: info: initialization of "F_1" proved
-search_trees.adb:680:07: info: initialization of "F_2" proved
-search_trees.adb:680:07: info: initialization of "F_3" proved
-search_trees.adb:680:07: info: initialization of "F_4" proved
-search_trees.adb:680:07: info: initialization of "F_5" proved
-search_trees.adb:686:17: info: initialization of "F_1" proved
+search_trees.adb:668:07: info: initialization of "X" proved
+search_trees.adb:668:10: info: initialization of "Y" proved
+search_trees.adb:669:07: info: initialization of "YL" proved
 search_trees.adb:694:13: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:882
-search_trees.adb:694:44: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:882
 search_trees.adb:694:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:882
-search_trees.adb:694:59: info: initialization of "X" proved, in call inlined at search_trees.adb:882
-search_trees.adb:699:17: info: initialization of "F_2" proved
 search_trees.adb:705:10: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:887
-search_trees.adb:705:41: info: initialization of "F_1" proved, in call inlined at search_trees.adb:887
-search_trees.adb:705:46: info: initialization of "X" proved, in call inlined at search_trees.adb:887
-search_trees.adb:705:49: info: initialization of "Y" proved, in call inlined at search_trees.adb:887
 search_trees.adb:706:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:887
 search_trees.adb:706:25: medium: assertion might fail, cannot prove Get (Model (F_1, X) (Y).A, 1) = Right, in call inlined at search_trees.adb:887
 search_trees.adb:706:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:887
-search_trees.adb:706:37: info: initialization of "F_1" proved, in call inlined at search_trees.adb:887
-search_trees.adb:706:42: info: initialization of "X" proved, in call inlined at search_trees.adb:887
-search_trees.adb:706:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:887
 search_trees.adb:707:25: medium: assertion might fail, cannot prove T.Values (X) < T.Values (Y), in call inlined at search_trees.adb:887
-search_trees.adb:707:35: info: initialization of "X" proved, in call inlined at search_trees.adb:887
-search_trees.adb:707:50: info: initialization of "Y" proved, in call inlined at search_trees.adb:887
 search_trees.adb:713:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:887
-search_trees.adb:713:46: info: initialization of "F_1" proved, in call inlined at search_trees.adb:887
 search_trees.adb:713:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:887
-search_trees.adb:718:17: info: initialization of "F_3" proved
-search_trees.adb:725:13: info: initialization of "YL" proved, in call inlined at search_trees.adb:892
 search_trees.adb:726:13: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:892
-search_trees.adb:726:44: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
-search_trees.adb:726:49: info: initialization of "Y" proved, in call inlined at search_trees.adb:892
-search_trees.adb:726:52: info: initialization of "YL" proved, in call inlined at search_trees.adb:892
 search_trees.adb:726:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
 search_trees.adb:727:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:892
 search_trees.adb:727:28: medium: assertion might fail, cannot prove Get (Model (F_2, Y) (YL).A, 1) = Left, in call inlined at search_trees.adb:892
 search_trees.adb:727:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
-search_trees.adb:727:40: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
-search_trees.adb:727:45: info: initialization of "Y" proved, in call inlined at search_trees.adb:892
 search_trees.adb:727:49: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:892
-search_trees.adb:727:49: info: initialization of "YL" proved, in call inlined at search_trees.adb:892
 search_trees.adb:734:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
-search_trees.adb:734:46: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
-search_trees.adb:734:51: info: initialization of "Y" proved, in call inlined at search_trees.adb:892
 search_trees.adb:740:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
-search_trees.adb:740:43: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
-search_trees.adb:740:48: info: initialization of "X" proved, in call inlined at search_trees.adb:892
 search_trees.adb:742:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
-search_trees.adb:742:46: info: initialization of "F_2" proved, in call inlined at search_trees.adb:892
 search_trees.adb:742:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
-search_trees.adb:747:17: info: initialization of "F_4" proved
-search_trees.adb:749:13: info: initialization of "YL" proved, in call inlined at search_trees.adb:897
 search_trees.adb:752:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:897
 search_trees.adb:752:28: medium: assertion might fail, cannot prove Get (Model (T.Struct, X) (YL).A, 1) = Right, in call inlined at search_trees.adb:897
 search_trees.adb:752:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
-search_trees.adb:752:50: info: initialization of "X" proved, in call inlined at search_trees.adb:897
 search_trees.adb:752:54: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:897
-search_trees.adb:752:54: info: initialization of "YL" proved, in call inlined at search_trees.adb:897
 search_trees.adb:759:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
-search_trees.adb:759:28: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:759:33: info: initialization of "Y" proved, in call inlined at search_trees.adb:897
 search_trees.adb:760:23: medium: assertion might fail, cannot prove T.Values (J) > T.Values (X), in call inlined at search_trees.adb:897
-search_trees.adb:760:48: info: initialization of "X" proved, in call inlined at search_trees.adb:897
 search_trees.adb:761:28: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
 search_trees.adb:761:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
-search_trees.adb:761:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:761:48: info: initialization of "X" proved, in call inlined at search_trees.adb:897
 search_trees.adb:762:28: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
 search_trees.adb:762:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
-search_trees.adb:762:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:762:48: info: initialization of "YL" proved, in call inlined at search_trees.adb:897
 search_trees.adb:762:48: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
 search_trees.adb:767:13: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:897
-search_trees.adb:767:41: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:767:46: info: initialization of "X" proved, in call inlined at search_trees.adb:897
-search_trees.adb:767:49: info: initialization of "YL" proved, in call inlined at search_trees.adb:897
 search_trees.adb:767:49: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
 search_trees.adb:774:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:897
-search_trees.adb:774:46: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:774:51: info: initialization of "X" proved, in call inlined at search_trees.adb:897
 search_trees.adb:780:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:897
-search_trees.adb:780:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
-search_trees.adb:780:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:897
 search_trees.adb:782:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:897
-search_trees.adb:782:46: info: initialization of "F_3" proved, in call inlined at search_trees.adb:897
 search_trees.adb:782:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
-search_trees.adb:787:17: info: initialization of "F_5" proved
 search_trees.adb:793:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:902
 search_trees.adb:793:25: medium: assertion might fail, cannot prove Get (Model (T.Struct, Y) (X).A, 1) = Left, in call inlined at search_trees.adb:902
 search_trees.adb:793:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:793:47: info: initialization of "Y" proved, in call inlined at search_trees.adb:902
-search_trees.adb:793:51: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:794:10: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:902
-search_trees.adb:794:29: info: initialization of "F_2" proved, in call inlined at search_trees.adb:902
-search_trees.adb:794:34: info: initialization of "X" proved, in call inlined at search_trees.adb:902
-search_trees.adb:794:37: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:797:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:797:26: info: initialization of "F_3" proved, in call inlined at search_trees.adb:902
 search_trees.adb:798:21: medium: assertion might fail, cannot prove T.Values (J) <= T.Values (X), in call inlined at search_trees.adb:902
-search_trees.adb:798:47: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:801:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:801:26: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
-search_trees.adb:801:31: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:802:21: medium: assertion might fail, cannot prove T.Values (J) < T.Values (Y), in call inlined at search_trees.adb:902
-search_trees.adb:802:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:902
 search_trees.adb:803:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
 search_trees.adb:803:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:803:40: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
-search_trees.adb:803:45: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:804:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
 search_trees.adb:804:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
-search_trees.adb:804:40: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
-search_trees.adb:804:45: info: initialization of "Y" proved, in call inlined at search_trees.adb:902
 search_trees.adb:809:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:902
-search_trees.adb:809:38: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
-search_trees.adb:809:43: info: initialization of "Y" proved, in call inlined at search_trees.adb:902
-search_trees.adb:809:46: info: initialization of "X" proved, in call inlined at search_trees.adb:902
 search_trees.adb:815:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:902
-search_trees.adb:815:46: info: initialization of "F_4" proved, in call inlined at search_trees.adb:902
 search_trees.adb:815:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
 search_trees.adb:820:17: warning: subprogram "Prove_Plug_Y" has no effect
 search_trees.adb:825:25: medium: assertion might fail, cannot prove Model (F_5, T.Root) = Model (F_1, T.Root), in call inlined at search_trees.adb:910
 search_trees.adb:825:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
-search_trees.adb:825:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
 search_trees.adb:825:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:825:47: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:825:54: info: initialization of "F_1" proved, in call inlined at search_trees.adb:910
 search_trees.adb:825:60: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:826:10: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:910
 search_trees.adb:826:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:826:50: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:826:58: info: initialization of "J" proved, in call inlined at search_trees.adb:910
 search_trees.adb:827:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:827:39: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:910
 search_trees.adb:827:47: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:827:55: info: initialization of "J" proved, in call inlined at search_trees.adb:910
 search_trees.adb:828:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:828:50: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:828:58: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:829:32: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:829:39: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:910
 search_trees.adb:829:47: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:829:55: info: initialization of "X" proved, in call inlined at search_trees.adb:910
-search_trees.adb:830:32: info: initialization of "D" proved, in call inlined at search_trees.adb:910
 search_trees.adb:833:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:833:25: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
-search_trees.adb:833:30: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:833:44: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:833:44: medium: assertion might fail, cannot prove Model (F_1, X) (I).K, in call inlined at search_trees.adb:910
-search_trees.adb:833:51: info: initialization of "F_1" proved, in call inlined at search_trees.adb:910
-search_trees.adb:833:56: info: initialization of "X" proved, in call inlined at search_trees.adb:910
 search_trees.adb:835:13: info: assertion proved (CVC4: 3 VC), in call inlined at search_trees.adb:910
 search_trees.adb:836:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:836:25: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
 search_trees.adb:836:31: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:837:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:837:34: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:837:49: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:837:67: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:837:75: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:839:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:839:25: info: initialization of "F_1" proved, in call inlined at search_trees.adb:910
 search_trees.adb:839:31: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:840:22: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:840:35: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:840:50: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:840:57: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:910
 search_trees.adb:840:65: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:840:73: info: initialization of "X" proved, in call inlined at search_trees.adb:910
 search_trees.adb:843:18: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:843:31: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:844:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
@@ -2325,19 +2039,14 @@ search_trees.adb:844:67: info: range check proved (CVC4: 1 VC), in call inlined 
 search_trees.adb:846:17: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:910
 search_trees.adb:846:17: medium: assertion might fail, cannot prove Get (Model (F_Old, T.Root) (X).A, Length (Model (F_1, T.Root) (I).A) + 1) = Get (Model (T.Struct, T.Root) (Y).A, Length (Model (F_5, T.Root) (I).A) + 1), in call inlined at search_trees.adb:910
 search_trees.adb:846:22: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:846:29: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:910
 search_trees.adb:846:37: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:846:45: info: initialization of "X" proved, in call inlined at search_trees.adb:910
 search_trees.adb:847:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:847:37: info: initialization of "F_1" proved, in call inlined at search_trees.adb:910
 search_trees.adb:847:43: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:847:57: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:848:17: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:910
 search_trees.adb:848:22: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:848:40: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:848:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:849:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:849:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
 search_trees.adb:849:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:849:52: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:852:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
@@ -2355,227 +2064,115 @@ search_trees.adb:855:53: info: overflow check proved (CVC4: 1 VC), in call inlin
 search_trees.adb:858:27: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
 search_trees.adb:859:29: medium: assertion might fail, cannot prove T.Values (J) < T.Values (I), in call inlined at search_trees.adb:910
 search_trees.adb:862:27: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:862:34: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
-search_trees.adb:862:39: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:868:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:910
-search_trees.adb:868:38: info: initialization of "F_5" proved, in call inlined at search_trees.adb:910
 search_trees.adb:868:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:910
-search_trees.adb:868:51: info: initialization of "Y" proved, in call inlined at search_trees.adb:910
 search_trees.adb:876:16: info: range check proved (CVC4: 1 VC)
 search_trees.adb:878:15: info: range check proved (CVC4: 1 VC)
 search_trees.adb:879:15: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:880:10: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:880:30: info: range check proved (CVC4: 1 VC)
-search_trees.adb:880:37: info: initialization of "J" proved
-search_trees.adb:880:40: info: initialization of "D" proved
 search_trees.adb:880:43: info: range check proved (CVC4: 1 VC)
 search_trees.adb:882:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:886:07: info: precondition proved (CVC4: 2 VC)
-search_trees.adb:886:26: info: initialization of "X" proved
-search_trees.adb:886:29: info: initialization of "X" proved
 search_trees.adb:886:39: info: range check proved (CVC4: 1 VC)
 search_trees.adb:887:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:891:07: info: precondition proved (CVC4: 2 VC)
-search_trees.adb:891:26: info: initialization of "Y" proved
-search_trees.adb:891:29: info: initialization of "Y" proved
 search_trees.adb:892:07: info: analyzing call to "Prove_Extract_YL" in context
 search_trees.adb:896:07: info: precondition proved (CVC4: 6 VC)
-search_trees.adb:896:23: info: initialization of "X" proved
-search_trees.adb:896:26: info: initialization of "X" proved
-search_trees.adb:896:36: info: initialization of "YL" proved
 search_trees.adb:897:07: info: analyzing call to "Prove_Plug_YL" in context
 search_trees.adb:901:07: info: precondition proved (CVC4: 6 VC)
-search_trees.adb:901:23: info: initialization of "Y" proved
-search_trees.adb:901:26: info: initialization of "Y" proved
-search_trees.adb:901:35: info: initialization of "X" proved
 search_trees.adb:902:07: info: analyzing call to "Prove_Plug_X" in context
-search_trees.adb:907:20: info: initialization of "Y" proved
 search_trees.adb:909:10: medium: precondition might fail, cannot prove Valid_Root (F, Root)
 search_trees.adb:909:27: info: range check proved (CVC4: 1 VC)
-search_trees.adb:909:34: info: initialization of "J" proved
-search_trees.adb:909:37: info: initialization of "D" proved
-search_trees.adb:909:40: info: initialization of "Y" proved
 search_trees.adb:910:10: info: analyzing call to "Prove_Plug_Y" in context
 search_trees.adb:913:07: medium: precondition might fail, cannot prove Valid_Root (T2.Struct, T2.Root)
-search_trees.adb:913:31: info: initialization of "T_Old.Root" proved
-search_trees.adb:913:31: info: initialization of "T_Old.Struct" proved
-search_trees.adb:913:31: info: initialization of "T_Old.Values" proved
+search_trees.adb:921:07: info: initialization of "X" proved
+search_trees.adb:921:10: info: initialization of "Y" proved
+search_trees.adb:922:07: info: initialization of "XR" proved
 search_trees.adb:923:41: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:923:41: info: precondition proved (CVC4: 1 VC)
-search_trees.adb:928:07: info: initialization of "T_Old.Root" proved
-search_trees.adb:928:07: info: initialization of "T_Old.Struct" proved
-search_trees.adb:928:07: info: initialization of "T_Old.Values" proved
-search_trees.adb:929:07: info: initialization of "F_Old" proved
-search_trees.adb:933:07: info: initialization of "F_1" proved
-search_trees.adb:933:07: info: initialization of "F_2" proved
-search_trees.adb:933:07: info: initialization of "F_3" proved
-search_trees.adb:933:07: info: initialization of "F_4" proved
-search_trees.adb:933:07: info: initialization of "F_5" proved
-search_trees.adb:939:17: info: initialization of "F_1" proved
 search_trees.adb:947:13: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:1134
-search_trees.adb:947:44: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1134
 search_trees.adb:947:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1134
-search_trees.adb:947:59: info: initialization of "Y" proved, in call inlined at search_trees.adb:1134
-search_trees.adb:952:17: info: initialization of "F_2" proved
 search_trees.adb:958:10: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:1139
-search_trees.adb:958:41: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1139
-search_trees.adb:958:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:1139
-search_trees.adb:958:49: info: initialization of "X" proved, in call inlined at search_trees.adb:1139
 search_trees.adb:959:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1139
 search_trees.adb:959:25: medium: assertion might fail, cannot prove Get (Model (F_1, Y) (X).A, 1) = Left, in call inlined at search_trees.adb:1139
 search_trees.adb:959:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1139
-search_trees.adb:959:37: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1139
-search_trees.adb:959:42: info: initialization of "Y" proved, in call inlined at search_trees.adb:1139
-search_trees.adb:959:46: info: initialization of "X" proved, in call inlined at search_trees.adb:1139
 search_trees.adb:960:25: medium: assertion might fail, cannot prove T.Values (X) < T.Values (Y), in call inlined at search_trees.adb:1139
-search_trees.adb:960:35: info: initialization of "X" proved, in call inlined at search_trees.adb:1139
-search_trees.adb:960:50: info: initialization of "Y" proved, in call inlined at search_trees.adb:1139
 search_trees.adb:966:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1139
-search_trees.adb:966:46: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1139
 search_trees.adb:966:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1139
-search_trees.adb:971:17: info: initialization of "F_3" proved
-search_trees.adb:978:13: info: initialization of "XR" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:979:13: info: precondition proved (CVC4: 17 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:979:44: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1144
-search_trees.adb:979:49: info: initialization of "X" proved, in call inlined at search_trees.adb:1144
-search_trees.adb:979:52: info: initialization of "XR" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:979:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:980:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:980:28: medium: assertion might fail, cannot prove Get (Model (F_2, X) (XR).A, 1) = Right, in call inlined at search_trees.adb:1144
 search_trees.adb:980:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:980:40: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1144
-search_trees.adb:980:45: info: initialization of "X" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:980:49: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:980:49: info: initialization of "XR" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:987:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:987:46: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1144
-search_trees.adb:987:51: info: initialization of "X" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:993:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:993:43: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1144
-search_trees.adb:993:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:995:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:995:46: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1144
 search_trees.adb:995:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1144
-search_trees.adb:1000:17: info: initialization of "F_4" proved
-search_trees.adb:1002:13: info: initialization of "XR" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1005:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1005:28: medium: assertion might fail, cannot prove Get (Model (T.Struct, Y) (XR).A, 1) = Left, in call inlined at search_trees.adb:1149
 search_trees.adb:1005:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1005:50: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1005:54: info: index check proved (CVC4: 2 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1005:54: info: initialization of "XR" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1012:22: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1012:29: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1012:34: info: initialization of "X" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1013:24: medium: assertion might fail, cannot prove T.Values (J) < T.Values (Y), in call inlined at search_trees.adb:1149
-search_trees.adb:1013:49: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1014:28: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1014:28: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1014:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1014:48: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1019:13: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:1149
-search_trees.adb:1019:41: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1019:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1019:49: info: initialization of "XR" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1019:49: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1026:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1026:46: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1026:51: info: initialization of "Y" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1032:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1032:43: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
-search_trees.adb:1032:48: info: initialization of "X" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1034:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1034:46: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1149
 search_trees.adb:1034:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
-search_trees.adb:1039:17: info: initialization of "F_5" proved
 search_trees.adb:1045:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1045:25: medium: assertion might fail, cannot prove Get (Model (T.Struct, X) (Y).A, 1) = Right, in call inlined at search_trees.adb:1154
 search_trees.adb:1045:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1045:47: info: initialization of "X" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1045:51: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1046:10: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1046:29: info: initialization of "F_2" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1046:34: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1046:37: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1049:19: info: initialization of "XR" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1049:40: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1049:47: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1049:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1050:21: medium: assertion might fail, cannot prove T.Values (J) > T.Values (X), in call inlined at search_trees.adb:1154
-search_trees.adb:1050:46: info: initialization of "X" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1053:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1053:26: info: initialization of "F_3" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1054:21: medium: assertion might fail, cannot prove T.Values (J) >= T.Values (Y), in call inlined at search_trees.adb:1154
-search_trees.adb:1054:47: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1056:13: info: assertion proved (CVC4: 2 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1057:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1057:26: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1057:31: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1058:46: info: initialization of "X" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1059:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1059:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1059:40: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1059:45: info: initialization of "X" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1060:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1060:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
-search_trees.adb:1060:40: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1060:45: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1065:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:1154
-search_trees.adb:1065:38: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1065:43: info: initialization of "X" proved, in call inlined at search_trees.adb:1154
-search_trees.adb:1065:46: info: initialization of "Y" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1071:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1154
-search_trees.adb:1071:46: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1154
 search_trees.adb:1071:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1076:17: warning: subprogram "Prove_Plug_X" has no effect
 search_trees.adb:1081:25: medium: assertion might fail, cannot prove Model (F_5, T.Root) = Model (F_1, T.Root), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
-search_trees.adb:1081:32: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1081:38: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:47: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1081:54: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1081:60: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:10: info: precondition proved (CVC4: 3 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1082:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1082:52: info: initialization of "J" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1082:58: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1082:65: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1082:73: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1082:81: info: initialization of "J" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1083:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1083:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1083:52: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1083:58: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1083:65: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1083:73: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1083:81: info: initialization of "Y" proved, in call inlined at search_trees.adb:1162
-search_trees.adb:1083:87: info: initialization of "D" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1086:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1086:26: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
-search_trees.adb:1086:31: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1086:45: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1086:45: medium: assertion might fail, cannot prove Model (F_1, Y) (I).K, in call inlined at search_trees.adb:1162
-search_trees.adb:1086:52: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
-search_trees.adb:1086:57: info: initialization of "Y" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1088:13: info: assertion proved (CVC4: 3 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1089:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1089:26: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1089:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1090:20: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1090:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1090:48: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1090:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1090:74: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1091:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1091:28: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1091:34: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1092:20: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1092:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1092:48: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1092:55: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1092:63: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1092:71: info: initialization of "Y" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1094:13: info: assertion proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1095:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1095:32: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
@@ -2583,12 +2180,9 @@ search_trees.adb:1096:20: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1096:33: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1096:48: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1096:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1096:74: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1097:24: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1097:31: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1097:37: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1097:61: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1097:68: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1097:74: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1099:13: info: assertion proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1100:19: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
@@ -2599,17 +2193,13 @@ search_trees.adb:1101:48: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1101:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1102:16: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1102:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1102:28: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1102:36: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1102:44: info: initialization of "Y" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1103:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1103:33: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1103:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1103:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1104:18: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1104:23: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1104:41: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1104:49: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1105:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1105:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1105:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
@@ -2622,93 +2212,58 @@ search_trees.adb:1109:48: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1109:66: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1110:16: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1110:21: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1110:28: info: initialization of "F_Old" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1110:36: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1110:44: info: initialization of "Y" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1111:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1111:33: info: initialization of "F_1" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1111:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1111:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1112:18: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1112:23: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1112:41: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1112:49: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1113:26: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1113:33: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1113:39: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1113:53: info: overflow check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1114:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1114:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1114:40: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1114:46: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1115:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
 search_trees.adb:1115:25: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1115:40: info: initialization of "F_4" proved, in call inlined at search_trees.adb:1162
-search_trees.adb:1115:45: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1120:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:1162
-search_trees.adb:1120:38: info: initialization of "F_5" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1120:44: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1162
-search_trees.adb:1120:51: info: initialization of "X" proved, in call inlined at search_trees.adb:1162
 search_trees.adb:1128:16: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1130:15: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1131:15: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1132:10: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1132:30: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1132:37: info: initialization of "J" proved
-search_trees.adb:1132:40: info: initialization of "D" proved
 search_trees.adb:1132:43: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1134:07: info: analyzing call to "Prove_Extract_Y" in context
 search_trees.adb:1138:07: info: precondition proved (CVC4: 2 VC)
-search_trees.adb:1138:26: info: initialization of "Y" proved
-search_trees.adb:1138:29: info: initialization of "Y" proved
 search_trees.adb:1138:38: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1139:07: info: analyzing call to "Prove_Extract_X" in context
 search_trees.adb:1143:07: info: precondition proved (CVC4: 2 VC)
-search_trees.adb:1143:26: info: initialization of "X" proved
-search_trees.adb:1143:29: info: initialization of "X" proved
 search_trees.adb:1144:07: info: analyzing call to "Prove_Extract_XR" in context
 search_trees.adb:1148:07: info: precondition proved (CVC4: 6 VC)
-search_trees.adb:1148:23: info: initialization of "Y" proved
-search_trees.adb:1148:26: info: initialization of "Y" proved
-search_trees.adb:1148:35: info: initialization of "XR" proved
 search_trees.adb:1149:07: info: analyzing call to "Prove_Plug_XR" in context
 search_trees.adb:1153:07: info: precondition proved (CVC4: 6 VC)
-search_trees.adb:1153:23: info: initialization of "X" proved
-search_trees.adb:1153:26: info: initialization of "X" proved
-search_trees.adb:1153:36: info: initialization of "Y" proved
 search_trees.adb:1154:07: info: analyzing call to "Prove_Plug_Y" in context
-search_trees.adb:1159:20: info: initialization of "X" proved
 search_trees.adb:1161:10: medium: precondition might fail, cannot prove Valid_Root (F, Root)
 search_trees.adb:1161:27: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1161:34: info: initialization of "J" proved
-search_trees.adb:1161:37: info: initialization of "D" proved
-search_trees.adb:1161:40: info: initialization of "X" proved
 search_trees.adb:1162:10: info: analyzing call to "Prove_Plug_X" in context
 search_trees.adb:1167:15: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:1167:15: info: precondition proved (CVC4: 1 VC)
-search_trees.adb:1167:22: info: initialization of "T_Old.Root" proved
-search_trees.adb:1167:22: info: initialization of "T_Old.Struct" proved
-search_trees.adb:1167:22: info: initialization of "T_Old.Values" proved
 search_trees.adb:1167:40: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1167:40: medium: assertion might fail, cannot prove Model (T) (J).K
 search_trees.adb:1167:40: medium: invariant check might fail
 search_trees.adb:1168:07: medium: precondition might fail, cannot prove Valid_Root (T2.Struct, T2.Root)
-search_trees.adb:1168:31: info: initialization of "T_Old.Root" proved
-search_trees.adb:1168:31: info: initialization of "T_Old.Struct" proved
-search_trees.adb:1168:31: info: initialization of "T_Old.Values" proved
 search_trees.adb:1178:07: warning: initialization of "D" has no effect
-search_trees.adb:1180:13: info: initialization of "Current" proved
 search_trees.adb:1182:33: info: loop invariant initialization proved (CVC4: 1 VC)
 search_trees.adb:1182:33: info: loop invariant preservation proved (CVC4: 1 VC)
 search_trees.adb:1182:33: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1182:51: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1182:59: info: index check proved (CVC4: 4 VC)
-search_trees.adb:1182:59: info: initialization of "Current" proved
 search_trees.adb:1183:10: info: loop variant proved (CVC4: 1 VC)
 search_trees.adb:1183:52: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1183:70: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1183:78: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1183:78: info: initialization of "Current" proved
 search_trees.adb:1188:13: info: loop invariant initialization proved (CVC4: 4 VC)
 search_trees.adb:1189:18: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1189:36: info: range check proved (CVC4: 2 VC)
@@ -2721,28 +2276,18 @@ search_trees.adb:1191:26: info: precondition proved (CVC4: 4 VC)
 search_trees.adb:1191:31: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1191:49: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1191:57: info: index check proved (CVC4: 4 VC)
-search_trees.adb:1191:57: info: initialization of "Current" proved
 search_trees.adb:1191:77: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1191:95: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1191:109: info: overflow check proved (CVC4: 2 VC)
 search_trees.adb:1192:28: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: subprogram at search_trees.ads:42 should mention T and V in a precondition]
-search_trees.adb:1195:22: info: initialization of "Current" proved
 search_trees.adb:1196:27: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1196:27: info: initialization of "Current" proved
 search_trees.adb:1198:30: info: index check proved (CVC4: 2 VC)
 search_trees.adb:1199:15: warning: unused assignment
-search_trees.adb:1200:13: info: initialization of "Current" proved
-search_trees.adb:1200:40: info: initialization of "Current" proved
 search_trees.adb:1200:40: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1202:15: warning: unused assignment
-search_trees.adb:1203:40: info: initialization of "Current" proved
 search_trees.adb:1203:40: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1211:10: info: precondition proved (CVC4: 12 VC)
-search_trees.adb:1211:32: info: initialization of "Previous" proved
 search_trees.adb:1211:32: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1225:07: info: initialization of "T_Old.Root" proved
-search_trees.adb:1225:07: info: initialization of "T_Old.Struct" proved
-search_trees.adb:1225:07: info: initialization of "T_Old.Values" proved
 search_trees.adb:1232:09: info: data dependencies proved
 search_trees.adb:1243:20: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1243:46: info: range check proved (CVC4: 1 VC)
@@ -2887,15 +2432,11 @@ search_trees.adb:1372:91: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1372:105: info: overflow check proved (CVC4: 1 VC)
 search_trees.adb:1381:10: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1382:20: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1382:23: info: initialization of "I" proved
-search_trees.adb:1383:20: info: initialization of "I" proved
-search_trees.adb:1394:16: info: initialization of "Current" proved
 search_trees.adb:1396:36: info: loop invariant initialization proved (CVC4: 1 VC)
 search_trees.adb:1396:36: info: loop invariant preservation proved (CVC4: 1 VC)
 search_trees.adb:1396:36: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1396:54: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1396:62: info: index check proved (CVC4: 4 VC)
-search_trees.adb:1396:62: info: initialization of "Current" proved
 search_trees.adb:1402:16: info: loop invariant initialization proved (CVC4: 4 VC)
 search_trees.adb:1403:21: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1403:39: info: range check proved (CVC4: 2 VC)
@@ -2908,43 +2449,27 @@ search_trees.adb:1405:29: info: precondition proved (CVC4: 4 VC)
 search_trees.adb:1405:34: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1405:52: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1405:60: info: index check proved (CVC4: 4 VC)
-search_trees.adb:1405:60: info: initialization of "Current" proved
 search_trees.adb:1405:80: info: precondition proved (CVC4: 2 VC)
 search_trees.adb:1405:98: info: range check proved (CVC4: 2 VC)
 search_trees.adb:1405:112: info: overflow check proved (CVC4: 2 VC)
 search_trees.adb:1406:31: medium: loop invariant might fail after first iteration, cannot prove V < T.Values (I) [possible explanation: precondition of subprogram at search_trees.ads:45 should mention V]
-search_trees.adb:1409:25: info: initialization of "Current" proved
 search_trees.adb:1410:30: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1410:30: info: initialization of "Previous" proved
 search_trees.adb:1412:31: info: assertion proved (CVC4: 1 VC)
 search_trees.adb:1413:33: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:1413:33: info: precondition proved (CVC4: 1 VC)
 search_trees.adb:1414:31: info: assertion proved (CVC4: 1 VC)
 search_trees.adb:1414:31: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:1416:33: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1416:33: info: initialization of "Previous" proved
-search_trees.adb:1421:40: info: initialization of "Previous" proved
 search_trees.adb:1421:40: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1421:50: info: initialization of "D" proved
 search_trees.adb:1429:10: info: precondition proved (CVC4: 12 VC)
-search_trees.adb:1429:32: info: initialization of "Previous" proved
 search_trees.adb:1429:32: info: range check proved (CVC4: 1 VC)
 search_trees.adb:1431:10: info: precondition proved (CVC4: 4 VC)
 search_trees.adb:1431:29: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1431:36: info: initialization of "Previous" proved
 search_trees.adb:1431:36: info: range check proved (CVC4: 1 VC)
-search_trees.adb:1431:46: info: initialization of "D" proved
 search_trees.adb:1432:20: info: index check proved (CVC4: 2 VC)
-search_trees.adb:1432:23: info: initialization of "I" proved
-search_trees.adb:1433:10: info: initialization of "I" proved
-search_trees.adb:1433:10: info: initialization of "T_Old.Root" proved
-search_trees.adb:1433:10: info: initialization of "T_Old.Struct" proved
-search_trees.adb:1433:10: info: initialization of "T_Old.Values" proved
 search_trees.adb:1433:10: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:1433:10: info: precondition proved (CVC4: 25 VC)
-search_trees.adb:1433:34: info: initialization of "Previous" proved
 search_trees.adb:1433:34: info: range check proved (CVC4: 2 VC)
-search_trees.adb:1433:44: info: initialization of "D" proved
 search_trees.ads:17:09: info: default initial condition proved (CVC4: 1 VC)
 search_trees.ads:18:06: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:23:13: info: invariant check proved (CVC4: 1 VC)
@@ -2965,7 +2490,6 @@ search_trees.ads:50:08: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:51:06: info: disjoint contract cases proved (CVC4: 1 VC)
 search_trees.ads:59:19: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:59:34: info: contract case proved (CVC4: 12 VC)
-search_trees.ads:60:11: info: initialization of "I" proved
 search_trees.ads:61:20: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:61:33: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:62:48: info: invariant check proved (CVC4: 1 VC)
@@ -2991,7 +2515,6 @@ search_trees.ads:73:54: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:73:54: info: precondition proved (CVC4: 2 VC)
 search_trees.ads:78:09: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:78:22: info: contract case proved (CVC4: 8 VC)
-search_trees.ads:79:11: info: initialization of "I" proved
 search_trees.ads:80:20: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:81:20: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:81:20: info: precondition proved (CVC4: 1 VC)
@@ -3004,7 +2527,6 @@ search_trees.ads:84:49: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:85:48: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:85:64: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:92:16: medium: contract case might fail
-search_trees.ads:93:11: info: initialization of "I" proved
 search_trees.ads:94:20: info: invariant check proved (CVC4: 1 VC)
 search_trees.ads:94:20: info: precondition proved (CVC4: 1 VC)
 search_trees.ads:94:31: info: index check proved (CVC4: 2 VC)
