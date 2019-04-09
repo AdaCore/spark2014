@@ -373,13 +373,13 @@
 </theory>
 <theory name="Test__package_def" sum="177acc4b7dff49ad0fd6369b2d20d8b4" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
  </transf>
  </goal>
 </theory>
 <theory name="Test__p__subprogram_def" sum="5527e129492276e94a0375330d8bc1b0" expanded="true">
  <goal name="WP_parameter def" expl="VC for def" expanded="true">
- <transf name="split_goal_wp" expanded="true">
+ <transf name="split_goal_wp_conj" expanded="true">
   <goal name="WP_parameter def.1" expl="1. assertion" expanded="true">
   <proof prover="0"><result status="unknown" time="0.00"/></proof>
   <proof prover="1"><result status="unknown" time="0.00"/></proof>
