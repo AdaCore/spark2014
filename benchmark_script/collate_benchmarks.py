@@ -69,9 +69,9 @@ PROVERS = sorted(PROVERS)
 
 EXT = {
     "altergo": "why",
-    "cvc4_14": "smt2",
-    "cvc4_15": "smt2",
-    "z3_432":  "smt2",
+    "cvc4_16": "smt2",
+    "z3_gnatprove": "smt2",
+    "z3_gnatprove_ce":  "smt2",
 }
 
 assert sorted(EXT) == PROVERS

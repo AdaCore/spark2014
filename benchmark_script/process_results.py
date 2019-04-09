@@ -5,24 +5,26 @@ import sys
 
 tests = set()
 
-# PROVERS = ["cvc4_14", "cvc4_15", "altergo", "z3"]
-PROVERS = ["z3_432"]
+PROVERS = ["altergo"]
 
 EXT = {
-    "cvc4_14": "smt2",
-    "cvc4_15": "smt2",
     "altergo": "why",
-    "z3_432":  "smt2",
+    "cvc4_16": "smt2",
+    "z3_gnatprove": "smt2",
+    "z3_gnatprove_ce":  "smt2",
 }
 
 VERDICTS = {
-    "cvc4_14": {"sat":     ["sat"],
+    "cvc4_16": {"sat":     ["sat"],
                 "unsat":   ["unsat"],
                 "unknown": ["unknown"]},
-    "cvc4_15": {"sat":     ["sat"],
-                "unsat":   ["unsat"],
-                "unknown": ["unknown"]},
-    "z3_432": {"sat":     ["sat"],
+    "z3_gnatprove": {"sat":     ["sat"],
+               "unsat":   ["unsat"],
+               "unknown": ["unknown",
+                           "number of configured allocations exceeded",
+                           "Segmentation fault",
+                           "Aborted"]},
+    "z3_gnatprove_ce": {"sat":     ["sat"],
                "unsat":   ["unsat"],
                "unknown": ["unknown",
                            "number of configured allocations exceeded",
