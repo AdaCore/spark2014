@@ -2,8 +2,6 @@ n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
 n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
-n04.adb:37:07: cannot use global variable "Y" of deep type
-n04.adb:37:07: without prior declaration in a Global aspect
 n04.adb:37:12: source of borrow must be variable "Y"
 n05.adb:37:22: insufficient permission on dereference from "X"
 n05.adb:37:22: object was declared as not writeable at line 31
@@ -140,12 +138,8 @@ spark02.adb:18:17: insufficient permission for "x"
 spark02.adb:18:17: object was declared as not writeable at line 10
 spark02.adb:32:11: illegal target for assignment
 spark02.adb:35:11: name expected here for move/borrow/observe
-spark03.adb:9:10: cannot use global variable "S" of deep type
-spark03.adb:9:10: without prior declaration in a Global aspect
-spark03b.adb:9:07: add "null => An_Item" dependency to ignore this input
-spark03b.adb:9:07: parameter "An_Item" is missing from input dependence list
-spark03b.adb:10:19: "S" is undefined (more references follow)
-spark03b.adb:30:04: volatile variable "A" must be declared at library level (SPARK RM 7.1.3(3))
-spark03c.adb:9:10: cannot use global variable "S" of deep type
-spark03c.adb:9:10: without prior declaration in a Global aspect
+spark03b.ads:4:13: insufficient permission for "An_Item" when returning from "Insert"
+spark03b.ads:4:13: object was moved at spark03b.adb:6
+spark03c.ads:7:13: insufficient permission for "An_Item" when returning from "Insert"
+spark03c.ads:7:13: object was moved at spark03c.adb:6
 gnatprove: error during generation of Global contracts

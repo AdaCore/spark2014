@@ -18,6 +18,6 @@ package Spark03 is
    W : AI;
    A : AA;
 
-   procedure Test;
+   procedure Test with Global => (In_Out => (A,Y), Output => (Z,W));
 
 end Spark03;

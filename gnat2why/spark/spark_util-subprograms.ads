@@ -354,10 +354,6 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
 
-   function Is_Protected_Operation (E : Entity_Id) return Boolean;
-   --  Returns True iff E is a protected operation, i.e. a protected subprogram
-   --  or a protected entry.
-
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a subprogram/task whose analysis was specifically

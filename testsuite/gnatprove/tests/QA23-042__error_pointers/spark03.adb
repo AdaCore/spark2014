@@ -1,6 +1,3 @@
-with Ada.Text_IO;
-use Ada.Text_IO;
-
 package body Spark03 is
 
    protected body AA is
@@ -19,16 +16,12 @@ package body Spark03 is
 
    procedure Test is
    begin
-      Put_Line ("X = " & Integer'Image(X) );
       Y.all := 43; --assign to (Y.all)
-      Put_Line ("X = " & Integer'Image(X) );
       A.Insert(Y); --
 
       A.Remove(Z);
       Z.all := 40;
-      Put_Line ("X = " & Integer'Image(X) );
       A.Remove(W);
       W.all := 41; --Runtime error : null pointer dereferencing
-      Put_Line ("X = " & Integer'Image(X) );
    end Test;
 end Spark03;
