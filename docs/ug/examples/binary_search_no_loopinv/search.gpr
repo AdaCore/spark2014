@@ -1,2 +1,6 @@
 project Search is
+
+   package Prove is
+      for Proof_Switches ("Ada") use ("--no-counterexample");
+   end Prove;
 end Search;
