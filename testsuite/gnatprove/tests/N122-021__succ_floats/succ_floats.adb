@@ -3,15 +3,15 @@ procedure Succ_Floats (A, B : Boolean) is
 begin
    X := 0.0;
    pragma Assert (Float'Succ (X) > 0.0); -- @ASSERT:PASS
-   pragma Assert (Float'Succ (X) < 1.0); -- @ASSERT:FAIL
+   pragma Assert (Float'Succ (X) < 1.0); -- Assert is true: provers timeout
    pragma Assert (Float'Pred (X) < 0.0); -- @ASSERT:PASS
    pragma Assert (Float'Pred (X) > -1.0); -- @ASSERT:PASS
 
    X := 1.0;
    pragma Assert (Float'Succ (X) > 1.0); -- @ASSERT:PASS
-   pragma Assert (Float'Succ (X) < 1.1); -- @ASSERT:FAIL
+   pragma Assert (Float'Succ (X) < 1.1); -- Assert is true: provers timeout
    pragma Assert (Float'Pred (X) < 1.0); -- @ASSERT:PASS
-   pragma Assert (Float'Pred (X) > 0.9); -- @ASSERT:FAIL
+   pragma Assert (Float'Pred (X) > 0.9); -- Assert is true: provers timeout
 
    X := Float'Last;
    if A then
