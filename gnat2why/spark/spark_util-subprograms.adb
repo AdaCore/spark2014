@@ -1093,10 +1093,16 @@ package body SPARK_Util.Subprograms is
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-     (Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
-        and then
-      GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp) =
-        SPARK_Util.Subprograms.Subp_Location (E));
+      Limit_Str : constant String :=
+        GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp);
+   begin
+      return
+        Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
+          and then
+        (Limit_Str = SPARK_Util.Subprograms.Subp_Location (E)
+          or else
+         Limit_Str = SPARK_Util.Subprograms.Subp_Body_Location (E));
+   end Is_Requested_Subprogram_Or_Task;
 
    -------------------------------
    -- Is_Simple_Shift_Or_Rotate --
@@ -1191,6 +1197,45 @@ package body SPARK_Util.Subprograms is
                     raise Program_Error
              );
    end Might_Be_Main;
+
+   ------------------------
+   -- Subp_Body_Location --
+   ------------------------
+
+   function Subp_Body_Location (E : Entity_Id) return String is
+      Body_N : Node_Id;
+      Body_E : Entity_Id := Empty;
+      Slc    : Source_Ptr;
+      Line   : Positive;
+
+   begin
+      case Ekind (E) is
+         when E_Function
+            | E_Procedure
+            | E_Task_Type
+            | Entry_Kind
+         =>
+            Body_E := Get_Body_Entity (E);
+
+         when E_Package =>
+            Body_N := Package_Body (E);
+            if Present (Body_N) then
+               Body_E := Defining_Entity (Body_N);
+            end if;
+
+         when others =>
+            null;
+      end case;
+
+      if Present (Body_E) then
+         Slc := Sloc (Body_E);
+         Line := Positive (Get_Physical_Line_Number (Slc));
+         return
+           GP_Subp_Marker & SPARK_Util.File_Name (Slc) & ":" & Image (Line, 1);
+      else
+         return "";
+      end if;
+   end Subp_Body_Location;
 
    -------------------
    -- Subp_Location --

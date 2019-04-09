@@ -1,0 +1,7 @@
+project Database is
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-g", "-O2", "-gnat12", "-gnatwa");
+   end Compiler;
+
+end Database;
