@@ -168,7 +168,7 @@ invariant is true but not inductive:
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 11,13
+   :lines: 8,9
 
 Note that using |CodePeer| static analysis allows here to fully prove the
 loop invariant, which is possible because |CodePeer| generates its own sound
@@ -177,7 +177,7 @@ details):
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops_cdp.prove
    :language: none
-   :lines: 10
+   :lines: 7
 
 Note also that not using an assertion (:ref:`Pragma Assert`) instead of a loop
 invariant also allows here to fully prove the corresponding property, by
@@ -185,7 +185,7 @@ relying on :ref:`Automatic Unrolling of Simple For-Loops`:
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops_unroll.prove
    :language: none
-   :lines: 4
+   :lines: 3
 
 Returning to the case where neither automatic loop unrolling nor |CodePeer| are
 used, the reasoning of |GNATprove| for checking property 2 in that case can be
