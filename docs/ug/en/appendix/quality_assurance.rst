@@ -73,11 +73,11 @@ Why3
 
 This part of SPARK takes the information in the Why language produced by GNAT2Why, translates it further into a format suitable for SMT solvers such as Z3 and CVC4, and runs these tools. The results are reported back to gnat2why.
 
-History: Started around the year 2000 by Jean-Christophe-Filliâtre as “Why” (see Jean-Christophe Filliâtre. Why: a multi-language multi-prover verification tool. Research Report 1366, LRI, Université Paris Sud, March 2003), it has undergone a number of redevelopments until its current version Why3 (since 2010).
+History: Started around the year 2000 by Jean-Christophe Filliâtre as “Why” (see Jean-Christophe Filliâtre. Why: a multi-language multi-prover verification tool. Research Report 1366, LRI, Université Paris Sud, March 2003), it has undergone a number of redevelopments until its current version Why3 (since 2010).
 
 Track record: Apart from SPARK, it is used by `Frama-C <http://frama-c.com/>`_, `Atelier B <http://www.atelierb.eu/en/>`_, and other program verification tools.
 
-Relationship with AdaCore/Altran: The Inria team around Why3 has strong ties with AdaCore and Altran. A number of research projects have been and are being carried out in collaboration with this team. This includes the `Hi-Lite project <http://www.open-do.org/projects/hi-lite/>`_, which led to the current version of SPARK based on Why3, and the still ongoing project `SOPRANO <http://soprano-project.fr/>`_ and joint laboratory `ProofInUse <http://www.spark-2014.org/proofinuse http://www.spark-2014.org/proofinuse>`_. In addition, while Why3 is mainly developed at Inria, AdaCore and Altran have made important contributions to the technology, such as the so-called fast-WP, a more efficient implementation of the main algorithm of Why3, and the why3server, a more scalable method of running external tools such as SMT solvers.
+Relationship with AdaCore/Altran: The Inria team around Why3 has strong ties with AdaCore and Altran. A number of research projects have been and are being carried out in collaboration with this team. This includes the `Hi-Lite project <http://www.open-do.org/projects/hi-lite/>`_, which led to the current version of SPARK based on Why3, and the still ongoing project `SOPRANO <http://soprano-project.fr/>`_ and joint laboratory `ProofInUse <http://www.spark-2014.org/proofinuse>`_. In addition, while Why3 is mainly developed at Inria, AdaCore and Altran have made important contributions to the technology, such as the so-called fast-WP, a more efficient implementation of the main algorithm of Why3, and the why3server, a more scalable method of running external tools such as SMT solvers.
 
 * Main developers: `Inria research institute <http://toccata.lri.fr/>`_
 * Main website: http://why3.lri.fr
