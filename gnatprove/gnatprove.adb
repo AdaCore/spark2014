@@ -479,10 +479,6 @@ procedure Gnatprove with SPARK_Mode is
          Args.Append ("--limit-region");
          Args.Append (CL_Switches.Limit_Region.all);
       end if;
-      if CL_Switches.Limit_Subp.all /= "" then
-         Args.Append ("--limit-subp");
-         Args.Append (CL_Switches.Limit_Subp.all);
-      end if;
 
       if Proof_Dir /= null then
          pragma Assert (Proof_Dir.all /= "");
