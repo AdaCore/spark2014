@@ -1215,7 +1215,10 @@ package body SPARK_Util.Subprograms is
             | E_Task_Type
             | Entry_Kind
          =>
-            Body_E := Get_Body_Entity (E);
+            --  A derived task type has no body itself, so exclude this case
+            if not Is_Derived_Type (E) then
+               Body_E := Get_Body_Entity (E);
+            end if;
 
          when E_Package =>
             Body_N := Package_Body (E);
