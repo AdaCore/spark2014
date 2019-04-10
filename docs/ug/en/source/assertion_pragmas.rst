@@ -120,12 +120,13 @@ true in all remaining iterations:
 .. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
    :language: ada
    :lines: 6-10
+   :lineno-match:
 
 Thus, |GNATprove| checks that property 2 holds but not property 1:
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 1,3
+   :lines: 2,3
 
 Conversely, in the following loop, the loop invariant is true during the first
 iteration and false in all remaining iterations:
@@ -133,12 +134,13 @@ iteration and false in all remaining iterations:
 .. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
    :language: ada
    :lines: 12-16
+   :lineno-match:
 
 Thus, |GNATprove| checks that property 1 holds but not property 2:
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 4,6
+   :lines: 4,5
 
 The following loop shows a case where the loop invariant holds both during the
 first iteration and all remaining iterations:
@@ -146,12 +148,13 @@ first iteration and all remaining iterations:
 .. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
    :language: ada
    :lines: 18-22
+   :lineno-match:
 
 |GNATprove| checks here that both properties 1 and 2 hold:
 
 .. literalinclude:: /gnatprove_by_example/results/simple_loops.prove
    :language: none
-   :lines: 7,8
+   :lines: 6,7
 
 In general, it is not sufficient that a loop invariant is true for |GNATprove|
 to prove it. The loop invariant should also be `inductive`: it should be
@@ -163,6 +166,7 @@ invariant is true but not inductive:
 .. literalinclude:: /gnatprove_by_example/examples/simple_loops.adb
    :language: ada
    :lines: 24-28
+   :lineno-match:
 
 |GNATprove| cannot check property 2 on that loop:
 
