@@ -2814,6 +2814,7 @@ package body Flow.Analysis is
               and then not Synthetic (Parent_Key)
               and then not Is_Empty_Record_Object (Parent_Key)
               and then not Is_Init_By_Proof (Parent_Key)
+              and then not Is_Internal (Parent_Key)
             then
                OK := True;
 
@@ -2836,7 +2837,6 @@ package body Flow.Analysis is
                  and then not Is_Function_Entity (Parent_Key)
                  and then Used.Contains
                                  (Change_Variant (Parent_Key, Normal_Use))
-                 and then not Is_Internal (Parent_Key)
                then
                   Emit_Info_Message (Var => Parent_Key, V_Initial => Parent);
                end if;
