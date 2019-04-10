@@ -26,8 +26,8 @@ flow:
 	-cd flow && gnatprove $(FLOW_OPTS) -P illegal.gpr       >  flow.results
 	-cd flow && gnatprove $(FLOW_OPTS) -P flow_error.gpr    >> flow.results
         # ignore the error status on analysis that issues check messages
-	-cd flow  && gnatprove $(FLOW_OPTS) -P spark_mode.gpr    >> flow.results
-	-cd flow  && gnatprove $(FLOW_OPTS) -P no_spark_mode.gpr >> flow.results
+	-cd flow && gnatprove $(FLOW_OPTS) -P spark_mode.gpr    >> flow.results
+	-cd flow && gnatprove $(FLOW_OPTS) -P no_spark_mode.gpr >> flow.results
 
 prove:
 	mkdir -p prove
@@ -46,10 +46,10 @@ prove:
             examples/long.txt        \
             examples/altergo.txt > prove/spark_mode_or_illegal.txt
         # ignore the error status on analysis that issues check messages
-	-cd prove && gnatprove $(PROVE_OPTS)  -P codepeer_on.gpr --steps=100    >  prove.results
-	-cd prove && gnatprove $(PROVE_OPTS)  -P intro.gpr       --steps=100    >> prove.results
-	-cd prove && gnatprove $(PROVE_OPTS)  -P long.gpr        --steps=10000  >> prove.results
-	-cd prove && gnatprove $(COMMON_OPTS) -P altergo.gpr     --steps=100    >> prove.results
+	-cd prove && gnatprove $(PROVE_OPTS)  -P codepeer_on.gpr --steps=100   >  prove.results
+	-cd prove && gnatprove $(PROVE_OPTS)  -P intro.gpr       --steps=100   >> prove.results
+	-cd prove && gnatprove $(PROVE_OPTS)  -P long.gpr        --steps=10000 >> prove.results
+	-cd prove && gnatprove $(COMMON_OPTS) -P altergo.gpr     --steps=100   >> prove.results
 
 results: $(ALL_FLOW_MSG) $(ALL_PROVE_MSG)
 
