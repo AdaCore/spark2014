@@ -2173,11 +2173,12 @@ package body Flow.Analysis is
       type Msg_Kind is (Unknown, Err);
 
       procedure Emit_Check_Message
-        (Var    : Flow_Id;
-         Vertex : Flow_Graphs.Vertex_Id;
-         Kind   : Msg_Kind;
-         OK     : in out Boolean)
-      with Pre  => not Is_Internal (Var),
+        (Var   : Flow_Id;
+         V_Use : Flow_Graphs.Vertex_Id;
+         Kind  : Msg_Kind;
+         OK    : in out Boolean)
+      with Pre  => not Is_Internal (Var)
+                   and then V_Use /= Flow_Graphs.Null_Vertex,
            Post => not OK;
       --  Produces an appropriately worded low/high message for variable Var
       --  when used at Vertex.
@@ -2240,12 +2241,12 @@ package body Flow.Analysis is
       ------------------------
 
       procedure Emit_Check_Message
-        (Var    : Flow_Id;
-         Vertex : Flow_Graphs.Vertex_Id;
-         Kind   : Msg_Kind;
-         OK     : in out Boolean)
+        (Var   : Flow_Id;
+         V_Use : Flow_Graphs.Vertex_Id;
+         Kind  : Msg_Kind;
+         OK    : in out Boolean)
       is
-         V_Key        : Flow_Id renames FA.PDG.Get_Key (Vertex);
+         V_Key        : Flow_Id renames FA.PDG.Get_Key (V_Use);
 
          V_Initial    : constant Flow_Graphs.Vertex_Id :=
            FA.PDG.Get_Vertex (Change_Variant (Var, Initial_Value));
@@ -2253,7 +2254,6 @@ package body Flow.Analysis is
          N            : Node_Or_Entity_Id;
          Msg          : Unbounded_String;
 
-         V_Error      : constant Flow_Graphs.Vertex_Id := Vertex;
          V_Goal       : Flow_Graphs.Vertex_Id;
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
@@ -2373,10 +2373,10 @@ package body Flow.Analysis is
          end if;
 
          if not Is_Final_Use then
-            V_Goal := V_Error;
+            V_Goal := V_Use;
 
             N := First_Variable_Use
-              (N        => Error_Location (FA.PDG, FA.Atr, V_Error),
+              (N        => Error_Location (FA.PDG, FA.Atr, V_Use),
                Scope    => FA.B_Scope,
                Var      => Var,
                Precise  => True,
@@ -2386,8 +2386,8 @@ package body Flow.Analysis is
             V_Goal := FA.Helper_End_Vertex;
             N      := Find_Global (FA.Spec_Entity, Var);
          else
-            V_Goal := V_Error;
-            N      := FA.Atr (Vertex).Error_Location;
+            V_Goal := V_Use;
+            N      := FA.Atr (V_Use).Error_Location;
          end if;
 
          declare
@@ -2411,7 +2411,7 @@ package body Flow.Analysis is
                             when Err     => (if Default_Init
                                              then Medium_Check_Kind
                                              else High_Check_Kind)),
-               Vertex   => Vertex);
+               Vertex   => V_Use);
 
             --  ??? only when Is_Final_Use ?
             if Is_Constituent (Var)
@@ -2430,7 +2430,7 @@ package body Flow.Analysis is
                   Severity     => (case Kind is
                                       when Unknown => Medium_Check_Kind,
                                       when Err     => High_Check_Kind),
-                  Vertex       => Vertex,
+                  Vertex       => V_Use,
                   Continuation => True);
             end if;
          end;
@@ -2699,9 +2699,9 @@ package body Flow.Analysis is
                      elsif Child_Atr.Variables_Explicitly_Used.Contains (Var)
                      then
                         Emit_Check_Message
-                          (Var    => Var,
-                           Vertex => Child,
-                           Kind   =>
+                          (Var   => Var,
+                           V_Use => Child,
+                           Kind  =>
                              (if Possibly_Initialized
                                 or else
                                  Might_Be_Initialized (Var       => Var,
@@ -2709,7 +2709,7 @@ package body Flow.Analysis is
                                                        V_Use     => Child)
                               then Unknown
                               else Err),
-                           OK     => OK);
+                           OK    => OK);
 
                      --  Otherwise, it is a partial assignment, e.g.
                      --     Arr (X) := Y;
@@ -2729,15 +2729,15 @@ package body Flow.Analysis is
                   else
                      if Child_Atr.Variables_Used.Contains (Var) then
                         Emit_Check_Message
-                          (Var    => Var,
-                           Vertex => Child,
-                           Kind   =>
+                          (Var   => Var,
+                           V_Use => Child,
+                           Kind  =>
                              (if Might_Be_Initialized (Var       => Var,
                                                        V_Initial => Start,
                                                        V_Use     => Child)
                               then Unknown
                               else Err),
-                           OK     => OK);
+                           OK    => OK);
                      end if;
                   end if;
                end if;
