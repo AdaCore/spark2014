@@ -249,6 +249,27 @@ This program implements a queue of integers using a doubly linked list, with
 full functional contracts on the API of the queue. |GNATprove| proves all
 checks on this program.
 
+.. rubric:: ``ghc_sort``
+
+This program is a partial solution to the first challenge of VerifyThis 2019.
+It features a sorting algorithm, which works by splitting the input sequence into
+monotonic subsequences of maximal length. It then reverses the decreasing
+subsequences and merges them pairwise until the sequence is reconstructed.
+
+Computation of the sequence of cuts is completely verified. On sorting
+algorithm, we only check that it returns a sorted sequence of the correct
+length. We did not attempt to prove that the result of the sort function is
+a permutation of its input. Indeed, this kind of property is complicated both to
+formalize and to verify, and generally requires ghost code
+(see :ref:`Manual Proof Using Ghost Code`).
+
+This example does not feature the use of any interactive proof techniques, as
+proofs attempted were largely in reach of the automated tool.
+We used support for ownership pointers in SPARK to implement lists of
+subsequences as a recursive data-type using pointers.
+It is all proved except for termination of recursive functions used to iterate
+over the lists.
+
 .. rubric:: ``natural``
 
 This program implements an interface to manipulate sets of natural numbers,
