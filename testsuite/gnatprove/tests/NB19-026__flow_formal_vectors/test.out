@@ -16,7 +16,7 @@ a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
-indefinite_bounded.adb:10:07: info: initialization of private part of "V" proved
+indefinite_bounded.adb:10:07: info: initialization of "V" proved
 indefinite_bounded.adb:10:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)

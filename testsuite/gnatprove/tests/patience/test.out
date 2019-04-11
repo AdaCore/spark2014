@@ -186,14 +186,7 @@ test_patience.adb:36:24: info: range check proved (CVC4: 1 VC), in call inlined 
 test_patience.adb:36:47: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:36:55: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at test_patience.adb:53
-test_patience.adb:47:04: info: initialization of "S.NumElts" proved
-test_patience.adb:47:04: info: initialization of "S.NumStacks" proved
-test_patience.adb:47:04: info: initialization of "S.PosHeight" proved
-test_patience.adb:47:04: info: initialization of "S.PosStack" proved
-test_patience.adb:47:04: info: initialization of "S.Preds" proved
-test_patience.adb:47:04: info: initialization of "S.StackSizes" proved
-test_patience.adb:47:04: info: initialization of "S.Stacks" proved
-test_patience.adb:47:04: info: initialization of "S.Values" proved
+test_patience.adb:47:04: info: initialization of "S" proved
 test_patience.adb:51:04: info: analyzing call to "PrintCardStack" in context
 test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:51:04: info: in inlined body at line 11

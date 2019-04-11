@@ -426,8 +426,7 @@ compiler.adb:1470:35: info: range check proved (CVC4: 1 VC)
 compiler.adb:1470:40: medium: array index check might fail
 compiler.adb:1470:47: info: range check proved (CVC4: 1 VC)
 compiler.adb:1470:52: info: range check proved (CVC4: 1 VC)
-compiler.adb:1488:03: info: initialization of "result.location" proved
-compiler.adb:1488:03: info: initialization of "result.stack" proved
+compiler.adb:1488:03: info: initialization of "result" proved
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1781
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1788
 compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1796
@@ -481,11 +480,8 @@ compiler.adb:1584:18: medium: range check might fail [possible explanation: subp
 compiler.adb:1585:18: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
 compiler.adb:1601:46: medium: range check might fail
 compiler.adb:1618:05: info: initialization of "Spawn_Data" proved
-compiler.adb:1619:05: info: initialization of "Code.data" proved
-compiler.adb:1619:05: info: initialization of "Code.instruction" proved
-compiler.adb:1619:05: info: initialization of "Code.level" proved
-compiler.adb:1624:05: info: initialization of "Caller.location" proved
-compiler.adb:1624:05: info: initialization of "Caller.stack" proved
+compiler.adb:1619:05: info: initialization of "Code" proved
+compiler.adb:1624:05: info: initialization of "Caller" proved
 compiler.adb:1625:05: info: initialization of "New_Thread" proved
 compiler.adb:1626:05: info: initialization of "Tmp_Data" proved
 compiler.adb:1627:05: info: initialization of "Ready" proved

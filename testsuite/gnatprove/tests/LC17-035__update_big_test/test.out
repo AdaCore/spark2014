@@ -144,22 +144,14 @@ ar.adb:1798:05: info: initialization of "Temp" proved
 ar.adb:1801:20: info: range check proved (CVC4: 1 VC)
 ar.adb:1808:05: info: initialization of "Temp" proved
 ar.adb:1811:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1893:05: info: initialization of "Temp.F1" proved
-ar.adb:1893:05: info: initialization of "Temp.G1" proved
-ar.adb:1903:05: info: initialization of "Temp.F1" proved
-ar.adb:1903:05: info: initialization of "Temp.G1" proved
-ar.adb:1913:05: info: initialization of "Temp.F1" proved
-ar.adb:1913:05: info: initialization of "Temp.G1" proved
-ar.adb:1923:05: info: initialization of "Temp.F1" proved
-ar.adb:1923:05: info: initialization of "Temp.G1" proved
-ar.adb:1933:05: info: initialization of "Temp.F1" proved
-ar.adb:1933:05: info: initialization of "Temp.G1" proved
-ar.adb:1943:05: info: initialization of "Temp.F1" proved
-ar.adb:1943:05: info: initialization of "Temp.G1" proved
-ar.adb:1953:05: info: initialization of "Temp.F1" proved
-ar.adb:1953:05: info: initialization of "Temp.G1" proved
-ar.adb:1963:05: info: initialization of "Temp.F1" proved
-ar.adb:1963:05: info: initialization of "Temp.G1" proved
+ar.adb:1893:05: info: initialization of "Temp" proved
+ar.adb:1903:05: info: initialization of "Temp" proved
+ar.adb:1913:05: info: initialization of "Temp" proved
+ar.adb:1923:05: info: initialization of "Temp" proved
+ar.adb:1933:05: info: initialization of "Temp" proved
+ar.adb:1943:05: info: initialization of "Temp" proved
+ar.adb:1953:05: info: initialization of "Temp" proved
+ar.adb:1963:05: info: initialization of "Temp" proved
 ar.adb:2036:05: info: initialization of "Temp" proved
 ar.adb:2046:05: info: initialization of "Temp" proved
 ar.adb:2056:05: info: initialization of "Temp" proved
@@ -451,12 +443,10 @@ ar.ads:705:11: info: flow dependencies proved
 ar.ads:706:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:710:11: info: flow dependencies proved
 ar.ads:711:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:714:14: info: initialization of "R.F1" proved
-ar.ads:714:14: info: initialization of "R.G1" proved
+ar.ads:714:14: info: initialization of "R" proved
 ar.ads:715:11: info: flow dependencies proved
 ar.ads:716:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:719:14: info: initialization of "R.F1" proved
-ar.ads:719:14: info: initialization of "R.G1" proved
+ar.ads:719:14: info: initialization of "R" proved
 ar.ads:720:11: info: flow dependencies proved
 ar.ads:721:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:725:11: info: flow dependencies proved
@@ -467,16 +457,13 @@ ar.ads:731:11: info: flow dependencies proved
 ar.ads:733:22: info: postcondition proved (CVC4: 2 VC)
 ar.ads:737:11: info: flow dependencies proved
 ar.ads:739:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:742:14: info: initialization of "R.F1" proved
-ar.ads:742:14: info: initialization of "R.G1" proved
+ar.ads:742:14: info: initialization of "R" proved
 ar.ads:743:11: info: flow dependencies proved
 ar.ads:744:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:747:14: info: initialization of "R.F1" proved
-ar.ads:747:14: info: initialization of "R.G1" proved
+ar.ads:747:14: info: initialization of "R" proved
 ar.ads:748:11: info: flow dependencies proved
 ar.ads:749:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:752:14: info: initialization of "R.F1" proved
-ar.ads:752:14: info: initialization of "R.G1" proved
+ar.ads:752:14: info: initialization of "R" proved
 ar.ads:753:11: info: flow dependencies proved
 ar.ads:754:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:761:11: info: flow dependencies proved
@@ -759,16 +746,13 @@ ar.ads:1485:11: info: flow dependencies proved
 ar.ads:1487:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1491:11: info: flow dependencies proved
 ar.ads:1493:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1496:14: info: initialization of "R.S1" proved
-ar.ads:1496:14: info: initialization of "R.T1" proved
+ar.ads:1496:14: info: initialization of "R" proved
 ar.ads:1497:11: info: flow dependencies proved
 ar.ads:1498:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1501:14: info: initialization of "R.S1" proved
-ar.ads:1501:14: info: initialization of "R.T1" proved
+ar.ads:1501:14: info: initialization of "R" proved
 ar.ads:1502:11: info: flow dependencies proved
 ar.ads:1503:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:1506:14: info: initialization of "R.S1" proved
-ar.ads:1506:14: info: initialization of "R.T1" proved
+ar.ads:1506:14: info: initialization of "R" proved
 ar.ads:1507:11: info: flow dependencies proved
 ar.ads:1508:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1515:11: info: flow dependencies proved

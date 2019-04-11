@@ -20,13 +20,7 @@ linted-controls.adb:47:28: info: overflow check proved (CVC4: 1 VC), in call inl
 linted-controls.adb:47:28: info: overflow check proved (CVC4: 1 VC), in call inlined at linted-controls.adb:55
 linted-controls.adb:54:27: info: range check proved (CVC4: 4 VC)
 linted-controls.adb:55:27: info: range check proved (CVC4: 4 VC)
-linted-controls.ads:37:41: info: initialization of "C.Back" proved
-linted-controls.ads:37:41: info: initialization of "C.Forward" proved
-linted-controls.ads:37:41: info: initialization of "C.Jumping" proved
-linted-controls.ads:37:41: info: initialization of "C.Left" proved
-linted-controls.ads:37:41: info: initialization of "C.Right" proved
-linted-controls.ads:37:41: info: initialization of "C.X_Tilt" proved
-linted-controls.ads:37:41: info: initialization of "C.Z_Tilt" proved
+linted-controls.ads:37:41: info: initialization of "C" proved
 linted-controls.ads:38:07: info: data dependencies proved
 linted-controls.ads:39:07: info: flow dependencies proved
 linted-io_pool.adb:77:04: call to operation of a formal protected parameter is not yet supported
@@ -221,14 +215,7 @@ linted-update.adb:99:43: info: range check proved (CVC4: 1 VC)
 linted-update.adb:100:33: info: length check proved (CVC4: 3 VC; Z3: 1 VC)
 linted-update.adb:100:33: info: range check proved (CVC4: 1 VC)
 linted-update.ads:40:38: info: initialization of "S" proved
-linted-update.ads:41:41: info: initialization of "U.MX_Position" proved
-linted-update.ads:41:41: info: initialization of "U.MY_Position" proved
-linted-update.ads:41:41: info: initialization of "U.MZ_Position" proved
-linted-update.ads:41:41: info: initialization of "U.X_Position" proved
-linted-update.ads:41:41: info: initialization of "U.X_Rotation" proved
-linted-update.ads:41:41: info: initialization of "U.Y_Position" proved
-linted-update.ads:41:41: info: initialization of "U.Z_Position" proved
-linted-update.ads:41:41: info: initialization of "U.Z_Rotation" proved
+linted-update.ads:41:41: info: initialization of "U" proved
 linted-windows.ads:26:41: info: initialization of "W" proved
 linted-writer.ads:21:16: high: possible data race when accessing variable "linted.io_pool.my_command_queue.state"
 linted-writer.ads:21:16: high: with task "linted.io_pool.worker_tasks"

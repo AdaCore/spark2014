@@ -1,8 +1,7 @@
 game.adb:16:10: info: precondition proved (CVC4: 2 VC)
 game.adb:19:10: info: precondition proved (CVC4: 2 VC)
 tictactoe.adb:13:14: info: postcondition proved (CVC4: 1 VC)
-tictactoe.adb:21:07: info: initialization of "P.X" proved
-tictactoe.adb:21:07: info: initialization of "P.Y" proved
+tictactoe.adb:21:07: info: initialization of "P" proved
 tictactoe.adb:25:13: info: initialization of "S" proved
 tictactoe.adb:26:13: info: initialization of "Last" proved
 tictactoe.adb:67:07: info: precondition proved (CVC4: 2 VC)
@@ -22,8 +21,7 @@ tictactoe.adb:136:16: info: precondition proved (CVC4: 18 VC)
 tictactoe.adb:145:28: info: unrolling loop
 tictactoe.adb:146:23: info: unrolling loop
 tictactoe.adb:161:07: info: initialization of "Score" proved
-tictactoe.adb:162:07: info: initialization of "P.X" proved
-tictactoe.adb:162:07: info: initialization of "P.Y" proved
+tictactoe.adb:162:07: info: initialization of "P" proved
 tictactoe.adb:164:30: info: unrolling loop
 tictactoe.adb:167:27: info: unrolling loop
 tictactoe.adb:171:31: info: overflow check proved (CVC4: 24 VC)

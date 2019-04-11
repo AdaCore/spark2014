@@ -1,3 +1,3 @@
 pack.adb:17:12: warning: unused assignment
-pack.ads:10:19: info: initialization of "R.X" proved
+pack.ads:10:19: info: initialization of "R" proved
 pack.ads:11:19: info: initialization of "A" proved

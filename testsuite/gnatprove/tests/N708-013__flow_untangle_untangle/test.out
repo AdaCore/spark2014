@@ -10,21 +10,21 @@ foo.adb:46:33: info: loop invariant initialization proved (CVC4: 1 VC)
 foo.adb:46:33: info: loop invariant preservation proved (CVC4: 1 VC)
 foo.adb:54:23: info: initialization of "O" proved
 foo.adb:55:09: info: flow dependencies proved
-foo.adb:57:07: info: initialization of "Tmp.X" proved
+foo.adb:57:07: info: initialization of "Tmp" proved
 foo.adb:65:23: info: initialization of "O" proved
 foo.adb:66:09: info: flow dependencies proved
-foo.adb:68:07: info: initialization of "Tmp.F.X" proved
+foo.adb:68:07: info: initialization of "Tmp" proved
 foo.adb:72:39: info: range check proved (CVC4: 1 VC)
 foo.adb:72:39: medium: overflow check might fail [possible explanation: subprogram at line 63 should mention A in a precondition]
 foo.adb:77:23: info: initialization of "O" proved
 foo.adb:78:09: info: flow dependencies proved
-foo.adb:80:07: info: initialization of "Tmp.X" proved
+foo.adb:80:07: info: initialization of "Tmp" proved
 foo.adb:83:13: warning: unused assignment
-foo.adb:87:23: info: initialization of "A.N" proved
+foo.adb:87:23: info: initialization of "A" proved
 foo.adb:88:23: info: initialization of "B" proved
 foo.adb:89:09: info: flow dependencies proved
 foo.adb:92:17: info: range check proved (CVC4: 1 VC)
 foo.adb:103:04: warning: analyzing unreferenced procedure "Test_07"
 foo.adb:104:23: info: initialization of "O" proved
-foo.adb:106:07: info: initialization of "Tmp.A" proved
+foo.adb:106:07: info: initialization of "Tmp" proved
 foo.adb:112:04: warning: analyzing unreferenced procedure "Test_08"

@@ -10,7 +10,7 @@ a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at list.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at list.ads:8
 list.adb:12:26: info: range check proved (CVC4: 1 VC)
-list.adb:14:14: info: initialization of private part of "Res" proved
+list.adb:14:14: info: initialization of "Res" proved
 list.adb:15:50: info: cannot unroll loop (too many loop iterations)
 list.adb:16:10: medium: precondition might fail, cannot prove not Is_Full (S) (e.g. when S = (N => ?, Top => 0, Content => (others => 1)) and S.Content'First = 1 and S.Content'Last = 0) [possible explanation: loop at line 15 should mention S in a loop invariant]
 list.adb:16:16: high: private part of "S" is not initialized

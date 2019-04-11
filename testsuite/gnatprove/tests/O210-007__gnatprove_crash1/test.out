@@ -1,5 +1,5 @@
 main.adb:9:08: info: range check proved (CVC4: 2 VC)
-main.adb:13:07: info: initialization of "Branch.M_Nodes" proved
+main.adb:13:07: info: initialization of "Branch" proved
 main.adb:16:22: info: length check proved (CVC4: 4 VC)
 main.adb:16:25: info: length check proved (CVC4: 4 VC)
 main.adb:20:13: info: loop invariant initialization proved (CVC4: 4 VC)

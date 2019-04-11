@@ -81,7 +81,7 @@ bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = F
 bounded_queue.ads:39:24: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:50:10: info: range check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
-bounded_queue_example.adb:10:04: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:10:04: info: initialization of "My_Queue" proved
 bounded_queue_example.adb:10:50: info: range check proved (CVC4: 1 VC)
 bounded_queue_example.adb:11:04: info: initialization of "Value" proved
 bounded_queue_example.adb:15:43: info: unrolling loop
@@ -100,7 +100,7 @@ bounded_queue_example_v1.adb:12:07: medium: precondition might fail, cannot prov
 bounded_queue_example_v1.adb:14:38: info: unrolling loop
 bounded_queue_example_v1.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
-bounded_queue_example_v2.adb:6:04: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:6:04: info: initialization of "My_Queue" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
 bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations)
@@ -329,8 +329,7 @@ datebook.ads:71:07: info: initialization of "Status" proved
 datebook.ads:73:06: info: data dependencies proved
 datebook.ads:74:06: info: flow dependencies proved
 datebook.ads:79:06: info: data dependencies proved
-datebooks.adb:31:07: info: initialization of "Find_Result.Found_Slot" proved
-datebooks.adb:31:07: info: initialization of "Find_Result.Fresh_Index" proved
+datebooks.adb:31:07: info: initialization of "Find_Result" proved
 datebooks.adb:41:35: info: loop invariant initialization proved (CVC4: 1 VC)
 datebooks.adb:41:35: info: loop invariant preservation proved (CVC4: 1 VC)
 datebooks.adb:55:17: info: range check proved (CVC4: 2 VC)
@@ -395,9 +394,7 @@ dates.adb:236:14: info: range check proved (CVC4: 2 VC)
 dates.adb:242:35: info: loop invariant initialization proved (CVC4: 1 VC)
 dates.adb:242:35: info: loop invariant preservation proved (CVC4: 1 VC)
 dates.adb:244:13: info: precondition proved (CVC4: 1 VC)
-dates.ads:32:07: info: initialization of "New_Date.Day" proved
-dates.ads:32:07: info: initialization of "New_Date.Month" proved
-dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:32:07: info: initialization of "New_Date" proved
 dates.ads:33:07: info: initialization of "Valid" proved
 dates.ads:35:06: info: flow dependencies proved
 dates.ads:62:76: info: initialization of "Valid" proved
@@ -573,8 +570,7 @@ initializer_demo.adb:10:21: medium: overflow check might fail [possible explanat
 initializer_demo.adb:17:07: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
 initializer_demo.adb:23:21: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:14 should mention A in a precondition]
-initializer_demo.adb:30:07: info: initialization of "Offset.X" proved
-initializer_demo.adb:30:07: info: initialization of "Offset.Y" proved
+initializer_demo.adb:30:07: info: initialization of "Offset" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC4: 1 VC)
 initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:22 should mention P in a precondition]
 initializer_demo.ads:12:28: info: range check proved (CVC4: 1 VC)
@@ -632,10 +628,8 @@ operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in 
 operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:21:04: info: initialization of "P1.X_Coord" proved
-operator_overload.adb:21:04: info: initialization of "P1.Y_Coord" proved
-operator_overload.adb:22:04: info: initialization of "P2.X_Coord" proved
-operator_overload.adb:22:04: info: initialization of "P2.Y_Coord" proved
+operator_overload.adb:21:04: info: initialization of "P1" proved
+operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
 overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at overflow.ads:3 should mention A and B in a precondition]
@@ -947,7 +941,6 @@ stacks.adb:14:30: medium: overflow check might fail [possible explanation: subpr
 stacks.adb:15:25: medium: array index check might fail [possible explanation: subprogram at stacks.ads:8 should mention Stack in a precondition]
 stacks.adb:21:33: medium: array index check might fail [possible explanation: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC4: 1 VC)
-stacks.ads:6:21: info: initialization of "Stack.Top" proved
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
 stacks.ads:10:19: info: initialization of "Item" proved
 stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
@@ -1088,8 +1081,7 @@ temperature_buffer14.ads:17:08: info: flow dependencies proved
 temperature_buffer14.ads:22:08: info: data dependencies proved
 temperature_buffer14.ads:23:08: info: flow dependencies proved
 temperature_buffer14.ads:27:11: info: data dependencies proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
+temperature_buffer14.ads:30:19: info: initialization of "Item" proved
 temperature_buffer14.ads:32:08: info: data dependencies proved
 temperature_buffer14.ads:33:08: info: flow dependencies proved
 terminal.adb:10:07: info: initialization of "Value" proved
@@ -1136,11 +1128,11 @@ various.adb:21:13: info: division check proved (CVC4: 1 VC)
 very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
-very_longs-divide.adb:29:04: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:30:04: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:29:04: info: initialization of "U" proved
+very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved
 very_longs-divide.adb:58:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:59:07: info: initialization of "Overflow_Mask" proved
@@ -1168,19 +1160,19 @@ very_longs-divide.adb:192:07: info: initialization of "Sum" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:34:11: info: flow dependencies proved
-very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:50:28: info: initialization of "Result" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:52:08: info: flow dependencies proved
 very_longs.adb:55:07: info: initialization of "L_Digit" proved
 very_longs.adb:56:07: info: initialization of "R_Digit" proved
 very_longs.adb:57:07: info: initialization of "Sum" proved
-very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:73:28: info: initialization of "Result" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
 very_longs.adb:75:08: info: flow dependencies proved
 very_longs.adb:78:07: info: initialization of "L_Digit" proved
 very_longs.adb:79:07: info: initialization of "R_Digit" proved
 very_longs.adb:80:07: info: initialization of "Difference" proved
-very_longs.adb:109:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:109:07: info: initialization of "Result" proved
 very_longs.adb:110:07: info: initialization of "Temp" proved
 very_longs.adb:126:07: info: initialization of "Index" proved
 very_longs.adb:127:07: info: initialization of "String_Index" proved
@@ -1188,33 +1180,33 @@ very_longs.adb:128:07: info: initialization of "H_Digit" proved
 very_longs.adb:129:07: info: initialization of "L_Digit" proved
 very_longs.adb:130:07: info: initialization of "H_Okay" proved
 very_longs.adb:131:07: info: initialization of "L_Okay" proved
-very_longs.adb:235:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:235:07: info: initialization of "Result" proved
 very_longs.adb:236:07: info: initialization of "L_Digit" proved
 very_longs.adb:237:07: info: initialization of "R_Digit" proved
 very_longs.adb:238:07: info: initialization of "Sum" proved
 very_longs.adb:239:07: info: initialization of "Carry" proved
-very_longs.adb:255:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:255:07: info: initialization of "Result" proved
 very_longs.adb:256:07: info: initialization of "L_Digit" proved
 very_longs.adb:257:07: info: initialization of "R_Digit" proved
 very_longs.adb:258:07: info: initialization of "Difference" proved
 very_longs.adb:259:07: info: initialization of "Borrow" proved
-very_longs.adb:283:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:283:07: info: initialization of "Result" proved
 very_longs.adb:284:07: info: initialization of "L_Digit" proved
 very_longs.adb:285:07: info: initialization of "R_Digit" proved
 very_longs.adb:286:07: info: initialization of "T_Digit" proved
 very_longs.adb:287:07: info: initialization of "Temp" proved
 very_longs.adb:288:07: info: initialization of "Carry" proved
-very_longs.adb:312:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:312:07: info: initialization of "Result" proved
 very_longs.adb:313:07: info: initialization of "L_Digit" proved
 very_longs.adb:314:07: info: initialization of "R_Digit" proved
 very_longs.adb:315:07: info: initialization of "T_Digit" proved
 very_longs.adb:316:07: info: initialization of "Temp" proved
 very_longs.adb:317:07: info: initialization of "Carry" proved
-very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
-very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
-very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:67:22: info: initialization of "Quotient" proved
+very_longs.ads:68:22: info: initialization of "Remainder" proved
 very_longs.ads:70:10: info: flow dependencies proved
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)
 workspaces.adb:5:48: info: length check proved (CVC4: 4 VC)

@@ -1,5 +1,2 @@
 stats.adb:34:26: warning: unused assignment
-stats.ads:34:22: info: initialization of "TheStats.FailBio" proved
-stats.ads:34:22: info: initialization of "TheStats.FailEntry" proved
-stats.ads:34:22: info: initialization of "TheStats.SuccessBio" proved
-stats.ads:34:22: info: initialization of "TheStats.SuccessEntry" proved
+stats.ads:34:22: info: initialization of "TheStats" proved

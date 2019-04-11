@@ -54,12 +54,10 @@ deceleration_curve.adb:109:12: medium: precondition might fail, cannot prove Is_
 deceleration_curve.adb:110:10: warning: assuming "New_Line" has no effect on global items
 deceleration_curve.adb:110:10: warning: no Global contract available for "New_Line"
 deceleration_curve.ads:28:06: info: precondition proved (CVC4: 1 VC)
-deceleration_curve.ads:81:32: info: initialization of "Braking_Curve.end_point" proved
 deceleration_curve.ads:81:32: medium: "Braking_Curve.curve" might not be initialized in "Curve_From_Target"
 deceleration_curve.ads:85:14: warning: subprogram "Print_Curve" has no effect
 deceleration_curve_test.adb:6:31: info: precondition proved (CVC4: 1 VC)
-deceleration_curve_test.adb:11:04: info: initialization of "braking_curve.curve" proved
-deceleration_curve_test.adb:11:04: info: initialization of "braking_curve.end_point" proved
+deceleration_curve_test.adb:11:04: info: initialization of "braking_curve" proved
 deceleration_curve_test.adb:15:19: info: implicit function contract not available for proof ("Distance_To_Speed" might not return)
 deceleration_curve_test.adb:15:19: info: precondition proved (CVC4: 6 VC)
 deceleration_curve_test.adb:15:19: medium: assertion might fail, cannot prove Distance_To_Speed(initial_speed, 0.0, -1.0) = 1000
@@ -101,10 +99,9 @@ sec_3_13_6_deceleration.ads:47:30: medium: precondition might fail, cannot prove
 sec_3_13_6_deceleration.ads:52:26: info: float overflow check proved (CVC4: 1 VC)
 sec_3_13_6_deceleration.ads:52:26: info: range check proved (Interval)
 sec_3_13_8_targets_decel_curves.adb:24:07: medium: precondition might fail, cannot prove Target.location <= Braking_Curve_Maximum_End_Point
-sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.curve" proved
-sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve.end_point" proved
+sec_3_13_8_targets_decel_curves.ads:70:32: info: initialization of "Braking_Curve" proved
 section_3_5_3.adb:41:54: info: overflow check proved (CVC4: 1 VC)
-section_3_5_3.ads:49:04: info: initialization of private part of "Connections" proved
+section_3_5_3.ads:49:04: info: initialization of "Connections" proved
 section_3_5_3.ads:49:49: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:51:53: info: range check proved (CVC4: 1 VC)
 section_3_5_3.ads:68:14: warning: subprogram "Initiate_Communication_Session" has no effect
@@ -228,7 +225,6 @@ step_function.ads:74:50: info: index check proved (CVC4: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC4: 2 VC)
 step_function.ads:80:53: info: index check proved (CVC4: 2 VC)
 step_function.ads:86:06: info: postcondition proved (CVC4: 6 VC)
-step_function.ads:95:32: info: initialization of "Merge.Number_Of_Delimiters" proved
 step_function.ads:101:04: medium: postcondition might fail, cannot prove Is_Valid(Merge)
 step_function.ads:106:30: info: index check proved (CVC4: 2 VC)
 step_function.ads:106:56: info: index check proved (CVC4: 2 VC)
@@ -239,8 +235,7 @@ step_function.ads:114:40: info: precondition proved (CVC4: 1 VC)
 step_function.ads:115:61: info: index check proved (CVC4: 2 VC)
 step_function.ads:116:40: info: precondition proved (CVC4: 1 VC)
 step_function.ads:117:61: info: index check proved (CVC4: 2 VC)
-step_function_test.adb:39:04: info: initialization of "sfun_merge.Number_Of_Delimiters" proved
-step_function_test.adb:39:04: info: initialization of "sfun_merge.Step" proved
+step_function_test.adb:39:04: info: initialization of "sfun_merge" proved
 step_function_test.adb:41:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:42:19: info: assertion proved (CVC4: 1 VC)
 step_function_test.adb:43:19: info: assertion proved (CVC4: 1 VC)

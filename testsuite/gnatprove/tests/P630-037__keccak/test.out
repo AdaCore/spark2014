@@ -31,8 +31,7 @@ keccak-duplex.adb:108:42: info: division check proved (CVC4: 1 VC), in instantia
 keccak-duplex.adb:112:07: info: precondition proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:113:27: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.adb:113:54: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:75:19: info: initialization of "Ctx.Rate" proved, in instantiation at keccak-keccak_1600.ads:66
-keccak-duplex.ads:75:19: info: initialization of "Ctx.State" proved, in instantiation at keccak-keccak_1600.ads:66
+keccak-duplex.ads:75:19: info: initialization of "Ctx" proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:77:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:79:14: info: postcondition proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:66
 keccak-duplex.ads:80:06: info: data dependencies proved, in instantiation at keccak-keccak_1600.ads:66
@@ -369,12 +368,7 @@ keccak-sponge.adb:411:14: info: length check proved (CVC4: 4 VC), in instantiati
 keccak-sponge.adb:411:20: info: length check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:411:20: info: range check proved (CVC4: 4 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.adb:413:32: info: range check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.Bits_Absorbed" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.Block" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.Bytes_Squeezed" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.Curr_State" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.Rate" proved, in instantiation at keccak-keccak_1600.ads:57
-keccak-sponge.ads:92:19: info: initialization of "Ctx.State" proved, in instantiation at keccak-keccak_1600.ads:57
+keccak-sponge.ads:92:19: info: initialization of "Ctx" proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:94:11: info: flow dependencies proved, in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:95:39: info: division check proved (CVC4: 1 VC), in instantiation at keccak-keccak_1600.ads:57
 keccak-sponge.ads:96:16: info: postcondition proved (CVC4: 3 VC), in instantiation at keccak-keccak_1600.ads:57

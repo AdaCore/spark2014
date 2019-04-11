@@ -122,5 +122,5 @@ types.adb:52:23: high: "R.X" is not written in "Test_04"
 types.adb:53:23: info: initialization of "X" proved
 types.adb:56:12: high: "R.X" is not written
 types.adb:59:04: warning: analyzing unreferenced procedure "Test_05"
-types.adb:59:23: info: initialization of "R.X" proved
+types.adb:59:23: info: initialization of "R" proved
 types.adb:60:23: info: initialization of "X" proved

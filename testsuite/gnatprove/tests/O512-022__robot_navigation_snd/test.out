@@ -40,10 +40,8 @@ algorithm.adb:150:63: info: range check proved (Interval)
 algorithm.adb:150:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:150:72: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:154:70: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:182:07: info: initialization of "rayR.first" proved
-algorithm.adb:182:07: info: initialization of "rayR.second" proved
-algorithm.adb:182:13: info: initialization of "rayL.first" proved
-algorithm.adb:182:13: info: initialization of "rayL.second" proved
+algorithm.adb:182:07: info: initialization of "rayR" proved
+algorithm.adb:182:13: info: initialization of "rayL" proved
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:195:47: medium: float overflow check might fail
 algorithm.adb:195:61: medium: float overflow check might fail
@@ -71,8 +69,8 @@ algorithm.adb:231:129: info: implicit function contract not available for proof 
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:246:17: info: postcondition proved (CVC4: 1 VC)
 algorithm.adb:250:17: info: postcondition proved (CVC4: 1 VC)
-algorithm.adb:253:10: info: initialization of "iterR.Node" proved
-algorithm.adb:253:17: info: initialization of "iterL.Node" proved
+algorithm.adb:253:10: info: initialization of "iterR" proved
+algorithm.adb:253:17: info: initialization of "iterL" proved
 algorithm.adb:257:10: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:261:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:261:35: info: loop invariant preservation proved (CVC4: 4 VC)
@@ -95,8 +93,8 @@ algorithm.adb:300:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:300:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:304:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:309:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:316:10: info: initialization of "riterR.Node" proved
-algorithm.adb:316:18: info: initialization of "riterL.Node" proved
+algorithm.adb:316:10: info: initialization of "riterR" proved
+algorithm.adb:316:18: info: initialization of "riterL" proved
 algorithm.adb:320:10: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:324:35: info: loop invariant preservation proved (CVC4: 4 VC)
@@ -193,10 +191,7 @@ algorithm.adb:563:07: info: initialization of "safetyDist" proved
 algorithm.adb:566:07: info: initialization of "theta" proved
 algorithm.adb:567:07: info: initialization of "robotPose" proved
 algorithm.adb:568:07: info: initialization of "goal" proved
-algorithm.adb:569:07: info: initialization of "pBestValley.value.otherGap.bearing" proved
-algorithm.adb:569:07: info: initialization of "pBestValley.value.risingGap.bearing" proved
-algorithm.adb:569:07: info: initialization of "pBestValley.value.risingGap.distance" proved
-algorithm.adb:569:07: info: initialization of "pBestValley.value.risingGap.iDir" proved
+algorithm.adb:569:07: info: initialization of "pBestValley" proved
 algorithm.adb:570:07: info: initialization of "iNumLPs" proved
 algorithm.adb:581:31: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:589:31: info: assertion proved (CVC4: 1 VC)

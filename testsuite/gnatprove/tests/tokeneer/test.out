@@ -10,21 +10,18 @@ admin.ads:68:11: info: data dependencies proved
 admin.ads:80:11: info: data dependencies proved
 admin.ads:91:11: info: data dependencies proved
 admin.ads:104:11: info: data dependencies proved
-admin.ads:115:20: info: initialization of "TheAdmin.CurrentOp" proved
-admin.ads:115:20: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:115:20: info: initialization of "TheAdmin" proved
 admin.ads:116:11: info: data dependencies proved
 admin.ads:117:11: info: flow dependencies proved
 admin.ads:118:22: info: postcondition proved (CVC4: 2 VC)
 admin.ads:135:11: info: data dependencies proved
 admin.ads:137:21: info: postcondition proved (CVC4: 1 VC)
 admin.ads:138:28: info: precondition proved (CVC4: 2 VC)
-admin.ads:151:21: info: initialization of "TheAdmin.CurrentOp" proved
-admin.ads:151:21: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:151:21: info: initialization of "TheAdmin" proved
 admin.ads:153:11: info: data dependencies proved
 admin.ads:154:11: info: flow dependencies proved
 admin.ads:155:22: info: postcondition proved (CVC4: 3 VC)
-admin.ads:168:22: info: initialization of "TheAdmin.CurrentOp" proved
-admin.ads:168:22: info: initialization of "TheAdmin.RolePresent" proved
+admin.ads:168:22: info: initialization of "TheAdmin" proved
 admin.ads:169:11: info: data dependencies proved
 admin.ads:170:21: info: postcondition proved (CVC4: 2 VC)
 admin.ads:184:11: info: data dependencies proved
@@ -37,19 +34,15 @@ admin.ads:206:22: info: postcondition proved (CVC4: 3 VC)
 admin.ads:220:11: info: data dependencies proved
 admin.ads:274:27: info: index check proved (CVC4: 2 VC)
 admintoken-interfac.ads:28:08: info: flow dependencies proved
-admintoken.adb:48:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:48:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:49:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:49:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:48:42: info: initialization of "AuthCert" constituent of "State" proved
+admintoken.adb:49:42: info: initialization of "IDCert" constituent of "State" proved
 admintoken.adb:50:50: info: initialization of "Interfac.State" constituent of "AdminToken.State" proved
 admintoken.adb:51:42: info: initialization of "TokenID" constituent of "State" proved
 admintoken.adb:52:42: info: initialization of "TokenPresence" constituent of "State" proved
 admintoken.adb:53:42: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:80:43: info: initialization of "TokenPresence" constituent of "State" proved
-admintoken.adb:119:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:119:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:120:41: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:120:41: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:119:41: info: initialization of "AuthCert" constituent of "State" proved
+admintoken.adb:120:41: info: initialization of "IDCert" constituent of "State" proved
 admintoken.adb:121:41: info: initialization of "TokenTry" constituent of "State" proved
 admintoken.adb:150:30: info: refined post proved (CVC4: 4 VC)
 admintoken.adb:156:07: info: initialization of "AuthValid" proved
@@ -80,10 +73,8 @@ admintoken.adb:386:19: info: precondition proved (CVC4: 1 VC)
 admintoken.adb:415:31: info: precondition proved (CVC4: 1 VC)
 admintoken.adb:427:25: info: precondition proved (CVC4: 1 VC)
 admintoken.adb:474:07: info: initialization of "Result" proved
-admintoken.adb:499:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-admintoken.adb:499:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-admintoken.adb:500:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-admintoken.adb:500:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+admintoken.adb:499:42: info: initialization of "AuthCert" constituent of "State" proved
+admintoken.adb:500:42: info: initialization of "IDCert" constituent of "State" proved
 admintoken.adb:501:42: info: initialization of "TokenID" constituent of "State" proved
 admintoken.adb:502:42: info: initialization of "TokenPresence" constituent of "State" proved
 admintoken.adb:503:42: info: initialization of "TokenTry" constituent of "State" proved
@@ -188,10 +179,7 @@ auditlog.adb:399:07: info: initialization of "TheFile" proved
 auditlog.adb:433:11: info: data dependencies proved
 auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:443:07: info: initialization of "OK" proved
-auditlog.adb:444:07: info: initialization of "Now.Day" proved
-auditlog.adb:444:07: info: initialization of "Now.MilliSec" proved
-auditlog.adb:444:07: info: initialization of "Now.Month" proved
-auditlog.adb:444:07: info: initialization of "Now.Year" proved
+auditlog.adb:444:07: info: initialization of "Now" proved
 auditlog.adb:463:10: info: range check proved (CVC4: 4 VC)
 auditlog.adb:463:68: info: length check proved (CVC4: 4 VC)
 auditlog.adb:464:22: info: length check proved (CVC4: 4 VC)
@@ -248,13 +236,7 @@ auditlog.adb:883:07: info: precondition proved (CVC4: 4 VC)
 auditlog.adb:906:42: info: initialization of "AuditAlarm" constituent of "State" proved
 auditlog.adb:907:42: info: initialization of "AuditSystemFault" constituent of "State" proved
 auditlog.adb:908:42: info: initialization of "LogFilesStatus" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.CurrentLogFile" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.LogFileEntries" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.NumberLogEntries" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.UsedLogFiles.Head" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.UsedLogFiles.LastI" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.UsedLogFiles.Length" constituent of "State" proved
-auditlog.adb:909:42: info: initialization of "LogFileState.UsedLogFiles.List" constituent of "State" proved
+auditlog.adb:909:42: info: initialization of "LogFileState" constituent of "State" proved
 auditlog.adb:917:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:919:80: info: range check proved (CVC4: 1 VC)
 auditlog.adb:919:85: info: overflow check proved (CVC4: 1 VC)
@@ -408,56 +390,12 @@ bio.ads:58:11: info: data dependencies proved
 bio.ads:63:11: info: flow dependencies proved
 bio.ads:86:11: info: data dependencies proved
 bio.ads:87:11: info: flow dependencies proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Privilege.Class" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.Privilege.Role" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-auth.adb:36:07: info: initialization of "LocalContents.SigAlgId" proved
+cert-attr-auth.adb:36:07: info: initialization of "LocalContents" proved
 cert-attr-auth.adb:37:07: info: initialization of "Extracted" proved
 cert-attr-auth.adb:38:07: info: initialization of "NotBeforeOk" proved
 cert-attr-auth.adb:39:07: info: initialization of "NotAfterOk" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Privilege.Class" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.Privilege.Role" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-auth.adb:85:07: info: initialization of "LocalContents.SigAlgId" proved
-cert-attr-auth.adb:97:32: info: initialization of "Raw.Day" proved
-cert-attr-auth.adb:97:32: info: initialization of "Raw.Hour" proved
-cert-attr-auth.adb:97:32: info: initialization of "Raw.Minute" proved
-cert-attr-auth.adb:97:32: info: initialization of "Raw.Month" proved
-cert-attr-auth.adb:97:32: info: initialization of "Raw.Year" proved
+cert-attr-auth.adb:85:07: info: initialization of "LocalContents" proved
+cert-attr-auth.adb:97:32: info: initialization of "Raw" proved
 cert-attr-auth.adb:98:14: info: data dependencies proved
 cert-attr-auth.adb:99:14: info: flow dependencies proved
 cert-attr-auth.adb:101:10: info: initialization of "TheYear" proved
@@ -467,214 +405,42 @@ cert-attr-auth.adb:104:10: info: initialization of "TheHour" proved
 cert-attr-auth.adb:105:10: info: initialization of "TheMinute" proved
 cert-attr-auth.ads:57:11: info: data dependencies proved
 cert-attr-auth.ads:69:11: info: data dependencies proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.Clearance.Class" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.Mechanism" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-auth.ads:81:23: info: initialization of "Contents.Role" proved
+cert-attr-auth.ads:81:23: info: initialization of "Contents" proved
 cert-attr-auth.ads:82:23: info: initialization of "Success" proved
 cert-attr-auth.ads:83:11: info: data dependencies proved
 cert-attr-auth.ads:84:11: info: flow dependencies proved
 cert-attr-auth.ads:97:25: info: initialization of "RawCert" proved
 cert-attr-auth.ads:98:11: info: data dependencies proved
 cert-attr-auth.ads:99:11: info: flow dependencies proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.Clearance.Class" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.Mechanism" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-auth.ads:118:07: info: initialization of "Contents.Role" proved
+cert-attr-auth.ads:118:07: info: initialization of "Contents" proved
 cert-attr-auth.ads:119:11: info: flow dependencies proved
 cert-attr-auth.ads:139:20: info: initialization of "IsVerified" proved
 cert-attr-auth.ads:140:11: info: data dependencies proved
 cert-attr-auth.ads:146:11: info: flow dependencies proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.Clearance.Class" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.Mechanism" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-auth.ads:168:21: info: initialization of "Contents.Role" proved
+cert-attr-auth.ads:168:21: info: initialization of "Contents" proved
 cert-attr-auth.ads:169:11: info: data dependencies proved
 cert-attr-auth.ads:170:11: info: flow dependencies proved
 cert-attr-auth.ads:171:22: info: postcondition proved (CVC4: 1 VC)
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.SigAlgId" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Template.ID" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Template.Length" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Template.Pad" proved
-cert-attr-ianda.adb:44:07: info: initialization of "LocalContents.Template.RequiredMaxFAR" proved
+cert-attr-ianda.adb:44:07: info: initialization of "LocalContents" proved
 cert-attr-ianda.adb:45:07: info: initialization of "Extracted" proved
 cert-attr-ianda.adb:46:07: info: initialization of "NotBeforeOk" proved
 cert-attr-ianda.adb:47:07: info: initialization of "NotAfterOk" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.Mechanism" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.ID" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.Length" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.Pad" proved
-cert-attr-ianda.ads:66:23: info: initialization of "Contents.Template.RequiredMaxFAR" proved
+cert-attr-ianda.ads:66:23: info: initialization of "Contents" proved
 cert-attr-ianda.ads:67:23: info: initialization of "Success" proved
 cert-attr-ianda.ads:68:11: info: data dependencies proved
 cert-attr-ianda.ads:69:11: info: flow dependencies proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.Mechanism" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.ID" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Length" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.Pad" proved
-cert-attr-ianda.ads:80:21: info: initialization of "Contents.Template.RequiredMaxFAR" proved
+cert-attr-ianda.ads:80:21: info: initialization of "Contents" proved
 cert-attr-ianda.ads:81:11: info: data dependencies proved
 cert-attr-ianda.ads:82:11: info: flow dependencies proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Day" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Hour" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Minute" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Month" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotAfter.Year" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Day" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Hour" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Minute" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Month" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.AttCertValidity.NotBefore.Year" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Holder.Issuer.ID" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Holder.Issuer.Name" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Holder.Issuer.NameLength" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Holder.SerialNumber" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Issuer.ID" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Issuer.Name" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Privilege.Class" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.Privilege.Role" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.SerialNumber" proved
-cert-attr-priv.adb:51:07: info: initialization of "LocalContents.SigAlgId" proved
+cert-attr-priv.adb:51:07: info: initialization of "LocalContents" proved
 cert-attr-priv.adb:52:07: info: initialization of "Extracted" proved
 cert-attr-priv.adb:53:07: info: initialization of "NotBeforeOk" proved
 cert-attr-priv.adb:54:07: info: initialization of "NotAfterOk" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.Clearance.Class" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.Mechanism" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-priv.ads:76:23: info: initialization of "Contents.Role" proved
+cert-attr-priv.ads:76:23: info: initialization of "Contents" proved
 cert-attr-priv.ads:77:23: info: initialization of "Success" proved
 cert-attr-priv.ads:78:11: info: data dependencies proved
 cert-attr-priv.ads:79:11: info: flow dependencies proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.ID" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.Name" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.Issuer.NameLength" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.BaseCertID.SerialNumber" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.Clearance.Class" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.ID.SerialNumber" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.Mechanism" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotAfter.Day" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotAfter.Month" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotAfter.Year" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Day" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Month" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.NotBefore.Year" proved
-cert-attr-priv.ads:91:21: info: initialization of "Contents.Role" proved
+cert-attr-priv.ads:91:21: info: initialization of "Contents" proved
 cert-attr-priv.ads:92:11: info: data dependencies proved
 cert-attr-priv.ads:93:11: info: flow dependencies proved
 cert-attr.adb:38:09: info: range check proved (CVC4: 1 VC)
@@ -684,73 +450,17 @@ cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:47:43: info: length check proved (CVC4: 4 VC)
 cert-attr.adb:47:46: info: length check proved (CVC4: 4 VC)
 cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
-cert-id.adb:61:07: info: initialization of "LocalContents.Issuer.ID" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Issuer.Name" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Issuer.NameLength" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.SerialNumber" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.SigAlgId" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Subject.ID" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Subject.Name" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Subject.NameLength" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.SubjectPublicKeyInfo.AlgorithmId" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.SubjectPublicKeyInfo.KeyID" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.SubjectPublicKeyInfo.KeyLength" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotAfter.Day" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotAfter.Hour" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotAfter.Minute" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotAfter.Month" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotAfter.Year" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotBefore.Day" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotBefore.Hour" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotBefore.Minute" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotBefore.Month" proved
-cert-id.adb:61:07: info: initialization of "LocalContents.Validity.NotBefore.Year" proved
+cert-id.adb:61:07: info: initialization of "LocalContents" proved
 cert-id.adb:62:07: info: initialization of "Extracted" proved
 cert-id.adb:63:07: info: initialization of "KeyLengthOK" proved
 cert-id.adb:64:07: info: initialization of "NotBeforeOk" proved
 cert-id.adb:65:07: info: initialization of "NotAfterOk" proved
 cert-id.adb:87:47: info: range check proved (CVC4: 1 VC)
-cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-id.ads:77:23: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-id.ads:77:23: info: initialization of "Contents.ID.SerialNumber" proved
-cert-id.ads:77:23: info: initialization of "Contents.Mechanism" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotAfter.Day" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotAfter.Month" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotAfter.Year" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotBefore.Day" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotBefore.Month" proved
-cert-id.ads:77:23: info: initialization of "Contents.NotBefore.Year" proved
-cert-id.ads:77:23: info: initialization of "Contents.Subject.ID" proved
-cert-id.ads:77:23: info: initialization of "Contents.Subject.Name" proved
-cert-id.ads:77:23: info: initialization of "Contents.Subject.NameLength" proved
-cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
-cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
-cert-id.ads:77:23: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
+cert-id.ads:77:23: info: initialization of "Contents" proved
 cert-id.ads:78:23: info: initialization of "Success" proved
 cert-id.ads:79:11: info: data dependencies proved
 cert-id.ads:80:11: info: flow dependencies proved
-cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.ID" proved
-cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.Name" proved
-cert-id.ads:92:21: info: initialization of "Contents.ID.Issuer.NameLength" proved
-cert-id.ads:92:21: info: initialization of "Contents.ID.SerialNumber" proved
-cert-id.ads:92:21: info: initialization of "Contents.Mechanism" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotAfter.Day" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotAfter.MilliSec" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotAfter.Month" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotAfter.Year" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotBefore.Day" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotBefore.MilliSec" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotBefore.Month" proved
-cert-id.ads:92:21: info: initialization of "Contents.NotBefore.Year" proved
-cert-id.ads:92:21: info: initialization of "Contents.Subject.ID" proved
-cert-id.ads:92:21: info: initialization of "Contents.Subject.Name" proved
-cert-id.ads:92:21: info: initialization of "Contents.Subject.NameLength" proved
-cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.AlgorithmID" proved
-cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyID" proved
-cert-id.ads:92:21: info: initialization of "Contents.SubjectPublicKey.KeyLength" proved
+cert-id.ads:92:21: info: initialization of "Contents" proved
 cert-id.ads:93:11: info: data dependencies proved
 cert-id.ads:94:11: info: flow dependencies proved
 cert.adb:63:09: info: range check proved (CVC4: 1 VC)
@@ -760,10 +470,8 @@ cert.adb:71:10: info: range check proved (CVC4: 4 VC)
 cert.adb:71:43: info: length check proved (CVC4: 4 VC)
 cert.adb:71:46: info: length check proved (CVC4: 4 VC)
 cert.adb:73:23: info: range check proved (CVC4: 4 VC)
-cert.adb:108:07: info: initialization of "LocalRawData.DataLength" proved
-cert.adb:108:07: info: initialization of "LocalRawData.RawData" proved
-cert.adb:128:07: info: initialization of "LocalSig.SigData" proved
-cert.adb:128:07: info: initialization of "LocalSig.SigLength" proved
+cert.adb:108:07: info: initialization of "LocalRawData" proved
+cert.adb:128:07: info: initialization of "LocalSig" proved
 cert.adb:164:07: info: initialization of "IsKnown" proved
 cert.ads:103:11: info: data dependencies proved
 cert.ads:116:11: info: data dependencies proved
@@ -807,197 +515,31 @@ certificatestore.ads:72:11: info: data dependencies proved
 certificatestore.ads:78:11: info: flow dependencies proved
 certificatestore.ads:96:11: info: data dependencies proved
 certificatestore.ads:109:11: info: data dependencies proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Issuer.ID" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Issuer.Name" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Issuer.NameLength" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.SerialNumber" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.SigAlgId" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Subject.ID" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Subject.Name" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Subject.NameLength" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.SubjectPublicKeyInfo.AlgorithmId" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.SubjectPublicKeyInfo.KeyID" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.SubjectPublicKeyInfo.KeyLength" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotAfter.Day" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotAfter.Hour" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotAfter.Minute" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotAfter.Month" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotAfter.Year" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotBefore.Day" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotBefore.Hour" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotBefore.Minute" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotBefore.Month" proved
-certprocessing.adb:37:07: info: initialization of "LocalData.Validity.NotBefore.Year" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Day" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Hour" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Minute" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Month" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Year" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Day" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Hour" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Minute" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Month" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Year" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Holder.Issuer.ID" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Holder.Issuer.Name" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Holder.Issuer.NameLength" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Holder.SerialNumber" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Issuer.ID" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Issuer.Name" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Issuer.NameLength" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Privilege.Class" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.Privilege.Role" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.SerialNumber" proved
-certprocessing.adb:78:07: info: initialization of "LocalData.SigAlgId" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Day" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Hour" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Minute" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Month" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Year" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Day" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Hour" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Minute" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Month" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Year" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Holder.Issuer.ID" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Holder.Issuer.Name" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Holder.Issuer.NameLength" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Holder.SerialNumber" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Issuer.ID" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Issuer.Name" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Issuer.NameLength" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.SerialNumber" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.SigAlgId" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Template.ID" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Template.Length" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Template.Pad" proved
-certprocessing.adb:118:07: info: initialization of "LocalData.Template.RequiredMaxFAR" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Day" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Hour" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Minute" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Month" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotAfter.Year" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Day" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Hour" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Minute" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Month" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.AttCertValidity.NotBefore.Year" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Holder.Issuer.ID" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Holder.Issuer.Name" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Holder.Issuer.NameLength" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Holder.SerialNumber" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Issuer.ID" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Issuer.Name" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Issuer.NameLength" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Privilege.Class" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.Privilege.Role" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.SerialNumber" proved
-certprocessing.adb:156:07: info: initialization of "LocalData.SigAlgId" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Issuer.ID" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Issuer.Name" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Issuer.NameLength" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.SerialNumber" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.SigAlgId" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Subject.ID" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Subject.Name" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Subject.NameLength" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.SubjectPublicKeyInfo.AlgorithmId" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.SubjectPublicKeyInfo.KeyID" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.SubjectPublicKeyInfo.KeyLength" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotAfter.Day" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotAfter.Hour" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotAfter.Minute" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotAfter.Month" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotAfter.Year" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Day" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Hour" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Minute" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Month" proved
-certprocessing.ads:114:07: info: initialization of "IDCert.Validity.NotBefore.Year" proved
+certprocessing.adb:37:07: info: initialization of "LocalData" proved
+certprocessing.adb:78:07: info: initialization of "LocalData" proved
+certprocessing.adb:118:07: info: initialization of "LocalData" proved
+certprocessing.adb:156:07: info: initialization of "LocalData" proved
+certprocessing.ads:114:07: info: initialization of "IDCert" proved
 certprocessing.ads:115:07: info: initialization of "ExtractSuccess" proved
 certprocessing.ads:116:11: info: data dependencies proved
 certprocessing.ads:117:11: info: flow dependencies proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Day" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Hour" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Minute" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Month" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotAfter.Year" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotBefore.Day" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotBefore.Hour" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotBefore.Minute" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotBefore.Month" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.AttCertValidity.NotBefore.Year" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Holder.Issuer.ID" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Holder.Issuer.Name" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Holder.Issuer.NameLength" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Holder.SerialNumber" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Issuer.ID" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Issuer.Name" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Issuer.NameLength" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Privilege.Class" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.Privilege.Role" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.SerialNumber" proved
-certprocessing.ads:132:07: info: initialization of "PrivCert.SigAlgId" proved
+certprocessing.ads:132:07: info: initialization of "PrivCert" proved
 certprocessing.ads:133:07: info: initialization of "ExtractSuccess" proved
 certprocessing.ads:134:11: info: data dependencies proved
 certprocessing.ads:135:11: info: flow dependencies proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Day" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Hour" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Minute" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Month" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotAfter.Year" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotBefore.Day" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotBefore.Hour" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotBefore.Minute" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotBefore.Month" proved
-certprocessing.ads:150:07: info: initialization of "IACert.AttCertValidity.NotBefore.Year" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Holder.Issuer.ID" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Holder.Issuer.Name" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Holder.Issuer.NameLength" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Holder.SerialNumber" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Issuer.ID" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Issuer.Name" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Issuer.NameLength" proved
-certprocessing.ads:150:07: info: initialization of "IACert.SerialNumber" proved
-certprocessing.ads:150:07: info: initialization of "IACert.SigAlgId" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Template.ID" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Template.Length" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Template.Pad" proved
-certprocessing.ads:150:07: info: initialization of "IACert.Template.RequiredMaxFAR" proved
+certprocessing.ads:150:07: info: initialization of "IACert" proved
 certprocessing.ads:151:07: info: initialization of "ExtractSuccess" proved
 certprocessing.ads:152:11: info: data dependencies proved
 certprocessing.ads:153:11: info: flow dependencies proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Day" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Hour" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Minute" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Month" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotAfter.Year" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotBefore.Day" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotBefore.Hour" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotBefore.Minute" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotBefore.Month" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.AttCertValidity.NotBefore.Year" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Holder.Issuer.ID" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Holder.Issuer.Name" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Holder.Issuer.NameLength" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Holder.SerialNumber" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Issuer.ID" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Issuer.Name" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Issuer.NameLength" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Privilege.Class" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.Privilege.Role" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.SerialNumber" proved
-certprocessing.ads:168:07: info: initialization of "AuthCert.SigAlgId" proved
+certprocessing.ads:168:07: info: initialization of "AuthCert" proved
 certprocessing.ads:169:07: info: initialization of "ExtractSuccess" proved
 certprocessing.ads:170:11: info: data dependencies proved
 certprocessing.ads:171:11: info: flow dependencies proved
-certprocessing.ads:185:20: info: initialization of "RawData.DataLength" proved
-certprocessing.ads:185:20: info: initialization of "RawData.RawData" proved
+certprocessing.ads:185:20: info: initialization of "RawData" proved
 certprocessing.ads:186:20: info: initialization of "ObtainSuccess" proved
 certprocessing.ads:188:11: info: data dependencies proved
 certprocessing.ads:189:11: info: flow dependencies proved
-certprocessing.ads:203:20: info: initialization of "SignatureData.SigData" proved
-certprocessing.ads:203:20: info: initialization of "SignatureData.SigLength" proved
+certprocessing.ads:203:20: info: initialization of "SignatureData" proved
 certprocessing.ads:204:20: info: initialization of "ObtainSuccess" proved
 certprocessing.ads:206:11: info: data dependencies proved
 certprocessing.ads:207:11: info: flow dependencies proved
@@ -1015,10 +557,7 @@ clock.adb:59:54: info: cannot unroll loop (too many loop iterations)
 clock.adb:60:12: info: index check proved (CVC4: 2 VC)
 clock.adb:60:56: info: division check proved (CVC4: 1 VC)
 clock.adb:61:20: info: division check proved (CVC4: 1 VC)
-clock.adb:89:41: info: initialization of "CurrentTimeVar.Day" constituent of "CurrentTime" proved
-clock.adb:89:41: info: initialization of "CurrentTimeVar.MilliSec" constituent of "CurrentTime" proved
-clock.adb:89:41: info: initialization of "CurrentTimeVar.Month" constituent of "CurrentTime" proved
-clock.adb:89:41: info: initialization of "CurrentTimeVar.Year" constituent of "CurrentTime" proved
+clock.adb:89:41: info: initialization of "CurrentTimeVar" constituent of "CurrentTime" proved
 clock.adb:126:32: info: range check proved (CVC4: 1 VC)
 clock.adb:127:33: info: range check proved (CVC4: 1 VC)
 clock.adb:128:31: info: range check proved (CVC4: 1 VC)
@@ -1062,10 +601,7 @@ clock.ads:103:11: info: data dependencies proved
 clock.ads:105:11: info: flow dependencies proved
 clock.ads:117:11: info: data dependencies proved
 clock.ads:130:11: info: data dependencies proved
-clock.ads:192:07: info: initialization of "TheTime.Day" proved
-clock.ads:192:07: info: initialization of "TheTime.MilliSec" proved
-clock.ads:192:07: info: initialization of "TheTime.Month" proved
-clock.ads:192:07: info: initialization of "TheTime.Year" proved
+clock.ads:192:07: info: initialization of "TheTime" proved
 clock.ads:193:07: info: initialization of "Success" proved
 clock.ads:194:11: info: flow dependencies proved
 clock.ads:212:07: info: initialization of "Year" proved
@@ -1312,16 +848,10 @@ configdata.adb:1383:43: info: initialization of "MinPreservedLogSize" constituen
 configdata.adb:1384:43: info: initialization of "AlarmThresholdSize" constituent of "State" proved
 configdata.adb:1385:43: info: initialization of "SystemMaxFar" constituent of "State" proved
 configdata.adb:1493:07: info: initialization of "Result" proved
-configdata.adb:1537:07: info: initialization of "DayStart.Day" proved
-configdata.adb:1537:07: info: initialization of "DayStart.MilliSec" proved
-configdata.adb:1537:07: info: initialization of "DayStart.Month" proved
-configdata.adb:1537:07: info: initialization of "DayStart.Year" proved
+configdata.adb:1537:07: info: initialization of "DayStart" proved
 configdata.adb:1542:70: info: range check proved (CVC4: 1 VC)
 configdata.adb:1570:07: info: initialization of "Result" proved
-configdata.adb:1571:07: info: initialization of "DayStart.Day" proved
-configdata.adb:1571:07: info: initialization of "DayStart.MilliSec" proved
-configdata.adb:1571:07: info: initialization of "DayStart.Month" proved
-configdata.adb:1571:07: info: initialization of "DayStart.Year" proved
+configdata.adb:1571:07: info: initialization of "DayStart" proved
 configdata.adb:1685:13: info: division check proved (CVC4: 1 VC)
 configdata.adb:1685:13: info: range check proved (CVC4: 1 VC)
 configdata.ads:30:08: info: flow dependencies proved
@@ -1366,14 +896,8 @@ configdata.ads:218:07: info: initialization of "TheSystemMaxFar" proved
 configdata.ads:220:11: info: data dependencies proved
 configdata.ads:221:11: info: flow dependencies proved
 configdata.ads:247:11: info: data dependencies proved
-configdata.ads:260:08: info: initialization of "NotBefore.Day" proved
-configdata.ads:260:08: info: initialization of "NotBefore.MilliSec" proved
-configdata.ads:260:08: info: initialization of "NotBefore.Month" proved
-configdata.ads:260:08: info: initialization of "NotBefore.Year" proved
-configdata.ads:261:08: info: initialization of "NotAfter.Day" proved
-configdata.ads:261:08: info: initialization of "NotAfter.MilliSec" proved
-configdata.ads:261:08: info: initialization of "NotAfter.Month" proved
-configdata.ads:261:08: info: initialization of "NotAfter.Year" proved
+configdata.ads:260:08: info: initialization of "NotBefore" proved
+configdata.ads:261:08: info: initialization of "NotAfter" proved
 configdata.ads:262:11: info: data dependencies proved
 configdata.ads:263:11: info: flow dependencies proved
 configdata.ads:280:11: info: data dependencies proved
@@ -1475,10 +999,7 @@ display.adb:152:32: info: range check proved (CVC4: 1 VC), in call inlined at di
 display.adb:152:32: info: range check proved (CVC4: 1 VC), in call inlined at display.adb:287
 display.adb:187:18: info: precondition proved (CVC4: 1 VC)
 display.adb:191:32: info: analyzing call to "CombineLines" in context
-display.adb:255:07: info: initialization of "TheMsg.Bottom.Len" proved
-display.adb:255:07: info: initialization of "TheMsg.Bottom.Text" proved
-display.adb:255:07: info: initialization of "TheMsg.Top.Len" proved
-display.adb:255:07: info: initialization of "TheMsg.Top.Text" proved
+display.adb:255:07: info: initialization of "TheMsg" proved
 display.adb:256:07: info: initialization of "Written" proved
 display.adb:258:07: info: initialization of "TopWritten" proved
 display.adb:259:07: info: initialization of "BottomWritten" proved
@@ -1486,8 +1007,7 @@ display.adb:287:57: info: analyzing call to "CombineLines" in context
 display.adb:293:21: info: precondition proved (CVC4: 1 VC)
 display.adb:312:42: info: initialization of "CurrentDisplay" constituent of "State" proved
 display.adb:313:42: info: initialization of "CurrentlyDisplayed" constituent of "State" proved
-display.adb:314:42: info: initialization of "Sizes.Bottom" constituent of "State" proved
-display.adb:314:42: info: initialization of "Sizes.Top" constituent of "State" proved
+display.adb:314:42: info: initialization of "Sizes" constituent of "State" proved
 display.ads:29:08: info: flow dependencies proved
 display.ads:98:11: info: data dependencies proved
 display.ads:103:11: info: flow dependencies proved
@@ -1510,30 +1030,15 @@ door.adb:183:07: info: initialization of "NewDoor" proved
 door.adb:184:07: info: initialization of "ID" proved
 door.adb:192:18: info: precondition proved (CVC4: 1 VC)
 door.adb:210:21: info: precondition proved (CVC4: 1 VC)
-door.adb:241:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:241:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:241:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:241:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:241:41: info: initialization of "AlarmTimeout" constituent of "State" proved
 door.adb:269:30: info: refined post proved (CVC4: 6 VC)
-door.adb:282:07: info: initialization of "LatchTimeout.Day" proved
-door.adb:282:07: info: initialization of "LatchTimeout.MilliSec" proved
-door.adb:282:07: info: initialization of "LatchTimeout.Month" proved
-door.adb:282:07: info: initialization of "LatchTimeout.Year" proved
-door.adb:314:41: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:314:41: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:314:41: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:314:41: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:282:07: info: initialization of "LatchTimeout" proved
+door.adb:314:41: info: initialization of "AlarmTimeout" constituent of "State" proved
 door.adb:339:30: info: refined post proved (CVC4: 5 VC)
-door.adb:364:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:364:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:364:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:364:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:364:42: info: initialization of "AlarmTimeout" constituent of "State" proved
 door.adb:365:42: info: initialization of "CurrentDoor" constituent of "State" proved
 door.adb:366:42: info: initialization of "DoorAlarm" constituent of "State" proved
-door.adb:405:42: info: initialization of "AlarmTimeout.Day" constituent of "State" proved
-door.adb:405:42: info: initialization of "AlarmTimeout.MilliSec" constituent of "State" proved
-door.adb:405:42: info: initialization of "AlarmTimeout.Month" constituent of "State" proved
-door.adb:405:42: info: initialization of "AlarmTimeout.Year" constituent of "State" proved
+door.adb:405:42: info: initialization of "AlarmTimeout" constituent of "State" proved
 door.adb:406:42: info: initialization of "CurrentDoor" constituent of "State" proved
 door.adb:407:42: info: initialization of "DoorAlarm" constituent of "State" proved
 door.adb:408:47: info: initialization of "Latch.State" proved
@@ -1555,8 +1060,7 @@ door.ads:228:11: info: flow dependencies proved
 door.ads:241:11: info: data dependencies proved
 door.ads:243:11: info: flow dependencies proved
 doorapi.adb:26:11: info: data dependencies proved
-doorapi.adb:30:07: info: initialization of "InMsg.Data" proved
-doorapi.adb:30:07: info: initialization of "InMsg.Length" proved
+doorapi.adb:30:07: info: initialization of "InMsg" proved
 doorapi.adb:33:29: info: length check proved (CVC4: 4 VC)
 doorapi.adb:33:29: info: precondition proved (CVC4: 4 VC)
 doorapi.adb:41:07: info: initialization of "IsOp" proved
@@ -1732,8 +1236,7 @@ enclave.adb:2154:22: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2158:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2176:13: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:2179:10: info: initialization of "KeyedDataPresence" proved
-enclave.adb:2180:10: info: initialization of "KeyedData.Length" proved
-enclave.adb:2180:10: info: initialization of "KeyedData.Text" proved
+enclave.adb:2180:10: info: initialization of "KeyedData" proved
 enclave.adb:2181:10: info: initialization of "TheOp" proved
 enclave.adb:2187:27: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2196:21: info: precondition proved (CVC4: 2 VC)
@@ -1797,13 +1300,9 @@ enrolment.adb:96:14: info: data dependencies proved
 enrolment.adb:104:14: info: flow dependencies proved
 enrolment.adb:124:25: info: postcondition proved (CVC4: 5 VC)
 enrolment.adb:132:10: info: initialization of "TheContents" proved
-enrolment.adb:133:10: info: initialization of "TheSubject.ID" proved
-enrolment.adb:133:10: info: initialization of "TheSubject.Name" proved
-enrolment.adb:133:10: info: initialization of "TheSubject.NameLength" proved
-enrolment.adb:134:10: info: initialization of "TheIssuer.ID" proved
-enrolment.adb:135:10: info: initialization of "ThePublicKey.AlgorithmID" proved
-enrolment.adb:135:10: info: initialization of "ThePublicKey.KeyID" proved
-enrolment.adb:135:10: info: initialization of "ThePublicKey.KeyLength" proved
+enrolment.adb:133:10: info: initialization of "TheSubject" proved
+enrolment.adb:134:10: info: initialization of "TheIssuer" proved
+enrolment.adb:135:10: info: initialization of "ThePublicKey" proved
 enrolment.adb:137:10: info: initialization of "Extracted" proved
 enrolment.adb:201:31: info: predicate check proved (CVC4: 1 VC)
 enrolment.adb:201:31: info: range check proved (CVC4: 1 VC)
@@ -1834,8 +1333,7 @@ keyboard.ads:49:11: info: flow dependencies proved
 keyboard.ads:61:11: info: data dependencies proved
 keyboard.ads:62:11: info: flow dependencies proved
 keyboard.ads:76:20: info: initialization of "DataPresence" proved
-keyboard.ads:77:20: info: initialization of "Data.Length" proved
-keyboard.ads:77:20: info: initialization of "Data.Text" proved
+keyboard.ads:77:20: info: initialization of "Data" proved
 keyboard.ads:78:11: info: data dependencies proved
 keyboard.ads:79:11: info: flow dependencies proved
 keyboard.ads:91:11: info: data dependencies proved
@@ -1851,10 +1349,7 @@ keystore.adb:102:32: info: range check proved (CVC4: 1 VC)
 keystore.adb:102:41: info: length check proved (CVC4: 4 VC)
 keystore.adb:102:44: info: length check proved (CVC4: 4 VC)
 keystore.adb:104:20: info: range check proved (CVC4: 4 VC)
-keystore.adb:122:22: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:122:22: info: initialization of "TheDigest.Pad" proved
-keystore.adb:122:22: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:122:22: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:122:22: info: initialization of "TheDigest" proved
 keystore.adb:123:22: info: initialization of "Success" proved
 keystore.adb:124:11: info: data dependencies proved
 keystore.adb:129:11: info: flow dependencies proved
@@ -1903,41 +1398,23 @@ keystore.adb:347:59: info: range check proved (CVC4: 1 VC)
 keystore.adb:365:33: info: initialization of "IssuerKey" proved
 keystore.adb:366:11: info: data dependencies proved
 keystore.adb:371:11: info: flow dependencies proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.AttrMask" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.IsPublic" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.KeyID" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.KeyLength" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.Owner.ID" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.Owner.Name" proved
-keystore.adb:381:07: info: initialization of "IssuerTemplate.Owner.NameLength" proved
+keystore.adb:381:07: info: initialization of "IssuerTemplate" proved
 keystore.adb:382:07: info: initialization of "Handles" proved
 keystore.adb:405:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:432:26: info: initialization of "PrivateKeyHandle" proved
 keystore.adb:433:11: info: data dependencies proved
 keystore.adb:438:11: info: flow dependencies proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.AttrMask" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.IsPublic" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.KeyID" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.KeyLength" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.Owner.ID" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.Owner.Name" proved
-keystore.adb:446:07: info: initialization of "PrivateTemplate.Owner.NameLength" proved
+keystore.adb:446:07: info: initialization of "PrivateTemplate" proved
 keystore.adb:447:07: info: initialization of "Handles" proved
 keystore.adb:469:18: info: precondition proved (CVC4: 1 VC)
-keystore.adb:497:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:497:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.adb:497:41: info: initialization of "ThisTISInfo" constituent of "State" proved
 keystore.adb:508:07: info: initialization of "RetVal" proved
 keystore.adb:509:07: info: initialization of "ThePrivateKeyH" proved
 keystore.adb:522:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:526:60: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:526:60: info: range check proved (CVC4: 1 VC)
 keystore.adb:573:07: info: initialization of "TheIssuerKey" proved
-keystore.adb:615:07: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:615:07: info: initialization of "TheDigest.Pad" proved
-keystore.adb:615:07: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:615:07: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:615:07: info: initialization of "TheDigest" proved
 keystore.adb:616:07: info: initialization of "Digested" proved
 keystore.adb:617:07: info: initialization of "TheIssuerKey" proved
 keystore.adb:618:07: info: initialization of "RetVal" proved
@@ -1945,30 +1422,18 @@ keystore.adb:638:21: info: precondition proved (CVC4: 1 VC)
 keystore.adb:642:64: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:642:64: info: range check proved (CVC4: 1 VC)
 keystore.adb:683:07: info: initialization of "ThePrivateKeyH" proved
-keystore.adb:684:07: info: initialization of "TheDigest.DigestID" proved
-keystore.adb:684:07: info: initialization of "TheDigest.Pad" proved
-keystore.adb:684:07: info: initialization of "TheDigest.SignReturn" proved
-keystore.adb:684:07: info: initialization of "TheDigest.VerifyReturn" proved
+keystore.adb:684:07: info: initialization of "TheDigest" proved
 keystore.adb:686:07: info: initialization of "Digested" proved
 keystore.adb:687:07: info: initialization of "RetVal" proved
 keystore.adb:718:21: info: precondition proved (CVC4: 1 VC)
 keystore.adb:722:63: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:722:63: info: range check proved (CVC4: 1 VC)
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.AttrMask" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.IsPublic" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.KeyID" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.KeyLength" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.Owner.ID" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.Owner.Name" proved
-keystore.adb:775:07: info: initialization of "TheKeyTemplate.Owner.NameLength" proved
+keystore.adb:775:07: info: initialization of "TheKeyTemplate" proved
 keystore.adb:776:07: info: initialization of "RetVal" proved
 keystore.adb:803:18: info: precondition proved (CVC4: 1 VC)
 keystore.adb:807:61: info: predicate check proved (CVC4: 1 VC)
 keystore.adb:807:61: info: range check proved (CVC4: 1 VC)
-keystore.adb:823:41: info: initialization of "ThisTISInfo.IsPresent" constituent of "State" proved
-keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.ID" constituent of "State" proved
-keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.Name" constituent of "State" proved
-keystore.adb:823:41: info: initialization of "ThisTISInfo.Owner.NameLength" constituent of "State" proved
+keystore.adb:823:41: info: initialization of "ThisTISInfo" constituent of "State" proved
 keystore.ads:31:08: info: flow dependencies proved
 keystore.ads:49:11: info: data dependencies proved
 keystore.ads:55:11: info: flow dependencies proved
@@ -1981,8 +1446,7 @@ keystore.ads:127:11: info: data dependencies proved
 keystore.ads:142:28: info: initialization of "Verified" proved
 keystore.ads:143:11: info: data dependencies proved
 keystore.ads:148:11: info: flow dependencies proved
-keystore.ads:174:20: info: initialization of "Signature.SigData" proved
-keystore.ads:174:20: info: initialization of "Signature.SigLength" proved
+keystore.ads:174:20: info: initialization of "Signature" proved
 keystore.ads:175:20: info: initialization of "Signed" proved
 keystore.ads:176:11: info: data dependencies proved
 keystore.ads:181:11: info: flow dependencies proved
@@ -1994,10 +1458,7 @@ keystore.ads:243:11: info: data dependencies proved
 keystore.ads:245:11: info: flow dependencies proved
 keystore.ads:247:22: info: postcondition proved (CVC4: 1 VC)
 latch.adb:38:42: info: initialization of "CurrentLatch" constituent of "State" proved
-latch.adb:39:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:39:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:39:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:39:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:39:42: info: initialization of "LatchTimeout" constituent of "State" proved
 latch.adb:73:30: info: refined post proved (CVC4: 2 VC)
 latch.adb:77:07: info: initialization of "LocalLatch" proved
 latch.adb:78:07: info: initialization of "ID" proved
@@ -2005,16 +1466,10 @@ latch.adb:90:18: info: precondition proved (CVC4: 1 VC)
 latch.adb:113:49: info: initialization of "Interfac.Output" constituent of "Latch.Output" proved
 latch.adb:124:30: info: refined post proved (CVC4: 1 VC)
 latch.adb:135:18: info: precondition proved (CVC4: 1 VC)
-latch.adb:153:41: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:153:41: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:153:41: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:153:41: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:153:41: info: initialization of "LatchTimeout" constituent of "State" proved
 latch.adb:155:30: info: refined post proved (CVC4: 1 VC)
 latch.adb:169:42: info: initialization of "CurrentLatch" constituent of "State" proved
-latch.adb:170:42: info: initialization of "LatchTimeout.Day" constituent of "State" proved
-latch.adb:170:42: info: initialization of "LatchTimeout.MilliSec" constituent of "State" proved
-latch.adb:170:42: info: initialization of "LatchTimeout.Month" constituent of "State" proved
-latch.adb:170:42: info: initialization of "LatchTimeout.Year" constituent of "State" proved
+latch.adb:170:42: info: initialization of "LatchTimeout" constituent of "State" proved
 latch.ads:29:08: info: flow dependencies proved
 latch.ads:40:11: info: data dependencies proved
 latch.ads:44:11: info: data dependencies proved
@@ -2085,19 +1540,7 @@ screen.adb:408:24: info: initialization of "AlarmThreshold" proved
 screen.adb:409:07: info: initialization of "MinEntry" proved
 screen.adb:409:17: info: initialization of "Clearance" proved
 screen.adb:410:07: info: initialization of "MaxFAR" proved
-screen.adb:412:07: info: initialization of "NewConfig.AlarmSilent" proved
-screen.adb:412:07: info: initialization of "NewConfig.AlarmThreshold" proved
-screen.adb:412:07: info: initialization of "NewConfig.AuthDuration" proved
-screen.adb:412:07: info: initialization of "NewConfig.Clearance" proved
-screen.adb:412:07: info: initialization of "NewConfig.FingerWait" proved
-screen.adb:412:07: info: initialization of "NewConfig.LatchUnlock" proved
-screen.adb:412:07: info: initialization of "NewConfig.MaxFAR" proved
-screen.adb:412:07: info: initialization of "NewConfig.MinEntry" proved
-screen.adb:412:07: info: initialization of "NewConfig.MinPreservedLog" proved
-screen.adb:412:07: info: initialization of "NewConfig.Policy" proved
-screen.adb:412:07: info: initialization of "NewConfig.TokenRemove" proved
-screen.adb:412:07: info: initialization of "NewConfig.WorkEnd" proved
-screen.adb:412:07: info: initialization of "NewConfig.WorkStart" proved
+screen.adb:412:07: info: initialization of "NewConfig" proved
 screen.adb:442:37: info: index check proved (CVC4: 2 VC)
 screen.adb:446:13: info: range check proved (CVC4: 4 VC)
 screen.adb:446:19: info: overflow check proved (CVC4: 1 VC)
@@ -2159,10 +1602,7 @@ screen.adb:855:32: info: initialization of "OK" proved
 screen.adb:856:11: info: data dependencies proved
 screen.adb:857:41: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:858:11: info: flow dependencies proved
-screen.adb:861:07: info: initialization of "TheTime.Day" proved
-screen.adb:861:07: info: initialization of "TheTime.MilliSec" proved
-screen.adb:861:07: info: initialization of "TheTime.Month" proved
-screen.adb:861:07: info: initialization of "TheTime.Year" proved
+screen.adb:861:07: info: initialization of "TheTime" proved
 screen.adb:898:18: info: precondition proved (CVC4: 1 VC)
 screen.adb:922:49: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:965:07: info: initialization of "ScreenOK" proved
@@ -2170,25 +1610,11 @@ screen.adb:966:07: info: initialization of "WriteOK" proved
 screen.adb:968:07: info: initialization of "ShouldDisplayStats" proved
 screen.adb:969:07: info: initialization of "ShouldDisplayConfig" proved
 screen.adb:1030:18: info: precondition proved (CVC4: 1 VC)
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.AlarmSilent" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.AlarmThreshold" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.AuthDuration" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.Clearance" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.FingerWait" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.LatchUnlock" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.MaxFAR" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.MinEntry" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.MinPreservedLog" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.Policy" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.TokenRemove" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.WorkEnd" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.Data.WorkStart" constituent of "State" proved
-screen.adb:1055:42: info: initialization of "CurrentConfig.IsDisplayed" constituent of "State" proved
+screen.adb:1055:42: info: initialization of "CurrentConfig" constituent of "State" proved
 screen.adb:1056:42: info: initialization of "CurrentDoorAlarm" constituent of "State" proved
 screen.adb:1057:42: info: initialization of "CurrentLogAlarm" constituent of "State" proved
 screen.adb:1058:42: info: initialization of "CurrentMsg" constituent of "State" proved
-screen.adb:1059:42: info: initialization of "CurrentStats.Data" constituent of "State" proved
-screen.adb:1059:42: info: initialization of "CurrentStats.IsDisplayed" constituent of "State" proved
+screen.adb:1059:42: info: initialization of "CurrentStats" constituent of "State" proved
 screen.adb:1060:50: info: initialization of "Interfac.Output" constituent of "Screen.Output" proved
 screen.adb:1061:42: info: initialization of "TheMsg" constituent of "State" proved
 screen.adb:1078:07: info: initialization of "ScreenOK" proved
@@ -2207,10 +1633,7 @@ stats.adb:64:51: info: overflow check proved (CVC4: 1 VC)
 stats.adb:79:53: info: overflow check proved (CVC4: 1 VC)
 stats.adb:94:47: info: overflow check proved (CVC4: 1 VC)
 stats.ads:30:18: info: range check proved (CVC4: 1 VC)
-stats.ads:44:20: info: initialization of "TheStats.FailBio" proved
-stats.ads:44:20: info: initialization of "TheStats.FailEntry" proved
-stats.ads:44:20: info: initialization of "TheStats.SuccessBio" proved
-stats.ads:44:20: info: initialization of "TheStats.SuccessEntry" proved
+stats.ads:44:20: info: initialization of "TheStats" proved
 stats.ads:45:11: info: flow dependencies proved
 stats.ads:57:11: info: flow dependencies proved
 stats.ads:69:11: info: flow dependencies proved
@@ -2449,10 +1872,7 @@ userentry.adb:379:24: info: precondition proved (CVC4: 1 VC)
 userentry.adb:416:11: info: data dependencies proved
 userentry.adb:419:33: info: initialization of "Status" constituent of "State" proved
 userentry.adb:424:11: info: flow dependencies proved
-userentry.adb:441:07: info: initialization of "TheTemplate.ID" proved
-userentry.adb:441:07: info: initialization of "TheTemplate.Length" proved
-userentry.adb:441:07: info: initialization of "TheTemplate.Pad" proved
-userentry.adb:441:07: info: initialization of "TheTemplate.RequiredMaxFAR" proved
+userentry.adb:441:07: info: initialization of "TheTemplate" proved
 userentry.adb:442:07: info: initialization of "MatchResult" proved
 userentry.adb:443:07: info: initialization of "AchievedFAR" proved
 userentry.adb:444:07: info: initialization of "MaxFAR" proved
@@ -2507,58 +1927,40 @@ userentry.ads:288:11: info: data dependencies proved
 userentry.ads:294:11: info: flow dependencies proved
 usertoken-interfac.ads:33:08: info: flow dependencies proved
 usertoken.adb:118:11: info: data dependencies proved
-usertoken.adb:118:33: info: initialization of "IDCert.Contents" constituent of "State" proved
-usertoken.adb:118:33: info: initialization of "IDCert.IDStatus" constituent of "State" proved
-usertoken.adb:118:33: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:118:33: info: initialization of "IDCert" constituent of "State" proved
 usertoken.adb:119:11: info: flow dependencies proved
 usertoken.adb:122:07: info: initialization of "IDCertContents" proved
-usertoken.adb:143:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-usertoken.adb:143:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-usertoken.adb:144:42: info: initialization of "IandACert.Contents" constituent of "State" proved
-usertoken.adb:144:42: info: initialization of "IandACert.Valid" constituent of "State" proved
-usertoken.adb:145:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-usertoken.adb:145:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
-usertoken.adb:145:42: info: initialization of "IDCert.Valid" constituent of "State" proved
-usertoken.adb:146:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
-usertoken.adb:146:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
+usertoken.adb:143:42: info: initialization of "AuthCert" constituent of "State" proved
+usertoken.adb:144:42: info: initialization of "IandACert" constituent of "State" proved
+usertoken.adb:145:42: info: initialization of "IDCert" constituent of "State" proved
+usertoken.adb:146:42: info: initialization of "PrivCert" constituent of "State" proved
 usertoken.adb:147:42: info: initialization of "TokenID" constituent of "State" proved
 usertoken.adb:148:42: info: initialization of "TokenPresence" constituent of "State" proved
 usertoken.adb:149:42: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:158:07: info: initialization of "AuthCertContents" proved
 usertoken.adb:159:07: info: initialization of "PrivCertContents" proved
 usertoken.adb:160:07: info: initialization of "IandACertContents" proved
-usertoken.adb:191:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-usertoken.adb:191:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-usertoken.adb:192:42: info: initialization of "IandACert.Contents" constituent of "State" proved
-usertoken.adb:192:42: info: initialization of "IandACert.Valid" constituent of "State" proved
-usertoken.adb:193:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-usertoken.adb:193:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
-usertoken.adb:193:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:191:42: info: initialization of "AuthCert" constituent of "State" proved
+usertoken.adb:192:42: info: initialization of "IandACert" constituent of "State" proved
+usertoken.adb:193:42: info: initialization of "IDCert" constituent of "State" proved
 usertoken.adb:194:50: info: initialization of "Interfac.State" constituent of "UserToken.State" proved
-usertoken.adb:195:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
-usertoken.adb:195:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
+usertoken.adb:195:42: info: initialization of "PrivCert" constituent of "State" proved
 usertoken.adb:196:42: info: initialization of "TokenID" constituent of "State" proved
 usertoken.adb:197:42: info: initialization of "TokenPresence" constituent of "State" proved
 usertoken.adb:198:42: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:233:41: info: initialization of "TokenPresence" constituent of "State" proved
 usertoken.adb:292:07: info: initialization of "SignedOK" proved
-usertoken.adb:293:07: info: initialization of "Signature.SigData" proved
-usertoken.adb:293:07: info: initialization of "Signature.SigLength" proved
+usertoken.adb:293:07: info: initialization of "Signature" proved
 usertoken.adb:294:07: info: initialization of "RawCert" proved
 usertoken.adb:295:07: info: initialization of "SignedCert" proved
 usertoken.adb:332:07: info: initialization of "Result" proved
-usertoken.adb:379:42: info: initialization of "AuthCert.Contents" constituent of "State" proved
-usertoken.adb:379:42: info: initialization of "AuthCert.Valid" constituent of "State" proved
-usertoken.adb:380:42: info: initialization of "IDCert.Contents" constituent of "State" proved
-usertoken.adb:380:42: info: initialization of "IDCert.IDStatus" constituent of "State" proved
-usertoken.adb:380:42: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:379:42: info: initialization of "AuthCert" constituent of "State" proved
+usertoken.adb:380:42: info: initialization of "IDCert" constituent of "State" proved
 usertoken.adb:381:42: info: initialization of "TokenTry" constituent of "State" proved
 usertoken.adb:410:07: info: initialization of "AuthValid" proved
 usertoken.adb:412:07: info: initialization of "AuthCertContents" proved
 usertoken.adb:424:14: info: data dependencies proved
-usertoken.adb:430:36: info: initialization of "IDCert.Contents" constituent of "State" proved
-usertoken.adb:430:36: info: initialization of "IDCert.IDStatus" constituent of "State" proved
-usertoken.adb:430:36: info: initialization of "IDCert.Valid" constituent of "State" proved
+usertoken.adb:430:36: info: initialization of "IDCert" constituent of "State" proved
 usertoken.adb:434:14: info: flow dependencies proved
 usertoken.adb:450:10: info: initialization of "RawCert" proved
 usertoken.adb:452:10: info: initialization of "CertFound" proved
@@ -2570,10 +1972,8 @@ usertoken.adb:526:36: info: initialization of "AuthValid" proved
 usertoken.adb:531:14: info: flow dependencies proved
 usertoken.adb:552:10: info: initialization of "RawCert" proved
 usertoken.adb:554:10: info: initialization of "CertFound" proved
-usertoken.adb:646:42: info: initialization of "IandACert.Contents" constituent of "State" proved
-usertoken.adb:646:42: info: initialization of "IandACert.Valid" constituent of "State" proved
-usertoken.adb:647:42: info: initialization of "PrivCert.Contents" constituent of "State" proved
-usertoken.adb:647:42: info: initialization of "PrivCert.Valid" constituent of "State" proved
+usertoken.adb:646:42: info: initialization of "IandACert" constituent of "State" proved
+usertoken.adb:647:42: info: initialization of "PrivCert" constituent of "State" proved
 usertoken.adb:676:07: info: initialization of "IandACertContents" proved
 usertoken.adb:677:07: info: initialization of "PrivCertContents" proved
 usertoken.adb:678:07: info: initialization of "PrivValid" proved
@@ -2615,21 +2015,11 @@ usertoken.adb:958:31: info: analyzing call to "MakeDescription" in context
 usertoken.adb:961:18: info: analyzing call to "MakeDescription" in context
 usertoken.adb:964:18: info: analyzing call to "MakeDescription" in context
 usertoken.adb:988:25: info: analyzing call to "MakeDescription" in context
-usertoken.adb:1017:41: info: initialization of "AuthCert.Contents" constituent of "State" proved
-usertoken.adb:1017:41: info: initialization of "AuthCert.Valid" constituent of "State" proved
-usertoken.adb:1035:07: info: initialization of "ID.Issuer.ID" proved
-usertoken.adb:1035:07: info: initialization of "ID.Issuer.Name" proved
-usertoken.adb:1035:07: info: initialization of "ID.Issuer.NameLength" proved
-usertoken.adb:1035:07: info: initialization of "ID.SerialNumber" proved
-usertoken.adb:1036:07: info: initialization of "NotBefore.Day" proved
-usertoken.adb:1036:07: info: initialization of "NotBefore.MilliSec" proved
-usertoken.adb:1036:07: info: initialization of "NotBefore.Month" proved
-usertoken.adb:1036:07: info: initialization of "NotBefore.Year" proved
-usertoken.adb:1037:07: info: initialization of "NotAfter.Day" proved
-usertoken.adb:1037:07: info: initialization of "NotAfter.MilliSec" proved
-usertoken.adb:1037:07: info: initialization of "NotAfter.Month" proved
-usertoken.adb:1037:07: info: initialization of "NotAfter.Year" proved
-usertoken.adb:1038:07: info: initialization of "Clearance.Class" proved
+usertoken.adb:1017:41: info: initialization of "AuthCert" constituent of "State" proved
+usertoken.adb:1035:07: info: initialization of "ID" proved
+usertoken.adb:1036:07: info: initialization of "NotBefore" proved
+usertoken.adb:1037:07: info: initialization of "NotAfter" proved
+usertoken.adb:1038:07: info: initialization of "Clearance" proved
 usertoken.adb:1040:07: info: initialization of "IDCertContents" proved
 usertoken.adb:1041:07: info: initialization of "AuthCertContents" proved
 usertoken.adb:1062:45: info: precondition proved (CVC4: 1 VC)

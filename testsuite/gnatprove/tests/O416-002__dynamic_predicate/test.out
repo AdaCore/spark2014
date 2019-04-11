@@ -13,18 +13,14 @@ dynamic_preds.adb:39:30: medium: predicate check might fail (e.g. when B = -1) [
 dynamic_preds.adb:45:27: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:45:30: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:51:32: medium: predicate check might fail
-dynamic_preds.adb:57:07: info: initialization of "Result.A" proved
-dynamic_preds.adb:57:07: info: initialization of "Result.B" proved
+dynamic_preds.adb:57:07: info: initialization of "Result" proved
 dynamic_preds.adb:59:19: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:60:19: medium: predicate check might fail (e.g. when B = -1) [possible explanation: precondition of subprogram at dynamic_preds.ads:32 should mention B]
-dynamic_preds.adb:66:07: info: initialization of "Result.A" proved
-dynamic_preds.adb:66:07: info: initialization of "Result.B" proved
-dynamic_preds.adb:75:07: info: initialization of "Result.A" proved
-dynamic_preds.adb:75:07: info: initialization of "Result.B" proved
+dynamic_preds.adb:66:07: info: initialization of "Result" proved
+dynamic_preds.adb:75:07: info: initialization of "Result" proved
 dynamic_preds.adb:77:19: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:78:19: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:84:07: info: initialization of "Result.A" proved
-dynamic_preds.adb:84:07: info: initialization of "Result.B" proved
+dynamic_preds.adb:84:07: info: initialization of "Result" proved
 dynamic_preds.adb:86:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:87:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:89:28: info: predicate check proved (CVC4: 1 VC)
@@ -41,8 +37,7 @@ dynamic_preds.adb:103:28: medium: overflow check might fail (e.g. when Above = I
 dynamic_preds.adb:106:28: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:106:28: medium: overflow check might fail (e.g. when Result = (A => Even'Last-3, B => 0))
 dynamic_preds.adb:108:14: medium: predicate check might fail (e.g. when Result = (A => 0, B => 4))
-dynamic_preds.adb:112:07: info: initialization of "Result.A" proved
-dynamic_preds.adb:112:07: info: initialization of "Result.B" proved
+dynamic_preds.adb:112:07: info: initialization of "Result" proved
 dynamic_preds.adb:114:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:115:16: medium: predicate check might fail
 dynamic_preds.adb:115:22: info: predicate check proved (CVC4: 1 VC)
@@ -68,12 +63,9 @@ dynamic_preds.ads:17:28: warning: unused initial value of "X"
 dynamic_preds.ads:18:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds.ads:21:20: info: division check proved (CVC4: 1 VC)
 dynamic_preds.ads:26:70: medium: overflow check might fail
-dynamic_preds.ads:28:30: info: initialization of "X.A" proved
-dynamic_preds.ads:28:30: info: initialization of "X.B" proved
-dynamic_preds.ads:29:39: info: initialization of "X.A" proved
-dynamic_preds.ads:29:39: info: initialization of "X.B" proved
-dynamic_preds.ads:30:36: info: initialization of "X.A" proved
-dynamic_preds.ads:30:36: info: initialization of "X.B" proved
+dynamic_preds.ads:28:30: info: initialization of "X" proved
+dynamic_preds.ads:29:39: info: initialization of "X" proved
+dynamic_preds.ads:30:36: info: initialization of "X" proved
 dynamic_preds.ads:36:19: info: postcondition proved (CVC4: 2 VC)
 dynamic_preds.ads:43:32: warning: unused initial value of "X"
 dynamic_preds.ads:44:41: warning: unused initial value of "X"
@@ -167,9 +159,7 @@ dynamic_preds_rte.ads:4:57: medium: overflow check might fail
 dynamic_preds_rte.ads:5:71: medium: overflow check might fail
 dynamic_preds_rte.ads:16:29: medium: divide by zero might fail
 dynamic_preds_rte.ads:19:31: medium: divide by zero might fail
-dynamic_preds_rte.ads:21:33: info: initialization of "X.A" proved
-dynamic_preds_rte.ads:21:33: info: initialization of "X.B" proved
+dynamic_preds_rte.ads:21:33: info: initialization of "X" proved
 dynamic_preds_rte.ads:24:34: medium: "X" might not be initialized in "Create_Small_Array"
-dynamic_preds_rte.ads:27:41: info: initialization of "X.A" proved
-dynamic_preds_rte.ads:27:41: info: initialization of "X.B" proved
+dynamic_preds_rte.ads:27:41: info: initialization of "X" proved
 dynamic_preds_rte.ads:28:42: info: initialization of "X" proved

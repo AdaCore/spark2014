@@ -8,7 +8,7 @@ copy.adb:50:04: info: initialization of "Response" proved
 copy.adb:51:04: info: initialization of "Yes_No" proved
 copy.adb:54:04: info: initialization of "Last" proved
 copy.adb:55:04: info: initialization of "Last_Of_Yes_No" proved
-copy.adb:56:04: info: initialization of "C.Item" proved
+copy.adb:56:04: info: initialization of "C" proved
 copy.adb:62:30: info: implicit function contract not available for proof ("Status" might not return)
 copy.adb:62:30: info: loop invariant initialization proved (CVC4: 3 VC)
 copy.adb:62:30: info: loop invariant preservation proved (CVC4: 3 VC)
@@ -104,7 +104,7 @@ copy.adb:343:07: info: precondition proved (CVC4: 2 VC)
 copy.adb:347:07: info: precondition proved (CVC4: 2 VC)
 echo.adb:31:08: info: data dependencies proved
 echo.adb:32:18: info: precondition of main program proved (CVC4: 1 VC)
-echo.adb:34:04: info: initialization of "C.Item" proved
+echo.adb:34:04: info: initialization of "C" proved
 echo.adb:36:14: info: function contract not available for proof ("End_Of_File" might not return)
 echo.adb:37:30: info: loop invariant initialization proved (CVC4: 1 VC)
 echo.adb:37:30: info: loop invariant preservation proved (CVC4: 1 VC)
@@ -115,7 +115,7 @@ echo.adb:44:16: info: precondition proved (CVC4: 2 VC)
 echo.adb:51:13: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:31:08: info: data dependencies proved
 echo_1.adb:32:18: info: precondition of main program proved (CVC4: 3 VC)
-echo_1.adb:36:04: info: initialization of "C.Item" proved
+echo_1.adb:36:04: info: initialization of "C" proved
 echo_1.adb:38:14: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:39:30: info: loop invariant initialization proved (CVC4: 3 VC)
 echo_1.adb:39:30: info: loop invariant preservation proved (CVC4: 3 VC)

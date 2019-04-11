@@ -1,8 +1,6 @@
 test.adb:41:09: info: data dependencies proved
 test.adb:48:09: info: data dependencies proved
-test.adb:57:23: info: initialization of "Z.A" proved
-test.adb:57:23: info: initialization of "Z.B" proved
-test.adb:57:23: info: initialization of "Z.C" proved
+test.adb:57:23: info: initialization of "Z" proved
 test.adb:58:09: info: data dependencies proved
 test.adb:67:09: info: data dependencies proved
 test.adb:74:09: info: data dependencies proved
@@ -18,9 +16,7 @@ test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:128:14: high: formal parameter "X" and global "Global_RA" are aliased (SPARK RM 6.4.2)
 test.adb:131:23: warning: "X" is not modified, could be IN
 test.adb:132:09: info: data dependencies proved
-test.adb:132:30: info: initialization of "Global_RA.A" proved
-test.adb:132:30: info: initialization of "Global_RA.B" proved
-test.adb:132:30: info: initialization of "Global_RA.C" proved
+test.adb:132:30: info: initialization of "Global_RA" proved
 test.adb:138:23: warning: "X" is not modified, could be IN
 test.adb:139:09: info: data dependencies proved
 test.adb:142:19: high: formal parameters "Y" and "Z" are aliased (SPARK RM 6.4.2)

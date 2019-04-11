@@ -22,10 +22,8 @@ my_package.adb:87:09: info: data dependencies proved
 my_package.adb:87:42: info: initialization of "X" proved
 my_package.adb:100:09: info: data dependencies proved
 my_package.adb:121:09: info: data dependencies proved
-my_package.adb:164:37: info: initialization of "Y.F1" proved
-my_package.adb:164:37: info: initialization of "Y.F2" proved
-my_package.adb:174:28: info: initialization of "Y.F1" proved
-my_package.adb:174:28: info: initialization of "Y.F2" proved
+my_package.adb:164:37: info: initialization of "Y" proved
+my_package.adb:174:28: info: initialization of "Y" proved
 my_package.adb:179:43: info: initialization of "Y" proved
 my_package.adb:190:28: info: initialization of "Y" proved
 my_package.adb:195:33: info: initialization of "Y" proved

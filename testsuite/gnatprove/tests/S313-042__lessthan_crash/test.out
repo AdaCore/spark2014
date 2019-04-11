@@ -14,15 +14,13 @@ moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
 moth-scheduler.adb:290:24: info: initialization of "task_id" proved
 moth-scheduler.adb:354:07: info: initialization of "tmp_mask" proved
 moth.ads:114:10: info: flow dependencies proved
-moth.ads:141:10: info: initialization of "Model.Idle" proved
-moth.ads:141:10: info: initialization of private part of "Model.Ready" proved
+moth.ads:141:10: info: initialization of "Model" proved
 moth.ads:190:23: info: initialization of "task_id" proved
 moth.ads:205:24: info: initialization of "task_id" proved
 moth.ads:217:28: info: initialization of "task_id" proved
 moth.ads:242:23: info: initialization of "task_id" proved
 moth.ads:292:26: info: initialization of "status" proved
-moth.ads:293:26: info: initialization of "mbx_entry.msg" proved
-moth.ads:293:26: info: initialization of "mbx_entry.sender_id" proved
+moth.ads:293:26: info: initialization of "mbx_entry" proved
 moth.ads:303:23: info: initialization of "status" proved
 moth.ads:323:20: info: initialization of "task_id" proved
 gnatprove: error during flow analysis and proof

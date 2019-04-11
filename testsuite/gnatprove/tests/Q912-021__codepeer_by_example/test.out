@@ -21,8 +21,6 @@ assign_pos.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when Y = 
 assign_rec.adb:4:16: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_rec.ads:9 should mention Y in a precondition]
 assign_rec.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_rec.ads:9 should mention Y in a precondition]
 assign_rec.ads:9:22: high: "X.D.A" is not initialized in "Assign" [CWE 457]
-assign_rec.ads:9:22: info: initialization of "X.C" proved
-assign_rec.ads:9:22: info: initialization of "X.D.B" proved
 assign_to_pos.adb:1:26: info: initialization of "X" proved
 assign_to_pos.adb:3:11: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 assign_to_pos.adb:3:11: medium: range check might fail [CWE 682] (e.g. when Y = -1) [possible explanation: subprogram at line 1 should mention Y in a precondition]
@@ -39,8 +37,6 @@ bad_assign_arr.adb:4:07: medium: array index check might fail [CWE 120] [possibl
 bad_assign_arr.adb:5:09: info: overflow check proved (CVC4: 1 VC)
 bad_assign_arr.adb:5:09: medium: array index check might fail [CWE 120] (e.g. when Y = 1) [possible explanation: subprogram at line 2 should mention Y in a precondition]
 bad_assign_rec.adb:2:27: high: "X.D.A" is not initialized in "Bad_Assign_Rec" [CWE 457]
-bad_assign_rec.adb:2:27: info: initialization of "X.C" proved
-bad_assign_rec.adb:2:27: info: initialization of "X.D.B" proved
 bad_assign_rec.adb:4:13: medium: overflow check might fail [CWE 190] (e.g. when Y = -2148) [possible explanation: subprogram at line 2 should mention Y in a precondition]
 bad_assign_rec.adb:5:15: info: division check proved (CVC4: 1 VC)
 bad_call_assign.adb:3:28: warning: unused initial value of "X" [CWE 563]

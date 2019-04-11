@@ -1,2 +1,1 @@
-p.adb:9:19: info: initialization of "Res.X" proved
-p.adb:9:19: info: initialization of "Res.Y" proved
+p.adb:9:19: info: initialization of "Res" proved

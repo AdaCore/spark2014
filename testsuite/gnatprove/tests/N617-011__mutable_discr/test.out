@@ -49,9 +49,9 @@ discr.adb:114:12: info: discriminant check proved (CVC4: 1 VC)
 discr.adb:115:12: medium: discriminant check might fail (e.g. when C = 1)
 discr.adb:120:28: info: range check proved (CVC4: 1 VC)
 discr.adb:120:34: info: discriminant check proved (CVC4: 1 VC)
-discr.adb:122:26: info: initialization of private part of "D" proved
+discr.adb:122:26: info: initialization of "D" proved
 discr.adb:127:12: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 122 should mention D'Constrained or D.C]
-discr.adb:130:26: info: initialization of private part of "D" proved
+discr.adb:130:26: info: initialization of "D" proved
 discr.adb:135:12: info: discriminant check proved (CVC4: 2 VC)
 discr.adb:139:07: info: precondition proved (CVC4: 1 VC)
 discr.adb:140:07: info: precondition proved (CVC4: 1 VC)

@@ -61,10 +61,7 @@ camera_motion.adb:137:19: medium: range check might fail, in call inlined at cam
 camera_motion.adb:143:32: medium: overflow check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:32: medium: range check might fail, in call inlined at camera_motion.adb:240
 camera_motion.adb:143:55: medium: overflow check might fail, in call inlined at camera_motion.adb:240
-camera_motion.adb:147:14: info: initialization of "Result.Max" proved
-camera_motion.adb:147:14: info: initialization of "Result.Mean" proved
-camera_motion.adb:147:14: info: initialization of "Result.Min" proved
-camera_motion.adb:147:14: info: initialization of "Result.StdDev" proved
+camera_motion.adb:147:14: info: initialization of "Result" proved
 camera_motion.adb:148:21: warning: unused assignment, in call inlined at camera_motion.adb:240
 camera_motion.adb:149:21: warning: unused assignment, in call inlined at camera_motion.adb:240
 camera_motion.adb:150:35: medium: range check might fail, in call inlined at camera_motion.adb:240
@@ -105,8 +102,7 @@ camera_motion.adb:224:07: warning: initialization of "Weighted_Mean_X" has no ef
 camera_motion.adb:225:07: warning: initialization of "Weighted_Mean_Y" has no effect
 camera_motion.adb:228:07: warning: initialization of "Weighted_Stddev_X" has no effect
 camera_motion.adb:229:07: warning: initialization of "Weighted_Stddev_Y" has no effect
-camera_motion.adb:230:07: info: initialization of "Stats.Mean" proved
-camera_motion.adb:230:07: info: initialization of "Stats.StdDev" proved
+camera_motion.adb:230:07: info: initialization of "Stats" proved
 camera_motion.adb:233:16: info: length check proved (CVC4: 7 VC)
 camera_motion.adb:233:19: medium: length check might fail [possible explanation: subprogram at camera_motion.ads:15 should mention Ref_Image in a precondition]
 camera_motion.adb:234:16: info: length check proved (CVC4: 7 VC)
@@ -175,11 +171,7 @@ camera_motion.adb:287:43: medium: range check might fail [possible explanation: 
 camera_motion.adb:288:28: info: in inlined body at line 24
 camera_motion.adb:288:28: info: unrolling loop
 camera_motion.adb:288:43: medium: range check might fail [possible explanation: loop at line 266 should mention Weighted_Var_Y in a loop invariant]
-camera_motion.adb:291:14: info: initialization of "Motion.Center_Col" proved
-camera_motion.adb:291:14: info: initialization of "Motion.Center_Row" proved
-camera_motion.adb:291:14: info: initialization of "Motion.Level" proved
-camera_motion.adb:291:14: info: initialization of "Motion.StdDev_Col" proved
-camera_motion.adb:291:14: info: initialization of "Motion.StdDev_Row" proved
+camera_motion.adb:291:14: info: initialization of "Motion" proved
 camera_motion.adb:293:31: medium: range check might fail
 camera_motion.adb:294:31: medium: range check might fail
 camera_motion.adb:295:31: medium: range check might fail

@@ -1,11 +1,11 @@
 very_longs-divide.adb:26:04: info: initialization of "N" proved
 very_longs-divide.adb:27:04: info: initialization of "M" proved
 very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
-very_longs-divide.adb:29:04: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:30:04: info: initialization of "V.Long_Digits" proved
+very_longs-divide.adb:29:04: info: initialization of "U" proved
+very_longs-divide.adb:30:04: info: initialization of "V" proved
 very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
 very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
+very_longs-divide.adb:52:30: info: initialization of "Result" proved
 very_longs-divide.adb:54:08: info: flow dependencies proved
 very_longs-divide.adb:58:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:59:07: info: initialization of "Overflow_Mask" proved
@@ -33,19 +33,19 @@ very_longs-divide.adb:192:07: info: initialization of "Sum" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
 very_longs.adb:34:11: info: flow dependencies proved
-very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:50:28: info: initialization of "Result" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
 very_longs.adb:52:08: info: flow dependencies proved
 very_longs.adb:55:07: info: initialization of "L_Digit" proved
 very_longs.adb:56:07: info: initialization of "R_Digit" proved
 very_longs.adb:57:07: info: initialization of "Sum" proved
-very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:73:28: info: initialization of "Result" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
 very_longs.adb:75:08: info: flow dependencies proved
 very_longs.adb:78:07: info: initialization of "L_Digit" proved
 very_longs.adb:79:07: info: initialization of "R_Digit" proved
 very_longs.adb:80:07: info: initialization of "Difference" proved
-very_longs.adb:109:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:109:07: info: initialization of "Result" proved
 very_longs.adb:110:07: info: initialization of "Temp" proved
 very_longs.adb:126:07: info: initialization of "Index" proved
 very_longs.adb:127:07: info: initialization of "String_Index" proved
@@ -53,32 +53,32 @@ very_longs.adb:128:07: info: initialization of "H_Digit" proved
 very_longs.adb:129:07: info: initialization of "L_Digit" proved
 very_longs.adb:130:07: info: initialization of "H_Okay" proved
 very_longs.adb:131:07: info: initialization of "L_Okay" proved
-very_longs.adb:226:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:226:07: info: initialization of "Result" proved
 very_longs.adb:227:07: info: initialization of "L_Digit" proved
 very_longs.adb:228:07: info: initialization of "R_Digit" proved
 very_longs.adb:229:07: info: initialization of "Sum" proved
 very_longs.adb:230:07: info: initialization of "Carry" proved
-very_longs.adb:246:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:246:07: info: initialization of "Result" proved
 very_longs.adb:247:07: info: initialization of "L_Digit" proved
 very_longs.adb:248:07: info: initialization of "R_Digit" proved
 very_longs.adb:249:07: info: initialization of "Difference" proved
 very_longs.adb:250:07: info: initialization of "Borrow" proved
-very_longs.adb:274:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:274:07: info: initialization of "Result" proved
 very_longs.adb:275:07: info: initialization of "L_Digit" proved
 very_longs.adb:276:07: info: initialization of "R_Digit" proved
 very_longs.adb:277:07: info: initialization of "T_Digit" proved
 very_longs.adb:278:07: info: initialization of "Temp" proved
 very_longs.adb:279:07: info: initialization of "Carry" proved
-very_longs.adb:303:07: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:303:07: info: initialization of "Result" proved
 very_longs.adb:304:07: info: initialization of "L_Digit" proved
 very_longs.adb:305:07: info: initialization of "R_Digit" proved
 very_longs.adb:306:07: info: initialization of "T_Digit" proved
 very_longs.adb:307:07: info: initialization of "Temp" proved
 very_longs.adb:308:07: info: initialization of "Carry" proved
-very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
 very_longs.ads:20:10: info: flow dependencies proved
-very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
-very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:67:22: info: initialization of "Quotient" proved
+very_longs.ads:68:22: info: initialization of "Remainder" proved
 very_longs.ads:70:10: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

@@ -2,14 +2,8 @@ patris.adb:41:04: info: initialization of "Score_Nbr" constituent of "Score_Stat
 patris.adb:42:04: info: initialization of "Level_Nbr" constituent of "Score_State" proved
 patris.adb:43:04: info: initialization of "Line_Counter" constituent of "Score_State" proved
 patris.adb:49:04: warning: initialization of "Cur_Board" constituent of "Game_State" has no effect
-patris.adb:50:04: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:50:04: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_State" has no effect
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
@@ -52,21 +46,12 @@ patris.adb:179:36: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:179:36: info: loop invariant preservation proved (CVC4: 1 VC)
 patris.adb:183:35: info: range check proved (CVC4: 1 VC)
 patris.adb:184:31: info: assertion proved (CVC4: 1 VC)
-patris.adb:214:07: info: initialization of "Candidate.D" proved
-patris.adb:214:07: info: initialization of "Candidate.S" proved
-patris.adb:214:07: info: initialization of "Candidate.X" proved
-patris.adb:214:07: info: initialization of "Candidate.Y" proved
+patris.adb:214:07: info: initialization of "Candidate" proved
 patris.adb:217:23: info: precondition proved (CVC4: 1 VC)
 patris.adb:234:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:234:52: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:234:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:235:41: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:235:53: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:236:41: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:236:61: info: initialization of "Level_Nbr" constituent of "Score_State" proved
@@ -74,14 +59,8 @@ patris.adb:237:41: info: initialization of "Score_Nbr" constituent of "Score_Sta
 patris.adb:237:52: info: initialization of "Line_Counter" constituent of "Score_State" proved
 patris.adb:260:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:260:52: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:260:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:261:41: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:261:53: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:262:41: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:280:07: info: initialization of "Success" proved

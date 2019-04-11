@@ -23,16 +23,13 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900063.adb:110:10: info: initialization of "Medium_Alarm.Action_Officer" proved
 c3900063.adb:113:38: high: private part of "Medium_Alarm" is not initialized
 c3900063.adb:114:19: medium: precondition might fail, cannot prove false
 c3900063.adb:117:18: high: private part of "Medium_Alarm" is not initialized
 c3900063.adb:120:19: medium: precondition might fail, cannot prove false
 c3900063.adb:132:13: medium: precondition might fail, cannot prove false
-c392004.adb:9:03: info: initialization of "My_Car.Convertible" proved
-c392004.adb:9:03: info: initialization of private part of "My_Car" proved
-c392004.adb:10:03: info: initialization of "Your_Car.Convertible" proved
-c392004.adb:10:03: info: initialization of private part of "Your_Car" proved
+c392004.adb:9:03: info: initialization of "My_Car" proved
+c392004.adb:10:03: info: initialization of "Your_Car" proved
 c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
 c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:26
 c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:29
@@ -55,14 +52,12 @@ c392004.adb:50:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:54:03: info: analyzing call to "TC_Assert" in context
 c392004.adb:57:03: info: analyzing call to "TC_Assert" in context
 c392004_1.adb:8:16: medium: precondition might fail, cannot prove false
-c392004_1.ads:56:22: info: initialization of "The_Vehicle.Engine_On" proved
+c392004_1.ads:56:22: info: initialization of "The_Vehicle" proved
 c392004_1.ads:57:22: warning: unused initial value of "The_Vehicle"
 c392004_2.adb:11:28: medium: precondition might fail, cannot prove false
 c392004_2.adb:21:28: medium: precondition might fail, cannot prove false
-c392004_2.ads:14:21: info: initialization of "The_Car.Convertible" proved
-c392004_2.ads:14:21: info: initialization of private part of "The_Car" proved
-c392004_2.ads:18:21: info: initialization of "The_Limo.Convertible" proved
-c392004_2.ads:18:21: info: initialization of private part of "The_Limo" proved
+c392004_2.ads:14:21: info: initialization of "The_Car" proved
+c392004_2.ads:18:21: info: initialization of "The_Limo" proved
 c392008.adb:57:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:57:17: high: "B_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Current_Balance" is not initialized

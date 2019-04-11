@@ -1,42 +1,11 @@
 dns_network.ads:29:26: warning: no procedure exists that can initialize abstract state "DNS_Network.Network"
-dns_network_receive.ads:28:07: info: initialization of "Packet.Length" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Bytes" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.AA" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.ANCount" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.ARCount" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.MessageID" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.NSCount" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.Opcode" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.QDCount" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.QR" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.RA" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.RCode" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.RD" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.Res1" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.Res2" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.Res3" proved
-dns_network_receive.ads:28:07: info: initialization of "Packet.Rest.Header.TC" proved
+dns_network_receive.ads:28:07: info: initialization of "Packet" proved
 dns_network_receive.ads:29:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:31:07: info: initialization of "Failure" proved
 dns_network_receive.ads:32:09: info: data dependencies proved
 dns_network_receive.ads:33:09: info: flow dependencies proved
 dns_network_receive.ads:39:11: info: postcondition proved (CVC4: 3 VC)
-dns_network_receive.ads:47:07: info: initialization of "Packet.Bytes" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.AA" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.ANCount" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.ARCount" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.MessageID" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.NSCount" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.Opcode" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.QDCount" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.QR" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.RA" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.RCode" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.RD" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.Res1" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.Res2" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.Res3" proved
-dns_network_receive.ads:47:07: info: initialization of "Packet.Header.TC" proved
+dns_network_receive.ads:47:07: info: initialization of "Packet" proved
 dns_network_receive.ads:48:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:49:07: info: initialization of "Reply_Address" proved
 dns_network_receive.ads:50:07: info: initialization of "Failure" proved
@@ -594,25 +563,8 @@ process_first_line_of_record.ads:45:07: info: initialization of "InMultilineReco
 process_first_line_of_record.ads:46:07: info: initialization of "LineInRecordCtr" proved
 process_first_line_of_record.ads:48:07: info: initialization of "CurrentNameServer" proved
 process_first_line_of_record.ads:49:07: info: initialization of "CurrentEmail" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.Algorithm" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.Class" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.Flags" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.Key" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.KeyLength" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.Protocol" proved
-process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec.TTLInSeconds" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.Algorithm" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.Class" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.KeyTag" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.NumLabels" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.OrigTTL" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.SigExpiration" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.SigInception" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.Signature" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.SignatureLength" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.SignerName" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.TTLInSeconds" proved
-process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec.TypeCovered" proved
+process_first_line_of_record.ads:51:07: info: initialization of "DNSKey_Rec" proved
+process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec" proved
 process_first_line_of_record.ads:54:07: info: initialization of "RecordSuccessfullyInserted" proved
 process_first_line_of_record.ads:56:09: info: data dependencies proved
 process_first_line_of_record.ads:57:09: info: flow dependencies proved
@@ -1171,25 +1123,8 @@ zone_file_io.adb:60:07: info: initialization of "Parseable" proved
 zone_file_io.adb:61:07: info: initialization of "AllDone" proved
 zone_file_io.adb:70:07: info: initialization of "BegIdx" proved
 zone_file_io.adb:71:07: info: initialization of "EndIdx" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.Algorithm" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.Class" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.Flags" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.Key" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.KeyLength" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.Protocol" proved
-zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec.TTLInSeconds" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.Algorithm" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.Class" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.KeyTag" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.NumLabels" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.OrigTTL" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.SigExpiration" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.SigInception" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.Signature" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.SignatureLength" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.SignerName" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.TTLInSeconds" proved
-zone_file_io.adb:87:07: info: initialization of "RRSig_Rec.TypeCovered" proved
+zone_file_io.adb:85:07: info: initialization of "DNSKey_Rec" proved
+zone_file_io.adb:87:07: info: initialization of "RRSig_Rec" proved
 zone_file_io.adb:107:20: medium: precondition might fail, cannot prove Is_Readable (File) [possible explanation: subprogram at zone_file_io.ads:24 should mention ZoneFile in a precondition]
 zone_file_io.adb:125:16: info: range check proved (CVC4: 1 VC)
 zone_file_io.adb:147:22: info: range check proved (CVC4: 1 VC)
@@ -1596,26 +1531,9 @@ zone_file_parser.adb:1654:28: info: index check proved (CVC4: 2 VC)
 zone_file_parser.adb:1654:28: info: overflow check proved (CVC4: 1 VC)
 zone_file_parser.adb:1678:43: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:1692:30: info: range check proved (CVC4: 1 VC)
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Algorithm" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Class" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Flags" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Key" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.KeyLength" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.Protocol" proved
-zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec.TTLInSeconds" proved
+zone_file_parser.ads:34:07: info: initialization of "DNSKey_Rec" proved
 zone_file_parser.ads:38:09: info: flow dependencies proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.Algorithm" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.Class" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.KeyTag" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.NumLabels" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.OrigTTL" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SigExpiration" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SigInception" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.Signature" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SignatureLength" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.SignerName" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.TTLInSeconds" proved
-zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec.TypeCovered" proved
+zone_file_parser.ads:41:07: info: initialization of "RRSig_Rec" proved
 zone_file_parser.ads:45:09: info: flow dependencies proved
 zone_file_parser.ads:52:09: info: flow dependencies proved
 zone_file_parser.ads:60:09: info: flow dependencies proved

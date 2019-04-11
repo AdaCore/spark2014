@@ -1,4 +1,4 @@
-derived.ads:7:22: info: initialization of "X.B" proved
+derived.ads:7:22: info: initialization of "X" proved
 derived.ads:8:20: info: postcondition proved (CVC4: 1 VC)
 derived.ads:8:20: medium: class-wide postcondition might be weaker than overridden one, cannot prove X.B
 derived.ads:12:24: warning: "X" is not modified, could be IN

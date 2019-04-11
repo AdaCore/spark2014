@@ -38,7 +38,7 @@ screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
 screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ' ', others => ':') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
 sdc.adb:11:04: info: initialization of "File" proved
-sdc.adb:12:04: info: initialization of private part of "T" proved
+sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
 sdc.adb:16:07: warning: no Global contract available for "Argument_Count"
 sdc.adb:17:07: info: precondition proved (CVC4: 1 VC)
@@ -61,7 +61,7 @@ stack.adb:66:19: info: index check proved (CVC4: 2 VC)
 stack.adb:75:34: info: cannot unroll loop (too many loop iterations)
 stack.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:20:30: info: overflow check proved (CVC4: 1 VC)
-stack.ads:24:19: info: initialization of "V.E" proved
+stack.ads:24:19: info: initialization of "V" proved
 stack.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:26:30: info: overflow check proved (CVC4: 1 VC)
 tokens.adb:14:07: info: initialization of "Word_Buffer" proved
@@ -80,13 +80,11 @@ tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:77:30: medium: precondition might fail, cannot prove Size >= 2 (e.g. when Last = 1)
 tokens.adb:77:41: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
-tokens.ads:19:20: info: initialization of "V.Instr" proved
-tokens.ads:19:20: info: initialization of "V.Op" proved
-tokens.ads:19:20: info: initialization of "V.Val.E" proved
+tokens.ads:19:20: info: initialization of "V" proved
 tokens.ads:25:36: warning: unreachable branch (CVC4: 1 VC)
 values-operations.adb:28:10: medium: exception might be raised
-values-operations.adb:37:07: info: initialization of "V2.E" proved
-values-operations.adb:38:07: info: initialization of "V1.E" proved
+values-operations.adb:37:07: info: initialization of "V2" proved
+values-operations.adb:38:07: info: initialization of "V1" proved
 values-operations.adb:40:07: info: initialization of "Result" proved
 values-operations.adb:43:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)

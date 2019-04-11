@@ -336,10 +336,8 @@ generic_float_tests.adb:405:29: info: initialization of "Y" proved, in instantia
 generic_float_tests.adb:405:29: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:406:19: info: postcondition proved (CVC4: 1 VC), in instantiation at foo.ads:10
 generic_float_tests.adb:406:19: info: postcondition proved (CVC4: 1 VC), in instantiation at foo.ads:15
-generic_float_tests.adb:412:07: info: initialization of "R.A" proved, in instantiation at foo.ads:10
-generic_float_tests.adb:412:07: info: initialization of "R.A" proved, in instantiation at foo.ads:15
-generic_float_tests.adb:412:07: info: initialization of "R.B" proved, in instantiation at foo.ads:10
-generic_float_tests.adb:412:07: info: initialization of "R.B" proved, in instantiation at foo.ads:15
+generic_float_tests.adb:412:07: info: initialization of "R" proved, in instantiation at foo.ads:10
+generic_float_tests.adb:412:07: info: initialization of "R" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:420:28: info: initialization of "Y" proved, in instantiation at foo.ads:10
 generic_float_tests.adb:420:28: info: initialization of "Y" proved, in instantiation at foo.ads:15
 generic_float_tests.adb:421:19: info: postcondition proved (CVC4: 1 VC), in instantiation at foo.ads:10

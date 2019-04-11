@@ -106,18 +106,7 @@ skein.adb:735:49: info: division check proved (CVC4: 1 VC)
 skein.adb:735:49: info: range check proved (CVC4: 1 VC)
 skein.adb:737:13: info: precondition proved (CVC4: 5 VC; Z3: 1 VC)
 skein.adb:756:07: info: analyzing call to "Copy_Msg_To_B" in context
-skein.adb:770:07: info: initialization of "Local_Ctx.B" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Byte_Count" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Bit_Pad" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_LSB" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Byte_Count_MSB" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Field_Type" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Final_Block" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.First_Block" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Reserved" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.H.Tweak_Words.Tree_Level" proved
-skein.adb:770:07: info: initialization of "Local_Ctx.X" proved
+skein.adb:770:07: info: initialization of "Local_Ctx" proved
 skein.adb:771:07: info: initialization of "N" proved
 skein.adb:772:07: info: initialization of "Blocks_Required" proved
 skein.adb:773:07: info: initialization of "Byte_Count" proved
@@ -161,35 +150,13 @@ skein.adb:844:10: info: precondition proved (CVC4: 6 VC)
 skein.adb:857:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:857:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:857:10: info: in inlined body at line 223
-skein.adb:878:07: info: initialization of "Ctx.B" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Byte_Count" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Hash_Bit_Len" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
-skein.adb:878:07: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
-skein.adb:878:07: info: initialization of "Ctx.X" proved
+skein.adb:878:07: info: initialization of "Ctx" proved
 skein.adb:879:07: info: initialization of "Result" proved
 skein.adb:884:07: info: precondition proved (CVC4: 6 VC)
 skein.adb:887:07: info: precondition proved (CVC4: 5 VC)
 skein.adb:888:32: info: predicate check proved (CVC4: 1 VC)
 skein.adb:910:12: info: precondition proved (CVC4: 1 VC)
-skein.ads:173:30: info: initialization of "Ctx.B" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Byte_Count" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Hash_Bit_Len" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Bit_Pad" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_LSB" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Byte_Count_MSB" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Field_Type" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Final_Block" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.First_Block" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Reserved" proved
-skein.ads:173:30: info: initialization of "Ctx.H.Tweak_Words.Tree_Level" proved
-skein.ads:173:30: info: initialization of "Ctx.X" proved
+skein.ads:173:30: info: initialization of "Ctx" proved
 skein.ads:175:11: info: data dependencies proved
 skein.ads:176:19: info: postcondition proved (CVC4: 4 VC)
 skein.ads:183:11: info: data dependencies proved

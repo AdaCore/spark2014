@@ -29,6 +29,5 @@ counterexamples.adb:54:29: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:55:22: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:55:22: medium: assertion might fail, cannot prove A (C) = 15 (e.g. when A.all = (others => 1) and A.all'First = 1 and A.all'Last = 1 and C = 1)
 counterexamples.adb:55:25: info: index check proved (CVC4: 2 VC)
-counterexamples.adb:58:04: info: initialization of "X.First" proved
-counterexamples.adb:58:04: info: initialization of "X.Second" proved
+counterexamples.adb:58:04: info: initialization of "X" proved
 counterexamples.adb:61:04: medium: precondition might fail, cannot prove X.Second /= null (e.g. when X = (First => null, Second => null))

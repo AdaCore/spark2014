@@ -2183,13 +2183,14 @@ package body Flow.Analysis is
       --  Produces an appropriately worded low/high message for variable Var
       --  when used at Vertex.
 
-      procedure Emit_Info_Message
-        (Var       : Flow_Id;
-         V_Initial : Flow_Graphs.Vertex_Id)
-      with Pre => not Is_Internal (Var)
-                  and then V_Initial /= Flow_Graphs.Null_Vertex;
-      --  Produces an appropriately worded info message for variable Var
-      --  introduced by V_Initial vertex.
+      procedure Emit_Info_Message_Global (Var : Flow_Id)
+      with Pre => Var.Kind in Direct_Mapping | Magic_String;
+
+      procedure Emit_Info_Message_Local (Var : Flow_Id)
+      with Pre => Var.Kind = Direct_Mapping;
+      --  Emit an appropriately worded info message for variable Var; messages
+      --  for global and local variables look the same, bug have different
+      --  locations.
 
       function Might_Be_Initialized
         (Var       : Flow_Id;
@@ -2474,54 +2475,63 @@ package body Flow.Analysis is
          OK := False;
       end Emit_Check_Message;
 
-      -----------------------
-      -- Emit_Info_Message --
-      -----------------------
+      ------------------------------
+      -- Emit_Info_Message_Global --
+      ------------------------------
 
-      procedure Emit_Info_Message
-        (Var       : Flow_Id;
-         V_Initial : Flow_Graphs.Vertex_Id)
-      is
-         N : Node_Or_Entity_Id;
-
+      procedure Emit_Info_Message_Global (Var : Flow_Id) is
       begin
-         if FA.Atr (V_Initial).Is_Global then
-            --  When the Global contract is generated we don't emit any
-            --  message, because it won't be obvious what such a message
-            --  actually means.
-            if FA.Is_Generative then
-               N := Empty;
-            else
-               N := Find_Global (FA.Spec_Entity, Var);
-            end if;
-         else
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
-
-            begin
-               --  When variable has an explicit initialization expression,
-               --  then it is obviously initialized, so skip the info message.
-               if Ekind (E) = E_Variable
-                 and then (Present (Expression (Declaration_Node (E))))
-               then
-                  N := Empty;
-               else
-                  N := FA.Atr (V_Initial).Error_Location;
-               end if;
-            end;
-         end if;
-
-         if Present (N) then
+         --  When the Global contract is generated we don't emit any message,
+         --  because it won't be obvious what such a message actually means.
+         if not FA.Is_Generative then
             Error_Msg_Flow
               (FA       => FA,
                Msg      => "initialization of & proved",
-               N        => N,
+               N        => Find_Global (FA.Spec_Entity, Var),
                F1       => Var,
                Tag      => Uninitialized,
-               Severity => Info_Kind,
-               Vertex   => V_Initial);
+               Severity => Info_Kind);
          end if;
-      end Emit_Info_Message;
+      end Emit_Info_Message_Global;
+
+      -----------------------------
+      -- Emit_Info_Message_Local --
+      -----------------------------
+
+      procedure Emit_Info_Message_Local (Var : Flow_Id) is
+         E : constant Entity_Id := Get_Direct_Mapping_Id (Var);
+
+      begin
+         --  Skip info messages for:
+
+         --  Variables with explicit initialization expressions, because
+         --  their initialization is obvious.
+
+         if (Ekind (E) = E_Variable
+               and then (Present (Expression (Declaration_Node (E)))))
+
+           --  Internal objects created by the frontend, because they are
+           --  initialized-by-construction.
+
+           or else
+             Is_Internal (E)
+
+           --  Auxiliary 'Result objects created by flow analysis.
+
+           or else
+             Ekind (E) = E_Function
+         then
+            null;
+         else
+            Error_Msg_Flow
+              (FA       => FA,
+               Msg      => "initialization of & proved",
+               N        => E,
+               F1       => Var,
+               Tag      => Uninitialized,
+               Severity => Info_Kind);
+         end if;
+      end Emit_Info_Message_Local;
 
       ---------------------------------
       -- Has_Only_Infinite_Execution --
@@ -2751,6 +2761,22 @@ package body Flow.Analysis is
       --  Objects that are genuinely used by the analysed routine; only for
       --  those we want the "info: initialization proved" messages.
 
+      Global_OK  : Flow_Id_Sets.Set;
+      Global_NOK : Flow_Id_Sets.Set;
+      Local_OK   : Flow_Id_Sets.Set;
+      Local_NOK  : Flow_Id_Sets.Set;
+      --  If all accesses to a given component happen after it is initialized,
+      --  then its entire object will appear in the OK set; otherwise, its
+      --  entire object will appear in the NOK set.
+      --
+      --  The OK/NOK containers are needed because an OK message is emitted
+      --  only once for the entire object, while NOK checks are emitted for
+      --  each component on each location where it accessed without being
+      --  initialized.
+      --
+      --  The Global/Local containers are needed, because messages on global
+      --  and local objects are located differently.
+
    --  Start of processing for Find_Use_Of_Uninitialized_Variables
 
    begin
@@ -2761,39 +2787,6 @@ package body Flow.Analysis is
       if FA.Has_Only_Exceptional_Paths then
          return;
       end if;
-
-      --  We only want to emit info messages about objects that are actually
-      --  used by the analysed subprogram. Here we prescan the flow graph to
-      --  collect them.
-
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            V_Key : Flow_Id      renames FA.PDG.Get_Key (V);
-            V_Atr : V_Attributes renames FA.Atr (V);
-         begin
-            --  Ignore synthetic null output; this is an auxilary object
-            if Synthetic (V_Key)
-
-              --  Ignore 'Final objects that do not correspond to OUT mode
-              --  parameters, Output globals, etc.
-
-              or else (V_Key.Variant = Final_Value
-                       and then not V_Atr.Is_Export)
-
-              --  Ignore own objects of the analysed pacakge, but only for
-              --  packages with a generated Initializes contract.
-
-              or else (V_Key.Variant = Final_Value
-                       and then V_Atr.Is_Export
-                       and then Ekind (FA.Spec_Entity) = E_Package
-                       and then No (FA.Initializes_N))
-            then
-               null;
-            else
-               Used.Union (V_Atr.Variables_Explicitly_Used);
-            end if;
-         end;
-      end loop;
 
       for Parent of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
@@ -2814,7 +2807,6 @@ package body Flow.Analysis is
               and then not Synthetic (Parent_Key)
               and then not Is_Empty_Record_Object (Parent_Key)
               and then not Is_Init_By_Proof (Parent_Key)
-              and then not Is_Internal (Parent_Key)
             then
                OK := True;
 
@@ -2825,23 +2817,85 @@ package body Flow.Analysis is
                   Visited => Visited,
                   OK      => OK);
 
-               --  If no checks have been emitted, then emit an info message,
-               --  except for:
-               --  * an auxiliary 'Result object
-               --  * internal objects created by the frontend, because they
-               --    are always initialized-by-construction
-               --  * local objects that are never used by a subprogram,
-               --    because we don't care about them.
+               --  If no checks have been emitted for any of the object
+               --  components, then want an info message for the entire object.
 
-               if OK
-                 and then not Is_Function_Entity (Parent_Key)
-                 and then Used.Contains
-                                 (Change_Variant (Parent_Key, Normal_Use))
-               then
-                  Emit_Info_Message (Var => Parent_Key, V_Initial => Parent);
-               end if;
+               declare
+                  Obj : constant Flow_Id :=
+                    Entire_Variable
+                      (Change_Variant (Parent_Key, Normal_Use));
+
+               begin
+                  if FA.Atr (Parent).Is_Global then
+                     if OK then
+                        Global_OK.Include (Obj);
+                     else
+                        Global_NOK.Include (Obj);
+                     end if;
+                  else
+                     if OK then
+                        Local_OK.Include (Obj);
+                     else
+                        Local_NOK.Include (Obj);
+                     end if;
+                  end if;
+               end;
+            end if;
+
+            --  While scanning the graph and emitting checks, we also pick
+            --  objects that are actually used; this is needed for emitting
+            --  messages.
+
+            --  Ignore synthetic null output; this is an auxilary object
+            if Synthetic (Parent_Key)
+
+              --  Ignore 'Final objects that do not correspond to OUT mode
+              --  parameters, Output globals, etc.
+
+              or else (Parent_Key.Variant = Final_Value
+                       and then not Parent_Atr.Is_Export)
+
+              --  Ignore own objects of the analysed pacakge, but only for
+              --  packages with a generated Initializes contract.
+
+              or else (Parent_Key.Variant = Final_Value
+                       and then Parent_Atr.Is_Export
+                       and then Ekind (FA.Spec_Entity) = E_Package
+                       and then No (FA.Initializes_N))
+
+              --  Ignore implicit references to discriminants and bounds
+
+              or else Parent_Atr.Is_Discr_Or_Bounds_Parameter
+
+            then
+               null;
+            else
+               for Var of Parent_Atr.Variables_Explicitly_Used loop
+
+                  --  Ignore reads of discriminants and bounds, because they
+                  --  are always initialized, even when the object is not.
+
+                  if not Is_Discriminant (Var)
+                    and then not Is_Bound (Var)
+                  then
+                     Used.Include (Entire_Variable (Var));
+                  end if;
+               end loop;
             end if;
          end;
+      end loop;
+
+      for Var of Global_OK.Difference (Global_NOK) loop
+         Emit_Info_Message_Global (Var);
+      end loop;
+
+      --  We only want info messages about local objects that are actually used
+      --  by the analysed subprogram.
+
+      for Var of Local_OK.Difference (Local_NOK) loop
+         if Used.Contains (Var) then
+            Emit_Info_Message_Local (Var);
+         end if;
       end loop;
    end Find_Use_Of_Uninitialized_Variables;
 

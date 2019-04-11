@@ -86,5 +86,5 @@ hnco-test2.adb:7:08: medium: precondition might fail, cannot prove Length (Conta
 hnco-test2.adb:8:08: medium: precondition might fail, cannot prove Length (Container) < Container.Capacity (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 7 should mention Container (for argument V) in a postcondition]
 hnco-test2.adb:10:22: medium: assertion might fail, cannot prove V.Contains (1) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 8 should mention Container (for argument V) in a postcondition]
 hnco-test2.adb:11:22: medium: assertion might fail, cannot prove V.Contains (2) (e.g. when V = (Capacity => 10, Hidden_Vector => ?)) [possible explanation: call at line 8 should mention Container (for argument V) in a postcondition]
-hnco-test2.ads:11:04: info: initialization of private part of "V" proved
+hnco-test2.ads:11:04: info: initialization of "V" proved
 hnco-test2.ads:11:34: info: range check proved (CVC4: 1 VC)

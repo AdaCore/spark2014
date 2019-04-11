@@ -66,12 +66,12 @@ storage_place_attributes.adb:21:23: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:27:22: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:28:22: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:33:04: info: initialization of "R2a_arr" proved
-storage_place_attributes.adb:35:04: info: initialization of "O2a.D3" proved
-storage_place_attributes.adb:37:04: info: initialization of "O2b.D3" proved
+storage_place_attributes.adb:35:04: info: initialization of "O2a" proved
+storage_place_attributes.adb:37:04: info: initialization of "O2b" proved
 storage_place_attributes.adb:39:19: medium: assertion might fail, cannot prove O2a.D3'First_bit = O2b.D3'first_bit
 storage_place_attributes.adb:40:19: info: assertion proved (CVC4: 1 VC)
 storage_place_attributes.adb:41:19: info: assertion proved (CVC4: 1 VC)
-storage_place_attributes.adb:43:04: info: initialization of "O2.D3" proved
+storage_place_attributes.adb:43:04: info: initialization of "O2" proved
 storage_place_attributes.adb:45:19: medium: assertion might fail, cannot prove O2.D3'First_Bit = O2a.D3'first_bit
 storage_place_attributes.adb:49:04: warning: analyzing unreferenced procedure "First1"
 storage_place_attributes.adb:49:14: warning: subprogram "First1" has no effect

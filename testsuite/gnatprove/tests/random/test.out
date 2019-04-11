@@ -1,6 +1,5 @@
 random.adb:45:07: info: initialization of "Last" proved
-random.adb:47:14: info: initialization of "G.Index" proved
-random.adb:47:14: info: initialization of "G.State" proved
+random.adb:47:14: info: initialization of "G" proved
 random.adb:49:31: info: cannot unroll loop (too many loop iterations)
 random.adb:65:14: info: range check proved (CVC4: 2 VC)
 random.adb:70:31: info: index check proved (CVC4: 4 VC)

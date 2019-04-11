@@ -18,7 +18,7 @@ a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at p.ads:12
-p.adb:4:07: info: initialization of "Cu.Node" proved
+p.adb:4:07: info: initialization of "Cu" proved
 p.adb:5:07: info: initialization of "I" proved
 p.adb:7:07: info: precondition proved (CVC4: 1 VC)
 p.adb:8:22: info: assertion proved (CVC4: 1 VC)

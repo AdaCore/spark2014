@@ -1,10 +1,6 @@
 unknown_1.adb:18:14: info: data dependencies proved
 unknown_1.adb:18:34: low: unused global "input_parameter"
-unknown_1.adb:21:10: info: initialization of "Box.A" proved
-unknown_1.adb:21:10: info: initialization of "Box.B" proved
-unknown_1.adb:21:10: info: initialization of "Box.C" proved
-unknown_1.adb:21:10: info: initialization of "Box.D" proved
-unknown_1.adb:21:10: info: initialization of "Box.E" proved
+unknown_1.adb:21:10: info: initialization of "Box" proved
 unknown_1.adb:35:14: info: data dependencies proved
 unknown_1.adb:47:39: info: range check proved (Interval)
 unknown_1.adb:49:41: info: range check proved (Interval)

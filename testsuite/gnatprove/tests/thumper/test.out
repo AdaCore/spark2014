@@ -5,8 +5,7 @@ client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no ef
 client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.adb:34:17: warning: procedure "Make_Request" is not referenced
 client_timestamp_maker.adb:35:10: info: initialization of "Local_Host" proved
-client_timestamp_maker.adb:36:10: info: initialization of "Request_Message.Data" proved
-client_timestamp_maker.adb:36:10: info: initialization of "Request_Message.Size" proved
+client_timestamp_maker.adb:36:10: info: initialization of "Request_Message" proved
 client_timestamp_maker.adb:37:10: info: initialization of "Network_Status" proved
 client_timestamp_maker.adb:38:10: info: initialization of "Address_Status" proved
 client_timestamp_maker.adb:60:07: medium: exception might be raised
@@ -279,10 +278,7 @@ hermes-oid.adb:164:17: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:164:72: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:165:23: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:165:40: info: index check proved (CVC4: 2 VC)
-hermes-oid.ads:26:39: info: initialization of "Result.Other_Component_Count" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Other_Components" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Root_Component" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Second_Level_Component" proved
+hermes-oid.ads:26:39: info: initialization of "Result" proved
 hermes-oid.ads:26:71: info: initialization of "Status" proved
 hermes-oid.ads:27:11: info: flow dependencies proved
 hermes-oid.ads:40:07: info: initialization of "Result" proved
@@ -335,8 +331,7 @@ network-addresses.adb:130:26: info: range check proved (CVC4: 1 VC)
 network-addresses.adb:133:24: info: assertion proved (CVC4: 2 VC)
 network-addresses.adb:136:25: info: overflow check proved (CVC4: 1 VC)
 network-addresses.adb:139:26: info: range check proved (CVC4: 1 VC)
-network-addresses.adb:144:07: info: initialization of "Result.Address" proved
-network-addresses.adb:144:07: info: initialization of "Result.Port" proved
+network-addresses.adb:144:07: info: initialization of "Result" proved
 network-addresses.ads:25:48: info: initialization of "Result" proved
 network-addresses.ads:25:67: info: initialization of "Status" proved
 network-addresses.ads:27:08: info: data dependencies proved
@@ -374,15 +369,11 @@ serial_generator.ads:27:19: info: initialization of "Number" proved
 serial_generator.ads:29:09: info: data dependencies proved
 serial_generator.ads:30:09: info: flow dependencies proved
 server_spark_boundary.adb:22:07: info: initialization of "Client_Address" proved
-server_spark_boundary.adb:24:07: info: initialization of "Network_Request.Data" proved
-server_spark_boundary.adb:24:07: info: initialization of "Network_Request.Size" proved
-server_spark_boundary.adb:25:07: info: initialization of "Request_Message.Data" proved
-server_spark_boundary.adb:25:07: info: initialization of "Request_Message.Size" proved
+server_spark_boundary.adb:24:07: info: initialization of "Network_Request" proved
+server_spark_boundary.adb:25:07: info: initialization of "Request_Message" proved
 server_spark_boundary.adb:26:07: info: initialization of "Read_Status" proved
-server_spark_boundary.adb:28:07: info: initialization of "Response_Message.Data" proved
-server_spark_boundary.adb:28:07: info: initialization of "Response_Message.Size" proved
-server_spark_boundary.adb:29:07: info: initialization of "Network_Response.Data" proved
-server_spark_boundary.adb:29:07: info: initialization of "Network_Response.Size" proved
+server_spark_boundary.adb:28:07: info: initialization of "Response_Message" proved
+server_spark_boundary.adb:29:07: info: initialization of "Network_Response" proved
 server_spark_boundary.adb:30:07: info: initialization of "Write_Status" proved
 server_spark_boundary.ads:24:08: info: data dependencies proved
 server_spark_boundary.ads:27:08: info: flow dependencies proved

@@ -20,7 +20,6 @@ uninitialized.adb:68:21: high: either make "Arr" constituent of "State" an input
 uninitialized.adb:68:28: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:68:28: medium: array index check might fail
 uninitialized.adb:74:11: info: data dependencies proved
-uninitialized.adb:74:32: info: initialization of "Rec.Arr" constituent of "State" proved
 uninitialized.adb:80:22: medium: "Rec.Boo" constituent of "State" might not be initialized
 uninitialized.adb:82:24: info: unrolling loop
 uninitialized.adb:88:04: warning: analyzing unreferenced procedure "Init_Record_Error"
@@ -30,9 +29,7 @@ uninitialized.adb:93:27: high: "A_Rec.Arr" is not initialized
 uninitialized.adb:93:40: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:93:40: medium: array index check might fail
 uninitialized.adb:98:04: warning: analyzing unreferenced procedure "Init_Record_Error_2"
-uninitialized.adb:98:35: info: initialization of "A_Rec.Arr" proved
-uninitialized.adb:98:35: info: initialization of "A_Rec.Boo" proved
-uninitialized.adb:99:07: info: initialization of "Another_Rec.Boo" proved
+uninitialized.adb:98:35: info: initialization of "A_Rec" proved
 uninitialized.adb:103:16: high: "Another_Rec.Arr" is not initialized
 uninitialized.adb:107:04: warning: analyzing unreferenced procedure "Init_Array_Through_Call_Warn"
 uninitialized.adb:107:44: info: initialization of "An_Arr" proved

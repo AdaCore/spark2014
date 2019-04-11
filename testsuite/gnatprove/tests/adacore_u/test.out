@@ -63,7 +63,7 @@ p.adb:135:10: info: precondition proved (CVC4: 5 VC)
 p.adb:135:24: info: overflow check proved (CVC4: 1 VC)
 p.ads:6:28: medium: "Result" might not be initialized in "Search_Array"
 p.ads:7:28: info: initialization of "Found" proved
-p.ads:20:28: info: initialization of "Result.Content" proved
+p.ads:20:28: info: initialization of "Result" proved
 p.ads:25:28: info: initialization of "Result" proved
 p.ads:26:42: info: index check proved (CVC4: 2 VC)
 p.ads:35:20: info: initialization of "A" proved
@@ -137,9 +137,7 @@ counting.ads:14:16: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:48: info: overflow check proved (CVC4: 1 VC)
 counting.ads:21:06: info: data dependencies proved
-data_package.adb:6:07: info: initialization of "Data.Field_1" proved
-data_package.adb:6:07: info: initialization of "Data.Field_2" proved
-data_package.adb:6:07: info: initialization of "Data.Field_3" proved
+data_package.adb:6:07: info: initialization of "Data" proved
 data_package.ads:3:01: info: flow dependencies proved
 data_package.ads:6:04: info: initialization of "Data_1" proved
 data_package.ads:7:04: info: initialization of "Data_2" proved
@@ -407,10 +405,7 @@ predicate_ints.adb:79:24: info: range check proved (CVC4: 1 VC)
 predicate_ints.adb:86:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at predicate_ints.ads:36 should mention Arg in a precondition]
 predicate_ints.ads:12:40: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.ads:13:20: info: postcondition proved (CVC4: 1 VC)
-predicate_ints.ads:17:21: info: initialization of "Arg.Max" proved
-predicate_ints.ads:17:21: info: initialization of "Arg.Min" proved
-predicate_ints.ads:17:21: info: initialization of "Arg.Value" proved
-predicate_ints.ads:17:21: info: initialization of extension of "Arg" proved
+predicate_ints.ads:17:21: info: initialization of "Arg" proved
 predicate_ints.ads:21:34: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639))
 predicate_ints.ads:22:14: info: postcondition proved (CVC4: 1 VC)
 predicate_ints.ads:29:25: info: postcondition proved (CVC4: 1 VC)
@@ -422,7 +417,6 @@ synchronized_file_system.ads:17:20: info: class-wide postcondition is stronger t
 synchronized_file_system.ads:20:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
 synchronized_file_system.ads:21:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 use_file_system.adb:3:28: info: initialization of "F" proved
-use_file_system.adb:3:28: info: initialization of extension of "F" proved
 use_file_system.adb:8:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:9:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:11:05: info: precondition proved (CVC4: 1 VC)

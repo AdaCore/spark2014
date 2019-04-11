@@ -77,7 +77,7 @@ is
       if True then
          Rec.Boo := True;
       end if;
-      Rec.Boo := not Rec.Boo;  --  This should be a warning.
+      Rec.Boo := not Rec.Boo;  --  This should be a check.
 
       for I in 1 .. 10 loop
          Rec.Arr (I) := I;  --  This should be ok.

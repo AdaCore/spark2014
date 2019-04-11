@@ -1,8 +1,7 @@
 spark05.adb:21:16: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at line 16 should mention X in a precondition]
 spark05.adb:21:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at line 16 should mention Y in a precondition]
-spark05.adb:30:04: info: initialization of "P.X" proved
-spark05.adb:30:04: info: initialization of "P.Y" proved
-spark05.adb:31:04: info: initialization of "M.A" proved
+spark05.adb:30:04: info: initialization of "P" proved
+spark05.adb:31:04: info: initialization of "M" proved
 spark05.adb:32:04: info: initialization of "AAM" proved
 spark05.adb:34:04: info: initialization of "getX" proved
 spark05.adb:35:04: info: initialization of "getY" proved

@@ -106,7 +106,7 @@ a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
-bounded.adb:11:07: info: initialization of private part of "V" proved
+bounded.adb:11:07: info: initialization of "V" proved
 bounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:15:22: info: assertion proved (CVC4: 1 VC)
@@ -216,7 +216,7 @@ bounded.adb:112:30: info: precondition proved (CVC4: 2 VC)
 bounded.adb:114:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:116:07: medium: assertion might fail
 bounded.ads:11:14: warning: subprogram "Test" has no effect
-indefinite_bounded.adb:10:07: info: initialization of private part of "V" proved
+indefinite_bounded.adb:10:07: info: initialization of "V" proved
 indefinite_bounded.adb:10:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
@@ -326,7 +326,7 @@ indefinite_bounded.adb:111:30: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded.adb:113:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:115:07: medium: assertion might fail
 indefinite_bounded.ads:13:14: warning: subprogram "Test" has no effect
-indefinite_bounded_tagged.adb:12:07: info: initialization of private part of "V" proved
+indefinite_bounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_bounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
@@ -437,7 +437,7 @@ indefinite_bounded_tagged.adb:115:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:117:07: medium: assertion might fail
 indefinite_bounded_tagged.ads:15:40: medium: range check might fail
 indefinite_bounded_tagged.ads:19:14: warning: subprogram "Test" has no effect
-indefinite_unbounded.adb:11:07: info: initialization of private part of "V" proved
+indefinite_unbounded.adb:11:07: info: initialization of "V" proved
 indefinite_unbounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 indefinite_unbounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:15:22: info: assertion proved (CVC4: 1 VC)
@@ -538,7 +538,7 @@ indefinite_unbounded.adb:104:07: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded.adb:104:30: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded.adb:106:07: medium: assertion might fail
 indefinite_unbounded.ads:15:14: warning: subprogram "Test" has no effect
-indefinite_unbounded_tagged.adb:12:07: info: initialization of private part of "V" proved
+indefinite_unbounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_unbounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
@@ -641,7 +641,7 @@ indefinite_unbounded_tagged.adb:106:30: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:108:07: medium: assertion might fail
 indefinite_unbounded_tagged.ads:17:40: medium: range check might fail
 indefinite_unbounded_tagged.ads:21:14: warning: subprogram "Test" has no effect
-unbounded.adb:10:07: info: initialization of private part of "V" proved
+unbounded.adb:10:07: info: initialization of "V" proved
 unbounded.adb:10:19: info: range check proved (CVC4: 1 VC)
 unbounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:14:22: info: assertion proved (CVC4: 1 VC)

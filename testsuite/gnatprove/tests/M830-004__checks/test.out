@@ -79,46 +79,46 @@ do_checks.adb:328:37: info: index check proved (CVC4: 2 VC)
 do_checks.adb:330:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:331:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:333:16: info: precondition proved (CVC4: 2 VC)
-do_checks.adb:344:40: info: initialization of "Y.Arr" proved
+do_checks.adb:344:40: info: initialization of "Y" proved
 do_checks.adb:346:27: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 344 should mention X]
 do_checks.adb:348:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:349:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:351:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:355:40: info: initialization of "Y.Arr" proved
+do_checks.adb:355:40: info: initialization of "Y" proved
 do_checks.adb:359:27: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:361:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:361:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:362:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:364:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:370:40: info: initialization of "Y.Arr" proved
+do_checks.adb:370:40: info: initialization of "Y" proved
 do_checks.adb:372:24: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 370 should mention X]
 do_checks.adb:374:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:375:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:377:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:381:29: warning: "X" is not modified, could be IN
-do_checks.adb:381:44: info: initialization of "Y.Arr" proved
+do_checks.adb:381:44: info: initialization of "Y" proved
 do_checks.adb:385:24: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:387:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:387:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:388:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:390:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:397:29: warning: "X" is not modified, could be IN
-do_checks.adb:397:44: info: initialization of "Y.Arr" proved
+do_checks.adb:397:44: info: initialization of "Y" proved
 do_checks.adb:402:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:404:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:404:22: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0)
 do_checks.adb:408:29: warning: "X" is not modified, could be IN
-do_checks.adb:408:44: info: initialization of "Y.Arr" proved
+do_checks.adb:408:44: info: initialization of "Y" proved
 do_checks.adb:412:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:412:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:413:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:415:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:415:22: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:421:30: warning: "X" is not modified, could be IN
-do_checks.adb:421:45: info: initialization of "Y.Arr" proved
-do_checks.adb:425:45: info: initialization of "Y.Arr" proved
+do_checks.adb:421:45: info: initialization of "Y" proved
+do_checks.adb:425:45: info: initialization of "Y" proved
 do_checks.adb:427:19: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:427:23: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 425 should mention X]
 do_checks.adb:430:23: info: range check proved (CVC4: 1 VC)
@@ -126,7 +126,7 @@ do_checks.adb:430:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:431:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:433:16: info: precondition proved (CVC4: 1 VC)
 do_checks.adb:437:29: warning: "X" is not modified, could be IN
-do_checks.adb:437:44: info: initialization of "Y.Arr" proved
+do_checks.adb:437:44: info: initialization of "Y" proved
 do_checks.adb:441:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:441:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:442:30: info: discriminant check proved (CVC4: 1 VC)

@@ -14,21 +14,18 @@ private_a.adb:45:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:46:17: info: precondition proved (CVC4: 1 VC)
 private_a.adb:50:11: info: flow dependencies proved
 private_a.adb:51:22: info: postcondition proved (CVC4: 1 VC)
-private_a.adb:53:07: info: initialization of "S.Exists" proved
-private_a.adb:53:07: info: initialization of "S.The_Stack" proved
+private_a.adb:53:07: info: initialization of "S" proved
 private_a.adb:57:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:58:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:59:17: info: precondition proved (CVC4: 1 VC)
 private_a.adb:63:11: info: flow dependencies proved
 private_a.adb:64:22: info: postcondition proved (CVC4: 1 VC)
-private_a.adb:66:07: info: initialization of "S.Exists" proved
-private_a.adb:66:07: info: initialization of "S.The_Stack" proved
+private_a.adb:66:07: info: initialization of "S" proved
 private_a.adb:70:22: info: assertion proved (CVC4: 1 VC)
 private_a.adb:71:12: info: precondition proved (CVC4: 1 VC)
 private_a.adb:72:22: medium: assertion might fail, cannot prove Stack.Get_Length (S.The_Stack) = 2 (e.g. when S = (Exists => True, The_Stack => (Len => 0, Elements => (others => 0))))
 private_a.adb:73:17: info: precondition proved (CVC4: 1 VC)
-private_a.adb:76:28: info: initialization of "Dst.Exists" proved
-private_a.adb:76:28: info: initialization of "Dst.The_Stack" proved
+private_a.adb:76:28: info: initialization of "Dst" proved
 private_a.adb:78:11: info: flow dependencies proved
 private_a.adb:80:13: info: postcondition proved (CVC4: 1 VC)
 private_a.adb:91:28: info: initialization of "X" proved

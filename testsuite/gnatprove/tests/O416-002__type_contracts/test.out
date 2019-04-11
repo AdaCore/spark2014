@@ -1,7 +1,7 @@
 communications.adb:5:38: medium: predicate check might fail
 communications.adb:7:16: info: length check proved (CVC4: 4 VC)
 communications.adb:7:19: info: length check proved (CVC4: 4 VC)
-communications.adb:11:07: info: initialization of "Coms.Msgs" proved
+communications.adb:11:07: info: initialization of "Coms" proved
 communications.adb:11:30: info: range check proved (CVC4: 1 VC)
 communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = -1)
 communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = 2147483647)
