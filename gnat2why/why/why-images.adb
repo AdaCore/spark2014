@@ -530,14 +530,19 @@ package body Why.Images is
       As_Labels : Boolean := False) is
    begin
       for Name of Value loop
-         if As_Labels then
-            P (O, "[@");
+         if Img (Name) = "<no name>" and then As_Labels then
+            --  Do not print
+            null;
+         else
+            if As_Labels then
+               P (O, "[@");
+            end if;
+            P (O, Name);
+            if As_Labels then
+               P (O, "]");
+            end if;
+            P (O, " ");
          end if;
-         P (O, Name);
-         if As_Labels then
-            P (O, "]");
-         end if;
-         P (O, " ");
       end loop;
    end P;
 
