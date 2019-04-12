@@ -277,7 +277,7 @@ package Configuration is
 
    Default_Steps : constant Natural := 100;
 
-   Phase1_Subdir : Virtual_File := Create ("phase1");
+   Phase1_Subdir : constant Virtual_File := Create ("phase1");
    Phase2_Subdir : Virtual_File := Create ("gnatprove");
    --  The subdir names for the storage of intermediate files (ALI, why3 files,
    --  etc). This is the subdir of the object dir, which might be further
