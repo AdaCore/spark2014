@@ -80,10 +80,10 @@ package body Gnat2Why_Args is
    function To_JSON (R : File_Specific) return JSON_Value;
 
    ----------
-   -- Init --
+   -- Load --
    ----------
 
-   procedure Init (Args_File   : String;
+   procedure Load (Args_File   : String;
                    Source_File : String)
    is
 
@@ -134,7 +134,7 @@ package body Gnat2Why_Args is
 
       V : constant JSON_Value := Read (Read_File_Into_String (Args_File));
 
-   --  Start of processing for Init
+   --  Start of processing for Load
 
    begin
       Global_Gen_Mode         := Get_Opt_Bool (V, Global_Gen_Mode_Name);
@@ -181,13 +181,13 @@ package body Gnat2Why_Args is
       if Has_Field (V, File_Specific_Name) then
          Read_File_Specific_Info (Get (V, File_Specific_Name));
       end if;
-   end Init;
+   end Load;
 
-   ---------
-   -- Set --
-   ---------
+   -----------
+   -- Store --
+   -----------
 
-   function Set (Obj_Dir : String) return String is
+   function Store (Obj_Dir : String) return String is
 
       function Write_To_File (V : JSON_Value) return String;
       --  Write the Content string to a file and return the filename
@@ -218,7 +218,7 @@ package body Gnat2Why_Args is
 
       Obj : constant JSON_Value := Create_Object;
 
-   --  Start of processing for Set
+   --  Start of processing for Store
 
    begin
       --  Warning_Mode is only relevant when Global_Mode = False, so ignore its
@@ -269,7 +269,7 @@ package body Gnat2Why_Args is
       end;
 
       return Write_To_File (Obj);
-   end Set;
+   end Store;
 
    -------------
    -- To_JSON --

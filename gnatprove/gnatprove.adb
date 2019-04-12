@@ -983,7 +983,7 @@ procedure Gnatprove with SPARK_Mode is
                  "sam"));
       end if;
 
-      return Gnat2Why_Args.Set (Obj_Dir);
+      return Gnat2Why_Args.Store (Obj_Dir);
    end Pass_Extra_Options_To_Gnat2why;
 
    --------------------------

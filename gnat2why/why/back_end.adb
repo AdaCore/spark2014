@@ -165,7 +165,7 @@ package body Back_End is
          Source_File : constant String :=
            Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
       begin
-         Gnat2Why_Args.Init (Args_File, Source_File);
+         Gnat2Why_Args.Load (Args_File, Source_File);
       end;
 
       --  gnat2why is run in two main modes:

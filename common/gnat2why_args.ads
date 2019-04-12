@@ -242,7 +242,7 @@ package Gnat2Why_Args is
    -- Procedures of this package --
    --------------------------------
 
-   procedure Init (Args_File   : String;
+   procedure Load (Args_File   : String;
                    Source_File : String)
    with Pre => Args_File /= "" and then Source_File /= "";
    --  Read the extra options information and set the corresponding global
@@ -252,9 +252,9 @@ package Gnat2Why_Args is
    --    want to avoid the dependency on Opt here, so you need to pass it
    --    yourself.
 
-   function Set (Obj_Dir : String) return String;
+   function Store (Obj_Dir : String) return String;
    --  Assuming that the above global variables are set to meaningful values,
-   --  Read them, store them into a file that gnat2why can read in later and
+   --  store those values into a file that gnat2why can read in later and
    --  return the file name.
    --  @param Obj_Dir the directory in which the file should be stored
    --  @return full name of the file that is to be passed to gnat2why using
