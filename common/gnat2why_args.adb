@@ -27,7 +27,6 @@
 with Ada.Directories;           use Ada.Directories;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Call;                      use Call;
-with GNAT.Directory_Operations; use GNAT.Directory_Operations;
 with GNAT.SHA1;
 with GNATCOLL.JSON;             use GNATCOLL.JSON;
 
@@ -201,17 +200,17 @@ package body Gnat2Why_Args is
          File_Name  : constant String (1 .. 12) :=
            GNAT.SHA1.Digest (Write_Cont) (1 .. 8) & ".tmp";
          FT         : File_Type;
-         Cur_Dir    : constant String := Get_Current_Dir;
+         Cur_Dir    : constant String := Current_Directory;
       begin
          --  We need to switch to the given Obj_Dir so that the temp file is
          --  created there.
 
-         Change_Dir (Obj_Dir);
+         Set_Directory (Obj_Dir);
          Create (FT, Name => File_Name);
          Put (FT, Write_Cont);
 
          Close (FT);
-         Change_Dir (Cur_Dir);
+         Set_Directory (Cur_Dir);
 
          return Compose (Obj_Dir, File_Name);
       end Write_To_File;
