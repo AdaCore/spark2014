@@ -723,9 +723,9 @@ procedure Gnatprove with SPARK_Mode is
 
          Obj_Dirs_JSON  : JSON_Array;
       begin
-         for Index in Obj_Path'Range loop
+         for Obj of Obj_Path loop
             declare
-               Full_Name : String renames Obj_Path (Index).Display_Full_Name;
+               Full_Name : String renames Obj.Display_Full_Name;
             begin
                Dir_Names_Seen.Insert (New_Item => Full_Name,
                                       Position => Unused,
@@ -754,9 +754,8 @@ procedure Gnatprove with SPARK_Mode is
          declare
             Switches_JSON : JSON_Array;
          begin
-            for J in Prj_Attr.Prove.Switches'Range loop
-               Append (Switches_JSON,
-                       Create (Prj_Attr.Prove.Switches (J).all));
+            for Switch of Prj_Attr.Prove.Switches.all loop
+               Append (Switches_JSON, Create (Switch.all));
             end loop;
             Set_Field (JSON_Rec, "switches", Switches_JSON);
          end;
