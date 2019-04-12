@@ -1348,12 +1348,7 @@ procedure Gnatprove with SPARK_Mode is
 
       procedure Set_Key_Value_Bool (Key : String; Value : Boolean) is
       begin
-         Put (File, Key & " = ");
-         if Value then
-            Put_Line (File, "true");
-         else
-            Put_Line (File, "false");
-         end if;
+         Put_Line (File, Key & " = " & (if Value then "true" else "false"));
       end Set_Key_Value_Bool;
 
       -----------------------
