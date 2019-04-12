@@ -1232,7 +1232,7 @@ procedure Gnatprove with SPARK_Mode is
       --  the binary, and "args" the arguments that need to be provided.
 
       Config : constant JSON_Value :=
-        Read (Read_File_Into_String (SPARK_Install.Gnatprove_Conf));
+        Read_File_Into_JSON (SPARK_Install.Gnatprove_Conf);
       File : File_Type;
 
       procedure Start_Section (Name : String);

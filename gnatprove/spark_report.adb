@@ -1069,11 +1069,10 @@ procedure SPARK_Report is
 
    use Ada.Text_IO;
 
-   Handle   : File_Type;
+   Handle : File_Type;
 
-   Contents : constant String :=
-     Read_File_Into_String (Source_Directories_File);
-   Info     : constant JSON_Value := Read (Contents);
+   Info   : constant JSON_Value :=
+     Read_File_Into_JSON (Source_Directories_File);
 
 --  Start of processing for SPARK_Report
 

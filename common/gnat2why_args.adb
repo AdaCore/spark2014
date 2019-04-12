@@ -131,7 +131,7 @@ package body Gnat2Why_Args is
          end if;
       end Read_File_Specific_Info;
 
-      V : constant JSON_Value := Read (Read_File_Into_String (Args_File));
+      V : constant JSON_Value := Read_File_Into_JSON (Args_File);
 
    --  Start of processing for Load
 
