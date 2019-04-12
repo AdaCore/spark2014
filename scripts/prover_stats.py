@@ -12,7 +12,6 @@ import subprocess
 import time
 from tqdm import tqdm
 
-args = None
 descr = """Run provers on files and return status,
 time and steps in machine-parsable format (JSON or CSV)."""
 
@@ -20,6 +19,10 @@ time and steps in machine-parsable format (JSON or CSV)."""
 class Prover:
     status_reg = re.compile("unsat|sat|unknown|timeout")
     pattern = "*.smt2"
+
+    def __init__(self):
+        self.executable_name = None
+        self.version_arg = None
 
     @staticmethod
     def regex_get(regex, text, group=None):
@@ -34,16 +37,25 @@ class Prover:
         else:
             return m.group(group)
 
+    def version(self):
+        return subprocess.check_output([self.executable_name,
+                                        self.version_arg]).strip()
+
 
 class Z3(Prover):
 
     limit_reg = re.compile("rlimit-count *(\d*)")
     time_reg = re.compile(":time *(\d*.\d*)")
 
-    def command(self):
-        result = ["z3", "-st"]
-        if args.timeout:
-            result.append("-T:" + str(args.timeout))
+    def __init__(self, executable_name="z3"):
+        Prover.__init__(self)
+        self.executable_name = executable_name
+        self.version_arg = "-version"
+
+    def command(self, timeout):
+        result = [self.executable_name, "-st"]
+        if timeout:
+            result.append("-T:" + str(timeout))
         return result
 
     def parse_output(self, output, fn):
@@ -65,17 +77,24 @@ class Altergo(Prover):
     status_reg = re.compile("Valid|Timeout|I don't know")
     pattern = "*.why"
 
-    def command(self):
-        result = ["alt-ergo", "-max-split", "5"]
-        if args.timeout:
+    def __init__(self, executable_name="alt-ergo"):
+        Prover.__init__(self)
+        self.executable_name = executable_name
+        self.version_arg = "-version"
+
+    def command(self, timeout):
+        result = [self.executable_name, "-max-split", "5",
+                  "-use-fpa", "-prelude", "fpa-theory-2019-10-08-19h00.why"]
+        if timeout:
             result.append("-timelimit")
-            result.append(str(args.timeout))
+            result.append(str(timeout))
         return result
 
     def parse_output(self, output, fn):
         """ run on single file and extract statistics"""
         try:
             ae_status = Prover.regex_get(self.status_reg, output)
+
             if ae_status == "Valid":
                 status = "unsat"
             elif ae_status == "Timeout":
@@ -84,11 +103,18 @@ class Altergo(Prover):
                 status = "unkown"
             else:
                 raise ValueError
+
+            if status == "timeout":
+                steps = 0
+                time = 0
+            else:
+                steps = int(Prover.regex_get(self.limit_reg, output, 1))
+                time = float(Prover.regex_get(self.time_reg, output, 1))
             return\
                 {"filename": fn,
                  "status": status,
-                 "steps": int(Prover.regex_get(self.limit_reg, output, 1)),
-                 "time": float(Prover.regex_get(self.time_reg, output, 1))}
+                 "steps": steps,
+                 "time": time}
         except ValueError:
             return {"filename": fn, "status": "error", "output": output}
 
@@ -97,12 +123,17 @@ class CVC4(Prover):
     limit_reg = re.compile("smt::SmtEngine::resourceUnitsUsed, (\d+.?\d*)")
     time_reg = re.compile("driver::totalTime, *(\d*.\d*)")
 
-    def command(self):
-        result = ["cvc4",
+    def __init__(self, executable_name="cvc4"):
+        Prover.__init__(self)
+        self.executable_name = executable_name
+        self.version_arg = "--version"
+
+    def command(self, timeout):
+        result = [self.executable_name,
                   "--stats",
                   "--quiet"]
-        if args.timeout:
-            result.append("--tlimit=" + str(args.timeout * 1000))
+        if timeout:
+            result.append("--tlimit=" + str(timeout * 1000))
         return result
 
     def parse_output(self, output, fn):
@@ -121,7 +152,7 @@ class CVC4(Prover):
 
 
 def parse_arguments():
-    global args
+    args = None
     parser = argparse.ArgumentParser(description=descr)
     parser.add_argument('files', metavar='F', nargs='+',
                         help='file or directory to be run on')
@@ -153,27 +184,30 @@ def parse_arguments():
     if args.format != "json" and args.format != "csv":
         print "output format " + args.format + " not supported, exiting."
         exit(1)
+    return args
 
 
-def compute_file_list(prover):
+def compute_file_list(files, prover, limit):
     result = []
-    for fn in args.files:
+    for fn in files:
+        if not os.path.exists(fn):
+            print "could not find " + fn + ", skipping"
         if os.path.isdir(fn):
             result += glob.glob(os.path.join(fn, prover.pattern))
         else:
             result.append(fn)
-    if args.limit and args.limit < len(result):
-        result = random.sample(result, args.limit)
+    if limit and limit < len(result):
+        result = random.sample(result, limit)
     return result
 
 
-def start_server(fname):
+def start_server(fname, parallel, verbose=False):
     cmd = ["why3server",
-           "-j", str(args.parallel),
+           "-j", str(parallel),
            "--single-client",
            "--logging",
            "--socket", fname]
-    if args.verbose:
+    if verbose:
         print cmd
     subprocess.Popen(cmd)
     time.sleep(1)
@@ -208,7 +242,7 @@ def read_request(fd):
     return results
 
 
-def get_all_results(prover, fnlist, max_running_processes=1):
+def get_all_results(prover, fnlist, parallel, verbose, timeout):
     """This function will, for each element fn of the string list [fnlist],
        append fn to the string list [cmd], run the result as a command,
        extract its output to stdout/stderr, and run the output_parser on the
@@ -218,9 +252,11 @@ def get_all_results(prover, fnlist, max_running_processes=1):
    """
     results = []
     file_map = {}
-    fd = start_server("sock.sock")
+    fd = start_server("sock.sock",
+                      parallel=parallel,
+                      verbose=verbose)
     for fn in fnlist:
-        my_id = send_request(fd, prover.command() + [fn])
+        my_id = send_request(fd, prover.command(timeout=timeout) + [fn])
         file_map[my_id] = fn
     with tqdm(total=len(file_map)) as pbar:
         while len(file_map) > 0:
@@ -237,8 +273,22 @@ def get_all_results(prover, fnlist, max_running_processes=1):
     return results
 
 
+def run_stats(prover, files,
+              limit=None,
+              parallel=1,
+              timeout=1,
+              verbose=False):
+    file_list = compute_file_list(files, prover, limit)
+    results = get_all_results(prover=prover,
+                              fnlist=file_list,
+                              parallel=parallel,
+                              verbose=verbose,
+                              timeout=timeout)
+    return results
+
+
 def main():
-    parse_arguments()
+    args = parse_arguments()
     if args.prover == "z3":
         prover = Z3()
     elif args.prover == "cvc4":
@@ -248,10 +298,12 @@ def main():
     else:
         raise ValueError
 
-    file_list = compute_file_list(prover)
-    results = get_all_results(prover=prover,
-                              fnlist=file_list,
-                              max_running_processes=args.parallel)
+    results = run_stats(prover=prover,
+                        files=args.files,
+                        limit=args.limit,
+                        parallel=args.parallel,
+                        timeout=args.timeout,
+                        verbose=args.verbose)
 
     if args.format == "json":
         s = json.dumps({"results": results}, indent=2)
@@ -270,4 +322,5 @@ def main():
         print s
 
 
-main()
+if __name__ == "__main__":
+    main()
