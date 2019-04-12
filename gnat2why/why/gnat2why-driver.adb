@@ -451,18 +451,18 @@ package body Gnat2Why.Driver is
 
          if not Gnat2Why_Args.Global_Gen_Mode then
             Touch_Main_File (Base_Name);
-         end if;
 
-         --  Issue warning if analyzing specific units with -u switch, but the
-         --  main entity in the compilation unit is generic.
+            --  Issue warning if analyzing specific units with -u switch, but
+            --  the main entity in the compilation unit is generic.
 
-         if Gnat2Why_Args.Limit_Units then
-            Error_Msg_N
-              ("?generic compilation unit is not analyzed",
-               GNAT_Root);
-            Error_Msg_N
-              ("\?only instantiations of the generic will be analyzed",
-               GNAT_Root);
+            if Gnat2Why_Args.Limit_Units then
+               Error_Msg_N
+                 ("?generic compilation unit is not analyzed",
+                  GNAT_Root);
+               Error_Msg_N
+                 ("\?only instantiations of the generic will be analyzed",
+                  GNAT_Root);
+            end if;
          end if;
 
          return;

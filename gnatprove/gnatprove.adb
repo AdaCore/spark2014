@@ -73,6 +73,7 @@ with Call;                       use Call;
 with Configuration;              use Configuration;
 with GNAT.Expect;                use GNAT.Expect;
 with GNAT.OS_Lib;
+with GNAT.SHA1;
 with GNAT.Strings;               use GNAT.Strings;
 with Gnat2Why_Args;
 with GNATCOLL.JSON;              use GNATCOLL.JSON;
@@ -890,94 +891,155 @@ procedure Gnatprove with SPARK_Mode is
        Obj_Dir           : String;
        Proj_Name         : String) return String
    is
-      use Ada.Strings.Unbounded;
+      function Write_To_File (V : JSON_Value) return String;
+      --  Write a textual representation of V to file
+      --  @return full name of the file that is to be passed to gnat2why using
+      --    -gnates=<file>. The chosen file name will be identical for
+      --    identical contents of the file.
+
+      function To_JSON (SL : String_Lists.List) return JSON_Array;
+      function To_JSON (FS : File_Specific) return JSON_Value;
+
+      use Gnat2Why_Args.Option_Names;
+
+      -------------------
+      -- Write_To_File --
+      -------------------
+
+      function Write_To_File (V : JSON_Value) return String is
+         Write_Cont : constant String := Write (V);
+         File_Name  : constant String (1 .. 12) :=
+           GNAT.SHA1.Digest (Write_Cont) (1 .. 8) & ".tmp";
+         FT         : File_Type;
+         Cur_Dir    : constant String := Current_Directory;
+      begin
+         --  We need to switch to the given Obj_Dir so that the temp file is
+         --  created there.
+
+         Set_Directory (Obj_Dir);
+         Create (FT, Name => File_Name);
+         Put (FT, Write_Cont);
+
+         Close (FT);
+         Set_Directory (Cur_Dir);
+
+         return Compose (Obj_Dir, File_Name);
+      end Write_To_File;
+
+      -------------
+      -- To_JSON --
+      -------------
+
+      function To_JSON (FS : Configuration.File_Specific) return JSON_Value is
+         Obj : constant JSON_Value := Create_Object;
+
+      begin
+         Set_Field (Obj, No_Loop_Unrolling_Name, FS.No_Loop_Unrolling);
+         Set_Field (Obj, No_Inlining_Name,       FS.No_Inlining);
+         Set_Field (Obj, Info_Messages_Name,     FS.Info);
+
+         --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
+         --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
+         --  called, which happens just before this routine is called with
+         --  Translation_Phase set to True.
+
+         if Translation_Phase then
+            Set_Field (Obj, Proof_Warnings_Name, FS.Proof_Warnings);
+
+            Set_Field (Obj, Why3_Args_Name,
+                       To_JSON (Compute_Why3_Args (Obj_Dir, FS)));
+         end if;
+
+         return Obj;
+      end To_JSON;
+
+      function To_JSON (SL : String_Lists.List) return JSON_Array is
+         A : JSON_Array := GNATCOLL.JSON.Empty_Array;
+      begin
+         for S of SL loop
+            Append (A, Create (S));
+         end loop;
+         return A;
+      end To_JSON;
+
+      Obj : constant JSON_Value := Create_Object;
+
    begin
-      --  Always set debug options
+      Set_Field (Obj, Global_Gen_Mode_Name, not Translation_Phase);
+      Set_Field (Obj, Check_Mode_Name, Configuration.Mode = GPM_Check);
 
-      Gnat2Why_Args.Debug_Mode := Debug;
-      Gnat2Why_Args.Debug_Trivial := CL_Switches.Debug_Trivial;
-      Gnat2Why_Args.Flow_Advanced_Debug := Flow_Extra_Debug;
-      Gnat2Why_Args.Flow_Generate_Contracts :=
-        not CL_Switches.No_Global_Generation;
+      --  Always store debug options
 
-      --  Options needed in both phases
+      Set_Field (Obj, Debug_Mode_Name,          Debug);
+      Set_Field (Obj, Flow_Advanced_Debug_Name, Flow_Extra_Debug);
+      Set_Field (Obj, Flow_Generate_Contracts_Name,
+                 not CL_Switches.No_Global_Generation);
 
-      Gnat2Why_Args.Global_Gen_Mode := not Translation_Phase;
-
-      Gnat2Why_Args.File_Specific_Map.Clear;
-      --  ??? This is needed because below we populate a global container
-      --  and this function is called once for each phase.
-
-      for FSC in Configuration.File_Specific_Map.Iterate loop
-         declare
-            R  : Gnat2Why_Args.File_Specific;
-            FS : File_Specific renames
-              Configuration.File_Specific_Map (FSC);
-         begin
-            R.Proof_Warnings := FS.Proof_Warnings;
-            R.No_Loop_Unrolling := FS.No_Loop_Unrolling;
-            R.Info_Messages := FS.Info;
-            R.No_Inlining := FS.No_Inlining;
-
-            --  Why3_Args are only needed in phase 2; also Compute_Why3_Args
-            --  might call gnatwhy3, which requires Write_Why3_Conf_File to be
-            --  called, which happens just before this routine is called with
-            --  Translation_Phase set to True.
-
-            if Translation_Phase then
-               R.Why3_Args := Compute_Why3_Args (Obj_Dir, FS);
-            end if;
-
-            Gnat2Why_Args.File_Specific_Map.Insert
-              (File_Specific_Maps.Key (FSC), R);
-         end;
-      end loop;
-
-      --  ??? apparently setting this option for both phases causes gprbuild to
-      --  rerun phase 1 when we try to reuse the ALI file generated with "-u"
-      --  switch without using this switch.
-
+      --  Options needed only in phase 2
       if Translation_Phase then
-         Gnat2Why_Args.Limit_Units := CL_Switches.U;
+         Set_Field (Obj, Check_All_Mode_Name,
+                    Configuration.Mode = GPM_Check_All);
+         Set_Field (Obj, Flow_Analysis_Mode_Name,
+                    Configuration.Mode = GPM_Flow);
+         Set_Field (Obj, Prove_Mode_Name,
+                    Configuration.Mode = GPM_Prove);
+
+         Set_Field (Obj, Limit_Units_Name,  CL_Switches.U);
+         Set_Field (Obj, Limit_Subp_Name,   CL_Switches.Limit_Subp.all);
+         Set_Field (Obj, Limit_Line_Name,   CL_Switches.Limit_Line.all);
+         Set_Field (Obj, Limit_Region_Name, CL_Switches.Limit_Region.all);
+
+         Set_Field (Obj, Report_Mode_Name,
+                    Gnat2Why_Args.Report_Mode_Type'Image (Report));
+
+         Set_Field (Obj,
+                    Warning_Mode_Name,
+                    Gnat2Why_Args.SPARK_Warning_Mode_Type'Image
+                      (Warning_Mode));
+
+         Set_Field (Obj, Pedantic_Name,         CL_Switches.Pedantic);
+         Set_Field (Obj, Flow_Termination_Name, CL_Switches.Flow_Termination);
+         Set_Field (Obj, Flow_Show_GG_Name,     CL_Switches.Flow_Show_GG);
+         Set_Field (Obj, Proof_Generate_Guards_Name,
+                    not CL_Switches.No_Axiom_Guard);
+         Set_Field (Obj, Debug_Trivial_Name,    CL_Switches.Debug_Trivial);
+         Set_Field (Obj, Ide_Mode_Name,         Configuration.IDE_Mode);
+         Set_Field (Obj, CWE_Name,              CL_Switches.CWE);
+
+         Set_Field (Obj, Why3_Dir_Name, Obj_Dir);
+
+         if CodePeer then
+            Set_Field (Obj, CP_Dir_Name,
+                       Compose
+                         (Compose
+                            (Compose (Obj_Dir, "codepeer"),
+                             Base_Name (Proj_Name) & ".output"),
+                          "sam"));
+         end if;
       end if;
 
-      --  ??? The following are only needed in translation phase
+      --  File-specific options
 
-      Gnat2Why_Args.Warning_Mode := Warning_Mode;
-      Gnat2Why_Args.Check_Mode := Configuration.Mode = GPM_Check;
-      Gnat2Why_Args.Check_All_Mode := Configuration.Mode = GPM_Check_All;
-      Gnat2Why_Args.Flow_Analysis_Mode := Configuration.Mode = GPM_Flow;
-      Gnat2Why_Args.Prove_Mode := Configuration.Mode = GPM_Prove;
-      Gnat2Why_Args.Flow_Termination_Proof := CL_Switches.Flow_Termination;
-      Gnat2Why_Args.Flow_Show_GG := CL_Switches.Flow_Show_GG;
-      Gnat2Why_Args.Proof_Generate_Guards :=
-        not CL_Switches.No_Axiom_Guard;
-      Gnat2Why_Args.Ide_Mode := IDE_Mode;
-      Gnat2Why_Args.Pedantic := CL_Switches.Pedantic;
-      Gnat2Why_Args.Limit_Subp :=
-        Ada.Strings.Unbounded.To_Unbounded_String
-          (CL_Switches.Limit_Subp.all);
-      Gnat2Why_Args.Limit_Line :=
-        Ada.Strings.Unbounded.To_Unbounded_String
-          (CL_Switches.Limit_Line.all);
-      Gnat2Why_Args.Limit_Region :=
-        Ada.Strings.Unbounded.To_Unbounded_String
-          (CL_Switches.Limit_Region.all);
-      Gnat2Why_Args.Report_Mode := Report;
-      Gnat2Why_Args.Why3_Dir := To_Unbounded_String (Obj_Dir);
-      Gnat2Why_Args.CWE := CL_Switches.CWE;
+      declare
+         FS : constant JSON_Value := Create_Object;
 
-      if CodePeer then
-         Gnat2Why_Args.CP_Res_Dir :=
-           To_Unbounded_String
-             (Compose
-                (Compose
-                   (Compose (Obj_Dir, "codepeer"),
-                    Base_Name (Proj_Name) & ".output"),
-                 "sam"));
-      end if;
+      begin
+         for FSC in Configuration.File_Specific_Map.Iterate loop
+            declare
+               File : String renames
+                 Configuration.File_Specific_Maps.Key (FSC);
+               Opts : Configuration.File_Specific renames
+                 Configuration.File_Specific_Map (FSC);
 
-      return Gnat2Why_Args.Store (Obj_Dir);
+            begin
+               Set_Field (FS, File, To_JSON (Opts));
+            end;
+         end loop;
+
+         Set_Field (Obj, File_Specific_Name, FS);
+      end;
+
+      return Write_To_File (Obj);
    end Pass_Extra_Options_To_Gnat2why;
 
    --------------------------

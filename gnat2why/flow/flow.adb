@@ -1226,8 +1226,8 @@ package body Flow is
       Debug_GG_Source;
 
       --  Print generated globals or initializes if --flow-show-gg is set
-      if Gnat2Why_Args.Flow_Show_GG
-        and then not Generating_Globals
+      if not Generating_Globals
+        and then Gnat2Why_Args.Flow_Show_GG
         and then FA.Is_Generative
       then
          Debug_Print_Generated_Contracts (FA);

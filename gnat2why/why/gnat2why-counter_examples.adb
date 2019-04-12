@@ -122,7 +122,7 @@ package body Gnat2Why.Counter_Examples is
       Str => Str);
 
    Dont_Display : constant CNT_Unbounded_String :=
-     Make_Trivial (Nul => True, Str => To_Unbounded_String ("@not_display"));
+     (Nul => True, Str => To_Unbounded_String ("@not_display"));
 
    type CNT_Element (K : CNT_Element_Kind) is record
       Ent_Ty     : Entity_Id;

@@ -24,25 +24,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Indefinite_Hashed_Maps;
-with Ada.Strings.Hash;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with String_Utils;          use String_Utils;
 
 package Gnat2Why_Args is
 
-   --  This package defines and initializes extra options of gnat2why, that are
-   --  not relevant to the GNAT frontend. It defines both the reading and the
-   --  writing of these extra options. There are two ways to use it, depending
-   --  on whether you are on the reading side (gnat2why) or the writing side
-   --  (gnatprove).
-
-   --  For reading the extra options, simply call "init". Now the global
-   --  variables defined at the beginning of this package are set corresponding
-   --  to the extra options.
-
-   --  For writing extra options, set the global variables to the required
-   --  values, and call "Set".
+   --  This package defines extra options of gnat2why, that are not relevant to
+   --  the GNAT frontend. It only implements reading of these extra options;
+   --  writing is implemented in gnatprove.
 
    --  These extra options are stored in a file that is passed to gnat2why
    --  using the extra switch "-gnates=<file>". See the body of this package
@@ -73,47 +62,47 @@ package Gnat2Why_Args is
 
    type SPARK_Warning_Mode_Type is (SW_Suppress, SW_Normal, SW_Treat_As_Error);
 
-   Warning_Mode : SPARK_Warning_Mode_Type := SW_Treat_As_Error;
+   Warning_Mode : SPARK_Warning_Mode_Type;
 
    --  Global generation mode. In this mode, gnat2why generates cross-reference
    --  information in ALI files about globals accessed by subprograms.
 
-   Global_Gen_Mode : Boolean := False;
+   Global_Gen_Mode : Boolean;
 
    --  SPARK 2014 checking mode. In this mode, gnat2why checks that code marked
    --  with SPARK_Mode => True does not violate SPARK 2014 rules.
 
-   Check_Mode : Boolean := False;
+   Check_Mode : Boolean;
 
    --  Check All mode. In this mode, gnat2why will do flow analysis but only
    --  report check related messages.
 
-   Check_All_Mode : Boolean := False;
+   Check_All_Mode : Boolean;
 
    --  Flow Analysis mode. In this mode, gnat2why will do only flow analysis
 
-   Flow_Analysis_Mode : Boolean := False;
+   Flow_Analysis_Mode : Boolean;
 
    --  Prove mode. In this mode gnat2why will also perform flow analysis, but
    --  only report soundness-related messages. Note that Flow_Analysis_Mode and
    --  Prove_Mode are mutually exclusive.
 
-   Prove_Mode : Boolean := False;
+   Prove_Mode : Boolean;
 
    --  Enable basic debugging for gnat2why. This will dump the CFG and PDG is
    --  dot format, and print the gnatwhy3 command line.
 
-   Debug_Mode : Boolean := False;
+   Debug_Mode : Boolean;
 
    --  This will enable additional tracing output and will call graphviz on
    --  each dumped graph.
 
-   Flow_Advanced_Debug : Boolean := False;
+   Flow_Advanced_Debug : Boolean;
 
    --  This will disable the simplification of trivial counterexamples in order
    --  to allow analysis of missing counterexamples.
 
-   Debug_Trivial : Boolean := False;
+   Debug_Trivial : Boolean;
 
    --  The SPARK RM does not make global contracts optional, rather this is a
    --  liberty we have taken in this implementation of SPARK. This flag is
@@ -121,23 +110,23 @@ package Gnat2Why_Args is
    --  absence of a global contract means the same thing as Global => null. By
    --  default, in gnat2why we synthesize global contracts.
 
-   Flow_Generate_Contracts : Boolean := True;
+   Flow_Generate_Contracts : Boolean;
 
    --  This will show termination status (as far as flow is concerned) for each
    --  subprogram with a warning or info message.
 
-   Flow_Termination_Proof : Boolean := False;
+   Flow_Termination_Proof : Boolean;
 
    --  This debug flag will show all generated contracts in a human-readable
    --  form. The main use are a few tests where we want to observe that GG is
    --  working correctly.
 
-   Flow_Show_GG : Boolean := False;
+   Flow_Show_GG : Boolean;
 
    --  Generate guards for axioms of functions to avoid having an unsound axiom
    --  when a function has an inconsistent contract.
 
-   Proof_Generate_Guards : Boolean := True;
+   Proof_Generate_Guards : Boolean;
 
    --  When Pedantic is True, issue warnings on features that could cause
    --  portability issues with other compilers than GNAT. For example, issue
@@ -150,11 +139,11 @@ package Gnat2Why_Args is
    --  but could be reassociated by another compiler as
    --    A + (B + C)
 
-   Pedantic : Boolean := False;
+   Pedantic : Boolean;
 
    --  Issue CWE Ids in messages
 
-   CWE : Boolean := False;
+   CWE : Boolean;
 
    --  Set the report mode (only failing VCs, all VCs, details)
 
@@ -169,110 +158,124 @@ package Gnat2Why_Args is
    --    GPR_Statistics in addition prints maximum steps and timings for proved
    --    checks.
 
-   Report_Mode : Report_Mode_Type := GPR_Fail;
+   Report_Mode : Report_Mode_Type;
 
    --  Limit analysis to the given units
 
-   Limit_Units : Boolean := False;
+   Limit_Units : Boolean;
 
    --  Limit analysis to this subprogram
 
-   Limit_Subp : Unbounded_String := Null_Unbounded_String;
+   Limit_Subp : Unbounded_String;
 
    --  Limit analysis to a selected region
 
-   Limit_Region : Unbounded_String := Null_Unbounded_String;
+   Limit_Region : Unbounded_String;
 
    --  Limit analysis to this line
 
-   Limit_Line : Unbounded_String := Null_Unbounded_String;
+   Limit_Line : Unbounded_String;
 
    --  The Why3 command will be run in this directory
 
-   Why3_Dir : Unbounded_String := Null_Unbounded_String;
+   Why3_Dir : Unbounded_String;
 
    --  If CP_Res_Dir is "null", then CodePeer processing will be disabled.
    --  Otherwise, CodePeer results will be in this directory.
 
-   CP_Res_Dir : Unbounded_String := Null_Unbounded_String;
+   CP_Res_Dir : Unbounded_String;
 
    --  IDE mode. Error messages may be formatted differently in this mode (e.g.
    --  JSON dict).
 
-   Ide_Mode : Boolean := False;
+   Ide_Mode : Boolean;
 
-   type File_Specific is record
-      --  Generate warnings by generating VCs and calling provers. As it is
-      --  costly, it is not enabled by default.
-      Proof_Warnings    : Boolean;
+   --  Generate warnings by generating VCs and calling provers. As it is
+   --  costly, it is not enabled by default.
 
-      --  Do not inline local functions to prove their code in the calling
-      --  context.
-      No_Inlining       : Boolean;
+   Proof_Warnings : Boolean;
 
-      --  Issue info messages related to gnatprove usage
-      Info_Messages     : Boolean;
+   --  Issue info messages related to gnatprove usage
 
-      --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
-      --  executable name is not hardcoded and is passed as a first argument
-      --  of this list.
+   Info_Messages : Boolean;
 
-      Why3_Args         : String_Lists.List;
+   --  Do not inline local functions to prove their code in the calling
+   --  context.
 
-      --  Prevent loop unrolling
-      No_Loop_Unrolling : Boolean;
-   end record;
+   No_Inlining : Boolean;
 
-   package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
-     (Key_Type        => String,
-      Element_Type    => File_Specific,
-      Hash            => Ada.Strings.Hash,
-      Equivalent_Keys => "=",
-      "="             => "=");
+   --  The cmd line args to be passed to gnatwhy3. In fact the "gnatwhy3"
+   --  executable name is not hardcoded and is passed as a first argument
+   --  of this list.
 
-   File_Specific_Map : File_Specific_Maps.Map;
+   Why3_Args : String_Lists.List;
 
-   function Proof_Warnings return Boolean;
-   function No_Inlining return Boolean;
-   function Info_Messages return Boolean;
-   function No_Loop_Unrolling return Boolean;
-   function Why3_Args return String_Lists.List;
+   --  Prevent loop unrolling
 
-   --------------------------------
-   -- Procedures of this package --
-   --------------------------------
+   No_Loop_Unrolling : Boolean;
+
+   ---------------------------
+   -- Loading option values --
+   ---------------------------
 
    procedure Load (Args_File   : String;
                    Source_File : String)
    with Pre => Args_File /= "" and then Source_File /= "";
    --  Read the extra options information and set the corresponding global
    --  variables above.
-   --  @param Filename the filename to read the extra information from.
+   --  @param Args_File the filename to read the extra information from.
    --    Basically, you should pass Opt.SPARK_Switches_File_Name.all here. We
    --    want to avoid the dependency on Opt here, so you need to pass it
    --    yourself.
+   --  @param Source_File key for the map with file-specific options
 
-   function Store (Obj_Dir : String) return String;
-   --  Assuming that the above global variables are set to meaningful values,
-   --  store those values into a file that gnat2why can read in later and
-   --  return the file name.
-   --  @param Obj_Dir the directory in which the file should be stored
-   --  @return full name of the file that is to be passed to gnat2why using
-   --    -gnates=<file>. The chosen file name will be identical for identical
-   --    contents of the file.
+   ------------------
+   -- Option names --
+   ------------------
 
-private
+   --  Extra options are passed from gnatprove to gnat2why in a JSON file. The
+   --  following package contains names of the JSON fields. The global
+   --  variables above will be set to the values stored in the corresponding
+   --  JSON fields.
+   --
+   --  Note: option names are intentionally kept in a dedicated package, so
+   --  they can be added into the scope with "use Option_Names;" clause without
+   --  adding names of the corresponding global variables (which would create
+   --  conflicts with similarly named variables in the Configuration package).
 
-   Local_Proof_Warnings    : Boolean;
-   Local_No_Inlining       : Boolean;
-   Local_Info_Messages     : Boolean;
-   Local_No_Loop_Unrolling : Boolean;
-   Local_Why3_Args         : String_Lists.List;
-
-   function Proof_Warnings return Boolean is (Local_Proof_Warnings);
-   function No_Inlining return Boolean is (Local_No_Inlining);
-   function Info_Messages return Boolean is (Local_Info_Messages);
-   function No_Loop_Unrolling return Boolean is (Local_No_Loop_Unrolling);
-   function Why3_Args return String_Lists.List is (Local_Why3_Args);
+   package Option_Names is
+      Warning_Mode_Name            : constant String := "warning_mode";
+      Global_Gen_Mode_Name         : constant String := "global_gen_mode";
+      Check_Mode_Name              : constant String := "check_mode";
+      Check_All_Mode_Name          : constant String := "check_all_mode";
+      Flow_Analysis_Mode_Name      : constant String := "flow_analysis_mode";
+      Prove_Mode_Name              : constant String := "prove_mode";
+      Debug_Mode_Name              : constant String := "debug";
+      Debug_Trivial_Name           : constant String := "debug_trivial";
+      Flow_Advanced_Debug_Name     : constant String := "flow_advanced_debug";
+      Flow_Generate_Contracts_Name : constant String :=
+        "flow_generate_contracts";
+      Flow_Termination_Name        : constant String :=
+        "flow_termination_proof";
+      Flow_Show_GG_Name            : constant String := "flow_show_gg";
+      Proof_Generate_Guards_Name   : constant String :=
+        "proof_generate_axiom_guards";
+      Proof_Warnings_Name          : constant String := "proof_warnings";
+      Limit_Units_Name             : constant String := "limit_units";
+      Limit_Subp_Name              : constant String := "limit_subp";
+      Limit_Region_Name            : constant String := "limit_region";
+      Limit_Line_Name              : constant String := "limit_line";
+      Pedantic_Name                : constant String := "pedantic";
+      No_Loop_Unrolling_Name       : constant String := "no_loop_unrolling";
+      Ide_Mode_Name                : constant String := "ide_mode";
+      Report_Mode_Name             : constant String := "report_mode";
+      Why3_Args_Name               : constant String := "why3_args";
+      Why3_Dir_Name                : constant String := "why3_dir";
+      CP_Dir_Name                  : constant String := "codepeer_dir";
+      CWE_Name                     : constant String := "cwe";
+      No_Inlining_Name             : constant String := "no_inlining";
+      Info_Messages_Name           : constant String := "info_messages";
+      File_Specific_Name           : constant String := "file_specific";
+   end Option_Names;
 
 end Gnat2Why_Args;

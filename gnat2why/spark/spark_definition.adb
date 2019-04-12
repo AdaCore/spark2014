@@ -2799,7 +2799,8 @@ package body SPARK_Definition is
       --  issued even on operations like "A * B / C" which are not reordered
       --  by GNAT, as they could be reordered according to RM 4.5/13.
 
-      if Gnat2Why_Args.Pedantic
+      if Emit_Warning_Info_Messages
+        and then Gnat2Why_Args.Pedantic
 
         --  Ignore code defined in the standard library, unless the main unit
         --  is from the standard library. In particular, ignore code from
@@ -2813,7 +2814,6 @@ package body SPARK_Definition is
         and then
           (not Location_In_Standard_Library (Sloc (N))
             or else Unit_In_Standard_Library (Main_Unit))
-        and then Emit_Warning_Info_Messages
         and then SPARK_Pragma_Is (Opt.On)
 
       then
