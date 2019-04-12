@@ -25,9 +25,7 @@
 
 with Ada.Directories;
 with Ada.Direct_IO;
-with Ada.IO_Exceptions;
 with Ada.Text_IO;
-with GNAT.Directory_Operations;
 with GNATCOLL.Mmap;
 with GNATCOLL.Utils;
 
@@ -95,91 +93,6 @@ package body Call is
       GNATCOLL.Utils.Free (Arg_List);
       Free (Executable);
    end Call_With_Status;
-
-   ---------
-   -- Cat --
-   ---------
-
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0) is
-
-      Count_Non_Blank_Lines : Natural := 0;
-      First_Line_Skipped    : Boolean := False;
-
-      procedure Print_Line (Line : String);
-      --  Print a single line to stdout. Skip the line if not blank and count
-      --  of non-blank lines exceeds the positive value (if non-zero) of
-      --  Cut_Non_Blank_Line_At. Instead, prints a line suggesting
-      --  continuation "(...)".
-
-      ----------------
-      -- Print_Line --
-      ----------------
-
-      procedure Print_Line (Line : String) is
-      begin
-         if GNATCOLL.Utils.Is_Blank_Line (Line) then
-            First_Line_Skipped := False;
-            Count_Non_Blank_Lines := 0;
-            Ada.Text_IO.Put_Line (Line);
-
-         elsif Cut_Non_Blank_Line_At > 0
-           and then Count_Non_Blank_Lines > Cut_Non_Blank_Line_At
-         then
-            if not First_Line_Skipped then
-               First_Line_Skipped := True;
-               Ada.Text_IO.Put_Line ("(...)");
-            end if;
-
-         else
-            First_Line_Skipped := False;
-            Count_Non_Blank_Lines := Count_Non_Blank_Lines + 1;
-            Ada.Text_IO.Put_Line (Line);
-         end if;
-      end Print_Line;
-
-      procedure My_Cat is new For_Line_In_File (Print_Line);
-
-   --  Start of processing for Cat
-
-   begin
-      My_Cat (File);
-   end Cat;
-
-   -----------------------------
-   -- Ch_Dir_Create_If_Needed --
-   -----------------------------
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String) is
-      use GNAT.Directory_Operations;
-   begin
-      Change_Dir (Dir);
-   exception
-      when Directory_Error =>
-         Make_Dir (Dir);
-         Change_Dir (Dir);
-   end Ch_Dir_Create_If_Needed;
-
-   ----------------------
-   -- For_Line_In_File --
-   ----------------------
-
-   procedure For_Line_In_File (File : String)
-   is
-      use Ada.Text_IO;
-      File_Handle : File_Type;
-   begin
-      Open (File_Handle, In_File, File);
-      while True loop
-         declare
-            Line : constant String := Get_Line (File_Handle);
-         begin
-            Handle_Line (Line);
-         end;
-      end loop;
-   exception
-      when Ada.IO_Exceptions.End_Error =>
-         Close (File_Handle);
-   end For_Line_In_File;
 
    ------------------------
    -- Print_Command_Line --

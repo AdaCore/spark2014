@@ -52,23 +52,11 @@ package Call is
    --  Return the process ID of the current process
    pragma Import (C, Get_Process_Id, "getpid");
 
-   generic
-      with procedure Handle_Line (Line : String);
-   procedure For_Line_In_File
-      (File : String);
-   --  Do something for each line of a file
-
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument
 
    function Read_File_Into_JSON (Fn : String) return JSON_Value;
    --  Same as Read_File_Into_String, but directly parse the file into a JSON
    --  value. Works for large files as well.
-
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0);
-   --  Print the file to stdout
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String);
-   --  chdir to given directory; if it does not exist, create it before
 
 end Call;
