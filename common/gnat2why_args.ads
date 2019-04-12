@@ -108,12 +108,12 @@ package Gnat2Why_Args is
    --  This will enable additional tracing output and will call graphviz on
    --  each dumped graph.
 
-   Debug_Trivial : Boolean := False;
+   Flow_Advanced_Debug : Boolean := False;
 
    --  This will disable the simplification of trivial counterexamples in order
    --  to allow analysis of missing counterexamples.
 
-   Flow_Advanced_Debug : Boolean := False;
+   Debug_Trivial : Boolean := False;
 
    --  The SPARK RM does not make global contracts optional, rather this is a
    --  liberty we have taken in this implementation of SPARK. This flag is
@@ -152,7 +152,9 @@ package Gnat2Why_Args is
 
    Pedantic : Boolean := False;
 
-   CWE : Boolean := False;  --  Issue CWE Ids in messages
+   --  Issue CWE Ids in messages
+
+   CWE : Boolean := False;
 
    --  Set the report mode (only failing VCs, all VCs, details)
 
