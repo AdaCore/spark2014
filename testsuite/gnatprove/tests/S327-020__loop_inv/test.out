@@ -2,12 +2,10 @@ lp.adb:19:23: info: cannot unroll loop (too many loop iterations)
 lp.adb:20:40: info: index check proved (CVC4: 2 VC)
 lp.adb:21:22: info: index check proved (CVC4: 2 VC)
 lp.adb:35:22: info: assertion proved (CVC4: 2 VC)
+lp.adb:37:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lp.adb:37:33: info: loop invariant preservation proved (CVC4: 2 VC)
-lp.adb:37:56: medium: loop invariant might fail in first iteration, cannot prove 2 ** K in U64'range
-lp.adb:37:58: medium: overflow check might fail
 lp.adb:38:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lp.adb:38:33: info: loop invariant preservation proved (CVC4: 2 VC)
-lp.adb:38:35: medium: overflow check might fail
 lp.adb:38:38: info: index check proved (CVC4: 8 VC)
 lp.adb:39:37: info: range check proved (CVC4: 1 VC)
 lp.adb:39:37: medium: overflow check might fail
