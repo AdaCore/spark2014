@@ -644,10 +644,6 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     # running the tool:
     # process = open("test.out", 'r').read()
 
-    # Check that the exit status is as expected
-    if exit_status is not None and process.status != exit_status:
-        print "Unexpected exit status of", process.status
-
     # Check marks in source code and print the command output sorted
     strlist = str.splitlines(process.out)
     # Replace line above by the one below for testing the scripts without
@@ -663,10 +659,17 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
 
     check_marks(strlist)
     check_fail(strlist, no_fail)
+    # Check that the exit status is as expected
+    if exit_status is not None and process.status != exit_status:
+        print "Unexpected exit status of", process.status
+        failure = True
+    else:
+        failure = False
+
     if filter_output is not None:
         strlist = grep(filter_output, strlist, invert=True)
 
-    if not no_output:
+    if not no_output or failure:
         if sort_output:
             print_sorted(strlist)
         else:
@@ -775,6 +778,14 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False):
     """
 
     do_flow(opt, procs, no_fail, mode="flow")
+
+
+def no_crash():
+    """
+    Only attempt to detect crashes and other unexpected behavior. No expected
+    tool output is filed for such tests.
+    """
+    gnatprove(no_output=True, exit_status=0)
 
 
 def clean():
