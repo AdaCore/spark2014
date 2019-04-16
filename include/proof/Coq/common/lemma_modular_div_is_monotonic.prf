@@ -1,4 +1,4 @@
-intros (dummy, denom_type,pre).
+intros dummy dummy2 denom_type pre.
 Open Scope Z_scope.
 
 (* rewrite hypotheses *)

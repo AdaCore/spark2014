@@ -1,4 +1,4 @@
-intros (arg2_type,pre).
+intros dummy arg2_type pre.
 Open Scope Z_scope.
 Require Import SPARK.
 

@@ -1,4 +1,4 @@
-intros (dummy, scale_denom_type, dummy1, ((scale_ratio,mul_no_ovfl),res_def)).
+intros dummy dummy1 scale_denom_type dummy2 ((scale_ratio,mul_no_ovfl),res_def).
 Open Scope Z_scope.
 Require Import SPARK.
 

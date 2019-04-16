@@ -1,10 +1,10 @@
 (* Similar to float32_div_common.prf for multiplication *)
 Require Import Fourier.
-Require Import Flocq.Core.Fcore.
+Require Import Flocq.Core.Core.
 
 (* l2 is the biggest power of two smaller than the square root of
    maxfloat; we prove that its square is smaller than maxfloat *)
 assert (t'real fliteral2 * t'real fliteral2 <= 33554430 * 10141204801825835211973625643008) as l2_square_le_max.
 { destruct fliteral_axiom2 as [fliteral2_finite l_real2].
   rewrite l_real2. ring_simplify.
-  now apply (Z2R_le 85070591730234615865843651857942052864 340282346638528859811704183484516925440). }
+  now apply (IZR_le 85070591730234615865843651857942052864 340282346638528859811704183484516925440). }

@@ -1,4 +1,4 @@
-intros val1_hyp (factor_type,(pre_val1_lt_val2,pre_val2_ub)).
+intros val1_hyp dummy factor_type (pre_val1_lt_val2, pre_val2_ub).
 Open Scope Z_scope.
 Require Import SPARK.
 

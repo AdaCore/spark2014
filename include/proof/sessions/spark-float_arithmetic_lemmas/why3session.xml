@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="5">
+<why3session shape_version="6">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
 <prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
@@ -118,7 +118,7 @@
   <proof prover="1"><result status="valid" steps="3459"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="10149"/></proof>
+  <proof prover="1"><result status="valid" steps="10149"/></proof>
   </goal>
   <goal name="VC def.5" expl="postcondition">
   </goal>
