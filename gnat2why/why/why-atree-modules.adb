@@ -2597,7 +2597,7 @@ package body Why.Atree.Modules is
          elsif Has_Access_Type (E) then
             declare
                Is_Incompl     : constant Boolean :=
-                 Designates_Incomplete_Type (E);
+                 Designates_Incomplete_Type (Repr_Pointer_Type (E));
                Root           : constant Entity_Id := Root_Pointer_Type (E);
                Root_Ty        : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
