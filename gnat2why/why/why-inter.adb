@@ -706,7 +706,7 @@ package body Why.Inter is
       if Nkind (E) in N_Entity and then Is_Type (E) then
          return WF_Context;
       else
-         return WF_Main;
+         return WF_Axioms;
       end if;
    end Dispatch_Entity_Completion;
 

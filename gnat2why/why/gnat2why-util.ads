@@ -186,6 +186,7 @@ package Gnat2Why.Util is
      (WF_Pure,
       WF_Variables,
       WF_Context,
+      WF_Axioms,
       WF_Main);
 
    --  Type used to control which marker information is included in the node.
@@ -233,7 +234,7 @@ package Gnat2Why.Util is
 
    function Usual_Params
      (Phase : Transformation_Phase;
-      Kind  : W_Section_Id := WF_Main) return Transformation_Params
+      Kind  : W_Section_Id := WF_Axioms) return Transformation_Params
    is
      (Transformation_Params'
         (File        => Kind,
@@ -254,7 +255,7 @@ package Gnat2Why.Util is
      (Usual_Params (Generate_VCs_For_Assert));
 
    function Logic_Params
-     (Kind : W_Section_Id := WF_Main) return Transformation_Params
+     (Kind : W_Section_Id := WF_Axioms) return Transformation_Params
    is (Usual_Params (Generate_Logic, Kind));
 
    --------------

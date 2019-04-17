@@ -25,7 +25,6 @@
 
 with Ada.Strings;
 with Ada.Strings.Fixed;
-with Ada.Containers;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
@@ -426,11 +425,11 @@ package body Gnat2Why.Error_Messages is
    end Emit_Proof_Result;
 
    ------------------------
-   -- Has_Registered_VCs --
+   -- Num_Registered_VCs --
    ------------------------
 
-   function Has_Registered_VCs return Boolean is
-     (not VC_Table.Is_Empty);
+   function Num_Registered_VCs return Ada.Containers.Count_Type is
+     (VC_Table.Length);
 
    ---------------------------
    -- Load_Codepeer_Results --

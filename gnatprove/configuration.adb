@@ -2240,10 +2240,12 @@ package body Configuration is
       then
          Args.Append ("spark_memcached_wrapper");
          Args.Append (CL_Switches.Memcached_Server.all);
-         Args.Append ("gnatwhy3");
-      else
-         Args.Append ("gnatwhy3");
       end if;
+
+      Args.Append ("spark_semaphore_wrapper");
+      Args.Append (Base_Name (Socket_Name.all));
+
+      Args.Append ("gnatwhy3");
 
       Args.Append ("--timeout");
       Args.Append (Image (FS.Timeout, 1));

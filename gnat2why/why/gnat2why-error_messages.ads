@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Debug.Timing;        use Debug.Timing;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with GNATCOLL.JSON;
@@ -51,8 +52,8 @@ package Gnat2Why.Error_Messages is
    --    proof. This is required to know the list of subprograms which don't
    --    have any VC associated with them. This is useful for assumptions.
 
-   function Has_Registered_VCs return Boolean;
-   --  Returns True iff the function Register_VC has been called
+   function Num_Registered_VCs return Ada.Containers.Count_Type;
+   --  Returns the number of registered VCs
 
    procedure Load_Codepeer_Results;
    --  Load the CodePeer result file and store results. Can be queried with

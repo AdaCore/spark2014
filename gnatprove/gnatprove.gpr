@@ -6,6 +6,8 @@ project GNATprove is
    for Object_Dir use "obj";
    for Exec_Dir use "../install/bin";
 
+   for Languages use ("Ada", "C");
+
    type Build_Type is ("Debug", "Production", "Coverage");
 
    Build : Build_Type := External ("Build", "Debug");
@@ -20,6 +22,7 @@ project GNATprove is
    for Main use ("gnatprove.adb",
                  "spark_report.adb",
                  "spark_memcached_wrapper.adb",
+                 "spark_semaphore_wrapper.adb",
                  "spark_codepeer_wrapper.adb");
 
    Common_Switches := ("-gnatyg", "-g");
@@ -28,8 +31,8 @@ project GNATprove is
       for Executable ("gnatprove.adb") use "gnatprove";
       for Executable ("spark_report.adb") use "spark_report";
       for Executable ("spark_codepeer_wrapper.adb") use "spark_codepeer_wrapper";
-      for Executable ("spark_memcached_wrapper.adb") use
-         "spark_memcached_wrapper";
+      for Executable ("spark_memcached_wrapper.adb") use "spark_memcached_wrapper";
+      for Executable ("spark_semaphore_wrapper.adb") use "spark_semaphore_wrapper";
 
       case Build is
          when "Debug" =>
@@ -55,6 +58,15 @@ project GNATprove is
             null;
       end case;
    end Compiler;
+
+   package Linker is
+      case Target is
+         when "x86-linux" | "x86_64-linux" =>
+            for Default_Switches ("Ada") use ("-pthread");
+         when others =>
+            null;
+      end case;
+   end Linker;
 
    package CodePeer is
 
