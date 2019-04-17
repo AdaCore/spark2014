@@ -728,8 +728,13 @@ package body VC_Kinds is
                         end;
                      else
                         declare
+                           --  Indices are sent by Why3 as JSON model_value.
+                           --  This is only accepted here if the model_value
+                           --  is actually a simple value: integer, boolean...
+                           --  And, on SPARK input, non simple value cannot
+                           --  be produced.
                            Indice   : constant String :=
-                                        Get (Json_Element, "indice");
+                              Get (Get (Json_Element, "indice"), "val");
                            Elem_Ptr : constant Cntexmp_Value_Ptr :=
                                         new Cntexmp_Value'(
                                           Get_Typed_Cntexmp_Value
