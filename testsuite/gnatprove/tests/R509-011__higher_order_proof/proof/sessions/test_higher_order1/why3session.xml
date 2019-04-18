@@ -1,11 +1,11 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="5">
-<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
-<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="5" steplimit="0" memlimit="1000"/>
+<why3session shape_version="6">
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="0"/>
+<prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="0"/>
 <file>
 <path name=".."/>
 <path name=".."/>
@@ -323,11 +323,11 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.20" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="693"/></proof>
+  <proof prover="1"><result status="valid" steps="26682"/></proof>
   <proof prover="2"><result status="unknown" steps="207"/></proof>
   </goal>
   <goal name="VC def.21" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="1160"/></proof>
+  <proof prover="1"><result status="valid" steps="26221"/></proof>
   <proof prover="2"><result status="unknown" steps="177"/></proof>
   </goal>
   <goal name="VC def.22" expl="postcondition">
@@ -989,7 +989,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.268" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="valid" steps="276"/></proof>
+  <proof prover="1"><result status="valid" steps="40824"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.269" expl="loop invariant init" proved="true">
@@ -999,7 +999,6 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.271" expl="loop invariant init" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="43329"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -1394,7 +1393,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.415" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="1800"/></proof>
+  <proof prover="1"><result status="valid" steps="64868"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.416" expl="loop invariant preservation" proved="true">
@@ -1404,12 +1403,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.418" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="84317"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.419" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="81873"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -1734,7 +1731,7 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.538" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="1718"/></proof>
+  <proof prover="1"><result status="valid" steps="141188"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.539" expl="loop invariant preservation" proved="true">
@@ -1744,12 +1741,10 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.541" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="75372"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.542" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="81301"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -1851,7 +1846,7 @@
   <goal name="VC def.578" expl="postcondition">
   </goal>
   <goal name="VC def.579" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="2308"/></proof>
+  <proof prover="1"><result status="valid" steps="127301"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.580" expl="assertion" proved="true">
@@ -2155,7 +2150,7 @@
   <proof prover="2"><result status="valid" steps="143"/></proof>
   </goal>
   <goal name="VC def.692" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="173"/></proof>
+  <proof prover="1"><result status="valid" steps="70653"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.693" expl="postcondition" proved="true">
@@ -2165,7 +2160,6 @@
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.695" expl="postcondition" proved="true">
-  <proof prover="0"><result status="timeout"/></proof>
   <proof prover="1"><result status="valid" steps="80311"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
