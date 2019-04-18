@@ -1248,7 +1248,8 @@ package body Gnat2Why.Expr.Loops is
 
                Index_Inv   : constant W_Pred_Id := Construct_Inv_For_Index;
                Cond_Prog   : constant W_Prog_Id := Construct_Cond;
-               Update_Stmt : constant W_Prog_Id := Construct_Update_Stmt;
+               Update_Stmt : constant W_Prog_Id :=
+                 +Insert_Cnt_Loc_Label (Stmt, +Construct_Update_Stmt);
                Exit_Cond   : constant W_Prog_Id := Construct_Exit_Cond;
                Impl_Inv    : constant W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
