@@ -23,7 +23,7 @@ patris.adb:107:33: info: index check proved (CVC4: 2 VC)
 patris.adb:107:50: info: index check proved (CVC4: 2 VC)
 patris.adb:108:36: info: index check proved (CVC4: 2 VC)
 patris.adb:108:54: info: index check proved (CVC4: 2 VC)
-patris.adb:116:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => I, D => East, X => 0, Y => PY_Coord'First+1) and XX = 2 and YY = 0)
+patris.adb:116:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => I, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 1)
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
 patris.adb:121:45: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => 1, Y => PY_Coord'First+1) and Y = 0)

@@ -56,7 +56,7 @@ math_simple_abstract.adb:6:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:6:28: info: division check proved (Z3: 1 VC)
 math_simple_abstract.adb:14:06: info: data dependencies proved
 math_simple_abstract.adb:15:19: info: division check proved (Z3: 1 VC)
-math_simple_abstract.adb:16:14: medium: postcondition might fail, cannot prove not Divides (Arg2, Arg1)
+math_simple_abstract.adb:16:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:21:25: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 math_simple_abstract.adb:22:33: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple_abstract.adb:22:33: info: loop invariant preservation proved (altergo: 1 VC)
