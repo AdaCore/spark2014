@@ -26,7 +26,7 @@
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
-  <proof prover="1"><result status="valid" steps="1276"/></proof>
+  <proof prover="1"><result status="valid" steps="1287"/></proof>
   </goal>
  </transf>
  </goal>
@@ -45,7 +45,7 @@
   <goal name="VC def.3" expl="postcondition">
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="826"/></proof>
+  <proof prover="1"><result status="valid" steps="795"/></proof>
   </goal>
  </transf>
  </goal>
@@ -87,7 +87,7 @@
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid"/></proof>
-  <proof prover="1"><result status="unknown" steps="120"/></proof>
+  <proof prover="1"><result status="unknown" steps="121"/></proof>
   </goal>
  </transf>
  </goal>
@@ -101,7 +101,7 @@
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
   <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
-  <proof prover="1"><result status="valid" steps="625"/></proof>
+  <proof prover="1"><result status="valid" steps="727"/></proof>
   </goal>
  </transf>
  </goal>
@@ -115,7 +115,7 @@
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
   <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
-  <proof prover="1"><result status="valid" steps="405"/></proof>
+  <proof prover="1"><result status="valid" steps="455"/></proof>
   </goal>
  </transf>
  </goal>
@@ -131,7 +131,7 @@
   <goal name="VC def.2" expl="postcondition">
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="647"/></proof>
+  <proof prover="1"><result status="valid" steps="739"/></proof>
   </goal>
  </transf>
  </goal>
@@ -147,12 +147,12 @@
   <goal name="VC def.2" expl="postcondition">
   </goal>
   <goal name="VC def.3" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="1005"/></proof>
+  <proof prover="1"><result status="valid" steps="1032"/></proof>
   </goal>
   <goal name="VC def.4" expl="postcondition">
   </goal>
   <goal name="VC def.5" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="805"/></proof>
+  <proof prover="1"><result status="valid" steps="842"/></proof>
   </goal>
   <goal name="VC def.6" expl="postcondition">
   </goal>
@@ -160,10 +160,10 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="VC def.8" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="287"/></proof>
+  <proof prover="1"><result status="valid" steps="299"/></proof>
   </goal>
   <goal name="VC def.9" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="254"/></proof>
+  <proof prover="1"><result status="valid" steps="256"/></proof>
   </goal>
  </transf>
  </goal>
@@ -179,7 +179,7 @@
   <goal name="VC def.2" expl="postcondition">
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="1914"/></proof>
+  <proof prover="1"><result status="valid" steps="2028"/></proof>
   </goal>
  </transf>
  </goal>
@@ -195,7 +195,7 @@
   <goal name="VC def.2" expl="postcondition">
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="522"/></proof>
+  <proof prover="1"><result status="valid" steps="629"/></proof>
   </goal>
  </transf>
  </goal>
