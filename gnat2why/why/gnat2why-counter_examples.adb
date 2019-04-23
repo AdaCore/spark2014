@@ -372,6 +372,17 @@ package body Gnat2Why.Counter_Examples is
    function Refine_Array_Components
      (Value : CNT_Element_Ptr) return CNT_Unbounded_String
    is
+
+      type Array_Elem is record
+         Ind_Printedt  : CNT_Unbounded_String; -- Index value as printed
+         Elem_Printedt : CNT_Unbounded_String; -- Element value as printed
+      end record;
+
+      package Sorted_Array is new Ada.Containers.Ordered_Maps
+           (Key_Type     => Uint,
+            Element_Type => Array_Elem,
+            "<"          => "<");
+
       Fst_Index  : constant Node_Id := First_Index (Value.Ent_Ty);
       Index_Type : constant Entity_Id := Retysp (Etype (Fst_Index));
 
@@ -379,6 +390,54 @@ package body Gnat2Why.Counter_Examples is
       Nul : Boolean := True;
       Fst : Uint;
       Lst : Uint;
+      S_Array : Sorted_Array.Map := Sorted_Array.Empty_Map;
+
+      procedure Reorder_Indices (S_Array : out Sorted_Array.Map;
+                                 Value   : CNT_Element_Ptr);
+
+      ---------------------
+      -- Reorder_Indices --
+      ---------------------
+
+      procedure Reorder_Indices (S_Array : out Sorted_Array.Map;
+                                 Value   : CNT_Element_Ptr)
+      is
+      begin
+         for C in Value.Indices.Iterate loop
+            --  Reorder the elements inside S_Array
+            declare
+               Indice       : String renames String_CNT_Elements.Key (C);
+               Elem         : CNT_Element_Ptr renames Value.Indices (C);
+
+               Ind_Val      : constant Cntexmp_Value_Ptr :=
+                 new Cntexmp_Value'(T => Cnt_Integer,
+                                    I => To_Unbounded_String (Indice));
+               Ind_Printed  : constant CNT_Unbounded_String :=
+                 Refine_Value (Ind_Val, Index_Type, True);
+               Elem_Printed : constant CNT_Unbounded_String :=
+                 Refine (Elem);
+               Ind_Value    : constant Uint := UI_From_String (Indice);
+            begin
+
+               --  The other case happen when the index has an enumeration type
+               --  and the value for this index given by cvc4 is outside of the
+               --  range of the enumeration type.
+
+               if Ind_Printed.Str /= Null_Unbounded_String
+                 and then UI_Le (Fst, Ind_Value)
+                 and then UI_Le (Ind_Value, Lst)
+               then
+                  Nul := Nul and then Elem_Printed.Nul;
+                  Sorted_Array.Include (Container => S_Array,
+                                        Key       => Ind_Value,
+                                        New_Item =>
+                                          (Ind_Printedt  => Ind_Printed,
+                                           Elem_Printedt => Elem_Printed));
+               end if;
+            end;
+         end loop;
+      end Reorder_Indices;
+
    begin
       Find_First_Static_Range (Fst_Index, Fst, Lst);
 
@@ -386,33 +445,16 @@ package body Gnat2Why.Counter_Examples is
          return Dont_Display;
       end if;
 
+      Reorder_Indices (S_Array, Value);
       Append (S, "(");
-      for C in Value.Indices.Iterate loop
+      for C in S_Array.Iterate loop
          declare
-            Indice       : String renames String_CNT_Elements.Key (C);
-            Elem         : CNT_Element_Ptr renames Value.Indices (C);
-
-            Ind_Val      : constant Cntexmp_Value_Ptr :=
-              new Cntexmp_Value'(T => Cnt_Integer,
-                                 I => To_Unbounded_String (Indice));
-            Ind_Printed  : constant CNT_Unbounded_String :=
-              Refine_Value (Ind_Val, Index_Type, True);
+            Ind_Printed : constant CNT_Unbounded_String :=
+                            S_Array (C).Ind_Printedt;
             Elem_Printed : constant CNT_Unbounded_String :=
-              Refine (Elem);
-            Ind_Value    : constant Uint := UI_From_String (Indice);
+                            S_Array (C).Elem_Printedt;
          begin
-
-            --  The other case happen when the index has an enumeration type
-            --  and the value for this index given by cvc4 is outside of the
-            --  range of the enumeration type.
-
-            if Ind_Printed.Str /= Null_Unbounded_String
-              and then UI_Le (Fst, Ind_Value)
-              and then UI_Le (Ind_Value, Lst)
-            then
-               Nul := Nul and then Elem_Printed.Nul;
-               Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str & ", ");
-            end if;
+            Append (S, Ind_Printed.Str & " => " & Elem_Printed.Str & ", ");
          end;
       end loop;
 
