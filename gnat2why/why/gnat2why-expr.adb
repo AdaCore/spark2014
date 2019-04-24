@@ -6394,7 +6394,7 @@ package body Gnat2Why.Expr is
    ------------------
 
    function Name_For_Old (N : Node_Id) return W_Identifier_Id is
-      Position : Ada_To_Why_Ident.Cursor := Old_Map.Find (N);
+      Position : Ada_To_Why_Ident.Cursor;
       Inserted : Boolean;
 
       use Ada_To_Why_Ident;
