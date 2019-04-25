@@ -1,2 +1,2 @@
 array_comp.ads:8:19: info: range check proved (CVC4: 4 VC)
-array_comp.ads:8:19: medium: assertion might fail, cannot prove YY (1 .. 2) < XX (e.g. when XX = (2 => 0, others => 1) and XX'First = 1 and XX'Last = 2 and YY = (2 => 0, others => 1))
+array_comp.ads:8:19: medium: assertion might fail, cannot prove YY (1 .. 2) < XX
