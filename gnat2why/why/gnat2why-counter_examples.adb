@@ -1084,12 +1084,6 @@ package body Gnat2Why.Counter_Examples is
         new Ada.Containers.Doubly_Linked_Lists
           (Element_Type => Name_And_Value);
 
-      function Compile_Time_Known_And_Constant
-        (E : Entity_Id) return Boolean;
-      --  This is used to know if something is compile time known and has
-      --  the keyword constant on its definition. Internally, it calls
-      --  Compile_Time_Known_Value_Or_Aggr.
-
       procedure Get_CNT_Element_Value_And_Attributes
         (Values      : String_CNT_Elements.Map;
          Prefix      : Unbounded_String;
@@ -1101,27 +1095,6 @@ package body Gnat2Why.Counter_Examples is
       --  "@not_display" is returned.
       --  In addition, recursively populate the list of attributes "Attributes"
       --  of CNT_Element and its fields if any attribute is found.
-
-      -------------------------------------
-      -- Compile_Time_Known_And_Constant --
-      -------------------------------------
-
-      function Compile_Time_Known_And_Constant
-        (E : Entity_Id) return Boolean
-      is
-      begin
-         if Ekind (E) = E_Constant then
-            declare
-               Decl : constant Node_Id := Enclosing_Declaration (E);
-               Expr : constant Node_Id := Expression (Decl);
-            begin
-               return Present (Expr)
-                 and then Compile_Time_Known_Value_Or_Aggr (Expr);
-            end;
-         end if;
-
-         return False;
-      end Compile_Time_Known_And_Constant;
 
       ------------------------------------------
       -- Get_CNT_Element_Value_And_Attributes --
@@ -1826,7 +1799,7 @@ package body Gnat2Why.Counter_Examples is
 
       function Is_Nul_Counterexample
         (Cntexmp : Cntexample_File_Maps.Map) return Boolean;
-      --  Dtermine whether Cntexmp is a "nul" counterexample, where all values
+      --  Determine whether Cntexmp is a "nul" counterexample, where all values
       --  are nul, which is characterisic of a spurious counterexample.
 
       ------------------------
