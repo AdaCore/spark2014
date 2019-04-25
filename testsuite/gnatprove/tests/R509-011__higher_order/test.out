@@ -339,7 +339,7 @@ test_higher_order.ads:63:30: warning: unused variable "A"
 test_higher_order.ads:63:42: warning: unused variable "X"
 test_higher_order.ads:84:19: info: assertion proved (altergo: 1 VC)
 test_higher_order.ads:84:35: info: range check proved (CVC4: 1 VC)
-test_higher_order.ads:94:19: info: assertion proved (Z3: 1 VC)
+test_higher_order.ads:94:19: info: assertion proved (altergo: 1 VC)
 test_higher_order.ads:94:35: info: range check proved (CVC4: 1 VC)
 test_higher_order.ads:104:19: info: assertion proved (Z3: 1 VC)
 test_higher_order.ads:104:36: info: range check proved (CVC4: 1 VC)
