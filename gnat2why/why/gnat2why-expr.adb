@@ -17961,7 +17961,11 @@ package body Gnat2Why.Expr is
          Variables   : in out Flow_Id_Sets.Set;
          Incompl_Acc : in out Entity_Sets.Set)
       is
-         Ty_Ext : constant Entity_Id := Retysp (Ty);
+         Spec_Ty : constant Entity_Id :=
+           (if Is_Class_Wide_Type (Ty)
+            then Get_Specific_Type_From_Classwide (Ty)
+            else Ty);
+         Ty_Ext  : constant Entity_Id := Retysp (Spec_Ty);
       begin
 
          --  Dynamic property of the type itself
