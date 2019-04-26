@@ -845,7 +845,7 @@ procedure Gnatprove with SPARK_Mode is
          Abort_With_Message
            ("gnatprove: unproved check messages considered as errors");
 
-      --  We propagate errors other than the Unproved_Checks_Error.
+      --  We propagate errors other than the Unproved_Checks_Error
 
       elsif Status /= 0 and then Status /= Unproved_Checks_Error_Status then
          GNAT.OS_Lib.OS_Exit (Status);
