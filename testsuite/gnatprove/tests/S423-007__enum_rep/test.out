@@ -1,0 +1,3 @@
+enum_rep.adb:14:32: Enum_Rep implementation defined attribute is not yet supported
+enum_rep.adb:23:32: Enum_Rep implementation defined attribute is not yet supported
+gnatprove: error during flow analysis and proof
