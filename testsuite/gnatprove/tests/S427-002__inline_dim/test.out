@@ -1,0 +1,4 @@
+challenges.adb:38:10: dimensions mismatch in "Get_Remaining_Distance" call
+challenges.adb:38:10: error in inlined body at line 33
+challenges.adb:38:74: expected dimension [L], found []
+gnatprove: error during generation of Global contracts
