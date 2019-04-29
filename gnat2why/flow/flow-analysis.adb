@@ -2826,7 +2826,7 @@ package body Flow.Analysis is
                       (Change_Variant (Parent_Key, Normal_Use));
 
                begin
-                  if FA.Atr (Parent).Is_Global then
+                  if Parent_Atr.Is_Global then
                      if OK then
                         Global_OK.Include (Obj);
                      else
