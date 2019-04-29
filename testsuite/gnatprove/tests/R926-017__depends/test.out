@@ -1,4 +1,4 @@
-main.adb:2:11: medium: "Tank1.Tank_State" might not be initialized after elaboration of main program "Main"
+main.adb:5:22: medium: "Tank1.Tank_State" might not be initialized after elaboration of main program "Main"
 main.adb:5:22: medium: assertion might fail, cannot prove (Valid_Tank) [possible explanation: subprogram at line 2 should mention Tank1.The_Tank in a precondition]
 tank1.ads:4:23: warning: no procedure exists that can initialize abstract state "Tank1.Tank_State"
 tank1.ads:10:08: info: data dependencies proved

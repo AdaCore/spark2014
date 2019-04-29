@@ -1,2 +1,2 @@
-attach_test.ads:6:17: medium: "Uninit" might not be initialized after elaboration of main program "Intr"
+attach_test.adb:6:15: medium: "Uninit" might not be initialized after elaboration of main program "Intr"
 attach_test.ads:7:33: medium: this interrupt might be reserved

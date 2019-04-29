@@ -12,7 +12,7 @@ achiever.ads:36:49: medium: contract case might fail
 achiever.ads:44:45: info: contract case proved (CVC4: 2 VC)
 achiever.ads:47:08: info: postcondition proved (CVC4: 1 VC)
 fault_manager.ads:3:14: warning: subprogram "Log_Direct_Failure" has no effect
-main.adb:3:11: medium: "My_Internal_State" might not be initialized after elaboration of main program "Main"
-main.adb:3:11: medium: "achiever.state_item" might not be initialized after elaboration of main program "Main"
+main.adb:11:12: medium: "My_Internal_State" might not be initialized after elaboration of main program "Main"
+main.adb:11:12: medium: "achiever.state_item" might not be initialized after elaboration of main program "Main"
 sc_status_type.adb:18:07: info: initialization of "Result" proved
 sc_status_type.ads:48:22: info: initialization of "This" proved

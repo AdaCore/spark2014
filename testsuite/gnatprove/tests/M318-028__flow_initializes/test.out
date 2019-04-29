@@ -2,7 +2,7 @@ pkg_b.ads:3:08: info: flow dependencies proved
 pkg_d.ads:2:08: info: flow dependencies proved
 pkg_e.ads:4:08: info: flow dependencies proved
 test_01.adb:4:06: info: data dependencies proved
-test_01.adb:4:32: medium: "Pkg_A.State" might not be initialized after elaboration of main program "Test_01"
+test_01.adb:7:09: medium: "Pkg_A.State" might not be initialized after elaboration of main program "Test_01"
 test_02.adb:4:06: info: data dependencies proved
 test_02.adb:7:09: high: "Pkg_A.State" is not an input in the Global contract of subprogram "Test_02" at line 3
 test_02.adb:7:09: high: "Pkg_A.State" is not initialized
@@ -15,6 +15,6 @@ test_05.adb:4:06: info: data dependencies proved
 test_05.adb:4:32: warning: unused initial value of "Pkg_B.State"
 test_06.adb:4:06: info: data dependencies proved
 test_07.adb:4:06: info: data dependencies proved
-test_07.adb:4:32: medium: "State" might not be initialized after elaboration of main program "Test_07"
+test_07.adb:7:09: medium: "State" might not be initialized after elaboration of main program "Test_07"
 test_08.adb:4:06: info: data dependencies proved
 test_09.adb:4:06: info: data dependencies proved

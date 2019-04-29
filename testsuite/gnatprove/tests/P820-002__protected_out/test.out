@@ -142,6 +142,6 @@ polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are n
 polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
 polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
-pr_a.adb:20:11: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
+pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 gnatprove: error during flow analysis and proof

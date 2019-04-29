@@ -21,4 +21,4 @@ pkg_c.ads:1:38: warning: no procedure exists that can initialize abstract state 
 pkg_c.ads:5:09: info: data dependencies proved
 pkg_c.ads:9:28: info: data dependencies proved
 pkg_c.ads:11:29: info: data dependencies proved
-use_counting.adb:3:11: medium: "Counting.State" might not be initialized after elaboration of main program "Use_Counting"
+use_counting.adb:5:05: medium: "Counting.State" might not be initialized after elaboration of main program "Use_Counting"

@@ -592,7 +592,10 @@ package body Flow.Analysis is
             Error_Msg_Flow
               (FA       => FA,
                Msg      => Msg,
-               N        => Find_Global (FA.Spec_Entity, R),
+               N        => First_Variable_Use (FA      => FA,
+                                               Var     => R,
+                                               Kind    => Use_Read,
+                                               Precise => True),
                F1       => R,
                F2       => Direct_Mapping_Id (FA.Spec_Entity),
                Tag      => Uninitialized,

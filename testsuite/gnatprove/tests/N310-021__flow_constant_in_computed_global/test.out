@@ -10,8 +10,6 @@ advancebutton.ads:29:27: info: initialization of "Result" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
 clock.ads:6:19: info: initialization of "Time" proved
-heatingsystem_dfa.adb:11:11: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:11:11: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
 heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
 heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
@@ -74,6 +72,8 @@ heatingsystem_dfa.adb:119:07: info: initialization of "MayOperate" proved
 heatingsystem_dfa.adb:120:07: info: initialization of "AboveTemp" proved
 heatingsystem_dfa.adb:121:07: info: initialization of "CurrentTime" proved
 heatingsystem_dfa.adb:122:07: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:201:07: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
+heatingsystem_dfa.adb:201:07: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 modeswitch.ads:5:20: info: initialization of "Value" proved
 programswitch.ads:5:20: info: initialization of "Value" proved
 thermostat.ads:15:25: info: initialization of "Result" proved

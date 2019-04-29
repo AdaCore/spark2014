@@ -1,2 +1,2 @@
 use_protected_types.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-use_protected_types.adb:3:11: medium: "memory accessed through objects of access type" might not be initialized after elaboration of main program "Use_Protected_Types"
+use_protected_types.adb:6:26: medium: "memory accessed through objects of access type" might not be initialized after elaboration of main program "Use_Protected_Types"

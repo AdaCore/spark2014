@@ -45,9 +45,9 @@ sdc.adb:17:07: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument"
+sdc.adb:22:07: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
+sdc.adb:23:07: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
 sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible explanation: call at line 22 should mention V (for argument T) in a postcondition]
-sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
-sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
 stack.adb:31:10: info: raise statement proved unreachable (CVC4: 1 VC)
 stack.adb:34:46: low: range check might fail (e.g. when V = (E => 1)) [possible explanation: precondition of subprogram at stack.ads:18 should mention V]
 stack.adb:36:20: info: range check proved (CVC4: 1 VC)

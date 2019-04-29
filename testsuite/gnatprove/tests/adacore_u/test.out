@@ -173,9 +173,9 @@ stack.ads:31:58: info: precondition proved (CVC4: 1 VC)
 stack.ads:39:14: info: postcondition proved (CVC4: 3 VC)
 stack.ads:40:61: info: precondition proved (CVC4: 1 VC)
 stack.ads:57:49: info: index check proved (CVC4: 2 VC)
-use_stack.adb:2:11: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
-use_stack.adb:2:11: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:3:10: medium: precondition of main program might fail, cannot prove not (Is_Empty)
+use_stack.adb:3:14: medium: "Stack.The_Stack" might not be initialized after elaboration of main program "Use_Stack"
+use_stack.adb:3:31: medium: "Stack.P_Stack" might not be initialized after elaboration of main program "Use_Stack"
 use_stack.adb:5:04: info: initialization of "F" proved
 use_stack.adb:7:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:9:19: info: precondition proved (CVC4: 1 VC)
