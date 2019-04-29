@@ -876,11 +876,11 @@ binary_trees.ads:53:14: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:64:25: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:65:47: info: index check proved (CVC4: 2 VC)
 binary_trees.ads:65:47: info: invariant check proved (CVC4: 1 VC)
+binary_trees.ads:74:25: medium: postcondition might fail, cannot prove Is_Add (Model'Result (Parent (F, I)).A, Position (F, I), Model'Result (I).A)
 binary_trees.ads:74:47: info: index check proved (CVC4: 2 VC)
 binary_trees.ads:74:47: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:75:33: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:75:33: info: precondition proved (CVC4: 1 VC)
-binary_trees.ads:85:29: medium: postcondition might fail, cannot prove J = I
 binary_trees.ads:93:06: info: data dependencies proved
 binary_trees.ads:94:14: info: invariant check proved (CVC4: 1 VC)
 binary_trees.ads:97:17: info: invariant check proved (CVC4: 1 VC)
