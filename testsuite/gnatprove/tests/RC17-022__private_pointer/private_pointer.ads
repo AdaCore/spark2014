@@ -40,7 +40,7 @@ package Private_Pointer with SPARK_Mode is
    X_2 : Mode_Off.T;
    pragma Assert (Is_Null (X_2));
    X_3 : Mode_Auto.T;
-   pragma Assert (Is_Null (X_3)); --@ASSERT:FAIL
+   pragma Assert (Is_Null (X_3));
    pragma Assert (X_3 /= Mode_Auto.C);
    pragma Assert (Mode_Auto.D = X_3);
 

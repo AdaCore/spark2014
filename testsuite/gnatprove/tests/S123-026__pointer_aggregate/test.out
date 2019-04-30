@@ -5,4 +5,5 @@ alias_aggregate.adb:13:57: object was moved at line 13
 alias_aggregate.adb:18:15: insufficient permission for "Y" when returning from "Local2"
 alias_aggregate.adb:18:15: object was moved at line 19
 alias_aggregate.adb:19:36: singleton choice required to prevent aliasing
-gnatprove: error during generation of Global contracts
+incomplete_types.ads:10:20: medium: assertion might fail, cannot prove X.Value = 2
+gnatprove: error during flow analysis and proof

@@ -1,15 +1,42 @@
-n01.adb:14:12: general access type "AI" not allowed in SPARK
-n011.adb:12:12: general access type "AI" not allowed in SPARK
-n02.adb:13:12: general access type "AM" not allowed in SPARK
-n02.adb:14:12: general access type "AI" not allowed in SPARK
-n04.adb:14:08: general access type "Int_Acc" not allowed in SPARK
-n04.adb:15:08: general access type "Int_Cst_Acc" not allowed in SPARK
+n01.adb:14:12: general access type is not allowed in SPARK
+n01.adb:14:12: violation of aspect SPARK_Mode at line 9
+n011.adb:12:12: general access type is not allowed in SPARK
+n011.adb:12:12: violation of aspect SPARK_Mode at line 7
+n02.adb:13:12: general access type is not allowed in SPARK
+n02.adb:13:12: violation of aspect SPARK_Mode at line 8
+n02.adb:14:12: general access type is not allowed in SPARK
+n02.adb:14:12: violation of aspect SPARK_Mode at line 8
+n04.adb:14:08: general access type is not allowed in SPARK
+n04.adb:14:08: violation of aspect SPARK_Mode at line 12
+n04.adb:15:08: general access type is not allowed in SPARK
+n04.adb:15:08: violation of aspect SPARK_Mode at line 12
 n04.adb:20:13: insufficient permission for "YY" when returning from "Z_In"
 n04.adb:20:13: object was moved at line 28
-n04.adb:24:08: insufficient permission on dereference from "Z"
-n04.adb:24:08: object was declared as not writeable at line 20
-n05.adb:11:08: general access type "Int_Acc" not allowed in SPARK
-observingcomposite.adb:24:01: statement expected
+n05.adb:11:08: general access type is not allowed in SPARK
+n05.adb:11:08: violation of aspect SPARK_Mode at line 9
+n05.adb:15:20: warning: formal parameter "A" is not referenced
+n05.adb:36:03: warning: analyzing unreferenced procedure "Out_IN"
+n05.adb:44:03: warning: variable "C" is never read and never assigned
+observingcomposite.adb:20:20: uninitialized allocator without default initialization is not allowed in SPARK
+observingcomposite.adb:20:20: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:21:20: uninitialized allocator without default initialization is not allowed in SPARK
+observingcomposite.adb:21:20: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:03: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:03: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:16: "XR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:16: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:22:21: "YR1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:22:21: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:23:18: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:23:18: error in inlined body at line 17
+observingcomposite.adb:23:18: info: analyzing call to "Sum_Rec" in context
+observingcomposite.adb:23:18: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:23:18: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:25:14: "R1" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+observingcomposite.adb:25:14: error in inlined body at line 17
+observingcomposite.adb:25:14: info: analyzing call to "Sum_Rec" in context
+observingcomposite.adb:25:14: violation of aspect SPARK_Mode at line 6
+observingcomposite.adb:25:14: violation of aspect SPARK_Mode at line 6
 pointers.adb:46:10: insufficient permission on dereference from "XX"
 pointers.adb:46:10: object was declared as not writeable at pointers.ads:31
 pointers.adb:46:20: insufficient permission on dereference from "YY"
@@ -38,14 +65,18 @@ pointers.ads:14:14: insufficient permission for "Y" when returning from "Bad_Swa
 pointers.ads:14:14: object was moved at pointers.adb:20
 pointers.ads:24:14: insufficient permission for "Y" when returning from "Bad_Swap2"
 pointers.ads:24:14: object was moved at pointers.adb:34
-pointers.ads:38:09: general access type "Int_Cst_Ptr" not allowed in SPARK
+pointers.ads:38:09: general access type is not allowed in SPARK
+pointers.ads:38:09: violation of aspect SPARK_Mode at line 2
 pointers.ads:40:14: insufficient permission for "Y" when returning from "Bad_Swap3"
 pointers.ads:40:14: object was moved at pointers.adb:60
 pointers.ads:46:14: insufficient permission for "CY" when returning from "Bad_Swap3"
 pointers.ads:46:14: object was moved at pointers.adb:72
+pointers.ads:54:09: "Int_Cst_Ptr" is not allowed in SPARK (due to general access type)
+pointers.ads:54:09: violation of aspect SPARK_Mode at line 2
 pointers.ads:56:14: insufficient permission for "Y" when returning from "Bad_Swap4"
 pointers.ads:56:14: object was moved at pointers.adb:86
-pointers.ads:70:09: general access type "Int_Cst_Ptr_Ptr" not allowed in SPARK
+pointers.ads:70:09: general access type is not allowed in SPARK
+pointers.ads:70:09: violation of aspect SPARK_Mode at line 2
 pointers.ads:74:14: insufficient permission for "X" when returning from "Swap5"
 pointers.ads:74:14: object was moved at pointers.adb:116
 pointers2.adb:31:16: insufficient permission for "Y"
@@ -60,14 +91,34 @@ pointers2.ads:18:14: insufficient permission for "Y" when returning from "Bad_Bo
 pointers2.ads:18:14: object was moved at pointers2.adb:30
 pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
 pointers2.ads:20:14: object was moved at pointers2.adb:36
-simple.adb:6:09: general access type "Int_Ptr" not allowed in SPARK
-simple.adb:7:09: general access type "Int_Cst_Ptr" not allowed in SPARK
-simple.adb:8:09: general access type "Int_Ptr_Ptr" not allowed in SPARK
-simple.adb:22:09: source of borrow must be variable "X"
-simple.adb:36:15: insufficient permission on dereference from "B"
-simple.adb:36:15: object was moved at line 34
-test.adb:21:04: constant declaration requires initialization expression
-test.adb:74:09: assignment to "in" mode parameter not allowed
-test.adb:94:15: add "all" to type "Int_Ptr2" defined at line 9
-test.adb:94:15: result must be general access type
-gnatprove: error during generation of Global contracts
+simple.adb:6:09: general access type is not allowed in SPARK
+simple.adb:6:09: violation of aspect SPARK_Mode at line 5
+simple.adb:7:09: general access type is not allowed in SPARK
+simple.adb:7:09: violation of aspect SPARK_Mode at line 5
+simple.adb:8:09: general access type is not allowed in SPARK
+simple.adb:8:09: violation of aspect SPARK_Mode at line 5
+simple.adb:12:04: local borrower of an access object is not yet supported
+test.adb:8:09: general access type is not allowed in SPARK
+test.adb:8:09: violation of aspect SPARK_Mode at line 7
+test.adb:9:09: general access type is not allowed in SPARK
+test.adb:9:09: violation of aspect SPARK_Mode at line 7
+test.adb:10:09: general access type is not allowed in SPARK
+test.adb:10:09: violation of aspect SPARK_Mode at line 7
+test.adb:11:09: general access type is not allowed in SPARK
+test.adb:11:09: violation of aspect SPARK_Mode at line 7
+test.adb:13:04: local borrower of an access object is not yet supported
+test.adb:20:12: warning: variable "varPtr2" is read but never assigned
+test.adb:28:08: general access type is not allowed in SPARK
+test.adb:28:08: violation of aspect SPARK_Mode at line 7
+test.adb:63:03: warning: analyzing unreferenced procedure "returnPointer2"
+test.adb:64:09: warning: variable "X" is read but never assigned
+test.adb:72:03: warning: analyzing unreferenced procedure "RW"
+test.adb:78:08: attribute "Access" is not allowed in SPARK
+test.adb:78:08: violation of aspect SPARK_Mode at line 7
+test.adb:84:08: warning: "B" may be null
+test.adb:86:03: info: analyzing call to "f" in context
+test.adb:86:11: warning: "x0" may be referenced before it has a value
+test.adb:87:08: info: analyzing call to "g" in context
+test.adb:88:03: info: analyzing call to "h" in context
+test.adb:89:08: info: analyzing call to "returnPointer" in context
+gnatprove: error during flow analysis and proof

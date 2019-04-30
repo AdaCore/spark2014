@@ -216,9 +216,10 @@ formal_vectors.adb:184:17: info: predicate check proved (CVC4: 1 VC), in instant
 formal_vectors.adb:184:33: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (others => (all => (all => 1))))))
-formal_vectors.adb:189:08: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:189:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
-formal_vectors.adb:189:21: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:189:07: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:189:14: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:189:27: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:195:22: info: refined post proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:196:43: info: precondition proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:196:75: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

@@ -1,1 +1,8 @@
-use_incomplete_type_auto.ads:4:19: medium: assertion might fail, cannot prove OK (W1)
+incomplete_type_auto.ads:12:09: "C" is not allowed in SPARK (due to incomplete type with deferred full view)
+incomplete_type_auto.ads:12:09: "C" is not allowed in SPARK (due to incomplete type with deferred full view)
+incomplete_type_auto.ads:12:09: access to incomplete type "C_Acc" is required to be in SPARK
+incomplete_type_auto.ads:12:09: access to incomplete type "C_Acc" is required to be in SPARK
+incomplete_type_auto.ads:13:09: incomplete type with deferred full view is not yet supported
+incomplete_type_auto.ads:14:09: "D" is not allowed in SPARK (due to incomplete type with deferred full view)
+incomplete_type_auto.ads:14:09: access to incomplete type "C_Acc" is required to be in SPARK
+gnatprove: error during flow analysis and proof

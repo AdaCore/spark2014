@@ -52,6 +52,7 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
+with Sem_SPARK;
 with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
 with SPARK_Annotate;                  use SPARK_Annotate;
@@ -281,6 +282,15 @@ package body SPARK_Definition is
 
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
+
+   function Get_Emit_Messages return Boolean is (Emit_Messages);
+
+   function Safe_Retysp (E : Entity_Id) return Entity_Id;
+   --  Mark E before calling Retysp on it. It is used inside ownership checking
+   --  because it does not follow the same structure as regular marking and
+   --  therefore may encounter unmarked nodes.
+   --  ??? ideally, it would be better to avoid this case so that we don't end
+   --  up translating things we don't use.
 
    ------------------------------
    -- Body_Statements_In_SPARK --
@@ -890,6 +900,15 @@ package body SPARK_Definition is
 
       Emit_Messages := False;
    end Inhibit_Messages;
+
+   ------------------------
+   -- Ownership_Checking --
+   ------------------------
+
+   package Ownership_Checking is new Sem_SPARK
+     (Retysp                        => Safe_Retysp,
+      Component_Is_Visible_In_SPARK => Component_Is_Visible_In_SPARK,
+      Emit_Messages                 => Get_Emit_Messages);
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -3081,6 +3100,20 @@ package body SPARK_Definition is
 
       Mark (N);
 
+      --  Perform the new SPARK checking rules for pointer aliasing. This is
+      --  only activated on SPARK code.
+      --  ??? Should we do something special for checking of withed units in
+      --  mode Auto?
+
+      if Debug_Flag_FF then
+         Ownership_Checking.Check_Safe_Pointers (N);
+      end if;
+
+      --  Violation_Detected may have been set to True while checking types.
+      --  Reset it here.
+
+      Violation_Detected := False;
+
       --  Go through Marking_Queue to mark remaining entities
 
       while not Marking_Queue.Is_Empty loop
@@ -3228,6 +3261,7 @@ package body SPARK_Definition is
 
                Current_SPARK_Pragma := Save_SPARK_Pragma;
                Violation_Detected := False;
+               Current_Incomplete_Type := Empty;
             end;
          end if;
       end loop;
@@ -3680,6 +3714,14 @@ package body SPARK_Definition is
             then
                Mark_Violation
                  ("nonvolatile function with effectively volatile result", Id);
+            end if;
+
+            if Is_Anonymous_Access_Type (Etype (Id))
+              and then not Ownership_Checking.Is_Traversal_Function (Id)
+            then
+               Mark_Violation
+                 ("anonymous access type for result for "
+                  & "non-traversal functions", Id);
             end if;
 
             while Present (Formal) loop
@@ -4849,6 +4891,15 @@ package body SPARK_Definition is
                            Mark_Violation (Comp, From => Comp_Type);
                         end if;
 
+                        --  Tagged types cannot be owning in SPARK
+
+                        if Is_Tagged_Type (E)
+                          and then Ownership_Checking.Is_Deep (Comp_Type)
+                        then
+                           Mark_Violation
+                             ("owning component of a tagged type", Comp);
+                        end if;
+
                         --  Mark the equality function for Comp_Type if it is
                         --  used for the predefined equality of E.
 
@@ -4945,11 +4996,18 @@ package body SPARK_Definition is
             if not Debug_Flag_FF then
                Mark_Violation ("access type", E);
 
-            --  Should not handle pointers which are not safe, we do not mark
-            --  access types if they are not under the SPARK mode On.
+            --  Reject access to subprogram types
 
-            elsif not SPARK_Pragma_Is (Opt.On) then
-               Mark_Violation ("access type without ownership", E);
+            elsif Is_Access_Subprogram_Type (Base_Type (E)) then
+               Mark_Violation ("access to subprogram type", E);
+
+            elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
+               Mark_Violation ("access attribute", E);
+
+               --   Reject general access types
+
+            elsif Ekind (Base_Type (E)) = E_General_Access_Type then
+               Mark_Violation ("general access type", E);
 
             --  Store the type in the Incomplete_Type map to be marked later.
 
@@ -7018,6 +7076,16 @@ package body SPARK_Definition is
       Mark_Entity (Retysp (E));
       return Entities_In_SPARK.Contains (Retysp (E));
    end Retysp_In_SPARK;
+
+   -----------------
+   -- Safe_Retysp --
+   -----------------
+
+   function Safe_Retysp (E : Entity_Id) return Entity_Id is
+   begin
+      Mark_Entity (E);
+      return Retysp (E);
+   end Safe_Retysp;
 
    ---------------------
    -- SPARK_Pragma_Is --

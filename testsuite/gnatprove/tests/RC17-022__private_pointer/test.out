@@ -19,11 +19,11 @@ private_pointer.ads:39:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:39:28: high: "X_1" is not initialized
 private_pointer.ads:40:04: info: initialization of "X_2" proved
 private_pointer.ads:41:19: info: assertion proved (CVC4: 1 VC)
-private_pointer.ads:43:19: medium: assertion might fail, cannot prove Is_Null (X_3)
+private_pointer.ads:43:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:43:28: high: "X_3" is not initialized
 private_pointer.ads:44:19: high: "X_3" is not initialized
-private_pointer.ads:44:19: medium: assertion might fail, cannot prove X_3 /= Mode_Auto.c
-private_pointer.ads:45:19: medium: assertion might fail, cannot prove Mode_Auto.D = X_3
+private_pointer.ads:44:19: info: assertion proved (CVC4: 1 VC)
+private_pointer.ads:45:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:45:33: high: "X_3" is not initialized
 private_pointer.ads:48:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:50:24: info: data dependencies proved

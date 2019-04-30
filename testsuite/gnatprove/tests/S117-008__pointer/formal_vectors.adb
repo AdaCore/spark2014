@@ -186,7 +186,7 @@ package body Formal_Vectors with SPARK_Mode is
    end Delete;
 
    function Element (V : Vector; I : Positive) return Element_Type is
-     (V.Content (I).all);
+     (Copy (V.Content (I).all));
 
    -- function Element (V : Vector; I : Positive) return access Element_Type is
    --   (V.Content (I));
