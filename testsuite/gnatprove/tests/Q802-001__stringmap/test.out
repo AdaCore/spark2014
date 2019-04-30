@@ -3,16 +3,16 @@ test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to acce
 test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
 test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
 test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: instantiation error at a-strbou.ads:387
-test.ads:6:04: instantiation error at a-strbou.ads:419
-test.ads:6:04: instantiation error at a-strbou.ads:465
-test.ads:6:04: instantiation error at a-strbou.ads:517
-test.ads:6:04: instantiation error at a-strbou.ads:524
+test.ads:6:04: instantiation error at a-strbou.ads:388
+test.ads:6:04: instantiation error at a-strbou.ads:420
+test.ads:6:04: instantiation error at a-strbou.ads:466
+test.ads:6:04: instantiation error at a-strbou.ads:518
+test.ads:6:04: instantiation error at a-strbou.ads:525
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
-test.ads:6:04: warning: in instantiation at a-strbou.ads:848
+test.ads:6:04: warning: in instantiation at a-strbou.ads:849
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
 gnatprove: error during flow analysis and proof
