@@ -28,6 +28,7 @@ with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Common_Containers;       use Common_Containers;
 with Flow_Types;              use Flow_Types;
 with GNAT.Source_Info;
+with GNATCOLL.Symbols;        use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -222,7 +223,7 @@ package body Gnat2Why.Types is
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, WNE_Default_Init)),
                      Def      => +Def,
-                     Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                     Labels   => Symbol_Sets.To_Set (NID ("inline")),
                      Location => No_Location,
                      Binders  =>
                        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
@@ -378,7 +379,7 @@ package body Gnat2Why.Types is
                            New_Function_Decl
                              (Domain   => EW_Pred,
                               Name     => Name,
-                              Labels   => Name_Id_Sets.Empty_Set,
+                              Labels   => Symbol_Sets.Empty_Set,
                               Binders  => Binders,
                               Location => No_Location));
 
@@ -397,7 +398,7 @@ package body Gnat2Why.Types is
                               Name     => Name,
                               Def      => +Def,
                               Location => No_Location,
-                              Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                              Labels   => Symbol_Sets.To_Set (NID ("inline")),
                               Binders  => Binders));
                   end if;
                end;
@@ -464,7 +465,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -519,7 +520,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Type_Invariant)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -550,7 +551,7 @@ package body Gnat2Why.Types is
             Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
               Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-            Rep_Module : constant W_Module_Id := New_Module (File => No_Name,
+            Rep_Module : constant W_Module_Id := New_Module (File => No_Symbol,
                                                        Name => NID (Name));
          begin
             --  Export the theory containing the pointer record definition
@@ -669,7 +670,7 @@ package body Gnat2Why.Types is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__default_checks"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking DIC of default value and absence"
                    & " of runtime errors in the private part of "
@@ -726,7 +727,7 @@ package body Gnat2Why.Types is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => No_Location,
-               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                Def      => +Why_Body));
 
       Close_Theory (File,
@@ -840,7 +841,7 @@ package body Gnat2Why.Types is
                  (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Dummy)),
                   Binders     => (1 .. 0 => <>),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type =>
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));

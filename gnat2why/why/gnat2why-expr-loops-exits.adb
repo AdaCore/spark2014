@@ -23,7 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;              use Namet;
+with GNATCOLL.Symbols;   use GNATCOLL.Symbols;
 with String_Utils;       use String_Utils;
 with Why.Atree.Builders; use Why.Atree.Builders;
 with Why.Conversions;    use Why.Conversions;
@@ -111,10 +111,10 @@ package body Gnat2Why.Expr.Loops.Exits is
         and then Unconditional_Loop_Exit (Nlists.Last (Instrs))
       then
          declare
-            Name : constant Name_Id :=
+            Name : constant Symbol :=
               NID (Capitalize_First
                      (New_Temp_Identifier (Base_Name => "exception")));
-            Exc : constant W_Name_Id := New_Name (Symbol => Name);
+            Exc : constant W_Name_Id := New_Name (Symb => Name);
 
             procedure Add_In_Map (M : in out Why_Node_Maps.Map);
             --  Add the new mapping to the toplevel map in the loop contexts

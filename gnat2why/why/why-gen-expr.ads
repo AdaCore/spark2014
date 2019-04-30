@@ -23,19 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;       use Gnat2Why.Util;
-with Namet;               use Namet;
-with Snames;              use Snames;
-with SPARK_Atree;         use SPARK_Atree;
-with SPARK_Util;          use SPARK_Util;
-with Types;               use Types;
-with Uintp;               use Uintp;
-with VC_Kinds;            use VC_Kinds;
-with Why.Atree.Builders;  use Why.Atree.Builders;
-with Why.Ids;             use Why.Ids;
-with Why.Inter;           use Why.Inter;
-with Why.Sinfo;           use Why.Sinfo;
-with Why.Types;           use Why.Types;
+with GNATCOLL.Symbols;   use GNATCOLL.Symbols;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+with Snames;             use Snames;
+with SPARK_Atree;        use SPARK_Atree;
+with SPARK_Util;         use SPARK_Util;
+with Types;              use Types;
+with Uintp;              use Uintp;
+with VC_Kinds;           use VC_Kinds;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Ids;            use Why.Ids;
+with Why.Inter;          use Why.Inter;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package Why.Gen.Expr is
 
@@ -145,19 +145,19 @@ package Why.Gen.Expr is
 
    function New_Located_Label
      (N         : Node_Id;
-      Left_Most : Boolean := False) return Name_Id;
+      Left_Most : Boolean := False) return Symbol;
    --  Return a label that contains the Ada Sloc of the node
 
-   function New_Shape_Label (Node : Node_Id) return Name_Id;
+   function New_Shape_Label (Node : Node_Id) return Symbol;
    --  Return a label representing the shape of the Ada code surrounding the
    --  input node. This label is used to name the VC file for manual proof.
 
    function New_Comment_Label
-     (Node : Node_Id; Loc : Name_Id; Reason : VC_Kind) return Name_Id;
+     (Node : Node_Id; Loc : Symbol; Reason : VC_Kind) return Symbol;
    --  Return a label with the tag "comment" in order to display VC information
    --  in VC generated files.
 
-   function New_Sub_VC_Marker (N : Node_Id) return Name_Id;
+   function New_Sub_VC_Marker (N : Node_Id) return Symbol;
    --  Return a label that contains the pretty printing for the given node
 
    function New_Function_Call
@@ -192,11 +192,11 @@ package Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Name_Id_Set;
+      Reason : VC_Kind) return Symbol_Set;
    --  Generate VC and location labels for the given Ada node, with the given
    --  VC reason
 
-   function Cur_Subp_Sloc return Name_Id;
+   function Cur_Subp_Sloc return Symbol;
    --  Return a label that identifies the current subprogram or package
 
    function New_Range_Expr

@@ -23,20 +23,21 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Flow_Utility;           use Flow_Utility;
-with Gnat2Why.Util;          use Gnat2Why.Util;
-with Snames;                 use Snames;
-with SPARK_Util;             use SPARK_Util;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Conversions;        use Why.Conversions;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Gen.Init;           use Why.Gen.Init;
-with Why.Gen.Names;          use Why.Gen.Names;
-with Why.Gen.Pointers;       use Why.Gen.Pointers;
-with Why.Gen.Records;        use Why.Gen.Records;
-with Why.Inter;              use Why.Inter;
+with Flow_Utility;        use Flow_Utility;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Snames;              use Snames;
+with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Init;        use Why.Gen.Init;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Pointers;    use Why.Gen.Pointers;
+with Why.Gen.Records;     use Why.Gen.Records;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Binders is
 
@@ -914,7 +915,7 @@ package body Why.Gen.Binders is
                                                     Binders => Binders);
       Equality   : W_Pred_Id;
       Node_Name  : constant String :=
-        (Get_Name_String (Get_Symbol (Get_Name (Name))));
+        (Img (Get_Symb (Get_Name (Name))));
       Axiom_Name : constant String := (if Node_Name /= ""
                                        then Node_Name & "__"
                                        else "") & Def_Axiom;
@@ -1051,7 +1052,7 @@ package body Why.Gen.Binders is
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
             Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
-            Labels    => Name_Id_Sets.Empty_Set,
+            Labels    => Symbol_Sets.Empty_Set,
             Pred      =>
               New_Existential_Quantif (Empty,
                                        Binders (Binders'First + 1
@@ -1088,7 +1089,7 @@ package body Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Type_Id := Why_Empty;
       Location    : Source_Ptr;
-      Labels      : Name_Id_Set;
+      Labels      : Symbol_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
@@ -1116,7 +1117,7 @@ package body Why.Gen.Binders is
       Items       : Item_Array;
       Return_Type : W_Type_Id := Why_Empty;
       Location    : Source_Ptr;
-      Labels      : Name_Id_Set;
+      Labels      : Symbol_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
@@ -1146,7 +1147,7 @@ package body Why.Gen.Binders is
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
-      Name     : Name_Id;
+      Name     : Symbol;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
@@ -1186,7 +1187,7 @@ package body Why.Gen.Binders is
          New_Type_Decl
            (Ada_Node   => Ada_Node,
             Name       => Name,
-            Labels     => Name_Id_Sets.Empty_Set,
+            Labels     => Symbol_Sets.Empty_Set,
             Definition =>
               New_Record_Definition
                 (Fields => New_Constant_Record_Binders (EW_Pred, Binders)));
@@ -1214,7 +1215,7 @@ package body Why.Gen.Binders is
            (Ada_Node  => Ada_Node,
             Variables => (1 => Binders (Binders'First).B_Name),
             Var_Type  => Get_Type (+Binders (Binders'First).B_Name),
-            Labels    => Name_Id_Sets.Empty_Set,
+            Labels    => Symbol_Sets.Empty_Set,
             Triggers  => Triggers,
             Pred      => Pred);
 
@@ -1269,7 +1270,7 @@ package body Why.Gen.Binders is
                  (Ada_Node  => Ada_Node,
                   Variables => Vars,
                   Var_Type  => Typ,
-                  Labels    => Name_Id_Sets.Empty_Set,
+                  Labels    => Symbol_Sets.Empty_Set,
                   Triggers  => Triggers,
                   Pred      => Pred);
             else
@@ -1277,7 +1278,7 @@ package body Why.Gen.Binders is
                  (Ada_Node  => Ada_Node,
                   Variables => Vars,
                   Var_Type  => Typ,
-                  Labels    => Name_Id_Sets.Empty_Set,
+                  Labels    => Symbol_Sets.Empty_Set,
                   Pred      =>
                     New_Universal_Quantif (Ada_Node => Empty,
                                            Binders  => Other_Binders,
@@ -1369,7 +1370,7 @@ package body Why.Gen.Binders is
             T := New_Label
               (Ada_Node => Ent,
                Domain   => EW_Term,
-               Labels   => Name_Id_Sets.Empty_Set,
+               Labels   => Symbol_Sets.Empty_Set,
                Def      => T,
                Typ      => EW_Init_Wrapper (Etype (Ent), EW_Split));
          end;

@@ -195,7 +195,7 @@ package body Why.Atree.Sprint is
       Effects : constant W_Effects_Id := Get_Effects (Node);
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
-      Labels  : constant Name_Id_Sets.Set := Get_Labels (Node);
+      Labels  : constant Symbol_Sets.Set := Get_Labels (Node);
    begin
       P (O, "(val _f : ");
       Print_Node (+Res_Ty);
@@ -249,7 +249,7 @@ package body Why.Atree.Sprint is
    ----------------------
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
-      Labels : constant Name_Id_Set := Get_Labels (Node);
+      Labels : constant Symbol_Set := Get_Labels (Node);
    begin
       P (O, "(");
       if not Labels.Is_Empty then
@@ -427,7 +427,7 @@ package body Why.Atree.Sprint is
    -----------------------------
 
    procedure Print_Clone_Declaration (Node : W_Clone_Declaration_Id) is
-      As_Name    : constant Name_Id := Get_As_Name (Node);
+      As_Name    : constant Symbol := Get_As_Name (Node);
       Subst_List : constant W_Clone_Substitution_OList :=
         +Get_Substitutions (Node);
    begin
@@ -435,7 +435,7 @@ package body Why.Atree.Sprint is
       P (O, Get_Clone_Kind (Node));
       P (O, " ");
       Print_Module_Id (Get_Origin (Node), With_File => True);
-      if As_Name /= No_Name then
+      if As_Name /= No_Symbol then
          P (O, " as ");
          P (O, As_Name);
       end if;
@@ -667,8 +667,7 @@ package body Why.Atree.Sprint is
          end if;
 
          declare
-            File_Name : constant String :=
-              Get_Name_String (Get_File_Name (Node));
+            File_Name : constant String := Img (Get_File_Name (Node));
 
             From_Command : constant String :=
               Compose (Compose (Compose (Compose (Containing_Directory
@@ -746,7 +745,7 @@ package body Why.Atree.Sprint is
                Node : constant W_Custom_Substitution_Id :=
                  W_Custom_Substitution_Id (Element (Position));
             begin
-               Append (Result, Get_Name_String (Get_From (Node)));
+               Append (Result, Img (Get_From (Node)));
             end;
 
             Position := Next (Position);
@@ -776,7 +775,7 @@ package body Why.Atree.Sprint is
                Node : constant W_Custom_Substitution_Id :=
                  W_Custom_Substitution_Id (Element (Position));
             begin
-               Match (Compile (Get_Name_String (Get_From (Node))), Text,
+               Match (Compile (Img (Get_From (Node))), Text,
                       Interm_Matches, Matches (0).First);
 
                if Interm_Matches (0) /= No_Match
@@ -1372,8 +1371,8 @@ package body Why.Atree.Sprint is
    ----------------------------
 
    procedure Print_Meta_Declaration (Node : W_Meta_Declaration_Id) is
-      Name      : constant Name_Id := Get_Name (Node);
-      Parameter : constant Name_Id := Get_Parameter (Node);
+      Name      : constant Symbol := Get_Name (Node);
+      Parameter : constant Symbol := Get_Parameter (Node);
    begin
       P (O, "meta """);
       P (O, Name);
@@ -1413,7 +1412,7 @@ package body Why.Atree.Sprint is
    -----------------
 
    procedure Print_Label (Node : W_Label_Id) is
-      Labels : constant Name_Id_Set := Get_Labels (Node);
+      Labels : constant Symbol_Set := Get_Labels (Node);
    begin
       if not Labels.Is_Empty then
          P (O, "( ");
@@ -1509,9 +1508,9 @@ package body Why.Atree.Sprint is
    begin
       if With_File then
          declare
-            File : constant Name_Id := Get_File (Node);
+            File : constant Symbol := Get_File (Node);
          begin
-            if File /= No_Name then
+            if File /= No_Symbol then
                P (O, """");
                P (O, File);
                P (O, """.");
@@ -1519,7 +1518,7 @@ package body Why.Atree.Sprint is
          end;
       end if;
 
-      P (O, Capitalize_First (Get_Name_String (Get_Name (Node))));
+      P (O, Capitalize_First (Img (Get_Name (Node))));
    end Print_Module_Id;
 
    ----------------
@@ -1531,23 +1530,23 @@ package body Why.Atree.Sprint is
       if not Get_Infix (Node) then
          declare
             Module    : constant W_Module_Id := Get_Module (Node);
-            Namespace : constant Name_Id := Get_Namespace (Node);
+            Namespace : constant Symbol := Get_Namespace (Node);
          begin
             if Module /= Why_Empty
-              and then Get_Name (Module) /= No_Name
+              and then Get_Name (Module) /= No_Symbol
             then
                Print_Module_Id (Module);
                P (O, ".");
             end if;
 
-            if Namespace /= No_Name then
+            if Namespace /= No_Symbol then
                P (O, Namespace);
                P (O, ".");
             end if;
          end;
       end if;
 
-      P (O, Get_Symbol (Node));
+      P (O, Get_Symb (Node));
    end Print_Name;
 
    -----------------------------
@@ -1556,16 +1555,16 @@ package body Why.Atree.Sprint is
 
    procedure Print_Name_Force_Prefix (Node : W_Name_Id) is
       Module    : constant W_Module_Id := Get_Module (Node);
-      Namespace : constant Name_Id := Get_Namespace (Node);
+      Namespace : constant Symbol := Get_Namespace (Node);
    begin
       if Module /= Why_Empty
-        and then Get_Name (Module) /= No_Name
+        and then Get_Name (Module) /= No_Symbol
       then
          Print_Module_Id (Module);
          P (O, ".");
       end if;
 
-      if Namespace /= No_Name
+      if Namespace /= No_Symbol
       then
          P (O, Namespace);
          P (O, ".");
@@ -1574,10 +1573,10 @@ package body Why.Atree.Sprint is
       if Get_Infix (Node)
       then
          P (O, "(");
-         P (O, Get_Symbol (Node));
+         P (O, Get_Symb (Node));
          P (O, ")");
       else
-         P (O, Get_Symbol (Node));
+         P (O, Get_Symb (Node));
       end if;
    end Print_Name_Force_Prefix;
 
@@ -2022,9 +2021,9 @@ package body Why.Atree.Sprint is
    ------------------
 
    procedure Print_Tagged (Node : W_Tagged_Id) is
-      Tag : constant Name_Id := Get_Tag (Node);
+      Tag : constant Symbol := Get_Tag (Node);
    begin
-      if Tag = No_Name then
+      if Tag = No_Symbol then
          Print_Node (+Get_Def (Node));
       elsif Tag = Old_Tag then
          P (O, "(old ");
@@ -2201,7 +2200,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Universal_Quantif (Node   : W_Universal_Quantif_Id) is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
-      Labels          : constant Name_Id_Set := Get_Labels (Node);
+      Labels          : constant Symbol_Set := Get_Labels (Node);
       Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId := Get_Triggers (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);

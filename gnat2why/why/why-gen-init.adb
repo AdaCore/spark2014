@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Common_Containers;        use Common_Containers;
-with Namet;                    use Namet;
 with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Util.Types;         use SPARK_Util.Types;
 with VC_Kinds;                 use VC_Kinds;
@@ -205,7 +204,7 @@ package body Why.Gen.Init is
                  (Domain      => EW_Prog,
                   Name        => To_Program_Space (Init_Val),
                   Binders     => A_Binder,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => Ty,
                   Pre         => Pre,
@@ -236,7 +235,7 @@ package body Why.Gen.Init is
                   Is_Mutable => False,
                   Type_Kind  => EW_Wrapper,
                   Name       => New_Name
-                    (Symbol => NID (Short_Name (Ty) & "__init_wrapper"),
+                    (Symb   => NID (Short_Name (Ty) & "__init_wrapper"),
                      Module => E_Init_Module (Ty))),
                Inserted => Inserted,
                Position => C);
@@ -398,7 +397,7 @@ package body Why.Gen.Init is
             Conv : constant W_Expr_Id := New_Label
               (Ada_Node => Ada_Node,
                Domain   => Domain,
-               Labels   => Name_Id_Sets.Empty_Set,
+               Labels   => Symbol_Sets.Empty_Set,
                Def      => Name,
                Typ      => EW_Split (E));
          begin

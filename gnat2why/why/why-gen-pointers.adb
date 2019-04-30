@@ -23,28 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers;             use Ada.Containers;
+with Ada.Containers;      use Ada.Containers;
 with Ada.Containers.Hashed_Maps;
-with Common_Containers;          use Common_Containers;
+with Common_Containers;   use Common_Containers;
 with GNAT.Source_Info;
-with Namet;                      use Namet;
-with Sinput;                     use Sinput;
-with Snames;                     use Snames;
-with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Util;                 use SPARK_Util;
-with VC_Kinds;                   use VC_Kinds;
-with Why.Atree.Accessors;        use Why.Atree.Accessors;
-with Why.Atree.Builders;         use Why.Atree.Builders;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Gen.Decl;               use Why.Gen.Decl;
-with Why.Gen.Expr;               use Why.Gen.Expr;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Gen.Preds;              use Why.Gen.Preds;
-with Why.Gen.Progs;              use Why.Gen.Progs;
-with Why.Inter;                  use Why.Inter;
-with Why.Types;                  use Why.Types;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Namet;               use Namet;
+with Sinput;              use Sinput;
+with Snames;              use Snames;
+with SPARK_Atree;         use SPARK_Atree;
+with SPARK_Util;          use SPARK_Util;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
+with Why.Types;           use Why.Types;
 
 package body Why.Gen.Pointers is
 
@@ -147,7 +149,7 @@ package body Why.Gen.Pointers is
                      Name        => To_Local (E_Symb (E, WNE_Pointer_Value)),
                      Binders     => A_Binder,
                      Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Return_Type => EW_Abstract (Directly_Designated_Type (E)),
                      Def         => New_Call
                        (Domain => EW_Term,
@@ -171,7 +173,7 @@ package body Why.Gen.Pointers is
                   Name     => +New_Identifier (Name => Null_Access_Name),
                   Binders  => A_Binder,
                   Location => No_Location,
-                  Labels   => Name_Id_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.Empty_Set,
                   Def      => New_Not (Domain => EW_Term,
                                        Right  => +New_Pointer_Is_Null_Access
                                          (E, +A_Ident, Local => True))));
@@ -182,7 +184,7 @@ package body Why.Gen.Pointers is
                   Name        => +To_Local (E_Symb (Ty, WNE_Null_Pointer)),
                   Binders     => (1 .. 0 => <>),
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Abstr_Ty));
 
          Condition := New_Call (Name => Why_Eq,
@@ -224,7 +226,7 @@ package body Why.Gen.Pointers is
                      Name        => To_Program_Space
                        (To_Local (E_Symb (E, WNE_Pointer_Value))),
                      Binders     => A_Binder,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Return_Type => EW_Abstract (Directly_Designated_Type (E)),
                      Pre         => Precond,
@@ -237,7 +239,7 @@ package body Why.Gen.Pointers is
                      Binders     => A_Binder,
                      Return_Type => Abstr_Ty,
                      Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Pre         => Precond,
                      Post        => Assign_Pointer_Post));
 
@@ -328,7 +330,7 @@ package body Why.Gen.Pointers is
          Emit (P,
                New_Global_Ref_Declaration
                  (Name     => Next_Address,
-                  Labels   => Name_Id_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.Empty_Set,
                   Ref_Type => EW_Int_Type,
                   Location => No_Location));
 
@@ -339,7 +341,7 @@ package body Why.Gen.Pointers is
                   Binders     => R_No_Init_Binder,
                   Return_Type => Abstr_Ty,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Post        => Uninitialized_Post,
                   Effects     => Address_Effects));
 
@@ -350,7 +352,7 @@ package body Why.Gen.Pointers is
                   Binders     => R_Init_Binder,
                   Return_Type => Abstr_Ty,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Post        => Initialized_Post,
                   Effects     => Address_Effects));
 
@@ -452,7 +454,7 @@ package body Why.Gen.Pointers is
                  (Domain   => EW_Pred,
                   Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
                   Location => Safe_First_Sloc (E),
-                  Labels   => Name_Id_Sets.Empty_Set,
+                  Labels   => Symbol_Sets.Empty_Set,
                   Binders  => R_Binder,
                   Def      => +Check_Pred));
          Pre_Cond :=
@@ -464,7 +466,7 @@ package body Why.Gen.Pointers is
                   Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
                   Binders     => R_Binder,
                   Location    => Safe_First_Sloc (E),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Root_Abstr,
                   Pre         => Pre_Cond,
                   Post        => Post));
@@ -520,7 +522,7 @@ package body Why.Gen.Pointers is
                   Name        => To_Local (E_Symb (E, WNE_To_Base)),
                   Binders     => A_Binder,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Root_Ty,
                   Def         => Def));
          end;
@@ -560,7 +562,7 @@ package body Why.Gen.Pointers is
                   Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                   Binders     => R_Binder,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Abstr_Ty,
                   Def         => Def));
          end;
@@ -587,7 +589,7 @@ package body Why.Gen.Pointers is
                Name        => To_Local (E_Symb (E, WNE_To_Base)),
                Binders     => A_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
          Emit
@@ -597,7 +599,7 @@ package body Why.Gen.Pointers is
                Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                Binders     => A_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
       end if;
@@ -677,19 +679,19 @@ package body Why.Gen.Pointers is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Origin        => Access_To_Incomp_Ty,
                Substitutions =>
                  (1 => New_Clone_Substitution
                       (Kind      => EW_Type_Subst,
                        Orig_Name => New_Name
-                         (Symbol => NID ("abstr_ty")),
+                         (Symb => NID ("abstr_ty")),
                        Image     => To_Local (Get_Name
                          (E_Symb (E, WNE_Private_Type)))),
                   2 => New_Clone_Substitution
                       (Kind      => EW_Type_Subst,
                        Orig_Name => New_Name
-                         (Symbol => NID ("comp_ty")),
+                         (Symb => NID ("comp_ty")),
                        Image     =>
                          Get_Name
                            (EW_Abstract (Directly_Designated_Type (E)))))));
@@ -722,8 +724,8 @@ package body Why.Gen.Pointers is
       Value_Id  : constant W_Identifier_Id :=
         (if Designates_Incomplete_Type (E)
          then W_Identifier_Id'(New_Identifier
-           (Symbol =>
-              Get_Symbol (Get_Name (E_Symb (E, WNE_Pointer_Value_Abstr))),
+           (Symb =>
+              Get_Symb (Get_Name (E_Symb (E, WNE_Pointer_Value_Abstr))),
             Domain => EW_Term,
             Typ    =>
               New_Named_Type
@@ -835,7 +837,7 @@ package body Why.Gen.Pointers is
                                                  others => <>)),
                Return_Type => +EW_Bool_Type,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Def         =>
                  +New_And_Expr
                     (+Comparison_Null, +Sec_Condition, EW_Pred)));
@@ -850,8 +852,9 @@ package body Why.Gen.Pointers is
       if Designates_Incomplete_Type (E) then
          Emit (P,
                New_Type_Decl
-                 (Name  => Get_Name_String
-                    (Get_Symbol (To_Local (E_Symb (E, WNE_Private_Type))))));
+                 (Name  => Img
+                    (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type)))))
+              );
       end if;
 
       Declare_Pointer_Type;
@@ -872,7 +875,7 @@ package body Why.Gen.Pointers is
         Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
 
    begin
-      return New_Module (File => No_Name,
+      return New_Module (File => No_Symbol,
                          Name => NID (Name));
    end Get_Rep_Pointer_Module;
 

@@ -22,8 +22,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols; use GNATCOLL.Symbols;
-with Sem_Util;         use Sem_Util;
+with Sem_Util; use Sem_Util;
 
 package body Common_Containers is
 

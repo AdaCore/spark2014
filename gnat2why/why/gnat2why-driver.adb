@@ -86,6 +86,7 @@ with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.Sprint;                use Why.Atree.Sprint;
 with Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
+with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
 with Why.Types;                       use Why.Types;
 
@@ -549,6 +550,7 @@ package body Gnat2Why.Driver is
             Load_Codepeer_Results;
             Timing_Phase_Completed (Timing, "codepeer results");
 
+            Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
             Timing_Phase_Completed (Timing, "init_why_sections");

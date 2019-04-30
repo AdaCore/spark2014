@@ -23,20 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;         use Namet;
-with Snames;        use Snames;
-with SPARK_Util;    use SPARK_Util;
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
-with Why.Sinfo;     use Why.Sinfo;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Snames;           use Snames;
+with SPARK_Util;       use SPARK_Util;
+with Types;            use Types;
+with Why.Ids;          use Why.Ids;
+with Why.Sinfo;        use Why.Sinfo;
 with Why.Types;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
-   function NID (Name : String) return Valid_Name_Id;
-   --  Return Name_Id for Name
+   procedure Initialize;
+   --  Initialize the state of this package; should be called before using the
+   --  NID function.
+
+   function NID (Name : String) return Symbol;
+   --  Return Symbol for Name
 
    function Conversion_Name
       (From : W_Type_Id;
@@ -74,7 +78,7 @@ package Why.Gen.Names is
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Is_Temp   : Boolean := False) return W_Identifier_Id;
@@ -91,7 +95,7 @@ package Why.Gen.Names is
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Is_Temp   : Boolean := False)
@@ -102,8 +106,8 @@ package Why.Gen.Names is
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
-      Symbol    : Name_Id;
-      Namespace : Name_Id := No_Name;
+      Symb      : Symbol;
+      Namespace : Symbol := No_Symbol;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Infix     : Boolean := False;

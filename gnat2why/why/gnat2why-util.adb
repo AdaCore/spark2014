@@ -41,8 +41,8 @@ with Why.Atree.Modules;          use Why.Atree.Modules;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Keywords;               use Why.Keywords;
 with Why.Inter;                  use Why.Inter;
+with Why.Keywords;               use Why.Keywords;
 with Why.Types;                  use Why.Types;
 
 package body Gnat2Why.Util is
@@ -320,10 +320,10 @@ package body Gnat2Why.Util is
 
    function Get_Counterexample_Labels
      (E              : Entity_Id;
-      Append_To_Name : String := "") return Name_Id_Sets.Set
+      Append_To_Name : String := "") return Symbol_Sets.Set
    is
-      Labels : Name_Id_Sets.Set;
-      Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
+      Labels : Symbol_Sets.Set;
+      Model_Trace : constant Symbol_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
 
       E_Type : constant Entity_Id := Retysp (Etype (E));
@@ -333,7 +333,7 @@ package body Gnat2Why.Util is
 
    begin
       if not Entity_Comes_From_Source (E) then
-         Labels := Name_Id_Sets.Empty_Set;
+         Labels := Symbol_Sets.Empty_Set;
 
       --  Generate counterexample labels for a function result. As function
       --  results are translated as refs, we must generate a "model_projected"
@@ -738,10 +738,10 @@ package body Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append          : String := "") return Name_Id_Sets.Set
+      Append          : String := "") return Symbol_Sets.Set
    is
-      S : Name_Id_Sets.Set :=
-       (Name_Id_Sets.To_Set
+      S : Symbol_Sets.Set :=
+       (Symbol_Sets.To_Set
           (NID
              (Model_Trace_Label &
               (if E = Empty
@@ -760,9 +760,9 @@ package body Gnat2Why.Util is
       return S;
    end Get_Model_Trace_Label;
 
-   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set is
-      S : constant Name_Id_Sets.Set :=
-       (Name_Id_Sets.To_Set
+   function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set is
+      S : constant Symbol_Sets.Set :=
+       (Symbol_Sets.To_Set
           (NID
              (Model_Trace_Label & Name)));
    begin

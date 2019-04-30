@@ -88,7 +88,7 @@ package body Why.Gen.Progs is
         New_Any_Expr
           (Ada_Node    => Ada_Node,
            Post        => Post,
-           Labels      => Name_Id_Sets.Empty_Set,
+           Labels      => Symbol_Sets.Empty_Set,
            Return_Type =>
              (if Return_Type = Why_Empty then EW_Unit_Type
               else Return_Type));
@@ -126,7 +126,7 @@ package body Why.Gen.Progs is
         New_Any_Expr
           (Ada_Node    => Ada_Node,
            Effects     => Effects,
-           Labels      => Name_Id_Sets.Empty_Set,
+           Labels      => Symbol_Sets.Empty_Set,
            Return_Type => EW_Unit_Type);
    end New_Havoc_Statement;
 
@@ -202,7 +202,7 @@ package body Why.Gen.Progs is
       return
         New_Any_Expr
           (Post        => Pred,
-           Labels      => Name_Id_Sets.Empty_Set,
+           Labels      => Symbol_Sets.Empty_Set,
            Return_Type => +T);
    end New_Simpl_Any_Prog;
 

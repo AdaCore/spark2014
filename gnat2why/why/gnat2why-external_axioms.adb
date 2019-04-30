@@ -23,20 +23,19 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;                  use Common_Containers;
-with Gnat2Why.Util;                      use Gnat2Why.Util;
-with Namet;                              use Namet;
-with Nlists;                             use Nlists;
-with SPARK_Util;                         use SPARK_Util;
-with Why.Atree.Builders;                 use Why.Atree.Builders;
-with Why.Atree.Modules;                  use Why.Atree.Modules;
-with Why.Gen.Arrays;                     use Why.Gen.Arrays;
-with Why.Gen.Binders;                    use Why.Gen.Binders;
-with Why.Gen.Names;                      use Why.Gen.Names;
-with Why.Ids;                            use Why.Ids;
-with Why.Inter;                          use Why.Inter;
-with Why.Sinfo;                          use Why.Sinfo;
-with Why.Types;                          use Why.Types;
+with Common_Containers;  use Common_Containers;
+with Gnat2Why.Util;      use Gnat2Why.Util;
+with Nlists;             use Nlists;
+with SPARK_Util;         use SPARK_Util;
+with Why.Atree.Builders; use Why.Atree.Builders;
+with Why.Atree.Modules;  use Why.Atree.Modules;
+with Why.Gen.Arrays;     use Why.Gen.Arrays;
+with Why.Gen.Binders;    use Why.Gen.Binders;
+with Why.Gen.Names;      use Why.Gen.Names;
+with Why.Ids;            use Why.Ids;
+with Why.Inter;          use Why.Inter;
+with Why.Sinfo;          use Why.Sinfo;
+with Why.Types;          use Why.Types;
 
 package body Gnat2Why.External_Axioms is
 

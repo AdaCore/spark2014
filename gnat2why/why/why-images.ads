@@ -23,13 +23,13 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;     use Namet;
-with Outputs;   use Outputs;
-with Types;     use Types;
-with Uintp;     use Uintp;
-with Urealp;    use Urealp;
-with Why.Sinfo; use Why.Sinfo;
-with Why.Types; use Why.Types;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Outputs;          use Outputs;
+with Types;            use Types;
+with Uintp;            use Uintp;
+with Urealp;           use Urealp;
+with Why.Sinfo;        use Why.Sinfo;
+with Why.Types;        use Why.Types;
 
 package Why.Images is
 
@@ -42,7 +42,7 @@ package Why.Images is
    --  Image functions for the basic entities used in Why's AST.
    --  These output the string image into O.
 
-   procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False);
+   procedure P (O : Output_Id; Name : Symbol; As_String : Boolean := False);
 
    procedure P (O : Output_Id; Node : Node_Id);
 
@@ -64,7 +64,7 @@ package Why.Images is
 
    procedure P
      (O         : Output_Id;
-      Value     : Name_Id_Set;
+      Value     : Symbol_Set;
       As_Labels : Boolean := False);
 
    procedure P
@@ -86,8 +86,9 @@ package Why.Images is
    --  Print either "module" or "theory" depending on theory type, if kind is
    --  EW_Theory and Empty_For_Theory is true, print nothing.
 
-   function Img (Name : Name_Id) return String;
-   --  Return the String content of Name
+   function Img (Name : Symbol) return String
+     with Pre => Name /= No_Symbol;
+   --  Return the String represented by the symbol
 
    function Img (Node : Why_Node_Set) return String;
    --  Return an image of a Node Id (with no leading space)

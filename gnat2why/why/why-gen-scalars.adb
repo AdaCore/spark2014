@@ -80,10 +80,10 @@ package body Why.Gen.Scalars is
       use Name_Id_Fixed_Point_Map;
 
       File        : constant W_Section_Id := WF_Pure;
-      Module_Name : constant Name_Id :=
+      Module_Name : constant Symbol :=
         Get_Fixed_Point_Theory_Name (Typ => Typ);
       Module      : constant W_Module_Id :=
-        New_Module (File => No_Name,
+        New_Module (File => No_Symbol,
                     Name => Module_Name);
       N_Ty        : constant W_Type_Id := New_Type
         (Ada_Node   => Base_Retysp (Typ),
@@ -97,28 +97,28 @@ package body Why.Gen.Scalars is
            Mult_Int    =>
              New_Identifier (Module => Module,
                              Domain => EW_Term,
-                             Symbol => NID ("fxp_mult_int"),
+                             Symb   => NID ("fxp_mult_int"),
                              Typ    => N_Ty),
            Div_Int     =>
              New_Identifier (Module => Module,
                              Domain => EW_Term,
-                             Symbol => NID ("fxp_div_int"),
+                             Symb   => NID ("fxp_div_int"),
                              Typ    => N_Ty),
            Of_Int      =>
              New_Identifier (Module => Module,
                              Domain => EW_Term,
-                             Symbol => NID ("of_int"),
+                             Symb   => NID ("of_int"),
                              Typ    => N_Ty),
            To_Int      =>
              New_Identifier (Module => Module,
                              Domain => EW_Term,
-                             Symbol => NID ("to_int"),
+                             Symb   => NID ("to_int"),
                              Typ    => EW_Int_Type));
 
       Num_Small : constant W_Name_Id :=
-        New_Name (Symbol => NID ("num_small"));
+        New_Name (Symb => NID ("num_small"));
       Den_Small : constant W_Name_Id :=
-        New_Name (Symbol => NID ("den_small"));
+        New_Name (Symb => NID ("den_small"));
 
       Small       : constant Ureal := Small_Value (Typ);
       Num_Small_V : constant W_Term_OId :=
@@ -159,7 +159,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Num_Small),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_V));
       Emit (File,
@@ -168,7 +168,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Den_Small),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_V));
 
@@ -187,7 +187,7 @@ package body Why.Gen.Scalars is
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
                Origin        => Fixed_Point_Rep,
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Substitutions => Subst));
 
       Close_Theory (File, Kind => Definition_Theory);
@@ -219,37 +219,37 @@ package body Why.Gen.Scalars is
       use Name_Id_Fixed_Point_Mult_Div_Map;
 
       File        : constant W_Section_Id := WF_Pure;
-      Module_Name : constant Name_Id :=
+      Module_Name : constant Symbol :=
         Get_Fixed_Point_Mult_Div_Theory_Name (Typ_Left   => Typ_Left,
                                               Typ_Right  => Typ_Right,
                                               Typ_Result => Typ_Result);
       Module      : constant W_Module_Id :=
-        New_Module (File => No_Name,
+        New_Module (File => No_Symbol,
                     Name => Module_Name);
       M_Module    : constant M_Fixed_Point_Mult_Div_Type :=
         M_Fixed_Point_Mult_Div_Type'
           (Module => Module,
            Mult   => New_Identifier (Module => Module,
                                      Domain => EW_Term,
-                                     Symbol => NID ("fxp_mult"),
+                                     Symb   => NID ("fxp_mult"),
                                      Typ    => Base_Why_Type (Typ_Result)),
            Div    => New_Identifier (Module => Module,
                                      Domain => EW_Term,
-                                     Symbol => NID ("fxp_div"),
+                                     Symb   => NID ("fxp_div"),
                                      Typ    => Base_Why_Type (Typ_Result)));
 
       Num_Small_X : constant W_Name_Id :=
-        New_Name (Symbol => NID ("num_small_x"));
+        New_Name (Symb => NID ("num_small_x"));
       Den_Small_X : constant W_Name_Id :=
-        New_Name (Symbol => NID ("den_small_x"));
+        New_Name (Symb => NID ("den_small_x"));
       Num_Small_Y : constant W_Name_Id :=
-        New_Name (Symbol => NID ("num_small_y"));
+        New_Name (Symb => NID ("num_small_y"));
       Den_Small_Y : constant W_Name_Id :=
-        New_Name (Symbol => NID ("den_small_y"));
+        New_Name (Symb => NID ("den_small_y"));
       Num_Small_Res : constant W_Name_Id :=
-        New_Name (Symbol => NID ("num_small_res"));
+        New_Name (Symb => NID ("num_small_res"));
       Den_Small_Res : constant W_Name_Id :=
-        New_Name (Symbol => NID ("den_small_res"));
+        New_Name (Symb => NID ("den_small_res"));
 
       Small_L      : constant Ureal := Small_Value (Typ_Left);
       Num_Small_L   : constant W_Term_OId :=
@@ -312,7 +312,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Num_Small_X),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_L));
       Emit (File,
@@ -321,7 +321,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Den_Small_X),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_L));
       Emit (File,
@@ -330,7 +330,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Num_Small_Y),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_R));
       Emit (File,
@@ -339,7 +339,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Den_Small_Y),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_R));
       Emit (File,
@@ -348,7 +348,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Num_Small_Res),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Num_Small_Op));
       Emit (File,
@@ -357,7 +357,7 @@ package body Why.Gen.Scalars is
                Name        => New_Identifier (Den_Small_Res),
                Binders     => (1 .. 0 => <>),
                Return_Type => EW_Int_Type,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Def         => +Den_Small_Op));
 
@@ -392,7 +392,7 @@ package body Why.Gen.Scalars is
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
                Origin        => Fixed_Point_Mult_Div,
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Substitutions => Subst));
 
       Close_Theory (File, Kind => Definition_Theory);
@@ -438,7 +438,7 @@ package body Why.Gen.Scalars is
          Default_Clone_Subst : constant W_Clone_Substitution_Id :=
            New_Clone_Substitution
              (Kind      => EW_Type_Subst,
-              Orig_Name => New_Name (Symbol => NID ("t")),
+              Orig_Name => New_Name (Symb => NID ("t")),
               Image     => Why_Name);
          Rep_Type_Clone_Substitution : constant W_Clone_Substitution_Array :=
            (if not Is_Static
@@ -447,7 +447,7 @@ package body Why.Gen.Scalars is
               (1 => New_Clone_Substitution
                (Kind      => EW_Type_Subst,
                 Orig_Name => New_Name
-                  (Symbol => NID ("rep_type")),
+                  (Symb => NID ("rep_type")),
                 Image     => Get_Name (Base_Why_Type (E))))
             else (1 .. 0 => <>));
          Static_Clone_Subst : constant W_Clone_Substitution_Array :=
@@ -469,7 +469,7 @@ package body Why.Gen.Scalars is
            (if not Is_Static then
               (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("base_to_rep")),
+                 Orig_Name => New_Name (Symb => NID ("base_to_rep")),
                  Image     =>
                    Get_Name
                      (Conversion_Name
@@ -477,7 +477,7 @@ package body Why.Gen.Scalars is
                          To   => Base_Why_Type (E)))),
                2 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("base_of_rep")),
+                 Orig_Name => New_Name (Symb => NID ("base_of_rep")),
                  Image     =>
                    Get_Name
                      (Conversion_Name
@@ -549,7 +549,7 @@ package body Why.Gen.Scalars is
               (Has_Modular_Integer_Type (E) and then Ty = EW_Int_Type)
             then
                New_Identifier
-              (Symbol => NID ("first_int"),
+              (Symb   => NID ("first_int"),
                Domain => EW_Term,
                Typ    => Ty)
             else To_Local (E_Symb (E, WNE_Attr_First)));
@@ -558,7 +558,7 @@ package body Why.Gen.Scalars is
               (Has_Modular_Integer_Type (E) and then Ty = EW_Int_Type)
             then
                New_Identifier
-              (Symbol => NID ("last_int"),
+              (Symb   => NID ("last_int"),
                Domain => EW_Term,
                Typ    => Ty)
             else To_Local (E_Symb (E, WNE_Attr_Last)));
@@ -597,7 +597,7 @@ package body Why.Gen.Scalars is
                      Name     => To_Local (E_Symb (E, Name)),
                      Def      => +True_Pred,
                      Location => No_Location,
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.Empty_Set,
                      Binders  => (1 => Binder_Type'(B_Name => Var,
                                                     others => <>))));
 
@@ -614,7 +614,7 @@ package body Why.Gen.Scalars is
                                                       (Base_Why_Type (E))
                                                   .Module),
                      Location => No_Location,
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.Empty_Set,
                      Binders  => (1 => Binder_Type'
                                       (B_Name => New_Identifier (
                                        Name => "x", Typ => EW_Int_Type),
@@ -651,7 +651,7 @@ package body Why.Gen.Scalars is
                                                 MF_Floats (Ty).Is_Finite,
                                               Args   => (1 => +Var)),
                         Location => No_Location,
-                        Labels   => Name_Id_Sets.Empty_Set,
+                        Labels   => Symbol_Sets.Empty_Set,
                         Binders  => (1 => Binder_Type'(B_Name => Var,
                                                        others => <>))));
 
@@ -704,7 +704,7 @@ package body Why.Gen.Scalars is
                      Name     => To_Local (E_Symb (E, Name)),
                      Def      => +Def,
                      Location => No_Location,
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.Empty_Set,
                      Binders  => Binders));
 
             --  in case we're dealing with bitvectors, we also need to generate
@@ -806,7 +806,7 @@ package body Why.Gen.Scalars is
          Emit (File,
                New_Type_Decl
                  (Name       => Why_Name,
-                  Labels     => Name_Id_Sets.Empty_Set,
+                  Labels     => Symbol_Sets.Empty_Set,
                   Definition => New_Range_Type_Definition
                     (First => Expr_Value (Low_Bound (Rng)),
                      Last  => Expr_Value (High_Bound (Rng)))));
@@ -817,7 +817,7 @@ package body Why.Gen.Scalars is
          Emit (File,
                New_Type_Decl
                  (Name   => Why_Name,
-                  Labels => Name_Id_Sets.Empty_Set));
+                  Labels => Symbol_Sets.Empty_Set));
       end if;
 
       --  retrieve and declare the attributes first, last, small, and modulus
@@ -838,7 +838,7 @@ package body Why.Gen.Scalars is
                      Typ  => EW_Int_Type),
                   Binders     => (1 .. 0 => <>),
                   Return_Type => EW_Int_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (Low_Bound (Rng)))));
@@ -850,7 +850,7 @@ package body Why.Gen.Scalars is
                      Typ  => EW_Int_Type),
                   Binders     => (1 .. 0 => <>),
                   Return_Type => EW_Int_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Def         => New_Integer_Constant
                     (Value => Expr_Value (High_Bound (Rng)))));
@@ -865,7 +865,7 @@ package body Why.Gen.Scalars is
       Emit (File,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   As_Name       => No_Name,
+                                   As_Name       => No_Symbol,
                                    Origin        => Pick_Clone,
                                    Substitutions => Compute_Clone_Subst));
    end Declare_Scalar_Type;
@@ -939,7 +939,7 @@ package body Why.Gen.Scalars is
                        To_Local (E_Symb (E, WNE_Attr_Modulus)),
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Def         => +Modul));
          end;
@@ -961,7 +961,7 @@ package body Why.Gen.Scalars is
                        To_Local (E_Symb (E, WNE_Small_Num)),
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Def         => +Num_Small));
             Emit (Section,
@@ -971,7 +971,7 @@ package body Why.Gen.Scalars is
                        To_Local (E_Symb (E, WNE_Small_Den)),
                      Binders     => (1 .. 0 => <>),
                      Return_Type => Base_Type,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Def         => +Den_Small));
          end;
@@ -996,7 +996,7 @@ package body Why.Gen.Scalars is
                     (Low_Bound (Rng), Compute => True),
                   Return_Type => Base_Type,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Def         => +First));
          Emit (Section,
                New_Function_Decl
@@ -1007,7 +1007,7 @@ package body Why.Gen.Scalars is
                     (High_Bound (Rng), Compute => True),
                   Return_Type => Base_Type,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Def         => +Last));
       end if;
    end Define_Scalar_Attributes;
@@ -1070,23 +1070,23 @@ package body Why.Gen.Scalars is
       Default_Clone_Subst : constant W_Clone_Substitution_Array :=
         (1 => New_Clone_Substitution
            (Kind      => EW_Type_Subst,
-            Orig_Name => New_Name (Symbol => NID ("t")),
+            Orig_Name => New_Name (Symb => NID ("t")),
             Image     => To_Why_Type (E)));
 
       In_Range_Substs : constant W_Clone_Substitution_Array :=
         (if Is_Modular_Integer_Type (E) then
              (1 => New_Clone_Substitution
               (Kind => EW_Predicate,
-               Orig_Name => New_Name (Symbol => NID ("in_range")),
+               Orig_Name => New_Name (Symb => NID ("in_range")),
                Image => Get_Name (E_Symb (E, WNE_Range_Pred))),
               2 => New_Clone_Substitution
                 (Kind => EW_Predicate,
-                 Orig_Name => New_Name (Symbol => NID ("in_range_int")),
+                 Orig_Name => New_Name (Symb => NID ("in_range_int")),
                  Image => Get_Name (E_Symb (E, WNE_Range_Pred_BV_Int))))
          else
            (1 => New_Clone_Substitution
                 (Kind => EW_Predicate,
-                 Orig_Name => New_Name (Symbol => NID ("in_range")),
+                 Orig_Name => New_Name (Symb => NID ("in_range")),
                  Image => Get_Name (E_Symb (E, WNE_Range_Pred)))));
 
       Mod_Clone_Subst : constant W_Clone_Substitution_Array :=
@@ -1103,7 +1103,7 @@ package body Why.Gen.Scalars is
         (if Is_Range_Type_In_Why (E) then
            (1 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("to_rep")),
+                 Orig_Name => New_Name (Symb => NID ("to_rep")),
                  Image     => To_Local (E_Symb (E, WNE_To_Rep))))
          else (1 .. 0 => <>));
 
@@ -1152,14 +1152,14 @@ package body Why.Gen.Scalars is
                           Args   => (1 => +Var),
                           Typ    => EW_Int_Type),
                      Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set));
+                     Labels      => Symbol_Sets.Empty_Set));
          end;
       end if;
 
       Emit (File,
             New_Clone_Declaration (Theory_Kind   => EW_Module,
                                    Clone_Kind    => EW_Export,
-                                   As_Name       => No_Name,
+                                   As_Name       => No_Symbol,
                                    Origin        => Clone,
                                    Substitutions => Substs));
 
@@ -1190,7 +1190,7 @@ package body Why.Gen.Scalars is
      (Typ_Left, Typ_Right, Typ_Result : Entity_Id)
       return M_Fixed_Point_Mult_Div_Type
    is
-      Module_Name : constant Name_Id :=
+      Module_Name : constant Symbol :=
         Get_Fixed_Point_Mult_Div_Theory_Name (Typ_Left   => Typ_Left,
                                               Typ_Right  => Typ_Right,
                                               Typ_Result => Typ_Result);
@@ -1203,7 +1203,7 @@ package body Why.Gen.Scalars is
    ------------------------------------------
 
    function Get_Fixed_Point_Mult_Div_Theory_Name
-     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Symbol
    is
       --  CodePeer does not understand the raise expressions inside and issues
       --  false alarms otherwise.
@@ -1238,7 +1238,7 @@ package body Why.Gen.Scalars is
 
    function Get_Fixed_Point_Theory (Typ : Entity_Id) return M_Fixed_Point_Type
    is
-      Module_Name : constant Name_Id :=
+      Module_Name : constant Symbol :=
         Get_Fixed_Point_Theory_Name (Typ => Typ);
    begin
       return M_Fixed_Points (Module_Name);
@@ -1248,7 +1248,7 @@ package body Why.Gen.Scalars is
    -- Get_Fixed_Point_Theory_Name --
    ---------------------------------
 
-   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Name_Id
+   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Symbol
    is
       Small : constant Ureal := Small_Value (Typ);
       Name  : constant String :=

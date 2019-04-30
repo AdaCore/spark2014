@@ -48,17 +48,9 @@ package body Why.Images is
 
    function Img (Node : Node_Id) return String;
 
-   ---------
-   -- Img --
-   ---------
-
-   function Img (Name : Name_Id) return String is
+   function Img (Name : Symbol) return String is
    begin
-      if Name = No_Name then
-         return "<no name>";
-      else
-         return Get_Name_String (Name);
-      end if;
+      return Get (Name).all;
    end Img;
 
    function Img (Node : Why_Node_Set) return String is
@@ -93,7 +85,7 @@ package body Why.Images is
    -- P --
    -------
 
-   procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False) is
+   procedure P (O : Output_Id; Name : Symbol; As_String : Boolean := False) is
    begin
       P (O, Img (Name), As_String);
    end P;
@@ -526,7 +518,7 @@ package body Why.Images is
 
    procedure P
      (O         : Output_Id;
-      Value     : Name_Id_Set;
+      Value     : Symbol_Set;
       As_Labels : Boolean := False) is
    begin
       for Name of Value loop

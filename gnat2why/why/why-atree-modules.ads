@@ -25,7 +25,7 @@
 
 with Ada;                        use Ada;
 with Ada.Containers.Hashed_Maps;
-with Common_Containers;
+with GNATCOLL.Symbols;
 with SPARK_Definition;           use SPARK_Definition;
 with Why.Ids;                    use Why.Ids;
 with Why.Gen.Names;              use Why.Gen.Names;
@@ -38,11 +38,11 @@ package Why.Atree.Modules is
    --  Predefined Why Files --
    ---------------------------
 
-   Int_File                : Name_Id;
-   Real_File               : Name_Id;
-   Ref_File                : Name_Id;
-   Gnatprove_Standard_File : Name_Id;
-   Ada_Model_File          : Name_Id;
+   Int_File                : Symbol;
+   Real_File               : Symbol;
+   Ref_File                : Symbol;
+   Gnatprove_Standard_File : Symbol;
+   Ada_Model_File          : Symbol;
 
    -----------------------------
    --  Predefined Why modules --
@@ -392,33 +392,33 @@ package Why.Atree.Modules is
    --  and can be accessed through "Get_array_Theory(_..)" functions.
 
    package Name_Id_Array_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays : Name_Id_Array_Map.Map;
 
    package Name_Id_Array_1_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1 : Name_Id_Array_1_Map.Map;
 
    package Name_Id_Array_1_Comp_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Comp_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1_Comp : Name_Id_Array_1_Comp_Map.Map;
 
    package Name_Id_Array_1_Bool_Op_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Bool_Op_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1_Bool_Op : Name_Id_Array_1_Bool_Op_Map.Map;
@@ -429,16 +429,16 @@ package Why.Atree.Modules is
    --  "Create_Array_Conversion_Function_If_Needed".
 
    package Name_Id_Conversion_Name_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => W_Identifier_Id,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    package Name_Id_Name_Id_Conversion_Name_Map is new
      Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => Name_Id_Conversion_Name_Map.Map,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=",
       "="             => Name_Id_Conversion_Name_Map."=");
 
@@ -474,9 +474,9 @@ package Why.Atree.Modules is
    --  small.
 
    package Name_Id_Fixed_Point_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Fixed_Point_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Fixed_Points : Name_Id_Fixed_Point_Map.Map;
@@ -487,9 +487,9 @@ package Why.Atree.Modules is
    --  smalls.
 
    package Name_Id_Fixed_Point_Mult_Div_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Fixed_Point_Mult_Div_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Fixed_Point_Mult_Div : Name_Id_Fixed_Point_Mult_Div_Map.Map;
@@ -525,16 +525,16 @@ package Why.Atree.Modules is
 
    --  Other identifiers
 
-   Old_Tag  : Name_Id;
+   Old_Tag  : Symbol;
    Def_Name : W_Identifier_Id;
 
    --  Labels
 
-   Model_Trace       : Name_Id;
-   Model_Projected   : Name_Id;
-   VC_Annotation     : Name_Id;
-   Model_VC_Post     : Name_Id;
-   GP_Already_Proved : Name_Id;
+   Model_Trace       : Symbol;
+   Model_Projected   : Symbol;
+   VC_Annotation     : Symbol;
+   Model_VC_Post     : Symbol;
+   GP_Already_Proved : Symbol;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package

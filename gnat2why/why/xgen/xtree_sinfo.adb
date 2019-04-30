@@ -80,8 +80,8 @@ package body Xtree_Sinfo is
       -- W_Name --
       ------------
 
-      New_Field (W_Name, "Symbol", "Name_Id");
-      New_Field (W_Name, "Namespace", "Name_Id", "No_Name");
+      New_Field (W_Name, "Symb", "Symbol");
+      New_Field (W_Name, "Namespace", "Symbol", "No_Symbol");
       New_Field (W_Name, "Module", "W_Module", Id_Lone);
       New_Field (W_Name, "Infix", "Boolean", "False");
       Set_Domain (W_Name, EW_Term);
@@ -137,7 +137,7 @@ package body Xtree_Sinfo is
       New_Field (W_Record_Binder,
                  "Arg_Type", "W_Type", Id_One);
       New_Field (W_Record_Binder,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Record_Binder,
                  "Is_Mutable", "Boolean", "False");
 
@@ -222,7 +222,7 @@ package body Xtree_Sinfo is
       New_Field (W_Universal_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Universal_Quantif,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Universal_Quantif,
                  "Var_Type", "W_Type", Id_One);
       New_Field (W_Universal_Quantif,
@@ -237,7 +237,7 @@ package body Xtree_Sinfo is
       New_Field (W_Existential_Quantif,
                  "Variables", "W_Identifier", Id_Some);
       New_Field (W_Existential_Quantif,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Existential_Quantif,
                  "Var_Type", "W_Type", Id_One);
       New_Field (W_Existential_Quantif,
@@ -279,7 +279,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Label,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Label,
                  "Def", "W_Expr", Id_One);
       New_Field (W_Label,
@@ -296,8 +296,8 @@ package body Xtree_Sinfo is
       -- W_Module --
       --------------
 
-      New_Field (W_Module, "File", "Name_Id");
-      New_Field (W_Module, "Name", "Name_Id");
+      New_Field (W_Module, "File", "Symbol");
+      New_Field (W_Module, "Name", "Symbol");
       Set_Domain (W_Module, EW_Term);
 
       ------------------
@@ -312,7 +312,7 @@ package body Xtree_Sinfo is
       -- W_Tagged --
       --------------
 
-      New_Field (W_Tagged, "Tag", "Name_Id");
+      New_Field (W_Tagged, "Tag", "Symbol");
       New_Field (W_Tagged, "Def", "W_Expr", Id_One);
       New_Field (W_Tagged, "Typ", "W_Type", Id_Lone);
 
@@ -414,7 +414,7 @@ package body Xtree_Sinfo is
       ---------------
 
       New_Field (W_Comment,
-                 "Comment", "Name_Id");
+                 "Comment", "Symbol");
 
       -------------
       -- W_Deref --
@@ -469,7 +469,7 @@ package body Xtree_Sinfo is
       New_Field (W_Any_Expr,
                  "Return_Type", "W_Type", Id_One);
       New_Field (W_Any_Expr,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
 
       ------------------
       -- W_Assignment --
@@ -482,7 +482,7 @@ package body Xtree_Sinfo is
       New_Field (W_Assignment,
                  "Typ", "W_Type", Id_One);
       New_Field (W_Assignment,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
 
       -------------------
       -- W_Binding_Ref --
@@ -578,7 +578,7 @@ package body Xtree_Sinfo is
       New_Field (W_Function_Decl,
                  "Def", "W_Expr", Id_Lone);
       New_Field (W_Function_Decl,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Function_Decl,
                  "Location", "Source_Ptr");
 
@@ -587,7 +587,7 @@ package body Xtree_Sinfo is
       -------------
 
       New_Field (W_Axiom,
-                 "Name", "Name_Id");
+                 "Name", "Symbol");
       New_Field (W_Axiom,
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Axiom, EW_Term);
@@ -597,7 +597,7 @@ package body Xtree_Sinfo is
       ------------
 
       New_Field (W_Goal,
-                 "Name", "Name_Id");
+                 "Name", "Symbol");
       New_Field (W_Goal,
                  "Def", "W_Pred", Id_One);
       Set_Domain (W_Goal, EW_Term);
@@ -611,7 +611,7 @@ package body Xtree_Sinfo is
       New_Field (W_Type_Decl,
                  "Name", "W_Name", Id_One);
       New_Field (W_Type_Decl,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Type_Decl,
                  "Definition", "W_Type_Definition", Id_Lone);
       Set_Domain (W_Type_Decl, EW_Term);
@@ -625,7 +625,7 @@ package body Xtree_Sinfo is
       New_Field (W_Global_Ref_Declaration,
                  "Ref_Type", "W_Type", Id_One);
       New_Field (W_Global_Ref_Declaration,
-                 "Labels", "Name_Id_Set");
+                 "Labels", "Symbol_Set");
       New_Field (W_Global_Ref_Declaration,
                  "Location", "Source_Ptr");
       Set_Domain (W_Global_Ref_Declaration, EW_Prog);
@@ -647,7 +647,7 @@ package body Xtree_Sinfo is
       New_Field (W_Namespace_Declaration,
                  "Declarations", "W_Declaration", Id_Set);
       New_Field (W_Namespace_Declaration,
-                 "Name", "Name_Id");
+                 "Name", "Symbol");
       Set_Domain (W_Namespace_Declaration, EW_Prog);
 
       ---------------------------
@@ -667,9 +667,9 @@ package body Xtree_Sinfo is
       ------------------------
 
       New_Field (W_Meta_Declaration,
-                 "Name", "Name_Id");
+                 "Name", "Symbol");
       New_Field (W_Meta_Declaration,
-                 "Parameter", "Name_Id");
+                 "Parameter", "Symbol");
       Set_Domain (W_Meta_Declaration, EW_Term);
 
       -------------------------
@@ -679,7 +679,7 @@ package body Xtree_Sinfo is
       New_Field (W_Clone_Declaration,
                  "Origin", "W_Module", Id_One);
       New_Field (W_Clone_Declaration,
-                 "As_Name", "Name_Id");
+                 "As_Name", "Symbol");
       New_Field (W_Clone_Declaration,
                  "Clone_Kind", "EW_Clone_Type");
       New_Field (W_Clone_Declaration,
@@ -707,13 +707,13 @@ package body Xtree_Sinfo is
       New_Field (W_Theory_Declaration,
                  "Declarations", "W_Declaration", Id_Set);
       New_Field (W_Theory_Declaration,
-                 "Name", "Name_Id");
+                 "Name", "Symbol");
       New_Field (W_Theory_Declaration,
                  "Kind", "EW_Theory_Type");
       New_Field (W_Theory_Declaration,
                  "Includes", "W_Include_Declaration", Id_Set);
       New_Field (W_Theory_Declaration,
-                 "Comment", "Name_Id");
+                 "Comment", "Symbol");
       Set_Domain (W_Theory_Declaration, EW_Prog);
 
       ---------------------------
@@ -721,7 +721,7 @@ package body Xtree_Sinfo is
       ---------------------------
 
       New_Field (W_Custom_Substitution,
-                 "From", "Name_Id");
+                 "From", "Symbol");
 
       New_Field (W_Custom_Substitution,
                  "To", "W_Any_Node", Id_One);
@@ -731,7 +731,7 @@ package body Xtree_Sinfo is
       --------------------------
 
       New_Field (W_Custom_Declaration,
-                 "File_Name", "Name_Id");
+                 "File_Name", "Symbol");
 
       New_Field (W_Custom_Declaration,
                  "Subst", "W_Custom_Substitution", Id_Set);

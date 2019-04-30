@@ -23,37 +23,38 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                use Ada.Strings;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings;             use Ada.Strings;
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
-with Checks;                     use Checks;
-with Common_Containers;          use Common_Containers;
-with Errout;                     use Errout;
+with Checks;                  use Checks;
+with Common_Containers;       use Common_Containers;
+with Errout;                  use Errout;
 with Eval_Fat;
-with Gnat2Why.Error_Messages;    use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
-with GNATCOLL.Utils;             use GNATCOLL.Utils;
-with Sinput;                     use Sinput;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
-with SPARK_Util.Types;           use SPARK_Util.Types;
-with Stand;                      use Stand;
-with Urealp;                     use Urealp;
-with Why.Atree.Accessors;        use Why.Atree.Accessors;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Atree.Tables;           use Why.Atree.Tables;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Gen.Binders;            use Why.Gen.Binders;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Gen.Init;               use Why.Gen.Init;
-with Why.Gen.Pointers;           use Why.Gen.Pointers;
-with Why.Gen.Preds;              use Why.Gen.Preds;
-with Why.Gen.Progs;              use Why.Gen.Progs;
-with Why.Gen.Records;            use Why.Gen.Records;
-with Why.Gen.Scalars;            use Why.Gen.Scalars;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with Sinput;                  use Sinput;
+with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
+with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
+with SPARK_Util.Types;        use SPARK_Util.Types;
+with Stand;                   use Stand;
+with Urealp;                  use Urealp;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Arrays;          use Why.Gen.Arrays;
+with Why.Gen.Binders;         use Why.Gen.Binders;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Init;            use Why.Gen.Init;
+with Why.Gen.Pointers;        use Why.Gen.Pointers;
+with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Records;         use Why.Gen.Records;
+with Why.Gen.Scalars;         use Why.Gen.Scalars;
+with Why.Images;              use Why.Images;
 
 package body Why.Gen.Expr is
 
@@ -85,7 +86,7 @@ package body Why.Gen.Expr is
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
 
-   function New_Located_Label (Input : Source_Ptr) return Name_Id;
+   function New_Located_Label (Input : Source_Ptr) return Symbol;
    --  @param Input a source pointer
    --  @return a Why3 label which identifies this source location in Why3
 
@@ -214,7 +215,7 @@ package body Why.Gen.Expr is
    -- Cur_Subp_Sloc --
    -------------------
 
-   function Cur_Subp_Sloc return Name_Id is
+   function Cur_Subp_Sloc return Symbol is
    begin
       return NID (Subp_Location (Current_Subp));
    end Cur_Subp_Sloc;
@@ -689,7 +690,7 @@ package body Why.Gen.Expr is
          --  adding a dummy node.
 
          else
-            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
+            T := New_Label (Labels => Symbol_Sets.Empty_Set,
                             Def    => T,
                             Domain => Domain,
                             Typ    => Split_To);
@@ -1869,7 +1870,7 @@ package body Why.Gen.Expr is
       --  Ada_Node to the expected type. We do that by adding a dummy node.
 
       elsif Get_Type_Kind (To_Conc) = EW_Split then
-         Result := New_Label (Labels => Name_Id_Sets.Empty_Set,
+         Result := New_Label (Labels => Symbol_Sets.Empty_Set,
                               Def    => Result,
                               Domain => Domain,
                               Typ    => To_Conc);
@@ -2676,7 +2677,7 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label (Input : Source_Ptr) return Name_Id is
+   function New_Located_Label (Input : Source_Ptr) return Symbol is
       Slc : Source_Ptr := Input;
       Buf : Unbounded_String;
    begin
@@ -2707,7 +2708,7 @@ package body Why.Gen.Expr is
    function New_Located_Label
      (N         : Node_Id;
       Left_Most : Boolean := False)
-      return Name_Id is
+      return Symbol is
    begin
       return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
    end New_Located_Label;
@@ -2716,14 +2717,14 @@ package body Why.Gen.Expr is
    -- New_Shape_Label --
    ---------------------
 
-   function New_Shape_Label (Node : Node_Id) return Name_Id is
+   function New_Shape_Label (Node : Node_Id) return Symbol is
       Buf : constant String := Shape_Of_Node (Node);
 
    begin
       if Buf /= "" then
          return NID (GP_Shape_Marker & Buf);
       else
-         return No_Name;
+         return No_Symbol;
       end if;
    end New_Shape_Label;
 
@@ -2733,16 +2734,16 @@ package body Why.Gen.Expr is
 
    function New_Comment_Label
      (Node   : Node_Id;
-      Loc    : Name_Id;
+      Loc    : Symbol;
       Reason : VC_Kind)
-      return Name_Id
+      return Symbol
    is
       --  CodePeer does not understand the result of Get_Name_String and issues
       --  false alarms otherwise.
       pragma Annotate (CodePeer, Skip_Analysis);
 
       Prefix  : constant String := "comment:";
-      Str_Loc : constant String := Get_Name_String (Loc);
+      Str_Loc : constant String := Img (Loc);
 
       Pointer  : Source_Ptr := Original_Location (Sloc (Node));
       Src_Buff : constant Source_Buffer_Ptr :=
@@ -2812,8 +2813,8 @@ package body Why.Gen.Expr is
                                        Condition : W_Expr_Id)
                                        return W_Expr_Id
    is
-      Node_Label : constant Name_Id_Sets.Set :=
-                        (Name_Id_Sets.To_Set
+      Node_Label : constant Symbol_Sets.Set :=
+                        (Symbol_Sets.To_Set
                            (NID (Branch_Id_Label &
                               Ada.Strings.Fixed.Trim
                                    (Source => Node_Id'Image (If_Node),
@@ -2977,7 +2978,7 @@ package body Why.Gen.Expr is
    -- New_Sub_VC_Marker --
    -----------------------
 
-   function New_Sub_VC_Marker (N : Node_Id) return Name_Id
+   function New_Sub_VC_Marker (N : Node_Id) return Symbol
    is
       Used_Node : Node_Id := N;
    begin
@@ -3238,7 +3239,7 @@ package body Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Name_Id_Set
+      Reason : VC_Kind) return Symbol_Set
    is
       --  A GNATprove label in Why3 has the following form
       --
@@ -3256,9 +3257,9 @@ package body Why.Gen.Expr is
 
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
-      Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
+      Set : Symbol_Set := Symbol_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
-      Location_Lab : constant Name_Id := New_Located_Label (Sloc);
+      Location_Lab : constant Symbol := New_Located_Label (Sloc);
    begin
       if CodePeer_Has_Proved (Sloc, Reason) then
          Emit_Proof_Result
@@ -3280,7 +3281,14 @@ package body Why.Gen.Expr is
          Set.Insert (New_Comment_Label (N, Location_Lab, Reason));
       end if;
 
-      Set.Insert (New_Shape_Label (Node => N));
+      declare
+         Symb : constant Symbol := New_Shape_Label (Node => N);
+      begin
+         if Symb /= No_Symbol then
+            Set.Insert (Symb);
+         end if;
+      end;
+
       if Reason = VC_Postcondition then
          Set.Insert (Model_VC_Post);
       else

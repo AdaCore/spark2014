@@ -25,8 +25,8 @@
 
 with Ada.Containers.Indefinite_Ordered_Maps;
 with Common_Containers;   use Common_Containers;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
-with Namet;               use Namet;
 with Types;               use Types;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -36,6 +36,7 @@ with Why.Atree.Mutators;  use Why.Atree.Mutators;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
 with Why.Sinfo;           use Why.Sinfo;
 with Why.Types;           use Why.Types;
@@ -46,7 +47,7 @@ package body Why.Gen.Decl is
      (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
-      Labels        : Name_Id_Sets.Set)
+      Labels        : Symbol_Sets.Set)
    with Pre => Field_Id /= Why_Empty;
    --  Emit declaration of a projection for a Why3 record type. The projection
    --  projects values of the record type to given field of this type.
@@ -129,7 +130,7 @@ package body Why.Gen.Decl is
             Field_Id      => Binders (Binder).B_Name,
             Labels        =>
               (if SPARK_Record then Binders (Binder).Labels
-               else Name_Id_Sets.Empty_Set));
+               else Symbol_Sets.Empty_Set));
       end loop;
    end Emit_Record_Declaration;
 
@@ -160,17 +161,15 @@ package body Why.Gen.Decl is
      (Section       : W_Section_Id;
       Param_Ty_Name : W_Name_Id;
       Field_Id      : W_Identifier_Id;
-      Labels        : Name_Id_Sets.Set)
+      Labels        : Symbol_Sets.Set)
    is
       use Projection_Names;
 
       --  Projection function name
-      Param_Ty_Name_Str : constant String :=
-        Get_Name_String (Get_Symbol (Param_Ty_Name));
+      Param_Ty_Name_Str : constant String := Img (Get_Symb (Param_Ty_Name));
 
       Proj_Name : constant String :=
-        Param_Ty_Name_Str & "_" &
-        Get_Name_String (Get_Symbol (Get_Name (Field_Id)));
+        Param_Ty_Name_Str & "_" & Img (Get_Symb (Get_Name (Field_Id)));
 
       Proj_Name_Cursor : constant Cursor :=
         Projection_Names_Decls.Find (Proj_Name);
@@ -267,7 +266,7 @@ package body Why.Gen.Decl is
                                                    Arg_Type => Typ)),
                   Effects     => New_Effects (Writes   => (1 => X)),
                   Return_Type => EW_Unit_Type,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location);
    end New_Havoc_Declaration;
 
@@ -279,8 +278,8 @@ package body Why.Gen.Decl is
    begin
       return
         New_Type_Decl
-          (Name   => New_Name (Symbol => NID (Name)),
-           Labels => Name_Id_Sets.Empty_Set);
+          (Name   => New_Name (Symb => NID (Name)),
+           Labels => Symbol_Sets.Empty_Set);
    end New_Type_Decl;
 
    function New_Type_Decl
@@ -289,7 +288,7 @@ package body Why.Gen.Decl is
    begin
       return New_Type_Decl
         (Name       => Name,
-         Labels     => Name_Id_Sets.Empty_Set,
+         Labels     => Symbol_Sets.Empty_Set,
          Definition => New_Transparent_Type_Definition
            (Domain          => EW_Prog,
             Type_Definition => Alias));

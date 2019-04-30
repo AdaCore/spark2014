@@ -33,6 +33,7 @@ with Flow_Refinement;                use Flow_Refinement;
 with Flow_Types;                     use Flow_Types;
 with Flow_Utility;                   use Flow_Utility;
 with GNAT.Source_Info;
+with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
 with Gnat2Why.Expr.Loops.Exits;
@@ -2201,7 +2202,7 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__subprogram_lsp"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking LSP for subprogram "
                        & """" & Get_Name_String (Chars (E)) & """"
@@ -2463,7 +2464,7 @@ package body Gnat2Why.Subprograms is
               (Domain   => EW_Prog,
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
-               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                Location => Safe_First_Sloc (E),
                Def      => +Why_Body));
 
@@ -2506,7 +2507,7 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__package_def"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking absence of run-time errors and "
                        & "package initial condition on package elaboration of "
@@ -2548,7 +2549,7 @@ package body Gnat2Why.Subprograms is
             New_Global_Ref_Declaration
               (Ada_Node => Containing_Protected_Type (E),
                Name     => Self_Name,
-               Labels   => Name_Id_Sets.Empty_Set,
+               Labels   => Symbol_Sets.Empty_Set,
                Location => Safe_First_Sloc (E),
                Ref_Type =>
                  Type_Of_Node (Containing_Protected_Type (E))));
@@ -2733,7 +2734,7 @@ package body Gnat2Why.Subprograms is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => Safe_First_Sloc (E),
-               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                Post     => Post,
                Def      => +Why_Body));
 
@@ -2841,7 +2842,7 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__protected_type"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for various checks related to the protected type "
                        & """" & Get_Name_String (Chars (E)) & """"
@@ -2865,7 +2866,7 @@ package body Gnat2Why.Subprograms is
                Name        => Self_Name,
                Binders     => (1 .. 0 => <>),
                Location    => Safe_First_Sloc (E),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Get_Typ (Self_Name)));
 
       --  ??? Where is the call to Push_Scope?
@@ -2996,7 +2997,7 @@ package body Gnat2Why.Subprograms is
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
                Location => Safe_First_Sloc (E),
-               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                Def      => +Why_Body));
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
@@ -3697,7 +3698,7 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__subprogram_def"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking contracts and absence of "
                        & "run-time errors in subprogram "
@@ -3807,7 +3808,7 @@ package body Gnat2Why.Subprograms is
             New_Global_Ref_Declaration
               (Ada_Node => Containing_Protected_Type (E),
                Name     => Self_Name,
-               Labels   => Name_Id_Sets.Empty_Set,
+               Labels   => Symbol_Sets.Empty_Set,
                Location => Safe_First_Sloc (E),
                Ref_Type =>
                  Type_Of_Node (Containing_Protected_Type (E))));
@@ -3942,7 +3943,7 @@ package body Gnat2Why.Subprograms is
               (Domain   => EW_Prog,
                Name     => Def_Name,
                Binders  => (1 => Unit_Param),
-               Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                Location => Safe_First_Sloc (E),
                Post     => Post_As_Pred,
                Def      => +Prog));
@@ -3986,7 +3987,7 @@ package body Gnat2Why.Subprograms is
       Open_Theory (File,
                    New_Module
                      (Name => NID (Name & "__task_body"),
-                      File => No_Name),
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking absence of run-time errors and "
                        & "non-termination of task body of the task type "
@@ -4083,7 +4084,7 @@ package body Gnat2Why.Subprograms is
                   Name     => Def_Name,
                   Binders  => (1 => Unit_Param),
                   Location => Safe_First_Sloc (E),
-                  Labels   => Name_Id_Sets.To_Set (Cur_Subp_Sloc),
+                  Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
                   Post     => Post,
                   Def      => +Why_Body));
       end;
@@ -5135,7 +5136,7 @@ package body Gnat2Why.Subprograms is
                   Name        => Prog_Id,
                   Binders     => Tag_B & Func_Why_Binders,
                   Return_Type => Type_Of_Node (Etype (E)),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Effects     => Effects,
                   Pre         => Pre,
@@ -5190,7 +5191,7 @@ package body Gnat2Why.Subprograms is
                  (File,
                   New_Global_Ref_Declaration
                     (Ada_Node => E,
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.Empty_Set,
                      Location => No_Location,
                      Name     => Volatile_State,
                      Ref_Type => EW_Private_Type));
@@ -5259,7 +5260,7 @@ package body Gnat2Why.Subprograms is
                  (Domain      => EW_Prog,
                   Name        => Prog_Id,
                   Binders     => Func_Why_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Unit_Type,
                   Effects     => Effects,
@@ -5280,7 +5281,7 @@ package body Gnat2Why.Subprograms is
                   Spec_Post_Id   : constant W_Identifier_Id :=
                     New_Identifier
                       (Domain => EW_Pred,
-                       Symbol => NID (Short_Name (E) & "__" & Specific_Post),
+                       Symb   => NID (Short_Name (E) & "__" & Specific_Post),
                        Typ    => EW_Bool_Type);
                   --  Name of the predicate function for E's specific post
 
@@ -5363,14 +5364,14 @@ package body Gnat2Why.Subprograms is
                                 Binders     =>
                                   Tag_Binder & Procedure_Logic_Binders (E),
                                 Location    => No_Location,
-                                Labels      => Name_Id_Sets.Empty_Set,
+                                Labels      => Symbol_Sets.Empty_Set,
                                 Return_Type => EW_Bool_Type),
                            2 => New_Function_Decl
                                (Domain      => EW_Prog,
                                 Name        => Prog_Id,
                                 Binders     => Func_Why_Binders,
                                 Location    => No_Location,
-                                Labels      => Name_Id_Sets.Empty_Set,
+                                Labels      => Symbol_Sets.Empty_Set,
                                 Return_Type => EW_Unit_Type,
                                 Effects     => Effects,
                                 Pre         => Dispatch_Pre,
@@ -5401,7 +5402,7 @@ package body Gnat2Why.Subprograms is
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
                              Location    => No_Location,
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Return_Type => EW_Unit_Type,
                              Effects     => Effects,
                              Pre         => False_Pred,
@@ -5421,7 +5422,7 @@ package body Gnat2Why.Subprograms is
                              Name        => Prog_Id,
                              Binders     => Func_Why_Binders,
                              Location    => No_Location,
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Return_Type => EW_Unit_Type,
                              Effects     => Effects,
                              Pre         => Pre,
@@ -5450,7 +5451,7 @@ package body Gnat2Why.Subprograms is
                     To_Local (E_Symb (E, WNE_Check_Invariants_On_Call)),
                   Binders     => Func_Why_Binders,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => EW_Unit_Type,
                   Pre         => Inv_Checks,
                   Post        => Inv_Checks));
@@ -5725,7 +5726,7 @@ package body Gnat2Why.Subprograms is
             Pred_Id           : constant W_Identifier_Id :=
               New_Identifier
                 (Domain => EW_Pred,
-                 Symbol => NID (Short_Name (E) & "__" & Function_Guard),
+                 Symb   => NID (Short_Name (E) & "__" & Function_Guard),
                  Typ    => EW_Bool_Type);
             Params            : constant Transformation_Params :=
               (File        => File,
@@ -5747,8 +5748,8 @@ package body Gnat2Why.Subprograms is
                   Binders     => Logic_Why_Binders,
                   Location    => No_Location,
                   Labels      =>
-                    (if Def = Why_Empty then Name_Id_Sets.Empty_Set
-                     else Name_Id_Sets.To_Set (NID ("inline"))),
+                    (if Def = Why_Empty then Symbol_Sets.Empty_Set
+                     else Symbol_Sets.To_Set (NID ("inline"))),
                   Def         => Def,
                   Return_Type => Why_Type));
 
@@ -5759,7 +5760,7 @@ package body Gnat2Why.Subprograms is
                   Name        => Pred_Id,
                   Binders     => Pred_Binders,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => EW_Bool_Type));
 
             if Is_Visible_Dispatching_Operation (E) then
@@ -5773,7 +5774,7 @@ package body Gnat2Why.Subprograms is
                              Name        => Logic_Id,
                              Binders     => Tag_Binder & Logic_Why_Binders,
                              Location    => No_Location,
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Return_Type => Why_Type),
                         2 => New_Function_Decl
                             (Domain      => EW_Pred,
@@ -5781,7 +5782,7 @@ package body Gnat2Why.Subprograms is
                              Binders     =>
                                Pred_Binders (1) & Tag_Binder &
                                Pred_Binders (2 .. Pred_Binders'Length),
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Location    => No_Location,
                              Return_Type => EW_Bool_Type))));
             end if;
@@ -5798,14 +5799,14 @@ package body Gnat2Why.Subprograms is
                             (Domain      => EW_Pterm,
                              Name        => Logic_Id,
                              Binders     => Logic_Why_Binders,
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Location    => No_Location,
                              Return_Type => Why_Type),
                         2 => New_Function_Decl
                             (Domain      => EW_Pred,
                              Name        => Pred_Id,
                              Binders     => Pred_Binders,
-                             Labels      => Name_Id_Sets.Empty_Set,
+                             Labels      => Symbol_Sets.Empty_Set,
                              Location    => No_Location,
                              Return_Type => EW_Bool_Type))));
             end if;

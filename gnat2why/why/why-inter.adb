@@ -25,7 +25,7 @@
 
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
-with Namet;                      use Namet;
+with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
@@ -47,6 +47,7 @@ with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Gen.Scalars;            use Why.Gen.Scalars;
+with Why.Images;                 use Why.Images;
 
 ---------------
 -- Why.Inter --
@@ -736,7 +737,7 @@ package body Why.Inter is
                and then M2 /= Why_Empty
                and then Get_Name (M1) = Get_Name (M2))
             then
-               return Get_Symbol (N1) = Get_Symbol (N2);
+               return Get_Symb (N1) = Get_Symb (N2);
             else
                return False;
             end if;
@@ -961,8 +962,7 @@ package body Why.Inter is
             Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
             Name  : constant W_Name_Id := Get_Name (Expr2);
          begin
-            return Get_Name_String (Get_Symbol (Name)) /=
-              To_String (WNE_Null_Pointer);
+            return Img (Get_Symb (Name)) /= To_String (WNE_Null_Pointer);
          end;
 
       else
@@ -1025,16 +1025,16 @@ package body Why.Inter is
       Local : Boolean := False)
       return W_Name_Id
    is
-      Suffix : constant Name_Id :=
+      Suffix : constant Symbol :=
         NID (Capitalize_First (Short_Name (E)));
    begin
       if Local then
-         return New_Name (Ada_Node => E, Symbol => Suffix);
+         return New_Name (Ada_Node => E, Symb => Suffix);
       else
          return
            New_Name
              (Ada_Node => E,
-              Symbol   => Suffix,
+              Symb     => Suffix,
               Module   => E_Module (E));
       end if;
    end Loop_Exception_Name;
@@ -1073,8 +1073,8 @@ package body Why.Inter is
             Name       =>
               New_Name
                 (Ada_Node => E,
-                 Symbol   => NID ("map"),
-                 Module   => New_Module (File => No_Name,
+                 Symb     => NID ("map"),
+                 Module   => New_Module (File => No_Symbol,
                                          Name => Get_Array_Theory_Name (E))));
       elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
 
@@ -1119,7 +1119,7 @@ package body Why.Inter is
 
    function New_Named_Type (S : String) return W_Type_Id is
    begin
-      return New_Named_Type (Name => New_Name (Symbol => NID (S)));
+      return New_Named_Type (Name => New_Name (Symb => NID (S)));
    end New_Named_Type;
 
    ------------------
@@ -1149,7 +1149,7 @@ package body Why.Inter is
       Comment : String)
    is
       S : constant String :=
-        Capitalize_First (Get_Name_String (Get_Name (Module)));
+        Capitalize_First (Img (Get_Name (Module)));
    begin
       Why_Sections (P).Cur_Theory :=
         New_Theory_Declaration (Name    => NID (S),
@@ -1218,12 +1218,12 @@ package body Why.Inter is
                  E_Axiom_Module (E)
                else
                  E_Module (E));
-            Namespace : constant Name_Id :=
+            Namespace : constant Symbol :=
               (case Selector is
                  when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
                  when No_Return => NID (To_String (WNE_No_Return_Module)),
                  when Refine    => NID (To_String (WNE_Refine_Module)),
-                 when Standard  => No_Name);
+                 when Standard  => No_Symbol);
          begin
             return
               New_Identifier
@@ -1256,7 +1256,7 @@ package body Why.Inter is
                                       Typ  => EW_Private_Type);
             else
                return New_Identifier
-                 (Module => New_Module (File => No_Name,
+                 (Module => New_Module (File => No_Symbol,
                                         Name => NID (Ada_Name)),
                   Name   => Why_Name,
                   Typ    => EW_Private_Type);
@@ -1282,13 +1282,13 @@ package body Why.Inter is
          return To_Why_Type (Specific_Tagged (E), Local);
 
       elsif Local then
-         return New_Name (Ada_Node => E, Symbol => NID (Suffix));
+         return New_Name (Ada_Node => E, Symb => NID (Suffix));
 
       else
          return
            New_Name
              (Ada_Node => E,
-              Symbol   => NID (Suffix),
+              Symb     => NID (Suffix),
               Module   => E_Module (E));
       end if;
 
