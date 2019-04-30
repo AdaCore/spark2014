@@ -4694,11 +4694,10 @@ package body Flow.Analysis is
                                        "at subprogram entry",
                            Severity => High_Check_Kind,
                            N        => First_Variable_Use
-                                         (N        => N,
-                                          Scope    => FA.B_Scope,
-                                          Var      => Var,
-                                          Precise  => False,
-                                          Targeted => False),
+                                         (N       => N,
+                                          Scope   => FA.B_Scope,
+                                          Var     => Var,
+                                          Precise => False),
                            F1       => Var,
                            Tag      => Uninitialized);
                      end if;
