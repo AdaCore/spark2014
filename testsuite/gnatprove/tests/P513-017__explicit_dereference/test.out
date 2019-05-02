@@ -1,23 +1,23 @@
-a-tags.adb:22:22: "Type_Specific_Data" is not allowed in SPARK (due to access type)
+a-tags.adb:22:22: "Type_Specific_Data" is not allowed in SPARK (due to general access type)
 a-tags.adb:22:22: violation of pragma SPARK_Mode at test.adc:1
 a-tags.adb:27:09: call through access to function is not allowed in SPARK
 a-tags.adb:27:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:11:09: access type is not allowed in SPARK
+a-tags.ads:11:09: access to subprogram type is not allowed in SPARK
 a-tags.ads:11:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:18:09: "Interface_Data_Element" is not allowed in SPARK (due to access type)
+a-tags.ads:18:09: "Interface_Data_Element" is not allowed in SPARK (due to access to subprogram type)
 a-tags.ads:18:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:21:07: subtype of "Interfaces_Array" is not allowed in SPARK (due to access type)
+a-tags.ads:21:07: subtype of "Interfaces_Array" is not allowed in SPARK (due to access to subprogram type)
 a-tags.ads:21:07: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:24:09: access type is not allowed in SPARK
+a-tags.ads:24:09: general access type is not allowed in SPARK
 a-tags.ads:24:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:28:09: access type is not allowed in SPARK
+a-tags.ads:28:09: access to subprogram type is not allowed in SPARK
 a-tags.ads:28:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:29:09: "Prim_Ptr" is not allowed in SPARK (due to access type)
+a-tags.ads:29:09: "Prim_Ptr" is not allowed in SPARK (due to access to subprogram type)
 a-tags.ads:29:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:36:09: access type is not allowed in SPARK
+a-tags.ads:36:09: general access type is not allowed in SPARK
 a-tags.ads:36:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:42:09: access type is not allowed in SPARK
+a-tags.ads:42:09: general access type is not allowed in SPARK
 a-tags.ads:42:09: violation of pragma SPARK_Mode at test.adc:1
-a-tags.ads:48:09: access type is not allowed in SPARK
+a-tags.ads:48:09: general access type is not allowed in SPARK
 a-tags.ads:48:09: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

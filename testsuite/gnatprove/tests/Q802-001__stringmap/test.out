@@ -1,8 +1,8 @@
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
 test.ads:6:04: instantiation error at a-strbou.ads:388
 test.ads:6:04: instantiation error at a-strbou.ads:420
 test.ads:6:04: instantiation error at a-strbou.ads:466

@@ -1,3 +1,2 @@
-p.ads:4:04: access type is not allowed in SPARK
-p.ads:4:04: violation of aspect SPARK_Mode at line 2
+p.ads:4:04: local borrower of an access object is not yet supported
 gnatprove: error during flow analysis and proof

@@ -1,3 +1,2 @@
-correlator.adb:14:15: access type is not allowed in SPARK
-correlator.adb:14:15: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+correlator.adb:8:20: warning: subprogram "Dummy" has no effect
+correlator.ads:4:17: warning: subprogram "Dummy" has no effect

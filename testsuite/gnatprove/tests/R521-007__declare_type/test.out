@@ -1,3 +1,1 @@
-pack2.adb:6:12: access type is not allowed in SPARK
-pack2.adb:6:12: violation of pragma SPARK_Mode at line 4
-gnatprove: error during flow analysis and proof
+pack2.ads:4:14: warning: subprogram "Dummy" has no effect

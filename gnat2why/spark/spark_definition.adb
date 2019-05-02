@@ -1476,8 +1476,8 @@ package body SPARK_Definition is
             end if;
 
          when N_Allocator =>
-            --  Allow allocators in the special mode -gnatdF
-            if Debug_Flag_FF then
+            --  Disallow allocators in the revert mode -gnatdF
+            if not Debug_Flag_FF then
                Mark (Expression (N));
 
                --  Check that the type of the allocator is visibly an access
@@ -1565,8 +1565,8 @@ package body SPARK_Definition is
             Mark_Identifier_Or_Expanded_Name (N);
 
          when N_Explicit_Dereference =>
-            --  Allow explicit dereference in the special mode -gnatdF
-            if Debug_Flag_FF then
+            --  Disallow explicit dereference in the revert mode -gnatdF
+            if not Debug_Flag_FF then
                Mark (Prefix (N));
             else
                Mark_Violation ("explicit dereference", N);
@@ -1701,9 +1701,9 @@ package body SPARK_Definition is
 
          when N_Null =>
 
-            --  Allow Null objects of access type in the special mode -gnatdF
+            --  Disallow Null objects of access type in the revert mode -gnatdF
 
-            if Debug_Flag_FF then
+            if not Debug_Flag_FF then
 
                --  Check that the type of null is visibly an access type
 
@@ -1797,7 +1797,7 @@ package body SPARK_Definition is
 
             begin
                if Is_Access_Type (Prefix_Type)
-                 and then not Debug_Flag_FF
+                 and then Debug_Flag_FF
                then
                   Mark_Violation ("implicit dereference", N);
 
@@ -3101,11 +3101,12 @@ package body SPARK_Definition is
       Mark (N);
 
       --  Perform the new SPARK checking rules for pointer aliasing. This is
-      --  only activated on SPARK code.
+      --  only activated on SPARK code. The debug flag -gnatdF is used to
+      --  deactivate the new pointer rules.
       --  ??? Should we do something special for checking of withed units in
       --  mode Auto?
 
-      if Debug_Flag_FF then
+      if not Debug_Flag_FF then
          Ownership_Checking.Check_Safe_Pointers (N);
       end if;
 
@@ -4991,9 +4992,9 @@ package body SPARK_Definition is
 
          elsif Is_Access_Type (E) then
 
-            --  Allow access types in the special mode -gnatdF
+            --  Disallow access types in the revert mode -gnatdF
 
-            if not Debug_Flag_FF then
+            if Debug_Flag_FF then
                Mark_Violation ("access type", E);
 
             --  Reject access to subprogram types
@@ -7209,7 +7210,7 @@ package body SPARK_Definition is
             --    type L_Ptr is access L;
             --    type SL_Ptr3 is new L_Ptr(7);
 
-            if Debug_Flag_FF and then Is_Nouveau_Type (E) then
+            if not Debug_Flag_FF and then Is_Nouveau_Type (E) then
                case Nkind (Decl) is
                   when N_Object_Declaration =>
                      return SPARK_Pragma (Defining_Identifier (Decl));

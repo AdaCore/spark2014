@@ -1,5 +1,2 @@
 project Test is
-   package compiler is
-      for Default_Switches ("Ada") use ("-gnatdF");
-   end compiler;
 end Test;

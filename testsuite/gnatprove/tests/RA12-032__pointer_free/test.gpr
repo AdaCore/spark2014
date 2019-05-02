@@ -1,5 +1,2 @@
 project Test is
-  package Compiler is
-    for Switches ("Ada") use ("-gnatdF");
-  end Compiler;
 end Test;

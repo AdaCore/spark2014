@@ -3,7 +3,7 @@ project Test is
    for Languages use ("Ada");
 
    package Compiler is
-      for Default_Switches ("ada") use ("-gnata", "-gnatdF");
+      for Default_Switches ("ada") use ("-gnata");
    end Compiler;
 
 end Test;

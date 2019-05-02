@@ -1,9 +1,3 @@
-r.adb:11:04: access to "Pt" is not allowed in SPARK (due to access type)
-r.adb:11:04: violation of pragma SPARK_Mode at test.adc:1
-r.adb:14:04: call through access to protected operation is not allowed in SPARK
-r.adb:14:04: violation of pragma SPARK_Mode at test.adc:1
-s.adb:6:04: access to "Suspension_Object" is not allowed in SPARK (due to access type)
-s.adb:6:04: violation of pragma SPARK_Mode at test.adc:1
-s.adb:10:07: suspension through access to suspension object is not allowed in SPARK
-s.adb:10:07: violation of pragma SPARK_Mode at test.adc:1
-gnatprove: error during flow analysis and proof
+s.adb:10:60: cannot use global variable "Ptr" of deep type
+s.adb:10:60: without prior declaration in a Global aspect
+gnatprove: error during generation of Global contracts

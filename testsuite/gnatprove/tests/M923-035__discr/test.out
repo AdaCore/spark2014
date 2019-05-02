@@ -1,8 +1,6 @@
-discr.adb:4:13: access to "Integer" is not allowed in SPARK (due to access type)
-discr.adb:4:13: violation of pragma SPARK_Mode at test.adc:1
 discr.adb:15:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
-discr.adb:15:04: violation of pragma SPARK_Mode at test.adc:1
+discr.adb:15:04: violation of pragma SPARK_Mode at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-M923-035__discr-14202/src/test.adc:1
 discr.adb:18:07: "Square" is not allowed in SPARK (due to discriminant on derived type)
-discr.adb:18:07: violation of pragma SPARK_Mode at test.adc:1
+discr.adb:18:07: violation of pragma SPARK_Mode at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-M923-035__discr-14202/src/test.adc:1
 discr.adb:18:21: compiler-generated raise statement is not yet supported
 gnatprove: error during flow analysis and proof

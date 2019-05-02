@@ -1,7 +1,5 @@
-discriminants.ads:2:09: access type is not allowed in SPARK
+discriminants.ads:2:09: general access type is not allowed in SPARK
 discriminants.ads:2:09: violation of aspect SPARK_Mode at line 1
-discriminants.ads:5:18: access to "Integer" is not allowed in SPARK (due to access type)
-discriminants.ads:5:18: violation of aspect SPARK_Mode at line 1
 discriminants.ads:9:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))
 discriminants.ads:9:04: violation of aspect SPARK_Mode at line 1
 discriminants.ads:12:04: discriminant on derived type is not allowed in SPARK (SPARK RM 3.7(2))

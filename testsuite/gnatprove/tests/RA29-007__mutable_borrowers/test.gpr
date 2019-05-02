@@ -2,6 +2,6 @@ project Test is
    for Languages use ("Ada");
    for Main use ();
    package Compiler is
-      for Default_Switches ("ada") use ("-gnatdF", "-gnatdk");
+      for Default_Switches ("ada") use ("-gnatdk");
    end Compiler;
 end Test;
