@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;     use Common_Containers;
 with Gnat2Why.Tables;       use Gnat2Why.Tables;
 with Snames;                use Snames;
@@ -224,12 +223,9 @@ package Gnat2Why.Util is
    --  of objects of this type. This is needed because we have aliasing between
    --  parameters of many functions and the global variable Why_Sections below.
 
-   Why_File_Name : String_Access;
-
    procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
-   --  file. The Unit node is used to initialize the above Why_File_Name
-   --  variable.
+   --  file.
 
    Why_Sections : array (W_Section_Id) of Why_Section;
 

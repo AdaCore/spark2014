@@ -133,7 +133,7 @@ package body Gnat2Why.Driver is
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
-   procedure Print_Why_File;
+   procedure Print_Why_File (Filename : String);
    --  Print the input Why3 file on disk
 
    procedure Touch_Main_File (Prefix : String);
@@ -141,7 +141,7 @@ package body Gnat2Why.Driver is
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
 
-   procedure Run_Gnatwhy3;
+   procedure Run_Gnatwhy3 (Filename : String);
    --  After generating the Why file, run the proof tool
 
    procedure Create_JSON_File (Proof_Done : Boolean);
@@ -560,16 +560,21 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed (Timing, "translation of compilation unit");
 
             if Has_Registered_VCs then
-               Print_Why_File;
+               declare
+                  Filename : constant String := Unit_Name & Why_File_Suffix;
+               begin
+                  Print_Why_File (Filename);
 
-               --  After printing the .mlw file the memory consumed by the Why3
-               --  AST is no longer needed; give it back to OS, so that provers
-               --  can use it. When not printing the .mlw file just do nothing;
-               --  there is almost nothing left to do and there is no point to
-               --  waste time on manually releasing memory.
-               Why.Atree.Tables.Free;
+                  --  After printing the .mlw file the memory consumed by the
+                  --  Why3 AST is no longer needed; give it back to OS, so that
+                  --  provers can use it. When not printing the .mlw file just
+                  --  do nothing; there is almost nothing left to do and there
+                  --  is no point to waste time on manually releasing memory.
 
-               Run_Gnatwhy3;
+                  Why.Atree.Tables.Free;
+
+                  Run_Gnatwhy3 (Filename);
+               end;
             end if;
 
             --  If the analysis is requested for a specific piece of code, we
@@ -695,9 +700,9 @@ package body Gnat2Why.Driver is
    -- Print_Why_File --
    --------------------
 
-   procedure Print_Why_File is
+   procedure Print_Why_File (Filename : String) is
    begin
-      Open_Current_File (Why_File_Name.all);
+      Open_Current_File (Filename);
       for WF in W_Section_Id loop
          Print_Section (Why_Sections (WF), Current_File);
       end loop;
@@ -708,11 +713,11 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 is
+   procedure Run_Gnatwhy3 (Filename : String) is
       use Ada.Directories;
       Status    : aliased Integer;
       Fn        : constant String :=
-        Compose (Current_Directory, Why_File_Name.all);
+        Compose (Current_Directory, Filename);
       Old_Dir   : constant String := Current_Directory;
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : constant String := Why3_Args.First_Element;
