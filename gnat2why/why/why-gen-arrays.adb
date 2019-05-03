@@ -578,8 +578,7 @@ package body Why.Gen.Arrays is
       To_Symb    : constant M_Array_Type := M_Arrays.Element (To_Name);
       Module     : constant W_Module_Id :=
         New_Module (File => No_Symbol,
-                    Name => NID (Img (From_Name) & "__to__"
-                      & Img (To_Name)));
+                    Name => Img (From_Name) & "__to__" & Img (To_Name));
       Convert_Id : constant W_Identifier_Id :=
         New_Identifier (Name      => "convert",
                         Module    => Module,
@@ -869,7 +868,7 @@ package body Why.Gen.Arrays is
    is
       Name    : constant Symbol := Get_Array_Theory_Name (E);
       Module  : constant W_Module_Id := New_Module (File => No_Symbol,
-                                                    Name => Name);
+                                                    Name => Img (Name));
       Symbols : constant M_Array_Type := Init_Array_Module (Module);
 
    begin
@@ -896,7 +895,8 @@ package body Why.Gen.Arrays is
          declare
             Array_1_Module : constant W_Module_Id :=
               New_Module (File => No_Symbol,
-                          Name => Get_Concat_Theory_Name (Name));
+                          Name =>
+                            Img (Get_Concat_Theory_Name (Name)));
          begin
             if not Register_Only then
                Declare_Concatenation_Symbols
@@ -915,7 +915,7 @@ package body Why.Gen.Arrays is
             declare
                Bool_Op_Module : constant W_Module_Id :=
                  New_Module (File => No_Symbol,
-                             Name => Get_Logical_Op_Theory_Name (Name));
+                             Name => Img (Get_Logical_Op_Theory_Name (Name)));
             begin
                if not Register_Only then
                   Declare_Logical_Operation_Symbols
@@ -935,7 +935,7 @@ package body Why.Gen.Arrays is
             declare
                Comp_Module : constant W_Module_Id :=
                  New_Module (File => No_Symbol,
-                             Name => Get_Comparison_Theory_Name (Name));
+                             Name => Img (Get_Comparison_Theory_Name (Name)));
             begin
                if not Register_Only then
                   Declare_Comparison_Symbols

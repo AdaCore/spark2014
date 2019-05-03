@@ -80,6 +80,13 @@ package body String_Utils is
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
    end Lower_Case_First;
 
+   function Lower_Case_First (S : String) return String is
+      T : String := S;
+   begin
+      Lower_Case_First (T);
+      return T;
+   end Lower_Case_First;
+
    -----------------------
    -- Standard_Ada_Case --
    -----------------------

@@ -917,7 +917,7 @@ package body Why.Gen.Pointers is
 
    begin
       return New_Module (File => No_Symbol,
-                         Name => NID (Name));
+                         Name => Name);
    end Get_Rep_Pointer_Module;
 
    ----------------------------------

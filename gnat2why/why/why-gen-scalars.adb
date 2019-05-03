@@ -36,6 +36,7 @@ with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Conversions;     use Why.Conversions;
 with Why.Gen.Decl;        use Why.Gen.Decl;
 with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Images;          use Why.Images;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Binders;     use Why.Gen.Binders;
@@ -84,7 +85,7 @@ package body Why.Gen.Scalars is
         Get_Fixed_Point_Theory_Name (Typ => Typ);
       Module      : constant W_Module_Id :=
         New_Module (File => No_Symbol,
-                    Name => Module_Name);
+                    Name => Img (Module_Name));
       N_Ty        : constant W_Type_Id := New_Type
         (Ada_Node   => Base_Retysp (Typ),
          Is_Mutable => False,
@@ -225,7 +226,7 @@ package body Why.Gen.Scalars is
                                               Typ_Result => Typ_Result);
       Module      : constant W_Module_Id :=
         New_Module (File => No_Symbol,
-                    Name => Module_Name);
+                    Name => Img (Module_Name));
       M_Module    : constant M_Fixed_Point_Mult_Div_Type :=
         M_Fixed_Point_Mult_Div_Type'
           (Module => Module,

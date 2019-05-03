@@ -29,6 +29,7 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util.Types;    use SPARK_Util.Types;
+with String_Utils;        use String_Utils;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
@@ -738,6 +739,21 @@ package body Why.Gen.Names is
    begin
       return Find (Why3_Symbol_Alloc, Name);
    end NID;
+
+   ----------------
+   -- New_Module --
+   ----------------
+
+   function New_Module
+     (Ada_Node : Node_Id := Empty;
+      File     : Symbol;
+      Name     : String)
+      return W_Module_Id
+   is
+      S : constant Symbol := NID (Capitalize_First (Name));
+   begin
+      return New_Module (Ada_Node, File, S);
+   end New_Module;
 
    -------------------------
    -- New_Temp_Identifier --

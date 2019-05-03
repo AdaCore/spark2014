@@ -2201,7 +2201,7 @@ package body Gnat2Why.Subprograms is
    begin
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__subprogram_lsp"),
+                     (Name => Name & "__subprogram_lsp",
                       File => No_Symbol),
                    Comment =>
                      "Module for checking LSP for subprogram "
@@ -2506,7 +2506,7 @@ package body Gnat2Why.Subprograms is
 
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__package_def"),
+                     (Name => Name & "__package_def",
                       File => No_Symbol),
                    Comment =>
                      "Module for checking absence of run-time errors and "
@@ -2841,7 +2841,7 @@ package body Gnat2Why.Subprograms is
 
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__protected_type"),
+                     (Name => Name & "__protected_type",
                       File => No_Symbol),
                    Comment =>
                      "Module for various checks related to the protected type "
@@ -3697,7 +3697,7 @@ package body Gnat2Why.Subprograms is
    begin
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__subprogram_def"),
+                     (Name => Name & "__subprogram_def",
                       File => No_Symbol),
                    Comment =>
                      "Module for checking contracts and absence of "
@@ -3986,7 +3986,7 @@ package body Gnat2Why.Subprograms is
 
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__task_body"),
+                     (Name => Name & "__task_body",
                       File => No_Symbol),
                    Comment =>
                      "Module for checking absence of run-time errors and "

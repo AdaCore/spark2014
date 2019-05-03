@@ -1074,8 +1074,10 @@ package body Why.Inter is
               New_Name
                 (Ada_Node => E,
                  Symb     => NID ("map"),
-                 Module   => New_Module (File => No_Symbol,
-                                         Name => Get_Array_Theory_Name (E))));
+                 Module   =>
+                   New_Module
+                     (File => No_Symbol,
+                      Name => Img (Get_Array_Theory_Name (E)))));
       elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
 
          --  The base type of a fixed point type is __fixed. Do not call
@@ -1146,13 +1148,10 @@ package body Why.Inter is
    procedure Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
-      Comment : String)
-   is
-      S : constant String :=
-        Capitalize_First (Img (Get_Name (Module)));
+      Comment : String) is
    begin
       Why_Sections (P).Cur_Theory :=
-        New_Theory_Declaration (Name    => NID (S),
+        New_Theory_Declaration (Name    => Get_Name (Module),
                                 Kind    => EW_Module,
                                 Comment => NID (Comment));
    end Open_Theory;
@@ -1257,7 +1256,7 @@ package body Why.Inter is
             else
                return New_Identifier
                  (Module => New_Module (File => No_Symbol,
-                                        Name => NID (Ada_Name)),
+                                        Name => Ada_Name),
                   Name   => Why_Name,
                   Typ    => EW_Private_Type);
             end if;

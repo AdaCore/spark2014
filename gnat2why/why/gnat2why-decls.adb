@@ -31,7 +31,6 @@ with Sinput;                       use Sinput;
 with SPARK_Util;                   use SPARK_Util;
 with Ada.Strings;                  use Ada.Strings;
 with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
-with String_Utils;                 use String_Utils;
 with Why.Atree.Accessors;          use Why.Atree.Accessors;
 with Why.Atree.Builders;           use Why.Atree.Builders;
 with Why.Atree.Modules;            use Why.Atree.Modules;
@@ -231,13 +230,12 @@ package body Gnat2Why.Decls is
       File : constant W_Section_Id := WF_Variables;
 
       Object_Name : constant String := To_String (E);
-      Module_Name : constant String := Capitalize_First (Object_Name);
 
    begin
       Open_Theory
         (File,
          Module =>
-           New_Module (Name => NID (Module_Name),
+           New_Module (Name => Object_Name,
                        File => GNATCOLL.Symbols.No_Symbol),
          Comment =>
            "Module declaring the external object """ & Object_Name &

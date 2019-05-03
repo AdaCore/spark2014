@@ -551,8 +551,9 @@ package body Gnat2Why.Types is
             Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
               Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-            Rep_Module : constant W_Module_Id := New_Module (File => No_Symbol,
-                                                       Name => NID (Name));
+            Rep_Module : constant W_Module_Id :=
+              New_Module (File => No_Symbol,
+                          Name => Name);
          begin
             --  Export the theory containing the pointer record definition
 
@@ -669,7 +670,7 @@ package body Gnat2Why.Types is
    begin
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__default_checks"),
+                     (Name => Name & "__default_checks",
                       File => No_Symbol),
                    Comment =>
                      "Module for checking DIC of default value and absence"

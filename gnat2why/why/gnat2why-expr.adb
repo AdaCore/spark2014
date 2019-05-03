@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
 with Ada.Strings.Equal_Case_Insensitive;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
@@ -58,6 +59,7 @@ with SPARK_Util.External_Axioms;     use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
 with Stand;                          use Stand;
 with Stringt;                        use Stringt;
+with String_Utils;                   use String_Utils;
 with Uintp;                          use Uintp;
 with Urealp;                         use Urealp;
 with VC_Kinds;                       use VC_Kinds;
@@ -78,6 +80,7 @@ with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Records;                use Why.Gen.Records;
 with Why.Gen.Scalars;                use Why.Gen.Scalars;
+with Why.Images;                     use Why.Images;
 with Why.Unchecked_Ids;              use Why.Unchecked_Ids;
 
 package body Gnat2Why.Expr is
@@ -8248,12 +8251,13 @@ package body Gnat2Why.Expr is
          --  Generate name for the function based on the location of the
          --  aggregate.
 
-         Name          : constant String := Get_Name_For_Aggregate (Expr);
+         Name          : constant String :=
+           Lower_Case_First (Get_Name_For_Aggregate (Expr));
          Module        : constant W_Module_Id :=
            New_Module
              (Ada_Node => Expr,
               File     => No_Symbol,
-              Name     => NID (Name));
+              Name     => Name);
          Func          : constant W_Identifier_Id :=
            +New_Identifier
            (Ada_Node => Expr,
@@ -8326,7 +8330,7 @@ package body Gnat2Why.Expr is
          Insert_Extra_Module
            (Expr,
             New_Module (File => No_Symbol,
-                        Name => NID (Name & To_String (WNE_Axiom_Suffix))),
+                        Name => Name & To_String (WNE_Axiom_Suffix)),
             Is_Axiom => True);
 
          --  Compute the parameters/arguments for the axiom/call as well as
@@ -9558,7 +9562,7 @@ package body Gnat2Why.Expr is
                 (Ada_Node => Expr,
                  Domain   => Domain,
                  Module   => M,
-                 Symb     => Get_Name (M)),
+                 Symb     => NID (Lower_Case_First (Img (Get_Name (M))))),
               Values,
               Types,
               Index_Values,
@@ -12777,7 +12781,7 @@ package body Gnat2Why.Expr is
                    (Ada_Node => Expr,
                     Domain   => Domain,
                     Module   => M,
-                    Symb     => Get_Name (M),
+                    Symb     => NID (Lower_Case_First (Img (Get_Name (M)))),
                     Typ      => New_Abstract_Base_Type (Type_Of_Node (Expr)));
                T := New_Call (Ada_Node => Expr,
                               Domain   => Domain,
@@ -17599,7 +17603,7 @@ package body Gnat2Why.Expr is
 
       Insert_Extra_Module
         (N,
-         New_Module (File => No_Symbol, Name => NID (Name)));
+         New_Module (File => No_Symbol, Name => Name));
 
       Open_Theory (Decl_File, E_Module (N),
                    Comment =>

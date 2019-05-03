@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;    use Ada.Characters.Handling;
 with Ada.Containers;             use Ada.Containers;
 with Common_Containers;          use Common_Containers;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
@@ -115,7 +116,7 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => NID (Full_Name (E)));
+                 Name     => Full_Name (E));
             --  ??? why New_Mode is called with E and not E2?
          begin
             Entity_Modules.Insert (E2, Why_Node_Id (M));
@@ -158,10 +159,10 @@ package body Why.Atree.Modules is
          return W_Module_Id (Element (C));
       elsif Nkind (E) in N_Entity then
          declare
-            Name : constant Symbol :=
-              NID (Full_Name (E) &
-                   (if Entity_In_Ext_Axioms (E) then ""
-                    else To_String (WNE_Axiom_Suffix)));
+            Name : constant String :=
+              Full_Name (E) &
+            (if Entity_In_Ext_Axioms (E) then ""
+             else To_String (WNE_Axiom_Suffix));
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,
@@ -192,7 +193,7 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => NID (Full_Name (E) & "__compl"));
+                 Name     => Full_Name (E) & "__compl");
          begin
             Compl_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -218,7 +219,7 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => NID (Full_Name (E) & "__init"));
+                 Name     => Full_Name (E) & "__init");
          begin
             Init_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -244,7 +245,7 @@ package body Why.Atree.Modules is
               New_Module
                 (Ada_Node => E,
                  File     => No_Symbol,
-                 Name     => NID (Full_Name (E) & "__rep"));
+                 Name     => Full_Name (E) & "__rep");
          begin
             Rep_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -281,9 +282,9 @@ package body Why.Atree.Modules is
 
       --  Modules of the Why standard library
 
-      Int_Module := New_Module (File => Int_File,  Name => NID ("Int"));
-      RealInfix  := New_Module (File => Real_File, Name => NID ("RealInfix"));
-      Ref_Module := New_Module (File => Ref_File,  Name => NID ("Ref"));
+      Int_Module := New_Module (File => Int_File,  Name => "Int");
+      RealInfix  := New_Module (File => Real_File, Name => "RealInfix");
+      Ref_Module := New_Module (File => Ref_File,  Name => "Ref");
 
       --  Builtin Why types
 
@@ -328,186 +329,186 @@ package body Why.Atree.Modules is
       Static_Modular_lt8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt8"));
+           Name => "Static_Modular_lt8");
       Static_Modular_lt16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt16"));
+           Name => "Static_Modular_lt16");
       Static_Modular_lt32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt32"));
+           Name => "Static_Modular_lt32");
       Static_Modular_lt64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt64"));
+           Name => "Static_Modular_lt64");
       Static_Modular_8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_8"));
+           Name => "Static_Modular_8");
       Static_Modular_16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_16"));
+           Name => "Static_Modular_16");
       Static_Modular_32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_32"));
+           Name => "Static_Modular_32");
       Static_Modular_64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_64"));
+           Name => "Static_Modular_64");
       Static_Discrete :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Discrete"));
+           Name => "Static_Discrete");
       Dynamic_Modular :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular"));
+           Name => "Dynamic_Modular");
       Dynamic_Discrete :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Discrete"));
+           Name => "Dynamic_Discrete");
       Static_Fixed_Point :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Fixed_Point"));
+           Name => "Static_Fixed_Point");
       Dynamic_Fixed_Point :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Fixed_Point"));
+           Name => "Dynamic_Fixed_Point");
       Fixed_Point_Rep :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Fixed_Point_Rep"));
+           Name => "Fixed_Point_Rep");
       Fixed_Point_Mult_Div :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Fixed_Point_Mult_Div"));
+           Name => "Fixed_Point_Mult_Div");
       Static_Float32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Float32"));
+           Name => "Static_Float32");
       Static_Float64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Float64"));
+           Name => "Static_Float64");
       Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Floating_Point"));
+           Name => "Dynamic_Floating_Point");
       Rep_Proj_Float32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_Float32"));
+           Name => "Rep_Proj_Float32");
       Rep_Proj_Float64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_Float64"));
+           Name => "Rep_Proj_Float64");
       Rep_Proj_Fixed :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_Fixed"));
+           Name => "Rep_Proj_Fixed");
       Rep_Proj_Int :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_Int"));
+           Name => "Rep_Proj_Int");
       Rep_Proj_Lt8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_ltBV8"));
+           Name => "Rep_Proj_ltBV8");
       Rep_Proj_Lt16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_ltBV16"));
+           Name => "Rep_Proj_ltBV16");
       Rep_Proj_Lt32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_ltBV32"));
+           Name => "Rep_Proj_ltBV32");
       Rep_Proj_Lt64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_ltBV64"));
+           Name => "Rep_Proj_ltBV64");
       Rep_Proj_8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_BV8"));
+           Name => "Rep_Proj_BV8");
       Rep_Proj_16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_BV16"));
+           Name => "Rep_Proj_BV16");
       Rep_Proj_32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_BV32"));
+           Name => "Rep_Proj_BV32");
       Rep_Proj_64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Rep_Proj_BV64"));
+           Name => "Rep_Proj_BV64");
       Access_To_Incomp_Ty :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Access_to_incomplete_type"));
+           Name => "Access_to_incomplete_type");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array")),
+                          Name => "Constr_Array"),
          2 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_2")),
+                          Name => "Constr_Array_2"),
          3 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_3")),
+                          Name => "Constr_Array_3"),
          4 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_4")));
+                          Name => "Constr_Array_4"));
       Unconstr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array")),
+                          Name => "Unconstr_Array"),
          2 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_2")),
+                          Name => "Unconstr_Array_2"),
          3 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_3")),
+                          Name => "Unconstr_Array_3"),
          4 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_4")));
+                          Name => "Unconstr_Array_4"));
 
       Array_Concat_Axioms :=
         New_Module
           (File => Gnatprove_Standard_File,
-           Name => NID ("Array__1__Concat"));
+           Name => "Array__1__Concat");
 
       Array_Int_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_Int_Rep_Comparison_Axiom"));
+           Name => "Array_Int_Rep_Comparison_Axiom");
 
       Array_BV8_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV8_Rep_Comparison_Axiom"));
+           Name => "Array_BV8_Rep_Comparison_Axiom");
 
       Array_BV16_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV16_Rep_Comparison_Axiom"));
+           Name => "Array_BV16_Rep_Comparison_Axiom");
 
       Array_BV32_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV32_Rep_Comparison_Axiom"));
+           Name => "Array_BV32_Rep_Comparison_Axiom");
 
       Array_BV64_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV64_Rep_Comparison_Axiom"));
+           Name => "Array_BV64_Rep_Comparison_Axiom");
 
       Standard_Array_Logical_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Standard_Array_Logical_Op_Axioms"));
+           Name => "Standard_Array_Logical_Op_Axioms");
 
       Subtype_Array_Logical_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Subtype_Array_Logical_Op_Axioms"));
+           Name => "Subtype_Array_Logical_Op_Axioms");
 
       --  Builtin unary minus and void
 
@@ -605,7 +606,7 @@ package body Why.Atree.Modules is
         New_Module
           (Ada_Node => Empty,
            File     => No_Symbol,
-           Name     => NID ("Standard_String__Img"));
+           Name     => "Standard_String__Img");
 
       To_String_Id :=
         New_Identifier (Ada_Node => Standard_String,
@@ -632,16 +633,16 @@ package body Why.Atree.Modules is
       Array_Modules :=
         (1 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__1")),
+                       Name => "Array__1"),
          2 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__2")),
+                       Name => "Array__2"),
          3 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__3")),
+                       Name => "Array__3"),
          4 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__4")));
+                       Name => "Array__4"));
    end Initialize;
 
    -----------------------
@@ -798,7 +799,7 @@ package body Why.Atree.Modules is
 
    procedure Init_Boolean_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Boolean"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Boolean");
    begin
       M_Boolean.Module := M;
       M_Boolean.Bool_Eq :=
@@ -923,7 +924,7 @@ package body Why.Atree.Modules is
       M : W_Module_Id;
    begin
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_32_64"));
+                       Name => "BVConv_32_64");
       M_BV_Conv_32_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -943,7 +944,7 @@ package body Why.Atree.Modules is
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_16_64"));
+                       Name => "BVConv_16_64");
       M_BV_Conv_16_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -963,7 +964,7 @@ package body Why.Atree.Modules is
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_64"));
+                       Name => "BVConv_8_64");
       M_BV_Conv_8_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -983,7 +984,7 @@ package body Why.Atree.Modules is
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_16_32"));
+                       Name => "BVConv_16_32");
       M_BV_Conv_16_32 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -1003,7 +1004,7 @@ package body Why.Atree.Modules is
                                           Typ => EW_BitVector_32_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_32"));
+                       Name => "BVConv_8_32");
       M_BV_Conv_8_32 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -1023,7 +1024,7 @@ package body Why.Atree.Modules is
                                           Typ => EW_BitVector_32_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_16"));
+                       Name => "BVConv_8_16");
       M_BV_Conv_8_16 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
@@ -1052,16 +1053,16 @@ package body Why.Atree.Modules is
    begin
       M_BVs (BV8).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV8"));
+                    Name => "BV8");
       M_BVs (BV16).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV16"));
+                    Name => "BV16");
       M_BVs (BV32).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV32"));
+                    Name => "BV32");
       M_BVs (BV64).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV64"));
+                    Name => "BV64");
       for BV in BV_Kind loop
          M_BVs (BV).T :=
            New_Type (Type_Kind  => EW_Builtin,
@@ -1262,7 +1263,7 @@ package body Why.Atree.Modules is
    procedure Init_Compat_Tags_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Compatible_Tags"));
+                    Name => "Compatible_Tags");
    begin
       M_Compat_Tags.Module := M;
       M_Compat_Tags.Compat_Tags_Id :=
@@ -1280,7 +1281,7 @@ package body Why.Atree.Modules is
       M : W_Module_Id;
    begin
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("FloatConv"));
+                       Name => "FloatConv");
       M_Floating_Conv :=
         M_Floating_Conv_Type'(Module      => M,
                               To_Float64  =>
@@ -1309,29 +1310,29 @@ package body Why.Atree.Modules is
    procedure Init_Floating_Module is
       Float32_BV_Converter : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_BV_Converter"));
+                    Name => "Float32_BV_Converter");
       Float64_BV_Converter : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_BV_Converter"));
+                    Name => "Float64_BV_Converter");
    begin
       M_Floats (Float32).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32"));
+                    Name => "Float32");
       M_Floats (Float64).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64"));
+                    Name => "Float64");
       M_Floats (Float32).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_power"));
+                    Name => "Float32_power");
       M_Floats (Float64).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_power"));
+                    Name => "Float64_power");
       M_Floats (Float32).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_next_prev"));
+                    Name => "Float32_next_prev");
       M_Floats (Float64).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_next_prev"));
+                    Name => "Float64_next_prev");
 
       for Fl in Floating_Kind loop
          M_Floats (Fl).T :=
@@ -1641,7 +1642,7 @@ package body Why.Atree.Modules is
    procedure Init_Int_Abs_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Abs"));
+                    Name => "Int_Abs");
    begin
       M_Int_Abs.Module := M;
       M_Int_Abs.Abs_Id :=
@@ -1658,7 +1659,7 @@ package body Why.Atree.Modules is
    procedure Init_Int_Div_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Division"));
+                    Name => "Int_Division");
    begin
       M_Int_Div.Module := M;
       M_Int_Div.Div :=
@@ -1695,7 +1696,7 @@ package body Why.Atree.Modules is
    procedure Init_Int_Minmax_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Minmax"));
+                    Name => "Int_Minmax");
 
    begin
       M_Int_Minmax.Module := M;
@@ -1717,7 +1718,7 @@ package body Why.Atree.Modules is
 
    procedure Init_Integer_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Integer"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Integer");
    begin
       M_Integer.Module := M;
       M_Integer.Bool_Eq :=
@@ -1764,7 +1765,7 @@ package body Why.Atree.Modules is
    procedure Init_Int_Power_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Power"));
+                    Name => "Int_Power");
    begin
       M_Int_Power.Module := M;
       M_Int_Power.Power :=
@@ -1793,7 +1794,7 @@ package body Why.Atree.Modules is
 
    procedure Init_Main_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Main"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Main");
    begin
       M_Main.Module := M;
       M_Main.String_Image_Type :=

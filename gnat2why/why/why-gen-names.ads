@@ -131,6 +131,14 @@ package Why.Gen.Names is
       Typ : W_Type_Id) return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
 
+   function New_Module
+     (Ada_Node : Node_Id := Empty;
+      File     : Symbol;
+      Name     : String)
+      return W_Module_Id;
+   --  Build a new module id with the given File and Name elements. The Name
+   --  will be capitalized because that's required by Why3 syntax.
+
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id;
 
    function To_Exprs (Ids : W_Identifier_Array) return W_Expr_Array;

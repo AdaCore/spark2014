@@ -1518,7 +1518,7 @@ package body Why.Atree.Sprint is
          end;
       end if;
 
-      P (O, Capitalize_First (Img (Get_Name (Node))));
+      P (O, Get_Name (Node));
    end Print_Module_Id;
 
    ----------------

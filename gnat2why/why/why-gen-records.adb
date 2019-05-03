@@ -2347,7 +2347,7 @@ package body Why.Gen.Records is
         Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
    begin
       return New_Module (File => No_Symbol,
-                         Name => NID (Name));
+                         Name => Name);
    end Get_Rep_Record_Module;
 
    ---------------------------------------
