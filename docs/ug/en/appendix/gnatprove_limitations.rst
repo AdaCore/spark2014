@@ -22,13 +22,11 @@ Tool Limitations
 #. A subset of all Ada fixed-point types and fixed-point operations is
    supported:
 
-   * fixed-point types must have a small that is a negative power of 2 or 10
    * multiplication and division between different fixed-point types and
-     universal real are rejected
-   * multiplication and division whose result type is not the same fixed-point
-     type as its fixed-point argument(s) are rejected, except for the special
-     case of dividing a fixed-point value by the small of its type
-     (T'Small) to yield an integer result which is always exact.
+     floating-point types are rejected
+   * multiplication and division between different fixed-point types such are
+     rejected if their smalls are not *compatible* as defined in Ada RM
+     G.2.3(21).
    * conversions from fixed-point types to floating-point types are rejected
 
    These restrictions ensure that the result of fixed-point operations always
@@ -78,21 +76,11 @@ Legality Rules
 #. |SPARK| Reference Manual rule 4.3(1), concerning use of the box
    symbol "<>" in aggregates, is not currently checked.
 
-#. The elaboration order rules described in the |SPARK| Reference
-   Manual 7.7 are not currently checked.
-
 #. The rule concerned with asserting that all child packages which
    have state denoted as being Part_Of a more visible state
    abstraction are given as constituents in the refinement of the more
    visible state is not checked (|SPARK| Reference Manual rule
    7.2.6(6)).
-
-#. |GNATprove| does not permit formal parameters to be mentioned
-   in the ``input_list`` of an Initializes Aspect, contrary
-   to |SPARK| Reference Manual 7.1.5(4). This limitation is only
-   relevant for packages that are nested inside subprograms.
-   This limitation is corrected in versions of the toolset based
-   on GNAT Pro 7.2.2, GPL 2014, or later.
 
 #. The case of a state abstraction whose Part_Of aspect denotes a
    task or protected unit is not currently supported.
@@ -100,7 +88,7 @@ Legality Rules
 #. The case of a Refined_Post specification for a (protected) entry
    is not currently supported.
 
-#. The use Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
+#. The use of Ada.Synchronous_Barriers.Synchronous_Barrier type is not currently
    allowed in |SPARK|.
 
 #. Entry families are not currently allowed in |SPARK|.
@@ -121,7 +109,9 @@ Proof Limitations
 
 #. Postconditions of recursive functions called in contracts and assertion
    pragmas are not available, possibly leading to unproved checks. The current
-   workaround is to use a non-recursive wrapper around those functions.
+   workaround is to use a non-recursive wrapper around those functions. Using
+   the switch ``--info`` reveals where the information about postcondition may
+   be lost.
 
 #. Attribute 'Valid is currently assumed to always return True.
 
@@ -146,41 +136,6 @@ Proof Limitations
    yet fully supported in proof. Checks might be missing so currently an
    error is emitted for any use of the 'Update attribute on
    multidimensional unconstrained arrays.
-
-#. The difference between the floating-point values +0 and -0 (as defined in
-   IEEE-754 standard) is ignored in proof. This is correct for all programs that
-   do not exploit the difference in bit-pattern between +0 and -0. For example,
-   the following specially crafted program is proved by |GNATprove| but fails at
-   run time due to a division by zero, because function ``Magic`` exploits the
-   difference of bit-pattern between +0 and -0 by using ``Unchecked_Conversion``
-   to return a different integer value for arguments +0 and -0.
-
-   .. code-block:: ada
-
-      pragma SPARK_Mode;
-
-      with Ada.Unchecked_Conversion;
-
-      procedure Zero_And_Unchecked is
-         procedure Crash (A, B : Float) is
-            function Magic is new Ada.Unchecked_Conversion (Float, Integer);
-            X : Integer;
-         begin
-            if A = B then
-               if Magic (B) /= 0 then
-                  X := 100 / Magic (A);
-               end if;
-            end if;
-         end Crash;
-
-         type UInt32 is mod 2 ** 32;
-         function Convert is new Ada.Unchecked_Conversion (UInt32, Float);
-
-         Zero_Plus : constant Float := Convert (16#0000_0000#);
-         Zero_Neg  : constant Float := Convert (16#8000_0000#);
-      begin
-         Crash (Zero_Plus, Zero_Neg);
-      end Zero_And_Unchecked;
 
 #. |GNATprove| does not follow the value of tags for tagged objects. As a
    consequence, tag checks are currently unprovable in most cases.
