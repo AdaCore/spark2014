@@ -9,14 +9,13 @@ Excluded Ada Features
 ---------------------
 
 To facilitate formal verification, |SPARK| enforces a number of global
-simplifications to Ada 2012. The most notable simplifications are:
+simplifications to Ada. The most notable simplifications are:
 
-* The use of access types and allocators is not permitted. Formal verification
-  of programs with pointers requires tracking which memory is allocated and
-  which memory has been freed, as well as separation between different blocks
-  of memory, which are not doable precisely without a lot of manual work. As a
-  replacement, |SPARK| provides rich generic data structures in the
-  :ref:`Formal Containers Library`.
+* Uses of access types and allocators must follow an ownership policy, so that
+  only one access object has read-write permission to some allocated memory at
+  any given time, or only read-only permission for that allocated memory is
+  granted to possibly multiple access objects. See :ref:`Memory Ownership
+  Policy`.
 
 * All expressions (including function calls) are free of
   side-effects. Functions with side-effects are more complex to treat logically
@@ -161,26 +160,80 @@ Note also the various warnings that |GNATprove| issues on unused parameters,
 global items and assignments, also based on the stricter |SPARK| interpretation
 of parameter and global modes.
 
+.. _Memory Ownership Policy:
+
+Memory Ownership Policy
+-----------------------
+
+In SPARK, access values (a.k.a. pointers) are only allowed to alias in known
+ways, so that formal verification can be applied *as if* allocated memory
+pointed to by access values was a component of the access value seen as a
+record object.
+
+In particular, assignment between access objects operates a transfer of
+ownership, where the source object loses its permission to read or write the
+underlying allocated memory.
+
+For example, in the following example:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_transfer.adb
+   :language: ada
+   :linenos:
+
+GNATprove correctly detects that ``X.all`` can neither be read nor written
+after the assignment of ``X`` to ``Y`` and issues corresponding messages:
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_transfer.flow
+   :language: none
+
+At call site, ownership is similarly transferred to the callee's parameters for
+the duration of the call, and returned to the actual parameters (a.k.a.
+arguments) when returning from the call.
+
+For example, in the following example:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_transfer_at_call.adb
+   :language: ada
+   :linenos:
+
+GNATprove correctly detects that the call to ``Proc`` cannot take ``X`` in
+argument as ``X`` is already accessed as a global variable by ``Proc``.
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_transfer_at_call.flow
+   :language: none
+
+Only pool-specific access types are allowed in SPARK, so it is not possible to
+declare access types with the qualifiers ``all`` or ``const``, as these define
+general access types. This ensures in particular that access values in SPARK
+always point to dynamically-allocated memory, and thus can be freed when not
+null.
+
 .. _Absence of Interferences:
 
 Absence of Interferences
 ------------------------
 
 In |SPARK|, an assignment to a variable cannot change the value of another
-variable. This is enforced by forbidding the use of access types (pointers) in
+variable. This is enforced by restricting the use of access types (pointers) in
 |SPARK|, and by restricting aliasing between parameters and global variables so
 that only benign aliasing is accepted (i.e. aliasing that does not cause
 interference).
 
 The precise rules detailed in SPARK RM 6.4.2 can be summarized as follows:
 
-* Two output parameters should never be aliased.
-* An input and an output parameters should not be aliased, unless the input
-  parameter is always passed by copy.
-* An output parameter should never be aliased with a global variable referenced
+* Two mutable parameters should never be aliased.
+* An immutable and a mutable parameters should not be aliased, unless the
+  immutable parameter is always passed by copy.
+* A mutable parameter should never be aliased with a global variable referenced
   by the subprogram.
-* An input parameter should not be aliased with a global variable referenced by
-  the subprogram, unless the input parameter is always passed by copy.
+* An immutable parameter should not be aliased with a global variable
+  referenced by the subprogram, unless the immutable parameter is always passed
+  by copy.
+
+An immutable parameter is either an input parameter that is not of an access
+type, or an anonymous access-to-constant parameter. Except for parameters of
+access types, the immutable/mutable distinction is the same as the input/output
+one.
 
 These rules extend the existing rules in Ada RM 6.4.1 for restricting aliasing,
 which already make it illegal to call a procedure with problematic (non-benign)

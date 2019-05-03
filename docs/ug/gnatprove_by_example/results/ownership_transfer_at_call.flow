@@ -1,0 +1,1 @@
+ownership_transfer_at_call.adb:18:10: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
