@@ -24,7 +24,7 @@ Tool Limitations
 
    * multiplication and division between different fixed-point types and
      floating-point types are rejected
-   * multiplication and division between different fixed-point types such are
+   * multiplication and division between different fixed-point types are
      rejected if their smalls are not *compatible* as defined in Ada RM
      G.2.3(21).
    * conversions from fixed-point types to floating-point types are rejected
