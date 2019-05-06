@@ -2814,11 +2814,10 @@ package body Why.Gen.Expr is
                                        return W_Expr_Id
    is
       Node_Label : constant Symbol_Sets.Set :=
-                        (Symbol_Sets.To_Set
-                           (NID (Branch_Id_Label &
-                              Ada.Strings.Fixed.Trim
-                                   (Source => Node_Id'Image (If_Node),
-                                    Side   => Left))));
+        Symbol_Sets.To_Set
+          (NID (Branch_Id_Label &
+                Ada.Strings.Fixed.Trim (Source => Node_Id'Image (If_Node),
+                                        Side   => Left)));
 
    begin
       return
