@@ -3256,9 +3256,11 @@ package body Why.Gen.Expr is
 
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
-      Set : Symbol_Set := Symbol_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
       Location_Lab : constant Symbol := New_Located_Label (Sloc);
+
+      Labels : Symbol_Set;
+
    begin
       if CodePeer_Has_Proved (Sloc, Reason) then
          Emit_Proof_Result
@@ -3268,32 +3270,33 @@ package body Why.Gen.Expr is
             True,
             Current_Subp,
             How_Proved => PC_Codepeer);
-         Set.Insert (GP_Already_Proved);
+         Labels.Insert (GP_Already_Proved);
       end if;
-      Set.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
-      Set.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-      Set.Insert (Location_Lab);
+      Labels.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
+      Labels.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
+      Labels.Insert (Location_Lab);
 
       --  Do not generate comment labels in Why3 to facilitate debugging
 
       if not Gnat2Why_Args.Debug_Mode then
-         Set.Insert (New_Comment_Label (N, Location_Lab, Reason));
+         Labels.Insert (New_Comment_Label (N, Location_Lab, Reason));
       end if;
 
       declare
          Symb : constant Symbol := New_Shape_Label (Node => N);
       begin
          if Symb /= No_Symbol then
-            Set.Insert (Symb);
+            Labels.Insert (Symb);
          end if;
       end;
 
       if Reason = VC_Postcondition then
-         Set.Insert (Model_VC_Post);
+         Labels.Insert (Model_VC_Post);
       else
-         Set.Insert (VC_Annotation);
+         Labels.Insert (VC_Annotation);
       end if;
-      return Set;
+
+      return Labels;
    end New_VC_Labels;
 
    ------------------
