@@ -35,9 +35,8 @@ def launch_server(limit_line, input_file):
 
     installdir = spark_install_path()
     bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
-    Env().add_path(bindir)
 
-    cmd = ["gnat_server", "--limit-line", limit_line, "test.mlw"]
+    cmd = [os.path.join (bindir, "gnat_server"), "--limit-line", limit_line, "test.mlw"]
     # Create a pipe to give request to the process one by one.
     read, write = os.pipe()
     # process writes output to file, so we can avoid deadlocking
