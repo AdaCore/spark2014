@@ -1942,8 +1942,7 @@ package body SPARK_Definition is
             --  Attribute Enum_Rep is expanded as a type conversion by the
             --  frontend.
 
-            elsif Present (Original_Node (N))
-              and then Nkind (Original_Node (N)) = N_Attribute_Reference
+            elsif Nkind (Original_Node (N)) = N_Attribute_Reference
               and then Get_Attribute_Id (Attribute_Name (Original_Node (N)))
               = Attribute_Enum_Rep
             then
