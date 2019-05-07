@@ -1,1 +1,3 @@
+ownership_transfer_at_call.adb:5:04: info: initialization of "X" proved
+ownership_transfer_at_call.adb:8:11: info: data dependencies proved
 ownership_transfer_at_call.adb:18:10: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
