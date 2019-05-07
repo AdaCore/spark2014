@@ -225,6 +225,12 @@ package SPARK_Definition is
                          C    : Cursor)
                          return Entity_Id;
 
+   Ownership_Errors : Boolean := False;
+   --  When ownership errors are detected then we must stop before flow
+   --  analysis, just like we stop when legality errors or SPARK violations are
+   --  detected. ??? This flag is needed because ownership checking is not yet
+   --  integrated with marking.
+
 private
 
    type Cursor is new Node_Lists.Cursor;

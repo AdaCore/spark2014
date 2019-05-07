@@ -283,7 +283,9 @@ package body SPARK_Definition is
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
-   function Get_Emit_Messages return Boolean is (Emit_Messages);
+   function Set_Ownership_Errors_And_Get_Emit_Messages return Boolean;
+   --  Mark that an ownership error was detected. Returns True iff a message
+   --  should be emitted (because we are in phase 2).
 
    function Safe_Retysp (E : Entity_Id) return Entity_Id;
    --  Mark E before calling Retysp on it. It is used inside ownership checking
@@ -908,7 +910,8 @@ package body SPARK_Definition is
    package Ownership_Checking is new Sem_SPARK
      (Retysp                        => Safe_Retysp,
       Component_Is_Visible_In_SPARK => Component_Is_Visible_In_SPARK,
-      Emit_Messages                 => Get_Emit_Messages);
+      Emit_Messages                 =>
+        Set_Ownership_Errors_And_Get_Emit_Messages);
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -7101,6 +7104,16 @@ package body SPARK_Definition is
       Mark_Entity (E);
       return Retysp (E);
    end Safe_Retysp;
+
+   ------------------------------------------------
+   -- Set_Ownership_Errors_And_Get_Emit_Messages --
+   ------------------------------------------------
+
+   function Set_Ownership_Errors_And_Get_Emit_Messages return Boolean is
+   begin
+      Ownership_Errors := True;
+      return Emit_Messages;
+   end Set_Ownership_Errors_And_Get_Emit_Messages;
 
    ---------------------
    -- SPARK_Pragma_Is --
