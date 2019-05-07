@@ -2,44 +2,23 @@ n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
 n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
-n04.adb:37:12: source of borrow must be variable "Y"
+n04.adb:15:16: traversal function returning access-to-variable type is not yet supported
+n04.adb:16:07: local borrower of an access object is not yet supported
+n04.adb:33:07: local borrower of an access object is not yet supported
 n05.adb:37:22: insufficient permission on dereference from "X"
 n05.adb:37:22: object was declared as not writeable at line 31
 n06.adb:39:22: insufficient permission on dereference from "X"
 n06.adb:39:22: object was declared as not writeable at line 33
-n07.adb:10:16: anonymous access type for result only allowed for traveral functions
-n07.adb:25:09: expression must be part of stand-alone object or parameter
-n07.adb:25:09: incorrect borrow or observe (SPARK RM 3.10(3))
+n07.adb:10:16: anonymous access type for result for non-traversal functions is not allowed in SPARK
+n07.adb:10:16: violation of pragma SPARK_Mode at test.adc:3
+n07.adb:16:10: local borrower of an access object is not yet supported
+n07.adb:23:04: local borrower of an access object is not yet supported
+n07.adb:25:09: "Get_Local_Pointer" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
+n07.adb:25:09: violation of pragma SPARK_Mode at test.adc:3
 n08.adb:21:18: insufficient permission on dereference from "A"
 n08.adb:21:18: object was declared as not writeable at line 16
 n08.adb:23:22: insufficient permission on dereference from "A"
 n08.adb:23:22: object was declared as not writeable at line 16
-n08b.adb:28:26: expected type universal integer
-n08b.adb:28:26: found type "ACI" defined at line 12
-n08b.adb:30:22: expected type "ACI" defined at line 12
-n08b.adb:30:22: found type access to "ACI" defined at line 30
-n08b.adb:39:43: expected type "ACI" defined at line 12
-n08b.adb:39:43: found type universal integer
-n08b.adb:39:52: expected type "ACI" defined at line 12
-n08b.adb:39:52: found type universal integer
-n08b.adb:40:15: add "all" to type "AM" defined at line 16
-n08b.adb:40:15: result must be general access type
-n08b.adb:43:39: expected type "Standard.Integer"
-n08b.adb:43:39: found type "ACI" defined at line 12
-n08b.adb:44:43: expected type "Standard.Integer"
-n08b.adb:44:43: found type "ACI" defined at line 12
-n08b.adb:45:51: expected type "Standard.Integer"
-n08b.adb:45:51: found type "ACI" defined at line 12
-n08b.adb:46:51: expected type "Standard.Integer"
-n08b.adb:46:51: found type "ACI" defined at line 12
-n08b.adb:53:39: expected type "Standard.Integer"
-n08b.adb:53:39: found type "ACI" defined at line 12
-n08b.adb:54:43: expected type "Standard.Integer"
-n08b.adb:54:43: found type "ACI" defined at line 12
-n08b.adb:55:51: expected type "Standard.Integer"
-n08b.adb:55:51: found type "ACI" defined at line 12
-n08b.adb:56:51: expected type "Standard.Integer"
-n08b.adb:56:51: found type "ACI" defined at line 12
 n09.adb:16:19: insufficient permission on dereference from "A"
 n09.adb:16:19: object was declared as not writeable at line 11
 n09b.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
@@ -138,8 +117,44 @@ spark02.adb:18:17: insufficient permission for "x"
 spark02.adb:18:17: object was declared as not writeable at line 10
 spark02.adb:32:11: illegal target for assignment
 spark02.adb:35:11: name expected here for move/borrow/observe
+spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
+spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
+spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)
+spark03.ads:8:07: info: flow dependencies proved
+spark03.ads:9:21: info: initialization of "An_Item" proved
+spark03.ads:10:07: info: flow dependencies proved
+spark03.ads:21:24: info: data dependencies proved
+spark03.ads:21:63: info: initialization of "Z" proved
+spark03.ads:21:65: info: initialization of "W" proved
 spark03b.ads:4:13: insufficient permission for "An_Item" when returning from "Insert"
 spark03b.ads:4:13: object was moved at spark03b.adb:6
 spark03c.ads:7:13: insufficient permission for "An_Item" when returning from "Insert"
 spark03c.ads:7:13: object was moved at spark03c.adb:6
+gnatprove: error during flow analysis and proof
+n08b.adb:28:26: expected type universal integer
+n08b.adb:28:26: found type "ACI" defined at line 12
+n08b.adb:30:22: expected type "ACI" defined at line 12
+n08b.adb:30:22: found type access to "ACI" defined at line 30
+n08b.adb:39:43: expected type "ACI" defined at line 12
+n08b.adb:39:43: found type universal integer
+n08b.adb:39:52: expected type "ACI" defined at line 12
+n08b.adb:39:52: found type universal integer
+n08b.adb:40:15: add "all" to type "AM" defined at line 16
+n08b.adb:40:15: result must be general access type
+n08b.adb:43:39: expected type "Standard.Integer"
+n08b.adb:43:39: found type "ACI" defined at line 12
+n08b.adb:44:43: expected type "Standard.Integer"
+n08b.adb:44:43: found type "ACI" defined at line 12
+n08b.adb:45:51: expected type "Standard.Integer"
+n08b.adb:45:51: found type "ACI" defined at line 12
+n08b.adb:46:51: expected type "Standard.Integer"
+n08b.adb:46:51: found type "ACI" defined at line 12
+n08b.adb:53:39: expected type "Standard.Integer"
+n08b.adb:53:39: found type "ACI" defined at line 12
+n08b.adb:54:43: expected type "Standard.Integer"
+n08b.adb:54:43: found type "ACI" defined at line 12
+n08b.adb:55:51: expected type "Standard.Integer"
+n08b.adb:55:51: found type "ACI" defined at line 12
+n08b.adb:56:51: expected type "Standard.Integer"
+n08b.adb:56:51: found type "ACI" defined at line 12
 gnatprove: error during generation of Global contracts

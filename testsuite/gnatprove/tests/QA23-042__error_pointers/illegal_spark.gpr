@@ -1,0 +1,10 @@
+with "test";
+
+project Illegal_SPARK is
+   package Compiler is
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+
+   for Excluded_Source_Files use Test.Phase_1_Errors;
+
+end Illegal_SPARK;
