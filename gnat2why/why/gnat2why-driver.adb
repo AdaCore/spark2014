@@ -795,11 +795,11 @@ package body Gnat2Why.Driver is
         (Process : not null access procedure (E : Entity_Id))
       is
       begin
-         --  Set error node so that bugbox information will be correct
-
-         Current_Error_Node := E;
-
          for E of Entities_To_Translate loop
+
+            --  Set error node so that bugbox information will be correct
+
+            Current_Error_Node := E;
             Process (E);
          end loop;
       end For_All_Entities;
