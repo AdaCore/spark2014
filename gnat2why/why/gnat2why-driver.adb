@@ -361,9 +361,44 @@ package body Gnat2Why.Driver is
 
       generic
          with procedure Action (N : Node_Id);
+      procedure Process_All_Units;
+      --  Call Action on all compilation units analyzed by the frontend. Units
+      --  might be processed in an arbitrary order; in particular, it is not
+      --  guaranteed that declarations are processed before uses.
+      --
+      --  Note: originally, we used Sem.Walk_Library_Items, but in complicated
+      --  chains of generics and inlined calls it was both failing to find a
+      --  suitable ordering of units and missing some units that were needed.
+
+      generic
+         with procedure Action (N : Node_Id);
       procedure Process_Current_Unit;
       --  Call Action on the spec of the current compilation unit and its body
       --  (if present).
+
+      -----------------------
+      -- Process_All_Units --
+      -----------------------
+
+      procedure Process_All_Units is
+      begin
+         --  Standard package is implicitly analysed
+         Action (Standard_Package_Node);
+
+         --  Iterate over all other units known to the frontend
+         for U in Main_Unit .. Last_Unit loop
+
+            --  Ignore non-compilation units (e.g. .adc configuration files)
+            --  and units that were not analysed (e.g. system.ads when it is
+            --  implicitly pulled by Ensure_System_Dependency).
+
+            if Present (Cunit (U))
+              and then Analyzed (Unit (Cunit (U)))
+            then
+               Action (Unit (Cunit (U)));
+            end if;
+         end loop;
+      end Process_All_Units;
 
       --------------------------
       -- Process_Current_Unit --
@@ -388,18 +423,13 @@ package body Gnat2Why.Driver is
       procedure Build_Flow_Tree is new Process_Current_Unit
         (Action => Flow_Generated_Globals.Traversal.Build_Tree);
 
-      --  Note that this use of Sem.Walk_Library_Items to see units in an order
-      --  which avoids forward references has caused problems in the past with
-      --  the combination of generics and inlining, as well as child units
-      --  referenced in parent units. To be checked.
-
-      procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
+      procedure Rewrite_All_Compilation_Units is new Process_All_Units
         (Action => Rewrite_Compilation_Unit);
 
-      procedure Register_All_Entities is new Sem.Walk_Library_Items
+      procedure Register_All_Entities is new Process_All_Units
         (Action => Register_Compilation_Unit);
 
-      procedure Register_All_Flow_Scopes is new Sem.Walk_Library_Items
+      procedure Register_All_Flow_Scopes is new Process_All_Units
         (Action => Register_Flow_Scopes);
 
       --  This Boolean indicates whether proof have been attempted anywhere in

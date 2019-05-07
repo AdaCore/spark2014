@@ -540,7 +540,6 @@ package body Flow_Visibility is
                    and then
                  Private_Present (Atree.Parent (N));
                Parent     := Scope (E);
-               pragma Assert (Hierarchy_Info.Contains (Parent));
             end if;
          elsif Get_Flow_Scope (N) = Null_Flow_Scope then
             Is_Private := False;

@@ -450,12 +450,11 @@ package body SPARK_Rewrite is
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
          null;
 
-      --  Rewrite_Compilation_Unit is called on the declaration or body of a
-      --  library unit (see spec of Sem.Walk_Library_Items), but we need here
-      --  to call Rewrite_Nodes on the parent compilation unit node, so that
-      --  aspects rewritten as pragmas after the library unit declaration or
-      --  body (listed in Pragmas_After) are also rewritten. Only Standard
-      --  package has no such a parent.
+      --  This procedure is called on the declaration or body of a library
+      --  unit, but we also need to process the parent of the compilation unit
+      --  node, so that aspects rewritten as pragmas after the library unit
+      --  declaration or body (listed in Pragmas_After) are also processed.
+      --  Only the Standard package has no such a parent.
 
       elsif N = Standard_Package_Node then
          pragma Assert (No (Parent (N)));
