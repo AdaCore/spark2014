@@ -1,5 +1,3 @@
-compiler.adb:27:40: info: data dependencies proved
-compiler.adb:46:10: info: data dependencies proved
 compiler.adb:49:24: info: cannot unroll loop (too many loop iterations)
 compiler.adb:50:18: medium: range check might fail
 compiler.adb:108:14: info: initialization of "i" proved, in call inlined at compiler.adb:971
@@ -690,7 +688,6 @@ compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at
 compiler.adb:113:10: info: initialization of "Result" proved, in call inlined at compiler.adb:995, in call inlined at compiler.adb:1161
 compiler.adb:159:13: warning: subprogram "Error" has no effect
 compiler.adb:300:20: info: initialization of "ch" proved
-compiler.adb:302:03: info: data dependencies proved
 compiler.adb:312:22: info: cannot unroll loop (too many loop iterations)
 compiler.adb:312:22: info: in inlined body at line 108
 compiler.adb:313:29: medium: range check might fail
@@ -779,7 +776,7 @@ compiler.adb:517:18: info: initialization of "table_index" proved, in call inlin
 compiler.adb:517:18: info: initialization of "table_index" proved, in call inlined at compiler.adb:1237
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1197 [possible explanation: loop at line 1193 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1200 [possible explanation: loop at line 1198 should mention table_index in a loop invariant]
-compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1207 [possible explanation: loop at line 1193 should mention table_index in a loop invariant]
+compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1207
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1210 [possible explanation: loop at line 1208 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1219 [possible explanation: loop at line 1215 should mention table_index in a loop invariant]
 compiler.adb:517:30: medium: range check might fail, in call inlined at compiler.adb:1237 [possible explanation: loop at line 1227 should mention table_index in a loop invariant]
@@ -829,8 +826,8 @@ compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at c
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1200
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1219
 compiler.adb:532:26: info: range check proved (CVC4: 1 VC), in call inlined at compiler.adb:1237
-compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207 [possible explanation: loop at line 1193 should mention varcount in a loop invariant]
-compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210 [possible explanation: loop at line 1208 should mention varcount in a loop invariant]
+compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1207
+compiler.adb:532:26: medium: range check might fail, in call inlined at compiler.adb:1210
 compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
 compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
 compiler.adb:534:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
@@ -855,7 +852,7 @@ compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined 
 compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1210
 compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1219
 compiler.adb:536:17: info: initialization of "varcount" proved, in call inlined at compiler.adb:1237
-compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237 [possible explanation: loop at line 1227 should mention varcount in a loop invariant]
+compiler.adb:536:26: medium: range check might fail, in call inlined at compiler.adb:1237
 compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1197
 compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1200
 compiler.adb:538:37: info: initialization of "table_index" proved, in call inlined at compiler.adb:1207
@@ -892,7 +889,7 @@ compiler.adb:556:10: info: initialization of "i" proved, in call inlined at comp
 compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:880, in call inlined at compiler.adb:1159
 compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:964
 compiler.adb:556:10: info: initialization of "i" proved, in call inlined at compiler.adb:964, in call inlined at compiler.adb:1161
-compiler.adb:577:21: medium: postcondition might fail, cannot prove Code(Code_Index).Instruction = instruction
+compiler.adb:577:21: medium: postcondition might fail, cannot prove Code(Code_Index).Instruction = instruction [possible explanation: subprogram at line 569 should mention code_index and code and instruction in a precondition]
 compiler.adb:590:28: medium: range check might fail [possible explanation: subprogram at line 569 should mention code_index in a precondition]
 compiler.adb:635:06: info: initialization of "sym" proved, in call inlined at compiler.adb:819
 compiler.adb:635:06: info: initialization of "sym" proved, in call inlined at compiler.adb:858
@@ -944,11 +941,11 @@ compiler.adb:704:10: info: initialization of "i" proved
 compiler.adb:705:23: info: initialization of "i" proved
 compiler.adb:711:42: info: initialization of "i" proved
 compiler.adb:711:65: info: initialization of "i" proved
-compiler.adb:718:19: medium: overflow check might fail [possible explanation: subprogram at line 666 should mention level and symbol_table in a precondition]
+compiler.adb:718:19: medium: overflow check might fail
 compiler.adb:718:34: info: initialization of "i" proved
 compiler.adb:719:26: info: initialization of "i" proved
 compiler.adb:720:26: info: initialization of "i" proved
-compiler.adb:733:19: medium: overflow check might fail [possible explanation: subprogram at line 666 should mention level and symbol_table in a precondition]
+compiler.adb:733:19: medium: overflow check might fail
 compiler.adb:733:34: info: initialization of "i" proved
 compiler.adb:734:26: info: initialization of "i" proved
 compiler.adb:735:26: info: initialization of "i" proved
@@ -1019,7 +1016,7 @@ compiler.adb:881:19: info: initialization of "i" proved
 compiler.adb:881:19: info: initialization of "i" proved, in call inlined at compiler.adb:1159
 compiler.adb:883:06: info: initialization of "sym" proved
 compiler.adb:885:20: info: initialization of "sym" proved
-compiler.adb:889:13: medium: overflow check might fail, in call inlined at compiler.adb:1159 [possible explanation: subprogram at line 602 should mention symbol_table in a precondition]
+compiler.adb:889:13: medium: overflow check might fail, in call inlined at compiler.adb:1159
 compiler.adb:889:28: info: initialization of "i" proved
 compiler.adb:889:28: info: initialization of "i" proved, in call inlined at compiler.adb:1159
 compiler.adb:890:20: info: initialization of "i" proved
@@ -1089,17 +1086,17 @@ compiler.adb:1033:20: info: initialization of "cx1" proved
 compiler.adb:1033:20: info: initialization of "cx1" proved, in call inlined at compiler.adb:1163
 compiler.adb:1034:08: info: initialization of "sym" proved
 compiler.adb:1056:10: info: initialization of "i" proved
-compiler.adb:1069:21: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1069:21: medium: overflow check might fail
 compiler.adb:1069:36: info: initialization of "i" proved
 compiler.adb:1070:28: info: initialization of "i" proved
 compiler.adb:1071:28: info: initialization of "i" proved
-compiler.adb:1088:21: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1088:21: medium: overflow check might fail
 compiler.adb:1088:36: info: initialization of "i" proved
 compiler.adb:1089:28: info: initialization of "i" proved
 compiler.adb:1090:28: info: initialization of "i" proved
 compiler.adb:1102:10: info: initialization of "i" proved
 compiler.adb:1103:23: info: initialization of "i" proved
-compiler.adb:1108:17: medium: overflow check might fail [possible explanation: subprogram at line 602 should mention level and symbol_table in a precondition]
+compiler.adb:1108:17: medium: overflow check might fail
 compiler.adb:1108:32: info: initialization of "i" proved
 compiler.adb:1109:24: info: initialization of "i" proved
 compiler.adb:1110:24: info: initialization of "i" proved
@@ -1371,9 +1368,9 @@ compiler.adb:1529:35: info: initialization of "Codes" proved, in call inlined at
 compiler.adb:1529:57: info: initialization of "Spawn_Data" proved, in call inlined at compiler.adb:1861
 compiler.adb:1561:12: info: initialization of "Success" proved
 compiler.adb:1567:44: medium: range check might fail
-compiler.adb:1583:14: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
-compiler.adb:1584:18: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
-compiler.adb:1585:18: medium: range check might fail [possible explanation: subprogram at line 1382 should mention Data in a precondition]
+compiler.adb:1583:14: medium: range check might fail [possible explanation: subprogram at line 1570 should mention Data in a precondition]
+compiler.adb:1584:18: medium: range check might fail [possible explanation: subprogram at line 1570 should mention Data in a precondition]
+compiler.adb:1585:18: medium: range check might fail [possible explanation: subprogram at line 1570 should mention Data in a precondition]
 compiler.adb:1601:46: medium: range check might fail
 compiler.adb:1636:15: info: initialization of "Codes" proved
 compiler.adb:1636:21: info: initialization of "Progreg" proved
@@ -1381,188 +1378,188 @@ compiler.adb:1637:18: info: initialization of "Progreg" proved
 compiler.adb:1637:26: medium: range check might fail [possible explanation: loop at line 1633 should mention Progreg in a loop invariant]
 compiler.adb:1640:12: info: initialization of "Code.instruction" proved
 compiler.adb:1644:18: info: initialization of "Top" proved
-compiler.adb:1644:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1644:22: medium: range check might fail
 compiler.adb:1645:47: info: initialization of "Top" proved
 compiler.adb:1645:52: info: initialization of "Code.data" proved
 compiler.adb:1649:16: info: initialization of "Code.data" proved
 compiler.adb:1653:58: info: initialization of "Basereg" proved
 compiler.adb:1653:66: info: range check proved (CVC4: 1 VC)
 compiler.adb:1654:65: info: initialization of "Top" proved
-compiler.adb:1654:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1654:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
-compiler.adb:1655:30: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1654:65: medium: range check might fail
+compiler.adb:1654:81: medium: range check might fail
+compiler.adb:1655:30: medium: range check might fail
 compiler.adb:1655:65: info: initialization of "Top" proved
-compiler.adb:1655:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1655:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1655:65: medium: range check might fail
+compiler.adb:1655:81: medium: range check might fail
 compiler.adb:1659:30: info: initialization of "Top" proved
-compiler.adb:1659:35: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1659:35: medium: overflow check might fail
 compiler.adb:1659:59: info: initialization of "Top" proved
 compiler.adb:1663:20: info: initialization of "Top" proved
-compiler.adb:1663:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1663:24: medium: range check might fail
 compiler.adb:1665:30: info: initialization of "Top" proved
 compiler.adb:1665:58: info: initialization of "Top" proved
-compiler.adb:1666:24: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1666:24: medium: overflow check might fail
 compiler.adb:1666:65: info: range check proved (CVC4: 1 VC)
 compiler.adb:1670:20: info: initialization of "Top" proved
-compiler.adb:1670:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1670:24: medium: range check might fail
 compiler.adb:1672:30: info: initialization of "Top" proved
 compiler.adb:1673:53: info: initialization of "Top" proved
-compiler.adb:1674:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1674:30: medium: overflow check might fail
 compiler.adb:1674:71: info: range check proved (CVC4: 1 VC)
 compiler.adb:1678:20: info: initialization of "Top" proved
-compiler.adb:1678:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1678:24: medium: range check might fail
 compiler.adb:1680:30: info: initialization of "Top" proved
 compiler.adb:1680:58: info: initialization of "Top" proved
-compiler.adb:1681:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1681:30: medium: overflow check might fail
 compiler.adb:1681:71: info: range check proved (CVC4: 1 VC)
 compiler.adb:1685:20: info: initialization of "Top" proved
-compiler.adb:1685:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1685:24: medium: range check might fail
 compiler.adb:1687:30: info: initialization of "Top" proved
 compiler.adb:1688:53: info: initialization of "Top" proved
-compiler.adb:1689:30: medium: divide by zero might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1689:30: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1689:30: medium: divide by zero might fail
+compiler.adb:1689:30: medium: overflow check might fail
 compiler.adb:1689:71: info: range check proved (CVC4: 1 VC)
 compiler.adb:1694:30: info: initialization of "Top" proved
 compiler.adb:1694:58: info: initialization of "Top" proved
 compiler.adb:1694:75: info: division check proved (CVC4: 1 VC)
 compiler.adb:1698:20: info: initialization of "Top" proved
-compiler.adb:1698:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1698:24: medium: range check might fail
 compiler.adb:1700:30: info: initialization of "Top" proved
 compiler.adb:1703:58: info: initialization of "Top" proved
 compiler.adb:1704:76: info: range check proved (CVC4: 1 VC)
 compiler.adb:1710:20: info: initialization of "Top" proved
-compiler.adb:1710:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1710:24: medium: range check might fail
 compiler.adb:1712:30: info: initialization of "Top" proved
 compiler.adb:1715:58: info: initialization of "Top" proved
 compiler.adb:1716:77: info: range check proved (CVC4: 1 VC)
 compiler.adb:1722:20: info: initialization of "Top" proved
-compiler.adb:1722:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1722:24: medium: range check might fail
 compiler.adb:1724:30: info: initialization of "Top" proved
 compiler.adb:1727:58: info: initialization of "Top" proved
 compiler.adb:1728:76: info: range check proved (CVC4: 1 VC)
 compiler.adb:1734:20: info: initialization of "Top" proved
-compiler.adb:1734:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1734:24: medium: range check might fail
 compiler.adb:1736:29: info: initialization of "Top" proved
 compiler.adb:1739:57: info: initialization of "Top" proved
 compiler.adb:1740:72: info: range check proved (CVC4: 1 VC)
 compiler.adb:1746:20: info: initialization of "Top" proved
-compiler.adb:1746:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1746:24: medium: range check might fail
 compiler.adb:1748:30: info: initialization of "Top" proved
 compiler.adb:1750:57: info: initialization of "Top" proved
 compiler.adb:1751:72: info: range check proved (CVC4: 1 VC)
 compiler.adb:1757:20: info: initialization of "Top" proved
-compiler.adb:1757:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1757:24: medium: range check might fail
 compiler.adb:1759:30: info: initialization of "Top" proved
 compiler.adb:1761:57: info: initialization of "Top" proved
 compiler.adb:1762:73: info: range check proved (CVC4: 1 VC)
 compiler.adb:1768:48: info: initialization of "Top" proved
 compiler.adb:1769:17: info: initialization of "Tmp_Data" proved
 compiler.adb:1770:20: info: initialization of "Top" proved
-compiler.adb:1770:24: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1770:24: medium: range check might fail
 compiler.adb:1780:18: info: initialization of "Top" proved
-compiler.adb:1780:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1780:22: medium: range check might fail
 compiler.adb:1781:16: info: initialization of "Code.level" proved
 compiler.adb:1781:28: info: initialization of "Basereg" proved
-compiler.adb:1781:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1781:28: medium: range check might fail
 compiler.adb:1783:15: info: initialization of "Caller.location" proved
 compiler.adb:1783:15: info: initialization of "Code.data" proved
-compiler.adb:1783:43: medium: range check might fail [possible explanation: loop at line 1633 should mention Caller and Code in a loop invariant]
-compiler.adb:1783:61: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1783:43: medium: range check might fail
+compiler.adb:1783:61: medium: range check might fail
 compiler.adb:1784:47: info: initialization of "Top" proved
 compiler.adb:1784:52: info: initialization of "Tmp_Data" proved
 compiler.adb:1788:16: info: initialization of "Code.level" proved
 compiler.adb:1788:28: info: initialization of "Basereg" proved
-compiler.adb:1788:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1788:28: medium: range check might fail
 compiler.adb:1790:15: info: initialization of "Caller.location" proved
 compiler.adb:1790:15: info: initialization of "Code.data" proved
 compiler.adb:1790:15: info: initialization of "Top" proved
-compiler.adb:1790:61: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1791:27: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
-compiler.adb:1791:64: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
+compiler.adb:1790:61: medium: range check might fail
+compiler.adb:1791:27: medium: range check might fail
+compiler.adb:1791:64: medium: range check might fail
 compiler.adb:1793:47: info: initialization of "Top" proved
 compiler.adb:1793:52: info: initialization of "Tmp_Data" proved
 compiler.adb:1796:16: info: initialization of "Code.level" proved
 compiler.adb:1796:28: info: initialization of "Basereg" proved
-compiler.adb:1796:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1796:28: medium: range check might fail
 compiler.adb:1797:46: info: initialization of "Top" proved
 compiler.adb:1799:28: info: initialization of "Caller.location" proved
-compiler.adb:1799:44: medium: range check might fail [possible explanation: loop at line 1633 should mention Caller and Code in a loop invariant]
+compiler.adb:1799:44: medium: range check might fail
 compiler.adb:1799:58: info: initialization of "Code.data" proved
-compiler.adb:1799:62: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1799:62: medium: range check might fail
 compiler.adb:1799:70: info: initialization of "Tmp_Data" proved
 compiler.adb:1800:18: info: initialization of "Top" proved
-compiler.adb:1800:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1800:22: medium: range check might fail
 compiler.adb:1804:16: info: initialization of "Code.level" proved
 compiler.adb:1804:28: info: initialization of "Basereg" proved
-compiler.adb:1804:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1804:28: medium: range check might fail
 compiler.adb:1805:46: info: initialization of "Top" proved
 compiler.adb:1807:28: info: initialization of "Caller.location" proved
 compiler.adb:1807:58: info: initialization of "Code.data" proved
-compiler.adb:1807:62: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
-compiler.adb:1808:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Caller and Code and Top in a loop invariant]
+compiler.adb:1807:62: medium: range check might fail
+compiler.adb:1808:28: medium: range check might fail
 compiler.adb:1808:65: info: initialization of "Top" proved
-compiler.adb:1808:65: medium: range check might fail [possible explanation: loop at line 1633 should mention Processors and Top in a loop invariant]
-compiler.adb:1808:81: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1808:65: medium: range check might fail
+compiler.adb:1808:81: medium: range check might fail
 compiler.adb:1809:30: info: initialization of "Tmp_Data" proved
 compiler.adb:1811:18: info: initialization of "Top" proved
-compiler.adb:1811:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1811:22: medium: range check might fail
 compiler.adb:1815:16: info: initialization of "Code.level" proved
 compiler.adb:1815:28: info: initialization of "Basereg" proved
-compiler.adb:1815:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1815:28: medium: range check might fail
 compiler.adb:1816:47: info: initialization of "Top" proved
-compiler.adb:1816:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1816:51: medium: range check might fail
 compiler.adb:1816:56: info: initialization of "Caller.location" proved
 compiler.adb:1817:47: info: initialization of "Top" proved
-compiler.adb:1817:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1817:51: medium: range check might fail
 compiler.adb:1817:56: info: initialization of "Basereg" proved
 compiler.adb:1818:47: info: initialization of "Top" proved
-compiler.adb:1818:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1818:51: medium: range check might fail
 compiler.adb:1818:56: info: initialization of "Progreg" proved
 compiler.adb:1819:47: info: initialization of "Top" proved
-compiler.adb:1819:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1819:51: medium: range check might fail
 compiler.adb:1820:47: info: initialization of "Top" proved
-compiler.adb:1820:51: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1820:51: medium: range check might fail
 compiler.adb:1820:56: info: initialization of "Caller.stack" proved
 compiler.adb:1821:22: info: initialization of "Top" proved
 compiler.adb:1821:26: info: range check proved (CVC4: 1 VC)
 compiler.adb:1822:34: info: initialization of "Code.data" proved
-compiler.adb:1822:38: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1822:38: medium: range check might fail
 compiler.adb:1826:38: info: initialization of "Top" proved
-compiler.adb:1826:43: medium: overflow check might fail [possible explanation: loop at line 1633 should mention Code and Top in a loop invariant]
-compiler.adb:1826:43: medium: range check might fail [possible explanation: loop at line 1633 should mention Code and Top in a loop invariant]
+compiler.adb:1826:43: medium: overflow check might fail
+compiler.adb:1826:43: medium: range check might fail
 compiler.adb:1826:45: info: initialization of "Code.data" proved
 compiler.adb:1830:34: info: initialization of "Code.data" proved
-compiler.adb:1830:38: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1830:38: medium: range check might fail
 compiler.adb:1834:46: info: initialization of "Top" proved
 compiler.adb:1835:14: info: initialization of "Tmp_Data" proved
 compiler.adb:1836:36: info: initialization of "Code.data" proved
-compiler.adb:1836:40: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1836:40: medium: range check might fail
 compiler.adb:1838:18: info: initialization of "Top" proved
-compiler.adb:1838:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1838:22: medium: range check might fail
 compiler.adb:1844:18: info: initialization of "Top" proved
-compiler.adb:1844:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1844:22: medium: range check might fail
 compiler.adb:1845:46: info: initialization of "Top" proved
 compiler.adb:1845:62: info: range check proved (CVC4: 1 VC)
 compiler.adb:1846:47: info: initialization of "Top" proved
 compiler.adb:1846:52: info: initialization of "Tmp_Data" proved
 compiler.adb:1853:16: info: initialization of "Code.level" proved
 compiler.adb:1853:28: info: initialization of "Basereg" proved
-compiler.adb:1853:28: medium: range check might fail [possible explanation: loop at line 1633 should mention Basereg in a loop invariant]
+compiler.adb:1853:28: medium: range check might fail
 compiler.adb:1855:26: info: initialization of "Caller.location" proved
 compiler.adb:1855:43: info: initialization of "Basereg" proved
 compiler.adb:1856:39: info: initialization of "Caller.stack" proved
 compiler.adb:1857:32: info: initialization of "Progreg" proved
 compiler.adb:1859:22: info: initialization of "Code.data" proved
-compiler.adb:1859:26: medium: range check might fail [possible explanation: loop at line 1633 should mention Code in a loop invariant]
+compiler.adb:1859:26: medium: range check might fail
 compiler.adb:1860:45: info: initialization of "New_Thread" proved
 compiler.adb:1861:11: info: initialization of "New_Thread" proved
-compiler.adb:1869:45: medium: array index check might fail [possible explanation: loop at line 1633 should mention Processors in a loop invariant]
+compiler.adb:1869:45: medium: array index check might fail
 compiler.adb:1882:23: info: initialization of "Time" proved
 compiler.adb:1882:30: info: initialization of "Period" proved
 compiler.adb:1883:27: info: initialization of "Time" proved
 compiler.adb:1885:18: info: initialization of "Ready" proved
 compiler.adb:1892:18: info: initialization of "Top" proved
-compiler.adb:1892:22: medium: range check might fail [possible explanation: loop at line 1633 should mention Top in a loop invariant]
+compiler.adb:1892:22: medium: range check might fail
 compiler.adb:1893:47: info: initialization of "Top" proved
 compiler.adb:1897:17: info: initialization of "Progreg" proved
 compiler.adb:1912:57: info: initialization of "Spawn_Data" proved
