@@ -50,7 +50,11 @@ package body Why.Images is
 
    function Img (Name : Symbol) return String is
    begin
-      return Get (Name).all;
+      if Name = No_Symbol then
+         return "[no name]";
+      else
+         return Get (Name).all;
+      end if;
    end Img;
 
    function Img (Node : Why_Node_Set) return String is
