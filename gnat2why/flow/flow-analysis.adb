@@ -2387,7 +2387,7 @@ package body Flow.Analysis is
                Targeted => True);
 
          elsif Is_Global then
-            V_Goal := FA.Helper_End_Vertex;
+            V_Goal := FA.End_Vertex;
             N      := Find_Global (FA.Spec_Entity, Var);
          else
             V_Goal := V_Use;
