@@ -6038,7 +6038,7 @@ package body Flow.Control_Flow_Graph is
       --  Create the magic start, helper end and end vertices
       --
       --  The start vertex has the entity's location, because it is
-      --  convenient place to put error messages thay apply to the
+      --  convenient place to put error messages that apply to the
       --  whole subprogram/package/body.
       Add_Vertex (FA, Null_Attributes'Update (Error_Location => Body_N),
                   FA.Start_Vertex);
