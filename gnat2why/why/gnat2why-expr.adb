@@ -13619,14 +13619,8 @@ package body Gnat2Why.Expr is
 
          when N_Indexed_Component
             | N_Selected_Component
+            | N_Explicit_Dereference
          =>
-            T := One_Level_Access (Expr,
-                                   Transform_Expr
-                                     (Prefix (Expr), Domain, Local_Params),
-                                   Domain,
-                                   Local_Params);
-
-         when N_Explicit_Dereference =>
             T := One_Level_Access (Expr,
                                    Transform_Expr
                                      (Prefix (Expr), Domain, Local_Params),
