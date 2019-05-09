@@ -762,9 +762,9 @@ package body Why.Gen.Pointers is
             Labels => Get_Model_Trace_Label ("'" & All_Label),
             others => <>);
 
-         Emit_Record_Declaration (Section => P,
-                                  Name => Ty_Name,
-                                  Binders  => Binders_F,
+         Emit_Record_Declaration (Section      => P,
+                                  Name         => Ty_Name,
+                                  Binders      => Binders_F,
                                   SPARK_Record => True);
 
          Emit_Ref_Type_Definition
@@ -852,7 +852,7 @@ package body Why.Gen.Pointers is
       if Designates_Incomplete_Type (E) then
          Emit (P,
                New_Type_Decl
-                 (Name  => Img
+                 (Name => Img
                     (Get_Symb (To_Local (E_Symb (E, WNE_Private_Type)))))
               );
       end if;
