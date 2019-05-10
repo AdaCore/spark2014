@@ -482,8 +482,8 @@ package body Configuration is
    ----------------------
 
    function Is_Manual_Prover return Boolean is
-      Provers : constant String_Lists.List :=
-        File_Specific_Map.Element ("Ada").Provers;
+      Provers : String_Lists.List renames
+        File_Specific_Map ("Ada").Provers;
    begin
       return Provers.Length = 1
         and then
@@ -496,8 +496,8 @@ package body Configuration is
    -------------------
 
    function Is_Coq_Prover return Boolean is
-      Provers : constant String_Lists.List :=
-        File_Specific_Map.Element ("Ada").Provers;
+      Provers : String_Lists.List renames
+        File_Specific_Map ("Ada").Provers;
    begin
       return Case_Insensitive_Contains (Provers, "coq");
    end Is_Coq_Prover;
@@ -809,8 +809,8 @@ package body Configuration is
 
    procedure Prepare_Prover_Lib (Obj_Dir : String) is
 
-      Provers        : constant String_Lists.List :=
-        File_Specific_Map.Element ("Ada").Provers;
+      Provers        : String_Lists.List renames
+        File_Specific_Map ("Ada").Provers;
       Prover_Name    : constant String :=
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
