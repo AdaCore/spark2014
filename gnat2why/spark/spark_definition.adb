@@ -3222,10 +3222,14 @@ package body SPARK_Definition is
             declare
                Save_SPARK_Pragma : constant Node_Id :=
                  Current_SPARK_Pragma;
-               Des_Ty            : constant Entity_Id :=
-                 Full_View (Directly_Designated_Type (E));
+               Des_Ty            : Entity_Id :=
+                 Directly_Designated_Type (E);
 
             begin
+               if Is_Incomplete_Type (Des_Ty) then
+                  Des_Ty := Full_View (Des_Ty);
+               end if;
+
                --  Get the appropriate SPARK pragma for the access type
 
                Current_SPARK_Pragma := SPARK_Pragma_Of_Entity (E);
@@ -3264,9 +3268,13 @@ package body SPARK_Definition is
 
                      pragma Assert
                        (Is_Access_Type (Node_Maps.Element (Pos))
-                        and then Is_Incomplete_Type
-                          (Directly_Designated_Type
-                               (Node_Maps.Element (Pos))));
+                        and then
+                          (Is_Incomplete_Type
+                               (Directly_Designated_Type
+                                    (Node_Maps.Element (Pos)))
+                           or else Is_Partial_View
+                               (Directly_Designated_Type
+                                    (Node_Maps.Element (Pos)))));
                   end;
                end if;
 
@@ -5022,7 +5030,9 @@ package body SPARK_Definition is
 
             --  Store the type in the Incomplete_Type map to be marked later.
 
-            elsif Is_Incomplete_Type (Directly_Designated_Type (E)) then
+            elsif Is_Incomplete_Type (Directly_Designated_Type (E))
+              or else Is_Partial_View (Directly_Designated_Type (E))
+            then
                if No (Full_View (Directly_Designated_Type (E))) then
                   Mark_Unsupported
                     ("incomplete type with deferred full view",

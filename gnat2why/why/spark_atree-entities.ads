@@ -471,6 +471,7 @@ package SPARK_Atree.Entities is
    function Designates_Incomplete_Type (E : Entity_Id) return Boolean with
      Pre => Is_Access_Type (E);
    --  Returns True if E is an access type which designates an incomplete type
+   --  or a partial view of a type.
 
    function Directly_Designated_Type (E : Entity_Id) return Node_Id with
      Pre => Is_Access_Type (E);

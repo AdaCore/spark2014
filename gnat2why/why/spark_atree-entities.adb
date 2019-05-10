@@ -157,7 +157,8 @@ package body SPARK_Atree.Entities is
    --------------------------------
 
    function Designates_Incomplete_Type (E : Entity_Id) return Boolean is
-     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (E)));
+     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (E))
+      or else SPARK_Util.Is_Partial_View (Einfo.Directly_Designated_Type (E)));
 
    -------------------
    -- DIC_Procedure --
