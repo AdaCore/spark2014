@@ -1657,46 +1657,44 @@ package body Configuration is
          Colon_Index : constant Natural :=
            Index (Source => Input, Pattern => ":");
 
+         Proof_Input : constant String :=
+           (if Colon_Index /= 0 then Input (Input'First .. Colon_Index - 1)
+            else Input);
+         Lazy_Input : constant String :=
+           (if Colon_Index /= 0 then Input (Colon_Index + 1 .. Input'Last)
+            else "");
+
       begin
-         declare
-            Proof_Input : constant String :=
-              (if Colon_Index /= 0 then Input (Input'First .. Colon_Index - 1)
-               else Input);
-            Lazy_Input : constant String :=
-              (if Colon_Index /= 0 then Input (Colon_Index + 1 .. Input'Last)
-               else "");
-         begin
-            if Proof_Input = "" then
-               FS.Proof := Per_Check;
-            elsif Proof_Input = "progressive" then
-               FS.Proof := Progressive;
-            elsif Proof_Input = "per_path" then
-               FS.Proof := Per_Path;
-            elsif Proof_Input = "per_check" then
-               FS.Proof := Per_Check;
+         if Proof_Input = "" then
+            FS.Proof := Per_Check;
+         elsif Proof_Input = "progressive" then
+            FS.Proof := Progressive;
+         elsif Proof_Input = "per_path" then
+            FS.Proof := Per_Path;
+         elsif Proof_Input = "per_check" then
+            FS.Proof := Per_Check;
 
-               --  Hidden debugging values
+         --  Hidden debugging values
 
-            elsif Proof_Input = "no_wp" then
-               FS.Proof := No_WP;
-            elsif Proof_Input = "all_split" then
-               FS.Proof := All_Split;
-            else
-               Abort_Msg ("error: wrong argument for --proof",
-                          With_Help => False);
-            end if;
+         elsif Proof_Input = "no_wp" then
+            FS.Proof := No_WP;
+         elsif Proof_Input = "all_split" then
+            FS.Proof := All_Split;
+         else
+            Abort_Msg ("error: wrong argument for --proof",
+                       With_Help => False);
+         end if;
 
-            if Lazy_Input = "" then
-               FS.Lazy := True;
-            elsif Lazy_Input = "all" then
-               FS.Lazy := False;
-            elsif Lazy_Input = "lazy" then
-               FS.Lazy := True;
-            else
-               Abort_Msg ("error: wrong argument for --proof",
-                          With_Help => False);
-            end if;
-         end;
+         if Lazy_Input = "" then
+            FS.Lazy := True;
+         elsif Lazy_Input = "all" then
+            FS.Lazy := False;
+         elsif Lazy_Input = "lazy" then
+            FS.Lazy := True;
+         else
+            Abort_Msg ("error: wrong argument for --proof",
+                       With_Help => False);
+         end if;
       end Set_Proof_Mode;
 
       -----------------
