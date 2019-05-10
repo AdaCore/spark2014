@@ -170,8 +170,8 @@ package Configuration is
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
-   --  Attributes that are synthetized from the command line and project file.
-   --  See the Postprocess function which defines these variables. Some
+   --  Attributes that are synthesized from the command line and project file.
+   --  See the Postprocess procedure which defines these variables. Some
    --  variables are only copies of command line switches, but we prefer to
    --  use a clearer name (e.g. Continue_On_Error vs K).
 

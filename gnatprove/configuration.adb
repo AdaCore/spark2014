@@ -1093,23 +1093,23 @@ package body Configuration is
       --  present.
 
       procedure Postprocess;
-      --  read the switch variables set by CL parsing and set the gnatprove
-      --  variables
+      --  Read the switch variables set by command-line parsing and set the
+      --  gnatprove variables.
 
       procedure File_Specific_Postprocess (FS : out File_Specific);
-      --  same as Postprocess, but for the switches that can be file-specific.
+      --  Same as Postprocess, but for the switches that can be file-specific.
       --  For example, --level, --timeout are handled here.
 
       procedure Set_Project_Vars (Proj : Project_Type);
-      --  set the variables of the Prj_Attr package
+      --  Set the variables of the Prj_Attr package
 
       procedure Set_Mode;
       procedure Set_Warning_Mode;
       procedure Set_Report_Mode;
 
       procedure Set_Level_Timeout_Steps_Provers (FS : out File_Specific);
-      --  using the --level, --timeout, --steps and --provers switches, set the
-      --  corresponding variables
+      --  Using the --level, --timeout, --steps and --provers switches, set the
+      --  corresponding variables.
 
       procedure Set_Proof_Mode (FS : in out File_Specific);
       procedure Process_Limit_Switches;
@@ -1255,7 +1255,7 @@ package body Configuration is
             Remove_Prover ("z3");
          end if;
 
-         if not Is_Empty_At_Start and Provers.Is_Empty then
+         if not Is_Empty_At_Start and then Provers.Is_Empty then
             Provers.Append ("altergo");
          end if;
 
@@ -1334,7 +1334,7 @@ package body Configuration is
             Parallel := CL_Switches.J;
          end if;
 
-         --  handling of Only_Given and Filelist
+         --  Handling of Only_Given and Filelist
 
          Only_Given := CL_Switches.U
            or not Null_Or_Empty_String (CL_Switches.Limit_Subp)
@@ -1740,8 +1740,8 @@ package body Configuration is
             FS.Provers.Append (S (First .. S'Last));
          end if;
 
-         --  we now check if cvc4 or z3 have explicitly been requested, but are
-         --  missing from the install
+         --  Check if cvc4 or z3 have explicitly been requested, but are
+         --  missing from the install.
 
          for Prover of FS.Provers loop
             if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
