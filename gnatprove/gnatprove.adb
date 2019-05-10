@@ -504,11 +504,7 @@ procedure Gnatprove with SPARK_Mode is
       end if;
 
       Args.Append ("--counterexample");
-      if Counterexample then
-         Args.Append ("on");
-      else
-         Args.Append ("off");
-      end if;
+      Args.Append (if Counterexample then "on" else "off");
 
       if CL_Switches.Z3_Counterexample then
          Args.Append ("--ce-prover");
