@@ -36,7 +36,6 @@ with Namet;
 with Opt;
 with Osint;
 with SPARK_Definition;
-with Stringt;
 with System;
 
 package body Back_End is
@@ -70,7 +69,6 @@ package body Back_End is
       --  tables that we need to change.
 
       Namet.Unlock;
-      Stringt.Unlock;
       Elists.Unlock;
 
       --  gnat2why is run in two main modes:
@@ -111,7 +109,6 @@ package body Back_End is
       --  Make sure to lock any unlocked tables again before returning
 
       Namet.Lock;
-      Stringt.Lock;
       Elists.Lock;
    end Call_Back_End;
 
