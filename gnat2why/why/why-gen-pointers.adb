@@ -44,6 +44,7 @@ with Why.Gen.Expr;        use Why.Gen.Expr;
 with Why.Gen.Names;       use Why.Gen.Names;
 with Why.Gen.Preds;       use Why.Gen.Preds;
 with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Records;     use Why.Gen.Records;
 with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
@@ -69,8 +70,10 @@ package body Why.Gen.Pointers is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   Pointer_Typ_To_Root : Pointer_Typ_To_Roots.Map :=
-     Pointer_Typ_To_Roots.Empty_Map;
+   Pointer_Typ_To_Root : Pointer_Typ_To_Roots.Map;
+   Completed_Types     : Node_Sets.Set;
+   --  Set of representative types for pointers to incomplete or partial types
+   --  for which a completion module has been declared.
 
    -------------------------------
    -- Complete_Rep_Pointer_Type --
@@ -385,7 +388,7 @@ package body Why.Gen.Pointers is
          Num        : constant Positive :=
            (if Has_Array_Type (Des_Ty) then
                  2 * Positive (Number_Dimensions (Des_Ty))
-            else raise Program_Error);
+            else Count_Discriminants (Des_Ty));
          --  For arrays the range check function takes as parameters the
          --  expression and the bounds for Des_Ty. For records it should take
          --  the discriminants.
@@ -431,10 +434,37 @@ package body Why.Gen.Pointers is
                  Dim => Positive (Number_Dimensions (Des_Ty)));
          else
 
-            --  We will handle records with discriminants here by calling
-            --  the range check functions for records.
+            --  We handle records with discriminants here by calling the range
+            --  check functions for records.
 
-            raise Program_Error;
+            pragma Assert (Has_Discriminants (Des_Ty));
+            pragma Assert
+              (not Is_Constrained (Retysp (Directly_Designated_Type (Root))));
+            pragma Assert (Is_Constrained (Des_Ty));
+
+            declare
+               Discr : Entity_Id := First_Discriminant (Des_Ty);
+            begin
+               for Count in 1 .. Num loop
+                  Args (Count) := +To_Why_Id
+                    (Discr,
+                     Local => True,
+                     Rec   => Root,
+                     Typ   => Base_Why_Type (Etype (Discr)));
+                  R_Binder (Count) :=
+                    Binder_Type'
+                      (B_Name => +Args (Count),
+                       others => <>);
+                  Next_Discriminant (Discr);
+               end loop;
+               pragma Assert (No (Discr));
+            end;
+
+            Check_Pred :=
+              New_Call
+                (Name => E_Symb (Des_Ty, WNE_Range_Pred),
+                 Args => Args (1 .. Num) & R_Val,
+                 Typ  => EW_Bool_Type);
          end if;
 
          --  Do subtype check only if the pointer is not null
@@ -660,46 +690,57 @@ package body Why.Gen.Pointers is
    -- Declare_Rep_Pointer_Compl --
    -------------------------------
 
-   procedure Declare_Rep_Pointer_Compl (P : W_Section_Id; E : Entity_Id) is
+   procedure Declare_Rep_Pointer_Compl_If_Needed
+     (P : W_Section_Id; E : Entity_Id)
+   is
+      Inserted : Boolean;
+      Position : Node_Sets.Cursor;
+
    begin
+      --  Use the Completed_Types set to make sure that we do not complete the
+      --  same type twice.
 
-      Open_Theory
-        (P, E_Compl_Module (E),
-         Comment =>
-           "Module for completing the pointer theory associated to type "
-         & """" & Get_Name_String (Chars (E)) & """"
-         & (if Sloc (E) > 0 then
-              " defined at " & Build_Location_String (Sloc (E))
-           else "")
-         & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+      Completed_Types.Insert (E, Position, Inserted);
 
-      Add_With_Clause (P, Get_Rep_Pointer_Module (E), EW_Import);
+      if Inserted then
+         Open_Theory
+           (P, E_Compl_Module (E),
+            Comment =>
+              "Module for completing the pointer theory associated to type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
-      Emit (P,
-            New_Clone_Declaration
-              (Theory_Kind   => EW_Module,
-               Clone_Kind    => EW_Export,
-               As_Name       => No_Symbol,
-               Origin        => Access_To_Incomp_Ty,
-               Substitutions =>
-                 (1 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("abstr_ty")),
-                       Image     => To_Local (Get_Name
-                         (E_Symb (E, WNE_Private_Type)))),
-                  2 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("comp_ty")),
-                       Image     =>
-                         Get_Name
-                           (EW_Abstract (Directly_Designated_Type (E)))))));
+         Add_With_Clause (P, Get_Rep_Pointer_Module (E), EW_Import);
 
-      Complete_Rep_Pointer_Type (P, E);
+         Emit (P,
+               New_Clone_Declaration
+                 (Theory_Kind   => EW_Module,
+                  Clone_Kind    => EW_Export,
+                  As_Name       => No_Symbol,
+                  Origin        => Access_To_Incomp_Ty,
+                  Substitutions =>
+                    (1 => New_Clone_Substitution
+                         (Kind      => EW_Type_Subst,
+                          Orig_Name => New_Name
+                            (Symb => NID ("abstr_ty")),
+                          Image     => To_Local (Get_Name
+                            (E_Symb (E, WNE_Private_Type)))),
+                     2 => New_Clone_Substitution
+                       (Kind      => EW_Type_Subst,
+                        Orig_Name => New_Name
+                          (Symb => NID ("comp_ty")),
+                        Image     =>
+                          Get_Name
+                            (EW_Abstract (Directly_Designated_Type (E)))))));
 
-      Close_Theory (P, Kind => Definition_Theory, Defined_Entity => E);
-   end Declare_Rep_Pointer_Compl;
+         Complete_Rep_Pointer_Type (P, E);
+
+         Close_Theory (P, Kind => Definition_Theory, Defined_Entity => E);
+      end if;
+   end Declare_Rep_Pointer_Compl_If_Needed;
 
    ------------------------------
    -- Declare_Rep_Pointer_Type --
@@ -1058,30 +1099,38 @@ package body Why.Gen.Pointers is
       Des_Ty : constant Entity_Id :=
         Retysp (Directly_Designated_Type (Retysp (Check_Ty)));
 
-      --  For now only support arrays. Use Prepare_Args_For_Subtype_Check on
-      --  designated type for records.
-
-      pragma Assert (Has_Array_Type (Des_Ty));
-      Dim  : constant Positive := Positive (Number_Dimensions (Des_Ty));
-      Args : W_Expr_Array (1 .. Dim * 2 + 1);
+   begin
       --  Parameters of the range check function for arrays are the bounds of
       --  Check_Ty and Expr.
-   begin
 
-      Args (Dim * 2 + 1) := +Expr;
-      for Count in 1 .. Dim loop
-         Args (2 * Count - 1) :=
-           Get_Array_Attr (Domain => EW_Term,
-                           Ty     => Des_Ty,
-                           Attr   => Attribute_First,
-                           Dim    => Count);
-         Args (2 * Count) :=
-           Get_Array_Attr (Domain => EW_Term,
-                           Ty     => Des_Ty,
-                           Attr   => Attribute_Last,
-                           Dim    => Count);
-      end loop;
-      return Args;
+      if Is_Array_Type (Des_Ty) then
+         declare
+            Dim  : constant Positive := Positive (Number_Dimensions (Des_Ty));
+            Args : W_Expr_Array (1 .. Dim * 2 + 1);
+         begin
+
+            Args (Dim * 2 + 1) := +Expr;
+            for Count in 1 .. Dim loop
+               Args (2 * Count - 1) :=
+                 Get_Array_Attr (Domain => EW_Term,
+                                 Ty     => Des_Ty,
+                                 Attr   => Attribute_First,
+                                 Dim    => Count);
+               Args (2 * Count) :=
+                 Get_Array_Attr (Domain => EW_Term,
+                                 Ty     => Des_Ty,
+                                 Attr   => Attribute_Last,
+                                 Dim    => Count);
+            end loop;
+            return Args;
+         end;
+
+      --  Use Prepare_Args_For_Subtype_Check on designated type for records
+
+      else
+         pragma Assert (Has_Discriminants (Des_Ty));
+         return Prepare_Args_For_Subtype_Check (Des_Ty, Expr);
+      end if;
    end Prepare_Args_For_Access_Subtype_Check;
 
    -----------------------------

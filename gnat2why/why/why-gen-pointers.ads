@@ -34,7 +34,9 @@ with Why.Sinfo;            use Why.Sinfo;
 package Why.Gen.Pointers is
    --  This package encapsulates the encoding of access types into Why.
 
-   procedure Declare_Rep_Pointer_Compl (P : W_Section_Id; E : Entity_Id) with
+   procedure Declare_Rep_Pointer_Compl_If_Needed
+     (P : W_Section_Id; E : Entity_Id)
+   with
      Pre => Is_Access_Type (E) and then Designates_Incomplete_Type (E);
    --  Declare a new module for completion of access types designating
    --  incomplete types.

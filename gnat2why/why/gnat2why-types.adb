@@ -948,7 +948,7 @@ package body Gnat2Why.Types is
 
       if Has_Incomplete_Access (E) then
          Create_Rep_Pointer_Theory_If_Needed (File, Get_Incomplete_Access (E));
-         Declare_Rep_Pointer_Compl
+         Declare_Rep_Pointer_Compl_If_Needed
            (File, Repr_Pointer_Type (Get_Incomplete_Access (E)));
       end if;
    end Translate_Type;
