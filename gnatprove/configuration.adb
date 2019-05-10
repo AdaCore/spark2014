@@ -1548,9 +1548,8 @@ package body Configuration is
 
       procedure Set_Mode is
       begin
-         Mode := GPM_All;
          if CL_Switches.Mode.all = "" then
-            null;
+            Mode := GPM_All;
          elsif CL_Switches.Mode.all = "prove" then
             Mode := GPM_Prove;
          elsif CL_Switches.Mode.all = "check" then
@@ -1659,8 +1658,6 @@ package body Configuration is
            Index (Source => Input, Pattern => ":");
 
       begin
-         FS.Lazy := True;
-
          declare
             Proof_Input : constant String :=
               (if Colon_Index /= 0 then Input (Input'First .. Colon_Index - 1)
@@ -1690,7 +1687,7 @@ package body Configuration is
             end if;
 
             if Lazy_Input = "" then
-               null;
+               FS.Lazy := True;
             elsif Lazy_Input = "all" then
                FS.Lazy := False;
             elsif Lazy_Input = "lazy" then
@@ -1761,9 +1758,8 @@ package body Configuration is
 
       procedure Set_Report_Mode is
       begin
-         Report := GPR_Fail;
          if CL_Switches.Report.all = "" then
-            null;
+            Report := GPR_Fail;
          elsif CL_Switches.Report.all = "fail" then
             Report := GPR_Fail;
          elsif CL_Switches.Report.all = "all" then
@@ -2089,9 +2085,8 @@ package body Configuration is
 
    procedure Set_CodePeer_Mode (Input : String) is
    begin
-      CodePeer := False;
       if Input = "" then
-         null;
+         CodePeer := False;
       elsif Input = "on" then
          CodePeer := True;
       elsif Input = "off" then
