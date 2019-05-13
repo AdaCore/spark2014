@@ -249,13 +249,13 @@ package body Configuration is
          --  case we return. At the end of the procedure, the warning is issued
          --  unconditionally.
 
-         if Prj_Attr.Builder.Global_Compilation_Switches_Ada /= null then
-            for Arg of Prj_Attr.Builder.Global_Compilation_Switches_Ada.all
-            loop
-               if GNATCOLL.Utils.Starts_With (Arg.all, "-gnateT=") then
-                  return;
-               end if;
-            end loop;
+         if Prj_Attr.Builder.Global_Compilation_Switches_Ada /= null
+           and then
+             (for some Switch of
+                Prj_Attr.Builder.Global_Compilation_Switches_Ada.all =>
+                  GNATCOLL.Utils.Starts_With (Switch.all, "-gnateT="))
+         then
+            return;
          end if;
          Put_Line
            (Standard_Error,
