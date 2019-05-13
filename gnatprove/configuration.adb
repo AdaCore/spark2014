@@ -1292,15 +1292,7 @@ package body Configuration is
          SPARK_Install.Z3_Present   := On_Path ("z3");
          SPARK_Install.CVC4_Present := On_Path ("cvc4");
 
-         Verbose           := CL_Switches.V;
-         Force             := CL_Switches.F;
-         Debug             := CL_Switches.D or CL_Switches.Flow_Debug;
-         Quiet             := CL_Switches.Q;
-         Minimal_Compile   := CL_Switches.M;
-         Flow_Extra_Debug  := CL_Switches.Flow_Debug;
-         Continue_On_Error := CL_Switches.K;
-         All_Projects      := CL_Switches.UU;
-         IDE_Mode          := CL_Switches.IDE_Progress_Bar;
+         Debug := CL_Switches.D or CL_Switches.Flow_Debug;
 
          --  Subprograms with no contracts (and a few other criteria) may be
          --  inlined, as this can help provability. In particular it helps as

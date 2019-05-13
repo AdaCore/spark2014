@@ -171,26 +171,27 @@ package Configuration is
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
    --  Attributes that are synthesized from the command line and project file.
-   --  See the Postprocess procedure which defines these variables. Some
-   --  variables are only copies of command line switches, but we prefer to
-   --  use a clearer name (e.g. Continue_On_Error vs K).
+   --  They are either defined in the Postprocess procedure or are simple
+   --  renamings of the command line switches (for them we still prefer to
+   --  use a clearer name, e.g. Continue_On_Error vs K).
 
-   Verbose              : Boolean;
-   Quiet                : Boolean;
-   Debug                : Boolean;
-   Force                : Boolean;
-   Minimal_Compile      : Boolean;
-   Flow_Extra_Debug     : Boolean;
-   Continue_On_Error    : Boolean;
-   All_Projects         : Boolean;
-   IDE_Mode             : Boolean;
-   Only_Given           : Boolean;
-   CodePeer             : Boolean;
-   Counterexample       : Boolean;
-   Mode                 : GP_Mode;
-   Warning_Mode         : Gnat2Why_Args.SPARK_Warning_Mode_Type;
-   Report               : Report_Mode_Type;
-   Parallel             : Integer;
+   CodePeer       : Boolean;
+   Counterexample : Boolean;
+   Debug          : Boolean;
+   Mode           : GP_Mode;
+   Only_Given     : Boolean;
+   Parallel       : Integer;
+   Report         : Report_Mode_Type;
+   Warning_Mode   : Gnat2Why_Args.SPARK_Warning_Mode_Type;
+
+   All_Projects      : Boolean renames CL_Switches.UU;
+   Continue_On_Error : Boolean renames CL_Switches.K;
+   Flow_Extra_Debug  : Boolean renames CL_Switches.Flow_Debug;
+   Force             : Boolean renames CL_Switches.F;
+   IDE_Mode          : Boolean renames CL_Switches.IDE_Progress_Bar;
+   Minimal_Compile   : Boolean renames CL_Switches.M;
+   Quiet             : Boolean renames CL_Switches.Q;
+   Verbose           : Boolean renames CL_Switches.V;
 
    type File_Specific is record
       Proof             : Proof_Mode;
