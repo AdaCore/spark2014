@@ -1070,7 +1070,7 @@ package body Configuration is
       C : Cursor := First (FS.Provers);
    begin
       loop
-         Append (Buf, Element (C));
+         Append (Buf, FS.Provers (C));
          Next (C);
          exit when not Has_Element (C);
          Append (Buf, ',');
@@ -1080,7 +1080,7 @@ package body Configuration is
 
    function Prover_List (Source_File : String) return String is
    begin
-      return Prover_List (File_Specific_Map.Element (Source_File));
+      return Prover_List (File_Specific_Map (Source_File));
    end Prover_List;
 
    -----------------------
