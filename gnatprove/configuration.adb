@@ -1409,7 +1409,7 @@ package body Configuration is
       begin
          if (CL_Switches.Output_Msg_Only and CL_Switches.Replay)
            or else (CL_Switches.Output_Msg_Only and CL_Switches.F)
-           or else (CL_Switches.F and CL_Switches.Output_Msg_Only)
+           or else (CL_Switches.F and CL_Switches.Replay)
          then
             Abort_Msg
               ("only one switch out of -f, --output-msg-only and --replay" &
