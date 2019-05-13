@@ -3257,6 +3257,7 @@ package body Why.Gen.Records is
 
       elsif Ekind (E) = E_Record_Subtype
         and then Present (Cloned_Subtype (E))
+        and then Is_Constrained (Cloned_Subtype (E)) = Is_Constrained (E)
       then
          return True;
 

@@ -944,7 +944,8 @@ package body Why.Gen.Pointers is
               Name     => E_Symb (Check_Ty, WNE_Range_Check_Fun),
               Progs    =>
                 Prepare_Args_For_Access_Subtype_Check (Check_Ty, +Expr),
-              Reason   => VC_Range_Check,
+              Reason   => (if Has_Array_Type (Des_Ty) then VC_Range_Check
+                           else VC_Discriminant_Check),
               Domain   => EW_Prog,
               Typ      => Get_Type (+Expr));
       end if;
