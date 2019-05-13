@@ -300,7 +300,8 @@ package body Configuration is
                   Ada.Text_IO.Put
                     ("Deleting directory " & Rm_Dir & "...");
                end if;
-               GNAT.Directory_Operations.Remove_Dir (Rm_Dir, True);
+               GNAT.Directory_Operations.Remove_Dir
+                 (Rm_Dir, Recursive => True);
                if CL_Switches.V then
                   Ada.Text_IO.Put_Line (" done");
                end if;
