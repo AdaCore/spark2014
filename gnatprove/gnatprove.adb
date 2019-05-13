@@ -396,9 +396,7 @@ procedure Gnatprove with SPARK_Mode is
          GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
                             Args         => Args,
                             Success      => Res);
-         for Arg of Args loop
-            Free (Arg);
-         end loop;
+         Free (Args);
          Set_Directory (Old_Dir);
          if Verbose then
             Ada.Text_IO.Put

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2017, AdaCore, Altran UK                  --
+--                  Copyright (C) 2019, AdaCore, Altran UK                  --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,6 +30,7 @@ with GNAT.OS_Lib;      use GNAT.OS_Lib;
 with GNAT.SHA1;
 with GNAT.Sockets;     use GNAT.Sockets;
 with GNATCOLL.Mmap;
+with GNATCOLL.Utils;
 with Memcache_Client;
 
 procedure GPRConfig_Memcached_Wrapper is
@@ -168,9 +169,7 @@ procedure GPRConfig_Memcached_Wrapper is
       Status := GNAT.OS_Lib.Spawn (Program_Name => GPRConfig_Path,
                                    Args         => Arguments);
 
-      for I in Arguments'Range loop
-         Free (Arguments (I));
-      end loop;
+      GNATCOLL.Utils.Free (Arguments);
 
       return Status;
    end Spawn_Gprconfig;

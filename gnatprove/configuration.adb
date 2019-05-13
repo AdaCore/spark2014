@@ -880,9 +880,7 @@ package body Configuration is
 
                   GNAT.OS_Lib.Free (Coqc_Bin);
 
-                  for It in Args'Range loop
-                     Free (Args (It));
-                  end loop;
+                  Free (Args);
                end;
             end;
          end if;
