@@ -4450,7 +4450,7 @@ package body SPARK_Definition is
                Disc : Entity_Id := First_Discriminant (E);
                Elmt : Elmt_Id :=
                  (if Present (Disc) and then Is_Constrained (E) then
-                       First_Elmt (Discriminant_Constraint (E))
+                    First_Elmt (Discriminant_Constraint (E))
                   else No_Elmt);
 
             begin
@@ -4460,6 +4460,13 @@ package body SPARK_Definition is
 
                   if not In_SPARK (Etype (Disc)) then
                      Mark_Violation (Disc, From => Etype (Disc));
+                  end if;
+
+                  --  Check that the discriminant is not of an access type as
+                  --  specified in SPARK RM 3.10
+
+                  if Has_Access_Type (Etype (Disc)) then
+                     Mark_Violation ("access discriminant", Disc);
                   end if;
 
                   --  Check that the default expression is in SPARK
