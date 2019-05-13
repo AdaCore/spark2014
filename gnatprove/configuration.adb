@@ -1866,8 +1866,6 @@ package body Configuration is
       end if;
 
       declare
-         Proj_Type      : constant Project_Type := Root_Project (Tree);
-
          function Concat3 (A, B : String_List_Access; C : String_List)
            return String_List;
 
@@ -1882,8 +1880,8 @@ package body Configuration is
                            return String_List is
          begin
             return (if A = null then (1 .. 0 => <>) else A.all) &
-            (if B = null then (1 .. 0 => <>) else B.all) &
-              C;
+                   (if B = null then (1 .. 0 => <>) else B.all) &
+                   C;
          end Concat3;
 
          -------------
@@ -1894,10 +1892,12 @@ package body Configuration is
                            return String_List is
          begin
             return (if A = null then (1 .. 0 => <>) else A.all) &
-            (if B = null then (1 .. 0 => <>) else B.all) &
-            (if C = null then (1 .. 0 => <>) else C.all) &
-              D;
+                   (if B = null then (1 .. 0 => <>) else B.all) &
+                   (if C = null then (1 .. 0 => <>) else C.all) &
+                   D;
          end Concat4;
+
+         Proj_Type : constant Project_Type := Root_Project (Tree);
 
       begin
 

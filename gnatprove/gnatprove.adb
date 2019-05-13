@@ -194,8 +194,8 @@ procedure Gnatprove with SPARK_Mode is
              Obj_Dir           => Obj_Dir,
              Proj_Name         => Project_File);
       Del_Succ : Boolean;
-   begin
 
+   begin
       Args.Append ("--restricted-to-languages=ada");
 
       if Minimal_Compile then
@@ -295,7 +295,7 @@ procedure Gnatprove with SPARK_Mode is
       Proj         : Project_Tree;
       Status       : out Integer)
    is
-      Args     : String_Lists.List;
+      Args : String_Lists.List;
    begin
       declare
          Subd : constant Virtual_File := Phase2_Subdir / Phase1_Subdir;
@@ -640,8 +640,10 @@ procedure Gnatprove with SPARK_Mode is
    is
       Obj_Dir : constant String :=
         Proj.Root_Project.Artifacts_Dir.Display_Full_Name;
+
    begin
       Write_Why3_Conf_File (Obj_Dir);
+
       declare
          use String_Lists;
          Args     : String_Lists.List;
@@ -852,7 +854,8 @@ procedure Gnatprove with SPARK_Mode is
 
    function Non_Blocking_Spawn
      (Command   : String;
-      Arguments : String_Lists.List) return Process_Descriptor is
+      Arguments : String_Lists.List) return Process_Descriptor
+   is
       Executable : String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Command);
       Args       : GNAT.OS_Lib.Argument_List :=
@@ -1088,7 +1091,7 @@ procedure Gnatprove with SPARK_Mode is
         Compose (SPARK_Install.Share, "gpr");
    begin
       --  Unset various environmment variables which might confuse the compiler
-      --  or gprbuild
+      --  or gprbuild.
 
       Clear ("ADA_INCLUDE_PATH");
       Clear ("ADA_OBJECTS_PATH");
@@ -1122,7 +1125,8 @@ procedure Gnatprove with SPARK_Mode is
 
    function Spawn_VC_Server
      (Proj_Type : Project_Type)
-      return Process_Descriptor is
+      return Process_Descriptor
+   is
       Args : String_Lists.List;
       Cur  : constant String := Ada.Directories.Current_Directory;
       Id   : Process_Descriptor;
@@ -1224,29 +1228,27 @@ procedure Gnatprove with SPARK_Mode is
       --  "name" maps to the why3.conf key. "executable" is just the name of
       --  the binary, and "args" the arguments that need to be provided.
 
-      Config : constant JSON_Value :=
-        Read_File_Into_JSON (SPARK_Install.Gnatprove_Conf);
       File : File_Type;
 
       procedure Start_Section (Name : String);
-      --  start a section in the why3.conf file
+      --  Start a section in the why3.conf file
 
       procedure Set_Key_Value (Key, Value : String);
-      --  write a line 'key = "value"' to the why3.conf file
+      --  Write a line 'key = "value"' to the why3.conf file
 
       procedure Set_Key_Value_Int (Key : String; Value : Integer);
-      --  same, but for Integers. We do not use overloading, because in
+      --  Same, but for Integers. We do not use overloading, because in
       --  connection with the overloading of JSON API, this will require type
       --  annotations.
 
       procedure Set_Key_Value_Bool (Key : String; Value : Boolean);
-      --  same, but for Booleans.
+      --  Same, but for Booleans.
 
       procedure Write_Prover_Config (Prover : JSON_Value);
-      --  write the config of a prover
+      --  Write the config of a prover
 
       procedure Write_Editor_Config (Editor : JSON_Value);
-      --  write the config of an editor
+      --  Write the config of an editor
 
       function Build_Prover_Command (Prover    : JSON_Value;
                                      Args_Step : Boolean)
@@ -1255,7 +1257,7 @@ procedure Gnatprove with SPARK_Mode is
       --  for why3.conf (with or without steps depending on Args_Step value).
 
       function Build_Executable (Exec : String) return String;
-      --  build the part of a command that corresponds to the executable. Takes
+      --  Build the part of a command that corresponds to the executable. Takes
       --  into account Benchmark mode.
 
       ----------------------
@@ -1312,13 +1314,13 @@ procedure Gnatprove with SPARK_Mode is
                                      return String
       is
          use Ada.Strings.Unbounded;
-         Command   : Unbounded_String;
-         Args      : constant JSON_Array := Get (Get (Prover, "args"));
-         Args_Add  : constant JSON_Array :=
-                       (if Args_Step then
-                           Get (Get (Prover, "args_steps"))
-                        else
-                           Get (Get (Prover, "args_time")));
+         Command  : Unbounded_String;
+         Args     : constant JSON_Array := Get (Get (Prover, "args"));
+         Args_Add : constant JSON_Array :=
+                      (if Args_Step then
+                          Get (Get (Prover, "args_steps"))
+                       else
+                          Get (Get (Prover, "args_time")));
       begin
          Append (Command,
                  Build_Executable (String'(Get (Get (Prover, "executable")))));
@@ -1405,16 +1407,19 @@ procedure Gnatprove with SPARK_Mode is
          end if;
          if Has_Field (Prover, "in_place") then
             Set_Key_Value_Bool ("in_place",
-                           Get (Get (Prover, "in_place")));
+                                Get (Get (Prover, "in_place")));
          end if;
 
       end Write_Prover_Config;
 
-      Editors : constant JSON_Array := Get (Get (Config, "editors"));
-      Provers : constant JSON_Array := Get (Get (Config, "provers"));
+      Config : constant JSON_Value :=
+        Read_File_Into_JSON (SPARK_Install.Gnatprove_Conf);
+
+      Editors  : constant JSON_Array := Get (Get (Config, "editors"));
+      Provers  : constant JSON_Array := Get (Get (Config, "provers"));
       Filename : constant String := Compose (Obj_Dir, "why3.conf");
 
-      --  Start of Processing of Write_Why3_Conf_File
+   --  Start of processing for Write_Why3_Conf_File
 
    begin
       Create (File, Out_File, Filename);
@@ -1430,7 +1435,7 @@ procedure Gnatprove with SPARK_Mode is
       Close (File);
    end Write_Why3_Conf_File;
 
-   Tree      : Project_Tree;
+   Tree : Project_Tree;
    --  GNAT project tree
 
 --  Start processing for Gnatprove
