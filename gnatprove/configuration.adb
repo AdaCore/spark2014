@@ -188,7 +188,7 @@ package body Configuration is
             Attr_Proof_Switches : constant Attribute_Pkg_List :=
               Build ("Prove", "Proof_Switches");
          begin
-            if Index = "Ada" or else Index = "ada" then
+            if Index in "Ada" | "ada" then
                return Prj_Attr.Prove.Proof_Switches_Ada;
             end if;
             return Attribute_Value (Proj, Attr_Proof_Switches, Index);
