@@ -48,10 +48,6 @@ package Call is
       Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False);
 
-   function Get_Process_Id return Integer;
-   --  Return the process ID of the current process
-   pragma Import (C, Get_Process_Id, "getpid");
-
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument
 
