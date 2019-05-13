@@ -662,11 +662,9 @@ procedure Gnatprove with SPARK_Mode is
          --  be able to see gnat2why output "as it happens", and not only
          --  when gnat2why is finished.
 
-         if Debug then
-            Args.Append ("--no-complete-output");
-         else
-            Args.Append ("--complete-output");
-         end if;
+         Args.Append (if Debug
+                      then "--no-complete-output"
+                      else "--complete-output");
 
          Id := Spawn_VC_Server (Proj.Root_Project);
 
