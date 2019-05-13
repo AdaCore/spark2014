@@ -296,20 +296,20 @@ package body Configuration is
          if Dir /= GNATCOLL.VFS.No_File then
             pragma Assert (Name_Dir = Name_GNATprove);
             if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
-               if CL_Switches.V then
+               if Verbose then
                   Ada.Text_IO.Put
                     ("Deleting directory " & Rm_Dir & "...");
                end if;
                GNAT.Directory_Operations.Remove_Dir
                  (Rm_Dir, Recursive => True);
-               if CL_Switches.V then
+               if Verbose then
                   Ada.Text_IO.Put_Line (" done");
                end if;
             end if;
          end if;
       exception
          when GNAT.Directory_Operations.Directory_Error =>
-            if CL_Switches.V then
+            if Verbose then
                Ada.Text_IO.Put_Line (" failed, please delete manually");
             end if;
       end Clean_Up_One_Directory;
