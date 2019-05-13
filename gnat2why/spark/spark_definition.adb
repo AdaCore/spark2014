@@ -4438,12 +4438,6 @@ package body SPARK_Definition is
                SRM_Reference => "SPARK RM 3.7(2)");
          end if;
 
-         if Ekind (E) in E_Private_Subtype | E_Record_Subtype
-           and then Is_For_Access_Subtype (E)
-         then
-            Mark_Unsupported ("discriminant constraint on access types", E);
-         end if;
-
          --  Mark discriminants if any
 
          if Has_Discriminants (E)
