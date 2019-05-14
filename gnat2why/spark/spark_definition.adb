@@ -1138,6 +1138,7 @@ package body SPARK_Definition is
      (No (Current_SPARK_Pragma)
       and not Violation_Detected
       and not Inside_Actions);
+
    ----------
    -- Mark --
    ----------
