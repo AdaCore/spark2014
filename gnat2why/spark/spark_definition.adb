@@ -991,8 +991,9 @@ package body SPARK_Definition is
    procedure Mark_Pragma                      (N : Node_Id);
    procedure Mark_Simple_Return_Statement     (N : Node_Id);
    procedure Mark_Extended_Return_Statement   (N : Node_Id);
-   procedure Mark_Subtype_Indication          (N : Node_Id);
    procedure Mark_Unary_Op                    (N : Node_Id);
+   procedure Mark_Subtype_Indication          (N : Node_Id)
+     with Pre => Nkind (N) = N_Subtype_Indication;
 
    procedure Mark_Stmt_Or_Decl_List           (L : List_Id);
    --  Mark a list of statements and declarations, and register any pragma
@@ -7003,9 +7004,7 @@ package body SPARK_Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T    : constant Entity_Id := Etype (if Nkind (N) = N_Subtype_Indication
-                                          then Subtype_Mark (N)
-                                          else N);
+      T    : constant Entity_Id := Etype (Subtype_Mark (N));
       Cstr : Node_Id;
 
    begin
