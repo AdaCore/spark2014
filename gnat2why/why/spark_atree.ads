@@ -56,7 +56,6 @@ package SPARK_Atree is
    subtype N_Short_Circuit            is Sinfo.N_Short_Circuit;
    subtype N_Subexpr                  is Sinfo.N_Subexpr;
    subtype N_Subprogram_Call          is Sinfo.N_Subprogram_Call;
-   subtype N_Subprogram_Instantiation is Sinfo.N_Subprogram_Instantiation;
 
    N_Aggregate                      : Node_Kind renames Sinfo.N_Aggregate;
    N_And_Then                       : Node_Kind renames Sinfo.N_And_Then;

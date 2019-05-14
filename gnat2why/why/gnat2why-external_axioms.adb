@@ -83,9 +83,7 @@ package body Gnat2Why.External_Axioms is
                   =>
                      Process (Defining_Identifier (N));
 
-                  when N_Subprogram_Declaration
-                     | N_Subprogram_Instantiation
-                  =>
+                  when N_Subprogram_Declaration =>
                      Process (Unique_Defining_Entity (N));
 
                   --  Call Process_Decls recursively on Package_Declaration and
