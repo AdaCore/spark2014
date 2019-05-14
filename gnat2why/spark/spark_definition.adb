@@ -5284,6 +5284,8 @@ package body SPARK_Definition is
       Save_SPARK_Pragma : constant Node_Id := Current_SPARK_Pragma;
       Save_Current_Delayed_Aspect_Type : constant Node_Id :=
         Current_Delayed_Aspect_Type;
+      Save_Current_Incomplete_Type : constant Node_Id :=
+        Current_Incomplete_Type;
 
    --  Start of processing for Mark_Entity
 
@@ -5338,6 +5340,7 @@ package body SPARK_Definition is
 
       Current_SPARK_Pragma := SPARK_Pragma_Of_Entity (E);
       Current_Delayed_Aspect_Type := Empty;
+      Current_Incomplete_Type := Empty;
 
       --  Fill in the map between classwide types and their corresponding
       --  specific type, in the case of the implicitly declared classwide type
@@ -5581,6 +5584,7 @@ package body SPARK_Definition is
       Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
       Current_SPARK_Pragma := Save_SPARK_Pragma;
       Current_Delayed_Aspect_Type := Save_Current_Delayed_Aspect_Type;
+      Current_Incomplete_Type := Save_Current_Incomplete_Type;
    end Mark_Entity;
 
    ------------------------------------
