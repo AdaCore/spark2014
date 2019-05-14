@@ -107,25 +107,36 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean;
       --  Return true iff A <= B
 
+      --------
+      -- LT --
+      --------
+
       function LT (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) = LT;
-      end LT;
+        (Compile_Time_Compare (A, B, True) = LT);
+
+      --------
+      -- GE --
+      --------
 
       function GE (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) in GE | GT | EQ;
-      end GE;
+        (Compile_Time_Compare (A, B, True) in GE | GT | EQ);
+
+      -----------
+      -- Empty --
+      -----------
 
       function Empty (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) = GT;
-      end Empty;
+        (Compile_Time_Compare (A, B, True) = GT);
+
+      ----------
+      -- Full --
+      ----------
 
       function Full (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) in LT | LE | EQ;
-      end Full;
+        (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
+
+   --  Start of processing for Check_Range
+
    begin
       if Empty (AL, AH)
         or else Empty (BL, BH)
