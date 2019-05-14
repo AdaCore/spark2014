@@ -17411,8 +17411,7 @@ package body Gnat2Why.Expr is
          --  explicitly. They should not be treated as part of a list of
          --  declarations.
 
-         when N_Subprogram_Instantiation
-            | N_Package_Body
+         when N_Package_Body
             | N_Package_Declaration
             | N_Subprogram_Body
             | N_Subprogram_Declaration

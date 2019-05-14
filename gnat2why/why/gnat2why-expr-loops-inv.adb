@@ -1456,7 +1456,6 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Pragma
             | N_Raise_xxx_Error
             | N_Raise_Statement
-            | N_Subprogram_Instantiation
             | N_Package_Body
             | N_Package_Declaration
             | N_Subprogram_Body
