@@ -29,7 +29,7 @@ with Ada.Directories;   use Ada.Directories;
 with Ada.Strings.Hash;
 with Call;              use Call;
 with GNAT.Strings;
-with Gnat2Why_Args;     use Gnat2Why_Args;
+with Gnat2Why_Opts;     use Gnat2Why_Opts;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
@@ -182,7 +182,7 @@ package Configuration is
    Only_Given     : Boolean;
    Parallel       : Integer;
    Report         : Report_Mode_Type;
-   Warning_Mode   : Gnat2Why_Args.SPARK_Warning_Mode_Type;
+   Warning_Mode   : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
 
    All_Projects      : Boolean renames CL_Switches.UU;
    Continue_On_Error : Boolean renames CL_Switches.K;
@@ -314,4 +314,11 @@ package Configuration is
 
    function Prover_List (Source_File : String) return String;
    function Prover_List (FS : File_Specific) return String;
+
+   function Compute_Why3_Args (Obj_Dir : String;
+                               FS      : File_Specific)
+                               return String_Lists.List;
+   --  Compute the list of arguments of gnatwhy3. This list is passed first to
+   --  gnat2why, which then passes it to gnatwhy3.
+
 end Configuration;

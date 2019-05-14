@@ -37,6 +37,7 @@ with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why_Args;             use Gnat2Why_Args;
+with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
 with Lib.Xref;
 with Namet;                     use Namet;

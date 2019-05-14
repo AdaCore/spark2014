@@ -32,6 +32,7 @@ with Elists;
 with Errout;
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
+with Gnat2Why_Opts;
 with Namet;
 with Opt;
 with Osint;
@@ -47,7 +48,7 @@ package body Back_End is
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
       return Opt.Warning_Mode_Type;
    --  Transform warning mode type of gnat2why_args to the warning mode type of
    --  the front-end.
@@ -198,15 +199,15 @@ package body Back_End is
    -------------------------------
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
       return Opt.Warning_Mode_Type
    is
    begin
       return
         (case M is
-            when Gnat2Why_Args.SW_Suppress       => Opt.Suppress,
-            when Gnat2Why_Args.SW_Normal         => Opt.Normal,
-            when Gnat2Why_Args.SW_Treat_As_Error => Opt.Treat_As_Error);
+            when Gnat2Why_Opts.SW_Suppress       => Opt.Suppress,
+            when Gnat2Why_Opts.SW_Normal         => Opt.Normal,
+            when Gnat2Why_Opts.SW_Treat_As_Error => Opt.Treat_As_Error);
    end To_Front_End_Warning_Mode;
 
 end Back_End;

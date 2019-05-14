@@ -2,7 +2,7 @@
 --                                                                          --
 --                            GNAT2WHY COMPONENTS                           --
 --                                                                          --
---                          G N A T 2 W H Y - A R G S                       --
+--                          G N A T 2 W H Y _ O P T S                       --
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
@@ -27,7 +27,7 @@
 with Call;          use Call;
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 
-package body Gnat2Why_Args is
+package body Gnat2Why_Opts.Reading is
 
    ----------
    -- Load --
@@ -54,8 +54,6 @@ package body Gnat2Why_Args is
       --  Return the string value of the [Field] of the JSON record [V]
 
       procedure Read_File_Specific_Info (V : JSON_Value);
-
-      use Gnat2Why_Args.Option_Names;
 
       -----------------------------
       -- Read_File_Specific_Info --
@@ -132,4 +130,4 @@ package body Gnat2Why_Args is
       Read_File_Specific_Info (Get (V, File_Specific_Name));
    end Load;
 
-end Gnat2Why_Args;
+end Gnat2Why_Opts.Reading;

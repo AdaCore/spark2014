@@ -31,6 +31,7 @@ with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded;
 with Ada.Text_IO;               use Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
+with Gnat2Why_Opts.Writing;
 with GNAT.Command_Line;         use GNAT.Command_Line;
 with GNAT.Directory_Operations;
 with GNAT.OS_Lib;
@@ -294,7 +295,7 @@ package body Configuration is
          --  in that case.
 
          if Dir /= GNATCOLL.VFS.No_File then
-            pragma Assert (Name_Dir = Name_GNATprove);
+            pragma Assert (Name_Dir = Gnat2Why_Opts.Writing.Name_GNATprove);
             if GNAT.OS_Lib.Is_Directory (Rm_Dir) then
                if Verbose then
                   Ada.Text_IO.Put
@@ -1773,15 +1774,15 @@ package body Configuration is
          --  Note that "on" here is retained for backwards compatibility
          --  with release 14.0.1
          if Warn_Switch = "" then
-            Warning_Mode := Gnat2Why_Args.SW_Normal;
+            Warning_Mode := Gnat2Why_Opts.SW_Normal;
          elsif Warn_Switch = "off" then
-            Warning_Mode := Gnat2Why_Args.SW_Suppress;
+            Warning_Mode := Gnat2Why_Opts.SW_Suppress;
          elsif Warn_Switch = "error" then
-            Warning_Mode := Gnat2Why_Args.SW_Treat_As_Error;
+            Warning_Mode := Gnat2Why_Opts.SW_Treat_As_Error;
          elsif Warn_Switch = "on"
            or else Warn_Switch = "continue"
          then
-            Warning_Mode := Gnat2Why_Args.SW_Normal;
+            Warning_Mode := Gnat2Why_Opts.SW_Normal;
          else
 
             Abort_Msg ("error: wrong argument for --warnings",
@@ -2095,5 +2096,193 @@ package body Configuration is
    begin
       return Ada.Directories.Compose (Out_Dir, "gnatprove.out");
    end SPARK_Report_File;
+
+   -----------------------
+   -- Compute_Why3_Args --
+   -----------------------
+
+   function Compute_Why3_Args (Obj_Dir : String;
+                               FS      : File_Specific)
+                               return String_Lists.List
+   is
+
+      Args    : String_Lists.List;
+      Why3_VF : constant Virtual_File :=
+        (if CL_Switches.Why3_Conf.all /= ""
+         then Create (Filesystem_String (CL_Switches.Why3_Conf.all))
+         else No_File);
+      Gnatwhy3_Conf : constant String :=
+        (if Why3_VF /= No_File then
+           (if Is_Absolute_Path (Why3_VF)
+            then CL_Switches.Why3_Conf.all
+            else Compose (+Get_Current_Dir.Full_Name,
+                          CL_Switches.Why3_Conf.all))
+         else "");
+
+      -------------------------
+      --  Local subprograms  --
+      -------------------------
+
+      procedure Prepare_Why3_Manual;
+      --  Build user libraries (if any) for manual provers
+
+      ---------------------------
+      --  Prepare_Why3_Manual  --
+      ---------------------------
+
+      procedure Prepare_Why3_Manual is
+         Args : GNAT.OS_Lib.Argument_List :=
+           (if Gnatwhy3_Conf /= "" then
+              (1 => new String'("--prepare-shared"),
+               2 => new String'("--prover"),
+               3 => new String'(Prover_List ("Ada")),
+               4 => new String'("--proof-dir"),
+               5 => new String'(Proof_Dir.all),
+               6 => new String'("--why3-conf"),
+               7 => new String'(Gnatwhy3_Conf))
+            else
+              (1 => new String'("--prepare-shared"),
+               2 => new String'("--prover"),
+               3 => new String'(Prover_List ("Ada")),
+               4 => new String'("--proof-dir"),
+               5 => new String'(Proof_Dir.all)));
+         Res : Boolean;
+         Old_Dir  : constant String := Current_Directory;
+         Gnatwhy3 : constant String :=
+           Compose (SPARK_Install.Libexec_Spark_Bin, "gnatwhy3");
+      begin
+         --  Use the Obj_Dir of gnat2why which already is "/.../gnatprove"
+         Set_Directory (Obj_Dir);
+         if Verbose then
+            Ada.Text_IO.Put
+              ("Changing to object directory: """ & Obj_Dir & """");
+            Ada.Text_IO.New_Line;
+            Ada.Text_IO.Put (Gnatwhy3 & " ");
+            for Arg of Args loop
+               Ada.Text_IO.Put (Arg.all & " ");
+            end loop;
+            Ada.Text_IO.New_Line;
+         end if;
+         GNAT.OS_Lib.Spawn (Program_Name => Gnatwhy3,
+                            Args         => Args,
+                            Success      => Res);
+         Free (Args);
+         Set_Directory (Old_Dir);
+         if Verbose then
+            Ada.Text_IO.Put
+              ("Changing back to directory: """ & Old_Dir & """");
+            Ada.Text_IO.New_Line;
+         end if;
+         if not Res then
+            Ada.Text_IO.Put_Line (Ada.Text_IO.Standard_Error,
+                                  "Failed to compile shared");
+            GNAT.OS_Lib.OS_Exit (1);
+         end if;
+      end Prepare_Why3_Manual;
+
+   --  Start of processing for Compute_Why3_Args
+
+   begin
+      --  The first "argument" is in fact the command name itself, because in
+      --  some cases we might want to change it.
+
+      if CL_Switches.Memcached_Server /= null
+        and then CL_Switches.Memcached_Server.all /= ""
+      then
+         Args.Append ("spark_memcached_wrapper");
+         Args.Append (CL_Switches.Memcached_Server.all);
+         Args.Append ("gnatwhy3");
+      else
+         Args.Append ("gnatwhy3");
+      end if;
+
+      Args.Append ("--timeout");
+      Args.Append (Image (FS.Timeout, 1));
+
+      Args.Append ("--steps");
+      Args.Append (Image (FS.Steps, 1));
+
+      Args.Append ("--memlimit");
+      Args.Append (Image (FS.Memlimit, 1));
+
+      if not FS.Provers.Is_Empty then
+         Args.Append ("--prover");
+         Args.Append (Prover_List (FS));
+      end if;
+
+      Args.Append ("--proof");
+      Args.Append (To_String (FS.Proof));
+
+      Args.Append ("--socket");
+      Args.Append (Socket_Name.all);
+
+      if Debug then
+         Args.Append ("--debug");
+      end if;
+
+      if CL_Switches.Debug_Save_VCs then
+         Args.Append ("--debug-save-vcs");
+      end if;
+
+      if Force then
+         Args.Append ("--force");
+      end if;
+
+      if not FS.Lazy then
+         Args.Append ("--prove-all");
+      end if;
+
+      if CL_Switches.Replay then
+         Args.Append ("--replay");
+      end if;
+
+      Args.Append ("-j");
+      Args.Append (Image (Parallel, 1));
+
+      if CL_Switches.Limit_Line.all /= "" then
+         Args.Append ("--limit-line");
+         Args.Append (CL_Switches.Limit_Line.all);
+      end if;
+      if CL_Switches.Limit_Region.all /= "" then
+         Args.Append ("--limit-region");
+         Args.Append (CL_Switches.Limit_Region.all);
+      end if;
+
+      if Proof_Dir /= null then
+         pragma Assert (Proof_Dir.all /= "");
+         Create_Path (Compose (Proof_Dir.all, "sessions"));
+         Args.Append ("--proof-dir");
+         --  Why3 is executed in the gnatprove directory and does not know
+         --  the project directory so we give it an absolute path to the
+         --  proof_dir.
+         Args.Append (Proof_Dir.all);
+         if Is_Manual_Prover then
+            Prepare_Why3_Manual;
+         end if;
+      end if;
+
+      if Gnatwhy3_Conf /= "" then
+         Args.Append ("--why3-conf");
+         Args.Append (Gnatwhy3_Conf);
+      end if;
+
+      if CL_Switches.Why3_Debug.all /= "" then
+         Args.Append ("--debug-why3");
+         Args.Append (CL_Switches.Why3_Debug.all);
+      end if;
+
+      Args.Append ("--counterexample");
+      Args.Append (if Counterexample then "on" else "off");
+
+      if CL_Switches.Z3_Counterexample then
+         Args.Append ("--ce-prover");
+         Args.Append ("z3_ce");
+      end if;
+
+      Args.Append ("--ce-timeout");
+      Args.Append (Image (FS.CE_Timeout, 1));
+
+      return Args;
+   end Compute_Why3_Args;
 
 end Configuration;

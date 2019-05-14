@@ -40,6 +40,7 @@ with Comperr;                   use Comperr;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why_Args;             use Gnat2Why_Args;
+with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
