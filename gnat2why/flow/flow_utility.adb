@@ -457,7 +457,7 @@ package body Flow_Utility is
    is
       T : constant Entity_Id := Get_Type (E, Scope);
    begin
-      return Ekind (E) in Formal_Kind
+      return Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
         and then Has_Extensions_Visible (Sinfo.Scope (E));
@@ -473,7 +473,7 @@ package body Flow_Utility is
             return Extensions_Visible (Get_Direct_Mapping_Id (F), Scope);
 
          when Record_Field =>
-            --  Record fields themselves cannot be classwide.
+            --  Record fields themselves cannot be classwide
             return False;
 
          when Null_Value | Synthetic_Null_Export | Magic_String =>
