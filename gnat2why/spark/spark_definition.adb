@@ -3136,26 +3136,26 @@ package body SPARK_Definition is
 
       Violation_Detected := False;
 
-      --  Go through Marking_Queue to mark remaining entities
-
-      while not Marking_Queue.Is_Empty loop
-         declare
-            E : constant Entity_Id := Marking_Queue.First_Element;
-         begin
-            Marking_Queue.Delete_First;
-            Mark_Entity (E);
-         end;
-      end loop;
-
-      --  Mark delayed type aspects and full views of accesses to incomplete or
-      --  partial types. Conceptually, they are kept in queues; we pick an
-      --  arbitrary element, process and delete it from the queue; this is
-      --  repeated until both queues are empty.
+      --  Mark entities from the marking queue, delayed type aspects, full
+      --  views of accesses to incomplete or partial types. Conceptually, they
+      --  are kept in queues; we pick an arbitrary element, process and delete
+      --  it from the queue; this is repeated until all queues are empty.
 
       loop
+         --  Go through Marking_Queue to mark remaining entities
+
+         if not Marking_Queue.Is_Empty then
+
+            declare
+               E : constant Entity_Id := Marking_Queue.First_Element;
+            begin
+               Mark_Entity (E);
+               Marking_Queue.Delete_First;
+            end;
+
          --  Mark delayed type aspects
 
-         if not Delayed_Type_Aspects.Is_Empty then
+         elsif not Delayed_Type_Aspects.Is_Empty then
 
             --  If no SPARK_Mode is set for the type, we only mark delayed
             --  aspects for types which have been found to be in SPARK. In this
