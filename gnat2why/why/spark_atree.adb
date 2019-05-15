@@ -561,12 +561,12 @@ package body SPARK_Atree is
                --  needs a range check towards the expected type.
 
                if Nkind (Atree.Parent (Par)) = N_Aggregate
-                 and then Nkind (Atree.Parent (Atree.Parent (Par))) =
-                 N_Attribute_Reference
                  and then
-                   Get_Attribute_Id
-                     (Attribute_Name (Atree.Parent (Atree.Parent (Par)))) =
-                 Attribute_Update
+                   Nkind (Atree.Parent (Atree.Parent (Par))) =
+                     N_Attribute_Reference
+                 and then
+                   Sem_Util.Is_Attribute_Update
+                     (Atree.Parent (Atree.Parent (Par)))
                then
 
                   Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
@@ -652,8 +652,7 @@ package body SPARK_Atree is
                pragma Assert
                  (Nkind (Aggr) = N_Aggregate
                   and then Nkind (Atree.Parent (Aggr)) = N_Attribute_Reference
-                  and then Get_Attribute_Id
-                    (Attribute_Name (Atree.Parent (Aggr))) = Attribute_Update);
+                  and then Sem_Util.Is_Attribute_Update (Atree.Parent (Aggr)));
 
                Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
                Num_Dim     : constant Pos :=
@@ -866,11 +865,9 @@ package body SPARK_Atree is
       end if;
 
       if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Attribute_Node))
-          = Attribute_Update
+        and then Sem_Util.Is_Attribute_Update (Attribute_Node)
         and then Einfo.Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then
-          not (Einfo.Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then not Einfo.Is_Constrained (Etype (Prefix (Attribute_Node)))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)

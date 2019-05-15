@@ -1352,8 +1352,7 @@ package body SPARK_Definition is
 
             if Present (Par)
               and then Nkind (Par) = N_Attribute_Reference
-              and then Get_Attribute_Id
-                         (Attribute_Name (Par)) = Attribute_Update
+              and then Is_Attribute_Update (Par)
             then
                return True;
             end if;

@@ -5297,7 +5297,7 @@ package body Flow.Control_Flow_Graph is
                return Rec (Prefix (N));
 
             when N_Attribute_Reference =>
-               return Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update
+               return Is_Attribute_Update (N)
                  and then Rec (Prefix (N));
 
             when N_Qualified_Expression | N_Type_Conversion =>

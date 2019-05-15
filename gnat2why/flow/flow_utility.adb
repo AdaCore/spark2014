@@ -3035,8 +3035,7 @@ package body Flow_Utility is
                for N of Seq loop
                   case Nkind (N) is
                   when N_Attribute_Reference =>
-                     pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                      Attribute_Update);
+                     pragma Assert (Is_Attribute_Update (N));
                      pragma Assert (List_Length (Expressions (N)) = 1);
 
                      declare
@@ -3157,9 +3156,7 @@ package body Flow_Utility is
 
             case Nkind (N) is
             when N_Attribute_Reference =>
-               pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                Attribute_Update);
-
+               pragma Assert (Is_Attribute_Update (N));
                pragma Assert (List_Length (Expressions (N)) = 1);
 
                if Debug_Trace_Untangle_Fields then
