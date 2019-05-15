@@ -2230,9 +2230,8 @@ package body Flow_Utility is
       --     R'Update (X => N)    False           {R.Y, N}
       --     R'Update (X => N)    True            {R.Y, N}
       --
-      --  Scope, Local_Constants, Use_Computed_Globals,
-      --  Expand_Synthesized_Constants will be passed on to Get_Variables if
-      --  necessary.
+      --  Scope, Use_Computed_Globals, Expand_Synthesized_Constants will be
+      --  passed on to Get_Variables if necessary.
       --
       --  Get_Variables will be called with Reduced set to False (as this
       --  function should never be called when it's True...).
