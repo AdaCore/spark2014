@@ -1350,15 +1350,11 @@ package body SPARK_Definition is
          if Nkind (Aggr) = N_Aggregate then
             Par := Parent (Aggr);
 
-            if Present (Par)
-              and then Nkind (Par) = N_Attribute_Reference
-              and then Is_Attribute_Update (Par)
-            then
-               return True;
-            end if;
+            return Nkind (Par) = N_Attribute_Reference
+              and then Is_Attribute_Update (Par);
+         else
+            return False;
          end if;
-
-         return False;
       end Is_Update_Aggregate;
 
       --------------------------------------
