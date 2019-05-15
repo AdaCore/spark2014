@@ -212,7 +212,7 @@ package body SPARK_Definition is
    --  SPARK_Mode entity if there is one or to their type entity in discovery
    --  mode.
 
-   Access_To_Incomplete_Types : Node_Sets.Set;
+   Access_To_Incomplete_Types : Node_Lists.List;
    --  Stores access types designating incomplete types. We cannot mark
    --  them when they are encountered as it might pull entities in an
    --  inappropiate order. We mark them at the end and raise an error if they
@@ -3307,7 +3307,7 @@ package body SPARK_Definition is
                   end;
                end if;
 
-               Access_To_Incomplete_Types.Delete (E);
+               Access_To_Incomplete_Types.Delete_First;
             end;
          else
             exit;
@@ -5065,7 +5065,7 @@ package body SPARK_Definition is
                      Directly_Designated_Type (E));
                   Mark_Violation (E, From => Directly_Designated_Type (E));
                else
-                  Access_To_Incomplete_Types.Insert (E);
+                  Access_To_Incomplete_Types.Append (E);
                end if;
 
             elsif not Retysp_In_SPARK (Directly_Designated_Type (E)) then
