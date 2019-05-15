@@ -4478,7 +4478,7 @@ package body Gnat2Why.Expr is
          --  created which can be reused later. The fall back case might happen
          --  for Itypes for which we do not generate a predicate.
 
-         if Designates_Incomplete_Type (Ty_Ext)
+         if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
            and then not Expand_Incompl
          then
 
@@ -4488,21 +4488,24 @@ package body Gnat2Why.Expr is
             declare
                use Ada_To_Why_Ident;
                Dyn_Inv_Pos : Ada_To_Why_Ident.Cursor :=
-                 Loc_Incompl_Acc.Find (Ty_Ext);
+                 Loc_Incompl_Acc.Find (Repr_Pointer_Type (Ty_Ext));
                Inserted    : Boolean;
 
             begin
                pragma Assert
                  (not (Has_Element (Dyn_Inv_Pos)
-                  and then New_Incompl_Acc.Contains (Ty_Ext)));
+                  and then New_Incompl_Acc.Contains
+                    (Repr_Pointer_Type (Ty_Ext))));
 
                if not Has_Element (Dyn_Inv_Pos) then
-                  Dyn_Inv_Pos := New_Incompl_Acc.Find (Ty_Ext);
+                  Dyn_Inv_Pos := New_Incompl_Acc.Find
+                    (Repr_Pointer_Type (Ty_Ext));
 
                   --  Search in the global map
 
                   if not Has_Element (Dyn_Inv_Pos) then
-                     Dyn_Inv_Pos := Incompl_Access_Dyn_Inv_Map.Find (Ty_Ext);
+                     Dyn_Inv_Pos := Incompl_Access_Dyn_Inv_Map.Find
+                       (Repr_Pointer_Type (Ty_Ext));
 
                      --  If it was not found and we are allowed to introduce
                      --  new declarations (New_Preds_Module is set), introduce
@@ -4521,9 +4524,9 @@ package body Gnat2Why.Expr is
                                 Typ       => EW_Bool_Type);
                         begin
                            Incompl_Access_Dyn_Inv_Map.Insert
-                             (Ty_Ext, Pred_Name);
+                             (Repr_Pointer_Type (Ty_Ext), Pred_Name);
                            New_Incompl_Acc.Insert
-                             (Ty_Ext, To_Local (Pred_Name),
+                             (Repr_Pointer_Type (Ty_Ext), To_Local (Pred_Name),
                               Dyn_Inv_Pos, Inserted);
                         end;
                      end if;
@@ -18072,11 +18075,12 @@ package body Gnat2Why.Expr is
                end if;
             end loop;
          elsif Is_Access_Type (Ty_Ext)
-           and then (not Designates_Incomplete_Type (Ty_Ext)
-                     or else not Incompl_Acc.Contains (Ty_Ext))
+           and then
+             (not Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
+              or else not Incompl_Acc.Contains (Repr_Pointer_Type (Ty_Ext)))
          then
-            if Designates_Incomplete_Type (Ty_Ext) then
-               Incompl_Acc.Insert (Ty_Ext);
+            if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext)) then
+               Incompl_Acc.Insert (Repr_Pointer_Type (Ty_Ext));
             end if;
 
             Variables_In_Dynamic_Invariant

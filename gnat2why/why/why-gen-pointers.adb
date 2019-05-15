@@ -967,7 +967,7 @@ package body Why.Gen.Pointers is
       T   : W_Expr_Id;
 
       Selected_Field : constant W_Identifier_Id :=
-        (if Designates_Incomplete_Type (Ty)
+        (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty))
          then E_Symb (Ty, WNE_Pointer_Value_Abstr)
          else E_Symb (Ty, WNE_Pointer_Value));
 
@@ -975,7 +975,7 @@ package body Why.Gen.Pointers is
       --  abstract value.
 
       Rec_Val     : constant W_Expr_Id :=
-        (if Designates_Incomplete_Type (Ty)
+        (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty))
          then New_Call
            (Domain => Domain,
             Name   => E_Symb (Ty, WNE_Pointer_Close),
@@ -1074,7 +1074,7 @@ package body Why.Gen.Pointers is
             Domain   => EW_Prog,
             Reason   => VC_Null_Pointer_Dereference,
             Typ      => EW_Abstract (Directly_Designated_Type (Retysp (E))));
-      elsif Designates_Incomplete_Type (Retysp (E)) then
+      elsif Designates_Incomplete_Type (Repr_Pointer_Type (Retysp (E))) then
          return New_Call (Args   => (1 => Name),
                           Name   => Field,
                           Domain => Domain,
@@ -1183,7 +1183,7 @@ package body Why.Gen.Pointers is
       Addr      : constant W_Expr_Id := A (2);
       Is_Null   : constant W_Expr_Id := A (3);
       S_Value   : W_Identifier_Id :=
-        (if Designates_Incomplete_Type (Ty_Ext)
+        (if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext))
          then E_Symb (Ty_Ext, WNE_Pointer_Value_Abstr)
          else E_Symb (Ty_Ext, WNE_Pointer_Value));
       S_Addr    : W_Identifier_Id := E_Symb (Ty_Ext, WNE_Pointer_Address);
@@ -1201,7 +1201,7 @@ package body Why.Gen.Pointers is
       --  If Ty designates an incomplete type, we need to reconstruct the
       --  abstract value.
 
-      if Designates_Incomplete_Type (Ty_Ext) then
+      if Designates_Incomplete_Type (Repr_Pointer_Type (Ty_Ext)) then
          Value := New_Call
            (Domain => EW_Term,
             Name   =>
