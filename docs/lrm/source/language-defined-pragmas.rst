@@ -124,6 +124,7 @@ Ada_05			      Yes
 Ada_2005		      Yes
 Ada_12             	      Yes
 Ada_2012           	      Yes
+Ada_2020           	      Yes
 Annotate		      Yes
 Check	 		      Yes
 Check_Policy 		      Yes                    No effect on provability (see section "Assertion Pragmas" in the SPARK User's Guide)

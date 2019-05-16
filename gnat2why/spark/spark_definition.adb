@@ -6198,6 +6198,7 @@ package body SPARK_Definition is
             | Pragma_Ada_2005
             | Pragma_Ada_12
             | Pragma_Ada_2012
+            | Pragma_Ada_2020
             | Pragma_Annotate
             | Pragma_Check_Policy
             | Pragma_Ignore_Pragma
