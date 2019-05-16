@@ -4325,43 +4325,30 @@ package body Flow.Control_Flow_Graph is
    begin
       if Pragma_Relevant_To_Flow (N) then
 
-         case Get_Pragma_Id (N) is
+         --  If we are processing a pragma that is relevant to flow analysis,
+         --  and we are not dealing with either pragma unmodified or
+         --  pragma unreferenced then we create a sink vertex to check
+         --  for uninitialized variables.
+         Collect_Functions_And_Read_Locked_POs
+           (N,
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Generating_Globals => FA.Generating_Globals);
 
-            when Pragma_Unmodified   |
-                 Pragma_Unused       |
-                 Pragma_Unreferenced =>
-
-               --  For pragma unmodified, pragma unused and pragma
-               --  unreferenced we produce a null vertex.
-               Add_Vertex (FA, Null_Node_Attributes, V);
-
-            when others =>
-               --  If we are processing a pragma that is relevant to
-               --  flow analysis, and we are not dealing with either
-               --  pragma unmodified or pragma unreferenced then we
-               --  create a sink vertex to check for uninitialized
-               --  variables.
-               Collect_Functions_And_Read_Locked_POs
-                 (N,
-                  Functions_Called   => Funcs,
-                  Tasking            => FA.Tasking,
-                  Generating_Globals => FA.Generating_Globals);
-
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (N),
-                  Make_Sink_Vertex_Attributes
-                    (Var_Use      => Get_Variables
-                       (Pragma_Argument_Associations (N),
-                        Scope                => FA.B_Scope,
-                        Fold_Functions       => False,
-                        Use_Computed_Globals => not FA.Generating_Globals),
-                     Sub_Called   => Funcs,
-                     Is_Assertion => True,
-                     E_Loc        => N,
-                     Execution    => Find_Execution_Kind),
-                  V);
-         end case;
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Sink_Vertex_Attributes
+              (Var_Use      => Get_Variables
+                   (Pragma_Argument_Associations (N),
+                    Scope                => FA.B_Scope,
+                    Fold_Functions       => False,
+                    Use_Computed_Globals => not FA.Generating_Globals),
+               Sub_Called   => Funcs,
+               Is_Assertion => True,
+               E_Loc        => N,
+               Execution    => Find_Execution_Kind),
+            V);
 
       else
          --  Otherwise we produce a null vertex
@@ -5676,11 +5663,6 @@ package body Flow.Control_Flow_Graph is
          when Pragma_Loop_Variant =>
             return True;
 
-         when Pragma_Unmodified   |
-              Pragma_Unused       |
-              Pragma_Unreferenced =>
-            return True;
-
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type in SPARK.Definition.
 
@@ -5696,7 +5678,7 @@ package body Flow.Control_Flow_Graph is
          --  Pragmas that do not need any marking, either because:
          --  . they are defined by SPARK 2014, or
          --  . they are already taken into account elsewhere (contracts)
-         --  . they have no effect on flow analysis
+         --  . they have no effect on control flow graphs
 
          --  Group 1a - RM Table 16.1, Ada language-defined pragmas marked
          --  "Yes".
@@ -5790,6 +5772,9 @@ package body Flow.Control_Flow_Graph is
               Pragma_Restriction_Warnings         |
               Pragma_Secondary_Stack_Size         |
               Pragma_Style_Checks                 |
+              Pragma_Unmodified                   |
+              Pragma_Unreferenced                 |
+              Pragma_Unused                       |
               Pragma_Test_Case                    |
               Pragma_Validity_Checks              |
               Pragma_Warnings                     |
