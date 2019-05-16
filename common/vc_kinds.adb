@@ -317,6 +317,8 @@ package body VC_Kinds is
             return "Warn if precondition is found to be always False";
          when VC_Inconsistent_Post                =>
             return "Warn if postcondition is found to be always False";
+         when VC_Inconsistent_Assume              =>
+            return "Warn if pragma Assume is found to be always False";
          when VC_Unreachable_Branch               =>
             return "Warn if branch is found to be unreachable";
          when VC_Dead_Code                        =>
@@ -825,6 +827,8 @@ package body VC_Kinds is
                "precondition always False",
              when VC_Inconsistent_Post =>
                "postcondition always False",
+             when VC_Inconsistent_Assume =>
+               "pragma Assume always False",
              when VC_Unreachable_Branch =>
                "unreachable branch",
              when VC_Dead_Code =>

@@ -529,6 +529,10 @@ package Gnat2Why.Expr is
    --  expression W with a warning by proof on branch reachability. Otherwise
    --  simply return W (which may or not be a program in that case).
 
+   function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id;
+   --  In cases where we want to detect inconsistent pragma Assume, attempt to
+   --  issue a warning if the path is dead at this point.
+
    ----------------------------------------
    -- Attributes Old, Loop_Entry, Result --
    ----------------------------------------

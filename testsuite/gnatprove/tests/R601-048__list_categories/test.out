@@ -72,5 +72,6 @@ VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden o
 [Proof warnings categories]
 VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False
 VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False
+VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False
 VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable
 VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable

@@ -134,7 +134,8 @@ as such.
 See the |GNAT Pro| Reference Manual for more details.
 
 Additionally, |GNATprove| can issue warnings as part of proof, on preconditions
-or postconditions that are always false, dead code after loops and unreachable
+or postconditions or pragma ``Assume`` that are always false,
+dead code after loops and unreachable
 branches in assertions and contracts. These warnings are not enabled by
 default, as they require calling a prover for each potential warning, which
 incurs a small cost (1 sec for each property thus checked). They can be enabled

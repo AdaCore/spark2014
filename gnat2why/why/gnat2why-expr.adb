@@ -15776,7 +15776,9 @@ package body Gnat2Why.Expr is
       --  as regular assertions.
 
       if Is_Pragma_Check (Prag, Name_Assume) then
-         T := New_Assume_Statement (Pred => Pred);
+         T :=
+           Sequence (New_Assume_Statement (Pred => Pred),
+                     Warn_On_Inconsistent_Assume (Prag));
       else
          T := New_Located_Assert (Expr, Pred, Reason, EW_Assert);
       end if;
@@ -18199,6 +18201,40 @@ package body Gnat2Why.Expr is
          return W;
       end if;
    end Warn_On_Dead_Branch;
+
+   ---------------------------------
+   -- Warn_On_Inconsistent_Assume --
+   ---------------------------------
+
+   function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id is
+      Stmt : W_Prog_Id;
+
+   begin
+      --  Only issue a check for unreachable branch if switch --proof-warnings
+      --  is set
+      if Gnat2Why_Args.Proof_Warnings
+        --  and warnings are not suppressed
+        and then Opt.Warning_Mode /= Opt.Suppress
+        --  and a warning can be issued on that node
+        and then May_Issue_Warning_On_Node (N)
+      then
+         Stmt :=
+           New_Located_Assert
+             (Ada_Node => N,
+              Pred     => False_Pred,
+              Reason   => VC_Inconsistent_Assume,
+              Kind     => EW_Check);
+
+         return
+           Sequence
+             ((1 => New_Comment (Comment => NID ("Check inconsistent assume "
+                                 & Build_Location_String (Sloc (N)))),
+               2 => New_Ignore (Prog => Stmt)));
+
+      else
+         return +Void;
+      end if;
+   end Warn_On_Inconsistent_Assume;
 
    -------------------------------
    -- Why_Subp_Has_Precondition --

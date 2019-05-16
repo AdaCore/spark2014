@@ -117,6 +117,7 @@ package VC_Kinds is
 
       VC_Inconsistent_Pre,
       VC_Inconsistent_Post,
+      VC_Inconsistent_Assume,
       VC_Unreachable_Branch,
       VC_Dead_Code);
 
