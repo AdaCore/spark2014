@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Switches ("Ada") use ("-save-temps", "-save-temps=obj");
+   end Compiler;
+end Test;
