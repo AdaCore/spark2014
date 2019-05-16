@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Switches ("Ada") use ("-save-temps");
+   end Compiler;
+end Test;
