@@ -6176,7 +6176,8 @@ package body Gnat2Why.Expr is
             when Func    => raise Program_Error;
          end case;
 
-         --  If needed, perform the check for a dynamic predicate on OUT and
+         --  If needed, perform the check for a dynamic predicate and null
+         --  exclusion of access types on OUT and
          --  IN OUT parameters on return from the call. This check is not done
          --  as part of the conversion from formal to actual parameter, as
          --  the check done in conversions also involves invariant properties
@@ -6199,16 +6200,48 @@ package body Gnat2Why.Expr is
                 not Eq_Base (Type_Of_Node (Formal), Type_Of_Node (Actual));
          begin
             if Present (Actual)
-              and then Has_Predicates (Retysp (Etype (Actual)))
               and then Need_Pred_Check_On_Store
             then
                declare
                   Postfetch_Actual : constant W_Prog_Id :=
                     +Transform_Expr (Actual, EW_Pterm, Params);
+
                begin
-                  Statement_Sequence_Append_To_Statements
-                    (Store, New_Predicate_Check (Actual, Etype (Actual),
-                                                 +Postfetch_Actual));
+                  --  Generate a predicate check if the actual has a predicate
+
+                  if Has_Predicates (Retysp (Etype (Actual))) then
+                     Statement_Sequence_Append_To_Statements
+                       (Store, New_Predicate_Check (Actual, Etype (Actual),
+                        +Postfetch_Actual));
+                  end if;
+
+                  --  Generate a null exclusion check if the actual cannot be
+                  --  null but the formal can.
+
+                  if Is_Access_Type (Retysp (Etype (Actual)))
+                    and then Can_Never_Be_Null (Retysp (Etype (Actual)))
+                    and then not Can_Never_Be_Null (Retysp (Etype (Formal)))
+                  then
+                     Statement_Sequence_Append_To_Statements
+                       (Store,
+                        New_Binding
+                          (Ada_Node => Actual,
+                           Name     => New_Identifier
+                             (Domain => EW_Prog,
+                              Name   => "_",
+                              Typ    => Get_Type (+Postfetch_Actual)),
+                           Def      => New_VC_Call
+                             (Ada_Node => Actual,
+                              Name     => To_Program_Space
+                                (E_Symb (Etype (Actual),
+                                 WNE_Assign_Null_Check)),
+                              Progs    => (1 => +Postfetch_Actual),
+                              Domain   => EW_Prog,
+                              Reason   => VC_Null_Exclusion,
+                              Typ      => Get_Type (+Postfetch_Actual)),
+                           Context  => +Void,
+                           Typ      => EW_Unit_Type));
+                  end if;
                end;
             end if;
          end;
