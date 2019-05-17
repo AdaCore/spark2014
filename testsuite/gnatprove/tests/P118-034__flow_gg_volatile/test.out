@@ -49,8 +49,8 @@ Generated contracts for read_state
          B.State
    Refined_Global =>
       Input =>
-         Flag_1
          Priv.State
+         Flag_1
 Generated contracts for read_atomic_state
    Global =>
       In_Out =>

@@ -58,11 +58,11 @@ Generated contracts for f_6
    Global =>
       Input =>
          G
-         Priv.I
          A.State_A
+         Priv.I
    Refined_Global =>
       Input =>
          G
-         Priv.I
          A.State_A
+         Priv.I
 Generated contracts for priv

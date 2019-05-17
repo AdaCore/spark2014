@@ -2204,7 +2204,8 @@ package body Flow_Error_Messages is
                   --  ??? we may want to use __gnat_decode() here instead
                   Append_Quote;
                   declare
-                     F_Name_String : constant String := To_String (F.Name);
+                     F_Name_String : constant String :=
+                       Strip_Child_Prefixes (To_String (F.Name));
 
                   begin
                      if F_Name_String = "__HEAP" then

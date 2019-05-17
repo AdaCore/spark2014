@@ -95,7 +95,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------
 
    Current_Task : constant Entity_Name :=
-     To_Entity_Name ("ada__task_identification__current_task");
+     To_Entity_Name (Child_Prefix & "ada__task_identification__current_task");
    --  This is used to detect calls to Ada.Task_Identification.Current_Task
 
    --------------------
@@ -603,9 +603,7 @@ package body Flow_Generated_Globals.Phase_2 is
    -------------------
 
    function Is_Predefined (EN : Entity_Name) return Boolean is
-   begin
-      return Match (Predefined, To_String (EN));
-   end Is_Predefined;
+     (Match (Predefined, Strip_Child_Prefixes (To_String (EN))));
 
    -------------
    -- GG_Read --

@@ -5776,4 +5776,15 @@ package body Flow_Utility is
       end if;
    end Find_In;
 
+   --------------------------
+   -- Strip_Child_Prefixes --
+   --------------------------
+
+   function Strip_Child_Prefixes (EN : String) return String is
+     (if EN'Length > Child_Prefix'Length and then
+      EN (EN'First .. EN'First + Child_Prefix'Length - 1) = Child_Prefix
+      then Strip_Child_Prefixes (EN
+                                 (EN'First + Child_Prefix'Length .. EN'Last))
+      else EN);
+
 end Flow_Utility;

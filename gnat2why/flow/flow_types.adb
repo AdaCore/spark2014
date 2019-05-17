@@ -854,7 +854,7 @@ package body Flow_Types is
       ------------------
 
       function Pretty_Print (EN : Entity_Name) return String is
-         Original : constant String := To_String (EN);
+         Original : constant String := Strip_Child_Prefixes (To_String (EN));
 
          Pretty : String (1 .. Original'Length);
          --  A placeholder for the pretty-printed string; it will be as long as
@@ -867,7 +867,6 @@ package body Flow_Types is
          Capitalize : Boolean := True;
          --  Control variables for skipping a second consecutive underscore and
          --  capitalizing the first letter of a compound string.
-
       begin
          for J in Original'Range loop
             if Skip then

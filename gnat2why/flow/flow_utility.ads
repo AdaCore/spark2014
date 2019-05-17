@@ -804,6 +804,9 @@ is
    --  instances (e.g. might appear in Global and Initializes contracts) into
    --  objects used in their corresponding generic actual parameter expression.
 
+   function Strip_Child_Prefixes (EN : String) return String;
+   --  Strip Child_Prefix from the string representation of an Entity_Name
+
 private
    Init_Done : Boolean := False with Ghost;
 
