@@ -4,7 +4,7 @@ p.ads:16:28: default initialization cannot depend on variable input "X" (SPARK R
 p.ads:20:24: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.ads:23:40: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.ads:26:50: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
-p.ads:30:51: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+p.ads:30:62: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.ads:44:09: predicate cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.ads:46:09: predicate cannot depend on variable input "X" (SPARK RM 4.4(2))
 p.ads:48:09: predicate cannot depend on variable input "X" (SPARK RM 4.4(2))

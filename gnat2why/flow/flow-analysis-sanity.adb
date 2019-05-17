@@ -488,12 +488,23 @@ package body Flow.Analysis.Sanity is
                      Err_Node => N);
 
                when N_Range_Constraint =>
-                  --  Note that fetching the Variables for C returns the union
-                  --  of the sets of the low-bound and the high-bound.
-                  Check_Variable_Inputs
-                    (Flow_Ids => Variables (N),
-                     Err_Desc => "subtype constraint",
-                     Err_Node => N);
+                  declare
+                     Range_Expr : constant Node_Id := Range_Expression (N);
+
+                     Lo : constant Node_Id := Low_Bound (Range_Expr);
+                     Hi : constant Node_Id := High_Bound (Range_Expr);
+
+                  begin
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Lo),
+                        Err_Desc => "subtype constraint",
+                        Err_Node => Lo);
+
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Hi),
+                        Err_Desc => "subtype constraint",
+                        Err_Node => Hi);
+                  end;
 
                when N_Index_Or_Discriminant_Constraint =>
                   Check_Variable_Inputs
