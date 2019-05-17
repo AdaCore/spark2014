@@ -794,7 +794,7 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-09:
 
-9. An the point of a dereference of an object, the object shall not be in the
+9. At the point of a dereference of an object, the object shall not be in the
    Moved or Borrowed state.
 
 .. _tu-access_types-10:
