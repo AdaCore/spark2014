@@ -2287,16 +2287,12 @@ package body Flow.Control_Flow_Graph is
            (Loop_Parameter_Specification (Iteration_Scheme (N)));
 
       begin
-         case Nkind (DSD) is
-            when N_Subtype_Indication =>
-               return Range_Expression (Constraint (DSD));
-            when N_Identifier | N_Expanded_Name =>
-               return Get_Range (Entity (DSD));
-            when N_Range =>
-               return DSD;
-            when others =>
-               raise Program_Error;
-         end case;
+         pragma Assert
+           (Nkind (DSD) in N_Range
+                         | N_Subtype_Indication
+                         | N_Identifier | N_Expanded_Name);
+
+         return Get_Range (DSD);
       end Get_Loop_Range;
 
       -------------
