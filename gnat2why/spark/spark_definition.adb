@@ -2348,21 +2348,19 @@ package body SPARK_Definition is
             | N_Defining_Operator_Symbol
             | N_Defining_Program_Unit_Name
             | N_Delay_Alternative
+            | N_Delta_Aggregate
             | N_Delta_Constraint
             | N_Derived_Type_Definition
             | N_Designator
             | N_Digits_Constraint
             | N_Discriminant_Association
             | N_Discriminant_Specification
-            | N_Function_Specification
-            | N_Iteration_Scheme
-            | N_Loop_Parameter_Specification
             | N_Elsif_Part
             | N_Empty
             | N_Entry_Body_Formal_Part
-            | N_Enumeration_Type_Definition
             | N_Entry_Call_Alternative
             | N_Entry_Index_Specification
+            | N_Enumeration_Type_Definition
             | N_Error
             | N_Exception_Handler
             | N_Floating_Point_Definition
@@ -2375,14 +2373,17 @@ package body SPARK_Definition is
             | N_Formal_Ordinary_Fixed_Point_Definition
             | N_Formal_Private_Type_Definition
             | N_Formal_Signed_Integer_Type_Definition
+            | N_Function_Specification
             | N_Generic_Association
             | N_Index_Or_Discriminant_Constraint
+            | N_Iteration_Scheme
+            | N_Loop_Parameter_Specification
             | N_Mod_Clause
             | N_Modular_Type_Definition
             | N_Ordinary_Fixed_Point_Definition
+            | N_Package_Specification
             | N_Parameter_Specification
             | N_Pragma_Argument_Association
-            | N_Package_Specification
             | N_Procedure_Specification
             | N_Protected_Definition
             | N_Push_Pop_xxx_Label
@@ -2399,10 +2400,9 @@ package body SPARK_Definition is
             | N_Terminate_Alternative
             | N_Triggering_Alternative
             | N_Unconstrained_Array_Definition
-            | N_Unused_At_Start
             | N_Unused_At_End
+            | N_Unused_At_Start
             | N_Variant
-            | N_Delta_Aggregate
          =>
             raise Program_Error;
       end case;
@@ -6161,14 +6161,14 @@ package body SPARK_Definition is
             | Pragma_Async_Writers
             | Pragma_Constant_After_Elaboration
             | Pragma_Contract_Cases
-            | Pragma_Depends
             | Pragma_Default_Initial_Condition
+            | Pragma_Depends
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
             | Pragma_Ghost
             | Pragma_Global
-            | Pragma_Initializes
             | Pragma_Initial_Condition
+            | Pragma_Initializes
             | Pragma_Invariant
             | Pragma_Part_Of
             | Pragma_Postcondition
@@ -6192,8 +6192,8 @@ package body SPARK_Definition is
             | Pragma_Ada_83
             | Pragma_Ada_95
             | Pragma_Ada_05
-            | Pragma_Ada_2005
             | Pragma_Ada_12
+            | Pragma_Ada_2005
             | Pragma_Ada_2012
             | Pragma_Ada_2020
             | Pragma_Annotate
@@ -6244,6 +6244,11 @@ package body SPARK_Definition is
          when Pragma_Abort_Defer
             | Pragma_Allow_Integer_Address
             | Pragma_Attribute_Definition
+            | Pragma_CPP_Class
+            | Pragma_CPP_Constructor
+            | Pragma_CPP_Virtual
+            | Pragma_CPP_Vtable
+            | Pragma_CPU
             | Pragma_C_Pass_By_Copy
             | Pragma_Check_Float_Overflow
             | Pragma_Check_Name
@@ -6256,11 +6261,6 @@ package body SPARK_Definition is
             | Pragma_Component_Alignment
             | Pragma_Controlled
             | Pragma_Convention_Identifier
-            | Pragma_CPP_Class
-            | Pragma_CPP_Constructor
-            | Pragma_CPP_Virtual
-            | Pragma_CPP_Vtable
-            | Pragma_CPU
             | Pragma_Debug_Policy
             | Pragma_Default_Scalar_Storage_Order
             | Pragma_Default_Storage_Pool
@@ -6321,9 +6321,9 @@ package body SPARK_Definition is
             | Pragma_Post
             | Pragma_Post_Class
             | Pragma_Pre
+            | Pragma_Pre_Class
             | Pragma_Predicate
             | Pragma_Prefix_Exception_Messages
-            | Pragma_Pre_Class
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings
             | Pragma_Propagate_Exceptions
@@ -6367,17 +6367,17 @@ package body SPARK_Definition is
             | Pragma_Wide_Character_Encoding
 
          --  Group 2b - Ada RM pragmas
-            | Pragma_Discard_Names
-            | Pragma_Locking_Policy
-            | Pragma_Queuing_Policy
-            | Pragma_Task_Dispatching_Policy
             | Pragma_All_Calls_Remote
             | Pragma_Asynchronous
+            | Pragma_Discard_Names
+            | Pragma_Lock_Free
+            | Pragma_Locking_Policy
+            | Pragma_Queuing_Policy
             | Pragma_Remote_Call_Interface
             | Pragma_Remote_Types
             | Pragma_Shared_Passive
-            | Pragma_Lock_Free
             | Pragma_Storage_Size
+            | Pragma_Task_Dispatching_Policy
         =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
