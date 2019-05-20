@@ -411,6 +411,23 @@ package body SPARK_Rewrite is
                   end if;
                end;
 
+            --  Slices cause the creation of Itypes with associated nodes for
+            --  the range of the corresponding index. These nodes should be
+            --  rewritten as well, which require special handling as they are
+            --  not attached to the tree. Possibly this could be done in
+            --  a variant of Traverse_Proc that does only traverse syntactic
+            --  children nodes???
+
+            when N_Slice =>
+               declare
+                  Typ   : constant Entity_Id := Etype (N);
+                  Index : constant Node_Id := First_Index (Typ);
+               begin
+                  if Is_Itype (Typ) then
+                     Rewrite_Nodes (Scalar_Range (Entity (Index)));
+                  end if;
+               end;
+
             when others =>
                null;
          end case;
