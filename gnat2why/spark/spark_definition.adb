@@ -3812,11 +3812,8 @@ package body SPARK_Definition is
             --  Traversal functions returning access to variable types are not
             --  supported yet.
 
-            if Is_Access_Type (Etype (Id))
+            if Ownership_Checking.Is_Traversal_Function (Id)
               and then not Is_Access_Constant (Etype (Id))
-              and then Is_Anonymous_Access_Type (Etype (Id))
-              and then Present (First_Formal (Id))
-              and then Is_Access_Type (Etype (First_Formal (Id)))
             then
                Mark_Unsupported
                  ("traversal function returning access-to-variable type",
