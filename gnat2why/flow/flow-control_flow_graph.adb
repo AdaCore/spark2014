@@ -2286,25 +2286,17 @@ package body Flow.Control_Flow_Graph is
          DSD : constant Node_Id := Discrete_Subtype_Definition
            (Loop_Parameter_Specification (Iteration_Scheme (N)));
 
-         R : Node_Id;
       begin
          case Nkind (DSD) is
             when N_Subtype_Indication =>
-               case Nkind (Constraint (DSD)) is
-                  when N_Range_Constraint =>
-                     R := Range_Expression (Constraint (DSD));
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
+               return Range_Expression (Constraint (DSD));
             when N_Identifier | N_Expanded_Name =>
-               R := Get_Range (Entity (DSD));
+               return Get_Range (Entity (DSD));
             when N_Range =>
-               R := DSD;
+               return DSD;
             when others =>
-               Print_Node_Subtree (DSD);
-               raise Why.Unexpected_Node;
+               raise Program_Error;
          end case;
-         return R;
       end Get_Loop_Range;
 
       -------------
