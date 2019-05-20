@@ -528,7 +528,7 @@ package body Flow.Analysis.Sanity is
             end case;
          end Check_Subtype_Constraints;
 
-      --  Start of processing for Check_Expression
+      --  Start of processing for Check_Declaration
 
       begin
          case Nkind (N) is
