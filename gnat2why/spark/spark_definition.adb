@@ -2544,78 +2544,79 @@ package body SPARK_Definition is
 
          --  Support a subset of the attributes defined in Ada RM. These are
          --  the attributes marked "Yes" in SPARK RM 15.2.
-         when Attribute_Adjacent       |
-           Attribute_Aft               |
-           Attribute_Body_Version      |
-           Attribute_Callable          |
-           Attribute_Caller            |
-           Attribute_Ceiling           |
-           Attribute_Class             |
-           Attribute_Constrained       |
-           Attribute_Copy_Sign         |
-           Attribute_Definite          |
-           Attribute_Delta             |
-           Attribute_Denorm            |
-           Attribute_Digits            |
-           Attribute_First             |
-           Attribute_First_Valid       |
-           Attribute_Floor             |
-           Attribute_Fore              |
-           Attribute_Last              |
-           Attribute_Last_Valid        |
-           Attribute_Length            |
-           Attribute_Machine           |
-           Attribute_Machine_Emax      |
-           Attribute_Machine_Emin      |
-           Attribute_Machine_Mantissa  |
-           Attribute_Machine_Overflows |
-           Attribute_Machine_Radix     |
-           Attribute_Machine_Rounds    |
-           Attribute_Max               |
-           Attribute_Min               |
-           Attribute_Mod               |
-           Attribute_Model             |
-           Attribute_Model_Emin        |
-           Attribute_Model_Epsilon     |
-           Attribute_Model_Mantissa    |
-           Attribute_Model_Small       |
-           Attribute_Modulus           |
-           Attribute_Old               |
-           Attribute_Partition_ID      |
-           Attribute_Pos               |
-           Attribute_Pred              |
-           Attribute_Range             |
-           Attribute_Remainder         |
-           Attribute_Result            |
-           Attribute_Round             |
-           Attribute_Rounding          |
-           Attribute_Safe_First        |
-           Attribute_Safe_Last         |
-           Attribute_Scale             |
-           Attribute_Scaling           |
-           Attribute_Small             |
-           Attribute_Succ              |
-           Attribute_Terminated        |
-           Attribute_Truncation        |
-           Attribute_Unbiased_Rounding |
-           Attribute_Update            |
-           Attribute_Val               |
-           Attribute_Value             |
-           Attribute_Version           |
-           Attribute_Wide_Value        |
-           Attribute_Wide_Width        |
-           Attribute_Wide_Wide_Value   |
-           Attribute_Wide_Wide_Width   |
-           Attribute_Width             =>
+         when Attribute_Adjacent
+            | Attribute_Aft
+            | Attribute_Body_Version
+            | Attribute_Callable
+            | Attribute_Caller
+            | Attribute_Ceiling
+            | Attribute_Class
+            | Attribute_Constrained
+            | Attribute_Copy_Sign
+            | Attribute_Definite
+            | Attribute_Delta
+            | Attribute_Denorm
+            | Attribute_Digits
+            | Attribute_First
+            | Attribute_First_Valid
+            | Attribute_Floor
+            | Attribute_Fore
+            | Attribute_Last
+            | Attribute_Last_Valid
+            | Attribute_Length
+            | Attribute_Machine
+            | Attribute_Machine_Emax
+            | Attribute_Machine_Emin
+            | Attribute_Machine_Mantissa
+            | Attribute_Machine_Overflows
+            | Attribute_Machine_Radix
+            | Attribute_Machine_Rounds
+            | Attribute_Max
+            | Attribute_Min
+            | Attribute_Mod
+            | Attribute_Model
+            | Attribute_Model_Emin
+            | Attribute_Model_Epsilon
+            | Attribute_Model_Mantissa
+            | Attribute_Model_Small
+            | Attribute_Modulus
+            | Attribute_Old
+            | Attribute_Partition_ID
+            | Attribute_Pos
+            | Attribute_Pred
+            | Attribute_Range
+            | Attribute_Remainder
+            | Attribute_Result
+            | Attribute_Round
+            | Attribute_Rounding
+            | Attribute_Safe_First
+            | Attribute_Safe_Last
+            | Attribute_Scale
+            | Attribute_Scaling
+            | Attribute_Small
+            | Attribute_Succ
+            | Attribute_Terminated
+            | Attribute_Truncation
+            | Attribute_Unbiased_Rounding
+            | Attribute_Update
+            | Attribute_Val
+            | Attribute_Value
+            | Attribute_Version
+            | Attribute_Wide_Value
+            | Attribute_Wide_Wide_Value
+            | Attribute_Wide_Wide_Width
+            | Attribute_Wide_Width
+            | Attribute_Width
+         =>
             null;
 
          --  We assume a maximal length for the image of any type. This length
          --  may be inaccurate for identifiers.
-         when Attribute_Wide_Image   |
-           Attribute_Wide_Wide_Image |
-           Attribute_Image           |
-           Attribute_Img             =>
-
+         when Attribute_Img
+            | Attribute_Image
+            | Attribute_Wide_Image
+            | Attribute_Wide_Wide_Image
+         =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic
@@ -2630,15 +2631,15 @@ package body SPARK_Definition is
          --  These attributes are supported, but generate a warning in
          --  "pedantic" mode, owing to their implemention-defined status.
          --  These are the attributes marked "Warn" in SPARK RM 15.2.
-         when Attribute_Alignment   |
-           Attribute_Bit_Order      |
-           Attribute_Component_Size |
-           Attribute_First_Bit      |
-           Attribute_Last_Bit       |
-           Attribute_Object_Size    |
-           Attribute_Position       |
-           Attribute_Size           |
-           Attribute_Value_Size
+         when Attribute_Alignment
+            | Attribute_Bit_Order
+            | Attribute_Component_Size
+            | Attribute_First_Bit
+            | Attribute_Last_Bit
+            | Attribute_Object_Size
+            | Attribute_Position
+            | Attribute_Size
+            | Attribute_Value_Size
          =>
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
