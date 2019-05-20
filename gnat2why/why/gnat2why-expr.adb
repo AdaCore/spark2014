@@ -10286,6 +10286,31 @@ package body Gnat2Why.Expr is
                                  Domain,
                                  Params);
 
+         when Attribute_Enum_Rep =>
+            declare
+               Args : constant List_Id := Expressions (Expr);
+               Arg  : constant Node_Id :=
+                 (if Is_Non_Empty_List (Args) then First (Args)
+                  else Prefix (Expr));
+            begin
+               if Has_Enumeration_Rep_Clause (Etype (Arg)) then
+                  T := New_Call
+                    (Ada_Node => Expr,
+                     Domain   => Domain,
+                     Name     => E_Symb (Etype (Arg), WNE_Pos_To_Rep),
+                     Args     => (1 => Transform_Expr (Arg,
+                                  EW_Int_Type,
+                                  Domain,
+                                  Params)),
+                     Typ      => EW_Int_Type);
+               else
+                  T := Transform_Expr (Arg,
+                                       EW_Int_Type,
+                                       Domain,
+                                       Params);
+               end if;
+            end;
+
          when Attribute_Val =>
             declare
                Val_Type : constant W_Type_Id :=

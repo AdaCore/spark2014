@@ -15,7 +15,7 @@ procedure Enum_Rep with SPARK_Mode is
    end My_Enum_Enumrep;
 
    function My_Enum_Enumrep_2 (X : My_Enum) return Integer
-     with Post => My_Enum_Enumrep_2'Result in 0 .. 2; -- incorrect
+     with Post => My_Enum_Enumrep_2'Result in 0 .. 2; -- @POSTCONDITION:FAIL
 
    function My_Enum_Enumrep_2 (X : My_Enum) return Integer
    is

@@ -1946,16 +1946,6 @@ package body SPARK_Definition is
                   Mark (Orig_N);
                end;
 
-            --  Attribute Enum_Rep is expanded as a type conversion by the
-            --  frontend.
-
-            elsif Nkind (Original_Node (N)) = N_Attribute_Reference
-              and then Get_Attribute_Id (Attribute_Name (Original_Node (N)))
-              = Attribute_Enum_Rep
-            then
-               Mark_Unsupported
-                 ("Enum_Rep implementation defined attribute", N);
-
             --  Otherwise, this is a type conversion that does not come from an
             --  unchecked conversion in the source. Check various limitations
             --  of GNATprove and issue an error on unsupported conversions.
@@ -2557,6 +2547,7 @@ package body SPARK_Definition is
             | Attribute_Delta
             | Attribute_Denorm
             | Attribute_Digits
+            | Attribute_Enum_Rep
             | Attribute_First
             | Attribute_First_Valid
             | Attribute_Floor

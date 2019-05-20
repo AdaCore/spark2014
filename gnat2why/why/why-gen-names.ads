@@ -238,6 +238,9 @@ package Why.Gen.Names is
 
       WNE_Attr_Value,
 
+      --  Used to translate the Enum_Rep attribute
+      WNE_Pos_To_Rep,
+
       --  Suffix of the module giving the axiom defining a logic function
       WNE_Axiom_Suffix,  --  ___axiom
 

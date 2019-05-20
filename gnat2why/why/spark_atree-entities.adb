@@ -223,6 +223,13 @@ package body SPARK_Atree.Entities is
    function Enumeration_Pos (Obj : Entity_Id) return Uint renames
      Einfo.Enumeration_Pos;
 
+   ---------------------
+   -- Enumeration_Rep --
+   ---------------------
+
+   function Enumeration_Rep (Obj : Entity_Id) return Uint renames
+     Einfo.Enumeration_Rep;
+
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -254,6 +261,13 @@ package body SPARK_Atree.Entities is
 
    function First_Index (Typ : Entity_Id) return Node_Id renames
      Einfo.First_Index;
+
+   -------------------
+   -- First_Literal --
+   -------------------
+
+   function First_Literal (Typ : Entity_Id) return Entity_Id renames
+     Einfo.First_Literal;
 
    -------------------
    -- First_Subtype --
@@ -365,6 +379,13 @@ package body SPARK_Atree.Entities is
          return False;
       end;
    end Has_Discriminants;
+
+   --------------------------------
+   -- Has_Enumeration_Rep_Clause --
+   --------------------------------
+
+   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean renames
+     Einfo.Has_Enumeration_Rep_Clause;
 
    ---------------------------
    -- Has_Interrupt_Handler --

@@ -976,6 +976,63 @@ package body Why.Gen.Scalars is
                      Location    => No_Location,
                      Def         => +Den_Small));
          end;
+
+      --  For enumeration types with an enumeration representation clause, we
+      --  need a function to translate the Enum_Rep attribute. For a type:
+      --
+      --  type My_Enum is (Lit1, Lit2, ..., Litn);
+      --  for My_Enum use (Rep1, Rep2, ..., Repn);
+      --
+      --  We generate:
+      --
+      --  function pos_to_rep (x : int) : int =
+      --    (if X = n - 1 then Repn
+      --     else ...
+      --       (if X = 1 then Rep2
+      --        else Rep1) ... )
+
+      elsif Is_Enumeration_Type (Retysp (E))
+        and then Has_Enumeration_Rep_Clause (Retysp (E))
+      then
+         declare
+            X_Ident : constant W_Identifier_Id :=
+              New_Identifier (Domain => EW_Term,
+                              Name   => "x",
+                              Typ    => EW_Int_Type);
+            Lit     : Entity_Id := First_Literal (Retysp (E));
+            Expr    : W_Expr_Id := New_Integer_Constant
+              (Value => Enumeration_Rep (Lit));
+         begin
+            loop
+               Lit := Next_Literal (Lit);
+               exit when No (Lit);
+               Expr := New_Conditional
+                 (Domain    => EW_Term,
+                  Condition => New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => +X_Ident,
+                     Right  => New_Integer_Constant
+                       (Value => Enumeration_Pos (Lit)),
+                     Domain => EW_Term),
+                  Then_Part => New_Integer_Constant
+                    (Value => Enumeration_Rep (Lit)),
+                  Else_Part => Expr,
+                  Typ       => EW_Int_Type);
+            end loop;
+
+            Emit (Section,
+                  Why.Gen.Binders.New_Function_Decl
+                    (Domain      => EW_Pterm,
+                     Name        =>
+                       To_Local (E_Symb (E, WNE_Pos_To_Rep)),
+                     Binders     =>
+                       (1 => Binder_Type'(B_Name => X_Ident,
+                                          others => <>)),
+                     Return_Type => EW_Int_Type,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Location    => No_Location,
+                     Def         => Expr));
+         end;
       end if;
 
       --  Compute and declare the first and last attributes of E

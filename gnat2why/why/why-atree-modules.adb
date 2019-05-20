@@ -2316,6 +2316,19 @@ package body Why.Atree.Modules is
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Base));
+
+               --  Symbol for enum_rep attribute of enumeration types
+
+               elsif Is_Enumeration_Type (E)
+                 and then Has_Enumeration_Rep_Clause (E)
+               then
+                  Insert_Symbol
+                    (E, WNE_Pos_To_Rep,
+                     New_Identifier
+                       (Symb   => NID ("pos_to_rep"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
                end if;
             end;
 

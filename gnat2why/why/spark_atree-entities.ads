@@ -354,6 +354,17 @@ package SPARK_Atree.Entities is
    --  For Enumeration Types --
    ----------------------------
 
+   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean
+   with
+     Pre  => Is_Enumeration_Type (Typ);
+
+   function First_Literal (Typ : Entity_Id) return Entity_Id
+   with
+     Pre  => Is_Enumeration_Type (Typ);
+
+   function Next_Literal (E : Entity_Id) return Entity_Id renames
+     Einfo.Next_Literal;
+
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    with
      Pre  => Is_Enumeration_Type (Typ),
@@ -533,6 +544,9 @@ package SPARK_Atree.Entities is
    --  protected operation.
 
    function Enumeration_Pos (Obj : Entity_Id) return Uint with
+     Pre => Ekind (Obj) = E_Enumeration_Literal;
+
+   function Enumeration_Rep (Obj : Entity_Id) return Uint with
      Pre => Ekind (Obj) = E_Enumeration_Literal;
 
    function Full_View (Obj : Entity_Id) return Entity_Id with
