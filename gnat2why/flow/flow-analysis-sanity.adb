@@ -372,10 +372,11 @@ package body Flow.Analysis.Sanity is
                      Elif : Node_Id := First (Elsif_Parts (N));
 
                   begin
-                     while Present (Elif) loop
+                     loop
                         Traverse_Declarations_Or_Statements
                           (Then_Statements (Elif));
                         Next (Elif);
+                        exit when No (Elif);
                      end loop;
                   end;
                end if;
@@ -425,9 +426,10 @@ package body Flow.Analysis.Sanity is
 
             if Present (Exception_Handlers (N)) then
                Handler := First (Exception_Handlers (N));
-               while Present (Handler) loop
+               loop
                   Traverse_Declarations_Or_Statements (Statements (Handler));
                   Next (Handler);
+                  exit when No (Handler);
                end loop;
             end if;
          end if;
