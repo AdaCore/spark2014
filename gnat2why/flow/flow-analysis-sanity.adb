@@ -108,7 +108,7 @@ package body Flow.Analysis.Sanity is
       procedure Traverse_Declaration_Or_Statement   (N : Node_Id);
       procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
 
-      procedure Check_Expression (N : Node_Id)
+      procedure Check_Declaration (N : Node_Id)
       with Pre => Nkind (N) in N_Full_Type_Declaration
                              | N_Subtype_Declaration
                              | N_Incomplete_Type_Declaration
@@ -117,8 +117,8 @@ package body Flow.Analysis.Sanity is
                              | N_Component_Declaration
                              | N_Discriminant_Specification
                              | N_Object_Renaming_Declaration;
-      --  Check if the expression for the declaration N has variable inputs. In
-      --  particular this enforces SPARK RM 4.4(2) by checking:
+      --  Check if the expressions for the declaration N have variable inputs.
+      --  In particular this enforces SPARK RM 4.4(2) by checking:
       --  * a constraint other than the range of a loop parameter specification
       --  * the default expression of a component declaration
       --  * the default expression of a discriminant_specification
@@ -196,7 +196,7 @@ package body Flow.Analysis.Sanity is
                           | N_Discriminant_Specification
                           | N_Object_Renaming_Declaration
             then
-               Check_Expression (N);
+               Check_Declaration (N);
             end if;
 
             Traverse_Declaration_Or_Statement (N);
@@ -435,11 +435,11 @@ package body Flow.Analysis.Sanity is
          end if;
       end Traverse_Handled_Statement_Sequence;
 
-      ----------------------
-      -- Check_Expression --
-      ----------------------
+      -----------------------
+      -- Check_Declaration --
+      -----------------------
 
-      procedure Check_Expression (N : Node_Id) is
+      procedure Check_Declaration (N : Node_Id) is
          function Check_Renaming (N : Node_Id) return Traverse_Result;
          --  Checks that indexed components and slices in object renaming
          --  declarations do not have variable inputs.
@@ -757,8 +757,8 @@ package body Flow.Analysis.Sanity is
                         --  "Standard.Integer".
 
                         when N_Identifier | N_Expanded_Name =>
-                           pragma Assert (Is_Type
-                                          (Entity (S_Indication_Mark)));
+                           pragma Assert
+                             (Is_Type (Entity (S_Indication_Mark)));
 
                         when others =>
                            raise Program_Error;
@@ -770,7 +770,7 @@ package body Flow.Analysis.Sanity is
             when others =>
                raise Program_Error;
          end case;
-      end Check_Expression;
+      end Check_Declaration;
 
       ---------------------------
       -- Check_Variable_Inputs --
