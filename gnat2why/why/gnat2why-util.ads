@@ -590,4 +590,8 @@ package Gnat2Why.Util is
          when RCK_Overflow_Not_Last  => VC_Overflow_Check);
    --  to convert a Scalar_Check_Kind to a VC_Kind
 
+   function Build_Printing_Plan return Why_Node_Lists.List;
+   --  Return a list of Theory Declarations which contains all theories of the
+   --  WF_Main section and all their dependencies, topologically sorted.
+
 end Gnat2Why.Util;

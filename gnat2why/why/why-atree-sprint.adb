@@ -1497,6 +1497,17 @@ package body Why.Atree.Sprint is
       Curr_Sloc := No_Location;
    end Print_Loc_Label;
 
+   ------------------------
+   -- Print_Modules_List --
+   ------------------------
+
+   procedure Print_Modules_List
+     (L : Why_Node_Lists.List; To : Output_Id) is
+   begin
+      O := To;
+      Print_List (L, Separator => "", Newline => True);
+   end Print_Modules_List;
+
    ---------------------
    -- Print_Module_Id --
    ---------------------

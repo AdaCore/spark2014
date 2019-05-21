@@ -25,6 +25,7 @@
 
 with Ada.Containers.Ordered_Sets;
 with Common_Containers;    use Common_Containers;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
@@ -77,6 +78,9 @@ package Why.Inter is
       Comment : String)
      with Pre => Why_Sections (P).Cur_Theory = Why_Empty;
    --  Open a new theory in the file
+
+   function Find_Decl (S : Symbol) return W_Theory_Declaration_Id;
+   --  Return the Theory Declaration that defines the theory with the name S
 
    procedure Add_Use_For_Entity
      (P               : W_Section_Id;

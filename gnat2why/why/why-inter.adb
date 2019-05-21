@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
-with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
 with SPARK_Definition;           use SPARK_Definition;
@@ -54,6 +54,14 @@ with Why.Images;                 use Why.Images;
 ---------------
 
 package body Why.Inter is
+
+   package Symbol_To_Theory_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => W_Theory_Declaration_Id,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   Symbol_To_Theory_Map : Symbol_To_Theory_Maps.Map;
 
    -----------------------
    -- Local Subprograms --
@@ -581,7 +589,13 @@ package body Why.Inter is
                                   From => Compute_Ada_Node_Set (S)));
       end case;
 
-      Why_Sections (P).Theories.Append (+Why_Sections (P).Cur_Theory);
+      declare
+         Th : constant W_Theory_Declaration_Id := Why_Sections (P).Cur_Theory;
+         N  : constant Symbol := Get_Name (Th);
+      begin
+         Why_Sections (P).Theories.Append (+Th);
+         Symbol_To_Theory_Map.Insert (N, Th);
+      end;
       Why_Sections (P).Cur_Theory := Why_Empty;
    end Close_Theory;
 
@@ -822,6 +836,15 @@ package body Why.Inter is
          return Obj;
       end if;
    end Extract_Object_Name;
+
+   ---------------
+   -- Find_Decl --
+   ---------------
+
+   function Find_Decl (S : Symbol) return W_Theory_Declaration_Id is
+   begin
+      return Symbol_To_Theory_Map.Element (S);
+   end Find_Decl;
 
    -----------------
    -- Get_EW_Type --

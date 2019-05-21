@@ -40,6 +40,10 @@ package Why.Atree.Sprint is
    procedure Print_Section
      (WF : Why_Section; To : Output_Id := Stdout);
 
+   procedure Print_Modules_List
+     (L : Why_Node_Lists.List; To : Output_Id);
+   --  Print a list of modules
+
    procedure wpg (Node : Why_Node_Id);
    pragma Export (Ada, wpg);
    --  Print generated source for argument Node. Intended only for use

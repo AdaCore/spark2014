@@ -23,25 +23,38 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;  use Common_Containers;
-with Gnat2Why.Util;      use Gnat2Why.Util;
-with Nlists;             use Nlists;
-with SPARK_Util;         use SPARK_Util;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Atree.Modules;  use Why.Atree.Modules;
-with Why.Gen.Arrays;     use Why.Gen.Arrays;
-with Why.Gen.Binders;    use Why.Gen.Binders;
-with Why.Gen.Names;      use Why.Gen.Names;
-with Why.Ids;            use Why.Ids;
-with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
+with Common_Containers;   use Common_Containers;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Nlists;              use Nlists;
+with SPARK_Util;          use SPARK_Util;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package body Gnat2Why.External_Axioms is
+
+   EA_Symbols : Symbol_Sets.Set;
 
    procedure Register_External_Entities (Package_Entity : Entity_Id);
    --  This function is called on a package with external axioms.
    --  It registers all entities in the global symbol table.
+
+   ------------------------------
+   -- Is_External_Axiom_Module --
+   ------------------------------
+
+   function Is_External_Axiom_Module (Module : W_Module_Id) return Boolean is
+   begin
+      return EA_Symbols.Contains (Get_Name (Module));
+   end Is_External_Axiom_Module;
 
    -------------------------------
    -- Process_External_Entities --
@@ -184,15 +197,27 @@ package body Gnat2Why.External_Axioms is
             declare
                File             : constant W_Section_Id := Dispatch_Entity (E);
                Element_Is_Local : constant Boolean :=
-                Containing_Package_With_Ext_Axioms (Component_Type (E)) =
-                  Package_Entity;
+                 Containing_Package_With_Ext_Axioms (Component_Type (E)) =
+                   Package_Entity;
+               S                : constant Symbol := Get_Array_Theory_Name (E);
+               M                : constant W_Module_Id :=
+                 New_Module (File => No_Symbol, Name => Img (S));
             begin
                Create_Rep_Array_Theory_If_Needed
                  (File          => File,
                   E             => E,
                   Register_Only => Element_Is_Local);
+               EA_Symbols.Insert (Get_Name (M));
             end;
          end if;
+
+         --  Register the module belonging to the entity E as being declared in
+         --  a package with External Axioms.
+
+         EA_Symbols.Insert (Get_Name (E_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Rep_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Compl_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Init_Module (E)));
       end Register_Entity;
 
    --  Start of processing for Register_External_Entities

@@ -27,8 +27,10 @@ with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Flow_Types;
 with Flow_Utility;
+with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with SPARK_Annotate;
@@ -434,6 +436,58 @@ package body Gnat2Why.Util is
               elsif Typ = EW_BitVector_64_Type then Uint_64
               else raise Program_Error);
    end BitVector_Type_Size;
+
+   -------------------------
+   -- Build_Printing_Plan --
+   -------------------------
+
+   function Build_Printing_Plan return Why_Node_Lists.List is
+      Seen : Symbol_Set;
+      Plan : Why_Node_Lists.List;
+
+      External_Axioms_Found : exception;
+
+      procedure Recurse (Th : W_Theory_Declaration_Id);
+
+      -------------
+      -- Recurse --
+      -------------
+
+      procedure Recurse (Th : W_Theory_Declaration_Id)
+      is
+         N : constant Symbol := Get_Name (Th);
+      begin
+         if Seen.Contains (N) then
+            return;
+         end if;
+         Seen.Insert (N);
+         for Incl of Get_List (+Get_Includes (Th)) loop
+            declare
+               M : constant W_Module_Id :=
+                 Get_Module (W_Include_Declaration_Id (Incl));
+            begin
+               if Is_External_Axiom_Module (M) then
+                  raise External_Axioms_Found;
+               end if;
+               if Get_File (M) = No_Symbol then
+                  Recurse (Find_Decl (Get_Name (M)));
+               end if;
+            end;
+         end loop;
+         Plan.Append (+Th);
+      end Recurse;
+
+   --  Start of processing for Build_Printing_Plan
+
+   begin
+      for Th of Why_Sections (WF_Main).Theories loop
+         Recurse (+Th);
+      end loop;
+      return Plan;
+   exception
+      when External_Axioms_Found =>
+         return Why_Node_Lists.Empty_List;
+   end Build_Printing_Plan;
 
    ------------------------------
    -- Check_DIC_At_Declaration --

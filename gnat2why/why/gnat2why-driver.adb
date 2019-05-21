@@ -84,7 +84,7 @@ with VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.Sprint;                use Why.Atree.Sprint;
-with Why.Atree.Tables;
+with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
 with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
@@ -741,9 +741,21 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File (Filename : String) is
    begin
       Open_Current_File (Filename);
-      for WF in W_Section_Id loop
-         Print_Section (Why_Sections (WF), Current_File);
-      end loop;
+      declare
+         Modules : Why_Node_Lists.List renames Build_Printing_Plan;
+      begin
+         if Modules.Is_Empty then
+
+            --  fall back to previous printing
+
+            for WF in W_Section_Id loop
+               Print_Section (Why_Sections (WF), Current_File);
+            end loop;
+
+         else
+            Print_Modules_List (Modules, Current_File);
+         end if;
+      end;
       Close_Current_File;
    end Print_Why_File;
 
