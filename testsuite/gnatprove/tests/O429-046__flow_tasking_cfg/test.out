@@ -9,9 +9,9 @@ foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 p.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p2.adb:5:24: warning: statement has no effect
 p2.adb:6:10: warning: initialization of "X" has no effect
-p2.adb:24:10: info: precondition proved (CVC4: 1 VC)
-p2.adb:29:10: info: precondition proved (CVC4: 1 VC)
-p2.adb:41:23: info: precondition proved (CVC4: 1 VC)
+p2.adb:24:10: info: precondition proved (Trivial: 1 VC)
+p2.adb:29:10: info: precondition proved (Trivial: 1 VC)
+p2.adb:41:23: info: precondition proved (Trivial: 1 VC)
 p2.ads:16:25: info: initialization of "X" proved
 p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved

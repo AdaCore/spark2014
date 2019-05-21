@@ -32,11 +32,11 @@ hermes-der-decode.adb:124:11: info: data dependencies proved
 hermes-der-decode.adb:126:29: medium: overflow check might fail
 hermes-der-decode.adb:127:51: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC4: 2 VC)
-hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 2 VC)
-hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 VC)
+hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 2 VC)
-hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 5 VC)
-hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 5 VC)
+hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 2 VC)
@@ -61,7 +61,7 @@ hermes-der-decode.adb:179:80: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:179:80: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:180:29: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:186:29: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 5 VC)
+hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 4 VC; Trivial: 1 VC)
 hermes-der-decode.adb:187:44: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:201:07: info: initialization of "Tag_Class" proved
 hermes-der-decode.adb:202:07: info: initialization of "Structured_Flag" proved
@@ -226,7 +226,7 @@ hermes-oid.adb:48:67: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:48:86: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:50:54: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:50:62: info: range check proved (CVC4: 1 VC)
-hermes-oid.adb:67:14: info: length check proved (CVC4: 4 VC)
+hermes-oid.adb:67:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 hermes-oid.adb:70:56: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:71:23: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:72:30: info: index check proved (CVC4: 2 VC)
@@ -245,7 +245,7 @@ hermes-oid.adb:98:07: info: initialization of "Right_Index" proved
 hermes-oid.adb:99:07: info: initialization of "Current_Component" proved
 hermes-oid.adb:100:07: info: initialization of "Out_Of_Space" proved
 hermes-oid.adb:101:07: info: initialization of "Temp" proved
-hermes-oid.adb:103:14: info: length check proved (CVC4: 4 VC)
+hermes-oid.adb:103:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 hermes-oid.adb:107:32: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:109:17: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:110:45: info: overflow check proved (CVC4: 1 VC)

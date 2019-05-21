@@ -7,7 +7,7 @@ test_arith.adb:24:52: info: initialization of "R" proved
 test_arith.adb:25:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:28:14: info: overflow check proved (CodePeer)
 test_arith.adb:31:50: info: initialization of "R" proved
-test_arith.adb:32:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:32:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test_arith.adb:35:14: info: overflow check proved (CodePeer)
 test_arith.adb:38:60: info: initialization of "R1" proved
 test_arith.adb:38:64: info: initialization of "R2" proved
@@ -36,7 +36,7 @@ test_arith.adb:77:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:80:15: info: overflow check proved (CodePeer)
 test_arith.adb:80:20: info: division check proved (CodePeer)
 test_arith.adb:83:66: info: initialization of "R" proved
-test_arith.adb:84:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:84:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test_arith.adb:84:33: info: overflow check proved (CodePeer)
 test_arith.adb:87:14: info: division check proved (CodePeer)
 test_arith.adb:90:76: info: initialization of "R1" proved
@@ -68,7 +68,7 @@ test_arith.adb:134:30: info: range check proved (CVC4: 1 VC)
 test_arith.adb:136:10: info: precondition proved (CVC4: 1 VC)
 test_arith.adb:137:31: info: range check proved (CodePeer)
 test_arith.adb:141:46: info: initialization of "R" proved
-test_arith.adb:143:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:143:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test_arith.adb:146:14: info: division check proved (CodePeer)
 test_arith.adb:149:53: info: initialization of "R1" proved
 test_arith.adb:149:57: info: initialization of "R2" proved

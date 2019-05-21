@@ -1,6 +1,6 @@
 string_old.adb:3:26: warning: "S" is not modified, could be IN
 string_old.adb:4:06: info: complete contract cases proved (CVC4: 1 VC)
-string_old.adb:5:14: info: contract case proved (CVC4: 2 VC)
+string_old.adb:5:14: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 string_old.adb:5:46: info: index check proved (CVC4: 2 VC)
 string_old.adb:5:53: info: range check proved (CVC4: 4 VC)
 string_old.adb:5:68: info: index check proved (CVC4: 2 VC)

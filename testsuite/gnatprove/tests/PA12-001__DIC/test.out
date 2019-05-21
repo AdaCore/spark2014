@@ -3,7 +3,7 @@ containers.ads:11:04: medium: type "Container" is not fully initialized
 containers.ads:13:07: info: range check proved (CVC4: 2 VC)
 dic_pred.ads:4:09: info: default initial condition proved (CVC4: 1 VC)
 dic_pred.ads:4:09: medium: predicate check might fail on default value
-dic_pred.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
+dic_pred.ads:5:09: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
 dic_pred.ads:11:22: info: range check proved (CVC4: 1 VC)
 use_dic_pred.ads:4:04: info: initialization of "X" proved
 use_dic_pred.ads:6:04: info: initialization of "V" proved

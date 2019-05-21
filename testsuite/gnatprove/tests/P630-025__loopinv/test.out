@@ -1,10 +1,10 @@
 decadriver.adb:73:21: medium: range check might fail (e.g. when Frame'First = 0 and Frame'Last = 2147483647)
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
 decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:75:18: info: length check proved (CVC4: 4 VC)
-decadriver.adb:75:45: info: length check proved (CVC4: 4 VC)
+decadriver.adb:75:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+decadriver.adb:75:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
-decadriver.adb:78:22: info: length check proved (CVC4: 4 VC)
+decadriver.adb:78:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:67: info: range check proved (CVC4: 1 VC)
 decadriver.adb:84:34: medium: range check might fail
@@ -99,7 +99,7 @@ decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Fr
 decadriver.ads:115:28: info: initialization of "Result" proved
 decadriver.ads:116:14: info: data dependencies proved
 decadriver.ads:117:09: info: flow dependencies proved
-decadriver.ads:120:17: info: postcondition proved (CVC4: 2 VC)
+decadriver.ads:120:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 decadriver.ads:121:07: warning: no check message justified by this pragma
 decadriver.ads:128:14: info: data dependencies proved
 decadriver.ads:129:09: info: flow dependencies proved

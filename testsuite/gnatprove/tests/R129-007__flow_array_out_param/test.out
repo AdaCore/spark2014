@@ -1,9 +1,9 @@
 mystr.adb:1:18: info: initialization of "S" proved
 mystr.adb:3:15: medium: missing self-dependency "S => S" (array bounds are preserved)
-mystr.adb:6:06: info: length check proved (CVC4: 4 VC)
+mystr.adb:6:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 outer.adb:1:18: info: initialization of "X" proved
 outer.adb:2:37: medium: missing self-dependency "X => X"
 outer.adb:2:56: medium: incorrect dependency "null => X"
 outer.adb:2:60: info: data dependencies proved
 outer.adb:4:14: medium: overflow check might fail [possible explanation: precondition of subprogram at line 2 should mention X]
-outer.adb:8:04: info: precondition proved (CVC4: 1 VC)
+outer.adb:8:04: info: precondition proved (Trivial: 1 VC)

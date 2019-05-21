@@ -25,7 +25,7 @@ arr_aggregate.ads:37:14: info: postcondition proved (CVC4: 5 VC)
 arr_aggregate.ads:45:14: info: postcondition proved (CVC4: 5 VC)
 rec_aggregate.ads:24:18: warning: unused initial value of "R"
 rec_aggregate.ads:26:14: info: postcondition proved (CVC4: 2 VC)
-rec_aggregate.ads:31:14: info: postcondition proved (CVC4: 4 VC)
+rec_aggregate.ads:31:14: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 rec_aggregate.ads:37:18: warning: unused initial value of "R"
 rec_aggregate.ads:39:14: info: postcondition proved (CVC4: 5 VC)
 rec_aggregate.ads:39:47: info: overflow check proved (CodePeer)

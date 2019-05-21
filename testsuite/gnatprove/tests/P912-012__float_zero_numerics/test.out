@@ -17,18 +17,18 @@ numerics.ads:29:99: info: range check proved (Interval)
 numerics.ads:32:99: info: division check proved (CVC4: 1 VC)
 numerics.ads:32:99: info: range check proved (Interval)
 run.adb:8:15: medium: precondition might fail, cannot prove Right /= 0.0 (e.g. when X1 = 0.0) [possible explanation: subprogram at run.ads:9 should mention X1 in a precondition]
-run.adb:14:15: info: precondition proved (CVC4: 1 VC)
-run.adb:20:15: info: precondition proved (CVC4: 1 VC)
-run.adb:26:15: info: precondition proved (CVC4: 1 VC)
-run.adb:32:15: info: precondition proved (CVC4: 1 VC)
+run.adb:14:15: info: precondition proved (Trivial: 1 VC)
+run.adb:20:15: info: precondition proved (Trivial: 1 VC)
+run.adb:26:15: info: precondition proved (Trivial: 1 VC)
+run.adb:32:15: info: precondition proved (Trivial: 1 VC)
 run.ads:10:24: info: initialization of "Y" proved
 run.ads:13:34: info: initialization of "Y" proved
 run.ads:15:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:18:34: info: initialization of "Y" proved
-run.ads:19:21: info: precondition proved (CVC4: 1 VC)
+run.ads:19:21: info: precondition proved (Trivial: 1 VC)
 run.ads:20:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:23:36: info: initialization of "Y" proved
 run.ads:25:19: info: postcondition proved (CVC4: 1 VC)
 run.ads:28:37: info: initialization of "Y" proved
-run.ads:29:21: info: precondition proved (CVC4: 1 VC)
+run.ads:29:21: info: precondition proved (Trivial: 1 VC)
 run.ads:30:19: info: postcondition proved (CVC4: 1 VC)

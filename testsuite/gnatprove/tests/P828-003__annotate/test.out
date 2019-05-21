@@ -2,4 +2,4 @@ t.ads:11:04: medium: range check might fail
 t.ads:11:52: medium: range check might fail
 t.ads:11:58: info: division check proved (CVC4: 1 VC)
 t.ads:12:12: warning: no check message justified by this pragma
-t.ads:15:28: info: length check proved (CVC4: 4 VC)
+t.ads:15:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

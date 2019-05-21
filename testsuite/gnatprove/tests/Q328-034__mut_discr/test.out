@@ -19,7 +19,7 @@ input.adb:266:24: info: range check proved (CVC4: 4 VC)
 input.adb:269:27: info: cannot unroll loop (too many loop iterations)
 input.adb:270:16: info: index check proved (CVC4: 2 VC)
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
-input.adb:273:12: info: length check proved (CVC4: 4 VC)
+input.adb:273:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V'First = 1 and V'Last = 2147483647) [possible explanation: loop at line 269 should mention S in a loop invariant]
 input.adb:273:22: info: range check proved (CVC4: 2 VC)
 input.adb:273:26: info: range check proved (CVC4: 1 VC)

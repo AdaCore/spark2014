@@ -24,7 +24,7 @@ CST_NODE = 94
 # Node corresponding to the split transformation
 CST_SPLIT = 95
 # Goal on which we apply z3 etc
-CST_GOAL = 99
+CST_GOAL = 102
 
 """ This tests is a commandline test for the itp server. It launches a server as
 a background process, and then pass it request in JSON. The output to be checked

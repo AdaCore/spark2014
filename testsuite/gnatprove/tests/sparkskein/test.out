@@ -93,10 +93,10 @@ skein.adb:690:19: info: predicate check proved (CVC4: 2 VC), in call inlined at 
 skein.adb:690:19: info: predicate check proved (CVC4: 2 VC), in call inlined at skein.adb:756
 skein.adb:690:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:716
 skein.adb:690:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:756
-skein.adb:694:39: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:716
-skein.adb:694:39: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at skein.adb:756
-skein.adb:694:39: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:716
-skein.adb:694:39: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at skein.adb:756
+skein.adb:694:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:716
+skein.adb:694:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:756
+skein.adb:694:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:716
+skein.adb:694:39: info: loop invariant preservation proved (Trivial: 1 VC), in call inlined at skein.adb:756
 skein.adb:698:27: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:716
 skein.adb:698:27: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:756
 skein.adb:714:42: info: range check proved (CVC4: 1 VC)
@@ -131,7 +131,7 @@ skein.adb:796:19: info: predicate check proved (CVC4: 1 VC), in call inlined at 
 skein.adb:796:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
 skein.adb:797:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:797:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:802:12: info: length check proved (CVC4: 4 VC)
+skein.adb:802:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 skein.adb:802:15: info: predicate check proved (CVC4: 1 VC)
 skein.adb:806:10: info: analyzing call to "Zero_Pad" in context
 skein.adb:806:10: info: cannot unroll loop (too many loop iterations)

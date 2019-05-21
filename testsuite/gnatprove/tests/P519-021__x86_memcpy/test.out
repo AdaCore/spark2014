@@ -39,8 +39,8 @@ memcpy.adb:176:35: info: range check proved (CVC4: 1 VC)
 memcpy.adb:189:28: info: division check proved (CVC4: 2 VC)
 memcpy.adb:207:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:207:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 2 VC)
-memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 2 VC)
+memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
 memcpy.adb:217:32: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -57,7 +57,7 @@ memcpy.adb:243:23: warning: unused assignment
 memcpy.adb:262:23: warning: unused assignment
 memcpy.adb:263:23: warning: unused assignment
 memcpy.adb:271:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:274:24: info: assertion proved (CVC4: 2 VC)
+memcpy.adb:274:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:280:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:281:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:283:24: info: assertion proved (CVC4: 1 VC)
@@ -70,7 +70,7 @@ memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.
 memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
 memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:309:21: info: assertion proved (CVC4: 2 VC)
+memcpy.adb:309:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:314:21: medium: assertion might fail, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
 memcpy.adb:315:21: medium: assertion might fail, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:317:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP-8) >= X86.ReadMem64(X86.RBP - 72)/8
@@ -84,8 +84,8 @@ memcpy.adb:330:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:331:35: info: range check proved (CVC4: 1 VC)
 memcpy.adb:353:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:353:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 2 VC)
-memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 2 VC)
+memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might fail after first iteration, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
 memcpy.adb:363:32: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -101,12 +101,12 @@ memcpy.adb:386:23: warning: unused assignment
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
 memcpy.adb:411:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:414:24: info: assertion proved (CVC4: 2 VC)
+memcpy.adb:414:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:420:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:421:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible explanation: loop invariant at line 353 should mention RDX]
-memcpy.adb:444:21: info: assertion proved (CVC4: 2 VC)
+memcpy.adb:444:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:449:21: medium: assertion might fail, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
 memcpy.adb:450:21: medium: assertion might fail, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:452:21: info: assertion proved (CVC4: 1 VC)
@@ -146,7 +146,7 @@ memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:535:13: warning: unused assignment to "RAX"
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
-memcpy.adb:574:10: info: precondition proved (CVC4: 2 VC)
+memcpy.adb:574:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:574:10: warning: unused assignment to "RAX"
 memcpy.adb:574:10: warning: unused assignment to "RSI"
 memcpy.adb:574:10: warning: unused assignment to "RSP"
@@ -190,7 +190,7 @@ memcpy.ads:30:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:31:31: low: unused global "StackAddressSize"
 memcpy.ads:31:53: low: unused global "FS"
 memcpy.ads:31:61: low: unused global "GS"
-memcpy.ads:35:14: info: postcondition proved (CVC4: 12 VC)
+memcpy.ads:35:14: info: postcondition proved (CVC4: 11 VC; Trivial: 1 VC)
 memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
 memcpy.ads:53:40: info: initialization of "CarryFlag" proved

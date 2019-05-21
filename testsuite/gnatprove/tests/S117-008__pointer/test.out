@@ -21,8 +21,8 @@ formal_vectors.adb:53:25: info: pointer dereference check proved (CVC4: 2 VC), i
 formal_vectors.adb:53:25: info: range check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:47: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:50: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:53:59: info: length check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:53:74: info: length check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:53:59: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:53:74: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:74: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:53:74: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:54:14: medium: predicate check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when New_Content.all = (1 => null, others => (all => (all => 2))) and New_Content.all'First = 1 and New_Content.all'Last = 2 and V = (Top => 1, Content => (all => (1 => (all => (all => 2)), others => (all => (all => 2)))))) [possible explanation: subprogram at line 29 should mention V in a precondition]
@@ -245,7 +245,7 @@ formal_vectors.ads:19:19: medium: postcondition might fail, cannot prove Element
 formal_vectors.ads:19:31: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:22:41: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:23:43: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.ads:26:19: info: precondition proved (CVC4: 6 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.ads:26:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:26:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:10 (e.g. when E'Old = (Top => 0, Content => null) and V = (Top => 0, Content => null) and V'Old = (Top => 0, Content => null))
 formal_vectors.ads:28:71: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:44:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

@@ -1,6 +1,6 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "Test_01_E"
 foo.adb:4:25: warning: unused initial value of "X"
-foo.adb:7:09: info: length check proved (CVC4: 4 VC)
+foo.adb:7:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 foo.adb:10:04: warning: analyzing unreferenced procedure "Test_02_Ok"
 foo.adb:10:26: info: initialization of "X" proved
-foo.adb:13:09: info: length check proved (CVC4: 4 VC)
+foo.adb:13:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

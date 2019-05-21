@@ -1,4 +1,4 @@
 p.adb:1:48: info: data dependencies proved
 p.adb:3:12: info: range check proved (CVC4: 2 VC)
-p.adb:7:13: info: length check proved (CVC4: 4 VC)
+p.adb:7:13: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.adb:7:24: medium: range check might fail

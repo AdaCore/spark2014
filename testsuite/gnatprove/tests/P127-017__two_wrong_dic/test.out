@@ -1,2 +1,2 @@
-p.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
+p.ads:5:09: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
 p.ads:5:09: medium: default initial condition might fail

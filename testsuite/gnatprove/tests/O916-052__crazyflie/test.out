@@ -8,7 +8,7 @@ crtp_pack.adb:98:24: medium: overflow check might fail, in instantiation at cons
 crtp_pack.adb:99:24: info: range check proved (CVC4: 4 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:99:24: medium: discriminant check might fail, in instantiation at console_pack.adb:40 (e.g. when Handler = (Packet => (Repr => HEADER_DATA, Size => 0, Channel => 0, Reserved => 0, Port => CRTP_PORT_CONSOLE, Data_1 => (others => 0), Header => 0, Data_2 => (others => 0), Raw => (others => 0)), Index => 1) and Handler.Packet'Constrained = False) [possible explanation: subprogram at crtp_pack.ads:102 should mention Handler in a precondition]
 crtp_pack.adb:100:44: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
-crtp_pack.adb:100:61: info: length check proved (CVC4: 4 VC), in instantiation at console_pack.adb:40
-crtp_pack.adb:101:12: info: length check proved (CVC4: 4 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:100:61: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at console_pack.adb:40
+crtp_pack.adb:101:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at console_pack.adb:40
 crtp_pack.adb:104:41: info: overflow check proved (CVC4: 1 VC), in instantiation at console_pack.adb:40
 crtp_pack.ads:105:07: info: initialization of "Has_Succeed" proved, in instantiation at console_pack.adb:40

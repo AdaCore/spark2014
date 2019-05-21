@@ -1,9 +1,9 @@
 essai05.adb:10:11: info: data dependencies proved
 essai05.adb:14:07: medium: range check might fail
 essai05.adb:14:07: warning: initialization of "R" has no effect
-essai05.adb:14:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:14:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:16:24: info: cannot unroll loop (too many loop iterations)
 essai05.adb:23:07: medium: range check might fail
 essai05.adb:23:07: warning: initialization of "R" has no effect
-essai05.adb:23:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:23:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:25:24: info: cannot unroll loop (too many loop iterations)

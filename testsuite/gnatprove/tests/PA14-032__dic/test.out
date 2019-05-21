@@ -1,11 +1,11 @@
 bounded_strings.adb:6:07: info: initialization of "Result" proved
 bounded_strings.adb:6:31: info: range check proved (CVC4: 1 VC)
-bounded_strings.adb:8:19: info: length check proved (CVC4: 4 VC)
-bounded_strings.adb:8:22: info: length check proved (CVC4: 4 VC)
+bounded_strings.adb:8:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:8:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.adb:9:19: info: index check proved (CVC4: 2 VC)
 bounded_strings.ads:9:09: info: default initial condition proved (CVC4: 1 VC)
 bounded_strings.ads:15:08: info: data dependencies proved
 bounded_strings.ads:21:08: info: data dependencies proved
 bounded_strings.ads:22:16: info: postcondition proved (CVC4: 2 VC)
 bounded_strings.ads:29:10: info: range check proved (CVC4: 2 VC)
-bounded_strings.ads:29:39: info: length check proved (CVC4: 4 VC)
+bounded_strings.ads:29:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

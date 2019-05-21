@@ -24,7 +24,7 @@ inrange4.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC)
 inrange4.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
 inrange4.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
 inrange4.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
-inrange4.ads:19:08: info: postcondition proved (CVC4: 2 VC)
+inrange4.ads:19:08: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 inrange5.ads:20:08: info: postcondition proved (CVC4: 2 VC)
 inrange6.adb:9:07: info: initialization of "Matched" proved
 inrange6.ads:18:14: info: postcondition proved (CVC4: 2 VC)

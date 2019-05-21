@@ -15,15 +15,15 @@ enums.adb:108:07: info: initialization of "R" proved
 enums.adb:142:39: info: initialization of "Result" proved
 enums.adb:143:39: info: initialization of "Success" proved
 enums.adb:144:11: info: flow dependencies proved
-enums.adb:145:22: info: postcondition proved (CVC4: 2 VC)
+enums.adb:145:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 enums.adb:145:66: info: range check proved (CVC4: 1 VC)
 enums.adb:152:33: info: range check proved (CVC4: 1 VC)
 enums.adb:152:39: info: range check proved (CVC4: 1 VC)
-enums.adb:160:19: info: postcondition proved (CVC4: 6 VC)
+enums.adb:160:19: info: postcondition proved (CVC4: 3 VC; Trivial: 3 VC)
 enums.adb:164:07: info: initialization of "R" proved
 enums.adb:167:27: info: range check proved (CVC4: 1 VC)
 enums.adb:167:34: info: range check proved (CVC4: 1 VC)
-enums.adb:175:19: info: postcondition proved (CVC4: 4 VC)
+enums.adb:175:19: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 enums.adb:176:71: info: range check proved (CVC4: 1 VC)
 enums.adb:180:07: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)

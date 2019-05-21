@@ -16,7 +16,7 @@ default_init.adb:30:22: info: assertion proved (CVC4: 1 VC)
 default_init.adb:31:22: info: assertion proved (CVC4: 1 VC)
 default_init.adb:35:07: info: initialization of "W" proved
 default_init.adb:37:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:37:33: info: precondition proved (CVC4: 1 VC)
+default_init.adb:37:33: info: precondition proved (Trivial: 1 VC)
 default_init.adb:41:07: info: initialization of "R" proved
 default_init.adb:44:25: info: assertion proved (CVC4: 1 VC)
 default_init.adb:44:28: info: index check proved (CVC4: 2 VC)
@@ -50,6 +50,6 @@ default_init.ads:42:14: warning: subprogram "Def_Glob1" has no effect
 default_init.ads:46:14: warning: subprogram "Def_Discr" has no effect
 default_init.ads:61:50: info: range check proved (CVC4: 1 VC)
 default_init.ads:63:52: info: range check proved (CVC4: 1 VC)
-default_init.ads:85:39: info: precondition proved (CVC4: 1 VC)
-default_init.ads:92:64: info: precondition proved (CVC4: 1 VC)
+default_init.ads:85:39: info: precondition proved (Trivial: 1 VC)
+default_init.ads:92:64: info: precondition proved (Trivial: 1 VC)
 default_init.ads:98:20: info: discriminant check proved (CVC4: 1 VC)

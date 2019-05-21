@@ -66,7 +66,7 @@ tests.adb:285:07: info: initialization of "Tmp" proved
 tests.adb:286:07: info: initialization of "Tmp2" proved
 tests.adb:301:23: info: initialization of "X" proved
 tests.adb:302:09: info: data dependencies proved
-tests.adb:315:13: info: discriminant check proved (CVC4: 2 VC)
+tests.adb:315:13: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 tests.adb:320:23: info: initialization of "X" proved
 tests.adb:321:09: info: data dependencies proved
 tests.adb:331:48: info: range check proved (CVC4: 1 VC)
@@ -78,7 +78,7 @@ tests.adb:341:09: info: data dependencies proved
 tests.adb:352:14: info: range check proved (CVC4: 1 VC)
 tests.adb:352:24: info: discriminant check proved (CVC4: 1 VC)
 tests.adb:353:07: info: initialization of "B" proved
-tests.adb:355:09: info: discriminant check proved (CVC4: 2 VC)
+tests.adb:355:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 tests.adb:360:23: info: initialization of "N" proved
 tests.adb:361:23: info: initialization of "M" proved
 tests.adb:362:09: info: data dependencies proved

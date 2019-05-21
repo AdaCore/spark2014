@@ -1,4 +1,4 @@
-flight_manager.adb:12:11: info: postcondition proved (CVC4: 2 VC)
+flight_manager.adb:12:11: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 flight_manager.adb:13:24: info: float overflow check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: division check proved (CVC4: 1 VC)
 flight_manager.adb:13:46: info: float overflow check proved (Interval)

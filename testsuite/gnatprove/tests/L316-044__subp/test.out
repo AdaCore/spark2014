@@ -1,4 +1,4 @@
-database.adb:51:17: info: postcondition proved (CVC4: 4 VC)
+database.adb:51:17: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 database.adb:121:35: info: index check proved (CVC4: 2 VC)
 database.adb:124:35: info: index check proved (CVC4: 2 VC)
 database.adb:130:44: info: index check proved (CVC4: 2 VC)

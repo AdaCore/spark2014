@@ -3,7 +3,7 @@ essai05.adb:1:11: warning: dynamic elaboration model is in effect
 essai05.adb:9:04: info: no contextual analysis of "Conv" (unconstrained return type)
 essai05.adb:13:07: medium: range check might fail
 essai05.adb:13:07: warning: initialization of "R" has no effect
-essai05.adb:13:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:13:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:15:24: info: cannot unroll loop (too many loop iterations)
 essai05.adb:21:04: warning: "A" is not modified, could be declared constant
 essai05.adb:22:04: warning: variable "B" is not referenced

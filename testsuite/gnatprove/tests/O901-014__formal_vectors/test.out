@@ -19,7 +19,7 @@ aida-containers-formal_vectors.adb:7:68: info: discriminant check proved (CVC4: 
 aida-containers-formal_vectors.adb:16:41: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:16:62: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:24:68: medium: discriminant check might fail, in instantiation at hnco-test2.ads:8 (e.g. when Length = 0 and New_Item = Element_Type'First) [possible explanation: subprogram at aida-containers-formal_vectors.ads:41 should mention Length and New_Item in a precondition]
-aida-containers-formal_vectors.adb:42:24: info: precondition proved (CVC4: 2 VC), in instantiation at hnco-test2.ads:8
+aida-containers-formal_vectors.adb:42:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:42:52: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:48:49: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8
 aida-containers-formal_vectors.adb:54:51: info: range check proved (CVC4: 1 VC), in instantiation at hnco-test2.ads:8

@@ -21,7 +21,7 @@ array_aggr.adb:33:10: medium: range check might fail
 array_aggr.adb:38:17: warning: subprogram "Aggregate_KO" has no effect
 array_aggr.adb:39:10: medium: range check might fail
 array_aggr.adb:39:59: medium: range check might fail
-array_aggr.adb:44:07: info: precondition proved (CVC4: 1 VC)
-array_aggr.adb:45:07: info: precondition proved (CVC4: 1 VC)
+array_aggr.adb:44:07: info: precondition proved (Trivial: 1 VC)
+array_aggr.adb:45:07: info: precondition proved (Trivial: 1 VC)
 array_aggr.ads:2:14: warning: subprogram "Bi_Dim_Aggr_OK" has no effect
 array_aggr.ads:4:14: warning: subprogram "Bi_Dim_Aggr_KO" has no effect

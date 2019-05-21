@@ -1,6 +1,6 @@
 do_loops.adb:25:04: info: initialization of "D" proved
 do_loops.adb:26:04: info: initialization of "A" proved
-do_loops.adb:28:04: info: precondition proved (CVC4: 1 VC)
+do_loops.adb:28:04: info: precondition proved (Trivial: 1 VC)
 do_loops.adb:32:22: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:33:22: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:39:22: info: assertion proved (CVC4: 1 VC)

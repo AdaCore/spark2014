@@ -1,6 +1,6 @@
 dynamic_1d.adb:1:11: warning: subprogram "Dynamic_1D" has no effect
 dynamic_1d.adb:4:21: info: initialization of "S" proved
-dynamic_1d.adb:11:26: info: length check proved (CVC4: 4 VC)
+dynamic_1d.adb:11:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dynamic_1d.adb:14:04: info: cannot unroll loop (too many loop iterations)
 dynamic_1d.adb:14:04: info: in inlined body at line 6
 dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect

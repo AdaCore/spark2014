@@ -1,5 +1,5 @@
 p.adb:16:10: high: "PO" must be listed in the Global aspect of "T2" (SPARK RM 6.1.4(13))
-p.adb:16:10: info: precondition proved (CVC4: 1 VC)
+p.adb:16:10: info: precondition proved (Trivial: 1 VC)
 p.ads:3:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)
 p.ads:3:17: info: data dependencies proved

@@ -1,4 +1,4 @@
 p.adb:3:46: info: postcondition proved (CVC4: 1 VC)
-p.adb:10:37: info: precondition proved (CVC4: 1 VC)
+p.adb:10:37: info: precondition proved (Trivial: 1 VC)
 p.adb:10:64: info: refined post proved (CVC4: 1 VC)
 p.adb:13:19: medium: assertion might fail, cannot prove Nested.F = 0

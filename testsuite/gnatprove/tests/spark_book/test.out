@@ -188,7 +188,7 @@ buffers.adb:133:23: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:133:57: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:57: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:143:07: info: initialization of "Characters_To_Copy" proved
-buffers.adb:146:19: info: length check proved (CVC4: 4 VC)
+buffers.adb:146:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 buffers.adb:150:42: info: range check proved (CVC4: 1 VC)
 buffers.adb:151:43: info: range check proved (CVC4: 1 VC)
 buffers.adb:153:11: info: range check proved (CVC4: 2 VC)
@@ -218,16 +218,16 @@ circle_demo.adb:10:04: info: initialization of "My_Circle" proved
 circle_demo.adb:14:14: info: precondition proved (CVC4: 1 VC)
 console_io.ads:15:03: info: flow dependencies proved
 contains.adb:7:04: info: initialization of "Result_Index" proved
-contains.adb:9:37: info: precondition proved (CVC4: 4 VC)
+contains.adb:9:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains.adb:11:57: medium: range check might fail
 contains2.adb:9:04: info: initialization of "Result_Index" proved
-contains2.adb:11:37: info: precondition proved (CVC4: 4 VC)
+contains2.adb:11:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains2.adb:13:57: info: range check proved (CVC4: 1 VC)
 contains3.adb:7:21: info: postcondition proved (CVC4: 2 VC)
 contains3.adb:7:69: info: index check proved (CVC4: 2 VC)
 contains3.adb:10:04: info: initialization of "Result_Index" proved
-contains3.adb:14:19: info: assertion proved (CVC4: 3 VC)
-contains3.adb:15:37: info: precondition proved (CVC4: 4 VC)
+contains3.adb:14:19: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+contains3.adb:15:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains3.adb:17:57: info: range check proved (CVC4: 1 VC)
 contains3.adb:22:37: info: index check proved (CVC4: 2 VC)
 contains3.adb:24:46: info: index check proved (CVC4: 2 VC)
@@ -286,7 +286,7 @@ control_structures.adb:184:07: info: analyzing call to "Calculate_Valve" in cont
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
 datebook.adb:63:07: info: initialization of "Found" proved
 datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
-datebook.adb:86:69: info: length check proved (CVC4: 4 VC)
+datebook.adb:86:69: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at datebook.ads:33 should mention Description in a precondition]
 datebook.adb:87:21: info: range check proved (CVC4: 2 VC)
 datebook.adb:87:64: info: range check proved (CVC4: 1 VC)
@@ -294,7 +294,7 @@ datebook.adb:88:68: info: range check proved (CVC4: 1 VC)
 datebook.adb:104:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:123:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:153:07: info: initialization of "Index" proved
-datebook.adb:156:19: info: length check proved (CVC4: 4 VC)
+datebook.adb:156:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
 datebook.adb:165:20: info: range check proved (CVC4: 2 VC)
 datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -343,7 +343,7 @@ datebooks.adb:62:74: info: range check proved (CVC4: 1 VC)
 datebooks.adb:73:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:86:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:106:07: info: initialization of "I" proved
-datebooks.adb:109:19: info: length check proved (CVC4: 4 VC)
+datebooks.adb:109:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
 datebooks.adb:118:20: info: range check proved (CVC4: 2 VC)
 datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 3 VC)
@@ -373,7 +373,7 @@ datebooks.ads:57:61: info: initialization of "Next_Date" proved
 datebooks.ads:57:93: info: initialization of "Status" proved
 datebooks.ads:59:06: info: flow dependencies proved
 dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved (CVC4: 24 VC)
+dates.adb:28:08: info: postcondition proved (CVC4: 12 VC; Trivial: 12 VC)
 dates.adb:47:07: info: initialization of "Length" proved
 dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
 dates.adb:72:06: info: flow dependencies proved
@@ -399,7 +399,7 @@ dates.ads:33:07: info: initialization of "Valid" proved
 dates.ads:35:06: info: flow dependencies proved
 dates.ads:62:76: info: initialization of "Valid" proved
 dates.ads:64:06: info: flow dependencies proved
-dates.ads:78:14: info: postcondition proved (CVC4: 3 VC)
+dates.ads:78:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
 density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
 density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
@@ -437,7 +437,7 @@ elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo
 elaboration_demo.adb:3:29: warning: unused variable "Count"
 elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
-elaboration_demo.adb:4:34: info: length check proved (CVC4: 4 VC)
+elaboration_demo.adb:4:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: info: float overflow check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
@@ -676,15 +676,15 @@ raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:8:08: info: complete contract cases proved (CVC4: 1 VC)
 region_checks.ads:8:08: info: disjoint contract cases proved (CVC4: 1 VC)
-region_checks.ads:9:17: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:10:17: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:11:17: info: contract case proved (CVC4: 2 VC)
+region_checks.ads:9:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:10:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:11:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 region_checks.ads:15:08: info: disjoint contract cases proved (CVC4: 1 VC)
-region_checks.ads:16:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:18:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:20:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:22:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:24:18: info: contract case proved (CVC4: 2 VC)
+region_checks.ads:16:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:18:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:20:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:22:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:24:18: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 scrabble.adb:7:15: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:7:26: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:7:37: info: predicate check proved (CVC4: 1 VC)
@@ -876,7 +876,7 @@ simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
 sorted_arrays2.ads:18:18: info: function contract not available for proof ("Is_Sorted" might not return)
 sorters.adb:17:11: info: flow dependencies proved
-sorters.adb:21:19: info: postcondition proved (CVC4: 5 VC)
+sorters.adb:21:19: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 sorters.adb:22:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:28: info: index check proved (CVC4: 2 VC)
@@ -904,8 +904,8 @@ sorters.adb:63:07: info: initialization of "Values_Last" proved
 sorters.adb:63:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:65:07: info: initialization of "Smallest" proved
 sorters.adb:68:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:69:22: info: length check proved (CVC4: 8 VC)
-sorters.adb:69:25: info: length check proved (CVC4: 8 VC)
+sorters.adb:69:22: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
+sorters.adb:69:25: info: length check proved (CVC4: 4 VC; Trivial: 4 VC)
 sorters.adb:70:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:70:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:73:13: info: precondition proved (CVC4: 10 VC)
@@ -951,17 +951,17 @@ string_examples.adb:9:01: info: initialization of "Address" proved
 string_examples.adb:13:09: warning: unused assignment
 string_examples.adb:15:06: warning: unused assignment
 string_examples.adb:15:09: medium: length check might fail
-string_examples.adb:16:09: info: length check proved (CVC4: 4 VC)
-string_examples.adb:17:12: info: length check proved (CVC4: 4 VC)
+string_examples.adb:16:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+string_examples.adb:17:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:19:06: warning: unused assignment
 string_examples.adb:20:09: info: range check proved (CVC4: 4 VC)
 string_examples.adb:21:09: warning: unused assignment
-string_examples.adb:21:17: info: length check proved (CVC4: 4 VC)
+string_examples.adb:21:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
 string_examples.adb:22:19: warning: unused assignment
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
-string_examples.adb:25:19: info: length check proved (CVC4: 4 VC)
-string_examples.adb:25:22: info: length check proved (CVC4: 4 VC)
+string_examples.adb:25:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+string_examples.adb:25:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:26:06: info: range check proved (CVC4: 4 VC)
 strings.adb:11:07: info: initialization of "Current" proved
 strings.adb:20:21: info: index check proved (CVC4: 2 VC)
@@ -1086,7 +1086,7 @@ temperature_buffer14.ads:32:08: info: data dependencies proved
 temperature_buffer14.ads:33:08: info: flow dependencies proved
 terminal.adb:10:07: info: initialization of "Value" proved
 terminal.adb:11:07: info: initialization of "Port_Status" proved
-terminal.adb:13:14: info: length check proved (CVC4: 4 VC)
+terminal.adb:13:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 terminal.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
 terminal.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
 terminal.adb:17:48: info: range check proved (CVC4: 2 VC)
@@ -1209,7 +1209,7 @@ very_longs.ads:67:22: info: initialization of "Quotient" proved
 very_longs.ads:68:22: info: initialization of "Remainder" proved
 very_longs.ads:70:10: info: flow dependencies proved
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)
-workspaces.adb:5:48: info: length check proved (CVC4: 4 VC)
+workspaces.adb:5:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)

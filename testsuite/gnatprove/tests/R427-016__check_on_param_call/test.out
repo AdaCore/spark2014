@@ -27,79 +27,79 @@ formals.adb:82:22: info: predicate check proved (CVC4: 1 VC)
 formals.adb:83:24: info: predicate check proved (CVC4: 1 VC)
 formals.adb:86:22: info: predicate check proved (CVC4: 1 VC)
 formals.adb:87:24: info: predicate check proved (CVC4: 1 VC)
-formals.adb:89:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:89:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:89:07: info: predicate check proved (CVC4: 1 VC)
-formals.adb:90:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:91:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:92:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:90:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:91:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:92:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:92:07: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 91 should mention A (for argument Z) in a postcondition]
-formals.adb:93:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:94:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:93:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:94:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:94:19: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 93 should mention A (for argument Z) in a postcondition]
-formals.adb:95:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:96:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:95:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:96:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:16: medium: predicate check might fail [possible explanation: call at line 95 should mention A (for argument W) in a postcondition]
-formals.adb:97:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:98:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:97:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:98:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:98:21: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 97 should mention A (for argument Z) in a postcondition]
-formals.adb:99:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:100:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:99:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:100:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:16: medium: predicate check might fail [possible explanation: call at line 99 should mention A (for argument V) in a postcondition]
-formals.adb:101:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:102:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:08: medium: predicate check might fail [possible explanation: call at line 101 should mention A (for argument W) in a postcondition]
-formals.adb:103:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:103:07: info: predicate check proved (CVC4: 1 VC)
-formals.adb:104:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:105:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:106:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:104:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:105:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:106:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:106:07: medium: predicate check might fail (e.g. when X = (others => 0)) [possible explanation: call at line 105 should mention A (for argument X) in a postcondition]
-formals.adb:107:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:108:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:107:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:108:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:108:19: medium: predicate check might fail (e.g. when X = (others => 0)) [possible explanation: call at line 107 should mention A (for argument X) in a postcondition]
-formals.adb:109:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:110:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:109:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:110:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:110:08: medium: predicate check might fail (e.g. when Y = (others => 0)) [possible explanation: call at line 109 should mention A (for argument Y) in a postcondition]
-formals.adb:111:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:112:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:111:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:112:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:112:18: medium: predicate check might fail [possible explanation: call at line 111 should mention A (for argument Y) in a postcondition]
-formals.adb:113:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:115:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:117:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:118:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:113:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:115:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:117:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:118:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:118:18: medium: predicate check might fail [possible explanation: call at line 117 should mention A (for argument U) in a postcondition]
-formals.adb:119:04: info: precondition proved (CVC4: 1 VC)
-formals.adb:121:04: info: precondition proved (CVC4: 1 VC)
+formals.adb:119:04: info: precondition proved (Trivial: 1 VC)
+formals.adb:121:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:1:11: warning: subprogram "Formals_Arr_Split" has no effect
 formals_arr_split.adb:3:04: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:5:04: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:7:12: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:10:17: info: initialization of "A" proved
-formals_arr_split.adb:14:09: info: length check proved (CVC4: 4 VC)
-formals_arr_split.adb:14:12: info: length check proved (CVC4: 4 VC)
+formals_arr_split.adb:14:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:14:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 formals_arr_split.adb:14:15: info: range check proved (CVC4: 2 VC)
 formals_arr_split.adb:17:18: info: initialization of "A" proved
 formals_arr_split.adb:20:07: medium: length check might fail, in call inlined at formals_arr_split.adb:48 (e.g. when U = (others => 1) and V'First = 0 and V'Last = 2 and Y = 1) [possible explanation: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:48
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:43
-formals_arr_split.adb:20:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
+formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:43
+formals_arr_split.adb:20:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:43
 formals_arr_split.adb:20:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:48
 formals_arr_split.adb:23:18: info: initialization of "A" proved
 formals_arr_split.adb:26:07: medium: length check might fail, in call inlined at formals_arr_split.adb:54 (e.g. when V'First = 0 and V'Last = 2 and Y = 1) [possible explanation: call at line 42 should mention A (for argument V) in a postcondition]
-formals_arr_split.adb:26:09: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:54
-formals_arr_split.adb:26:12: info: length check proved (CVC4: 4 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
+formals_arr_split.adb:26:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:26:15: info: range check proved (CVC4: 2 VC), in call inlined at formals_arr_split.adb:54
 formals_arr_split.adb:31:11: info: index check proved (CVC4: 2 VC)
 formals_arr_split.adb:36:07: info: precondition proved (CVC4: 1 VC)
 formals_arr_split.adb:36:22: medium: range check might fail (e.g. when A'First = -1 and A'Last = -1) [possible explanation: precondition of subprogram at line 34 should mention A]
-formals_arr_split.adb:39:22: info: length check proved (CVC4: 4 VC)
-formals_arr_split.adb:40:24: info: length check proved (CVC4: 4 VC)
-formals_arr_split.adb:42:04: info: precondition proved (CVC4: 1 VC)
-formals_arr_split.adb:46:10: info: precondition proved (CVC4: 1 VC)
+formals_arr_split.adb:39:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:40:24: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+formals_arr_split.adb:42:04: info: precondition proved (Trivial: 1 VC)
+formals_arr_split.adb:46:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:46:13: medium: length check might fail (e.g. when U'First = 0 and U'Last = 2 and X = 1)
-formals_arr_split.adb:52:10: info: precondition proved (CVC4: 1 VC)
+formals_arr_split.adb:52:10: info: precondition proved (Trivial: 1 VC)
 formals_arr_split.adb:52:13: medium: length check might fail (e.g. when X = 1)
 formals_arr_split_pred.adb:5:31: info: index check proved (CVC4: 2 VC)
 formals_arr_split_pred.adb:8:33: info: index check proved (CVC4: 2 VC)
@@ -121,35 +121,35 @@ formals_arr_split_pred.adb:31:20: info: predicate check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:32:22: info: predicate check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:32:22: info: range check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:33:24: info: predicate check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:35:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:35:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:35:07: info: predicate check proved (CVC4: 2 VC)
 formals_arr_split_pred.adb:35:07: info: range check proved (CVC4: 1 VC)
-formals_arr_split_pred.adb:36:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:36:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:36:08: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:37:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:37:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:37:08: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:38:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:38:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:38:07: info: predicate check proved (CVC4: 2 VC)
 formals_arr_split_pred.adb:38:07: info: range check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:38:07: medium: predicate check might fail (e.g. when X = (others => 0) and X'First = 1 and X'Last = 10) [possible explanation: call at line 37 should mention A (for argument X) in a postcondition]
-formals_arr_split_pred.adb:39:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:39:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:39:08: info: predicate check proved (CVC4: 2 VC)
-formals_arr_split_pred.adb:40:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:40:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:40:19: info: predicate check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:40:19: info: range check proved (CVC4: 1 VC)
 formals_arr_split_pred.adb:40:19: medium: predicate check might fail (e.g. when X = (others => 0) and X'First = 1 and X'Last = 10) [possible explanation: call at line 39 should mention A (for argument X) in a postcondition]
-formals_arr_split_pred.adb:41:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:41:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:41:07: info: predicate check proved (CVC4: 3 VC)
-formals_arr_split_pred.adb:42:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:42:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:42:08: medium: predicate check might fail (e.g. when Y = (others => 0)) [possible explanation: call at line 41 should mention A (for argument Y) in a postcondition]
-formals_arr_split_pred.adb:43:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:43:07: info: predicate check proved (CVC4: 3 VC)
-formals_arr_split_pred.adb:44:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:44:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:44:18: medium: predicate check might fail [possible explanation: call at line 43 should mention A (for argument Y) in a postcondition]
-formals_arr_split_pred.adb:45:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:45:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:45:07: info: predicate check proved (CVC4: 3 VC)
-formals_arr_split_pred.adb:46:04: info: precondition proved (CVC4: 1 VC)
+formals_arr_split_pred.adb:46:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:46:18: medium: predicate check might fail [possible explanation: call at line 45 should mention A (for argument U) in a postcondition]
 formals_rec_split.adb:1:11: warning: subprogram "Formals_Rec_Split" has no effect
 formals_rec_split.adb:11:31: info: range check proved (CVC4: 1 VC)
@@ -161,10 +161,10 @@ formals_rec_split.adb:28:11: info: discriminant check proved (CVC4: 1 VC), in ca
 formals_rec_split.adb:28:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:49 (e.g. when U = (D => ?, F => 1) and V = (D => ?, F => 1)) [possible explanation: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3"
 formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55 (e.g. when V = (D => ?, F => 1)) [possible explanation: call at line 43 should mention A (for argument V) in a postcondition]
-formals_rec_split.adb:43:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split.adb:47:10: info: precondition proved (CVC4: 1 VC)
+formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False) [possible explanation: subprogram at line 1 should mention Y in a precondition]
-formals_rec_split.adb:53:10: info: precondition proved (CVC4: 1 VC)
+formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC4: 1 VC)
@@ -209,28 +209,28 @@ formals_rec_split_pred.adb:67:22: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:67:22: info: predicate check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:68:22: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:68:22: info: predicate check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:70:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:70:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:70:07: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:70:07: info: predicate check proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:71:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:72:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:73:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:71:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:72:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:73:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:73:07: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:73:07: medium: predicate check might fail (e.g. when X = (D => ?, F => 1, G => 1, H => 0)) [possible explanation: call at line 72 should mention A (for argument X) in a postcondition]
-formals_rec_split_pred.adb:74:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:75:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:74:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:75:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:75:19: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:75:19: medium: predicate check might fail (e.g. when X = (D => ?, F => 1, G => 1, H => 0)) [possible explanation: call at line 74 should mention A (for argument X) in a postcondition]
-formals_rec_split_pred.adb:76:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:77:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:76:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:77:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:77:08: medium: predicate check might fail (e.g. when Y = (D => ?, F => 1, G => 1, H => 0)) [possible explanation: call at line 76 should mention A (for argument Y) in a postcondition]
-formals_rec_split_pred.adb:78:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:79:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:78:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:79:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:79:13: medium: predicate check might fail [possible explanation: call at line 78 should mention A (for argument Y) in a postcondition]
-formals_rec_split_pred.adb:80:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:81:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:80:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:81:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:81:13: medium: predicate check might fail [possible explanation: call at line 80 should mention A (for argument U) in a postcondition]
-formals_rec_split_pred.adb:82:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:84:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:86:04: info: precondition proved (CVC4: 1 VC)
-formals_rec_split_pred.adb:88:04: info: precondition proved (CVC4: 1 VC)
+formals_rec_split_pred.adb:82:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:84:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:86:04: info: precondition proved (Trivial: 1 VC)
+formals_rec_split_pred.adb:88:04: info: precondition proved (Trivial: 1 VC)

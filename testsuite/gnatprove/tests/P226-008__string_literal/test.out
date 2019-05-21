@@ -1,4 +1,4 @@
 bcheck.adb:5:04: info: range check proved (CVC4: 4 VC)
 bcheck.adb:5:15: info: overflow check proved (CVC4: 1 VC)
-bcheck.adb:5:20: info: length check proved (CVC4: 4 VC)
-bcheck.adb:5:23: info: length check proved (CVC4: 4 VC)
+bcheck.adb:5:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bcheck.adb:5:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

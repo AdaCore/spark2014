@@ -2,4 +2,4 @@ main.adb:5:19: info: implicit function contract not available for proof ("Proxy"
 main.adb:5:19: medium: assertion might fail, cannot prove Proxy = 0 [possible explanation: subprogram at line 2 should mention P.D in a precondition]
 main.adb:6:19: medium: assertion might fail, cannot prove P.Unit.F (1) = 0
 main.adb:6:25: info: implicit function contract not available for proof ("F" might not return)
-p.adb:7:14: info: precondition proved (CVC4: 1 VC), in instantiation at main.adb:3
+p.adb:7:14: info: precondition proved (Trivial: 1 VC), in instantiation at main.adb:3

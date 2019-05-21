@@ -4,7 +4,7 @@ definite.adb:26:09: info: data dependencies proved
 definite.adb:26:31: info: initialization of "G" proved
 definite.adb:27:09: info: flow dependencies proved
 definite.adb:33:09: medium: discriminant check might fail [possible explanation: subprogram at line 24 should mention X'Constrained or X.D in a precondition]
-definite.adb:34:09: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:34:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:37:28: info: initialization of "X" proved
 definite.adb:38:28: info: initialization of "Y" proved
 definite.adb:39:09: info: data dependencies proved
@@ -14,25 +14,25 @@ definite.adb:48:25: info: initialization of "Y" proved
 definite.adb:49:09: info: data dependencies proved
 definite.adb:49:31: info: initialization of "G" proved
 definite.adb:50:09: info: flow dependencies proved
-definite.adb:55:09: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:55:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:58:25: info: initialization of "X" proved
 definite.adb:59:09: info: data dependencies proved
 definite.adb:60:09: info: flow dependencies proved
-definite.adb:65:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:67:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:69:15: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:65:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:67:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:69:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:74:09: info: data dependencies proved
 definite.adb:74:31: info: initialization of "G" proved
 definite.adb:75:09: info: flow dependencies proved
-definite.adb:80:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:82:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:84:15: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:80:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:82:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:84:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:89:26: info: initialization of "X" proved
 definite.adb:90:26: info: initialization of "Y" proved
 definite.adb:91:09: info: data dependencies proved
 definite.adb:91:30: info: initialization of "G" proved
 definite.adb:95:09: medium: discriminant check might fail [possible explanation: subprogram at line 89 should mention X'Constrained or X.D in a precondition]
-definite.adb:96:09: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:96:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:99:30: info: initialization of "X" proved
 definite.adb:100:30: info: initialization of "Y" proved
 definite.adb:101:09: info: data dependencies proved
@@ -41,15 +41,15 @@ definite.adb:107:23: info: initialization of "X" proved
 definite.adb:108:23: info: initialization of "Y" proved
 definite.adb:109:09: info: data dependencies proved
 definite.adb:110:09: info: flow dependencies proved
-definite.adb:117:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:119:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:121:15: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:117:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:119:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:121:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:125:26: info: initialization of "X" proved
 definite.adb:126:26: info: initialization of "Y" proved
 definite.adb:127:09: info: data dependencies proved
-definite.adb:133:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:135:15: info: discriminant check proved (CVC4: 2 VC)
-definite.adb:137:15: info: discriminant check proved (CVC4: 2 VC)
+definite.adb:133:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:135:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+definite.adb:137:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 definite.adb:141:23: info: initialization of "X" proved
 definite.adb:142:09: info: data dependencies proved
 definite.adb:143:09: info: flow dependencies proved
@@ -97,14 +97,14 @@ test.adb:102:14: info: discriminant check proved (CVC4: 1 VC)
 test.adb:104:14: info: discriminant check proved (CVC4: 1 VC)
 test.adb:108:04: warning: analyzing unreferenced procedure "Test_Definite_04"
 test.adb:108:32: info: initialization of "X" proved
-test.adb:114:15: info: discriminant check proved (CVC4: 2 VC)
-test.adb:116:15: info: discriminant check proved (CVC4: 2 VC)
+test.adb:114:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+test.adb:116:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:120:04: warning: analyzing unreferenced procedure "Test_Definite_05"
 test.adb:120:32: info: initialization of "X" proved
 test.adb:123:28: info: range check proved (CVC4: 1 VC)
 test.adb:128:14: info: discriminant check proved (CVC4: 1 VC)
 test.adb:130:18: info: discriminant check proved (CVC4: 1 VC)
-test.adb:132:09: info: discriminant check proved (CVC4: 2 VC)
+test.adb:132:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:132:12: medium: "R.Reason" might not be initialized
 test.adb:135:32: info: initialization of "X" proved
 test.adb:136:32: info: initialization of "Y" proved

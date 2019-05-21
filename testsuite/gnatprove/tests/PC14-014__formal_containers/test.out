@@ -47,7 +47,7 @@ a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1290:13: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:33
+a-cfhase.ads:1290:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
 a-cfinve.ads:601:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:729:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:732:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
@@ -117,7 +117,7 @@ a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1697:13: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1697:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cforse.ads:1718:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cforse.ads:1736:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cofove.ads:288:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
@@ -231,8 +231,8 @@ my_bounded_vectors.adb:41:07: info: precondition proved (Z3: 3 VC)
 my_bounded_vectors.adb:41:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:42:07: info: precondition proved (Z3: 2 VC)
 my_bounded_vectors.adb:42:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:45:24: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:47:10: info: precondition proved (Z3: 2 VC)
+my_bounded_vectors.adb:45:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
+my_bounded_vectors.adb:47:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:50:07: info: precondition proved (Z3: 2 VC)
 my_bounded_vectors.adb:50:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:51:07: info: precondition proved (Z3: 2 VC)
@@ -280,10 +280,10 @@ my_bounded_vectors.adb:90:22: info: assertion proved (Z3: 1 VC)
 my_bounded_vectors.adb:93:07: info: precondition proved (Z3: 4 VC)
 my_bounded_vectors.adb:93:19: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:95:30: info: assertion proved (Z3: 2 VC)
-my_bounded_vectors.adb:96:07: info: precondition proved (Z3: 2 VC)
+my_bounded_vectors.adb:96:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:101:07: info: precondition proved (Z3: 1 VC)
 my_bounded_vectors.adb:103:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:106:07: info: precondition proved (Z3: 2 VC)
+my_bounded_vectors.adb:106:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:109:07: info: precondition proved (Z3: 1 VC)
 my_bounded_vectors.adb:110:22: info: assertion proved (Z3: 1 VC)
 my_bounded_vectors.ads:9:14: warning: subprogram "Test_Bounded_Vectors" has no effect
@@ -470,9 +470,9 @@ my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:121:22: info: assertion proved (CVC4: 1 VC)
 my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_maps.adb:124:07: medium: assertion might fail
-my_maps.adb:129:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:131:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)
+my_maps.adb:130:07: info: precondition proved (Trivial: 1 VC)
+my_maps.adb:131:07: info: precondition proved (Trivial: 1 VC)
 my_maps.ads:20:17: info: postcondition proved (Z3: 2 VC)
 my_maps.ads:31:14: warning: subprogram "Test_Map" has no effect
 my_ordered_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
@@ -578,9 +578,9 @@ my_ordered_maps.adb:136:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:139:22: info: assertion proved (CVC4: 1 VC)
 my_ordered_maps.adb:141:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_ordered_maps.adb:142:07: medium: assertion might fail
-my_ordered_maps.adb:147:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:148:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:149:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:147:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_maps.adb:148:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_maps.adb:149:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_maps.ads:17:12: info: postcondition proved (Z3: 2 VC)
 my_ordered_maps.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 my_ordered_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
@@ -706,9 +706,9 @@ my_ordered_sets.adb:180:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
 my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:186:07: medium: assertion might fail
-my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:192:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:193:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:191:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_sets.adb:192:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_sets.adb:193:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
 my_ordered_sets.ads:22:53: medium: range check might fail [possible explanation: subprogram at line 22 should mention X in a precondition]
 my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
@@ -826,9 +826,9 @@ my_sets.adb:168:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:171:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
 my_sets.adb:174:07: medium: assertion might fail
-my_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:180:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:181:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:179:07: info: precondition proved (Trivial: 1 VC)
+my_sets.adb:180:07: info: precondition proved (Trivial: 1 VC)
+my_sets.adb:181:07: info: precondition proved (Trivial: 1 VC)
 my_sets.ads:19:17: info: postcondition proved (Z3: 2 VC)
 my_sets.ads:30:17: info: postcondition proved (Z3: 1 VC)
 my_sets.ads:39:14: warning: subprogram "Test_Set" has no effect
@@ -857,8 +857,8 @@ my_vectors.adb:39:07: info: precondition proved (Z3: 3 VC)
 my_vectors.adb:39:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:40:07: info: precondition proved (Z3: 2 VC)
 my_vectors.adb:40:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:43:24: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:45:10: info: precondition proved (Z3: 2 VC)
+my_vectors.adb:43:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
+my_vectors.adb:45:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:48:07: info: precondition proved (Z3: 2 VC)
 my_vectors.adb:48:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:49:07: info: precondition proved (Z3: 2 VC)
@@ -906,10 +906,10 @@ my_vectors.adb:88:22: info: assertion proved (Z3: 1 VC)
 my_vectors.adb:91:07: info: precondition proved (Z3: 4 VC)
 my_vectors.adb:91:19: info: range check proved (Z3: 1 VC)
 my_vectors.adb:93:30: info: assertion proved (Z3: 2 VC)
-my_vectors.adb:94:07: info: precondition proved (Z3: 2 VC)
+my_vectors.adb:94:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:99:07: info: precondition proved (Z3: 1 VC)
 my_vectors.adb:101:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:104:07: info: precondition proved (Z3: 2 VC)
+my_vectors.adb:104:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:107:07: info: precondition proved (Z3: 1 VC)
 my_vectors.adb:108:22: info: assertion proved (Z3: 1 VC)
 my_vectors.adb:111:07: medium: assertion might fail

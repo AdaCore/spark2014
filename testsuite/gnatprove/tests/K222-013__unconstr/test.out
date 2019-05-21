@@ -1,4 +1,4 @@
-unconstr.adb:5:09: info: length check proved (CVC4: 4 VC)
+unconstr.adb:5:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 unconstr.adb:8:04: warning: analyzing unreferenced procedure "Q"
 unconstr.adb:8:14: warning: subprogram "Q" has no effect
 unconstr.adb:9:07: info: initialization of "A" proved

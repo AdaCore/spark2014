@@ -1,6 +1,6 @@
-use_unchecked_union.adb:15:20: info: discriminant check proved (CVC4: 2 VC)
-use_unchecked_union.adb:17:20: info: discriminant check proved (CVC4: 2 VC)
-use_unchecked_union.adb:19:20: info: discriminant check proved (CVC4: 2 VC)
+use_unchecked_union.adb:15:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+use_unchecked_union.adb:17:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+use_unchecked_union.adb:19:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 use_unchecked_union.adb:32:19: medium: discriminant check might fail (e.g. when output = (discr => ?, record1 => (field1 => 1, field2 => (others => 1)), record2 => (field1 => 1, field2 => (others => 1))) and output'Constrained = False) [possible explanation: subprogram at use_unchecked_union.ads:33 should mention output'Constrained or output.discr in a precondition]
 use_unchecked_union.adb:33:19: medium: discriminant check might fail (e.g. when output = (discr => ?, record1 => (field1 => 1, field2 => (others => 1)), record2 => (field1 => 1, field2 => (others => 1))) and output'Constrained = False) [possible explanation: subprogram at use_unchecked_union.ads:33 should mention output'Constrained or output.discr in a precondition]
 use_unchecked_union.adb:35:19: medium: discriminant check might fail (e.g. when output = (discr => ?, record1 => (field1 => 0, field2 => (others => 0)), record2 => (field1 => 0, field2 => (others => 0))) and output'Constrained = False) [possible explanation: subprogram at use_unchecked_union.ads:33 should mention output'Constrained or output.discr in a precondition]

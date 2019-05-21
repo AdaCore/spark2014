@@ -23,52 +23,52 @@ port.ads:16:19: info: assertion proved
 port.ads:65:28: info: initialization of "X" proved
 port.ads:66:11: info: data dependencies proved
 port.ads:67:11: info: flow dependencies proved
-port.ads:68:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:68:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:68:22: warning: attribute Valid is assumed to return True
 port.ads:70:28: info: initialization of "X" proved
 port.ads:71:11: info: data dependencies proved
 port.ads:72:11: info: flow dependencies proved
-port.ads:73:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:73:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:73:22: warning: attribute Valid is assumed to return True
 port.ads:75:29: info: initialization of "X" proved
 port.ads:76:11: info: data dependencies proved
 port.ads:77:11: info: flow dependencies proved
-port.ads:78:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:78:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:78:22: warning: attribute Valid is assumed to return True
 port.ads:80:29: info: initialization of "X" proved
 port.ads:81:11: info: data dependencies proved
 port.ads:82:11: info: flow dependencies proved
-port.ads:83:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:83:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:83:22: warning: attribute Valid is assumed to return True
 port.ads:90:28: info: initialization of "X" proved
 port.ads:91:11: info: data dependencies proved
 port.ads:92:11: info: flow dependencies proved
-port.ads:93:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:93:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:93:22: warning: attribute Valid is assumed to return True
 port.ads:95:28: info: initialization of "X" proved
 port.ads:96:11: info: data dependencies proved
 port.ads:97:11: info: flow dependencies proved
-port.ads:98:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:98:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:98:22: warning: attribute Valid is assumed to return True
 port.ads:104:28: info: initialization of "X" proved
 port.ads:105:11: info: data dependencies proved
 port.ads:106:11: info: flow dependencies proved
-port.ads:107:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:107:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:107:22: warning: attribute Valid is assumed to return True
 port.ads:109:28: info: initialization of "X" proved
 port.ads:110:11: info: data dependencies proved
 port.ads:111:11: info: flow dependencies proved
-port.ads:112:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:112:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:112:22: warning: attribute Valid is assumed to return True
 port.ads:114:29: info: initialization of "X" proved
 port.ads:115:11: info: data dependencies proved
 port.ads:116:11: info: flow dependencies proved
-port.ads:117:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:117:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:117:22: warning: attribute Valid is assumed to return True
 port.ads:119:29: info: initialization of "X" proved
 port.ads:120:11: info: data dependencies proved
 port.ads:121:11: info: flow dependencies proved
-port.ads:122:22: info: postcondition proved (CVC4: 2 VC)
+port.ads:122:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 port.ads:122:22: warning: attribute Valid is assumed to return True
 port.ads:128:26: info: initialization of "X" proved
 port.ads:129:11: info: data dependencies proved

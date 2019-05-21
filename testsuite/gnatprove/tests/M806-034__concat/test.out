@@ -1,13 +1,13 @@
 concat.adb:3:14: warning: subprogram "One" has no effect
 concat.adb:4:16: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:34
-concat.adb:4:28: info: length check proved (CVC4: 4 VC), in call inlined at concat.adb:34
+concat.adb:4:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat.adb:34
 concat.adb:4:28: info: range check proved (CVC4: 1 VC), in call inlined at concat.adb:34
 concat.adb:4:30: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:34
 concat.adb:6:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:34
 concat.adb:7:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:34
 concat.adb:10:14: warning: subprogram "Two" has no effect
 concat.adb:11:17: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:35
-concat.adb:11:29: info: length check proved (CVC4: 4 VC), in call inlined at concat.adb:35
+concat.adb:11:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved (CVC4: 1 VC), in call inlined at concat.adb:35
 concat.adb:11:31: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:35
 concat.adb:13:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:35
@@ -31,13 +31,13 @@ concat_left.adb:12:22: info: assertion proved (CVC4: 1 VC)
 concat_left.adb:12:26: info: index check proved (CVC4: 2 VC)
 concat_left.adb:13:22: info: assertion proved (CVC4: 1 VC)
 concat_left.adb:16:14: warning: subprogram "Two" has no effect
-concat_left.adb:17:18: info: length check proved (CVC4: 4 VC), in call inlined at concat_left.adb:36
+concat_left.adb:17:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:17:18: info: range check proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:17:20: info: range check proved (CVC4: 4 VC), in call inlined at concat_left.adb:36
 concat_left.adb:19:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:20:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:23:14: warning: subprogram "Three" has no effect
-concat_left.adb:24:19: info: length check proved (CVC4: 4 VC), in call inlined at concat_left.adb:37
+concat_left.adb:24:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_left.adb:37
 concat_left.adb:24:19: info: range check proved (CVC4: 1 VC), in call inlined at concat_left.adb:37
 concat_left.adb:24:21: info: range check proved (CVC4: 4 VC), in call inlined at concat_left.adb:37
 concat_left.adb:26:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:37
@@ -55,13 +55,13 @@ concat_right.adb:12:26: info: index check proved (CVC4: 2 VC)
 concat_right.adb:13:22: info: assertion proved (CVC4: 1 VC)
 concat_right.adb:16:14: warning: subprogram "Two" has no effect
 concat_right.adb:17:16: info: range check proved (CVC4: 4 VC), in call inlined at concat_right.adb:36
-concat_right.adb:17:27: info: length check proved (CVC4: 4 VC), in call inlined at concat_right.adb:36
+concat_right.adb:17:27: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: range check proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:19:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:20:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:23:14: warning: subprogram "Three" has no effect
 concat_right.adb:24:17: info: range check proved (CVC4: 4 VC), in call inlined at concat_right.adb:37
-concat_right.adb:24:28: info: length check proved (CVC4: 4 VC), in call inlined at concat_right.adb:37
+concat_right.adb:24:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: range check proved (CVC4: 1 VC), in call inlined at concat_right.adb:37
 concat_right.adb:26:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:37
 concat_right.adb:27:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:37

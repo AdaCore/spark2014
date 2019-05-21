@@ -5,7 +5,7 @@ basic.adb:13:36: info: overflow check proved (CVC4: 1 VC)
 basic.adb:16:16: medium: overflow check might fail (e.g. when A = 1 and B = Integer'Last) [possible explanation: subprogram at line 12 should mention A and B in a precondition]
 basic.adb:20:19: info: postcondition proved (CVC4: 3 VC)
 basic.adb:24:07: info: initialization of "R" proved
-basic.adb:31:30: info: assertion proved (CVC4: 4 VC)
+basic.adb:31:30: info: assertion proved (CVC4: 2 VC; Trivial: 2 VC)
 basic.adb:39:25: info: initialization of "X" proved
 basic.adb:39:28: info: initialization of "Y" proved
 basic.adb:41:17: info: postcondition proved (CVC4: 2 VC)

@@ -1,9 +1,9 @@
 test.adb:11:16: medium: postcondition might fail
-{"ide_request": "Command_req", "node_ID":99, "command" : "introduce_premises" }
+{"ide_request": "Command_req", "node_ID":102, "command" : "introduce_premises" }
 
-{"ide_request": "Command_req", "node_ID":99, "command" : "z3" }
+{"ide_request": "Command_req", "node_ID":102, "command" : "z3" }
 
-{"ide_request": "Get_task", "node_ID":99, "loc": false, "full_context": false}
+{"ide_request": "Get_task", "node_ID":102, "loc": false, "full_context": false}
 
 Message
 Task
@@ -16,7 +16,7 @@ goal VC def :
   A > 0 ->
   (forall test__parity__result:int.
     test__parity__result = A ->
-    (exists x:int. (0 <= x /\ x <= 255) /\ (A = (x + x) \/ A = ((x + x) + 2))))
+    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
 
 
 Process Ended

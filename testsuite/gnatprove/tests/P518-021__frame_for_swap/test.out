@@ -27,8 +27,8 @@ test_swap_lines.adb:37:41: info: index check proved (CVC4: 4 VC), in call inline
 test_swap_lines.adb:37:60: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:63: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:66: info: overflow check proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:38:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:38:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:67
+test_swap_lines.adb:38:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at test_swap_lines.adb:67
+test_swap_lines.adb:38:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:49: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:52: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:71: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67

@@ -1,4 +1,4 @@
-p.adb:15:07: info: precondition proved (CVC4: 1 VC)
+p.adb:15:07: info: precondition proved (Trivial: 1 VC)
 p.adb:15:07: warning: statement has no effect
 p.adb:15:07: warning: unused assignment to "Y"
 p.ads:3:14: medium: the task might terminate, which is not allowed in SPARK

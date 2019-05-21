@@ -41,11 +41,11 @@ textio-get_line.adb:98:22: info: assertion proved (CVC4: 1 VC)
 textio-get_line.adb:98:27: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:114:13: info: raise statement proved unreachable (CVC4: 1 VC)
 textio-get_line.adb:118:12: info: precondition proved (CVC4: 1 VC)
-textio-get_line.adb:126:10: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:126:10: info: precondition proved (CVC4: 8 VC; Trivial: 1 VC)
 textio-get_line.adb:126:44: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:128:27: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:139:39: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:145:28: info: assertion proved (CVC4: 2 VC)
+textio-get_line.adb:145:28: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 textio-get_line.adb:145:106: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:146:35: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:146:114: info: range check proved (CVC4: 1 VC)
@@ -55,11 +55,11 @@ textio-get_line.adb:148:41: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:152:31: medium: assertion might fail, cannot prove Buf (K) = ASCII.nul
 textio-get_line.adb:152:36: medium: array index check might fail
 textio-get_line.adb:153:23: medium: range check might fail
-textio-get_line.adb:156:13: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:156:13: info: precondition proved (CVC4: 8 VC; Trivial: 1 VC)
 textio-get_line.adb:156:47: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:158:26: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:167:04: info: initialization of "Rest" proved
-textio-get_line.adb:173:09: info: length check proved (CVC4: 4 VC)
+textio-get_line.adb:173:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio-get_line.adb:174:23: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:174:23: medium: range check might fail
 textio-get_line.adb:184:19: info: overflow check proved (CVC4: 1 VC)
@@ -73,9 +73,9 @@ textio-get_line.adb:190:38: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:190:72: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:191:30: info: loop invariant initialization proved (CVC4: 1 VC)
 textio-get_line.adb:191:30: info: loop invariant preservation proved (CVC4: 1 VC)
-textio-get_line.adb:195:07: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:195:07: info: precondition proved (CVC4: 7 VC; Trivial: 2 VC)
 textio-get_line.adb:200:30: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:208:07: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:208:07: info: precondition proved (CVC4: 7 VC; Trivial: 2 VC)
 textio-get_line.adb:208:18: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:209:12: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:215:22: info: assertion proved (CVC4: 1 VC)
@@ -114,12 +114,12 @@ textio.adb:186:37: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: range check proved (CVC4: 1 VC)
 textio.adb:189:16: info: range check proved (CVC4: 4 VC)
-textio.adb:189:34: info: length check proved (CVC4: 4 VC)
-textio.adb:189:37: info: length check proved (CVC4: 4 VC)
+textio.adb:189:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+textio.adb:189:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
 textio.adb:199:19: info: range check proved (CVC4: 4 VC)
-textio.adb:199:37: info: length check proved (CVC4: 4 VC)
-textio.adb:199:40: info: length check proved (CVC4: 4 VC)
+textio.adb:199:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+textio.adb:199:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible explanation: call at line 178 should mention Cur_Position and File (for argument File) in a postcondition]
 textio.adb:211:07: info: precondition proved (CVC4: 5 VC)
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
@@ -127,15 +127,15 @@ textio.ads:12:07: warning: "File" is not modified, could be IN
 textio.ads:13:07: info: initialization of "Item" proved
 textio.ads:14:07: info: initialization of "Last" proved
 textio.ads:16:06: info: data dependencies proved
-textio.ads:26:32: info: contract case proved (CVC4: 2 VC)
+textio.ads:26:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 textio.ads:32:16: medium: contract case might fail
 textio.ads:35:20: info: index check proved (CVC4: 2 VC)
 textio.ads:35:54: info: index check proved (CVC4: 2 VC)
 textio.ads:42:07: info: initialization of "Item" proved
 textio.ads:43:07: info: initialization of "Last" proved
 textio.ads:45:06: info: data dependencies proved
-textio.ads:55:32: info: contract case proved (CVC4: 2 VC)
-textio.ads:61:16: info: contract case proved (CVC4: 5 VC)
+textio.ads:55:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+textio.ads:61:16: info: contract case proved (CVC4: 4 VC; Trivial: 1 VC)
 textio.ads:64:20: info: index check proved (CVC4: 2 VC)
 textio.ads:64:54: info: index check proved (CVC4: 2 VC)
 textio.ads:76:58: info: initialization of "Result" proved

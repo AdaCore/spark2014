@@ -96,11 +96,11 @@ update_logic_fn.ads:88:11: info: flow dependencies proved
 update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99)
 update_logic_fn.ads:97:18: info: initialization of "A" proved
 update_logic_fn.ads:102:11: info: flow dependencies proved
-update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 11 VC)
+update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC; Trivial: 4 VC)
 update_logic_fn.ads:111:18: info: initialization of "A" proved
 update_logic_fn.ads:115:11: info: flow dependencies proved
 update_logic_fn.ads:116:14: info: postcondition proved (CVC4: 1 VC)
 update_logic_fn.ads:121:18: info: initialization of "A" proved
-update_logic_fn.ads:127:19: info: postcondition proved (CVC4: 2 VC)
+update_logic_fn.ads:127:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 update_logic_fn.ads:133:24: info: initialization of "A" proved
 update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove A = A_3D_Arr'update (e.g. when V1 = 1001 and V2 = Integer'First and X1 = 1 and X2 = 2 and Y1 = 3 and Y2 = 2 and Z1 = Blue and Z2 = Blue)

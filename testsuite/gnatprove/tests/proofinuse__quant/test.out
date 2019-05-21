@@ -1,5 +1,5 @@
 quantifiers.adb:8:17: info: postcondition proved (CVC4: 1 VC)
-quantifiers.adb:16:22: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+quantifiers.adb:16:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 quantifiers.adb:24:22: info: assertion proved (altergo: 1 VC)
 quantifiers.ads:7:14: warning: subprogram "Previous_Seen" has no effect
 quantifiers.ads:10:14: warning: subprogram "Not_For_Some" has no effect

@@ -2,7 +2,7 @@
   total: 1  proved: 0
 
 == Number of sub goals ==
-  total: 7  proved: 4
+  total: 7  proved: 6
 
 == Goals not proved ==
   +-- file [../add.mlw]
@@ -10,8 +10,6 @@
       +-- goal VC def
         +-- transformation split_goal_wp_conj
           +-- goal VC def.0
-          +-- goal VC def.2
-          +-- goal VC def.5
   
 == Goals proved by only one prover ==
   +-- file [../add.mlw]

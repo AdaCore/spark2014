@@ -63,12 +63,12 @@ x86.adb:660:17: info: postcondition proved (altergo: 1 VC)
 x86.adb:684:23: medium: postcondition might fail, cannot prove ReadMem64(RDI_Start+(I*8)) = RAX
 x86.adb:689:31: info: assertion proved (CVC4: 2 VC)
 x86.adb:691:16: info: precondition proved (CVC4: 6 VC; altergo: 2 VC)
-x86.adb:693:36: info: loop invariant initialization proved (CVC4: 2 VC)
-x86.adb:693:36: info: loop invariant preservation proved (CVC4: 1 VC; altergo: 1 VC)
+x86.adb:693:36: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+x86.adb:693:36: info: loop invariant preservation proved (Trivial: 1 VC; altergo: 1 VC)
 x86.adb:703:17: info: postcondition proved (CVC4: 1 VC)
-x86.adb:714:25: info: assertion proved (CVC4: 3 VC; Z3: 1 VC)
-x86.adb:722:25: info: assertion proved (CVC4: 3 VC; altergo: 1 VC)
-x86.adb:725:10: info: precondition proved (CVC4: 14 VC; Z3: 1 VC; altergo: 1 VC)
+x86.adb:714:25: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC; Z3: 1 VC)
+x86.adb:722:25: info: assertion proved (CVC4: 1 VC; Trivial: 2 VC; altergo: 1 VC)
+x86.adb:725:10: info: precondition proved (CVC4: 10 VC; Trivial: 4 VC; Z3: 1 VC; altergo: 1 VC)
 x86.adb:726:10: info: precondition proved (CVC4: 4 VC)
 x86.adb:730:39: medium: loop invariant might fail after first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
 x86.adb:730:39: medium: loop invariant might fail in first iteration, cannot prove Memory'Loop_Entry(i) = Memory(i)
@@ -256,15 +256,15 @@ x86.ads:580:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:589:06: info: data dependencies proved
 x86.ads:590:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:593:06: info: data dependencies proved
-x86.ads:595:16: info: postcondition proved (CVC4: 3 VC)
+x86.ads:595:16: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 x86.ads:603:06: info: data dependencies proved
 x86.ads:606:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:610:06: info: data dependencies proved
-x86.ads:612:17: info: postcondition proved (CVC4: 4 VC)
+x86.ads:612:17: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 x86.ads:620:06: info: data dependencies proved
 x86.ads:623:14: info: postcondition proved (CVC4: 4 VC)
 x86.ads:631:06: info: data dependencies proved
-x86.ads:633:06: info: postcondition proved (CVC4: 6 VC)
+x86.ads:633:06: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
 x86.ads:662:06: info: data dependencies proved
 x86.ads:665:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:670:06: info: data dependencies proved
@@ -280,11 +280,11 @@ x86.ads:708:52: info: range check proved (CVC4: 2 VC)
 x86.ads:718:06: info: data dependencies proved
 x86.ads:718:46: low: unused global "ZeroFlag"
 x86.ads:718:46: warning: "ZeroFlag" is not modified, could be INPUT
-x86.ads:721:14: info: postcondition proved (CVC4: 6 VC)
+x86.ads:721:14: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
 x86.ads:729:06: info: data dependencies proved
-x86.ads:731:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:731:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:735:06: info: data dependencies proved
-x86.ads:737:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:737:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:745:06: info: data dependencies proved
 x86.ads:746:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:750:06: info: data dependencies proved

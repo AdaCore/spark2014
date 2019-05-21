@@ -1,4 +1,4 @@
 alias.adb:6:24: info: data dependencies proved
 alias.adb:9:14: medium: overflow check might fail [possible explanation: precondition of subprogram at line 5 should mention G and X]
-alias.adb:14:07: info: precondition proved (CVC4: 1 VC)
+alias.adb:14:07: info: precondition proved (Trivial: 1 VC)
 alias.adb:14:13: high: formal parameter "X" and global "G" are aliased (SPARK RM 6.4.2)

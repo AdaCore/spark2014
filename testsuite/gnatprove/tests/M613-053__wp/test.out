@@ -1,5 +1,5 @@
 sorters_not_global.adb:8:06: info: flow dependencies proved
-sorters_not_global.adb:11:08: info: postcondition proved (CVC4: 4 VC)
+sorters_not_global.adb:11:08: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 sorters_not_global.adb:20:07: info: initialization of "Temp" proved
 sorters_not_global.adb:34:08: info: postcondition proved (CVC4: 3 VC)
 sorters_not_global.adb:36:17: info: range check proved (CVC4: 2 VC)

@@ -1,4 +1,4 @@
 slice_test_2.adb:9:07: info: range check proved (CVC4: 4 VC)
-slice_test_2.adb:9:23: info: length check proved (CVC4: 4 VC)
-slice_test_2.adb:10:09: info: length check proved (CVC4: 4 VC)
+slice_test_2.adb:9:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+slice_test_2.adb:10:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 slice_test_2.adb:10:09: info: range check proved (CVC4: 4 VC)

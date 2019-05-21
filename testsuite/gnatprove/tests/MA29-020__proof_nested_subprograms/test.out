@@ -34,7 +34,7 @@ skein.adb:101:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:101:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
 skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:102:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:107:12: info: length check proved (CVC4: 4 VC)
+skein.adb:107:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context

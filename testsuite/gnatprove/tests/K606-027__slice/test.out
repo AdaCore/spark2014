@@ -7,9 +7,9 @@ fb20a00.adb:18:10: info: range check proved (CVC4: 2 VC)
 fb20a00.adb:19:10: info: initialization of "Pos" proved
 fb20a00.adb:21:29: info: cannot unroll loop (too many loop iterations)
 fb20a00.adb:25:38: info: range check proved (CodePeer)
-fb20a00.adb:34:15: info: length check proved (CVC4: 4 VC)
+fb20a00.adb:34:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 fb20a00.adb:34:18: medium: length check might fail [possible explanation: subprogram at fb20a00.ads:43 should mention Str in a precondition]
-fb20a00.adb:35:15: info: length check proved (CVC4: 4 VC)
+fb20a00.adb:35:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 fb20a00.adb:35:18: medium: length check might fail [possible explanation: subprogram at fb20a00.ads:43 should mention Sub in a precondition]
 fb20a00.adb:37:34: medium: overflow check might fail
 fb20a00.adb:37:42: info: range check proved (CodePeer)

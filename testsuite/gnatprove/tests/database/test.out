@@ -1,6 +1,6 @@
 database.adb:49:42: info: initialization of "Account" proved
-database.adb:52:17: info: postcondition proved (altergo: 4 VC)
-database.adb:60:17: info: postcondition proved (altergo: 4 VC)
+database.adb:52:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
+database.adb:60:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
 database.adb:122:21: info: range check proved (altergo: 1 VC)
 database.adb:123:17: info: index check proved (altergo: 2 VC)
 database.adb:124:36: info: index check proved (altergo: 2 VC)

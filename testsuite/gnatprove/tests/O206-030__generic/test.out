@@ -53,7 +53,7 @@ pack_refs.ads:12:19: info: postcondition proved (CVC4: 1 VC), in instantiation a
 pack_refs.ads:12:40: info: overflow check proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:13:11: info: complete contract cases proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:13:11: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:13:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:14:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:15:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:13:41: info: contract case proved (Trivial: 2 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:14:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:15:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at main_refs.adb:5
 gnatprove: error during flow analysis and proof

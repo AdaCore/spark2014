@@ -1,4 +1,4 @@
-p1.adb:5:14: info: postcondition proved (CVC4: 7 VC)
+p1.adb:5:14: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC)
 p1.adb:5:16: info: index check proved (CVC4: 2 VC)
 p1.adb:5:23: info: index check proved (CVC4: 2 VC)
 p1.adb:6:16: info: index check proved (CVC4: 2 VC)

@@ -110,17 +110,17 @@ section_3_5_3.ads:80:14: warning: subprogram "Contact_RBC" has no effect
 section_4_6.ads:102:24: warning: unused variable "mode"
 section_4_6.ads:106:06: medium: contract cases might not be complete
 section_4_6.ads:106:06: medium: contract cases might not be disjoint
-section_4_6.ads:106:55: info: contract case proved (CVC4: 2 VC)
-section_4_6.ads:107:55: info: contract case proved (CVC4: 2 VC)
-section_4_6.ads:108:55: info: contract case proved (CVC4: 2 VC)
-section_4_6.ads:109:14: info: postcondition proved (CVC4: 1 VC)
+section_4_6.ads:106:55: info: contract case proved (Trivial: 2 VC)
+section_4_6.ads:107:55: info: contract case proved (Trivial: 2 VC)
+section_4_6.ads:108:55: info: contract case proved (Trivial: 2 VC)
+section_4_6.ads:109:14: info: postcondition proved (Trivial: 1 VC)
 step_function.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:30:33: info: loop invariant preservation proved (Z3: 1 VC)
 step_function.adb:31:50: info: index check proved (CVC4: 4 VC)
 step_function.adb:32:61: info: index check proved (CVC4: 2 VC)
 step_function.adb:32:61: info: overflow check proved (CVC4: 1 VC)
-step_function.adb:46:13: info: loop invariant initialization proved (CVC4: 2 VC)
-step_function.adb:46:13: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
+step_function.adb:46:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+step_function.adb:46:13: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 step_function.adb:47:34: info: index check proved (CVC4: 4 VC)
 step_function.adb:48:33: info: index check proved (CVC4: 4 VC)
 step_function.adb:50:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -149,14 +149,14 @@ step_function.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
 step_function.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
 step_function.adb:102:13: info: loop invariant initialization proved (CVC4: 2 VC)
 step_function.adb:102:13: info: loop invariant preservation proved (CVC4: 2 VC)
-step_function.adb:107:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:107:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:107:28: medium: "Merge.Step" might not be initialized
 step_function.adb:107:28: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(0).Delimiter = Function_Range'first
-step_function.adb:109:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:109:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:110:16: medium: "Merge.Step" might not be initialized
 step_function.adb:110:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun1.Step(i1).Delimiter
 step_function.adb:110:29: info: index check proved (CVC4: 4 VC)
-step_function.adb:112:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:112:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:113:16: medium: "Merge.Step" might not be initialized
 step_function.adb:113:16: medium: loop invariant might fail after first iteration, cannot prove Merge.Step(im-1).Delimiter < SFun2.Step(i2).Delimiter
 step_function.adb:113:29: info: index check proved (CVC4: 4 VC)
@@ -170,7 +170,7 @@ step_function.adb:120:13: medium: loop invariant might fail after first iteratio
 step_function.adb:122:30: info: index check proved (CVC4: 4 VC)
 step_function.adb:122:45: medium: "Merge.Step" might not be initialized
 step_function.adb:122:56: info: index check proved (CVC4: 4 VC)
-step_function.adb:124:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:124:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:124:13: medium: loop invariant might fail after first iteration
 step_function.adb:127:36: info: index check proved (CVC4: 4 VC)
 step_function.adb:127:51: medium: "Merge.Step" might not be initialized
@@ -180,7 +180,7 @@ step_function.adb:131:13: medium: loop invariant might fail after first iteratio
 step_function.adb:133:30: info: index check proved (CVC4: 4 VC)
 step_function.adb:133:45: medium: "Merge.Step" might not be initialized
 step_function.adb:133:56: info: index check proved (CVC4: 4 VC)
-step_function.adb:135:13: info: loop invariant initialization proved (CVC4: 2 VC)
+step_function.adb:135:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 step_function.adb:135:13: medium: loop invariant might fail after first iteration
 step_function.adb:138:36: info: index check proved (CVC4: 4 VC)
 step_function.adb:138:51: medium: "Merge.Step" might not be initialized
@@ -219,7 +219,7 @@ step_function.ads:56:12: info: postcondition proved (Z3: 1 VC)
 step_function.ads:58:27: info: index check proved (CVC4: 2 VC)
 step_function.ads:59:36: info: index check proved (CVC4: 2 VC)
 step_function.ads:60:50: info: index check proved (CVC4: 2 VC)
-step_function.ads:72:06: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC)
+step_function.ads:72:06: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC)
 step_function.ads:73:28: info: index check proved (CVC4: 2 VC)
 step_function.ads:74:50: info: index check proved (CVC4: 2 VC)
 step_function.ads:78:26: info: index check proved (CVC4: 2 VC)

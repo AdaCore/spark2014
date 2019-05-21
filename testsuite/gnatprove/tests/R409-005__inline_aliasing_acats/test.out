@@ -5,7 +5,7 @@ c41107a.adb:8:19: warning: unused variable "Y"
 c41107a.adb:14:09: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 main.adb:17:28: warning: unused initial value of "Y"
 main.adb:26:07: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-p.adb:14:09: info: precondition proved (CVC4: 1 VC)
+p.adb:14:09: info: precondition proved (Trivial: 1 VC)
 p.adb:14:16: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 p.adb:14:24: warning: unused assignment
 p.ads:16:23: warning: unused variable "X"

@@ -1,4 +1,4 @@
 use_ext_ax.adb:4:19: info: assertion proved (CVC4: 1 VC)
-use_ext_ax.adb:4:19: info: precondition proved (CVC4: 1 VC)
+use_ext_ax.adb:4:19: info: precondition proved (Trivial: 1 VC)
 use_ext_ax.adb:5:19: info: assertion proved (CVC4: 1 VC)
-use_ext_ax.adb:5:23: info: precondition proved (CVC4: 1 VC)
+use_ext_ax.adb:5:23: info: precondition proved (Trivial: 1 VC)

@@ -1,4 +1,4 @@
 concat.adb:5:14: info: range check proved (CVC4: 4 VC)
-concat.adb:5:26: info: length check proved (CVC4: 4 VC)
+concat.adb:5:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 concat.adb:5:26: info: range check proved (CVC4: 1 VC)
 concat.adb:5:28: info: range check proved (CVC4: 4 VC)

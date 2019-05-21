@@ -8,7 +8,7 @@ x86.adb:50:22: medium: assertion might fail, in call inlined at x86.adb:99 [poss
 x86.adb:55:20: medium: loop invariant might fail after first iteration, cannot prove (for all M in 0 .. N => var1 /= (var2-var1_range_size + M)) or (for some i in 0 .. var1_range_size => (for some j in 0 .. var2_range_size => (var1 + i) = (var2 + j))), in call inlined at x86.adb:99 [possible explanation: precondition of subprogram at x86.ads:19 should mention var1 and var2]
 x86.adb:55:20: medium: loop invariant might fail in first iteration, cannot prove (for all M in 0 .. N => var1 /= (var2-var1_range_size + M)) or (for some i in 0 .. var1_range_size => (for some j in 0 .. var2_range_size => (var1 + i) = (var2 + j))), in call inlined at x86.adb:99 [possible explanation: precondition of subprogram at x86.ads:19 should mention var1 and var2]
 x86.adb:60:28: info: assertion proved (CVC4: 1 VC), in call inlined at x86.adb:99
-x86.adb:66:19: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at x86.adb:99
+x86.adb:66:19: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at x86.adb:99
 x86.adb:69:32: medium: loop invariant might fail after first iteration, cannot prove var1 + i /= var2 + J, in call inlined at x86.adb:99 [possible explanation: precondition of subprogram at x86.ads:19 should mention var1 and var2]
 x86.adb:72:52: info: range check proved (CVC4: 2 VC), in call inlined at x86.adb:99
 x86.adb:74:37: medium: assertion might fail, cannot prove N in 0 .. var1_range_size+var2_range_size, in call inlined at x86.adb:99

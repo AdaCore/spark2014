@@ -4,14 +4,14 @@ dns_network_receive.ads:29:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:31:07: info: initialization of "Failure" proved
 dns_network_receive.ads:32:09: info: data dependencies proved
 dns_network_receive.ads:33:09: info: flow dependencies proved
-dns_network_receive.ads:39:11: info: postcondition proved (CVC4: 3 VC)
+dns_network_receive.ads:39:11: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 dns_network_receive.ads:47:07: info: initialization of "Packet" proved
 dns_network_receive.ads:48:07: info: initialization of "Number_Bytes" proved
 dns_network_receive.ads:49:07: info: initialization of "Reply_Address" proved
 dns_network_receive.ads:50:07: info: initialization of "Failure" proved
 dns_network_receive.ads:51:09: info: data dependencies proved
 dns_network_receive.ads:52:09: info: flow dependencies proved
-dns_network_receive.ads:58:11: info: postcondition proved (CVC4: 3 VC)
+dns_network_receive.ads:58:11: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 dns_table_pkg.adb:34:10: info: initialization of "Length" proved
 dns_table_pkg.adb:37:14: info: range check proved (CVC4: 2 VC)
 dns_table_pkg.adb:45:36: info: function contract not available for proof ("WireNameLength" might not return)
@@ -372,8 +372,8 @@ parser_utilities.adb:641:13: info: loop invariant preservation proved (CVC4: 3 V
 parser_utilities.adb:642:27: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:650:27: info: range check proved (CVC4: 1 VC)
 parser_utilities.adb:662:11: info: range check proved (CVC4: 2 VC)
-parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 8 VC)
-parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 8 VC)
+parser_utilities.adb:667:13: info: loop invariant initialization proved (CVC4: 7 VC; Trivial: 1 VC)
+parser_utilities.adb:667:13: info: loop invariant preservation proved (CVC4: 7 VC; Trivial: 1 VC)
 parser_utilities.adb:673:25: info: range check proved (CVC4: 4 VC)
 parser_utilities.adb:674:22: info: index check proved (CVC4: 4 VC)
 parser_utilities.adb:674:39: info: index check proved (CVC4: 4 VC)
@@ -518,7 +518,7 @@ parser_utilities.ads:60:09: info: flow dependencies proved
 parser_utilities.ads:66:07: info: initialization of "EndIdx" proved
 parser_utilities.ads:67:07: info: initialization of "T" proved
 parser_utilities.ads:68:09: info: flow dependencies proved
-parser_utilities.ads:70:20: info: postcondition proved (CVC4: 6 VC)
+parser_utilities.ads:70:20: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
 parser_utilities.ads:74:32: info: range check proved (CVC4: 2 VC)
 parser_utilities.ads:75:29: info: index check proved (CVC4: 2 VC)
 parser_utilities.ads:75:46: info: index check proved (CVC4: 2 VC)
@@ -1103,9 +1103,9 @@ spark_dns_main.adb:36:04: info: initialization of "Success" proved
 spark_dns_main.adb:39:20: info: range check proved (CVC4: 2 VC)
 spark_dns_main.adb:40:04: info: initialization of "ZoneFile" proved
 spark_dns_main.adb:43:34: warning: unused assignment to "ZoneFile"
-task_limit.adb:42:16: info: refined post proved (CVC4: 7 VC)
+task_limit.adb:42:16: info: refined post proved (CVC4: 5 VC; Trivial: 2 VC)
 task_limit.adb:50:38: info: range check proved (CVC4: 1 VC)
-task_limit.adb:64:16: info: refined post proved (CVC4: 5 VC)
+task_limit.adb:64:16: info: refined post proved (CVC4: 3 VC; Trivial: 2 VC)
 task_limit.adb:71:38: info: range check proved (CVC4: 1 VC)
 task_limit.ads:25:23: info: range check proved (CVC4: 2 VC)
 task_limit.ads:29:28: info: initialization of "Success" proved
@@ -1549,7 +1549,7 @@ zone_file_parser.ads:85:07: info: initialization of "BlockNumbers" proved
 zone_file_parser.ads:86:07: info: initialization of "BlockLengths" proved
 zone_file_parser.ads:87:07: info: initialization of "BitMaps" proved
 zone_file_parser.ads:90:09: info: flow dependencies proved
-zone_file_parser.ads:98:20: info: postcondition proved (CVC4: 2 VC)
+zone_file_parser.ads:98:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 zone_file_parser.ads:101:07: info: initialization of "NewIPV4" proved
 zone_file_parser.ads:105:09: info: flow dependencies proved
 zone_file_parser.ads:109:07: info: initialization of "NewIPV6" proved

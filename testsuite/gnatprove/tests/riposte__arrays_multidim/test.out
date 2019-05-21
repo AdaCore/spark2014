@@ -12,7 +12,7 @@ arrays_multidim.adb:59:11: info: flow dependencies proved
 arrays_multidim.adb:60:22: info: postcondition proved (CVC4: 1 VC)
 arrays_multidim.adb:67:11: info: flow dependencies proved
 arrays_multidim.adb:68:22: info: postcondition proved (CVC4: 1 VC)
-arrays_multidim.adb:80:19: info: postcondition proved (CVC4: 2 VC)
+arrays_multidim.adb:80:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 arrays_multidim.adb:93:11: info: flow dependencies proved
 arrays_multidim.adb:94:22: medium: postcondition might fail, cannot prove A(I, J) = V
 arrays_multidim.adb:103:11: info: flow dependencies proved

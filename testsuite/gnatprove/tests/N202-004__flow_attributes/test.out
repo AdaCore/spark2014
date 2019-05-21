@@ -15,11 +15,11 @@ foo.adb:45:13: info: range check proved (CVC4: 1 VC)
 foo.adb:48:26: info: initialization of "A" proved
 foo.adb:49:26: info: initialization of "B" proved
 foo.adb:50:09: info: flow dependencies proved
-foo.adb:54:09: info: length check proved (CVC4: 4 VC)
+foo.adb:54:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 foo.adb:55:13: info: range check proved (CVC4: 1 VC)
 foo.adb:58:26: info: initialization of "A" proved
 foo.adb:59:09: info: flow dependencies proved
-foo.adb:62:09: info: length check proved (CVC4: 4 VC)
+foo.adb:62:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 foo.adb:63:11: medium: array index check might fail
 foo.adb:66:26: info: initialization of "A" proved
 foo.adb:67:09: info: flow dependencies proved
@@ -30,7 +30,7 @@ foo.adb:80:26: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:84:26: info: initialization of "A" proved
 foo.adb:85:09: info: flow dependencies proved
 foo.adb:91:26: info: initialization of "A" proved
-foo.adb:94:09: info: length check proved (CVC4: 4 VC), in call inlined at foo.adb:102
+foo.adb:94:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at foo.adb:102
 foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102
 foo.adb:98:26: info: initialization of "A" proved
 foo.adb:99:09: info: flow dependencies proved
@@ -42,7 +42,7 @@ foo.adb:116:09: info: flow dependencies proved
 foo.adb:128:30: info: initialization of "Data" proved
 foo.adb:129:30: info: initialization of "Octet_Count" proved
 foo.adb:130:09: info: flow dependencies proved
-foo.adb:134:12: info: length check proved (CVC4: 4 VC)
+foo.adb:134:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 foo.adb:135:26: info: range check proved (CVC4: 1 VC)
 foo.adb:136:14: medium: range check might fail
 foo.adb:137:29: info: range check proved (CVC4: 1 VC)

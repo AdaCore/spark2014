@@ -1,5 +1,5 @@
 report.adb:5:06: medium: "Test_Name" might not be initialized in "Report"
 report.adb:14:06: info: range check proved (CVC4: 4 VC)
-report.adb:14:35: info: length check proved (CVC4: 4 VC)
-report.adb:14:38: info: length check proved (CVC4: 4 VC)
+report.adb:14:35: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+report.adb:14:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 report.ads:5:06: warning: initialization of "Test_Name_Len" has no effect

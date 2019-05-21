@@ -1,4 +1,4 @@
 proc.adb:7:07: info: range check proved (CVC4: 2 VC)
 proc.adb:19:14: warning: subprogram "P" has no effect
 proc.adb:21:24: medium: range check might fail (e.g. when Dr = (Length => 0, Contents => ?) and Item'First = 2 and Item'Last = 1)
-proc.adb:21:33: info: length check proved (CVC4: 4 VC)
+proc.adb:21:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

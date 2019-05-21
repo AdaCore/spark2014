@@ -1,5 +1,5 @@
 p.adb:5:20: warning: subprogram "Inner" has no effect
 p.adb:7:28: medium: assertion might fail, cannot prove Arg = 0
-p.adb:17:12: info: precondition proved (CVC4: 1 VC)
+p.adb:17:12: info: precondition proved (Trivial: 1 VC)
 p.ads:7:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:7:14: info: nontermination of task proved (CVC4: 1 VC)

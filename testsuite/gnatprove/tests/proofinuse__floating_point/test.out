@@ -20,19 +20,19 @@ floating_point.adb:61:24: info: division check proved (Z3: 1 VC)
 floating_point.adb:61:24: info: float overflow check proved (Interval)
 floating_point.adb:62:16: info: division check proved (Z3: 1 VC)
 floating_point.adb:62:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:19 should mention X and Y in a precondition]
-floating_point.adb:69:33: info: division check proved (Z3: 2 VC)
+floating_point.adb:69:33: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:69:33: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:69:41: info: division check proved (Z3: 1 VC)
 floating_point.adb:69:41: info: float overflow check proved (Interval)
 floating_point.adb:69:49: info: float overflow check proved (Interval)
-floating_point.adb:70:33: info: division check proved (Z3: 2 VC)
+floating_point.adb:70:33: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:70:33: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:70:41: info: division check proved (Z3: 1 VC)
 floating_point.adb:70:41: info: float overflow check proved (Interval)
 floating_point.adb:70:49: info: float overflow check proved (Interval)
 floating_point.adb:71:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention X and Y in a precondition]
 floating_point.adb:72:22: medium: assertion might fail, cannot prove Res < (1.6181**N)/2.2360 + 1.0 [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
-floating_point.adb:72:35: info: division check proved (Z3: 2 VC)
+floating_point.adb:72:35: info: division check proved (Trivial: 1 VC; Z3: 1 VC)
 floating_point.adb:72:35: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:22 should mention N in a precondition]
 floating_point.adb:72:39: info: division check proved (Z3: 1 VC)
 floating_point.adb:72:39: info: float overflow check proved (Interval)

@@ -1,4 +1,4 @@
-main.adb:17:19: info: postcondition proved (CVC4: 3 VC)
+main.adb:17:19: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
 main.adb:17:33: info: overflow check proved (CVC4: 1 VC)
 main.adb:18:30: info: overflow check proved (CVC4: 1 VC)
 main.adb:18:40: info: overflow check proved (CVC4: 1 VC)

@@ -46,7 +46,7 @@ pack.adb:69:14: warning: subprogram "A11" has no effect
 pack.adb:76:20: info: initialization of "A" proved
 pack.adb:77:19: info: postcondition proved (CVC4: 1 VC)
 pack.adb:77:47: info: index check proved (CVC4: 2 VC)
-pack.adb:81:09: info: length check proved (CVC4: 4 VC)
+pack.adb:81:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pack.adb:84:04: warning: analyzing unreferenced procedure "P"
 pack.adb:84:14: warning: subprogram "P" has no effect
 pack.adb:85:07: info: initialization of "A" proved

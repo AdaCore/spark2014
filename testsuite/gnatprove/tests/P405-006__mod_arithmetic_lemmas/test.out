@@ -23,7 +23,7 @@ test_arith.adb:63:14: info: postcondition proved (CVC4: 1 VC)
 test_arith.adb:69:52: info: initialization of "R" proved
 test_arith.adb:70:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:76:50: info: initialization of "R" proved
-test_arith.adb:77:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:77:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test_arith.adb:83:60: info: initialization of "R1" proved
 test_arith.adb:83:64: info: initialization of "R2" proved
 test_arith.adb:85:14: info: postcondition proved (CVC4: 1 VC)
@@ -43,7 +43,7 @@ test_arith.adb:122:44: info: initialization of "R" proved
 test_arith.adb:124:14: info: postcondition proved (CVC4: 2 VC)
 test_arith.adb:127:20: info: division check proved (CVC4: 1 VC)
 test_arith.adb:130:66: info: initialization of "R" proved
-test_arith.adb:131:14: info: postcondition proved (CVC4: 2 VC)
+test_arith.adb:131:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 test_arith.adb:134:14: info: division check proved (CVC4: 1 VC)
 test_arith.adb:137:76: info: initialization of "R1" proved
 test_arith.adb:137:80: info: initialization of "R2" proved

@@ -255,18 +255,18 @@ x86.ads:420:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:426:06: info: data dependencies proved
 x86.ads:427:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:434:06: info: data dependencies proved
-x86.ads:435:14: info: postcondition proved (CVC4: 3 VC)
+x86.ads:435:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 x86.ads:446:06: info: data dependencies proved
 x86.ads:447:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:454:06: info: data dependencies proved
-x86.ads:455:14: info: postcondition proved (CVC4: 3 VC)
+x86.ads:455:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 x86.ads:475:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:479:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:486:06: info: data dependencies proved
-x86.ads:488:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:488:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:492:06: info: data dependencies proved
-x86.ads:494:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:494:14: info: postcondition proved (Trivial: 1 VC)
 x86.ads:502:06: info: data dependencies proved
-x86.ads:503:14: info: postcondition proved (CVC4: 4 VC)
+x86.ads:503:14: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 x86.ads:507:06: info: data dependencies proved
-x86.ads:508:14: info: postcondition proved (CVC4: 4 VC)
+x86.ads:508:14: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)

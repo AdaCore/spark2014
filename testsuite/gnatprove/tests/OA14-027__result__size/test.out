@@ -1,1 +1,1 @@
-res_size.ads:6:20: info: postcondition proved (CVC4: 1 VC)
+res_size.ads:6:20: info: postcondition proved (Trivial: 1 VC)

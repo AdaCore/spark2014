@@ -1,5 +1,5 @@
 sorters.adb:16:11: info: flow dependencies proved
-sorters.adb:20:19: info: postcondition proved (CVC4: 5 VC)
+sorters.adb:20:19: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 sorters.adb:21:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:21:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:28: info: index check proved (CVC4: 2 VC)
@@ -27,8 +27,8 @@ sorters.adb:62:07: info: initialization of "Values_Last" proved
 sorters.adb:62:07: info: range check proved (CVC4: 2 VC)
 sorters.adb:64:07: info: initialization of "Smallest" proved
 sorters.adb:67:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:68:22: info: length check proved (CVC4: 8 VC)
-sorters.adb:68:25: info: length check proved (CVC4: 8 VC)
+sorters.adb:68:22: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
+sorters.adb:68:25: info: length check proved (CVC4: 4 VC; Trivial: 4 VC)
 sorters.adb:69:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:69:40: info: range check proved (CVC4: 8 VC)
 sorters.adb:72:13: info: precondition proved (CVC4: 10 VC)

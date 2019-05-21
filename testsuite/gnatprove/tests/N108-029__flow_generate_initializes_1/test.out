@@ -9,4 +9,4 @@ outer.ads:2:14: warning: subprogram "P" has no effect
 p.adb:1:14: info: initialization of "X" proved
 p.adb:3:29: info: initialization of "Nested.State" proved
 p.adb:15:46: medium: overflow check might fail [possible explanation: precondition of subprogram at line 5 should mention Hidden]
-p.adb:18:15: info: precondition proved (CVC4: 1 VC)
+p.adb:18:15: info: precondition proved (Trivial: 1 VC)

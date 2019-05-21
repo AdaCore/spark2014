@@ -1,5 +1,5 @@
-dyn_arrays.adb:5:10: info: length check proved (CVC4: 4 VC)
-dyn_arrays.adb:10:10: info: length check proved (CVC4: 4 VC)
+dyn_arrays.adb:5:10: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+dyn_arrays.adb:10:10: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dyn_arrays.ads:6:42: info: initialization of "To" proved
 dyn_arrays.ads:7:51: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:8:14: info: postcondition proved (CVC4: 1 VC)

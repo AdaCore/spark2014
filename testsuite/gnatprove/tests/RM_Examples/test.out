@@ -30,7 +30,7 @@ f.adb:11:36: info: overflow check proved (CVC4: 1 VC)
 f.adb:13:26: info: range check proved (CVC4: 1 VC)
 f.adb:13:37: info: index check proved (CVC4: 2 VC)
 f.adb:13:37: info: overflow check proved (CVC4: 1 VC)
-f.adb:21:27: info: assertion proved (CVC4: 2 VC)
+f.adb:21:27: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 f.adb:21:41: medium: "Control_Char" might not be initialized
 f.adb:34:12: medium: "Control_Char" might not be initialized
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"

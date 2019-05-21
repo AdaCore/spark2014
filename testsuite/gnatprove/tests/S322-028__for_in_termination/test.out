@@ -18,16 +18,16 @@ bounded_table.ads:30:13: info: subprogram "Full" will terminate, terminating ann
 bounded_table.ads:33:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:35:13: info: subprogram "Has_Element" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:37:13: info: subprogram "Next" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
-bounded_table.ads:39:18: info: postcondition proved (CVC4: 2 VC), in instantiation at repro_main.adb:9
+bounded_table.ads:39:18: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:42:13: info: subprogram "Element" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:45:13: info: subprogram "Member" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:46:17: info: postcondition proved (CVC4: 2 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:46:34: info: precondition proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
+bounded_table.ads:46:34: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:49:14: info: subprogram "Push" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 bounded_table.ads:54:14: info: postcondition proved (CVC4: 4 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:54:50: info: overflow check proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:57:15: info: precondition proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
-bounded_table.ads:58:15: info: precondition proved (CVC4: 1 VC), in instantiation at repro_main.adb:9
+bounded_table.ads:57:15: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
+bounded_table.ads:58:15: info: precondition proved (Trivial: 1 VC), in instantiation at repro_main.adb:9
 bounded_table.ads:60:13: info: subprogram "Index_Of" will terminate, terminating annotation has been proved, in instantiation at repro_main.adb:9
 repro_main.adb:4:11: info: subprogram "Repro_Main" will terminate, terminating annotation has been proved
 repro_main.adb:16:13: info: precondition proved (CVC4: 1 VC)
@@ -36,5 +36,6 @@ repro_main.adb:18:13: info: precondition proved (CVC4: 1 VC)
 repro_main.adb:19:13: info: precondition proved (CVC4: 1 VC)
 repro_main.adb:20:13: info: precondition proved (CVC4: 1 VC)
 repro_main.adb:22:08: info: precondition proved (CVC4: 1 VC)
+repro_main.adb:22:08: info: precondition proved (Trivial: 1 VC)
 repro_main.adb:23:38: info: precondition proved (CVC4: 2 VC)
 repro_main.adb:24:07: info: loop variant proved (CVC4: 1 VC)
