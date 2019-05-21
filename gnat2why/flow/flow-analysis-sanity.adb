@@ -184,8 +184,7 @@ package body Flow.Analysis.Sanity is
          --  Loop through statements or declarations
          while Present (N) loop
 
-            --  Call Check_Expression the declarations specified in SPARK RM
-            --  4.4(2).
+            --  Check declarations listed in SPARK RM 4.4(2)
 
             if Nkind (N) in N_Full_Type_Declaration
                           | N_Subtype_Declaration
