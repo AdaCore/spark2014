@@ -7055,10 +7055,10 @@ package body SPARK_Definition is
 
          when N_Digits_Constraint
             | N_Delta_Constraint
-            =>
+         =>
             null;
 
-         when others =>  --  TO DO ???
+         when others =>
             raise Program_Error;
       end case;
    end Mark_Subtype_Indication;
