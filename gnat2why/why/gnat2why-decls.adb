@@ -88,16 +88,14 @@ package body Gnat2Why.Decls is
 
       --  Define a logic function to return the address of a constant object
 
-      if Is_Object (E) then
-         Emit (File,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Pterm,
-                  Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
-                  Binders     => (1 .. 0 => <>),
-                  Labels      => Symbol_Sets.Empty_Set,
-                  Location    => No_Location,
-                  Return_Type => EW_Int_Type));
-      end if;
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
+               Binders     => (1 .. 0 => <>),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Int_Type));
 
       Close_Theory (File,
                     Kind           => Definition_Theory,
