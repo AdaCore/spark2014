@@ -742,11 +742,11 @@ package body Gnat2Why.Driver is
    begin
       Open_Current_File (Filename);
       declare
-         Modules : Why_Node_Lists.List renames Build_Printing_Plan;
+         Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
       begin
          if Modules.Is_Empty then
 
-            --  fall back to previous printing
+            --  Fall back to previous printing
 
             for WF in W_Section_Id loop
                Print_Section (Why_Sections (WF), Current_File);
