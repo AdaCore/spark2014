@@ -6994,64 +6994,32 @@ package body SPARK_Definition is
    -----------------------------
 
    procedure Mark_Subtype_Indication (N : Node_Id) is
-      T    : constant Entity_Id := Etype (Subtype_Mark (N));
-      Cstr : Node_Id;
+      T : constant Entity_Id := Etype (Subtype_Mark (N));
 
    begin
       --  Check that the base type is in SPARK
 
       if not Retysp_In_SPARK (T) then
-         Mark_Violation (N, From => T); -- ?? N? similar below
+         Mark_Violation (N, From => T);
       end if;
 
-      Cstr := Constraint (N);
+      --  Floating- and fixed-point constraints are static in Ada, so do
+      --  not require marking. Violations in range constraints render the
+      --  (implicit) type of the subtype indication as not-in-SPARK anyway,
+      --  so they also do not require explicit marking here.
+      --  ??? error messages for this would be better if located at the
+      --  exact subexpression of the range constraint that causes problem
+      --
+      --  Note: in general, constraints can also be an N_Range and
+      --  N_Index_Or_Discriminant_Constraint. We would see them when marking
+      --  all subtype indications "syntactically", i.e. by traversing the AST;
+      --  however, we mark them "semantically", i.e. by looking directly at the
+      --  (implicit) type of an object/component which bypasses this routine.
 
-      case Nkind (Cstr) is
-         when N_Range_Constraint =>
-            null;
-
-         when N_Index_Or_Discriminant_Constraint =>
-
-            if Is_Array_Type (T) then
-               Cstr := First (Constraints (Cstr));
-               while Present (Cstr) loop
-
-                  case Nkind (Cstr) is
-                     when N_Identifier | N_Expanded_Name =>
-                        if not Retysp_In_SPARK (Entity (Cstr)) then
-                           Mark_Violation (N, From => Entity (Cstr));
-                        end if;
-
-                     when N_Subtype_Indication =>
-                        if not Retysp_In_SPARK (Entity (Subtype_Mark (Cstr)))
-                        then
-                           Mark_Violation (N, From => Subtype_Mark (Cstr));
-                        end if;
-
-                     when N_Range =>
-                        null;
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-                  Next (Cstr);
-               end loop;
-
-               --  Note that a discriminant association that has no selector
-               --  name list appears directly as an expression in the tree.
-
-            else
-               null;
-            end if;
-
-         when N_Digits_Constraint
-            | N_Delta_Constraint
-         =>
-            null;
-
-         when others =>
-            raise Program_Error;
-      end case;
+      pragma Assert
+        (Nkind (Constraint (N)) in N_Delta_Constraint
+                                 | N_Digits_Constraint
+                                 | N_Range_Constraint);
    end Mark_Subtype_Indication;
 
    -------------------
