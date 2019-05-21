@@ -745,9 +745,15 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-04:
 
-4. A declaration of a stand-alone object of an anonymous access type shall
-   have an explicit initial value and shall occur (directly or indirectly)
-   within a subprogram body, an entry body, or a block statement.
+4. A declaration of a stand-alone object of an anonymous access type shall have
+   an explicit initial value and shall occur immediately within a subprogram
+   body, an entry body, or a block statement.
+
+   [Redundant: Because such declarations cannot occur immediately within a
+   package declaration or body, the associated borrowing/observing operation is
+   limited by the scope of the subprogram, entry or block statement. Thus, it
+   is not necessary to add rules restricting the visibility of such
+   declarations.]
 
 .. _tu-access_types-05:
 
@@ -769,16 +775,7 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-07:
 
-7. If the root of the name of a managed object denotes an object whose scope
-   includes any portion of the visible part of a package, then a declaration
-   that observes or borrows the managed object shall not occur within the
-   private part or body of the package, nor within a private descendant of the
-   package, unless the accessibility level of the declaration is statically
-   deeper than that of the package.
-
-.. _tu-access_types-08:
-
-8. For an assignment statement where the target is a stand-alone object of an
+7. For an assignment statement where the target is a stand-alone object of an
    anonymous access-to-object type:
 
    - If the type of the target is an anonymous access-to-variable type (an
@@ -792,64 +789,64 @@ a class-wide type might be an owning type).]
      not in the Moved state and is not declared at a statically deeper
      accessibility level than that of the target object.
 
+.. _tu-access_types-08:
+
+8. At the point of a dereference of an object, the object shall not be in the
+   Moved or Borrowed state.
+
 .. _tu-access_types-09:
 
-9. At the point of a dereference of an object, the object shall not be in the
-   Moved or Borrowed state.
+9. At the point of a read of an object, or of passing an object as an actual
+   parameter of mode **in** or **in out**, or of a call where the object is a
+   global input of the callee, neither the object nor any of its reachable
+   elements shall be in the Moved or Borrowed state.
+
+   At the point of a return statement, or at any other point where a call
+   completes normally (e.g., the end of a procedure body), no inputs or outputs
+   of the callee being returned from shall be in the Moved state.  In the case
+   of an input of the callee which is not also an output, this rule may be
+   enforced at the point of the move operation (because there is no way for the
+   moved input to transition out of the Moved state), even in the case of a
+   subprogram which never returns.
+
+   Similarly, at the end of the elaboration of both the declaration and of the
+   body of a package, no reachable element of an object denoted by the name of
+   an initialization_item of the package's Initializes aspect or by an input
+   occuring in the input_list of such an initialization_item shall be in the
+   Moved state.
+
+   The source of a move operation shall not be a part of a library-level
+   constant without variable inputs.
 
 .. _tu-access_types-10:
 
-10. At the point of a read of an object, or of passing an object as an actual
-    parameter of mode **in** or **in out**, or of a call where the object is a
-    global input of the callee, neither the object nor any of its reachable
-    elements shall be in the Moved or Borrowed state.
-
-    At the point of a return statement, or at any other point where a call
-    completes normally (e.g., the end of a procedure body), no inputs or
-    outputs of the callee being returned from shall be in the Moved state.
-    In the case of an input of the callee which is not also an output,
-    this rule may be enforced at the point of the move operation (because
-    there is no way for the moved input to transition out of the Moved
-    state), even in the case of a subprogram which never returns.
-
-    Similarly, at the end of the elaboration of both the declaration and of
-    the body of a package, no reachable element of an object denoted by the
-    name of an initialization_item of the package's Initializes aspect or by
-    an input occuring in the input_list of such an initialization_item
-    shall be in the Moved state.
-
-    The source of a move operation shall not be a part of a library-level
-    constant without variable inputs.
+10. If the state of a name that denotes a managed object is Observed, the name
+    shall not be moved, borrowed, or assigned.
 
 .. _tu-access_types-11:
 
-11. If the state of a name that denotes a managed object is Observed, the name
-    shall not be moved, borrowed, or assigned.
+11. If the state of a name that denotes a managed object is Borrowed, the name
+    shall not be moved, borrowed, observed, or assigned.
 
 .. _tu-access_types-12:
 
-12. If the state of a name that denotes a managed object is Borrowed, the name
-    shall not be moved, borrowed, observed, or assigned.
-
-.. _tu-access_types-13:
-
-13. At the point of a call, any name that denotes a managed object that is a
+12. At the point of a call, any name that denotes a managed object that is a
     global output of the callee (i.e., an output other than a parameter of the
     callee or a function result) shall not be in the Observed or Borrowed
     state.  Similarly, any name that denotes a managed object that is a global
     input of the callee shall not be in the Moved or Borrowed state.
 
-.. _tu-access_types-14:
+.. _tu-access_types-13:
 
-14. The prefix of an Old or Loop_Entry attribute reference shall not be of an
+13. The prefix of an Old or Loop_Entry attribute reference shall not be of an
     owning or observing type unless the prefix is a function_call and the
     called function is not a traversal function.
 
 .. centered:: **Verification Rules**
 
-.. _tu-access_types-15:
+.. _tu-access_types-14:
 
-15. When an owning access object other than a borrower, an observer,
+14. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
