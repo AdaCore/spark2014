@@ -1,14 +1,14 @@
-a-cofove.ads:574:57: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
-a-cofove.ads:702:23: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
-a-cofove.ads:705:38: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
-a-cofove.ads:738:14: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
-a-cofove.ads:742:35: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at sorted_vectors.ads:14
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
+a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
+a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at sorted_vectors.ads:14
 sorted_vectors.adb:10:09: info: precondition proved (CVC4: 4 VC)
 sorted_vectors.adb:12:13: info: loop invariant initialization proved (CVC4: 1 VC)
 sorted_vectors.adb:12:13: info: loop invariant preservation proved (CVC4: 1 VC)

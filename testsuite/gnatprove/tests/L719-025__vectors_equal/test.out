@@ -1,14 +1,14 @@
-a-cofove.ads:574:57: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofove.ads:702:23: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofove.ads:705:38: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofove.ads:738:14: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofove.ads:742:35: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at p.ads:9
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:9
+a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at p.ads:9
+a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at p.ads:9
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at p.ads:9
 p.adb:5:07: info: precondition proved (CVC4: 1 VC)
 p.adb:6:07: info: precondition proved (CVC4: 1 VC)
 p.adb:10:27: info: precondition proved (CVC4: 2 VC)
