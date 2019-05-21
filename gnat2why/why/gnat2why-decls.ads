@@ -28,15 +28,21 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Util;                 use SPARK_Util;
 with Types;                      use Types;
 
 package Gnat2Why.Decls is
 
    procedure Translate_Constant
      (File : W_Section_Id;
-      E    : Entity_Id);
-   --  Generate a function declaration for IN parameters, named numbers and
-   --  constant objects.
+      E    : Entity_Id)
+   with Pre => Ekind (E) in E_Constant
+                          | E_Discriminant
+                          | E_In_Parameter
+                 or else
+               Is_Quantified_Loop_Param (E);
+   --  Generate a function declaration for objects that appear as constant
+   --  in Why.
 
    procedure Translate_Constant_Value
      (File : W_Section_Id;
@@ -61,13 +67,14 @@ package Gnat2Why.Decls is
 
    procedure Translate_Loop_Entity
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Ekind (E) = E_Loop;
 
    procedure Translate_Variable
      (File : W_Section_Id;
       E    : Entity_Id)
    with Pre => Entity_In_SPARK (E);
-   --  Generate Why declarations that correspond to an Ada top level object
+   --  Generate Why declarations that correspond to an Ada top-level object
    --  declaration.
 
 end Gnat2Why.Decls;

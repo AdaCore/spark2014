@@ -1037,15 +1037,15 @@ package body Gnat2Why.Driver is
                   Generate_Empty_Axiom_Theory (File, E);
                end if;
 
-            --  We translate private variables of access type in the partial
+            --  We translate private constants of access type in the partial
             --  declaration. This should avoid translating them twice (in the
-            --  partial and full view). The fowllowing case represents these
-            --  types because they are considered as mutable while they are
+            --  partial and full view). The following case represents these
+            --  objects because they are considered as mutable while they are
             --  constants and may have a partial and full view. We chose the
             --  partial view bacause the full view may not be in SPARK.
 
             elsif Is_Full_View (E) then
-               null;
+               pragma Assert (Ekind (E) = E_Constant);
 
             else
                Translate_Variable (File, E);

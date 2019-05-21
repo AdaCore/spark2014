@@ -28,7 +28,6 @@ with GNATCOLL.Symbols;
 with Gnat2Why.Expr;                use Gnat2Why.Expr;
 with Namet;                        use Namet;
 with Sinput;                       use Sinput;
-with SPARK_Util;                   use SPARK_Util;
 with Ada.Strings;                  use Ada.Strings;
 with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
 with Why.Atree.Accessors;          use Why.Atree.Accessors;
