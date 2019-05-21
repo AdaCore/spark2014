@@ -1,4 +1,5 @@
 pragma SPARK_Mode;
+pragma Unevaluated_Use_Of_Old(Allow);
 package body Old_Loop_Entry is
 
    function Copy (Ptr : P) return P is
@@ -34,6 +35,21 @@ package body Old_Loop_Entry is
             Decreases => Y.A.all - Y'Loop_Entry.A.all);
       end loop;
    end Bad;
+
+   procedure Bad_Body (X : in out T; Y : in out P) with
+     Post => X.all = X'Old.all
+       and then Y.A.all = Y.A'Old.all
+       and then Y.A.all = Accessor(Y)'Old.all
+       and then Y.A.all = Y'Old.A.all,
+     Contract_Cases =>
+       (X = null  => X.all = X'Old.all,
+        X /= null => Y.A.all = Y.A'Old.all
+                       and then Y.A.all = Accessor(Y)'Old.all,
+        others    => Y.A.all = Y'Old.A.all)
+   is
+   begin
+      null;
+   end Bad_Body;
 
 end Old_Loop_Entry;
 

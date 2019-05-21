@@ -60,7 +60,7 @@ package body Formal_Vectors with SPARK_Mode is
    procedure Move (From, To : in out Element_Access) with
    --  Something strange happens with inlining of Move, remove contract to see
      Pre  => From /= null,
-     Post => To /= null and then To.all = From.all'Old and then From = null
+     Post => To /= null and then Model(To.all) = Model(From.all)'Old and then From = null
    is
    begin
       Free (To);
@@ -70,7 +70,7 @@ package body Formal_Vectors with SPARK_Mode is
 
    procedure Swap (From, To : in out Element_Access) with
      Pre  => From /= null and then To /= null,
-     Post => From /= null and then To /= null and then To.all = From.all'Old and then From.all = To.all'Old
+     Post => From /= null and then To /= null and then Model(To.all) = Model(From.all)'Old and then Model(From.all) = Model(To.all)'Old
    is
       Tmp : Element_Access := To;
    begin
