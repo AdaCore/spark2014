@@ -757,8 +757,7 @@ package body Flow.Analysis is
                                                 else FA.S_Scope),
                        Fold_Functions       => False,
                        Reduced              => True,
-                       Use_Computed_Globals => True))
-                 - Quantified_Variables (Expr);
+                       Use_Computed_Globals => True));
 
                for Var of Vars_Used loop
                   if not Vars_Known.Contains (Var) then

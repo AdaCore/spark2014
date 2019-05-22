@@ -329,11 +329,6 @@ is
    --  expression for which we obtain variables, and Scope_N is the node
    --  controlling visibility.
 
-   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
-   with Pre => Present (N);
-   --  Return the set of entire variables which are introduced in a quantifier
-   --  under node N.
-
    function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
