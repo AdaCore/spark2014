@@ -19,7 +19,7 @@ default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
-provers_output_regex = re.compile("\((Interval|CVC4|Z3|altergo).*\)")
+provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo).*\)")
 
 #  Change directory
 
