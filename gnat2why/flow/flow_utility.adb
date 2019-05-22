@@ -2081,14 +2081,13 @@ package body Flow_Utility is
    -------------------
 
    type Get_Variables_Context is record
-      Scope                           : Flow_Scope;
-      Fold_Functions                  : Boolean;
-      Use_Computed_Globals            : Boolean;
-      Reduced                         : Boolean;
-      Assume_In_Expression            : Boolean;
-      Expand_Synthesized_Constants    : Boolean;
-      Consider_Extensions             : Boolean;
-      Quantified_Variables_Introduced : Node_Sets.Set;
+      Scope                        : Flow_Scope;
+      Fold_Functions               : Boolean;
+      Use_Computed_Globals         : Boolean;
+      Reduced                      : Boolean;
+      Assume_In_Expression         : Boolean;
+      Expand_Synthesized_Constants : Boolean;
+      Consider_Extensions          : Boolean;
    end record;
 
    function Get_Variables_Internal
@@ -2119,14 +2118,13 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Scope,
-         Fold_Functions                  => Fold_Functions,
-         Use_Computed_Globals            => Use_Computed_Globals,
-         Reduced                         => Reduced,
-         Assume_In_Expression            => Assume_In_Expression,
-         Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
-         Consider_Extensions             => Consider_Extensions,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                        => Scope,
+         Fold_Functions               => Fold_Functions,
+         Use_Computed_Globals         => Use_Computed_Globals,
+         Reduced                      => Reduced,
+         Assume_In_Expression         => Assume_In_Expression,
+         Expand_Synthesized_Constants => Expand_Synthesized_Constants,
+         Consider_Extensions          => Consider_Extensions);
 
    begin
       return Get_Variables_Internal (N, Ctx);
@@ -2143,14 +2141,13 @@ package body Flow_Utility is
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Scope,
-         Fold_Functions                  => Fold_Functions,
-         Use_Computed_Globals            => Use_Computed_Globals,
-         Reduced                         => Reduced,
-         Assume_In_Expression            => Assume_In_Expression,
-         Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
-         Consider_Extensions             => False,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                        => Scope,
+         Fold_Functions               => Fold_Functions,
+         Use_Computed_Globals         => Use_Computed_Globals,
+         Reduced                      => Reduced,
+         Assume_In_Expression         => Assume_In_Expression,
+         Expand_Synthesized_Constants => Expand_Synthesized_Constants,
+         Consider_Extensions          => False);
 
    begin
       return Get_Variables_Internal (L, Ctx);
@@ -2195,17 +2192,9 @@ package body Flow_Utility is
       with Pre => Nkind (E) in N_Entity;
       --  Return a set that can be merged into Variables, as above
 
-      function Filter (Variables : Flow_Id_Sets.Set) return Flow_Id_Sets.Set;
-      --  Some functions called by Get_Variables do not know about the context
-      --  we've built up, so we may need to strip some variables from their
-      --  returned set. In particular, we remove quantified variables.
-
-      function Recurse (N                        : Node_Id;
-                        Consider_Extensions      : Boolean   := False;
-                        With_Quantified_Variable : Entity_Id := Empty)
-                        return Flow_Id_Sets.Set
-      with Pre => (if Present (With_Quantified_Variable)
-                   then Nkind (With_Quantified_Variable) in N_Entity);
+      function Recurse (N                   : Node_Id;
+                        Consider_Extensions : Boolean := False)
+                        return Flow_Id_Sets.Set;
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
@@ -2238,15 +2227,15 @@ package body Flow_Utility is
 
       function Untangle_With_Context (N : Node_Id)
                                       return Flow_Id_Sets.Set
-      is (Filter (Untangle_Record_Fields
+      is (Untangle_Record_Fields
            (N,
             Scope                        => Ctx.Scope,
             Fold_Functions               => Ctx.Fold_Functions,
             Use_Computed_Globals         => Ctx.Use_Computed_Globals,
             Expand_Synthesized_Constants =>
-              Ctx.Expand_Synthesized_Constants)));
+              Ctx.Expand_Synthesized_Constants));
       --  Helper function to call Untangle_Record_Fields with the appropriate
-      --  context, but also filtering out quantified variables.
+      --  context.
 
       function Discriminant_Constraints (E : Entity_Id)
                                          return Flow_Id_Sets.Set
@@ -2290,18 +2279,13 @@ package body Flow_Utility is
       -- Recurse --
       -------------
 
-      function Recurse (N                        : Node_Id;
-                        Consider_Extensions      : Boolean   := False;
-                        With_Quantified_Variable : Entity_Id := Empty)
+      function Recurse (N                   : Node_Id;
+                        Consider_Extensions : Boolean := False)
                         return Flow_Id_Sets.Set
       is
          New_Ctx : Get_Variables_Context := Ctx;
       begin
          New_Ctx.Consider_Extensions := Consider_Extensions;
-         if Present (With_Quantified_Variable) then
-            New_Ctx.Quantified_Variables_Introduced.Insert
-              (With_Quantified_Variable);
-         end if;
          return Get_Variables_Internal (N, New_Ctx);
       end Recurse;
 
@@ -2349,26 +2333,6 @@ package body Flow_Utility is
             end if;
          end if;
       end Merge_Entity;
-
-      ------------
-      -- Filter --
-      ------------
-
-      function Filter (Variables : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
-      is
-      begin
-         return Filtered_Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
-         do
-            for V of Variables loop
-               if V.Kind not in Direct_Mapping | Record_Field
-                 or else
-                 not Ctx.Quantified_Variables_Introduced.Contains (V.Node)
-               then
-                  Filtered_Variables.Insert (V);
-               end if;
-            end loop;
-         end return;
-      end Filter;
 
       ------------------------
       -- Do_Subprogram_Call --
@@ -2533,13 +2497,8 @@ package body Flow_Utility is
       -- Do_Entity --
       ---------------
 
-      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      is
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
-         if Ctx.Quantified_Variables_Introduced.Contains (E) then
-            return Flow_Id_Sets.Empty_Set;
-         end if;
-
          case Ekind (E) is
             --------------------------------------------
             -- Entities requiring some kind of action --
@@ -3444,7 +3403,7 @@ package body Flow_Utility is
 
                   begin
                      for FS of M loop
-                        Variables.Union (Filter (FS));
+                        Variables.Union (FS);
                      end loop;
                   end;
 
@@ -3555,10 +3514,21 @@ package body Flow_Utility is
                   E : constant Entity_Id := Defining_Identifier (It);
 
                begin
-                  Variables.Union (Recurse (It,
-                                            With_Quantified_Variable => E));
-                  Variables.Union (Recurse (Condition (N),
-                                            With_Quantified_Variable => E));
+                  Variables.Union (Recurse (It));
+
+                  --  Filter the quantified expression parameter from variables
+                  --  referenced in the predicate, because the parameter is
+                  --  only visible within that predicate.
+
+                  for V of Recurse (Condition (N)) loop
+                     if V.Kind in Direct_Mapping | Record_Field
+                       and then V.Node = E
+                     then
+                        null;
+                     else
+                        Variables.Include (V);
+                     end if;
+                  end loop;
                end;
                return Skip;
 
@@ -3650,14 +3620,13 @@ package body Flow_Utility is
                                      return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Get_Flow_Scope (Scope_N),
-         Fold_Functions                  => False,
-         Use_Computed_Globals            => True,
-         Reduced                         => True,
-         Assume_In_Expression            => True,
-         Expand_Synthesized_Constants    => False,
-         Consider_Extensions             => False,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                        => Get_Flow_Scope (Scope_N),
+         Fold_Functions               => False,
+         Use_Computed_Globals         => True,
+         Reduced                      => True,
+         Assume_In_Expression         => True,
+         Expand_Synthesized_Constants => False,
+         Consider_Extensions          => False);
 
    begin
       return
