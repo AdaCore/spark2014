@@ -3394,7 +3394,7 @@ package body Flow_Utility is
                   --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.
 
-                  Variables.Union (Do_Subprogram_Call (Parent (N)));
+                  Variables.Union (Recurse (Prefix (N)));
 
                elsif Ctx.Reduced then
                   --  In reduced mode we just keep traversing the tree, but we
