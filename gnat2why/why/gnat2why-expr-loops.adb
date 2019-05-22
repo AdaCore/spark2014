@@ -1727,7 +1727,7 @@ package body Gnat2Why.Expr.Loops is
    begin
       return Sequence
         (New_Comment
-           (Comment => NID ("Translation of an Ada loop"
+           (Comment => NID ("Translation of an unrolled Ada loop"
             & (if Sloc (Loop_Id) > 0 then
                  " from " & Build_Location_String (Sloc (Loop_Id))
               else ""))),
