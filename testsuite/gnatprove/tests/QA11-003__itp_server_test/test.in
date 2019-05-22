@@ -1,3 +1,3 @@
-{"ide_request": "Command_req", "node_ID":102, "command" : "introduce_premises" }
-{"ide_request": "Command_req", "node_ID":102, "command" : "z3" }
-{"ide_request": "Get_task", "node_ID":102, "loc": false, "full_context": false}
+{"ide_request": "Command_req", "node_ID":18, "command" : "introduce_premises" }
+{"ide_request": "Command_req", "node_ID":18, "command" : "z3" }
+{"ide_request": "Get_task", "node_ID":18, "loc": false, "full_context": false}

@@ -2,6 +2,22 @@ from test_support import *
 import time
 import json
 
+"""TO UPDATE: When this test needs updating, the problem is most likely that
+the number in CST_NODE, CST_SPLIT and CST_GOAL are no longer relevant. To
+change them, you need to modify itp_lib.py in GPS spark plugin and change the
+debug variable to True (this make node number appear in manual proof). Then,
+launch this test prove_all and then click edit manual proof. You just need to
+report the ID number of the node above the split transformation in CST_NODE,
+the node for split on CST_SPLIT and the node that is unproved (last one of the
+tree) on CST_GOAL.
+Note that you need to update the *.in file too with the CST_GOAL everywhere.
+"""
+
+
+""" This tests is a commandline test for the itp server. It launches a server as
+a background process, and then pass it request in JSON. The output to be checked
+are notifications written in JSON"""
+
 DEAD = "Dead"
 INITIALIZED = "Initialized"
 NEXT_UNPROVEN = "Next_Unproven_Node_Id"
@@ -20,15 +36,11 @@ RLIMIT = "\nrlimit: Real time limit (8 s) exceeded\n"
 TASK_MONITOR = "Task_Monitor"
 
 # Node above the split transformation
-CST_NODE = 94
+CST_NODE = 10
 # Node corresponding to the split transformation
-CST_SPLIT = 95
+CST_SPLIT = 11
 # Goal on which we apply z3 etc
-CST_GOAL = 102
-
-""" This tests is a commandline test for the itp server. It launches a server as
-a background process, and then pass it request in JSON. The output to be checked
-are notifications written in JSON"""
+CST_GOAL = 18
 
 # This launches the itp_server
 def launch_server(limit_line, input_file):
