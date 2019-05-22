@@ -4210,7 +4210,7 @@ package body Flow.Control_Flow_Graph is
       --  pragma Inspection_Point is added to a source program, then
       --  breaking on fip will get you to that point in the program.
 
-      function Proc (N : Node_Id) return Traverse_Result;
+      function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result;
       --  Adds N to the appropriate entry references of the current
       --  context, if N is a loop_entry reference.
 
@@ -4269,41 +4269,41 @@ package body Flow.Control_Flow_Graph is
          null;
       end fip;
 
-      ----------
-      -- Proc --
-      ----------
+      ------------------------------
+      -- Add_Loop_Entry_Reference --
+      ------------------------------
 
-      function Proc (N : Node_Id) return Traverse_Result is
+      function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result is
          Loop_Name : Node_Id;
       begin
-         case Nkind (N) is
-            when N_Attribute_Reference =>
-               case Get_Attribute_Id (Attribute_Name (N)) is
-                  when Attribute_Loop_Entry =>
-                     pragma Assert (Present (Ctx.Active_Loop));
+         if Nkind (N) = N_Attribute_Reference
+           and then
+             Get_Attribute_Id (Attribute_Name (N)) = Attribute_Loop_Entry
+         then
+            pragma Assert (Present (Ctx.Active_Loop));
 
-                     if Present (Expressions (N)) then
-                        --  This is a named loop entry reference
-                        --  (i.e. X'Loop_Entry (Foo))
-                        pragma Assert (List_Length (Expressions (N)) = 1);
-                        Loop_Name := First (Expressions (N));
-                        pragma Assert (Nkind (Loop_Name) = N_Identifier);
-                        Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+            --  This is a named loop entry reference, e.g. "X'Loop_Entry (Foo)"
 
-                     else
-                        Ctx.Entry_References (Ctx.Active_Loop).Include (N);
-                     end if;
-                  when others =>
-                     null;
-               end case;
+            if Present (Expressions (N)) then
 
-            when others =>
-               null;
-         end case;
+               pragma Assert (List_Length (Expressions (N)) = 1);
+               Loop_Name := First (Expressions (N));
+
+               pragma Assert (Nkind (Loop_Name) = N_Identifier);
+               Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+
+            --  or otherwise a reference to the immediately enclosing loop
+
+            else
+               Ctx.Entry_References (Ctx.Active_Loop).Include (N);
+            end if;
+         end if;
+
          return OK;
-      end Proc;
+      end Add_Loop_Entry_Reference;
 
-      procedure Add_Loop_Entry_References is new Traverse_Proc (Proc);
+      procedure Add_Loop_Entry_References is new
+        Traverse_Proc (Add_Loop_Entry_Reference);
 
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
