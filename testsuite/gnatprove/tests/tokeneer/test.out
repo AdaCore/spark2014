@@ -51,8 +51,8 @@ admintoken.adb:156:27: info: initialization of "RoleOK" proved
 admintoken.adb:158:07: info: initialization of "AuthCertContents" proved
 admintoken.adb:159:07: info: initialization of "IDCertContents" proved
 admintoken.adb:176:13: info: range check proved (CVC4: 4 VC)
-admintoken.adb:176:37: info: length check proved (CVC4: 4 VC)
-admintoken.adb:176:40: info: length check proved (CVC4: 4 VC)
+admintoken.adb:176:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+admintoken.adb:176:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 admintoken.adb:182:23: info: range check proved (CVC4: 4 VC)
 admintoken.adb:199:14: info: data dependencies proved
 admintoken.adb:205:37: info: initialization of "Description" proved
@@ -104,16 +104,16 @@ admintoken.ads:226:11: info: flow dependencies proved
 admintoken.ads:227:22: info: postcondition proved (CVC4: 3 VC)
 admintoken.ads:279:21: info: range check proved (CVC4: 1 VC)
 alarm.adb:42:49: info: initialization of "Interfac.Output" constituent of "Alarm.Output" proved
-alarm.adb:45:30: info: refined post proved (CVC4: 2 VC)
+alarm.adb:45:30: info: refined post proved (CVC4: 1 VC; Trivial: 1 VC)
 alarm.ads:26:08: info: flow dependencies proved
 alarm.ads:43:11: info: data dependencies proved
 alarm.ads:57:11: info: data dependencies proved
 alarm.ads:60:11: info: flow dependencies proved
-alarm.ads:71:22: info: postcondition proved (CVC4: 2 VC)
-alarmapi.adb:38:29: info: length check proved (CVC4: 4 VC)
-alarmapi.adb:38:29: info: precondition proved (CVC4: 4 VC)
-alarmapi.adb:65:29: info: length check proved (CVC4: 4 VC)
-alarmapi.adb:65:29: info: precondition proved (CVC4: 4 VC)
+alarm.ads:71:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+alarmapi.adb:38:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+alarmapi.adb:38:29: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
+alarmapi.adb:65:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+alarmapi.adb:65:29: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 alarmapi.ads:29:28: info: data dependencies proved
 alarmapi.ads:38:30: info: data dependencies proved
 auditlog.adb:85:18: info: range check proved (CVC4: 1 VC)
@@ -135,11 +135,11 @@ auditlog.adb:160:07: info: initialization of "OK" proved
 auditlog.adb:161:07: info: initialization of "FirstTime" proved
 auditlog.adb:162:07: info: initialization of "LastTime" proved
 auditlog.adb:163:07: info: initialization of "TimeCount" proved
-auditlog.adb:179:13: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:179:13: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:180:24: info: range check proved (CVC4: 1 VC)
 auditlog.adb:180:36: info: range check proved (CVC4: 1 VC)
 auditlog.adb:180:46: info: range check proved (CVC4: 1 VC)
-auditlog.adb:182:13: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:182:13: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:184:16: info: range check proved (CVC4: 1 VC)
 auditlog.adb:184:27: info: range check proved (CVC4: 1 VC)
 auditlog.adb:184:36: info: range check proved (CVC4: 1 VC)
@@ -154,15 +154,15 @@ auditlog.adb:277:10: info: initialization of "Descr" proved
 auditlog.adb:278:10: info: initialization of "FirstTime" proved
 auditlog.adb:279:10: info: initialization of "Offset" proved
 auditlog.adb:280:10: info: initialization of "BothTimesOK" proved
-auditlog.adb:290:23: info: length check proved (CVC4: 4 VC)
+auditlog.adb:290:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 auditlog.adb:290:23: info: range check proved (CVC4: 4 VC)
 auditlog.adb:290:42: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:291:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:294:22: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:294:22: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:295:24: info: range check proved (CVC4: 1 VC)
 auditlog.adb:295:35: info: range check proved (CVC4: 1 VC)
 auditlog.adb:295:44: info: range check proved (CVC4: 1 VC)
-auditlog.adb:297:22: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:297:22: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:299:16: info: range check proved (CVC4: 1 VC)
 auditlog.adb:299:28: info: range check proved (CVC4: 1 VC)
 auditlog.adb:299:37: info: range check proved (CVC4: 1 VC)
@@ -173,7 +173,7 @@ auditlog.adb:365:45: info: predicate check proved (CVC4: 1 VC)
 auditlog.adb:365:45: info: range check proved (CVC4: 1 VC)
 auditlog.adb:386:11: info: data dependencies proved
 auditlog.adb:389:11: info: flow dependencies proved
-auditlog.adb:394:22: info: postcondition proved (CVC4: 2 VC)
+auditlog.adb:394:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 auditlog.adb:398:07: info: initialization of "OK" proved
 auditlog.adb:399:07: info: initialization of "TheFile" proved
 auditlog.adb:433:11: info: data dependencies proved
@@ -181,15 +181,15 @@ auditlog.adb:435:11: info: flow dependencies proved
 auditlog.adb:443:07: info: initialization of "OK" proved
 auditlog.adb:444:07: info: initialization of "Now" proved
 auditlog.adb:463:10: info: range check proved (CVC4: 4 VC)
-auditlog.adb:463:68: info: length check proved (CVC4: 4 VC)
-auditlog.adb:464:22: info: length check proved (CVC4: 4 VC)
-auditlog.adb:511:35: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:463:68: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+auditlog.adb:464:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+auditlog.adb:511:35: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:564:11: info: data dependencies proved
 auditlog.adb:568:11: info: flow dependencies proved
 auditlog.adb:585:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:585:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:586:42: info: overflow check proved (CVC4: 1 VC)
-auditlog.adb:587:22: info: postcondition proved (CVC4: 8 VC)
+auditlog.adb:587:22: info: postcondition proved (CVC4: 6 VC; Trivial: 2 VC)
 auditlog.adb:588:72: info: range check proved (CVC4: 1 VC)
 auditlog.adb:588:77: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:589:42: info: overflow check proved (CVC4: 1 VC)
@@ -265,13 +265,13 @@ auditlog.adb:990:37: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1014:55: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1070:33: info: loop invariant initialization proved (CVC4: 1 VC)
 auditlog.adb:1070:33: info: loop invariant preservation proved (CVC4: 1 VC)
-auditlog.adb:1071:33: info: loop invariant initialization proved (CVC4: 2 VC)
-auditlog.adb:1071:33: info: loop invariant preservation proved (CVC4: 2 VC)
+auditlog.adb:1071:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+auditlog.adb:1071:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 auditlog.adb:1081:20: info: range check proved (CVC4: 2 VC)
 auditlog.adb:1082:42: info: loop invariant initialization proved (CVC4: 2 VC)
 auditlog.adb:1082:42: info: loop invariant preservation proved (CVC4: 2 VC)
-auditlog.adb:1083:42: info: loop invariant initialization proved (CVC4: 2 VC)
-auditlog.adb:1083:42: info: loop invariant preservation proved (CVC4: 2 VC)
+auditlog.adb:1083:42: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+auditlog.adb:1083:42: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 auditlog.adb:1088:90: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1089:91: info: range check proved (CVC4: 1 VC)
 auditlog.adb:1090:26: info: range check proved (CVC4: 2 VC)
@@ -292,7 +292,7 @@ auditlog.adb:1174:85: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1175:50: info: overflow check proved (CVC4: 1 VC)
 auditlog.adb:1178:07: info: initialization of "OldAlarm" proved
 auditlog.adb:1182:07: info: precondition proved (CVC4: 2 VC)
-auditlog.adb:1187:26: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1187:26: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:1193:10: info: precondition proved (CVC4: 2 VC)
 auditlog.adb:1240:30: info: refined post proved (CVC4: 2 VC)
 auditlog.adb:1242:80: info: range check proved (CVC4: 1 VC)
@@ -307,7 +307,7 @@ auditlog.adb:1252:07: info: initialization of "FileIndexInUsedList" proved
 auditlog.adb:1254:22: info: precondition proved (CVC4: 1 VC)
 auditlog.adb:1254:45: info: predicate check proved (CVC4: 1 VC)
 auditlog.adb:1254:45: info: range check proved (CVC4: 1 VC)
-auditlog.adb:1256:22: info: precondition proved (CVC4: 1 VC)
+auditlog.adb:1256:22: info: precondition proved (Trivial: 1 VC)
 auditlog.adb:1289:16: info: loop invariant initialization proved (CVC4: 1 VC)
 auditlog.adb:1289:16: info: loop invariant preservation proved (CVC4: 1 VC)
 auditlog.adb:1290:66: info: range check proved (CVC4: 2 VC)
@@ -365,15 +365,15 @@ bio.adb:126:33: info: loop invariant preservation proved (CVC4: 3 VC), in call i
 bio.adb:129:25: info: analyzing call to "ValueOf" in context
 bio.adb:151:11: info: data dependencies proved
 bio.adb:160:07: info: initialization of "TheCodeName" proved
-bio.adb:172:17: info: postcondition proved (CVC4: 1 VC)
+bio.adb:172:17: info: postcondition proved (Trivial: 1 VC)
 bio.adb:174:38: info: range check proved (CVC4: 1 VC)
 bio.adb:175:12: info: range check proved (CVC4: 1 VC)
 bio.adb:175:41: info: range check proved (CVC4: 1 VC)
 bio.adb:176:12: info: range check proved (CVC4: 1 VC)
 bio.adb:176:57: info: range check proved (CVC4: 1 VC)
 bio.adb:182:13: info: range check proved (CVC4: 4 VC)
-bio.adb:182:42: info: length check proved (CVC4: 4 VC)
-bio.adb:182:45: info: length check proved (CVC4: 4 VC)
+bio.adb:182:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bio.adb:182:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bio.adb:184:23: info: range check proved (CVC4: 4 VC)
 bio.adb:190:22: info: analyzing call to "GetReturnCode" in context
 bio.adb:241:07: info: initialization of "NumericReturn" proved
@@ -447,8 +447,8 @@ cert-attr.adb:38:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:39:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:40:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
-cert-attr.adb:47:43: info: length check proved (CVC4: 4 VC)
-cert-attr.adb:47:46: info: length check proved (CVC4: 4 VC)
+cert-attr.adb:47:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+cert-attr.adb:47:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
 cert-id.adb:61:07: info: initialization of "LocalContents" proved
 cert-id.adb:62:07: info: initialization of "Extracted" proved
@@ -467,8 +467,8 @@ cert.adb:63:09: info: range check proved (CVC4: 1 VC)
 cert.adb:64:09: info: range check proved (CVC4: 1 VC)
 cert.adb:65:09: info: range check proved (CVC4: 1 VC)
 cert.adb:71:10: info: range check proved (CVC4: 4 VC)
-cert.adb:71:43: info: length check proved (CVC4: 4 VC)
-cert.adb:71:46: info: length check proved (CVC4: 4 VC)
+cert.adb:71:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+cert.adb:71:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert.adb:73:23: info: range check proved (CVC4: 4 VC)
 cert.adb:108:07: info: initialization of "LocalRawData" proved
 cert.adb:128:07: info: initialization of "LocalSig" proved
@@ -493,12 +493,12 @@ certificatestore.adb:215:14: info: flow dependencies proved
 certificatestore.adb:222:23: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:222:31: info: range check proved (CVC4: 1 VC)
 certificatestore.adb:223:10: info: range check proved (CVC4: 4 VC)
-certificatestore.adb:223:26: info: length check proved (CVC4: 4 VC)
-certificatestore.adb:223:29: info: length check proved (CVC4: 4 VC)
+certificatestore.adb:223:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+certificatestore.adb:223:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:223:29: info: range check proved (CVC4: 4 VC)
 certificatestore.adb:224:10: info: range check proved (CVC4: 4 VC)
-certificatestore.adb:224:42: info: length check proved (CVC4: 4 VC)
-certificatestore.adb:224:45: info: length check proved (CVC4: 4 VC)
+certificatestore.adb:224:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+certificatestore.adb:224:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 certificatestore.adb:265:42: info: initialization of "NextSerialNumber" constituent of "State" proved
 certificatestore.adb:266:42: info: initialization of "Overflow" constituent of "State" proved
 certificatestore.adb:280:07: info: initialization of "ReadOK" proved
@@ -958,8 +958,8 @@ configuration.adb:110:71: info: range check proved (CVC4: 1 VC)
 configuration.adb:111:12: info: range check proved (CVC4: 1 VC)
 configuration.adb:116:26: info: range check proved (CVC4: 4 VC)
 configuration.adb:118:13: info: range check proved (CVC4: 4 VC)
-configuration.adb:118:38: info: length check proved (CVC4: 4 VC)
-configuration.adb:118:41: info: length check proved (CVC4: 4 VC)
+configuration.adb:118:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+configuration.adb:118:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 configuration.adb:161:18: info: precondition proved (CVC4: 1 VC)
 configuration.adb:185:21: info: precondition proved (CVC4: 1 VC)
 configuration.adb:193:18: info: precondition proved (CVC4: 1 VC)
@@ -1061,8 +1061,8 @@ door.ads:241:11: info: data dependencies proved
 door.ads:243:11: info: flow dependencies proved
 doorapi.adb:26:11: info: data dependencies proved
 doorapi.adb:30:07: info: initialization of "InMsg" proved
-doorapi.adb:33:29: info: length check proved (CVC4: 4 VC)
-doorapi.adb:33:29: info: precondition proved (CVC4: 4 VC)
+doorapi.adb:33:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+doorapi.adb:33:29: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 doorapi.adb:41:07: info: initialization of "IsOp" proved
 doorapi.adb:42:07: info: initialization of "IsClosed" proved
 doorapi.adb:43:07: info: initialization of "CommsIsOK" proved
@@ -1100,7 +1100,7 @@ enclave.adb:395:33: info: initialization of "Status" constituent of "State" prov
 enclave.adb:401:11: info: flow dependencies proved
 enclave.adb:438:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:444:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:447:06: info: postcondition proved (CVC4: 12 VC)
+enclave.adb:447:06: info: postcondition proved (CVC4: 8 VC; Trivial: 4 VC)
 enclave.adb:461:13: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:461:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:463:10: warning: unreachable branch (CVC4: 1 VC)
@@ -1123,7 +1123,7 @@ enclave.adb:631:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:639:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:641:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:645:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:648:06: info: postcondition proved (CVC4: 17 VC)
+enclave.adb:648:06: info: postcondition proved (CVC4: 12 VC; Trivial: 5 VC)
 enclave.adb:659:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:665:10: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:670:18: info: precondition proved (CVC4: 1 VC)
@@ -1147,7 +1147,7 @@ enclave.adb:846:10: info: precondition proved (CVC4: 1 VC)
 enclave.adb:868:11: info: data dependencies proved
 enclave.adb:878:11: info: flow dependencies proved
 enclave.adb:900:27: info: precondition proved (CVC4: 1 VC)
-enclave.adb:902:06: info: postcondition proved (CVC4: 9 VC)
+enclave.adb:902:06: info: postcondition proved (CVC4: 7 VC; Trivial: 2 VC)
 enclave.adb:913:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:920:07: info: initialization of "TheCurrentFloppy" proved
 enclave.adb:921:07: info: initialization of "ConfigDataOK" proved
@@ -1158,7 +1158,7 @@ enclave.adb:984:11: info: flow dependencies proved
 enclave.adb:1005:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1014:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1020:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1029:06: info: postcondition proved (CVC4: 22 VC)
+enclave.adb:1029:06: info: postcondition proved (CVC4: 17 VC; Trivial: 5 VC)
 enclave.adb:1051:13: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1051:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1053:11: warning: unreachable branch (CVC4: 1 VC)
@@ -1171,7 +1171,7 @@ enclave.adb:1095:11: info: data dependencies proved
 enclave.adb:1107:11: info: flow dependencies proved
 enclave.adb:1139:11: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1154:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1163:06: info: postcondition proved (CVC4: 25 VC)
+enclave.adb:1163:06: info: postcondition proved (CVC4: 20 VC; Trivial: 5 VC)
 enclave.adb:1172:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1180:15: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1190:10: warning: unreachable branch (CVC4: 1 VC)
@@ -1186,7 +1186,7 @@ enclave.adb:1266:11: info: flow dependencies proved
 enclave.adb:1332:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1351:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1357:19: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1366:06: info: postcondition proved (CVC4: 33 VC)
+enclave.adb:1366:06: info: postcondition proved (CVC4: 24 VC; Trivial: 9 VC)
 enclave.adb:1390:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1411:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1413:11: warning: unreachable branch (CVC4: 1 VC)
@@ -1194,13 +1194,13 @@ enclave.adb:1417:14: warning: unreachable branch (CVC4: 1 VC)
 enclave.adb:1417:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1422:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1425:17: info: precondition proved (CVC4: 3 VC)
-enclave.adb:1427:13: info: precondition proved (CVC4: 12 VC)
+enclave.adb:1427:13: info: precondition proved (CVC4: 9 VC; Trivial: 3 VC)
 enclave.adb:1430:13: info: precondition proved (CVC4: 4 VC)
-enclave.adb:1433:13: info: precondition proved (CVC4: 11 VC)
-enclave.adb:1436:13: info: precondition proved (CVC4: 14 VC)
+enclave.adb:1433:13: info: precondition proved (CVC4: 8 VC; Trivial: 3 VC)
+enclave.adb:1436:13: info: precondition proved (CVC4: 12 VC; Trivial: 2 VC)
 enclave.adb:1452:41: info: initialization of "Status" constituent of "State" proved
 enclave.adb:1454:30: info: refined post proved (CVC4: 3 VC)
-enclave.adb:1489:27: info: refined post proved (CVC4: 2 VC)
+enclave.adb:1489:27: info: refined post proved (CVC4: 1 VC; Trivial: 1 VC)
 enclave.adb:1505:14: info: data dependencies proved
 enclave.adb:1565:31: info: refined post proved (CVC4: 3 VC)
 enclave.adb:1570:07: info: initialization of "LocalStatus" proved
@@ -1211,16 +1211,16 @@ enclave.adb:1582:13: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1621:31: info: refined post proved (CVC4: 5 VC)
 enclave.adb:1636:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1655:18: info: precondition proved (CVC4: 1 VC)
-enclave.adb:1838:06: info: refined post proved (CVC4: 35 VC)
+enclave.adb:1838:06: info: refined post proved (CVC4: 24 VC; Trivial: 11 VC)
 enclave.adb:1857:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1863:19: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1888:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1894:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:1896:07: info: initialization of "LocalStatus" proved
 enclave.adb:1898:42: info: range check proved (CVC4: 1 VC)
-enclave.adb:1903:13: info: precondition proved (CVC4: 10 VC)
-enclave.adb:1908:13: info: precondition proved (CVC4: 17 VC)
-enclave.adb:1991:06: info: refined post proved (CVC4: 25 VC)
+enclave.adb:1903:13: info: precondition proved (CVC4: 7 VC; Trivial: 3 VC)
+enclave.adb:1908:13: info: precondition proved (CVC4: 13 VC; Trivial: 4 VC)
+enclave.adb:1991:06: info: refined post proved (CVC4: 16 VC; Trivial: 9 VC)
 enclave.adb:2019:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2029:18: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2035:19: info: precondition proved (CVC4: 1 VC)
@@ -1230,7 +1230,7 @@ enclave.adb:2095:14: info: data dependencies proved
 enclave.adb:2104:14: info: flow dependencies proved
 enclave.adb:2130:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2136:22: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2139:09: info: postcondition proved (CVC4: 21 VC)
+enclave.adb:2139:09: info: postcondition proved (CVC4: 14 VC; Trivial: 7 VC)
 enclave.adb:2148:21: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2154:22: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2158:21: info: precondition proved (CVC4: 1 VC)
@@ -1243,7 +1243,7 @@ enclave.adb:2196:21: info: precondition proved (CVC4: 2 VC)
 enclave.adb:2197:42: info: range check proved (CVC4: 1 VC)
 enclave.adb:2199:24: info: precondition proved (CVC4: 1 VC)
 enclave.adb:2209:24: info: precondition proved (CVC4: 1 VC)
-enclave.adb:2226:10: info: precondition proved (CVC4: 12 VC)
+enclave.adb:2226:10: info: precondition proved (CVC4: 9 VC; Trivial: 3 VC)
 enclave.ads:62:11: info: data dependencies proved
 enclave.ads:66:11: info: data dependencies proved
 enclave.ads:70:11: info: data dependencies proved
@@ -1269,7 +1269,7 @@ enclave.ads:312:11: info: flow dependencies proved
 enclave.ads:432:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:442:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:448:26: info: precondition proved (CVC4: 1 VC)
-enclave.ads:457:13: info: postcondition proved (CVC4: 35 VC)
+enclave.ads:457:13: info: postcondition proved (CVC4: 24 VC; Trivial: 11 VC)
 enclave.ads:486:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:496:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:502:26: info: precondition proved (CVC4: 1 VC)
@@ -1279,7 +1279,7 @@ enclave.ads:539:11: info: flow dependencies proved
 enclave.ads:565:25: info: precondition proved (CVC4: 1 VC)
 enclave.ads:591:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:597:35: info: precondition proved (CVC4: 1 VC)
-enclave.ads:602:13: info: postcondition proved (CVC4: 25 VC)
+enclave.ads:602:13: info: postcondition proved (CVC4: 16 VC; Trivial: 9 VC)
 enclave.ads:631:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:641:34: info: precondition proved (CVC4: 1 VC)
 enclave.ads:647:35: info: precondition proved (CVC4: 1 VC)
@@ -1291,14 +1291,14 @@ enrolment.adb:67:66: info: range check proved (CVC4: 1 VC)
 enrolment.adb:68:66: info: range check proved (CVC4: 1 VC)
 enrolment.adb:68:74: info: range check proved (CVC4: 1 VC)
 enrolment.adb:72:13: info: range check proved (CVC4: 4 VC)
-enrolment.adb:72:40: info: length check proved (CVC4: 4 VC)
-enrolment.adb:72:43: info: length check proved (CVC4: 4 VC)
+enrolment.adb:72:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+enrolment.adb:72:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 enrolment.adb:74:23: info: range check proved (CVC4: 4 VC)
 enrolment.adb:94:35: info: initialization of "KeyAdded" proved
 enrolment.adb:95:35: info: initialization of "Description" proved
 enrolment.adb:96:14: info: data dependencies proved
 enrolment.adb:104:14: info: flow dependencies proved
-enrolment.adb:124:25: info: postcondition proved (CVC4: 5 VC)
+enrolment.adb:124:25: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC)
 enrolment.adb:132:10: info: initialization of "TheContents" proved
 enrolment.adb:133:10: info: initialization of "TheSubject" proved
 enrolment.adb:134:10: info: initialization of "TheIssuer" proved
@@ -1346,8 +1346,8 @@ keystore.adb:98:09: info: range check proved (CVC4: 1 VC)
 keystore.adb:101:19: info: range check proved (CVC4: 1 VC)
 keystore.adb:102:10: info: range check proved (CVC4: 4 VC)
 keystore.adb:102:32: info: range check proved (CVC4: 1 VC)
-keystore.adb:102:41: info: length check proved (CVC4: 4 VC)
-keystore.adb:102:44: info: length check proved (CVC4: 4 VC)
+keystore.adb:102:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+keystore.adb:102:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 keystore.adb:104:20: info: range check proved (CVC4: 4 VC)
 keystore.adb:122:22: info: initialization of "TheDigest" proved
 keystore.adb:123:22: info: initialization of "Success" proved
@@ -1489,13 +1489,13 @@ latch.ads:145:11: info: flow dependencies proved
 latch.ads:146:22: info: postcondition proved (CVC4: 1 VC)
 latch.ads:159:11: info: data dependencies proved
 latch.ads:160:11: info: flow dependencies proved
-latchapi.adb:95:37: info: length check proved (CVC4: 4 VC)
-latchapi.adb:95:37: info: precondition proved (CVC4: 4 VC)
+latchapi.adb:95:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+latchapi.adb:95:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 latchapi.adb:103:07: info: initialization of "IsLocked" proved
 latchapi.adb:103:17: info: initialization of "CommsIsOK" proved
 latchapi.adb:103:28: info: initialization of "ReadBackOK" proved
-latchapi.adb:132:37: info: length check proved (CVC4: 4 VC)
-latchapi.adb:132:37: info: precondition proved (CVC4: 4 VC)
+latchapi.adb:132:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+latchapi.adb:132:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 latchapi.adb:140:06: info: initialization of "IsLocked" proved
 latchapi.adb:140:16: info: initialization of "CommsIsOK" proved
 latchapi.adb:140:27: info: initialization of "ReadBackOK" proved
@@ -1544,8 +1544,8 @@ screen.adb:412:07: info: initialization of "NewConfig" proved
 screen.adb:442:37: info: index check proved (CVC4: 2 VC)
 screen.adb:446:13: info: range check proved (CVC4: 4 VC)
 screen.adb:446:19: info: overflow check proved (CVC4: 1 VC)
-screen.adb:446:41: info: length check proved (CVC4: 4 VC)
-screen.adb:446:44: info: length check proved (CVC4: 4 VC)
+screen.adb:446:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:446:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:446:44: info: range check proved (CVC4: 4 VC)
 screen.adb:446:72: info: overflow check proved (CVC4: 1 VC)
 screen.adb:465:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:629
@@ -1555,19 +1555,19 @@ screen.adb:481:59: info: division check proved (CVC4: 1 VC)
 screen.adb:481:67: info: range check proved (CVC4: 1 VC)
 screen.adb:485:10: info: range check proved (CVC4: 4 VC)
 screen.adb:485:32: info: overflow check proved (CVC4: 1 VC)
-screen.adb:485:37: info: length check proved (CVC4: 4 VC)
-screen.adb:485:40: info: length check proved (CVC4: 4 VC)
+screen.adb:485:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:485:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:485:40: info: range check proved (CVC4: 4 VC)
 screen.adb:505:10: info: range check proved (CVC4: 4 VC)
-screen.adb:505:33: info: length check proved (CVC4: 4 VC)
-screen.adb:505:36: info: length check proved (CVC4: 4 VC)
+screen.adb:505:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:505:36: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:524:10: info: range check proved (CVC4: 4 VC)
-screen.adb:524:33: info: length check proved (CVC4: 4 VC)
-screen.adb:524:36: info: length check proved (CVC4: 4 VC)
+screen.adb:524:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:524:36: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:545:10: info: range check proved (CVC4: 4 VC)
 screen.adb:545:32: info: overflow check proved (CVC4: 1 VC)
-screen.adb:545:37: info: length check proved (CVC4: 4 VC)
-screen.adb:545:40: info: length check proved (CVC4: 4 VC)
+screen.adb:545:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:545:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:545:40: info: range check proved (CVC4: 4 VC)
 screen.adb:599:49: info: range check proved (CVC4: 1 VC)
 screen.adb:605:49: info: range check proved (CVC4: 1 VC)
@@ -1595,8 +1595,8 @@ screen.adb:774:09: info: initialization of "SuccessBio" proved
 screen.adb:775:09: info: initialization of "FailBio" proved
 screen.adb:794:10: info: range check proved (CVC4: 4 VC)
 screen.adb:794:32: info: overflow check proved (CVC4: 1 VC)
-screen.adb:794:37: info: length check proved (CVC4: 4 VC)
-screen.adb:794:40: info: length check proved (CVC4: 4 VC)
+screen.adb:794:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+screen.adb:794:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:794:40: info: range check proved (CVC4: 4 VC)
 screen.adb:855:32: info: initialization of "OK" proved
 screen.adb:856:11: info: data dependencies proved
@@ -1691,17 +1691,17 @@ tismain.adb:316:11: info: flow dependencies proved
 tismain.adb:569:20: info: precondition proved (CVC4: 1 VC)
 tismain.adb:575:21: info: precondition proved (CVC4: 1 VC)
 tismain.adb:582:20: info: precondition proved (CVC4: 1 VC)
-tismain.adb:615:08: info: postcondition proved (CVC4: 32 VC)
+tismain.adb:615:08: info: postcondition proved (CVC4: 22 VC; Trivial: 10 VC)
 tismain.adb:630:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:636:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:643:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:684:14: info: data dependencies proved
 tismain.adb:692:14: info: flow dependencies proved
 tismain.adb:716:17: info: precondition proved (CVC4: 2 VC)
-tismain.adb:719:17: info: precondition proved (CVC4: 4 VC)
+tismain.adb:719:17: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 tismain.adb:723:19: info: precondition proved (CVC4: 6 VC)
-tismain.adb:727:17: info: precondition proved (CVC4: 28 VC)
-tismain.adb:734:17: info: precondition proved (CVC4: 23 VC)
+tismain.adb:727:17: info: precondition proved (CVC4: 19 VC; Trivial: 9 VC)
+tismain.adb:734:17: info: precondition proved (CVC4: 14 VC; Trivial: 9 VC)
 tismain.adb:748:11: info: data dependencies proved
 tismain.adb:755:39: info: initialization of "Clock.CurrentTime" proved
 tismain.adb:756:34: info: initialization of "SystemFault" proved
@@ -1709,11 +1709,11 @@ tismain.adb:785:11: info: flow dependencies proved
 tismain.adb:1105:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1111:26: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1118:25: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1145:13: info: postcondition proved (CVC4: 32 VC)
+tismain.adb:1145:13: info: postcondition proved (CVC4: 21 VC; Trivial: 11 VC)
 tismain.adb:1183:25: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1189:26: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1196:25: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1235:13: info: precondition proved (CVC4: 31 VC)
+tismain.adb:1235:13: info: precondition proved (CVC4: 21 VC; Trivial: 10 VC)
 tismain.adb:1256:11: info: data dependencies proved
 tismain.adb:1259:39: info: initialization of "Alarm.Output" proved
 tismain.adb:1260:38: info: initialization of "Door.State" proved
@@ -1728,17 +1728,17 @@ tismain.adb:1318:39: info: initialization of "Latch.Output" proved
 tismain.adb:1319:40: info: initialization of "Screen.Output" proved
 tismain.adb:1320:34: info: initialization of "TheAdmin" proved
 tismain.adb:1328:11: info: flow dependencies proved
-tismain.adb:1396:10: info: loop invariant initialization proved (CVC4: 29 VC)
-tismain.adb:1396:10: info: loop invariant preservation proved (CVC4: 29 VC)
+tismain.adb:1396:10: info: loop invariant initialization proved (CVC4: 19 VC; Trivial: 10 VC)
+tismain.adb:1396:10: info: loop invariant preservation proved (CVC4: 19 VC; Trivial: 10 VC)
 tismain.adb:1408:22: info: precondition proved (CVC4: 2 VC)
 tismain.adb:1414:23: info: precondition proved (CVC4: 2 VC)
 tismain.adb:1421:22: info: precondition proved (CVC4: 2 VC)
-tismain.adb:1446:07: info: precondition proved (CVC4: 29 VC)
-tismain.adb:1453:10: info: assertion proved (CVC4: 31 VC)
+tismain.adb:1446:07: info: precondition proved (CVC4: 19 VC; Trivial: 10 VC)
+tismain.adb:1453:10: info: assertion proved (CVC4: 20 VC; Trivial: 11 VC)
 tismain.adb:1492:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1498:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1505:22: info: precondition proved (CVC4: 1 VC)
-tismain.adb:1546:10: info: assertion proved (CVC4: 32 VC)
+tismain.adb:1546:10: info: assertion proved (CVC4: 21 VC; Trivial: 11 VC)
 tismain.adb:1585:22: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1591:23: info: precondition proved (CVC4: 1 VC)
 tismain.adb:1598:22: info: precondition proved (CVC4: 1 VC)
@@ -1755,8 +1755,8 @@ tokenreader.adb:175:55: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:176:12: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:176:57: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:181:13: info: range check proved (CVC4: 4 VC)
-tokenreader.adb:181:43: info: length check proved (CVC4: 4 VC)
-tokenreader.adb:181:46: info: length check proved (CVC4: 4 VC)
+tokenreader.adb:181:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+tokenreader.adb:181:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 tokenreader.adb:183:23: info: range check proved (CVC4: 4 VC)
 tokenreader.adb:208:41: info: initialization of "ReaderStatus" constituent of "State" proved
 tokenreader.adb:219:07: info: initialization of "NumberReaders" proved
@@ -1779,7 +1779,7 @@ tokenreader.adb:300:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:311:24: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:322:21: info: precondition proved (CVC4: 1 VC)
 tokenreader.adb:333:18: info: precondition proved (CVC4: 1 VC)
-tokenreader.adb:338:15: info: precondition proved (CVC4: 1 VC)
+tokenreader.adb:338:15: info: precondition proved (Trivial: 1 VC)
 tokenreader.adb:338:31: info: predicate check proved (CVC4: 1 VC)
 tokenreader.adb:338:31: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:372:07: info: initialization of "ResponseCode" proved
@@ -1811,7 +1811,7 @@ tokenreader.adb:642:13: info: data dependencies proved
 tokenreader.adb:645:13: info: flow dependencies proved
 tokenreader.adb:669:43: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:689:21: info: precondition proved (CVC4: 1 VC)
-tokenreader.adb:694:18: info: precondition proved (CVC4: 1 VC)
+tokenreader.adb:694:18: info: precondition proved (Trivial: 1 VC)
 tokenreader.adb:694:34: info: predicate check proved (CVC4: 1 VC)
 tokenreader.adb:694:34: info: range check proved (CVC4: 1 VC)
 tokenreader.adb:766:07: info: initialization of "StatusOK" proved
@@ -1839,14 +1839,14 @@ updates.ads:47:11: info: data dependencies proved
 updates.ads:51:39: info: initialization of "Alarm.Output" proved
 updates.ads:52:39: info: initialization of "Latch.Output" proved
 updates.ads:55:11: info: flow dependencies proved
-updates.ads:79:22: info: postcondition proved (CVC4: 3 VC)
+updates.ads:79:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 updates.ads:95:24: info: initialization of "SystemFault" proved
 updates.ads:96:11: info: data dependencies proved
 updates.ads:100:39: info: initialization of "Alarm.Output" proved
 updates.ads:101:39: info: initialization of "Latch.Output" proved
 updates.ads:102:40: info: initialization of "Screen.Output" proved
 updates.ads:108:11: info: flow dependencies proved
-updates.ads:143:22: info: postcondition proved (CVC4: 3 VC)
+updates.ads:143:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 userentry.adb:79:11: info: data dependencies proved
 userentry.adb:95:11: info: data dependencies proved
 userentry.adb:97:33: info: initialization of "Status" constituent of "State" proved
@@ -1881,8 +1881,8 @@ userentry.adb:471:17: info: data dependencies proved
 userentry.adb:473:17: info: flow dependencies proved
 userentry.adb:476:15: info: range check proved (CVC4: 1 VC)
 userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
-userentry.adb:482:45: info: length check proved (CVC4: 4 VC)
-userentry.adb:482:48: info: length check proved (CVC4: 4 VC)
+userentry.adb:482:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+userentry.adb:482:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
 userentry.adb:533:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:548:21: info: precondition proved (CVC4: 1 VC)

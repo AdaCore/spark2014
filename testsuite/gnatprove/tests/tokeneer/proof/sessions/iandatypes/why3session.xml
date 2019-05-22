@@ -15,7 +15,9 @@
 <theory name="Iandatypes__fart_image__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="96"/></proof>
@@ -26,7 +28,9 @@
   <proof prover="2"><result status="unknown" steps="150"/></proof>
   <proof prover="3"><result status="unknown" steps="200"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition">
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
