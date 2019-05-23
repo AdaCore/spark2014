@@ -22,8 +22,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;               use Ada.Characters.Handling;
-with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Assumption_Types;          use Assumption_Types;
@@ -1205,7 +1205,7 @@ package body Flow_Error_Messages is
             else OK);
 
          function Check_Function_Result is
-           new Traverse_Func (Is_Function_Result);
+           new Traverse_More_Func (Is_Function_Result);
 
       --  Start of processing for Has_Attribute_Result
 
@@ -1272,7 +1272,7 @@ package body Flow_Error_Messages is
             return OK;
          end Is_Post_State;
 
-         function Find_Post_State is new Traverse_Func (Is_Post_State);
+         function Find_Post_State is new Traverse_More_Func (Is_Post_State);
 
       --  Start of processing for Has_Post_State
 

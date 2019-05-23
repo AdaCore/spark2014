@@ -1191,6 +1191,8 @@ package body Flow_Refinement is
          return OK;
       end Proc;
 
+      --  Simple syntactic AST traversal here, as we don't need to traverse
+      --  actions nodes added in semantic analysis.
       function Find_Abstract_State is new Traverse_Func (Process => Proc);
 
    --  Start of processing for Mentions_State_With_Visible_Refinement

@@ -1320,7 +1320,7 @@ package body SPARK_Definition is
          end Handle_Object_Declaration;
 
          procedure Handle_All_Object_Declarations is new
-           Traverse_Proc (Handle_Object_Declaration);
+           Traverse_More_Proc (Handle_Object_Declaration);
 
       --  Start of processing for Check_Unrolled_Loop
 
@@ -3975,7 +3975,7 @@ package body SPARK_Definition is
                return OK;
             end Replace_Type;
 
-            procedure Replace_Types is new Traverse_Proc (Replace_Type);
+            procedure Replace_Types is new Traverse_More_Proc (Replace_Type);
 
          --  Start of processing for Process_Class_Wide_Condition
 
@@ -4255,7 +4255,7 @@ package body SPARK_Definition is
                end Is_Current_Instance;
 
                function Find_Current_Instance is new
-                 Traverse_Func (Is_Current_Instance);
+                 Traverse_More_Func (Is_Current_Instance);
 
             begin
                return Find_Current_Instance (N) = Abandon;

@@ -283,7 +283,7 @@ package body SPARK_Util is
       end Is_Applicable_Loop_Variant_Or_Invariant;
 
       function Find_Applicable_Loop_Variant_Or_Invariant is new
-        Traverse_Func (Is_Applicable_Loop_Variant_Or_Invariant);
+        Traverse_More_Func (Is_Applicable_Loop_Variant_Or_Invariant);
 
       --------------------------------------
       -- Is_Non_Scalar_Object_Declaration --
@@ -310,7 +310,7 @@ package body SPARK_Util is
       end Is_Non_Scalar_Object_Declaration;
 
       function Find_Non_Scalar_Object_Declaration is new
-        Traverse_Func (Is_Non_Scalar_Object_Declaration);
+        Traverse_More_Func (Is_Non_Scalar_Object_Declaration);
 
       ---------------------
       -- Local Variables --
@@ -700,7 +700,7 @@ package body SPARK_Util is
       end Is_Allocator;
 
       function Check_Allocator is new
-        Traverse_Func (Is_Allocator);
+        Traverse_More_Func (Is_Allocator);
 
    begin
       return Check_Allocator (N) = Abandon;
@@ -734,7 +734,7 @@ package body SPARK_Util is
       end Is_Volatile_Function_Call;
 
       function Check_Volatile_Function is new
-        Traverse_Func (Is_Volatile_Function_Call);
+        Traverse_More_Func (Is_Volatile_Function_Call);
 
    begin
       return Check_Volatile_Function (N) = Abandon;
@@ -1957,7 +1957,7 @@ package body SPARK_Util is
          return OK;
       end Find_Assoc;
 
-      procedure Count_Assoc is new Traverse_Proc (Find_Assoc);
+      procedure Count_Assoc is new Traverse_More_Proc (Find_Assoc);
 
    --  Start of processing for Number_Of_Assocs_In_Expression
 

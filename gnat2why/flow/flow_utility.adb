@@ -319,7 +319,7 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_Proc (Process => Proc);
+      procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
    --  Start of processing for Collect_Functions_And_Read_Locked_POs
@@ -3301,6 +3301,9 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
+            when N_Ignored_In_SPARK =>
+               return Skip;
+
             when N_Entry_Call_Statement
                | N_Function_Call
                | N_Procedure_Call_Statement
@@ -3320,15 +3323,15 @@ package body Flow_Utility is
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
-               | N_Call_Marker
+               | N_Body_Stub
                | N_Entry_Body
                | N_Entry_Declaration
-               | N_Freeze_Entity
-               | N_Freeze_Generic_Entity
-               | N_Later_Decl_Item
-               | N_Renaming_Declaration
+               | N_Package_Declaration
+               | N_Proper_Body
                | N_Representation_Clause
-               | N_Variable_Reference_Marker
+               | N_Single_Task_Declaration
+               | N_Subprogram_Declaration
+               | N_Task_Type_Declaration
             =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
@@ -3341,6 +3344,7 @@ package body Flow_Utility is
                end if;
 
             --  Within expression, a defining identifier only appears as a
+            --  declaration for a compiler-generated temporary or as a
             --  parameter of a quantified expression (effectively, it declares
             --  a local object). Such identifiers are not considered as "uses"
             --  of any variable, so we ignore them.
@@ -3353,7 +3357,8 @@ package body Flow_Utility is
                if Is_Type (N) then
                   Variables.Union (Do_Entity (N));
                else
-                  pragma Assert (Is_Quantified_Loop_Param (N));
+                  pragma Assert (Is_Internal (N)
+                                  or else Is_Quantified_Loop_Param (N));
                end if;
 
             when N_Aggregate =>
@@ -3538,7 +3543,7 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_Proc (Process => Proc);
+      procedure Traverse is new Traverse_More_Proc (Process => Proc);
 
    --  Start of processing for Get_Variables_Internal
 

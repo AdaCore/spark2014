@@ -126,7 +126,7 @@ package body Flow.Analysis.Sanity is
       --    part of that index or slice.
 
       procedure Check_Name_Indexes_And_Slices is new
-        Traverse_Proc (Check_Name_Index_And_Slice);
+        Traverse_More_Proc (Check_Name_Index_And_Slice);
 
       procedure Check_Subtype_Constraints (N : Node_Id);
       --  Check that subtype constraints do not have variable inputs

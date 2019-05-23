@@ -253,7 +253,7 @@ package body Flow.Analysis is
                   end if;
                end Process;
 
-               procedure Traverse is new Traverse_Proc (Process);
+               procedure Traverse is new Traverse_More_Proc (Process);
 
             begin
                --  For packages scan the Initializes contract
@@ -385,7 +385,7 @@ package body Flow.Analysis is
          end if;
       end Search_Expr;
 
-      procedure Search_Expression is new Traverse_Proc (Search_Expr);
+      procedure Search_Expression is new Traverse_More_Proc (Search_Expr);
       --  This will narrow down the location of the searched for
       --  variable in the given node as far as possible.
 
@@ -4712,7 +4712,7 @@ package body Flow.Analysis is
       end Check_Prefix;
 
       procedure Check_Prefix_Of_Tick_Old is new
-        Traverse_Proc (Process => Check_Prefix);
+        Traverse_More_Proc (Process => Check_Prefix);
 
       Postconditions : Node_Lists.List;
 

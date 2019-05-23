@@ -2322,7 +2322,7 @@ package body Flow.Control_Flow_Graph is
             end case;
          end Proc;
 
-         procedure Find_Return is new Traverse_Proc (Process => Proc);
+         procedure Find_Return is new Traverse_More_Proc (Process => Proc);
 
          V           : Flow_Graphs.Vertex_Id;
          Faux_Exit_V : Flow_Graphs.Vertex_Id;
@@ -2591,7 +2591,7 @@ package body Flow.Control_Flow_Graph is
             end case;
          end Proc_Search;
 
-         function Do_Search is new Traverse_Func (Proc_Search);
+         function Do_Search is new Traverse_More_Func (Proc_Search);
          --  Returns Abandon when Proc_Search returns it for any of the
          --  traversed nodes.
 
@@ -3037,7 +3037,7 @@ package body Flow.Control_Flow_Graph is
             return OK;
          end Proc_Search;
 
-         procedure Rec_Inner is new Traverse_Proc (Proc_Search);
+         procedure Rec_Inner is new Traverse_More_Proc (Proc_Search);
 
          ---------
          -- Rec --
@@ -4303,7 +4303,7 @@ package body Flow.Control_Flow_Graph is
       end Add_Loop_Entry_Reference;
 
       procedure Add_Loop_Entry_References is new
-        Traverse_Proc (Add_Loop_Entry_Reference);
+        Traverse_More_Proc (Add_Loop_Entry_Reference);
 
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;

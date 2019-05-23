@@ -364,7 +364,7 @@ package body SPARK_Atree is
       end Search_Old_Or_Loop_Entry;
 
       function Search_Attrs is new
-        Atree.Traverse_Func (Search_Old_Or_Loop_Entry);
+        Sem_Util.Traverse_More_Func (Search_Old_Or_Loop_Entry);
 
    --  Start of processing for Expression_Contains_Old_Or_Loop_Entry
 
