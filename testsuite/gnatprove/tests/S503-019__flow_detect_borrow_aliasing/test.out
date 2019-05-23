@@ -1,0 +1,5 @@
+p.adb:5:04: info: initialization of "X" proved
+p.adb:7:20: warning: unused initial value of "Y"
+p.adb:8:11: info: data dependencies proved
+p.adb:10:07: warning: unused variable "Tmp"
+p.adb:12:13: warning: unused assignment
