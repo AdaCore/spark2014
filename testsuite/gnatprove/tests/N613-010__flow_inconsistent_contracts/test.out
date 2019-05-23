@@ -1,3 +1,3 @@
 foo.adb:8:09: info: flow dependencies proved
-foo.adb:11:07: high: "G" must be listed in the Depends aspect of "P" (SPARK RM 6.1.4(13))
+foo.adb:11:07: high: "G" must be listed in the Depends aspect of "P" (SPARK RM 6.1.4(14))
 foo.adb:14:04: warning: analyzing unreferenced procedure "Test_01"

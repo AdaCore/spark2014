@@ -5,10 +5,10 @@ test.adb:27:23: info: overflow check proved (CVC4: 1 VC)
 test.adb:70:14: medium: overflow check might fail [possible explanation: subprogram at test.ads:22 should mention X and Z in a precondition]
 test.adb:95:16: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]
 test.adb:95:20: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]
-test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(13))
+test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(14))
 test.adb:105:14: medium: overflow check might fail [possible explanation: subprogram at test.ads:40 should mention X and Y in a precondition]
 test.adb:105:18: medium: overflow check might fail [possible explanation: subprogram at test.ads:40 should mention X and Y in a precondition]
-test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(13))
+test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(14))
 test.ads:10:12: info: flow dependencies proved
 test.ads:12:54: info: initialization of "Z" proved
 test.ads:15:24: medium: missing self-dependency "Y => Y"

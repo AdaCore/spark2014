@@ -1,5 +1,5 @@
-p.ads:6:51: medium: export "PO" must not depend on Proof_In "X" (SPARK RM 6.1.4(17))
+p.ads:6:51: medium: export "PO" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 q.ads:9:21: info: initialization of "Y" proved
-q.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(17))
+q.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 r.ads:9:21: info: initialization of "Y" proved
-r.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(17))
+r.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))

@@ -77,7 +77,7 @@ levels.adb:24:12: info: flow dependencies proved
 levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:37:27: info: refined post proved (CVC4: 1 VC)
-levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 levels.adb:45:27: medium: refined postcondition might fail, cannot prove Read_Partial_0 + 1 > X0
 levels.adb:45:42: medium: overflow check might fail
 levels.adb:52:23: info: initialization of "A" proved

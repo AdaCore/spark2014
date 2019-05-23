@@ -2,10 +2,10 @@ foo.adb:12:22: info: assertion proved (CVC4: 1 VC)
 foo.ads:11:09: info: data dependencies proved
 foo.ads:13:23: info: postcondition proved (CVC4: 1 VC)
 foo.ads:19:14: info: postcondition proved (CVC4: 1 VC)
-null_global.ads:9:27: high: "C" must be listed in the Global aspect of "Check_F1" (SPARK RM 6.1.4(13)), in inherited contract at null_global.ads:15
+null_global.ads:9:27: high: "C" must be listed in the Global aspect of "Check_F1" (SPARK RM 6.1.4(14)), in inherited contract at null_global.ads:15
 null_global.ads:16:07: "C" is referenced in Pre but missing from the Global
 null_global.ads:16:07: info: data dependencies proved
 null_global.ads:19:07: "C" is referenced in Pre but missing from the Global
 null_global.ads:19:07: info: data dependencies proved
-null_global.ads:20:27: high: "C" must be listed in the Global aspect of "Check_F2" (SPARK RM 6.1.4(13))
+null_global.ads:20:27: high: "C" must be listed in the Global aspect of "Check_F2" (SPARK RM 6.1.4(14))
 gnatprove: error during flow analysis and proof

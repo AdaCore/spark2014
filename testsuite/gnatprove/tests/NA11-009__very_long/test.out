@@ -63,7 +63,7 @@ very_longs.adb:425:10: info: initialization of "Overflow_Mask" proved
 very_longs.adb:439:11: "Dividend" is referenced in Pre but missing from the Global
 very_longs.adb:439:11: info: data dependencies proved
 very_longs.adb:440:11: info: flow dependencies proved
-very_longs.adb:441:38: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(13))
+very_longs.adb:441:38: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(14))
 very_longs.adb:475:11: info: data dependencies proved
 very_longs.adb:475:56: info: initialization of "Current_Borrow" proved
 very_longs.adb:476:11: info: flow dependencies proved

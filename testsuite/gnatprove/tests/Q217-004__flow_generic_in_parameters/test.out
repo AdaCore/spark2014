@@ -6,8 +6,8 @@ foo.adb:7:23: info: initialization of "X" proved, in instantiation at foo.adb:24
 foo.adb:7:45: info: data dependencies proved, in instantiation at foo.adb:23
 foo.adb:7:45: info: data dependencies proved, in instantiation at foo.adb:24
 foo.adb:7:45: info: data dependencies proved, in instantiation at foo.adb:25
-foo.adb:13:15: high: constant with variable input "V" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(13)), in instantiation at foo.adb:23
-foo.adb:13:15: high: constant with variable input "V" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(13)), in instantiation at foo.adb:25
+foo.adb:13:15: high: constant with variable input "V" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(14)), in instantiation at foo.adb:23
+foo.adb:13:15: high: constant with variable input "V" must be listed in the Global aspect of "Init" (SPARK RM 6.1.4(14)), in instantiation at foo.adb:25
 foo.adb:16:16: high: constant with variable input "V" must be mentioned as an input of the Initializes aspect of "Inst_3" (SPARK RM 7.1.5(11)), in instantiation at foo.adb:25
 foo.adb:23:34: actual for formal object with mode in cannot depend on variable input "O_Var" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

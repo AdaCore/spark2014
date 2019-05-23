@@ -3,12 +3,12 @@ main.adb:1:35: info: data dependencies proved
 main.adb:4:09: info: data dependencies proved
 main.adb:7:09: info: data dependencies proved
 main.adb:12:39: info: data dependencies proved
-main.adb:12:59: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+main.adb:12:59: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 main.adb:13:22: medium: precondition might fail, cannot prove X = 0
 main.adb:17:38: info: data dependencies proved
 main.adb:18:22: medium: precondition might fail, cannot prove X = 0
 main.adb:23:25: info: data dependencies proved
-main.adb:23:45: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+main.adb:23:45: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 main.adb:25:07: medium: precondition might fail, cannot prove X = 0
 main.adb:28:24: info: data dependencies proved
 main.adb:30:07: medium: precondition might fail, cannot prove X = 0

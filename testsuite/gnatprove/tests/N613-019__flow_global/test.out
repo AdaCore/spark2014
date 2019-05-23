@@ -1,5 +1,5 @@
-client.adb:7:07: high: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-client.adb:7:12: high: "X" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-client.adb:8:07: high: "Z" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
+client.adb:7:07: high: "Y" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
+client.adb:7:12: high: "X" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
+client.adb:8:07: high: "Z" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
 client.adb:8:14: medium: overflow check might fail
 client.ads:4:21: info: data dependencies proved

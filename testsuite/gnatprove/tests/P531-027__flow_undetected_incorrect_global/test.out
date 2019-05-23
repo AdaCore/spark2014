@@ -1,12 +1,12 @@
-bar.adb:8:10: high: "Foo.State" must be a global output of "Get_Data" (SPARK RM 6.1.4(16))
+bar.adb:8:10: high: "Foo.State" must be a global output of "Get_Data" (SPARK RM 6.1.4(17))
 bar.adb:16:09: info: data dependencies proved
 bar.adb:16:30: info: initialization of "G" proved
-bar.adb:27:09: high: "G" must be a global output of "Test_01" (SPARK RM 6.1.4(16))
-bar.adb:36:07: high: "G" must be a global output of "Test_02" (SPARK RM 6.1.4(16))
+bar.adb:27:09: high: "G" must be a global output of "Test_01" (SPARK RM 6.1.4(17))
+bar.adb:36:07: high: "G" must be a global output of "Test_02" (SPARK RM 6.1.4(17))
 foo.ads:3:25: warning: no procedure exists that can initialize abstract state "Foo.State"
 nested.adb:3:42: info: flow dependencies proved
 nested.adb:4:29: info: data dependencies proved
-nested.adb:17:09: high: "P1.S1" must be a global output of "Test_01" (SPARK RM 6.1.4(16))
+nested.adb:17:09: high: "P1.S1" must be a global output of "Test_01" (SPARK RM 6.1.4(17))
 nested.adb:20:27: info: data dependencies proved
 nested.adb:21:41: info: initialization of "P2.S2" proved
-nested.adb:35:12: high: "P2.S2" must be a global output of "Foo" (SPARK RM 6.1.4(16))
+nested.adb:35:12: high: "P2.S2" must be a global output of "Foo" (SPARK RM 6.1.4(17))

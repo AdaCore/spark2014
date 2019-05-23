@@ -35,9 +35,9 @@ test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
 test.adb:223:14: info: data dependencies proved
 test.adb:223:35: info: initialization of "S" proved
 test.adb:228:22: info: initialization of "X" proved
-test.adb:233:12: high: "S" must be a global output of "Direct_Update_Bad" (SPARK RM 6.1.4(16))
-test.adb:245:10: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(16))
-test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(16))
+test.adb:233:12: high: "S" must be a global output of "Direct_Update_Bad" (SPARK RM 6.1.4(17))
+test.adb:245:10: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(17))
+test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(17))
 test.adb:265:38: info: initialization of "Global_B" constituent of "State" proved
 test.adb:275:46: info: initialization of "Local_Y" proved
 test.adb:276:09: info: data dependencies proved

@@ -2,6 +2,6 @@ bar.adb:5:14: warning: subprogram "Test_01" has no effect
 baz.ads:4:04: info: flow dependencies proved
 baz.ads:4:25: high: Public_G must be initialized at elaboration
 baz.ads:7:04: high: "S" is not initialized in "Baz"
-foo.adb:9:12: high: "G" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-foo.adb:15:27: high: "G" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(13))
-foo.adb:18:61: high: "G" must be listed in the Global aspect of "E" (SPARK RM 6.1.4(13))
+foo.adb:9:12: high: "G" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
+foo.adb:15:27: high: "G" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(14))
+foo.adb:18:61: high: "G" must be listed in the Global aspect of "E" (SPARK RM 6.1.4(14))

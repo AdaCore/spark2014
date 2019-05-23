@@ -1,6 +1,6 @@
 no_return_illegal.adb:11:07: medium: exception might be raised
 no_return_illegal.adb:17:10: medium: call to nonreturning subprogram might be executed
-no_return_illegal.adb:18:12: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(16))
+no_return_illegal.adb:18:12: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(17))
 no_return_illegal.adb:18:17: info: overflow check proved (CVC4: 1 VC)
 no_return_illegal.adb:25:10: medium: call to nonreturning subprogram might be executed
 no_return_illegal.adb:27:17: info: overflow check proved (CVC4: 1 VC)

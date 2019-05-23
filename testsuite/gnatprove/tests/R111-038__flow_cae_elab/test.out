@@ -1,2 +1,2 @@
-p.adb:1:14: high: subprogram "Fun" with global constant after elaboration "CAE" must not be called during elaboration of "P" (SPARK RM 6.1.4(20))
+p.adb:1:14: high: subprogram "Fun" with global constant after elaboration "CAE" must not be called during elaboration of "P" (SPARK RM 6.1.4(21))
 p.ads:4:46: info: data dependencies proved

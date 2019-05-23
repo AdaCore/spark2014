@@ -1,4 +1,4 @@
-test.ads:8:14: high: "Val" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(13))
+test.ads:8:14: high: "Val" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14))
 test.ads:9:11: "Val" is referenced in expression function but missing from the Global
 test.ads:9:11: "Val" is referenced in expression function but missing from the Global
 test.ads:9:11: info: data dependencies proved

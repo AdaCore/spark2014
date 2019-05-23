@@ -1,3 +1,3 @@
 pack.adb:11:14: medium: overflow check might fail (e.g. when A = 0 and B = -2147483649) [possible explanation: subprogram at pack.ads:6 should mention A in a precondition]
-pack.adb:11:16: high: "B" constituent of "Content" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(13))
+pack.adb:11:16: high: "B" constituent of "Content" must be listed in the Refined_Global aspect of "Update_Content" (SPARK RM 6.1.4(14))
 pack.ads:7:06: info: data dependencies proved

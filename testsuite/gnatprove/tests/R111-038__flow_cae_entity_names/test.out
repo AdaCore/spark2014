@@ -1,2 +1,2 @@
-p.ads:3:14: high: constant after elaboration "F" must not be an output of subprogram "Bar" (SPARK RM 6.1.4(20))
-q.adb:2:11: high: constant after elaboration "p.f" must not be an output of subprogram "Q" (SPARK RM 6.1.4(20))
+p.ads:3:14: high: constant after elaboration "F" must not be an output of subprogram "Bar" (SPARK RM 6.1.4(21))
+q.adb:2:11: high: constant after elaboration "p.f" must not be an output of subprogram "Q" (SPARK RM 6.1.4(21))

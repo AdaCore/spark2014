@@ -1,5 +1,5 @@
 impure_package.adb:7:16: medium: overflow check might fail [possible explanation: subprogram at impure_package.ads:3 should mention X in a precondition]
-impure_package.adb:7:23: high: "Y" must be listed in the Global aspect of "Pure_Function" (SPARK RM 6.1.4(13))
+impure_package.adb:7:23: high: "Y" must be listed in the Global aspect of "Pure_Function" (SPARK RM 6.1.4(14))
 call.adb:10:08: info: data dependencies proved
 call.adb:22:51: medium: precondition might fail, cannot prove X > 0.0
 call.adb:22:51: medium: range check might fail

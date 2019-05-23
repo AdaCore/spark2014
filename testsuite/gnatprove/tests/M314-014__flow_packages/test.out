@@ -17,13 +17,13 @@ ic.adb:49:34: high: "Test_01.X" constituent of "IC.State_A" must be mentioned as
 ic.adb:49:34: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
 ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
 ic.adb:57:09: info: data dependencies proved
-ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
+ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(14))
 ic.adb:108:06: "Test_02.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
 ic.adb:108:06: info: data dependencies proved
-ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
+ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(14))
 ic.adb:116:06: "Test_01.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
 ic.adb:116:06: info: data dependencies proved
-ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
+ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(14))
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
 ic.ads:3:08: info: flow dependencies proved
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved

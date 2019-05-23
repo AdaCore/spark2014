@@ -690,7 +690,7 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-               when Kind_Subprogram   => "6.1.4(13)",
+               when Kind_Subprogram   => "6.1.4(14)",
                when Kind_Package
                   | Kind_Package_Body => "7.1.5(11)",
                when Kind_Task         => raise Program_Error);
@@ -3004,7 +3004,7 @@ package body Flow.Analysis is
                               Path     => Path,
                               Msg      => "export & must not depend " &
                                           "on Proof_In &",
-                              SRM_Ref  => "6.1.4(17)",
+                              SRM_Ref  => "6.1.4(18)",
                               N        => Find_Global (FA.Spec_Entity,
                                                        Input),
                               F1       => Output,
@@ -3136,7 +3136,7 @@ package body Flow.Analysis is
               (FA       => FA,
                Msg      => "& must be a Proof_In as it is only " &
                            "used in assertions",
-               SRM_Ref  => "6.1.4(17)",
+               SRM_Ref  => "6.1.4(18)",
                N        => Find_Global (FA.Spec_Entity,
                                         Direct_Mapping_Id (Input)),
                F1       => Direct_Mapping_Id (Input),
@@ -4791,7 +4791,7 @@ package body Flow.Analysis is
 
       procedure Check_Subprogram (E : Entity_Id);
       --  Inspects globals of subprogram E to detect violations of SPARK RM
-      --  6.1.4(20).
+      --  6.1.4(21).
 
       ----------------------
       -- Check_Subprogram --
@@ -4799,7 +4799,7 @@ package body Flow.Analysis is
 
       procedure Check_Subprogram (E : Entity_Id) is
          procedure Emit_Check (Globals : Flow_Id_Sets.Set);
-         --  Emit check when SRM 6.1.4(20) is violated
+         --  Emit check when SRM 6.1.4(21) is violated
 
          ----------------
          -- Emit_Check --
@@ -4821,7 +4821,7 @@ package body Flow.Analysis is
                         F1       => Direct_Mapping_Id (E),
                         F2       => Global,
                         F3       => Direct_Mapping_Id (FA.Spec_Entity),
-                        SRM_Ref  => "6.1.4(20)",
+                        SRM_Ref  => "6.1.4(21)",
                         Tag      => Not_Constant_After_Elaboration);
 
                   else
@@ -4834,7 +4834,7 @@ package body Flow.Analysis is
                         --  ??? This error location should be improved
                         F1       => Global,
                         F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                        SRM_Ref  => "6.1.4(20)",
+                        SRM_Ref  => "6.1.4(21)",
                         Tag      => Not_Constant_After_Elaboration);
                   end if;
                end if;

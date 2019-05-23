@@ -46,8 +46,8 @@ foo.adb:140:09: info: flow dependencies proved
 foo.adb:149:09: info: data dependencies proved
 foo.adb:150:09: info: flow dependencies proved
 foo.adb:154:21: high: "B" is not initialized
-function_depends_on_state.adb:23:34: medium: "B" constituent of "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-function_depends_on_state.adb:23:40: medium: "D" constituent of "S2" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+function_depends_on_state.adb:23:34: medium: "B" constituent of "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+function_depends_on_state.adb:23:40: medium: "D" constituent of "S2" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 function_depends_on_state.adb:28:22: medium: assertion might fail, cannot prove B = D [possible explanation: subprogram at function_depends_on_state.ads:14 should mention B and D in a precondition]
 function_depends_on_state.ads:4:08: info: flow dependencies proved
 function_depends_on_state.ads:7:11: info: data dependencies proved

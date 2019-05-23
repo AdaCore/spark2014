@@ -1,5 +1,5 @@
 package_1.adb:29:12: info: data dependencies proved
-package_1.adb:29:34: medium: "State_Var_2" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+package_1.adb:29:34: medium: "State_Var_2" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 package_1.adb:32:22: medium: postcondition might fail, cannot prove (Invariant)
 package_1.adb:35:37: medium: overflow check might fail
 package_1.adb:39:07: info: precondition proved (CVC4: 1 VC)

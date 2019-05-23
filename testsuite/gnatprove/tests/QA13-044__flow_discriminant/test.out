@@ -1,6 +1,6 @@
 p.adb:55:14: "Input" is referenced in Pre but missing from the Global
 p.adb:55:14: info: data dependencies proved
-p.adb:56:29: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+p.adb:56:29: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 p.ads:6:11: info: flow dependencies proved
 p.ads:9:11: info: flow dependencies proved
 p.ads:12:11: info: flow dependencies proved
