@@ -173,15 +173,6 @@ package body Flow.Analysis.Sanity is
                         Expand_Synthesized_Constants => True));
       --  Wrapper around Get_Variables
 
-      function Variables (L : List_Id) return Flow_Id_Sets.Set
-      is
-        (Get_Variables (L,
-                        Scope                        => FA.B_Scope,
-                        Fold_Functions               => False,
-                        Use_Computed_Globals         => True,
-                        Expand_Synthesized_Constants => True));
-      --  As above
-
       -------------------
       -- Check_Actuals --
       -------------------
@@ -235,10 +226,19 @@ package body Flow.Analysis.Sanity is
       begin
          case Nkind (N) is
             when N_Indexed_Component =>
-               Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Expressions (N)),
-                  Err_Desc => "renamed index",
-                  Err_Node => N);
+               declare
+                  Expr : Node_Id := First (Expressions (N));
+
+               begin
+                  loop
+                     Detect_Variable_Inputs
+                       (Flow_Ids => Variables (Expr),
+                        Err_Desc => "renamed index",
+                        Err_Node => Expr);
+                     Next (Expr);
+                     exit when No (Expr);
+                  end loop;
+               end;
 
             when N_Slice =>
                Detect_Variable_Inputs
@@ -297,10 +297,19 @@ package body Flow.Analysis.Sanity is
                end;
 
             when N_Index_Or_Discriminant_Constraint =>
-               Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Constraints (N)),
-                  Err_Desc => "subtype constraint",
-                  Err_Node => N);
+               declare
+                  Constraint : Node_Id := First (Constraints (N));
+
+               begin
+                  loop
+                     Detect_Variable_Inputs
+                       (Flow_Ids => Variables (Constraint),
+                        Err_Desc => "subtype constraint",
+                        Err_Node => Constraint);
+                     Next (Constraint);
+                     exit when No (Constraint);
+                  end loop;
+               end;
 
             when N_Delta_Constraint
                | N_Digits_Constraint
