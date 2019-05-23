@@ -30,6 +30,7 @@ with Xtree_Builders; use Xtree_Builders;
 
 package body Xtree_Sinfo is
 
+   --  See the Makefile for overall behavior information
    procedure Build_AST is
    begin
       Register_Kinds;

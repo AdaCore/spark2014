@@ -25,6 +25,7 @@
 
 package Xtree_Sinfo is
 
+   --  See the Makefile for overall information on how it is executed
    procedure Build_AST;
 
 end Xtree_Sinfo;
