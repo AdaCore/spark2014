@@ -6182,6 +6182,7 @@ package body SPARK_Definition is
             | Pragma_Initial_Condition
             | Pragma_Initializes
             | Pragma_Invariant
+            | Pragma_No_Caching
             | Pragma_Part_Of
             | Pragma_Postcondition
             | Pragma_Precondition
