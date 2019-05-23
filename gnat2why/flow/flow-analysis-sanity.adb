@@ -483,10 +483,21 @@ package body Flow.Analysis.Sanity is
          begin
             case Nkind (N) is
                when N_Range =>
-                  Check_Variable_Inputs
-                    (Flow_Ids => Variables (N),
-                     Err_Desc => "subtype constraint",
-                     Err_Node => N);
+                  declare
+                     Lo : constant Node_Id := Low_Bound (N);
+                     Hi : constant Node_Id := High_Bound (N);
+
+                  begin
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Lo),
+                        Err_Desc => "subtype constraint",
+                        Err_Node => Lo);
+
+                     Check_Variable_Inputs
+                       (Flow_Ids => Variables (Hi),
+                        Err_Desc => "subtype constraint",
+                        Err_Node => Hi);
+                  end;
 
                when N_Range_Constraint =>
                   declare
