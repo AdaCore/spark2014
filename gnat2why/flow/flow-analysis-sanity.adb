@@ -330,129 +330,119 @@ package body Flow.Analysis.Sanity is
       ----------------------------
 
       procedure Check_Type_Declaration (N : Node_Id) is
+         Typ : constant Type_Id := Defining_Identifier (N);
+
       begin
-         declare
-            Typ : constant Type_Id := Defining_Identifier (N);
+         --  Check that the type predicate expression, if present, does not
+         --  have variable inputs. We don't use Has_Predicates because in case
+         --  of a type with a completion will return True both for the type
+         --  declaration and the completion and we don't want to have duplicate
+         --  checks.
 
-         begin
-            --  Check that the type predicate expression, if present, does not
-            --  have variable inputs. We don't use Has_Predicates because in
-            --  case of a type with a completion will return True both for the
-            --  type declaration and the completion and we don't want to have
-            --  duplicate checks.
+         if Present (Get_Pragma (Typ, Pragma_Predicate)) then
+            Detect_Variable_Inputs
+              (Flow_Ids =>
+                 Variables
+                   (Get_Expr_From_Return_Only_Func
+                        (Predicate_Function (Typ))),
+               Err_Desc => "predicate",
+               Err_Node => Typ);
+         end if;
 
-            if Present (Get_Pragma (Typ, Pragma_Predicate)) then
+         --  Check that the type invariant expression, if present, does not
+         --  have variable inputs. Has_Invariants_In_SPARK operates on the
+         --  public view of a type and therefore we call it on private type
+         --  declarations or extensions.
+
+         if Nkind (N) in N_Private_Type_Declaration
+                       | N_Private_Extension_Declaration
+           and then Has_Invariants_In_SPARK (Typ)
+         then
+            declare
+               Expr : constant Node_Id :=
+                 Get_Expr_From_Check_Only_Proc (Invariant_Procedure (Typ));
+
+               Funs : constant Node_Sets.Set :=
+                 Get_Functions (Expr, Include_Predicates => False);
+
+            begin
+               --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
+
                Detect_Variable_Inputs
-                 (Flow_Ids =>
-                    Variables
-                      (Get_Expr_From_Return_Only_Func
-                         (Predicate_Function (Typ))),
-                  Err_Desc => "predicate",
-                  Err_Node => Typ);
-            end if;
+                 (Flow_Ids => Variables (Expr),
+                  Err_Desc => "invariant",
+                  Err_Node => Full_View (Typ));
 
-            --  Check that the type invariant expression, if present, does not
-            --  have variable inputs. Has_Invariants_In_SPARK operates on the
-            --  public view of a type and therefore we use call it on private
-            --  type declarations or extensions.
+               --  Check 7.3.2(5) (no calls to boundary subprograms)
 
-            if Nkind (N) in N_Private_Type_Declaration
-                          | N_Private_Extension_Declaration
-              and then Has_Invariants_In_SPARK (Typ)
-            then
-
-               --  This is the check for 7.3.2(3) [which is really 4.4(2)] and
-               --  the check for 7.3.2(5).
-
-               declare
-                  Expr : constant Node_Id :=
-                    Get_Expr_From_Check_Only_Proc
-                      (Invariant_Procedure (Typ));
-
-                  Funs : constant Node_Sets.Set :=
-                    Get_Functions (Expr, Include_Predicates => False);
-
-               begin
-
-                  --  Check 4.4(2) (no variable inputs)
-
-                  Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Expr),
-                     Err_Desc => "invariant",
-                     Err_Node => Full_View (Typ));
-
-                  --  Check 7.3.2(5) (no calls to boundary subprograms)
-
-                  for F of Funs loop
-                     if Is_Boundary_Subprogram_For_Type (F, Typ) then
-                        Error_Msg_Flow
-                          (FA       => FA,
-                           Msg      =>
-                             "cannot call boundary subprogram & " &
-                             "for type & in its own invariant",
-                           Severity => High_Check_Kind,
-                           N        => Full_View (Typ),
-                           F1       => Direct_Mapping_Id (F),
-                           F2       => Direct_Mapping_Id (Typ),
-                           SRM_Ref  => "7.3.2(5)");
-                     end if;
-                  end loop;
-               end;
-            end if;
-
-            --  Check that the subtype constraint, if present, does not depend
-            --  on variable inputs.
-
-            if Nkind (N) in N_Subtype_Declaration
-                          | N_Full_Type_Declaration
-                          | N_Private_Extension_Declaration
-                and then
-                  (not Is_Internal (Typ)
-                   or else (Nkind (N) = N_Full_Type_Declaration
-                            and then Present (Incomplete_View (N)))
-                   or else Is_Derived_Type (Typ))
-            then
-               declare
-                  S_Indication : Node_Id;
-
-               begin
-                  --  Find the subtype indication
-
-                  case Nkind (N) is
-                     when N_Full_Type_Declaration =>
-                        declare
-                           Typ_Def : constant Node_Id :=
-                             Type_Definition (N);
-
-                        begin
-                           S_Indication :=
-                             (case Nkind (Typ_Def) is
-                                 when N_Derived_Type_Definition =>
-                                    Subtype_Indication (Typ_Def),
-                                 when N_Array_Type_Definition =>
-                                    Subtype_Indication
-                                (Component_Definition (Typ_Def)),
-                                 when others => Empty);
-                        end;
-
-                     when N_Subtype_Declaration
-                        | N_Private_Extension_Declaration
-                        =>
-                        S_Indication := Subtype_Indication (N);
-
-                     when others =>
-                        raise Program_Error;
-                  end case;
-
-                  if Present (S_Indication)
-                    and then Nkind (S_Indication) = N_Subtype_Indication
-                  then
-                     Check_Subtype_Constraints
-                       (Constraint (S_Indication));
+               for F of Funs loop
+                  if Is_Boundary_Subprogram_For_Type (F, Typ) then
+                     Error_Msg_Flow
+                       (FA       => FA,
+                        Msg      =>
+                          "cannot call boundary subprogram & " &
+                          "for type & in its own invariant",
+                        Severity => High_Check_Kind,
+                        N        => Full_View (Typ),
+                        F1       => Direct_Mapping_Id (F),
+                        F2       => Direct_Mapping_Id (Typ),
+                        SRM_Ref  => "7.3.2(5)");
                   end if;
-               end;
-            end if;
-         end;
+               end loop;
+            end;
+         end if;
+
+         --  Check that the subtype constraint, if present, does not depend
+         --  on variable inputs.
+
+         if Nkind (N) in N_Subtype_Declaration
+                      | N_Full_Type_Declaration
+                      | N_Private_Extension_Declaration
+             and then
+               (not Is_Internal (Typ)
+                or else (Nkind (N) = N_Full_Type_Declaration
+                         and then Present (Incomplete_View (N)))
+                or else Is_Derived_Type (Typ))
+         then
+            declare
+               S_Indication : Node_Id;
+
+            begin
+               --  Find the subtype indication
+
+               case Nkind (N) is
+                  when N_Full_Type_Declaration =>
+                     declare
+                        Typ_Def : constant Node_Id := Type_Definition (N);
+
+                     begin
+                        S_Indication :=
+                          (case Nkind (Typ_Def) is
+                              when N_Derived_Type_Definition =>
+                                 Subtype_Indication (Typ_Def),
+                              when N_Array_Type_Definition =>
+                                 Subtype_Indication
+                             (Component_Definition (Typ_Def)),
+                              when others => Empty);
+                     end;
+
+                  when N_Subtype_Declaration
+                     | N_Private_Extension_Declaration
+                  =>
+                     S_Indication := Subtype_Indication (N);
+
+                  when others =>
+                     raise Program_Error;
+               end case;
+
+               if Present (S_Indication)
+                 and then Nkind (S_Indication) = N_Subtype_Indication
+               then
+                  Check_Subtype_Constraints
+                    (Constraint (S_Indication));
+               end if;
+            end;
+         end if;
 
          --  Special case for N_Constrained_Array_Definition. Check that its
          --  subtype constraints do not depend on variable inputs.
@@ -839,8 +829,7 @@ package body Flow.Analysis.Sanity is
                      --  SPARK; SPARK RM 3.7(2).
 
                      when N_Private_Extension_Declaration =>
-                        pragma Assert
-                          (No (Discriminant_Specifications (N)));
+                        pragma Assert (No (Discriminant_Specifications (N)));
 
                      when others =>
                         raise Program_Error;
