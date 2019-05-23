@@ -4,11 +4,11 @@ a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiat
 a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiation at dimensions.ads:380
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
-a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:379
-a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at dimensions.ads:380
+a-ngelfu.ads:127:36: info: division check proved (altergo: 1 VC), in instantiation at dimensions.ads:379
+a-ngelfu.ads:127:36: info: division check proved (altergo: 1 VC), in instantiation at dimensions.ads:380
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at dimensions.ads:379
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at dimensions.ads:380
-challenges.adb:8:37: info: precondition proved (CVC4: 1 VC), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
+challenges.adb:8:37: medium: precondition might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:37: medium: range check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:54: medium: float overflow check might fail, in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
 challenges.adb:8:59: info: float overflow check proved (Interval), in call inlined at challenges.adb:15, in call inlined at challenges.adb:24, in call inlined at challenges.adb:33, in call inlined at challenges.adb:38
