@@ -548,12 +548,17 @@ package body Flow.Analysis.Sanity is
                   declare
                      Var : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
+                     use type Ada.Containers.Count_Type;
+                     --  For equality of Length
+
                      function Is_Protected_Discriminant (F : Flow_Id)
                                                          return Boolean
                      is (Ekind (F.Component.First_Element) = E_Discriminant)
-                     with Pre => Ekind (Get_Direct_Mapping_Id (F)) =
-                                   E_Protected_Type
-                                 and then F.Kind = Record_Field;
+                     with Pre  => Ekind (Get_Direct_Mapping_Id (F)) =
+                                    E_Protected_Type
+                                  and then F.Kind = Record_Field,
+                          Post => (if Is_Protected_Discriminant'Result
+                                   then F.Component.Length = 1);
 
                   begin
                      --  We shall not get internal objects here, because we
