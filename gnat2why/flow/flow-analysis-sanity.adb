@@ -396,8 +396,8 @@ package body Flow.Analysis.Sanity is
          --  on variable inputs.
 
          if Nkind (N) in N_Subtype_Declaration
-                      | N_Full_Type_Declaration
-                      | N_Private_Extension_Declaration
+                       | N_Full_Type_Declaration
+                       | N_Private_Extension_Declaration
              and then
                (not Is_Internal (Typ)
                 or else (Nkind (N) = N_Full_Type_Declaration
@@ -537,7 +537,7 @@ package body Flow.Analysis.Sanity is
                F1       => Entire_Variable (F));
          end Emit_Error;
 
-      --  Start of processing for Check_Variable_Inputs
+      --  Start of processing for Detect_Variable_Inputs
 
       begin
          for F of Flow_Ids loop
@@ -556,10 +556,13 @@ package body Flow.Analysis.Sanity is
                                  and then F.Kind = Record_Field;
 
                   begin
-                     pragma Assert (Nkind (Var) in N_Entity);
+                     --  We shall not get internal objects here, because we
+                     --  call Get_Variables with Expand_Synthesized_Constants
+                     --  parameter set.
+                     pragma Assert (not Is_Internal (F.Node));
 
-                     --  We emit an error if F is a non internal variable. In
-                     --  particular we consider F a variable if is not:
+                     --  We emit an error if F is considered a variable, in
+                     --  particular, when it is not:
                      --  * a bound
                      --  * a constant object
                      --  * a discriminant of a protected type
@@ -573,8 +576,7 @@ package body Flow.Analysis.Sanity is
                                   (Is_Protected_Discriminant (F)
                                    or else
                                    Is_Within_Protected_Function))
-                             or else Is_Constant_Object (Var)
-                             or else Is_Internal (Var))
+                             or else Is_Constant_Object (Var))
                      then
                         Emit_Error (F);
                         Sane := False;
