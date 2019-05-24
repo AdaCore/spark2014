@@ -10609,7 +10609,8 @@ package body Gnat2Why.Expr is
                --  attribute Size.
 
                Has_Type_Prefix : constant Boolean :=
-                 Present (Entity (Var))
+                 Nkind (Var) in N_Has_Entity
+                   and then Present (Entity (Var))
                    and then Is_Type (Entity (Var));
 
             --  Start of processing for Size_Attributes

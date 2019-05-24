@@ -1,0 +1,2 @@
+uc.adb:8:19: high: "X" is not initialized
+uc.adb:8:19: medium: assertion might fail, cannot prove X'Size = Conv(X)'size
