@@ -53,9 +53,9 @@ package body Flow.Analysis.Antialiasing is
 
    Aliasing_Status : Aliasing_Statuses.Map := Aliasing_Statuses.Empty_Map;
 
-   function Check_Range (AL, AH : Node_Id;
-                         BL, BH : Node_Id)
-                         return Non_Obvious_Aliasing_Check_Result;
+   function Check_Ranges (Range_A : Node_Id;
+                          Range_B : Node_Id)
+                          return Non_Obvious_Aliasing_Check_Result;
    --  Checks two ranges for potential overlap
 
    function Aliasing (A,        B        : Node_Id;
@@ -87,13 +87,13 @@ package body Flow.Analysis.Antialiasing is
    --  Updates the aliasing Status only if the Current_Status is worse (in
    --  terms of the ordering given by the type Computed_Aliasing_Result).
 
-   -----------------
-   -- Check_Range --
-   -----------------
+   ------------------
+   -- Check_Ranges --
+   ------------------
 
-   function Check_Range (AL, AH : Node_Id;
-                         BL, BH : Node_Id)
-                         return Non_Obvious_Aliasing_Check_Result
+   function Check_Ranges (Range_A : Node_Id;
+                          Range_B : Node_Id)
+                          return Non_Obvious_Aliasing_Check_Result
    is
       function LT (A, B : Node_Id) return Boolean;
       --  Return true iff A < B
@@ -135,6 +135,11 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean is
         (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
 
+      AL : constant Node_Id := Low_Bound  (Range_A);
+      AH : constant Node_Id := High_Bound (Range_A);
+      BL : constant Node_Id := Low_Bound  (Range_B);
+      BH : constant Node_Id := High_Bound (Range_B);
+
    --  Start of processing for Check_Range
 
    begin
@@ -159,7 +164,7 @@ package body Flow.Analysis.Antialiasing is
          --  We don't know
          return Possible_Aliasing;
       end if;
-   end Check_Range;
+   end Check_Ranges;
 
    --------------
    -- Aliasing --
@@ -525,10 +530,8 @@ package body Flow.Analysis.Antialiasing is
                   end;
 
                when N_Slice =>
-                  case Check_Range (Low_Bound (Discrete_Range (Ptr_A)),
-                                    High_Bound (Discrete_Range (Ptr_A)),
-                                    Low_Bound (Discrete_Range (Ptr_B)),
-                                    High_Bound (Discrete_Range (Ptr_B))) is
+                  case Check_Ranges (Discrete_Range (Ptr_A),
+                                     Discrete_Range (Ptr_B)) is
                      when No_Aliasing =>
                         if Trace_Antialiasing then
                            Write_Str ("   -> slice ");
