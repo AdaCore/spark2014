@@ -1,2 +1,2 @@
-p.ads:4:04: local borrower of an access object is not yet supported
+p.ads:4:04: object of anonymous access type must be declared immediately within a subprogram, entry or block (SPARK RM 3.10(4))
 gnatprove: error during flow analysis and proof

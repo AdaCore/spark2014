@@ -2,8 +2,6 @@ gen.ads:2:09: generic package with External_Axiomatization is not allowed in SPA
 gen.ads:2:09: violation of aspect SPARK_Mode at line 3, instance at my_gen.ads:3
 my_gen.ads:3:01: attribute "Access" is not allowed in SPARK
 my_gen.ads:3:01: instantiation error at gen.ads:8
-my_gen.ads:3:01: instantiation error at gen.ads:8
-my_gen.ads:3:01: local borrower of an access object is not yet supported
 my_gen.ads:3:01: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3
 my_gen.ads:3:09: private part of package with External_Axiomatization is not allowed in SPARK
 my_gen.ads:3:09: violation of aspect SPARK_Mode at gen.ads:3, instance at line 3

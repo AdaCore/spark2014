@@ -3561,6 +3561,11 @@ package body SPARK_Definition is
            and then Is_Access_Type (T)
            and then not Is_Access_Constant (T)
            and then Is_Anonymous_Access_Type (T)
+
+            --  Only issue message on legal declarations. Others are handled in
+            --  ownership checking code in the frontend.
+
+           and then Ownership_Checking.Is_Local_Context (Scope (E))
          then
             Mark_Unsupported ("local borrower of an access object", E);
          end if;
