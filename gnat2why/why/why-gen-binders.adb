@@ -465,7 +465,7 @@ package body Why.Gen.Binders is
                      B.Init.Id :=
                        New_Identifier
                          (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Main.B_Name));
+                          Typ  => Get_Typ (B.Init.Id));
                   end if;
                end;
 
@@ -485,7 +485,7 @@ package body Why.Gen.Binders is
                      B.Init.Id :=
                        New_Identifier
                          (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Main.B_Name));
+                          Typ  => Get_Typ (B.Init.Id));
                   end if;
                end;
 
@@ -518,7 +518,7 @@ package body Why.Gen.Binders is
                      B.Init.Id :=
                        New_Identifier
                          (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Main.B_Name));
+                          Typ  => Get_Typ (B.Init.Id));
                   end if;
                end;
 
@@ -549,7 +549,7 @@ package body Why.Gen.Binders is
                      B.Init.Id :=
                        New_Identifier
                          (Name => Local_Name & "__attr__init",
-                          Typ  => Get_Typ (B.Main.B_Name));
+                          Typ  => Get_Typ (B.Init.Id));
                   end if;
                end;
 
