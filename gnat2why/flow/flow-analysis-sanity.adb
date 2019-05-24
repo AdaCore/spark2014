@@ -609,7 +609,7 @@ package body Flow.Analysis.Sanity is
       begin
          while Present (N) loop
 
-            --  Where component declarations are expected we might also get
+            --  When expecting component declarations we might also get
             --  protected operations, pragmas, representation clauses, etc.
 
             if Nkind (N) = N_Component_Declaration then
@@ -618,33 +618,31 @@ package body Flow.Analysis.Sanity is
                --  Check that the subtype constraint for the component, if
                --  present, does not depend on variable inputs.
 
-               if Present (Subtype_Indication (Component_Definition (N))) then
-                  declare
-                     S_Indication_Mark : constant Node_Id :=
-                       Subtype_Indication (Component_Definition (N));
+               declare
+                  S_Indication_Mark : constant Node_Id :=
+                    Subtype_Indication (Component_Definition (N));
 
-                  begin
-                     case Nkind (S_Indication_Mark) is
-                        --  Subtype either points to a constraint, for example
-                        --  "String (1 .. 10)".
+               begin
+                  case Nkind (S_Indication_Mark) is
+                     --  Subtype either points to a constraint, for example
+                     --  "String (1 .. 10)".
 
-                        when N_Subtype_Indication =>
-                           Check_Subtype_Constraints
-                             (Constraint (S_Indication_Mark));
+                     when N_Subtype_Indication =>
+                        Check_Subtype_Constraints
+                          (Constraint (S_Indication_Mark));
 
-                        --  or to a type, for example "Integer", or
-                        --  "Standard.Integer".
+                     --  or to a type, for example "Integer", or
+                     --  "Standard.Integer".
 
-                        when N_Identifier | N_Expanded_Name =>
-                           pragma Assert
-                             (Is_Type (Entity (S_Indication_Mark)));
+                     when N_Identifier | N_Expanded_Name =>
+                        pragma Assert
+                          (Is_Type (Entity (S_Indication_Mark)));
 
-                        when others =>
-                           raise Program_Error;
+                     when others =>
+                        raise Program_Error;
 
-                     end case;
-                  end;
-               end if;
+                  end case;
+               end;
             end if;
 
             Next (N);
