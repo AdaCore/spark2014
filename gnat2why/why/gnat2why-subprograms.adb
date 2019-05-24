@@ -2557,7 +2557,9 @@ package body Gnat2Why.Subprograms is
 
       --  Translate initial condition of E
 
-      if Present (Init_Cond) then
+      if Present (Init_Cond)
+        and then (No (Body_N) or else Entity_Body_In_SPARK (E))
+      then
          declare
             Expr : constant Node_Id :=
               Expression (First (Pragma_Argument_Associations (Init_Cond)));
