@@ -2339,19 +2339,12 @@ package body Gnat2Why.Expr is
                         --  if the actual is a simple identifier and no
                         --  conversion is needed, it can be translated "as is".
 
-                        --  We don't want Transform_Identifier to generate a
-                        --  deref here, so putting Ref_Allowed to false.
-
                         declare
-                           My_Params : Transformation_Params := Params;
+                           Actual_Binder : constant Item_Type :=
+                             Ada_Ent_To_Why.Element
+                               (Symbol_Table, Entity (Actual));
                         begin
-                           My_Params.Ref_Allowed := False;
-                           Why_Args (Arg_Cnt) :=
-                             Transform_Identifier
-                               (My_Params,
-                                Actual,
-                                Entity (Actual),
-                                Domain => Domain);
+                           Why_Args (Arg_Cnt) := +Actual_Binder.Main.B_Name;
                         end;
 
                      else
@@ -3591,7 +3584,8 @@ package body Gnat2Why.Expr is
               (Left   => +P,
                Right  => New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => New_Init_Attribute_Access (C_Ty, +C_Expr),
+                  Left   => New_Init_Attribute_Access
+                    (C_Ty, +C_Expr, Params.Ref_Allowed),
                   Right  =>
                     (if Has_Default_Aspect (Ty_Ext)
                      or else Default_Initialization
@@ -3720,7 +3714,8 @@ package body Gnat2Why.Expr is
               (Left   => +P,
                Right  => New_Comparison
                  (Symbol => Why_Eq,
-                  Left   => New_Init_Attribute_Access (F_Ty, +F_Expr),
+                  Left   => New_Init_Attribute_Access
+                    (F_Ty, +F_Expr, Params.Ref_Allowed),
                   Right  =>
                     (if Present (Expression (Enclosing_Declaration (E)))
                      or else Default_Initialization
@@ -4161,12 +4156,13 @@ package body Gnat2Why.Expr is
       Ty_Ext    : constant Entity_Id := Retysp (Ty_Spec);
       Init_Expr : constant W_Term_Id :=
         (if Is_Init_Wrapper_Type (Get_Type (+Expr)) then
-           +New_Init_Wrapper_Value_Access (Empty, Ty_Ext, +Expr, EW_Term)
+           +New_Init_Wrapper_Value_Access
+           (Empty, Ty_Ext, +Expr, EW_Term, Params.Ref_Allowed)
          else Expr);
       --  Expression for the first parameter of the predicate call
       Init_Flag : constant W_Term_Id :=
         (if Is_Init_Wrapper_Type (Get_Type (+Expr)) then
-           +New_Init_Attribute_Access (Ty_Ext, +Expr)
+           +New_Init_Attribute_Access (Ty_Ext, +Expr, Params.Ref_Allowed)
          else Initialized);
       --  If initialization is handled by proof, use the initialization flag to
       --  decide whether a component is initialized.
@@ -8983,7 +8979,8 @@ package body Gnat2Why.Expr is
 
                         if Needs_Init_Wrapper_Type (C_Typ) then
                            Is_Init := Pred_Of_Boolean_Term
-                             (+New_Init_Attribute_Access (C_Typ, +Read));
+                             (+New_Init_Attribute_Access
+                                (C_Typ, +Read, Params.Ref_Allowed));
                         end if;
 
                         Read := Insert_Simple_Conversion
@@ -11099,7 +11096,8 @@ package body Gnat2Why.Expr is
                   Name     => Tmp,
                   Def      => Expr,
                   Context  => Boolean_Expr_Of_Pred
-                    (W      => Compute_Is_Initialized (Etype (Var), +Tmp),
+                    (W      => Compute_Is_Initialized
+                         (Etype (Var), +Tmp, Params.Ref_Allowed),
                      Domain => Domain),
                   Typ      => EW_Bool_Type);
             end;
@@ -14688,7 +14686,7 @@ package body Gnat2Why.Expr is
       --  If the init_id field is present, use a wrapper type in split form so
       --  that initialization checks are inserted when necessary.
 
-      if Params.Ref_Allowed and then Init_Id.Present then
+      if Init_Id.Present then
          T := New_Label
            (Ada_Node => Ent,
             Domain   => Domain,

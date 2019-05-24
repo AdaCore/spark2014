@@ -39,16 +39,18 @@ package Why.Gen.Init is
    --  Add declarations for a wrapper type for E in P
 
    function New_Init_Wrapper_Value_Access
-     (Ada_Node : Node_Id;
-      E        : Entity_Id;
-      Name     : W_Expr_Id;
-      Domain   : EW_Domain)
+     (Ada_Node    : Node_Id;
+      E           : Entity_Id;
+      Name        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True)
       return W_Expr_Id;
    --  Access the value of an expression of a wrapper type
 
    function New_Init_Attribute_Access
-     (E    : Entity_Id;
-      Name : W_Expr_Id)
+     (E           : Entity_Id;
+      Name        : W_Expr_Id;
+      Ref_Allowed : Boolean := True)
       return W_Expr_Id;
    --  Access the initialization flag of an expression of a wrapper type
 
@@ -75,8 +77,9 @@ package Why.Gen.Init is
    --  wrapper if any.
 
    function Compute_Is_Initialized
-     (E    : Entity_Id;
-      Name : W_Term_Id)
+     (E           : Entity_Id;
+      Name        : W_Term_Id;
+      Ref_Allowed : Boolean)
       return W_Pred_Id;
    --  Whether Name is initialized. This does not only include the top level
    --  initialization flag of E but also the flags of nested components for

@@ -63,8 +63,9 @@ package body Why.Gen.Init is
    ----------------------------
 
    function Compute_Is_Initialized
-     (E    : Entity_Id;
-      Name : W_Term_Id)
+     (E           : Entity_Id;
+      Name        : W_Term_Id;
+      Ref_Allowed : Boolean)
       return W_Pred_Id
    is
 
@@ -75,7 +76,8 @@ package body Why.Gen.Init is
       function Is_Initialized_For_Comp
         (C_Expr : W_Term_Id; C_Ty : Entity_Id)
          return W_Pred_Id
-      is (Compute_Is_Initialized (E => C_Ty, Name => C_Expr));
+      is (Compute_Is_Initialized
+          (E => C_Ty, Name => C_Expr, Ref_Allowed => Ref_Allowed));
 
       -----------------------------
       -- Is_Initialized_For_Comp --
@@ -87,7 +89,8 @@ package body Why.Gen.Init is
       is
          pragma Unreferenced (E);
       begin
-         return Compute_Is_Initialized (E => C_Ty, Name => C_Expr);
+         return Compute_Is_Initialized
+           (E => C_Ty, Name => C_Expr, Ref_Allowed => Ref_Allowed);
       end Is_Initialized_For_Comp;
 
       function Is_Initialized_For_Array is new Build_Predicate_For_Array
@@ -108,12 +111,13 @@ package body Why.Gen.Init is
            and then Is_Init_Wrapper_Type (Get_Type (+Name))
          then
             P := Pred_Of_Boolean_Term
-              (+New_Init_Attribute_Access (E, +Name));
+              (+New_Init_Attribute_Access (E, +Name, Ref_Allowed));
             Expr := New_Init_Wrapper_Value_Access
-              (Ada_Node => Empty,
-               E        => E,
-               Name     => Expr,
-               Domain   => EW_Term);
+              (Ada_Node    => Empty,
+               E           => E,
+               Name        => Expr,
+               Domain      => EW_Term,
+               Ref_Allowed => Ref_Allowed);
          end if;
 
          --  Initialization of components
@@ -298,7 +302,8 @@ package body Why.Gen.Init is
               (Ada_Node => Ada_Node,
                Left     => New_Located_Assert
                  (Ada_Node => Ada_Node,
-                  Pred     => Compute_Is_Initialized (E, +Tmp),
+                  Pred     => Compute_Is_Initialized
+                    (E, +Tmp, Ref_Allowed => True),
                   Reason   => VC_Initialization_Check,
                   Kind     => EW_Assert),
                Right    => +Tmp),
@@ -333,8 +338,9 @@ package body Why.Gen.Init is
    -------------------------------
 
    function New_Init_Attribute_Access
-     (E    : Entity_Id;
-      Name : W_Expr_Id)
+     (E           : Entity_Id;
+      Name        : W_Expr_Id;
+      Ref_Allowed : Boolean := True)
       return W_Expr_Id
    is
       Field : W_Identifier_Id;
@@ -352,8 +358,12 @@ package body Why.Gen.Init is
                  Get_Entity_Of_Variable (Name));
          begin
             if Ent.Init.Present then
-               return New_Deref (Right => Ent.Init.Id,
-                                 Typ   => EW_Bool_Type);
+               if Ref_Allowed then
+                  return New_Deref (Right => Ent.Init.Id,
+                                    Typ   => EW_Bool_Type);
+               else
+                  return +Ent.Init.Id;
+               end if;
             else
                return +True_Term;
             end if;
@@ -375,10 +385,11 @@ package body Why.Gen.Init is
    -----------------------------------
 
    function New_Init_Wrapper_Value_Access
-     (Ada_Node : Node_Id;
-      E        : Entity_Id;
-      Name     : W_Expr_Id;
-      Domain   : EW_Domain)
+     (Ada_Node    : Node_Id;
+      E           : Entity_Id;
+      Name        : W_Expr_Id;
+      Domain      : EW_Domain;
+      Ref_Allowed : Boolean := True)
       return W_Expr_Id
    is
       Field : W_Identifier_Id;
@@ -407,7 +418,7 @@ package body Why.Gen.Init is
                   Left     => New_Located_Assert
                     (Ada_Node => Ada_Node,
                      Pred     => Pred_Of_Boolean_Term
-                       (+New_Init_Attribute_Access (E, Name)),
+                       (+New_Init_Attribute_Access (E, Name, Ref_Allowed)),
                      Reason   => VC_Initialization_Check,
                      Kind     => EW_Assert),
                   Right    => +Conv);
