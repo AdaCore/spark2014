@@ -1,0 +1,3 @@
+p.adb:9:20: info: initialization of "Z" proved
+p.adb:10:11: info: data dependencies proved
+p.adb:11:11: info: flow dependencies proved
