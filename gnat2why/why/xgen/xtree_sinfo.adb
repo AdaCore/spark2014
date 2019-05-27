@@ -292,6 +292,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Loc_Label, "Sloc", "Source_Ptr");
       New_Field (W_Loc_Label, "Def", "W_Expr", Id_One);
+      New_Field (W_Loc_Label, "Marker", "Symbol", "No_Symbol");
 
       --------------
       -- W_Module --

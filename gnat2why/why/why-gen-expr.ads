@@ -398,8 +398,9 @@ package Why.Gen.Expr is
    --  If Need_Check is True, insert range, null exclusion and predicate checks
 
    function Insert_Cnt_Loc_Label
-     (Ada_Node : Node_Id;
-      E        : W_Expr_Id) return W_Expr_Id;
+     (Ada_Node     : Node_Id;
+      E            : W_Expr_Id;
+      Is_Loop_Head : Boolean := False) return W_Expr_Id;
    --  Return E with a new label for the counterexample location of Ada_Node
 
    function New_Typed_Binding

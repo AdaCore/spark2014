@@ -1793,14 +1793,11 @@ package body Gnat2Why.Counter_Examples is
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
          File                : String;
          Line                : Natural;
-         Line_Cntexmp        : Cntexample_Elt_Lists.List);
+         Line_Cntexmp        : Cntexample_Elt_Lists.List;
+         Is_Previous         : Boolean;
+         LI_Node             : Node_Id);
       --  Pretty prints counterexample model elements at a single source
       --  code location (line).
-
-      function Is_Nul_Counterexample
-        (Cntexmp : Cntexample_File_Maps.Map) return Boolean;
-      --  Determine whether Cntexmp is a "nul" counterexample, where all values
-      --  are nul, which is characterisic of a spurious counterexample.
 
       ------------------------
       -- Create_Pretty_Line --
@@ -1810,7 +1807,9 @@ package body Gnat2Why.Counter_Examples is
         (Pretty_File_Cntexmp : in out Cntexample_Lines;
          File                : String;
          Line                : Natural;
-         Line_Cntexmp        : Cntexample_Elt_Lists.List)
+         Line_Cntexmp        : Cntexample_Elt_Lists.List;
+         Is_Previous         : Boolean;
+         LI_Node             : Node_Id)
       is
          Variables : Variables_Info;
          Pretty_Line_Cntexmp_Arr : Cntexample_Elt_Lists.List;
@@ -1826,45 +1825,17 @@ package body Gnat2Why.Counter_Examples is
             --  Add the counterexample line only if there are some
             --  pretty printed counterexample elements
             if not Pretty_Line_Cntexmp_Arr.Is_Empty then
-               Pretty_File_Cntexmp.Other_Lines.Insert
-                 (Line, Pretty_Line_Cntexmp_Arr);
+               if Is_Previous then
+                  Pretty_File_Cntexmp.Previous_Lines.Insert
+                    (Line, (Line_Cnt => Pretty_Line_Cntexmp_Arr,
+                            Ada_Node => Integer (LI_Node)));
+               else
+                  Pretty_File_Cntexmp.Other_Lines.Insert
+                    (Line, Pretty_Line_Cntexmp_Arr);
+               end if;
             end if;
          end if;
       end Create_Pretty_Line;
-
-      ---------------------------
-      -- Is_Nul_Counterexample --
-      ---------------------------
-
-      function Is_Nul_Counterexample
-        (Cntexmp : Cntexample_File_Maps.Map) return Boolean
-      is
-         function Is_All_Zeros_Line
-           (Line : Cntexample_Elt_Lists.List) return Boolean
-         is
-            (for all Elt of Line => Elt.Val_Str.Nul);
-
-      begin
-         for File_C in Cntexmp.Iterate loop
-            declare
-               Lines_Map : Cntexample_Line_Maps.Map renames
-                 Element (File_C).Other_Lines;
-
-            begin
-               if not Is_All_Zeros_Line (Element (File_C).VC_Line) then
-                  return False;
-               end if;
-
-               for Line_C in Lines_Map.Iterate loop
-                  if not Is_All_Zeros_Line (Lines_Map (Line_C)) then
-                     return False;
-                  end if;
-               end loop;
-            end;
-         end loop;
-
-         return True;
-      end Is_Nul_Counterexample;
 
       --  Local variables
 
@@ -1882,14 +1853,21 @@ package body Gnat2Why.Counter_Examples is
    begin
       for File_C in Remapped_Cntexmp.Iterate loop
          declare
+            Is_Previous         : Boolean;
+            LI_Node             : Node_Id := Empty;
+            Filename            : constant String :=
+              Compute_Filename_Previous (Key (File_C), Is_Previous, LI_Node);
             Pretty_File_Cntexmp : Cntexample_Lines :=
-             Cntexample_Lines'(VC_Line     =>
-                                 Cntexample_Elt_Lists.Empty_List,
-                               Other_Lines =>
-                                 Cntexample_Line_Maps.Empty_Map);
-
-            Filename  : String renames Key (File_C);
-            Lines_Map : Cntexample_Line_Maps.Map renames
+              (if No_Element /= Pretty_Cntexmp.Find (Filename) then
+                  Element (Pretty_Cntexmp.Find (Filename))
+               else
+                  Cntexample_Lines'(VC_Line        =>
+                                      Cntexample_Elt_Lists.Empty_List,
+                                    Other_Lines    =>
+                                      Cntexample_Line_Maps.Empty_Map,
+                                    Previous_Lines =>
+                                      Previous_Line_Maps.Empty_Map));
+            Lines_Map           : Cntexample_Line_Maps.Map renames
               Element (File_C).Other_Lines;
 
          begin
@@ -1898,16 +1876,21 @@ package body Gnat2Why.Counter_Examples is
                  (Pretty_File_Cntexmp,
                   Filename,
                   Cntexample_Line_Maps.Key (Line_C),
-                  Lines_Map (Line_C));
+                  Lines_Map (Line_C),
+                  Is_Previous,
+                  LI_Node);
             end loop;
 
             --  At this point, the information of VC_line is now in the
             --  Other_Lines field because Remap_VC_Info was applied.
             if Is_Ada_File_Name (Filename) and then
-              not Cntexample_Line_Maps.Is_Empty
+              (not Cntexample_Line_Maps.Is_Empty
                 (Pretty_File_Cntexmp.Other_Lines)
+              or else
+                not Previous_Line_Maps.Is_Empty
+                (Pretty_File_Cntexmp.Previous_Lines))
             then
-               Pretty_Cntexmp.Insert (Filename, Pretty_File_Cntexmp);
+               Pretty_Cntexmp.Include (Filename, Pretty_File_Cntexmp);
             end if;
          end;
       end loop;
@@ -1919,6 +1902,8 @@ package body Gnat2Why.Counter_Examples is
       if Is_Nul_Counterexample (Pretty_Cntexmp) then
          Pretty_Cntexmp.Clear;
       end if;
+
+      Remove_Vars.Remove_Extra_Vars (Pretty_Cntexmp);
 
       return Pretty_Cntexmp;
    end Create_Pretty_Cntexmp;
@@ -2443,8 +2428,9 @@ package body Gnat2Why.Counter_Examples is
 
       Remapped_Cntexmp.Insert
         (Key      => VC_File,
-         New_Item => (Other_Lines => Cntexample_Line_Maps.Empty_Map,
-                      VC_Line     => Cntexample_Elt_Lists.Empty_List),
+         New_Item => (Other_Lines    => Cntexample_Line_Maps.Empty_Map,
+                      VC_Line        => Cntexample_Elt_Lists.Empty_List,
+                      Previous_Lines => Previous_Line_Maps.Empty_Map),
          Position => C,
          Inserted => Inserted);
 

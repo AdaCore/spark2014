@@ -94,16 +94,23 @@ package body Why.Images is
       P (O, Img (Name), As_String);
    end P;
 
-   procedure P (O : Output_Id; Value : Source_Ptr) is
+   procedure P
+     (O      : Output_Id;
+      Value  : Source_Ptr;
+      Marker : Symbol := No_Symbol)
+   is
    begin
       if Value > No_Location then
          declare
             File : constant String := SPARK_Util.File_Name (Value);
             Line : constant Physical_Line_Number :=
               Get_Physical_Line_Number (Value);
+            Mark : constant String :=
+              (if Marker = No_Symbol then ""
+               else "'@" & Img (Marker) & "@'");
 
             Sloc_Tag : constant String :=
-              "[#""" & File & """" &
+              "[#""" & Mark & File & """" &
               Physical_Line_Number'Image (Line) & " " &
               "0" & " " &  --  dummy column1 0
               "0" & "]";   --  dummy column2 0

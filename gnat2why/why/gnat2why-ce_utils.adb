@@ -23,8 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Tables; use Gnat2Why.Tables;
-with SPARK_Util;      use SPARK_Util;
+with Ada.Strings.Fixed; use Ada.Strings.Fixed;
+with Atree;
+with Gnat2Why.Tables;   use Gnat2Why.Tables;
+with Nlists;
+with Sinput;            use Sinput;
+with SPARK_Util;        use SPARK_Util;
 
 package body Gnat2Why.CE_Utils is
 
@@ -48,6 +52,52 @@ package body Gnat2Why.CE_Utils is
 
       return False;
    end Compile_Time_Known_And_Constant;
+
+   -------------------------------
+   -- Compute_Filename_Previous --
+   -------------------------------
+
+   function Compute_Filename_Previous (Filename    : String;
+                                       Is_Previous : out Boolean;
+                                       Ada_Node    : in out Node_Id)
+                                       return String
+   is
+
+      Match : constant String := "'@Loop";
+   begin
+      if Filename'Length >= Match'Length and then
+        Filename (Filename'First .. Filename'First + Match'Length - 1) =
+        Match
+      then
+         declare
+            Number_At_Tick : constant Natural :=
+              Index (Source  => Filename (Filename'First + Match'Length ..
+                       Filename'Last),
+                     Pattern => "'");
+         begin
+            Ada_Node :=
+              Get_Entity_Id (False,
+                             Filename (Filename'First + Match'Length ..
+                                   Number_At_Tick - 2));
+            Is_Previous := True;
+            return Filename (Number_At_Tick + 1 .. Filename'Last);
+         end;
+      else
+         Is_Previous := False;
+         return Filename;
+      end if;
+   end Compute_Filename_Previous;
+
+   ------------------
+   -- Convert_Node --
+   ------------------
+
+   function Convert_Node (N : Integer) return Node_Id is
+   begin
+      return Node_Id (N);
+   exception
+      when others => return Empty;
+   end Convert_Node;
 
    -----------------------------
    -- Find_First_Static_Range --
@@ -122,8 +172,10 @@ package body Gnat2Why.CE_Utils is
    begin
       for File_C in Cntexmp.Iterate loop
          declare
-            Lines_Map : Cntexample_Line_Maps.Map renames
-              Element (File_C).Other_Lines;
+            Lines_Map    : Cntexample_Line_Maps.Map renames
+                             Element (File_C).Other_Lines;
+            Previous_Map : Previous_Line_Maps.Map renames
+                             Element (File_C).Previous_Lines;
 
          begin
             if not Is_All_Zeros_Line (Element (File_C).VC_Line) then
@@ -132,6 +184,12 @@ package body Gnat2Why.CE_Utils is
 
             for Line_C in Lines_Map.Iterate loop
                if not Is_All_Zeros_Line (Lines_Map (Line_C)) then
+                  return False;
+               end if;
+            end loop;
+
+            for Line_C in Previous_Map.Iterate loop
+               if not Is_All_Zeros_Line (Previous_Map (Line_C).Line_Cnt) then
                   return False;
                end if;
             end loop;
@@ -189,5 +247,159 @@ package body Gnat2Why.CE_Utils is
                            UI_From_String (Right));
          end;
    end UI_From_String;
+
+   package body Remove_Vars is
+
+      function Get_Line_Encapsulating_Function (A : Node_Id) return Natural
+        with Pre => Nkind (A) = N_Pragma;
+      --  Get the line of the definition of the function in which a
+      --  Loop_Invariant is defined.
+
+      function Get_Line_Encapsulating_Loop (A : Node_Id) return Natural
+        with Pre => Nkind (A) = N_Pragma;
+      --  Get the line of the definition of the directly encapsulating loop of
+      --  a Loop_Invariant.
+
+      procedure Eliminate_Between (Other_Lines : out Cntexample_Line_Maps.Map;
+                                   Previous_Line :
+                                   Cntexample_Elt_Lists.List;
+                                   Node                   : Integer);
+      --  Eliminate the counterexamples variables that are present in
+      --  Previous_Line from Other_Lines. These should have a location between
+      --  the encapsulating function of Node and the encapsulating loop of
+      --  Node. These are known to be duplicates of the Previous_Line.
+
+      ---------------------------------
+      -- Get_Line_Encapsulating_Loop --
+      ---------------------------------
+
+      function Get_Line_Encapsulating_Loop (A : Node_Id) return Natural is
+
+         function Is_Loop_Stmt (N : Node_Id) return Boolean is
+           (Nkind (N) = N_Loop_Statement);
+
+         function Enclosing_Loop_Stmt is new
+           First_Parent_With_Property (Is_Loop_Stmt);
+
+         --  Parent_Node should point to the loop statement
+         Parent_Node : constant Node_Id := Enclosing_Loop_Stmt (A);
+      begin
+         if Nlists.Is_List_Member (Parent_Node) then
+            declare
+               Prev_Parent : constant Node_Id := Nlists.Prev (Parent_Node);
+            begin
+               if Present (Prev_Parent) then
+                  return Natural
+                    (Get_Logical_Line_Number (Sloc (Prev_Parent)));
+               else
+                  --  Loop is the first statement so we try to return just
+                  --  before the N_Handled_Sequence_Of_Statements (to avoid
+                  --  removing data from the loop).
+                  return Natural (Get_Logical_Line_Number
+                                  (Sloc (Atree.Parent (Parent_Node)))) - 1;
+               end if;
+            end;
+         else
+            return Natural (Get_Logical_Line_Number
+                            (Sloc (Atree.Parent (Parent_Node))));
+         end if;
+      exception
+         when others => return 0;
+      end Get_Line_Encapsulating_Loop;
+
+      -------------------------------------
+      -- Get_Line_Encapsulating_Function --
+      -------------------------------------
+
+      function Get_Line_Encapsulating_Function (A : Node_Id) return Natural is
+      begin
+         return Natural (Get_Logical_Line_Number (Sloc
+                         (Directly_Enclosing_Subprogram_Or_Entry (A))));
+      exception
+         when others => return 0;
+      end Get_Line_Encapsulating_Function;
+
+      -----------------------
+      -- Eliminate_Between --
+      -----------------------
+
+      procedure Eliminate_Between (Other_Lines   :
+                                     out Cntexample_Line_Maps.Map;
+                                   Previous_Line :
+                                     Cntexample_Elt_Lists.List;
+                                   Node          : Integer)
+      is
+         Node_LI : constant Node_Id := Convert_Node (Node);
+         B       : constant Natural :=
+           Get_Line_Encapsulating_Function (Node_LI);
+         E       : constant Natural := Get_Line_Encapsulating_Loop (Node_LI);
+         use Cntexample_Elt_Lists;
+         use Cntexample_Line_Maps;
+         New_Lines : Cntexample_Line_Maps.Map := Empty_Map;
+      begin
+         for C in Other_Lines.Iterate loop
+            declare
+               Line_Variables : Cntexample_Elt_Lists.List := Element (C);
+               Line_Number    : Natural renames Key (C);
+            begin
+               if Line_Number >= B and then Line_Number <= E then
+                  for V in Previous_Line.Iterate loop
+                     declare
+                        Cur : Cntexample_Elt_Lists.Cursor :=
+                                Cntexample_Elt_Lists.Find (Line_Variables,
+                                                           Element (V));
+                     begin
+                        if Has_Element (Cur) then
+                           Line_Variables.Delete (Cur);
+                        end if;
+                     end;
+                  end loop;
+               end if;
+               if not Is_Empty (Line_Variables) then
+                  New_Lines.Include (Line_Number, Line_Variables);
+               end if;
+            end;
+         end loop;
+         Other_Lines := New_Lines;
+      end Eliminate_Between;
+
+      -----------------------
+      -- Remove_Extra_Vars --
+      -----------------------
+
+      procedure Remove_Extra_Vars (Cntexmp : in out Cntexample_File_Maps.Map)
+      is
+      --  Here we assume that Create_Pretty_Cntexmp just was used. So, there is
+      --  a complete counterexample with, in particular, Previous_Lines filled
+      --  and other lines all filled.
+      begin
+         for Fcur in Cntexmp.Iterate loop
+            declare
+               File : Cntexample_Lines :=
+                 Cntexample_File_Maps.Element
+                          (Cntexmp,
+                           Cntexample_File_Maps.Key (Fcur));
+               Previous_Loc : Previous_Line_Maps.Map renames
+                                File.Previous_Lines;
+
+            begin
+               for C in Previous_Loc.Iterate loop
+                  declare
+                     Previous_Elt : constant Previous_Line :=
+                       Previous_Loc.Element (Previous_Line_Maps.Key (C));
+                     Node_LI      : constant Integer :=
+                       Previous_Elt.Ada_Node;
+                  begin
+                     Eliminate_Between (File.Other_Lines,
+                                        Previous_Elt.Line_Cnt,
+                                        Node_LI);
+                  end;
+               end loop;
+               Cntexmp.Replace_Element (Fcur, File);
+            end;
+         end loop;
+      end Remove_Extra_Vars;
+
+   end Remove_Vars;
 
 end Gnat2Why.CE_Utils;

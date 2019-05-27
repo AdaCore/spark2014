@@ -218,11 +218,19 @@ def check_counterexamples():
                     return ctx
 
                 if "cntexmp" in msg:
-                    for ff, file_values in msg["cntexmp"].items():
-                        for line, values in file_values.items():
-                            ctx = "  trace at " + ff + ":" + line + " --> " + \
-                                  " and ".join(map(str_elem, values))
-                            msg_list.append(((ff, int(line)), ctx))
+                    for ff, file_value in msg["cntexmp"].items():
+                        if "current" in file_value:
+                            for line, values in file_value["current"].items():
+                                ctx = "  trace at " + ff + ":" + line + \
+                                      " --> " + \
+                                      " and ".join(map(str_elem, values))
+                                msg_list.append(((ff, int(line)), ctx))
+                        if "previous" in file_value:
+                            for line, values in file_value["previous"].items():
+                                ctx = "[PREVIOUS]  trace at " + ff + ":" + \
+                                      line + " --> " + \
+                                      " and ".join(map(str_elem, values))
+                                msg_list.append(((ff, int(line)), ctx))
 
                     # sort the trace elements based on location
                     msg_list.sort(key=location)

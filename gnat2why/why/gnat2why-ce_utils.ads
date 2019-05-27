@@ -38,6 +38,18 @@ package Gnat2Why.CE_Utils is
    --  the keyword constant on its definition. Internally, it calls
    --  Compile_Time_Known_Value_Or_Aggr.
 
+   function Compute_Filename_Previous (Filename    : String;
+                                       Is_Previous : out Boolean;
+                                       Ada_Node    : in out Node_Id)
+                                       return String;
+   --  This computes the filename from the location given. The location can
+   --  be of the form "'@Loop 4200@'filename.adb" in which case it should
+   --  set Is_Previous to true and Ada_Node to the value corresponding to
+   --  the integer in location. The function returns the filename itself.
+
+   function Convert_Node (N : Integer) return Node_Id;
+   --  Convert an integer to Node_Id. Return empty on exception.
+
    procedure Find_First_Static_Range
      (N   : Node_Id;
       Fst : out Uint;
@@ -71,5 +83,15 @@ package Gnat2Why.CE_Utils is
    function UI_From_String (Val : String) return Uint;
    --  Naive computation of a Uint form a string which is the representation of
    --  an integer in base 10.
+
+   package Remove_Vars is
+   --  This package contains the feature that removes duplicates of
+   --  counterexample variables from before the current loop.
+
+      procedure Remove_Extra_Vars (Cntexmp : in out Cntexample_File_Maps.Map);
+      --  Remove the duplicates of Previous_Line in the normal counterexamples
+      --  (those that are before the loop).
+
+   end Remove_Vars;
 
 end Gnat2Why.CE_Utils;

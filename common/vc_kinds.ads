@@ -453,9 +453,12 @@ package VC_Kinds is
                                              "<"          => "<",
                                              "="          => "=");
 
+   function Eq_List (A, B : Cntexample_Elt) return Boolean is
+      (A.Name = B.Name);
+
    package Cntexample_Elt_Lists is new
      Ada.Containers.Doubly_Linked_Lists (Element_Type => Cntexample_Elt,
-                                         "="          => "=");
+                                         "="          => Eq_List);
 
    package Cntexample_Line_Maps is new
      Ada.Containers.Ordered_Maps (Key_Type     => Natural,
@@ -463,10 +466,37 @@ package VC_Kinds is
                                   "<"          => "<",
                                   "="          => Cntexample_Elt_Lists."=");
 
-   type Cntexample_Lines is record
-      VC_Line     : Cntexample_Elt_Lists.List;
-      Other_Lines : Cntexample_Line_Maps.Map;
+   type Previous_Line is record
+      Line_Cnt : Cntexample_Elt_Lists.List;
+      Ada_Node : Integer;  --  Node_Id of the Loop_Invariant
    end record;
+
+   function Eq_previous (A, B : Previous_Line) return Boolean is
+      (Cntexample_Elt_Lists."=" (A.Line_Cnt, B.Line_Cnt));
+
+   package Previous_Line_Maps is new
+     Ada.Containers.Ordered_Maps (Key_Type     => Natural,
+                                  Element_Type => Previous_Line,
+                                  "<"          => "<",
+                                  "="          => Eq_previous);
+
+   type Cntexample_Lines is record
+      VC_Line        : Cntexample_Elt_Lists.List;
+      --  Counterexamples on the VC line
+      Other_Lines    : Cntexample_Line_Maps.Map;
+      --  Counterexamples on all oter lines
+      Previous_Lines : Previous_Line_Maps.Map;
+      --  Additional Counterexamples for the previous lines
+   end record;
+   --  Previous lines is a feature related to loops. For Why3, intuitively, the
+   --  check inside the loop assumes the loop invariant at previous iterations.
+   --  So, when a counterexample appears, it contains the values at "previous
+   --  iteration". These values have their locations duplicated by the VC
+   --  generation exactly at the location of the while line (in Why3). So, what
+   --  has been done here, is to change the location of loops to a recognizable
+   --  one. These counterexamples are generated at these locations in the first
+   --  pass and in the second pass (now), we recognize them to display them
+   --  specially (with "Previous iteration" text).
 
    package Cntexample_File_Maps is new
      Ada.Containers.Indefinite_Ordered_Maps (Key_Type     => String,
