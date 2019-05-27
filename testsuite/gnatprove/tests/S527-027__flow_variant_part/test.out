@@ -1,0 +1,2 @@
+q.ads:5:21: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
