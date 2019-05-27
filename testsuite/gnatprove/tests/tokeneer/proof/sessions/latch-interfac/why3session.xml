@@ -9,7 +9,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="latch-interfac.mlw"/>
-<theory name="Latch__interfac__islocked__subprogram_def" proved="true">
+<theory name="Ada___latch__interfac__islocked__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -19,7 +19,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__interfac__lock__subprogram_def">
+<theory name="Ada___latch__interfac__lock__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -36,7 +36,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Latch__interfac__unlock__subprogram_def">
+<theory name="Ada___latch__interfac__unlock__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">

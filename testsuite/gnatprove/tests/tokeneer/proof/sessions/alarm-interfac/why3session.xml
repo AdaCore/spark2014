@@ -9,7 +9,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="alarm-interfac.mlw"/>
-<theory name="Alarm__interfac__isalarming__subprogram_def" proved="true">
+<theory name="Ada___alarm__interfac__isalarming__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -19,7 +19,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Alarm__interfac__activate__subprogram_def">
+<theory name="Ada___alarm__interfac__activate__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -36,7 +36,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Alarm__interfac__deactivate__subprogram_def">
+<theory name="Ada___alarm__interfac__deactivate__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">

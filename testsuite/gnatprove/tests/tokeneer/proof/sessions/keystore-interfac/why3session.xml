@@ -12,7 +12,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="keystore-interfac.mlw"/>
-<theory name="Keystore__interfac__package_def" proved="true">
+<theory name="Ada___keystore__interfac__package_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -38,7 +38,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__returnvaluet_image__subprogram_def">
+<theory name="Ada___keystore__interfac__returnvaluet_image__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -61,7 +61,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__initialize__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__initialize__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -71,7 +71,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__finalize__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__finalize__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -81,7 +81,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__createobject__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__createobject__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -91,7 +91,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjectsinit__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__findobjectsinit__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -101,7 +101,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjects__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__findobjects__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -111,7 +111,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__findobjectsfinal__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__findobjectsfinal__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -121,7 +121,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestinit__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__digestinit__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -131,7 +131,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestupdate__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__digestupdate__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -141,7 +141,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__digestfinal__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__digestfinal__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -151,7 +151,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__sign__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__sign__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -161,7 +161,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__verify__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__verify__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -171,7 +171,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__getattributevalue__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__getattributevalue__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -181,7 +181,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Keystore__interfac__delete__subprogram_def" proved="true">
+<theory name="Ada___keystore__interfac__delete__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
