@@ -58,54 +58,54 @@ a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.adb:8
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.adb:9
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.adb:7
-a-cofove.ads:288:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:330:73: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:363:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:398:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:444:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:468:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:509:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:574:28: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:574:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:702:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:738:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:836:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
+a-cofove.ads:293:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:335:73: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:368:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:403:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:449:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:473:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:514:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:579:28: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:841:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at bounded.ads:6
 bounded.adb:11:07: info: initialization of "V" proved
 bounded.adb:11:19: info: range check proved (CVC4: 1 VC)
 bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
