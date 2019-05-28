@@ -561,13 +561,10 @@ package body Flow.Analysis.Sanity is
                                    then F.Component.Length = 1);
 
                   begin
-                     --  We shall not get internal objects here, because we
-                     --  call Get_Variables with Expand_Synthesized_Constants
-                     --  parameter set.
-                     pragma Assert (not Is_Internal (F.Node));
+                     pragma Assert (Nkind (Var) in N_Entity);
 
-                     --  We emit an error if F is considered a variable, in
-                     --  particular, when it is not:
+                     --  We emit an error if F is a non internal variable. In
+                     --  particular we consider F a variable if is not:
                      --  * a bound
                      --  * a constant object
                      --  * a discriminant of a protected type
@@ -581,7 +578,8 @@ package body Flow.Analysis.Sanity is
                                   (Is_Protected_Discriminant (F)
                                    or else
                                    Is_Within_Protected_Function))
-                             or else Is_Constant_Object (Var))
+                             or else Is_Constant_Object (Var)
+                             or else Is_Internal (Var))
                      then
                         Emit_Error (F);
                         Sane := False;
