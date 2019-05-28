@@ -1685,14 +1685,33 @@ package body Gnat2Why.Counter_Examples is
                                    (Key      => Attribute,
                                     New_Item => New_Index_Item (Part_Entity));
                               else
-                                 Values.Insert
-                                   (Key      => Attribute,
-                                    New_Item => New_Item (Ent_Ty));
+                                 if Var_Slice_Num <
+                                   String_Split.Slice_Count (Name_Parts)
+                                   and then Slice (Name_Parts, 2) =
+                                   Loop_Entry_Label
+                                 then
+                                    Values.Insert
+                                      (Key      => "'" & Loop_Entry_Label,
+                                       New_Item => New_Item (Ent_Ty));
+                                 else
+                                    Values.Insert
+                                      (Key      => Attribute,
+                                       New_Item => New_Item (Ent_Ty));
+                                 end if;
                               end if;
                            end if;
 
-                           Current_Cnt_Value :=
-                             Values.Element (Attribute);
+                           if Var_Slice_Num <
+                             String_Split.Slice_Count (Name_Parts)
+                             and then Slice (Name_Parts, 2) =
+                             Loop_Entry_Label
+                           then
+                              Current_Cnt_Value :=
+                                Values.Element ("'" & Loop_Entry_Label);
+                           else
+                              Current_Cnt_Value :=
+                                Values.Element (Attribute);
+                           end if;
                         end;
                      end;
                   elsif Is_Attribute then
@@ -1703,6 +1722,10 @@ package body Gnat2Why.Counter_Examples is
                         pragma Assert (Var_Slice_Num = 2);
                         Is_Attribute := False;
                         Current_Cnt_Value := Current_Cnt_Value.Index;
+
+                     elsif Part = Loop_Entry_Label then
+                        Is_Attribute := False;
+                        Ent_Ty := Current_Cnt_Value.Ent_Ty;
 
                      --  Fields of access types do not have node ids, they are
                      --  hanlded as special strings.
@@ -1749,7 +1772,7 @@ package body Gnat2Why.Counter_Examples is
                           Current_Cnt_Value.Fields.Contains (Part_Entity)
                         then
                            Current_Cnt_Value.Fields.Insert
-                          (Part_Entity, New_Item (Ent_Ty));
+                             (Part_Entity, New_Item (Ent_Ty));
                         end if;
 
                         Current_Cnt_Value :=

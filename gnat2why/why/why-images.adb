@@ -549,4 +549,21 @@ package body Why.Images is
       end loop;
    end P;
 
+   procedure P
+     (O         : Output_Id;
+      Value     : String_Sets.Set;
+      As_Labels : Boolean := False) is
+   begin
+      for Name of Value loop
+         if As_Labels then
+            P (O, "[@");
+         end if;
+         P (O, Name);
+         if As_Labels then
+            P (O, "]");
+         end if;
+         P (O, " ");
+      end loop;
+   end P;
+
 end Why.Images;

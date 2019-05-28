@@ -9,7 +9,7 @@ a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
 p.adb:9:36: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F = (1 => 1, others => 2) and Saved = (1 => 2, others => 1))
+p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F'Loop_Entry = (1 => 1, others => 2) and Saved = (1 => 2, others => 1))
 partition_refinement.adb:8:07: info: initialization of "P_Elem" proved
 partition_refinement.adb:8:15: info: initialization of "P_Prime" proved
 partition_refinement.adb:9:07: info: initialization of "P_Prime_Index" proved

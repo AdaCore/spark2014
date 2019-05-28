@@ -320,8 +320,8 @@ package body Gnat2Why.Subprograms is
       (Binder_Type'(Ada_Node => Empty,
                     B_Name   =>
                        New_Identifier
-                      (Name => To_String (WNE_Attr_Tag),
-                       Typ  => EW_Int_Type),
+                      (Name   => To_String (WNE_Attr_Tag),
+                       Typ    => EW_Int_Type),
                     B_Ent    => Null_Entity_Name,
                     Mutable  => False,
                     Labels   => <>));
@@ -2221,7 +2221,8 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function then
          Result_Name :=
            New_Identifier
-             (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
+             (Name  => Name & "__result",
+              Typ   => Type_Of_Node (Etype (E)));
       end if;
 
       Params :=
@@ -3740,7 +3741,8 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) = E_Function then
          Result_Name :=
            New_Identifier
-             (Name => Name & "__result", Typ => Type_Of_Node (Etype (E)));
+             (Name  => Name & "__result",
+              Typ   => Type_Of_Node (Etype (E)));
 
          Result_Var :=
            New_Deref

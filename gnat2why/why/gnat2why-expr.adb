@@ -25,7 +25,9 @@
 
 with Ada.Characters.Handling;        use Ada.Characters.Handling;
 with Ada.Containers;                 use Ada.Containers;
+with Ada.Strings;
 with Ada.Strings.Equal_Case_Insensitive;
+with Ada.Strings.Fixed;              use Ada.Strings.Fixed;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Checks;                         use Checks;
 with Debug;
@@ -6380,6 +6382,16 @@ package body Gnat2Why.Expr is
 
          use Ada_To_Why_Ident;
 
+         Attrs : Common_Containers.String_Sets.Set :=
+                   Common_Containers.String_Sets.Empty_Set;
+         Model_Trace : constant String :=
+           (if Nkind (Expr) in N_Has_Entity then
+               "model_trace:" &
+               Trim (Source => Entity (Expr)'Image,
+                     Side   => Ada.Strings.Left) &
+              "'Loop_Entry"
+            else "");
+
       begin
          pragma Unreferenced (Loop_Id);
 
@@ -6396,10 +6408,15 @@ package body Gnat2Why.Expr is
                Nd  := Empty;
             end if;
 
+            if Model_Trace /= "" then
+               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+            end if;
             Loop_Map.Insert (Key      => Expr,
-                             New_Item => New_Temp_Identifier
-                                           (Typ      => Typ,
-                                            Ada_Node => Nd),
+                             New_Item => New_Generated_Identifier
+                                           (Typ       => Typ,
+                                            Ada_Node  => Nd,
+                                            Base_Name => "loop_entry",
+                                            Attrs     => Attrs),
                              Position => Pos,
                              Inserted => Dummy);
          end if;

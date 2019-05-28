@@ -119,7 +119,7 @@ counterexample expected for check at records.adb:166
 counterexample expected for check at records.adb:195
   trace at records.adb:190 --> X = (Exists => True, The_Pair => (A => 0, B => 1))
   trace at records.adb:195 --> X = (Exists => True, The_Pair => (A => 1, B => 1)) and X'Old = (Exists => True, The_Pair => (A => 0, B => 1))
-  trace at records.adb:199 --> Tmp = 1
+  trace at records.adb:199 --> Tmp = 1 and X = (Exists => True, The_Pair => (A => 0, B => 1))
   trace at records.adb:200 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
   trace at records.adb:201 --> X = (Exists => True, The_Pair => (A => 1, B => 1))
 counterexample expected for check at records.adb:209
@@ -130,12 +130,13 @@ counterexample expected for check at records.adb:209
 counterexample expected for check at records.adb:256
   trace at records.adb:254 --> X = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:256 --> X = (Exists => False, The_Pair => (A => 0, B => 0)) and X'Old = (Exists => False, The_Pair => (A => 1, B => 0))
-  trace at records.adb:263 --> Tmp = 0
+  trace at records.adb:263 --> Tmp = 0 and X = (Exists => False, The_Pair => (A => 1, B => 0))
   trace at records.adb:264 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
   trace at records.adb:265 --> X = (Exists => False, The_Pair => (A => 0, B => 0))
 counterexample expected for check at records.adb:270
   trace at records.adb:268 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
   trace at records.adb:270 --> X = (Exists => False, The_Pair => (A => 0, B => 1)) and X'Old = (Exists => False, The_Pair => (A => 0, B => 1))
+  trace at records.adb:277 --> X = (Exists => False, The_Pair => (A => 0, B => 1))
 counterexample expected for check at records.adb:300
   trace at records.adb:295 --> X = (Exists => True, The_Pair => (A => 4, B => 4))
   trace at records.adb:300 --> X = (Exists => True, The_Pair => (A => 4, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 4, B => 4))

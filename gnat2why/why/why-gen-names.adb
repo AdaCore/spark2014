@@ -36,7 +36,6 @@ with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
 with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
-with Why.Types;           use Why.Types;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Scalars;     use Why.Gen.Scalars;
 
@@ -642,13 +641,15 @@ package body Why.Gen.Names is
    -- New_Identifier --
    --------------------
 
-   function New_Identifier (Ada_Node : Node_Id := Empty;
-                            Name     : String;
-                            Typ      : W_Type_Id := Why_Empty;
-                            Is_Temp  : Boolean := False)
-                            return W_Identifier_Id is
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : String;
+      Typ      : W_Type_Id := Why.Types.Why_Empty;
+      Attrs    : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set)
+      return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Typ, Is_Temp);
+      return New_Identifier (Ada_Node, EW_Term, Name, Typ, Attrs);
    end New_Identifier;
 
    function New_Identifier
@@ -657,10 +658,12 @@ package body Why.Gen.Names is
       Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty;
-      Is_Temp   : Boolean := False) return W_Identifier_Id is
+      Attrs     : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set)
+      return W_Identifier_Id is
    begin
       return New_Identifier
-        (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Is_Temp);
+        (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Attrs);
    end New_Identifier;
 
    function New_Identifier
@@ -668,7 +671,8 @@ package body Why.Gen.Names is
       Domain   : EW_Domain;
       Name     : String;
       Typ      : W_Type_Id := Why_Empty;
-      Is_Temp  : Boolean := False)
+      Attrs    : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set)
       return W_Identifier_Id is
    begin
       return
@@ -677,7 +681,7 @@ package body Why.Gen.Names is
            Domain   => Domain,
            Symb     => NID (Name),
            Typ      => Typ,
-           Is_Temp  => Is_Temp);
+           Attrs    => Attrs);
    end New_Identifier;
 
    function New_Identifier
@@ -687,7 +691,8 @@ package body Why.Gen.Names is
       Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why_Empty;
-      Is_Temp   : Boolean := False)
+      Attrs     : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set)
       return W_Identifier_Id is
    begin
       return
@@ -697,7 +702,7 @@ package body Why.Gen.Names is
                         Namespace => Namespace,
                         Module    => Module,
                         Typ       => Typ,
-                        Is_Temp   => Is_Temp);
+                        Attrs     => Attrs);
    end New_Identifier;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
@@ -716,7 +721,8 @@ package body Why.Gen.Names is
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Infix     : Boolean := False;
-      Is_Temp   : Boolean := False)
+      Attrs     : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set)
       return W_Identifier_Id is
    begin
       return
@@ -728,7 +734,7 @@ package body Why.Gen.Names is
                                               Infix     => Infix,
                                               Module    => Module),
                         Typ      => Typ,
-                        Is_Temp  => Is_Temp);
+                        Labels   => Attrs);
    end New_Identifier;
 
    ---------
@@ -775,12 +781,31 @@ package body Why.Gen.Names is
      (Ada_Node  : Node_Id   := Empty;
       Typ       : W_Type_Id := Why_Empty;
       Base_Name : String    := "") return W_Identifier_Id is
+
+      Temp_Labels : Common_Containers.String_Sets.Set :=
+        Common_Containers.String_Sets.Empty_Set;
+   begin
+      Common_Containers.String_Sets.Insert (Container => Temp_Labels,
+                                            New_Item  => "mlw:proxy_symbol");
+      Common_Containers.String_Sets.Insert (Temp_Labels, "introduced");
+      return New_Identifier (Ada_Node => Ada_Node,
+                             Name     => New_Temp_Identifier (Base_Name),
+                             Typ      => Typ,
+                             Attrs    => Temp_Labels);
+   end New_Temp_Identifier;
+
+   function New_Generated_Identifier
+     (Ada_Node  : Node_Id   := Empty;
+      Typ       : W_Type_Id := Why_Empty;
+      Base_Name : String    := "";
+      Attrs     : Common_Containers.String_Sets.Set) return W_Identifier_Id is
+
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Name     => New_Temp_Identifier (Base_Name),
                              Typ      => Typ,
-                             Is_Temp  => True);
-   end New_Temp_Identifier;
+                             Attrs    => Attrs);
+   end New_Generated_Identifier;
 
    --------------------------
    -- New_Temp_Identifiers --

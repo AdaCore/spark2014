@@ -23,13 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols; use GNATCOLL.Symbols;
-with Snames;           use Snames;
-with SPARK_Util;       use SPARK_Util;
-with Types;            use Types;
-with Why.Ids;          use Why.Ids;
-with Why.Sinfo;        use Why.Sinfo;
-with Why.Types;
+with GNATCOLL.Symbols;  use GNATCOLL.Symbols;
+with Snames;            use Snames;
+with SPARK_Util;        use SPARK_Util;
+with Types;             use Types;
+with Why.Ids;           use Why.Ids;
+with Why.Sinfo;         use Why.Sinfo;
+with Why.Types;         use Why.Types;
+with Common_Containers; use Common_Containers;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
@@ -68,11 +69,12 @@ package Why.Gen.Names is
    function New_Abs (Kind : W_Type_Id) return W_Identifier_Id;
    --  Return the name of the absolute value operator for the given kind
 
-   function New_Identifier (Ada_Node : Node_Id := Empty;
-                            Name     : String;
-                            Typ      : W_Type_Id := Why.Types.Why_Empty;
-                            Is_Temp  : Boolean := False)
-       return W_Identifier_Id;
+   function New_Identifier
+     (Ada_Node : Node_Id := Empty;
+      Name     : String;
+      Typ      : W_Type_Id := Why.Types.Why_Empty;
+      Attrs    : String_Sets.Set := String_Sets.Empty_Set)
+      return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
    function New_Identifier
@@ -81,14 +83,15 @@ package Why.Gen.Names is
       Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
-      Is_Temp   : Boolean := False) return W_Identifier_Id;
+      Attrs     : String_Sets.Set := String_Sets.Empty_Set)
+      return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
       Typ      : W_Type_Id := Why.Types.Why_Empty;
-      Is_Temp  : Boolean := False)
+      Attrs    : String_Sets.Set := String_Sets.Empty_Set)
       return W_Identifier_Id;
 
    function New_Identifier
@@ -98,7 +101,7 @@ package Why.Gen.Names is
       Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
-      Is_Temp   : Boolean := False)
+      Attrs     : String_Sets.Set := String_Sets.Empty_Set)
       return W_Identifier_Id;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id;
@@ -111,7 +114,7 @@ package Why.Gen.Names is
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Infix     : Boolean := False;
-      Is_Temp   : Boolean := False)
+      Attrs     : String_Sets.Set := String_Sets.Empty_Set)
       return W_Identifier_Id;
 
    function New_Temp_Identifier (Base_Name : String := "") return String;
@@ -125,6 +128,12 @@ package Why.Gen.Names is
       Base_Name : String    := "") return W_Identifier_Id;
    --  @param Base_Name optional basis for the name of the temporary
    --  @return a new unique identifier
+
+   function New_Generated_Identifier
+     (Ada_Node  : Node_Id   := Empty;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Base_Name : String    := "";
+      Attrs     : String_Sets.Set) return W_Identifier_Id;
 
    function New_Temp_Identifiers
      (Num : Positive;
@@ -171,6 +180,7 @@ package Why.Gen.Names is
    Is_Null_Label     : constant String := "Is_Null";
    All_Label         : constant String := "All";
    Index_Label       : constant String := "Index";
+   Loop_Entry_Label  : constant String := "Loop_Entry";
 
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"
