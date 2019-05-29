@@ -5039,9 +5039,15 @@ package body SPARK_Definition is
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
 
-            --   Reject general access types
+            --  Reject general access types. We check the underlying type of
+            --  the base type as the base type itself can be private.
+            --  ??? We assume that access subtypes have visibility on the full
+            --  view of their base type or we would have a private subtype
+            --  instead of an access subtype.
 
-            elsif Ekind (Base_Type (E)) = E_General_Access_Type then
+            elsif Ekind (Underlying_Type (Base_Type (E))) =
+              E_General_Access_Type
+            then
                Mark_Violation ("general access type", E);
 
             --  Store the type in the Incomplete_Type map to be marked later.
