@@ -1,0 +1,2 @@
+repro.ads:11:04: info: range check proved (CVC4: 2 VC)
+repro.ads:13:19: info: assertion proved
