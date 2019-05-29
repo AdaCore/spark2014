@@ -144,13 +144,10 @@ package body Flow.Analysis.Sanity is
       --  * a Type_Invariant aspect specification
 
       procedure Detect_Variable_Inputs
-        (Flow_Ids : Flow_Id_Sets.Set;
+        (N        : Node_Id;
          Err_Desc : String;
-         Err_Node : Node_Id)
-      with Pre => (for all F of Flow_Ids => F.Kind in Direct_Mapping
-                                                    | Record_Field
-                                                    | Magic_String);
-      --  Emit error for any member of the Flow_Ids which does NOT denote
+         Err_Node : Node_Id);
+      --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
 
@@ -191,7 +188,7 @@ package body Flow.Analysis.Sanity is
                  and then Constant_Present (Decl)
                then
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Expression (Decl)),
+                    (N        => Expression (Decl),
                      Err_Desc => "actual for formal object with mode in",
                      Err_Node => Decl);
                end if;
@@ -211,7 +208,7 @@ package body Flow.Analysis.Sanity is
       begin
          if Present (Default_Expression) then
             Detect_Variable_Inputs
-              (Flow_Ids => Variables (Default_Expression),
+              (N        => Default_Expression,
                Err_Desc => "default initialization",
                Err_Node => Default_Expression);
          end if;
@@ -232,7 +229,7 @@ package body Flow.Analysis.Sanity is
                begin
                   loop
                      Detect_Variable_Inputs
-                       (Flow_Ids => Variables (Expr),
+                       (N        => Expr,
                         Err_Desc => "renamed index",
                         Err_Node => Expr);
                      Next (Expr);
@@ -242,7 +239,7 @@ package body Flow.Analysis.Sanity is
 
             when N_Slice =>
                Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Discrete_Range (N)),
+                 (N        => Discrete_Range (N),
                   Err_Desc => "renamed slice",
                   Err_Node => Discrete_Range (N));
 
@@ -267,12 +264,12 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Lo),
+                    (N        => Lo,
                      Err_Desc => "subtype constraint",
                      Err_Node => Lo);
 
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Hi),
+                    (N        => Hi,
                      Err_Desc => "subtype constraint",
                      Err_Node => Hi);
                end;
@@ -286,12 +283,12 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Lo),
+                    (N        => Lo,
                      Err_Desc => "subtype constraint",
                      Err_Node => Lo);
 
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Hi),
+                    (N        => Hi,
                      Err_Desc => "subtype constraint",
                      Err_Node => Hi);
                end;
@@ -303,7 +300,7 @@ package body Flow.Analysis.Sanity is
                begin
                   loop
                      Detect_Variable_Inputs
-                       (Flow_Ids => Variables (Constraint),
+                       (N        => Constraint,
                         Err_Desc => "subtype constraint",
                         Err_Node => Constraint);
                      Next (Constraint);
@@ -341,10 +338,8 @@ package body Flow.Analysis.Sanity is
 
          if Present (Get_Pragma (Typ, Pragma_Predicate)) then
             Detect_Variable_Inputs
-              (Flow_Ids =>
-                 Variables
-                   (Get_Expr_From_Return_Only_Func
-                        (Predicate_Function (Typ))),
+              (N        => Get_Expr_From_Return_Only_Func
+                             (Predicate_Function (Typ)),
                Err_Desc => "predicate",
                Err_Node => Typ);
          end if;
@@ -369,7 +364,7 @@ package body Flow.Analysis.Sanity is
                --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
 
                Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Expr),
+                 (N        => Expr,
                   Err_Desc => "invariant",
                   Err_Node => Full_View (Typ));
 
@@ -490,7 +485,7 @@ package body Flow.Analysis.Sanity is
       ---------------------------
 
       procedure Detect_Variable_Inputs
-        (Flow_Ids : Flow_Id_Sets.Set;
+        (N        : Node_Id;
          Err_Desc : String;
          Err_Node : Node_Id)
       is
@@ -540,7 +535,7 @@ package body Flow.Analysis.Sanity is
       --  Start of processing for Detect_Variable_Inputs
 
       begin
-         for F of Flow_Ids loop
+         for F of Variables (N) loop
             case F.Kind is
                when Direct_Mapping
                   | Record_Field
@@ -968,8 +963,8 @@ package body Flow.Analysis.Sanity is
                   begin
                      if Is_Record_Type (Typ) then
                         Detect_Variable_Inputs
-                          (Flow_Ids => Variables
-                             (Get_Expr_From_Return_Only_Func (FA.Spec_Entity)),
+                          (N        => Get_Expr_From_Return_Only_Func
+                                         (FA.Spec_Entity),
                            Err_Desc => "user-defined equality",
                            Err_Node => FA.Spec_Entity);
                      end if;
