@@ -1407,6 +1407,29 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
    end Is_Concurrent_Component_Or_Discr;
 
+   ----------------------------
+   -- Is_Declared_In_Private --
+   ----------------------------
+
+   function Is_Declared_In_Private (E : Entity_Id) return Boolean is
+      Current : Entity_Id := E;
+   begin
+      loop
+         declare
+            Decl : constant Node_Id :=
+              (if Is_Itype (Current) then Associated_Node_For_Itype (Current)
+               else Enclosing_Declaration (Current));
+         begin
+            if In_Private_Declarations (Decl) then
+               return True;
+            end if;
+            Current := Scope (Current);
+            exit when No (Current);
+         end;
+      end loop;
+      return False;
+   end Is_Declared_In_Private;
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------

@@ -5039,7 +5039,7 @@ package body SPARK_Definition is
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
 
-               --   Reject general access types
+            --   Reject general access types
 
             elsif Ekind (Base_Type (E)) = E_General_Access_Type then
                Mark_Violation ("general access type", E);
@@ -5053,6 +5053,15 @@ package body SPARK_Definition is
                   Mark_Unsupported
                     ("incomplete type with deferred full view",
                      Directly_Designated_Type (E));
+                  Mark_Violation (E, From => Directly_Designated_Type (E));
+
+               --  Do not pull types declared in private parts with no
+               --  SPARK_mode to avoid crashes if they are out of SPARK later.
+
+               elsif Is_Declared_In_Private (Directly_Designated_Type (E))
+                 and then
+                   No (SPARK_Pragma_Of_Entity (Directly_Designated_Type (E)))
+               then
                   Mark_Violation (E, From => Directly_Designated_Type (E));
                else
                   Access_To_Incomplete_Types.Append (E);
