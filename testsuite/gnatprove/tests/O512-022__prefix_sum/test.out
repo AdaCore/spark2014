@@ -125,7 +125,7 @@ prefixsum_expanded.adb:113:07: info: initialization of "Saved_A" proved
 prefixsum_expanded.adb:116:27: info: division check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:119:11: info: assertion proved (CVC4: 8 VC)
 prefixsum_expanded.adb:137:13: info: loop invariant initialization proved (CVC4: 11 VC)
-prefixsum_expanded.adb:139:13: medium: loop invariant might fail after first iteration, cannot prove All_Elements_In (A, (4 / Space) * 8 * Maximum)
+prefixsum_expanded.adb:137:13: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 8 VC)
 prefixsum_expanded.adb:139:36: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:139:49: info: range check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:161:10: info: loop variant proved (CVC4: 1 VC)
