@@ -1494,12 +1494,12 @@ package body Flow.Control_Flow_Graph is
             RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
                 (Expression (N),
-                 Map_Root                     => LHS_Root,
-                 Map_Type                     => LHS_Type,
-                 Scope                        => FA.B_Scope,
-                 Fold_Functions               => True,
-                 Use_Computed_Globals         => not FA.Generating_Globals,
-                 Expand_Synthesized_Constants => False);
+                 Map_Root                => LHS_Root,
+                 Map_Type                => LHS_Type,
+                 Scope                   => FA.B_Scope,
+                 Fold_Functions          => True,
+                 Use_Computed_Globals    => not FA.Generating_Globals,
+                 Expand_Internal_Objects => False);
 
          begin
             Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
@@ -3725,13 +3725,13 @@ package body Flow.Control_Flow_Graph is
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
-                    (N                            => Expr,
-                     Map_Root                     => Direct_Mapping_Id (E),
-                     Map_Type                     => Get_Type (E, FA.B_Scope),
-                     Scope                        => FA.B_Scope,
-                     Fold_Functions               => True,
-                     Use_Computed_Globals         => not FA.Generating_Globals,
-                     Expand_Synthesized_Constants => False);
+                    (N                       => Expr,
+                     Map_Root                => Direct_Mapping_Id (E),
+                     Map_Type                => Get_Type (E, FA.B_Scope),
+                     Scope                   => FA.B_Scope,
+                     Fold_Functions          => True,
+                     Use_Computed_Globals    => not FA.Generating_Globals,
+                     Expand_Internal_Objects => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;

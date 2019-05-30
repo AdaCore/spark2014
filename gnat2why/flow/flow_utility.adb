@@ -2082,13 +2082,13 @@ package body Flow_Utility is
    -------------------
 
    type Get_Variables_Context is record
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean;
-      Assume_In_Expression         : Boolean;
-      Expand_Synthesized_Constants : Boolean;
-      Consider_Extensions          : Boolean;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean;
+      Assume_In_Expression    : Boolean;
+      Expand_Internal_Objects : Boolean;
+      Consider_Extensions     : Boolean;
    end record;
 
    function Get_Variables_Internal
@@ -2108,47 +2108,47 @@ package body Flow_Utility is
    -------------------
 
    function Get_Variables
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False;
-      Consider_Extensions          : Boolean := False)
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False;
+      Consider_Extensions     : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                        => Scope,
-         Fold_Functions               => Fold_Functions,
-         Use_Computed_Globals         => Use_Computed_Globals,
-         Reduced                      => Reduced,
-         Assume_In_Expression         => Assume_In_Expression,
-         Expand_Synthesized_Constants => Expand_Synthesized_Constants,
-         Consider_Extensions          => Consider_Extensions);
+        (Scope                   => Scope,
+         Fold_Functions          => Fold_Functions,
+         Use_Computed_Globals    => Use_Computed_Globals,
+         Reduced                 => Reduced,
+         Assume_In_Expression    => Assume_In_Expression,
+         Expand_Internal_Objects => Expand_Internal_Objects,
+         Consider_Extensions     => Consider_Extensions);
 
    begin
       return Get_Variables_Internal (N, Ctx);
    end Get_Variables;
 
    function Get_Variables
-     (L                            : List_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False)
+     (L                       : List_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                        => Scope,
-         Fold_Functions               => Fold_Functions,
-         Use_Computed_Globals         => Use_Computed_Globals,
-         Reduced                      => Reduced,
-         Assume_In_Expression         => Assume_In_Expression,
-         Expand_Synthesized_Constants => Expand_Synthesized_Constants,
-         Consider_Extensions          => False);
+        (Scope                   => Scope,
+         Fold_Functions          => Fold_Functions,
+         Use_Computed_Globals    => Use_Computed_Globals,
+         Reduced                 => Reduced,
+         Assume_In_Expression    => Assume_In_Expression,
+         Expand_Internal_Objects => Expand_Internal_Objects,
+         Consider_Extensions     => False);
 
    begin
       return Get_Variables_Internal (L, Ctx);
@@ -2199,11 +2199,11 @@ package body Flow_Utility is
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
-        (N                            : Node_Id;
-         Scope                        : Flow_Scope;
-         Fold_Functions               : Boolean;
-         Use_Computed_Globals         : Boolean;
-         Expand_Synthesized_Constants : Boolean)
+        (N                       : Node_Id;
+         Scope                   : Flow_Scope;
+         Fold_Functions          : Boolean;
+         Use_Computed_Globals    : Boolean;
+         Expand_Internal_Objects : Boolean)
       return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Selected_Component
                     or else Is_Attribute_Update (N);
@@ -2220,8 +2220,8 @@ package body Flow_Utility is
       --     R'Update (X => N)    False           {R.Y, N}
       --     R'Update (X => N)    True            {R.Y, N}
       --
-      --  Scope, Use_Computed_Globals, Expand_Synthesized_Constants will be
-      --  passed on to Get_Variables if necessary.
+      --  Scope, Use_Computed_Globals, Expand_Internal_Objects will be passed
+      --  on to Get_Variables if necessary.
       --
       --  Get_Variables will be called with Reduced set to False (as this
       --  function should never be called when it's True...).
@@ -2230,11 +2230,10 @@ package body Flow_Utility is
                                       return Flow_Id_Sets.Set
       is (Untangle_Record_Fields
            (N,
-            Scope                        => Ctx.Scope,
-            Fold_Functions               => Ctx.Fold_Functions,
-            Use_Computed_Globals         => Ctx.Use_Computed_Globals,
-            Expand_Synthesized_Constants =>
-              Ctx.Expand_Synthesized_Constants));
+            Scope                   => Ctx.Scope,
+            Fold_Functions          => Ctx.Fold_Functions,
+            Use_Computed_Globals    => Ctx.Use_Computed_Globals,
+            Expand_Internal_Objects => Ctx.Expand_Internal_Objects));
       --  Helper function to call Untangle_Record_Fields with the appropriate
       --  context.
 
@@ -2506,7 +2505,7 @@ package body Flow_Utility is
             --------------------------------------------
 
             when E_Constant =>
-               if Ctx.Expand_Synthesized_Constants
+               if Ctx.Expand_Internal_Objects
                  and then not Comes_From_Source (E)
                then
 
@@ -2891,11 +2890,11 @@ package body Flow_Utility is
       ----------------------------
 
       function Untangle_Record_Fields
-        (N                            : Node_Id;
-         Scope                        : Flow_Scope;
-         Fold_Functions               : Boolean;
-         Use_Computed_Globals         : Boolean;
-         Expand_Synthesized_Constants : Boolean)
+        (N                       : Node_Id;
+         Scope                   : Flow_Scope;
+         Fold_Functions          : Boolean;
+         Use_Computed_Globals    : Boolean;
+         Expand_Internal_Objects : Boolean)
       return Flow_Id_Sets.Set
       is
          function Is_Ignored_Node (N : Node_Id) return Boolean
@@ -2907,11 +2906,11 @@ package body Flow_Utility is
          function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
          is (Get_Variables
              (N,
-              Scope                        => Scope,
-              Fold_Functions               => Fold_Functions,
-              Use_Computed_Globals         => Use_Computed_Globals,
-              Reduced                      => False,
-              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+              Scope                   => Scope,
+              Fold_Functions          => Fold_Functions,
+              Use_Computed_Globals    => Use_Computed_Globals,
+              Reduced                 => False,
+              Expand_Internal_Objects => Expand_Internal_Objects));
 
          M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
@@ -3362,7 +3361,20 @@ package body Flow_Utility is
 
             when N_Identifier | N_Expanded_Name =>
                if Present (Entity (N)) then
-                  Variables.Union (Do_Entity (Entity (N)));
+
+                  --  When detecting variable inputs and seeing an internal
+                  --  variable (which comes from inlining for proof), recurse
+                  --  into the original expression.
+
+                  if Ekind (Entity (N)) = E_Variable
+                    and then Is_Internal (Entity (N))
+                    and then Ctx.Expand_Internal_Objects
+                  then
+                     pragma Assert (Is_Rewrite_Substitution (N));
+                     Variables.Union (Recurse (Original_Node (N)));
+                  else
+                     Variables.Union (Do_Entity (Entity (N)));
+                  end if;
                end if;
 
             --  Within expression, a defining identifier only appears as a
@@ -3417,16 +3429,16 @@ package body Flow_Utility is
                      M : constant Flow_Id_Maps.Map :=
                        Untangle_Record_Assignment
                          (N,
-                          Map_Root                     =>
+                          Map_Root                =>
                             Direct_Mapping_Id (Etype (N)),
-                          Map_Type                     =>
+                          Map_Type                =>
                             Get_Type (N, Ctx.Scope),
-                          Scope                        => Ctx.Scope,
-                          Fold_Functions               => Ctx.Fold_Functions,
-                          Use_Computed_Globals         =>
+                          Scope                   => Ctx.Scope,
+                          Fold_Functions          => Ctx.Fold_Functions,
+                          Use_Computed_Globals    =>
                             Ctx.Use_Computed_Globals,
-                          Expand_Synthesized_Constants =>
-                            Ctx.Expand_Synthesized_Constants);
+                          Expand_Internal_Objects =>
+                            Ctx.Expand_Internal_Objects);
 
                   begin
                      for FS of M loop
@@ -3647,13 +3659,13 @@ package body Flow_Utility is
                                      return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                        => Get_Flow_Scope (Scope_N),
-         Fold_Functions               => False,
-         Use_Computed_Globals         => True,
-         Reduced                      => True,
-         Assume_In_Expression         => True,
-         Expand_Synthesized_Constants => False,
-         Consider_Extensions          => False);
+        (Scope                   => Get_Flow_Scope (Scope_N),
+         Fold_Functions          => False,
+         Use_Computed_Globals    => True,
+         Reduced                 => True,
+         Assume_In_Expression    => True,
+         Expand_Internal_Objects => False,
+         Consider_Extensions     => False);
 
    begin
       return
@@ -4730,14 +4742,14 @@ package body Flow_Utility is
    --------------------------------
 
    function Untangle_Record_Assignment
-     (N                            : Node_Id;
-      Map_Root                     : Flow_Id;
-      Map_Type                     : Entity_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean;
-      Extensions_Irrelevant        : Boolean := True)
+     (N                       : Node_Id;
+      Map_Root                : Flow_Id;
+      Map_Type                : Entity_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Expand_Internal_Objects : Boolean;
+      Extensions_Irrelevant   : Boolean := True)
       return Flow_Id_Maps.Map
    is
       --  !!! Join/Merge need to be able to deal with private parts and
@@ -4746,11 +4758,11 @@ package body Flow_Utility is
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variables
             (N,
-             Scope                        => Scope,
-             Fold_Functions               => Fold_Functions,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Reduced                      => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants))
+             Scope                   => Scope,
+             Fold_Functions          => Fold_Functions,
+             Use_Computed_Globals    => Use_Computed_Globals,
+             Reduced                 => False,
+             Expand_Internal_Objects => Expand_Internal_Objects))
       with Pre => Nkind (N) in N_Subexpr;
       --  Helpful wrapper for calling Get_Variables
 
@@ -4762,15 +4774,15 @@ package body Flow_Utility is
          return Flow_Id_Maps.Map
       is (Untangle_Record_Assignment
             (N,
-             Map_Root                     => Map_Root,
-             Map_Type                     => (if Present (Map_Type)
-                                              then Map_Type
-                                              else Get_Type (N, Scope)),
-             Scope                        => Scope,
-             Fold_Functions               => Fold_Functions,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants,
-             Extensions_Irrelevant        => Ext_Irrelevant))
+             Map_Root                => Map_Root,
+             Map_Type                => (if Present (Map_Type)
+                                         then Map_Type
+                                         else Get_Type (N, Scope)),
+             Scope                   => Scope,
+             Fold_Functions          => Fold_Functions,
+             Use_Computed_Globals    => Use_Computed_Globals,
+             Expand_Internal_Objects => Expand_Internal_Objects,
+             Extensions_Irrelevant   => Ext_Irrelevant))
       with Pre => Nkind (N) in N_Subexpr
                     and then
                   (if not Extensions_Irrelevant

@@ -164,10 +164,10 @@ package body Flow.Analysis.Sanity is
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
         (Get_Variables (N,
-                        Scope                        => FA.B_Scope,
-                        Fold_Functions               => False,
-                        Use_Computed_Globals         => True,
-                        Expand_Synthesized_Constants => True));
+                        Scope                   => FA.B_Scope,
+                        Fold_Functions          => False,
+                        Use_Computed_Globals    => True,
+                        Expand_Internal_Objects => True));
       --  Wrapper around Get_Variables
 
       -------------------
@@ -556,10 +556,13 @@ package body Flow.Analysis.Sanity is
                                    then F.Component.Length = 1);
 
                   begin
-                     pragma Assert (Nkind (Var) in N_Entity);
+                     --  We shall not get internal objects here, because
+                     --  we call Get_Variables with Expand_Internal_Objects
+                     --  parameter set.
+                     pragma Assert (not Is_Internal (F.Node));
 
-                     --  We emit an error if F is a non internal variable. In
-                     --  particular we consider F a variable if is not:
+                     --  We emit an error if F is considered a variable, in
+                     --  particular, when it is not:
                      --  * a bound
                      --  * a constant object
                      --  * a discriminant of a protected type
@@ -573,8 +576,7 @@ package body Flow.Analysis.Sanity is
                                   (Is_Protected_Discriminant (F)
                                    or else
                                    Is_Within_Protected_Function))
-                             or else Is_Constant_Object (Var)
-                             or else Is_Internal (Var))
+                             or else Is_Constant_Object (Var))
                      then
                         Emit_Error (F);
                         Sane := False;
