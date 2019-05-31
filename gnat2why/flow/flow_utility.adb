@@ -2774,7 +2774,7 @@ package body Flow_Utility is
                         LB := Type_Low_Bound (Etype (First_Index (T)));
                         HB := Type_High_Bound (Etype (First_Index (T)));
                      else
-                        pragma Assert (Ekind (T) in Scalar_Kind);
+                        pragma Assert (Is_Scalar_Type (T));
                         LB := Low_Bound (Scalar_Range (T));
                         HB := High_Bound (Scalar_Range (T));
                      end if;
