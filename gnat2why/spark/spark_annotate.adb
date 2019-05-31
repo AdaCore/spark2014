@@ -28,7 +28,6 @@ with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Doubly_Linked_Lists;
 with Aspects;                      use Aspects;
 with Common_Containers;
-with Einfo;                        use Einfo;
 with Errout;                       use Errout;
 with GNAT.Regpat;                  use GNAT.Regpat;
 with Namet;                        use Namet;
@@ -819,7 +818,7 @@ package body SPARK_Annotate is
    ------------------------------
 
    function Scalar_Has_Init_By_Proof (E : Entity_Id) return Boolean is
-     (Ekind (E) in Scalar_Kind
+     (Is_Scalar_Type (E)
       and then Init_Annotations.Contains (Unique_Entity (E)));
 
    --------------------------------------------
