@@ -37,6 +37,7 @@ with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
+with Uintp;                           use Uintp;
 
 with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
@@ -2764,15 +2765,36 @@ package body Flow_Utility is
                | Attribute_Range
             =>
                declare
-                  T  : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
-                  pragma Assert (Nkind (T) in N_Entity);
+                  T : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
+
                   LB : Node_Id;
                   HB : Node_Id;
+                  --  Low and high bounds, respectively
+
+                  Dims  : Pos;
+                  Index : Node_Id;
+                  --  Number of dimensions and index for multi-dimensional
+                  --  arrays.
+
                begin
                   if Is_Constrained (T) then
                      if Is_Array_Type (T) then
-                        LB := Type_Low_Bound (Etype (First_Index (T)));
-                        HB := Type_High_Bound (Etype (First_Index (T)));
+                        if Present (Expressions (N)) then
+                           Dims :=
+                             UI_To_Int (Intval (First (Expressions (N))));
+                           Index := First_Index (T);
+
+                           for J in 1 .. Dims - 1 loop
+                              Next_Index (Index);
+                           end loop;
+
+                           LB := Type_Low_Bound  (Etype (Index));
+                           HB := Type_High_Bound (Etype (Index));
+
+                        else
+                           LB := Type_Low_Bound  (Etype (First_Index (T)));
+                           HB := Type_High_Bound (Etype (First_Index (T)));
+                        end if;
                      else
                         pragma Assert (Is_Scalar_Type (T));
                         LB := Low_Bound (Scalar_Range (T));
