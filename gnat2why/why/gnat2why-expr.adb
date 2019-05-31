@@ -6546,27 +6546,29 @@ package body Gnat2Why.Expr is
       --                         Upd (..., Accn, Expr))));
 
       procedure Shift_Rvalue
-        (N    : in out Node_Id;
-         Expr : in out W_Prog_Id);
-      --  the input triple (N, Expr, Expr_Type) describes an assignment
+        (N           : in out Node_Id;
+         Expr        : in out W_Prog_Id;
+         Last_Access : in out Node_Id);
+      --  the input pair (N, Expr) describes an assignment
       --      N := Expr
       --  where N is the Ada node for some Lvalue of the form
       --    Prefix.Acc1.(...).Acc[n-1].Accn := Expr;
-      --  Expr_Type is the type in which the assignment takes place, ie. the
-      --  type of Expr and of Accn.
-      --  The *output* triple (N, Expr, Expr_Type) corresponds to the same
+      --  The *output* pair (N, Expr) corresponds to the same
       --  assignment, but shifting the Accn to the right side and transforming
       --  it into an update. We obtain
       --    Prefix.Acc1.(...).Acc[n-1] :=
       --         Upd (Prefix.Acc1.(...).Acc[n-1], Accn, Expr)
+      --  Last_Access is used as an accumulator to store the last subexpression
+      --  which is not a conversion in the parents of N.
 
       ------------------
       -- Shift_Rvalue --
       ------------------
 
       procedure Shift_Rvalue
-        (N    : in out Node_Id;
-         Expr : in out W_Prog_Id)
+        (N           : in out Node_Id;
+         Expr        : in out W_Prog_Id;
+         Last_Access : in out Node_Id)
       is
          Typ : Node_Id;
       begin
@@ -6616,6 +6618,8 @@ package body Gnat2Why.Expr is
                | N_Slice
                | N_Explicit_Dereference
             =>
+               Last_Access := N;
+
                declare
                   Prefix_Type : constant W_Type_Id :=
                     Expected_Type_Of_Prefix (Prefix (N));
@@ -6647,9 +6651,10 @@ package body Gnat2Why.Expr is
          end case;
       end Shift_Rvalue;
 
-      Left_Side  : Node_Id   := Lvalue;
-      Right_Side : W_Prog_Id := Expr;
-      Result     : W_Prog_Id := +Void;
+      Left_Side   : Node_Id   := Lvalue;
+      Right_Side  : W_Prog_Id := Expr;
+      Last_Access : Node_Id   := Empty;
+      Result      : W_Prog_Id := +Void;
 
    --  Start of processing for New_Assignment
 
@@ -6661,7 +6666,7 @@ package body Gnat2Why.Expr is
       while Nkind (Left_Side) in N_Type_Conversion
                                | N_Unchecked_Type_Conversion
       loop
-         Shift_Rvalue (Left_Side, Right_Side);
+         Shift_Rvalue (Left_Side, Right_Side, Last_Access);
       end loop;
 
       --  Record attributes of objects are not modified by assignments
@@ -6681,7 +6686,7 @@ package body Gnat2Why.Expr is
       end;
 
       while not (Nkind (Left_Side) in N_Identifier | N_Expanded_Name) loop
-         Shift_Rvalue (Left_Side, Right_Side);
+         Shift_Rvalue (Left_Side, Right_Side, Last_Access);
       end loop;
 
       --  In those cases where the left-hand side is type converted, the type
@@ -6762,6 +6767,12 @@ package body Gnat2Why.Expr is
                   Tmp : constant W_Expr_Id := New_Temp_For_Expr (+Right_Side);
 
                begin
+                  pragma Assert
+                    (No (Last_Access)
+                     or else (Nkind (Last_Access) = N_Selected_Component
+                       and then Ekind (Entity (Selector_Name (Last_Access))) /=
+                         E_Discriminant));
+
                   if Binder.Fields.Present then
                      Result := Sequence
                        (Result, New_Assignment
@@ -6775,7 +6786,11 @@ package body Gnat2Why.Expr is
                            Typ      => Get_Typ (Binder.Fields.Binder.B_Name)));
                   end if;
 
-                  if Binder.Discrs.Present then
+                  --  Discriminants cannot have been updated if the last access
+                  --  was a selected components as discriminants can only be
+                  --  modified when the object is assigned as a whole.
+
+                  if Binder.Discrs.Present and then No (Last_Access) then
                      if Binder.Discrs.Binder.Mutable then
                         Result := Sequence
                           (Result, New_Assignment
@@ -6815,7 +6830,12 @@ package body Gnat2Why.Expr is
                     Etype (Binder.Value.Ada_Node);
                   Tmp        : constant W_Expr_Id :=
                     New_Temp_For_Expr (+Right_Side);
+
                begin
+                  pragma Assert
+                    (No (Last_Access)
+                     or else Nkind (Last_Access) = N_Explicit_Dereference);
+
                   Result := Sequence
                     (Result, New_Assignment
                        (Ada_Node => Ada_Node,
@@ -6828,7 +6848,10 @@ package body Gnat2Why.Expr is
                            E        => Binder_Typ),
                         Typ      => Get_Typ (Binder.Value.B_Name)));
 
-                  if Binder.Mutable then
+                  --  Address and is_null cannot have been updated if the last
+                  --  access was a dereference.
+
+                  if Binder.Mutable and then No (Last_Access) then
                      Result := Sequence
                        ((1 => Result,
                          2 => New_Assignment
