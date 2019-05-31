@@ -2416,10 +2416,13 @@ package body Why.Gen.Arrays is
 
                  2 => New_Comparison
                    (Symbol => Why_Eq,
-                    Left   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                    Left   =>
+                      Insert_Conversion_To_Rep_No_Bool
+                        (Domain,
+                         Get_Array_Attr (Domain => EW_Term,
+                                         Expr   => Left_Arr,
+                                         Attr   => Attribute_First,
+                                         Dim    => I)),
                     Right  => Right_Bounds (2 * I - 1),
                     Domain => Domain),
 
@@ -2427,10 +2430,13 @@ package body Why.Gen.Arrays is
 
                  3 => New_Comparison
                    (Symbol => Why_Eq,
-                    Left   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                    Left   =>
+                      Insert_Conversion_To_Rep_No_Bool
+                        (Domain,
+                         Get_Array_Attr (Domain => EW_Term,
+                                         Expr   => Left_Arr,
+                                         Attr   => Attribute_Last,
+                                         Dim    => I)),
                     Right  => Right_Bounds (2 * I),
                     Domain => Domain)),
               Domain    => Domain);
