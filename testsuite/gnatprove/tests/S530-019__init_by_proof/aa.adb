@@ -1,7 +1,7 @@
 package body AA
   with SPARK_Mode
 is
-   procedure initGlobalsAA(Status : out Natural) is
+   procedure initGlobalsAA (Status : out Natural) is
    begin
       --
       -- make status = 0 = good for now

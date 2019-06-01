@@ -12,10 +12,10 @@ begin
    -- null;
    initGlobalsA(status);
    if status = 0 then
-      UseA(X);
-      UseAA(X);
+      UseA (X);
+      UseAA (X);
 
-      Ada.Text_IO.Put("X = " & X'Image);
-      Ada.Text_IO.Put("  status = " & status'Image & ASCII.CR);
+      Ada.Text_IO.Put ("X = " & X'Image);
+      Ada.Text_IO.Put ("  status = " & status'Image & ASCII.CR);
    end if;
 end Main;

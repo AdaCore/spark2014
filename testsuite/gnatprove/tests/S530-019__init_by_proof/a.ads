@@ -9,7 +9,7 @@ is
    subtype My_Natural is Natural;
    pragma Annotate (GNATprove, Init_By_Proof, My_Natural);
 
-   procedure initGlobalsA(status : out Natural) with
+   procedure initGlobalsA (status : out Natural) with
      Post => (if status = 0 then Global_A_Initalized),
      Global => (Output => (Global_AA, Global_AS));
 
@@ -17,9 +17,8 @@ is
      Pre => Global_A_Initalized,
      Global => (Input => Global_AS);
 
-
 private
-   Global_A        : My_Natural  with Part_Of => Global_AS;
+   Global_A : My_Natural with Part_Of => Global_AS;
 
    --function Global_A_Initalized return Boolean is (Global_A'Valid_Scalars);
 end A;
