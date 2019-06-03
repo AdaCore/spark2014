@@ -781,7 +781,7 @@ package body Flow.Analysis is
                                                                 FA.B_Scope)
                   then
 
-                     --  To check an initial_condition aspect, we make sure
+                     --  To check an Initial_Condition aspect, we make sure
                      --  that all variables mentioned are also mentioned in
                      --  an initializes aspect.
 
