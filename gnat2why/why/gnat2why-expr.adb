@@ -10345,7 +10345,7 @@ package body Gnat2Why.Expr is
                  Retysp (Etype (Var));
                Dim    : constant Uint :=
                  (if Present (Expressions (Expr)) then
-                     Expr_Value (First (Expressions (Expr)))
+                     Intval (First (Expressions (Expr)))
                   else Uint_1);
                Typ    : constant W_Type_Id :=
                  (if Domain = EW_Prog then EW_Int_Type
