@@ -347,9 +347,8 @@ package body Flow.Analysis is
                         Normal_Use);
 
       function Search_Expr (N : Node_Id) return Traverse_Result;
-      --  This function sets First_Use to the given node if it
-      --  contains the variable we're looking for. If not, we abort
-      --  the search.
+      --  Sets First_Use to the given node if it contains the variable we're
+      --  looking for. If not, we abort the search.
 
       -----------------
       -- Search_Expr --
@@ -357,28 +356,32 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) not in N_Subprogram_Call
-                           | N_Entry_Call_Statement
-                           | N_Expanded_Name
-                           | N_Identifier
-                           | N_Selected_Component
+         if Nkind (N) in N_Subprogram_Call
+                       | N_Entry_Call_Statement
+                       | N_Expanded_Name
+                       | N_Identifier
+                       | N_Selected_Component
          then
-            --  Calling Get_Variables can be very slow. Let's only do it on
-            --  nodes that actually make sense to flag up in an check/info
-            --  message from flow; i.e. nodes that describe a
-            --  variable/constant or might use a global.
-            return OK;
-         elsif Get_Variables (N,
+            if Get_Variables (N,
                               Scope                => Scope,
                               Reduced              => not Precise,
                               Assume_In_Expression => False,
                               Fold_Functions       => False,
                               Use_Computed_Globals => True).Contains (Var_Tgt)
-         then
-            First_Use := N;
-            return OK;
+            then
+               First_Use := N;
+               return OK;
+            else
+               return Skip;
+            end if;
+
+         --  Calling Get_Variables can be very slow. Let's only do it on nodes
+         --  that actually make sense to flag up in an check/info message from
+         --  flow; i.e. nodes that describe a variable/constant or might use a
+         --  global.
+
          else
-            return Skip;
+            return OK;
          end if;
       end Search_Expr;
 
