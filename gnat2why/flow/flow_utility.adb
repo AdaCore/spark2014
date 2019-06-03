@@ -2177,7 +2177,7 @@ package body Flow_Utility is
       with Pre => Nkind (E) in N_Entity;
       --  Process the given entity and return the variables associated with it
 
-      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
+      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Attribute_Reference;
       --  Process the given attribute reference. Do not follow children after
       --  calling this.
@@ -2702,11 +2702,11 @@ package body Flow_Utility is
          return Flow_Id_Sets.Empty_Set;
       end Do_Entity;
 
-      ------------------------------
-      -- Do_N_Attribute_Reference --
-      ------------------------------
+      ----------------------------
+      -- Do_Attribute_Reference --
+      ----------------------------
 
-      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
+      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       is
          The_Attribute : constant Attribute_Id :=
            Get_Attribute_Id (Attribute_Name (N));
@@ -2862,7 +2862,7 @@ package body Flow_Utility is
          end if;
 
          return Variables;
-      end Do_N_Attribute_Reference;
+      end Do_Attribute_Reference;
 
       ----------------------------
       -- Untangle_Record_Fields --
@@ -3414,7 +3414,7 @@ package body Flow_Utility is
                end if;
 
             when N_Attribute_Reference =>
-               Variables.Union (Do_N_Attribute_Reference (N));
+               Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
             when N_In | N_Not_In =>
