@@ -12761,38 +12761,42 @@ package body Gnat2Why.Expr is
 
          when N_Real_Literal =>
 
-            --  Literals of fixed-point type are directly translated into the
-            --  integer that represents them in the corresponding fixed-point
-            --  type.
+            declare
+               Rty : constant Entity_Id := Retysp (Etype (Expr));
+            begin
 
-            if Is_Fixed_Point_Type (Etype (Expr)) then
-               T := New_Fixed_Constant
-                      (Ada_Node => Expr,
-                       Value    => Corresponding_Integer_Value (Expr),
-                       Typ      => Base_Why_Type (Etype (Expr)));
+               --  Literals of fixed-point type are directly translated into
+               --  the integer that represents them in the corresponding
+               --  fixed-point type.
 
-            --  It can happen that the literal is a universal real which is
-            --  converted into a fixed point type, we then simply return a
-            --  real constant.
+               if Is_Fixed_Point_Type (Rty) then
+                  T := New_Fixed_Constant
+                    (Ada_Node => Expr,
+                     Value    => Corresponding_Integer_Value (Expr),
+                     Typ      => Base_Why_Type (Rty));
 
-            elsif Is_Universal_Numeric_Type (Etype (Expr)) then
-               T := New_Real_Constant (Ada_Node => Expr,
-                                       Value    => Realval (Expr));
+                  --  It can happen that the literal is a universal real which
+                  --  is converted into a fixed point type, we then simply
+                  --  return a real constant.
 
-            else
-               T := New_Float_Constant
-                 (Ada_Node => Expr,
-                  Value    => Realval (Expr),
-                  Typ      => (if Has_Single_Precision_Floating_Point_Type
-                               (Etype (Expr))
-                               then
-                                  EW_Float_32_Type
-                               elsif Has_Double_Precision_Floating_Point_Type
-                                 (Etype (Expr))
-                               then
-                                  EW_Float_64_Type
-                               else raise Program_Error));
-            end if;
+               elsif Is_Universal_Numeric_Type (Rty) then
+                  T := New_Real_Constant (Ada_Node => Expr,
+                                          Value    => Realval (Expr));
+
+               else
+                  T := New_Float_Constant
+                    (Ada_Node => Expr,
+                     Value    => Realval (Expr),
+                     Typ      =>
+                       (if Has_Single_Precision_Floating_Point_Type (Rty)
+                        then
+                           EW_Float_32_Type
+                        elsif Has_Double_Precision_Floating_Point_Type (Rty)
+                        then
+                           EW_Float_64_Type
+                        else raise Program_Error));
+               end if;
+            end;
 
          when N_Character_Literal =>
 
