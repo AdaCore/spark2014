@@ -2174,8 +2174,7 @@ package body Flow_Utility is
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
 
-      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      with Pre => Nkind (E) in N_Entity;
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set;
       --  Process the given entity and return the variables associated with it
 
       function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
@@ -2645,8 +2644,9 @@ package body Flow_Utility is
                | E_Function
                | E_Procedure
             =>
-               --  Dealt with when dealing with N_Subprogram_Call nodes
-               null;
+               --  Dealt with when dealing with N_Subprogram_Call nodes, except
+               --  when traversing the AST looking for first use of a variable.
+               pragma Assert (not Ctx.Assume_In_Expression);
 
             when E_Block
                | E_Exception
@@ -2724,6 +2724,20 @@ package body Flow_Utility is
          -----------------
 
          case The_Attribute is
+            when Attribute_Result =>
+               pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
+
+               --  It is an over-approximation to return all components of the
+               --  'Result, but it is actually harmless, because in the Post
+               --  expression the entire 'Result object must be initialized
+               --  anyway.
+
+               return
+                 (if Ctx.Reduced
+                  then Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Entity (Prefix (N))))
+                  else Flatten_Variable (Entity (Prefix (N)), Ctx.Scope));
+
             when Attribute_Update =>
                if Ctx.Reduced or else Is_Tagged_Type (Get_Type (N, Ctx.Scope))
                then
@@ -4252,7 +4266,6 @@ package body Flow_Utility is
             when Direct_Mapping | Record_Field =>
                declare
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  pragma Assert (Nkind (E) = N_Defining_Identifier);
 
                begin
                   if Ekind (E) = E_Constant

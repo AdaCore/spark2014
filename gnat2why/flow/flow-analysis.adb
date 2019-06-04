@@ -670,9 +670,6 @@ package body Flow.Analysis is
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    is
-      Vars_Used  : Flow_Id_Sets.Set;
-      Vars_Known : Flow_Id_Sets.Set;
-
    begin
       for Refined in Boolean loop
          declare
@@ -698,18 +695,30 @@ package body Flow.Analysis is
                   | Kind_Package_Body => "7.1.5(11)",
                when Kind_Task         => raise Program_Error);
 
+            Vars_Used  : Flow_Id_Sets.Set;
+            Vars_Known : Flow_Id_Sets.Set;
+
          begin
             if Refined then
                Vars_Known := To_Entire_Variables (FA.All_Vars);
+               --  Copy all variables introduced into the flow graph, i.e.
+               --  globals, formals and implicit 'Result (for functions).
+               --  Note: we also copy local objects, which is unnecessary but
+               --  harmless, because they can't be referenced in Post anyway.
+
             else
                case FA.Kind is
                   when Kind_Subprogram =>
                      --  We need to assemble the variables known from the spec:
-                     --  these are parameters (both explicit and implicit) and
-                     --  globals.
+                     --  parameters (both explicit and implicit), globals and
+                     --  the implicit 'Result (for functions).
 
                      Vars_Known :=
                        To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
+
+                     if Ekind (FA.Spec_Entity) = E_Function then
+                        Vars_Known.Insert (Direct_Mapping_Id (FA.Spec_Entity));
+                     end if;
 
                      declare
                         Globals : Global_Flow_Ids;
@@ -759,7 +768,6 @@ package body Flow.Analysis is
                                                 then FA.B_Scope
                                                 else FA.S_Scope),
                        Fold_Functions       => False,
-                       Reduced              => True,
                        Use_Computed_Globals => True));
 
                for Var of Vars_Used loop
