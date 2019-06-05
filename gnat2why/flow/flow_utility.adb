@@ -2824,22 +2824,34 @@ package body Flow_Utility is
                         Variables.Union (Recurse (LB));
                      end if;
 
-                  elsif not Ctx.Reduced then
-                     for F of Recurse (Prefix (N)) loop
-                        if F.Kind in Direct_Mapping | Record_Field
-                          and then F.Facet = Normal_Part
-                          and then Has_Bounds (F, Ctx.Scope)
-                        then
-                           --  This is not a bound variable, but it requires
-                           --  bounds tracking. We make it a bound variable.
-                           Variables.Include
-                             (F'Update (Facet => The_Bounds));
+                  else
+                     if Ctx.Reduced then
+                        --  ??? The "Reduced" mode is only used for more
+                        --  precise slocs in flow error messages. We don't
+                        --  care, instead let's focus on removing this mode.
+                        null;
+                     else
+                        for F of Recurse (Prefix (N)) loop
+                           if F.Kind in Direct_Mapping | Record_Field
+                             and then F.Facet = Normal_Part
+                             and then Has_Bounds (F, Ctx.Scope)
+                           then
+                              --  This is not a bound variable, but it requires
+                              --  bounds tracking. We make it a bound variable.
 
-                        else
-                           --  This is something else, we just copy it
-                           Variables.Include (F);
-                        end if;
-                     end loop;
+                              --  ??? we should only do this if the immediate
+                              --  prefix denotes an object (e.g. "Obj'Length"
+                              --  but not "Func (Obj)'Length").
+
+                              Variables.Include
+                                (F'Update (Facet => The_Bounds));
+
+                           else
+                              --  This is something else, we just copy it
+                              Variables.Include (F);
+                           end if;
+                        end loop;
+                     end if;
                   end if;
                end;
                return Variables;
@@ -3676,15 +3688,27 @@ package body Flow_Utility is
         (Scope                   => Get_Flow_Scope (Scope_N),
          Fold_Functions          => False,
          Use_Computed_Globals    => True,
-         Reduced                 => True,
+         Reduced                 => False,
          Assume_In_Expression    => True,
          Expand_Internal_Objects => False,
          Consider_Extensions     => False);
 
+      Entire_Variables : Flow_Id_Sets.Set;
+
    begin
-      return
-        Expand_Abstract_States
-          (Get_Variables_Internal (Expr_N, Ctx));
+      --  Ignore references to array bounds
+
+      for V of Get_Variables_Internal (Expr_N, Ctx) loop
+         if V.Kind in Direct_Mapping | Record_Field
+           and then V.Facet = The_Bounds
+         then
+            null;
+         else
+            Entire_Variables.Include (Entire_Variable (V));
+         end if;
+      end loop;
+
+      return Expand_Abstract_States (Entire_Variables);
    end Get_Variables_For_Proof;
 
    -----------------

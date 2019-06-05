@@ -19,5 +19,5 @@ procedure Test with SPARK_Mode is
 begin
    pragma Assert (A'First = 1);
    P (A);
-   pragma Assert (A'First = 1); -- unproved
+   pragma Assert (A'First = 1); -- @ASSERT:PASS
 end Test;
