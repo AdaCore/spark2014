@@ -7,7 +7,7 @@ procedure Test_Bounds with SPARK_Mode is
 
    procedure Change (X : in out My_T) with
      Pre  => not X'Constrained,
-     Post => X.Content'Last = X.Content'Last'Old  --  wrong
+     Post => X.Content'Last = X.Content'Last'Old  --  @POSTCONDITION:FAIL
    is
    begin
       X := (X => 10, Content => (1 .. 10 => 0));
@@ -15,7 +15,7 @@ procedure Test_Bounds with SPARK_Mode is
 
    procedure Change_2 (X : in out My_T) with
      Pre  => not X'Constrained,
-     Post => X.X = X.X'Old                        --  wrong
+     Post => X.X = X.X'Old                        --  @POSTCONDITION:FAIL
    is
    begin
       X := (X => 10, Content => (1 .. 10 => 0));

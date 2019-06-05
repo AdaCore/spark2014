@@ -3696,10 +3696,12 @@ package body Flow_Utility is
       Entire_Variables : Flow_Id_Sets.Set;
 
    begin
-      --  Ignore references to array bounds
+      --  Ignore references to array bounds of objects (because they are never
+      --  mutable) but keep references to array bounds of components (becayse
+      --  they might be mutable).
 
       for V of Get_Variables_Internal (Expr_N, Ctx) loop
-         if V.Kind in Direct_Mapping | Record_Field
+         if V.Kind = Direct_Mapping
            and then V.Facet = The_Bounds
          then
             null;

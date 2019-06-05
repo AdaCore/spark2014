@@ -1,6 +1,6 @@
 test_bounds.adb:5:07: info: range check proved (CVC4: 2 VC)
 test_bounds.adb:8:22: warning: unused initial value of "X"
-test_bounds.adb:10:14: info: postcondition proved (Trivial: 1 VC)
+test_bounds.adb:10:14: medium: postcondition might fail, cannot prove X.Content'Last = X.Content'Last'old (e.g. when X = (X => ?, Content => (others => 0)) and X.Content'First = 1 and X.Content'Last = 10 and X'Old = (X => ?, Content => (others => 0)) and X.Content'First = 1 and X.Content'Last = 0)
 test_bounds.adb:13:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_bounds.adb:16:24: warning: unused initial value of "X"
 test_bounds.adb:18:14: medium: postcondition might fail, cannot prove X.X = X.X'old (e.g. when X = (X => 10, Content => ?) and X'Old = (X => 0, Content => ?))
