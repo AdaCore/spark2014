@@ -10343,10 +10343,10 @@ package body Gnat2Why.Expr is
             declare
                Ty_Ent : constant Entity_Id :=
                  Retysp (Etype (Var));
-               Dim    : constant Uint :=
+               Dim    : constant Positive :=
                  (if Present (Expressions (Expr)) then
-                     Intval (First (Expressions (Expr)))
-                  else Uint_1);
+                     Positive (UI_To_Int (Intval (First (Expressions (Expr)))))
+                  else 1);
                Typ    : constant W_Type_Id :=
                  (if Domain = EW_Prog then EW_Int_Type
                   else Base_Why_Type_No_Bool (Expected_Typ));
@@ -10365,8 +10365,7 @@ package body Gnat2Why.Expr is
                         T := Get_Array_Attr (Domain => Domain,
                                              Ty     => Entity (Var),
                                              Attr   => Attr_Id,
-                                             Dim    =>
-                                               Positive (UI_To_Int (Dim)),
+                                             Dim    => Dim,
                                              Typ    => Typ);
 
                      --  Object'First/Last/Length
@@ -10380,9 +10379,7 @@ package body Gnat2Why.Expr is
                         begin
                            T :=
                              Get_Array_Attr
-                               (Domain, Why_Expr, Attr_Id,
-                                Positive (UI_To_Int (Dim)),
-                                Typ => Typ);
+                               (Domain, Why_Expr, Attr_Id, Dim, Typ => Typ);
                            if Domain = EW_Prog then
                               T :=
                                 +Sequence (New_Ignore (Prog => +Why_Expr), +T);
