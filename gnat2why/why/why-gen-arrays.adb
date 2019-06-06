@@ -752,6 +752,40 @@ package body Why.Gen.Arrays is
                  Left   => A_Comp,
                  Right  => B_Comp,
                  Domain => EW_Pred);
+
+            if Needs_Init_Wrapper_Type (To_Comp) then
+               declare
+                  A_Init    : constant W_Expr_Id :=
+                    (if Needs_Init_Wrapper_Type (From_Comp)
+                     then New_Init_Attribute_Access
+                       (E    => From_Comp,
+                        Name => New_Call
+                          (Domain  => EW_Term,
+                           Name    => From_Symb.Get,
+                           Binders => A_Binder & Indexes,
+                           Typ     =>
+                             EW_Init_Wrapper (From_Comp, EW_Abstract)))
+                     else +True_Term);
+                  B_Init    : constant W_Expr_Id :=
+                    New_Init_Attribute_Access
+                      (E    => To_Comp,
+                       Name => New_Call
+                         (Domain  => EW_Term,
+                          Name    => To_Symb.Get,
+                          Binders => B_Binder & Indexes,
+                          Typ     => EW_Init_Wrapper (To_Comp, EW_Abstract)));
+               begin
+                  T_Comp :=
+                    New_And_Expr
+                      (Left   => T_Comp,
+                       Right  => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => B_Init,
+                          Right  => A_Init,
+                          Domain => EW_Pred),
+                       Domain => EW_Pred);
+               end;
+            end if;
          end;
 
          T := New_Universal_Quantif
