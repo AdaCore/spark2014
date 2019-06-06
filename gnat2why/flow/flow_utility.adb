@@ -3402,6 +3402,7 @@ package body Flow_Utility is
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
                end if;
+               return Skip;
 
             --  Within expression, a defining identifier only appears as a
             --  declaration for a compiler-generated temporary or as a
