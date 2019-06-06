@@ -2300,8 +2300,6 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Do_Loop is
-         Contains_Return : Boolean := False;
-
          function Proc (N : Node_Id) return Traverse_Result;
          --  Set Contains_Return to true if we find a return statement
 
@@ -2309,20 +2307,23 @@ package body Flow.Control_Flow_Graph is
          -- Proc --
          ----------
 
-         function Proc (N : Node_Id) return Traverse_Result
-         is
+         function Proc (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
-               when N_Simple_Return_Statement   |
-                    N_Extended_Return_Statement =>
-                  Contains_Return := True;
+               when N_Simple_Return_Statement
+                  | N_Extended_Return_Statement
+               =>
                   return Abandon;
+
                when others =>
                   return OK;
             end case;
          end Proc;
 
-         procedure Find_Return is new Traverse_More_Proc (Process => Proc);
+         function Find_Return is new Traverse_More_Func (Process => Proc);
+
+         Contains_Return : constant Boolean := Find_Return (N) = Abandon;
+         --  True if we have a return statement
 
          V           : Flow_Graphs.Vertex_Id;
          Faux_Exit_V : Flow_Graphs.Vertex_Id;
@@ -2330,9 +2331,6 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Loop
 
       begin
-         --  Check if we have a return statement
-         Find_Return (N);
-
          --  We have a null vertex for the loop, as we have no
          --  condition.
          Add_Vertex (FA,
@@ -2561,8 +2559,7 @@ package body Flow.Control_Flow_Graph is
          -- Proc_Search --
          -----------------
 
-         function Proc_Search (N : Node_Id) return Traverse_Result
-         is
+         function Proc_Search (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
 
