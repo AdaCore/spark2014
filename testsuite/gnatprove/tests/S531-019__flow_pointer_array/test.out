@@ -1,12 +1,12 @@
-test.adb:10:14: medium: postcondition might fail, cannot prove A /= null (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
-test.adb:10:28: medium: pointer dereference check might fail (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
-test.adb:10:38: medium: pointer dereference check might fail (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
-test.adb:10:54: medium: pointer dereference check might fail (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
-test.adb:10:63: medium: pointer dereference check might fail (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
+test.adb:10:14: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
+test.adb:10:28: info: pointer dereference check proved (CVC4: 2 VC)
+test.adb:10:38: info: pointer dereference check proved (CVC4: 2 VC)
+test.adb:10:54: info: pointer dereference check proved (CVC4: 2 VC)
+test.adb:10:63: info: pointer dereference check proved (CVC4: 2 VC)
 test.adb:13:20: info: pointer dereference check proved (CVC4: 2 VC)
 test.adb:13:28: info: cannot unroll loop (too many loop iterations)
-test.adb:14:10: medium: pointer dereference check might fail (e.g. when A = null) [possible explanation: loop at line 13 should mention A in a loop invariant]
-test.adb:14:13: medium: array index check might fail (e.g. when A.all = (others => (F => 2)) and A.all'First = 2 and A.all'Last = 0 and I = 1)
+test.adb:14:10: info: pointer dereference check proved (CVC4: 1 VC)
+test.adb:14:13: info: index check proved (CVC4: 2 VC)
 test.adb:20:19: info: assertion proved (CVC4: 1 VC)
 test.adb:20:19: info: pointer dereference check proved (CVC4: 2 VC)
 test.adb:21:04: info: precondition proved (CVC4: 1 VC)
