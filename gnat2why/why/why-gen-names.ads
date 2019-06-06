@@ -181,6 +181,7 @@ package Why.Gen.Names is
    All_Label         : constant String := "All";
    Index_Label       : constant String := "Index";
    Loop_Entry_Label  : constant String := "Loop_Entry";
+   Old_Label         : constant String := "Old";
 
    --  The following enumeration is used for two things:
    --    * a simple enumeration of strings, accessed using the "To_String"

@@ -6385,6 +6385,8 @@ package body Gnat2Why.Expr is
          Attrs : Common_Containers.String_Sets.Set :=
                    Common_Containers.String_Sets.Empty_Set;
          Model_Trace : constant String :=
+           --  Here we exclude Loop_Entry expressions and only consider
+           --  Entities
            (if Nkind (Expr) in N_Has_Entity then
                "model_trace:" &
                Trim (Source => Entity (Expr)'Image,
@@ -6461,8 +6463,24 @@ package body Gnat2Why.Expr is
 
       if Inserted then
          declare
+            function Is_Contract_Case (P : Node_Id) return Boolean is
+              (Is_Pragma (P, Pragma_Contract_Cases));
+
+            function Enclosing_Contract_Case is new
+              First_Parent_With_Property (Is_Contract_Case);
+
             Typ : W_Type_Id;
             Nd  : Node_Id;
+            Attrs : Common_Containers.String_Sets.Set :=
+                   Common_Containers.String_Sets.Empty_Set;
+            Model_Trace : constant String :=
+              --  Here we exclude Old expressions and only consider Entities
+              (if Nkind (N) in N_Has_Entity then
+                  "model_trace:" &
+                  Trim (Source => Entity (N)'Image,
+                        Side   => Ada.Strings.Left) &
+                 "'Old"
+               else "");
          begin
             if Nkind (N) in N_Identifier | N_Expanded_Name then
                Typ := Type_Of_Node (N);
@@ -6472,9 +6490,22 @@ package body Gnat2Why.Expr is
                Nd  := Empty;
             end if;
 
-            Old_Map (Position) :=
-              New_Temp_Identifier
-                (Base_Name => "old", Typ => Typ, Ada_Node => Nd);
+            if Present (Enclosing_Contract_Case (N)) and then
+              Model_Trace /= ""
+            then
+               Common_Containers.String_Sets.Insert (Attrs, Model_Trace);
+               Old_Map (Position) :=
+                 New_Generated_Identifier
+                   (Base_Name => "old",
+                    Typ       => Typ,
+                    Ada_Node  => Nd,
+                    Attrs     => Attrs);
+            else
+               Old_Map (Position) :=
+                 New_Temp_Identifier (Base_Name => "old",
+                                      Typ       => Typ,
+                                      Ada_Node  => Nd);
+            end if;
          end;
       end if;
 

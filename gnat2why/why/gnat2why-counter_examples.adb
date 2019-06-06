@@ -1661,6 +1661,15 @@ package body Gnat2Why.Counter_Examples is
                            and then Ekind (Part_Entity) in
                              E_In_Out_Parameter | E_Out_Parameter then "'Old"
                            elsif Elt.Kind = CEE_Result then "'Result"
+                           elsif Var_Slice_Num <
+                             String_Split.Slice_Count (Name_Parts)
+                           and then Slice (Name_Parts, 2) =
+                             Loop_Entry_Label
+                           then "'Loop_Entry"
+                           elsif Var_Slice_Num <
+                             String_Split.Slice_Count (Name_Parts)
+                           and then Slice (Name_Parts, 2) =
+                             Old_Label then "'Old"
                            else "");
                      begin
                         Variables.Variables_Map.Insert
@@ -1671,47 +1680,31 @@ package body Gnat2Why.Counter_Examples is
                            Values : String_CNT_Elements.Map renames
                              Variables.Variables_Map (Info_Pos);
                         begin
+
                            if not Values.Contains (Attribute) then
 
-                              --  Handle the case where entity is the prefix of
-                              --  an Index attribute by constructing an
+                              --  Handle the case where entity is the prefix
+                              --  of an Index attribute by constructing an
                               --  appropriate Index_Value.
 
                               if Var_Slice_Num <
                                 String_Split.Slice_Count (Name_Parts)
-                                and then Slice (Name_Parts, 2) = Index_Label
+                                and then Slice (Name_Parts, 2) =
+                                Index_Label
                               then
                                  Values.Insert
                                    (Key      => Attribute,
-                                    New_Item => New_Index_Item (Part_Entity));
+                                    New_Item =>
+                                      New_Index_Item (Part_Entity));
                               else
-                                 if Var_Slice_Num <
-                                   String_Split.Slice_Count (Name_Parts)
-                                   and then Slice (Name_Parts, 2) =
-                                   Loop_Entry_Label
-                                 then
-                                    Values.Insert
-                                      (Key      => "'" & Loop_Entry_Label,
-                                       New_Item => New_Item (Ent_Ty));
-                                 else
-                                    Values.Insert
-                                      (Key      => Attribute,
-                                       New_Item => New_Item (Ent_Ty));
-                                 end if;
+                                 Values.Insert
+                                   (Key      => Attribute,
+                                    New_Item => New_Item (Ent_Ty));
                               end if;
                            end if;
 
-                           if Var_Slice_Num <
-                             String_Split.Slice_Count (Name_Parts)
-                             and then Slice (Name_Parts, 2) =
-                             Loop_Entry_Label
-                           then
-                              Current_Cnt_Value :=
-                                Values.Element ("'" & Loop_Entry_Label);
-                           else
-                              Current_Cnt_Value :=
-                                Values.Element (Attribute);
-                           end if;
+                           Current_Cnt_Value :=
+                             Values.Element (Attribute);
                         end;
                      end;
                   elsif Is_Attribute then
@@ -1723,7 +1716,11 @@ package body Gnat2Why.Counter_Examples is
                         Is_Attribute := False;
                         Current_Cnt_Value := Current_Cnt_Value.Index;
 
-                     elsif Part = Loop_Entry_Label then
+                     --  Ignore Loop_Entry/Old Attribute, it is handled in
+                     --  previous case
+
+                     elsif Part = Loop_Entry_Label or else Part = Old_Label
+                     then
                         Is_Attribute := False;
                         Ent_Ty := Current_Cnt_Value.Ent_Ty;
 
