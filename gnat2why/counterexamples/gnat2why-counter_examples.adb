@@ -38,11 +38,9 @@ with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
 with GNAT.String_Split;           use GNAT.String_Split;
-with Gnat2Why_Args;               use Gnat2Why_Args;
 with Gnat2Why.CE_Utils;           use Gnat2Why.CE_Utils;
 with Gnat2Why.Tables;             use Gnat2Why.Tables;
 with Gnat2Why.Util;               use Gnat2Why.Util;
-with Namet;                       use Namet;
 with Nlists;                      use Nlists;
 with Sinput;                      use Sinput;
 with Snames;                      use Snames;
@@ -114,15 +112,6 @@ package body Gnat2Why.Counter_Examples is
    type CNT_Element_Kind is
      (Array_Value, Record_Value, Simple_Value, Index_Value, Access_Value);
    --  Kind for counterexample elements, see below
-
-   function Make_Trivial (Nul : Boolean;
-                          Str : Unbounded_String)
-                          return CNT_Unbounded_String is
-     (Nul => Nul and not Gnat2Why_Args.Debug_Trivial,
-      Str => Str);
-
-   Dont_Display : constant CNT_Unbounded_String :=
-     (Nul => True, Str => To_Unbounded_String ("@not_display"));
 
    type CNT_Element (K : CNT_Element_Kind) is record
       Ent_Ty     : Entity_Id;
@@ -829,196 +818,9 @@ package body Gnat2Why.Counter_Examples is
       AST_Type  : Entity_Id;
       Is_Index  : Boolean := False) return CNT_Unbounded_String
    is
-      function Refine_Aux
-        (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id;
-         Is_Index  : Boolean := False)
-         return CNT_Unbounded_String;
-      --  Mutually recursive function with the local Refine_Value, which trims
-      --  space on both ends of the result.
-
-      ----------------
-      -- Refine_Aux --
-      ----------------
-
-      function Refine_Aux
-        (Cnt_Value : Cntexmp_Value_Ptr;
-         AST_Type  : Entity_Id;
-         Is_Index  : Boolean := False)
-         return CNT_Unbounded_String
-      is
-
-         Why3_Type : constant Cntexmp_Type := Cnt_Value.all.T;
-      begin
-         case Why3_Type is
-            when Cnt_Integer =>
-
-               --  Necessary for some types that makes boolean be translated to
-               --  integers like: "subype only_true := True .. True".
-
-               if Is_Boolean_Type (AST_Type) then
-                  return Make_Trivial (Nul => Cnt_Value.I = "0",
-                                       Str => To_Unbounded_String
-                                         (Cnt_Value.I /= "0"));
-
-               elsif Is_Enumeration_Type (AST_Type) then
-                  declare
-                     Value : constant Uint := UI_From_String
-                         (To_String (Cnt_Value.I));
-                     Nul   : constant Boolean := Cnt_Value.I = "0";
-
-                     --  Call Get_Enum_Lit_From_Pos to get a corresponding
-                     --  enumeration entity.
-
-                     Enum  : Entity_Id;
-
-                  begin
-                     --  Initialization of Enum can raise Constraint_Error if
-                     --  there is no literal value for the position.
-
-                     Enum := Get_Enum_Lit_From_Pos (AST_Type, Value);
-
-                     --  Special case for characters, which are defined in the
-                     --  standard unit Standard.ASCII, and as such do not have
-                     --  a source code representation.
-
-                     if Is_Character_Type (AST_Type) then
-                        --  Call Get_Unqualified_Decoded_Name_String to get a
-                        --  correctly printed character in Name_Buffer.
-
-                        Get_Unqualified_Decoded_Name_String (Chars (Enum));
-
-                        --  The call to Get_Unqualified_Decoded_Name_String
-                        --  set Name_Buffer to '<char>' where <char> is the
-                        --  character we are interested in. Just retrieve it
-                        --  directly at Name_Buffer(2).
-
-                        return Make_Trivial (Nul => Nul,
-                                             Str => "'" & To_Unbounded_String
-                                               (Char_To_String_Representation
-                                                  (Name_Buffer (2))) & "'");
-
-                        --  For all enumeration types that are not character,
-                        --  call Get_Enum_Lit_From_Pos to get a corresponding
-                        --  enumeratio n entity, then Source_Name to get a
-                        --  correctly capitalized enumeration value.
-
-                     else
-                        return Make_Trivial
-                          (Nul => Nul,
-                           Str => To_Unbounded_String (Source_Name (Enum)));
-                     end if;
-
-                     --  An exception is raised by Get_Enum_Lit_From_Pos
-                     --  if the position Value is outside the bounds of the
-                     --  enumeration. In such a case, return the raw integer
-                     --  returned by the prover.
-
-                  exception
-                     when Constraint_Error =>
-                        if Is_Index then
-                           return Make_Trivial (Nul => True,
-                                                Str => Null_Unbounded_String);
-                        else
-                           return Make_Trivial (Nul => Nul,
-                                                Str => Cnt_Value.I);
-                        end if;
-                  end;
-
-                  --  Cvc4 returns Floating_point value with integer type. We
-                  --  don't want to print those.
-
-               elsif Is_Floating_Point_Type (AST_Type) then
-                  return Make_Trivial (Nul => True,
-                                       Str => Null_Unbounded_String);
-
-               elsif Is_Fixed_Point_Type (AST_Type) then
-                  return Make_Trivial
-                    (Nul => Cnt_Value.I = "0",
-                     Str => To_Unbounded_String
-                       (Print_Fixed (Small_Value (AST_Type),
-                        To_String (Cnt_Value.I))));
-
-               --  Only integer types are expected in that last case
-
-               else
-                  pragma Assert (Is_Discrete_Type (AST_Type));
-                  declare
-                     --  Decision: generic values for Bound_Type and
-                     --  Bound_Value are random for now. They can be
-                     --  adjusted in the future.
-
-                     package Pr is new Gen_Print (Bound_Type => 10,
-                                                  Bound_Value => 5);
-                  begin
-                     return Make_Trivial
-                       (Nul => Cnt_Value.I = "0",
-                        Str => To_Unbounded_String (
-                          Pr.Print_Discrete
-                            (To_String (Cnt_Value.I), AST_Type)));
-                  end;
-               end if;
-
-            when Cnt_Boolean =>
-               return Make_Trivial
-                 (Nul => not Cnt_Value.Bo,
-                  Str => To_Unbounded_String (Cnt_Value.Bo));
-
-            when Cnt_Bitvector =>
-
-               --  Boolean are translated into bitvector of size 1 for CVC4
-               --  because it fails to produce a model when booleans are used
-               --  inside translated arrays_of_records.
-
-               if Is_Boolean_Type (AST_Type) then
-                  return Make_Trivial
-                    (Nul => Cnt_Value.B = "0",
-                     Str => To_Unbounded_String (Cnt_Value.B /= "0"));
-               end if;
-
-               return Make_Trivial (Nul => Cnt_Value.B = "0",
-                                    Str => Cnt_Value.B);
-
-            when Cnt_Decimal =>
-               return Make_Trivial (Nul => Cnt_Value.D = "0.0",
-                                    Str => Cnt_Value.D);
-
-            when Cnt_Float =>
-
-               pragma Assert (Is_Floating_Point_Type (AST_Type));
-               declare
-                  S : constant Unbounded_String := Print_Float (Cnt_Value.all);
-               begin
-                  return Make_Trivial (Nul => S = "0.0", Str => S);
-               end;
-
-            when Cnt_Unparsed =>
-               return Make_Trivial (Nul => Cnt_Value.U = "0",
-                                    Str => Cnt_Value.U);
-
-            --  This case only happens when the why3 counterexamples are
-            --  incorrect. Ideally, this case should be removed but it
-            --  still happens in practice.
-
-            when Cnt_Invalid =>
-               return Make_Trivial (Nul => True,
-                                    Str => Cnt_Value.S);
-
-            when Cnt_Projection =>
-               pragma Assert (False);
-               --  This case should never happen: we never built a
-               --  Cnt_Projection ever.
-               return Make_Trivial (Nul => True,
-                                    Str => Cnt_Value.Er);
-
-            when Cnt_Record | Cnt_Array =>
-               pragma Assert (False);
-               return Dont_Display;
-         end case;
-      end Refine_Aux;
 
       Res : constant CNT_Unbounded_String :=
-        Refine_Aux (Cnt_Value, AST_Type, Is_Index);
+        Print_Cntexmp_Value (Cnt_Value, AST_Type, Is_Index);
 
    --  Start of processing for Refine_Value
 

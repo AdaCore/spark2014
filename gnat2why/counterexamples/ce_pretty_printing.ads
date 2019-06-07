@@ -28,8 +28,12 @@ with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
 with Types;                 use Types;
 with Urealp;                use Urealp;
 with VC_Kinds;              use VC_Kinds;
+with Gnat2Why_Args;
 
 package Ce_Pretty_Printing is
+
+   Dont_Display : constant CNT_Unbounded_String :=
+     (Nul => True, Str => To_Unbounded_String ("@not_display"));
 
    function StringBits_To_Approx (Sign, Significand, Exp : String)
                                   return String;
@@ -46,6 +50,22 @@ package Ce_Pretty_Printing is
    function Print_Float (Cnt_Value : Cntexmp_Value) return Unbounded_String
      with Pre => Cnt_Value.T = Cnt_Float;
    --  Print a counterexample value as a float
+
+   function Make_Trivial (Nul : Boolean;
+                          Str : Unbounded_String)
+                          return CNT_Unbounded_String is
+     (Nul => Nul and not Gnat2Why_Args.Debug_Trivial,
+      Str => Str);
+   --  Used to remove "trivial" counterexamples
+
+   function Print_Cntexmp_Value (Cnt_Value : Cntexmp_Value_Ptr;
+                                 AST_Type  : Entity_Id;
+                                 Is_Index  : Boolean := False)
+                                 return CNT_Unbounded_String;
+   --  Print a simple counterexample value: Cntexmp_Value_Ptr. The type is
+   --  used to correctly print an Integer as a Character type for example. If
+   --  Is_Index, AST_Type is discrete and Cnt_Value is not integer then print
+   --  nothing.
 
    generic
       --  This package is used to alter printing for values of Discrete_Type.
