@@ -23,9 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with Types;                use Types;
-with Urealp;               use Urealp;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with SPARK_Atree.Entities;  use SPARK_Atree.Entities;
+with Types;                 use Types;
+with Urealp;                use Urealp;
+with VC_Kinds;              use VC_Kinds;
 
 package Ce_Pretty_Printing is
 
@@ -40,6 +42,10 @@ package Ce_Pretty_Printing is
    --  If the computation of Small * Nb is an integer we print it as an
    --  integer. If not, we print Nb * Num (Small) / Den (Small) with Small
    --  normalized Ureal.
+
+   function Print_Float (Cnt_Value : Cntexmp_Value) return Unbounded_String
+     with Pre => Cnt_Value.T = Cnt_Float;
+   --  Print a counterexample value as a float
 
    generic
       --  This package is used to alter printing for values of Discrete_Type.

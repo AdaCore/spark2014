@@ -837,9 +837,6 @@ package body Gnat2Why.Counter_Examples is
       --  Mutually recursive function with the local Refine_Value, which trims
       --  space on both ends of the result.
 
-      function Print_Float (Cnt_Value : Cntexmp_Value)
-                            return Unbounded_String;
-
       ----------------
       -- Refine_Aux --
       ----------------
@@ -1019,40 +1016,6 @@ package body Gnat2Why.Counter_Examples is
                return Dont_Display;
          end case;
       end Refine_Aux;
-
-      -----------------
-      -- Print_Float --
-      -----------------
-
-      function Print_Float (Cnt_Value : Cntexmp_Value)
-                            return Unbounded_String
-      is
-         F : Float_Value renames Cnt_Value.F.all;
-      begin
-         case F.F_Type is
-         when Float_Plus_Infinity | Float_Minus_Infinity | Float_NaN =>
-
-            --  Decision: we don't print infinities or Nan
-            return Null_Unbounded_String;
-
-         when Float_Plus_Zero | Float_Minus_Zero =>
-
-            --  Decision: we print zero+ and zero- as 0 (0.0 for type)
-            return To_Unbounded_String ("0.0");
-
-         when Float_Val =>
-            declare
-               F_S   : constant String := To_String (F.F_Sign);
-               F_Si  : constant String := To_String (F.F_Significand);
-               F_Exp : constant String := To_String (F.F_Exponent);
-            begin
-               return
-                 To_Unbounded_String
-                   (Ce_Pretty_Printing.StringBits_To_Approx
-                      (F_S, F_Si, F_Exp));
-            end;
-         end case;
-      end Print_Float;
 
       Res : constant CNT_Unbounded_String :=
         Refine_Aux (Cnt_Value, AST_Type, Is_Index);
