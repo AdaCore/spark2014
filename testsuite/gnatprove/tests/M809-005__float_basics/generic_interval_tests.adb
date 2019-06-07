@@ -23,7 +23,7 @@ is
 
    procedure Test_03 (X : FT)
      with Pre  => X * X in 0.0 .. 1.0,
-          Post => X     in 0.0 .. 1.0  -- ok
+          Post => X     in 0.0 .. 1.0  -- ok if FT is only positive
    is
    begin
       null;
