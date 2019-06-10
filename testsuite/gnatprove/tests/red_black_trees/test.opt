@@ -1,7 +1,6 @@
 !large SKIP part of large testsuite
 inverse-prover SKIP too slow
 assertions SKIP too slow
-Darwin SKIP too slow
 32bits SKIP diffs
 NT SKIP hanging prover processes on windows (QA16-002)
 ALL RLIMIT 5000

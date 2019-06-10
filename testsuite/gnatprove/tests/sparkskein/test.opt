@@ -1,5 +1,4 @@
 !large SKIP part of large testsuite
-Darwin SKIP test too slow
 NT SKIP test too slow
 assertions SKIP minor proof diff probably due to timeout
 inverse-prover SKIP test too slow

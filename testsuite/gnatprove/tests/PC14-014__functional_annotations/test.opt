@@ -1,4 +1,3 @@
 !large SKIP part of large testsuite
 inverse-prover SKIP too slow for inverse-prover
 NT SKIP diffs in session
-Darwin SKIP diffs in session
