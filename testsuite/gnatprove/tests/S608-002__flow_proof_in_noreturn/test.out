@@ -1,0 +1,2 @@
+main.adb:13:07: info: data dependencies proved
+main.adb:20:35: info: range check proved (CVC4: 1 VC)
