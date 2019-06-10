@@ -282,7 +282,7 @@ run-time checks, an error is reported when running the test program:
    :menuselection:`Build --> Run --> test_search`.
 
 It appears that two contract cases for ``Search`` are activated at the same
-time! More information can be generated at run time if the code is compiler
+time! More information can be generated at run time if the code is compiled
 with the switch ``-gnateE``:
 
 .. code-block:: bash
