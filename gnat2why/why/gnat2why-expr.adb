@@ -8192,24 +8192,30 @@ package body Gnat2Why.Expr is
             Value    := Index_Values.First;
             Typ      := Index_Types.First;
 
-            while Value /= No_Element loop
-               R := +Sequence
-                 (New_Ignore
-                    (Prog =>
-                         +Transform_Discrete_Choices
-                       (Choices      => Choices (Element (Value)),
-                        Choice_Type  => Element (Typ),
-                        Matched_Expr =>  --  The value does not matter here
-                          New_Discrete_Constant
-                            (Value => Uint_0,
-                             Typ   =>
-                               Base_Why_Type_No_Bool (Element (Typ))),
-                        Cond_Domain  => EW_Prog,
-                        Params       => Params)),
-                  +R);
-               Next (Value);
-               Next (Typ);
-            end loop;
+            declare
+               Checks : W_Statement_Sequence_Id := Void_Sequence;
+            begin
+               while Value /= No_Element loop
+                  Sequence_Append
+                    (Checks,
+                     (New_Ignore
+                          (Prog =>
+                             +Transform_Discrete_Choices
+                             (Choices      => Choices (Element (Value)),
+                              Choice_Type  => Element (Typ),
+                              Matched_Expr =>
+                              --  The value does not matter here
+                                New_Discrete_Constant
+                                  (Value => Uint_0,
+                                   Typ   =>
+                                     Base_Why_Type_No_Bool (Element (Typ))),
+                              Cond_Domain  => EW_Prog,
+                              Params       => Params))));
+                  Next (Value);
+                  Next (Typ);
+               end loop;
+               R := +Sequence (+Checks, +R);
+            end;
          end if;
 
          --  If the aggregate has known bounds, we use this information if it
