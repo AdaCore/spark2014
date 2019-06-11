@@ -965,7 +965,7 @@ package body Gnat2Why.Counter_Examples is
 
       for Var of Variables.Variables_Order loop
          declare
-            Variable : Cursor :=
+            Variable : constant Cursor :=
               Variables.Variables_Map.Find (Var.Id);
             Var_Name : constant Unbounded_String := Var.Name;
 
@@ -1015,7 +1015,6 @@ package body Gnat2Why.Counter_Examples is
                      Add_CNT (Att.Name, Att.Value);
                   end loop;
 
-                  Next (Variable);
                end;
             end if;
          end;
