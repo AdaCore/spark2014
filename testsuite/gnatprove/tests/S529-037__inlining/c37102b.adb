@@ -18,6 +18,8 @@ procedure C37102B is
       K : ARR (1 .. F (D => G));
    end record;
 
+   type R is new ARR (1 .. F (D => G));
+
 begin
    null;
 end C37102B;
