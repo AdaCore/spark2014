@@ -7036,11 +7036,15 @@ package body SPARK_Definition is
       --  all subtype indications "syntactically", i.e. by traversing the AST;
       --  however, we mark them "semantically", i.e. by looking directly at the
       --  (implicit) type of an object/component which bypasses this routine.
+      --  In fact, we may see a node of kind N_Index_Or_Discriminant_Constraint
+      --  as part of an allocator in an interfering context, which will get
+      --  rejected.
 
       pragma Assert
         (Nkind (Constraint (N)) in N_Delta_Constraint
                                  | N_Digits_Constraint
-                                 | N_Range_Constraint);
+                                 | N_Range_Constraint
+                                 | N_Index_Or_Discriminant_Constraint);
    end Mark_Subtype_Indication;
 
    -------------------
