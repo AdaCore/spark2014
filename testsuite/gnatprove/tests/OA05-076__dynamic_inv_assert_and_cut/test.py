@@ -9,4 +9,4 @@ from test_support import *
 prove_all(steps=1,
           counterexample=False,
           prover=["z3"],
-          opt=["--limit-subp=lsc-bignum.ads:176"])
+          opt=["--no-axiom-guard"])
