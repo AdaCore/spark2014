@@ -425,11 +425,13 @@ package body Gnat2Why.Expr.Loops is
       High_Id         : W_Identifier_Id := Why_Empty;
 
    begin
-      --  Push a scope for the exit statements of the loop. This
-      --  scope is popped later by calling [Wrap_Loop] which calls
-      --  [Exits.Wrap_Loop_Body].
+      --  Push a scope for the exit statements of the loop. This scope is
+      --  popped later by calling Wrap_Loop which calls Exits.Wrap_Loop_Body,
+      --  in the cases where the loop is not unrolled.
 
-      Exits.Before_Start_Of_Loop;
+      if not Is_Selected_For_Loop_Unrolling (Stmt) then
+         Exits.Before_Start_Of_Loop;
+      end if;
 
       --  Add the loop index to the entity table
 
@@ -1715,7 +1717,7 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
 
-      Try_Body : constant W_Prog_Id :=
+      Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Expr
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
@@ -1729,19 +1731,20 @@ package body Gnat2Why.Expr.Loops is
                       else ""))),
                Repeat_Loop));
 
-      Loop_Try : constant W_Prog_Id :=
+   begin
+      Try_Body :=
         New_Try_Block
           (Prog    => Try_Body,
            Handler => (1 => New_Handler (Name => Loop_Ident,
                                          Def  => +Void)));
-   begin
+
       return Sequence
         (New_Comment
            (Comment => NID ("Translation of an unrolled Ada loop"
             & (if Sloc (Loop_Id) > 0 then
                  " from " & Build_Location_String (Sloc (Loop_Id))
               else ""))),
-         Loop_Try);
+         Try_Body);
    end Unroll_Loop;
 
    ---------------
