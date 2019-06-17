@@ -1588,7 +1588,7 @@ package body SPARK_Definition is
                --  Uninitialized allocators are only allowed on types defining
                --  full default initialization.
 
-               if Nkind (Expression (N)) = N_Identifier
+               if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
                  and then Default_Initialization
                    (Entity (Expression (N)), Get_Flow_Scope (N))
                      /= Full_Default_Initialization
