@@ -1,0 +1,3 @@
+safe_read.adb:3:59: info: initialization of "Has_Read" proved
+safe_read_str.adb:3:40: info: initialization of "Buf" proved
+safe_read_str.adb:3:58: info: initialization of "Has_Read" proved

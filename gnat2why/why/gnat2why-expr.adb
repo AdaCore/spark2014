@@ -2679,13 +2679,13 @@ package body Gnat2Why.Expr is
                        (if Aliasing
                         or else Get_Type_Kind (Actual_Type) = EW_Abstract
                         then
-                        +New_Identifier
+                           +New_Identifier
                           (Ada_Node => Empty,
                            Name     => Full_Name (Formal) & "__compl",
                            Typ      => Actual_Type)
                         else Transform_Expr
                           (Actual, Actual_Type, Domain, Params));
-                     Need_Ref : constant Boolean :=
+                     Need_Ref    : constant Boolean :=
                        Get_Type_Kind (Actual_Type) = EW_Abstract
                        or else Aliasing
                        or else not Simple_Actual;
@@ -2708,49 +2708,66 @@ package body Gnat2Why.Expr is
                              Get_Typ (Binders (Bind_Cnt).Content.B_Name));
                         Nb_Of_Refs := Nb_Of_Refs + 1;
 
-                     --  If a check is needed on the actual, insert it by
-                     --  calling Insert_Checked_Conversion. The result of the
-                     --  conversion is discarded and the actual is used as is.
+                        --  Havoc the reference if necessary
 
-                     elsif Need_Check then
+                        if Needs_Havoc
+                          and then Binders (Bind_Cnt).Content.Mutable
+                        then
+                           Why_Args (Arg_Cnt) := +Sequence
+                             (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
+                              Right => +Why_Args (Arg_Cnt));
+                        end if;
+
+                     --  If the actual is an entity in split form, it can be
+                     --  used as is.
+
+                     else
                         declare
                            A_Id : constant W_Identifier_Id :=
                              Ada_Ent_To_Why.Element
                                (Symbol_Table, Entity (Actual)).Content.B_Name;
-                           F_Ty : constant W_Type_Id :=
-                             Get_Typ (Binders (Bind_Cnt).Content.B_Name);
                         begin
-                           Why_Args (Arg_Cnt) :=
-                             +Sequence
-                               (Actual,
-                                New_Ignore
-                                  (Prog => +Insert_Checked_Conversion
-                                     (Ada_Node => Actual,
-                                      Domain   => EW_Prog,
-                                      Expr     => New_Deref
+
+                           --  If a check is needed on the actual, insert it by
+                           --  calling Insert_Checked_Conversion. The result of
+                           --  the conversion is discarded and the actual is
+                           --  used as is.
+
+                           if Need_Check then
+                              Why_Args (Arg_Cnt) :=
+                                +Sequence
+                                (Actual,
+                                 New_Ignore
+                                   (Prog => +Insert_Checked_Conversion
                                         (Ada_Node => Actual,
-                                         Right    => A_Id,
-                                         Typ      => Get_Typ (A_Id)),
-                                      To       => F_Ty)),
-                                +A_Id);
+                                         Domain   => EW_Prog,
+                                         Expr     => New_Deref
+                                           (Ada_Node => Actual,
+                                            Right    => A_Id,
+                                            Typ      => Get_Typ (A_Id)),
+                                         To       =>
+                                           Get_Typ
+                                             (Binders
+                                                (Bind_Cnt).Content.B_Name))),
+                                 +A_Id);
+
+                           else
+
+                              Why_Args (Arg_Cnt) :=
+                                +Ada_Ent_To_Why.Element
+                                (Symbol_Table, Entity (Actual)).Content.B_Name;
+                           end if;
+
+                           --  Havoc the reference if necessary
+
+                           if Needs_Havoc
+                             and then Binders (Bind_Cnt).Content.Mutable
+                           then
+                              Why_Args (Arg_Cnt) := +Sequence
+                                (Left  => New_Havoc_Call (A_Id),
+                                 Right => +Why_Args (Arg_Cnt));
+                           end if;
                         end;
-                     else
-
-                        --  If the actual is an entity in split form, it can be
-                        --  used as is.
-
-                        Why_Args (Arg_Cnt) :=
-                          +Ada_Ent_To_Why.Element
-                            (Symbol_Table, Entity (Actual)).Content.B_Name;
-                     end if;
-
-                     --  Havoc the reference if necessary
-
-                     if Needs_Havoc and then Binders (Bind_Cnt).Content.Mutable
-                     then
-                        Why_Args (Arg_Cnt) := +Sequence
-                          (Left  => New_Havoc_Call (+Why_Args (Arg_Cnt)),
-                           Right => +Why_Args (Arg_Cnt));
                      end if;
 
                      Arg_Cnt := Arg_Cnt + 1;
