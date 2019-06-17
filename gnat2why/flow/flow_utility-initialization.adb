@@ -203,7 +203,7 @@ package body Flow_Utility.Initialization is
                                               Ignore_DIC);
          else
             declare
-               Type_Def : Node_Id := Empty;
+               Type_Def : Node_Id;
                Rec_Part : Node_Id := Empty;
 
                Parent_Typ : constant Node_Id := Parent (Typ);
