@@ -2066,3 +2066,20 @@ module Access_to_incomplete_type
   axiom open_close:
     forall x : comp_ty [__close x]. __open (__close x) = x
 end
+
+(* Module for the pledge of a local borrower. Morally, a pledge is a predicate
+   representing the link between the borrowed value and the borrower. We do
+   not use Why3 lambdas to avoid introducing polymorphism. Instead, we represent
+   a pledge as a two parameter map with a function get to query whether the
+   relation holds between the borrowed value and the borrower. *)
+
+module Pledge
+  type borrower
+  type borrowed
+
+  type __pledge_ty
+
+  type __pledge_ty__ref = { mutable __pledge_ty__content[@model_trace:] : __pledge_ty }
+
+  val function __pledge_get __pledge_ty borrowed borrower : bool
+end

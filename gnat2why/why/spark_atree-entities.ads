@@ -232,6 +232,9 @@ package SPARK_Atree.Entities is
    function Is_Access_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Access_Type;
 
+   function Is_Anonymous_Access_Type (E : Entity_Id) return Boolean renames
+     Einfo.Is_Anonymous_Access_Type;
+
    function Associated_Node_For_Itype (E : Entity_Id) return Node_Id renames
      Einfo.Associated_Node_For_Itype;
 

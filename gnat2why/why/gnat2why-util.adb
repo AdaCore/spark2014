@@ -33,6 +33,7 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
+with Nlists;                     use Nlists;
 with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
@@ -303,6 +304,31 @@ package body Gnat2Why.Util is
       end loop;
       return Ty;
    end Get_Base_Of_Type;
+
+   ----------------------------
+   -- Get_Borrows_From_Decls --
+   ----------------------------
+
+   procedure Get_Borrows_From_Decls
+     (Decls   : List_Id;
+      Borrows : in out Node_Sets.Set)
+   is
+      Cur_Decl : Node_Id := First (Decls);
+
+   begin
+      while Present (Cur_Decl) loop
+         if Nkind (Cur_Decl) = N_Object_Declaration then
+            declare
+               E : constant Entity_Id := Defining_Identifier (Cur_Decl);
+            begin
+               if Is_Local_Borrower (E) then
+                  Borrows.Insert (E);
+               end if;
+            end;
+         end if;
+         Next (Cur_Decl);
+      end loop;
+   end Get_Borrows_From_Decls;
 
    ---------------------------------------------
    -- Get_Container_In_Iterator_Specification --

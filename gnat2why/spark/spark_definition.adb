@@ -294,6 +294,12 @@ package body SPARK_Definition is
    --  ??? ideally, it would be better to avoid this case so that we don't end
    --  up translating things we don't use.
 
+   function Has_Deep_Subcomponents_With_Predicates
+     (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return true if E has subcomponents of a deep type which are subjected
+   --  to a subtype predicate.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -1120,6 +1126,89 @@ package body SPARK_Definition is
 
       return SPARK_Status_JSON;
    end Get_SPARK_JSON;
+
+   --------------------------------------------
+   -- Has_Deep_Subcomponents_With_Predicates --
+   --------------------------------------------
+
+   function Has_Deep_Subcomponents_With_Predicates
+     (E : Entity_Id) return Boolean
+   is
+      Seen : Node_Sets.Set;
+
+      function Subcomponents_With_Predicates (E : Entity_Id) return Boolean;
+      --  Auxiliary function doing the actual computation. It stops if E is
+      --  in Seen.
+
+      -----------------------------------
+      -- Subcomponents_With_Predicates --
+      -----------------------------------
+
+      function Subcomponents_With_Predicates (E : Entity_Id) return Boolean
+      is
+         Typ : constant Entity_Id := Retysp (E);
+         Res : Boolean;
+      begin
+         if Seen.Contains (Typ) or not Ownership_Checking.Is_Deep (Typ) then
+            return False;
+         elsif Has_Predicates (Typ) then
+            return True;
+         end if;
+
+         Seen.Insert (Typ);
+
+         case Ekind (Typ) is
+         when Record_Kind =>
+            declare
+               Comp : Entity_Id := First_Component (Typ);
+            begin
+               Res := False;
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Subcomponents_With_Predicates (Etype (Comp))
+                  then
+                     Res := True;
+                     exit;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+            end;
+         when Array_Kind =>
+            Res := Subcomponents_With_Predicates (Component_Type (Typ));
+         when Access_Kind =>
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type (Typ);
+
+            begin
+               --  If Typ designates an incomplete or private type, the
+               --  designated type may not be marked. We mark it using
+               --  Retysp_In_SPARK. If it is not in SPARK, we consider that its
+               --  full view is private, so we return False.
+
+               if (Is_Partial_View (Des_Ty)
+                   or else Is_Incomplete_Type (Des_Ty))
+                 and then not Retysp_In_SPARK (Full_View (Des_Ty))
+               then
+                  Res := False;
+               else
+                  if Is_Partial_View (Des_Ty)
+                    or else Is_Incomplete_Type (Des_Ty)
+                  then
+                     Des_Ty := Full_View (Des_Ty);
+                  end if;
+
+                  Res := Subcomponents_With_Predicates (Des_Ty);
+               end if;
+            end;
+         when others => Res := False;
+         end case;
+
+         return Res;
+      end Subcomponents_With_Predicates;
+
+   begin
+      return Subcomponents_With_Predicates (E);
+   end Has_Deep_Subcomponents_With_Predicates;
 
    --------------
    -- In_SPARK --
@@ -3555,19 +3644,21 @@ package body SPARK_Definition is
             return;
          end if;
 
-         --  Local borrowers of access to variable types are not supported yet
+         --  We do not support local borrowers if they have predicates that
+         --  can be broken arbitrarily deeply during the traversal.
 
-         if Ekind (E) = E_Variable
-           and then Is_Access_Type (T)
-           and then not Is_Access_Constant (T)
-           and then Is_Anonymous_Access_Type (T)
+         if Is_Local_Borrower (E)
 
-            --  Only issue message on legal declarations. Others are handled in
-            --  ownership checking code in the frontend.
+           --  Only issue message on legal declarations. Others are handled in
+           --  ownership checking code in the frontend.
 
            and then Ownership_Checking.Is_Local_Context (Scope (E))
+           and then Has_Deep_Subcomponents_With_Predicates
+             (Directly_Designated_Type (T))
          then
-            Mark_Unsupported ("local borrower of an access object", E);
+            Mark_Unsupported
+              ("local borrower of a type with predicates on subcomponents of"
+               & " deep type", E);
          end if;
 
          if Present (Sub)

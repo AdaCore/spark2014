@@ -62,6 +62,7 @@ with Why.Conversions;                use Why.Conversions;
 with Why.Gen.Decl;                   use Why.Gen.Decl;
 with Why.Gen.Expr;                   use Why.Gen.Expr;
 with Why.Gen.Names;                  use Why.Gen.Names;
+with Why.Gen.Pointers;               use Why.Gen.Pointers;
 with Why.Gen.Preds;                  use Why.Gen.Preds;
 with Why.Gen.Progs;                  use Why.Gen.Progs;
 with Why.Gen.Records;                use Why.Gen.Records;
@@ -1140,6 +1141,10 @@ package body Gnat2Why.Subprograms is
                   if not Is_Concurrent_Type (Entity) then
                      Effects_Append_Binder_To_Writes
                        (Ada_Ent_To_Why.Element (Symbol_Table, Entity));
+
+                     if Is_Local_Borrower (Entity) then
+                        Effects_Append_To_Writes (Eff, Get_Pledge_Id (Entity));
+                     end if;
                   end if;
 
                end;
@@ -3102,6 +3107,9 @@ package body Gnat2Why.Subprograms is
 
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
+      function Havoc_Borrowed_Expressions
+        (Borrows : Node_Sets.Set) return W_Prog_Id;
+
       ----------------------
       -- Assume_For_Input --
       ----------------------
@@ -3428,6 +3436,23 @@ package body Gnat2Why.Subprograms is
          end loop;
       end Get_Pre_Post_Pragmas;
 
+      --------------------------------
+      -- Havoc_Borrowed_Expressions --
+      --------------------------------
+
+      function Havoc_Borrowed_Expressions
+        (Borrows : Node_Sets.Set) return W_Prog_Id
+      is
+         Result : W_Statement_Sequence_Id := Void_Sequence;
+      begin
+         for E of Borrows loop
+            Sequence_Append
+              (Result,
+               Havoc_Borrowed_Expression (E));
+         end loop;
+         return +Result;
+      end Havoc_Borrowed_Expressions;
+
       ------------------
       -- Post_As_Pred --
       ------------------
@@ -3695,6 +3720,8 @@ package body Gnat2Why.Subprograms is
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
 
+      Borrowers : Node_Sets.Set;
+
    --  Start of processing for Generate_VCs_For_Subprogram
 
    begin
@@ -3839,6 +3866,8 @@ package body Gnat2Why.Subprograms is
            (Get_Flat_Statement_And_Declaration_List
               (Declarations (Body_N)));
 
+         Get_Borrows_From_Decls (Declarations (Body_N), Borrowers);
+
          Why_Body :=
            Sequence
              ((1 => Check_Ceiling_Protocol (Body_Params, E),
@@ -3860,7 +3889,8 @@ package body Gnat2Why.Subprograms is
            ((1 => Transform_All_Pragmas
                     (Pre_Prags, "checking of pragma precondition"),
              2 => Why_Body,
-             3 => Transform_All_Pragmas
+             3 => Havoc_Borrowed_Expressions (Borrowers),
+             4 => Transform_All_Pragmas
                     (Post_Prags, "checking of pragma postcondition")));
 
          Why_Body := Checking_Of_Refined_Post (Why_Body);

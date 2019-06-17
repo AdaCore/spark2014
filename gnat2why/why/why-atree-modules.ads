@@ -103,6 +103,7 @@ package Why.Atree.Modules is
    Rep_Proj_32            : W_Module_Id;
    Rep_Proj_64            : W_Module_Id;
    Access_To_Incomp_Ty    : W_Module_Id;
+   Pledge                 : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);

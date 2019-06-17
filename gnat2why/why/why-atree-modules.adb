@@ -450,6 +450,10 @@ package body Why.Atree.Modules is
         New_Module
           (File => Ada_Model_File,
            Name => "Access_to_incomplete_type");
+      Pledge :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Pledge");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,

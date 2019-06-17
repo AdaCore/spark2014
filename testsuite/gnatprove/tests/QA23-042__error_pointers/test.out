@@ -4,15 +4,15 @@ n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
 n04.adb:15:16: traversal function returning access-to-variable type is not yet supported
 n04.adb:16:07: object of anonymous access type must be declared immediately within a subprogram, entry or block (SPARK RM 3.10(4))
-n04.adb:33:07: local borrower of an access object is not yet supported
+n04.adb:37:12: "foo" is not allowed in SPARK (due to traversal function returning access-to-variable type)
+n04.adb:37:12: violation of pragma SPARK_Mode at test.adc:3
 n05.adb:37:22: insufficient permission on dereference from "X"
 n05.adb:37:22: object was declared as not writeable at line 31
 n06.adb:39:22: insufficient permission on dereference from "X"
 n06.adb:39:22: object was declared as not writeable at line 33
 n07.adb:10:16: anonymous access type for result for non-traversal functions is not allowed in SPARK
 n07.adb:10:16: violation of pragma SPARK_Mode at test.adc:3
-n07.adb:16:10: local borrower of an access object is not yet supported
-n07.adb:23:04: local borrower of an access object is not yet supported
+n07.adb:23:04: object of anonymous access type must be initialized (SPARK RM 3.10(4))
 n07.adb:25:09: "Get_Local_Pointer" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
 n07.adb:25:09: violation of pragma SPARK_Mode at test.adc:3
 n08.adb:21:18: insufficient permission on dereference from "A"

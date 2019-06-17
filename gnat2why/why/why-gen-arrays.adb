@@ -2277,7 +2277,7 @@ package body Why.Gen.Arrays is
 
          when W_Deref =>
             declare
-               Id : constant W_Identifier_Id := Get_Right (+E);
+               Id : constant W_Identifier_Id := Get_Right (W_Deref_Id (E));
             begin
                return Get_Ada_Node (+Id);
             end;

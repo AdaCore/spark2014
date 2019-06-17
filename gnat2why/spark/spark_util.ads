@@ -427,6 +427,10 @@ package SPARK_Util is
    --  original record component. Returns Empty if no such component is found.
    --  In particular returns empty on hidden components.
 
+   function Is_Local_Borrower (E : Entity_Id) return Boolean;
+   --  Return True is E is a constant or a variable of an anonymous access to
+   --  variable type.
+
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------

@@ -1715,6 +1715,19 @@ package body SPARK_Util is
       return False;
    end Is_In_Statically_Dead_Branch;
 
+   -----------------------
+   -- Is_Local_Borrower --
+   -----------------------
+
+   function Is_Local_Borrower (E : Entity_Id) return Boolean is
+      T : constant Entity_Id := Retysp (Etype (E));
+   begin
+      return Ekind (E) in E_Variable | E_Constant
+        and then Is_Access_Type (T)
+        and then not Is_Access_Constant (T)
+        and then Is_Anonymous_Access_Type (T);
+   end Is_Local_Borrower;
+
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
    ---------------------------------
