@@ -79,7 +79,8 @@ package Flow_Utility.Initialization is
    function Default_Initialization (Typ        : Entity_Id;
                                     Scope      : Flow_Scope;
                                     Ignore_DIC : Boolean := False)
-                                    return Default_Initialization_Kind;
+                                    return Default_Initialization_Kind
+   with Pre => Is_Type (Typ);
    --  Determine default initialization kind that applies to a particular type.
    --  Types defined in units with external axiomatization (such as formal
    --  containers) and private types are treated specially, so that they are
