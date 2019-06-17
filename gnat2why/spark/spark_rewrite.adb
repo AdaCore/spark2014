@@ -202,7 +202,7 @@ package body SPARK_Rewrite is
          loop
             pragma Loop_Invariant (Present (E));
 
-            if Is_Subprogram (E)
+            if Ekind (E) in E_Function | E_Procedure
               and then not Is_Generic_Actual_Subprogram (E)
             then
                return E;
