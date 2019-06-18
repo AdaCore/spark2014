@@ -7393,6 +7393,21 @@ package body Gnat2Why.Expr is
          Expr  : W_Expr_Id := +Borrower_Id;
          Dummy : Node_Id := N;
       begin
+         --  With Borrower designating the current value of the borrower, and
+         --  Borrower_Id designating the value of the borrower after the
+         --  assignment (the one that will be referred to in the new pledge),
+         --  we handle the assignment:
+         --
+         --     Borrower := Path;  --  Path originates in Borrower
+         --
+         --  as an update of the inner Path inside Borrower:
+         --
+         --     Path := Borrower_Id;
+         --
+         --  This explains why we're using here the existing function
+         --  Shift_Rvalue to produce the updated value of Borrower after the
+         --  assignment, to use in the current pledge.
+
          while Nkind (N) not in
            N_Identifier | N_Expanded_Name | N_Function_Call
          loop
@@ -7405,6 +7420,8 @@ package body Gnat2Why.Expr is
 
          return New_Pledge_Call (Borrower, +Borrowed_Id, Expr);
       end Update_Value_From_Assignment;
+
+      --  Local variables
 
       Borrowed_Ty : constant Entity_Id := Get_Borrowed_Typ (Borrower);
       Borrower_Id : constant W_Identifier_Id :=
@@ -7420,6 +7437,9 @@ package body Gnat2Why.Expr is
                               Right  => +Borrower_Id,
                               Domain => EW_Term)
          else Update_Value_From_Assignment (Borrowed_Id, Borrower_Id, Path));
+
+   --  Start of processing for New_Pledge_Update_From_Assignment
+
    begin
       return New_Pledge_Update (Borrower, Borrowed_Id, Borrower_Id, +Def);
    end New_Pledge_Update_From_Assignment;
