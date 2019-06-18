@@ -4370,9 +4370,9 @@ package body SPARK_Definition is
                                   & "instance of enclosing type",
                                   E,
                                   SRM_Reference => "SPARK RM 3.8(2)");
+               else
+                  Mark (Expr);
                end if;
-
-               Mark (Expr);
             end if;
          end Mark_Default_Expression;
 
@@ -5928,7 +5928,9 @@ package body SPARK_Definition is
    procedure Mark_Object_Declaration (N : Node_Id) is
       E : constant Entity_Id := Defining_Entity (N);
    begin
-      if not In_SPARK (E) then
+      if In_SPARK (E) then
+         pragma Assert (In_SPARK (Etype (E)));
+      else
          Mark_Violation (N, From => E);
       end if;
    end Mark_Object_Declaration;
