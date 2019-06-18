@@ -5473,8 +5473,7 @@ package body SPARK_Definition is
       if SPARK_Pragma_Is (Opt.Off)
         and then Ekind (E) /= E_Abstract_State
       then
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
-         return;
+         goto Restore;
       end if;
 
       --  For recursive references, start with marking the entity in SPARK
@@ -5680,7 +5679,7 @@ package body SPARK_Definition is
       end if;
 
       --  Restore prestate
-
+   <<Restore>>
       Violation_Detected := Save_Violation_Detected;
       Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
       Current_SPARK_Pragma := Save_SPARK_Pragma;
