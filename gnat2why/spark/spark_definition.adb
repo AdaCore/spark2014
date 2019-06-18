@@ -1589,6 +1589,7 @@ package body SPARK_Definition is
                --  full default initialization.
 
                if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
+                 and then In_SPARK (Entity (Expression (N)))
                  and then Default_Initialization
                    (Entity (Expression (N)), Get_Flow_Scope (N))
                      /= Full_Default_Initialization
@@ -3620,6 +3621,7 @@ package body SPARK_Definition is
 
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
+           and then In_SPARK (Etype (E))
            and then Default_Initialization (Etype (E), Get_Flow_Scope (E))
              not in Full_Default_Initialization | No_Possible_Initialization
            and then not Has_Initial_Value (E)
@@ -5240,6 +5242,8 @@ package body SPARK_Definition is
 
                         Comp : Entity_Id := First_Component (E);
 
+                        Scop : constant Flow_Scope := Get_Flow_Scope (E);
+
                      begin
                         while Present (Comp) loop
 
@@ -5247,6 +5251,23 @@ package body SPARK_Definition is
 
                            if In_SPARK (Etype (Comp)) then
                               Mark_Default_Expression (Comp);
+
+                              --  Protected types need full default
+                              --  initialization, so we check their components.
+
+                              if No (Expression (Parent (Comp)))
+                                and then
+                                  Default_Initialization (Etype (Comp), Scop)
+                                  not in Full_Default_Initialization
+                                       | No_Possible_Initialization
+                              then
+                                 Mark_Violation
+                                   ("protected type "
+                                    & "with no default initialization",
+                                    E,
+                                    SRM_Reference => "SPARK RM 9.4");
+                              end if;
+
                            else
                               Mark_Violation (Comp, From => Etype (Comp));
                            end if;
@@ -5283,20 +5304,6 @@ package body SPARK_Definition is
                                     & " proof", Part);
                               end if;
                            end loop;
-                        end if;
-
-                        --  Protected types need full default initialization.
-                        --  No check needed if the private view of the type is
-                        --  not in SPARK.
-
-                        if Default_Initialization (E, Get_Flow_Scope (E))
-                          not in Full_Default_Initialization
-                               | No_Possible_Initialization
-                        then
-                           Mark_Violation ("protected type "
-                                           & "with no default initialization",
-                                           E,
-                                           SRM_Reference => "SPARK RM 9.4");
                         end if;
 
                         --  If the private part is marked On, then the full
