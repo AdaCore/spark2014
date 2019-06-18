@@ -5512,6 +5512,27 @@ package body SPARK_Definition is
          Mark_Address (E);
       end if;
 
+      --  Check for ownership legality violations on entities that are
+      --  analyzed in SPARK_Mode Auto.
+
+      if No (Current_SPARK_Pragma) then
+         declare
+            Decl : constant Node_Id :=
+              (case Ekind (E) is
+                  when E_Variable | E_Constant =>
+                    Parent (E),
+                  when others =>
+                    Empty);
+         begin
+            if Present (Decl)
+              and then not Ownership_Checking.Is_Legal (Decl)
+            then
+               Violation_Detected := True;
+               Last_Violation_Root_Cause_Node := Decl;
+            end if;
+         end;
+      end if;
+
       --  Mark differently each kind of entity
 
       case Ekind (E) is
