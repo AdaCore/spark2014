@@ -5262,9 +5262,9 @@ package body SPARK_Definition is
                                        | No_Possible_Initialization
                               then
                                  Mark_Violation
-                                   ("protected type "
+                                   ("protected component "
                                     & "with no default initialization",
-                                    E,
+                                    Comp,
                                     SRM_Reference => "SPARK RM 9.4");
                               end if;
 
