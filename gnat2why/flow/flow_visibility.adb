@@ -576,7 +576,9 @@ package body Flow_Visibility is
          end if;
       end if;
 
-      if Is_Generic_Instance (E) then
+      if Is_Generic_Instance (E)
+        and then not Is_Wrapper_Package (E)
+      then
          Template := Generic_Parent (Specification (N));
 
          --  Deal with instances of child instances; this is based on frontend
