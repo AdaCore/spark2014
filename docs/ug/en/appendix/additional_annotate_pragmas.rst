@@ -1,4 +1,4 @@
- 
+
 .. _Uses_of_Pragma_Annotate_GNATprove:
 
 Uses of Pragma Annotate GNATprove
@@ -22,7 +22,7 @@ Using Pragma Annotate to Justify Check Messages
 You can use annotations of the form
 
 .. code-block:: ada
-      
+
     pragma Annotate (GNATprove, False_Positive,
                      "message to be justified", "reason");
 
@@ -37,7 +37,7 @@ SPARK doesn't usually prove termination of subprograms. You can instruct it do
 so using annotations of this form:
 
 .. code-block:: ada
-      
+
    pragma Annotate (GNATprove, Terminating, Subp_Or_Package_Entity);
 
 See the section :ref:`Subprogram Termination` about details of this use of
@@ -52,7 +52,7 @@ This aspect provides the primitives of a container type that will be used to
 iterate over its content. For example, if we write:
 
 .. code-block:: ada
-		
+
    type Container is private with
      Iterable => (First       => First,
                   Next        => Next,
@@ -61,7 +61,7 @@ iterate over its content. For example, if we write:
 where
 
 .. code-block:: ada
-		
+
    function First (S : Set) return Cursor;
    function Has_Element (S : Set; C : Cursor) return Boolean;
    function Next (S : Set; C : Cursor) return Cursor;
@@ -81,7 +81,7 @@ to cursors that are actually valid in the container, the provided function
 ``Has_Element`` is used. For example, the property stated above becomes:
 
 .. code-block:: ada
-		
+
    (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C)))
 
 Like for the standard Ada iteration mechanism, it is possible to allow
@@ -90,7 +90,7 @@ addition an ``Element`` primitive to the ``Iterable`` aspect. For example, if
 we write:
 
 .. code-block:: ada
-		
+
    type Container is private with
      Iterable => (First       => First,
                   Next        => Next,
@@ -100,14 +100,14 @@ we write:
 where
 
 .. code-block:: ada
-		
+
    function Element (S : Set; C : Cursor) return Element_Type;
 
 then quantification over containers can be done directly on its elements. For
 example, we could rewrite the above property into:
 
 .. code-block:: ada
-		
+
    (for all E of S => P (E))
 
 For execution, quantification over elements of a container is translated as a
@@ -117,7 +117,7 @@ cursors. For example, the above property is translated using quantification
 over cursors :
 
 .. code-block:: ada
-		
+
    (for all C : Cursor => (if Has_Element (S, C) then P (Element (S, C)))
 
 Depending on the application, this translation may be too low-level and
@@ -125,7 +125,7 @@ introduce an unnecessary burden on the automatic provers. As an example, let
 us consider a package for functional sets:
 
 .. code-block:: ada
-		
+
   package Sets with SPARK_Mode is
 
     type Cursor is private;
@@ -154,7 +154,7 @@ Following the scheme described previously, the postcondition of ``Intersection``
 is translated for proof as:
 
 .. code-block:: ada
-		
+
   (for all C : Cursor =>
       (if Has_Element (Intersection'Result, C) then
              Mem (S1, Element (Intersection'Result, C))
@@ -168,7 +168,7 @@ is translated for proof as:
 Using the postcondition of ``Mem``, this can be refined further into:
 
 .. code-block:: ada
-		
+
   (for all C : Cursor =>
       (if Has_Element (Intersection'Result, C) then
              (for some C1 : Cursor =>
@@ -191,7 +191,7 @@ with a `Contains` function, that will be used for quantification. For example,
 on our sets, we could write:
 
 .. code-block:: ada
-		
+
   function Mem (S : Set; E : Element_Type) return Boolean;
   pragma Annotate (GNATprove, Iterable_For_Proof, "Contains", Mem);
 
@@ -199,7 +199,7 @@ With this annotation, the postcondition of ``Intersection`` is translated in a
 simpler way, using logic quantification directly over elements:
 
 .. code-block:: ada
-		
+
   (for all E : Element_Type =>
        (if Mem (Intersection'Result, E) then Mem (S1, E) and Mem (S2, E)))
   and (for all E : Element_Type =>
@@ -218,7 +218,7 @@ example, let us consider a package of linked lists that is specified using a
 sequence that allows accessing the element stored at each position:
 
 .. code-block:: ada
-		
+
   package Lists with SPARK_Mode is
 
    type Sequence is private with
@@ -267,7 +267,7 @@ function. Following the usual translation scheme for quantified expressions, the
 last line of the postcondition of ``Init`` is translated for proof as:
 
 .. code-block:: ada
-		
+
   (for all C : Cursor =>
       (if Has_Element (Init'Result, C) then Element (Init'Result, C) = E));
 
@@ -275,7 +275,7 @@ Using the definition of ``Element`` and ``Has_Element``, it can then be refined
 further into:
 
 .. code-block:: ada
-		
+
   (for all C : Cursor =>
       (if Position (Init'Result, C) in 1 .. Length (Model (Init'Result))
        then Get (Model (Init'Result), Position (Init'Result, C)) = E));
@@ -293,7 +293,7 @@ complex containers toward quantification on their model. For example, on our
 lists, we could write:
 
 .. code-block:: ada
-		
+
    function Model (L : List) return Sequence;
    pragma Annotate (GNATprove, Iterable_For_Proof, "Model", Entity => Model);
 
@@ -315,18 +315,18 @@ as ``L``.
 Inlining Functions for Proof
 ----------------------------
 
-Contracts for functions are generally translated by |GNATprove| has axioms on
+Contracts for functions are generally translated by |GNATprove| as axioms on
 otherwise undefined functions. As an example, consider the following function:
 
 .. code-block:: ada
-		
+
     function Increment (X : Integer) return Integer with
       Post => Increment'Result >= X;
 
 It will be translated by GNATprove as follows:
 
 .. code-block:: ada
-		
+
     function Increment (X : Integer) return Integer;
 
     axiom : (for all X : Integer. Increment (X) >= X);
@@ -335,14 +335,14 @@ For internal reasons due to ordering issues, expression functions are also
 defined using axioms. For example:
 
 .. code-block:: ada
-		
+
     function Is_Positive (X : Integer) return Boolean is (X > 0);
 
 will be translated exactly as if its definition was given through a
 postcondition, namely:
 
 .. code-block:: ada
-		
+
     function Is_Positive (X : Integer) return Boolean;
 
     axiom : (for all X : Integer. Is_Positive (X) = (X > 0));
@@ -359,7 +359,7 @@ function, a direct definition will be used for the function instead of an
 axiom:
 
 .. code-block:: ada
-		
+
     function Is_Positive (X : Integer) return Boolean is (X > 0);
     pragma Annotate (GNATprove, Inline_For_Proof, Is_Positive);
 
@@ -367,7 +367,7 @@ The same pragma will also allow to inline a regular function, if its
 postcondition is simply an equality between its result and an expression:
 
 .. code-block:: ada
-		
+
     function Is_Positive (X : Integer) return Boolean with
       Post => Is_Positive'Result = (X > 0);
     pragma Annotate (GNATprove, Inline_For_Proof, Is_Positive);
