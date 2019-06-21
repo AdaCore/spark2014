@@ -2660,7 +2660,7 @@ package body Flow.Control_Flow_Graph is
          --  In the traversal of the loop body, this finds suitable targets
          --  and checks if they are fully initialized.
 
-         procedure Rec (N : Node_Id);
+         procedure Rec is new Traverse_More_Proc (Proc_Search);
          --  Wrapper around the traversal, so that Proc_Search can call itself
 
          ---------------------
@@ -3072,14 +3072,6 @@ package body Flow.Control_Flow_Graph is
             end case;
             return OK;
          end Proc_Search;
-
-         procedure Rec_Inner is new Traverse_More_Proc (Proc_Search);
-
-         ---------
-         -- Rec --
-         ---------
-
-         procedure Rec (N : Node_Id) renames Rec_Inner;
 
       --  Start of processing for Variables_Initialized_By_Loop
 
