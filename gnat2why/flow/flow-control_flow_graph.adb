@@ -2789,13 +2789,13 @@ package body Flow.Control_Flow_Graph is
 
                         if (Compile_Time_Compare (Low_Bound (Param_Range),
                                                   Low_Bound (Index_Range),
-                                                  True) = EQ
+                                                  Assume_Valid => True) = EQ
                             or else Matches_Object_Bound
                               (Low_Bound (Param_Range), Attribute_First))
                           and then
                             (Compile_Time_Compare (High_Bound (Param_Range),
                                                    High_Bound (Index_Range),
-                                                   True) = EQ
+                                                   Assume_Valid => True) = EQ
                              or else Matches_Object_Bound
                                (High_Bound (Param_Range), Attribute_Last))
                         then
