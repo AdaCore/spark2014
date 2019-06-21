@@ -2632,9 +2632,15 @@ package body Flow.Control_Flow_Graph is
          --  the current loop.
 
          function Get_Array_Index (N : Node_Id) return Target
-         with Pre => Present (N);
+         with Pre  => Present (N),
+              Post => (if Get_Array_Index'Result.Valid
+                       then Get_Array_Index'Result.Var.Kind in Direct_Mapping
+                                                             | Record_Field
+                        and then not Get_Array_Index'Result.D.Is_Empty
+                        and then (for all E of Get_Array_Index'Result.D =>
+                                      Ekind (E) = E_Loop_Parameter));
          --  Convert the target of an assignment to an array into a flow id
-         --  and a list of indices.
+         --  and a list of loop parameters.
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
          with Pre => T.Valid;
@@ -2724,7 +2730,8 @@ package body Flow.Control_Flow_Graph is
                  (Bound : Node_Id;
                   Attr  : Attribute_Id)
                   return Boolean
-                 with Pre => Attr in Attribute_First | Attribute_Last;
+                 with Pre => Nkind (Bound) in N_Subexpr
+                             and then Attr in Attribute_First | Attribute_Last;
                --  Returns True iff the bound of the loop parameter's range
                --  ('First or 'Last) matches that same bound of the assigned
                --  array, e.g.:
