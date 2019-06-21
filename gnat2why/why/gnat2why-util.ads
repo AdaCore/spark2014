@@ -502,8 +502,9 @@ package Gnat2Why.Util is
 
    procedure Get_Borrows_From_Decls
      (Decls   : List_Id;
-      Borrows : in out Node_Sets.Set);
-   --  From a list of declarations, returns a set of borrowers
+      Borrows : in out Node_Lists.List);
+   --  From a list of declarations, returns a list of borrowers, in reverse
+   --  order of the declarations.
 
    ------------------------------
    -- Symbol table subprograms --

@@ -3108,7 +3108,7 @@ package body Gnat2Why.Subprograms is
       function Wrap_Decls_For_CC_Guards (P : W_Prog_Id) return W_Prog_Id;
 
       function Havoc_Borrowed_Expressions
-        (Borrows : Node_Sets.Set) return W_Prog_Id;
+        (Borrows : Node_Lists.List) return W_Prog_Id;
 
       ----------------------
       -- Assume_For_Input --
@@ -3441,7 +3441,7 @@ package body Gnat2Why.Subprograms is
       --------------------------------
 
       function Havoc_Borrowed_Expressions
-        (Borrows : Node_Sets.Set) return W_Prog_Id
+        (Borrows : Node_Lists.List) return W_Prog_Id
       is
          Result : W_Statement_Sequence_Id := Void_Sequence;
       begin
@@ -3720,7 +3720,7 @@ package body Gnat2Why.Subprograms is
       Precondition_Is_Statically_False  : Boolean := False;
       Postcondition_Is_Statically_False : Boolean := False;
 
-      Borrowers : Node_Sets.Set;
+      Borrowers : Node_Lists.List;
 
    --  Start of processing for Generate_VCs_For_Subprogram
 

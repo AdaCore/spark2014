@@ -11378,7 +11378,7 @@ package body Gnat2Why.Expr is
          --  Havoc all entities borrowed in the block
 
          declare
-            Borrows : Node_Sets.Set;
+            Borrows : Node_Lists.List;
             Result  : W_Statement_Sequence_Id := Void_Sequence;
          begin
             Get_Borrows_From_Decls (Declarations (N), Borrows);

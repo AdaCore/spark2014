@@ -311,7 +311,7 @@ package body Gnat2Why.Util is
 
    procedure Get_Borrows_From_Decls
      (Decls   : List_Id;
-      Borrows : in out Node_Sets.Set)
+      Borrows : in out Node_Lists.List)
    is
       Cur_Decl : Node_Id := First (Decls);
 
@@ -322,7 +322,7 @@ package body Gnat2Why.Util is
                E : constant Entity_Id := Defining_Identifier (Cur_Decl);
             begin
                if Is_Local_Borrower (E) then
-                  Borrows.Insert (E);
+                  Borrows.Prepend (E);
                end if;
             end;
          end if;
