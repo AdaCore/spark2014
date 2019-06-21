@@ -2153,7 +2153,8 @@ package body Flow.Control_Flow_Graph is
       with Pre => Is_For_Loop (N);
       --  Return the range given for loop
 
-      function Loop_Might_Exit_Early (N : Node_Id) return Boolean;
+      function Loop_Might_Exit_Early (Loop_N : Node_Id) return Boolean
+      with Pre => Nkind (Loop_N) = N_Loop_Statement;
       --  Return true if the loop contains an exit or return statement
 
       procedure Do_Loop;
@@ -2273,8 +2274,9 @@ package body Flow.Control_Flow_Graph is
       --  This means the loop body may not be executed, so any initializations
       --  in the loop which subsequent code depends on will be flagged up.
 
-      function Variables_Initialized_By_Loop (N : Node_Id)
-                                              return Flow_Id_Sets.Set;
+      function Variables_Initialized_By_Loop (Loop_N : Node_Id)
+                                              return Flow_Id_Sets.Set
+      with Pre => Nkind (N) = N_Loop_Statement;
       --  A conservative heuristic to determine the set of possible variables
       --  fully initialized by the given statement list.
 
@@ -2551,7 +2553,7 @@ package body Flow.Control_Flow_Graph is
       -- Loop_Might_Exit_Early --
       ---------------------------
 
-      function Loop_Might_Exit_Early (N : Node_Id) return Boolean is
+      function Loop_Might_Exit_Early (Loop_N : Node_Id) return Boolean is
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
 
@@ -2595,14 +2597,14 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Loop_Might_Exit_Early
 
       begin
-         return Do_Search (N) = Abandon;
+         return Do_Search (Loop_N) = Abandon;
       end Loop_Might_Exit_Early;
 
       -----------------------------------
       -- Variables_Initialized_By_Loop --
       -----------------------------------
 
-      function Variables_Initialized_By_Loop (N : Node_Id)
+      function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       is
          Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -2623,7 +2625,8 @@ package body Flow.Control_Flow_Graph is
          Current_Loop : Node_Id       := Empty;
          Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
 
-         Lc : constant Graph_Connections := CM (Union_Id (Statements (N)));
+         Lc : constant Graph_Connections :=
+           CM (Union_Id (Statements (Loop_N)));
          --  A slice (represented by Standard_Entry and Standard_Exits) of the
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
@@ -3074,11 +3077,11 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Variables_Initialized_By_Loop
 
       begin
-         if Loop_Might_Exit_Early (N) then
+         if Loop_Might_Exit_Early (Loop_N) then
             return Flow_Id_Sets.Empty_Set;
          end if;
 
-         Rec (N);
+         Rec (Loop_N);
 
          return Fully_Initialized;
       end Variables_Initialized_By_Loop;
