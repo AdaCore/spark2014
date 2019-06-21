@@ -106,6 +106,10 @@ package body SPARK_Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, Init_By_Proof, E).
 
+   Pledge_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores type entities with a pragma Annotate (GNATprove, Pledge, E).
+
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
       Kind            : Annotate_Kind;
@@ -175,6 +179,11 @@ package body SPARK_Annotate is
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, Init_By_Proof, E) and
    --  insert it in the Init_Annotations map.
+
+   procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) with
+     Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, Pledge, E) and insert it
+   --  in the Pledge_Annotations map.
 
    ---------
    -- "<" --
@@ -541,6 +550,92 @@ package body SPARK_Annotate is
       end if;
    end Check_Iterable_Annotation;
 
+   -----------------------------
+   -- Check_Pledge_Annotation --
+   -----------------------------
+
+   procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) is
+
+      procedure Check_Pledge_Entity (E : Entity_Id);
+
+      -------------------------
+      -- Check_Pledge_Entity --
+      -------------------------
+
+      procedure Check_Pledge_Entity (E : Entity_Id) is
+         Borrower : constant Entity_Id := First_Formal (E);
+      begin
+         if No (Borrower)
+           or else No (Next_Formal (Borrower))
+           or else Present (Next_Formal (Next_Formal (Borrower)))
+         then
+            Error_Msg_N
+              ("Pledge function must have exactly two parameters", E);
+         elsif not Is_Ghost_Entity (E) then
+            Error_Msg_N
+              ("Pledge function must be a ghost function", E);
+         elsif not Is_Standard_Boolean_Type (Etype (E)) then
+            Error_Msg_N
+              ("Pledge function must return Boolean", E);
+         elsif No (Get_Expression_Function (E)) then
+            Error_Msg_N
+              ("Pledge function must be an expression function", E);
+         else
+            declare
+               Pledge_Expr : constant Entity_Id := Next_Formal (Borrower);
+            begin
+               if not Is_Anonymous_Access_Type (Etype (Borrower)) then
+                  Error_Msg_N
+                    ("first parameter of Pledge function must be an anonymous "
+                     & "access type", Borrower);
+               elsif not Is_Standard_Boolean_Type (Etype (Pledge_Expr)) then
+                  Error_Msg_N
+                    ("second parameter of Pledge function must be a Boolean",
+                     Pledge_Expr);
+               else
+                  declare
+                     Expr : constant Node_Id :=
+                       Expression (Get_Expression_Function (E));
+                  begin
+                     if Nkind (Expr) not in N_Expanded_Name | N_Identifier
+                       or else Entity (Expr) /= Pledge_Expr
+                     then
+                        Error_Msg_N
+                          ("expression of a Pledge function must be its second"
+                           & " parameter", Pledge_Expr);
+                     end if;
+                  end;
+               end if;
+            end;
+         end if;
+      end Check_Pledge_Entity;
+
+      E : Entity_Id;
+   begin
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         Error_Msg_N
+           ("third parameter of a pragma Pledge must be an entity",
+            Arg3_Exp);
+      else
+         E := Entity (Arg3_Exp);
+      end if;
+
+      --  This entity must be a function
+
+      if Ekind (E) /= E_Function then
+         Error_Msg_N
+           ("entity parameter of a pragma Pledge must be a function",
+            Arg3_Exp);
+         return;
+      else
+         Check_Pledge_Entity (E);
+      end if;
+
+      --  Go through renamings to find the appropriate entity
+
+      Pledge_Annotations.Include (Unique_Entity (E));
+   end Check_Pledge_Annotation;
+
    --------------------------------
    -- Check_Terminate_Annotation --
    --------------------------------
@@ -601,6 +696,13 @@ package body SPARK_Annotate is
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
+
+   ---------------------------
+   -- Has_Pledge_Annotation --
+   ---------------------------
+
+   function Has_Pledge_Annotation (E : Entity_Id) return Boolean is
+     (Pledge_Annotations.Contains (E));
 
    ------------------------------
    -- Has_Terminate_Annotation --
@@ -878,6 +980,10 @@ package body SPARK_Annotate is
            "init_by_proof"
          then
             Check_Init_Annotation (Arg3_Exp);
+            Ok := False;
+            return;
+         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "pledge" then
+            Check_Pledge_Annotation (Arg3_Exp);
             Ok := False;
             return;
          end if;

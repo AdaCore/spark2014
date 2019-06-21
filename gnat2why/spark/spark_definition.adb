@@ -3155,6 +3155,17 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
+      elsif Has_Pledge_Annotation (E)
+        and then
+          (Nkind (First_Actual (N)) not in N_Expanded_Name | N_Identifier
+           or else not Is_Local_Borrower (Entity (First_Actual (N))))
+      then
+         --  We may want to support other parameters later when traversal
+         --  functions are supported.
+
+         Mark_Unsupported
+           ("first actual of a pledge function which is not a local borrower",
+            N);
       end if;
    end Mark_Call;
 

@@ -212,4 +212,7 @@ package SPARK_Annotate is
    with Pre => Is_Type (E);
    --  Return True if a pragma Init_By_Proof applies to the type E
 
+   function Has_Pledge_Annotation (E : Entity_Id) return Boolean;
+   --  Return True if the function E is a pledge function
+
 end SPARK_Annotate;

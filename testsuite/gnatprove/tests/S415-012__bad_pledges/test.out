@@ -1,0 +1,8 @@
+bad_pledges.adb:2:13: Pledge function must have exactly two parameters
+bad_pledges.adb:4:19: first parameter of Pledge function must be an anonymous access type
+bad_pledges.adb:6:39: second parameter of Pledge function must be a Boolean
+bad_pledges.adb:8:13: Pledge function must return Boolean
+bad_pledges.adb:10:13: Pledge function must be a ghost function
+bad_pledges.adb:12:13: Pledge function must be an expression function
+bad_pledges.adb:18:39: expression of a Pledge function must be its second parameter
+gnatprove: error during generation of Global contracts
