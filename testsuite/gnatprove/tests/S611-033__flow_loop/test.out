@@ -1,0 +1,8 @@
+p.adb:7:04: warning: analyzing unreferenced procedure "Update"
+p.adb:7:22: warning: "Noise" is not modified, could be IN
+p.adb:9:34: info: cannot unroll loop (too many loop iterations)
+p.adb:9:34: warning: statement has no effect
+p.adb:11:13: warning: initialization of "Local_Avg" has no effect
+p.adb:13:48: info: unrolling loop
+p.adb:13:48: warning: statement has no effect
+p.adb:14:34: warning: unused assignment

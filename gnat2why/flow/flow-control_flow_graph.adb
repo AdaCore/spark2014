@@ -2638,6 +2638,15 @@ package body Flow.Control_Flow_Graph is
          --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
+         function Is_Declared_Within_Current_Loop
+           (E : Entity_Id) return Boolean
+         with Pre => Is_Object (E);
+         --  Returns True iff object E is declared within the currently
+         --  analysed loop.
+         --  Note: this is similar to Scope_Within, but operating on the
+         --  syntactic level, because FOR loops do not act as scopes for
+         --  objects declared within them.
+
          function Proc_Search (N : Node_Id) return Traverse_Result;
          --  In the traversal of the loop body, this finds suitable targets
          --  and checks if they are fully initialized.
@@ -2931,6 +2940,22 @@ package body Flow.Control_Flow_Graph is
             return Fully_Defined;
          end Fully_Defined_In_Original_Loop;
 
+         -------------------------------------
+         -- Is_Declared_Within_Current_Loop --
+         -------------------------------------
+
+         function Is_Declared_Within_Current_Loop
+           (E : Entity_Id) return Boolean
+         is
+            function Is_Current_Loop (N : Node_Id) return Boolean is
+              (N = Loop_N);
+
+            function Current_Loop_Parent is new First_Parent_With_Property
+              (Is_Current_Loop);
+         begin
+            return Present (Current_Loop_Parent (E));
+         end Is_Declared_Within_Current_Loop;
+
          -----------------
          -- Proc_Search --
          -----------------
@@ -2968,6 +2993,8 @@ package body Flow.Control_Flow_Graph is
 
                      begin
                         if T.Valid
+                          and then not Is_Declared_Within_Current_Loop
+                            (Get_Direct_Mapping_Id (T.Var))
                           and then Fully_Defined_In_Original_Loop (T)
                         then
                            Fully_Initialized.Include (T.Var);
@@ -3000,6 +3027,8 @@ package body Flow.Control_Flow_Graph is
 
                            begin
                               if T.Valid
+                                and then not Is_Declared_Within_Current_Loop
+                                  (Get_Direct_Mapping_Id (T.Var))
                                 and then Fully_Defined_In_Original_Loop (T)
                               then
                                  Fully_Initialized.Include (T.Var);
