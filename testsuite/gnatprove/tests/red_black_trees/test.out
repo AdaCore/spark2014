@@ -1168,9 +1168,9 @@ red_black_trees.adb:121:46: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:127:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:127:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:131:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+red_black_trees.adb:131:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 red_black_trees.adb:132:25: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:132:39: info: index check proved (CVC4: 4 VC)
-red_black_trees.adb:133:24: medium: loop invariant might fail after first iteration, cannot prove Length (M (J).A) < Max - (N + 1)
 red_black_trees.adb:133:35: info: index check proved (CVC4: 4 VC)
 red_black_trees.adb:138:16: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 1 VC)
 red_black_trees.adb:142:23: medium: loop invariant might fail after first iteration, cannot prove Res (J).Status = (Res (Peek (T.Struct, J, Left)).Count = Res (Peek (T.Struct, J, Right)).Count)
@@ -1251,10 +1251,10 @@ red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:471
-red_black_trees.adb:258:28: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
+red_black_trees.adb:258:28: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
-red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:416
+red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:471
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:262:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:416
