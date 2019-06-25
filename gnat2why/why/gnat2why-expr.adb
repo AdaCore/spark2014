@@ -17553,7 +17553,7 @@ package body Gnat2Why.Expr is
 
                  (if Is_Error_Signaling_Procedure (Subp)
                     and then not
-                      (Ekind (Enclosing_Subp) in E_Procedure
+                      (Ekind (Enclosing_Subp) = E_Procedure
                         and then Is_Error_Signaling_Procedure (Enclosing_Subp))
                   then
                      No_Return
