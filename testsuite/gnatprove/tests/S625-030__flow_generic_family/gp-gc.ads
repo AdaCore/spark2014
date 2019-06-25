@@ -1,0 +1,2 @@
+generic
+procedure GP.GC;
