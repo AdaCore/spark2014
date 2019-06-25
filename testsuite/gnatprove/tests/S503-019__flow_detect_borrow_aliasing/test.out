@@ -8,9 +8,9 @@ q.adb:6:04: info: initialization of "X_Ptr" proved
 q.adb:9:13: info: data dependencies proved
 q.adb:13:14: warning: unused assignment
 q.adb:19:16: high: formal parameter "Y" and global "X_Ptr" are aliased (SPARK RM 6.4.2)
-r.adb:9:04: info: initialization of "O" proved
-r.adb:11:20: warning: unused initial value of "X"
-r.adb:20:18: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
+r.adb:10:04: info: initialization of "O" proved
+r.adb:12:20: warning: unused initial value of "X"
+r.adb:24:25: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 s.adb:10:04: info: initialization of "Ptr" proved
 s.adb:12:20: warning: unused initial value of "X"
 s.adb:21:17: info: non-aliasing of formal parameters "X" and "Y" proved
