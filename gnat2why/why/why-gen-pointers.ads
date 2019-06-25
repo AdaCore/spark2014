@@ -151,6 +151,9 @@ package Why.Gen.Pointers is
    procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id);
    --  Clone the pledge module for E and emit a global reference for the pledge
 
+   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id;
+   --  Get the borrowed entity
+
    function Get_Borrowed_Expr (E : Entity_Id) return Node_Id;
    --  Get the initial borrowed expression
 
@@ -163,13 +166,13 @@ package Why.Gen.Pointers is
    function New_Pledge_Call
      (E            : Entity_Id;
       Borrowed_Arg : W_Expr_Id;
-      Borrower_Arg : W_Expr_Id) return W_Expr_Id;
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
    --  Construct a call to the pledge of E
 
    function New_Pledge_Update
      (E            : Entity_Id;
       Borrowed_Id  : W_Identifier_Id;
-      Borrower_Id  : W_Identifier_Id;
+      Brower_Id    : W_Identifier_Id;
       Def          : W_Term_Id) return W_Prog_Id;
    --  Construct an update of the pledge of E
 

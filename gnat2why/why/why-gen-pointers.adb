@@ -76,10 +76,11 @@ package body Why.Gen.Pointers is
    --  for which a completion module has been declared.
 
    type Borrow_Info is record
-      Borrowed_Expr : Node_Id;          --  Initial expression
-      Borrowed_Ty   : Entity_Id;        --  Type of the borrower
-      Pledge_Id     : W_Identifier_Id;  --  Why id for the pledge function
-      Pledge_Get    : W_Identifier_Id;  --  Why id for get on pledges
+      Borrowed_Entity : Entity_Id;        --  Root borrowed object
+      Borrowed_Expr   : Node_Id;          --  Initial expression
+      Borrowed_Ty     : Entity_Id;        --  Type of the borrower
+      Pledge_Id       : W_Identifier_Id;  --  Why id for the pledge function
+      Pledge_Get      : W_Identifier_Id;  --  Why id for get on pledges
    end record;
 
    package Borrow_Info_Maps is new Ada.Containers.Hashed_Maps
@@ -701,6 +702,16 @@ package body Why.Gen.Pointers is
       Emit (P, New_Type_Decl (Name  => To_Why_Type (E, Local => True),
                               Alias => +New_Named_Type
                                 (Name => To_Name (WNE_Rec_Rep))));
+      Emit
+        (P,
+         Why.Atree.Builders.New_Function_Decl
+           (Domain      => EW_Pterm,
+            Name        => To_Local (E_Symb (E, WNE_Dummy)),
+            Binders     => (1 .. 0 => <>),
+            Labels      => Symbol_Sets.Empty_Set,
+            Location    => No_Location,
+            Return_Type =>
+              +New_Named_Type (Name => To_Why_Type (E, Local => True))));
    end Declare_Ada_Pointer;
 
    ------------------------
@@ -716,20 +727,23 @@ package body Why.Gen.Pointers is
       Ref_Type         : constant W_Type_Id :=
         New_Named_Type (New_Name (Symb   => NID (Pledge_Ty_Name),
                                   Module => Current_Module));
-      Expr             : Node_Id := Expression (Enclosing_Declaration (E));
-      Expr_Ty          : Entity_Id := Etype (E);
+      Borrowed_Expr    : Node_Id := Expression (Enclosing_Declaration (E));
+      Borrowed_Ty      : Entity_Id := Etype (E);
+      Borrowed_Entity  : Entity_Id;
       Cur              : Node_Id := Expression (Enclosing_Declaration (E));
 
    begin
       --  Find the borrowed initial expression and type.
       --  We go over the initial expression to find the biggest prefix
-      --  containing no function calls and we store it in Expr. Expr_Ty is the
-      --  type of the object borrowing the expression at this point (either
-      --  E or the first formal of a call to a traversal function).
+      --  containing no function calls and we store it in Borrowed_Expr.
+      --  Borrowed_Ty is the type of the object borrowing the expression at
+      --  this point (either E or the first formal of a call to a traversal
+      --  function).
 
       loop
          case Nkind (Cur) is
             when N_Identifier | N_Expanded_Name =>
+               Borrowed_Entity := Entity (Cur);
                exit;
             when N_Selected_Component
                | N_Indexed_Component
@@ -743,16 +757,21 @@ package body Why.Gen.Pointers is
             =>
                Cur := Expression (Cur);
             when N_Function_Call =>
-               Expr := First_Actual (Cur);
-               Expr_Ty := Etype (First_Formal (Get_Called_Entity (Cur)));
-               Cur := Expr;
-               pragma Assert (Present (Expr));
+               Borrowed_Expr := First_Actual (Cur);
+               Borrowed_Ty := Etype (First_Formal (Get_Called_Entity (Cur)));
+               Cur := Borrowed_Expr;
+               pragma Assert (Present (Borrowed_Expr));
             when others =>
                raise Not_Implemented;
          end case;
       end loop;
 
-      --  clone the pledge module
+      --  Clone the pledge module. It creates a pledge function relating the
+      --  borrowed entity and the borrower. We could have chosen to rather
+      --  relate the borrowed expression and the borrower, but it makes it
+      --  less practical to have good triggers for quantified expressions
+      --  arising from the translation of a call to a function which has a
+      --  pledge annotation.
 
       Emit (File,
             New_Clone_Declaration
@@ -771,7 +790,7 @@ package body Why.Gen.Pointers is
                        Orig_Name => New_Name
                          (Symb => NID ("borrowed")),
                        Image     => Get_Name
-                         (Type_Of_Node (Expr_Ty))))));
+                         (Type_Of_Node (Borrowed_Entity))))));
 
       declare
          Loc_Pledge_Id  : constant W_Identifier_Id :=
@@ -796,10 +815,11 @@ package body Why.Gen.Pointers is
                                            Location => No_Location));
 
          Borrow_Infos.Insert
-           (E, Borrow_Info'(Borrowed_Expr => Expr,
-                            Borrowed_Ty   => Expr_Ty,
-                            Pledge_Id     => Pledge_Id,
-                            Pledge_Get    => Pledge_Get_Id));
+           (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
+                            Borrowed_Expr   => Borrowed_Expr,
+                            Borrowed_Ty     => Borrowed_Ty,
+                            Pledge_Id       => Pledge_Id,
+                            Pledge_Get      => Pledge_Get_Id));
       end;
    end Declare_Pledge_Ref;
 
@@ -1023,6 +1043,13 @@ package body Why.Gen.Pointers is
       end if;
    end Declare_Rep_Pointer_Type;
 
+   -------------------------
+   -- Get_Borrowed_Entity --
+   -------------------------
+
+   function Get_Borrowed_Entity (E : Entity_Id) return Entity_Id is
+     (Borrow_Infos (E).Borrowed_Entity);
+
    -----------------------
    -- Get_Borrowed_Expr --
    -----------------------
@@ -1154,7 +1181,7 @@ package body Why.Gen.Pointers is
    function New_Pledge_Call
      (E            : Entity_Id;
       Borrowed_Arg : W_Expr_Id;
-      Borrower_Arg : W_Expr_Id) return W_Expr_Id
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id
    is
       Pledge_Id  : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Id;
@@ -1166,7 +1193,7 @@ package body Why.Gen.Pointers is
       return New_Call
         (Domain => EW_Term,
          Name   => Pledge_Get,
-         Args   => (Pledge_Deref, Borrowed_Arg, Borrower_Arg),
+         Args   => (Pledge_Deref, Borrowed_Arg, Brower_Arg),
          Typ    => Get_Typ (Pledge_Id));
    end New_Pledge_Call;
 
@@ -1177,7 +1204,7 @@ package body Why.Gen.Pointers is
    function New_Pledge_Update
      (E            : Entity_Id;
       Borrowed_Id  : W_Identifier_Id;
-      Borrower_Id  : W_Identifier_Id;
+      Brower_Id    : W_Identifier_Id;
       Def          : W_Term_Id) return W_Prog_Id
    is
       Pledge_Id  : constant W_Identifier_Id :=
@@ -1188,7 +1215,7 @@ package body Why.Gen.Pointers is
         New_Result_Ident (Typ => Get_Typ (Pledge_Id));
       Res_Acc    : constant W_Term_Id :=
         New_Call (Name => Pledge_Get,
-                  Args => (+Res, +Borrowed_Id, +Borrower_Id),
+                  Args => (+Res, +Borrowed_Id, +Brower_Id),
                   Typ  => EW_Bool_Type);
    begin
       return New_Assignment
@@ -1197,7 +1224,7 @@ package body Why.Gen.Pointers is
            (Post        => New_Universal_Quantif
                 (Binders  => (1 => Binder_Type'(B_Name => Borrowed_Id,
                                                 others => <>),
-                              2 => Binder_Type'(B_Name => Borrower_Id,
+                              2 => Binder_Type'(B_Name => Brower_Id,
                                                 others => <>)),
                  Triggers => New_Triggers
                    (Triggers => (1 => New_Trigger (Terms => (1 => +Res_Acc)))),

@@ -704,13 +704,34 @@ package body Gnat2Why.Expr is
                and then Entity_Body_In_SPARK (E);
    --  Return True if node Expr can "see" the Refined_Post of entity E
 
+   ---------------------------------
+   -- Handling of Local Borrowers --
+   ---------------------------------
+
+   function Compute_Assumption_For_Borrow
+     (Brower      : Entity_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Params      : Transformation_Params) return W_Pred_Id;
+   --  Compute constraints preserved throughout the life of a borrower
+
    function New_Pledge_Update_From_Assignment
-     (Borrower : Entity_Id;
-      Path     : Node_Id;
-      In_Decl  : Boolean) return W_Prog_Id;
-   --  Create an assignment updating the pledge of Borrower from an update
+     (Brower  : Entity_Id;
+      Path    : Node_Id;
+      In_Decl : Boolean) return W_Prog_Id;
+   --  Create an assignment updating the pledge of a borrower from an update
    --  Path. In_Decl is true if the assignment comes from the declaration of
-   --  Borrower.
+   --  Brower.
+
+   function Transform_Pledge_Call
+     (Brower : Entity_Id;
+      Def    : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id;
+   --  Transform a call to a function annotated with a pragma Annotate
+   --  (GNATprove, Pledge, ...).
+   --  ??? The translation is stronger than the actual function body, so we
+   --  may have a proved check failing at runtime if such a call is used in
+   --  a negative way.
 
    -------------------
    -- Apply_Modulus --
@@ -810,9 +831,9 @@ package body Gnat2Why.Expr is
 
             if Is_Local_Borrower (Lvalue) then
                Res := New_Pledge_Update_From_Assignment
-                 (Borrower => Lvalue,
-                  Path     => Rexpr,
-                  In_Decl  => True);
+                 (Brower  => Lvalue,
+                  Path    => Rexpr,
+                  In_Decl => True);
             end if;
 
             case Binder.Kind is
@@ -2224,6 +2245,153 @@ package body Gnat2Why.Expr is
          return +Void;
       end if;
    end Check_Subtype_Indication;
+
+   -----------------------------------
+   -- Compute_Assumption_For_Borrow --
+   -----------------------------------
+
+   function Compute_Assumption_For_Borrow
+     (Brower      : Entity_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Params      : Transformation_Params) return W_Pred_Id
+   is
+      Borrowed : constant Entity_Id := Get_Borrowed_Entity (Brower);
+
+      function Path_From_Name (Path : Node_Id) return W_Expr_Id;
+      --  Compute Borrowed_Id.Path if Path is a path rooted at Borrowed
+
+      function Path_From_Name (Path : Node_Id) return W_Expr_Id is
+         W_Expr : W_Expr_Id;
+      begin
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         Insert_Entity (Borrowed, Borrowed_Id);
+         W_Expr := Transform_Expr
+           (Expr    => Path,
+            Domain  => EW_Term,
+            Params  => Params);
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+         return W_Expr;
+      end Path_From_Name;
+
+      Res : W_Pred_Id := True_Pred;
+      Cur : Node_Id := Get_Borrowed_Expr (Brower);
+
+   begin
+      --  Go through the borrowed expression to collect constraints on borrowed
+      --  components.
+
+      loop
+         --  Assume that the constraints on Cur are preserved
+
+         if Nkind (Cur) not in N_Type_Conversion
+                             | N_Unchecked_Type_Conversion
+                             | N_Slice
+         then
+            declare
+               Ty    : constant Entity_Id := Retysp (Etype (Cur));
+               W_Cur : constant W_Expr_Id := Transform_Expr
+                 (Expr    => Cur,
+                  Domain  => EW_Term,
+                  Params  => Params);
+               --  Expression for Cur rooted at Borrowed
+
+               Cur_N : constant W_Expr_Id := Path_From_Name (Cur);
+               --  Expression for Cur rooted at Borrowed_Id
+            begin
+               case Ekind (Ty) is
+
+                  --  Bounds of borrowed components are preserved
+
+                  when Array_Kind =>
+                     if not Is_Static_Array_Type (Ty) then
+                        Res := +New_And_Expr
+                          (Domain => EW_Pred,
+                           Left   => +New_Bounds_Equality
+                             (Left_Arr  => W_Cur,
+                              Right_Arr => Cur_N,
+                              Dim       =>
+                                Positive (Number_Dimensions (Ty))),
+                           Right  => +Res);
+                     end if;
+
+                  --  Nullity of pointers is preserved. Note that in
+                  --  general pointers will not be null in a path.
+                  --  However, Path itself can be.
+                  --  ??? We could also state that the address is
+                  --  preserved.
+
+                  when Access_Kind =>
+                     Res := +New_And_Expr
+                       (Domain => EW_Pred,
+                        Left   =>
+                           New_Comparison
+                          (Symbol => Why_Eq,
+                           Left   => New_Pointer_Is_Null_Access (Ty, W_Cur),
+                           Right  => New_Pointer_Is_Null_Access (Ty, Cur_N),
+                           Domain => EW_Pred),
+                        Right  => +Res);
+
+                  when others =>
+                     pragma Assert (Is_Record_Type_In_Why (Ty));
+
+                     --  Discriminants of borrowed components are preserved
+
+                     if Has_Discriminants (Ty) then
+                        declare
+                           Discr : Entity_Id := First_Discriminant (Ty);
+                        begin
+                           loop
+                              Res := +New_And_Expr
+                                (Domain => EW_Pred,
+                                 Left   => New_Comparison
+                                   (Symbol  => Why_Eq,
+                                    Left    => New_Ada_Record_Access
+                                      (Ada_Node => Empty,
+                                       Domain   => EW_Term,
+                                       Name     => W_Cur,
+                                       Field    => Discr,
+                                       Ty       => Ty),
+                                    Right   => New_Ada_Record_Access
+                                      (Ada_Node => Empty,
+                                       Domain   => EW_Term,
+                                       Name     => Cur_N,
+                                       Field    => Discr,
+                                       Ty       => Ty),
+                                    Domain  => EW_Pred),
+                                 Right  => +Res);
+                              Next_Discriminant (Discr);
+                              exit when No (Discr);
+                           end loop;
+                        end;
+                     end if;
+               end case;
+            end;
+         end if;
+
+         --  Go to the next prefix
+
+         case Nkind (Cur) is
+            when N_Expanded_Name | N_Identifier =>
+               exit;
+
+            when N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               Cur := Expression (Cur);
+
+            when N_Slice
+               | N_Selected_Component
+               | N_Indexed_Component
+               | N_Explicit_Dereference
+            =>
+               Cur := Prefix (Cur);
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+      return Res;
+   end Compute_Assumption_For_Borrow;
 
    -----------------------
    -- Compute_Call_Args --
@@ -5181,45 +5349,96 @@ package body Gnat2Why.Expr is
    -- Havoc_Borrowed_Expression --
    -------------------------------
 
-   function Havoc_Borrowed_Expression (Borrower : Entity_Id) return W_Prog_Id
+   function Havoc_Borrowed_Expression (Brower : Entity_Id) return W_Prog_Id
    is
-      Expr : constant Node_Id := Get_Borrowed_Expr (Borrower);
-      Ty   : constant Entity_Id := Get_Borrowed_Typ (Borrower);
-      W_Ty : constant W_Type_Id := Type_Of_Node (Ty);
-      Res  : constant W_Term_Id := +New_Result_Ident (W_Ty);
+      Borrowed    : constant Entity_Id := Get_Borrowed_Entity (Brower);
+      Expr        : constant Node_Id := Get_Borrowed_Expr (Brower);
+      Ty          : constant Entity_Id := Get_Borrowed_Typ (Brower);
+      Borrowed_Id : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Base_Name => "borrowed", Typ => Type_Of_Node (Borrowed));
+      Expr_Id     : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Base_Name => "borrowed_expr", Typ => Type_Of_Node (Ty));
+      W_Expr      : W_Expr_Id;
+      Havoc_Expr  : W_Prog_Id;
 
    begin
-      --  To be as precise as possible, we try to only havoc the part of
-      --  the borrowed object which has been modified.
+      --  Store in W_Expr the expression tmp_borrowed.Expr. We convert it to
+      --  Ty because it may not respect the constraints of the type of
+      --  Borrowed.Expr, so we will need to convert it back later with checks
+      --  enabled.
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Insert_Entity (Borrowed, Borrowed_Id);
+      W_Expr := Insert_Simple_Conversion
+           (Domain => EW_Pterm,
+            Expr   => Transform_Expr
+              (Expr    => Expr,
+               Domain  => EW_Pterm,
+               Params  => Body_Params),
+            To     => Type_Of_Node (Ty));
+      Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+      --  We produce:
+      --
+      --  let tmp_borrowed = any <Etype (Borrowed)> in
+      --  let tmp_borrowed_expr = (to_ty tmp_borrowed.Expr) in
+      --  assume { dyn_prop tmp_borrowed_expr
+      --            /\ pledge tmp_borrowed Brower
+      --            /\ assumption_for_borrow };
+      --  borrowed.Expr := tmp_borrowed_expr
+      --
+      --  Note that we cannot assume the dynamic invariant of tmp_borrowed,
+      --  we check it later when assigning to borrowed.Expr. We assume the
+      --  dynamic property of tmp_borrowed_expr however as its preservation
+      --  is enforced by language restrictions (we do not allow borrowing
+      --  types with predicates on deep parts).
+
+      Havoc_Expr := Sequence
+        ((1 => New_Assume_Statement
+          (Pred => +New_And_Expr
+           (Domain    => EW_Pred,
+            Conjuncts =>
+              (1 => +Compute_Dynamic_Invariant
+                 (Expr        => +Expr_Id,
+                  Ty          => Ty,
+                  Params      => Body_Params,
+                  Initialized => True_Term),
+               2 => +Pred_Of_Boolean_Term
+                 (+New_Pledge_Call
+                      (E            => Brower,
+                       Borrowed_Arg => +Borrowed_Id,
+                       Brower_Arg   => Transform_Identifier
+                         (Params   => Body_Params,
+                          Expr     => Brower,
+                          Ent      => Brower,
+                          Domain   => EW_Term))),
+               3 => +Compute_Assumption_For_Borrow
+                 (Brower,
+                  Borrowed_Id,
+                  Body_Params)))),
+          2 => New_Assignment
+            (Lvalue => Expr,
+             Expr   => +Insert_Checked_Conversion
+               (Ada_Node => Brower,
+                Domain   => EW_Prog,
+                Expr     => +Expr_Id,
+                To       => Type_Of_Node (Etype (Expr)),
+                Lvalue   => True))));
 
       return
-        New_Assignment
-          (Lvalue => Expr,
-           Expr   => +Insert_Checked_Conversion
-             (Ada_Node => Borrower,
-              Domain   => EW_Prog,
-              Expr     => New_Any_Expr
-                (Return_Type => W_Ty,
-                 Post        =>
-                   +New_And_Expr
-                     (Left   => +Compute_Dynamic_Invariant
-                          (Expr        => Res,
-                           Ty          => Ty,
-                           Params      => Body_Params,
-                           Initialized => True_Term),
-                      Right  => +Pred_Of_Boolean_Term
-                        (+New_Pledge_Call
-                           (E            => Borrower,
-                            Borrowed_Arg => +Res,
-                            Borrower_Arg => Transform_Identifier
-                              (Params   => Body_Params,
-                               Expr     => Borrower,
-                               Ent      => Borrower,
-                               Domain   => EW_Term))),
-                      Domain => EW_Pred),
-                 Labels      => Symbol_Sets.Empty_Set),
-              To       => Type_Of_Node (Etype (Expr)),
-              Lvalue   => True));
+        New_Binding
+          (Name    => Borrowed_Id,
+           Def     => New_Any_Expr
+             (Return_Type => Type_Of_Node (Borrowed),
+              Labels      => Symbol_Sets.Empty_Set),
+           Context =>
+             New_Binding
+               (Domain  => EW_Prog,
+                Name    => Expr_Id,
+                Def     => W_Expr,
+                Context => +Havoc_Expr));
    end Havoc_Borrowed_Expression;
 
    ----------------------------
@@ -7369,16 +7588,16 @@ package body Gnat2Why.Expr is
    ---------------------------------------
 
    function New_Pledge_Update_From_Assignment
-     (Borrower : Entity_Id;
-      Path     : Node_Id;
-      In_Decl  : Boolean) return W_Prog_Id
+     (Brower  : Entity_Id;
+      Path    : Node_Id;
+      In_Decl : Boolean) return W_Prog_Id
    is
 
       function Update_Value_From_Assignment
         (Borrowed_Id : W_Identifier_Id;
-         Borrower_Id : W_Identifier_Id;
+         Brower_Id   : W_Identifier_Id;
          Path        : Node_Id) return W_Expr_Id;
-      --  pledge (Borrowed_Id, (Borrower with Path = Borrower_Id))
+      --  pledge (Borrowed_Id, (Brower with Path = Brower_Id))
 
       ----------------------------------
       -- Update_Value_From_Assignment --
@@ -7386,26 +7605,26 @@ package body Gnat2Why.Expr is
 
       function Update_Value_From_Assignment
         (Borrowed_Id : W_Identifier_Id;
-         Borrower_Id : W_Identifier_Id;
+         Brower_Id   : W_Identifier_Id;
          Path        : Node_Id) return W_Expr_Id
       is
          N     : Node_Id := Path;
-         Expr  : W_Expr_Id := +Borrower_Id;
+         Expr  : W_Expr_Id := +Brower_Id;
          Dummy : Node_Id := N;
       begin
-         --  With Borrower designating the current value of the borrower, and
-         --  Borrower_Id designating the value of the borrower after the
+         --  With Brower designating the current value of the borrower, and
+         --  Brower_Id designating the value of the borrower after the
          --  assignment (the one that will be referred to in the new pledge),
          --  we handle the assignment:
          --
-         --     Borrower := Path;  --  Path originates in Borrower
+         --     Brower := Path;  --  Path originates in Brower
          --
-         --  as an update of the inner Path inside Borrower:
+         --  as an update of the inner Path inside Brower:
          --
-         --     Path := Borrower_Id;
+         --     Path := Brower_Id;
          --
          --  This explains why we're using here the existing function
-         --  Shift_Rvalue to produce the updated value of Borrower after the
+         --  Shift_Rvalue to produce the updated value of Brower after the
          --  assignment, to use in the current pledge.
 
          while Nkind (N) not in
@@ -7418,30 +7637,50 @@ package body Gnat2Why.Expr is
             pragma Assert (Nkind (N) /= N_Function_Call);
          end loop;
 
-         return New_Pledge_Call (Borrower, +Borrowed_Id, Expr);
+         return New_Pledge_Call (Brower, +Borrowed_Id, Expr);
       end Update_Value_From_Assignment;
 
       --  Local variables
 
-      Borrowed_Ty : constant Entity_Id := Get_Borrowed_Typ (Borrower);
-      Borrower_Id : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ       => Type_Of_Node (Etype (Borrower)),
-                             Base_Name => "borrower");
+      Borrowed_Ty : constant Entity_Id := Get_Borrowed_Typ (Brower);
+      Borrowed    : constant Entity_Id := Get_Borrowed_Entity (Brower);
+      Brower_Id   : constant W_Identifier_Id :=
+        New_Temp_Identifier (Typ       => Type_Of_Node (Etype (Brower)),
+                             Base_Name => "brower");
       Borrowed_Id : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ       => Type_Of_Node (Borrowed_Ty),
+        New_Temp_Identifier (Typ       => Type_Of_Node (Borrowed),
                              Base_Name => "borrowed");
-      Def         : constant W_Expr_Id :=
-        (if In_Decl
-         then New_Comparison (Symbol => Why_Eq,
-                              Left   => +Borrowed_Id,
-                              Right  => +Borrower_Id,
-                              Domain => EW_Term)
-         else Update_Value_From_Assignment (Borrowed_Id, Borrower_Id, Path));
+      Def         : W_Expr_Id;
 
    --  Start of processing for New_Pledge_Update_From_Assignment
 
    begin
-      return New_Pledge_Update (Borrower, Borrowed_Id, Borrower_Id, +Def);
+      --  For a declaration, we generate:
+      --    brower_id = borrowed_id.path
+      --  Note that it would be incorrect to generate:
+      --    borrowed_id = { borrowed_id with path = brower_id }
+      --  like we do for reborrows, as other components of borrowed_id are not
+      --  frozen by the borrow and can be updated simultaneously.
+
+      if In_Decl then
+         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+         Insert_Entity (Borrowed, Borrowed_Id);
+         Def := New_Comparison (Symbol => Why_Eq,
+                                Left   => +Insert_Simple_Conversion
+                                  (Domain => EW_Term,
+                                   Expr   => Transform_Expr
+                                     (Expr    => Get_Borrowed_Expr (Brower),
+                                      Domain  => EW_Term,
+                                      Params  => Body_Params),
+                                   To     => Type_Of_Node (Borrowed_Ty)),
+                                Right  => +Brower_Id,
+                                Domain => EW_Term);
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+      else
+         Def := Update_Value_From_Assignment (Borrowed_Id, Brower_Id, Path);
+      end if;
+
+      return New_Pledge_Update (Brower, Borrowed_Id, Brower_Id, +Def);
    end New_Pledge_Update_From_Assignment;
 
    ------------------------
@@ -10343,9 +10582,9 @@ package body Gnat2Why.Expr is
       then
          T := Sequence
            (New_Pledge_Update_From_Assignment
-              (Borrower => Entity (Lvalue),
-               Path     => Expression (Stmt),
-               In_Decl  => False),
+              (Brower  => Entity (Lvalue),
+               Path    => Expression (Stmt),
+               In_Decl => False),
             T);
       end if;
       return T;
@@ -13948,6 +14187,12 @@ package body Gnat2Why.Expr is
                      Domain    => Domain,
                      Params    => Local_Params);
                end;
+            elsif Has_Pledge_Annotation (Get_Called_Entity (Expr)) then
+               T := Transform_Pledge_Call
+                 (Entity (First_Actual (Expr)),
+                  Next_Actual (First_Actual (Expr)),
+                  Domain,
+                  Local_Params);
             else
                T := Transform_Function_Call (Expr, Domain, Local_Params);
             end if;
@@ -15611,6 +15856,176 @@ package body Gnat2Why.Expr is
 
       return T;
    end Transform_Non_Binary_Modular_Operation;
+
+   ---------------------------
+   -- Transform_Pledge_Call --
+   ---------------------------
+
+   function Transform_Pledge_Call
+     (Brower : Entity_Id;
+      Def    : Node_Id;
+      Domain : EW_Domain;
+      Params : Transformation_Params) return W_Expr_Id
+   is
+
+      Brower_Id        : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Base_Name => "brower",
+           Typ       => Type_Of_Node (Etype (Brower)));
+      Borrowed         : constant Entity_Id :=
+        Get_Borrowed_Entity (Brower);
+      Borrowed_Id      : constant W_Identifier_Id :=
+        New_Temp_Identifier
+          (Base_Name => "borrowed",
+           Typ       => Type_Of_Node (Etype (Borrowed)));
+      Path_Constraints : constant W_Pred_Id :=
+        Compute_Assumption_For_Borrow
+          (Brower      => Brower,
+           Borrowed_Id => Borrowed_Id,
+           Params      => Params);
+      --  Predicate expressing that it is possible to access the borrowed
+      --  expression in borrowed_id.
+
+      Brower_Is_Null : constant W_Expr_Id := New_Pointer_Is_Null_Access
+        (E    => Retysp (Etype (Brower)),
+         Name => Transform_Identifier
+           (Params   => Params,
+            Expr     => Brower,
+            Ent      => Brower,
+            Domain   => EW_Term));
+      --  Get the is_null field of Brower. We store it before we override
+      --  Brower in the symbol table.
+
+   begin
+      --  For a borrow Brower := Borrowed.Path, we want to generate:
+      --
+      --  forall Brower_id, borrowed_id [pledge borrowed_id Brower_id].
+      --    (* The borrower respects its dynamic invariant *)
+      --    dyn_inv brower_id ->
+      --    (* Brower and borrowed are linked by the pledge *)
+      --    pledge borrowed_id brower_id ->
+      --    (* Constraints in borrowed on the path leading to brower are
+      --       preserved *)
+      --    same_constraints_on_path <borrowed, borrowed_id> ->
+      --    (* The Is_Null component of the Brower cannot be assigned.
+      --       ??? We could also preserve the address. *)
+      --    brower_id.is_null = brower.is_null ->
+      --       def
+      --
+      --  Note that we do not assume the dynamic property of borrowed as the
+      --  pledge should be usable to reassess the dynamic invariant of the
+      --  borrowed object. It should not cause issues as the pledge should
+      --  only mention borrowed.path and not borrowed.
+
+      --  Insert Brower_Id and Borrowed_Id in the symbol table
+
+      Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+      Insert_Entity (Brower, Brower_Id);
+      Insert_Entity (Borrowed, Borrowed_Id);
+
+      --  Transform the pledge in the pred domain, we will lift it to other
+      --  domains afterward.
+
+      declare
+         Res           : W_Expr_Id := Transform_Expr
+           (Expr   => Def,
+            Domain => EW_Pred,
+            Params => Params);
+         Pledge_Call   : constant W_Expr_Id :=
+           New_Pledge_Call
+             (E            => Brower,
+              Borrowed_Arg => +Borrowed_Id,
+              Brower_Arg => +Brower_Id);
+         Assumption    : constant W_Expr_Id := New_And_Expr
+           (Conjuncts => (1 => +Pred_Of_Boolean_Term (+Pledge_Call),
+                          2 => +Compute_Dynamic_Invariant
+                            (Expr        => +Brower_Id,
+                             Ty          => Etype (Brower),
+                             Params      => Params,
+                             Initialized => True_Term),
+                          3 => +Path_Constraints,
+                          4 => New_Comparison
+                            (Symbol => Why_Eq,
+                             Left   => Brower_Is_Null,
+                             Right  => New_Pointer_Is_Null_Access
+                               (E    => Retysp (Etype (Brower)),
+                                Name => +Brower_Id),
+                             Domain => EW_Pred)),
+            Domain    => EW_Pred);
+      begin
+         Res := New_Conditional
+                 (Condition => Assumption,
+                  Domain    => EW_Pred,
+                  Then_Part => Res,
+                  Typ       => EW_Bool_Type);
+
+         Res :=
+           +New_Universal_Quantif
+           (Binders  =>
+              Binder_Type'(B_Name => Borrowed_Id, others => <>)
+            & Binder_Type'(B_Name => Brower_Id, others => <>),
+            Triggers => New_Triggers
+              (Triggers =>
+                   (1 => New_Trigger (Terms => (1 => Pledge_Call)))),
+            Pred     => +Res);
+
+         --  For the term domains, just lift it directly
+
+         if Domain in EW_Terms then
+            Res := Boolean_Expr_Of_Pred (+Res, Domain);
+
+         --  In the prog domain, we want to insert checks. We generate:
+         --  ignore (let brower_id = any Brower_ty in
+         --          let borrowed_id = any borrowed_ty in
+         --          assume {assumption};
+         --          def);
+         --          any bool ensures { result = Res }
+         --  where Res is the translation of the pledge in the Pred domain.
+         --  Note that the mechanism is similar to the one used for translating
+         --  quantified expressions.
+
+         elsif Domain = EW_Prog then
+            declare
+               Checks : W_Prog_Id :=
+                 Sequence
+                   (Left  => New_Assume_Statement
+                      (Pred => +Assumption),
+                    Right => +Transform_Expr (Expr    => Def,
+                                             Domain  => EW_Prog,
+                                             Params  => Params));
+            begin
+               Checks := New_Binding
+                 (Name    => Brower_Id,
+                  Def     => New_Any_Expr
+                    (Return_Type => Get_Typ (Brower_Id),
+                     Labels      => Symbol_Sets.Empty_Set),
+                  Context => New_Binding
+                    (Domain  => EW_Prog,
+                     Name    => Borrowed_Id,
+                     Def     => New_Any_Expr
+                       (Return_Type => Get_Typ (Borrowed_Id),
+                        Labels      => Symbol_Sets.Empty_Set),
+                     Context => +Checks,
+                     Typ     => EW_Bool_Type),
+                  Typ     => EW_Bool_Type);
+               Res := +Sequence
+                 (Left  => New_Ignore (Prog => Checks),
+                  Right => New_Any_Expr
+                    (Post        => +New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => +New_Result_Ident (EW_Bool_Type),
+                          Right  => +Res,
+                          Domain => EW_Pred),
+                     Return_Type => EW_Bool_Type,
+                     Labels      => Symbol_Sets.Empty_Set));
+            end;
+         end if;
+
+         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+         return Res;
+      end;
+   end Transform_Pledge_Call;
 
    ----------------------
    -- Transform_Pragma --

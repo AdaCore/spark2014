@@ -298,7 +298,7 @@ package Gnat2Why.Expr is
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
 
-   function Havoc_Borrowed_Expression (Borrower : Entity_Id) return W_Prog_Id;
+   function Havoc_Borrowed_Expression (Brower : Entity_Id) return W_Prog_Id;
    --  Construct a program which havocs a borrowed expression. After the havoc,
    --  we get information about potential updates from the borrower by
    --  assuming that its pledge (relation between the borrower and the borrowed

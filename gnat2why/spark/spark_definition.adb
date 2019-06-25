@@ -921,7 +921,8 @@ package body SPARK_Definition is
      (Retysp                        => Safe_Retysp,
       Component_Is_Visible_In_SPARK => Component_Is_Visible_In_SPARK,
       Emit_Messages                 =>
-        Set_Ownership_Errors_And_Get_Emit_Messages);
+        Set_Ownership_Errors_And_Get_Emit_Messages,
+      Is_Pledge_Function            => SPARK_Annotate.Has_Pledge_Annotation);
 
    ----------------------------------
    -- Recursive Marking of the AST --

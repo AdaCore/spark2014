@@ -585,12 +585,13 @@ package body Gnat2Why.Types is
                  Insert_Simple_Conversion
                    (Domain => EW_Term,
                     Expr   => +Var_A,
-                    To     => Type_Of_Node (Base_Type (E)));
+                    To     => Type_Of_Node (Etype (First_Formal (Eq))));
                Arg_B : constant W_Expr_Id :=
                  Insert_Simple_Conversion
                    (Domain => EW_Term,
                     Expr   => +Var_B,
-                    To     => Type_Of_Node (Base_Type (E)));
+                    To     => Type_Of_Node
+                      (Etype (Next_Formal (First_Formal (Eq)))));
                Def   : constant W_Expr_Id :=
                  New_Function_Call
                    (Ada_Node => Eq,
