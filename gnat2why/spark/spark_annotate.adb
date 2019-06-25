@@ -616,6 +616,7 @@ package body SPARK_Annotate is
          Error_Msg_N
            ("third parameter of a pragma Pledge must be an entity",
             Arg3_Exp);
+         return;
       else
          E := Entity (Arg3_Exp);
       end if;
