@@ -1251,9 +1251,9 @@ red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:471
-red_black_trees.adb:258:28: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
+red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:471
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
