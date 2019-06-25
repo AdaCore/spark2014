@@ -440,16 +440,16 @@ package body SPARK_Util.Subprograms is
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
    is
-      function Has_No_Output return Boolean;
-      --  Return True if procedure E has no output (parameter or global).
-      --  Otherwise, or if we don't know for sure, return False. If After_GG
-      --  is False, then we will not query generated globals.
+      function Has_Output return Boolean;
+      --  Return True either when procedure E has output (parameter or global)
+      --  or when don't know for sure (because no Global has been generated
+      --  yet). If After_GG is False, then we will not query generated globals.
 
-      -------------------
-      -- Has_No_Output --
-      -------------------
+      ----------------
+      -- Has_Output --
+      ----------------
 
-      function Has_No_Output return Boolean is
+      function Has_Output return Boolean is
          Formal : Entity_Id := First_Formal (E);
 
          Globals : Global_Flow_Ids;
@@ -462,7 +462,7 @@ package body SPARK_Util.Subprograms is
                when E_Out_Parameter
                   | E_In_Out_Parameter
                =>
-                  return False;
+                  return True;
                when E_In_Parameter =>
                   null;
             end case;
@@ -480,22 +480,22 @@ package body SPARK_Util.Subprograms is
                          Globals             => Globals,
                          Use_Deduced_Globals => After_GG);
 
-            return Globals.Outputs.Is_Empty;
+            return not Globals.Outputs.Is_Empty;
 
-         --  Otherwise we don't know, return False to be on the safe side
+         --  Otherwise we don't know, return True to be on the safe side
 
          else
-            return False;
+            return True;
          end if;
-      end Has_No_Output;
+      end Has_Output;
 
    --  Start of processing for Get_Execution_Kind
 
    begin
-      if Has_No_Output then
-         return Abnormal_Termination;
-      else
+      if Has_Output then
          return Infinite_Loop;
+      else
+         return Abnormal_Termination;
       end if;
    end Get_Execution_Kind;
 
