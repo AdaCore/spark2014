@@ -7241,9 +7241,15 @@ package body SPARK_Definition is
    -----------------
 
    function Safe_Retysp (E : Entity_Id) return Entity_Id is
+      --  Ownership checking relies on finding the components of a record type
+      --  from the type returned by Safe_Retysp. Hence return the specific
+      --  tagged type instead of a class-wide type.
+      Typ : constant Entity_Id :=
+        (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
+         else E);
    begin
       Mark_Entity (E);
-      return Retysp (E);
+      return Retysp (Typ);
    end Safe_Retysp;
 
    ------------------------------------------------
