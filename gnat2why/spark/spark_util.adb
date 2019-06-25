@@ -1869,9 +1869,15 @@ package body SPARK_Util is
    ------------------------------
 
    function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean is
-     (Present (Scope (E))
+   begin
+      --  Parent of the scope might be rewritten by inlining for proof, so we
+      --  look at the original node.
+      return
+        Present (Scope (E))
         and then Present (Parent (Scope (E)))
-        and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+        and then Nkind (Original_Node (Parent (Scope (E))))
+                 = N_Quantified_Expression;
+   end Is_Quantified_Loop_Param;
 
    ------------------------------------
    -- Is_Selected_For_Loop_Unrolling --
