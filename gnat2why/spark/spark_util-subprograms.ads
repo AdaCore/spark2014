@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why_Args;
 with Sem_Disp;
 
 package SPARK_Util.Subprograms is
@@ -325,17 +326,15 @@ package SPARK_Util.Subprograms is
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
-   function Is_Error_Signaling_Procedure
-     (E        : Entity_Id;
-      After_GG : Boolean := True)
-      return Boolean
-   is
+   function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
      (No_Return (E)
-      and then Get_Execution_Kind (E, After_GG) = Abnormal_Termination);
+      and then
+      Get_Execution_Kind (E, After_GG => True) = Abnormal_Termination)
+    with Pre => not Gnat2Why_Args.Global_Gen_Mode;
    --  @param E subprogram
-   --  @param After_GG is True when we can use the generated globals
    --  @return True iff E is marked No_Return and is considered to always
    --     terminate abnormally.
+   --  Note: this routine is meant to be only used in phase 2
 
    function Is_Intrinsic (E : Entity_Id) return Boolean
    is

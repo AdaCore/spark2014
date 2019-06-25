@@ -31,7 +31,6 @@ with Debug;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
-with Gnat2Why_Args;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
