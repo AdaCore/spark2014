@@ -588,14 +588,30 @@ package body Flow_Visibility is
            and then Is_Generic_Unit (Scope (Template))
          then
             declare
-               Inst_Node : constant Node_Id := Get_Unit_Instantiation_Node (E);
+               Child_Inst : constant Entity_Id :=
+                 (if Ekind (E) = E_Package
+                  then E
+                  else Defining_Entity (Atree.Parent (Subprogram_Spec (E))));
+               --  If the child instance is a package, we can directly pass it
+               --  to Get_Unit_Instantiation_Node; when it is a subprogram, we
+               --  must get its wrapper package. Typically it is just the Scope
+               --  of E, except for instance-as-compilation-unit, where we need
+               --  to retrieve the wrapper package syntactically.
+
+               pragma Assert
+                 (Ekind (E) = E_Package
+                    or else
+                  (Ekind (E) in E_Function | E_Procedure
+                   and then Is_Wrapper_Package (Child_Inst)));
+
+               Inst_Node : constant Node_Id :=
+                 Get_Unit_Instantiation_Node (Child_Inst);
 
             begin
-               pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
+               pragma Assert (Nkind (Inst_Node) in N_Generic_Instantiation);
                --  The original frontend routine expects formal packages too,
-               --  but in the backend we only get package instantiations,
-               --  because formal packages have been expanded to renamings of
-               --  instances.
+               --  but in the backend we only instantiations, because formal
+               --  packages have been expanded to renamings of instances.
 
                pragma Assert (Nkind (Name (Inst_Node)) = N_Expanded_Name);
                --  When analysing the generic parent body, frontend expects the
