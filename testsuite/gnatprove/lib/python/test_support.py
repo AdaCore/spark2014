@@ -271,6 +271,96 @@ def check_fail(strlist, no_failures_allowed):
                                                                 m.group(2))
 
 
+def is_dependency_tag(tag):
+    """Returns True if the given tag corresponds to a dependency flow
+    message"""
+    return tag in ("DEPENDS",
+                   "GLOBAL")
+
+
+def is_flow_initialization_tag(tag):
+    """Returns True if the given tag corresponds to an initialization flow
+    message"""
+    return tag in ("INITIALIZED",
+                   "INITIALIZES")
+
+
+def is_aliasing_tag(tag):
+    """Returns True if the given tag corresponds to an aliasing flow message"""
+    return tag in ("ALIASING")
+
+
+def is_rte_tag(tag):
+    """Returns True if the given tag corresponds to a RTE proof message"""
+    return tag in ("DIVISION_CHECK",
+                   "INDEX_CHECK",
+                   "OVERFLOW_CHECK",
+                   "RANGE_CHECK",
+                   "LENGTH_CHECK",
+                   "DISCRIMINANT_CHECK",
+                   "TAG_CHECK",
+                   "NULL_EXCLUSION",
+                   "DEREFERENCE_CHECK")
+
+
+def is_proof_initialization_tag(tag):
+    """Returns True if the given tag corresponds to an initialization proof
+    message"""
+    return tag in ("INIT_BY_PROOF")
+
+
+def is_ada_assertion_tag(tag):
+    """Returns True if the given tag corresponds to an Ada assertion proof
+    message"""
+    return tag in ("PREDICATE_CHECK",
+                   "INVARIANT_CHECK",
+                   "PRECONDITION",
+                   "PRECONDITION_MAIN",
+                   "POSTCONDITION",
+                   "ASSERT")
+
+
+def is_spark_assertion_tag(tag):
+    """Returns True if the given tag corresponds to an Ada assertion proof
+    message"""
+    return tag in ("DEFAULT_INITIAL_CONDITION",
+                   "CONTRACT_CASE",
+                   "DISJOINT_CONTRACT_CASE",
+                   "COMPLETE_CONTRACT_CASE",
+                   "LOOP_INVARIANT_INIT",
+                   "LOOP_INVARIANT_PRESERV",
+                   "LOOP_INVARIANT",
+                   "LOOP_VARIANT",
+                   "REFINED_POST")
+
+
+def is_other_proof_tag(tag):
+    """Returns True if the given tag corresponds to another proof message"""
+    return tag in ("INITIAL_CONDITION",
+                   "RAISE",
+                   "TRIVIAL_PRE",
+                   "WEAKER_PRE",
+                   "STRONGER_POST",
+                   "WEAKER_CLASSWIDE_PRE",
+                   "STRONGER_CLASSWIDE_POST")
+
+
+def is_flow_tag(tag):
+    """Returns True if the given tag corresponds to a flow message"""
+    return (is_dependency_tag(tag) or
+            is_flow_initialization_tag(tag) or
+            is_aliasing_tag(tag))
+
+
+def is_proof_tag(tag):
+    """Returns True if the given tag corresponds to a proof message"""
+    return (is_rte_tag(tag) or
+            is_proof_initialization_tag(tag) or
+            is_ada_assertion_tag(tag) or
+            is_spark_assertion_tag(tag) or
+            is_other_proof_tag(tag))
+
+
 def check_marks(strlist):
     """Checks that marks in source code have a matching result.
 
@@ -396,49 +486,6 @@ def check_marks(strlist):
 
         # no tag recognized
         return None
-
-    def is_flow_tag(tag):
-        """Returns True if the given tag corresponds to a flow message"""
-        return tag in ("DEPENDS",
-                       "GLOBAL",
-                       "INITIALIZED",
-                       "INITIALIZES",
-                       "ALIASING")
-
-    def is_proof_tag(tag):
-        """Returns True if the given tag corresponds to a proof message"""
-        return tag in ("DIVISION_CHECK",
-                       "INDEX_CHECK",
-                       "OVERFLOW_CHECK",
-                       "PREDICATE_CHECK",
-                       "INVARIANT_CHECK",
-                       "RANGE_CHECK",
-                       "LENGTH_CHECK",
-                       "DISCRIMINANT_CHECK",
-                       "TAG_CHECK",
-                       "INITIAL_CONDITION",
-                       "DEFAULT_INITIAL_CONDITION",
-                       "PRECONDITION",
-                       "PRECONDITION_MAIN",
-                       "POSTCONDITION",
-                       "REFINED_POST",
-                       "CONTRACT_CASE",
-                       "DISJOINT_CONTRACT_CASE",
-                       "COMPLETE_CONTRACT_CASE",
-                       "LOOP_INVARIANT_INIT",
-                       "LOOP_INVARIANT_PRESERV",
-                       "LOOP_INVARIANT",
-                       "LOOP_VARIANT",
-                       "ASSERT",
-                       "RAISE",
-                       "TRIVIAL_PRE",
-                       "WEAKER_PRE",
-                       "STRONGER_POST",
-                       "WEAKER_CLASSWIDE_PRE",
-                       "STRONGER_CLASSWIDE_POST",
-                       "INIT_BY_PROOF",
-                       "NULL_EXCLUSION",
-                       "DEREFERENCE_CHECK")
 
     def is_negative_result(result):
         """Returns True if the given result corresponds to a negative one"""
