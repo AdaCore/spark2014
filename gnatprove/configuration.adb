@@ -1716,30 +1716,43 @@ package body Configuration is
             return;
          end if;
          FS.Provers.Clear;
-         First := S'First;
-         for Cur in S'Range loop
-            if S (Cur) = ',' then
-               FS.Provers.Append (S (First .. Cur - 1));
-               First := Cur + 1;
+         if S /= "all" then
+            First := S'First;
+            for Cur in S'Range loop
+               if S (Cur) = ',' then
+                  FS.Provers.Append (S (First .. Cur - 1));
+                  First := Cur + 1;
+               end if;
+            end loop;
+            if S /= "" then
+               FS.Provers.Append (S (First .. S'Last));
             end if;
-         end loop;
-         if S /= "" then
-            FS.Provers.Append (S (First .. S'Last));
+
+            --  Check if cvc4 or z3 have explicitly been requested, but are
+            --  missing from the install.
+
+            for Prover of FS.Provers loop
+               if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
+                 or else
+                   (Prover = "z3" and then not SPARK_Install.Z3_Present)
+               then
+                  Abort_Msg ("error: prover " & Prover &
+                               " was selected, but it is not installed",
+                             With_Help => False);
+               end if;
+            end loop;
+
+         --  prover switch is set to "all"
+
+         else
+            if SPARK_Install.CVC4_Present then
+               FS.Provers.Append ("cvc4");
+            end if;
+            if SPARK_Install.Z3_Present then
+               FS.Provers.Append ("z3");
+            end if;
+            FS.Provers.Append ("altergo");
          end if;
-
-         --  Check if cvc4 or z3 have explicitly been requested, but are
-         --  missing from the install.
-
-         for Prover of FS.Provers loop
-            if (Prover = "cvc4" and then not SPARK_Install.CVC4_Present)
-              or else
-                (Prover = "z3" and then not SPARK_Install.Z3_Present)
-            then
-               Abort_Msg ("error: prover " & Prover &
-                            " was selected, but it is not installed",
-                          With_Help => False);
-            end if;
-         end loop;
       end Set_Provers;
 
       ---------------------
