@@ -8,7 +8,8 @@ is
 
       package String_Lists is
      new Ada.Containers.Formal_Doubly_Linked_Lists
-       (Element_Type => General_Strings.Bounded_String);
+	(Element_Type => General_Strings.Bounded_String,
+	 "="          => General_Strings."=");
 
      function Get_Error (Object : Logger; Position : Cursor) return String with
        Global => null,

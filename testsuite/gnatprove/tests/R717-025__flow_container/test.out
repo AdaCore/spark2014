@@ -20,12 +20,12 @@ a-cforse.ads:1415:47: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cforse.ads:1430:40: info: precondition proved (CVC4: 1 VC), in instantiation at p.adb:9
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.adb:9
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at p.adb:9
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at p.adb:9
 p.adb:7:09: info: data dependencies proved
 p.adb:13:04: info: initialization of "Set" constituent of "S" proved
 p.adb:13:32: info: range check proved (CVC4: 1 VC)

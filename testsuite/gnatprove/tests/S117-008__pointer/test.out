@@ -1,9 +1,9 @@
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_vectors.ads:48, in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:9:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:16:20: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:16:20: info: range check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

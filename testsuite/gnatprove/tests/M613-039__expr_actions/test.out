@@ -1,14 +1,14 @@
-a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:9
+a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:712:38: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at list.ads:9
+a-cofove.ads:749:35: info: range check proved (CVC4: 1 VC), in instantiation at list.ads:9
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at list.ads:9
 list.adb:16:07: info: initialization of "S" proved
 list.adb:20:14: info: initialization of "Res" proved
 list.adb:23:10: medium: precondition might fail, cannot prove not Is_Full (S) (e.g. when S = (Top => 0, Content => (others => 0)))
