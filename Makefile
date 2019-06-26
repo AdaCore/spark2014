@@ -77,7 +77,7 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 
 setup:
 	cd why3 && ./configure --prefix=$(INSTALLDIR) \
-		--enable-relocation
+		--enable-relocation --disable-js-of-ocaml
 
 why3:
 	$(MAKE) -C why3
