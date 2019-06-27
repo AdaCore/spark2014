@@ -1,10 +1,10 @@
-a-cfhama.ads:679:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:688:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:718:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cfhama.ads:733:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at com_map.ads:30
+a-cfhama.ads:680:39: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at com_map.ads:30
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at com_map.ads:30
 com_map.ads:39:22: info: precondition proved (CVC4: 1 VC)
 deceleration_curve.adb:33:07: info: initialization of "delta_speed" proved
 deceleration_curve.adb:37:25: info: assertion proved (CVC4: 4 VC)

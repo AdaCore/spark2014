@@ -4,18 +4,18 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:43
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:32
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at simple_allocator.ads:26
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_allocator.ads:39
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at list_mod_allocator.ads:28
 list_allocator.adb:18:39: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:20:39: info: index check proved (CVC4: 2 VC)
 list_allocator.adb:29:35: info: overflow check proved (CVC4: 1 VC)
