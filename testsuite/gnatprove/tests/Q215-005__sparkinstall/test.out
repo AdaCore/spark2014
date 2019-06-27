@@ -30,6 +30,7 @@ why3server
 why3session
 z3
 libexec/spark/share dir
+alt-ergo
 codepeer
 doc
 gcc-8.3.1
