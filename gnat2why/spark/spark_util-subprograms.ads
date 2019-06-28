@@ -209,12 +209,10 @@ package SPARK_Util.Subprograms is
    function Get_Execution_Kind
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-   with Pre  => Ekind (E) = E_Procedure,
-        Post => Get_Execution_Kind'Result in Normal_Execution     |
-                                             Abnormal_Termination |
-                                             Infinite_Loop;
-   --  @param E is a procedure that never returns, either marked with No_Return
-   --     or for which flow analysis determines that no path returns.
+   with Pre  => Ekind (E) = E_Procedure and then No_Return (E),
+        Post => Get_Execution_Kind'Result in Abnormal_Termination
+                                           | Infinite_Loop;
+   --  @param E is a non-returning procedure
    --  @param After_GG True if this call is made after generation of globals,
    --     so we can query the globals computed for E if not specified by the
    --     user.

@@ -491,11 +491,9 @@ package body SPARK_Util.Subprograms is
    --  Start of processing for Get_Execution_Kind
 
    begin
-      if Has_Output then
-         return Infinite_Loop;
-      else
-         return Abnormal_Termination;
-      end if;
+      return (if Has_Output
+              then Infinite_Loop
+              else Abnormal_Termination);
    end Get_Execution_Kind;
 
    -----------------------------------
