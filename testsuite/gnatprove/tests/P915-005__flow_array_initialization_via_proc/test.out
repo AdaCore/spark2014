@@ -1,4 +1,4 @@
 p.adb:10:35: info: cannot unroll loop (too many loop iterations)
 p.adb:14:25: info: range check proved (CVC4: 4 VC)
 p.ads:5:28: info: initialization of "A" proved
-p.ads:6:26: info: initialization of "My_Array" proved
+p.ads:6:26: medium: "My_Array" might not be initialized in "Init_Array"

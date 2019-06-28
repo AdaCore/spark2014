@@ -2907,6 +2907,13 @@ package body Flow.Control_Flow_Graph is
                         else
                            Tv := Flow_Graphs.Abort_Traversal;
                         end if;
+
+                     --  ??? same as the enclosing ELSIF block; refactor
+
+                     elsif Lc.Standard_Exits.Contains (V) then
+                        Fully_Defined := False;
+                        Tv            := Flow_Graphs.Abort_Traversal;
+
                      else
                         Tv := Flow_Graphs.Continue;
                      end if;
