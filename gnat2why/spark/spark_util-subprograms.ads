@@ -329,9 +329,9 @@ package SPARK_Util.Subprograms is
       and then
       Get_Execution_Kind (E, After_GG => True) = Abnormal_Termination)
     with Pre => not Gnat2Why_Args.Global_Gen_Mode;
-   --  @param E subprogram
-   --  @return True iff E is marked No_Return and is considered to always
-   --     terminate abnormally.
+   --  @param E any entity
+   --  @return True iff E is a procedure annotated with No_Return
+   --     and is considered to always terminate abnormally.
    --  Note: this routine is meant to be only used in phase 2
 
    function Is_Intrinsic (E : Entity_Id) return Boolean
