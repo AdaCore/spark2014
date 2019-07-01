@@ -1,4 +1,4 @@
 alias.adb:5:42: info: data dependencies proved
 alias.adb:12:10: high: formal parameter "X" and global "G" are aliased (SPARK RM 6.4.2)
+alias.adb:26:10: high: formal parameter "X" and global "G" are aliased (SPARK RM 6.4.2)
 alias.adb:27:07: medium: call to nonreturning subprogram might be executed
-alias.ads:3:14: warning: "G" is not modified, could be INPUT

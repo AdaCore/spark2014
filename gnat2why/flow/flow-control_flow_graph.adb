@@ -4553,7 +4553,9 @@ package body Flow.Control_Flow_Graph is
             Prev := Var;
          end loop;
 
-         if No_Return (Called_Thing) then
+         if No_Return (Called_Thing)
+           and then not No_Return (FA.Spec_Entity)
+         then
             CM.Insert
               (Union_Id (N),
                Graph_Connections'

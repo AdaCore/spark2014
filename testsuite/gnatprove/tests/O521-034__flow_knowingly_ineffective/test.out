@@ -3,4 +3,3 @@ p.adb:20:21: info: assertion proved (CVC4: 1 VC)
 p.adb:21:06: info: precondition proved (Trivial: 1 VC)
 p.ads:5:32: info: data dependencies proved
 p.ads:7:34: info: data dependencies proved
-p.ads:7:57: low: unused global "Dummy"

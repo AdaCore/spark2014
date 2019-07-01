@@ -1,8 +1,4 @@
-test_func.adb:3:11: high: "abstract_state_package.some_state" is not an input in the Global contract of subprogram "test_func" at line 3
-test_func.adb:3:11: high: "abstract_state_package.some_state" is not written
-test_func.adb:3:11: high: either make "abstract_state_package.some_state" an input in the Global contract or write to it before use
-test_func.adb:3:22: warning: unused variable "a"
-test_func.adb:5:04: warning: unused variable "b"
+test_func.adb:5:04: info: initialization of "b" proved
 test_func.adb:8:10: medium: overflow check might fail [possible explanation: call at line 7 should mention a (for argument b) in a postcondition]
 test_func.adb:10:16: medium: call to nonreturning subprogram might be executed
 utility_test.ads:26:26: info: initialization of "a" proved
