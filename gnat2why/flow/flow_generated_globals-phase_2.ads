@@ -171,6 +171,11 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param EN is the entity name that we check for being a ghost entity
    --  @return True iff EN is a ghost entity
 
+   function GG_Is_Constant (EN : Entity_Name) return Boolean
+   with Pre => GG_Has_Been_Generated;
+   --  @param EN is the entity name that we check for being a constant
+   --  @return True iff EN is a constant
+
    function GG_Is_CAE_Entity (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name that we check for being a constant after

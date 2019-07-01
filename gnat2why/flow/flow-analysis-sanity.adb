@@ -24,23 +24,24 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Nlists;                 use Nlists;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
+with Nlists;                         use Nlists;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Util;                       use Sem_Util;
+with Sinfo;                          use Sinfo;
+with Snames;                         use Snames;
 
-with Checked_Types;          use Checked_Types;
+with Checked_Types;                  use Checked_Types;
 with Gnat2Why_Args;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Util;             use SPARK_Util;
-with VC_Kinds;               use VC_Kinds;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
+with SPARK_Util;                     use SPARK_Util;
+with VC_Kinds;                       use VC_Kinds;
 
-with Flow_Error_Messages;    use Flow_Error_Messages;
-with Flow_Utility;           use Flow_Utility;
-with Flow_Refinement;        use Flow_Refinement;
+with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 
 package body Flow.Analysis.Sanity is
 
@@ -634,8 +635,10 @@ package body Flow.Analysis.Sanity is
                   end;
 
                when Magic_String =>
-                  Emit_Error (F);
-                  Sane := False;
+                  if not GG_Is_Constant (F.Name) then
+                     Emit_Error (F);
+                     Sane := False;
+                  end if;
 
                when others =>
                   raise Program_Error;

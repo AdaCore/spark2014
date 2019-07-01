@@ -1,3 +1,2 @@
-p.ads:3:37: subtype constraint cannot depend on variable input "q.c" (SPARK RM 4.4(2))
+p.ads:3:12: info: range check proved (CVC4: 2 VC)
 q.adb:5:12: info: range check proved (CVC4: 2 VC)
-gnatprove: error during flow analysis and proof

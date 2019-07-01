@@ -267,6 +267,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Entities annotated as ghost
 
    ----------------------------------------------------------------------
+   --  Constant information
+   ----------------------------------------------------------------------
+
+   Constants : Name_Sets.Set;
+   --  Constants
+
+   ----------------------------------------------------------------------
    --  CAE information
    ----------------------------------------------------------------------
 
@@ -1299,6 +1306,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_CAE_Entities =>
                   Serialize (CAE_Entities);
+
+               when EK_Constants =>
+                  Serialize (Constants);
 
                when EK_Volatiles =>
                   Serialize (Async_Readers_Vars,    "AR");
@@ -2662,6 +2672,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
      renames Ghost_Entities.Contains;
+
+   --------------------
+   -- GG_Is_Constant --
+   --------------------
+
+   function GG_Is_Constant (EN : Entity_Name) return Boolean
+     renames Constants.Contains;
 
    ----------------------
    -- GG_Is_CAE_Entity --
