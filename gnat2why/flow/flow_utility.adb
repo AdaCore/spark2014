@@ -5334,7 +5334,8 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
-         when N_Function_Call
+         when N_Explicit_Dereference
+            | N_Function_Call
             | N_Indexed_Component
             | N_Unchecked_Type_Conversion
          =>
