@@ -499,9 +499,9 @@ package body Why.Gen.Expr is
          for I in 1 .. Dim loop
             declare
                Low_From : constant Node_Id :=
-                 Type_Low_Bound (Nth_Index_Type (From_Ent, I));
+                 Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
                Low_To   : constant Node_Id :=
-                 Type_Low_Bound (Nth_Index_Type (To_Ent, I));
+                 Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
             begin
                if not Is_Static_Expression (Low_From)
                  or else not Is_Static_Expression (Low_To)

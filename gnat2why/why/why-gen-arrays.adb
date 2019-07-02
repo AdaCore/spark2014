@@ -2021,7 +2021,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name
                    (Symb => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Ind_Ty) then
+                   (if Has_Modular_Integer_Type (Ind_Ty) then
                          MF_BVs (R_Ty).Ule
                     else
                        Int_Infix_Le));
@@ -2239,7 +2239,7 @@ package body Why.Gen.Arrays is
             Type_Name := To_Unbounded_String
               (To_String (WNE_Array_BV_Suffix)
                & Image (Integer (UI_To_Int
-                 (Modular_Size (Etype (Index)))), 1));
+                 (Modular_Size (Retysp (Etype (Index))))), 1));
          else
             Type_Name :=
               To_Unbounded_String (To_String (WNE_Array_Int_Suffix));
