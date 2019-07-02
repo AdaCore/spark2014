@@ -136,7 +136,7 @@ package body Ce_Pretty_Printing is
          --  Difference calculations
          Diff_To_High : constant Uint := abs (Nb_Value - High_Bound);
          Diff_To_Low  : constant Uint := abs (Nb_Value - Low_Bound);
-         Side         : String (1 .. 1);
+         Side         : Character;
 
       begin
          --  If the range of type is too small, we do nothing. If the type
@@ -159,7 +159,7 @@ package body Ce_Pretty_Printing is
                return Type_Name & "'Last";
 
             elsif Diff_To_High < Bound_Value then
-               Side := (if Nb_Value < High_Bound then "-" else "+");
+               Side := (if Nb_Value < High_Bound then '-' else '+');
                return Type_Name & "'Last" & Side & UI_Image (Diff_To_High);
 
             else
@@ -177,7 +177,7 @@ package body Ce_Pretty_Printing is
                return Type_Name & "'First";
 
             elsif Diff_To_Low < Bound_Value then
-               Side := (if Nb_Value < Low_Bound then "-" else "+");
+               Side := (if Nb_Value < Low_Bound then '-' else '+');
                return Type_Name & "'First" & Side & UI_Image (Diff_To_Low);
 
             else
