@@ -317,7 +317,6 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-              and then Is_Library_Level_Entity (E)
               and then Is_Ghost_Entity (E)
             then
                Ghost_Entities.Include (E);
@@ -333,7 +332,6 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-              and then Is_Library_Level_Entity (E)
               and then Ekind (E) = E_Constant
             then
                Constants.Include (E);
@@ -422,6 +420,17 @@ package body Flow_Generated_Globals.Phase_1 is
       Process_Protected_Objects (Tasking (Locks));
 
       if not Local then
+         --  If the current entity is non-local, i.e. can be called from
+         --  other compilation units, then it must be library-level (or is
+         --  a protected operation/task entry of a library-level concurrent
+         --  object). Consequently, all of their global objects must be
+         --  library-level as well.
+
+         pragma Assert
+           (Is_Library_Level_Entity (E)
+              or else
+            (Is_Concurrent_Type (Scope (E))
+             and then Is_Library_Level_Entity (Scope (E))));
 
          --  Collect volatile variables and state abstractions; these sets are
          --  disjoint, so it is more efficient to process them separately
