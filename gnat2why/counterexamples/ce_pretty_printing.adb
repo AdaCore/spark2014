@@ -71,7 +71,11 @@ package body Ce_Pretty_Printing is
 
    end Print_Conversion;
 
-   package body Gen_Print is
+   --------------------
+   -- Print_Discrete --
+   --------------------
+
+   function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String
         with Pre => Is_Discrete_Type (Ty);
@@ -98,96 +102,93 @@ package body Ce_Pretty_Printing is
          end if;
       end Beautiful_Source_Name;
 
-      --------------------
-      -- Print_Discrete --
-      --------------------
+      Nb_Value : Uint;
 
-      function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String
-      is
-         Nb_Value : Uint;
+   --  Start of processing for Print_Discrete
+
+   begin
+      --  Handle exception from UI_From_String
       begin
-         --  Handle exception from UI_From_String
-         begin
-            Nb_Value := UI_From_String (Nb);
-         exception
-            when others => return Nb;
-         end;
+         Nb_Value := UI_From_String (Nb);
+      exception
+         when others => return Nb;
+      end;
 
-         --  If one of the bound is not known, we cannot evaluate the type
-         --  range so we cannot decide if we alter printing.
-         if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
-            not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
+      --  If one of the bound is not known, we cannot evaluate the type range
+      --  so we cannot decide if we alter printing.
+      if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
+         not Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
+      then
+         return Nb;
+      end if;
+
+      --  Beginning of safe computations
+
+      declare
+         --  Type informations
+         Low_Bound  : constant Uint   :=
+           Expr_Value (Type_Low_Bound (Nb_Type));
+         High_Bound : constant Uint   :=
+           Expr_Value (Type_High_Bound (Nb_Type));
+         Type_Range : constant Uint   := High_Bound - Low_Bound;
+         Type_Name  : constant String := Beautiful_Source_Name (Nb_Type);
+
+         --  Difference calculations
+         Diff_To_High : constant Uint := abs (Nb_Value - High_Bound);
+         Diff_To_Low  : constant Uint := abs (Nb_Value - Low_Bound);
+         Side         : String (1 .. 1);
+
+      begin
+         --  If the range of type is too small, we do nothing. If the type
+         --  we are given is internal then we don't want to print it as it
+         --  would confuse the user.
+         --  Example: type Data_T is array (1 .. 1000) of Integer;
+         --  There is an internal type Tdata_tD1 for range (1..1000) for
+         --  indices: we don't want to print Tdata_tD1'First.
+         if Type_Range <= UI_From_Int (Bound_Type) or else
+           (not Comes_From_Source (Nb_Type) and then
+                not Is_Standard_Entity (Nb_Type))
          then
             return Nb;
          end if;
 
-         --  Beginning of safe computations.
-         declare
-            --  Type informations
-            Low_Bound  : constant Uint   :=
-              Expr_Value (Type_Low_Bound (Nb_Type));
-            High_Bound : constant Uint   :=
-              Expr_Value (Type_High_Bound (Nb_Type));
-            Type_Range : constant Uint   := High_Bound - Low_Bound;
-            Type_Name  : constant String := Beautiful_Source_Name (Nb_Type);
+         --  Nb is closer to the highest bound
+         if Diff_To_High <= Diff_To_Low then
 
-            --  Difference calculations
-            Diff_To_High : constant Uint := abs (Nb_Value - High_Bound);
-            Diff_To_Low  : constant Uint := abs (Nb_Value - Low_Bound);
-            Side         : String (1 .. 1);
-         begin
+            if Diff_To_High = 0 then
+               return Type_Name & "'Last";
 
-            --  If the range of type is too small, we do nothing. If the type
-            --  we are given is internal then we don't want to print it as it
-            --  would confuse the user.
-            --  Example: type Data_T is array (1 .. 1000) of Integer;
-            --  There is an internal type Tdata_tD1 for range (1..1000) for
-            --  indices: we don't want to print Tdata_tD1'First.
-            if Type_Range <= UI_From_Int (Bound_Type) or else
-              (not Comes_From_Source (Nb_Type) and then
-               not Is_Standard_Entity (Nb_Type))
-            then
-               return Nb;
-            end if;
-
-            --  Nb is closer to the highest bound
-            if Diff_To_High <= Diff_To_Low then
-
-               if Diff_To_High = 0 then
-                  return Type_Name & "'Last";
-
-               elsif Diff_To_High < Bound_Value then
-                  Side := (if Nb_Value < High_Bound then "-" else "+");
-                  return Type_Name & "'Last" & Side & UI_Image (Diff_To_High);
-
-               else
-                  return Nb;
-               end if;
-
-            --  We don't want to print Natural'First + 5 as counterexample. So,
-            --  there is a special case when Low_Bound of the type is in
-            --  0 .. 1.
-            elsif Low_Bound = 0 or else Low_Bound = 1 then
-               return Nb;
+            elsif Diff_To_High < Bound_Value then
+               Side := (if Nb_Value < High_Bound then "-" else "+");
+               return Type_Name & "'Last" & Side & UI_Image (Diff_To_High);
 
             else
-               if Diff_To_Low = 0 then
-                  return Type_Name & "'First";
-
-               elsif Diff_To_Low < Bound_Value then
-                  Side := (if Nb_Value < Low_Bound then "-" else "+");
-                  return Type_Name & "'First" & Side & UI_Image (Diff_To_Low);
-
-               else
-                  return Nb;
-               end if;
+               return Nb;
             end if;
-         end;
-      end Print_Discrete;
 
-   end Gen_Print;
+         --  We don't want to print Natural'First + 5 as counterexample. So,
+         --  there is a special case when Low_Bound of the type is in 0 .. 1.
+
+         elsif Low_Bound = 0 or else Low_Bound = 1 then
+            return Nb;
+
+         else
+            if Diff_To_Low = 0 then
+               return Type_Name & "'First";
+
+            elsif Diff_To_Low < Bound_Value then
+               Side := (if Nb_Value < Low_Bound then "-" else "+");
+               return Type_Name & "'First" & Side & UI_Image (Diff_To_Low);
+
+            else
+               return Nb;
+            end if;
+         end if;
+      end;
+   end Print_Discrete;
 
    --  Start of package body for Print_Conversion
+
    package body Print_Conversion is
 
       pragma Assert (T_Unsigned'Size = T_Float'Size);
@@ -484,13 +485,14 @@ package body Ce_Pretty_Printing is
                   --  Decision: generic values for Bound_Type and Bound_Value
                   --  are random for now. They can be adjusted in the future.
 
-                  package Pr is new Gen_Print (Bound_Type  => 10,
-                                               Bound_Value => 5);
+                  function Pretty_Print is
+                    new Print_Discrete (Bound_Type  => 10,
+                                        Bound_Value => 5);
                begin
                   return Make_Trivial
                     (Nul => Cnt_Value.I = "0",
                      Str => To_Unbounded_String (
-                       Pr.Print_Discrete
+                       Pretty_Print
                          (To_String (Cnt_Value.I), AST_Type)));
                end;
             end if;
