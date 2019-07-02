@@ -26,7 +26,7 @@
 with Ada.Strings.Fixed;        use Ada.Strings.Fixed;
 with Ada.Text_IO;
 with Ada.Unchecked_Conversion;
-with Csets;                    use Csets;
+with Casing;                   use Casing;
 with Gnat2Why.CE_Utils;        use Gnat2Why.CE_Utils;
 with Interfaces;               use Interfaces;
 with Namet;                    use Namet;
@@ -85,32 +85,17 @@ package body Ce_Pretty_Printing is
       function Beautiful_Source_Name (Ty : Entity_Id) return String is
       begin
          if Is_Standard_Entity (Ty) then
+            --  Put lower-case name in Global_Name_Buffer
             Get_Unqualified_Name_String (Chars (Ty));
-            declare
-               --  This name is all lower case
-               Name     : String := Name_Buffer (1 .. Name_Len);
-               --  Decides when the next element should be switch to upper case
-               To_Upper : Boolean := True;
 
-            begin
-               for I in Name'Range loop
-                  if To_Upper then
-                     Name (I) := Fold_Upper (Name (I));
-                  end if;
+            --  Convert the content of Global_Name_Buffer to "Mixed_Case"
+            Set_Casing (Mixed_Case);
 
-                  if Name (I) = '_' then
-                     To_Upper := True;
-                  else
-                     To_Upper := False;
-                  end if;
-               end loop;
-               return Name;
-            end;
-
+            --  Return the converted name
+            return Name_Buffer (1 .. Name_Len);
          else
             return Source_Name (Ty);
          end if;
-
       end Beautiful_Source_Name;
 
       --------------------
