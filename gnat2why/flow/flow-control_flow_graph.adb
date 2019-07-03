@@ -2312,10 +2312,25 @@ package body Flow.Control_Flow_Graph is
          function Proc (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
+
+               --  These might cause the loop to exit early
+
                when N_Simple_Return_Statement
                   | N_Extended_Return_Statement
                =>
                   return Abandon;
+
+               --  In these the EXIT/RETURN statement, if present, will
+               --  certainly refer to subprogram's own loop (EXIT) or to
+               --  the suprogram itself (RETURN).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
 
                when others =>
                   return OK;
