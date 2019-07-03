@@ -2896,7 +2896,7 @@ package body SPARK_Definition is
 
         and then
           (not Location_In_Standard_Library (Sloc (N))
-            or else Unit_In_Standard_Library (Main_Unit))
+            or else Is_Internal_Unit (Main_Unit))
         and then SPARK_Pragma_Is (Opt.On)
 
       then
@@ -6805,7 +6805,7 @@ package body SPARK_Definition is
       --  generated in this case for standard library code.
 
       if Location_In_Standard_Library (Sloc (N))
-        and not Unit_In_Standard_Library (Main_Unit)
+        and not Is_Internal_Unit (Main_Unit)
       then
          return;
 

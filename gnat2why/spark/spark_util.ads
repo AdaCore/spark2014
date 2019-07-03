@@ -28,7 +28,6 @@ with Atree;             use Atree;
 with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
-with Impunit;           use Impunit;
 with Lib;               use Lib;
 with Namet;             use Namet;
 with Nlists;            use Nlists;
@@ -663,11 +662,6 @@ package SPARK_Util is
    --  @param C a character to print in a counterexample
    --  @return a string representing the character for humans to read, which is
    --     the character itself if it is a graphic one, otherwise its name.
-
-   function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
-     (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
-   --  Returns True is unit U is in the standard library, which includes all
-   --  units defined in Ada RM, and all units predefined by GNAT.
 
    function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
    --  Returns True if location Loc is in a unit of the standard library, as

@@ -1929,7 +1929,7 @@ package body SPARK_Util is
              True,
 
           when others =>
-             Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc))));
+             Is_Internal_Unit (Unit (Get_Source_File_Index (Loc))));
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
