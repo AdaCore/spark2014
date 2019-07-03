@@ -1901,13 +1901,6 @@ package body SPARK_Util is
         and then Unroll /= No_Unrolling;
    end Is_Selected_For_Loop_Unrolling;
 
-   ------------------------
-   -- Is_Standard_Entity --
-   ------------------------
-
-   function Is_Standard_Entity (E : Entity_Id) return Boolean is
-     (for some S of Standard_Entity => S = E);
-
    ---------------------
    -- Is_Synchronized --
    ---------------------

@@ -32,6 +32,7 @@ with Interfaces;               use Interfaces;
 with Namet;                    use Namet;
 with SPARK_Atree;              use SPARK_Atree;
 with SPARK_Util;               use SPARK_Util;
+with SPARK_Util.Types;         use SPARK_Util.Types;
 with String_Utils;             use String_Utils;
 with Uintp;                    use Uintp;
 
@@ -88,7 +89,7 @@ package body Ce_Pretty_Printing is
 
       function Beautiful_Source_Name (Ty : Entity_Id) return String is
       begin
-         if Is_Standard_Entity (Ty) then
+         if Is_Standard_Type (Ty) then
             --  Put lower-case name in Global_Name_Buffer
             Get_Unqualified_Name_String (Chars (Ty));
 
@@ -147,7 +148,7 @@ package body Ce_Pretty_Printing is
          --  indices: we don't want to print Tdata_tD1'First.
          if Type_Range <= UI_From_Int (Bound_Type) or else
            (not Comes_From_Source (Nb_Type) and then
-                not Is_Standard_Entity (Nb_Type))
+                not Is_Standard_Type (Nb_Type))
          then
             return Nb;
          end if;
