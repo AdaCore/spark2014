@@ -271,6 +271,13 @@ package Flow_Generated_Globals.Phase_2 is
    --  Returns True iff subprogram E calls (directly or indirectly) itself,
    --  i.e. is a recursive subprogram.
 
+   function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean
+   with Pre => GG_Has_Been_Generated and then
+               Ekind (E1) in E_Entry | E_Procedure | E_Function and then
+               Ekind (E2) in E_Entry | E_Procedure | E_Function;
+   --  Returns True iff subprogram E1 calls (directly or indirectly) E2, and
+   --  conversly, i.e. they are mutually recursive subprograms.
+
    function Calls_Current_Task (E : Entity_Id) return Boolean
    with Pre => GG_Has_Been_Generated and then
                Analysis_Requested (E, With_Inlined => True) and then

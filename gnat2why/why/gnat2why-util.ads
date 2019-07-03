@@ -506,6 +506,10 @@ package Gnat2Why.Util is
    --  From a list of declarations, returns a list of borrowers, in reverse
    --  order of the declarations.
 
+   function Has_Post_Axiom (E : Entity_Id) return Boolean with
+     Pre => Is_Subprogram_Or_Entry (E);
+   --  Returns True if we may produce an axiom for the post of E
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------

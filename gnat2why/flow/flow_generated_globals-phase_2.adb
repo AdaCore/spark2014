@@ -350,6 +350,10 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects a subprogram to itself.
 
+   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean;
+   --  Returns True iff there is an edge in the subprogram call graph that
+   --  connects EN1 to EN2.
+
    function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean is
      ((Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning)
       or else Is_Recursive (EN));
@@ -2986,6 +2990,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Is_Recursive (E : Entity_Id) return Boolean is
      (Is_Recursive (To_Entity_Name (E)));
+
+   ------------------------
+   -- Mutually_Recursive --
+   ------------------------
+
+   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean is
+     (Subprogram_Call_Graph.Contains (EN1)
+      and then Subprogram_Call_Graph.Contains (EN2)
+      and then Subprogram_Call_Graph.Edge_Exists (EN1, EN2)
+      and then Subprogram_Call_Graph.Edge_Exists (EN2, EN1));
+
+   function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
+     (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
 
    ------------------------
    -- Calls_Current_Task --

@@ -1,10 +1,10 @@
 rec_post.adb:2:56: info: division check proved (CVC4: 1 VC)
 rec_post.adb:3:55: info: division check proved (CVC4: 1 VC)
+rec_post.ads:2:13: info: function contract might not be available on recursive calls
 rec_post.ads:2:13: medium: subprogram "Is_Even" might not terminate, terminating annotation could be incorrect
 rec_post.ads:3:14: info: postcondition proved (altergo: 2 VC)
-rec_post.ads:3:46: info: function contract not available for proof ("Is_Odd" is recursive)
 rec_post.ads:3:56: info: range check proved (CVC4: 1 VC)
+rec_post.ads:6:13: info: function contract might not be available on recursive calls
 rec_post.ads:6:13: medium: subprogram "Is_Odd" might not terminate, terminating annotation could be incorrect
 rec_post.ads:7:14: info: postcondition proved (CVC4: 1 VC; altergo: 2 VC)
-rec_post.ads:7:47: info: function contract not available for proof ("Is_Even" is recursive)
 rec_post.ads:7:58: info: range check proved (CVC4: 1 VC)

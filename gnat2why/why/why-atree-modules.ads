@@ -23,12 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada;                        use Ada;
+with Ada;                            use Ada;
 with Ada.Containers.Hashed_Maps;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
+with Gnat2Why.Util;                  use Gnat2Why.Util;
 with GNATCOLL.Symbols;
-with SPARK_Definition;           use SPARK_Definition;
-with Why.Ids;                    use Why.Ids;
-with Why.Gen.Names;              use Why.Gen.Names;
+with SPARK_Definition;               use SPARK_Definition;
+with Why.Ids;                        use Why.Ids;
+with Why.Gen.Names;                  use Why.Gen.Names;
 
 package Why.Atree.Modules is
    --  This package helps with Why modules. Today, it is only a list of
@@ -569,6 +571,13 @@ package Why.Atree.Modules is
    --  Returns the module where File = No_Name and Name = (Full_Name (E) &
    --  "__init"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
+
+   function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id with
+     Pre => Has_Post_Axiom (E) and then Is_Recursive (E);
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__rec_axiom"). Memoization may be used. Returns Empty when it is called
+   --  with a node which is not an entity, and no module is known for this
+   --  entity.
 
    function Get_Module_Name (M : W_Module_Id) return String;
    --  Return the name of the module

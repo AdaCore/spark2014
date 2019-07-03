@@ -14924,22 +14924,18 @@ package body Gnat2Why.Expr is
               Is_Recursive (Subp);
          begin
 
-            if (Subp_Non_Returning or else Subp_Recursive)
+            if Subp_Non_Returning
               and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
             then
                declare
                   String_For_Implicit : constant String :=
                     (if Has_Explicit_Contracts then ""
                      else "implicit ");
-                  String_For_Reason   : constant String :=
-                    (if Subp_Recursive
-                     then "is recursive"
-                     else "might not return");
                begin
                   Error_Msg_NE
                     ("info: ?" & String_For_Implicit
                      & "function contract not available for "
-                     & "proof (& " & String_For_Reason & ")", Expr, Subp);
+                     & "proof (& might not return)", Expr, Subp);
                end;
             end if;
 

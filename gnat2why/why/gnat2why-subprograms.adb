@@ -25,6 +25,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 with Common_Containers;              use Common_Containers;
+with Debug;
 with Errout;                         use Errout;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
 with Flow_Generated_Globals;         use Flow_Generated_Globals;
@@ -4181,6 +4182,9 @@ package body Gnat2Why.Subprograms is
       Refined_Post       : W_Pred_Id := Why_Empty;
       Why_Type           : W_Type_Id := Why_Empty;
 
+      --  use this variable to temporarily store current theory
+      Save_Theory   : W_Theory_Declaration_Id;
+
    begin
       Params :=
         (File        => File,
@@ -4194,8 +4198,6 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Do not generate an axiom for the postcondition of:
-      --    * recursive functions, as the axiom could be used to prove the
-      --      function itself,
       --    * potentially non returning functions as the axiom could be
       --      unsound,
       --    * volatile functions and protected subprograms.
@@ -4203,8 +4205,7 @@ package body Gnat2Why.Subprograms is
       if Ekind (E) in E_Procedure | Entry_Kind
         or else No_Return (E)
         or else Has_Pragma_Volatile_Function (E)
-        or else ((Is_Recursive (E)
-                  or else Is_Potentially_Nonreturning (E))
+        or else (Is_Potentially_Nonreturning (E)
                  and then (not Is_Scalar_Type (Etype (E))
                            or else not Use_Split_Form_For_Type (Etype (E))))
       then
@@ -4215,9 +4216,7 @@ package body Gnat2Why.Subprograms is
       --  their range property is always sound. For dynamic scalar types, we
       --  assume the bounds of their first static ancestor.
 
-      elsif Is_Recursive (E)
-        or else Is_Potentially_Nonreturning (E)
-      then
+      elsif Is_Potentially_Nonreturning (E) then
 
          --  Expression functions will have their own definition axiom which
          --  may contradict the range axiom. Do not emit range axiom for them.
@@ -4271,6 +4270,54 @@ package body Gnat2Why.Subprograms is
                      Context  => +Dynamic_Prop_Result)));
          end;
          return;
+      end if;
+
+      pragma Assert (Has_Post_Axiom (E));
+
+      --  For recursive functions, we store the axiom in a different module,
+      --  so that we can make sure that it cannot be used to prove the function
+      --  itself.
+
+      if Is_Recursive (E) then
+
+         --  Raise a warning about missing (implicit) contract on recursive
+         --  calls.
+
+         declare
+            Has_Explicit_Contracts : constant Boolean :=
+              Has_Contracts (E, Pragma_Postcondition)
+              or else Has_Contracts (E, Pragma_Contract_Cases);
+            Has_Implicit_Contracts : constant Boolean :=
+              Type_Needs_Dynamic_Invariant (Etype (E));
+         begin
+
+            if Debug.Debug_Flag_Underscore_F
+              and then (Has_Implicit_Contracts or else Has_Explicit_Contracts)
+            then
+               declare
+                  String_For_Implicit : constant String :=
+                    (if Has_Explicit_Contracts then ""
+                     else "implicit ");
+               begin
+                  Error_Msg_N
+                    ("info: ?" & String_For_Implicit
+                     & "function contract might not be available on "
+                     & "recursive calls", E);
+               end;
+            end if;
+         end;
+
+         Save_Theory := Why_Sections (File).Cur_Theory;
+         Why_Sections (File).Cur_Theory := Why_Empty;
+         Open_Theory (File, E_Rec_Axiom_Module (E),
+                      Comment =>
+                        "Module for declaring an axiom for the post condition"
+                      & " of the recursive function"
+                      & """" & Get_Name_String (Chars (E)) & """"
+                      & (if Sloc (E) > 0 then
+                           " defined at " & Build_Location_String (Sloc (E))
+                        else "")
+                      & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
       --  If the function has a postcondition, is not mutually recursive
@@ -4487,6 +4534,13 @@ package body Gnat2Why.Subprograms is
                              Refined_Post);
          end if;
       end;
+
+      if Is_Recursive (E) then
+         Close_Theory (File,
+                       Kind           => Axiom_Theory,
+                       Defined_Entity => E);
+         Why_Sections (File).Cur_Theory := Save_Theory;
+      end if;
 
       Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
    end Generate_Axiom_For_Post;

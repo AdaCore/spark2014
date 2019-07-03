@@ -8,7 +8,7 @@ aggregates.ads:21:09: info: invariant check proved on default value (CVC4: 1 VC)
 aggregates.ads:22:23: info: range check proved (CVC4: 1 VC)
 aggregates.ads:25:09: info: invariant check proved on default value (CVC4: 1 VC; Trivial: 1 VC)
 aggregates.ads:27:09: info: invariant check proved on default value (CVC4: 2 VC; Trivial: 2 VC)
-external.adb:14:17: info: implicit function contract not available for proof ("Get" is recursive)
+external.adb:14:17: info: implicit function contract not available for proof ("Get" might not return)
 external.ads:5:22: info: initialization of "X" proved
 globals.adb:15:15: info: overflow check proved (CVC4: 1 VC)
 globals.adb:29:15: info: overflow check proved (CVC4: 1 VC)
@@ -34,7 +34,7 @@ globals.ads:41:11: info: data dependencies proved
 globals.ads:44:11: info: data dependencies proved
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)
-inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" is recursive)
+inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" might not return)
 inside_out.adb:20:08: medium: invariant check might fail [possible explanation: subprogram at line 7 should mention X and Mode in a precondition]
 inside_out.adb:30:15: info: overflow check proved (CVC4: 1 VC)
 inside_out.adb:45:13: info: analyzing call to "Body_Create" in context

@@ -28,7 +28,6 @@ with Ada.Containers;             use Ada.Containers;
 with Common_Containers;          use Common_Containers;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
-with Gnat2Why.Util;              use Gnat2Why.Util;
 with Snames;                     use Snames;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
@@ -91,12 +90,13 @@ package body Why.Atree.Modules is
       Equivalent_Keys => "=",
       "="             => "=");
 
-   Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
-   Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Compl_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Init_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
-   Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Why_Symb_Map      : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
+   Entity_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Axiom_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules     : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules      : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rec_Axiom_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Rep_Modules       : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------
    -- E_Module --
@@ -228,6 +228,34 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Init_Module;
+
+   ------------------------
+   -- E_Rec_Axiom_Module --
+   ------------------------
+
+   function E_Rec_Axiom_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Rec_Axiom_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            Name : constant String :=
+              Full_Name (E) & "__rec_axioms";
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Symbol,
+                 Name     => Name);
+         begin
+            Rec_Axiom_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Rec_Axiom_Module;
 
    ------------------
    -- E_Rep_Module --

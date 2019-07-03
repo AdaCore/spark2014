@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
+with Flow_Generated_Globals.Phase_2;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
@@ -477,6 +478,7 @@ package body Why.Inter is
       -----------------------
 
       procedure Add_Axiom_Imports (S : Node_Sets.Set) is
+         use Flow_Generated_Globals.Phase_2;
       begin
          for N of S loop
             if Nkind (N) not in N_Entity
@@ -485,6 +487,27 @@ package body Why.Inter is
                Add_With_Clause (P,
                                 E_Axiom_Module (N),
                                 EW_Clone_Default);
+
+               --  Add a with clause for the theory containing the post axiom
+               --  of a recursive function. We do not include it when proving
+               --  the subprogram itself or mutually recursive subprograms as
+               --  it would be unsound. We do not include it either when
+               --  proving a package elaboration, or VCs for a type declaration
+               --  as it is not clear yet how we can decide whether those are
+               --  mutually recursive with a function or not.
+
+               if Present (Defined_Entity)
+                 and then Is_Subprogram_Or_Entry (Defined_Entity)
+                 and then Nkind (N) in N_Entity
+                 and then Is_Subprogram_Or_Entry (N)
+                 and then Is_Recursive (N)
+                 and then Has_Post_Axiom (N)
+                 and then not Mutually_Recursive (Defined_Entity, N)
+               then
+                  Add_With_Clause (P,
+                                   E_Rec_Axiom_Module (N),
+                                   EW_Clone_Default);
+               end if;
             end if;
          end loop;
       end Add_Axiom_Imports;

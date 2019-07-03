@@ -25,6 +25,7 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Flow_Generated_Globals.Phase_2;
 with Flow_Types;
 with Flow_Utility;
 with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
@@ -869,6 +870,21 @@ package body Gnat2Why.Util is
    begin
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
+
+   --------------------
+   -- Has_Post_Axiom --
+   --------------------
+
+   function Has_Post_Axiom (E : Entity_Id) return Boolean is
+     (Ekind (E) not in E_Procedure | Entry_Kind
+      and then not No_Return (E)
+      and then not Has_Pragma_Volatile_Function (E)
+      and then not
+        Flow_Generated_Globals.Phase_2.Is_Potentially_Nonreturning (E));
+   --  Do not generate an axiom for the postcondition of:
+   --    * procedures or entries,
+   --    * potentially non returning functions as the axiom could be unsound,
+   --    * volatile functions and protected subprograms.
 
    -----------------------
    -- Init_Why_Sections --

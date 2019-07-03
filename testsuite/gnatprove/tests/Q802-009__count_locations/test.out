@@ -14,6 +14,7 @@ count_locations.adb:20:33: info: loop invariant preservation proved (CVC4: 1 VC)
 count_locations.adb:23:34: info: range check proved (CVC4: 1 VC)
 count_locations.adb:31:22: info: assertion proved (CVC4: 1 VC)
 count_locations.adb:32:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+count_locations.ads:12:13: info: function contract might not be available on recursive calls
 count_locations.ads:12:13: medium: subprogram "Partial_Count_Selected_Locations" might not terminate, terminating annotation could be incorrect
 count_locations.ads:13:37: info: overflow check proved (CVC4: 1 VC)
 count_locations.ads:13:37: info: range check proved (CVC4: 1 VC)
