@@ -1,4 +1,4 @@
-do_loops.adb:20:14: info: postcondition proved (CVC4: 1 VC; Trivial: 2 VC)
+do_loops.adb:20:14: info: postcondition proved (CVC4: 3 VC)
 do_loops.adb:20:28: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:20:38: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:20:54: info: pointer dereference check proved (CVC4: 2 VC)
@@ -7,10 +7,10 @@ do_loops.adb:23:20: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:24:10: info: pointer dereference check proved (CVC4: 1 VC)
 do_loops.adb:24:13: info: index check proved (CVC4: 2 VC)
 do_loops.adb:34:04: info: precondition proved (CVC4: 1 VC)
+do_loops.adb:35:19: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:35:19: info: pointer dereference check proved (CVC4: 2 VC)
-do_loops.adb:35:19: medium: assertion might fail, cannot prove A'First = 1
+do_loops.adb:36:19: info: assertion proved (CVC4: 1 VC)
 do_loops.adb:36:19: info: pointer dereference check proved (CVC4: 2 VC)
-do_loops.adb:36:19: medium: assertion might fail, cannot prove A'Last = 100
 do_loops.adb:37:05: info: pointer dereference check proved (CVC4: 1 VC)
 do_loops.adb:38:05: info: pointer dereference check proved (CVC4: 1 VC)
 do_loops.adb:40:08: info: pointer dereference check proved (CVC4: 1 VC)
@@ -46,12 +46,12 @@ do_loops.adb:59:17: info: pointer dereference check proved (CVC4: 1 VC)
 do_loops.adb:60:25: medium: assertion might fail, cannot prove D /= null [possible explanation: loop at line 52 should mention D in a loop invariant]
 do_loops.adb:61:25: medium: assertion might fail, cannot prove D.F3 /= null [possible explanation: loop at line 52 should mention D in a loop invariant]
 do_loops.adb:61:26: info: pointer dereference check proved (CVC4: 1 VC)
-do_loops.adb:62:25: medium: assertion might fail, cannot prove D.F3'First = 1
+do_loops.adb:62:25: medium: assertion might fail, cannot prove D.F3'First = 1 [possible explanation: loop at line 52 should mention D in a loop invariant]
 do_loops.adb:62:26: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:62:45: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:63:25: medium: assertion might fail, cannot prove D.F4 /= null [possible explanation: loop at line 52 should mention D in a loop invariant]
 do_loops.adb:63:26: info: pointer dereference check proved (CVC4: 1 VC)
-do_loops.adb:64:25: medium: assertion might fail, cannot prove D.F4'First = 1
+do_loops.adb:64:25: medium: assertion might fail, cannot prove D.F4'First = 1 [possible explanation: loop at line 52 should mention D in a loop invariant]
 do_loops.adb:64:26: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:64:45: info: pointer dereference check proved (CVC4: 2 VC)
 do_loops.adb:65:11: info: pointer dereference check proved (CVC4: 1 VC)
