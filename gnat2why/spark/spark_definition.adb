@@ -2895,7 +2895,7 @@ package body SPARK_Definition is
         --  implementation of the standard library.
 
         and then
-          (not Location_In_Standard_Library (Sloc (N))
+          (not In_Internal_Unit (N)
             or else Is_Internal_Unit (Main_Unit))
         and then SPARK_Pragma_Is (Opt.On)
 
@@ -6804,7 +6804,7 @@ package body SPARK_Definition is
       --  are analyzing the standard library itself). As a result, no VC is
       --  generated in this case for standard library code.
 
-      if Location_In_Standard_Library (Sloc (N))
+      if In_Internal_Unit (N)
         and not Is_Internal_Unit (Main_Unit)
       then
          return;

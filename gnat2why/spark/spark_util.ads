@@ -663,10 +663,6 @@ package SPARK_Util is
    --  @return a string representing the character for humans to read, which is
    --     the character itself if it is a graphic one, otherwise its name.
 
-   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
-   --  Returns True if location Loc is in a unit of the standard library, as
-   --  computed by Unit_In_Standard_Library.
-
    function Get_Flat_Statement_And_Declaration_List
      (Stmts : List_Id) return Node_Lists.List;
    --  Given a list of statements and declarations Stmts, returns the flattened
@@ -676,12 +672,14 @@ package SPARK_Util is
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
 
-   function Is_Standard_Entity (E : Entity_Id) return Boolean is
-     (Location_In_Standard_Library (Sloc (E)));
+   function Is_Standard_Entity (E : Entity_Id) return Boolean
+     renames In_Internal_Unit;
    --  This function is used to detect that an entity was defined in
    --  the standard library. They should correspond to node created by
    --  Create_Standard in cstand.ads. This is checked by looking at
    --  locations of entities.
+   --  ??? This routine returns actually detects all internal entities, which
+   --  is different from the intention described in the comment above.
 
    function File_Name_Without_Suffix (File_Name : String) return String;
 

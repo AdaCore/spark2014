@@ -1916,21 +1916,6 @@ package body SPARK_Util is
           --  subprograms nested in the type itself.
    end Is_Synchronized;
 
-   ----------------------------------
-   -- Location_In_Standard_Library --
-   ----------------------------------
-
-   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean is
-      (case Loc is
-          when No_Location =>
-             False,
-
-          when Standard_Location | Standard_ASCII_Location | System_Location =>
-             True,
-
-          when others =>
-             Is_Internal_Unit (Unit (Get_Source_File_Index (Loc))));
-
    -------------------------------
    -- May_Issue_Warning_On_Node --
    -------------------------------
