@@ -430,8 +430,27 @@ package body SPARK_Atree is
    -- Get_Enclosing_Object --
    --------------------------
 
-   function Get_Enclosing_Object (N : Node_Id) return Entity_Id renames
-     Sem_Util.Get_Enclosing_Object;
+   function Get_Enclosing_Object (N : Node_Id) return Entity_Id is
+   begin
+      if Einfo.Is_Entity_Name (N) then
+         return Entity (N);
+      else
+         case Nkind (N) is
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Get_Enclosing_Object (Prefix (N));
+
+            when N_Type_Conversion =>
+               return Get_Enclosing_Object (Expression (N));
+
+            when others =>
+               return Empty;
+         end case;
+      end if;
+   end Get_Enclosing_Object;
 
    -------------------
    -- Get_Pragma_Id --

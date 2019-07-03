@@ -11397,13 +11397,18 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Constrained =>
+
             --  To be able to handle affectations, we put the constrained why
             --  field to false in components of aggregates that have an
             --  unconstrained type with defaulted discriminants.
             --  Thus, on constant objects, we should not use this field to
             --  translate 'Constrained but rather return true directly.
 
-            if Is_Constant_Object (Get_Enclosing_Object (Var)) then
+            if not Has_Dereferences (Var)
+              and then
+                (No (Get_Enclosing_Object (Var))
+                 or else Is_Constant_Object (Get_Enclosing_Object (Var)))
+            then
                T := +True_Term;
             else
                declare
@@ -14294,34 +14299,55 @@ package body Gnat2Why.Expr is
                                     (Constr_Ty, Get_Flow_Scope (Constr_Ty)) =
                                       Full_Default_Initialization);
 
-                     Value_Id  : constant W_Identifier_Id :=
+                     Value_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "value",
                           Typ       => EW_Abstract (Des_Ty));
-                     Alloc_Id  : constant W_Identifier_Id :=
+                     Alloc_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier
                          (Base_Name => "alloc",
                           Typ       => Call_Ty);
-                     Res_Id    : constant W_Identifier_Id :=
+                     Res_Id     : constant W_Identifier_Id :=
                        +New_Result_Ident (Typ => EW_Abstract (Constr_Ty));
-                     Pred      : constant W_Pred_Id :=
+                     Pred       : constant W_Pred_Id :=
                        +New_And_Expr
-                         (Left   => +Compute_Default_Init
-                            (Expr   => +Res_Id,
-                             Ty     => Constr_Ty,
-                             Params => Body_Params),
-                          Right  => +Compute_Dynamic_Invariant
-                            (Expr             => +Res_Id,
-                             Ty               => Constr_Ty,
-                             Params           => Body_Params,
-                             --  Uninitialized allocators are only allowed if
-                             --  the type defines full default init.
-                             Initialized      => True_Term,
-                             --  Also assume bounds / discriminants
-                             Only_Var         => False_Term),
-                          Domain => EW_Pred);
+                       (Left   => +Compute_Default_Init
+                          (Expr   => +Res_Id,
+                           Ty     => Constr_Ty,
+                           Params => Body_Params),
+                        Right  => +Compute_Dynamic_Invariant
+                          (Expr             => +Res_Id,
+                           Ty               => Constr_Ty,
+                           Params           => Body_Params,
+                           --  Uninitialized allocators are only allowed if
+                           --  the type defines full default init.
+                           Initialized      => True_Term,
+                           --  Also assume bounds / discriminants
+                           Only_Var         => False_Term),
+                        Domain => EW_Pred);
+                     Value_Expr : W_Expr_Id :=
+                       New_Any_Expr
+                         (Post        => Pred,
+                          Labels      => Symbol_Sets.Empty_Set,
+                          Return_Type => Get_Typ (Res_Id));
                   begin
-                     pragma Assert (Is_Constrained (Constr_Ty));
+                     pragma Assert
+                       (Is_Constrained (Constr_Ty)
+                        or else Has_Defaulted_Discriminants (Constr_Ty));
+
+                     --  Update the constrained attribute to True as access
+                     --  objects are always constrained by their initial
+                     --  value.
+
+                     if Has_Discriminants (Constr_Ty)
+                       and then Has_Defaulted_Discriminants (Constr_Ty)
+                     then
+                        Value_Expr := New_Record_Attributes_Update
+                          (Domain    => EW_Term,
+                           Name      => Value_Expr,
+                           Is_Cst    => True,
+                           Ty        => Constr_Ty);
+                     end if;
 
                      Call := New_Binding
                        (Name    => New_Identifier (Name => "_"),
@@ -14341,10 +14367,7 @@ package body Gnat2Why.Expr is
                               Def     => Insert_Checked_Conversion
                                 (Ada_Node => New_Expr,
                                  Domain   => Domain,
-                                 Expr     => New_Any_Expr
-                                   (Post        => Pred,
-                                    Labels      => Symbol_Sets.Empty_Set,
-                                    Return_Type => Get_Typ (Res_Id)),
+                                 Expr     => Value_Expr,
                                  To       => Get_Typ (Value_Id)),
                               Context => +Sequence
                                 (Left  => New_Assume_Statement
@@ -14373,15 +14396,36 @@ package body Gnat2Why.Expr is
                   Func_New_Initialized_Name :=
                     E_Symb (Etype (Expr), WNE_Init_Allocator);
 
-                  Call := New_Call
-                    (Name     => +Func_New_Initialized_Name,
-                     Domain   => Domain,
-                     Args     => (1 => +Transform_Expr
-                                  (Expr          => New_Expr,
-                                   Expected_Type => Type_Of_Node (Des_Ty),
-                                   Domain        => Domain,
-                                   Params        => Local_Params)),
-                     Typ      => Get_Typ (Func_New_Initialized_Name));
+                  declare
+                     Value_Expr : W_Expr_Id := Transform_Expr
+                       (Expr          => New_Expr,
+                        Expected_Type => Type_Of_Node (Des_Ty),
+                        Domain        => Domain,
+                        Params        => Local_Params);
+
+                  begin
+                     --  Update the constrained attribute to True as access
+                     --  objects are always constrained by their initial
+                     --  value. Also update the tag attribute if Des_Ty is a
+                     --  specific type.
+
+                     if (Has_Discriminants (Des_Ty)
+                         and then Has_Defaulted_Discriminants (Des_Ty))
+                       or else Is_Tagged_Type (Des_Ty)
+                     then
+                        Value_Expr := New_Record_Attributes_Update
+                          (Domain => EW_Term,
+                           Name   => Value_Expr,
+                           Is_Cst => True,
+                           Ty     => Des_Ty);
+                     end if;
+
+                     Call := New_Call
+                       (Name     => +Func_New_Initialized_Name,
+                        Domain   => Domain,
+                        Args     => (1 => Value_Expr),
+                        Typ      => Get_Typ (Func_New_Initialized_Name));
+                  end;
 
                end if;
 

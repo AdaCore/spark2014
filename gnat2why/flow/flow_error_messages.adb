@@ -1165,15 +1165,10 @@ package body Flow_Error_Messages is
 
          elsif Nkind (N) = N_Assignment_Statement then
             declare
-               --  If the target of the assignment has a pointer dereference,
-               --  it does not have an enclosing object. Possibly change that
-               --  to get the root object in some cases of dereferences.
-
-               V : constant Entity_Id := Get_Enclosing_Object (Name (N));
+               V : constant Entity_Id :=
+                 SPARK_Atree.Get_Enclosing_Object (Name (N));
             begin
-               if Present (V) then
-                  Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
-               end if;
+               Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
             end;
 
          --  As Get_Variables_For_Proof only apply to expressions, we do not

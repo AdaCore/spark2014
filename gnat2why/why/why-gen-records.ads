@@ -183,7 +183,7 @@ package Why.Gen.Records is
    --  with default discriminants and 'Tag is the type's tag for specific
    --  tagged types.
    --  @param Is_Cst True if Name is a constant (its 'Constrained attribute
-   --   should be True.
+   --   should be True).
    --  @result Name updated with values of From_Expr attributes if present and
    --  default ones otherwise.
 

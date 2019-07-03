@@ -1225,6 +1225,33 @@ package body SPARK_Util is
       end case;
    end Get_Range;
 
+   ----------------------
+   -- Has_Dereferences --
+   ----------------------
+
+   function Has_Dereferences (N : Node_Id) return Boolean is
+   begin
+      if Einfo.Is_Entity_Name (N) then
+         return False;
+      else
+         case Nkind (N) is
+            when N_Explicit_Dereference =>
+               return True;
+            when N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Has_Dereferences (Prefix (N));
+
+            when N_Type_Conversion =>
+               return Has_Dereferences (Expression (N));
+
+            when others =>
+               return False;
+         end case;
+      end if;
+   end Has_Dereferences;
+
    ------------------
    -- Has_Volatile --
    ------------------

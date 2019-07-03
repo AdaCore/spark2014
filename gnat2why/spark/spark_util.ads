@@ -588,6 +588,10 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
+   function Has_Dereferences (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Return True if there is a dereference in the suffix of N which is a path
+
    function Is_Action (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration

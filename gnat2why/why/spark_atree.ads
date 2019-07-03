@@ -417,6 +417,9 @@ package SPARK_Atree is
 
    function Get_Enclosing_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Copied from Sem_Util.Get_Enclosing_Object except that it does not
+   --  return Empty on dereferences of access objects.
+   --  It can only return Empty when called on expressions which are not paths.
 
    function Get_Pragma_Arg (N : Node_Id) return Node_Id renames
      Sinfo.Get_Pragma_Arg;

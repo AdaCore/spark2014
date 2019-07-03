@@ -2885,8 +2885,9 @@ package body Why.Gen.Records is
       if Has_Constrained then
          declare
             Value : constant W_Expr_Id :=
-              (if From_Expr = Why_Empty then
-                 (if Is_Cst or else Is_Constrained (Ty) then +True_Term
+              (if Is_Cst then +True_Term
+               elsif From_Expr = Why_Empty then
+                 (if Is_Constrained (Ty) then +True_Term
                   else +False_Term)
                else New_Is_Constrained_Access
                  (Domain => Domain,
