@@ -6805,7 +6805,7 @@ package body SPARK_Definition is
       --  generated in this case for standard library code.
 
       if In_Internal_Unit (N)
-        and not Is_Internal_Unit (Main_Unit)
+        and then not Is_Internal_Unit (Main_Unit)
       then
          return;
 
