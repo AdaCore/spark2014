@@ -52,10 +52,10 @@ configuration file ``.why3.conf`` in your ``HOME``, or a configuration file
 given in argument with switch ``-C <file>``.  This file consists of a few
 general settings and a section for each prover which is supported.
 
-|GNATprove| reads the default configuration file ``.why3.conf`` in your
-``HOME``, or the configuration file given in argument with switch
-``--why3-conf=<file>``. Any prover name configured in this configuration file
-can be used as an argument to switch ``--prover``.
+Note that |GNATprove| never reads the default configuration file ``.why3.conf``
+in your ``HOME``. You need to pass the configuration file explicitly with
+switch ``--why3-conf=<file>``. Any prover name configured in this configuration
+file can be used as an argument to switch ``--prover``.
 
 Note that using this mechanism, you cannot replace the definitions provided
 with the SPARK tools for the provers ``altergo``, ``cvc4`` and ``z3``.
