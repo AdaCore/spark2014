@@ -4,9 +4,9 @@
 --                                                                          --
 --                              P L A T F O R M                             --
 --                                                                          --
---                                 S p e c                                  --
+--                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2019, AdaCore                     --
+--                       Copyright (C) 2010-2018, AdaCore                   --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,15 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-package Platform is
+package body Platform is
 
-   --  Value CodePeer_OS for the host OS flavor is for analysis of GNATprove
-   --  code by CodePeer.
+   -------------------
+   -- Get_OS_Flavor --
+   -------------------
 
-   type Host_Operating_System_Flavor is
-      (X86_Windows, X86_64_Windows, X86_Linux, X86_64_Linux, X86_64_Darwin,
-       X86_64_FreeBSD, CodePeer_OS);
-
-   function Get_OS_Flavor return Host_Operating_System_Flavor;
+   function Get_OS_Flavor return Host_Operating_System_Flavor is
+   begin
+      return X86_64_FreeBSD;
+   end Get_OS_Flavor;
 
 end Platform;
