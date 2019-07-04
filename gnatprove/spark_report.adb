@@ -925,6 +925,7 @@ procedure SPARK_Report is
              when X86_Windows | X86_64_Windows => "Windows",
              when X86_Linux   | X86_64_Linux   => "Linux",
              when X86_64_Darwin                => "Darwin",
+             when X86_64_FreeBSD               => "FreeBSD",
              when CodePeer_OS                  => "CodePeer OS");
 
       Pointer_Size : constant :=
