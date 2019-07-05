@@ -620,7 +620,7 @@ package body Flow_Utility is
                      end loop;
 
                      for Comp of Components (Root) loop
-                        Root_Components.Include
+                        Root_Components.Insert
                           (Original_Record_Component (Comp));
                      end loop;
                   end;
