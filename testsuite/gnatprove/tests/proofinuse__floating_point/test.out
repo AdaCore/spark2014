@@ -62,7 +62,7 @@ floating_point.adb:134:40: info: float overflow check proved (Interval)
 floating_point.adb:139:25: medium: overflow check might fail
 floating_point.adb:139:30: info: division check proved (Z3: 1 VC)
 floating_point.adb:141:14: medium: float overflow check might fail
-floating_point.adb:141:28: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:141:28: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:141:34: medium: float overflow check might fail
 floating_point.adb:141:39: medium: float overflow check might fail
 floating_point.adb:144:22: medium: assertion might fail, cannot prove (Y * Y) * X in 1.0 - 0.005 .. 1.0 + 5.0E-3 [possible explanation: subprogram at floating_point.ads:48 should mention X in a precondition]
@@ -103,12 +103,12 @@ floating_point.adb:204:22: info: assertion proved (CVC4: 1 VC)
 floating_point.adb:212:14: info: precondition proved (Z3: 1 VC)
 floating_point.adb:213:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:225:17: info: float overflow check proved (Z3: 1 VC)
-floating_point.adb:225:22: info: division check proved (CVC4: 1 VC)
+floating_point.adb:225:22: info: division check proved (Z3: 1 VC)
 floating_point.adb:225:22: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:75 should mention X and Y and Z in a precondition]
 floating_point.adb:225:27: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:226:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:241:17: info: float overflow check proved (Z3: 1 VC)
-floating_point.adb:241:22: info: division check proved (CVC4: 1 VC)
+floating_point.adb:241:22: info: division check proved (Z3: 1 VC)
 floating_point.adb:241:22: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:78 should mention X and Y and Z in a precondition]
 floating_point.adb:241:27: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:242:22: medium: assertion might fail, cannot prove Res
@@ -132,7 +132,7 @@ floating_point.adb:281:22: info: assertion proved (CVC4: 1 VC)
 floating_point.adb:293:17: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:293:22: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:93 should mention A and C in a precondition]
 floating_point.adb:293:26: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:93 should mention A and B and C and D in a precondition]
-floating_point.adb:293:31: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:293:31: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:293:36: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:93 should mention B and D in a precondition]
 floating_point.adb:294:22: info: assertion proved (Z3: 1 VC)
 floating_point.adb:304:17: info: float overflow check proved (CVC4: 1 VC)
@@ -149,7 +149,7 @@ floating_point.adb:327:24: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:328:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:338:14: medium: precondition might fail, cannot prove X >= 0.0
 floating_point.adb:338:22: info: float overflow check proved (CVC4: 1 VC)
-floating_point.adb:338:26: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:338:26: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:338:30: info: float overflow check proved (CVC4: 1 VC)
 floating_point.adb:339:22: medium: assertion might fail, cannot prove Res
 floating_point.adb:349:04: warning: analyzing unreferenced procedure "Polynomial"
@@ -164,7 +164,7 @@ floating_point.adb:353:56: info: float overflow check proved (Z3: 2 VC)
 floating_point.adb:359:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:109 should mention X and Y in a precondition]
 floating_point.adb:360:22: info: assertion proved (Z3: 1 VC)
 floating_point.adb:366:16: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:110 should mention X and Y in a precondition]
-floating_point.adb:367:22: info: assertion proved (CVC4: 1 VC)
+floating_point.adb:367:22: info: assertion proved (Z3: 1 VC)
 floating_point.adb:372:24: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:113 should mention X and Y in a precondition]
 floating_point.adb:373:24: medium: float overflow check might fail [possible explanation: subprogram at floating_point.ads:113 should mention Y and Z in a precondition]
 floating_point.adb:374:22: medium: assertion might fail, cannot prove X - Z > 0.0 [possible explanation: subprogram at floating_point.ads:113 should mention X and Z in a precondition]
@@ -173,7 +173,7 @@ floating_point.adb:382:16: medium: float overflow check might fail [possible exp
 floating_point.adb:382:21: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:383:22: medium: assertion might fail, cannot prove Res >= X [possible explanation: subprogram at floating_point.ads:116 should mention X in a precondition]
 floating_point.adb:384:22: medium: assertion might fail, cannot prove Res <= Y [possible explanation: subprogram at floating_point.ads:116 should mention Y in a precondition]
-floating_point.adb:392:16: info: float overflow check proved (CVC4: 1 VC)
+floating_point.adb:392:16: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:392:21: info: float overflow check proved (Z3: 1 VC)
 floating_point.adb:393:22: medium: assertion might fail, cannot prove Res <= X [possible explanation: subprogram at floating_point.ads:117 should mention X in a precondition]
 floating_point.adb:394:22: medium: assertion might fail, cannot prove Res >= Y [possible explanation: subprogram at floating_point.ads:117 should mention Y in a precondition]

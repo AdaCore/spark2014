@@ -3984,7 +3984,7 @@
   </transf>
   </goal>
   <goal name="VC def.568" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="7845"/></proof>
+  <proof prover="0"><result status="valid" steps="7596"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
