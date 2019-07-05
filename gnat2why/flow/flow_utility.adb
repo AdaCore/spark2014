@@ -633,12 +633,12 @@ package body Flow_Utility is
                      if Has_Discriminants (T) then
                         for C of Components (T) loop
                            if Is_Visible (Get_Root_Component (C), Scope) then
-                              Results.Include (Add_Component (F, C));
+                              Results.Insert (Add_Component (F, C));
                            else
                               Contains_Non_Visible := True;
                            end if;
                         end loop;
-                        Results.Include (F'Update (Facet => Private_Part));
+                        Results.Insert (F'Update (Facet => Private_Part));
                      else
                         Results := Flow_Id_Sets.To_Set (F);
                      end if;
@@ -734,13 +734,13 @@ package body Flow_Utility is
                         if Results.Is_Empty then
                            Results := Flow_Id_Sets.To_Set (F);
                         else
-                           Results.Include (F'Update (Facet => Private_Part));
+                           Results.Insert (F'Update (Facet => Private_Part));
                         end if;
                      end if;
 
                      if Classwide then
-                        --  Ids.Include (F'Update (Facet => The_Tag)); ???
-                        Results.Include (F'Update (Facet => Extension_Part));
+                        --  Ids.Insert (F'Update (Facet => The_Tag)); ???
+                        Results.Insert (F'Update (Facet => Extension_Part));
                      end if;
 
                   when Access_Kind
