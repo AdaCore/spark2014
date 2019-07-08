@@ -4182,8 +4182,9 @@ package body Gnat2Why.Subprograms is
       Refined_Post       : W_Pred_Id := Why_Empty;
       Why_Type           : W_Type_Id := Why_Empty;
 
-      --  use this variable to temporarily store current theory
-      Save_Theory   : W_Theory_Declaration_Id;
+      --  Use this variable to temporarily store current theory.
+      --  Initial value is never used. Add it to remove CodePeer warning.
+      Save_Theory   : W_Theory_Declaration_Id := Why_Empty;
 
    begin
       Params :=
