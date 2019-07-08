@@ -551,23 +551,10 @@ package Graphs is
    --  this in cfganal.c.
 
    procedure Close
-     (G       : in out Graph;
-      Visitor : access procedure (A, B : Vertex_Id) := null);
-   --  Transitively close the graph using SIMPLE_TC from Nuutila's
-   --  thesis. The visitor procedure, if not null, is called for each new edge
-   --  added to the graph.
+     (G : in out Graph);
+   --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis
    --
    --  Complexity is O(N^2).
-
-   procedure Conditional_Close
-     (G             : in out Graph;
-      Edge_Selector : not null access function
-        (A, B : Vertex_Id) return Boolean);
-   --  Transitively close the graph using SIMPLE_TC from Nuutila's thesis.
-   --  A new edge is only added if the Edge_Selector function returns True
-   --  for the given vertices.
-   --
-   --  Complexity is O(N^2) and space more or less doubled.
 
    ----------------------------------------------------------------------
    --  IO

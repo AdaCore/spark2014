@@ -297,8 +297,7 @@ package body Graphs is
    -----------
 
    procedure Close
-     (G       : in out Graph;
-      Visitor : access procedure (A, B : Vertex_Id) := null)
+     (G : in out Graph)
    is
       type Component is new Natural;
 
@@ -395,15 +394,10 @@ package body Graphs is
          end if;
       end loop;
 
-      --  IMPORTANT NOTE: See Conditional_Close below which relies on this
-      --  post-processing.
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          for W of Sets (Succ (V)) loop
             if not G.Edge_Exists (V, W) then
                G.Add_Edge (V, W, G.Default_Colour);
-               if Visitor /= null then
-                  Visitor (V, W);
-               end if;
             end if;
          end loop;
       end loop;
@@ -425,43 +419,6 @@ package body Graphs is
    begin
       return Natural (C);
    end Cluster_To_Natural;
-
-   -----------------------
-   -- Conditional_Close --
-   -----------------------
-
-   procedure Conditional_Close
-     (G             : in out Graph;
-      Edge_Selector : not null access function
-        (A, B : Vertex_Id) return Boolean)
-   is
-      procedure Visitor (A, B : Vertex_Id);
-      --  Obvious visitor procedure.
-
-      -------------
-      -- Visitor --
-      -------------
-
-      procedure Visitor (A, B : Vertex_Id)
-      is
-      begin
-         if not Edge_Selector (A, B) then
-            G.Remove_Edge (A, B);
-         end if;
-      end Visitor;
-
-   --  Start of processing for Conditional_Close
-
-   begin
-      --  IMPORTANT NOTE: This current implementation takes advantage of
-      --  the inefficient (in terms of space) implementation of Close - we
-      --  effectively cache the entire graph hence we can actually get away
-      --  with modifying it in the visitor procedure. If we get around to
-      --  improving Close to not be so wasteful we need a re-think of
-      --  Conditional_Close.
-
-      G.Close (Visitor'Access);
-   end Conditional_Close;
 
    --------------
    -- Contains --
