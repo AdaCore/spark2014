@@ -1,5 +1,5 @@
 Simplified version of toto.conf before and after adding prover. They should differ
 Files result1 and result2 differ
-test.adb:4:53: info: overflow check proved (Z3: 1 VC)
+test.adb:4:53: info: overflow check proved (CVC3: 1 VC)
 test.adb:4:53: medium: overflow check might fail (e.g. when Z = Integer'Last) [possible explanation: subprogram at line 4 should mention Z in a precondition]
-z3-4.4.0: exec of 'z3-4.4.0' failed (No such file or directory)
+cvc3-2.4.1: exec of 'cvc3-2.4.1' failed (No such file or directory)

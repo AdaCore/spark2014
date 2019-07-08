@@ -6,14 +6,14 @@ procedure Main is
 begin
    begin
       if Argument(1) = "-version" then
-         Put_Line ("Z3 version 4.4.0");
+         Put_Line ("This is CVC3 version 2.4.1");
          return;
       end if;
    exception
       when others =>
-         Put_Line ("unsat");
+         Put_Line ("Valid.");
          return;
    end;
-   Put_Line ("unsat");
+   Put_Line ("Valid.");
    return;
 end Main;
