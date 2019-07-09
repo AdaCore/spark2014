@@ -817,7 +817,7 @@ package body Configuration is
         Ada.Characters.Handling.To_Lower (Provers.First_Element);
       Prover_Lib_Dir : constant String :=
         Compose
-          (Compose (SPARK_Install.Share_Why3, "libs"),
+          (Compose (SPARK_Install.Libexec_Share_Why3, "libs"),
            Name => Prover_Name);
       Prover_Obj_Dir : constant String := Compose
         (Compose (Obj_Dir, "why3_libs"),
