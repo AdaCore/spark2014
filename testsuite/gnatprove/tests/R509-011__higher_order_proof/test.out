@@ -1172,9 +1172,9 @@ spark-higher_order-fold.adb:302:22: info: precondition proved (CVC4: 3 VC), in i
 
 spark-higher_order-fold.adb:308:16: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC; Z3: 1 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at test_higher_order1.ads:22
 
-spark-higher_order-fold.adb:308:16: info: assertion proved (Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at spark-higher_order-fold.ads:597, in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.adb:308:16: info: assertion proved (Trivial: 1 VC; Z3: 1 VC; altergo: 1 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at spark-higher_order-fold.ads:660, in instantiation at test_higher_order3.ads:28
 
-spark-higher_order-fold.adb:308:16: info: assertion proved (Trivial: 1 VC; Z3: 2 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at spark-higher_order-fold.ads:660, in instantiation at test_higher_order3.ads:28
+spark-higher_order-fold.adb:308:16: info: assertion proved (Trivial: 1 VC; Z3: 2 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at spark-higher_order-fold.ads:597, in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.adb:310:28: info: precondition proved (CVC4: 4 VC), in instantiation at spark-higher_order-fold.ads:530, in instantiation at spark-higher_order-fold.ads:597, in instantiation at test_higher_order3.ads:20
 
@@ -1916,7 +1916,7 @@ spark-higher_order-fold.adb:749:32: info: overflow check proved (Z3: 1 VC), in i
 
 spark-higher_order-fold.adb:749:35: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.adb:749:47: info: overflow check proved (Z3: 1 VC), in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.adb:749:47: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.adb:749:50: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
 
@@ -2432,7 +2432,7 @@ spark-higher_order-fold.adb:952:34: info: range check proved (CVC4: 1 VC), in in
 
 spark-higher_order-fold.adb:952:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.adb:954:19: info: precondition proved (CVC4: 15 VC; Trivial: 1 VC; altergo: 1 VC), in instantiation at test_higher_order3.ads:20
+spark-higher_order-fold.adb:954:19: info: precondition proved (CVC4: 15 VC; Trivial: 1 VC; Z3: 1 VC), in instantiation at test_higher_order3.ads:20
 
 spark-higher_order-fold.adb:954:35: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order3.ads:20
 
