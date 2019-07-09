@@ -403,6 +403,141 @@ package body Graphs is
       end loop;
    end Close;
 
+   ---------
+   -- SSC --
+   ---------
+
+   function SCC
+     (G : in out Graph)
+      return Strongly_Connected_Components
+   is
+      --  ??? This implementation is the same as in Close, but we should switch
+      --  from SIMPLE_TC to one of the algorithms recommended by Nuutila's in
+      --  his PhD thesis.
+
+      type Component is new Natural;
+
+      type V_To_V is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Valid_Vertex_Id;
+
+      type V_To_VIS is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
+
+      type V_To_Comp is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
+
+      type Index is new Vertex_Id;
+      --  This type is for numbering the vertices in the order of visiting
+      --  them; note that it is distinct from the numbers that we use
+      --  everywhere else to identify vertices.
+      --
+      --  Here zero means that a vertex has not been visited yet.
+
+      type V_To_Index is array
+        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Index;
+
+      Stack   : Vertex_Index_List := VIL.Empty_Vector;
+      Root    : V_To_Index        := V_To_Index'(others => 0);
+      Comp    : V_To_Comp         := V_To_Comp'(others => 0);
+      Succ    : V_To_V;
+      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      Counter : Index             := 0;
+
+      Current_Component : Component := 0;
+
+      procedure SIMPLE_TC (V : Valid_Vertex_Id);
+      --  See Nuutila's PhD thesis.
+
+      ---------------
+      -- SIMPLE_TC --
+      ---------------
+
+      procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+         Me : constant Index := Counter + 1;
+      begin
+         Root (V) := Me;
+
+         Counter := Counter + 1;
+
+         Stack.Append (V);
+
+         Succ (V) := V;
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               W : Valid_Vertex_Id renames Key (C);
+            begin
+               Sets (Succ (V)).Insert (W);
+            end;
+         end loop;
+
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               W : Valid_Vertex_Id renames Key (C);
+            begin
+               if Root (W) = 0 then
+                  SIMPLE_TC (W);
+               end if;
+               if Comp (W) = 0 then
+                  Root (V) := Index'Min (Root (V), Root (W));
+               end if;
+               Sets (Succ (V)).Union (Sets (Succ (W)));
+            end;
+         end loop;
+
+         if Root (V) = Me then
+            Current_Component := Current_Component + 1;
+            loop
+               declare
+                  W : constant Valid_Vertex_Id := Stack.Last_Element;
+               begin
+                  Stack.Delete_Last;
+
+                  Comp (W) := Current_Component;
+                  Succ (W) := Succ (V); --  Pointer copy
+
+                  exit when W = V;
+               end;
+            end loop;
+         end if;
+      end SIMPLE_TC;
+
+      --  Local variables:
+
+      Components : Strongly_Connected_Components;
+
+   --  Start of processing for SCC
+
+   begin
+      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         if Root (V) = 0 then
+            SIMPLE_TC (V);
+         end if;
+      end loop;
+
+      --  Instead of adding edges to the original graph, create the
+      --  condensation graph.
+
+      Components.Vertex_To_Component.Set_Length (G.Vertices.Length);
+      Components.Component_Graph.Set_Length
+        (Ada.Containers.Count_Type (Current_Component));
+
+      for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
+         --  Store mapping from vertices to their strongly connected components
+
+         Components.Vertex_To_Component (V) := Component_Id (Comp (V));
+
+         --  Store edges between strongly connected components by picking first
+         --  vertex from each component.
+
+         for W of Sets (Succ (V)) loop
+            Components.Component_Graph (Component_Id (Comp (V))).
+              Include (Component_Id (Comp (W)));
+         end loop;
+      end loop;
+
+      return Components;
+   end SCC;
+
    ------------------
    -- Cluster_Hash --
    ------------------
@@ -924,6 +1059,33 @@ package body Graphs is
                           Get_Vertex (G, V_2));
    end Edge_Exists;
 
+   function Edge_Exists
+     (G        : Graph;
+      SCC      : Strongly_Connected_Components;
+      V_1, V_2 : Vertex_Id) return Boolean
+   is
+      pragma Unreferenced (G);
+      C_1 : constant Component_Id := SCC.Vertex_To_Component (V_1);
+      C_2 : constant Component_Id := SCC.Vertex_To_Component (V_2);
+
+   begin
+      return SCC.Component_Graph (C_1).Contains (C_2);
+   end Edge_Exists;
+
+   function Edge_Exists
+     (G        : Graph;
+      SCC      : Strongly_Connected_Components;
+      V_1, V_2 : Vertex_Key) return Boolean
+   is
+      C_1 : constant Component_Id :=
+        SCC.Vertex_To_Component (Get_Vertex (G, V_1));
+      C_2 : constant Component_Id :=
+        SCC.Vertex_To_Component (Get_Vertex (G, V_2));
+
+   begin
+      return SCC.Component_Graph (C_1).Contains (C_2);
+   end Edge_Exists;
+
    ------------------
    -- First_Cursor --
    ------------------
@@ -1036,6 +1198,13 @@ package body Graphs is
          when In_Neighbours  => Has_Element (C.VIS_Native_Cursor),
          when Out_Neighbours => Has_Element (C.EAM_Native_Cursor),
          when All_Vertices   => Has_Element (C.VL_Native_Cursor));
+
+   ----------
+   -- Hash --
+   ----------
+
+   function Hash (C : Component_Id) return Ada.Containers.Hash_Type is
+     (Generic_Integer_Hash (Natural (C)));
 
    --------------------
    -- Include_Vertex --

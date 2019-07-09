@@ -124,6 +124,8 @@ package Graphs is
    subtype Simple_Traversal_Instruction is Traversal_Instruction
      range Continue .. Abort_Traversal;
 
+   type Strongly_Connected_Components is private;
+
    ----------------------------------------------------------------------
    --  Basic operations
    ----------------------------------------------------------------------
@@ -251,6 +253,20 @@ package Graphs is
       V_1, V_2 : Vertex_Key) return Boolean
    with Pre => G.Contains (V_1) and then G.Contains (V_2);
    --  Same as above but takes Vertex_Keys as parameters.
+
+   function Edge_Exists
+     (G        : Graph;
+      SCC      : Strongly_Connected_Components;
+      V_1, V_2 : Vertex_Id) return Boolean
+   with Pre => V_1 /= Null_Vertex and then V_2 /= Null_Vertex;
+   --  Same as above but using a precomputed strongly connected components
+
+   function Edge_Exists
+     (G        : Graph;
+      SCC      : Strongly_Connected_Components;
+      V_1, V_2 : Vertex_Key) return Boolean
+   with Pre => G.Contains (V_1) and then G.Contains (V_2);
+   --  Same as above but using a precomputed strongly connected components
 
    function Edge_Colour
      (G        : Graph;
@@ -556,6 +572,15 @@ package Graphs is
    --
    --  Complexity is O(N^2).
 
+   function SCC
+     (G : in out Graph)
+      return Strongly_Connected_Components;
+   --  Returns the condensation graph of G, i.e. a graph whose vertices are the
+   --  strongly connected components of G and whose edges correspond to edges
+   --  of G that connect vertices from different components. This graph can
+   --  be used to quickly answer connectivity queries (just like Close), but
+   --  without keeping the entire transitive closure of G in memory.
+
    ----------------------------------------------------------------------
    --  IO
    ----------------------------------------------------------------------
@@ -722,5 +747,35 @@ private
             VL_Native_Cursor : VL.Cursor;
       end case;
    end record;
+
+   ----------------------------------------------------------------------
+   --  Strongly connected components
+
+   type Component_Id is new Positive;
+   --  Identifier of a stronly connected component
+
+   function Hash (C : Component_Id) return Ada.Containers.Hash_Type;
+
+   package Vertex_To_Component_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Valid_Vertex_Id,
+                             Element_Type => Component_Id);
+
+   package Component_Sets is new
+     Ada.Containers.Hashed_Sets (Element_Type        => Component_Id,
+                                 Hash                => Hash,
+                                 Equivalent_Elements => "=");
+
+   package Component_To_Components_Vectors is new
+     Ada.Containers.Vectors (Index_Type   => Component_Id,
+                             Element_Type => Component_Sets.Set,
+                             "="          => Component_Sets."=");
+
+   type Strongly_Connected_Components is record
+      Vertex_To_Component : Vertex_To_Component_Vectors.Vector;
+      Component_Graph     : Component_To_Components_Vectors.Vector;
+   end record;
+   --  The strongly connected components are represented as a map from original
+   --  vertices to their strongly connected component and a map from one
+   --  strongly connected component to others.
 
 end Graphs;

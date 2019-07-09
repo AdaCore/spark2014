@@ -78,6 +78,10 @@ package body Flow_Visibility is
    Hierarchy_Info : Hierarchy_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
 
+   Components : Scope_Graphs.Strongly_Connected_Components;
+   --  Pre-computed strongly connected components of the visibility graph for
+   --  quickly answering visibility queries.
+
    ----------------------------------------------------------------------------
    --  Subprogram declarations
    ----------------------------------------------------------------------------
@@ -386,6 +390,8 @@ package body Flow_Visibility is
          Hierarchy_Info.Clear;
       end if;
 
+      Components := Scope_Graph.SCC;
+
       --  Sanity check: all vertices should be now connected to Standard
 
       declare
@@ -400,7 +406,7 @@ package body Flow_Visibility is
          pragma Assert
            (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
                (if V /= Standard
-                then Scope_Graph.Non_Trivial_Path_Exists (V, Standard)));
+                then Scope_Graph.Edge_Exists (Components, V, Standard)));
       end;
 
    end Connect_Flow_Scopes;
@@ -460,9 +466,10 @@ package body Flow_Visibility is
       --  visibility between the same scopes.
 
       return Looking_From = Looking_At
-        or else Scope_Graph.Non_Trivial_Path_Exists
-          (Scope_Graph.Get_Vertex (Sanitize (Looking_From)),
-           Scope_Graph.Get_Vertex (Sanitize (Looking_At)));
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Sanitize (Looking_From),
+           Sanitize (Looking_At));
    end Is_Visible;
 
    ---------------
