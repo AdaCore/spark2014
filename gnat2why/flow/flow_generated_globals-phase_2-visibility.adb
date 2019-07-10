@@ -65,6 +65,10 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    Hierarchy_Info : Name_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
 
+   Components : Scope_Graphs.Strongly_Connected_Components;
+   --  Pre-computed strongly connected components of the visibility graph for
+   --  quickly answering visibility queries.
+
    Children : Name_Graphs.Map;
    Nested   : Name_Graphs.Map;
    --  ??? those should be maps from Entity_Name -> Name_Lists.List, just like
@@ -387,6 +391,8 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Print (Scope_Graph);
       end if;
 
+      Components := Scope_Graph.SCC;
+
       --  Release memory to the provers
       Hierarchy_Info.Clear;
       Hierarchy_Info.Reserve_Capacity (0);
@@ -408,7 +414,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          pragma Assert
            (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
               (if V /= Standard
-               then Scope_Graph.Non_Trivial_Path_Exists (V, Standard)));
+               then Scope_Graph.Edge_Exists (Components, V, Standard)));
       end;
 
    end Connect_Name_Scopes;
@@ -710,8 +716,9 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
       --  what Non_Trivial_Path_Exists says when called with the same vertices.
 
       return From = Looking_At
-        or else Scope_Graph.Non_Trivial_Path_Exists
-          (Scope_Graph.Get_Vertex (From),
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Scope_Graph.Get_Vertex (From),
            Scope_Graph.Get_Vertex (Looking_At));
    end State_Refinement_Is_Visible;
 
@@ -728,11 +735,12 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
         (Ent => Scope (State), Part => Private_Part);
 
    begin
-      --  ??? see the comment about about From = Looking_At
+      --  ??? see the comment about From = Looking_At
 
       return From = Looking_At
-        or else Scope_Graph.Non_Trivial_Path_Exists
-          (Scope_Graph.Get_Vertex (From),
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Scope_Graph.Get_Vertex (From),
            Scope_Graph.Get_Vertex (Looking_At));
    end Part_Of_Is_Visible;
 
