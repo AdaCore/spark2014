@@ -404,24 +404,20 @@ package body Graphs is
    end Close;
 
    ---------
-   -- SSC --
+   -- SCC --
    ---------
 
    function SCC
-     (G : in out Graph)
+     (G : Graph)
       return Strongly_Connected_Components
    is
-      --  ??? This implementation is the same as in Close, but we should switch
-      --  from SIMPLE_TC to one of the algorithms recommended by Nuutila's in
-      --  his PhD thesis.
+      --  This implementation mostly mirrors the one from Boost::Graph, which
+      --  outline is described in Boost's transitive_closure.html and detailed
+      --  in transitive_closure.w, respectively.
+      --  ??? we still miss "chain decomposition" for an optimized
+      --  implementation of the set union.
 
       type Component is new Natural;
-
-      type V_To_V is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Valid_Vertex_Id;
-
-      type V_To_VIS is array
-        (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Vertex_Index_Set;
 
       type V_To_Comp is array
         (Valid_Vertex_Id range 1 .. G.Vertices.Last_Index) of Component;
@@ -439,20 +435,19 @@ package body Graphs is
       Stack   : Vertex_Index_List := VIL.Empty_Vector;
       Root    : V_To_Index        := V_To_Index'(others => 0);
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
-      Succ    : V_To_V;
-      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
       Counter : Index             := 0;
 
       Current_Component : Component := 0;
 
-      procedure SIMPLE_TC (V : Valid_Vertex_Id);
-      --  See Nuutila's PhD thesis.
+      procedure VISIT (V : Valid_Vertex_Id);
+      --  Tarjan's algorithm for strongly connected components, as described in
+      --  Nuutila's PhD thesis.
 
-      ---------------
-      -- SIMPLE_TC --
-      ---------------
+      -----------
+      -- VISIT --
+      -----------
 
-      procedure SIMPLE_TC (V : Valid_Vertex_Id) is
+      procedure VISIT (V : Valid_Vertex_Id) is
          Me : constant Index := Counter + 1;
       begin
          Root (V) := Me;
@@ -461,26 +456,16 @@ package body Graphs is
 
          Stack.Append (V);
 
-         Succ (V) := V;
-         for C in G.Vertices (V).Out_Neighbours.Iterate loop
-            declare
-               W : Valid_Vertex_Id renames Key (C);
-            begin
-               Sets (Succ (V)).Insert (W);
-            end;
-         end loop;
-
          for C in G.Vertices (V).Out_Neighbours.Iterate loop
             declare
                W : Valid_Vertex_Id renames Key (C);
             begin
                if Root (W) = 0 then
-                  SIMPLE_TC (W);
+                  VISIT (W);
                end if;
                if Comp (W) = 0 then
                   Root (V) := Index'Min (Root (V), Root (W));
                end if;
-               Sets (Succ (V)).Union (Sets (Succ (W)));
             end;
          end loop;
 
@@ -493,24 +478,27 @@ package body Graphs is
                   Stack.Delete_Last;
 
                   Comp (W) := Current_Component;
-                  Succ (W) := Succ (V); --  Pointer copy
-
                   exit when W = V;
                end;
             end loop;
          end if;
-      end SIMPLE_TC;
+      end VISIT;
 
       --  Local variables:
 
       Components : Strongly_Connected_Components;
+
+      CG   : Component_To_Components_Vectors.Vector;
+      Succ : Component_To_Components_Vectors.Vector renames
+        Components.Component_Graph;
+      --  Condensation graph and its transitive closure, respectively
 
    --  Start of processing for SCC
 
    begin
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
          if Root (V) = 0 then
-            SIMPLE_TC (V);
+            VISIT (V);
          end if;
       end loop;
 
@@ -518,7 +506,10 @@ package body Graphs is
       --  condensation graph.
 
       Components.Vertex_To_Component.Set_Length (G.Vertices.Length);
-      Components.Component_Graph.Set_Length
+
+      Succ.Set_Length
+        (Ada.Containers.Count_Type (Current_Component));
+      CG.Set_Length
         (Ada.Containers.Count_Type (Current_Component));
 
       for V in Valid_Vertex_Id range 1 .. G.Vertices.Last_Index loop
@@ -526,13 +517,36 @@ package body Graphs is
 
          Components.Vertex_To_Component (V) := Component_Id (Comp (V));
 
-         --  Store edges between strongly connected components by picking first
-         --  vertex from each component.
+         --  Store edges between strongly connected components but avoid loops
 
-         for W of Sets (Succ (V)) loop
-            Components.Component_Graph (Component_Id (Comp (V))).
-              Include (Component_Id (Comp (W)));
+         for C in G.Vertices (V).Out_Neighbours.Iterate loop
+            declare
+               W : Valid_Vertex_Id renames Key (C);
+            begin
+               if Comp (V) /= Comp (W) then --  avoid self-loops
+                  CG (Component_Id (Comp (V))).
+                    Include (Component_Id (Comp (W)));
+               end if;
+            end;
          end loop;
+      end loop;
+
+      --  Tarjan's algorithm enumerates strongly connected components in
+      --  reverse topological order, which is exactly the order we need here.
+
+      for U in Component_Id range 1 .. Component_Id (Current_Component) loop
+         for V : Component_Id of CG (U) loop
+            Succ (U).Union (Succ (V));
+            Succ (U).Include (V);
+         end loop;
+      end loop;
+
+      --  Add edges from each component to itself, because each vertex of a
+      --  strongly connected component is connected to other vertices of the
+      --  same component.
+
+      for U in Component_Id range 1 .. Component_Id (Current_Component) loop
+         Succ (U).Include (U);
       end loop;
 
       return Components;
