@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Common_Containers;       use Common_Containers;
+with Flow_Error_Messages;     use Flow_Error_Messages;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why.Util;           use Gnat2Why.Util;
@@ -50,6 +51,7 @@ package body Why.Gen.Progs is
          Reason,
          True,
          Current_Subp,
+         No_Session_File,
          How_Proved => PC_Interval);
    end Emit_Always_True_Range_Check;
 

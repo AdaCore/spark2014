@@ -55,8 +55,20 @@ package Flow_Error_Messages is
    --  This boolean becomes True if we find a error during flow analysis which
    --  should stop further analysis (i.e. proof).
 
+   type Session_File_Base_ID is new Natural;
+
+   subtype Session_File_ID is Session_File_Base_ID
+   range 1 .. Session_File_Base_ID'Last;
+   --  Indices for session files
+
+   No_Session_File : constant Session_File_Base_ID := 0;
+
+   function Register_Session_File (S : String) return Session_File_ID;
+   --  Register a string as a session file, create its ID and return it.
+
    function Get_Flow_JSON return JSON_Array;
    function Get_Proof_JSON return JSON_Array;
+   function Get_Session_Map_JSON return JSON_Value;
    --  Call these functions to get the messages of proof and flow in JSON form.
    --  Should be called only when analysis is finished.
 
@@ -143,6 +155,7 @@ package Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
+      SF_Id       : Session_File_Base_ID;
       Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean);
    --  register a message for proof (i.e. which corresponds to a check that is

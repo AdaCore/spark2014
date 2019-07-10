@@ -23,11 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Debug.Timing; use Debug.Timing;
+with Debug.Timing;        use Debug.Timing;
+with Flow_Error_Messages; use Flow_Error_Messages;
 with GNATCOLL.JSON;
-with SPARK_Atree;  use SPARK_Atree;
-with Types;        use Types;
-with VC_Kinds;     use VC_Kinds;
+with SPARK_Atree;         use SPARK_Atree;
+with Types;               use Types;
+with VC_Kinds;            use VC_Kinds;
 
 package Gnat2Why.Error_Messages is
 
@@ -78,6 +79,7 @@ package Gnat2Why.Error_Messages is
       Kind       : VC_Kind;
       Proved     : Boolean;
       E          : Entity_Id;
+      SF_Id      : Session_File_Base_ID;
       How_Proved : Prover_Category;
       Extra_Msg  : String := "";
       Tracefile  : String := "";

@@ -225,6 +225,7 @@ package body Gnat2Why.Driver is
       Set_Field (Full, "spark", Create (Get_SPARK_JSON));
       Set_Field (Full, "flow", Create (Get_Flow_JSON));
       if Proof_Done then
+         Set_Field (Full, "session_map", Get_Session_Map_JSON);
          Set_Field (Full, "proof", Create (Get_Proof_JSON));
       end if;
       Set_Field (Full, "assumptions", Get_Assume_JSON);

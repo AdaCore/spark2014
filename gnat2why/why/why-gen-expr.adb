@@ -30,6 +30,7 @@ with Checks;                  use Checks;
 with Common_Containers;       use Common_Containers;
 with Errout;                  use Errout;
 with Eval_Fat;
+with Flow_Error_Messages;     use Flow_Error_Messages;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -3281,6 +3282,7 @@ package body Why.Gen.Expr is
             Reason,
             True,
             Current_Subp,
+            No_Session_File,
             How_Proved => PC_Codepeer);
          Labels.Insert (GP_Already_Proved);
       end if;

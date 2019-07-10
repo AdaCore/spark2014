@@ -35,6 +35,7 @@ with Elists;                         use Elists;
 with Errout;                         use Errout;
 with Flow.Analysis.Antialiasing;     use Flow.Analysis.Antialiasing;
 with Flow_Dependency_Maps;           use Flow_Dependency_Maps;
+with Flow_Error_Messages;            use Flow_Error_Messages;
 with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                use Flow_Refinement;
 with Flow_Utility;                   use Flow_Utility;
@@ -16543,6 +16544,7 @@ package body Gnat2Why.Expr is
                                      Kind       => Reason,
                                      E          => Current_Subp,
                                      Proved     => Proved,
+                                     SF_Id      => No_Session_File,
                                      How_Proved => PC_Prover);
                   return +Void;
                else
