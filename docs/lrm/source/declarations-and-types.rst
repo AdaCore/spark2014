@@ -411,26 +411,24 @@ The rules which accomplish all of this are described below.
 
 .. centered:: **Static Semantics**
 
-An access-to-variable type is said to be an *owning* access type if
-if it is either a (named) pool-specific access type, the anonymous
-type of a stand-alone object (including a generic formal **in** mode object),
-the anonymous type of an object renaming declaration,
-or an anonymous type occuring in the profile (either as a
-parameter type or as the function result type) of a traversal function
-(defined below).
+Only the following (named or anonymous) access types are in |SPARK|:
 
-An access-to-constant type is said to be an *observing* access type if
-if it is either a (named) pool-specific access type, the anonymous
-type of a stand-alone object (including a generic formal **in** mode object),
-the anonymous type of an object renaming declaration,
-or an anonymous type occuring in the profile (either as a
-parameter type or as the function result type) of a traversal function
-(defined below).
+- a (named) pool-specific access type,
 
-Access types (named or anonymous) which are neither owning nor
-observing are not in |SPARK|.
+- the anonymous type of a stand-alone object (including a generic formal **in**
+  mode object),
+
+- the anonymous type of an object renaming declaration, or
+
+- an anonymous type occurring as a parameter type, or as a function result type
+  of a traversal function (defined below).
+
 [Redundant: For example, named general access types, access discriminants,
 and access-to-subprogram types are not in |SPARK|.]
+
+Such a type is said to be an *owning* access type when it is an
+access-to-variable type, and an *observing* access type when it is an
+access-to-constant type.
 
 User-defined storage pools are not in |SPARK|; more specifically, the package
 System.Storage_Pools, Storage_Pool aspect specifications, and the Storage_Pool
