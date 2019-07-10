@@ -1,4 +1,4 @@
 inverse-prover SKIP ordering issue
 community SKIP requires lemmas
 !large SKIP part of large testsuite
-RLIMT 1500
+ALL RLIMT 1500
