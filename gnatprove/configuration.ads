@@ -244,7 +244,7 @@ package Configuration is
          Share                    : constant String :=
            Compose (Prefix, "share");
          Libexec_Share_Why3       : constant String :=
-           Compose (Libexec_Spark, "why3");
+           Compose (Compose (Libexec_Spark, "share"), "why3");
          Share_Spark              : constant String :=
            Compose (Share, "spark");
          Share_Spark_Theories     : constant String :=
