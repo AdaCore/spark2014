@@ -1760,9 +1760,9 @@ package body SPARK_Util is
    ---------------------------------
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-     (not (Ekind (E) = E_Discriminant and then
-              (Is_Completely_Hidden (E)
-                or else No (Root_Record_Component (E)))));
+     (not (Is_Completely_Hidden (E)
+             or else
+           No (Root_Record_Component (E))));
 
    ----------------------
    -- Is_Others_Choice --

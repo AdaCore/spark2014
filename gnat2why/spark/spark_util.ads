@@ -355,12 +355,10 @@ package SPARK_Util is
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean;
-   --  @param E any entity
-   --  @return Return True if E is not a Discriminant or if E is visible in
-   --  SPARK.
-   --  Contrary to Einfo.Is_Completely_Hidden, this function can be called on
-   --  any entity E, not only discriminants.
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) = E_Discriminant;
+   --  @param E entity of a discriminant
+   --  @return Return True if E is visible in SPARK
 
    function Is_Package_State (E : Entity_Id) return Boolean;
    --  @param E any entity
