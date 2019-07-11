@@ -24,6 +24,6 @@ private
          end case;
       end record;
 
-      Undefined_Request : constant T := T'(The_Kind => Undefined);
+   Undefined_Request : constant T := T'(The_Kind => Undefined);
 
 end FDP;
