@@ -1750,9 +1750,8 @@ package body SPARK_Util is
       T : constant Entity_Id := Retysp (Etype (E));
    begin
       return Ekind (E) in E_Variable | E_Constant
-        and then Is_Access_Type (T)
-        and then not Is_Access_Constant (T)
-        and then Is_Anonymous_Access_Type (T);
+        and then Is_Anonymous_Access_Type (T)
+        and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
 
    ---------------------------------
