@@ -409,7 +409,8 @@ package SPARK_Util is
    --  @param E an entity that represents a global
    --  @return True if E is safe to be accesses from multiple tasks
 
-   function Root_Record_Component (E : Entity_Id) return Entity_Id;
+   function Root_Record_Component (E : Entity_Id) return Entity_Id
+   with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  Given a component or discriminant of a record (sub-)type, return the
    --  corresponding component or discriminant of the root type, if any. This
    --  is the identity when E is the component of a root type.
@@ -417,7 +418,8 @@ package SPARK_Util is
 
    function Search_Component_By_Name
      (Rec  : Entity_Id;
-      Comp : Entity_Id) return Entity_Id;
+      Comp : Entity_Id) return Entity_Id
+   with Pre => Ekind (Comp) in E_Component | E_Discriminant;
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
