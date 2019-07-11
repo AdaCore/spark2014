@@ -2,6 +2,6 @@ nonlinear.adb:1:42: info: initialization of "R1" proved
 nonlinear.adb:1:46: info: initialization of "R2" proved
 nonlinear.adb:4:11: medium: postcondition might fail, cannot prove R1 <= R2
 nonlinear.adb:7:12: info: division check proved
-nonlinear.adb:7:12: info: range check proved
+nonlinear.adb:7:12: medium: range check might fail [possible explanation: precondition of subprogram at line 1 should mention X]
 nonlinear.adb:8:12: info: division check proved
 nonlinear.adb:8:12: medium: range check might fail [possible explanation: precondition of subprogram at line 1 should mention X]
