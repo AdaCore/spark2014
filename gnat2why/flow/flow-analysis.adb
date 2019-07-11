@@ -1999,10 +1999,7 @@ package body Flow.Analysis is
                  not Defines_Async_Reader_Var (V) and then
 
                  --  Suppression for elaboration of nested packages
-                 not Is_Package_Elaboration (V) and then
-
-                 --  Suppression for ghost entities
-                 not Is_Ghost_Entity (FA.Spec_Entity)
+                 not Is_Package_Elaboration (V)
 
                then
                   declare
