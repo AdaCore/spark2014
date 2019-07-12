@@ -427,6 +427,15 @@ package SPARK_Util is
    --  Return True is E is a constant or a variable of an anonymous access to
    --  variable type.
 
+   function Unique_Component (E : Entity_Id) return Entity_Id
+   with Pre  => Ekind (E) in E_Component | E_Discriminant,
+        Post => Ekind (Unique_Component'Result) = Ekind (E);
+   --  Given an entity of a record component or discriminant, possibly from a
+   --  derived type, return the corresponding component or discriminant from
+   --  the base type. The returned entity provides a unique representation of
+   --  components and discriminants between both the base type and all types
+   --  derived from it.
+
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------

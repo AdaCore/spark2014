@@ -2749,4 +2749,21 @@ package body SPARK_Util is
       return Unique_Entity (Cunit_Entity (Main_Unit));
    end Unique_Main_Unit_Entity;
 
+   ----------------------
+   -- Unique_Component --
+   ----------------------
+
+   function Unique_Component (E : Entity_Id) return Entity_Id is
+   begin
+      if Ekind (E) = E_Discriminant
+        and then Present (Corresponding_Discriminant (E))
+      then
+         return Unique_Component (Corresponding_Discriminant (E));
+      elsif Present (Corresponding_Record_Component (E)) then
+         return Unique_Component (Corresponding_Record_Component (E));
+      else
+         return Original_Record_Component (E);
+      end if;
+   end Unique_Component;
+
 end SPARK_Util;

@@ -21,11 +21,8 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
-with Ada.Strings.Maps;
-with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 
 with Errout;                          use Errout;
 with Lib;                             use Lib;
@@ -41,11 +38,9 @@ with Uintp;                           use Uintp;
 
 with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
-with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
 with Gnat2Why.Util;
 with SPARK_Definition;                use SPARK_Definition;
 with SPARK_Frame_Conditions;          use SPARK_Frame_Conditions;
-with SPARK_Util.External_Axioms;      use SPARK_Util.External_Axioms;
 with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with Why;
@@ -54,7 +49,6 @@ with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
-with Graphs;
 
 package body Flow_Utility is
 
@@ -63,9 +57,6 @@ package body Flow_Utility is
    ----------------------------------------------------------------------
    --  Debug
    ----------------------------------------------------------------------
-
-   Debug_Record_Component      : constant Boolean := False;
-   --  Enable this to generate record component pdf file.
 
    Debug_Trace_Get_Global      : constant Boolean := False;
    --  Enable this to debug Get_Global.
@@ -82,25 +73,6 @@ package body Flow_Utility is
 
    Debug_Trace_Untangle_Record : constant Boolean := False;
    --  Enable this to print traces for Untangle_Record_Assignemnt.
-
-   ----------------------------------------------------------------------
-   --  Component_Graphs
-   ----------------------------------------------------------------------
-
-   package Component_Graphs is new Graphs
-     (Vertex_Key   => Entity_Id,
-      Key_Hash     => Node_Hash,
-      Edge_Colours => Natural,
-      Null_Key     => Empty,
-      Test_Key     => "=");
-
-   Comp_Graph  : Component_Graphs.Graph;
-
-   Temp_String : Unbounded_String := Null_Unbounded_String;
-
-   procedure Add_To_Temp_String (S : String);
-   --  Nasty nasty hack to add the given string to a global variable,
-   --  Temp_String. We use this to pretty print nodes via Sprint_Node.
 
    ----------------------------------------------------------------------
    --  Loop information
@@ -195,20 +167,6 @@ package body Flow_Utility is
       pragma Assert (not Loop_Info_Frozen);
       Loop_Info.Insert (Loop_E, Writes);
    end Add_Loop_Writes;
-
-   ------------------------
-   -- Add_To_Temp_String --
-   ------------------------
-
-   procedure Add_To_Temp_String (S : String) is
-      Whitespace : constant Ada.Strings.Maps.Character_Set :=
-        Ada.Strings.Maps.To_Set
-        (" " & Ada.Characters.Latin_1.CR & Ada.Characters.Latin_1.LF);
-   begin
-      Append (Temp_String,
-              Trim (To_Unbounded_String (S), Whitespace, Whitespace));
-      Append (Temp_String, "\n");
-   end Add_To_Temp_String;
 
    -------------------------------------------
    -- Collect_Functions_And_Read_Locked_POs --
@@ -335,10 +293,10 @@ package body Flow_Utility is
    --------------------
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
-     (if Is_Part_Of_Concurrent_Object (E)
-      then Node_Hash (E)
-      else Component_Graphs.Cluster_Hash
-             (Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (E))));
+     (Node_Hash
+        (if Is_Part_Of_Concurrent_Object (E)
+         then E
+         else Unique_Component (E)));
 
    ----------------
    -- Components --
@@ -3890,197 +3848,6 @@ package body Flow_Utility is
         and then not Is_Constrained (T);
    end Has_Bounds;
 
-   ----------------
-   -- Initialize --
-   ----------------
-
-   procedure Initialize is
-      use Component_Graphs;
-
-      procedure Process (E : Entity_Id);
-      --  Extract information about entity E into flow's internal data
-      --  structure. Currently it deals with record components and
-      --  discriminants.
-
-      function Node_Info (G : Graph;
-                          V : Vertex_Id)
-                          return Node_Display_Info;
-
-      function Edge_Info (G      : Graph;
-                          A      : Vertex_Id;
-                          B      : Vertex_Id;
-                          Marked : Boolean;
-                          Colour : Natural)
-                          return Edge_Display_Info;
-      ---------------
-      -- Node_Info --
-      ---------------
-
-      function Node_Info (G : Graph;
-                          V : Vertex_Id)
-                          return Node_Display_Info
-      is
-      begin
-         Temp_String := Null_Unbounded_String;
-         Set_Special_Output (Add_To_Temp_String'Access);
-         Print_Tree_Node (G.Get_Key (V));
-         Cancel_Special_Output;
-
-         return (Show        => True,
-                 Shape       => Shape_Oval,
-                 Colour      => To_Unbounded_String ("black"),
-                 Fill_Colour => Null_Unbounded_String,
-                 Label       => Temp_String);
-      end Node_Info;
-
-      ---------------
-      -- Edge_Info --
-      ---------------
-
-      function Edge_Info (G      : Graph;
-                          A      : Vertex_Id;
-                          B      : Vertex_Id;
-                          Marked : Boolean;
-                          Colour : Natural)
-                          return Edge_Display_Info
-      is
-         pragma Unreferenced (G, A, B, Marked, Colour);
-      begin
-         return (Show   => True,
-                 Shape  => Edge_Normal,
-                 Colour => To_Unbounded_String ("black"),
-                 Label  => Null_Unbounded_String);
-      end Edge_Info;
-
-      -------------
-      -- Process --
-      -------------
-
-      procedure Process (E : Entity_Id) is
-         Comp : Entity_Id;
-         --  Component or discriminant of entity E
-
-      begin
-         if Is_Record_Type (E)
-           or else Is_Incomplete_Or_Private_Type (E)
-           or else Is_Concurrent_Type (E)
-         then
-            Comp := First_Component_Or_Discriminant (E);
-
-            while Present (Comp) loop
-               --  We add a component to the graph if it is in SPARK
-               if Component_Is_Visible_In_SPARK (Comp) then
-                  Comp_Graph.Include_Vertex (Comp);
-
-                  Comp_Graph.Include_Vertex (Original_Record_Component (Comp));
-
-                  if Ekind (Comp) = E_Discriminant
-                    and then Present (Corresponding_Discriminant (Comp))
-                  then
-                     Comp_Graph.Include_Vertex
-                       (Corresponding_Discriminant (Comp));
-                  end if;
-               end if;
-
-               Next_Component_Or_Discriminant (Comp);
-            end loop;
-         end if;
-      end Process;
-
-      --  Local variables
-
-      S    : Node_Sets.Set;
-      Ptr  : Entity_Id;
-      Ptr2 : Entity_Id;
-
-   --  Start of processing for Initialize
-
-   begin
-      Comp_Graph := Component_Graphs.Create;
-
-      for E of Entities_To_Translate loop
-         Process (E);
-
-         if Ekind (E) = E_Package
-           and then Entity_In_Ext_Axioms (E)
-         then
-            Process_External_Entities (E, Process'Access);
-         end if;
-      end loop;
-
-      for V of Comp_Graph.Get_Collection (All_Vertices) loop
-         Ptr := Comp_Graph.Get_Key (V);
-         S.Insert (Ptr);
-
-         Comp_Graph.Add_Edge (V_1 => Ptr,
-                              V_2 => Original_Record_Component (Ptr));
-
-         if Ekind (Ptr) = E_Discriminant
-           and then Present (Corresponding_Discriminant (Ptr))
-         then
-            Comp_Graph.Add_Edge
-              (V_1 => Ptr,
-               V_2 => Corresponding_Discriminant (Ptr));
-         end if;
-
-         for V2 of Comp_Graph.Get_Collection (All_Vertices) loop
-            exit when V = V2;
-            Ptr2 := Comp_Graph.Get_Key (V2);
-            if Sloc (Ptr) = Sloc (Ptr2) then
-               Comp_Graph.Add_Edge (V_1 => V, V_2 => V2);
-            end if;
-         end loop;
-      end loop;
-
-      while not S.Is_Empty loop
-         declare
-            Work_List : Node_Sets.Set :=
-              Node_Sets.To_Set (S.First_Element);
-            --  Work list seeded with a random element
-
-            C : Cluster_Id;
-
-         begin
-            --  Create a new component
-            Comp_Graph.New_Cluster (C);
-
-            --  Flood current component
-            loop
-               Ptr := Work_List.First_Element;
-
-               S.Exclude (Ptr);
-
-               Comp_Graph.Set_Cluster (Comp_Graph.Get_Vertex (Ptr), C);
-
-               for Neighbour_Kind in Collection_Type_T range
-                 Out_Neighbours .. In_Neighbours
-               loop
-                  for V of Comp_Graph.Get_Collection
-                    (Comp_Graph.Get_Vertex (Ptr), Neighbour_Kind)
-                  loop
-                     Ptr2 := Comp_Graph.Get_Key (V);
-                     if S.Contains (Ptr2) then
-                        Work_List.Include (Ptr2);
-                     end if;
-                  end loop;
-               end loop;
-
-               Work_List.Delete (Ptr);
-
-               exit when Work_List.Is_Empty;
-            end loop;
-         end;
-      end loop;
-
-      if Debug_Record_Component then
-         Comp_Graph.Write_Pdf_File (Filename  => "component_graph",
-                                    Node_Info => Node_Info'Access,
-                                    Edge_Info => Edge_Info'Access);
-      end if;
-
-      Init_Done := True;
-   end Initialize;
-
    ---------------------
    -- Is_Ghost_Entity --
    ---------------------
@@ -4346,13 +4113,9 @@ package body Flow_Utility is
    --------------------
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean is
-      use type Component_Graphs.Cluster_Id;
-
-   begin
-      return C1 = C2 or else
-        Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C1)) =
-          Comp_Graph.Get_Cluster (Comp_Graph.Get_Vertex (C2));
-   end Same_Component;
+     (C1 = C2
+        or else
+      Unique_Component (C1) = Unique_Component (C2));
 
    ---------------------
    -- First_Name_Node --

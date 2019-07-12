@@ -40,15 +40,7 @@ with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
 
-package Flow_Utility
-  with Initial_Condition => not Is_Initialized
-is
-
-   procedure Initialize with Pre => not Is_Initialized;
-   --  Set up state required by some functions in this package
-
-   function Is_Initialized return Boolean with Ghost;
-   --  Tests if we're initialized
+package Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
@@ -65,10 +57,8 @@ is
    --  global effects directly.
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
-   with Pre => Is_Initialized and then
-                 Nkind (E) = N_Defining_Identifier and then
-                 (Ekind (E) in E_Component | E_Discriminant
-                  or else Is_Part_Of_Concurrent_Object (E));
+   with Pre => Ekind (E) in E_Component | E_Discriminant
+               or else Is_Part_Of_Concurrent_Object (E);
    --  Compute a suitable hash for the given record component
 
    procedure Remove_Constants
@@ -93,8 +83,7 @@ is
    --     instance, such a global_item is ignored."
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
-   with Pre => Is_Initialized and then
-               (Ekind (C1) in E_Component | E_Discriminant
+   with Pre => (Ekind (C1) in E_Component | E_Discriminant
                 or else Is_Part_Of_Concurrent_Object (C1))
                 and then
                (Ekind (C2) in E_Component | E_Discriminant
@@ -805,14 +794,5 @@ is
 
    function Strip_Child_Prefixes (EN : String) return String;
    --  Strip Child_Prefix from the string representation of an Entity_Name
-
-private
-   Init_Done : Boolean := False with Ghost;
-
-   --------------------
-   -- Is_Initialized --
-   --------------------
-
-   function Is_Initialized return Boolean is (Init_Done);
 
 end Flow_Utility;

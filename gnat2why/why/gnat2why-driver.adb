@@ -508,11 +508,6 @@ package body Gnat2Why.Driver is
          return;
       end if;
 
-      --  Set up the flow tree utility package; it is done before the flow GG
-      --  traversal to support detection of constants with variable inputs.
-
-      Flow_Utility.Initialize;
-
       --  Build hierarchical representation of scopes in the current
       --  compilation unit. This may require two traversals: for spec and body.
 
