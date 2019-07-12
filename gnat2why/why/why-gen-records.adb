@@ -35,7 +35,6 @@ with Sinput;              use Sinput;
 with Snames;              use Snames;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
-with SPARK_Util.Types;    use SPARK_Util.Types;
 with Uintp;               use Uintp;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;

@@ -26,6 +26,7 @@
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
@@ -170,7 +171,8 @@ package Why.Gen.Records is
       From_Expr : W_Expr_Id := Why_Empty;
       Is_Cst    : Boolean := False;
       Ty        : Entity_Id)
-      return W_Expr_Id;
+      return W_Expr_Id
+        with Pre => Retysp (Ty) = Ty;
    --  Generate a Why3 expression that corresponds to an update to the
    --  additional fields introduced in records for the 'Constrained and 'Tag
    --  attributes.
