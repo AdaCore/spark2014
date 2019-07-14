@@ -14,11 +14,4 @@ is
 
    end;
 
-
-   procedure Verify_Destination_2 (Context : in out Context_Type) is
-   begin
-      Context.Elements (Destination) := (State => Valid);
-      pragma Assert (Context.Elements (Destination)'Constrained); --@ASSERT:FAIL
-   end;
-
 end Test;

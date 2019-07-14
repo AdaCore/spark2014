@@ -1154,8 +1154,7 @@ package body Gnat2Why.Expr is
                                         (Ada_Node => N,
                                          Domain   => EW_Prog,
                                          Name     => +Tmp_Var,
-                                         Ty       =>
-                                           Retysp (Etype (Lvalue))),
+                                         Ty       => Etype (Lvalue)),
                                       +L_Id));
                      begin
                         return +New_Typed_Binding
@@ -1337,7 +1336,7 @@ package body Gnat2Why.Expr is
                             (Domain => EW_Prog,
                              Name   => +Tmp_Var,
                              Is_Cst => True,
-                             Ty     => Retysp (Etype (E)))
+                             Ty     => Etype (E))
                           else +Tmp_Var),
                           +L_Id));
                begin
@@ -6914,7 +6913,7 @@ package body Gnat2Why.Expr is
       --  Record attributes of objects are not modified by assignments
 
       declare
-         Ty : constant Entity_Id := Retysp (Etype (Left_Side));
+         Ty : constant Entity_Id := Etype (Left_Side);
       begin
          if Is_Record_Type_In_Why (Ty) then
             Right_Side :=
@@ -8552,7 +8551,7 @@ package body Gnat2Why.Expr is
                Args (Cnt) := New_Record_Attributes_Update
                  (Domain   => Domain,
                   Name     => Args (Cnt),
-                  Ty       => Retysp (Element (Typ)));
+                  Ty       => Element (Typ));
             end if;
             Next (Value);
             Next (Typ);
@@ -14296,8 +14295,7 @@ package body Gnat2Why.Expr is
                   declare
                      Call_Ty   : constant W_Type_Id :=
                        Get_Typ (Func_New_Uninitialized_Name);
-                     Constr_Ty : constant Entity_Id :=
-                       Retysp (Entity (New_Expr));
+                     Constr_Ty : constant Entity_Id := Entity (New_Expr);
                      pragma Assert (Default_Initialization
                                     (Constr_Ty, Get_Flow_Scope (Constr_Ty)) =
                                       Full_Default_Initialization);
@@ -17557,7 +17555,7 @@ package body Gnat2Why.Expr is
                   Expr := New_Record_Attributes_Update
                     (Domain   => Domain,
                      Name     => Expr,
-                     Ty       => Retysp (Etype (Component)));
+                     Ty       => Etype (Component));
                end if;
 
                if Ekind (Component) = E_Discriminant then

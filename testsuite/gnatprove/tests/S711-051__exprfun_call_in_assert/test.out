@@ -1,7 +1,4 @@
 test.adb:10:38: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test.adb:12:22: info: assertion proved (CVC4: 1 VC)
-test.adb:13:22: info: assertion proved (CVC4: 1 VC)
-test.adb:18:04: warning: analyzing unreferenced procedure "Verify_Destination_2"
-test.adb:20:38: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-test.adb:21:22: medium: assertion might fail, cannot prove Context.Elements (Destination)'Constrained
+test.adb:13:22: medium: assertion might fail, cannot prove Context_Field (Context) = Destination (e.g. when Context = (Field => Destination, Elements => (Destination => (State => Valid), others => (State => Valid))))
 test.ads:14:14: info: postcondition proved (CVC4: 1 VC)
