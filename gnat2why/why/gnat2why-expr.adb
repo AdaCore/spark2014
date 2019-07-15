@@ -13881,47 +13881,45 @@ package body Gnat2Why.Expr is
                   end if;
                end New_Short_Circuit_Expr;
 
+               Left : constant W_Expr_Id :=
+                 Transform_Expr (Left_Opnd (Expr),
+                                 EW_Bool_Type,
+                                 Domain,
+                                 Local_Params);
+               Right : W_Expr_Id;
+
             --  Start of processing for Short_Circuit
 
             begin
                Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+
                if Present (Actions (Expr)) then
                   Transform_Actions_Preparation (Actions (Expr));
                end if;
 
-               declare
-                  Left : constant W_Expr_Id :=
-                    Transform_Expr (Left_Opnd (Expr),
-                                    EW_Bool_Type,
-                                    Domain,
-                                    Local_Params);
-                  Right : W_Expr_Id :=
-                    Transform_Expr (Right_Opnd (Expr),
-                                    EW_Bool_Type,
-                                    Domain,
-                                    Local_Params);
-               begin
-                  --  Possibly warn on an unreachable right branch
+               Right := Transform_Expr (Right_Opnd (Expr),
+                                        EW_Bool_Type,
+                                        Domain,
+                                        Local_Params);
 
-                  if Domain = EW_Prog then
-                     Right :=
-                       Warn_On_Dead_Branch (Right_Opnd (Expr), Right,
-                                            Local_Params.Phase);
-                  end if;
+               --  Possibly warn on an unreachable right branch
 
-                  T :=
-                    New_Short_Circuit_Expr
-                      (Left   => Left,
-                       Right  => Right,
-                       Domain => Domain);
-               end;
+               if Domain = EW_Prog then
+                  Right :=
+                    Warn_On_Dead_Branch (Right_Opnd (Expr), Right,
+                                         Local_Params.Phase);
+               end if;
 
                if Present (Actions (Expr)) then
-                  T := Transform_Actions (Actions (Expr),
-                                          T,
-                                          Domain,
-                                          Local_Params);
+                  Right := Transform_Actions (Actions (Expr),
+                                              Right,
+                                              Domain,
+                                              Local_Params);
                end if;
+
+               T := New_Short_Circuit_Expr (Left   => Left,
+                                            Right  => Right,
+                                            Domain => Domain);
 
                Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
             end Short_Circuit;
