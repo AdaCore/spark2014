@@ -51,7 +51,7 @@ package body Why.Gen.Progs is
          Reason,
          True,
          Current_Subp,
-         No_Session_File,
+         No_Session_Dir,
          How_Proved => PC_Interval);
    end Emit_Always_True_Range_Check;
 

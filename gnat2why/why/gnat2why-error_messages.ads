@@ -79,7 +79,7 @@ package Gnat2Why.Error_Messages is
       Kind       : VC_Kind;
       Proved     : Boolean;
       E          : Entity_Id;
-      SF_Id      : Session_File_Base_ID;
+      SD_Id      : Session_Dir_Base_ID;
       How_Proved : Prover_Category;
       Extra_Msg  : String := "";
       Tracefile  : String := "";

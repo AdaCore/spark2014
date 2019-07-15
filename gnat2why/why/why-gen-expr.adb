@@ -3282,7 +3282,7 @@ package body Why.Gen.Expr is
             Reason,
             True,
             Current_Subp,
-            No_Session_File,
+            No_Session_Dir,
             How_Proved => PC_Codepeer);
          Labels.Insert (GP_Already_Proved);
       end if;

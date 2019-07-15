@@ -16542,7 +16542,7 @@ package body Gnat2Why.Expr is
                                      Kind       => Reason,
                                      E          => Current_Subp,
                                      Proved     => Proved,
-                                     SF_Id      => No_Session_File,
+                                     SD_Id      => No_Session_Dir,
                                      How_Proved => PC_Prover);
                   return +Void;
                else

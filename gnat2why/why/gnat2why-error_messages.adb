@@ -295,7 +295,7 @@ package body Gnat2Why.Error_Messages is
       Kind       : VC_Kind;
       Proved     : Boolean;
       E          : Entity_Id;
-      SF_Id      : Session_File_Base_ID;
+      SD_Id      : Session_Dir_Base_ID;
       How_Proved : Prover_Category;
       Extra_Msg  : String := "";
       Tracefile  : String := "";
@@ -420,7 +420,7 @@ package body Gnat2Why.Error_Messages is
             Editor_Cmd  => Editor_Cmd,
             Stats       => Stats,
             How_Proved  => How_Proved,
-            SF_Id       => SF_Id,
+            SD_Id       => SD_Id,
             E           => E);
       end;
    end Emit_Proof_Result;
@@ -746,9 +746,9 @@ package body Gnat2Why.Error_Messages is
                                         return Why3_Prove_Result;
       --  Parse the JSON produced for Why3 for a single Why3 result record.
 
-      procedure Handle_Result (V : JSON_Value; SF_Id : Session_File_Base_ID);
-      --  Parse a single result entry. The entry comes from the session file
-      --  identified by [SF_Id].
+      procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID);
+      --  Parse a single result entry. The entry comes from the session dir
+      --  identified by [SD_Id].
 
       procedure Handle_Error (Msg : String; Internal : Boolean) with No_Return;
       procedure Handle_Timings (V : JSON_Value);
@@ -781,7 +781,7 @@ package body Gnat2Why.Error_Messages is
       -- Handle_Result --
       -------------------
 
-      procedure Handle_Result (V : JSON_Value; SF_Id : Session_File_Base_ID) is
+      procedure Handle_Result (V : JSON_Value; SD_Id : Session_Dir_Base_ID) is
          Rec : constant Why3_Prove_Result := Parse_Why3_Prove_Result (V);
          VC  : VC_Info renames VC_Table (Rec.Id);
          Extra_Text : constant String :=
@@ -808,7 +808,7 @@ package body Gnat2Why.Error_Messages is
             Kind        => Rec.Kind,
             Proved      => Rec.Result,
             E           => VC.Entity,
-            SF_Id       => SF_Id,
+            SD_Id       => SD_Id,
             How_Proved  => PC_Prover,
             Tracefile   => To_String (Rec.Tracefile),
             Cntexmp     => Rec.Cntexmp,
@@ -897,7 +897,7 @@ package body Gnat2Why.Error_Messages is
       declare
          File    : constant JSON_Value := Read (S, "");
          Results : constant JSON_Array := Get (Get (File, "results"));
-         SF_Id   : Session_File_Base_ID := 0;
+         SD_Id   : Session_Dir_Base_ID := 0;
       begin
          if Has_Field (File, "error") then
             declare
@@ -909,14 +909,14 @@ package body Gnat2Why.Error_Messages is
                Handle_Error (Msg, Internal);
             end;
          end if;
-         if Has_Field (File, "session_file") then
-            SF_Id := Register_Session_File (Get (Get (File, "session_file")));
+         if Has_Field (File, "session_dir") then
+            SD_Id := Register_Session_Dir (Get (Get (File, "session_dir")));
          end if;
          if Has_Field (File, "timings") then
             Handle_Timings (Get (File, "timings"));
          end if;
          for Index in 1 .. Length (Results) loop
-            Handle_Result (Get (Results, Index), SF_Id);
+            Handle_Result (Get (Results, Index), SD_Id);
          end loop;
          if Has_Field (File, "warnings") then
             declare
