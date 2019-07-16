@@ -1363,9 +1363,6 @@ package body Flow.Analysis is
                   --  of constants in wrapper packages of generic subprograms.
                   --  ??? maybe we want a separate check for them.
                   null;
-               elsif Atr.Mode = Mode_Proof then
-                  --  Proof_Ins are never ineffective imports, for now
-                  null;
                elsif Atr.Is_Global then
                   if FA.Kind = Kind_Subprogram
                     and then not FA.Is_Generative
