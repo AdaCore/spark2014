@@ -1293,25 +1293,20 @@ package body Flow.Control_Flow_Graph is
       procedure Process (F : Flow_Id) is
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
 
-         PM : constant Param_Mode :=
-           (if Ekind (Get_Direct_Mapping_Id (F)) = E_Discriminant
-            then Mode_In
-            else M);
-
          F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
          F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
 
          Initial_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (F_Ent => F_Initial,
-              Mode  => PM,
+              Mode  => M,
               E_Loc => E,
               S     => Scop);
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (F_Ent => F_Final,
-              Mode  => PM,
+              Mode  => M,
               E_Loc => E);
 
       begin
