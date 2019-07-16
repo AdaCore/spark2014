@@ -891,7 +891,7 @@ package body Flow.Analysis is
          begin
             if F_Final.Variant = Final_Value
               and then A_Final.Is_Export
-              and then F_Final.Kind /= Synthetic_Null_Export
+              and then not Synthetic (F_Final)
             then
 
                --  We have a final use vertex which is an export that has
@@ -1155,7 +1155,7 @@ package body Flow.Analysis is
                Suppressed.Union (To_Entire_Variables (Atr.Variables_Read));
 
                if Var.Variant = Initial_Value
-                 and then Var.Kind /= Synthetic_Null_Export
+                 and then not Synthetic (Var)
                then
                   declare
                      Entire_Var : constant Flow_Id :=
