@@ -595,10 +595,6 @@ package Flow_Types is
       Is_Global                    : Boolean;
       --  True if the imported or exported variable is a global
 
-      Is_Loop_Parameter            : Boolean;
-      --  True for loop parameters so they can be ignored in ineffective-import
-      --  analysis.
-
       Is_Import                    : Boolean;
       --  True if the given initial value is a parameter or global of the
       --  analysed subprogram.
@@ -704,7 +700,6 @@ package Flow_Types is
                    Is_Initialized                  => False,
                    Is_Function_Return              => False,
                    Is_Global                       => False,
-                   Is_Loop_Parameter               => False,
                    Is_Import                       => False,
                    Is_Export                       => False,
                    Mode                            => Mode_Invalid,
