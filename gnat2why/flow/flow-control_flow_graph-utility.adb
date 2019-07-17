@@ -532,10 +532,7 @@ package body Flow.Control_Flow_Graph.Utility is
             --    * concurrent types (since they are implicit formal
             --      parameters), they components, discriminants and Part_Ofs
             A.Is_Import :=
-              Ekind (Entire_Var) in E_In_Out_Parameter
-                                  | E_In_Parameter
-                                  | E_Protected_Type
-                                  | E_Task_Type;
+              A.Mode in Mode_In | Mode_In_Out;
 
             if Is_Discriminant (F_Ent)
               or else Is_Bound (F_Ent)
