@@ -23,7 +23,6 @@
 
 with Flow_Utility;           use Flow_Utility;
 with Sem_Aux;                use Sem_Aux;
-with Sem_Type;               use Sem_Type;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Flow.Control_Flow_Graph.Utility is
@@ -531,15 +530,12 @@ package body Flow.Control_Flow_Graph.Utility is
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
             --    * concurrent types (since they are implicit formal
-            --      parameters)
-            --    * components of protected objects
-            --    * parts of task objects that are initialized
+            --      parameters), they components, discriminants and Part_Ofs
             A.Is_Import :=
-              Ekind (Entire_Var) in E_In_Out_Parameter |
-                                    E_In_Parameter     |
-                                    E_Protected_Type   |
-                                    E_Task_Type
-              or else In_Generic_Actual (Entire_Var);
+              Ekind (Entire_Var) in E_In_Out_Parameter
+                                  | E_In_Parameter
+                                  | E_Protected_Type
+                                  | E_Task_Type;
 
             if Is_Discriminant (F_Ent)
               or else Is_Bound (F_Ent)
