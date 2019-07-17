@@ -566,17 +566,8 @@ package body Flow.Control_Flow_Graph.Utility is
                                                           (F_Ent, Normal_Use));
 
          when Final_Value =>
-            --  Is_Export is True for:
-            --    * formal "in" and "in out" parameters
-            --    * function results
-            --    * exported modes (modes "in", "out" and "in out")
-            --  Array bounds are not exported.
             A.Is_Export :=
-              (Ekind (Entire_Var) in E_In_Out_Parameter
-                                   | E_Out_Parameter
-                                   | E_Function
-                 or else
-               A.Mode in Exported_Global_Modes)
+              A.Mode in Exported_Global_Modes
               and then not Is_Bound (F_Ent);
 
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
