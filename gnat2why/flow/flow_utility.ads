@@ -128,10 +128,10 @@ is
    --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) in E_Entry     |
-                                     E_Function  |
-                                     E_Procedure |
-                                     E_Task_Type;
+   with Pre => Ekind (Subprogram) in E_Entry
+                                   | E_Function
+                                   | E_Procedure
+                                   | E_Task_Type;
    --  Return true if the given subprogram has been annotated with a dependency
    --  relation.
 
@@ -142,10 +142,10 @@ is
       Depends              : out Dependency_Maps.Map;
       Use_Computed_Globals : Boolean := True;
       Callsite             : Node_Id := Empty)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type
                   and then Has_Depends (Subprogram),
         Post => (for all Inputs of Depends =>
                    (for all Input of Inputs => Present (Input)));
@@ -172,16 +172,16 @@ is
    --  globals phase. It prevents us from attempting to use generated globals
    --  before they have actually been produced.
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Scope                  : Flow_Scope;
-                          Classwide              : Boolean;
-                          Globals                : out Global_Flow_Ids;
-                          Use_Deduced_Globals    : Boolean := True;
-                          Ignore_Depends         : Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type
+   procedure Get_Globals (Subprogram          : Entity_Id;
+                          Scope               : Flow_Scope;
+                          Classwide           : Boolean;
+                          Globals             : out Global_Flow_Ids;
+                          Use_Deduced_Globals : Boolean := True;
+                          Ignore_Depends      : Boolean := False)
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type
                 and then not Is_Derived_Type (Subprogram)
                 and then (if Ekind (Subprogram) = E_Procedure
                           then not Is_DIC_Procedure (Subprogram)

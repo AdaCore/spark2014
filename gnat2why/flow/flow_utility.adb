@@ -1427,12 +1427,12 @@ package body Flow_Utility is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Scope                  : Flow_Scope;
-                          Classwide              : Boolean;
-                          Globals                : out Global_Flow_Ids;
-                          Use_Deduced_Globals    : Boolean := True;
-                          Ignore_Depends         : Boolean := False)
+   procedure Get_Globals (Subprogram          : Entity_Id;
+                          Scope               : Flow_Scope;
+                          Classwide           : Boolean;
+                          Globals             : out Global_Flow_Ids;
+                          Use_Deduced_Globals : Boolean := True;
+                          Ignore_Depends      : Boolean := False)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
