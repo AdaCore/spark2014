@@ -2521,10 +2521,9 @@ package body Flow_Generated_Globals.Phase_2 is
       end Resolve_Globals;
 
       --  Now that the Globals Graph has been generated we set GG_Generated to
-      --  True. Notice that we set GG_Generated to True before we remove edges
-      --  leading to constants without variable input. The reasoning behind
-      --  this is to use the generated globals instead of the computed globals
-      --  when we call Get_Globals from within Has_Variable_Input.
+      --  True. We do this before we remove edges leading to constants without
+      --  variable input. It is to use the generated globals when we call
+      --  Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
 
       --  Put tasking-related information back to the bag

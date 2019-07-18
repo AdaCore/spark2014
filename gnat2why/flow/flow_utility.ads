@@ -194,10 +194,9 @@ is
                    Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is
-   --  given). If the Global and Depends aspects are not present then use the
-   --  generated globals or finally, if non of the above exist fall back to
-   --  the computed globals. The sets returned will contain Flow_Id with the
-   --  variant set to In_View and Out_View.
+   --  given). If the Global and Depends aspects are not present then use
+   --  the generated globals. The sets returned will contain Flow_Id with
+   --  the variant set to In_View and Out_View.
    --
    --  This query is meaningless for derived task types (whose entities are
    --  also of an E_Task_Type kind), because derived types cannot be annotated
