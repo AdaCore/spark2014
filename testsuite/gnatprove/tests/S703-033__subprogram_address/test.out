@@ -1,0 +1,3 @@
+a.adb:5:38: attribute "Address" outside an attribute definition clause is not allowed in SPARK
+a.adb:5:38: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof
