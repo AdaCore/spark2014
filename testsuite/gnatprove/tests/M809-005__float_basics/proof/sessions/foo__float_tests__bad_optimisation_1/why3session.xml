@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="altergo" version="1.30-gnatprove" timelimit="120" steplimit="10000" memlimit="0"/>
+<prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
+<prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="foo__float_tests__bad_optimisation_1.mlw"/>
+<theory name="Foo__float_tests__bad_optimisation_1__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="precondition">
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="1591861"/></proof>
+  <proof prover="2"><result status="unknown" steps="4409"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition">
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450088"/></proof>
+  <proof prover="2"><result status="unknown" steps="6859"/></proof>
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition">
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450096"/></proof>
+  <proof prover="2"><result status="unknown" steps="15716"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.7" expl="postcondition">
+  <proof prover="0"><result status="failure"/></proof>
+  <proof prover="1"><result status="unknown" steps="8450088"/></proof>
+  <proof prover="2"><result status="unknown" steps="8987"/></proof>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

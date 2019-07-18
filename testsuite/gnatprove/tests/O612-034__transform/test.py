@@ -6,7 +6,7 @@ import time
 # This test tests the capacity of gnatprove to follow transformations that
 # have been inserted into the Why3 session
 
-session_file = os.path.join('gnatprove', 'test', 'why3session.xml')
+session_file = os.path.join('gnatprove', 'test__p', 'why3session.xml')
 
 def print_session_proofs():
     with open(session_file) as f:

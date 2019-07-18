@@ -44,4 +44,4 @@ counterexample expected for check at enums.adb:67
   trace at enums.adb:66 --> A = Elem_7
   trace at enums.adb:67 --> A = Elem_7
   trace at enums.adb:81 --> R = True
-  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True and R = True
+  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True

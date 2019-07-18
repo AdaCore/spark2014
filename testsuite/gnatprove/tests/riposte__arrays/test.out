@@ -97,4 +97,4 @@ counterexample expected for check at arrays.adb:199
   trace at arrays.adb:203 --> X = 'NUL'
   trace at arrays.adb:204 --> R = ('NUL' => False, 'SOH' => False, others => True)
 [PREVIOUS]  trace at arrays.adb:206 --> R = ('SOH' => True, others => False) and X = 'LC_Y_Diaeresis'
-  trace at arrays.adb:209 --> R = ('SOH' => True, others => False) and Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
+  trace at arrays.adb:209 --> Single_Char_Set_Broken'Result = ('SOH' => True, others => False)
