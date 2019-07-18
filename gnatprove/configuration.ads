@@ -178,6 +178,7 @@ package Configuration is
    CodePeer       : Boolean;
    Counterexample : Boolean;
    Debug          : Boolean;
+   GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
    Only_Given     : Boolean;
    Parallel       : Integer;

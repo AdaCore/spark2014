@@ -117,10 +117,10 @@ package body Configuration is
    procedure Set_CodePeer_Mode (Input : String);
    --  Parse the --codepeer option (possibilities are "on" and "off")
 
-   procedure Check_gnateT_Switch;
-   --  Do the actual check and issue warning for the check mentioned in
-   --  Set_Target_Dir: if -gnateT is not set in
-   --  Builder.Global_Configuration_Switches.
+   function Check_gnateT_Switch (Tree : Project_Tree) return String;
+   --  Try to compute the gnateT switch to be used for gnat2why. If there is
+   --  a target and runtime set, but we can't compute the switch, a warning
+   --  is issued.
 
    procedure Check_File_Part_Of_Project (Tree : Project_Tree;
                                          Fn   : String);
@@ -240,15 +240,14 @@ package body Configuration is
    -- Check_gnateT_Switch --
    -------------------------
 
-   procedure Check_gnateT_Switch is
+   function Check_gnateT_Switch (Tree : Project_Tree) return String is
    begin
-      if Prj_Attr.Target.all /= ""
-        or else CL_Switches.Target.all /= ""
+      if not Tree.Root_Project.Target_Same_As_Host
+        and then
+          (Prj_Attr.Target.all /= "" or else CL_Switches.Target.all /= "")
       then
 
-         --  We check the conditions for *not* issuing the warning, in which
-         --  case we return. At the end of the procedure, the warning is issued
-         --  unconditionally.
+         --  User has already set the attribute, don't try anything smart
 
          if Prj_Attr.Builder.Global_Compilation_Switches_Ada /= null
            and then
@@ -256,8 +255,31 @@ package body Configuration is
                 Prj_Attr.Builder.Global_Compilation_Switches_Ada.all =>
                   GNATCOLL.Utils.Starts_With (Switch.all, "-gnateT="))
          then
-            return;
+            return "";
          end if;
+
+         declare
+            Att    : constant Attribute_Pkg_String :=
+              Build ("", "runtime_dir");
+            RT_Dir : constant String :=
+              Tree.Root_Project.Attribute_Value (Att, "ada");
+         begin
+            if RT_Dir /= "" then
+               declare
+                  Targ_Prop_File : constant String :=
+                    Compose (RT_Dir, "ada_target_properties");
+               begin
+                  if Exists (Targ_Prop_File) then
+                     return "-gnateT=" & Targ_Prop_File;
+                  end if;
+               end;
+            end if;
+         end;
+
+         --  If we reached here, there *should* be a target properties
+         --  file, but we can't find it and the user didn't add one. Print
+         --  a warning.
+
          Put_Line
            (Standard_Error,
             "warning: attribute ""Target"" of your project file is " &
@@ -267,6 +289,7 @@ package body Configuration is
             "warning: to specify target properties, specify option " &
               """-gnateT"" using ""Builder.Global_Compilation_Switches""");
       end if;
+      return "";
    end Check_gnateT_Switch;
 
    --------------
@@ -552,6 +575,14 @@ package body Configuration is
             "-P:");
          Define_Switch
            (Config,
+            CL_Switches.Target'Access,
+            Long_Switch => "--target=");
+         Define_Switch
+           (Config,
+            CL_Switches.RTS'Access,
+            Long_Switch => "--RTS=");
+         Define_Switch
+           (Config,
             CL_Switches.Subdirs'Access,
             Long_Switch => "--subdirs=");
          Define_Switch
@@ -708,16 +739,8 @@ package body Configuration is
             Long_Switch => "--report=");
          Define_Switch
            (Config,
-            CL_Switches.RTS'Access,
-            Long_Switch => "--RTS=");
-         Define_Switch
-           (Config,
             CL_Switches.Subdirs'Access,
             Long_Switch => "--subdirs=");
-         Define_Switch
-           (Config,
-            CL_Switches.Target'Access,
-            Long_Switch => "--target=");
          Define_Switch
            (Config,
             CL_Switches.U'Access,
@@ -1198,6 +1221,17 @@ package body Configuration is
          end;
 
          declare
+            Targ : constant String :=
+              (if CL_Switches.Target /= null then CL_Switches.Target.all
+               else "");
+            RTS : constant String :=
+              (if CL_Switches.RTS /= null then CL_Switches.RTS.all else "");
+         begin
+            Set_Target_And_Runtime
+              (Proj_Env.all, Targ, RTS);
+         end;
+         Set_Automatic_Config_File (Proj_Env.all);
+         declare
             Arr  : constant File_Array := Proj_Env.Predefined_Project_Path;
             Arr2 : File_Array
               (1 .. Integer (CL_Switches.GPR_Project_Path.Length));
@@ -1335,7 +1369,7 @@ package body Configuration is
          Process_Limit_Switches;
 
          Set_CodePeer_Mode (CL_Switches.CodePeer.all);
-         Check_gnateT_Switch;
+         GnateT_Switch := new String'(Check_gnateT_Switch (Tree));
          Set_Mode;
          Set_Warning_Mode;
          Set_Report_Mode;

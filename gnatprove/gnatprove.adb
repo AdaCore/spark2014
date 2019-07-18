@@ -262,6 +262,12 @@ procedure Gnatprove with SPARK_Mode is
 
       Args.Append ("-gnates=" & Opt_File);
 
+      if GnateT_Switch /= null
+        and then GnateT_Switch.all /= ""
+      then
+         Args.Append (Configuration.GnateT_Switch.all);
+      end if;
+
       Call_With_Status
         (Command   => "gprbuild",
          Arguments => Args,
