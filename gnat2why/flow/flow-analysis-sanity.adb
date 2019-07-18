@@ -1008,21 +1008,32 @@ package body Flow.Analysis.Sanity is
                Traverse_Declarations_And_HSS (Subp_Body);
 
                --  If this is a user defined equality on a record type, then it
-               --  cannot have variable inputs.
+               --  shall have a Global aspect of null.
 
                if Is_User_Defined_Equality (FA.Spec_Entity) then
                   declare
                      Typ : constant Entity_Id :=
                        Get_Full_Type_Without_Checking
                          (First_Formal (FA.Spec_Entity));
-
+                     Globals : Global_Flow_Ids;
                   begin
                      if Is_Record_Type (Typ) then
-                        Detect_Variable_Inputs
-                          (N        => Get_Expr_From_Return_Only_Func
-                                         (FA.Spec_Entity),
-                           Err_Desc => "user-defined equality",
-                           Err_Node => FA.Spec_Entity);
+                        Get_Globals (Subprogram => FA.Spec_Entity,
+                                     Scope      => FA.S_Scope,
+                                     Classwide  => False,
+                                     Globals    => Globals);
+
+                        if not (Globals.Proof_Ins.Is_Empty and then
+                                Globals.Inputs.Is_Empty)
+                        then
+                           Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      => "user-defined equality shall " &
+                                   "have a Global aspect of null",
+                                 SRM_Ref  => "6.6(1)",
+                                 N        => FA.Spec_Entity,
+                                 Severity => Error_Kind);
+                        end if;
                      end if;
                   end;
                end if;
