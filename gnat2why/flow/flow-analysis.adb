@@ -854,12 +854,40 @@ package body Flow.Analysis is
       --  ??? would be better to have those symmetric, but even better, we
       --  should reuse more code with Find_Ineffective_Imports_...
 
+      function Is_In_Access_Parameter (E : Entity_Id) return Boolean;
+      --  Returns True iff E is a formal parameter of mode IN with a named
+      --  access type. Such parameters appear as exports (except if they are
+      --  access-to-constant) and they can be written, but they are typically
+      --  used without being written and then we suppress the warning.
+
       function Is_Or_Belongs_To_Concurrent_Object
         (F : Flow_Id)
          return Boolean
       with Pre => F.Kind in Direct_Mapping | Record_Field;
       --  @param F is the Flow_Id that we want to check
       --  @return True iff F is or belongs to a concurrent object
+
+      ----------------------------
+      -- Is_In_Access_Parameter --
+      ----------------------------
+
+      function Is_In_Access_Parameter (E : Entity_Id) return Boolean is
+      begin
+         if Ekind (E) = E_In_Parameter then
+            declare
+               Typ : constant Entity_Id := Get_Type (E, FA.B_Scope);
+
+            begin
+               --  Access constant types never appear as exports
+               pragma Assert (not Is_Access_Constant (Typ));
+
+               return Is_Access_Type (Typ)
+                 and then not Is_Anonymous_Access_Type (Typ);
+            end;
+         else
+            return False;
+         end if;
+      end Is_In_Access_Parameter;
 
       ----------------------------------------
       -- Is_Or_Belongs_To_Concurrent_Object --
@@ -988,6 +1016,9 @@ package body Flow.Analysis is
                            Is_Or_Belongs_To_Concurrent_Object (F_Final)
                              or else
                            Is_Param_Of_Null_Subp_Of_Generic
+                             (Get_Direct_Mapping_Id (F_Final))
+                             or else
+                           Is_In_Access_Parameter
                              (Get_Direct_Mapping_Id (F_Final)))
                then
                   null;

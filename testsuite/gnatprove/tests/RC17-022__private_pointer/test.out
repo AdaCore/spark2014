@@ -10,7 +10,6 @@ private_pointer.ads:9:17: info: postcondition proved (CVC4: 1 VC)
 private_pointer.ads:10:16: warning: volatile function "Init_Alloc" has no volatile effects
 private_pointer.ads:11:17: info: postcondition proved (CVC4: 2 VC)
 private_pointer.ads:11:53: info: precondition proved (CVC4: 1 VC)
-private_pointer.ads:12:17: warning: subprogram "Set" has no effect
 private_pointer.ads:14:17: info: postcondition proved (altergo: 1 VC)
 private_pointer.ads:14:17: info: precondition proved (CVC4: 1 VC)
 private_pointer.ads:16:56: info: range check proved (CVC4: 1 VC)

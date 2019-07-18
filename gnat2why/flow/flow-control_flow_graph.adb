@@ -1242,10 +1242,17 @@ package body Flow.Control_Flow_Graph is
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs)
    is
+      Typ : constant Entity_Id := Get_Type (E, FA.B_Scope);
+
       M : constant Param_Mode :=
         (case Ekind (E) is
+            --  Formal parameters of mode IN with a non-constant access type
+            --  can be assigned, so we handle them very much like IN OUTs.
             when E_In_Parameter =>
-               Mode_In,
+               (if Is_Access_Type (Typ)
+                  and then not Is_Access_Constant (Typ)
+                then Mode_In_Out
+                else Mode_In),
 
             when E_In_Out_Parameter
                | E_Task_Type
