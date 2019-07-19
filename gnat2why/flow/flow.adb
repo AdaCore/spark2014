@@ -525,10 +525,9 @@ package body Flow is
             pragma Assert (A.Variables_Defined.Length = 1);
 
             declare
-               Var_Def : Flow_Id;
+               Var_Def : Flow_Id renames
+                 A.Variables_Defined (A.Variables_Defined.First);
             begin
-               Var_Def := A.Variables_Defined (A.Variables_Defined.First);
-
                Write_Str (Flow_Id_To_String (Var_Def));
                Write_Str (" => ");
             end;

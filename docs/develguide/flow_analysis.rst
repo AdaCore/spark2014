@@ -359,3 +359,32 @@ employed. Neither I try to reimplement or reuse the Boost and LEDA algorithms.
 
 To summarize: we seem to have an O(|E|*|V|) implementation that is on par with
 the state-of-the art libraries and so far it is good enough for us.
+
+Renamings of controlled objects
+*******************************
+
+In flow analysis we often use renamings like this:
+
+   Var_Def : Flow_Id renames
+      A.Variables_Defined (A.Variables_Defined.First);
+
+which might seem minor, but actually is meant to avoid genuine performance
+bottlenecks that happened with explicit copies like this:
+
+   Var_Def : constant Flow_Id :=
+      A.Variables_Defined (A.Variables_Defined.First);
+
+The issue is that objects like Flow_Id and even more flow vertex attributes
+(i.e. elements of the "FA.Atr" map) tend to be "big", i.e. they are records
+with container components. Unsurprisingly, local copies of such objects are
+expensive.
+
+When written as renaming the code is actually expanded into something like:
+
+   Tmp : constant Container_Instance_Package.Reference :=
+      Container_Instance_Package.Element (...);
+
+where the Reference_Type is ultimately a pointer and is very cheap. This type
+is declared with Implicit_Dereference aspect, which allows GNAT to magically
+use it where an element type would be needed. We could explicitly use this
+type in flow, but that would be quite verbose; renamings seem much better.
