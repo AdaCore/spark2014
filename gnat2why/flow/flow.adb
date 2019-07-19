@@ -555,6 +555,9 @@ package body Flow is
                Get_Name_String
                  (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
 
+         elsif A.Pretty_Print_Kind = Pretty_Print_Borrow then
+            Write_Str ("borrow");
+
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
 

@@ -1,25 +1,16 @@
-array_borrows.adb:9:39: warning: unused initial value of "J"
 array_borrows.adb:10:06: info: data dependencies proved
-array_borrows.adb:10:27: warning: "X" is not modified, could be INPUT
 array_borrows.adb:12:16: medium: postcondition might fail, cannot prove X (True).all = I
 array_borrows.adb:12:25: info: pointer dereference check proved (CVC4: 1 VC)
-array_borrows.adb:14:07: warning: initialization of "Y" has no effect
 array_borrows.adb:16:09: medium: pointer dereference check might fail
-array_borrows.adb:16:13: warning: unused assignment
 array_borrows.adb:23:23: info: assertion proved (CVC4: 1 VC)
 array_borrows.adb:23:25: info: pointer dereference check proved (CVC4: 1 VC)
 array_borrows.adb:25:20: info: assertion proved (CVC4: 1 VC)
 array_borrows.adb:25:29: info: pointer dereference check proved (CVC4: 1 VC)
 flow_borrows.adb:12:06: info: data dependencies proved
-flow_borrows.adb:12:27: warning: "X" is not modified, could be INPUT
 flow_borrows.adb:14:16: info: postcondition proved (CVC4: 1 VC)
 flow_borrows.adb:14:20: info: pointer dereference check proved (CVC4: 1 VC)
-flow_borrows.adb:16:07: warning: initialization of "Y" has no effect
-flow_borrows.adb:17:07: warning: initialization of "Z" has no effect
 flow_borrows.adb:19:09: info: pointer dereference check proved (CVC4: 1 VC)
-flow_borrows.adb:19:13: warning: unused assignment
 flow_borrows.adb:20:09: medium: pointer dereference check might fail
-flow_borrows.adb:20:13: warning: unused assignment
 flow_borrows.adb:27:22: info: assertion proved (CVC4: 1 VC)
 flow_borrows.adb:27:24: info: pointer dereference check proved (CVC4: 1 VC)
 flow_borrows.adb:29:19: info: assertion proved (CVC4: 1 VC)

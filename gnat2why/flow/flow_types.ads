@@ -542,7 +542,8 @@ package Flow_Types is
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field,
-                                Pretty_Print_Entry_Barrier);
+                                Pretty_Print_Entry_Barrier,
+                                Pretty_Print_Borrow);
 
    type V_Attributes is record
       Is_Null_Node                 : Boolean;

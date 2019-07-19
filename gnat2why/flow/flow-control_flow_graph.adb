@@ -357,6 +357,9 @@ package body Flow.Control_Flow_Graph is
       Folded_Function_Checks : Node_Lists.List;
       --  Nodes we need to separately check for uninitialized variables due to
       --  function folding.
+
+      Borrowers              : Node_Lists.List;
+      --  Stack of object declarations for local borrowers
    end record;
 
    No_Context : constant Context :=
@@ -364,7 +367,8 @@ package body Flow.Control_Flow_Graph is
               Active_Loop            => Empty,
               Termination_Proved     => False,
               Entry_References       => Node_Graphs.Empty_Map,
-              Folded_Function_Checks => Node_Lists.Empty_List);
+              Folded_Function_Checks => Node_Lists.Empty_List,
+              Borrowers              => Node_Lists.Empty_List);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -3836,6 +3840,18 @@ package body Flow.Control_Flow_Graph is
                   V);
                Inits.Append (V);
 
+               --  If this object is a local borrower, then put its declaration
+               --  on the stack. We only need this for assignments whose RHS
+               --  doesn't need to be split, because local borrowers are always
+               --  of an access type and thus in flow they are represented as
+               --  single "blobs".
+
+               if Is_Anonymous_Access_Type (Get_Type (E, FA.B_Scope))
+                 and then not Is_Access_Constant (Get_Type (E, FA.B_Scope))
+               then
+                  Ctx.Borrowers.Append (N);
+               end if;
+
             end if;
 
             Ctx.Folded_Function_Checks.Append (Expr);
@@ -4733,6 +4749,11 @@ package body Flow.Control_Flow_Graph is
       Block : Graph_Connections;
       Decls : constant List_Id := Declarations (N);
       HSS   : constant Node_Id := Handled_Statement_Sequence (N);
+
+      Borrowers_Marker : constant Ada.Containers.Count_Type :=
+        Ctx.Borrowers.Length;
+      --  Record current position of the borrows stack
+
    begin
       if Present (Decls) then
          Process_Statement_List (Decls, FA, CM, Ctx);
@@ -4794,6 +4815,67 @@ package body Flow.Control_Flow_Graph is
             Block.Standard_Exits.Insert (V);
          end;
       end if;
+
+      --  When borrowers go out of scope, we pop them from the stack and assign
+      --  back to the borrowed objects. This way we keep track of anything that
+      --  happened while they were borrowed.
+
+      while Ctx.Borrowers.Length > Borrowers_Marker loop
+         declare
+            Decl : constant Node_Id := Ctx.Borrowers.Last_Element;
+            Expr : constant Node_Id := Expression (Decl);
+
+            Borrower : constant Flow_Id :=
+              Direct_Mapping_Id (Defining_Identifier (Decl));
+
+            Borrowed : Flow_Id;
+            --  The root of the borrowed object
+            --  ??? we get the latter by misusing a routine for analysing the
+            --  LHS of an assignment statement, but it works well and is better
+            --  than duplicating its code.
+
+            Partial_Definition : Boolean;
+            View_Conversion    : Boolean;
+            Seq                : Node_Lists.List;
+            --  Unused parameters
+
+            V : Flow_Graphs.Vertex_Id;
+
+         begin
+            --  If the RHS is a function call, it must be a traversal function
+            --  and then the borrowed object its first actual. Otherwise, the
+            --  borrowed object is the RHS itself.
+            --  ??? This code doesn't work for chained traversal functions,
+            --  e.g. "Traversal_Func1 (Traversal_Func2 (Obj))". We should be
+            --  reusing some utility routine from the borrow checker.
+            Get_Assignment_Target_Properties
+              (N                  => (if Nkind (Expr) = N_Function_Call
+                                      then First_Actual (Expr)
+                                      else Expr),
+               Partial_Definition => Partial_Definition,
+               View_Conversion    => View_Conversion,
+               Map_Root           => Borrowed,
+               Seq                => Seq);
+
+            --  Add vertex for assigning the borrower back to the borrowed
+            --  object and connect it with the graph.
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Def    => Flow_Id_Sets.To_Set (Borrowed),
+                  Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
+                  Loops      => Ctx.Current_Loops,
+                  Print_Hint => Pretty_Print_Borrow,
+                  E_Loc      => N),
+               V);
+
+            Linkup (FA, Block.Standard_Exits, V);
+            Block.Standard_Exits := Vertex_Sets.To_Set (V);
+
+            Ctx.Borrowers.Delete_Last;
+         end;
+      end loop;
 
       CM.Insert (Union_Id (N), Block);
    end Do_Subprogram_Or_Block;
