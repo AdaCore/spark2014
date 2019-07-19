@@ -506,7 +506,7 @@ package body SPARK_Util.Subprograms is
       Arg    : Node_Id;
 
    begin
-      --  If there is no associated body, return Empty.
+      --  If there is no associated body, return Empty
 
       if No (Body_N) then
          return Empty;
@@ -527,7 +527,7 @@ package body SPARK_Util.Subprograms is
             pragma Assert (Present (Arg));
             Arg := Next (Arg);
             pragma Assert (Present (Arg));
-            return (Get_Pragma_Arg (Arg));
+            return Get_Pragma_Arg (Arg);
          end if;
 
          Next (Stmt);
@@ -547,12 +547,6 @@ package body SPARK_Util.Subprograms is
       Stmt   : Node_Id;
 
    begin
-      --  If there is no associated body, return Empty.
-
-      if No (Body_N) then
-         return Empty;
-      end if;
-
       Stmt := First (Statements (Handled_Statement_Sequence (Body_N)));
 
       while Present (Stmt) loop

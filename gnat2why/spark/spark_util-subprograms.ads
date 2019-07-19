@@ -249,22 +249,20 @@ package SPARK_Util.Subprograms is
    --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Ekind (E) = E_Procedure;
-   --  @param E procedure
+   with Pre => Is_DIC_Procedure (E) or else Is_Invariant_Procedure (E);
+   --  @param E a Default_Initial_Condition or Type_Invariant procedure
    --  @return the expression in the first pragma Check found in the body of E,
    --     if any, or Empty otherwise
-   --  Extract a condition being checked from a procedure intended to check
-   --  this condition. This is used to extract the condition checked for aspect
-   --  Default_Initialization and Type_Invariant.
+   --  Extract a condition checked for aspect Default_Initialization and
+   --  Type_Invariant.
 
    function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
-   with Pre => Ekind (E) = E_Function;
-   --  @param E function
+   with Pre => Is_Predicate_Function (E);
+   --  @param E a predicate function
    --  @return the expression in the first return statement found in the body
    --     of E, if any, or Empty otherwise
-   --  Extract a condition being checked from a procedure intended to test
-   --  this condition. This is used to extract the condition checked for aspect
-   --  Dynamic_Predicate.
+   --  Extract a condition checked by a function generated for aspect
+   --  [Dynamic_]Predicate.
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    with Pre => Ekind (E) in Protected_Kind |
