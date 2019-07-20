@@ -138,6 +138,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
+      First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
       Last_Inv           : Node_Id := Empty)
       return W_Prog_Id;
@@ -163,6 +164,11 @@ package body Gnat2Why.Expr.Loops is
    --  value of the loop variant expressions to these temporary variables.
    --  Variant_Check checks both the absence of run-time errors in the loop
    --  variant, and that the loop variant makes progress.
+   --
+   --  First_Stmt is the first statement in the loop body, to help decide
+   --  whether to issue a dead code warning. Similarly, Next_Stmt is the first
+   --  statement after the loop, to help decide whether to issue a dead code
+   --  warning if control cannot reach that point.
    --
    --  See comments in Wrap_Loop's body for the actual transformation
 
@@ -609,6 +615,7 @@ package body Gnat2Why.Expr.Loops is
                               Variant_Tmps       => Variant_Tmps,
                               Variant_Update     => Variant_Update,
                               Variant_Check      => Variant_Check,
+                              First_Stmt         => Loop_Stmts.First_Element,
                               Next_Stmt          => Next_Stmt,
                               Last_Inv           =>
                                 (if Loop_Invariants.Is_Empty then Empty
@@ -662,6 +669,8 @@ package body Gnat2Why.Expr.Loops is
                                  Variant_Tmps       => Variant_Tmps,
                                  Variant_Update     => Variant_Update,
                                  Variant_Check      => Variant_Check,
+                                 First_Stmt         =>
+                                   Loop_Stmts.First_Element,
                                  Next_Stmt          => Next_Stmt,
                                  Last_Inv           =>
                                    (if Loop_Invariants.Is_Empty then Empty
@@ -1329,6 +1338,7 @@ package body Gnat2Why.Expr.Loops is
                                Variant_Update     => Variant_Update,
                                Variant_Check      => Variant_Check,
                                Update_Stmt        => Update_Stmt,
+                               First_Stmt         => Loop_Stmts.First_Element,
                                Next_Stmt          => Next_Stmt,
                                Last_Inv           =>
                                  (if Loop_Invariants.Is_Empty then Empty
@@ -1804,6 +1814,7 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
+      First_Stmt         : Node_Id;
       Next_Stmt          : Node_Id := Empty;
       Last_Inv           : Node_Id := Empty)
       return W_Prog_Id
@@ -1904,31 +1915,15 @@ package body Gnat2Why.Expr.Loops is
          Handler => (1 => New_Handler (Name => Loop_Ident,
                                        Def  => +Void)));
 
-      if Present (Next_Stmt)
-        --  Do not issue a check for dead code if switch --proof-warnings is
-        --  not set
-        and then Gnat2Why_Args.Proof_Warnings
-        --  or if warnings are suppressed
-        and then Opt.Warning_Mode /= Opt.Suppress
-        --  or when the next statement if an inconditional error, signaled as
-        --  either a raise statement or a pragma Assert (False).
-        and then not Is_Error_Signaling_Statement (Next_Stmt)
-      then
-         Warn_Dead_Code :=
-           +New_VC_Expr
-             (Ada_Node => Next_Stmt,
-              Expr     => +New_Identifier (Name => "absurd"),
-              Reason   => VC_Dead_Code,
-              Domain   => EW_Prog);
+      --  Possibly warn on dead code, both when entering the loop and after the
+      --  loop.
 
+      Loop_Try :=
+        Warn_On_Dead_Code (First_Stmt, Loop_Try, Generate_VCs_For_Body);
+
+      if Present (Next_Stmt) then
          Warn_Dead_Code :=
-           Sequence
-             (New_Comment
-                (Comment => NID ("Check dead code after loop"
-                 & (if Sloc (Next_Stmt) > 0 then
-                      " at " & Build_Location_String (Sloc (Next_Stmt))
-                   else ""))),
-              New_Ignore (Prog => Warn_Dead_Code));
+           Warn_On_Dead_Code (Next_Stmt, +Void, Generate_VCs_For_Body);
       end if;
 
       return

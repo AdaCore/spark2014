@@ -1539,6 +1539,9 @@ package body SPARK_Util is
          when N_Procedure_Call_Statement =>
             return Is_Error_Signaling_Procedure (Get_Called_Entity (N));
 
+         when N_Call_Marker =>
+            return Is_Error_Signaling_Statement (Next (N));
+
          when others =>
             return False;
       end case;

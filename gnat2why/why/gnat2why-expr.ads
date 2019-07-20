@@ -533,8 +533,14 @@ package Gnat2Why.Expr is
       W     : W_Expr_Id;
       Phase : Transformation_Phase) return W_Expr_Id;
    --  In cases where we want to detect unreachable branches, wrap program
-   --  expression W with a warning by proof on branch reachability. Otherwise
-   --  simply return W (which may or not be a program in that case).
+   --  expression W with a warning by proof on reachability. Otherwise simply
+   --  return W (which may or not be a program in that case).
+
+   function Warn_On_Dead_Code
+     (N     : Node_Id;
+      W     : W_Prog_Id;
+      Phase : Transformation_Phase) return W_Prog_Id;
+   --  Same as Warn_On_Dead_Branch except for dead code
 
    function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id;
    --  In cases where we want to detect inconsistent pragma Assume, attempt to

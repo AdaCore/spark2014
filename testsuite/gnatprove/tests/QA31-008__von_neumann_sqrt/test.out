@@ -7,6 +7,9 @@ p.adb:23:40: info: overflow check proved (CVC4: 2 VC)
 p.adb:24:40: medium: overflow check might fail
 p.adb:27:36: info: division check proved (CVC4: 1 VC)
 p.adb:28:21: info: overflow check proved (CVC4: 1 VC)
+p.adb:29:13: warning: unreachable code (CVC4: 1 VC)
+p.adb:31:13: warning: unreachable code (CVC4: 1 VC)
+p.adb:34:14: warning: unreachable code (CVC4: 1 VC)
 p.adb:64:07: info: initialization of "UX" proved
 p.adb:64:11: info: initialization of "M" proved
 p.adb:64:14: info: initialization of "Y" proved

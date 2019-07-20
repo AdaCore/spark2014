@@ -67,6 +67,7 @@ patris.adb:280:07: info: initialization of "Success" proved
 patris.adb:290:10: info: precondition proved (CVC4: 2 VC)
 patris.adb:294:13: info: precondition proved (CVC4: 2 VC)
 patris.adb:295:13: info: precondition proved (CVC4: 2 VC)
+patris.adb:306:13: warning: unreachable code (CVC4: 1 VC)
 patris.adb:306:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:323:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:408:07: info: initialization of "Success" proved

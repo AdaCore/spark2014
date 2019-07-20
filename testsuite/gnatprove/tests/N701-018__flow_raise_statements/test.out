@@ -1,8 +1,12 @@
 raise_statements.adb:5:17: info: overflow check proved (CVC4: 1 VC)
+raise_statements.adb:23:10: warning: unreachable code (CVC4: 1 VC)
 raise_statements.adb:24:10: info: assertion proved (CVC4: 1 VC)
+raise_statements.adb:28:10: warning: unreachable code (CVC4: 1 VC)
 raise_statements.adb:29:10: info: raise statement proved unreachable (CVC4: 1 VC)
 raise_statements.adb:32:23: medium: overflow check might fail [possible explanation: precondition of subprogram at raise_statements.ads:14 should mention Par1]
 raise_statements.adb:32:30: info: overflow check proved (CVC4: 1 VC)
+raise_statements.adb:55:13: warning: unreachable code (CVC4: 1 VC)
+raise_statements.adb:56:13: warning: unreachable code (CVC4: 1 VC)
 raise_statements.adb:58:10: info: assertion proved (CVC4: 1 VC)
 raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"

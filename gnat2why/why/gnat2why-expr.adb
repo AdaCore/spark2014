@@ -518,6 +518,21 @@ package body Gnat2Why.Expr is
    --  @return the translation of the expression contained in the invariant
    --          applied on Expr.
 
+   procedure Warn_On_Dead_Branch_Condition_Update
+     (Cond    : Node_Id;
+      Do_Warn : in out Boolean);
+   --  Set the condition Do_Warn to False if the Boolean expression Cond is
+   --  statically True or False, or it contains a sub-expression X'Valid. As
+   --  validity is assumed to be always True in GNATprove, we don't want to
+   --  report a spurious warning in that case.
+
+   function Warn_On_Dead_Branch_Or_Code
+     (N      : Node_Id;
+      W      : W_Expr_Id;
+      Branch : Boolean;
+      Phase  : Transformation_Phase) return W_Expr_Id;
+   --  Shared functionality for warning on dead branch or dead code.
+
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
       Selector : Selection_Kind := Why.Inter.Standard) return Boolean;
@@ -1822,7 +1837,14 @@ package body Gnat2Why.Expr is
 
             when N_Case_Statement_Alternative =>
                --  ??? Maybe we should merge the code for statements?
-               return +Transform_Statements_And_Declarations (Statements (N));
+               T := +Transform_Statements_And_Declarations (Statements (N));
+
+               --  Possibly warn on dead code
+
+               T :=
+                 +Warn_On_Dead_Code (First (Statements (N)), +T, Params.Phase);
+
+               return T;
 
             when others =>
                raise Unexpected_Node;
@@ -18095,23 +18117,63 @@ package body Gnat2Why.Expr is
          when N_If_Statement =>
             declare
                Then_Part : constant List_Id := Then_Statements (Stmt_Or_Decl);
-               Then_Stmt : constant W_Prog_Id :=
+               Then_Stmt : W_Prog_Id :=
                  Transform_Statements_And_Declarations (Then_Part);
                Else_Part : constant List_Id := Else_Statements (Stmt_Or_Decl);
                Else_Stmt : W_Prog_Id :=
                  Transform_Statements_And_Declarations (Else_Part);
+
+               Do_Warn_On_Dead_Branch : Boolean := True;
+               --  Whether we should warn on dead branches. This may be set
+               --  to False is we encounter a test for X'Valid.
+
             begin
+               --  Possibly warn on dead code
+
+               Warn_On_Dead_Branch_Condition_Update (Condition (Stmt_Or_Decl),
+                                                     Do_Warn_On_Dead_Branch);
+               if Do_Warn_On_Dead_Branch then
+                  Then_Stmt :=
+                    +Warn_On_Dead_Code (First (Then_Part),
+                                        +Then_Stmt,
+                                        Generate_VCs_For_Body);
+
+                  if List_Length (Else_Part) > 0 then
+                     Else_Stmt :=
+                       +Warn_On_Dead_Code (First (Else_Part),
+                                           +Else_Stmt,
+                                           Generate_VCs_For_Body);
+                  end if;
+               end if;
+
                if Present (Elsif_Parts (Stmt_Or_Decl)) then
                   declare
-                     Cur : Node_Id := Last (Elsif_Parts (Stmt_Or_Decl));
+                     Cur      : Node_Id := Last (Elsif_Parts (Stmt_Or_Decl));
+                     Cur_Stmt : W_Prog_Id;
                   begin
-
                      --  Beginning from the tail that consists of the
                      --  translation of the Else part, possibly a no-op,
                      --  translate the list of elsif parts into a chain of
                      --  if-then-else Why expressions.
 
                      while Present (Cur) loop
+                        Cur_Stmt :=
+                          Transform_Statements_And_Declarations
+                            (Then_Statements (Cur));
+
+                        --  Possibly warn on an unreachable case branch
+
+                        Warn_On_Dead_Branch_Condition_Update
+                          (Condition (Cur),
+                           Do_Warn_On_Dead_Branch);
+                        if Do_Warn_On_Dead_Branch then
+                           Cur_Stmt :=
+                             +Warn_On_Dead_Code
+                               (First (Then_Statements (Cur)),
+                                +Cur_Stmt,
+                                Generate_VCs_For_Body);
+                        end if;
+
                         Else_Stmt :=
                           New_Label
                             (Labels =>
@@ -18126,9 +18188,7 @@ package body Gnat2Why.Expr is
                                      EW_Bool_Type,
                                      EW_Prog,
                                      Params => Body_Params)),
-                                Then_Part =>
-                                  +Transform_Statements_And_Declarations
-                                    (Then_Statements (Cur)),
+                                Then_Part => +Cur_Stmt,
                                 Else_Part => +Else_Stmt,
                                 Domain    => EW_Prog),
                                 Typ       => EW_Unit_Type);
@@ -18943,10 +19003,18 @@ package body Gnat2Why.Expr is
       W     : W_Expr_Id;
       Phase : Transformation_Phase) return W_Expr_Id
    is
-      Enclosing_Subp : constant Entity_Id :=
-        Unique_Entity
-          (Lib.Xref.SPARK_Specific.
-             Enclosing_Subprogram_Or_Library_Package (N));
+      (Warn_On_Dead_Branch_Or_Code (N, W, Branch => True, Phase => Phase));
+
+   ---------------------------------
+   -- Warn_On_Dead_Branch_Or_Code --
+   ---------------------------------
+
+   function Warn_On_Dead_Branch_Or_Code
+     (N      : Node_Id;
+      W      : W_Expr_Id;
+      Branch : Boolean;
+      Phase  : Transformation_Phase) return W_Expr_Id
+   is
       Stmt : W_Prog_Id;
 
    begin
@@ -18957,21 +19025,18 @@ package body Gnat2Why.Expr is
         and then Opt.Warning_Mode /= Opt.Suppress
         --  and a warning can be issued on that node
         and then May_Issue_Warning_On_Node (N)
-        --  and the phase corresponds to generating VCs in assertions
-        and then
-          (Phase in Generate_VCs_For_Assertion
-            --  with a special case for predicate expressions, which
-            --  are checked for RTE as part of the translation of a
-            --  compiler-generated predicate function.
-            or else (Phase = Generate_VCs_For_Body
-                      and then Is_Subprogram (Enclosing_Subp)
-                      and then Is_Predicate_Function (Enclosing_Subp)))
+        --  and the phase corresponds to generating VCs
+        and then Phase in Generate_VCs
+        --  and when the next statement if not an inconditional error, signaled
+        --  typically as a raise statement or a pragma Assert (False).
+        and then not Is_Error_Signaling_Statement (N)
       then
          Stmt :=
            New_Located_Assert
              (Ada_Node => N,
               Pred     => False_Pred,
-              Reason   => VC_Unreachable_Branch,
+              Reason   =>
+                (if Branch then VC_Unreachable_Branch else VC_Dead_Code),
               Kind     => EW_Check);
 
          return
@@ -18986,7 +19051,42 @@ package body Gnat2Why.Expr is
       else
          return W;
       end if;
-   end Warn_On_Dead_Branch;
+   end Warn_On_Dead_Branch_Or_Code;
+
+   -----------------------
+   -- Warn_On_Dead_Code --
+   -----------------------
+
+   function Warn_On_Dead_Code
+     (N     : Node_Id;
+      W     : W_Prog_Id;
+      Phase : Transformation_Phase) return W_Prog_Id
+   is
+      (+Warn_On_Dead_Branch_Or_Code (N, +W, Branch => False, Phase => Phase));
+
+   ------------------------------------------
+   -- Warn_On_Dead_Branch_Condition_Update --
+   ------------------------------------------
+
+   procedure Warn_On_Dead_Branch_Condition_Update
+     (Cond    : Node_Id;
+      Do_Warn : in out Boolean)
+   is
+   begin
+      Do_Warn := Do_Warn
+
+        --  A condition statically True or False means that the branch being
+        --  dead is not a useful warning.
+
+        and then not
+          (Is_Entity_Name (Cond)
+             and then Present (Entity (Cond))
+             and then Entity (Cond) in Standard_True | Standard_False)
+
+        --  Similarly for a condition that contains X'Valid
+
+        and then not Expression_Contains_Valid_Or_Valid_Scalars (Cond);
+   end Warn_On_Dead_Branch_Condition_Update;
 
    ---------------------------------
    -- Warn_On_Inconsistent_Assume --

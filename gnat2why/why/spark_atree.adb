@@ -372,6 +372,48 @@ package body SPARK_Atree is
       return Search_Attrs (Expr) = Atree.Abandon;
    end Expression_Contains_Old_Or_Loop_Entry;
 
+   ------------------------------------------------
+   -- Expression_Contains_Valid_Or_Valid_Scalars --
+   ------------------------------------------------
+
+   function Expression_Contains_Valid_Or_Valid_Scalars
+     (Expr : Node_Id) return Boolean
+   is
+      use type Atree.Traverse_Result;
+
+      function Search_Valid_Or_Valid_Scalars
+        (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for attribute Valid or Valid_Scalars
+
+      -----------------------------------
+      -- Search_Valid_Or_Valid_Scalars --
+      -----------------------------------
+
+      function Search_Valid_Or_Valid_Scalars
+        (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (N))
+             in Attribute_Valid | Attribute_Valid_Scalars
+         then
+            --  There is no need to continue the traversal, as one such
+            --  attribute suffices.
+
+            return Atree.Abandon;
+         end if;
+
+         return Atree.OK;
+      end Search_Valid_Or_Valid_Scalars;
+
+      function Search_Attrs is new
+        Sem_Util.Traverse_More_Func (Search_Valid_Or_Valid_Scalars);
+
+   --  Start of processing for Expression_Contains_Valid_Or_Valid_Scalars
+
+   begin
+      return Search_Attrs (Expr) = Atree.Abandon;
+   end Expression_Contains_Valid_Or_Valid_Scalars;
+
    -----------------
    -- Expressions --
    -----------------
