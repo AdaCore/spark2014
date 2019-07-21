@@ -1,0 +1,2 @@
+sem_cat.adb:18:09: too complex actions inserted in expression
+gnatprove: error during flow analysis and proof
