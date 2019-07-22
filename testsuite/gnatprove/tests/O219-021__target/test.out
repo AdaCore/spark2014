@@ -3,6 +3,8 @@ gnatprove: Could not locate exec arm-eabi-gnatls
 gnatprove: error during generation of Global contracts
 gprbuild: *** compilation phase failed
 gprconfig: can't find a toolchain for the following configuration:
+gprconfig: can't find a toolchain for the following configuration:
+gprconfig: language 'ada', target 'arm-eabi', default runtime
 gprconfig: language 'ada', target 'arm-eabi', default runtime
 warning: attribute "Target" of your project file is only used to determine runtime library
 warning: to specify target properties, specify option "-gnateT" using "Builder.Global_Compilation_Switches"
