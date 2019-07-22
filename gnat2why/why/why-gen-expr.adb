@@ -2140,7 +2140,7 @@ package body Why.Gen.Expr is
    begin
       if Is_Scalar_Type (Typ) then
          declare
-            BT       : constant W_Type_Id := Base_Why_Type (Why_Type);
+            BT       : constant W_Type_Id := Base_Why_Type_No_Bool (Why_Type);
             Left_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
