@@ -1272,15 +1272,15 @@ package body Flow is
       -----------------------------
 
       procedure Build_Graphs_For_Entity (E : Entity_Id) is
-
          Graph_Start : Entity_Id := Empty;
          --  Graph entry point, if any
+
       begin
          for Child of Scope_Map (E) loop
             Build_Graphs_For_Entity (Child);
          end loop;
 
-         case Ekind (E) is
+         case Container_Scope'(Ekind (E)) is
             when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
                --  Only analyse if requested, body is in SPARK and is annotated
                --  with SPARK_Mode => On.
@@ -1310,9 +1310,6 @@ package body Flow is
 
             when E_Protected_Type =>
                --   ??? perhaps we should do something, but now we don't
-               null;
-
-            when others =>
                null;
          end case;
 
@@ -1346,7 +1343,6 @@ package body Flow is
       Success : Boolean;
 
    begin
-
       --  Check that classwide contracts conform to the legality rules laid
       --  out in SRM 6.1.6.
       Success := True;
