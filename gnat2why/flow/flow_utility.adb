@@ -2363,7 +2363,7 @@ package body Flow_Utility is
          is
             May_Use_Extensions : constant Boolean :=
               Has_Extensions_Visible (Subprogram) or else
-              Ekind (Get_Type (Formal, Ctx.Scope)) in Class_Wide_Kind;
+              Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope));
             --  True if we have the aspect set (so we know the subprogram might
             --  convert to a classwide type), or we're dealing with a classwide
             --  type directly (since that may or may not have extensions).
@@ -5175,7 +5175,7 @@ package body Flow_Utility is
                T_To   : constant Entity_Id := Get_Type (N, Scope);
 
                --  To_Class_Wide : constant Boolean :=
-               --    Ekind (T_To) in Class_Wide_Kind;
+               --    Is_Class_Wide_Type (T_To);
 
                Class_Wide_Conversion : constant Boolean :=
                  not Is_Class_Wide_Type (T_From)
@@ -5496,7 +5496,7 @@ package body Flow_Utility is
                            elsif F.Kind = Direct_Mapping then
                               case F.Facet is
                                  when Extension_Part =>
-                                    if Ekind (New_Typ) in Class_Wide_Kind then
+                                    if Is_Class_Wide_Type (New_Typ) then
                                        Vars_Defined.Include (F);
                                     end if;
                                  when others =>
@@ -5555,7 +5555,7 @@ package body Flow_Utility is
       end loop;
 
       if Nkind (N) = N_Type_Conversion
-        and then Ekind (Etype (N)) in Class_Wide_Kind
+        and then Is_Class_Wide_Type (Etype (N))
         and then Extensions_Visible (Base_Node, Scope)
       then
          Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));
