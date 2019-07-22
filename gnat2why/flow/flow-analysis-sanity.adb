@@ -820,20 +820,21 @@ package body Flow.Analysis.Sanity is
 
                      when N_Full_Type_Declaration =>
                         declare
-                           Typ : constant Entity_Id := Defining_Identifier (N);
-
                            Typ_Def : constant Node_Id := Type_Definition (N);
 
                            Optional_Component_List : Node_Id;
 
                         begin
-                           --  Skip discriminants of a completion of a private
-                           --  type, as they have already been checked when the
-                           --  type was declared.
+                           --  We repeat effort here for private and incomplete
+                           --  types, because we traverse discriminants of both
+                           --  the partial declaration and its completion.
+                           --  In the event that both have descriminants, the
+                           --  user will see multiple flow error messages about
+                           --  the same variable input, but this one line of
+                           --  code is easier to maintain rather than
+                           --  code that filters for each corner case.
 
-                           if not Is_Private_Type (Etype (Typ)) then
-                              Traverse_Discriminants (N);
-                           end if;
+                           Traverse_Discriminants (N);
 
                            --  Traverse record components
                            case Nkind (Typ_Def) is

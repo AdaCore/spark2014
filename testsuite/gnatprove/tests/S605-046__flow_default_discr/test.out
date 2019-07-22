@@ -1,0 +1,5 @@
+p.ads:5:27: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+q.ads:3:27: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+q.ads:5:27: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+s.ads:4:27: default initialization cannot depend on variable input "V" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
