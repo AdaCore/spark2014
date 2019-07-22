@@ -1,0 +1,3 @@
+p.adb:6:32: info: data dependencies proved
+p.adb:6:55: low: unused global "PT"
+p.adb:9:28: medium: assertion might fail, cannot prove (Fun)
