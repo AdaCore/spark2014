@@ -2043,7 +2043,6 @@ package body Flow_Utility is
       Scope                   : Flow_Scope;
       Fold_Functions          : Boolean;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean;
       Assume_In_Expression    : Boolean;
       Expand_Internal_Objects : Boolean;
       Consider_Extensions     : Boolean;
@@ -2070,7 +2069,6 @@ package body Flow_Utility is
       Scope                   : Flow_Scope;
       Fold_Functions          : Boolean;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
       Consider_Extensions     : Boolean := False)
@@ -2080,7 +2078,6 @@ package body Flow_Utility is
         (Scope                   => Scope,
          Fold_Functions          => Fold_Functions,
          Use_Computed_Globals    => Use_Computed_Globals,
-         Reduced                 => Reduced,
          Assume_In_Expression    => Assume_In_Expression,
          Expand_Internal_Objects => Expand_Internal_Objects,
          Consider_Extensions     => Consider_Extensions);
@@ -2094,7 +2091,6 @@ package body Flow_Utility is
       Scope                   : Flow_Scope;
       Fold_Functions          : Boolean;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set
@@ -2103,7 +2099,6 @@ package body Flow_Utility is
         (Scope                   => Scope,
          Fold_Functions          => Fold_Functions,
          Use_Computed_Globals    => Use_Computed_Globals,
-         Reduced                 => Reduced,
          Assume_In_Expression    => Assume_In_Expression,
          Expand_Internal_Objects => Expand_Internal_Objects,
          Consider_Extensions     => False);
@@ -2143,8 +2138,7 @@ package body Flow_Utility is
       procedure Merge_Entity (Variables : in out Flow_Id_Sets.Set;
                               E         : Entity_Id)
       with Pre => Nkind (E) in N_Entity;
-      --  Add the given entity to Variables, respecting the Context (in
-      --  particular the flag Reduced).
+      --  Add the given entity to Variables, respecting the Context
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (E) in N_Entity;
@@ -2179,9 +2173,6 @@ package body Flow_Utility is
       --
       --  Scope, Use_Computed_Globals, Expand_Internal_Objects will be passed
       --  on to Get_Variables if necessary.
-      --
-      --  Get_Variables will be called with Reduced set to False (as this
-      --  function should never be called when it's True...).
 
       function Untangle_With_Context (N : Node_Id)
                                       return Flow_Id_Sets.Set
@@ -2259,35 +2250,19 @@ package body Flow_Utility is
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
-         if Ctx.Reduced then
-            if Is_Concurrent_Component_Or_Discr (E) then
-               return
-                 Flow_Id_Sets.To_Set (Direct_Mapping_Id (Scope (E)));
+         if Is_Concurrent_Component_Or_Discr (E) then
+            return Flatten_Variable (Add_Component
+                                     (Direct_Mapping_Id (Scope (E)), E),
+                                     Ctx.Scope);
 
-            elsif Is_Part_Of_Concurrent_Object (E) then
-               return
-                 Flow_Id_Sets.To_Set
-                   (Direct_Mapping_Id (Etype (Encapsulating_State (E))));
+         elsif Is_Part_Of_Concurrent_Object (E) then
+            return Flatten_Variable
+              (Add_Component
+                 (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
+               Ctx.Scope);
 
-            else
-               return
-                 Flow_Id_Sets.To_Set (Direct_Mapping_Id (Unique_Entity (E)));
-            end if;
          else
-            if Is_Concurrent_Component_Or_Discr (E) then
-               return Flatten_Variable (Add_Component
-                                          (Direct_Mapping_Id (Scope (E)), E),
-                                        Ctx.Scope);
-
-            elsif Is_Part_Of_Concurrent_Object (E) then
-               return Flatten_Variable
-                 (Add_Component
-                    (Direct_Mapping_Id (Etype (Encapsulating_State (E))), E),
-                  Ctx.Scope);
-
-            else
-               return Flatten_Variable (E, Ctx.Scope);
-            end if;
+            return Flatten_Variable (E, Ctx.Scope);
          end if;
       end Merge_Entity;
 
@@ -2419,9 +2394,7 @@ package body Flow_Utility is
               or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
             then
                V.Include (Change_Variant (G, Normal_Use));
-               if Extensions_Visible (G, Ctx.Scope)
-                 and then not Ctx.Reduced
-               then
+               if Extensions_Visible (G, Ctx.Scope) then
                   V.Include (Change_Variant (G, Normal_Use)'Update
                                (Facet => Extension_Part));
                end if;
@@ -2434,19 +2407,15 @@ package body Flow_Utility is
 
          --  Finally, expand the collected set (if necessary)
 
-         if Ctx.Reduced then
-            return V;
-         else
-            return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-               for Tmp of V loop
-                  if Tmp.Kind = Record_Field then
-                     R.Include (Tmp);
-                  else
-                     R.Union (Flatten_Variable (Tmp, Ctx.Scope));
-                  end if;
-               end loop;
-            end return;
-         end if;
+         return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
+            for Tmp of V loop
+               if Tmp.Kind = Record_Field then
+                  R.Include (Tmp);
+               else
+                  R.Union (Flatten_Variable (Tmp, Ctx.Scope));
+               end if;
+            end loop;
+         end return;
       end Do_Subprogram_Call;
 
       ---------------
@@ -2541,12 +2510,10 @@ package body Flow_Utility is
                   Vars : Flow_Id_Sets.Set := Merge_Entity (E);
 
                begin
-
                   --  If we've extensions (and we care about them) then we need
                   --  to add them now.
 
-                  if not Ctx.Reduced
-                    and then Ctx.Consider_Extensions
+                  if Ctx.Consider_Extensions
                     and then Extensions_Visible (E, Ctx.Scope)
                   then
                      Vars.Include
@@ -2610,7 +2577,7 @@ package body Flow_Utility is
                | E_Label
                | E_Loop
                | E_Package
-               =>
+            =>
                --  Nothing to do for these directly; we get them while
                --  traversing a list of statements or an identifier.
                null;
@@ -2690,15 +2657,11 @@ package body Flow_Utility is
                --  anyway.
 
                return
-                 (if Ctx.Reduced
-                  then Flow_Id_Sets.To_Set
-                    (Direct_Mapping_Id (Entity (Prefix (N))))
-                  else Flatten_Variable (Entity (Prefix (N)), Ctx.Scope));
+                 Flatten_Variable (Entity (Prefix (N)), Ctx.Scope);
 
             when Attribute_Update =>
-               if Ctx.Reduced or else Is_Tagged_Type (Get_Type (N, Ctx.Scope))
-               then
-                  --  !!! Precise analysis is disabled for tagged types, so we
+               if Is_Tagged_Type (Get_Type (N, Ctx.Scope)) then
+                  --  ??? Precise analysis is disabled for tagged types, so we
                   --      just do the usual instead.
                   null;
 
@@ -2707,27 +2670,22 @@ package body Flow_Utility is
                end if;
 
             when Attribute_Constrained =>
-               if not Ctx.Reduced then
-                  for F of Recurse (Prefix (N)) loop
-                     if F.Kind in Direct_Mapping | Record_Field
-                       and then F.Facet = Normal_Part
-                       and then Has_Bounds (F, Ctx.Scope)
-                     then
-                        --  This is not a bound variable, but it requires
-                        --  bounds tracking. We make it a bound variable.
-                        Variables.Include
-                          (F'Update (Facet => The_Bounds));
+               for F of Recurse (Prefix (N)) loop
+                  if F.Kind in Direct_Mapping | Record_Field
+                    and then F.Facet = Normal_Part
+                    and then Has_Bounds (F, Ctx.Scope)
+                  then
+                     --  This is not a bound variable, but it requires
+                     --  bounds tracking. We make it a bound variable.
+                     Variables.Include
+                       (F'Update (Facet => The_Bounds));
 
-                     elsif Is_Discriminant (F) then
-                        Variables.Include (F);
+                  elsif Is_Discriminant (F) then
+                     Variables.Include (F);
 
-                     end if;
-                  end loop;
-                  return Variables;
-               else
-                  null;
-                  --  Otherwise, we do the usual
-               end if;
+                  end if;
+               end loop;
+               return Variables;
 
             when Attribute_First
                | Attribute_Last
@@ -2782,33 +2740,26 @@ package body Flow_Utility is
                      end if;
 
                   else
-                     if Ctx.Reduced then
-                        --  ??? The "Reduced" mode is only used for more
-                        --  precise slocs in flow error messages. We don't
-                        --  care, instead let's focus on removing this mode.
-                        null;
-                     else
-                        for F of Recurse (Prefix (N)) loop
-                           if F.Kind in Direct_Mapping | Record_Field
-                             and then F.Facet = Normal_Part
-                             and then Has_Bounds (F, Ctx.Scope)
-                           then
-                              --  This is not a bound variable, but it requires
-                              --  bounds tracking. We make it a bound variable.
+                     for F of Recurse (Prefix (N)) loop
+                        if F.Kind in Direct_Mapping | Record_Field
+                          and then F.Facet = Normal_Part
+                          and then Has_Bounds (F, Ctx.Scope)
+                        then
+                           --  This is not a bound variable, but it requires
+                           --  bounds tracking. We make it a bound variable.
 
-                              --  ??? we should only do this if the immediate
-                              --  prefix denotes an object (e.g. "Obj'Length"
-                              --  but not "Func (Obj)'Length").
+                           --  ??? we should only do this if the immediate
+                           --  prefix denotes an object (e.g. "Obj'Length"
+                           --  but not "Func (Obj)'Length").
 
-                              Variables.Include
-                                (F'Update (Facet => The_Bounds));
+                           Variables.Include
+                             (F'Update (Facet => The_Bounds));
 
-                           else
-                              --  This is something else, we just copy it
-                              Variables.Include (F);
-                           end if;
-                        end loop;
-                     end if;
+                        else
+                           --  This is something else, we just copy it
+                           Variables.Include (F);
+                        end if;
+                     end loop;
                   end if;
                end;
                return Variables;
@@ -2895,7 +2846,6 @@ package body Flow_Utility is
               Scope                   => Scope,
               Fold_Functions          => Fold_Functions,
               Use_Computed_Globals    => Use_Computed_Globals,
-              Reduced                 => False,
               Expand_Internal_Objects => Expand_Internal_Objects));
 
          M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
@@ -3405,21 +3355,13 @@ package body Flow_Utility is
 
                   Variables.Union (Recurse (Prefix (N)));
 
-               elsif Ctx.Reduced then
-                  --  In reduced mode we just keep traversing the tree, but we
-                  --  need to turn off consider_extensions.
-                  Variables.Union (Recurse (Prefix (N)));
-
                else
                   Variables.Union (Untangle_With_Context (N));
                end if;
                return Skip;
 
             when N_Type_Conversion =>
-               if Ctx.Reduced then
-                  return OK;
-
-               elsif Is_Record_Type (Get_Type (N, Ctx.Scope)) then
+               if Is_Record_Type (Get_Type (N, Ctx.Scope)) then
                   --  We use Untangle_Record_Assignment as this can deal with
                   --  view conversions.
 
@@ -3660,7 +3602,6 @@ package body Flow_Utility is
         (Scope                   => Get_Flow_Scope (Scope_N),
          Fold_Functions          => False,
          Use_Computed_Globals    => True,
-         Reduced                 => False,
          Assume_In_Expression    => True,
          Expand_Internal_Objects => False,
          Consider_Extensions     => False);
@@ -4566,7 +4507,6 @@ package body Flow_Utility is
              Scope                   => Scope,
              Fold_Functions          => Fold_Functions,
              Use_Computed_Globals    => Use_Computed_Globals,
-             Reduced                 => False,
              Expand_Internal_Objects => Expand_Internal_Objects))
       with Pre => Nkind (N) in N_Subexpr;
       --  Helpful wrapper for calling Get_Variables
@@ -5163,8 +5103,7 @@ package body Flow_Utility is
             (N,
              Scope                => Scope,
              Fold_Functions       => Fold,
-             Use_Computed_Globals => Use_Computed_Globals,
-             Reduced              => False));
+             Use_Computed_Globals => Use_Computed_Globals));
 
       Unused                   : Boolean;
       Base_Node                : Flow_Id;

@@ -261,15 +261,11 @@ package Flow_Utility is
       Scope                   : Flow_Scope;
       Fold_Functions          : Boolean;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
       Consider_Extensions     : Boolean := False)
       return Flow_Id_Sets.Set
-   with Pre  => (if Fold_Functions then Assume_In_Expression),
-        Post => (if Reduced
-                 then (for all F of Get_Variables'Result
-                         => Is_Entire_Variable (F)));
+   with Pre => (if Fold_Functions then Assume_In_Expression);
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --
@@ -283,8 +279,6 @@ package Flow_Utility is
    --  The following other options all have default parameters as they are only
    --  useful in certain usage scenarios. In the majority of flow analysis, one
    --  does not have to think about them. They are:
-   --
-   --     * Reduced: if True, obtain only entire variables
    --
    --     * Assume_In_Expression: if True, we assume that node N is part of
    --       some kind of expression, and aggressively raise exceptions if we
@@ -300,7 +294,6 @@ package Flow_Utility is
       Scope                   : Flow_Scope;
       Fold_Functions          : Boolean;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set;
@@ -465,9 +458,6 @@ package Flow_Utility is
    --
    --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
    --  Expand_Internal_Objects will be passed on to Get_Variables if necessary.
-   --
-   --  Get_Variables will be called with Reduced set to False (as this function
-   --  should never be called when its True...).
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;

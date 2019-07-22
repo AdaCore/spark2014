@@ -362,18 +362,25 @@ package body Flow.Analysis is
                        | N_Identifier
                        | N_Selected_Component
          then
-            if Get_Variables (N,
-                              Scope                => Scope,
-                              Reduced              => not Precise,
-                              Assume_In_Expression => False,
-                              Fold_Functions       => False,
-                              Use_Computed_Globals => True).Contains (Var_Tgt)
-            then
-               First_Use := N;
-               return OK;
-            else
-               return Skip;
-            end if;
+            declare
+               Expr_Vars : constant Flow_Id_Sets.Set :=
+                 Get_Variables (N,
+                                Scope                => Scope,
+                                Assume_In_Expression => False,
+                                Fold_Functions       => False,
+                                Use_Computed_Globals => True);
+
+            begin
+               if (if Precise
+                   then Expr_Vars.Contains (Var_Tgt)
+                   else To_Entire_Variables (Expr_Vars).Contains (Var_Tgt))
+               then
+                  First_Use := N;
+                  return OK;
+               else
+                  return Skip;
+               end if;
+            end;
 
          --  Calling Get_Variables can be very slow. Let's only do it on nodes
          --  that actually make sense to flag up in an check/info message from
