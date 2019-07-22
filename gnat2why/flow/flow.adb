@@ -1345,7 +1345,7 @@ package body Flow is
    begin
       --  Check that classwide contracts conform to the legality rules laid
       --  out in SRM 6.1.6.
-      Success := True;
+
       for E of Entities_To_Translate loop
          if Is_Subprogram (E)
            and then SPARK_Util.Subprograms.Analysis_Requested
