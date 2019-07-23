@@ -944,6 +944,7 @@ package body Gnat2Why.Driver is
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.
       Translated_Object_Names.Clear;
+      Translated_Object_Names.Reserve_Capacity (0);
    end Translate_CUnit;
 
    ----------------------

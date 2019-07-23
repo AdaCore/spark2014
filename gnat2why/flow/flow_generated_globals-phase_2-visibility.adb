@@ -389,6 +389,7 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
 
       --  Release memory to the provers
       Hierarchy_Info.Clear;
+      Hierarchy_Info.Reserve_Capacity (0);
 
       --  Sanity check: all vertices should be now connected to Standard
 
