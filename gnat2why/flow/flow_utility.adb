@@ -2437,9 +2437,16 @@ package body Flow_Utility is
          end if;
 
          --  Apply sanity check for functions
+         --  ??? we should not emit errors from an utility routine like this,
+         --  but otherwise we would need:
+         --  * an exact Node_Id of the call in the flow graph (for
+         --    subprograms in the current unit whose bodies are in SPARK)
+         --  * an extra sanity-check for contracts of subprograms from other
+         --    units or whose bodies are not in SPARK
 
          if Nkind (Callsite) = N_Function_Call
            and then not Globals.Outputs.Is_Empty
+           and then not Gnat2Why_Args.Global_Gen_Mode
          then
             Error_Msg_NE
               (Msg => "side effects of function & are not modeled in SPARK",
@@ -2447,7 +2454,7 @@ package body Flow_Utility is
                E   => Subprogram);
          end if;
 
-         --  Merge globals into the variables used
+         --  Merge global inputs into the variables used
 
          for G of Globals.Inputs loop
             if not Folding
@@ -2460,14 +2467,6 @@ package body Flow_Utility is
                   V.Include (Change_Variant (G, Normal_Use)'Update
                                (Facet => Extension_Part));
                end if;
-            end if;
-         end loop;
-
-         for G of Globals.Outputs loop
-            V.Include (Change_Variant (G, Normal_Use));
-            if Extensions_Visible (G, Ctx.Scope) and then not Ctx.Reduced then
-               V.Include (Change_Variant (G, Normal_Use)'Update
-                            (Facet => Extension_Part));
             end if;
          end loop;
 
