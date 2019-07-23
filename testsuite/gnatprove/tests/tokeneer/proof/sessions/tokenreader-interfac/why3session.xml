@@ -44,7 +44,7 @@
   </goal>
   <goal name="VC def.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="15235"/></proof>
+  <proof prover="1"><result status="unknown" steps="14816"/></proof>
   <proof prover="2"><result status="unknown" steps="150"/></proof>
   <proof prover="3"><result status="unknown" steps="186"/></proof>
   </goal>

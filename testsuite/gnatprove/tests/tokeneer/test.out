@@ -449,6 +449,7 @@ cert-attr.adb:40:09: info: range check proved (CVC4: 1 VC)
 cert-attr.adb:47:10: info: range check proved (CVC4: 4 VC)
 cert-attr.adb:47:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert-attr.adb:47:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+cert-attr.adb:49:10: warning: unreachable code (CVC4: 1 VC)
 cert-attr.adb:49:23: info: range check proved (CVC4: 4 VC)
 cert-id.adb:61:07: info: initialization of "LocalContents" proved
 cert-id.adb:62:07: info: initialization of "Extracted" proved
@@ -469,6 +470,7 @@ cert.adb:65:09: info: range check proved (CVC4: 1 VC)
 cert.adb:71:10: info: range check proved (CVC4: 4 VC)
 cert.adb:71:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 cert.adb:71:46: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+cert.adb:73:10: warning: unreachable code (CVC4: 1 VC)
 cert.adb:73:23: info: range check proved (CVC4: 4 VC)
 cert.adb:108:07: info: initialization of "LocalRawData" proved
 cert.adb:128:07: info: initialization of "LocalSig" proved
@@ -1883,6 +1885,7 @@ userentry.adb:476:15: info: range check proved (CVC4: 1 VC)
 userentry.adb:482:16: info: range check proved (CVC4: 4 VC)
 userentry.adb:482:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 userentry.adb:482:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+userentry.adb:484:16: warning: unreachable code (CVC4: 1 VC)
 userentry.adb:484:26: info: range check proved (CVC4: 4 VC)
 userentry.adb:533:21: info: precondition proved (CVC4: 1 VC)
 userentry.adb:548:21: info: precondition proved (CVC4: 1 VC)

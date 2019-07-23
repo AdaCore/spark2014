@@ -19,9 +19,9 @@
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__init__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Certificatestore__init__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -40,50 +40,113 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.5" expl="precondition" proved="true">
+  <goal name="VC def.5" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="70"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.6" expl="precondition" proved="true">
+  <goal name="VC def.7" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.8" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="70"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.10" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="43"/></proof>
   </goal>
-  <goal name="VC def.7" expl="postcondition" proved="true">
+  <goal name="VC def.11" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="70"/></proof>
+  </goal>
+  <goal name="VC def.12" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.13" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__updatestore__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Certificatestore__updatestore__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="19"/></proof>
+  <goal name="VC def.1" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
   </goal>
-  <goal name="VC def.2" expl="precondition" proved="true">
+  <goal name="VC def.2" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="VC def.3" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
+  <proof prover="0"><result status="valid" steps="19"/></proof>
   </goal>
-  <goal name="VC def.4" expl="precondition" proved="true">
-  <transf name="trivial_true" proved="true" >
-  </transf>
+  <goal name="VC def.4" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
   </goal>
-  <goal name="VC def.5" expl="precondition" proved="true">
+  <goal name="VC def.5" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.7" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="37"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.9" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.10" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="37"/></proof>
+  </goal>
+  <goal name="VC def.11" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.12" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.13" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="40"/></proof>
+  </goal>
+  <goal name="VC def.14" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.15" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.16" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="44"/></proof>
+  </goal>
+  <goal name="VC def.17" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.18" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="55"/></proof>
   </goal>
-  <goal name="VC def.7" expl="postcondition" proved="true">
+  <goal name="VC def.19" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
@@ -139,9 +202,9 @@
  </transf>
  </goal>
 </theory>
-<theory name="Certificatestore__putnextserialnumber__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Certificatestore__putnextserialnumber__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -150,23 +213,44 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.2" expl="precondition" proved="true">
+  <goal name="VC def.2" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.3" expl="precondition" proved="true">
+  <goal name="VC def.4" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.4" expl="precondition" proved="true">
+  <goal name="VC def.6" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.5" expl="precondition" proved="true">
+  <goal name="VC def.7" expl="check">
+  <proof prover="0" timelimit="1"><result status="unknown" steps="22"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.6" expl="postcondition" proved="true">
+  <goal name="VC def.9" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.10" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.11" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.12" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
