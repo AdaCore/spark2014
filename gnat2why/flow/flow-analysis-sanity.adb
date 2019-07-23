@@ -1036,8 +1036,8 @@ package body Flow.Analysis.Sanity is
                if Is_User_Defined_Equality (FA.Spec_Entity) then
                   declare
                      Typ : constant Entity_Id :=
-                       Get_Full_Type_Without_Checking
-                         (First_Formal (FA.Spec_Entity));
+                       Unchecked_Full_Type
+                         (Etype (First_Formal (FA.Spec_Entity)));
                      Globals : Global_Flow_Ids;
                   begin
                      if Is_Record_Type (Typ) then

@@ -292,20 +292,6 @@ package body SPARK_Util.Types is
       return Count;
    end Count_Non_Inherited_Discriminants;
 
-   ------------------------------------
-   -- Get_Full_Type_Without_Checking --
-   ------------------------------------
-
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
-      T : constant Entity_Id := Etype (N);
-   begin
-      if Present (Full_View (T)) then
-         return Full_View (T);
-      else
-         return T;
-      end if;
-   end Get_Full_Type_Without_Checking;
-
    -------------------------------
    -- Get_Initial_DIC_Procedure --
    -------------------------------
@@ -888,6 +874,19 @@ package body SPARK_Util.Types is
          return Empty;
       end if;
    end Task_Body_Entity;
+
+   -------------------------
+   -- Unchecked_Full_Type --
+   -------------------------
+
+   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id is
+   begin
+      if Present (Full_View (E)) then
+         return Full_View (E);
+      else
+         return E;
+      end if;
+   end Unchecked_Full_Type;
 
    ---------------------------------------
    -- Visible_Declarations_Of_Prot_Type --

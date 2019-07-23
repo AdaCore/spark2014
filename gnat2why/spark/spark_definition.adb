@@ -4868,8 +4868,7 @@ package body SPARK_Definition is
                --  Mark the equality function for Component_Typ if it is used
                --  for the predefined equality of E.
 
-               if Is_Record_Type
-                 (Get_Full_Type_Without_Checking (Component_Typ))
+               if Is_Record_Type (Unchecked_Full_Type (Component_Typ))
                  and then Present
                    (Get_User_Defined_Eq (Base_Type (Component_Typ)))
                then
@@ -5039,8 +5038,7 @@ package body SPARK_Definition is
                            --  Mark the equality function for Comp_Type if it
                            --  is used for the predefined equality of E.
 
-                           if Is_Record_Type
-                             (Get_Full_Type_Without_Checking (Comp_Type))
+                           if Is_Record_Type (Unchecked_Full_Type (Comp_Type))
                              and then Present
                                (Get_User_Defined_Eq (Base_Type (Comp_Type)))
                            then

@@ -193,14 +193,11 @@ package SPARK_Util.Types is
    --     which has been marked if any. This is necessary as inherited DIC
    --     procedures may not have a body, or may not be marked.
 
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
-   with Pre  => Present (N),
-        Post => Is_Type (Get_Full_Type_Without_Checking'Result);
-   --  Get the type of the given entity. This function looks through
-   --  private types and should be used with extreme care.
-   --  ??? This function should probably be removed. Its comment says it
-   --  applies to entities, while it may be called from flow on entities or
-   --  nodes of record type.
+   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id
+   with Pre  => Is_Type (E),
+        Post => Is_Type (Unchecked_Full_Type'Result);
+   --  Get the type of the given entity. This function looks through private
+   --  types and should be used with extreme care.
 
    function Get_Iterable_Type_Primitive
      (Typ : Entity_Id;

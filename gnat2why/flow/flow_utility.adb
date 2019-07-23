@@ -2934,7 +2934,7 @@ package body Flow_Utility is
            or else
              (Is_Attribute_Update (Root_Node)
               and then
-              Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
+              Is_Record_Type (Unchecked_Full_Type (Etype (Root_Node))))
            or else
              Is_Ignored_Attribute (Root_Node)
          loop
@@ -2988,7 +2988,7 @@ package body Flow_Utility is
          if not (Nkind (Root_Node) in N_Identifier | N_Expanded_Name
                    and then
                  Is_Record_Type
-                   (Get_Full_Type_Without_Checking (Etype (Root_Node))))
+                   (Unchecked_Full_Type (Etype (Root_Node))))
          then
             return Vars : Flow_Id_Sets.Set do
 

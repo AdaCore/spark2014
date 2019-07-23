@@ -570,7 +570,7 @@ package body Gnat2Why.Types is
 
          if Present (Eq)
            and then Entity_In_SPARK (Eq)
-           and then Is_Record_Type (Get_Full_Type_Without_Checking (E))
+           and then Is_Record_Type (Unchecked_Full_Type (E))
          then
             declare
                Var_A : constant W_Identifier_Id :=
