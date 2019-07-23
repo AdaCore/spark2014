@@ -299,15 +299,10 @@ package body SPARK_Util.Types is
    function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
       T : constant Entity_Id := Etype (N);
    begin
-      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
-         return T;
+      if Present (Full_View (T)) then
+         return Full_View (T);
       else
-         pragma Assert (Is_Type (T));
-         if Present (Full_View (T)) then
-            return Full_View (T);
-         else
-            return T;
-         end if;
+         return T;
       end if;
    end Get_Full_Type_Without_Checking;
 
