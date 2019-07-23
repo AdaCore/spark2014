@@ -2631,7 +2631,7 @@ package body Flow.Control_Flow_Graph is
                case Valid is
                   when True =>
                      Var : Flow_Id;
-                     D   : Entity_Vectors.Vector;
+                     D   : Node_Lists.List;
                   when False =>
                      null;
                end case;
@@ -2687,7 +2687,7 @@ package body Flow.Control_Flow_Graph is
          function Get_Array_Index (N : Node_Id) return Target is
             F : Flow_Id;
             T : Entity_Id;
-            L : Entity_Vectors.Vector;
+            L : Node_Lists.List;
          begin
             --  First, is this really an array access?
             --  ??? We are not supporting array slices yet
@@ -2731,7 +2731,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Extract indices (and make sure they are simple and distinct)
 
-            L := Entity_Vectors.Empty_Vector;
+            L := Node_Lists.Empty_List;
 
             declare
                Param_Expr  : Node_Id := First (Expressions (N)); --  LHS

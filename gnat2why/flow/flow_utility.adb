@@ -2941,8 +2941,7 @@ package body Flow_Utility is
 
          Root_Node     : Node_Id := N;
 
-         Component     : Entity_Vectors.Vector := Entity_Vectors.Empty_Vector;
-
+         Component     : Node_Lists.List := Node_Lists.Empty_List;
          Seq           : Node_Lists.List := Node_Lists.Empty_List;
 
          E             : Entity_Id;
