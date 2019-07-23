@@ -1,10 +1,9 @@
-p.adb:10:28: info: initialization of "X2.X" proved
-pack.adb:5:14: info: postcondition proved (CVC4: 2 VC)
+pack.adb:5:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 pack.adb:10:14: info: postcondition proved (CVC4: 1 VC)
-pack.ads:10:14: info: postcondition proved (CVC4: 2 VC)
+pack.ads:10:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 pack.ads:13:14: info: postcondition proved (CVC4: 1 VC)
 user.adb:2:11: warning: subprogram "User" has no effect
-user.adb:5:22: info: assertion proved (CVC4: 2 VC)
+user.adb:5:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 user.adb:6:22: info: assertion proved
-user.adb:8:22: info: assertion proved (CVC4: 2 VC)
+user.adb:8:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 user.adb:9:22: info: assertion proved (CVC4: 1 VC)

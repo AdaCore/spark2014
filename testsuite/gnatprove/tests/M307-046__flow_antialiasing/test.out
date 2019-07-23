@@ -1,24 +1,28 @@
-test.adb:57:23: info: initialization of "Z.A" proved
-test.adb:57:23: info: initialization of "Z.B" proved
-test.adb:57:23: info: initialization of "Z.C" proved
+test.adb:41:09: info: data dependencies proved
+test.adb:48:09: info: data dependencies proved
+test.adb:57:23: info: initialization of "Z" proved
+test.adb:58:09: info: data dependencies proved
+test.adb:67:09: info: data dependencies proved
+test.adb:74:09: info: data dependencies proved
+test.adb:82:09: info: data dependencies proved
+test.adb:90:09: info: data dependencies proved
+test.adb:97:09: info: data dependencies proved
 test.adb:103:30: warning: "Y" is not modified, could be IN
+test.adb:104:09: info: data dependencies proved
 test.adb:113:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:116:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:119:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:125:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:128:14: high: formal parameter "X" and global "Global_RA" are aliased (SPARK RM 6.4.2)
 test.adb:131:23: warning: "X" is not modified, could be IN
-test.adb:132:30: info: initialization of "Global_RA.A" proved
-test.adb:132:30: info: initialization of "Global_RA.B" proved
-test.adb:132:30: info: initialization of "Global_RA.C" proved
+test.adb:132:09: info: data dependencies proved
+test.adb:132:30: info: initialization of "Global_RA" proved
 test.adb:138:23: warning: "X" is not modified, could be IN
+test.adb:139:09: info: data dependencies proved
 test.adb:142:19: high: formal parameters "Y" and "Z" are aliased (SPARK RM 6.4.2)
 test.adb:145:04: warning: analyzing unreferenced procedure "Test_06"
 test.adb:148:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
 test.adb:151:04: warning: analyzing unreferenced procedure "Test_07"
-test.adb:155:17: info: initialization of "Y.A" proved
-test.adb:155:17: info: initialization of "Y.B" proved
-test.adb:155:17: info: initialization of "Y.C" proved
 test.adb:155:17: warning: unused assignment to "Y"
 test.adb:158:04: warning: analyzing unreferenced procedure "Test_08"
 test.adb:162:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
@@ -50,7 +54,6 @@ test.adb:247:04: warning: analyzing unreferenced procedure "Slice_07"
 test.adb:251:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:252:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:253:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
-test.adb:254:36: info: initialization of "Tmp" proved
 test.adb:254:36: warning: unused assignment to "Tmp"
 test.adb:256:23: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 test.adb:259:04: warning: analyzing unreferenced procedure "Slice_08"
@@ -63,6 +66,9 @@ test.adb:282:04: warning: analyzing unreferenced procedure "UCC_03"
 test.adb:285:15: info: non-aliasing of formal parameters "X" and "Y" proved
 test.adb:288:04: warning: analyzing unreferenced procedure "UCC_04"
 test.adb:291:15: info: non-aliasing of formal parameters "X" and "Y" proved
+test.adb:300:09: info: data dependencies proved
+test.adb:301:09: info: flow dependencies proved
+test.adb:314:09: info: flow dependencies proved
 test.adb:317:15: info: non-aliasing of formal parameters "A" and "B" proved
 test.adb:332:04: warning: analyzing unreferenced procedure "Test_TC_1"
 test.adb:338:04: warning: analyzing unreferenced procedure "Test_TC_2"

@@ -1,1 +1,1 @@
-p.adb:17:10: medium: precondition might fail
+p.adb:17:10: medium: precondition might fail, cannot prove X [possible explanation: subprogram at p.ads:3 should mention X in a precondition]

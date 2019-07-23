@@ -6,7 +6,7 @@
 --                                                                          --
 --                                S p e c                                   --
 --                                                                          --
---                   Copyright (C) 2018, Altran UK Limited                  --
+--                Copyright (C) 2018-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -21,9 +21,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Atree;      use Atree;
-with Flow_Types; use Flow_Types;
-with Types;      use Types;
+with Atree;         use Atree;
+with Flow_Types;    use Flow_Types;
+with Gnat2Why_Args;
+with Types;         use Types;
 
 package Flow_Visibility is
 
@@ -57,7 +58,8 @@ package Flow_Visibility is
 
    generic
       with procedure Process (E : Entity_Id; Info : Hierarchy_Info_T);
-   procedure Iterate_Flow_Scopes;
+   procedure Iterate_Flow_Scopes
+   with Pre => Gnat2Why_Args.Global_Gen_Mode;
    --  Call Process on every registered flow scope
    --  ??? this should be only exposed to serialization, which itself is only
    --  exposed to Flow_Generated_Globals.Phase_1; one day the entire hierarchy

@@ -6,14 +6,13 @@ attempt_1.adb:17:20: info: float overflow check proved (Interval)
 attempt_1.adb:17:24: info: float overflow check proved (Interval)
 attempt_1.adb:25:33: info: initialization of "New_Speed" proved
 attempt_1.adb:26:33: info: initialization of "Average" proved
+attempt_1.adb:27:09: info: data dependencies proved
 attempt_1.adb:30:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
 attempt_1.adb:30:32: info: range check proved (CVC4: 1 VC)
-attempt_1.adb:30:37: info: initialization of "New_Speed" proved
 attempt_1.adb:33:30: info: float overflow check proved (CodePeer)
 attempt_1.adb:33:40: info: float overflow check proved (Interval)
 attempt_1.adb:33:44: info: float overflow check proved (Interval)
 attempt_1.adb:34:31: info: float overflow check proved (CodePeer)
-attempt_1.adb:34:33: info: initialization of "New_Speed" proved
 attempt_1.adb:34:44: info: division check proved (CodePeer)
 attempt_1.adb:34:44: info: float overflow check proved (Interval)
 attempt_2.adb:16:18: info: range check proved (Interval)
@@ -26,14 +25,13 @@ attempt_2.adb:19:22: info: float overflow check proved (Interval)
 attempt_2.adb:19:36: info: float overflow check proved (Interval)
 attempt_2.adb:27:33: info: initialization of "New_Speed" proved
 attempt_2.adb:28:33: info: initialization of "Average" proved
+attempt_2.adb:29:09: info: data dependencies proved
 attempt_2.adb:32:19: medium: postcondition might fail, cannot prove Invariant (N + 1, New_Speed)
 attempt_2.adb:32:32: info: range check proved (CVC4: 1 VC)
-attempt_2.adb:32:37: info: initialization of "New_Speed" proved
 attempt_2.adb:35:30: info: float overflow check proved (CodePeer)
 attempt_2.adb:35:40: info: float overflow check proved (Interval)
 attempt_2.adb:35:44: info: float overflow check proved (Interval)
 attempt_2.adb:36:31: info: float overflow check proved (CodePeer)
-attempt_2.adb:36:33: info: initialization of "New_Speed" proved
 attempt_2.adb:36:44: info: division check proved (CodePeer)
 attempt_2.adb:36:44: info: float overflow check proved (Interval)
 attempt_3.adb:17:17: info: range check proved (Interval)
@@ -42,9 +40,9 @@ attempt_3.adb:20:17: info: range check proved (Interval)
 attempt_3.adb:20:20: info: float overflow check proved (Interval)
 attempt_3.adb:32:33: info: initialization of "New_Speed" proved
 attempt_3.adb:33:33: info: initialization of "Average" proved
-attempt_3.adb:38:19: info: postcondition proved (altergo: 1 VC)
+attempt_3.adb:35:09: info: data dependencies proved
+attempt_3.adb:38:19: info: postcondition proved (CVC4: 1 VC)
 attempt_3.adb:38:32: info: range check proved (CVC4: 1 VC)
-attempt_3.adb:38:37: info: initialization of "New_Speed" proved
 attempt_3.adb:40:48: info: float overflow check proved (Interval)
 attempt_3.adb:40:52: info: float overflow check proved (Interval)
 attempt_3.adb:40:52: info: range check proved (Interval)
@@ -53,15 +51,13 @@ attempt_3.adb:46:22: info: assertion proved (CodePeer)
 attempt_3.adb:47:22: info: assertion proved (CodePeer)
 attempt_3.adb:48:22: info: assertion proved (CodePeer)
 attempt_3.adb:49:22: info: assertion proved (CodePeer)
-attempt_3.adb:53:22: info: initialization of "New_Speed" proved
 attempt_3.adb:53:22: medium: assertion might fail, cannot prove New_Speed <= Old_Speed + 1.0
 attempt_3.adb:53:45: info: float overflow check proved (CodePeer)
 attempt_3.adb:54:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:55:22: medium: assertion might fail, cannot prove Old_Speed + 1.0 <= High_Bound(N) + 1.0
 attempt_3.adb:55:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:55:55: info: float overflow check proved (CodePeer)
-attempt_3.adb:56:22: info: initialization of "New_Speed" proved
-attempt_3.adb:56:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N) + 1.0
+attempt_3.adb:56:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:56:49: info: float overflow check proved (CodePeer)
 attempt_3.adb:59:48: info: range check proved (Interval)
 attempt_3.adb:59:51: info: float overflow check proved (Interval)
@@ -92,18 +88,15 @@ attempt_3.adb:66:31: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:22: info: assertion proved (CodePeer)
 attempt_3.adb:69:36: info: float overflow check proved (CodePeer)
 attempt_3.adb:69:57: info: range check proved (CodePeer)
-attempt_3.adb:70:22: info: initialization of "New_Speed" proved
-attempt_3.adb:70:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N+1)
+attempt_3.adb:70:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:70:47: info: range check proved (CodePeer)
-attempt_3.adb:74:22: info: initialization of "New_Speed" proved
 attempt_3.adb:74:22: medium: assertion might fail, cannot prove New_Speed >= Old_Speed - 1.0
 attempt_3.adb:74:45: info: float overflow check proved (CodePeer)
 attempt_3.adb:75:22: info: assertion proved (CodePeer)
 attempt_3.adb:76:22: medium: assertion might fail, cannot prove Old_Speed - 1.0 >= Low_Bound(N) - 1.0
 attempt_3.adb:76:32: info: float overflow check proved (CodePeer)
 attempt_3.adb:76:54: info: float overflow check proved (CodePeer)
-attempt_3.adb:77:22: info: assertion proved (Z3: 1 VC)
-attempt_3.adb:77:22: info: initialization of "New_Speed" proved
+attempt_3.adb:77:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:77:48: info: float overflow check proved (CodePeer)
 attempt_3.adb:79:22: info: assertion proved (CodePeer)
 attempt_3.adb:79:30: info: range check proved (Interval)
@@ -114,15 +107,12 @@ attempt_3.adb:79:65: info: float overflow check proved (Interval)
 attempt_3.adb:80:22: info: assertion proved (CodePeer)
 attempt_3.adb:80:35: info: float overflow check proved (CodePeer)
 attempt_3.adb:80:55: info: range check proved (CodePeer)
-attempt_3.adb:81:22: info: assertion proved (Z3: 1 VC)
-attempt_3.adb:81:22: info: initialization of "New_Speed" proved
+attempt_3.adb:81:22: info: assertion proved (CVC4: 1 VC)
 attempt_3.adb:81:46: info: range check proved (CodePeer)
 attempt_3.adb:83:31: info: float overflow check proved (CodePeer)
-attempt_3.adb:83:33: info: initialization of "New_Speed" proved
 attempt_3.adb:83:44: info: division check proved (CodePeer)
 attempt_3.adb:83:44: info: float overflow check proved (Interval)
 attempt_3.adb:84:29: info: float overflow check proved (CodePeer)
-attempt_3.adb:84:31: info: initialization of "Average" proved
 attempt_3.adb:84:39: info: float overflow check proved (Interval)
 attempt_4.adb:26:26: info: range check proved (Interval)
 attempt_4.adb:26:29: info: float overflow check proved (Interval)
@@ -139,6 +129,7 @@ attempt_4.adb:30:45: info: range check proved (Interval)
 attempt_4.adb:30:50: info: float overflow check proved (Interval)
 attempt_4.adb:30:71: info: float overflow check proved (Interval)
 attempt_4.adb:36:34: info: initialization of "Average" proved
+attempt_4.adb:37:09: info: data dependencies proved
 attempt_4.adb:40:19: medium: postcondition might fail, cannot prove Invariant (N + 1, Speed, Distance)
 attempt_4.adb:40:32: info: range check proved (CVC4: 1 VC)
 attempt_4.adb:44:25: info: float overflow check proved (CodePeer)
@@ -148,5 +139,4 @@ attempt_4.adb:45:30: info: float overflow check proved (CodePeer)
 attempt_4.adb:45:39: info: division check proved (CodePeer)
 attempt_4.adb:45:39: info: float overflow check proved (Interval)
 attempt_4.adb:46:28: info: float overflow check proved (CodePeer)
-attempt_4.adb:46:31: info: initialization of "Average" proved
 attempt_4.adb:46:39: info: float overflow check proved (Interval)

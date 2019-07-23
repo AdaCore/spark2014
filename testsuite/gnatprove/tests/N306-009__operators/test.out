@@ -22,8 +22,10 @@ a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:7
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:5
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:7
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at inst_ext_ax.ads:5
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at inst_ext_ax.ads:7
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:5
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:7
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:5
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:7
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:5
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:7
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:5
@@ -40,6 +42,6 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:7
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:5
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at inst_ext_ax.ads:7
-inst_ext_ax.ads:17:11: medium: range check might fail, in instantiation at inst_ext_ax.ads:31 (e.g. when I1 = Int100'Last and I2 = 1) [possible explanation: subprogram at line 16 should mention I1 and I2 in a precondition]
+inst_ext_ax.ads:17:11: medium: range check might fail, in instantiation at inst_ext_ax.ads:31 (e.g. when I1 = 1 and I2 = Int100'Last) [possible explanation: subprogram at line 16 should mention I1 and I2 in a precondition]
 inst_ext_ax.ads:25:24: info: overflow check proved (CVC4: 1 VC), in instantiation at inst_ext_ax.ads:32
-inst_ext_ax.ads:25:24: medium: range check might fail, in instantiation at inst_ext_ax.ads:32 [possible explanation: subprogram at line 24 should mention I1 and I2 in a precondition]
+inst_ext_ax.ads:25:24: medium: range check might fail, in instantiation at inst_ext_ax.ads:32 (e.g. when I1 = Int100'Last and I2 = 0) [possible explanation: subprogram at line 24 should mention I1 and I2 in a precondition]

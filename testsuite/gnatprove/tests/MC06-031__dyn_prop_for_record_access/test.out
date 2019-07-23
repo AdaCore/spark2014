@@ -6,20 +6,14 @@ dynamic_types.adb:26:16: info: index check proved (CVC4: 2 VC)
 dynamic_types.adb:27:47: info: range check proved (CVC4: 1 VC)
 dynamic_types.adb:29:47: info: range check proved (CVC4: 1 VC)
 dynamic_types.adb:33:28: info: range check proved (CVC4: 1 VC)
+dynamic_types.adb:34:07: info: initialization of "Result" proved
+dynamic_types.adb:35:07: info: initialization of "Tmp" proved
 dynamic_types.adb:39:13: info: loop invariant initialization proved (CVC4: 1 VC)
 dynamic_types.adb:39:13: info: loop invariant preservation proved (CVC4: 1 VC)
-dynamic_types.adb:39:37: info: initialization of "From" proved
 dynamic_types.adb:39:42: info: overflow check proved (CVC4: 2 VC)
 dynamic_types.adb:39:52: info: index check proved (CVC4: 4 VC)
 dynamic_types.adb:40:17: info: precondition proved (CVC4: 2 VC)
-dynamic_types.adb:40:31: info: initialization of "From" proved
 dynamic_types.adb:40:31: info: range check proved (CVC4: 1 VC)
-dynamic_types.adb:41:20: info: initialization of "Tmp.Result" proved
-dynamic_types.adb:42:18: info: initialization of "Tmp.From" proved
-dynamic_types.adb:43:13: info: initialization of "Result" proved
-dynamic_types.adb:44:20: info: initialization of "Result" proved
-dynamic_types.adb:46:13: info: initialization of "From" proved
-dynamic_types.adb:49:21: info: initialization of "From" proved
 dynamic_types.adb:49:26: info: overflow check proved (CVC4: 1 VC)
 dynamic_types.adb:49:26: info: range check proved (CVC4: 1 VC)
 dynamic_types.ads:6:14: info: postcondition proved (CVC4: 1 VC)

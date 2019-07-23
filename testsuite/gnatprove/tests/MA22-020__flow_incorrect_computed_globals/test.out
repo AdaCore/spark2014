@@ -1,3 +1,5 @@
-caller_of_liar.adb:12:11: info: initialization of "Tmp" proved
-caller_of_liar.adb:13:11: info: initialization of "Tmp2" proved
+caller_of_liar.adb:9:07: info: initialization of "Tmp" proved
+caller_of_liar.adb:9:12: info: initialization of "Tmp2" proved
 caller_of_liar.ads:5:25: info: initialization of "T" proved
+caller_of_liar.ads:6:11: info: data dependencies proved
+caller_of_liar.ads:7:11: info: flow dependencies proved

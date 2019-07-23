@@ -1,5 +1,5 @@
 CVC4=cvc4
-ALTERGO=../install/libexec/spark/bin/alt-ergo
+ALTERGO=alt-ergo
 
 FILES := $(shell find bench -name "*.smt2" -or -name "*.why")
 BENCH := $(patsubst %.why,%.result,$(patsubst %.smt2,%.result,$(FILES)))

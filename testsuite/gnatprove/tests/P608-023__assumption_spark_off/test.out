@@ -1,3 +1,2 @@
-pack.adb:39:22: info: initialization of "A" proved
-pack.adb:39:22: medium: assertion might fail, cannot prove A = B (e.g. when A = True and B = False)
-pack.adb:39:26: info: initialization of "B" proved
+pack.adb:35:07: info: initialization of "B" proved
+pack.adb:39:22: medium: assertion might fail, cannot prove A = B (e.g. when B = False)

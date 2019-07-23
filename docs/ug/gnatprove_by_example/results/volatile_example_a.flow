@@ -1,5 +1,2 @@
-volatile_example_a.adb:24:11: info: initialization of "Tmp.X" proved
-volatile_example_a.adb:27:25: info: initialization of "Tmp.X" proved
-volatile_example_a.adb:27:33: info: initialization of "Tmp.Y" proved
-volatile_example_a.adb:29:12: info: initialization of "Tmp.X" proved
-volatile_example_a.adb:29:12: info: initialization of "Tmp.Y" proved
+volatile_example_a.adb:18:11: info: data dependencies proved
+volatile_example_a.adb:21:07: info: initialization of "Tmp" proved

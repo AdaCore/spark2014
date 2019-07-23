@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,13 +24,12 @@
 ------------------------------------------------------------------------------
 
 with GNAT.Source_Info;
+with GNATCOLL.Symbols;
 with Gnat2Why.Expr;                use Gnat2Why.Expr;
 with Namet;                        use Namet;
 with Sinput;                       use Sinput;
-with SPARK_Util;                   use SPARK_Util;
 with Ada.Strings;                  use Ada.Strings;
 with Ada.Strings.Fixed;            use Ada.Strings.Fixed;
-with String_Utils;                 use String_Utils;
 with Why.Atree.Accessors;          use Why.Atree.Accessors;
 with Why.Atree.Builders;           use Why.Atree.Builders;
 with Why.Atree.Modules;            use Why.Atree.Modules;
@@ -79,7 +78,7 @@ package body Gnat2Why.Decls is
 
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Why_Id
                  (E, No_Comp => True, Domain => EW_Term, Local => True),
                Binders     => (1 .. 0 => <>),
@@ -89,16 +88,14 @@ package body Gnat2Why.Decls is
 
       --  Define a logic function to return the address of a constant object
 
-      if Is_Object (E) then
-         Emit (File,
-               Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
-                  Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
-                  Binders     => (1 .. 0 => <>),
-                  Labels      => Name_Id_Sets.Empty_Set,
-                  Location    => No_Location,
-                  Return_Type => EW_Int_Type));
-      end if;
+      Emit (File,
+            Why.Atree.Builders.New_Function_Decl
+              (Domain      => EW_Pterm,
+               Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
+               Binders     => (1 .. 0 => <>),
+               Labels      => Symbol_Sets.Empty_Set,
+               Location    => No_Location,
+               Return_Type => EW_Int_Type));
 
       Close_Theory (File,
                     Kind           => Definition_Theory,
@@ -230,14 +227,13 @@ package body Gnat2Why.Decls is
       File : constant W_Section_Id := WF_Variables;
 
       Object_Name : constant String := To_String (E);
-      Module_Name : constant String := Capitalize_First (Object_Name);
 
    begin
       Open_Theory
         (File,
          Module =>
-           New_Module (Name => NID (Module_Name),
-                       File => No_Name),
+           New_Module (Name => Object_Name,
+                       File => GNATCOLL.Symbols.No_Symbol),
          Comment =>
            "Module declaring the external object """ & Object_Name &
            ","" created in " & GNAT.Source_Info.Enclosing_Entity);
@@ -249,41 +245,9 @@ package body Gnat2Why.Decls is
         (File,
          New_Global_Ref_Declaration
            (Name     => To_Why_Id (E, Local => True),
-            Labels   => Name_Id_Sets.Empty_Set,
+            Labels   => Symbol_Sets.Empty_Set,
             Location => No_Location,
             Ref_Type => EW_Private_Type));
-
-      Close_Theory (File,
-                    Kind => Standalone_Theory);
-   end Translate_External_Object;
-
-   procedure Translate_External_Object (E : Entity_Id)
-   is
-      File : constant W_Section_Id := WF_Variables;
---      Var : constant Item_Type := Mk_Item_Of_Entity (E);
---   ??? this doesn't seem to be needed
-
-   begin
-      Open_Theory (File, E_Module (E),
-                   Comment =>
-                     "Module declaring the external object "
-                       & """" & Get_Name_String (Chars (E)) & """"
-                       & " defined at " & Build_Location_String (Sloc (E))
-                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
-
-      --  We generate a global ref.
-      --  Do not set a location as counterexample values for external objects
-      --  are not meaningful.
-
-      Emit
-        (File,
-         New_Global_Ref_Declaration
-           (Name     => To_Why_Id (E, Local => True),
-            Labels   => Name_Id_Sets.Empty_Set,
-            Location => No_Location,
-            Ref_Type => EW_Private_Type));
-
---      Insert_Item (E, Var);
 
       Close_Theory (File,
                     Kind => Standalone_Theory);
@@ -343,7 +307,7 @@ package body Gnat2Why.Decls is
          when DRecord =>
             if Var.Fields.Present then
 
-               --  generate a global ref for the fields
+               --  Generate a global ref for the fields
 
                Emit
                  (File,
@@ -356,7 +320,7 @@ package body Gnat2Why.Decls is
 
             if Var.Discrs.Present then
 
-               --  generate a global ref or constant for the fields
+               --  Generate a global ref or constant for the fields
 
                if Var.Discrs.Binder.Mutable then
                   Emit
@@ -370,7 +334,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        =>
                           To_Local (Var.Discrs.Binder.B_Name),
                         Binders     => (1 .. 0 => <>),
@@ -382,12 +346,12 @@ package body Gnat2Why.Decls is
 
             if Var.Constr.Present then
 
-               --  generate a constant for 'Constrained attribute
+               --  Generate a constant for 'Constrained attribute
 
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Constr.Id),
                      Binders     => (1 .. 0 => <>),
                      Labels      => Get_Counterexample_Labels
@@ -398,22 +362,22 @@ package body Gnat2Why.Decls is
 
             if Var.Tag.Present then
 
-               --  generate a constant for 'Tag attribute
+               --  Generate a constant for 'Tag attribute
 
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Tag.Id),
                      Binders     => (1 .. 0 => <>),
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Tag.Id)));
             end if;
 
          when UCArray =>
 
-            --  generate a global ref for the content
+            --  Generate a global ref for the content
 
             Emit
               (File,
@@ -440,12 +404,12 @@ package body Gnat2Why.Decls is
                     Get_Typ (Var.Bounds (D).Last);
 
                begin
-                  --  generate constants for bounds
+                  --  Generate constants for bounds
 
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).First),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
@@ -457,7 +421,7 @@ package body Gnat2Why.Decls is
                   Emit
                     (File,
                      Why.Atree.Builders.New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        => To_Local (Var.Bounds (D).Last),
                         Binders     => (1 .. 0 => <>),
                         Labels      => Get_Counterexample_Labels
@@ -489,7 +453,7 @@ package body Gnat2Why.Decls is
                  (File,
                   New_Global_Ref_Declaration
                     (Name     => To_Local (Var.Address),
-                     Labels   => Name_Id_Sets.Empty_Set,
+                     Labels   => Symbol_Sets.Empty_Set,
                      Location => Safe_First_Sloc (E),
                      Ref_Type => Get_Typ (Var.Address)));
 
@@ -508,9 +472,9 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Address),
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
                      Return_Type => Get_Typ (Var.Address)));
@@ -518,7 +482,7 @@ package body Gnat2Why.Decls is
                Emit
                  (File,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (Var.Is_Null),
                      Binders     => (1 .. 0 => <>),
                      Location    => Safe_First_Sloc (E),
@@ -546,13 +510,25 @@ package body Gnat2Why.Decls is
             raise Program_Error;
       end case;
 
+      --  generate a global ref for the initialization flag if any
+
+      if Var.Init.Present then
+         Emit
+           (File,
+            New_Global_Ref_Declaration
+              (Name     => To_Local (Var.Init.Id),
+               Labels   => Symbol_Sets.Empty_Set,
+               Location => Safe_First_Sloc (E),
+               Ref_Type => EW_Bool_Type));
+      end if;
+
       Emit (File,
             Why.Atree.Builders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Address)),
                Binders     => (1 .. 0 => <>),
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => EW_Int_Type));
 
       Close_Theory (File,

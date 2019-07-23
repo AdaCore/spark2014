@@ -2,1229 +2,744 @@ a-cfinve.ads:315:51: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cfinve.ads:315:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:315:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:315:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:315:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:357:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:357:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:357:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:357:73: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:357:73: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:390:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:390:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:390:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:390:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:390:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:425:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:425:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:425:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:425:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:425:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:471:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:471:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:471:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:471:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:471:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:495:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:536:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:536:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:536:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:536:59: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:536:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:601:28: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:601:28: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:601:28: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:601:28: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:601:28: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_bounded.ads:6
 a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.ads:12
 a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.ads:8
 a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.ads:14
+a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded.adb:7
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_bounded_tagged.adb:9
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded.adb:8
 a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at indefinite_unbounded_tagged.adb:9
-a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:310:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:352:73: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:385:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:420:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:420:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:466:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:466:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:490:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:490:51: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:531:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:531:59: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:596:28: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:596:28: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
-a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at unbounded.ads:8
-a-cofove.ads:858:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
-a-cofove.ads:858:56: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.adb:7
+a-cfinve.ads:863:56: info: overflow check proved (CVC4: 1 VC), in instantiation at unbounded.adb:7
+a-cofove.ads:288:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:330:73: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:363:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:398:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:444:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:468:51: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:509:59: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:574:28: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:574:57: info: range check proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:702:23: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:738:14: info: precondition proved (CVC4: 1 VC), in instantiation at bounded.ads:6
+a-cofove.ads:836:56: info: overflow check proved (CVC4: 1 VC), in instantiation at bounded.adb:8
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_bounded_tagged.ads:12
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at indefinite_unbounded_tagged.ads:14
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at bounded.ads:6
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at unbounded.ads:8
-bounded.adb:11:07: info: initialization of private part of "V" proved
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at unbounded.ads:8
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at bounded.ads:6
+bounded.adb:11:07: info: initialization of "V" proved
 bounded.adb:11:19: info: range check proved (CVC4: 1 VC)
-bounded.adb:13:14: info: initialization of private part of "V" proved
 bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:14:32: info: initialization of private part of "V" proved
 bounded.adb:15:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:15:22: info: initialization of private part of "V" proved
 bounded.adb:16:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:16:32: info: initialization of private part of "V" proved
 bounded.adb:18:07: info: precondition proved (CVC4: 1 VC)
-bounded.adb:18:15: info: initialization of private part of "V" proved
 bounded.adb:19:07: info: precondition proved (CVC4: 1 VC)
-bounded.adb:19:15: info: initialization of private part of "V" proved
 bounded.adb:20:07: info: precondition proved (CVC4: 1 VC)
-bounded.adb:20:15: info: initialization of private part of "V" proved
 bounded.adb:21:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:21:36: info: initialization of private part of "V" proved
 bounded.adb:22:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:22:30: info: initialization of private part of "V" proved
 bounded.adb:23:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:23:32: info: initialization of private part of "V" proved
 bounded.adb:24:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:24:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:24:31: info: initialization of private part of "V" proved
 bounded.adb:25:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:25:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:25:31: info: initialization of private part of "V" proved
 bounded.adb:26:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:26:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:26:31: info: initialization of private part of "V" proved
-bounded.adb:28:07: info: precondition proved (CVC4: 2 VC)
-bounded.adb:28:25: info: initialization of private part of "V" proved
+bounded.adb:28:07: info: precondition proved (CVC4: 1 VC)
 bounded.adb:30:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:30:36: info: initialization of private part of "V" proved
 bounded.adb:31:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:31:30: info: initialization of private part of "V" proved
 bounded.adb:32:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:32:32: info: initialization of private part of "V" proved
-bounded.adb:35:10: info: initialization of private part of "W" proved
-bounded.adb:35:24: info: precondition proved (CVC4: 2 VC)
-bounded.adb:35:30: info: initialization of private part of "V" proved
+bounded.adb:35:24: info: precondition proved (CVC4: 1 VC)
 bounded.adb:37:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:37:39: info: initialization of private part of "W" proved
 bounded.adb:38:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:38:33: info: initialization of private part of "W" proved
 bounded.adb:39:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:39:35: info: initialization of private part of "W" proved
 bounded.adb:40:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:40:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:40:34: info: initialization of private part of "W" proved
 bounded.adb:41:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:41:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:41:34: info: initialization of private part of "W" proved
 bounded.adb:42:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:42:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:42:34: info: initialization of private part of "W" proved
 bounded.adb:44:10: info: precondition proved (CVC4: 1 VC)
-bounded.adb:44:18: info: initialization of private part of "W" proved
-bounded.adb:44:21: info: initialization of private part of "V" proved
 bounded.adb:45:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:45:39: info: initialization of private part of "W" proved
 bounded.adb:46:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:46:33: info: initialization of private part of "W" proved
 bounded.adb:47:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:47:35: info: initialization of private part of "W" proved
 bounded.adb:48:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:48:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:48:34: info: initialization of private part of "W" proved
 bounded.adb:49:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:49:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:49:34: info: initialization of private part of "W" proved
 bounded.adb:50:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:50:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:50:34: info: initialization of private part of "W" proved
 bounded.adb:51:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:51:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:51:34: info: initialization of private part of "W" proved
 bounded.adb:52:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:52:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:52:34: info: initialization of private part of "W" proved
 bounded.adb:53:25: info: assertion proved (CVC4: 1 VC)
 bounded.adb:53:25: info: precondition proved (CVC4: 2 VC)
-bounded.adb:53:34: info: initialization of private part of "W" proved
-bounded.adb:55:10: info: precondition proved (CVC4: 2 VC)
-bounded.adb:55:18: info: initialization of private part of "W" proved
+bounded.adb:55:10: info: precondition proved (CVC4: 1 VC)
 bounded.adb:56:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:56:35: info: initialization of private part of "W" proved
 bounded.adb:57:25: info: assertion proved (CVC4: 1 VC)
-bounded.adb:57:25: info: initialization of private part of "W" proved
 bounded.adb:60:07: info: precondition proved (CVC4: 2 VC)
-bounded.adb:60:24: info: initialization of private part of "V" proved
 bounded.adb:61:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:61:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:61:31: info: initialization of private part of "V" proved
 bounded.adb:62:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:62:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:62:31: info: initialization of private part of "V" proved
 bounded.adb:63:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:63:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:63:31: info: initialization of private part of "V" proved
 bounded.adb:65:07: info: precondition proved (CVC4: 4 VC)
-bounded.adb:65:13: info: initialization of private part of "V" proved
 bounded.adb:66:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:66:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:66:31: info: initialization of private part of "V" proved
 bounded.adb:67:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:67:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:67:31: info: initialization of private part of "V" proved
 bounded.adb:68:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:68:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:68:31: info: initialization of private part of "V" proved
 bounded.adb:70:07: info: precondition proved (CVC4: 1 VC)
-bounded.adb:70:20: info: initialization of private part of "V" proved
 bounded.adb:71:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:71:36: info: initialization of private part of "V" proved
 bounded.adb:72:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:72:30: info: initialization of private part of "V" proved
 bounded.adb:73:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:73:32: info: initialization of private part of "V" proved
 bounded.adb:74:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:74:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:74:31: info: initialization of private part of "V" proved
 bounded.adb:75:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:75:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:75:31: info: initialization of private part of "V" proved
-bounded.adb:77:25: info: initialization of private part of "V" proved
 bounded.adb:78:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:78:36: info: initialization of private part of "V" proved
 bounded.adb:79:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:79:30: info: initialization of private part of "V" proved
 bounded.adb:80:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:80:32: info: initialization of private part of "V" proved
 bounded.adb:81:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:81:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:81:31: info: initialization of private part of "V" proved
 bounded.adb:82:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:82:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:82:31: info: initialization of private part of "V" proved
 bounded.adb:84:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:84:35: info: initialization of private part of "V" proved
 bounded.adb:85:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:85:34: info: initialization of private part of "V" proved
 bounded.adb:86:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:86:22: info: precondition proved (CVC4: 1 VC)
-bounded.adb:86:37: info: initialization of private part of "V" proved
 bounded.adb:87:22: info: assertion proved (CVC4: 1 VC)
 bounded.adb:87:22: info: precondition proved (CVC4: 1 VC)
-bounded.adb:87:36: info: initialization of private part of "V" proved
 bounded.adb:89:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:89:34: info: initialization of private part of "V" proved
 bounded.adb:90:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:90:34: info: initialization of private part of "V" proved
 bounded.adb:91:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:91:34: info: initialization of private part of "V" proved
 bounded.adb:93:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:93:42: info: initialization of private part of "V" proved
 bounded.adb:94:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:94:42: info: initialization of private part of "V" proved
 bounded.adb:95:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:95:42: info: initialization of private part of "V" proved
 bounded.adb:97:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:97:32: info: initialization of private part of "V" proved
 bounded.adb:98:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:98:36: info: initialization of private part of "V" proved
 bounded.adb:99:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:99:35: info: initialization of private part of "V" proved
 bounded.adb:100:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:100:39: info: initialization of private part of "V" proved
 bounded.adb:101:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:101:39: info: initialization of private part of "V" proved
 bounded.adb:103:22: info: assertion proved (Z3: 1 VC)
-bounded.adb:103:42: info: initialization of private part of "V" proved
-bounded.adb:104:18: info: initialization of private part of "V" proved
 bounded.adb:105:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:105:36: info: initialization of private part of "V" proved
 bounded.adb:106:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:106:30: info: initialization of private part of "V" proved
 bounded.adb:107:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:107:32: info: initialization of private part of "V" proved
 bounded.adb:108:22: info: assertion proved (Z3: 1 VC)
 bounded.adb:108:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:108:31: info: initialization of private part of "V" proved
 bounded.adb:109:22: info: assertion proved (Z3: 1 VC)
 bounded.adb:109:22: info: precondition proved (CVC4: 2 VC)
-bounded.adb:109:31: info: initialization of private part of "V" proved
 bounded.adb:110:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:110:38: info: initialization of private part of "V" proved
 bounded.adb:112:07: info: precondition proved (CVC4: 2 VC)
-bounded.adb:112:24: info: initialization of private part of "V" proved
 bounded.adb:112:30: info: precondition proved (CVC4: 2 VC)
-bounded.adb:112:39: info: initialization of private part of "V" proved
 bounded.adb:114:22: info: assertion proved (CVC4: 1 VC)
-bounded.adb:114:32: info: initialization of private part of "V" proved
 bounded.adb:116:07: medium: assertion might fail
-bounded.ads:12:14: warning: subprogram "Test" has no effect
-indefinite_bounded.adb:10:07: info: initialization of private part of "V" proved
+bounded.ads:11:14: warning: subprogram "Test" has no effect
+indefinite_bounded.adb:10:07: info: initialization of "V" proved
 indefinite_bounded.adb:10:19: info: range check proved (CVC4: 1 VC)
-indefinite_bounded.adb:12:14: info: initialization of private part of "V" proved
 indefinite_bounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:13:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:14:22: info: initialization of private part of "V" proved
 indefinite_bounded.adb:15:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:15:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:17:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:17:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:18:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:18:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:19:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:19:15: info: initialization of private part of "V" proved
 indefinite_bounded.adb:20:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:20:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:21:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:21:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:22:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:22:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:23:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:23:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:23:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:24:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:24:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:24:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:25:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:25:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:25:31: info: initialization of private part of "V" proved
-indefinite_bounded.adb:27:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:27:25: info: initialization of private part of "V" proved
+indefinite_bounded.adb:27:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded.adb:29:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:29:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:30:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:30:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:31:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:31:32: info: initialization of private part of "V" proved
-indefinite_bounded.adb:34:10: info: initialization of private part of "W" proved
-indefinite_bounded.adb:34:24: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:34:30: info: initialization of private part of "V" proved
+indefinite_bounded.adb:34:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded.adb:36:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:36:39: info: initialization of private part of "W" proved
 indefinite_bounded.adb:37:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:37:33: info: initialization of private part of "W" proved
 indefinite_bounded.adb:38:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:38:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:39:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:39:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:39:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:40:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:40:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:40:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:41:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:41:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:41:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:43:10: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:43:18: info: initialization of private part of "W" proved
-indefinite_bounded.adb:43:21: info: initialization of private part of "V" proved
 indefinite_bounded.adb:44:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:44:39: info: initialization of private part of "W" proved
 indefinite_bounded.adb:45:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:45:33: info: initialization of private part of "W" proved
 indefinite_bounded.adb:46:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:46:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:47:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:47:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:47:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:48:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:48:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:48:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:49:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:49:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:49:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:50:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:50:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:50:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:51:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:51:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:51:34: info: initialization of private part of "W" proved
 indefinite_bounded.adb:52:25: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:52:25: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:52:34: info: initialization of private part of "W" proved
-indefinite_bounded.adb:54:10: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:54:18: info: initialization of private part of "W" proved
+indefinite_bounded.adb:54:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded.adb:55:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:55:35: info: initialization of private part of "W" proved
 indefinite_bounded.adb:56:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:56:25: info: initialization of private part of "W" proved
 indefinite_bounded.adb:59:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:59:24: info: initialization of private part of "V" proved
 indefinite_bounded.adb:60:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:60:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:60:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:61:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:61:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:61:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:62:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:62:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:62:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:64:07: info: precondition proved (CVC4: 4 VC)
-indefinite_bounded.adb:64:13: info: initialization of private part of "V" proved
 indefinite_bounded.adb:65:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:65:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:65:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:66:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:66:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:66:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:67:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:67:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:67:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:69:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:69:20: info: initialization of private part of "V" proved
 indefinite_bounded.adb:70:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:70:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:71:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:71:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:72:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:72:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:73:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:73:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:73:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:74:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:74:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:74:31: info: initialization of private part of "V" proved
-indefinite_bounded.adb:76:25: info: initialization of private part of "V" proved
 indefinite_bounded.adb:77:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:77:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:78:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:78:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:79:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:79:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:80:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:80:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:80:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:81:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:81:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:81:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:83:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:83:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:84:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:84:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:85:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:85:22: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:85:37: info: initialization of private part of "V" proved
 indefinite_bounded.adb:86:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded.adb:86:22: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded.adb:86:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:88:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:88:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:89:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:89:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:90:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:90:34: info: initialization of private part of "V" proved
 indefinite_bounded.adb:92:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:92:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:93:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:93:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:94:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:94:42: info: initialization of private part of "V" proved
 indefinite_bounded.adb:96:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:96:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:97:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:97:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:98:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:98:35: info: initialization of private part of "V" proved
 indefinite_bounded.adb:99:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:99:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:100:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:100:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:102:22: info: assertion proved (Z3: 1 VC)
-indefinite_bounded.adb:102:42: info: initialization of private part of "V" proved
-indefinite_bounded.adb:103:18: info: initialization of private part of "V" proved
 indefinite_bounded.adb:104:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:104:36: info: initialization of private part of "V" proved
 indefinite_bounded.adb:105:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:105:30: info: initialization of private part of "V" proved
 indefinite_bounded.adb:106:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:106:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:107:22: info: assertion proved (Z3: 1 VC)
 indefinite_bounded.adb:107:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:107:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:108:22: info: assertion proved (Z3: 1 VC)
 indefinite_bounded.adb:108:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:108:31: info: initialization of private part of "V" proved
 indefinite_bounded.adb:109:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:109:38: info: initialization of private part of "V" proved
 indefinite_bounded.adb:111:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:111:24: info: initialization of private part of "V" proved
 indefinite_bounded.adb:111:30: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded.adb:111:39: info: initialization of private part of "V" proved
 indefinite_bounded.adb:113:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded.adb:113:32: info: initialization of private part of "V" proved
 indefinite_bounded.adb:115:07: medium: assertion might fail
 indefinite_bounded.ads:13:14: warning: subprogram "Test" has no effect
-indefinite_bounded_tagged.adb:12:07: info: initialization of private part of "V" proved
+indefinite_bounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_bounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:14:14: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:15:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:16:22: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:17:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:17:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:19:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:19:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:20:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:20:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:21:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:21:15: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:22:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:22:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:23:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:23:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:24:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:24:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:25:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:25:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_bounded_tagged.adb:25:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:26:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:26:22: medium: assertion might fail, cannot prove Element (V, 2) = F(2)
-indefinite_bounded_tagged.adb:26:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:27:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:27:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:27:31: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:29:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:29:25: info: initialization of private part of "V" proved
+indefinite_bounded_tagged.adb:29:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded_tagged.adb:31:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:31:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:32:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:32:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:33:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:33:32: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:36:10: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:36:24: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:36:30: info: initialization of private part of "V" proved
+indefinite_bounded_tagged.adb:36:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded_tagged.adb:38:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:38:39: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:39:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:39:33: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:40:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:40:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:41:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:41:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_bounded_tagged.adb:41:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:42:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:42:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_bounded_tagged.adb:42:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:43:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:43:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_bounded_tagged.adb:43:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:45:10: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:45:18: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:45:21: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:46:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:46:39: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:47:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:47:33: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:48:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:48:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:49:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:49:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_bounded_tagged.adb:49:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:50:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_bounded_tagged.adb:50:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:51:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:51:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_bounded_tagged.adb:51:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:52:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:52:25: medium: assertion might fail, cannot prove Element (W, 4) = F(1)
-indefinite_bounded_tagged.adb:52:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:53:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:53:25: medium: assertion might fail, cannot prove Element (W, 5) = F(2)
-indefinite_bounded_tagged.adb:53:34: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:54:25: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:54:25: medium: assertion might fail, cannot prove Element (W, 6) = F(3)
-indefinite_bounded_tagged.adb:54:34: info: initialization of private part of "W" proved
-indefinite_bounded_tagged.adb:56:10: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:56:18: info: initialization of private part of "W" proved
+indefinite_bounded_tagged.adb:56:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_bounded_tagged.adb:57:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:57:35: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:58:25: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:58:25: info: initialization of private part of "W" proved
 indefinite_bounded_tagged.adb:61:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:61:24: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:62:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:62:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_bounded_tagged.adb:62:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:63:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:63:22: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:63:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:64:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:64:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
-indefinite_bounded_tagged.adb:64:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:66:07: info: precondition proved (CVC4: 4 VC)
-indefinite_bounded_tagged.adb:66:13: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:67:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:67:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:67:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:68:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:68:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:68:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:69:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:69:22: medium: assertion might fail, cannot prove Element (V, 3) = F(1)
-indefinite_bounded_tagged.adb:69:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:71:07: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:71:20: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:72:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:72:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:73:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:73:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:74:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:74:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:75:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:75:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:75:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:76:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:76:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:76:31: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:78:25: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:79:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:79:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:80:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:80:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:81:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:81:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:82:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:82:22: medium: assertion might fail, cannot prove Element (V, 1) = F(4)
-indefinite_bounded_tagged.adb:82:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:83:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:83:22: medium: assertion might fail, cannot prove Element (V, 2) = F(3)
-indefinite_bounded_tagged.adb:83:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:85:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:85:35: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:86:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:86:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:87:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:87:22: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:87:37: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:88:22: info: assertion proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:88:22: info: precondition proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:88:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:90:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
-indefinite_bounded_tagged.adb:90:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:91:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:91:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:92:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
-indefinite_bounded_tagged.adb:92:34: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:94:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:94:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:95:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:95:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:96:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:96:42: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:98:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:98:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:99:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:99:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:100:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:100:35: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:101:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:101:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:102:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:102:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:104:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
-indefinite_bounded_tagged.adb:104:42: info: initialization of private part of "V" proved
-indefinite_bounded_tagged.adb:105:18: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:106:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:106:36: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:107:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:107:30: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:108:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:108:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:109:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:109:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_bounded_tagged.adb:109:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:110:22: info: precondition proved (CVC4: 2 VC)
 indefinite_bounded_tagged.adb:110:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_bounded_tagged.adb:110:31: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:111:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:111:38: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:113:07: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:113:24: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:113:30: info: precondition proved (CVC4: 2 VC)
-indefinite_bounded_tagged.adb:113:39: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:115:22: info: assertion proved (CVC4: 1 VC)
-indefinite_bounded_tagged.adb:115:32: info: initialization of private part of "V" proved
 indefinite_bounded_tagged.adb:117:07: medium: assertion might fail
 indefinite_bounded_tagged.ads:15:40: medium: range check might fail
 indefinite_bounded_tagged.ads:19:14: warning: subprogram "Test" has no effect
-indefinite_unbounded.adb:11:07: info: initialization of private part of "V" proved
+indefinite_unbounded.adb:11:07: info: initialization of "V" proved
 indefinite_unbounded.adb:11:19: info: range check proved (CVC4: 1 VC)
-indefinite_unbounded.adb:13:14: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:14:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:15:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:15:22: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:17:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:17:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:18:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:18:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:19:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:19:15: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:20:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:20:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:21:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:21:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:22:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:22:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:22:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:23:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:23:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:23:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:24:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:24:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:24:31: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:26:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:26:25: info: initialization of private part of "V" proved
+indefinite_unbounded.adb:26:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded.adb:28:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:28:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:29:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:29:30: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:32:10: info: initialization of private part of "W" proved
-indefinite_unbounded.adb:32:24: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:32:30: info: initialization of private part of "V" proved
+indefinite_unbounded.adb:32:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded.adb:34:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:34:39: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:35:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:35:33: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:36:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:36:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:36:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:37:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:37:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:37:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:38:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:38:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:38:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:40:10: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:40:18: info: initialization of private part of "W" proved
-indefinite_unbounded.adb:40:21: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:41:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:41:39: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:42:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:42:33: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:43:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:43:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:43:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:44:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:44:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:44:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:45:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:45:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:45:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:46:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:46:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:46:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:47:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:47:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:47:34: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:48:25: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:48:25: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:48:34: info: initialization of private part of "W" proved
-indefinite_unbounded.adb:50:10: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:50:18: info: initialization of private part of "W" proved
+indefinite_unbounded.adb:50:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded.adb:51:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:51:35: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:52:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:52:25: info: initialization of private part of "W" proved
 indefinite_unbounded.adb:55:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:55:24: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:56:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:56:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:56:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:57:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:57:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:57:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:58:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:58:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:58:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:60:07: info: precondition proved (CVC4: 4 VC)
-indefinite_unbounded.adb:60:13: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:61:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:61:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:61:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:62:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:62:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:62:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:63:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:63:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:63:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:65:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:65:20: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:66:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:66:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:67:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:67:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:68:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:68:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:68:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:69:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:69:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:69:31: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:71:25: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:72:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:72:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:73:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:73:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:74:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:74:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:74:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:75:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:75:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:75:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:77:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:77:35: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:78:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:78:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:79:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:79:22: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:79:37: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:80:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded.adb:80:22: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded.adb:80:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:82:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:82:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:83:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:83:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:84:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:84:34: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:86:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:86:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:87:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:87:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:88:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:88:42: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:90:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:90:32: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:91:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:91:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:92:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:92:35: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:93:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:93:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:94:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:94:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:96:22: info: assertion proved (Z3: 1 VC)
-indefinite_unbounded.adb:96:42: info: initialization of private part of "V" proved
-indefinite_unbounded.adb:97:18: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:98:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:98:36: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:99:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:99:30: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:100:22: info: assertion proved (Z3: 1 VC)
 indefinite_unbounded.adb:100:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:100:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:101:22: info: assertion proved (Z3: 1 VC)
 indefinite_unbounded.adb:101:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:101:31: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:102:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded.adb:102:38: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:104:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:104:24: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:104:30: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded.adb:104:39: info: initialization of private part of "V" proved
 indefinite_unbounded.adb:106:07: medium: assertion might fail
 indefinite_unbounded.ads:15:14: warning: subprogram "Test" has no effect
-indefinite_unbounded_tagged.adb:12:07: info: initialization of private part of "V" proved
+indefinite_unbounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_unbounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:14:14: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:15:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:15:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:16:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:16:22: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:18:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:18:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:19:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:19:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:20:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:20:15: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:21:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:21:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:22:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:22:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:23:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:23:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_unbounded_tagged.adb:23:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:24:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:24:22: medium: assertion might fail, cannot prove Element (V, 2) = F(2)
-indefinite_unbounded_tagged.adb:24:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:25:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:25:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:25:31: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:27:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:27:25: info: initialization of private part of "V" proved
+indefinite_unbounded_tagged.adb:27:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded_tagged.adb:29:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:29:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:30:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:30:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:31:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:31:32: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:34:10: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:34:24: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:34:30: info: initialization of private part of "V" proved
+indefinite_unbounded_tagged.adb:34:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded_tagged.adb:36:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:36:39: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:37:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:37:33: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:38:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:38:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_unbounded_tagged.adb:38:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:39:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:39:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_unbounded_tagged.adb:39:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:40:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:40:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_unbounded_tagged.adb:40:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:42:10: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:42:18: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:42:21: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:43:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:43:39: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:44:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:44:33: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:45:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:45:25: medium: assertion might fail, cannot prove Element (W, 1) = F(1)
-indefinite_unbounded_tagged.adb:45:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:46:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:46:25: medium: assertion might fail, cannot prove Element (W, 2) = F(2)
-indefinite_unbounded_tagged.adb:46:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:47:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:47:25: medium: assertion might fail, cannot prove Element (W, 3) = F(3)
-indefinite_unbounded_tagged.adb:47:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:48:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:48:25: medium: assertion might fail, cannot prove Element (W, 4) = F(1)
-indefinite_unbounded_tagged.adb:48:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:49:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:49:25: medium: assertion might fail, cannot prove Element (W, 5) = F(2)
-indefinite_unbounded_tagged.adb:49:34: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:50:25: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:50:25: medium: assertion might fail, cannot prove Element (W, 6) = F(3)
-indefinite_unbounded_tagged.adb:50:34: info: initialization of private part of "W" proved
-indefinite_unbounded_tagged.adb:52:10: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:52:18: info: initialization of private part of "W" proved
+indefinite_unbounded_tagged.adb:52:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 indefinite_unbounded_tagged.adb:53:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:53:35: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:54:25: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:54:25: info: initialization of private part of "W" proved
 indefinite_unbounded_tagged.adb:57:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:57:24: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:58:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:58:22: medium: assertion might fail, cannot prove Element (V, 1) = F(1)
-indefinite_unbounded_tagged.adb:58:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:59:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:59:22: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:59:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:60:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:60:22: medium: assertion might fail, cannot prove Element (V, 3) = F(3)
-indefinite_unbounded_tagged.adb:60:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:62:07: info: precondition proved (CVC4: 4 VC)
-indefinite_unbounded_tagged.adb:62:13: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:63:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:63:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:63:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:64:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:64:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:64:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:65:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:65:22: medium: assertion might fail, cannot prove Element (V, 3) = F(1)
-indefinite_unbounded_tagged.adb:65:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:67:07: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:67:20: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:68:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:68:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:69:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:69:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:70:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:70:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:70:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:71:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:71:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:71:31: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:73:25: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:74:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:74:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:75:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:75:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:76:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:76:22: medium: assertion might fail, cannot prove Element (V, 1) = F(4)
-indefinite_unbounded_tagged.adb:76:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:77:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:77:22: medium: assertion might fail, cannot prove Element (V, 2) = F(3)
-indefinite_unbounded_tagged.adb:77:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:79:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:79:35: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:80:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:80:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:81:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:81:22: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:81:37: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:82:22: info: assertion proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:82:22: info: precondition proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:82:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:84:22: medium: assertion might fail, cannot prove Find_Index (V, F(0)) = No_Index
-indefinite_unbounded_tagged.adb:84:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:85:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:85:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:86:22: medium: assertion might fail, cannot prove Find_Index (V, F(4), 2) = No_Index
-indefinite_unbounded_tagged.adb:86:34: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:88:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:88:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:89:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:89:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:90:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:90:42: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:92:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:92:32: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:93:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:93:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:94:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:94:35: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:95:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:95:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:96:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:96:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:98:22: medium: assertion might fail, cannot prove not Sort.Is_Sorted (V)
-indefinite_unbounded_tagged.adb:98:42: info: initialization of private part of "V" proved
-indefinite_unbounded_tagged.adb:99:18: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:100:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:100:36: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:101:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:101:30: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:102:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:102:22: medium: assertion might fail, cannot prove Element (V, 1) = F(3)
-indefinite_unbounded_tagged.adb:102:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:103:22: info: precondition proved (CVC4: 2 VC)
 indefinite_unbounded_tagged.adb:103:22: medium: assertion might fail, cannot prove Element (V, 2) = F(4)
-indefinite_unbounded_tagged.adb:103:31: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:104:22: info: assertion proved (CVC4: 1 VC)
-indefinite_unbounded_tagged.adb:104:38: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:106:07: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:106:24: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:106:30: info: precondition proved (CVC4: 2 VC)
-indefinite_unbounded_tagged.adb:106:39: info: initialization of private part of "V" proved
 indefinite_unbounded_tagged.adb:108:07: medium: assertion might fail
 indefinite_unbounded_tagged.ads:17:40: medium: range check might fail
 indefinite_unbounded_tagged.ads:21:14: warning: subprogram "Test" has no effect
-unbounded.adb:10:07: info: initialization of private part of "V" proved
+unbounded.adb:10:07: info: initialization of "V" proved
 unbounded.adb:10:19: info: range check proved (CVC4: 1 VC)
-unbounded.adb:12:14: info: initialization of private part of "V" proved
 unbounded.adb:13:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:13:32: info: initialization of private part of "V" proved
 unbounded.adb:14:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:14:22: info: initialization of private part of "V" proved
 unbounded.adb:16:07: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:16:15: info: initialization of private part of "V" proved
 unbounded.adb:17:07: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:17:15: info: initialization of private part of "V" proved
 unbounded.adb:18:07: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:18:15: info: initialization of private part of "V" proved
 unbounded.adb:19:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:19:36: info: initialization of private part of "V" proved
 unbounded.adb:20:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:20:30: info: initialization of private part of "V" proved
 unbounded.adb:21:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:21:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:21:31: info: initialization of private part of "V" proved
 unbounded.adb:22:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:22:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:22:31: info: initialization of private part of "V" proved
 unbounded.adb:23:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:23:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:23:31: info: initialization of private part of "V" proved
-unbounded.adb:25:07: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:25:25: info: initialization of private part of "V" proved
+unbounded.adb:25:07: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 unbounded.adb:27:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:27:36: info: initialization of private part of "V" proved
 unbounded.adb:28:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:28:30: info: initialization of private part of "V" proved
 unbounded.adb:29:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:29:32: info: initialization of private part of "V" proved
-unbounded.adb:32:10: info: initialization of private part of "W" proved
-unbounded.adb:32:24: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:32:30: info: initialization of private part of "V" proved
+unbounded.adb:32:24: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 unbounded.adb:34:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:34:39: info: initialization of private part of "W" proved
 unbounded.adb:35:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:35:33: info: initialization of private part of "W" proved
 unbounded.adb:36:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:36:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:36:34: info: initialization of private part of "W" proved
 unbounded.adb:37:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:37:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:37:34: info: initialization of private part of "W" proved
 unbounded.adb:38:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:38:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:38:34: info: initialization of private part of "W" proved
 unbounded.adb:40:10: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:40:18: info: initialization of private part of "W" proved
-unbounded.adb:40:21: info: initialization of private part of "V" proved
 unbounded.adb:41:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:41:39: info: initialization of private part of "W" proved
 unbounded.adb:42:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:42:33: info: initialization of private part of "W" proved
 unbounded.adb:43:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:43:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:43:34: info: initialization of private part of "W" proved
 unbounded.adb:44:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:44:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:44:34: info: initialization of private part of "W" proved
 unbounded.adb:45:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:45:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:45:34: info: initialization of private part of "W" proved
 unbounded.adb:46:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:46:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:46:34: info: initialization of private part of "W" proved
 unbounded.adb:47:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:47:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:47:34: info: initialization of private part of "W" proved
 unbounded.adb:48:25: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:48:25: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:48:34: info: initialization of private part of "W" proved
-unbounded.adb:50:10: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:50:18: info: initialization of private part of "W" proved
+unbounded.adb:50:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 unbounded.adb:51:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:51:35: info: initialization of private part of "W" proved
 unbounded.adb:52:25: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:52:25: info: initialization of private part of "W" proved
 unbounded.adb:55:07: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:55:24: info: initialization of private part of "V" proved
 unbounded.adb:56:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:56:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:56:31: info: initialization of private part of "V" proved
 unbounded.adb:57:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:57:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:57:31: info: initialization of private part of "V" proved
 unbounded.adb:58:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:58:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:58:31: info: initialization of private part of "V" proved
 unbounded.adb:60:07: info: precondition proved (CVC4: 4 VC)
-unbounded.adb:60:13: info: initialization of private part of "V" proved
 unbounded.adb:61:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:61:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:61:31: info: initialization of private part of "V" proved
 unbounded.adb:62:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:62:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:62:31: info: initialization of private part of "V" proved
 unbounded.adb:63:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:63:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:63:31: info: initialization of private part of "V" proved
 unbounded.adb:65:07: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:65:20: info: initialization of private part of "V" proved
 unbounded.adb:66:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:66:36: info: initialization of private part of "V" proved
 unbounded.adb:67:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:67:30: info: initialization of private part of "V" proved
 unbounded.adb:68:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:68:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:68:31: info: initialization of private part of "V" proved
 unbounded.adb:69:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:69:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:69:31: info: initialization of private part of "V" proved
-unbounded.adb:71:25: info: initialization of private part of "V" proved
 unbounded.adb:72:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:72:36: info: initialization of private part of "V" proved
 unbounded.adb:73:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:73:30: info: initialization of private part of "V" proved
 unbounded.adb:74:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:74:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:74:31: info: initialization of private part of "V" proved
 unbounded.adb:75:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:75:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:75:31: info: initialization of private part of "V" proved
 unbounded.adb:77:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:77:35: info: initialization of private part of "V" proved
 unbounded.adb:78:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:78:34: info: initialization of private part of "V" proved
 unbounded.adb:79:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:79:22: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:79:37: info: initialization of private part of "V" proved
 unbounded.adb:80:22: info: assertion proved (CVC4: 1 VC)
 unbounded.adb:80:22: info: precondition proved (CVC4: 1 VC)
-unbounded.adb:80:36: info: initialization of private part of "V" proved
 unbounded.adb:82:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:82:34: info: initialization of private part of "V" proved
 unbounded.adb:83:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:83:34: info: initialization of private part of "V" proved
 unbounded.adb:84:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:84:34: info: initialization of private part of "V" proved
 unbounded.adb:86:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:86:42: info: initialization of private part of "V" proved
 unbounded.adb:87:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:87:42: info: initialization of private part of "V" proved
 unbounded.adb:88:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:88:42: info: initialization of private part of "V" proved
 unbounded.adb:90:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:90:32: info: initialization of private part of "V" proved
 unbounded.adb:91:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:91:36: info: initialization of private part of "V" proved
 unbounded.adb:92:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:92:35: info: initialization of private part of "V" proved
 unbounded.adb:93:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:93:39: info: initialization of private part of "V" proved
 unbounded.adb:94:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:94:39: info: initialization of private part of "V" proved
 unbounded.adb:96:22: info: assertion proved (Z3: 1 VC)
-unbounded.adb:96:42: info: initialization of private part of "V" proved
-unbounded.adb:97:18: info: initialization of private part of "V" proved
 unbounded.adb:98:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:98:36: info: initialization of private part of "V" proved
 unbounded.adb:99:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:99:30: info: initialization of private part of "V" proved
 unbounded.adb:100:22: info: assertion proved (Z3: 1 VC)
 unbounded.adb:100:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:100:31: info: initialization of private part of "V" proved
 unbounded.adb:101:22: info: assertion proved (Z3: 1 VC)
 unbounded.adb:101:22: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:101:31: info: initialization of private part of "V" proved
 unbounded.adb:102:22: info: assertion proved (CVC4: 1 VC)
-unbounded.adb:102:38: info: initialization of private part of "V" proved
 unbounded.adb:104:07: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:104:24: info: initialization of private part of "V" proved
 unbounded.adb:104:30: info: precondition proved (CVC4: 2 VC)
-unbounded.adb:104:39: info: initialization of private part of "V" proved
 unbounded.adb:105:07: medium: assertion might fail
-unbounded.ads:14:14: warning: subprogram "Test" has no effect
+unbounded.ads:15:14: warning: subprogram "Test" has no effect

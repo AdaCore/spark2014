@@ -1,5 +1,4 @@
-ext_pack.adb:5:04: info: initialization of "Step" constituent of "S" proved
-ext_pack.adb:9:14: medium: overflow check might fail (e.g. when C = -1 and Step = Integer'First) [possible explanation: subprogram at line 7 should mention C and Step in a precondition]
-ext_pack.adb:10:20: medium: overflow check might fail (e.g. when Step = Integer'Last) [possible explanation: subprogram at line 7 should mention Step in a precondition]
-ext_pack.ads:6:04: info: initialization of "C" proved
-pack.ads:7:04: info: initialization of "N" proved
+ext_pack.adb:9:14: medium: overflow check might fail (e.g. when C = -1 and Step = Integer'First) [possible explanation: subprogram at ext_pack.ads:8 should mention C and Step in a precondition]
+ext_pack.adb:10:20: medium: overflow check might fail (e.g. when Step = Integer'Last) [possible explanation: subprogram at ext_pack.ads:8 should mention Step in a precondition]
+ext_pack.ads:3:08: info: flow dependencies proved
+pack.ads:4:03: info: flow dependencies proved

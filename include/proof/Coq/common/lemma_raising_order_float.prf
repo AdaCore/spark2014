@@ -4,7 +4,7 @@ Require Import SPARK.
    When using "autorewrite with element_db", it will use its usual lemmas + range_axiom  *)
 Hint Rewrite  lt_finite : element_db.
 Hint Resolve range_axiom: element_db.
-assert (Htrans: Relation_Definitions.transitive _ (fun (x y: float) => lt (to_rep x) (to_rep y))).
+assert (Htrans: Relation_Definitions.transitive _ (fun (x y: float__) => lt (to_rep x) (to_rep y))).
 {
   (* Translate lt to the lt of Coq *)
   intro; intros; autorewrite with element_db in *; eauto with element_db.
@@ -14,3 +14,7 @@ assert (Htrans: Relation_Definitions.transitive _ (fun (x y: float) => lt (to_re
 }
 
 eapply (generic_raising_order_minus _ _ Htrans _ ); eauto; intuition.
+(* Conclude *)
+destruct (h2 i0) as [Hconcl | H3]; eauto.
+- destruct Hconcl; eauto.
+- subst. contradict H. omega.

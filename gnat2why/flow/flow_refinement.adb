@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                   --
 --                                                                          --
---               Copyright (C) 2013-2018, Altran UK Limited                 --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -292,6 +292,26 @@ package body Flow_Refinement is
             --  such cases we jump to the entity of the aspect.
 
             when N_Pragma =>
+               --  Pretend that pre- and postconditions are attached to the
+               --  body; this makes no difference for flow analysis (which
+               --  relies on the FA.S_Scope and FA.B_Scope that are set before
+               --  analysing any subprogram), but is needed for proof (which
+               --  simply calls Get_Flow_Scope as needed).
+
+               if Get_Pragma_Id (Context) in Pragma_Contract_Cases
+                                           | Pragma_Initial_Condition
+                                           | Pragma_Precondition
+                                           | Pragma_Postcondition
+               then
+                  if From_Aspect_Specification (Context) then
+                     return (Ent  => Entity (Corresponding_Aspect (Context)),
+                             Part => Body_Part);
+                  else
+                     return (Ent  => Unique_Defining_Entity (Parent (Context)),
+                             Part => Body_Part);
+                  end if;
+               end if;
+
                Prev_Context := Context;
 
                if From_Aspect_Specification (Context) then
@@ -385,23 +405,24 @@ package body Flow_Refinement is
    ------------------------
 
    function Is_Fully_Contained (State   : Entity_Id;
-                                Outputs : Node_Sets.Set)
+                                Outputs : Node_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    is
-      --  ??? Respect SPARK_Mode barrier, see Expand_Abstract_State
-     ((for all C of Iter (Refinement_Constituents (State))
-       => Outputs.Contains (C))
-        and then
-      (for all C of Iter (Part_Of_Constituents (State))
-       => Outputs.Contains (C)));
+   begin
+      return Node_Sets.Is_Subset (Subset =>
+                                    Down_Project (State, Body_Scope (Scop)),
+                                  Of_Set => Outputs);
+   end Is_Fully_Contained;
 
    function Is_Fully_Contained (State   : Flow_Id;
-                                Outputs : Flow_Id_Sets.Set)
+                                Outputs : Flow_Id_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    is
      (case State.Kind is
          when Direct_Mapping =>
-            Is_Fully_Contained (State.Node, To_Node_Set (Outputs)),
+            Is_Fully_Contained (State.Node, To_Node_Set (Outputs), Scop),
          when others =>
             raise Program_Error);
 
@@ -448,8 +469,9 @@ package body Flow_Refinement is
       Partial.Clear;
 
       for Var of Vars loop
-         if Is_Constituent (Var) then
-            pragma Assert (Var.Kind in Direct_Mapping | Record_Field);
+         if Var.Kind = Direct_Mapping
+           and then Is_Constituent (Get_Direct_Mapping_Id (Var))
+         then
             declare
                Projected_Entity, Partial_Entity : Node_Sets.Set;
 
@@ -498,7 +520,7 @@ package body Flow_Refinement is
 
       Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
+         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
             Projected_Vars.Inputs.Include (State);
          end if;
       end loop;
@@ -524,7 +546,7 @@ package body Flow_Refinement is
 
       Up_Project (Vars.Outputs, Scope, Projected, Partial);
       for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs) then
+         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
             Projected_Vars.Inputs.Include (Change_Variant (State, In_View));
          end if;
       end loop;
@@ -541,8 +563,6 @@ package body Flow_Refinement is
                          Projected_Deps : out Dependency_Maps.Map;
                          Scope          : Flow_Scope)
    is
-      use type Flow_Id_Sets.Set;
-
       LHS_Constituents : Flow_Id_Sets.Set;
       --  Constituents that are appear on the LHS of the dependency map
 
@@ -552,9 +572,104 @@ package body Flow_Refinement is
       Null_Clause : Dependency_Maps.Cursor;
       --  Position of the "null => ..." clause
 
+      Visible_Views  : Flow_Id_Sets.Set;
+      Projection_Map : Flow_Id_Surjection.Map;
+
+      function Visible_View (F : Flow_Id) return Flow_Id
+      with Pre  => Present (F),
+           Post => Present (Visible_View'Result);
+
+      ------------------
+      -- Visible_View --
+      ------------------
+
+      function Visible_View (F : Flow_Id) return Flow_Id is
+         Projected, Partial : Flow_Id_Sets.Set;
+
+      begin
+         if Is_Constituent (F) then
+            Up_Project (Flow_Id_Sets.To_Set (F), Scope, Projected, Partial);
+            pragma Assert (Partial.Length + Projected.Length = 1);
+
+            return (if Projected.Is_Empty
+                    then Partial (Partial.First)
+                    else Projected (Projected.First));
+         else
+            return F;
+         end if;
+      end Visible_View;
+
+   --  Start of processing for Up_Project
+
    begin
-      --  First collect constituents from the LHS of the dependency map; we
-      --  will use them to decide whether to add a self-dependency on their
+      --  First, up-project all items in the dependency map to their most
+      --  precise representation that is visible from Scope.
+
+      for Clause in Deps.Iterate loop
+         declare
+            LHS : Flow_Id renames Dependency_Maps.Key (Clause);
+            RHS : Flow_Id_Sets.Set renames Deps (Clause);
+
+            procedure Add_Mapping (Item : Flow_Id);
+            --  Add mapping from Item to its most precise representation
+
+            -----------------
+            -- Add_Mapping --
+            -----------------
+
+            procedure Add_Mapping (Item : Flow_Id) is
+               Repr : constant Flow_Id := Visible_View (Item);
+
+            begin
+               Projection_Map.Include (Key      => Item,
+                                       New_Item => Repr);
+
+               Visible_Views.Include (Repr);
+            end Add_Mapping;
+
+         begin
+            if Present (LHS) then
+               Add_Mapping (LHS);
+            end if;
+
+            for RHS_Item of RHS loop
+               Add_Mapping (RHS_Item);
+            end loop;
+         end;
+      end loop;
+
+      --  The most precise representation might violate SPARK RM 7.2.6(7), i.e.
+      --  we might get both a constituent and its encapsulating abstract state.
+      --  We climb the abstract state hierarchy and if get an abstract state
+      --  that appears in the contract we subsitute the target with that
+      --  abstract state.
+
+      for Mapping in Projection_Map.Iterate loop
+         declare
+            Source : Flow_Id renames Flow_Id_Surjection.Key (Mapping);
+            Target : Flow_Id renames Projection_Map (Mapping);
+
+            pragma Unreferenced (Source);
+            --  This is for debug
+
+            Repr : Flow_Id := Target;
+
+         begin
+            while Is_Constituent (Repr) loop
+               Repr := Encapsulating_State (Repr);
+               if Present (Repr) then
+                  if Visible_Views.Contains (Repr) then
+                     Target := Repr;
+                  end if;
+               else
+                  exit;
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      --  Collect constituents from the LHS of the dependency map; we will
+      --  use them to decide whether to add a self-dependency on their
       --  encapsulating abstract states for states that are partially-written.
 
       for Clause in Deps.Iterate loop
@@ -568,7 +683,7 @@ package body Flow_Refinement is
          end;
       end loop;
 
-      --  Up project the dependency relation and add a self-dependency for
+      --  Up-project the dependency relation and add a self-dependency for
       --  abstract states that are partially-written.
 
       for Clause in Deps.Iterate loop
@@ -576,29 +691,22 @@ package body Flow_Refinement is
             LHS : Flow_Id          renames Dependency_Maps.Key (Clause);
             RHS : Flow_Id_Sets.Set renames Deps (Clause);
 
-            Projected, Partial : Flow_Id_Sets.Set;
-            Projected_RHS      : Flow_Id_Sets.Set;
-
+            Projected_RHS    : Flow_Id_Sets.Set;
             Projected_Clause : Dependency_Maps.Cursor;
 
             Unused : Boolean;
 
          begin
-            Up_Project (RHS, Scope, Projected, Partial);
-            Projected_RHS := Projected or Partial;
-
-            --  Reuse set-based up-projection routine with a singleton set, for
-            --  which the result is also a singleton set.
-
-            Up_Project (Flow_Id_Sets.To_Set (LHS), Scope, Projected, Partial);
-            pragma Assert (Partial.Length + Projected.Length = 1);
+            for Item of RHS loop
+               Projected_RHS.Include (Projection_Map (Item));
+            end loop;
 
             --  If the LHS was up-projected to an abstract state then the RHS
             --  require a special processing.
 
-            if Projected.Is_Empty then
+            if Present (LHS) and then LHS /= Projection_Map (LHS) then
                declare
-                  LHS_State : Flow_Id renames Partial (Partial.First);
+                  LHS_State : constant Flow_Id := Projection_Map (LHS);
 
                begin
                   --  If State represents a partial-write of an abstract state
@@ -607,7 +715,9 @@ package body Flow_Refinement is
                   --  constituents behave as if they would be updated with
                   --  their old values.
 
-                  if not Is_Fully_Contained (LHS_State, LHS_Constituents) then
+                  if not Is_Fully_Contained (LHS_State, LHS_Constituents,
+                                             Scope)
+                  then
                      Projected_RHS.Include (LHS_State);
                   end if;
 
@@ -625,7 +735,10 @@ package body Flow_Refinement is
 
             else
                declare
-                  LHS_Object : Flow_Id renames Projected (Projected.First);
+                  LHS_Object : constant Flow_Id :=
+                    (if Present (LHS)
+                     then Projection_Map (LHS)
+                     else Null_Flow_Id);
 
                begin
                   Projected_Deps.Insert (Key      => LHS_Object,
@@ -1001,7 +1114,7 @@ package body Flow_Refinement is
                   --  Variables that are Part_Of a concurrent type are always
                   --  fully default initialized.
                   return True;
-               elsif Is_Predefined_Initialized_Variable (Ent) then
+               elsif Is_Predefined_Initialized_Entity (Ent) then
                   --  We don't have many predefined units with an Initializes
                   --  contract, but we still want to know if their variables
                   --  are initialized.

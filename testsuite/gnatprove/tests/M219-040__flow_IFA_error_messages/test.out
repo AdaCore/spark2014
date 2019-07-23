@@ -1,7 +1,7 @@
 test.adb:7:04: warning: analyzing unreferenced function "Uninitialized_1"
+test.adb:8:07: info: initialization of "X" proved
 test.adb:16:14: medium: "Y" might not be initialized
 test.adb:16:16: medium: overflow check might fail
-test.adb:16:18: info: initialization of "X" proved
 test.adb:31:07: medium: exception might be raised
 test.adb:38:04: warning: analyzing unreferenced procedure "Uninitialized_3"
 test.adb:38:51: medium: "C" might not be initialized in "Uninitialized_3"
@@ -12,15 +12,8 @@ test.adb:45:27: info: overflow check proved (CVC4: 1 VC)
 test.adb:45:32: info: division check proved (CVC4: 1 VC)
 test.adb:56:04: warning: analyzing unreferenced procedure "Uninitialized_4"
 test.adb:56:31: medium: "Export" might not be initialized in "Uninitialized_4"
-test.adb:62:18: info: initialization of "A" proved
 test.adb:62:20: medium: overflow check might fail [possible explanation: loop at line 61 should mention A in a loop invariant]
-test.adb:64:22: info: initialization of "B" proved
-test.adb:64:26: info: initialization of "A" proved
-test.adb:65:35: info: initialization of "B" proved
-test.adb:65:40: info: initialization of "A" proved
-test.adb:66:24: info: initialization of "B" proved
 test.adb:66:26: info: overflow check proved (CVC4: 1 VC)
-test.adb:67:29: info: initialization of "B" proved
 test.adb:76:04: warning: analyzing unreferenced procedure "Uninitialized_5"
 test.adb:76:31: medium: "A" might not be initialized in "Uninitialized_5"
 test.adb:79:21: high: "C" is not initialized
@@ -41,23 +34,28 @@ test.adb:103:07: warning: statement has no effect
 test.adb:104:12: warning: unused assignment
 test.adb:106:12: warning: unused assignment
 test.adb:116:40: info: initialization of "Export" proved
+test.adb:117:07: info: initialization of "Temp" proved
+test.adb:120:14: info: data dependencies proved
 test.adb:120:36: info: initialization of "Temp" proved
+test.adb:121:14: info: flow dependencies proved
+test.adb:128:15: info: data dependencies proved
 test.adb:128:37: info: initialization of "Temp" proved
+test.adb:129:15: info: flow dependencies proved
 test.adb:135:07: warning: statement has no effect
 test.adb:135:07: warning: unused assignment to "Temp"
-test.adb:137:17: info: initialization of "Temp" proved
 test.adb:144:14: warning: subprogram "Ineffective_Statements_4" has no effect
 test.adb:150:24: info: range check proved (CVC4: 1 VC)
 test.adb:150:24: medium: overflow check might fail [possible explanation: subprogram at line 147 should mention Val in a precondition]
 test.adb:150:41: info: range check proved (CVC4: 1 VC)
 test.adb:163:14: warning: subprogram "Unused_Variables_1" has no effect
+test.adb:167:10: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:173:25: info: assertion proved (CVC4: 1 VC), in instantiation at test.adb:176
-test.adb:173:25: info: initialization of "Unused" proved, in instantiation at test.adb:176
 test.adb:185:39: warning: unused variable "Par2"
+test.adb:187:07: info: initialization of "X" proved
+test.adb:187:10: info: initialization of "Y" proved
 test.adb:187:13: warning: unused variable "Z"
+test.adb:190:15: info: data dependencies proved
 test.adb:190:29: low: unused global "Y"
-test.adb:199:14: info: initialization of "X" proved
-test.adb:199:14: info: initialization of "Y" proved
 test.adb:199:23: medium: overflow check might fail [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
 test.adb:199:30: medium: overflow check might fail [possible explanation: subprogram at line 185 should mention Par1 in a precondition]
 test.adb:208:14: warning: subprogram "Unreachable_Code_1" has no effect

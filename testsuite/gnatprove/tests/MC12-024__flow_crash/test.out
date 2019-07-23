@@ -1,14 +1,11 @@
-p.adb:24:07: info: initialization of "Full_S.A" proved
-p.adb:24:07: info: initialization of "Full_S.B" proved
-p.adb:31:28: medium: overflow check might fail [possible explanation: subprogram at line 27 should mention Full_S and X in a precondition]
-p.adb:32:28: medium: float overflow check might fail [possible explanation: subprogram at line 27 should mention Full_S and Y in a precondition]
-p.ads:25:34: info: initialization of "Full_S.A" proved
-p.ads:25:34: info: initialization of "Full_S.B" proved
+p.adb:31:28: medium: overflow check might fail [possible explanation: subprogram at p.ads:30 should mention Full_S and X in a precondition]
+p.adb:32:28: medium: float overflow check might fail [possible explanation: subprogram at p.ads:30 should mention Full_S and Y in a precondition]
+p.ads:25:11: info: data dependencies proved
+p.ads:25:34: info: initialization of "Full_S" proved
 p.ads:25:42: info: initialization of "Raw_S" proved
-p.ads:27:22: info: initialization of "Full_S.A" proved
-p.ads:27:22: info: initialization of "Full_S.B" proved
-p.ads:28:22: info: initialization of "Raw_S" proved
-p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R
+p.ads:26:11: info: flow dependencies proved
+p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R [possible explanation: call at p.adb:24 should mention Raw_S in a postcondition]
+p.ads:32:11: info: data dependencies proved
 p.ads:32:41: warning: unused initial value of "Raw_S"
 p.ads:33:11: medium: missing dependency "null => Raw_S"
 p.ads:33:32: medium: incorrect dependency "Raw_S => Raw_S"

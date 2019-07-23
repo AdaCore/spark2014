@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -192,7 +192,7 @@ package Flow is
       --  vertex set of the other record fields; only used in phase 2.
 
       All_Vars : Flow_Id_Sets.Set;
-      --  Variables used in the body
+      --  Flattened variables accessible in the body
 
       Loops : Node_Sets.Set;
       --  Loops (identified by labels)
@@ -215,10 +215,16 @@ package Flow is
       Dependency_Map : Dependency_Maps.Map;
       --  A map of all the dependencies
 
-      No_Errors_Or_Warnings : Boolean;
-      --  True if no errors or warnings were found while flow analysing this
-      --  entity. This is initialized to True and set to False when an error
+      Errors_Or_Warnings : Boolean;
+      --  True if errors or warnings were found while flow analysing this
+      --  entity. This is initialized to False and set to True when an error
       --  or a warning is found.
+
+      Data_Dependency_Errors : Boolean;
+      Flow_Dependency_Errors : Boolean;
+      --  True if either data or flow dependency error has been reported for
+      --  this entity; such errors can be reported from various routines and
+      --  those flags are for maintaining a summary.
 
       Direct_Calls : Node_Sets.Set;
       --  Contains subprograms called and package elaborations
@@ -317,13 +323,16 @@ package Flow is
      (E                  : Entity_Id;
       Generating_Globals : Boolean)
       return Flow_Analysis_Graphs
-   with Pre => Ekind (E) in E_Function       |
-                            E_Procedure      |
-                            E_Task_Type      |
-                            E_Protected_Type |
-                            E_Entry          |
-                            E_Package        |
-                            E_Package_Body;
+   with Pre => Ekind (E) in E_Function
+                          | E_Procedure
+                          | E_Task_Type
+                          | E_Protected_Type
+                          | E_Entry
+                          | E_Package
+                          | E_Package_Body
+               and then (if Ekind (E) = E_Procedure
+                         then not Is_DIC_Procedure (E)
+                            and then not Is_Invariant_Procedure (E));
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 

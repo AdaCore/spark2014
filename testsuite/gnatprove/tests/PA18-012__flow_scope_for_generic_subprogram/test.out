@@ -1,8 +1,8 @@
 main.adb:7:04: info: in instantiation at memregions.adb:45
 main.adb:7:04: info: unrolling loop
-memregions.adb:10:04: info: initialization of "Validity" constituent of "State" proved
 memregions.adb:11:04: info: initialization of "Memory" constituent of "State" proved
 memregions.adb:18:23: info: unrolling loop
 memregions.adb:31:23: info: unrolling loop
-memregions.adb:37:14: info: initialization of "Res.Index" proved
-memregions.ads:11:14: info: initialization of "Validity" constituent of "State" proved
+memregions.ads:5:04: info: flow dependencies proved
+memregions.ads:17:07: info: data dependencies proved
+memregions.ads:24:07: info: data dependencies proved, in instantiation at main.adb:7

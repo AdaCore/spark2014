@@ -1,26 +1,16 @@
 p.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 p.adb:12:19: info: postcondition proved (CVC4: 2 VC)
 p.adb:16:14: warning: subprogram "Sub" has no effect
+p.adb:17:07: info: initialization of "Z" proved
+p.adb:17:07: info: initialization of "Z" proved, in call inlined at p.adb:43
 p.adb:22:22: info: postcondition proved (CVC4: 1 VC)
 p.adb:22:22: info: postcondition proved (CVC4: 1 VC), in call inlined at p.adb:43
 p.adb:27:22: info: postcondition proved (CVC4: 2 VC)
 p.adb:27:22: info: postcondition proved (CVC4: 2 VC), in call inlined at p.adb:43
 p.adb:32:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:43
-p.adb:32:22: info: initialization of "Z" proved
-p.adb:32:22: info: initialization of "Z" proved, in call inlined at p.adb:43
-p.adb:33:12: info: initialization of "Z" proved
-p.adb:33:12: info: initialization of "Z" proved, in call inlined at p.adb:43
 p.adb:34:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:43
-p.adb:34:22: info: initialization of "Z" proved
-p.adb:34:22: info: initialization of "Z" proved, in call inlined at p.adb:43
 p.adb:36:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:43
-p.adb:36:26: info: initialization of "Z" proved
-p.adb:36:26: info: initialization of "Z" proved, in call inlined at p.adb:43
-p.adb:37:12: info: initialization of "Z" proved
-p.adb:37:12: info: initialization of "Z" proved, in call inlined at p.adb:43
 p.adb:38:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:43
-p.adb:38:26: info: initialization of "Z" proved
-p.adb:38:26: info: initialization of "Z" proved, in call inlined at p.adb:43
 p.adb:41:04: warning: analyzing unreferenced procedure "Dummy"
 p.adb:41:14: warning: subprogram "Dummy" has no effect
 p.ads:9:19: info: postcondition proved (CVC4: 1 VC)

@@ -799,7 +799,7 @@ package ACChessBoard is
 
    -- Panther is new Piece: moves as Threeleaper (3,0 leaper) or as Wazir (1 sq. orthogonally)
    Panther_Offsets : array (Med_Offset_Type) of Direction_Type :=
-     (North_North_North, 
+     (North_North_North,
       East_East_East,
       South_South_South,
       West_West_West,
@@ -1073,8 +1073,8 @@ package ACChessBoard is
    -- and so on for other attacks_from function declared.
    Attacks_To : array (Integer_Type range -48 .. +48) of Move_Direction_Access :=
      (others => Attacks_From_Placeholder'Access);
-     
-   -- Initial setup - Random for NBV, but mirror symetric 
+
+   -- Initial setup - Random for NBV, but mirror symetric
    -- All pawns protected: Setup_RVNB, Setup_RBVN
    -- Unprotected pawns:   Setup_RVNB, Setup_RBNV, Setup_RNBV, Setup_RNVB
       Type Random_Setup_Type is ( Setup_RVNB, Setup_RBVN, Setup_RVBN, Setup_RBNV, Setup_RNBV, Setup_RNVB );
@@ -1082,7 +1082,7 @@ package ACChessBoard is
       --subtype Protected_Random_Setup_Type is Random_Setup_Type range Setup_RVNB .. Setup_RBVN;
 
       This_Random_Setup : Random_Setup_Type;
-      
+
       package Random_Setup is new Ada.Numerics.Discrete_Random ( Random_Setup_Type );
 
    ----------------

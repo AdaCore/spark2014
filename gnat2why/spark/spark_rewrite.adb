@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                        Copyright (C) 2013-2018, AdaCore                  --
+--                     Copyright (C) 2013-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -411,6 +411,23 @@ package body SPARK_Rewrite is
                   end if;
                end;
 
+            --  Slices cause the creation of Itypes with associated nodes for
+            --  the range of the corresponding index. These nodes should be
+            --  rewritten as well, which require special handling as they are
+            --  not attached to the tree. Possibly this could be done in
+            --  a variant of Traverse_Proc that does only traverse syntactic
+            --  children nodes???
+
+            when N_Slice =>
+               declare
+                  Typ   : constant Entity_Id := Etype (N);
+                  Index : constant Node_Id := First_Index (Typ);
+               begin
+                  if Is_Itype (Typ) then
+                     Rewrite_Nodes (Scalar_Range (Entity (Index)));
+                  end if;
+               end;
+
             when others =>
                null;
          end case;
@@ -450,12 +467,11 @@ package body SPARK_Rewrite is
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
          null;
 
-      --  Rewrite_Compilation_Unit is called on the declaration or body of a
-      --  library unit (see spec of Sem.Walk_Library_Items), but we need here
-      --  to call Rewrite_Nodes on the parent compilation unit node, so that
-      --  aspects rewritten as pragmas after the library unit declaration or
-      --  body (listed in Pragmas_After) are also rewritten. Only Standard
-      --  package has no such a parent.
+      --  This procedure is called on the declaration or body of a library
+      --  unit, but we also need to process the parent of the compilation unit
+      --  node, so that aspects rewritten as pragmas after the library unit
+      --  declaration or body (listed in Pragmas_After) are also processed.
+      --  Only the Standard package has no such a parent.
 
       elsif N = Standard_Package_Node then
          pragma Assert (No (Parent (N)));

@@ -1,6 +1,5 @@
+arith.adb:18:07: info: initialization of "Z" proved
 arith.adb:20:22: info: unrolling loop
-arith.adb:21:15: info: initialization of "Z" proved
-arith.adb:21:23: medium: overflow check might fail (e.g. when J = 1 and X = (1 => Integer'First, others => -1) and Y = (1 => -1, others => Integer'First) and Z = (others => Integer'First)) [possible explanation: subprogram at line 17 should mention X and Y in a precondition]
-arith.adb:23:14: info: initialization of "Z" proved
+arith.adb:21:23: medium: overflow check might fail (e.g. when J = 1 and X = (others => -1) and Y = (others => Integer'First)) [possible explanation: subprogram at arith.ads:15 should mention X and Y in a precondition]
 arith.ads:6:40: info: overflow check proved (CVC4: 1 VC)
 arith.ads:6:68: info: overflow check proved (CVC4: 1 VC)

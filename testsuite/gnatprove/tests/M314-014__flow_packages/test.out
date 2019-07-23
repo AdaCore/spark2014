@@ -1,45 +1,56 @@
-ic.adb:14:32: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
+ic.adb:13:11: info: flow dependencies proved
 ic.adb:16:07: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
+ic.adb:23:11: info: flow dependencies proved
 ic.adb:24:36: "Test_02.Y" constituent of "IC.State_B" must be initialized at elaboration
 ic.adb:26:07: info: initialization of "Test_02.X" constituent of "IC.State_A" proved
-ic.adb:32:32: info: initialization of "Test_03.X" constituent of "IC.State_A" proved
+ic.adb:31:11: info: flow dependencies proved
 ic.adb:34:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized
 ic.adb:34:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:34:07: info: initialization of "Test_03.X" constituent of "IC.State_A" proved
+ic.adb:39:11: info: flow dependencies proved
 ic.adb:40:43: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_04" (SPARK RM 7.1.5(11))
 ic.adb:42:07: high: "Test_01.X" constituent of "IC.State_A" is not initialized
 ic.adb:42:07: high: initialization of "IC.State_A" is specified at ic.ads:3
 ic.adb:42:07: info: initialization of "Test_04.X" constituent of "IC.State_A" proved
+ic.adb:48:06: info: flow dependencies proved
 ic.adb:49:34: high: "Test_01.X" constituent of "IC.State_A" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
 ic.adb:49:34: high: "Test_01.Y" constituent of "IC.State_B" must be mentioned as an input of the Initializes aspect of "Test_05" (SPARK RM 7.1.5(11))
 ic.adb:54:24: warning: no procedure exists that can initialize abstract state "Test_06.S" constituent of "IC.State_B"
-ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(13))
+ic.adb:57:09: info: data dependencies proved
+ic.adb:91:31: high: "Y" constituent of "S" must be listed in the Refined_Global aspect of "Sanity_Check_5" (SPARK RM 6.1.4(14))
 ic.adb:108:06: "Test_02.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
-ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(13))
+ic.adb:108:06: info: data dependencies proved
+ic.adb:109:35: high: "Test_02.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_1" (SPARK RM 6.1.4(14))
 ic.adb:116:06: "Test_01.Y" constituent of "IC.State_B" is referenced in Post but missing from the Global
-ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(13))
-ic.adb:125:14: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:126:21: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:132:14: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
-ic.adb:133:41: info: initialization of "Test_01.X" constituent of "IC.State_A" proved
+ic.adb:116:06: info: data dependencies proved
+ic.adb:118:41: high: "Test_01.Y" constituent of "IC.State_B" must be listed in the Global aspect of "Sanity_Check_2" (SPARK RM 6.1.4(14))
 ic.ads:2:36: warning: no procedure exists that can initialize abstract state "IC.State_B"
+ic.ads:3:08: info: flow dependencies proved
 initialized.adb:5:04: info: initialization of "Var" constituent of "State" proved
+initialized.ads:4:08: info: flow dependencies proved
+initialized.ads:7:11: info: data dependencies proved
+main.adb:6:09: info: data dependencies proved
 main.adb:7:44: info: initialization of "Uninitialized.State" proved
+main.adb:8:09: info: flow dependencies proved
 no_init.ads:3:26: warning: no procedure exists that can initialize abstract state "No_Init.S"
+no_init.ads:4:08: info: flow dependencies proved
+other.ads:3:08: info: flow dependencies proved
 pkg_a.adb:7:04: high: "A" constituent of "State_A" is not initialized in "Pkg_A"
 pkg_a.adb:7:04: high: initialization of "Pkg_A.State_A" is specified at pkg_a.ads:3
 pkg_a.adb:11:61: info: overflow check proved (CVC4: 1 VC)
-pkg_a.adb:16:09: medium: precondition might fail
+pkg_a.adb:16:09: medium: precondition might fail, cannot prove X in -100 .. 100
 pkg_a.adb:16:23: high: "X" is not initialized
 pkg_a.adb:17:06: warning: unused assignment
 pkg_a.ads:2:36: warning: no procedure exists that can initialize abstract state "Pkg_A.State_B"
 pkg_a.ads:8:04: high: "X" is not initialized in "Pkg_A"
-pkg_a.ads:10:04: info: initialization of "Z" proved
 pkg_a.ads:10:04: warning: initialization of "Z" has no effect
 pkg_a.ads:12:04: low: initialization of "W" must be mentioned in the Initializes contract of "Pkg_A" (SPARK RM 7.1.5(9))
 pkg_a.ads:13:04: info: initialization of "Q" proved
 pkg_b.adb:10:14: high: "Y" must be mentioned as an input of the Initializes aspect of "Pkg_B" (SPARK RM 7.1.5(11))
+pkg_b.ads:5:08: info: flow dependencies proved
 pkg_c.adb:15:12: high: cannot write "X" during elaboration of "Pkg_C" (SPARK RM 7.7.1(6))
+pkg_c.ads:5:08: info: flow dependencies proved
+pkg_d.ads:4:06: info: flow dependencies proved
 pkg_d.ads:4:27: high: X must be initialized at elaboration
 pkg_d.ads:10:04: info: initialization of "X" proved
 pkg_d.ads:11:04: info: initialization of "Y" proved
@@ -48,10 +59,9 @@ pkg_e.adb:6:03: high: "X" constituent of "Meant_To_Be_Init" is not initialized i
 pkg_e.adb:6:03: high: initialization of "Pkg_E.Meant_To_Be_Init" is specified at pkg_e.ads:4
 pkg_e.adb:7:03: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.adb:14:06: warning: unused assignment
-pkg_e.adb:14:09: info: initialization of "Y" constituent of "Meant_To_Be_Init" proved
 pkg_e.ads:3:27: warning: no procedure exists that can initialize abstract state "Pkg_E.Meant_To_Be_Unint"
 pkg_e.ads:8:03: high: "Vis_A" is not initialized in "Pkg_E"
-pkg_e.ads:9:03: info: initialization of "Vis_B" proved
 pkg_e.ads:11:03: low: initialization of "Vis_D" must be mentioned in the Initializes contract of "Pkg_E" (SPARK RM 7.1.5(9))
 uninitialized.adb:8:40: info: initialization of "Var" constituent of "State" proved
+uninitialized.ads:6:11: info: data dependencies proved
 gnatprove: error during flow analysis and proof

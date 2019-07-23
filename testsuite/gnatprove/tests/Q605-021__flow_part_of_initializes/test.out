@@ -1,1 +1,2 @@
+tp.ads:4:09: info: flow dependencies proved
 tp.ads:9:23: high: "Var" must be mentioned as an input of the Initializes aspect of "TP" (SPARK RM 7.1.5(11))

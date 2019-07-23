@@ -1,29 +1,24 @@
+fb20a00.adb:9:07: info: initialization of "New_Str" proved
 fb20a00.adb:9:07: info: range check proved (CVC4: 2 VC)
+fb20a00.adb:10:07: info: initialization of "New_Sub" proved
 fb20a00.adb:10:07: info: range check proved (CVC4: 2 VC)
+fb20a00.adb:18:10: info: initialization of "Ret" proved
 fb20a00.adb:18:10: info: range check proved (CVC4: 2 VC)
+fb20a00.adb:19:10: info: initialization of "Pos" proved
 fb20a00.adb:21:29: info: cannot unroll loop (too many loop iterations)
-fb20a00.adb:25:24: info: initialization of "Ret" proved
-fb20a00.adb:25:38: info: initialization of "Pos" proved
 fb20a00.adb:25:38: info: range check proved (CodePeer)
-fb20a00.adb:27:24: info: initialization of "Ret" proved
-fb20a00.adb:30:18: info: initialization of "Ret" proved
-fb20a00.adb:34:15: info: length check proved (CVC4: 4 VC)
-fb20a00.adb:34:18: medium: length check might fail [possible explanation: subprogram at line 6 should mention Str in a precondition]
-fb20a00.adb:35:15: info: length check proved (CVC4: 4 VC)
-fb20a00.adb:35:18: medium: length check might fail [possible explanation: subprogram at line 6 should mention Sub in a precondition]
-fb20a00.adb:37:15: info: initialization of "Pos" proved
-fb20a00.adb:37:22: info: initialization of "New_Str" proved
+fb20a00.adb:34:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+fb20a00.adb:34:18: medium: length check might fail [possible explanation: subprogram at fb20a00.ads:43 should mention Str in a precondition]
+fb20a00.adb:35:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+fb20a00.adb:35:18: medium: length check might fail [possible explanation: subprogram at fb20a00.ads:43 should mention Sub in a precondition]
 fb20a00.adb:37:34: medium: overflow check might fail
-fb20a00.adb:37:35: info: initialization of "New_Sub" proved
 fb20a00.adb:37:42: info: range check proved (CodePeer)
 fb20a00.adb:37:49: medium: overflow check might fail
 fb20a00.adb:39:11: medium: range check might fail
 fb20a00.adb:39:31: medium: overflow check might fail
 fb20a00.adb:39:39: info: range check proved (CodePeer)
 fb20a00.adb:39:46: info: overflow check proved (CodePeer)
-fb20a00.adb:42:17: info: initialization of "Pos" proved
 fb20a00.adb:42:21: medium: overflow check might fail
-fb20a00.adb:45:12: info: initialization of "Pos" proved
 fb20a00.adb:45:30: info: overflow check proved (CodePeer)
 fb20a00.adb:45:38: info: range check proved (CodePeer)
 fb20a00.adb:45:45: info: overflow check proved (CodePeer)

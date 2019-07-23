@@ -10,4 +10,4 @@ functional.ads:10:06: info: disjoint contract cases proved
 functional.ads:11:28: info: contract case proved
 functional.ads:16:28: info: contract case proved
 functional.ads:21:36: info: contract case proved
-functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen) (e.g. when Max = 1 and Snd = 1)
+functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen) (e.g. when Max1 = Natural'Last and Max2 = Natural'Last)

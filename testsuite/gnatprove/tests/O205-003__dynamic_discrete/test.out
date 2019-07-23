@@ -1,10 +1,8 @@
 test_dynamic_property.adb:1:11: warning: subprogram "Test_Dynamic_Property" has no effect
 test_dynamic_property.adb:2:12: info: range check proved (CVC4: 2 VC)
 test_dynamic_property.adb:3:32: info: range check proved (CVC4: 1 VC)
+test_dynamic_property.adb:5:24: info: flow dependencies proved
 test_dynamic_property.adb:7:15: info: range check proved (CVC4: 2 VC)
-test_dynamic_property.adb:8:07: info: initialization of "X" proved
-test_dynamic_property.adb:8:07: info: initialization of "Y" proved
-test_dynamic_property.adb:8:31: info: initialization of "X" proved
 test_dynamic_property.adb:8:31: info: range check proved (CVC4: 1 VC)
 test_dynamic_property.adb:11:17: info: postcondition proved (CVC4: 1 VC)
 test_dynamic_property.adb:18:20: info: overflow check proved (CVC4: 1 VC)
@@ -13,22 +11,14 @@ test_dynamic_property.adb:28:17: info: range check proved (CVC4: 1 VC)
 test_dynamic_property.adb:30:17: info: range check proved (CVC4: 1 VC)
 test_dynamic_property.adb:39:17: info: overflow check proved (CVC4: 1 VC)
 test_dynamic_property.adb:39:17: info: range check proved (CVC4: 1 VC)
-test_dynamic_property.adb:43:09: info: precondition proved (CVC4: 1 VC)
+test_dynamic_property.adb:43:09: info: precondition proved (Trivial: 1 VC)
 test_dynamic_property.adb:44:19: info: assertion proved (CVC4: 1 VC)
-test_dynamic_property.adb:44:19: info: initialization of "X" proved
 test_dynamic_property.adb:45:19: info: assertion proved (CVC4: 1 VC)
-test_dynamic_property.adb:45:19: info: precondition proved (CVC4: 1 VC)
-test_dynamic_property.adb:46:04: info: precondition proved (CVC4: 1 VC)
-test_dynamic_property.adb:46:15: info: initialization of "X" proved
+test_dynamic_property.adb:45:19: info: precondition proved (Trivial: 1 VC)
+test_dynamic_property.adb:46:04: info: precondition proved (Trivial: 1 VC)
 test_dynamic_property.adb:47:19: info: assertion proved (CVC4: 1 VC)
-test_dynamic_property.adb:47:19: info: initialization of "X" proved
-test_dynamic_property.adb:48:13: info: initialization of "Y" proved
-test_dynamic_property.adb:49:07: info: precondition proved (CVC4: 1 VC)
-test_dynamic_property.adb:49:24: info: initialization of "Y" proved
+test_dynamic_property.adb:49:07: info: precondition proved (Trivial: 1 VC)
 test_dynamic_property.adb:49:24: info: range check proved (CVC4: 1 VC)
 test_dynamic_property.adb:50:22: info: assertion proved (CVC4: 1 VC)
-test_dynamic_property.adb:50:28: info: initialization of "Y" proved
-test_dynamic_property.adb:52:22: info: initialization of "X" proved
 test_dynamic_property.adb:52:22: info: range check proved (CVC4: 1 VC)
 test_dynamic_property.adb:53:19: info: assertion proved (CVC4: 1 VC)
-test_dynamic_property.adb:53:19: info: initialization of "X" proved

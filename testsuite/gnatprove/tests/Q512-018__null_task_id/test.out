@@ -1,0 +1,2 @@
+main.adb:7:41: medium: precondition might fail, cannot prove T /= Null_Task_Id
+main.adb:8:41: medium: precondition might fail, cannot prove T /= Null_Task_Id

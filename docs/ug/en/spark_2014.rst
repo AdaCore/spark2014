@@ -15,12 +15,11 @@ More details on how |GNAT Pro| compiles |SPARK| code can be found in the |GNAT
 Pro| Reference Manual.
 
 |SPARK| can be seen as a large subset of Ada with additional
-aspects/pragmas/attributes, the latest version SPARK 2014 being a much larger
-subset than previous versions of |SPARK|. It includes in particular:
+aspects/pragmas/attributes. It includes in particular:
 
-* richer types (subtypes with bounds not known statically, discriminant
-  records, subtype predicates)
-* more flexible features to structure programs (function and operator
+* rich types (subtypes with bounds not known statically, discriminant records,
+  subtype predicates, access types)
+* flexible features to structure programs (function and operator
   overloading, early returns and exits, raise statements)
 * code sharing features (generics, expression functions)
 * object oriented features (tagged types, dispatching)

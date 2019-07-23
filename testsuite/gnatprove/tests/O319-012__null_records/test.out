@@ -1,12 +1,12 @@
 null_record.adb:10:22: info: assertion proved (CVC4: 1 VC)
 null_record.adb:11:22: info: assertion proved (CVC4: 1 VC)
-null_record.adb:64:07: info: precondition proved (CVC4: 1 VC)
+null_record.adb:64:07: info: precondition proved (Trivial: 1 VC)
 null_record.adb:65:22: info: assertion proved (CVC4: 1 VC)
-null_record.adb:66:07: info: precondition proved (CVC4: 1 VC)
+null_record.adb:66:07: info: precondition proved (Trivial: 1 VC)
 null_record.adb:67:22: info: assertion proved (CVC4: 1 VC)
-null_record.adb:68:07: info: precondition proved (CVC4: 1 VC)
+null_record.adb:68:07: info: precondition proved (Trivial: 1 VC)
 null_record.adb:69:22: info: assertion proved (CVC4: 1 VC)
-null_record.adb:70:07: info: precondition proved (CVC4: 1 VC)
+null_record.adb:70:07: info: precondition proved (Trivial: 1 VC)
 null_record.adb:71:22: info: assertion proved (CVC4: 1 VC)
 null_record.ads:8:14: warning: subprogram "Check_Equal" has no effect
 null_record.ads:9:14: warning: subprogram "Check_Aggregate" has no effect

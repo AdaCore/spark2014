@@ -1,5 +1,5 @@
-saturation.adb:11:23: medium: postcondition might fail, cannot prove Val = Val'old (e.g. when Val = (Value => 36830, Upper_Bound => 36830) and Val'Old = (Value => 28705, Upper_Bound => 36830))
+saturation.adb:11:23: medium: postcondition might fail, cannot prove Val = Val'old (e.g. when Val = (Value => 65534, Upper_Bound => 65534) and Val'Old = (Value => 1, Upper_Bound => 65534))
 counterexample expected for check at saturation.adb:11
-  trace at saturation.adb:10 --> Val = (Value => 28705, Upper_Bound => 36830)
-  trace at saturation.adb:11 --> Val = (Value => 36830, Upper_Bound => 36830) and Val'Old = (Value => 28705, Upper_Bound => 36830)
-  trace at saturation.adb:15 --> Val = (Value => 36830, Upper_Bound => 36830)
+  trace at saturation.adb:10 --> Val = (Value => 1, Upper_Bound => 65534)
+  trace at saturation.adb:11 --> Val = (Value => 65534, Upper_Bound => 65534) and Val'Old = (Value => 1, Upper_Bound => 65534)
+  trace at saturation.adb:15 --> Val = (Value => 65534, Upper_Bound => 65534)

@@ -1,11 +1,4 @@
-non_binary_mod_power.adb:13:09: info: initialization of "X" proved
-non_binary_mod_power.adb:14:09: info: initialization of "Y" proved
-non_binary_mod_power.adb:15:10: info: initialization of "Z" proved
 non_binary_mod_power.adb:15:12: info: overflow check proved (CVC4: 1 VC)
 non_binary_mod_power.adb:15:18: info: division check proved (CVC4: 1 VC)
 non_binary_mod_power.adb:16:19: info: assertion proved (CVC4: 1 VC)
-non_binary_mod_power.adb:16:19: info: initialization of "Z" proved
-non_binary_mod_power.adb:16:32: info: initialization of "Y" proved
-non_binary_mod_power.adb:17:19: info: initialization of "X" proved
-non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = T1 (Y) (e.g. when X = 0 and Y = 0)
-non_binary_mod_power.adb:17:27: info: initialization of "Y" proved
+non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = T1 (Y) (e.g. when X = 223 and Y = 1)

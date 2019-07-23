@@ -1,3 +1,3 @@
-main.adb:4:16: medium: postcondition might fail, cannot prove A = B (e.g. when A = (X => -1) and B = (X => -1)) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
-main.adb:7:16: medium: overflow check might fail (e.g. when A = (X => Integer'First) and B = (X => -1)) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
+main.adb:4:16: medium: postcondition might fail, cannot prove A = B (e.g. when A = (X => 0) and B = (X => 0))
+main.adb:7:16: medium: overflow check might fail (e.g. when A = (X => -1) and B = (X => Integer'First)) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
 main.adb:7:23: info: division check proved (CVC4: 1 VC)

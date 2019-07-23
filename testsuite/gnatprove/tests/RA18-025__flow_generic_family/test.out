@@ -1,3 +1,5 @@
-gp-gc.adb:4:09: high: "P.State" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(13)), in instantiation at main.adb:6
-gp.adb:2:04: info: initialization of "X" constituent of "State" proved, in instantiation at main.adb:5
+gp-gc.adb:4:09: high: "P.State" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14)), in instantiation at main.adb:6
+gp-gc.ads:3:24: info: data dependencies proved, in instantiation at main.adb:6
+gp.ads:2:42: info: flow dependencies proved, in instantiation at main.adb:5
+gp.ads:3:24: info: data dependencies proved, in instantiation at main.adb:5
 main.adb:4:11: warning: subprogram "Main" has no effect

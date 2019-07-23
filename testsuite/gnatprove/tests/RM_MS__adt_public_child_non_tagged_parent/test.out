@@ -1,3 +1,4 @@
-pairs_14-additional_14.adb:7:42: medium: overflow check might fail (e.g. when Value = (Value_One => Integer'Last, Value_Two => Integer'Last)) [possible explanation: subprogram at line 4 should mention Value in a precondition]
-pairs_14-additional_14.adb:8:42: medium: overflow check might fail (e.g. when Value = (Value_One => ?, Value_Two => Integer'Last)) [possible explanation: subprogram at line 4 should mention Value in a precondition]
-pairs_14.adb:5:23: medium: overflow check might fail (e.g. when Value = (Value_One => -1, Value_Two => Integer'First)) [possible explanation: subprogram at line 4 should mention Value in a precondition]
+pairs_14-additional_14.adb:7:42: medium: overflow check might fail (e.g. when Value = (Value_One => Integer'Last, Value_Two => Integer'Last)) [possible explanation: subprogram at pairs_14-additional_14.ads:6 should mention Value in a precondition]
+pairs_14-additional_14.adb:8:42: medium: overflow check might fail (e.g. when Value = (Value_One => 1, Value_Two => Integer'Last)) [possible explanation: subprogram at pairs_14-additional_14.ads:6 should mention Value in a precondition]
+pairs_14-additional_14.ads:7:11: info: flow dependencies proved
+pairs_14.adb:5:23: medium: overflow check might fail (e.g. when Value = (Value_One => -1, Value_Two => Integer'First)) [possible explanation: subprogram at pairs_14.ads:8 should mention Value in a precondition]

@@ -4,7 +4,7 @@ with Ada.Unchecked_Deallocation;
 with System.Memory;                 use System, System.Memory;
 with System.Unsigned_Types;         use System.Unsigned_Types;
 
-package body Conts.Lists with SPARK_Mode => Off is
+package body Conts.Lists is
 
    -------------------------------
    -- Bounded_List_Nodes_Traits --

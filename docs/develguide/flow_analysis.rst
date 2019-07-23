@@ -1,7 +1,113 @@
 Flow Analysis
 =============
 
+To start hacking on the flow analaysis you should first read about the general
+tool architecture (:ref:`Tool Structure`). Then the main entry point for the
+gnat2why backed is the GNAT_To_Why routine. Note: we hack on gnat2why with
+different editors, but for newcomers it is the easiest to stick with GPS,
+because it seems best with code navigation (e.g. showing where objects are
+written and where subprograms are called).
+
+The GNAT_To_Why routine takes a root node of the current compilation unit; you
+can read about the abstract syntax tree, or AST in section 2.2.1 The Abstract
+Syntax Tree of the GNAT Book (https://www2.adacore.com/gap-static/GNAT_Book/).
+
+To navigate the AST we use routines from these units (from high- to low-level):
+
+1. ``SPARK_Util``
+2. ``Sem_Util``
+3. ``Einfo``
+4. ``Sinfo``
+
+It is impossible to become familiar with all of those routines up front, but it
+will happen as you hack. Just keep in mind that we prefer high-level routines,
+because they make the code more readable and are more robust (as they abstract
+from many "AST anomalies", e.g. renamings as compilation units and renamings as
+bodies); also, Entity_Id is preferred over Node_Id (where possible).
+
+Inspired by the frontend Node_Ids and Entity_Ids, flow analysis mostly deals
+with Flow_Ids. However, they are heavier that the frontend ones (because they
+have a controlled component) and are not kept in tables (because we are not
+restricted by the frontend bootstrapping issues and can freely use
+Ada.Containers which offer nicer API). This is why instead of local copies of
+Flow_Id objects we prefer renamings (this used to be a performance bottleneck,
+so those renamings are not a premature optimization).
+
+The need for a dedicated data structure is best illustrated by record
+components (e.g. A.B.C), which can't be represented with a single Entity_Id
+(instead, the Flow_Id.Node represents A and Flow_Id.Component represents a
+vector [B,C]). Note: the Flow_Id contains much more (and arguably its current
+design evolved into this and perhaps should be revisited one day); you will
+become familiar with this as you hack.
+
+Finally, Flow_Id can wrap around Entity_Name for objects that can't be
+represented as an Entity_Id. This is best illustrated by an example: remember
+that frontend processes one unit at a time, but the unit might (indirectly)
+reference an object from another units:
+
+.. code-block:: ada
+
+   package Other is
+      function Proxy return Boolean;
+   end;
+
+   package body Other is
+      Hidden : Boolean := True;
+      function Proxy return Boolean is (Hidden);
+   end;
+
+   with Other;
+   procedure Main is
+      X : Boolean := Other.Proxy;
+   ...
+
+When analysing Main the frontend will not see the Hidden object (and this is
+the right choice as far as the compilation is concerned), but flow analysis
+must recognize that Proxy references Hidden and so Hidden will be represented
+as an Entity_Name. The Entity_Name is just an integer (just like Entity_Id), so
+it is cheap to test for equality and store in containers. For error reporting
+we map Entity_Name to a corresponding string (e.g. "other__hidden").
+
+To have unique representation, if an object can be represented by both
+Entity_Name and Entity_Id, we choose Entity_Id, as it makes navigating the AST
+and writing assertions easier. The correspondence in maintained in
+``SPARK_Register``.
+
+Flow graphs
+***********
+
+The bulk of flow analysis is based on a widely cited paper "The Program
+Dependence Graph and Its Use in Optimization" by Ferrante, et al. We have 5
+kinds of graphs, but in practice we primarily look at control flow graph (CFG)
+and code that populates it, and on the program dependence graph (PDG) and code
+that analyses it. To see the graph use ``--flow-debug`` switch; they will be
+placed as gnatprove/*.pdf files. They are prefixed with gg_ and fa_, which
+stands for "global generation" and "flow analysis" (or phase 1 and 2),
+respectively.
+
+Intuitively, at the top of the graphs are vertices for initial values of
+various "places" (in the Common Lisp sense), i.e. formal and global parameters,
+local objects, loop variables, etc; record objects are "flattened" into
+components.  At the bottom are the final vertices. (Pronounced "tick initial"
+and "tick final", respectively, as they resemble Ada attributes.) In the middle
+are vertices that correspond to statements in the source code.
+
+Graph vertices are manipulated as integers (for same reasons as Entity_Names).
+Internally each vertex represents a Flow_Id, which is quite natural for the
+top/bottom vertices, but note that their Flow_Id.Variant is set to
+Initial_Value and Final_Value, respectively. Vertices that represent statements
+have Flow_Id.Node set to the Node_Id of the statement. Now you see that Flow_Id
+can represent quite different things (just like Entity_Id). It might be
+confusing at the beginning, but soon stops to be a problem, because typically
+routines only deal with one "kind" of thing at a time.
+
+Graphs are created in ``flow-control-flow-graph.adb`` and analysed in
+``flow-analysis.adb``.
+
 ..  this is about global generation
+
+Global generation
+=================
 
 Flow analysis is really about two activities: verifying the explicit data flow
 contracts (e.g. Global/Depends) and generating them when they are missing.

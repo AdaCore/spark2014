@@ -1,7 +1,5 @@
 skein.adb:34:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:139
-skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash = (others => 0) and Hash'First = 9 and N = 7)
-skein.adb:35:34: info: initialization of "Hash" proved, in call inlined at skein.adb:139
-skein.adb:36:70: info: initialization of "Local_Ctx.X" proved, in call inlined at skein.adb:139
+skein.adb:35:29: medium: array index check might fail, in call inlined at skein.adb:139 (e.g. when Hash'First = 9 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 63, First_Block => True, Final_Block => True), Hash_Bit_Len => 9223372036854776312, Byte_Count => 0), X => (0 => 0, others => 0), B => (others => 0)) and N = 7)
 skein.adb:36:77: info: division check proved (CVC4: 1 VC), in call inlined at skein.adb:139
 skein.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:139
 skein.adb:37:57: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:139
@@ -11,68 +9,48 @@ skein.adb:56:22: warning: unused assignment, in call inlined at skein.adb:127
 skein.adb:60:04: warning: analyzing unreferenced procedure "Zero_Pad"
 skein.adb:64:11: info: range check proved (CVC4: 2 VC)
 skein.adb:64:98: info: cannot unroll loop (too many loop iterations)
+skein.adb:76:07: info: initialization of "Local_Ctx" proved
+skein.adb:77:07: info: initialization of "N" proved
+skein.adb:78:07: info: initialization of "Blocks_Done" proved
+skein.adb:79:07: info: initialization of "Blocks_Required" proved
+skein.adb:80:07: info: initialization of "Byte_Count" proved
+skein.adb:81:07: info: initialization of "X" proved
 skein.adb:87:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:111
-skein.adb:87:53: info: initialization of "Local_Ctx.H.Byte_Count" proved, in call inlined at skein.adb:111
 skein.adb:87:112: warning: statement has no effect, in call inlined at skein.adb:111
-skein.adb:88:29: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:111
 skein.adb:88:29: warning: unused assignment, in call inlined at skein.adb:111
-skein.adb:95:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:95:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:95:43: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:96:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:96:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:96:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:97:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:97:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:97:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:98:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:98:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:98:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:99:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:99:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:99:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:100:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:100:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:100:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:101:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:101:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:101:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:102:26: info: initialization of "Local_Ctx.B" proved, in call inlined at skein.adb:125
 skein.adb:102:26: warning: unused assignment, in call inlined at skein.adb:125
 skein.adb:102:72: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:125
-skein.adb:107:12: medium: length check might fail (e.g. when Hash = (others => 0) and Hash'First = 0 and Hash'Last = 0)
+skein.adb:107:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 skein.adb:109:43: warning: unused assignment
 skein.adb:110:07: warning: statement has no effect
-skein.adb:110:11: info: initialization of "Local_Ctx.H.Byte_Count" proved
 skein.adb:111:10: info: analyzing call to "Zero_Pad_B" in context
 skein.adb:111:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:111:10: info: in inlined body at line 87
-skein.adb:115:22: info: initialization of "Local_Ctx.H.Hash_Bit_Len" proved
 skein.adb:115:52: info: division check proved (CVC4: 1 VC)
-skein.adb:115:52: medium: range check might fail (e.g. when Byte_Count = 0 and Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
+skein.adb:115:52: medium: range check might fail (e.g. when Local_Ctx = (H => (Tweak_Words => (Byte_Count_LSB => 0, Byte_Count_MSB => 0, Reserved => 0, Tree_Level => 0, Bit_Pad => False, Field_Type => 0, First_Block => False, Final_Block => True), Hash_Bit_Len => 0, Byte_Count => 0), X => (others => 0), B => (others => 0)))
 skein.adb:118:19: warning: unused assignment
-skein.adb:119:12: info: initialization of "Local_Ctx.X" proved
-skein.adb:121:27: info: initialization of "Byte_Count" proved
 skein.adb:121:44: info: division check proved (CVC4: 1 VC)
 skein.adb:125:10: info: analyzing call to "Set_B_Counter" in context
-skein.adb:125:25: info: initialization of "Blocks_Done" proved
 skein.adb:127:10: info: analyzing call to "Skein_Start_New_Type" in context
-skein.adb:133:15: info: initialization of "Byte_Count" proved
-skein.adb:133:29: info: initialization of "Blocks_Done" proved
-skein.adb:134:14: info: initialization of "N" proved
 skein.adb:139:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:139:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:139:10: info: in inlined body at line 34
-skein.adb:139:10: info: initialization of "N" proved
-skein.adb:140:44: info: initialization of "Blocks_Done" proved
-skein.adb:141:44: info: initialization of "Local_Ctx.X" proved
-skein.adb:144:25: info: initialization of "X" proved
-skein.adb:146:25: info: initialization of "Blocks_Done" proved
 skein.adb:146:37: medium: range check might fail (e.g. when Blocks_Done = 36028797018963968) [possible explanation: loop at line 124 should mention Blocks_Done in a loop invariant]
-skein.adb:147:20: info: initialization of "Blocks_Done" proved
-skein.adb:147:35: info: initialization of "Blocks_Required" proved
 skein.ads:132:31: info: initialization of "Hash" proved
-
 Summary of SPARK analysis
 =========================
 
@@ -81,17 +59,18 @@ SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
-Initialization 28 28 . . . . .
+Initialization 7 7 . . . . .
 Non-Aliasing . . . . . . .
-Run-time Checks 21 . . . 17 . 4
+Run-time Checks 21 . . . 18 . 3
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 49 28 (57%) . . 17 (35%) . 4 (8%)
+Total 28 7 (25%) . . 18 (64%) . 3 (11%)
 
 
-max steps used for successful proof: 1
+max steps used for successful proof: 191
+
 Analyzed 1 unit
 in unit skein, 8 subprograms and packages out of 8 analyzed
  Skein at skein.ads:6 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
@@ -101,7 +80,7 @@ effects on parameters and Global variables of Skein.Put_64_LSB_First depends on
  effects on parameters and Global variables of Interfaces.Shift_Right
  Skein.Skein_512_Context at skein.ads:88 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
 absence of run-time errors of Skein.Skein_512_Context fully established
- Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks and 15 warnings) and not proved, 16 checks out of 20 proved
+ Skein.Skein_512_Final at skein.ads:131 flow analyzed (0 errors, 0 checks and 15 warnings) and not proved, 17 checks out of 20 proved
  Skein.Skein_512_Final.Set_B_Counter at skein.adb:92 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
 effects on parameters and Global variables of Skein.Skein_512_Final.Set_B_Counter depends on
  effects on parameters and Global variables of Interfaces.Shift_Right

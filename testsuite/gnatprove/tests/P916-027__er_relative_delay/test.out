@@ -1,3 +1,2 @@
-main.adb:5:10: info: initialization of "One" proved
 main.adb:5:14: medium: divide by zero might fail
-main.adb:5:14: medium: overflow check might fail
+main.adb:5:14: medium: overflow check might fail (e.g. when One = 1)

@@ -1,22 +1,20 @@
-tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = Integer'First and I = 2 and T = (others => Integer'First)) [possible explanation: subprogram at line 2 should mention A in a precondition]
+tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -195225787 and I = 3 and T = (others => -195225787)) [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
 tab_init.adb:6:33: info: loop invariant initialization proved (CVC4: 1 VC)
 tab_init.adb:6:33: info: loop invariant preservation proved (CVC4: 1 VC)
-tab_init.adb:7:39: info: initialization of "T" proved
 tab_init.adb:7:39: medium: "T" might not be initialized
 tab_init.adb:7:41: info: index check proved (CVC4: 4 VC)
 tab_init.adb:7:47: info: overflow check proved (CVC4: 2 VC)
 tab_init.adb:8:25: info: assertion proved (CVC4: 1 VC)
-tab_init.adb:8:25: info: initialization of "T" proved
+tab_init.adb:8:25: medium: "T" might not be initialized
 tab_init.adb:8:31: info: overflow check proved (altergo: 1 VC)
-tab_init.ads:5:21: info: initialization of "T" proved
-tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = Integer'First and I = 2 and T = (others => Integer'First)) [possible explanation: subprogram at line 2 should mention A in a precondition]
+tab_init.ads:5:21: medium: "T" might not be initialized in "Init"
+tab_init.adb:5:19: medium: overflow check might fail (e.g. when A = -195225787 and I = 3 and T = (others => -195225787)) [possible explanation: subprogram at tab_init.ads:5 should mention A in a precondition]
 tab_init.adb:6:33: info: loop invariant initialization proved (CVC4: 1 VC)
 tab_init.adb:6:33: info: loop invariant preservation proved (CVC4: 1 VC)
-tab_init.adb:7:39: info: initialization of "T" proved
 tab_init.adb:7:39: medium: "T" might not be initialized
 tab_init.adb:7:41: info: index check proved (CVC4: 4 VC)
 tab_init.adb:7:47: info: overflow check proved (CVC4: 2 VC)
 tab_init.adb:8:25: info: assertion proved (CVC4: 1 VC)
-tab_init.adb:8:25: info: initialization of "T" proved
+tab_init.adb:8:25: medium: "T" might not be initialized
 tab_init.adb:8:31: info: overflow check proved (altergo: 1 VC)
-tab_init.ads:5:21: info: initialization of "T" proved
+tab_init.ads:5:21: medium: "T" might not be initialized in "Init"

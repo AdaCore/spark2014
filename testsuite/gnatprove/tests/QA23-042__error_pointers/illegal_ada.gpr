@@ -1,0 +1,9 @@
+with "test";
+
+project Illegal_Ada is
+   package Compiler is
+      for Local_Configuration_Pragmas use "test.adc";
+   end Compiler;
+
+   for Source_Files use Test.Phase_1_Errors;
+end Illegal_Ada;

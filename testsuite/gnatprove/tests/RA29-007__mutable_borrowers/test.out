@@ -1,5 +1,7 @@
-traversal.adb:11:69: expected state "unrestricted" at least, got "observed"
-traversal.adb:11:69: insufficient permission on dereference from "X"
-traversal.adb:13:56: expected state "unrestricted" at least, got "observed"
-traversal.adb:13:56: insufficient permission for "X"
-gnatprove: error during generation of Global contracts
+traversal.adb:11:13: traversal function returning access-to-variable type is not yet supported
+traversal.adb:13:13: traversal function returning access-to-variable type is not yet supported
+traversal.adb:20:07: local borrower of an access object is not yet supported
+traversal.adb:20:29: "Get_Fst" is not allowed in SPARK (due to traversal function returning access-to-variable type)
+traversal.adb:20:29: violation of aspect SPARK_Mode at line 1
+walker.adb:15:07: local borrower of an access object is not yet supported
+gnatprove: error during flow analysis and proof

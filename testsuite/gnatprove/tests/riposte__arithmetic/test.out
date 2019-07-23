@@ -1,171 +1,154 @@
 arithmetic.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:7:38: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = Integer'First and B = 1 and Minus_I'Result = 0) [possible explanation: subprogram at line 6 should mention A and B in a precondition]
+arithmetic.adb:10:16: medium: overflow check might fail (e.g. when A = -2 and B = Integer'Last) [possible explanation: subprogram at line 6 should mention A and B in a precondition]
 arithmetic.adb:14:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:14:39: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = Integer'First and Negation_I'Result = 0) [possible explanation: subprogram at line 13 should mention A in a precondition]
+arithmetic.adb:17:14: medium: overflow check might fail (e.g. when A = Integer'First) [possible explanation: subprogram at line 13 should mention A in a precondition]
 arithmetic.adb:21:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:21:41: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:24:16: medium: overflow check might fail (e.g. when A = -2 and B = 2 and Multiply_A'Result = 0) [possible explanation: subprogram at line 20 should mention A and B in a precondition]
+arithmetic.adb:24:16: medium: overflow check might fail (e.g. when A = -2 and B = 2) [possible explanation: subprogram at line 20 should mention A and B in a precondition]
 arithmetic.adb:27:04: warning: analyzing unreferenced function "Multiply_B"
+arithmetic.adb:29:07: info: initialization of "R" proved
 arithmetic.adb:32:11: info: range check proved (CVC4: 2 VC)
-arithmetic.adb:33:15: info: initialization of "R" proved
 arithmetic.adb:33:17: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:34:33: info: initialization of "R" proved
 arithmetic.adb:34:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:34:33: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:34:48: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:37:14: info: initialization of "R" proved
+arithmetic.adb:43:07: info: initialization of "R" proved
 arithmetic.adb:45:14: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:45:14: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:46:14: info: initialization of "R" proved
-arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 323 and Double_A = 2 and Double_B = 2)
+arithmetic.adb:53:11: info: flow dependencies proved
+arithmetic.adb:56:07: info: initialization of "C" proved
+arithmetic.adb:59:22: medium: assertion might fail, cannot prove Double_A * Double_B /= C (e.g. when C = 4 and Double_A = 2 and Double_B = 2)
 arithmetic.adb:59:31: medium: overflow check might fail (e.g. when Double_A = 2 and Double_B = 2)
-arithmetic.adb:59:45: info: initialization of "C" proved
-arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 12166397)
+arithmetic.adb:65:11: info: flow dependencies proved
+arithmetic.adb:68:07: info: initialization of "C" proved
+arithmetic.adb:71:22: medium: assertion might fail, cannot prove A * B /= C (e.g. when A = 2 and B = 2 and C = 4)
 arithmetic.adb:71:24: medium: overflow check might fail (e.g. when A = 2 and B = 2)
-arithmetic.adb:71:31: info: initialization of "C" proved
-arithmetic.adb:76:21: medium: overflow check might fail (e.g. when A = Integer'First and B = -1)
+arithmetic.adb:76:21: medium: overflow check might fail (e.g. when A = -1 and B = Integer'First)
 arithmetic.adb:77:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:77:35: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:79:07: info: initialization of "R" proved
 arithmetic.adb:83:14: info: range check proved (CVC4: 2 VC)
-arithmetic.adb:84:32: info: initialization of "R" proved
 arithmetic.adb:84:32: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:85:36: info: initialization of "R" proved
 arithmetic.adb:85:36: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:85:36: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:85:42: info: overflow check proved (CVC4: 2 VC)
 arithmetic.adb:88:14: info: range check proved (CVC4: 2 VC)
-arithmetic.adb:89:32: info: initialization of "R" proved
 arithmetic.adb:89:32: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:90:36: info: initialization of "R" proved
 arithmetic.adb:90:36: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:90:36: info: loop invariant preservation proved (CVC4: 2 VC)
 arithmetic.adb:90:42: info: overflow check proved (CVC4: 2 VC)
-arithmetic.adb:93:14: info: initialization of "R" proved
 arithmetic.adb:97:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:101:07: info: initialization of "R" proved
 arithmetic.adb:103:22: info: assertion proved
-arithmetic.adb:106:20: info: initialization of "R" proved
-arithmetic.adb:107:33: info: initialization of "R" proved
 arithmetic.adb:107:33: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:107:33: info: loop invariant preservation proved (CVC4: 2 VC)
-arithmetic.adb:109:14: info: initialization of "R" proved
-arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 0 and N = 2) [possible explanation: subprogram at line 112 should mention N in a precondition]
+arithmetic.adb:113:19: medium: postcondition might fail, cannot prove Halve_B'Result + Halve_B'Result = N  or Halve_B'Result + Halve_B'Result + 1 = N (e.g. when Halve_B'Result = 0 and N = 2)
+arithmetic.adb:117:07: info: initialization of "R" proved
 arithmetic.adb:119:22: info: assertion proved
-arithmetic.adb:122:20: info: initialization of "R" proved
 arithmetic.adb:124:13: info: loop invariant initialization proved (CVC4: 2 VC)
 arithmetic.adb:124:13: medium: loop invariant might fail after first iteration, cannot prove N > R + R + 1 (e.g. when N = 2 and R = 2)
-arithmetic.adb:124:17: info: initialization of "R" proved
-arithmetic.adb:126:14: info: initialization of "R" proved
 arithmetic.adb:130:19: info: postcondition proved (CVC4: 1 VC)
+arithmetic.adb:134:07: info: initialization of "R" proved
 arithmetic.adb:136:22: info: assertion proved
-arithmetic.adb:139:20: info: initialization of "R" proved
-arithmetic.adb:140:33: info: initialization of "R" proved
 arithmetic.adb:140:33: info: loop invariant initialization proved (CVC4: 3 VC)
 arithmetic.adb:140:33: info: loop invariant preservation proved (CVC4: 3 VC)
-arithmetic.adb:144:14: info: initialization of "R" proved
 arithmetic.adb:148:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:148:38: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:155:20: info: initialization of "R" proved
-arithmetic.adb:156:33: info: initialization of "R" proved
+arithmetic.adb:150:07: info: initialization of "R" proved
 arithmetic.adb:156:33: info: loop invariant initialization proved (CVC4: 3 VC)
 arithmetic.adb:156:33: info: loop invariant preservation proved (CVC4: 3 VC)
-arithmetic.adb:160:14: info: initialization of "R" proved
 arithmetic.adb:164:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:164:39: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:166:07: info: initialization of "R" proved
 arithmetic.adb:169:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:171:24: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:171:24: medium: overflow check might fail (e.g. when N = Integer'First and R = 0) [possible explanation: subprogram at line 163 should mention N in a precondition]
-arithmetic.adb:173:14: info: initialization of "R" proved
+arithmetic.adb:171:24: medium: overflow check might fail (e.g. when N = Integer'First) [possible explanation: subprogram at line 163 should mention N in a precondition]
 arithmetic.adb:178:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:178:39: info: overflow check proved (CVC4: 1 VC)
+arithmetic.adb:180:07: info: initialization of "R" proved
 arithmetic.adb:183:24: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:185:24: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:185:24: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:187:14: info: initialization of "R" proved
 arithmetic.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:191:39: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:194:14: info: range check proved (CVC4: 1 VC)
-arithmetic.adb:194:14: medium: overflow check might fail (e.g. when Abs_Test_C'Result = 0 and N = Integer'First) [possible explanation: subprogram at line 190 should mention N in a precondition]
-arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N (e.g. when N = 10 and Test_Mod_A'Result = 0) [possible explanation: subprogram at line 197 should mention N in a precondition]
+arithmetic.adb:194:14: medium: overflow check might fail (e.g. when N = Integer'First) [possible explanation: subprogram at line 190 should mention N in a precondition]
+arithmetic.adb:198:19: medium: postcondition might fail, cannot prove Test_Mod_A'Result = N (e.g. when N = -1 and Test_Mod_A'Result = 9)
 arithmetic.adb:201:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N (e.g. when N = 9 and Test_Mod_B'Result = -1) [possible explanation: subprogram at line 204 should mention N in a precondition]
+arithmetic.adb:205:19: medium: postcondition might fail, cannot prove Test_Mod_B'Result = N (e.g. when N = -11 and Test_Mod_B'Result = -1)
 arithmetic.adb:208:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A (e.g. when A = 0 and Test_Mod_C'Result = -1) [possible explanation: precondition of subprogram at line 211 should mention A]
+arithmetic.adb:215:19: medium: postcondition might fail, cannot prove Test_Mod_C'Result = A (e.g. when A = -3 and Test_Mod_C'Result = -1)
 arithmetic.adb:218:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:223:04: warning: analyzing unreferenced function "Test_Div_A"
 arithmetic.adb:226:36: medium: assertion might fail, cannot prove N / 10 < 0 (e.g. when N = -1) [possible explanation: subprogram at line 223 should mention N in a precondition]
 arithmetic.adb:226:38: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A (e.g. when A = 1 and Test_Rem_A'Result = 0) [possible explanation: precondition of subprogram at line 230 should mention A]
+arithmetic.adb:234:19: medium: postcondition might fail, cannot prove Test_Rem_A'Result = A (e.g. when A = -1 and Test_Rem_A'Result = 0)
 arithmetic.adb:237:16: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:244:19: info: postcondition proved (CVC4: 1 VC)
-arithmetic.adb:244:39: medium: overflow check might fail [possible explanation: precondition of subprogram at line 240 should mention A]
+arithmetic.adb:244:39: medium: overflow check might fail (e.g. when A = Byte'First and B = -2) [possible explanation: precondition of subprogram at line 240 should mention A]
 arithmetic.adb:244:45: info: division check proved (CVC4: 1 VC)
 arithmetic.adb:244:45: medium: overflow check might fail (e.g. when A = Byte'First and B = -1) [possible explanation: precondition of subprogram at line 240 should mention A]
 arithmetic.adb:244:50: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:244:55: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:247:16: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = Byte'First and B = -1)
+arithmetic.adb:254:41: medium: overflow check might fail (e.g. when A = -1 and B = Byte'First)
 arithmetic.adb:257:17: info: overflow check proved (CVC4: 1 VC)
-arithmetic.adb:257:22: medium: divide by zero might fail
+arithmetic.adb:257:22: medium: divide by zero might fail (e.g. when A = -1 and B = -2 and C = 1)
 arithmetic.adb:257:30: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:257:37: medium: overflow check might fail (e.g. when A = Byte'First and B = 3 and C = Byte'First+1)
+arithmetic.adb:257:37: medium: overflow check might fail (e.g. when A = Byte'First+2 and B = Byte'Last and C = -3)
+arithmetic.adb:262:11: info: flow dependencies proved
 arithmetic.adb:266:22: info: assertion proved (Z3: 1 VC)
 arithmetic.adb:266:26: info: division check proved (CVC4: 1 VC)
+arithmetic.adb:273:11: info: flow dependencies proved
 arithmetic.adb:277:22: medium: assertion might fail, cannot prove 100 rem A /= 0 (e.g. when A = 2)
 arithmetic.adb:277:26: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:283:19: info: postcondition proved (CVC4: 2 VC)
+arithmetic.adb:283:19: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 arithmetic.adb:288:29: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:288:34: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:288:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:288:47: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:293:22: medium: postcondition might fail, cannot prove IsPositive_Wrong'Result = 0 (e.g. when IsPositive_Wrong'Result = 1 and X = 2)
+arithmetic.adb:293:22: medium: postcondition might fail, cannot prove IsPositive_Wrong'Result = 0 (e.g. when IsPositive_Wrong'Result = 1)
 arithmetic.adb:298:29: info: range check proved (CVC4: 1 VC)
 arithmetic.adb:298:34: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:298:42: info: overflow check proved (CVC4: 1 VC)
 arithmetic.adb:298:47: info: division check proved (CVC4: 1 VC)
 counterexample expected for check at arithmetic.adb:10
-  trace at arithmetic.adb:6 --> A = Integer'First and B = 1
-  trace at arithmetic.adb:10 --> A = Integer'First and B = 1 and Minus_I'Result = 0
+  trace at arithmetic.adb:6 --> A = -2 and B = Integer'Last
+  trace at arithmetic.adb:10 --> A = -2 and B = Integer'Last
 counterexample expected for check at arithmetic.adb:17
   trace at arithmetic.adb:13 --> A = Integer'First
-  trace at arithmetic.adb:17 --> A = Integer'First and Negation_I'Result = 0
+  trace at arithmetic.adb:17 --> A = Integer'First
 counterexample expected for check at arithmetic.adb:76
-  trace at arithmetic.adb:75 --> A = Integer'First and B = -1
-  trace at arithmetic.adb:76 --> A = Integer'First and B = -1
-  trace at arithmetic.adb:81 --> R = 0
-  trace at arithmetic.adb:82 --> I = 0 and I = 0 and R = 0
-  trace at arithmetic.adb:88 --> I = 0 and R = 0
-  trace at arithmetic.adb:89 --> R = 0
-  trace at arithmetic.adb:93 --> Plus'Result = 0
+  trace at arithmetic.adb:75 --> A = -1 and B = Integer'First
+  trace at arithmetic.adb:76 --> A = -1 and B = Integer'First
 counterexample expected for check at arithmetic.adb:113
   trace at arithmetic.adb:112 --> N = 2
   trace at arithmetic.adb:113 --> Halve_B'Result = 0 and N = 2
-  trace at arithmetic.adb:120 --> I = 127 and R = 0
-  trace at arithmetic.adb:121 --> R = 2
-  trace at arithmetic.adb:126 --> Halve_B'Result = 0
+  trace at arithmetic.adb:120 --> I = 0 and R = 0
+  trace at arithmetic.adb:121 --> R = 0
+  trace at arithmetic.adb:126 --> Halve_B'Result = 0 and R = 0
 counterexample expected for check at arithmetic.adb:124
   trace at arithmetic.adb:112 --> N = 2
-  trace at arithmetic.adb:120 --> I = 0 and R = 0
+  trace at arithmetic.adb:120 --> I = 2 and R = 0
   trace at arithmetic.adb:121 --> R = 2
   trace at arithmetic.adb:124 --> N = 2 and R = 2
-  trace at arithmetic.adb:126 --> Halve_B'Result = 0
 counterexample expected for check at arithmetic.adb:171
   trace at arithmetic.adb:163 --> N = Integer'First
-  trace at arithmetic.adb:171 --> N = Integer'First and R = 0
-  trace at arithmetic.adb:173 --> Abs_Test_A'Result = 0
+  trace at arithmetic.adb:171 --> N = Integer'First
 counterexample expected for check at arithmetic.adb:194
   trace at arithmetic.adb:190 --> N = Integer'First
-  trace at arithmetic.adb:194 --> Abs_Test_C'Result = 0 and N = Integer'First
+  trace at arithmetic.adb:194 --> N = Integer'First
 counterexample expected for check at arithmetic.adb:226
   trace at arithmetic.adb:223 --> N = -1
   trace at arithmetic.adb:226 --> N = -1
 counterexample expected for check at arithmetic.adb:254
-  trace at arithmetic.adb:250 --> A = Byte'First
-  trace at arithmetic.adb:251 --> B = -1
+  trace at arithmetic.adb:250 --> A = -1
+  trace at arithmetic.adb:251 --> B = Byte'First
   trace at arithmetic.adb:252 --> C = 0
-  trace at arithmetic.adb:254 --> A = Byte'First and B = -1
+  trace at arithmetic.adb:254 --> A = -1 and B = Byte'First
 counterexample expected for check at arithmetic.adb:293
   trace at arithmetic.adb:291 --> X = 2
-  trace at arithmetic.adb:293 --> IsPositive_Wrong'Result = 1 and X = 2
+  trace at arithmetic.adb:293 --> IsPositive_Wrong'Result = 1
   trace at arithmetic.adb:298 --> IsPositive_Wrong'Result = 1

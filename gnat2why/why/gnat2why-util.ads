@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,6 @@
 
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Indefinite_Doubly_Linked_Lists;
-with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 with Common_Containers;     use Common_Containers;
 with Gnat2Why.Tables;       use Gnat2Why.Tables;
 with Snames;                use Snames;
@@ -189,6 +188,13 @@ package Gnat2Why.Util is
       WF_Context,
       WF_Main);
 
+   --  Type used to control which marker information is included in the node.
+   --  This is for pretty-printing part of a possibly large assertion.
+   type Gen_Marker_Kind is
+     (GM_None,      --  no pretty-printing info
+      GM_Node_Only, --  only the node ID is printed
+      GM_All);      --  node ID and sloc of node are printed
+
    type Transformation_Params is record
       File        : W_Section_Id;
       --  Identity of the current Why3 file. If needed, new theories and
@@ -196,10 +202,10 @@ package Gnat2Why.Util is
       Phase       : Transformation_Phase;
       --  Current transformation phase, which impacts the way code is
       --  transformed from Ada to Why3.
-      Gen_Marker  : Boolean;
-      --  Flag that is True when the transformation should include in the
-      --  generated Why3 node a special label, to be used to show which part
-      --  of a possibly large assertion is not proved.
+      Gen_Marker  : Gen_Marker_Kind;
+      --  Flag that indicates whether the transformation should include in the
+      --  generated Why3 node a special label, to be used to show which part of
+      --  a possibly large assertion is not proved.
       Ref_Allowed : Boolean;
       --  Flag that is True if references are allowed
       Old_Allowed : Boolean;
@@ -217,12 +223,9 @@ package Gnat2Why.Util is
    --  of objects of this type. This is needed because we have aliasing between
    --  parameters of many functions and the global variable Why_Sections below.
 
-   Why_File_Name : String_Access;
-
    procedure Init_Why_Sections;
    --  Call this procedure to initialize the predefined sections of the Why
-   --  file. The Unit node is used to initialize the above Why_File_Name
-   --  variable.
+   --  file.
 
    Why_Sections : array (W_Section_Id) of Why_Section;
 
@@ -235,7 +238,7 @@ package Gnat2Why.Util is
      (Transformation_Params'
         (File        => Kind,
          Phase       => Phase,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => (if Phase = Generate_Logic then False else True),
          Old_Allowed => (if Phase = Generate_Logic then False else True)));
    --  Usual set of transformation parameters for a given phase
@@ -260,7 +263,7 @@ package Gnat2Why.Util is
 
    function Get_Counterexample_Labels
      (E              : Entity_Id;
-      Append_To_Name : String := "") return Name_Id_Sets.Set;
+      Append_To_Name : String := "") return Symbol_Sets.Set;
    --  Get labels needed for getting counterexample value for entity E.
    --  Note that if the entity does not come from source, return empty set of
    --  labels - these entitities should not be displayed in counterexample.
@@ -271,7 +274,7 @@ package Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append          : String := "") return Name_Id_Sets.Set;
+      Append          : String := "") return Symbol_Sets.Set;
    --  Gets model trace label for given entity.
    --  Note that if the entity is empty or does not come from source code,
    --  return the label "model_trace:".
@@ -280,7 +283,7 @@ package Gnat2Why.Util is
    --  @param Append the string that will be appended to the name of the
    --    counterexample element
 
-   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set;
+   function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set;
    --  Gets model trace label for given name. This is used for attributes.
    --  For variables and components, use the variant above.
 
@@ -420,9 +423,19 @@ package Gnat2Why.Util is
    --  @param Scope the entity of a package, entry, task, or subprogram.
 
    function Is_Mutable_In_Why (E : Entity_Id) return Boolean with
-     Pre => Nkind (E) in N_Defining_Identifier | N_Defining_Operator_Symbol;
-   --  Given an identifier, decide if it denotes a variable that is mutable in
-   --  the Why translation.
+     Pre => Ekind (E) in E_Constant
+                       | E_Component
+                       | E_Discriminant
+                       | E_Loop_Parameter
+                       | E_Protected_Type
+                       | E_Task_Type
+                       | E_Variable
+                       | Formal_Kind;
+   --  Returns True iff object E is mutable in the Why translation; E must
+   --  denote a discriminant or component, an entire object or a concurrent
+   --  type (which acts as an implicit formal parameter for protected
+   --  operations and possibly as a global for subprograms nested in
+   --  protected operations and tasks).
 
    function Is_Private_Intrinsic_Op (N : Node_Id) return Boolean with
      Pre => Nkind (N) in N_Op;
@@ -483,6 +496,10 @@ package Gnat2Why.Util is
    function Get_Container_In_Iterator_Specification
      (N : Node_Id) return Node_Id;
 
+   function Needs_Init_Wrapper_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  Whether we need a wrapper type with a specific initialization flag for E
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------
@@ -527,7 +544,9 @@ package Gnat2Why.Util is
 
    function Get_Graph_Closure
      (Map  : Node_Graphs.Map;
-      From : Node_Sets.Set) return Node_Sets.Set;
+      From : Node_Sets.Set) return Node_Sets.Set
+   with Post => Node_Sets.Is_Subset (Subset => From,
+                                     Of_Set => Get_Graph_Closure'Result);
    --  @param Map the graph
    --  @param From the node to start from
    --  @return the set of nodes reachable from the node From in the graph Map
@@ -570,5 +589,9 @@ package Gnat2Why.Util is
          when RCK_Overflow_Not_First => VC_Overflow_Check,
          when RCK_Overflow_Not_Last  => VC_Overflow_Check);
    --  to convert a Scalar_Check_Kind to a VC_Kind
+
+   function Build_Printing_Plan return Why_Node_Lists.List;
+   --  Return a list of Theory Declarations which contains all theories of the
+   --  WF_Main section and all their dependencies, topologically sorted.
 
 end Gnat2Why.Util;

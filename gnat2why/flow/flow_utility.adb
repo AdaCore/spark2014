@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2013-2018, Altran UK Limited                 --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,7 @@ with Ada.Strings.Maps;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
 
 with Errout;                          use Errout;
+with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
 with Output;                          use Output;
@@ -350,11 +351,6 @@ package body Flow_Utility is
         or else Has_Discriminants (E)
       then
          declare
-            Ptr : Entity_Id;
-            T   : Entity_Id          := E;
-            L   : Node_Lists.List    := Node_Lists.Empty_List;
-            S   : Component_Sets.Set := Component_Sets.Empty_Set;
-
             function Up (E : Entity_Id) return Entity_Id with Pure_Function;
             --  Get parent type, but don't consider record subtypes' ancestors
 
@@ -377,6 +373,13 @@ package body Flow_Utility is
                   return A;
                end if;
             end Up;
+
+            --  Local variables
+
+            Ptr : Entity_Id;
+            T   : Entity_Id          := E;
+            L   : Node_Lists.List    := Node_Lists.Empty_List;
+            S   : Component_Sets.Set := Component_Sets.Empty_Set;
 
          begin
             loop
@@ -425,109 +428,23 @@ package body Flow_Utility is
    begin
       return (for some X of FS => Is_Discriminant (X));
    end Contains_Discriminants;
+   ----------------------------
+   -- Expand_Abstract_States --
+   ----------------------------
 
-   ---------------------------
-   -- Expand_Abstract_State --
-   ---------------------------
-
-   function Expand_Abstract_State
-     (F               : Flow_Id;
-      Erase_Constants : Boolean)
+   function Expand_Abstract_States
+     (Vars : Flow_Id_Sets.Set)
       return Flow_Id_Sets.Set
    is
+      Expanded : Flow_Id_Sets.Set;
+
    begin
-      case F.Kind is
-         when Direct_Mapping =>
-            declare
-               E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+      for Var of Vars loop
+         Expanded.Union (Expand_Abstract_State (Var));
+      end loop;
 
-            begin
-               --  Expand abstract states as much as possible while respecting
-               --  the SPARK_Mode barrier.
-               if Ekind (E) = E_Abstract_State then
-                  declare
-                     Pkg : constant Entity_Id := Scope (E);
-                     --  Package
-                     pragma Assert (Ekind (Pkg) = E_Package);
-
-                     Result : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-
-                  begin
-                     --  Use the Refined_State aspect, if visible
-                     if Entity_Body_In_SPARK (Pkg) then
-
-                        --  At this point we know whether the state has a null
-                        --  refinement; if it does, then we ignore it.
-                        if Has_Null_Refinement (E) then
-                           return Flow_Id_Sets.Empty_Set;
-                        else
-                           for C of Iter (Refinement_Constituents (E)) loop
-                              Result.Union
-                                (Expand_Abstract_State
-                                   (Direct_Mapping_Id (C),
-                                    Erase_Constants));
-                           end loop;
-
-                           return Result;
-                        end if;
-
-                     --  Pick the Part_Of constituents from the private part
-                     --  of the package and private child packages, but only if
-                     --  they are visible (which is equivalent to being marked
-                     --  as in-SPARK).
-
-                     else
-                        for C of Iter (Part_Of_Constituents (E)) loop
-                           Result.Union
-                             (Expand_Abstract_State
-                                (Direct_Mapping_Id (C),
-                                 Erase_Constants));
-                        end loop;
-
-                     --  There might be more constituents in the package body,
-                     --  but we can't see them. The state itself will represent
-                     --  them.
-
-                        Result.Insert
-                          (Magic_String_Id (To_Entity_Name (E)));
-
-                        return Result;
-                     end if;
-                  end;
-
-               --  Entities translated as constants in Why3 should not be
-               --  considered as effects for proof. This includes in particular
-               --  formal parameters of mode IN.
-
-               elsif Erase_Constants
-                 and then not Gnat2Why.Util.Is_Mutable_In_Why (E)
-               then
-                  return Flow_Id_Sets.Empty_Set;
-
-               --  Otherwise the effect is significant for proof, keep it
-
-               else
-                  --  Entities in SPARK are represented by Entity_Id; those not
-                  --  in SPARK are represented by Entity_Name, because they
-                  --  behave as "blobs".
-
-                  return Flow_Id_Sets.To_Set
-                    (if Entity_In_SPARK (E)
-                     then Change_Variant (F, Normal_Use)
-                     else Magic_String_Id (To_Entity_Name (E)));
-               end if;
-            end;
-
-         when Magic_String =>
-            return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
-
-         when Null_Value =>
-            return Flow_Id_Sets.Empty_Set;
-
-         when Record_Field | Synthetic_Null_Export =>
-            raise Program_Error;
-      end case;
-   end Expand_Abstract_State;
+      return Expanded;
+   end Expand_Abstract_States;
 
    ------------------------
    -- Extensions_Visible --
@@ -540,7 +457,7 @@ package body Flow_Utility is
    is
       T : constant Entity_Id := Get_Type (E, Scope);
    begin
-      return Ekind (E) in Formal_Kind
+      return Is_Formal (E)
         and then Is_Tagged_Type (T)
         and then not Is_Class_Wide_Type (T)
         and then Has_Extensions_Visible (Sinfo.Scope (E));
@@ -556,7 +473,7 @@ package body Flow_Utility is
             return Extensions_Visible (Get_Direct_Mapping_Id (F), Scope);
 
          when Record_Field =>
-            --  Record fields themselves cannot be classwide.
+            --  Record fields themselves cannot be classwide
             return False;
 
          when Null_Value | Synthetic_Null_Export | Magic_String =>
@@ -713,9 +630,9 @@ package body Flow_Utility is
                      Debug ("processing private type");
 
                      if Has_Discriminants (T) then
-                        for Ptr of Components (T) loop
-                           if Is_Visible (Get_Root_Component (Ptr), Scope) then
-                              Results.Include (Add_Component (F, Ptr));
+                        for C of Components (T) loop
+                           if Is_Visible (Get_Root_Component (C), Scope) then
+                              Results.Include (Add_Component (F, C));
                            else
                               Contains_Non_Visible := True;
                            end if;
@@ -825,18 +742,11 @@ package body Flow_Utility is
                         Results.Include (F'Update (Facet => Extension_Part));
                      end if;
 
-                  when Array_Kind
+                  when Access_Kind
+                     | Array_Kind
                      | Scalar_Kind
                   =>
-                     Debug ("processing scalar or array type");
-
-                     Results := Flow_Id_Sets.To_Set (F);
-
-                  when Access_Kind =>
-                     --  ??? Pointers come only from globals (hopefully). They
-                     --  should be removed when generating globals and here
-                     --  we should only get the __HEAP entity name should.
-                     Debug ("processing access type");
+                     Debug ("processing access or array or scalar type");
 
                      Results := Flow_Id_Sets.To_Set (F);
 
@@ -844,7 +754,6 @@ package body Flow_Utility is
                      | E_Subprogram_Type
                      | Incomplete_Kind
                   =>
-
                      raise Program_Error;
 
                end case;
@@ -952,13 +861,10 @@ package body Flow_Utility is
             when N_Type_Conversion =>
                View_Conversion := True;
 
-            when N_Unchecked_Type_Conversion
-               | N_Explicit_Dereference
-            =>
+            when N_Unchecked_Type_Conversion =>
                null;
-               --  ??? should not be null for derefrence?
 
-            when N_Indexed_Component | N_Slice =>
+            when N_Indexed_Component | N_Slice | N_Explicit_Dereference =>
                Partial_Definition := True;
                exit;
          end case;
@@ -1347,7 +1253,7 @@ package body Flow_Utility is
          end case;
       end Process;
 
-      --  Local variables:
+      --  Local variables
 
       pragma Assert
         (List_Length (Pragma_Argument_Associations (Global_Node)) = 1);
@@ -1920,34 +1826,68 @@ package body Flow_Utility is
    -- Get_Proof_Globals --
    -----------------------
 
-   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
-                                Classwide      :     Boolean;
-                                Reads          : out Flow_Id_Sets.Set;
-                                Writes         : out Flow_Id_Sets.Set;
-                                Keep_Constants :     Boolean := False)
+   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
+                                Reads           : out Flow_Id_Sets.Set;
+                                Writes          : out Flow_Id_Sets.Set;
+                                Erase_Constants :     Boolean;
+                                Scop            :     Flow_Scope :=
+                                  Null_Flow_Scope)
    is
       Globals : Global_Flow_Ids;
 
       S : constant Flow_Scope :=
-        Get_Flow_Scope (if Entity_Body_In_SPARK (Subprogram)
-                        then Get_Body_Entity (Subprogram)
-                        else Subprogram);
+        (if Present (Scop)
+         then Scop
+         else Get_Flow_Scope ((if Entity_Body_In_SPARK (Subprogram)
+                               then Get_Body_Entity (Subprogram)
+                               else Subprogram)));
 
-      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
-                        Expanded   : in out Flow_Id_Sets.Set);
-      --  Expand abstract states
+      function Only_Mutable
+        (Objects : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set
+      with Pre  => Erase_Constants,
+           Post => Flow_Id_Sets.Is_Subset (Subset => Only_Mutable'Result,
+                                           Of_Set => Objects);
+      --  Returns those of Objects that are mutable in Why3
 
-      ------------
-      -- Expand --
-      ------------
-      procedure Expand (Unexpanded :        Flow_Id_Sets.Set;
-                        Expanded   : in out Flow_Id_Sets.Set)
+      ------------------
+      -- Only_Mutable --
+      ------------------
+
+      function Only_Mutable
+        (Objects : Flow_Id_Sets.Set)
+         return Flow_Id_Sets.Set
       is
+         Mutable : Flow_Id_Sets.Set;
+
       begin
-         for U of Unexpanded loop
-            Expanded.Union (Expand_Abstract_State (U, not Keep_Constants));
+         for Object of Objects loop
+            if Object.Kind = Direct_Mapping then
+               --  Entities translated as constants in Why3 should not
+               --  be considered as effects for proof. This includes,
+               --  in particular, formal parameters of mode IN.
+
+               --  Otherwise the effect is significant for proof, keep it
+
+               if Gnat2Why.Util.Is_Mutable_In_Why
+                 (Get_Direct_Mapping_Id (Object))
+               then
+                  Mutable.Insert (Object);
+               end if;
+
+            --  ??? Entities not in SPARK are represented as Magic_String;
+            --  for now, consider them as mutable. The only other objects
+            --  represented as Magic_String are abstract, which are always
+            --  mutable.
+
+            else
+               pragma Assert (Object.Kind = Magic_String);
+               Mutable.Insert (Object);
+            end if;
          end loop;
-      end Expand;
+
+         return Mutable;
+      end Only_Mutable;
 
       E : Entity_Id;
       --  The entity whose Global contract will be queried from the flow
@@ -1971,22 +1911,24 @@ package body Flow_Utility is
       end if;
 
       Get_Globals
-        (Subprogram             => E,
-         Scope                  => S,
-         Classwide              => Classwide,
-         Globals                => Globals,
-         Use_Deduced_Globals    => True);
-
-      --  Reset outputs
-      Writes := Flow_Id_Sets.Empty_Set;
-      Reads  := Flow_Id_Sets.Empty_Set;
+        (Subprogram          => E,
+         Scope               => S,
+         Classwide           => True,
+         Globals             => Globals,
+         Use_Deduced_Globals => True);
 
       --  Expand all variables; it is more efficent to process Proof_Ins and
       --  Reads separaterly, because they are disjoint and there is no point
       --  in computing their union.
-      Expand (Globals.Proof_Ins, Reads);
-      Expand (Globals.Inputs,    Reads);
-      Expand (Globals.Outputs,   Writes);
+      Reads := Flow_Id_Sets.Union (Expand_Abstract_States (Globals.Proof_Ins),
+                                   Expand_Abstract_States (Globals.Inputs));
+
+      Writes := Expand_Abstract_States (Globals.Outputs);
+
+      if Erase_Constants then
+         Reads  := Only_Mutable (Reads);
+         Writes := Only_Mutable (Writes);
+      end if;
    end Get_Proof_Globals;
 
    --------------
@@ -2288,9 +2230,8 @@ package body Flow_Utility is
       --     R'Update (X => N)    False           {R.Y, N}
       --     R'Update (X => N)    True            {R.Y, N}
       --
-      --  Scope, Local_Constants, Use_Computed_Globals,
-      --  Expand_Synthesized_Constants will be passed on to Get_Variables if
-      --  necessary.
+      --  Scope, Use_Computed_Globals, Expand_Synthesized_Constants will be
+      --  passed on to Get_Variables if necessary.
       --
       --  Get_Variables will be called with Reduced set to False (as this
       --  function should never be called when it's True...).
@@ -2794,7 +2735,7 @@ package body Flow_Utility is
                | E_Subprogram_Body
                | E_Task_Body
                | E_Void
-               =>
+            =>
                raise Program_Error;
 
          end case;
@@ -3094,8 +3035,7 @@ package body Flow_Utility is
                for N of Seq loop
                   case Nkind (N) is
                   when N_Attribute_Reference =>
-                     pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                      Attribute_Update);
+                     pragma Assert (Is_Attribute_Update (N));
                      pragma Assert (List_Length (Expressions (N)) = 1);
 
                      declare
@@ -3216,9 +3156,7 @@ package body Flow_Utility is
 
             case Nkind (N) is
             when N_Attribute_Reference =>
-               pragma Assert (Get_Attribute_Id (Attribute_Name (N)) =
-                                Attribute_Update);
-
+               pragma Assert (Is_Attribute_Update (N));
                pragma Assert (List_Length (Expressions (N)) = 1);
 
                if Debug_Trace_Untangle_Fields then
@@ -3443,8 +3381,21 @@ package body Flow_Utility is
                   Variables.Union (Do_Entity (Entity (N)));
                end if;
 
+            --  Within expression, a defining identifier only appears as a
+            --  parameter of a quantified expression (effectively, it declares
+            --  a local object). Such identifiers are not considered as "uses"
+            --  of any variable, so we ignore them.
+            --
+            --  ??? we also get here type indentifiers, when Get_Variables
+            --  is called on an entire type declaration and not just on its
+            --  constraint expressions; such calls of Get_Variables feel wrong.
+
             when N_Defining_Identifier =>
-               Variables.Union (Do_Entity (N));
+               if Is_Type (N) then
+                  Variables.Union (Do_Entity (N));
+               else
+                  pragma Assert (Is_Quantified_Loop_Param (N));
+               end if;
 
             when N_Aggregate =>
                Variables.Union (Recurse (Aggregate_Bounds (N)));
@@ -3456,7 +3407,7 @@ package body Flow_Utility is
                   --  entry/function. This appears on the tree as a selected
                   --  component of the protected object.
 
-                  Variables.Union (Do_Subprogram_Call (Parent (N)));
+                  Variables.Union (Recurse (Prefix (N)));
 
                elsif Ctx.Reduced then
                   --  In reduced mode we just keep traversing the tree, but we
@@ -3690,46 +3641,6 @@ package body Flow_Utility is
       end return;
    end Get_Variables_Internal;
 
-   -------------------
-   -- To_Proof_View --
-   -------------------
-
-   function To_Proof_View
-     (Objects : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   is
-      Converted : Flow_Id_Sets.Set;
-      --  Flow represents globals known by Entity_Id but not in SPARK as
-      --  Direct_Mapping; for proof they are represented as Magic_String.
-
-   begin
-      for Object of Objects loop
-         case Object.Kind is
-            when Direct_Mapping =>
-               declare
-                  E : constant Entity_Id := Get_Direct_Mapping_Id (Object);
-
-               begin
-                  if Ekind (E) = E_Abstract_State
-                    or else not Entity_In_SPARK (E)
-                  then
-                     Converted.Insert (Magic_String_Id (To_Entity_Name (E)));
-                  else
-                     Converted.Insert (Object);
-                  end if;
-               end;
-
-            when Magic_String =>
-               Converted.Insert (Object);
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end loop;
-
-      return Converted;
-   end To_Proof_View;
-
    -----------------------------
    -- Get_Variables_For_Proof --
    -----------------------------
@@ -3749,7 +3660,9 @@ package body Flow_Utility is
          Quantified_Variables_Introduced => Node_Sets.Empty_Set);
 
    begin
-      return To_Proof_View (Get_Variables_Internal (Expr_N, Ctx));
+      return
+        Expand_Abstract_States
+          (Get_Variables_Internal (Expr_N, Ctx));
    end Get_Variables_For_Proof;
 
    -----------------
@@ -3769,10 +3682,11 @@ package body Flow_Utility is
       Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
       Write_Ids : Flow_Types.Flow_Id_Sets.Set;
    begin
-      Get_Proof_Globals (Subprogram => Subprogram,
-                         Classwide  => True,
-                         Reads      => Read_Ids,
-                         Writes     => Write_Ids);
+      Get_Proof_Globals (Subprogram      => Subprogram,
+                         Reads           => Read_Ids,
+                         Writes          => Write_Ids,
+                         Erase_Constants => True);
+
       return not Read_Ids.Is_Empty or else not Write_Ids.Is_Empty;
    end Has_Proof_Globals;
 
@@ -3781,22 +3695,34 @@ package body Flow_Utility is
    ------------------------
 
    function Has_Variable_Input (C : Entity_Id) return Boolean is
-      Position : Entity_To_Boolean_Maps.Cursor;
-      Inserted : Boolean;
-      --  Position and status for inserting a dummy value. If inserting
-      --  succeeds, then compute the actual value and store it in the map; if
-      --  it fails, then return the memoized value.
-
    begin
-      Variable_Input_Map.Insert (Key      => C,
-                                 Position => Position,
-                                 Inserted => Inserted);
+      --  If the answer has already been memoized, then return it
 
-      if Inserted then
-         Variable_Input_Map (Position) := Has_Variable_Input_Internal (C);
-      end if;
+      declare
+         Position : constant Entity_To_Boolean_Maps.Cursor :=
+           Variable_Input_Map.Find (C);
+         --  This cursor must be declared in a local block, so that it
+         --  disappears before we might recursively call this routine via
+         --  Has_Variable_Input_Internal. It would be illegal to do Insert in
+         --  that recursive call while the above cursor is alive.
 
-      return Variable_Input_Map (Position);
+      begin
+         if Entity_To_Boolean_Maps.Has_Element (Position) then
+            return Variable_Input_Map (Position);
+         end if;
+      end;
+
+      --  Otherwise, compute answer and memoize it
+
+      declare
+         Answer : constant Boolean := Has_Variable_Input_Internal (C);
+
+      begin
+         Variable_Input_Map.Insert (Key      => C,
+                                    New_Item => Answer);
+
+         return Answer;
+      end;
    end Has_Variable_Input;
 
    ---------------------------------
@@ -3806,7 +3732,7 @@ package body Flow_Utility is
    function Has_Variable_Input_Internal (C : Entity_Id) return Boolean is
       E    : Entity_Id := C;
       Expr : Node_Id;
-      FS   : Flow_Id_Sets.Set;
+      Vars : Flow_Id_Sets.Set;
 
    begin
       --  This routine is mirrored in Direct_Inputs_Of_Constant; any change
@@ -3835,7 +3761,7 @@ package body Flow_Utility is
          return False;
       end if;
 
-      FS := Get_Variables
+      Vars := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
          Fold_Functions       => True,
@@ -3844,23 +3770,32 @@ package body Flow_Utility is
       --  constant. This means that there might be some mutual recursion here
       --  (but this should be fine).
 
-      if not FS.Is_Empty then
-         --  If any variable was found then return True
+      if Vars.Is_Empty then
+
+         --  With Global contracts in place, Get_Variables result is trusted
+
+         if GG_Has_Been_Generated then
+            return False;
+
+         --  Without Global contracts we conservatively assume that any
+         --  unannotated function might read a variable.
+
+         else
+            --  ??? this code is duplicated in Direct_Inputs_Of_Constant
+
+            return
+              (for some F of Get_Functions (Expr, Include_Predicates => False)
+                 => not Has_User_Supplied_Globals (F)
+                     and then
+                    not In_Predefined_Unit (F));
+         end if;
+
+      --  If any variable was found then return True
+
+      else
          return True;
       end if;
 
-      if GG_Has_Been_Generated
-        or else Get_Functions (Expr, Include_Predicates => False).Is_Empty
-      then
-         --  If we reach this point then the constant does not have variable
-         --  input.
-         return False;
-      else
-         --  Globals have not yet been computed. If we find any function calls
-         --  we consider the constant to have variable inputs (this is the safe
-         --  thing to do).
-         return True;
-      end if;
    end Has_Variable_Input_Internal;
 
    ----------------
@@ -3990,7 +3925,7 @@ package body Flow_Utility is
          end if;
       end Process;
 
-      --  Local variables:
+      --  Local variables
 
       S    : Node_Sets.Set;
       Ptr  : Entity_Id;
@@ -4209,11 +4144,15 @@ package body Flow_Utility is
       while Nkind (Ptr) in Valid_Assignment_Kinds loop
          case Valid_Assignment_Kinds (Nkind (Ptr)) is
             --  ??? Check the return for dereference
-            when N_Identifier | N_Expanded_Name | N_Explicit_Dereference =>
+            when N_Identifier | N_Expanded_Name =>
                return True;
             when N_Type_Conversion | N_Unchecked_Type_Conversion =>
                Ptr := Expression (Ptr);
-            when N_Indexed_Component | N_Slice | N_Selected_Component =>
+            when N_Indexed_Component
+               | N_Slice
+               | N_Selected_Component
+               | N_Explicit_Dereference
+            =>
                Ptr := Prefix (Ptr);
          end case;
       end loop;
@@ -4273,45 +4212,6 @@ package body Flow_Utility is
    is
      (Nkind (N) in N_Entity
       and then Ekind (N) = E_Abstract_State);
-
-   --------------------------
-   -- Quantified_Variables --
-   --------------------------
-
-   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set is
-      RV : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-
-      function Proc (N : Node_Id) return Traverse_Result;
-
-      ----------
-      -- Proc --
-      ----------
-
-      function Proc (N : Node_Id) return Traverse_Result is
-      begin
-         if Nkind (N) = N_Quantified_Expression then
-            pragma Assert (Present (Iterator_Specification (N))
-                             xor
-                           Present (Loop_Parameter_Specification (N)));
-
-            RV.Insert (Direct_Mapping_Id
-                       (Defining_Identifier
-                          (if Present (Iterator_Specification (N))
-                           then Iterator_Specification (N)
-                           else Loop_Parameter_Specification (N))));
-         end if;
-
-         return OK;
-      end Proc;
-
-      procedure Traverse is new Traverse_Proc (Proc);
-
-   --  Start of processing for Quantified_Variables
-
-   begin
-      Traverse (N);
-      return RV;
-   end Quantified_Variables;
 
    ------------------------------
    -- Rely_On_Generated_Global --
@@ -4854,7 +4754,8 @@ package body Flow_Utility is
              Fold_Functions               => Fold_Functions,
              Use_Computed_Globals         => Use_Computed_Globals,
              Reduced                      => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+             Expand_Synthesized_Constants => Expand_Synthesized_Constants))
+      with Pre => Nkind (N) in N_Subexpr;
       --  Helpful wrapper for calling Get_Variables
 
       function Recurse_On
@@ -4874,7 +4775,9 @@ package body Flow_Utility is
              Use_Computed_Globals         => Use_Computed_Globals,
              Expand_Synthesized_Constants => Expand_Synthesized_Constants,
              Extensions_Irrelevant        => Ext_Irrelevant))
-      with Pre => (if not Extensions_Irrelevant
+      with Pre => Nkind (N) in N_Subexpr
+                    and then
+                  (if not Extensions_Irrelevant
                    then not Ext_Irrelevant);
       --  Helpful wrapper for recursing. Note that once extensions are not
       --  irrelevant its not right to start ignoring them again.
@@ -4892,10 +4795,12 @@ package body Flow_Utility is
       --  Similarly, if A = Obj.X and B = R.X'Private_Part and Offset = 1,
       --  then joining will produce Obj.X'Private_Part.
 
-      procedure Merge (Component : Entity_Id;
+      procedure Merge (M         : in out Flow_Id_Maps.Map;
+                       Component : Entity_Id;
                        Input     : Node_Id)
-      with Pre => Nkind (Component) in N_Entity
-                  and then Ekind (Component) in E_Component | E_Discriminant;
+      with Pre => Ekind (Component) in E_Component | E_Discriminant
+                    and then
+                  (No (Input) or else Nkind (Input) in N_Subexpr);
       --  Merge the assignment map for Input into our current assignment
       --  map M. For example, if the input is (X => A, Y => B) and
       --  Component is C, and Map_Root is Obj, then we include in M the
@@ -4913,8 +4818,6 @@ package body Flow_Utility is
       with Pre => Is_Type (Typ);
       --  Returns the discriminant constraints for Typ if it is a record or
       --  concurrent type with discriminants, returns the empty set otherwise.
-
-      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
       ----------
       -- Join --
@@ -4943,7 +4846,8 @@ package body Flow_Utility is
       -- Merge --
       -----------
 
-      procedure Merge (Component : Entity_Id;
+      procedure Merge (M         : in out Flow_Id_Maps.Map;
+                       Component : Entity_Id;
                        Input     : Node_Id)
       is
          F   : constant Flow_Id := Add_Component (Map_Root, Component);
@@ -4953,30 +4857,28 @@ package body Flow_Utility is
             when Record_Kind =>
                if Present (Input) then
                   Tmp := Recurse_On (Input, F);
-               else
-                  Tmp := Flow_Id_Maps.Empty_Map;
-               end if;
 
-               for C in Tmp.Iterate loop
-                  declare
-                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
-                  begin
-                     M.Insert (Output, Inputs);
-                  end;
-               end loop;
+                  for C in Tmp.Iterate loop
+                     declare
+                        Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        Inputs : Flow_Id_Sets.Set renames Tmp (C);
+                     begin
+                        M.Insert (Output, Inputs);
+                     end;
+                  end loop;
+               end if;
 
             when others =>
                declare
-                  Targets : constant Flow_Id_Sets.Set :=
+                  Outputs : constant Flow_Id_Sets.Set :=
                     Flatten_Variable (F, Scope);
 
                   Inputs  : constant Flow_Id_Sets.Set :=
                     Get_Vars_Wrapper (Input);
 
                begin
-                  for Id of Targets loop
-                     M.Insert (Id, Inputs);
+                  for Output of Outputs loop
+                     M.Insert (Output, Inputs);
                   end loop;
                end;
          end case;
@@ -4999,7 +4901,6 @@ package body Flow_Utility is
                Discriminants : Flow_Id_Sets.Set;
 
             begin
-
                --  Loop over the list of discriminant constraints
 
                for Discr of Iter (Discriminant_Constraint (Typ)) loop
@@ -5012,6 +4913,10 @@ package body Flow_Utility is
             return Flow_Id_Sets.Empty_Set;
          end if;
       end Discriminant_Constraints;
+
+      --  Local variables
+
+      M : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
    --  Start of processing for Untangle_Record_Assignment
 
@@ -5053,7 +4958,6 @@ package body Flow_Utility is
                Input  : Node_Id;
                Target : Node_Id;
                Done   : Component_Sets.Set;
-               FS     : Flow_Id_Sets.Set;
 
             begin
                Component_Association := First (Component_Associations (N));
@@ -5065,7 +4969,7 @@ package body Flow_Utility is
                   end if;
                   Target := First (Choices (Component_Association));
                   while Present (Target) loop
-                     Merge (Entity (Target), Input);
+                     Merge (M, Component => Entity (Target), Input => Input);
                      Done.Insert (Original_Record_Component (Entity (Target)));
                      Next (Target);
                   end loop;
@@ -5079,6 +4983,7 @@ package body Flow_Utility is
                   declare
                      ORC : constant Entity_Id :=
                        Original_Record_Component (Component);
+                     FS  : Flow_Id_Sets.Set;
 
                   begin
                      if not Done.Contains (ORC) then
@@ -5103,18 +5008,17 @@ package body Flow_Utility is
                  Recurse_On (Prefix (N),
                              Direct_Mapping_Id (Etype (Prefix (N))));
 
+               Selector : constant Entity_Id := Entity (Selector_Name (N));
+
             begin
                for C in Tmp.Iterate loop
                   declare
-                     Output : Flow_Id renames
-                       Flow_Id_Maps.Key (C);
-
-                     Inputs : Flow_Id_Sets.Set renames
-                       Flow_Id_Maps.Element (C);
+                     Output : Flow_Id          renames Flow_Id_Maps.Key (C);
+                     Inputs : Flow_Id_Sets.Set renames Tmp (C);
 
                   begin
                      if Same_Component (Output.Component.First_Element,
-                                        Entity (Selector_Name (N)))
+                                        Selector)
                      then
                         M.Insert (Join (Map_Root, Output, 1), Inputs);
                      end if;
@@ -5387,7 +5291,7 @@ package body Flow_Utility is
             | N_Unchecked_Type_Conversion
          =>
 
-            --  For these we just summarize the entire blob.
+            --  For these we just summarize the entire blob
 
             declare
                RHS : constant Flow_Id_Sets.Set := Get_Vars_Wrapper (N);
@@ -5559,17 +5463,17 @@ package body Flow_Utility is
 
             when N_Indexed_Component =>
                declare
-                  Ptr  : Node_Id := First (Expressions (N));
+                  Expr : Node_Id := First (Expressions (N));
                   A, B : Flow_Id_Sets.Set;
 
                begin
-                  while Present (Ptr) loop
-                     A := Get_Vars_Wrapper (Ptr, Fold => False);
-                     B := Get_Vars_Wrapper (Ptr, Fold => True);
+                  while Present (Expr) loop
+                     A := Get_Vars_Wrapper (Expr, Fold => False);
+                     B := Get_Vars_Wrapper (Expr, Fold => True);
                      Vars_Used.Union (B);
                      Vars_Proof.Union (A - B);
 
-                     Next (Ptr);
+                     Next (Expr);
                   end loop;
                end;
                Process_Type_Conversions := False;
@@ -5853,5 +5757,47 @@ package body Flow_Utility is
          return True;
       end if;
    end Is_Opaque_For_Proof;
+
+   -------------
+   -- Find_In --
+   -------------
+
+   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id
+   is
+   begin
+      if User.Contains (G) then
+         return G;
+      elsif Is_Constituent (G) then
+         return Find_In (User, Encapsulating_State (G));
+      else
+         return Empty;
+      end if;
+   end Find_In;
+
+   -------------
+   -- Find_In --
+   -------------
+
+   function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id is
+   begin
+      if User.Contains (G) then
+         return G;
+      elsif Is_Constituent (G) then
+         return Find_In (User, Encapsulating_State (G));
+      else
+         return Null_Flow_Id;
+      end if;
+   end Find_In;
+
+   --------------------------
+   -- Strip_Child_Prefixes --
+   --------------------------
+
+   function Strip_Child_Prefixes (EN : String) return String is
+     (if EN'Length > Child_Prefix'Length and then
+      EN (EN'First .. EN'First + Child_Prefix'Length - 1) = Child_Prefix
+      then Strip_Child_Prefixes (EN
+                                 (EN'First + Child_Prefix'Length .. EN'Last))
+      else EN);
 
 end Flow_Utility;

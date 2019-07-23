@@ -3,9 +3,6 @@ pragma SPARK_Mode (On);
 pragma Unevaluated_Use_Of_Old (Allow);
 --  Allow use of 'Old in potentially unevaluated expressions
 
-pragma Warnings (GNATprove, Off, "no Global contract available for");
---  Calls to standard library subprograms which do not read/write globals
-
 pragma Warnings (GNATprove, Off, "no contextual analysis");
 pragma Warnings (GNATprove, Off, "implicit function contract not available for proof");
 --  Ignore info messages for proof

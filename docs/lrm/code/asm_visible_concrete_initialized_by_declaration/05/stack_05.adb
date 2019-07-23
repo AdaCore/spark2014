@@ -8,14 +8,14 @@ is
    S : Vector := Vector'(Index_Range => 0);  -- Initialization of S
    Pointer : Pointer_Range := 0;             -- Initialization of Pointer
 
-   procedure Push(X : in Integer) 
+   procedure Push(X : in Integer)
    is
    begin
       Pointer := Pointer + 1;
       S(Pointer) := X;
    end Push;
 
-   procedure Pop(X : out Integer) 
+   procedure Pop(X : out Integer)
    is
    begin
       X := S(Pointer);

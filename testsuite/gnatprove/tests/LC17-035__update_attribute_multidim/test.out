@@ -1,6 +1,6 @@
-update.ads:22:30: medium: postcondition might fail, cannot prove A(J, K, L) = A'Old(J, J, J) (e.g. when I = 3 and J = 1 and K = 1 and L = 2)
+update.ads:22:30: medium: postcondition might fail, cannot prove A(J, K, L) = A'Old(J, J, J) (e.g. when J = 1 and K = 1 and L = 2)
 update.ads:31:19: info: postcondition proved (CVC4: 1 VC)
-update.ads:38:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when I = 1 and New_Val = 0)
+update.ads:38:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when I = 1 and New_Val = Integer'First+1)
 update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
 update_checks.adb:29:25: medium: range check might fail (e.g. when X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
@@ -76,51 +76,31 @@ update_checks.ads:28:28: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:36: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:44: info: range check proved (CVC4: 1 VC)
 update_checks.ads:28:64: info: range check proved (CVC4: 1 VC)
-update_logic_fn.adb:23:16: info: initialization of "A" proved
-update_logic_fn.adb:24:16: info: initialization of "A" proved
-update_logic_fn.adb:35:16: info: initialization of "A" proved
-update_logic_fn.adb:36:16: info: initialization of "A" proved
-update_logic_fn.adb:48:23: info: initialization of "A" proved
-update_logic_fn.adb:49:19: info: initialization of "A" proved
-update_logic_fn.adb:61:23: info: initialization of "A" proved
-update_logic_fn.adb:62:19: info: initialization of "A" proved
-update_logic_fn.adb:73:16: info: initialization of "A" proved
-update_logic_fn.adb:74:16: info: initialization of "A" proved
-update_logic_fn.adb:85:16: info: initialization of "A" proved
-update_logic_fn.adb:86:16: info: initialization of "A" proved
-update_logic_fn.adb:96:16: info: initialization of "A" proved
-update_logic_fn.adb:97:16: info: initialization of "A" proved
-update_logic_fn.adb:109:22: info: initialization of "A" proved
-update_logic_fn.adb:110:22: info: initialization of "A" proved
-update_logic_fn.adb:122:22: info: initialization of "A" proved
-update_logic_fn.adb:123:22: info: initialization of "A" proved
 update_logic_fn.ads:23:18: info: initialization of "A" proved
+update_logic_fn.ads:28:11: info: flow dependencies proved
 update_logic_fn.ads:29:14: info: postcondition proved (CVC4: 1 VC)
-update_logic_fn.ads:29:15: info: initialization of "A" proved
 update_logic_fn.ads:33:18: info: initialization of "A" proved
+update_logic_fn.ads:38:11: info: flow dependencies proved
 update_logic_fn.ads:39:14: info: postcondition proved (CVC4: 1 VC)
-update_logic_fn.ads:39:15: info: initialization of "A" proved
 update_logic_fn.ads:43:24: info: initialization of "A" proved
-update_logic_fn.ads:49:14: medium: postcondition might fail, cannot prove A = A_2D_Arr'update (e.g. when V1 = 99 and V2 = 0 and X = 4 and Y = 0)
-update_logic_fn.ads:49:15: info: initialization of "A" proved
+update_logic_fn.ads:48:11: info: flow dependencies proved
+update_logic_fn.ads:49:14: medium: postcondition might fail, cannot prove A = A_2D_Arr'update (e.g. when V1 = 101 and V2 = Integer'First and X = 4 and Y = 0)
 update_logic_fn.ads:55:18: info: initialization of "A" proved
+update_logic_fn.ads:61:11: info: flow dependencies proved
 update_logic_fn.ads:62:14: info: postcondition proved (CVC4: 1 VC)
-update_logic_fn.ads:62:15: info: initialization of "A" proved
 update_logic_fn.ads:68:24: info: initialization of "A" proved
-update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = -1 and V2 = 0 and X = 5 and Y = 7)
-update_logic_fn.ads:75:15: info: initialization of "A" proved
+update_logic_fn.ads:74:11: info: flow dependencies proved
+update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = Integer'First and V2 = 1001 and X = 5 and Y = 7)
 update_logic_fn.ads:83:18: info: initialization of "A" proved
-update_logic_fn.ads:90:17: info: initialization of "A" proved
-update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 0 and X = 5 and Y = 7)
+update_logic_fn.ads:88:11: info: flow dependencies proved
+update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99)
 update_logic_fn.ads:97:18: info: initialization of "A" proved
-update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC)
-update_logic_fn.ads:103:42: info: initialization of "A" proved
+update_logic_fn.ads:102:11: info: flow dependencies proved
+update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC; Trivial: 4 VC)
 update_logic_fn.ads:111:18: info: initialization of "A" proved
+update_logic_fn.ads:115:11: info: flow dependencies proved
 update_logic_fn.ads:116:14: info: postcondition proved (CVC4: 1 VC)
-update_logic_fn.ads:116:15: info: initialization of "A" proved
 update_logic_fn.ads:121:18: info: initialization of "A" proved
-update_logic_fn.ads:127:19: info: postcondition proved (CVC4: 2 VC)
-update_logic_fn.ads:128:06: info: initialization of "A" proved
+update_logic_fn.ads:127:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 update_logic_fn.ads:133:24: info: initialization of "A" proved
-update_logic_fn.ads:140:06: info: initialization of "A" proved
-update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove A = A_3D_Arr'update (e.g. when V1 = 999 and V2 = 0 and X1 = 1 and X2 = 2 and Y1 = 2 and Y2 = 2 and Z1 = Red and Z2 = Blue)
+update_logic_fn.ads:140:06: medium: postcondition might fail, cannot prove A = A_3D_Arr'update (e.g. when V1 = 1001 and V2 = Integer'First and X1 = 1 and X2 = 2 and Y1 = 3 and Y2 = 2 and Z1 = Blue and Z2 = Blue)

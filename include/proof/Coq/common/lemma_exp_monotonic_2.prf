@@ -1,4 +1,4 @@
-unfold in_range, in_range1.
+unfold dynamic_invariant, dynamic_invariant1, in_range, in_range1.
 intros ((val_pos, _),((exp1_pos, _),(_, exp1_le_exp2))).
 
 (* apply theorem about monotonicity of power *)

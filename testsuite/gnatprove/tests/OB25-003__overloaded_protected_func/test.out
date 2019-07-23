@@ -1,6 +1,6 @@
 c910003_pack.adb:6:11: medium: range check might fail
 c910003_pack.adb:9:11: medium: range check might fail
-c910003_pack.adb:14:68: medium: array index check might fail (e.g. when Item1 = 0)
+c910003_pack.adb:14:68: medium: array index check might fail
 c910003_pack.adb:15:68: medium: array index check might fail (e.g. when Item2 = 0)
 c910003_pack.ads:9:36: warning: unused variable "X"
 c910003_pack.ads:10:36: warning: unused variable "X"

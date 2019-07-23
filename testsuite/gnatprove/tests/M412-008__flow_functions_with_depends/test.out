@@ -1,28 +1,36 @@
+foo.adb:10:11: info: data dependencies proved
+foo.adb:12:11: info: flow dependencies proved
 foo.adb:17:22: info: assertion proved (CVC4: 1 VC)
+foo.adb:23:09: info: data dependencies proved
+foo.adb:24:09: info: flow dependencies proved
 foo.adb:29:26: info: initialization of "R" proved
-foo.adb:35:10: medium: precondition might fail [possible explanation: subprogram at line 27 should mention G1 and G2 and A and B in a precondition]
-foo.adb:43:25: info: initialization of "B" proved
+foo.adb:30:09: info: data dependencies proved
+foo.adb:31:09: info: flow dependencies proved
+foo.adb:35:10: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 27 should mention G2 and B in a precondition]
 foo.adb:44:25: info: initialization of "R" proved
-foo.adb:51:10: medium: precondition might fail [possible explanation: subprogram at line 42 should mention G1 and G2 and A in a precondition]
+foo.adb:45:09: info: data dependencies proved
+foo.adb:46:09: info: flow dependencies proved
+foo.adb:51:10: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 42 should mention G2 in a precondition]
 foo.adb:51:26: high: "B" is not initialized
 foo.adb:62:26: info: initialization of "R" proved
+foo.adb:63:09: info: data dependencies proved
+foo.adb:64:09: info: flow dependencies proved
 foo.adb:80:26: info: initialization of "R" proved
-foo.adb:87:12: info: initialization of "Tmp" proved
+foo.adb:81:09: info: data dependencies proved
+foo.adb:82:09: info: flow dependencies proved
 foo.adb:92:26: info: initialization of "R" proved
-foo.adb:100:17: info: initialization of "Tmp" proved
+foo.adb:93:09: info: data dependencies proved
+foo.adb:94:09: info: flow dependencies proved
 foo.adb:100:21: medium: overflow check might fail [possible explanation: loop at line 99 should mention Tmp in a loop invariant]
-foo.adb:101:28: info: initialization of "Tmp" proved
-foo.adb:103:12: info: initialization of "Tmp" proved
 foo.adb:108:26: info: initialization of "R" proved
-foo.adb:114:12: medium: precondition might fail [possible explanation: subprogram at line 106 should mention G1 and G2 and A and B in a precondition]
+foo.adb:109:09: info: data dependencies proved
+foo.adb:110:09: info: flow dependencies proved
+foo.adb:114:12: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 in a precondition]
 foo.adb:115:40: medium: overflow check might fail [possible explanation: subprogram at line 106 should mention A in a precondition]
-foo.adb:116:29: medium: precondition might fail [possible explanation: subprogram at line 106 should mention G1 and G2 and A and B in a precondition]
-foo.adb:120:25: info: initialization of "A" proved
-foo.adb:121:25: info: initialization of "B" proved
+foo.adb:116:29: medium: precondition might fail, cannot prove Y = G2 [possible explanation: subprogram at line 106 should mention G2 and B in a precondition]
 foo.adb:122:25: info: initialization of "R" proved
-foo.adb:123:31: info: initialization of "G1" proved
-foo.adb:123:35: info: initialization of "G2" proved
-foo.adb:126:12: medium: precondition might fail
+foo.adb:123:09: info: data dependencies proved
+foo.adb:126:12: medium: precondition might fail, cannot prove Y = G2
 foo.adb:127:40: medium: overflow check might fail
 foo.adb:128:29: high: "G1" is not an input in the Global contract of subprogram "Test_07_E" at line 120
 foo.adb:128:29: high: "G1" is not initialized
@@ -30,14 +38,21 @@ foo.adb:128:29: high: "G2" is not an input in the Global contract of subprogram 
 foo.adb:128:29: high: "G2" is not initialized
 foo.adb:128:29: high: either make "G1" an input in the Global contract or initialize it before use
 foo.adb:128:29: high: either make "G2" an input in the Global contract or initialize it before use
-foo.adb:128:29: medium: precondition might fail
+foo.adb:128:29: medium: precondition might fail, cannot prove Y = G2
 foo.adb:129:31: high: "A" is not initialized
 foo.adb:129:38: high: "B" is not initialized
+foo.adb:139:09: info: data dependencies proved
+foo.adb:140:09: info: flow dependencies proved
+foo.adb:149:09: info: data dependencies proved
+foo.adb:150:09: info: flow dependencies proved
 foo.adb:154:21: high: "B" is not initialized
-function_depends_on_state.adb:8:04: info: initialization of "A" constituent of "S" proved
-function_depends_on_state.adb:8:07: info: initialization of "B" constituent of "S" proved
-function_depends_on_state.adb:8:10: info: initialization of "C" constituent of "S2" proved
-function_depends_on_state.adb:8:13: info: initialization of "D" constituent of "S2" proved
-function_depends_on_state.adb:23:34: medium: "B" constituent of "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-function_depends_on_state.adb:23:40: medium: "D" constituent of "S2" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-function_depends_on_state.adb:28:22: medium: assertion might fail, cannot prove B = D [possible explanation: subprogram at line 22 should mention B and D in a precondition]
+function_depends_on_state.adb:23:34: medium: "B" constituent of "S" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+function_depends_on_state.adb:23:40: medium: "D" constituent of "S2" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+function_depends_on_state.adb:28:22: medium: assertion might fail, cannot prove B = D [possible explanation: subprogram at function_depends_on_state.ads:14 should mention B and D in a precondition]
+function_depends_on_state.ads:4:08: info: flow dependencies proved
+function_depends_on_state.ads:7:11: info: data dependencies proved
+function_depends_on_state.ads:8:11: info: flow dependencies proved
+function_depends_on_state.ads:11:11: info: data dependencies proved
+function_depends_on_state.ads:12:11: info: flow dependencies proved
+function_depends_on_state.ads:15:11: info: data dependencies proved
+function_depends_on_state.ads:16:11: info: flow dependencies proved

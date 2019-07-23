@@ -1,6 +1,4 @@
 my_package.adb:14:14: info: discriminant check proved (CVC4: 1 VC)
 my_package.adb:16:14: info: discriminant check proved (CVC4: 1 VC)
-my_package.ads:21:07: info: initialization of "V.M_C" proved
 my_package_2.adb:14:14: info: discriminant check proved (CVC4: 1 VC)
 my_package_2.adb:16:14: info: discriminant check proved (CVC4: 1 VC)
-my_package_2.ads:21:07: info: initialization of "V.M_C" proved

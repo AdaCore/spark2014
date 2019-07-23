@@ -5,7 +5,7 @@ project Test is
 
    package Prove is
       for Proof_Dir use "proof";
-      for Switches use ("--no-axiom-guard", "--level=0");
+      for Proof_Switches ("Ada") use ("--no-axiom-guard", "--level=0");
    end Prove;
 
 end Test;

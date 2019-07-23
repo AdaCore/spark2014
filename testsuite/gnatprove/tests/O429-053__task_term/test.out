@@ -1,19 +1,12 @@
 task_non_term.adb:4:07: warning: initialization of "A" has no effect
 task_non_term.adb:5:07: warning: initialization of "F" has no effect
-task_non_term.adb:8:13: info: initialization of "F" proved
+task_non_term.adb:6:07: info: initialization of "Tmp" proved
 task_non_term.adb:8:22: warning: statement has no effect
 task_non_term.adb:9:14: warning: unused assignment
-task_non_term.adb:9:17: info: initialization of "F" proved
 task_non_term.adb:10:12: warning: unused assignment
-task_non_term.adb:10:15: info: initialization of "A" proved
 task_non_term.adb:10:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [possible explanation: loop at line 8 should mention A in a loop invariant]
-task_non_term.adb:10:19: info: initialization of "F" proved
 task_non_term.adb:11:12: warning: unused assignment
-task_non_term.adb:11:15: info: initialization of "Tmp" proved
-task_non_term.adb:21:17: info: initialization of "F" proved
-task_non_term.adb:22:15: info: initialization of "A" proved
-task_non_term.adb:22:17: medium: overflow check might fail (e.g. when A = Integer'First and F = -1) [possible explanation: loop at line 20 should mention A and F in a loop invariant]
-task_non_term.adb:22:19: info: initialization of "F" proved
-task_non_term.adb:23:15: info: initialization of "Tmp" proved
+task_non_term.adb:18:07: info: initialization of "Tmp" proved
+task_non_term.adb:22:17: medium: overflow check might fail (e.g. when A = -1 and F = Integer'First) [possible explanation: loop at line 20 should mention A and F in a loop invariant]
 task_non_term.ads:2:09: medium: the task might terminate, which is not allowed in SPARK
 task_non_term.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)

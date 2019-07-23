@@ -1,2 +1,2 @@
-test.adb:10:12: info: initialization of "Tmp.X" proved
+test.adb:7:07: info: initialization of "Tmp" proved
 test.ads:3:23: info: initialization of "N" proved

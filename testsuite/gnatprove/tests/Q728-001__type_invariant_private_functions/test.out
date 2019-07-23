@@ -1,7 +1,6 @@
 test.adb:4:19: high: "X" is not initialized
 test.adb:6:19: high: "X" is not initialized
-test.adb:6:19: medium: assertion might fail, cannot prove X /= Y (e.g. when X = (F => 0) and Y = (F => 0))
-test.adb:6:24: info: initialization of "Y" proved
+test.adb:6:19: medium: assertion might fail, cannot prove X /= Y
 test_type.ads:3:13: info: invariant check proved (CVC4: 1 VC)
 test_type.ads:5:09: info: invariant check proved on default value (CVC4: 1 VC)
 test_type.ads:11:16: info: overflow check proved (CVC4: 1 VC)

@@ -1,6 +1,5 @@
-derived.ads:7:22: info: initialization of "X.B" proved
+derived.ads:7:22: info: initialization of "X" proved
 derived.ads:8:20: info: postcondition proved (CVC4: 1 VC)
-derived.ads:8:20: medium: class-wide postcondition might be weaker than overridden one
+derived.ads:8:20: medium: class-wide postcondition might be weaker than overridden one, cannot prove X.B
 derived.ads:12:24: warning: "X" is not modified, could be IN
-dispatcher.adb:6:08: medium: precondition might fail (e.g. when X = (B => True))
-object.ads:8:20: info: initialization of "X.B" proved, in inherited contract at derived.ads:7
+dispatcher.adb:6:08: medium: precondition might fail, cannot prove Is_Valid (X) (e.g. when X = (B => True)) [possible explanation: subprogram at line 3 should mention X in a precondition]

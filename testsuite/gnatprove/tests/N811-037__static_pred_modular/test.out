@@ -1,2 +1,2 @@
 t.adb:8:04: warning: analyzing unreferenced procedure "Decr"
-t.adb:10:13: medium: predicate check might fail (e.g. when X = 1) [possible explanation: subprogram at line 8 should mention X in a precondition]
+t.adb:10:13: medium: predicate check might fail [possible explanation: subprogram at line 6 should mention X in a precondition]

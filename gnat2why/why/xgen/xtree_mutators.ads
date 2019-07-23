@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                    Copyright (C) 2010-2014, AdaCore                      --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,10 +28,10 @@ with Outputs; use Outputs;
 package Xtree_Mutators is
    --  This package provides generators for Why node mutators
 
-   procedure Print_Mutator_Declarations  (O : in out Output_Record);
+   procedure Print_Mutator_Declarations (O : in out Output_Record);
    --  Print mutator declarations for Why nodes
 
-   procedure Print_Mutator_Bodies  (O : in out Output_Record);
+   procedure Print_Mutator_Bodies (O : in out Output_Record);
    --  Print mutator bodies for Why nodes
 
 end Xtree_Mutators;

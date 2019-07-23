@@ -3,6 +3,4 @@ add_field.ads:10:04: info: range check proved (CVC4: 2 VC)
 add_field.ads:16:19: info: assertion proved (CVC4: 1 VC)
 add_field.ads:16:46: info: index check proved (CVC4: 2 VC)
 use_var.ads:1:34: info: initial condition proved (CVC4: 1 VC)
-use_var.ads:1:55: info: initialization of "C" proved
-use_var.ads:6:28: info: initialization of "C" proved
 use_var.ads:9:07: info: range check proved (CVC4: 2 VC)

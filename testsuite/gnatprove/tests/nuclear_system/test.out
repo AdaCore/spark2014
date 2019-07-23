@@ -1,8 +1,12 @@
-nuclear_system.adb:18:22: info: initialization of "Deadline" proved
-nuclear_system.adb:27:22: info: initialization of "Current_Time" proved
-nuclear_system.adb:45:13: info: initialization of "Current_Time" proved
+nuclear_reactors.ads:4:03: info: flow dependencies proved
+nuclear_reactors.ads:7:11: info: data dependencies proved
+nuclear_reactors.ads:12:11: info: data dependencies proved
+nuclear_system.adb:14:07: info: initialization of "Deadline" proved
 nuclear_system.ads:11:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 nuclear_system.ads:11:09: info: nontermination of task proved (CVC4: 1 VC)
+nuclear_system.ads:17:14: info: data dependencies proved
 nuclear_system.ads:18:27: info: initialization of "Time" proved
+nuclear_system.ads:20:15: info: data dependencies proved
 nuclear_system.ads:26:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 nuclear_system.ads:26:09: info: nontermination of task proved (CVC4: 1 VC)
+nuclear_system.ads:27:11: info: data dependencies proved

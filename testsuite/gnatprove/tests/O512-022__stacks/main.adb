@@ -1,6 +1,7 @@
-with Ada.Text_IO;         use Ada.Text_IO;
-with Ada.Integer_Text_IO; use Ada.Integer_Text_IO;
-with Stacks;              use Stacks;
+with Ada.Text_IO;           use Ada.Text_IO;
+with Ada.Integer_Text_IO;   use Ada.Integer_Text_IO;
+with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+with Stacks;                use Stacks;
 
 procedure Main is
    Max : Positive;
@@ -18,20 +19,21 @@ begin
          Put_Line ("push or pop element...");
 
          declare
-            Cmd : constant String := Get_Line;
+            Cmd : String(1..20);
+            Last : Integer;
             V   : Integer;
             Pos : Positive;
-
          begin
-            if Cmd'Length = 3 and then Cmd (1 .. 3) = "pop" then
+            Get_Line(Cmd, Last);
+            if Last = 3 and then Cmd (1 .. 3) = "pop" then
                S.Pop;
                Put_Line ("stack is now: ");
                S.Print;
                New_Line;
 
-            elsif Cmd'Length >= 6 and then Cmd (1 .. 5) = "push " then
-               Get (Cmd (6 .. Cmd'Last), V, Pos);
-               S.Push (Element (V));
+            elsif Last >= 6 and then Cmd (1 .. 5) = "push " then
+               Get (Cmd (6 .. Last), V, Pos);
+               S.Push (Stacks.Element (V));
                Put_Line ("stack is now: ");
                S.Print;
                New_Line;

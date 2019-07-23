@@ -13,6 +13,12 @@ from gnatpython.ex import Run
 # - the prover locations
 # - platform (32bits/64bits) in Z3 output
 
+# We remove LD_LIBRARY_PATH which is set by the GNAT compiler dependency.
+# In this way we can test if the provers work without this env var.
+# ??? os.unsetenv didn't work, so setting to empty string instead
+
+os.environ['LD_LIBRARY_PATH'] = ''
+
 p = Run(["gnatprove", "--version"])
 l = p.out.splitlines()
 # drop first line of output

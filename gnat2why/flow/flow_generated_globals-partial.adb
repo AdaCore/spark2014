@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2016-2018, Altran UK Limited              --
+--                Copyright (C) 2016-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -672,11 +672,16 @@ package body Flow_Generated_Globals.Partial is
             (Has_No_Body_Yet (E) and then not No_Return (E)));
 
          --  For library-level packages and protected-types the non-blocking
-         --  status is meaningless; for others conservatively assume that they
-         --  are blocking.
+         --  status is meaningless. Otherwise, it is either a user instance of
+         --  a predefined unit for which we generate contracts but it is the
+         --  Ada RM that decides is its blocking status; or we conservatively
+         --  assume it to be potentially blocking.
+
          Contr.Nonblocking :=
            (if Is_Callee (E)
-            then False
+            then (if In_Predefined_Unit (E)
+                  then not Is_Predefined_Potentially_Blocking (E)
+                  else False)
             else Meaningless);
 
          --  In a contract it is syntactically not allowed to suspend on a
@@ -1383,7 +1388,11 @@ package body Flow_Generated_Globals.Partial is
                    Contracts :        Entity_Contract_Maps.Map;
                    Patches   : in out Global_Patch_Lists.List)
    is
-      Folded_Scope : constant Flow_Scope := Get_Flow_Scope (Folded);
+      Folded_Scope : constant Flow_Scope :=
+        (Ent => Folded, Part => Visible_Part);
+      --  Just like in Flow_Analyse_Entity, we explicitly use the Visible_Part,
+      --  because for subprograms without explicit spec Get_Flow_Scope always
+      --  returns the Body_Part.
 
       Full_Contract : Contract renames Contracts (Folded);
 
@@ -1631,7 +1640,8 @@ package body Flow_Generated_Globals.Partial is
                            Projected, Partial);
 
                for State of Partial loop
-                  if Is_Fully_Contained (State, Update.Initializes.Refined)
+                  if Is_Fully_Contained (State, Update.Initializes.Refined,
+                                         Folded_Scope)
                   then
                      Projected.Include (State);
                   end if;
@@ -2128,6 +2138,7 @@ package body Flow_Generated_Globals.Partial is
             --  Get_Variables. For subprograms in predefined units with no
             --  Global contract we assume Global => null, similarly as we do in
             --  Mark_Call.
+            --  ??? this code is duplicated in Has_Variable_Input_Internal
 
             for F of Get_Functions (Expr, Include_Predicates => False) loop
                if not Has_User_Supplied_Globals (F)
@@ -2249,17 +2260,17 @@ package body Flow_Generated_Globals.Partial is
       --  Initialize the workset with constants from the generated globals
       --  ??? better to initialize this when globals are picked from the AST
 
-      for Contr of Contracts loop
-         Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
-         Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
-      end loop;
-
       Seed_Exposed_Constants;
 
       --  However, it is also our responsibility to record calls in the
       --  initialization expressions of constants exposed from the current
       --  compilation unit, i.e. declared in the visible and private parts
       --  of .ads packages.
+
+      for Contr of Contracts loop
+         Seed (Pick_Constants (Contr.Globals.Refined.Proof_Ins));
+         Seed (Pick_Constants (Contr.Globals.Refined.Inputs));
+      end loop;
 
       --  Grow graph
 
@@ -2544,7 +2555,7 @@ package body Flow_Generated_Globals.Partial is
             end loop;
          end Traverse_Declarations;
 
-         --  Local variables:
+         --  Local variables
 
          Pkg_Spec : constant Node_Id := Package_Specification (E);
 

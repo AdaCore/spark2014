@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -341,7 +341,7 @@
 --      Should be used either to for projection functions or together with
 --      label "model" or "model_projected".
 --
---  "model_vc"
+--  "vc:annotation"
 --      This label identifies the construct that triggers the VC and it is not
 --      postcondition.
 --

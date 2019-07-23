@@ -1,5 +1,4 @@
 test.adb:4:20: info: postcondition proved (CVC4: 1 VC)
-test.adb:10:23: info: initialization of "Tmp" proved
 test.adb:16:57: info: division check proved (CVC4: 2 VC)
 test.adb:16:57: info: range check proved (CVC4: 2 VC)
 test.adb:21:34: info: range check proved (CVC4: 1 VC)

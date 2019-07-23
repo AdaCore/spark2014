@@ -1,38 +1,26 @@
 test.adb:4:04: warning: analyzing unreferenced procedure "Test_01"
-test.adb:4:23: info: initialization of "X" proved
-test.adb:9:33: info: initialization of "X" proved
 test.adb:9:33: medium: loop invariant might fail after first iteration, cannot prove X = X'loop_entry
 test.adb:9:33: medium: loop invariant might fail in first iteration, cannot prove X = X'loop_entry
 test.adb:9:37: high: "X" is not initialized
 test.adb:13:04: warning: analyzing unreferenced procedure "Test_02"
-test.adb:13:23: info: initialization of "X" proved
-test.adb:18:33: info: initialization of "X" proved
 test.adb:18:33: medium: loop invariant might fail after first iteration, cannot prove X = X'Loop_Entry (Wibble)
 test.adb:18:33: medium: loop invariant might fail in first iteration, cannot prove X = X'Loop_Entry (Wibble)
 test.adb:18:37: high: "X" is not initialized
 test.adb:22:04: warning: analyzing unreferenced procedure "Test_03"
-test.adb:22:23: info: initialization of "X" proved
 test.adb:25:46: info: unrolling loop
-test.adb:28:36: info: initialization of "X" proved
 test.adb:28:36: info: loop invariant preservation proved (CVC4: 10 VC)
 test.adb:28:36: medium: loop invariant might fail in first iteration, cannot prove X = X'Loop_Entry (Wibble)
 test.adb:28:40: high: "X" is not initialized
 test.adb:34:04: warning: analyzing unreferenced procedure "Test_04"
-test.adb:34:23: info: initialization of "X" proved
-test.adb:39:33: info: initialization of "X" proved
 test.adb:39:33: medium: loop invariant might fail after first iteration, cannot prove X = X'loop_entry
 test.adb:39:33: medium: loop invariant might fail in first iteration, cannot prove X = X'loop_entry
 test.adb:39:37: high: "X" is not initialized
-test.adb:41:36: info: initialization of "X" proved
 test.adb:41:36: info: loop invariant initialization proved (CVC4: 1 VC)
 test.adb:41:36: info: loop invariant preservation proved (CVC4: 1 VC)
-test.adb:41:40: info: initialization of "X" proved
 test.adb:47:04: warning: analyzing unreferenced procedure "Test_05"
-test.adb:47:23: info: initialization of "X" proved
 test.adb:52:10: medium: loop variant might fail
 test.adb:52:44: high: "X" is not initialized
 test.adb:56:04: warning: analyzing unreferenced procedure "Test_06"
-test.adb:56:23: info: initialization of "X" proved
 test.adb:59:38: info: unrolling loop
 test.adb:61:25: high: "X" is not initialized
 test.adb:61:25: medium: assertion might fail, cannot prove X'Loop_Entry = 0

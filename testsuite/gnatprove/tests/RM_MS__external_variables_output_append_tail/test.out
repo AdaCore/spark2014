@@ -1,10 +1,11 @@
 output_port_14.adb:14:51: info: initialization of "Output_Shadow" proved
+output_port_14.adb:15:11: info: data dependencies proved
 output_port_14.adb:15:33: info: initialization of "Output_Port" constituent of "Outputs" proved
-output_port_14.adb:17:22: info: initialization of "Output_Shadow" proved
+output_port_14.adb:16:11: info: flow dependencies proved
 output_port_14.adb:17:22: info: postcondition proved (CVC4: 1 VC)
-output_port_14.adb:21:22: info: initialization of "Output_Shadow" proved
 output_port_14.adb:26:41: info: initialization of "Output_Port" constituent of "Outputs" proved
-output_port_14.adb:36:19: info: initialization of "Out_1" proved
+output_port_14.adb:29:07: info: initialization of "Out_1" proved
+output_port_14.adb:29:14: info: initialization of "Out_2" proved
 output_port_14.adb:39:22: info: assertion proved (CVC4: 3 VC)
-output_port_14.adb:40:39: info: initialization of "Out_2" proved
-output_port_14.adb:42:25: info: initialization of "Out_1" proved
+output_port_14.ads:6:11: info: data dependencies proved
+output_port_14.ads:7:11: info: flow dependencies proved

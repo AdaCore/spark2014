@@ -15,10 +15,12 @@ Generated contracts for a
    Initializes =>
       Var
       VI1
-a.adb:4:55: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention X and Y in a precondition]
-a.adb:6:65: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
+a.adb:4:55: medium: overflow check might fail [possible explanation: subprogram at a.ads:3 should mention X and Y in a precondition]
+a.adb:6:65: medium: overflow check might fail [possible explanation: subprogram at a.ads:4 should mention X and Y in a precondition]
 a.adb:10:10: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention X and Y in a precondition]
-a.adb:26:30: info: initialization of "Var" proved
+a.adb:11:09: info: data dependencies proved
+a.adb:30:54: info: data dependencies proved
+a.adb:31:54: info: data dependencies proved
 a.adb:36:22: info: overflow check proved (CVC4: 1 VC)
 a.adb:36:27: info: overflow check proved (CVC4: 1 VC)
 a.adb:36:32: info: overflow check proved (CVC4: 1 VC)
@@ -31,3 +33,4 @@ a.adb:48:32: info: overflow check proved (CVC4: 1 VC)
 a.adb:48:37: info: overflow check proved (CVC4: 1 VC)
 a.adb:48:42: info: overflow check proved (CVC4: 1 VC)
 a.adb:48:47: info: overflow check proved (CVC4: 1 VC)
+a.ads:4:64: info: data dependencies proved

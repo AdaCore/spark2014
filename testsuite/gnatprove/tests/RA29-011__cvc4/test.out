@@ -1,5 +1,5 @@
 
-Copyright (c) 2009-2017 by the authors and their institutional
+Copyright (c) 2009-2019 by the authors and their institutional
 affiliations listed at http://cvc4.cs.stanford.edu/authors
 
 CVC4 is open-source and is covered by the BSD license (modified).
@@ -9,6 +9,12 @@ USE AT YOUR OWN RISK.
 
 CVC4 incorporates code from ANTLR3 (http://www.antlr.org).
 See licenses/antlr3-LICENSE for copyright and licensing information.
+
+This version of CVC4 is linked against the following non-(L)GPL'ed
+third party libraries.
+
+  SymFPU - The Symbolic Floating Point Unit
+  See https://github.com/martin-cs/symfpu/tree/CVC4 for copyright information.
 
 This version of CVC4 is linked against the following third party
 libraries covered by the LGPLv3 license.
@@ -21,9 +27,9 @@ See the file COPYING (distributed with the source code, and with
 all binaries) for the full CVC4 copyright, licensing, and (lack of)
 warranty information.
 
-version       : 1.6-prerelease
+version       : 1.7.1-prerelease
 
-library       : 1.6.0
+library       : 1.7.1
 
 debug code    : no
 statistics    : yes
@@ -35,6 +41,7 @@ assertions    : no
 proof         : no
 coverage      : no
 profiling     : no
+asan          : no
 competition   : no
 
 abc           : no
@@ -42,7 +49,8 @@ cln           : no
 glpk          : no
 cadical       : no
 cryptominisat : no
+drat2er       : no
 gmp           : yes
 lfsc          : no
 readline      : no
-tls           : no
+symfpu        : yes

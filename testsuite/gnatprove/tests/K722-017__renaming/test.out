@@ -1,6 +1,4 @@
 renam.adb:11:04: warning: analyzing unreferenced procedure "K"
-renam.adb:11:14: info: initialization of "R.A" proved
-renam.adb:11:14: info: initialization of "X" proved
 renam.adb:38:07: warning: analyzing unreferenced function "F"
 renam.adb:57:04: warning: analyzing unreferenced procedure "U"
 renam.ads:3:14: warning: subprogram "P" has no effect

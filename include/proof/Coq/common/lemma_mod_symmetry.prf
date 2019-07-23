@@ -1,4 +1,4 @@
-intros (arg1_type,(arg2_type,pre)).
+intros.
 Open Scope Z_scope.
 
 (* apply arithmetic theorem *)

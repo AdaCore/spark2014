@@ -1,90 +1,45 @@
-for_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
-for_loops.adb:9:04: warning: no Global contract available for "Put_Line"
 for_loops.adb:14:24: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:16:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
 for_loops.adb:16:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test1) > 0 (e.g. when Counter = 1)
-for_loops.adb:16:41: info: initialization of "Counter" proved
-for_loops.adb:18:10: warning: assuming "Put_Line" has no effect on global items
-for_loops.adb:18:10: warning: no Global contract available for "Put_Line"
 for_loops.adb:25:29: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:29:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 for_loops.adb:29:33: info: loop invariant preservation proved (CVC4: 1 VC)
 for_loops.adb:29:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 (e.g. when Counter = 1)
-for_loops.adb:29:41: info: initialization of "Counter" proved
-for_loops.adb:32:10: warning: assuming "Put_Line" has no effect on global items
-for_loops.adb:32:10: warning: no Global contract available for "Put_Line"
 for_loops.adb:40:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-for_loops.adb:40:38: info: initialization of "Counter" proved
 for_loops.adb:40:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:42:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-for_loops.adb:44:36: info: initialization of "Counter" proved
 for_loops.adb:44:36: info: loop invariant proved (CodePeer)
-for_loops.adb:46:13: warning: assuming "Put_Line" has no effect on global items
-for_loops.adb:46:13: warning: no Global contract available for "Put_Line"
 for_loops.adb:55:30: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-for_loops.adb:55:38: info: initialization of "Counter" proved
 for_loops.adb:55:47: info: cannot unroll loop (too many loop iterations)
 for_loops.adb:57:28: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-for_loops.adb:59:13: warning: assuming "Put_Line" has no effect on global items
-for_loops.adb:59:13: warning: no Global contract available for "Put_Line"
-for_loops.adb:61:36: info: initialization of "Counter" proved
 for_loops.adb:61:36: info: loop invariant proved (CodePeer)
-optional.adb:10:04: warning: assuming "Put_Line" has no effect on global items
-optional.adb:10:04: warning: no Global contract available for "Put_Line"
-optional.adb:17:33: info: initialization of "TA" proved
 optional.adb:17:33: info: loop invariant proved (CodePeer)
-optional.adb:19:21: info: initialization of "TA" proved
+optional.adb:19:21: warning: unused assignment
 optional.adb:27:11: medium: array index check might fail
-optional.adb:27:26: info: initialization of "TA" proved
 optional.adb:29:48: info: unrolling loop
-optional.adb:31:36: info: initialization of "TA" proved
 optional.adb:31:36: info: loop invariant initialization proved (CVC4: 3 VC)
 optional.adb:31:36: medium: loop invariant might fail after first iteration, cannot prove TA'Loop_Entry (Outer, Inner) = 0 (e.g. when Inner = 2 and Outer = 1)
-optional.adb:35:07: warning: assuming "Put_Line" has no effect on global items
-optional.adb:35:07: warning: no Global contract available for "Put_Line"
 utils.adb:10:29: info: range check proved (CodePeer)
-utils.adb:10:34: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention Val in a precondition]
-while_loops.adb:9:04: warning: assuming "Put_Line" has no effect on global items
-while_loops.adb:9:04: warning: no Global contract available for "Put_Line"
+utils.adb:10:34: medium: overflow check might fail (e.g. when Val = 1) [possible explanation: subprogram at utils.ads:2 should mention Val in a precondition]
 while_loops.adb:14:21: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:14:29: info: initialization of "Counter" proved
-while_loops.adb:16:10: warning: assuming "Put_Line" has no effect on global items
-while_loops.adb:16:10: warning: no Global contract available for "Put_Line"
 while_loops.adb:18:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 while_loops.adb:18:33: info: loop invariant initialization proved (CVC4: 1 VC)
 while_loops.adb:18:33: info: loop invariant preservation proved (CVC4: 1 VC)
-while_loops.adb:18:41: info: initialization of "Counter" proved
-while_loops.adb:20:21: info: initialization of "Counter" proved
 while_loops.adb:20:29: medium: overflow check might fail (e.g. when Counter = Natural'Last)
 while_loops.adb:27:21: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:27:29: info: initialization of "Counter" proved
 while_loops.adb:32:33: info: implicit function contract not available for proof ("Sum_Of" is recursive)
 while_loops.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC)
 while_loops.adb:32:33: medium: loop invariant might fail in first iteration, cannot prove Sum_Of (Counter)'Loop_Entry (Test2) < 0 (e.g. when Counter = 2)
-while_loops.adb:32:41: info: initialization of "Counter" proved
-while_loops.adb:35:10: warning: assuming "Put_Line" has no effect on global items
-while_loops.adb:35:10: warning: no Global contract available for "Put_Line"
-while_loops.adb:36:21: info: initialization of "Counter" proved
 while_loops.adb:36:29: info: overflow check proved (CVC4: 1 VC)
 while_loops.adb:44:22: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:44:30: info: initialization of "Counter" proved
 while_loops.adb:46:25: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:48:36: info: initialization of "Counter" proved
 while_loops.adb:48:36: info: loop invariant initialization proved (CVC4: 1 VC)
 while_loops.adb:48:36: info: loop invariant preservation proved (CVC4: 1 VC)
-while_loops.adb:50:13: warning: assuming "Put_Line" has no effect on global items
-while_loops.adb:50:13: warning: no Global contract available for "Put_Line"
-while_loops.adb:53:21: info: initialization of "Counter" proved
 while_loops.adb:53:29: medium: overflow check might fail (e.g. when Counter = Natural'Last)
 while_loops.adb:61:22: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:61:30: info: initialization of "Counter" proved
 while_loops.adb:63:25: info: implicit function contract not available for proof ("Sum_Of" is recursive)
-while_loops.adb:65:36: info: initialization of "Counter" proved
 while_loops.adb:65:36: info: loop invariant initialization proved (CVC4: 1 VC)
 while_loops.adb:65:36: info: loop invariant preservation proved (CVC4: 1 VC)
-while_loops.adb:67:13: warning: assuming "Put_Line" has no effect on global items
-while_loops.adb:67:13: warning: no Global contract available for "Put_Line"
 while_loops.adb:70:10: warning: unreachable code (CVC4: 1 VC)
-while_loops.adb:70:21: info: initialization of "Counter" proved
 while_loops.adb:70:29: info: overflow check proved (CVC4: 1 VC)

@@ -1,6 +1,8 @@
 q.adb:5:23: info: initialization of "X" proved
+q.adb:7:07: info: data dependencies proved
 q.adb:7:32: warning: "G" is not modified, could be INPUT
 q.adb:12:23: info: initialization of "X" proved
+q.adb:13:11: info: data dependencies proved
 q.adb:13:32: warning: "G" is not modified, could be INPUT
 q.adb:19:04: warning: analyzing unreferenced procedure "Test_03"
 q.adb:19:23: info: initialization of "X" proved

@@ -1,2 +1,4 @@
-pkg__a.adb:7:04: info: initialization of "Counter" constituent of "State" proved
+pkg.ads:5:04: info: flow dependencies proved
+pkg.ads:10:07: info: data dependencies proved
+pkg.ads:11:07: info: flow dependencies proved
 pkg__a.adb:19:29: info: overflow check proved (CVC4: 1 VC)

@@ -71,8 +71,8 @@ Definition map__content (v:map__ref): (map.Map.map t component_type) :=
 Fixpoint array_eq (a : map.Map.map t component_type)
   (af : t) (b : map.Map.map t component_type) (bf : t) (h : nat) : bool :=
   match h with
-  | O => Z.eqb (map.Map.get a af) (map.Map.get b bf)
-  | S (n) => andb (Z.eqb (map.Map.get a af) (map.Map.get b bf)) (array_eq a (af + 1)%Z b (bf + 1)%Z n)
+  | O => Z.eqb (a af) (b bf)
+  | S (n) => andb (Z.eqb (a af) (b bf)) (array_eq a (af + 1)%Z b (bf + 1)%Z n)
   end.
 
 Lemma array_eq_def:
@@ -84,7 +84,7 @@ forall (a:(map.Map.map t component_type)),
       array_eq a af b bf h = true <->
       (forall (i:t),
         (af <= i <= af + Z.of_nat h)%Z ->
-            map.Map.get a i = map.Map.get b ((bf - af) + i))%Z.
+            a i = b ((bf - af) + i))%Z.
 intros a af b bf h.
 generalize af bf; clear af bf.
 induction h; intros af bf; split.
@@ -101,7 +101,7 @@ induction h; intros af bf; split.
    rewrite Z.sub_simpl_r.
    apply Z.eqb_eq; auto.
  - unfold array_eq; fold array_eq; unfold andb.
-   destruct (Z.eqb (Map.get a af) (Map.get b bf)) eqn:Heq;
+   destruct (Z.eqb (a af) (b bf)) eqn:Heq;
    [apply Z.eqb_eq in Heq|intro Hwrong; contradict Hwrong; auto].
    intros Helmt i [Hil Hir].
    rewrite <- Nat.add_1_r in Hir.
@@ -148,14 +148,14 @@ forall (a:(map.Map.map t component_type)),
          \/ ((~ (le af al)) /\ (gt bf bl)))
         /\ forall (i:t),
             ((le af i) /\ (le i al)) ->
-            ((map.Map.get a i) = (map.Map.get b (add (sub bf af) i)))) ->
+            ((a i) = (b (add (sub bf af) i)))) ->
        ((bool_eq a af al b bf bl) = true))
       /\ (((bool_eq a af al b bf bl) = true) ->
           ((((le af al) -> ((add (sub al af) one) = (add (sub bl bf) one)))
             /\ ((~ (le af al)) -> (gt bf bl)))
            /\ forall (i:t),
                ((le af i) /\ (le i al)) ->
-               ((map.Map.get a i) = (map.Map.get b (add (sub bf af) i))))).
+               ((a i) = (b (add (sub bf af) i))))).
 intros a af al b bf bl.
 unfold le; unfold gt; unfold add; unfold one; unfold sub; unfold bool_eq.
 split.
@@ -194,17 +194,17 @@ Qed.
 (* Why3 goal *)
 Definition slide: (map.Map.map t component_type) -> t -> t ->
   (map.Map.map t component_type).
-intros (a) of nf.
+intros a of nf.
 destruct (Z.eq_dec of nf) as [_ | _].
-exact (Map._map_constr _ _ a).
-exact (Map._map_constr _ _ (fun x => a (x - nf + of)%Z)).
+exact a.
+exact (fun x => a (x - nf + of)%Z).
 Defined.
 
 (* Why3 goal *)
 Lemma slide_eq :
 forall (a:(map.Map.map t component_type)),
  forall (first:t), ((slide a first first) = a).
-intros (a) first.
+intros a first.
 unfold slide; simpl.
 destruct (Z.eq_dec first first) as [_ | Hwrong];
 [| contradict Hwrong]; auto.
@@ -216,12 +216,12 @@ forall (a:(map.Map.map t component_type)),
  forall (old_first:t),
   forall (new_first:t),
    forall (i:t),
-    ((map.Map.get (slide a old_first new_first) i) = (map.Map.get a
-                                                       (sub i
-                                                         (sub new_first
-                                                           old_first)))).
-intros (a) old_first new_first i.
-unfold Map.get; unfold slide; unfold sub; simpl.
+    (((slide a old_first new_first) i) = (a
+                                           (sub i
+                                             (sub new_first
+                                               old_first)))).
+intros a old_first new_first i.
+unfold slide; unfold sub; simpl.
 destruct (Z.eq_dec old_first new_first) as [Ha | _].
  - rewrite Ha.
    rewrite Zminus_diag.

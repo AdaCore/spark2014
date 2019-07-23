@@ -1,2 +1,4 @@
+equality.adb:13:11: info: flow dependencies proved
 equality.adb:18:22: info: postcondition proved (CVC4: 2 VC)
+equality.adb:26:11: info: flow dependencies proved
 equality.adb:32:22: info: postcondition proved (CVC4: 2 VC)

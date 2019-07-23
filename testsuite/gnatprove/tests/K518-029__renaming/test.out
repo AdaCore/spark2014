@@ -1,2 +1,1 @@
-renam.ads:4:14: info: initialization of "X" proved
-renam.ads:5:33: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = 1)
+renam.ads:5:33: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = 1) [possible explanation: call at renam.adb:9 should mention X in a postcondition]

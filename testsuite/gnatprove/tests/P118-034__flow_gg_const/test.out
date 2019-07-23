@@ -12,7 +12,7 @@ Generated contracts for main
    Refined_Global =>
       Input =>
          p__var
-main.adb:20:19: info: precondition proved (CVC4: 1 VC)
+main.adb:20:19: info: precondition proved (Trivial: 1 VC)
 main.adb:20:19: medium: assertion might fail, cannot prove (Both_Are_True)
 Generated contracts for read_variable
    Global =>

@@ -1,11 +1,11 @@
 package Stacks_05
 is
-   
+
    type Stack is private;
 
    function Is_Empty(S : Stack) return Boolean;
    function Is_Full(S : Stack) return Boolean;
-      
+
    procedure Clear(S : in out Stack);
    --# post Is_Empty(S);
    procedure Push(S : in out Stack; X : in Integer);

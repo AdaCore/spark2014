@@ -1,34 +1,24 @@
-database.adb:41:07: info: initialization of "First_Available" proved
 database.adb:49:42: info: initialization of "Account" proved
-database.adb:52:17: info: postcondition proved (altergo: 3 VC)
-database.adb:52:35: info: initialization of "Account" proved
-database.adb:60:17: info: postcondition proved (altergo: 3 VC)
-database.adb:118:17: info: initialization of "Links" proved
+database.adb:52:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
+database.adb:60:17: info: postcondition proved (Trivial: 1 VC; altergo: 3 VC)
 database.adb:122:21: info: range check proved (altergo: 1 VC)
 database.adb:123:17: info: index check proved (altergo: 2 VC)
 database.adb:124:36: info: index check proved (altergo: 2 VC)
 database.adb:132:35: info: index check proved (altergo: 2 VC)
 database.adb:135:35: info: index check proved (altergo: 2 VC)
 database.adb:141:44: info: index check proved (altergo: 2 VC)
-database.adb:152:36: info: initialization of "Count" proved
 database.adb:152:36: info: loop invariant initialization proved (altergo: 1 VC)
 database.adb:152:36: info: loop invariant preservation proved (altergo: 1 VC)
-database.adb:154:25: info: initialization of "Count" proved
 database.adb:154:31: info: overflow check proved (altergo: 1 VC)
-database.adb:157:17: info: initialization of "Count" proved
+database.adb:161:10: info: initialization of "Tmp_Prev" proved
+database.adb:161:10: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:182
+database.adb:162:10: info: initialization of "Tmp_Next" proved
+database.adb:162:10: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:182
 database.adb:173:30: info: range check proved (altergo: 1 VC), in call inlined at database.adb:182
-database.adb:175:23: info: initialization of "Links" proved
-database.adb:175:23: info: initialization of "Links" proved, in call inlined at database.adb:182
-database.adb:176:53: info: initialization of "Tmp_Prev" proved
-database.adb:176:53: info: initialization of "Tmp_Prev" proved, in call inlined at database.adb:182
-database.adb:177:53: info: initialization of "Tmp_Next" proved
-database.adb:177:53: info: initialization of "Tmp_Next" proved, in call inlined at database.adb:182
 database.adb:182:07: info: analyzing call to "Initialize_Links" in context
 database.adb:182:07: info: cannot unroll loop (too many loop iterations)
 database.adb:182:07: info: in inlined body at line 164
 database.adb:251:19: info: precondition proved (altergo: 1 VC)
-database.adb:254:56: info: initialization of "Account" proved
-database.adb:258:37: info: initialization of "Account" proved
 database.adb:272:10: info: precondition proved (altergo: 1 VC)
 database.adb:283:22: info: precondition proved (altergo: 1 VC)
 database.adb:296:17: info: precondition proved (altergo: 1 VC)
@@ -37,7 +27,6 @@ database.adb:314:27: info: precondition proved (altergo: 1 VC)
 database.adb:320:42: info: precondition proved (altergo: 2 VC)
 database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved (altergo: 3 VC)
-database.ads:65:24: info: initialization of "Account" proved
 database.ads:67:41: info: precondition proved (altergo: 1 VC)
 database.ads:88:41: info: precondition proved (altergo: 1 VC)
 database.ads:107:14: info: precondition proved (altergo: 1 VC)

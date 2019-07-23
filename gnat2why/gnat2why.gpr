@@ -73,13 +73,17 @@ project GNAT2Why is
          "flow-analysis-sanity.adb",
          "flow-control_flow_graph.adb",
          "flow-data_dependence_graph.adb",
+         "graphs.adb",
+         "why-atree-sprint.adb",
+
+         --  the following files contain instances of Graphs
+         --  leading to false alarms in graphs.adb
+         "flow.ads",
          "flow_generated_globals-partial.adb",
          "flow_generated_globals-phase_2.adb",
+         "flow_generated_globals-phase_2-visibility.adb",
          "flow_utility.adb",
-         "flow_visibility.adb",
-         "gnat2why-expr.adb",
-         "graphs.adb",
-         "why-atree-sprint.adb");
+         "flow_visibility.adb");
 
    end CodePeer;
 

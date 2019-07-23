@@ -1,13 +1,12 @@
-tag_check.adb:12:09: medium: tag check might fail (e.g. when X = (X => 0) and Y = (X => 0))
+tag_check.adb:12:09: medium: tag check might fail
 tag_check.adb:13:07: medium: assertion might fail
 tag_check.adb:33:04: warning: analyzing unreferenced procedure "Use_Two"
 tag_check.adb:33:14: warning: subprogram "Use_Two" has no effect
-tag_check.adb:35:07: medium: tag check might fail (e.g. when X = (X => 0) and Y = (X => 0))
+tag_check.adb:35:07: medium: tag check might fail
 tag_check.adb:38:04: warning: analyzing unreferenced procedure "Use_Three"
 tag_check.adb:38:14: warning: subprogram "Use_Three" has no effect
-tag_check.adb:40:07: medium: tag check might fail (e.g. when X = (X => 0) and Y = (X => 0))
+tag_check.adb:40:07: medium: tag check might fail
 tag_check.ads:7:14: warning: subprogram "Two" has no effect
 tag_check.ads:8:14: warning: subprogram "Three" has no effect
 tag_check.ads:12:14: high: all paths in "Assign" raise exceptions or do not terminate normally
-tag_check.ads:14:24: info: initialization of "X.X" proved
-tag_check.ads:14:24: info: initialization of extension of "X" proved
+tag_check.ads:14:24: info: initialization of "X" proved

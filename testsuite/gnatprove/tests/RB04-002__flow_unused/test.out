@@ -1,2 +1,2 @@
-martians.ads:9:19: info: assertion proved (CVC4: 1 VC)
-martians.ads:10:19: info: assertion proved (CVC4: 1 VC)
+martians.ads:9:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+martians.ads:10:19: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)

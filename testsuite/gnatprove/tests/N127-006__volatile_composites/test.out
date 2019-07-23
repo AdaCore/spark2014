@@ -1,9 +1,18 @@
 legal.adb:50:21: medium: range check might fail (e.g. when Tmp = 4294967295)
-legal.adb:80:12: info: initialization of "Tmp" proved
 legal.ads:91:19: info: initialization of "X" proved
+legal.ads:92:11: info: data dependencies proved
+legal.ads:95:11: info: data dependencies proved
 legal.ads:95:32: info: initialization of "V1" proved
 legal.ads:99:19: info: initialization of "X" proved
+legal.ads:100:11: info: data dependencies proved
+legal.ads:103:11: info: data dependencies proved
 legal.ads:107:19: info: initialization of "X" proved
+legal.ads:108:11: info: data dependencies proved
 legal.ads:110:21: info: initialization of "X" proved
+legal.ads:111:11: info: data dependencies proved
+legal.ads:114:11: info: data dependencies proved
 legal.ads:118:19: info: initialization of "X" proved
+legal.ads:119:11: info: data dependencies proved
+legal.ads:122:11: info: data dependencies proved
 legal.ads:124:20: info: initialization of "X" proved
+legal.ads:125:11: info: data dependencies proved

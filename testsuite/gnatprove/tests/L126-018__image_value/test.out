@@ -1,13 +1,7 @@
-p.adb:2:14: warning: "Y" is not modified, could be IN
-p.adb:2:14: warning: unused variable "Y"
-p.adb:5:18: warning: assuming "Get_Line" has no effect on global items
-p.adb:5:18: warning: no Global contract available for "Get_Line"
-p.adb:7:04: warning: assuming "Put_Line" has no effect on global items
-p.adb:7:04: warning: no Global contract available for "Put_Line"
-p.adb:7:23: info: initialization of "X" proved
-p.adb:8:10: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
-p.adb:8:10: medium: range check might fail
-p.adb:8:18: info: initialization of "S" proved
-p.adb:9:04: warning: assuming "Put_Line" has no effect on global items
-p.adb:9:04: warning: no Global contract available for "Put_Line"
-p.adb:9:23: info: initialization of "X" proved
+p.adb:3:14: warning: "Y" is not modified, could be IN
+p.adb:3:14: warning: unused variable "Y"
+p.adb:7:04: info: initialization of "Buffer" proved
+p.adb:12:26: medium: precondition might fail, cannot prove Right'Length <= Natural'Last - Length (Left) (e.g. when Buffer = (others => 'NUL')) [possible explanation: loop at line 10 should mention Unb_Str in a loop invariant]
+p.adb:12:28: info: range check proved (CVC4: 4 VC)
+p.adb:18:13: medium: precondition might fail (e.g. when S = (others => 'NUL') and S'First = 1 and S'Last = 0)
+p.adb:18:13: medium: range check might fail

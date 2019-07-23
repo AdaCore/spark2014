@@ -1,5 +1,6 @@
 justifinit.adb:12:17: warning: "Y" is not modified, could be IN
 justifinit.adb:12:17: warning: unused variable "Y"
+justifinit.adb:13:11: info: data dependencies proved
 justifinit.adb:13:31: low: unused global "X" constituent of "State"
 justifinit.ads:3:26: warning: no procedure exists that can initialize abstract state "Justifinit.State"
 justifinit.ads:6:11: low: global Input "Justifinit.State" of "P" not read

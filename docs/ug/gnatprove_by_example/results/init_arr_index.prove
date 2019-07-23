@@ -1,7 +1,4 @@
-init_arr_index.adb:3:27: info: initialization of "A" proved
 init_arr_index.adb:5:11: info: postcondition proved
-init_arr_index.adb:5:36: info: initialization of "A" proved
-init_arr_index.adb:10:30: info: loop invariant initialization proved
-init_arr_index.adb:10:30: info: loop invariant preservation proved
-init_arr_index.adb:10:59: info: initialization of "A" proved
-init_arr_index.adb:10:61: info: index check proved
+init_arr_index.adb:12:30: info: loop invariant initialization proved
+init_arr_index.adb:12:30: info: loop invariant preservation proved
+init_arr_index.adb:12:61: info: index check proved

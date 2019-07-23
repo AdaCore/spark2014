@@ -1,3 +1,1 @@
-main.adb:5:17: info: initialization of "X" proved
 main.adb:8:19: info: assertion proved (CVC4: 1 VC)
-main.adb:8:23: info: initialization of "Y" proved

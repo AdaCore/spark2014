@@ -1,16 +1,12 @@
 math_utils.adb:12:22: info: assertion proved (CVC4: 1 VC)
-math_utils.adb:15:21: info: initialization of "Result" proved
 math_utils.adb:19:25: info: assertion proved (CVC4: 4 VC)
 math_utils.adb:20:10: info: loop variant proved (CVC4: 1 VC)
 math_utils.adb:22:13: info: loop invariant initialization proved (CVC4: 1 VC)
 math_utils.adb:22:13: info: loop invariant preservation proved (CVC4: 1 VC)
-math_utils.adb:22:42: info: initialization of "Result" proved
 math_utils.adb:22:55: info: index check proved (CVC4: 4 VC)
 math_utils.adb:24:13: info: loop invariant initialization proved (CVC4: 1 VC)
 math_utils.adb:24:13: info: loop invariant preservation proved (CVC4: 1 VC)
-math_utils.adb:24:43: info: initialization of "Result" proved
 math_utils.adb:24:55: info: index check proved (CVC4: 4 VC)
 math_utils.adb:27:22: info: assertion proved (CVC4: 1 VC)
-math_utils.adb:27:41: info: initialization of "Result" proved
-math_utils.adb:29:14: info: initialization of "Result" proved
+math_utils.ads:9:08: info: flow dependencies proved
 math_utils.ads:11:16: info: postcondition proved (CVC4: 2 VC)

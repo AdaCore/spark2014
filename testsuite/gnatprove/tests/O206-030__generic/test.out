@@ -1,3 +1,7 @@
+gen_func.ads:7:08: info: data dependencies proved, in instantiation at main.adb:16
+gen_func.ads:12:08: info: flow dependencies proved, in instantiation at main.adb:16
+gen_func_pragmas.ads:7:01: info: data dependencies proved, in instantiation at main.adb:20
+gen_func_pragmas.ads:12:01: info: flow dependencies proved, in instantiation at main.adb:20
 gen_pack.adb:9:20: low: unused global "External", in instantiation at main.adb:24
 gen_pack.adb:10:16: low: unused global constant with variable input "Outer", in instantiation at main.adb:24
 gen_pack.adb:11:16: low: unused global "Constit" constituent of "State", in instantiation at main.adb:24
@@ -6,13 +10,15 @@ gen_pack.adb:16:16: medium: incorrect dependency "Func'Result => External", in i
 gen_pack.adb:17:16: medium: incorrect dependency "Func'Result => constant with variable input Outer", in instantiation at main.adb:24
 gen_pack.adb:18:16: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.adb:19:16: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:24
+gen_pack.ads:10:11: info: data dependencies proved, in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => External", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:24
 gen_pack.ads:17:11: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:24
-gen_pack.ads:25:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:24
-gen_pack_gen.ads:30:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:32
-gen_pack_gen_pragmas.ads:30:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:37
+gen_pack_gen.ads:13:11: info: data dependencies proved, in instantiation at main.adb:33
+gen_pack_gen.ads:21:11: info: flow dependencies proved, in instantiation at main.adb:33
+gen_pack_gen_pragmas.ads:13:04: info: data dependencies proved, in instantiation at main.adb:38
+gen_pack_gen_pragmas.ads:21:04: info: flow dependencies proved, in instantiation at main.adb:38
 gen_pack_pragmas.adb:9:24: low: unused global "External", in instantiation at main.adb:28
 gen_pack_pragmas.adb:10:20: low: unused global constant with variable input "Outer", in instantiation at main.adb:28
 gen_pack_pragmas.adb:11:20: low: unused global "Constit" constituent of "State", in instantiation at main.adb:28
@@ -21,11 +27,11 @@ gen_pack_pragmas.adb:16:20: medium: incorrect dependency "Func'Result => Externa
 gen_pack_pragmas.adb:17:20: medium: incorrect dependency "Func'Result => constant with variable input Outer", in instantiation at main.adb:28
 gen_pack_pragmas.adb:18:20: medium: incorrect dependency "Func'Result => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.adb:19:20: medium: incorrect dependency "Func'Result => Pack_Inner", in instantiation at main.adb:28
+gen_pack_pragmas.ads:10:04: info: data dependencies proved, in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Constit constituent of State", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => External", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => Pack_Inner", in instantiation at main.adb:28
 gen_pack_pragmas.ads:17:04: medium: missing dependency "null => constant with variable input Outer", in instantiation at main.adb:28
-gen_pack_pragmas.ads:25:04: info: initialization of "Pack_Inner" proved, in instantiation at main.adb:28
 main.adb:16:42: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:20:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:24:41: actual for formal object with mode in cannot depend on variable input "Pack_Local" (SPARK RM 4.4(2))
@@ -36,16 +42,18 @@ main.adb:37:53: actual for formal object with mode in cannot depend on variable 
 main.adb:38:50: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:42:47: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
 main.adb:46:55: actual for formal object with mode in cannot depend on variable input "Local" (SPARK RM 4.4(2))
-pack_gen.adb:4:04: info: initialization of "Constit" constituent of "State" proved
-pack_gen.ads:26:04: info: initialization of "Pack_Inner" proved
-pack_gen_pragmas.adb:4:04: info: initialization of "Constit" constituent of "State" proved
-pack_gen_pragmas.ads:26:04: info: initialization of "Pack_Inner" proved
-pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5 (e.g. when External = Integer'Last and Formal = 1 and Func_Inst'Result = 0) [possible explanation: precondition of subprogram at line 2 should mention Formal]
+pack_gen.ads:5:08: info: flow dependencies proved
+pack_gen.ads:11:11: info: data dependencies proved, in instantiation at main.adb:42
+pack_gen.ads:18:11: info: flow dependencies proved, in instantiation at main.adb:42
+pack_gen_pragmas.ads:5:04: info: flow dependencies proved
+pack_gen_pragmas.ads:11:04: info: data dependencies proved, in instantiation at main.adb:46
+pack_gen_pragmas.ads:18:04: info: flow dependencies proved, in instantiation at main.adb:46
+pack_refs.adb:4:21: medium: overflow check might fail, in instantiation at main_refs.adb:5 (e.g. when External = Integer'Last and Formal = 1) [possible explanation: precondition of subprogram at pack_refs.ads:10 should mention Formal]
 pack_refs.ads:12:19: info: postcondition proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:12:40: info: overflow check proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:13:11: info: complete contract cases proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
 pack_refs.ads:13:11: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:13:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:14:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
-pack_refs.ads:15:41: info: contract case proved (CVC4: 2 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:13:41: info: contract case proved (Trivial: 2 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:14:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at main_refs.adb:5
+pack_refs.ads:15:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at main_refs.adb:5
 gnatprove: error during flow analysis and proof

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2016-2018, AdaCore                  --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Exp_Util;                           use Exp_Util;
-with Opt;                                use Opt;
-with Sem_Prag;                           use Sem_Prag;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
+with Exp_Util;         use Exp_Util;
+with Opt;              use Opt;
+with Sem_Prag;         use Sem_Prag;
+with SPARK_Util.Types; use SPARK_Util.Types;
 
 package body SPARK_Util.External_Axioms is
 

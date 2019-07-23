@@ -1,4 +1,4 @@
-package Predicate                                                                                                                              
+package Predicate
 with SPARK_Mode
 is
    subtype P_Type is String

@@ -1,7 +1,3 @@
-ex.adb:11:23: info: initialization of "Result" proved
-ex.adb:11:23: info: initialization of "Result" proved, in call inlined at ex.adb:20
 ex.adb:11:30: info: overflow check proved (CVC4: 11 VC; Z3: 2 VC; altergo: 4 VC), in call inlined at ex.adb:20
-ex.adb:14:14: info: initialization of "Result" proved
-ex.adb:14:14: info: initialization of "Result" proved, in call inlined at ex.adb:20
 ex.adb:20:17: info: in inlined body at line 9
 ex.adb:20:17: info: unrolling loop

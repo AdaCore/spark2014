@@ -1,0 +1,6 @@
+foo.adb:13:07: info: unrolling loop
+foo.adb:14:34: info: range check proved (Z3: 2 VC)
+foo.adb:18:34: info: range check proved (Z3: 2 VC)
+foo.ads:20:07: info: initialization of "Max" proved
+foo.ads:21:07: info: initialization of "Min" proved
+foo.ads:25:11: medium: postcondition might fail, cannot prove P.Size_Demand_Max <= Max (e.g. when Max = 1.3322916E+0 and Metrics = (Parameters => (others => (Size_Demand_Min => 1.3322916E+0, Size_Demand_Max => 1.3322916E+0))) and P = Metrics.Parameters (Picasso))

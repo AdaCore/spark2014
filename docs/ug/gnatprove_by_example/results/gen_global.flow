@@ -1,6 +1,6 @@
 gen_global.adb:18:07: warning: statement has no effect
 gen_global.adb:18:07: warning: unused assignment to "V"
+gen_global.adb:23:06: info: data dependencies proved
 gen_global.adb:23:28: info: initialization of "V" proved
-gen_global.ads:4:14: info: initialization of "V" proved
+gen_global.adb:24:06: info: flow dependencies proved
 gen_global.ads:6:14: warning: subprogram "Do_Nothing" has no effect
-gen_global.ads:8:14: info: initialization of "V" proved

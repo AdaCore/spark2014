@@ -1,8 +1,10 @@
-package_1.adb:7:04: info: initialization of "State_Var_1" constituent of "State" proved
-package_1.adb:8:04: info: initialization of "State_Var_2" constituent of "State" proved
-package_1.adb:29:34: medium: "State_Var_2" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+package_1.adb:29:12: info: data dependencies proved
+package_1.adb:29:34: medium: "State_Var_2" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 package_1.adb:32:22: medium: postcondition might fail, cannot prove (Invariant)
 package_1.adb:35:37: medium: overflow check might fail
 package_1.adb:39:07: info: precondition proved (CVC4: 1 VC)
 package_1.adb:40:34: medium: overflow check might fail
+package_1.ads:4:06: info: flow dependencies proved
+package_1.ads:11:11: info: data dependencies proved
+package_1.ads:17:11: info: data dependencies proved
 package_1.ads:19:21: info: postcondition proved (CVC4: 1 VC)

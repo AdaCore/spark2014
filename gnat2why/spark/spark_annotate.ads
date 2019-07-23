@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2011-2018, AdaCore                     --
---                     Copyright (C) 2014-2018, Altran UK Limited           --
+--                     Copyright (C) 2011-2019, AdaCore                     --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -206,5 +206,8 @@ package SPARK_Annotate is
 
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
+
+   function Scalar_Has_Init_By_Proof (E : Entity_Id) return Boolean;
+   --  Return True if a pragma Init_By_Proof applies to the type E
 
 end SPARK_Annotate;

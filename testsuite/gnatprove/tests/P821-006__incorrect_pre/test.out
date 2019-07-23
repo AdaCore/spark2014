@@ -1,5 +1,4 @@
-foo.ads:17:53: info: length check proved (CVC4: 4 VC)
+foo.ads:17:53: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 main.adb:8:19: info: initialization of "d" proved
-main.adb:18:14: medium: precondition might fail
-main.adb:18:29: info: initialization of "arr" proved
+main.adb:18:14: medium: precondition might fail, cannot prove bytes'Length = 4
 main.adb:18:29: info: range check proved (CVC4: 4 VC)

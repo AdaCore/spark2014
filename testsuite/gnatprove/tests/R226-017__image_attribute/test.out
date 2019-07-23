@@ -1,4 +1,2 @@
 test.adb:8:22: info: range check proved (CVC4: 1 VC)
-test.adb:8:24: info: initialization of "Foo" proved
 test.adb:9:22: info: range check proved (CVC4: 1 VC)
-test.adb:9:24: info: initialization of "Foo" proved

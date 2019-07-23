@@ -1,4 +1,6 @@
-foo-pc-c.adb:5:04: info: initialization of "B" constituent of "State" proved
+foo-pc-c.ads:4:04: info: flow dependencies proved
 foo-pc-c.ads:8:22: info: initialization of "Y" proved
-foo.adb:8:04: info: initialization of "A" constituent of "State_A" proved
+foo-pc-c.ads:9:09: info: data dependencies proved
 foo.adb:11:24: info: initialization of "Y" proved
+foo.adb:12:09: info: data dependencies proved
+foo.ads:3:04: info: flow dependencies proved

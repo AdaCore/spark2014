@@ -1,41 +1,21 @@
-split_pointers.adb:11:14: warning: subprogram "Test_In" has no effect
-split_pointers.adb:17:19: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:18:12: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:18:21: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:19:12: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:19:19: info: initialization of "Tmp" proved
-split_pointers.adb:38:27: info: initialization of "Z" proved
-split_pointers.adb:42:12: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:42:21: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:54:19: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:55:17: info: initialization of "Tmp" proved
-split_pointers.adb:55:21: medium: overflow check might fail (e.g. when Tmp = Integer'First and Y.all = -1) [possible explanation: precondition of subprogram at line 47 should mention Y]
-split_pointers.adb:55:25: info: pointer dereference check proved (CVC4: 1 VC)
-split_pointers.adb:57:14: info: initialization of "Tmp" proved
-split_pointers.adb:71:04: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:71:16: info: initialization of "Y" proved
-split_pointers.adb:71:19: info: initialization of "C" proved
-split_pointers.adb:72:09: info: initialization of "W" proved
-split_pointers.adb:72:09: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:72:22: info: initialization of "Y" proved
-split_pointers.adb:72:25: info: initialization of "C" proved
-split_pointers.adb:73:04: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:73:17: info: initialization of "W" proved
-split_pointers.adb:73:20: info: initialization of "Y" proved
-split_pointers.adb:73:23: info: initialization of "Z" proved
-split_pointers.adb:74:04: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:74:13: info: initialization of "H1.X" proved
-split_pointers.adb:74:19: info: initialization of "H3.X" proved
-split_pointers.adb:75:09: info: initialization of "C" proved
-split_pointers.adb:75:09: info: initialization of "W" proved
-split_pointers.adb:75:09: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:75:19: info: initialization of "H1.X" proved
-split_pointers.adb:75:25: info: initialization of "H3.X" proved
-split_pointers.adb:76:04: info: precondition proved (CVC4: 1 VC)
-split_pointers.adb:76:17: info: initialization of "H1.X" proved
-split_pointers.adb:76:23: info: initialization of "H3.X" proved
-split_pointers.adb:76:29: info: initialization of "H4.X" proved
-split_pointers.adb:77:04: info: initialization of "C" proved
-split_pointers.adb:77:04: info: initialization of "W" proved
-split_pointers.adb:77:04: info: initialization of "Y" proved
-split_pointers.adb:77:04: info: precondition proved (CVC4: 1 VC)
+split_pointers.adb:25:14: insufficient permission for "X" when returning from "Test_In_Out"
+split_pointers.adb:25:14: object was moved at line 31
+split_pointers.adb:68:04: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:68:04: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:68:34: allocators in interfering context is not allowed in SPARK
+split_pointers.adb:68:34: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:69:04: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:69:04: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:69:25: allocators in interfering context is not allowed in SPARK
+split_pointers.adb:69:25: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:76:19: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:76:19: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:76:25: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:76:25: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:77:25: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:77:25: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:77:31: "H2" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:77:31: violation of aspect SPARK_Mode at line 1
+split_pointers.adb:78:23: "H3" is not allowed in SPARK (due to allocators in interfering context)
+split_pointers.adb:78:23: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

@@ -1,2 +1,3 @@
-input_port.adb:18:21: info: initialization of "Input_Value" proved
 input_port.ads:5:29: info: initialization of "Input_Value" proved
+input_port.ads:6:11: info: data dependencies proved
+input_port.ads:7:11: info: flow dependencies proved

@@ -21,7 +21,7 @@
 
 
 package ACFen is
-   
+
    procedure Fen_Init;
    procedure Fen_Load_Pieces(Fen : in String);
    procedure Fen_Load_Side_To_Move(Fen : in String);
@@ -29,9 +29,9 @@ package ACFen is
    procedure Fen_Load_En_Passant(Fen : in String);
    procedure Fen_Load_Fifty_Move_Counter (Fen : in String);
    procedure Fen_Load_Ply_Depth (Fen : in String);
-   
-   
+
+
    -- Output current position into a string
    function Fen_Save_To_String return String;
-   
+
 end ACfen;

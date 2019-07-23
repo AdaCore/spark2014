@@ -1,3 +1,1 @@
 p.adb:11:04: high: modification of "X" in elaboration requires Elaborate_Body on package "P" (SPARK RM 7.7.1(5))
-p.ads:5:14: info: initialization of "X" proved
-proxy.ads:1:11: info: initialization of "X" proved

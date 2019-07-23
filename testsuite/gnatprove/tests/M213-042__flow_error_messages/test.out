@@ -3,7 +3,6 @@ test.adb:15:04: warning: analyzing unreferenced procedure "Use_Of_Uninitialised"
 test.adb:16:36: info: initialization of "X" proved
 test.adb:26:12: medium: "N" might not be initialized
 test.adb:26:14: medium: overflow check might fail
-test.adb:26:16: info: initialization of "M" proved
 test.adb:30:25: info: initialization of "X" proved
 test.adb:30:28: info: initialization of "Y" proved
 test.adb:31:23: medium: missing dependency "X => C"

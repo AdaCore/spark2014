@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -322,9 +322,9 @@ package Flow_Types is
       Comp : Entity_Id)
       return Flow_Id
    with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                (Nkind (Comp) = N_Defining_Identifier and then
-                   (Ekind (Comp) in E_Component | E_Discriminant
-                    or else Is_Part_Of_Concurrent_Object (Comp))) and then
+                (Ekind (Comp) in E_Component | E_Discriminant
+                   or else
+                 Is_Part_Of_Concurrent_Object (Comp)) and then
                 F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same Flow_Id, but accessed with the given component

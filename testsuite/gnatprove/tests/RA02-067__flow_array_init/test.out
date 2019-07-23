@@ -1,9 +1,7 @@
-p.adb:18:14: info: length check proved (CVC4: 4 VC)
+p.adb:18:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.adb:18:14: warning: unused assignment
 p.adb:20:07: info: cannot unroll loop (too many loop iterations)
 p.adb:21:16: warning: unused assignment
 p.adb:23:10: info: unrolling loop
-p.adb:24:23: info: initialization of "Value" proved
 p.adb:24:23: warning: unused assignment
-p.adb:25:24: info: initialization of "Output" proved
 p.ads:24:20: info: initialization of "Output" proved

@@ -1,0 +1,7 @@
+p-priv_proc.ads:1:21: high: possible data race when accessing variable "p.state"
+p-priv_proc.ads:1:21: high: with task "p.priv_proc"
+p-priv_proc.ads:1:21: high: with task "q.to"
+p-priv_proc.ads:1:36: info: data dependencies proved
+p.ads:1:41: info: flow dependencies proved
+q.ads:4:14: info: nontermination of task proved (CVC4: 1 VC)
+q.ads:4:22: info: data dependencies proved

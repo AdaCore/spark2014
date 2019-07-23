@@ -66,7 +66,7 @@ ada_real_time.ads:138:59: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:138:59: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:139:56: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:139:56: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:144:16: medium: precondition might fail
+ada_real_time.ads:144:16: medium: precondition might fail, cannot prove Right /= Time_Span_First
 ada_real_time.ads:146:31: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:146:50: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:146:50: info: overflow check proved (CVC4: 1 VC)
@@ -86,7 +86,7 @@ ada_real_time.ads:152:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:152:58: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:152:58: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:153:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:153:56: medium: overflow check might fail
+ada_real_time.ads:153:56: medium: overflow check might fail (e.g. when Right = -1)
 ada_real_time.ads:161:27: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:161:47: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:161:47: info: overflow check proved (CVC4: 1 VC)
@@ -107,7 +107,7 @@ ada_real_time.ads:167:59: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:167:59: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:168:56: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:168:56: info: overflow check proved (CVC4: 1 VC)
-ada_real_time.ads:173:16: medium: precondition might fail
+ada_real_time.ads:173:16: medium: precondition might fail, cannot prove Right /= Time_Span_First
 ada_real_time.ads:175:31: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:175:31: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:176:31: info: implicit function contract not available for proof ("To_Duration" might not return)
@@ -125,8 +125,8 @@ ada_real_time.ads:181:58: info: division check proved (CVC4: 1 VC)
 ada_real_time.ads:181:58: info: overflow check proved (CVC4: 1 VC)
 ada_real_time.ads:181:58: info: range check proved (CVC4: 1 VC)
 ada_real_time.ads:182:56: info: division check proved (CVC4: 1 VC)
-ada_real_time.ads:182:56: medium: overflow check might fail
-ada_real_time.ads:188:25: medium: precondition might fail
+ada_real_time.ads:182:56: medium: overflow check might fail (e.g. when Left = -1)
+ada_real_time.ads:188:25: medium: precondition might fail, cannot prove Right /= Time_Span_First
 ada_real_time.ads:192:31: info: implicit function contract not available for proof ("To_Duration" might not return)
 ada_real_time.ads:192:50: info: range check proved (CVC4: 2 VC)
 ada_real_time.ads:192:50: medium: divide by zero might fail

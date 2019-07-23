@@ -1,7 +1,6 @@
-p.ads:6:04: info: initialization of "V" proved
-try_init_3.adb:5:04: info: initialization of "G" constituent of "Y" proved
+p.ads:3:06: info: flow dependencies proved
+try_init_1.ads:4:06: info: flow dependencies proved
 try_init_3.ads:4:25: low: initialization of "Try_Init_3.X" must be mentioned in the Initializes contract of "Try_Init_3" (SPARK RM 7.1.5(9))
 try_init_3.ads:4:25: warning: no procedure exists that can initialize abstract state "Try_Init_3.X"
 try_init_3.ads:8:04: low: initialization of constant with variable input "C" through "V" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
-try_init_5.ads:12:04: info: initialization of "Not_Used" proved
 try_init_5.ads:13:04: low: initialization of constant with variable input "C" through "V" must be listed in the Initializes contract (SPARK RM 7.1.5(9))

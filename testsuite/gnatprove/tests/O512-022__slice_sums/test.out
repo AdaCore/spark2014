@@ -1,16 +1,15 @@
+slice_sums.adb:7:07: info: initialization of "Result" proved
+slice_sums.adb:8:07: info: initialization of "Current_Slice" proved
+slice_sums.adb:9:07: info: initialization of "Current_Sum" proved
 slice_sums.adb:13:11: info: range check proved (CVC4: 2 VC)
 slice_sums.adb:15:13: info: loop invariant initialization proved (CVC4: 1 VC)
 slice_sums.adb:15:13: info: loop invariant preservation proved (CVC4: 1 VC)
 slice_sums.adb:15:21: info: range check proved (CVC4: 4 VC)
 slice_sums.adb:15:59: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:16:24: info: range check proved (CVC4: 4 VC)
-slice_sums.adb:17:21: info: initialization of "Max_Sum" proved
 slice_sums.adb:17:32: info: precondition proved (CVC4: 2 VC)
-slice_sums.adb:19:13: info: loop invariant initialization proved (CVC4: 4 VC)
-slice_sums.adb:19:13: info: loop invariant preservation proved (CVC4: 4 VC)
-slice_sums.adb:20:27: info: initialization of "Result.Lo" proved
-slice_sums.adb:21:16: info: initialization of "Result.Hi" proved
-slice_sums.adb:22:16: info: initialization of "Max_Sum" proved
+slice_sums.adb:19:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC)
+slice_sums.adb:19:13: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC)
 slice_sums.adb:22:26: info: precondition proved (CVC4: 2 VC)
 slice_sums.adb:24:14: info: range check proved (CVC4: 2 VC)
 slice_sums.adb:26:16: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -18,85 +17,55 @@ slice_sums.adb:26:16: info: loop invariant preservation proved (CVC4: 2 VC)
 slice_sums.adb:26:25: info: range check proved (CVC4: 4 VC)
 slice_sums.adb:26:63: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:27:30: info: range check proved (CVC4: 4 VC)
-slice_sums.adb:28:25: info: initialization of "Max_Sum" proved
 slice_sums.adb:28:36: info: precondition proved (CVC4: 2 VC)
 slice_sums.adb:30:27: info: range check proved (CVC4: 4 VC)
 slice_sums.adb:30:65: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:31:35: info: precondition proved (CVC4: 2 VC)
-slice_sums.adb:33:16: info: loop invariant initialization proved (CVC4: 4 VC)
-slice_sums.adb:33:16: info: loop invariant preservation proved (CVC4: 4 VC)
-slice_sums.adb:34:30: info: initialization of "Result.Lo" proved
-slice_sums.adb:35:19: info: initialization of "Result.Hi" proved
-slice_sums.adb:36:19: info: initialization of "Max_Sum" proved
+slice_sums.adb:33:16: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC)
+slice_sums.adb:33:16: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC)
 slice_sums.adb:36:29: info: precondition proved (CVC4: 2 VC)
 slice_sums.adb:38:44: info: range check proved (CVC4: 1 VC)
 slice_sums.adb:38:48: info: range check proved (CVC4: 1 VC)
 slice_sums.adb:39:28: info: precondition proved (CVC4: 1 VC)
-slice_sums.adb:39:36: info: initialization of "Current_Slice.Hi" proved
-slice_sums.adb:39:36: info: initialization of "Current_Slice.Lo" proved
-slice_sums.adb:40:16: info: initialization of "Current_Sum" proved
-slice_sums.adb:40:30: info: initialization of "Max_Sum" proved
-slice_sums.adb:41:26: info: initialization of "Current_Slice.Hi" proved
-slice_sums.adb:41:26: info: initialization of "Current_Slice.Lo" proved
-slice_sums.adb:42:27: info: initialization of "Current_Sum" proved
 slice_sums.adb:42:27: info: range check proved (CVC4: 1 VC)
-slice_sums.adb:47:14: info: initialization of "Result.Hi" proved
-slice_sums.adb:47:14: info: initialization of "Result.Lo" proved
+slice_sums.adb:57:07: info: initialization of "Current_Lo" proved
+slice_sums.adb:58:07: info: initialization of "Result" proved
 slice_sums.adb:63:41: info: range check proved (CVC4: 1 VC)
-slice_sums.adb:64:24: info: initialization of "Result.Lo" proved
 slice_sums.adb:66:14: info: range check proved (CVC4: 2 VC)
 slice_sums.adb:68:16: info: loop invariant initialization proved (CVC4: 4 VC)
 slice_sums.adb:68:16: info: loop invariant preservation proved (CVC4: 4 VC)
-slice_sums.adb:68:27: info: initialization of "Current_Lo" proved
-slice_sums.adb:70:21: info: initialization of "Current_Sum" proved
 slice_sums.adb:71:43: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:71:57: info: overflow check proved (CVC4: 2 VC)
-slice_sums.adb:73:16: info: initialization of "Current_Sum" proved
 slice_sums.adb:73:16: info: loop invariant initialization proved (CVC4: 1 VC)
-slice_sums.adb:73:16: medium: loop invariant might fail after first iteration, cannot prove Current_Sum = Sum (X, Slice_Bounds'(Current_Lo, Current_Hi - 1)) (e.g. when Current_Hi = 2 and Current_Lo = 1 and Current_Sum = 32768 and X = (others => Vector_Element'Last+1))
+slice_sums.adb:73:16: info: loop invariant preservation proved (CVC4: 1 VC)
 slice_sums.adb:73:30: info: precondition proved (CVC4: 2 VC)
-slice_sums.adb:73:52: info: initialization of "Current_Lo" proved
 slice_sums.adb:74:36: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:74:36: info: range check proved (CVC4: 2 VC)
-slice_sums.adb:76:16: info: loop invariant initialization proved (CVC4: 4 VC)
-slice_sums.adb:76:16: info: loop invariant preservation proved (CVC4: 4 VC)
-slice_sums.adb:77:30: info: initialization of "Result.Lo" proved
-slice_sums.adb:78:19: info: initialization of "Result.Hi" proved
-slice_sums.adb:79:19: info: initialization of "Max_Sum" proved
+slice_sums.adb:76:16: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC)
+slice_sums.adb:76:16: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC)
 slice_sums.adb:79:29: info: precondition proved (CVC4: 2 VC)
 slice_sums.adb:81:16: info: loop invariant initialization proved (CVC4: 1 VC)
 slice_sums.adb:81:24: info: range check proved (CVC4: 4 VC)
 slice_sums.adb:81:70: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:82:30: info: range check proved (CVC4: 4 VC)
 slice_sums.adb:82:76: info: overflow check proved (CVC4: 2 VC)
-slice_sums.adb:83:24: medium: loop invariant might fail after first iteration, cannot prove Max_Sum >= Sum (X, Slice_Bounds'(Lo_Index, Hi_Index)) (e.g. when Current_Hi = 0 and Hi_Index = 0 and Lo_Index = 0 and Max_Sum = 0 and X = (others => 0))
-slice_sums.adb:83:25: info: initialization of "Max_Sum" proved
+slice_sums.adb:83:24: medium: loop invariant might fail after first iteration, cannot prove Max_Sum >= Sum (X, Slice_Bounds'(Lo_Index, Hi_Index)) (e.g. when Hi_Index = 1 and Lo_Index = 1 and Max_Sum = 0 and X = (others => -1))
 slice_sums.adb:83:36: info: precondition proved (CVC4: 2 VC)
 slice_sums.adb:86:16: info: loop invariant initialization proved (CVC4: 1 VC)
+slice_sums.adb:86:16: info: loop invariant preservation proved (CVC4: 1 VC)
 slice_sums.adb:86:24: info: range check proved (CVC4: 4 VC)
-slice_sums.adb:86:59: info: initialization of "Current_Lo" proved
 slice_sums.adb:87:18: info: precondition proved (CVC4: 2 VC)
-slice_sums.adb:87:18: medium: loop invariant might fail after first iteration, cannot prove Sum (X, Slice_Bounds'(Lo_Index, Current_Lo - 1)) <= 0 (e.g. when Current_Lo = 0 and Lo_Index = 0 and X = (others => 0))
 slice_sums.adb:89:16: info: loop invariant initialization proved (CVC4: 1 VC)
+slice_sums.adb:89:16: info: loop invariant preservation proved (CVC4: 1 VC)
 slice_sums.adb:89:24: info: range check proved (CVC4: 4 VC)
-slice_sums.adb:89:48: info: initialization of "Current_Lo" proved
 slice_sums.adb:89:73: info: overflow check proved (CVC4: 2 VC)
 slice_sums.adb:90:18: info: precondition proved (CVC4: 2 VC)
-slice_sums.adb:90:18: medium: loop invariant might fail after first iteration, cannot prove Sum (X, Slice_Bounds'(Current_Lo, Hi_Index)) >= 0 (e.g. when Current_Hi = 2 and Current_Lo = 1 and Hi_Index = 1 and X = (others => Vector_Element'Last+1))
-slice_sums.adb:92:28: info: initialization of "Current_Sum" proved
 slice_sums.adb:92:40: info: overflow check proved (CVC4: 1 VC)
-slice_sums.adb:93:16: info: initialization of "Current_Sum" proved
-slice_sums.adb:93:30: info: initialization of "Max_Sum" proved
-slice_sums.adb:94:27: info: initialization of "Current_Sum" proved
 slice_sums.adb:94:27: info: range check proved (CVC4: 1 VC)
-slice_sums.adb:95:29: info: initialization of "Current_Lo" proved
 slice_sums.adb:96:29: info: range check proved (CVC4: 1 VC)
 slice_sums.adb:99:44: info: overflow check proved (CVC4: 1 VC)
 slice_sums.adb:99:44: info: range check proved (CVC4: 1 VC)
-slice_sums.adb:100:19: info: initialization of "Current_Sum" proved
-slice_sums.adb:106:14: info: initialization of "Result.Hi" proved
-slice_sums.adb:106:14: info: initialization of "Result.Lo" proved
-slice_sums.ads:6:14: info: postcondition proved (CVC4: 5 VC)
+slice_sums.ads:6:14: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 slice_sums.ads:10:31: info: range check proved (CVC4: 2 VC)
 slice_sums.ads:11:34: info: range check proved (CVC4: 2 VC)
 slice_sums.ads:12:31: info: precondition proved (CVC4: 1 VC)
@@ -104,7 +73,7 @@ slice_sums.ads:13:37: info: precondition proved (CVC4: 1 VC)
 slice_sums.ads:14:23: info: precondition proved (CVC4: 1 VC)
 slice_sums.ads:21:31: info: range check proved (CVC4: 2 VC)
 slice_sums.ads:22:34: info: range check proved (CVC4: 2 VC)
-slice_sums.ads:23:30: medium: postcondition might fail, cannot prove Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_Bounds'(Lo, Hi)) (e.g. when Hi = 0 and Lo = 0 and X = (others => 0))
+slice_sums.ads:23:30: medium: postcondition might fail, cannot prove Sum (X, Maximal_Sum_Slice_Bounds_2'Result) >= Sum (X, Slice_Bounds'(Lo, Hi)) (e.g. when Hi = 1 and Lo = 2 and X = (others => 1))
 slice_sums.ads:23:31: info: precondition proved (CVC4: 1 VC)
 slice_sums.ads:24:37: info: precondition proved (CVC4: 1 VC)
 slice_sums.ads:25:23: info: precondition proved (CVC4: 1 VC)

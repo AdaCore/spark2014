@@ -1,7 +1,9 @@
+gen_func.ads:6:08: info: data dependencies proved, in instantiation at main.adb:6
 gen_func.ads:8:17: low: unused global "External", in instantiation at main.adb:6
 gen_func.ads:10:08: medium: missing dependency "null => External", in instantiation at main.adb:6
 gen_func.ads:12:13: medium: incorrect dependency "Func_Inst_1'Result => External", in instantiation at main.adb:6
 gen_proc.ads:5:21: info: initialization of "Formal" proved, in instantiation at main.adb:8
+gen_proc.ads:6:08: info: data dependencies proved, in instantiation at main.adb:8
 gen_proc.ads:7:24: low: unused global "External", in instantiation at main.adb:8
 gen_proc.ads:9:08: medium: missing dependency "null => External", in instantiation at main.adb:8
 gen_proc.ads:10:21: medium: incorrect dependency "Formal => External", in instantiation at main.adb:8

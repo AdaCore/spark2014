@@ -1,1 +1,2 @@
+spark_io.ads:8:09: info: flow dependencies proved
 spark_io.ads:27:21: info: implicit function contract not available for proof ("Mode" might not return)

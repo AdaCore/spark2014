@@ -1,37 +1,23 @@
+binary_search.adb:6:07: info: initialization of "Left" proved
+binary_search.adb:7:07: info: initialization of "Right" proved
+binary_search.adb:8:07: info: initialization of "Med" proved
 binary_search.adb:14:17: info: range check proved (CVC4: 1 VC)
 binary_search.adb:15:17: info: range check proved (CVC4: 1 VC)
-binary_search.adb:17:10: info: initialization of "Left" proved
-binary_search.adb:17:17: info: initialization of "Right" proved
 binary_search.adb:17:30: info: index check proved (CVC4: 2 VC)
-binary_search.adb:18:17: info: initialization of "Left" proved
 binary_search.adb:19:16: info: index check proved (CVC4: 2 VC)
-binary_search.adb:19:16: info: initialization of "Left" proved
 binary_search.adb:19:32: info: index check proved (CVC4: 2 VC)
-binary_search.adb:19:32: info: initialization of "Right" proved
-binary_search.adb:23:13: info: initialization of "Left" proved
-binary_search.adb:23:20: info: initialization of "Right" proved
-binary_search.adb:24:33: info: initialization of "Left" proved
 binary_search.adb:24:33: info: loop invariant initialization proved (CVC4: 4 VC)
 binary_search.adb:24:33: info: loop invariant preservation proved (CVC4: 4 VC)
-binary_search.adb:24:53: info: initialization of "Right" proved
 binary_search.adb:25:10: info: loop variant proved (CVC4: 1 VC)
-binary_search.adb:25:44: info: initialization of "Right" proved
-binary_search.adb:25:52: info: initialization of "Left" proved
-binary_search.adb:27:17: info: initialization of "Left" proved
 binary_search.adb:27:22: info: overflow check proved (CVC4: 1 VC)
 binary_search.adb:27:22: info: range check proved (CVC4: 1 VC)
-binary_search.adb:27:25: info: initialization of "Right" proved
 binary_search.adb:27:39: info: division check proved (CVC4: 1 VC)
 binary_search.adb:29:16: info: index check proved (CVC4: 2 VC)
-binary_search.adb:29:16: info: initialization of "Med" proved
-binary_search.adb:30:21: info: initialization of "Med" proved
 binary_search.adb:30:25: info: overflow check proved (CVC4: 1 VC)
 binary_search.adb:31:19: info: index check proved (CVC4: 2 VC)
-binary_search.adb:32:22: info: initialization of "Med" proved
 binary_search.adb:32:26: info: range check proved (CVC4: 1 VC)
-binary_search.adb:34:20: info: initialization of "Med" proved
 binary_search.ads:12:66: info: index check proved (CVC4: 2 VC)
 binary_search.ads:12:76: info: index check proved (CVC4: 2 VC)
 binary_search.ads:16:57: info: index check proved (CVC4: 2 VC)
-binary_search.ads:17:49: medium: postcondition might fail, cannot prove A (Index) /= I (e.g. when A = (3 => 0, 4 => 0, others => -1) and A'First = 1 and A'Last = 4 and I = 0 and Index = 3 and Search'Result = 0)
+binary_search.ads:17:49: medium: postcondition might fail, cannot prove A (Index) /= I (e.g. when A = (1 => 0, 3 => 0, 4 => 0, others => -1) and A'First = 2 and A'Last = 4 and I = 0 and Index = 3)
 binary_search.ads:17:52: info: index check proved (CVC4: 2 VC)

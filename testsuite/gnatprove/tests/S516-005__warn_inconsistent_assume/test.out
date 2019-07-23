@@ -1,0 +1,2 @@
+inconsistent.adb:1:11: warning: subprogram "Inconsistent" has no effect
+inconsistent.adb:3:04: warning: pragma Assume is always False (CVC4: 1 VC)

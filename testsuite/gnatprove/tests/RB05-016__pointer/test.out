@@ -1,0 +1,7 @@
+bad_pointer.adb:11:21: insufficient permission on dereference from "X"
+bad_pointer.adb:11:21: object was moved at line 6
+bad_pointer.adb:18:09: object was observed at line 15
+bad_pointer.adb:32:07: local borrower of an access object is not yet supported
+bad_pointer.adb:36:24: object was borrowed at line 32
+bad_pointer.adb:41:07: local borrower of an access object is not yet supported
+gnatprove: error during flow analysis and proof

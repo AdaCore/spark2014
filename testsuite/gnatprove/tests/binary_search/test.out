@@ -1,27 +1,15 @@
-FAILED CHECK UNEXPECTED at binary_search.adb:28
-binary_search.adb:20:13: info: initialization of "Left" proved
-binary_search.adb:20:34: info: initialization of "Right" proved
-binary_search.adb:24:13: info: initialization of "Left" proved
-binary_search.adb:24:21: info: initialization of "Right" proved
+binary_search.adb:13:07: info: initialization of "Left" proved
+binary_search.adb:14:07: info: initialization of "Right" proved
+binary_search.adb:15:07: info: initialization of "Med" proved
 binary_search.adb:26:13: info: loop invariant initialization proved (altergo: 2 VC)
-binary_search.adb:26:42: info: initialization of "Left" proved
+binary_search.adb:26:13: info: loop invariant preservation proved (altergo: 2 VC)
 binary_search.adb:26:57: info: index check proved (altergo: 4 VC)
-binary_search.adb:28:31: info: initialization of "Right" proved
-binary_search.adb:28:54: medium: loop invariant might fail after first iteration, cannot prove I < A (Index) [possible explanation: precondition of subprogram at line 12 should mention I]
 binary_search.adb:28:61: info: index check proved (altergo: 4 VC)
 binary_search.adb:29:10: info: loop variant proved (altergo: 1 VC)
-binary_search.adb:29:44: info: initialization of "Right" proved
-binary_search.adb:29:52: info: initialization of "Left" proved
-binary_search.adb:31:17: info: initialization of "Left" proved
 binary_search.adb:31:22: info: range check proved (altergo: 1 VC)
-binary_search.adb:31:25: info: initialization of "Right" proved
 binary_search.adb:31:39: info: division check proved (altergo: 1 VC)
-binary_search.adb:33:16: info: initialization of "Med" proved
-binary_search.adb:34:21: info: initialization of "Med" proved
 binary_search.adb:34:25: info: range check proved (altergo: 1 VC)
-binary_search.adb:36:22: info: initialization of "Med" proved
 binary_search.adb:36:26: info: range check proved (altergo: 1 VC)
-binary_search.adb:38:20: info: initialization of "Med" proved
 binary_search.ads:21:33: info: index check proved (altergo: 2 VC)
 binary_search.ads:23:14: info: postcondition proved (altergo: 2 VC)
 binary_search.ads:23:57: info: index check proved (altergo: 2 VC)

@@ -19,7 +19,4 @@ is
    --  from NB26-002 (industrial user)
    procedure Mult_Protect (X, Y, Z : Natural_32; Res : out Integer_32);
 
-   --  example for internal test
-   procedure Round (X, Y, Z : Positive_32; Res : out Natural_32);
-
 end Nonlinear;

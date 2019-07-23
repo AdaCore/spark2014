@@ -1,65 +1,45 @@
+main.adb:6:04: info: initialization of "X1" proved
+main.adb:7:04: info: initialization of "X2" proved
 main.adb:10:19: info: assertion proved (CVC4: 1 VC)
-main.adb:10:19: info: initialization of "X1.C1" proved
-main.adb:11:04: info: initialization of "X1.C1" proved
 main.adb:11:06: info: precondition proved (CVC4: 1 VC)
 main.adb:12:19: info: assertion proved (CVC4: 1 VC)
-main.adb:12:23: info: initialization of "X1.C1" proved
-main.adb:15:19: info: assertion proved (CVC4: 1 VC)
-main.adb:15:19: info: initialization of "X2.C1" proved
-main.adb:15:19: info: initialization of "X2.C2" proved
-main.adb:16:04: info: initialization of "X2.C1" proved
-main.adb:16:04: info: initialization of "X2.C2" proved
-main.adb:16:06: info: precondition proved (CVC4: 1 VC)
-main.adb:17:19: info: assertion proved (CVC4: 1 VC)
-main.adb:17:23: info: initialization of "X2.C1" proved
-main.adb:17:23: info: initialization of "X2.C2" proved
-main.adb:19:04: warning: assuming "Put_Line" has no effect on global items
-main.adb:19:04: warning: no Global contract available for "Put_Line"
+main.adb:15:19: info: assertion proved (altergo: 1 VC)
+main.adb:16:06: info: precondition proved (altergo: 1 VC)
+main.adb:17:19: info: assertion proved (altergo: 1 VC)
 unit1.adb:12:20: info: overflow check proved (CVC4: 1 VC)
-unit1.ads:9:22: info: initialization of "X.C1" proved
-unit1.ads:11:20: info: initialization of "X.C1" proved
-unit1.ads:11:20: info: initialization of "X.C1" proved, in inherited contract at unit2.ads:11
-unit1.ads:11:20: info: initialization of "X.C1" proved, in inherited contract at unit2.ads:11
-unit1.ads:11:20: info: initialization of "X.C2" proved, in inherited contract at unit2.ads:11
-unit1.ads:11:20: info: initialization of "X.C2" proved, in inherited contract at unit2.ads:11
-unit1.ads:11:20: info: initialization of "X.C3" proved, in inherited contract at unit2.ads:11
-unit1.ads:12:20: info: initialization of "X.C1" proved
+unit1.ads:9:22: info: initialization of "X" proved
+unit1.ads:10:06: info: data dependencies proved
 unit1.ads:12:20: info: postcondition is stronger than class-wide postcondition (CVC4: 1 VC)
 unit1.ads:12:20: info: postcondition proved (CVC4: 1 VC)
-unit1.ads:31:29: medium: precondition might fail (e.g. when X = (C1 => Integer'Last))
+unit1.ads:16:09: info: data dependencies proved
+unit1.ads:20:09: info: data dependencies proved
+unit1.ads:28:06: info: data dependencies proved
+unit1.ads:31:29: medium: precondition might fail, cannot prove not X.Is_Max (e.g. when X = (C1 => Integer'Last))
 unit1.ads:32:20: info: postcondition proved (CVC4: 1 VC)
-unit1.ads:32:20: medium: postcondition might be weaker than class-wide postcondition (e.g. when X = (C1 => -1))
+unit1.ads:32:20: medium: postcondition might be weaker than class-wide postcondition, cannot prove X = X'Old.Next
 unit1.ads:32:36: info: overflow check proved (CVC4: 1 VC)
 unit2.adb:13:12: info: precondition proved (CVC4: 1 VC)
-unit2.adb:14:20: medium: overflow check might fail (e.g. when X = (C1 => 0, C2 => Integer'Last))
-unit2.ads:11:22: info: initialization of "X.C1" proved
-unit2.ads:11:22: info: initialization of "X.C2" proved
-unit2.ads:12:14: info: initialization of "X.C1" proved
-unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition (CVC4: 1 VC)
+unit2.adb:14:20: medium: overflow check might fail (e.g. when X = (C1 => 1, C2 => Integer'Last))
+unit2.ads:11:22: info: initialization of "X" proved
+unit2.ads:12:14: info: postcondition is stronger than class-wide postcondition (altergo: 1 VC)
 unit2.ads:12:14: info: postcondition proved (CVC4: 2 VC)
-unit2.ads:12:32: info: initialization of "X.C2" proved
-unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition (e.g. when X = (C1 => -1, C2 => -1))
+unit2.ads:23:14: medium: postcondition might be weaker than class-wide postcondition, cannot prove (X = X'old)
 unit2.ads:23:30: info: overflow check proved (CVC4: 1 VC)
-unit2.ads:23:43: medium: postcondition might fail, cannot prove X.C2 = X.C2'Old + 1 (e.g. when X = (C1 => ?, C2 => 1) and X'Old = (C1 => ?, C2 => 1))
+unit2.ads:23:43: medium: postcondition might fail, cannot prove X.C2 = X.C2'Old + 1 (e.g. when X = (C1 => 1, C2 => 1) and X'Old = (C1 => 0, C2 => -1))
 unit2.ads:23:59: info: overflow check proved (CVC4: 1 VC)
 unit3.adb:13:12: info: precondition proved (CVC4: 1 VC)
 unit3.adb:14:20: medium: overflow check might fail (e.g. when X = (C1 => 1, C2 => 1, C3 => Integer'Last))
-unit3.ads:11:22: info: initialization of "X.C1" proved
-unit3.ads:11:22: info: initialization of "X.C2" proved
-unit3.ads:11:22: info: initialization of "X.C3" proved
-unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
-unit3.ads:13:20: info: initialization of "X.C1" proved
+unit3.ads:11:22: info: initialization of "X" proved
+unit3.ads:12:20: info: class-wide postcondition is stronger than overridden one (altergo: 1 VC)
 unit3.ads:13:20: info: postcondition is stronger than class-wide postcondition (CVC4: 3 VC)
 unit3.ads:13:20: info: postcondition proved (CVC4: 3 VC)
-unit3.ads:13:38: info: initialization of "X.C2" proved
-unit3.ads:13:56: info: initialization of "X.C3" proved
 unit3.ads:24:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
-unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one (e.g. when X = (C1 => -1, C2 => -1, C3 => -1))
-unit3.ads:25:36: medium: overflow check might fail (e.g. when X = (C1 => Integer'Last, others => ?))
-unit3.ads:25:65: medium: overflow check might fail (e.g. when X = (C2 => Integer'Last, others => ?))
-unit3.ads:25:94: medium: overflow check might fail (e.g. when X = (C3 => Integer'Last, others => ?))
+unit3.ads:25:20: medium: class-wide postcondition might be weaker than overridden one, cannot prove (X = X'old) (e.g. when X = (C1 => 0, C2 => 0, C3 => 0))
+unit3.ads:25:36: medium: overflow check might fail (e.g. when X = (C1 => Integer'Last, C2 => Integer'Last, C3 => Integer'Last))
+unit3.ads:25:65: medium: overflow check might fail (e.g. when X = (C1 => 0, C2 => Integer'Last, C3 => 0))
+unit3.ads:25:94: medium: overflow check might fail (e.g. when X = (C1 => 0, C2 => 0, C3 => Integer'Last))
 unit3.ads:26:20: info: postcondition is stronger than class-wide postcondition (CVC4: 3 VC)
 unit3.ads:26:36: info: overflow check proved (CVC4: 1 VC)
 unit3.ads:26:65: info: overflow check proved (CVC4: 1 VC)
-unit3.ads:26:78: medium: postcondition might fail, cannot prove X.C3 = X.C3'Old + 1 (e.g. when X = (C3 => 1, others => ?) and X'Old = (C3 => 1, others => ?))
+unit3.ads:26:78: medium: postcondition might fail, cannot prove X.C3 = X.C3'Old + 1 (e.g. when X = (C1 => 1, C2 => 1, C3 => 1) and X'Old = (C1 => 0, C2 => 0, C3 => -1))
 unit3.ads:26:94: info: overflow check proved (CVC4: 1 VC)

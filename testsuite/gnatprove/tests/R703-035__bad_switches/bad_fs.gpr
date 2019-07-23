@@ -1,0 +1,7 @@
+project Bad_FS is
+
+  package Prove is
+    for Proof_Switches ("main.adb") use ("--bad-switch");
+  end Prove;
+
+end Bad_FS;

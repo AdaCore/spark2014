@@ -31,7 +31,8 @@ is
               Number_Of_People_Killed => 0);
 
    overriding
-   procedure Print (This : Professional) is
+   procedure Print (This : Professional) with SPARK_Mode => Off
+   is
    begin
       New_Line;
       Put (To_String (Get_Name (This)) & " is ");

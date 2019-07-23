@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  B o d y                                 --
 --                                                                          --
---                        Copyright (C) 2013-2018, AdaCore                  --
+--                     Copyright (C) 2013-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -165,11 +165,16 @@ package body SPARK_Register is
                         Register_Entity (E);
                      end if;
 
-                  when E_Abstract_State
-                     | E_Loop_Parameter
+                  when E_Loop_Parameter
                      | Formal_Kind
                   =>
                      Register_Entity (E);
+
+                  when E_Abstract_State =>
+                     Register_Entity
+                       (if Present (Non_Limited_View (E))
+                        then Non_Limited_View (E)
+                        else E);
 
                   when others =>
                      null;
@@ -345,7 +350,7 @@ package body SPARK_Register is
          return OK;
       end Process_Node;
 
-   --  Start of processing for Process_Node
+   --  Start of processing for Register_Compilation_Unit
 
    begin
       --  Skip generic units; care only about their instances
@@ -353,12 +358,11 @@ package body SPARK_Register is
       if Is_Generic_Unit (Unique_Defining_Entity (N)) then
          null;
 
-      --  This procedure is called on the declaration or body of a library unit
-      --  (see spec of Sem.Walk_Library_Items), but we need here to process
-      --  the parent of the compilation unit node, so that aspects rewritten
-      --  as pragmas after the library unit declaration or body (listed in
-      --  Pragmas_After) are also processed. Only the Standard package has no
-      --  such a parent.
+      --  This procedure is called on the declaration or body of a library
+      --  unit, but we also need to process the parent of the compilation unit
+      --  node, so that aspects rewritten as pragmas after the library unit
+      --  declaration or body (listed in Pragmas_After) are also processed.
+      --  Only the Standard package has no such a parent.
 
       elsif N = Standard_Package_Node then
          Process_Tree (N);

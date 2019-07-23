@@ -310,14 +310,14 @@ is
          --  OK, since type-safety is later re-established by the proof system.
 
          KS (WCNT_512) := Skein_KS_Parity;
-         pragma Annotate
-           (GNATprove, False_Positive, """KS"" might not be initialized",
-            "array KS is initialized at index 8, then from 0 to 7");
 
          for I in I8 loop
             KS (I)    := Ctx.X (I);
             --  Compute overall parity
             KS (WCNT_512) := KS (WCNT_512) xor Ctx.X (I);
+            pragma Annotate
+              (GNATprove, False_Positive, """KS"" might not be initialized",
+               "array KS is initialized at index 8, then from 0 to 7");
          end loop;
       end Initialize_Key_Schedule;
 

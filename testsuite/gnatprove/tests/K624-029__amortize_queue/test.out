@@ -1,100 +1,80 @@
-a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
-a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
-a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
-a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
-a-cofove.ads:764:35: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at amortized_queue.ads:10
-amortized_queue.adb:5:07: info: initialization of private part of "Result" proved
-amortized_queue.adb:5:14: info: initialization of private part of "Result" proved
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
+a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
+a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at amortized_queue.ads:10
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at amortized_queue.ads:10
+amortized_queue.adb:5:14: info: initialization of "Result" proved
 amortized_queue.adb:5:57: info: range check proved (CVC4: 1 VC)
 amortized_queue.adb:7:13: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:7:21: info: initialization of private part of "Result" proved
 amortized_queue.adb:7:29: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:7:44: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:8:35: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:8:35: info: loop invariant preservation proved (CVC4: 1 VC)
-amortized_queue.adb:8:52: info: initialization of private part of "Result" proved
 amortized_queue.adb:10:16: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:10:16: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:11:20: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:11:29: info: initialization of private part of "Result" proved
 amortized_queue.adb:11:37: info: range check proved (CodePeer)
 amortized_queue.adb:11:42: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:11:57: info: range check proved (CodePeer)
 amortized_queue.adb:13:25: info: assertion proved (CVC4: 1 VC)
-amortized_queue.adb:13:42: info: initialization of private part of "Result" proved
 amortized_queue.adb:15:13: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:15:21: info: initialization of private part of "Result" proved
 amortized_queue.adb:15:29: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:15:45: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:16:35: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:16:35: info: loop invariant preservation proved (CVC4: 1 VC)
-amortized_queue.adb:16:52: info: initialization of private part of "Result" proved
 amortized_queue.adb:16:81: info: overflow check proved (CodePeer)
 amortized_queue.adb:18:16: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:18:16: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:19:20: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:19:29: info: initialization of private part of "Result" proved
 amortized_queue.adb:19:37: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:19:42: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:19:57: info: range check proved (CodePeer)
 amortized_queue.adb:21:16: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:21:16: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:22:20: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:22:29: info: initialization of private part of "Result" proved
 amortized_queue.adb:22:55: info: overflow check proved (CodePeer)
 amortized_queue.adb:22:55: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:22:62: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:22:78: info: range check proved (CodePeer)
-amortized_queue.adb:29:07: info: initialization of private part of "Result" proved
-amortized_queue.adb:29:14: info: initialization of private part of "Result" proved
+amortized_queue.adb:29:14: info: initialization of "Result" proved
 amortized_queue.adb:29:45: info: range check proved (CVC4: 1 VC)
 amortized_queue.adb:30:10: info: precondition proved (CVC4: 1 VC)
-amortized_queue.adb:30:18: info: initialization of private part of "Result" proved
 amortized_queue.adb:32:13: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:32:21: info: initialization of private part of "Result" proved
 amortized_queue.adb:32:29: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:32:45: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:33:35: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:33:35: info: loop invariant preservation proved (CVC4: 1 VC)
-amortized_queue.adb:33:52: info: initialization of private part of "Result" proved
 amortized_queue.adb:33:65: info: overflow check proved (CodePeer)
 amortized_queue.adb:34:36: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:34:36: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:34:36: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:34:45: info: initialization of private part of "Result" proved
 amortized_queue.adb:36:16: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:36:16: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:37:18: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:37:27: info: initialization of private part of "Result" proved
 amortized_queue.adb:37:37: info: overflow check proved (CodePeer)
-amortized_queue.adb:37:37: info: range check proved (CVC4: 2 VC)
+amortized_queue.adb:37:37: info: range check proved (CodePeer)
 amortized_queue.adb:37:44: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:37:60: info: range check proved (CodePeer)
-amortized_queue.adb:44:07: info: initialization of private part of "Result" proved
-amortized_queue.adb:44:14: info: initialization of private part of "Result" proved
+amortized_queue.adb:44:14: info: initialization of "Result" proved
 amortized_queue.adb:44:57: info: range check proved (CVC4: 1 VC)
 amortized_queue.adb:46:13: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:46:21: info: initialization of private part of "Result" proved
 amortized_queue.adb:46:29: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:46:44: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:47:35: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:47:35: info: loop invariant preservation proved (CVC4: 1 VC)
-amortized_queue.adb:47:52: info: initialization of private part of "Result" proved
 amortized_queue.adb:49:16: info: loop invariant initialization proved (CVC4: 1 VC)
 amortized_queue.adb:49:16: info: loop invariant preservation proved (CVC4: 1 VC)
 amortized_queue.adb:50:18: info: precondition proved (CVC4: 4 VC)
-amortized_queue.adb:50:27: info: initialization of private part of "Result" proved
-amortized_queue.adb:50:35: info: range check proved (CVC4: 2 VC)
+amortized_queue.adb:50:35: info: range check proved (CodePeer)
 amortized_queue.adb:50:40: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:50:55: info: range check proved (CodePeer)
 amortized_queue.adb:52:09: info: precondition proved (CVC4: 1 VC)
-amortized_queue.adb:52:17: info: initialization of private part of "Result" proved
 amortized_queue.adb:62:14: info: postcondition proved (CVC4: 4 VC)
 amortized_queue.adb:65:20: info: precondition proved (CVC4: 2 VC)
 amortized_queue.adb:65:36: info: range check proved (CVC4: 1 VC)
@@ -123,51 +103,30 @@ amortized_queue.adb:78:56: info: overflow check proved (CodePeer)
 amortized_queue.adb:78:56: info: range check proved (CVC4: 2 VC)
 amortized_queue.adb:78:63: info: precondition proved (CVC4: 4 VC)
 amortized_queue.adb:78:78: info: range check proved (CVC4: 2 VC)
-amortized_queue.adb:84:07: info: initialization of private part of "RevRear" proved
-amortized_queue.adb:84:27: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:86:25: info: initialization of private part of "RevRear" proved
-amortized_queue.adb:87:14: info: initialization of private part of "RevRear" proved
+amortized_queue.adb:84:27: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:87:22: info: precondition proved (CVC4: 1 VC)
-amortized_queue.adb:92:07: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:92:07: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:92:42: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:92:42: info: precondition proved (CVC4: 2 VC)
+amortized_queue.adb:92:42: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:93:41: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:93:41: info: precondition proved (CVC4: 2 VC)
+amortized_queue.adb:93:41: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:94:09: info: precondition proved (CVC4: 1 VC)
-amortized_queue.adb:94:22: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:95:20: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:95:44: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:96:12: info: precondition proved (CVC4: 3 VC)
-amortized_queue.adb:96:28: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:96:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
-amortized_queue.adb:96:42: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:96:55: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:96:55: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:96:61: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:96:55: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:96:86: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:96:86: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:96:92: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:103:07: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:103:07: info: initialization of private part of "Result.Rear" proved
+amortized_queue.adb:96:86: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:103:42: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:103:42: info: precondition proved (CVC4: 2 VC)
+amortized_queue.adb:103:42: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:104:41: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:104:41: info: precondition proved (CVC4: 2 VC)
+amortized_queue.adb:104:41: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:105:09: info: precondition proved (CVC4: 1 VC)
-amortized_queue.adb:105:17: info: initialization of private part of "Result.Rear" proved
-amortized_queue.adb:106:20: info: initialization of private part of "Result.Front" proved
-amortized_queue.adb:106:44: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:107:12: info: precondition proved (CVC4: 3 VC)
-amortized_queue.adb:107:28: info: initialization of private part of "Result.Front" proved
 amortized_queue.adb:107:34: info: non-aliasing of formal parameters "Front" and "Rear" proved
-amortized_queue.adb:107:42: info: initialization of private part of "Result.Rear" proved
 amortized_queue.adb:107:55: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:107:55: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:107:61: info: initialization of private part of "Result.Front" proved
+amortized_queue.adb:107:55: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:107:86: info: discriminant check proved (CVC4: 1 VC)
-amortized_queue.adb:107:86: info: precondition proved (CVC4: 2 VC)
-amortized_queue.adb:107:92: info: initialization of private part of "Result.Rear" proved
+amortized_queue.adb:107:86: info: precondition proved (CVC4: 1 VC)
 amortized_queue.adb:114:14: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:16:14: info: postcondition proved (CVC4: 3 VC)
 amortized_queue.ads:18:20: info: precondition proved (CVC4: 2 VC)
@@ -210,12 +169,12 @@ amortized_queue.ads:67:14: info: postcondition proved (CVC4: 1 VC)
 amortized_queue.ads:67:14: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:67:28: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:72:06: info: precondition proved (CVC4: 1 VC)
-amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q)) (e.g. when Q = (Front => (Capacity => Capacity_Range'Last, others => ?), Rear => (Capacity => Capacity_Range'Last, others => ?)) and Tail'Result = (Front => (Capacity => Capacity_Range'Last, others => ?), Rear => (Capacity => Capacity_Range'Last, others => ?)))
+amortized_queue.ads:72:06: medium: postcondition might fail, cannot prove Model (Q) = Model (Tail'Result) & Last_Element (Model (Q))
 amortized_queue.ads:72:18: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:72:38: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:72:40: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:72:54: info: precondition proved (CVC4: 1 VC)
-amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'result) (e.g. when Enqueue'Result = (Front => (Capacity => Capacity_Range'Last, others => ?), Rear => (Capacity => Capacity_Range'Last, others => ?)) and Q = (Front => (Capacity => Capacity_Range'Last, others => ?), Rear => (Capacity => Capacity_Range'Last, others => ?)) and V = 0)
+amortized_queue.ads:78:06: medium: postcondition might fail, cannot prove V & Model (Q) = Model (Enqueue'result)
 amortized_queue.ads:78:08: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:78:10: info: precondition proved (CVC4: 1 VC)
 amortized_queue.ads:78:22: info: precondition proved (CVC4: 1 VC)

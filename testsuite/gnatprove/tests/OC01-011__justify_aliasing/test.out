@@ -1,4 +1,4 @@
 aliasing.adb:13:16: info: index check proved (CVC4: 2 VC)
-aliasing.adb:13:16: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and I = 0) [possible explanation: subprogram at line 11 should mention I in a precondition]
+aliasing.adb:13:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:8 should mention I in a precondition]
 aliasing.adb:13:23: info: index check proved (CVC4: 2 VC)
-aliasing.adb:13:23: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 1 and J = 0) [possible explanation: subprogram at line 11 should mention J in a precondition]
+aliasing.adb:13:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:8 should mention J in a precondition]

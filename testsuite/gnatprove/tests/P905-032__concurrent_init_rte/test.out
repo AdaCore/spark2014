@@ -1,1 +1,1 @@
-init_concurrent.ads:12:22: medium: precondition might fail
+init_concurrent.ads:12:22: medium: precondition might fail, cannot prove X > 0

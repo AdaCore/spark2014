@@ -1,5 +1,5 @@
 user.adb:2:17: info: initialization of "X" proved
 user.adb:2:20: info: initialization of "Y" proved
-user.adb:9:19: info: initialization of "X" proved
+user.adb:3:08: info: data dependencies proved
 user.adb:9:19: medium: assertion might fail, cannot prove X = Y
-user.adb:9:23: info: initialization of "Y" proved
+util.ads:3:08: info: flow dependencies proved

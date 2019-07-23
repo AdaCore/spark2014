@@ -9,7 +9,7 @@
    package Compiler is
       for Driver ("Ada") use "gnat2why";
       for Object_File_Suffix ("Ada") use ".ali";
-      For Dependency_Kind ("Ada") use "ALI_File";
+      for Dependency_Kind ("Ada") use "ALI_File";
    end Compiler;
   </config>
  </configuration>

@@ -1,9 +1,9 @@
-unfold in_range, in_range1.
-intros ((val1_pos, _),(_,(_, val1_le_val2))).
+unfold dynamic_invariant1, dynamic_invariant, in_range, in_range1.
+intros.
 
 (* apply theorem about monotonicity of power *)
 apply Z.pow_le_mono_l.
 
 (* remaining goals can be proved automatically *)
-auto with zarith.
+intuition.
 Qed.

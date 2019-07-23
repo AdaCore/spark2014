@@ -1,37 +1,33 @@
 lexer.adb:60:23: info: implicit function contract not available for proof ("Size" might not return)
 lexer.adb:61:20: info: implicit function contract not available for proof ("Size" might not return)
 lexer.adb:62:19: info: function contract not available for proof ("Index" might not return)
+lexer.adb:74:09: info: data dependencies proved
 lexer.adb:83:27: info: discriminant check proved (CVC4: 2 VC)
 lexer.adb:85:45: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:90:43: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:101:39: info: initialization of "The_Filename" constituent of "State" proved
 lexer.adb:102:39: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:103:39: info: initialization of "Current_Read.C" constituent of "State" proved
+lexer.adb:103:39: info: initialization of "Current_Read" constituent of "State" proved
 lexer.adb:104:39: info: initialization of "Current_Line" constituent of "State" proved
 lexer.adb:105:39: info: initialization of "Current_Col" constituent of "State" proved
 lexer.adb:106:39: info: initialization of "Current_Idx" constituent of "State" proved
-lexer.adb:107:39: info: initialization of "Next_Read.C" constituent of "State" proved
+lexer.adb:107:39: info: initialization of "Next_Read" constituent of "State" proved
 lexer.adb:108:39: info: initialization of "Next_Idx" constituent of "State" proved
 lexer.adb:114:07: info: precondition proved (CVC4: 1 VC)
 lexer.adb:119:07: info: precondition proved (CVC4: 1 VC)
-lexer.adb:119:13: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:120:30: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:121:07: info: initialization of "Current_Col" constituent of "State" proved
-lexer.adb:121:07: info: initialization of "Current_Line" constituent of "State" proved
-lexer.adb:121:07: info: initialization of "Current_Read.C" constituent of "State" proved
 lexer.adb:124:10: info: precondition proved (CVC4: 1 VC)
-lexer.adb:124:16: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:125:30: info: initialization of "The_File" constituent of "State" proved
-lexer.adb:127:20: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:127:23: info: initialization of "Current_Read.C" constituent of "State" proved
-lexer.adb:128:23: info: initialization of "Current_Idx" constituent of "State" proved
+lexer.adb:127:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 lexer.adb:150:07: info: initialization of "S" proved
+lexer.adb:151:07: info: initialization of "First_Line" proved
+lexer.adb:152:07: info: initialization of "First_Col" proved
+lexer.adb:153:07: info: initialization of "First_Idx" proved
+lexer.adb:156:12: info: data dependencies proved
 lexer.adb:164:20: info: postcondition proved (CVC4: 4 VC)
 lexer.adb:173:20: info: postcondition proved (CVC4: 2 VC)
 lexer.adb:181:20: info: postcondition proved (CVC4: 4 VC)
 lexer.adb:182:48: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:184:56: info: overflow check proved (CVC4: 1 VC)
-lexer.adb:200:23: info: discriminant check proved (CVC4: 2 VC)
+lexer.adb:200:23: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 lexer.adb:205:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:218:21: info: postcondition proved (CVC4: 2 VC)
 lexer.adb:223:27: info: discriminant check proved (CVC4: 2 VC)
@@ -55,99 +51,56 @@ lexer.adb:271:36: info: loop invariant preservation proved (CVC4: 2 VC)
 lexer.adb:273:13: info: loop variant proved (CVC4: 1 VC)
 lexer.adb:283:33: info: discriminant check proved (CVC4: 1 VC)
 lexer.adb:284:10: info: precondition proved (CVC4: 1 VC)
+lexer.adb:294:10: info: initialization of "L" proved
+lexer.adb:295:10: info: initialization of "C" proved
 lexer.adb:305:15: info: precondition proved (CVC4: 1 VC)
-lexer.adb:307:15: info: initialization of "L" proved
-lexer.adb:309:15: info: initialization of "C" proved
-lexer.adb:322:33: info: initialization of "T.Col" proved
-lexer.adb:322:33: info: initialization of "T.Length" proved
-lexer.adb:322:33: info: initialization of "T.Line" proved
-lexer.adb:322:33: info: initialization of "T.Value" proved
+lexer.adb:320:12: info: data dependencies proved
+lexer.adb:322:33: info: initialization of "T" proved
 lexer.adb:325:20: info: postcondition proved (CVC4: 4 VC)
-lexer.adb:326:20: info: initialization of "T.Line" proved
-lexer.adb:327:20: info: initialization of "T.Col" proved
-lexer.adb:328:20: info: initialization of "T.Length" proved
-lexer.adb:333:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:339:18: info: discriminant check proved (CVC4: 2 VC)
+lexer.adb:333:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:339:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 lexer.adb:345:16: info: raise statement proved unreachable (CVC4: 1 VC)
-lexer.adb:356:33: info: initialization of "T.Col" proved
-lexer.adb:356:33: info: initialization of "T.Length" proved
-lexer.adb:356:33: info: initialization of "T.Line" proved
-lexer.adb:356:33: info: initialization of "T.Value" proved
+lexer.adb:351:12: info: data dependencies proved
+lexer.adb:356:33: info: initialization of "T" proved
 lexer.adb:360:20: info: postcondition proved (CVC4: 5 VC)
-lexer.adb:362:20: info: initialization of "T.Line" proved
-lexer.adb:363:20: info: initialization of "T.Col" proved
-lexer.adb:364:20: info: initialization of "T.Length" proved
 lexer.adb:364:43: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:366:53: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:366:53: info: range check proved (CVC4: 1 VC)
+lexer.adb:367:10: info: initialization of "N" proved
 lexer.adb:369:10: info: precondition proved (CVC4: 1 VC)
-lexer.adb:372:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:376:32: info: initialization of "N" proved
-lexer.adb:378:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:382:32: info: initialization of "N" proved
-lexer.adb:384:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:388:32: info: initialization of "N" proved
-lexer.adb:390:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:394:32: info: initialization of "N" proved
-lexer.adb:396:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:400:32: info: initialization of "N" proved
-lexer.adb:402:18: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:406:32: info: initialization of "N" proved
+lexer.adb:372:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:378:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:384:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:390:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:396:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:402:18: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+lexer.adb:425:07: info: initialization of "State" proved
+lexer.adb:427:07: info: initialization of "C" proved
 lexer.adb:450:10: info: precondition proved (CVC4: 2 VC)
-lexer.adb:454:15: info: discriminant check proved (CVC4: 2 VC)
+lexer.adb:454:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 lexer.adb:456:41: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:461:33: info: loop invariant initialization proved (CVC4: 2 VC)
 lexer.adb:461:33: info: loop invariant preservation proved (CVC4: 2 VC)
 lexer.adb:463:10: info: loop variant proved (CVC4: 1 VC)
 lexer.adb:468:36: info: discriminant check proved (CVC4: 1 VC)
-lexer.adb:470:10: info: initialization of "S" proved
 lexer.adb:470:10: info: precondition proved (CVC4: 2 VC)
-lexer.adb:474:16: info: initialization of "First_Col" proved
-lexer.adb:474:16: info: initialization of "First_Line" proved
 lexer.adb:474:16: info: precondition proved (CVC4: 2 VC)
-lexer.adb:478:16: info: initialization of "First_Col" proved
-lexer.adb:478:16: info: initialization of "First_Line" proved
 lexer.adb:478:16: info: precondition proved (CVC4: 2 VC)
-lexer.adb:502:16: info: initialization of "First_Col" proved
-lexer.adb:502:16: info: initialization of "First_Line" proved
 lexer.adb:502:16: info: precondition proved (CVC4: 1 VC)
 lexer.adb:502:54: info: range check proved (CVC4: 1 VC)
-lexer.adb:502:56: info: initialization of "C" proved
 lexer.adb:502:58: info: range check proved (CVC4: 1 VC)
 lexer.adb:508:27: info: discriminant check proved (CVC4: 2 VC)
-lexer.adb:514:13: info: loop invariant initialization proved (CVC4: 6 VC)
-lexer.adb:514:13: info: loop invariant preservation proved (CVC4: 6 VC)
-lexer.adb:517:13: info: initialization of "State" proved
-lexer.adb:521:21: info: initialization of "S" proved
-lexer.adb:522:28: info: initialization of "First_Idx" proved
+lexer.adb:514:13: info: loop invariant initialization proved (CVC4: 6 VC; Trivial: 1 VC)
+lexer.adb:514:13: info: loop invariant preservation proved (CVC4: 6 VC; Trivial: 1 VC)
 lexer.adb:528:10: info: loop variant proved (CVC4: 1 VC)
-lexer.adb:533:21: info: initialization of "C" proved
-lexer.adb:540:21: info: initialization of "C" proved
-lexer.adb:548:21: info: initialization of "C" proved
-lexer.adb:552:22: info: initialization of "First_Col" proved
-lexer.adb:552:22: info: initialization of "First_Line" proved
 lexer.adb:552:22: info: precondition proved (CVC4: 1 VC)
-lexer.adb:556:21: info: initialization of "C" proved
-lexer.adb:562:21: info: initialization of "C" proved
-lexer.adb:568:21: info: initialization of "C" proved
-lexer.adb:574:21: info: initialization of "C" proved
-lexer.adb:576:22: info: initialization of "S" proved
 lexer.adb:576:22: info: precondition proved (CVC4: 2 VC)
-lexer.adb:585:21: info: initialization of "C" proved
 lexer.adb:588:33: info: discriminant check proved (CVC4: 1 VC)
 lexer.adb:590:25: info: precondition proved (CVC4: 1 VC)
-lexer.adb:592:25: info: initialization of "S" proved
 lexer.adb:592:25: info: precondition proved (CVC4: 2 VC)
-lexer.adb:593:25: info: initialization of "State" proved
 lexer.adb:602:16: info: raise statement proved unreachable (CVC4: 1 VC)
-lexer.adb:606:10: info: initialization of "S" proved
 lexer.adb:606:10: info: precondition proved (CVC4: 2 VC)
-lexer.adb:609:22: info: assertion proved (CVC4: 2 VC)
-lexer.adb:609:25: info: initialization of "State" proved
-lexer.adb:610:35: info: initialization of "S" proved
-lexer.adb:614:46: info: initialization of "S" proved
-lexer.adb:618:18: info: initialization of "State" proved
-lexer.adb:631:18: info: initialization of "State" proved
+lexer.adb:609:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 lexer.adb:636:40: info: range check proved (CVC4: 4 VC)
 lexer.adb:636:55: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:638:40: info: range check proved (CVC4: 4 VC)
@@ -155,31 +108,16 @@ lexer.adb:638:55: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:638:71: info: overflow check proved (CVC4: 1 VC)
 lexer.adb:640:40: info: range check proved (CVC4: 4 VC)
 lexer.adb:640:55: info: overflow check proved (CVC4: 1 VC)
-lexer.adb:642:10: info: initialization of "First_Col" proved
-lexer.adb:642:10: info: initialization of "First_Idx" proved
-lexer.adb:642:10: info: initialization of "First_Line" proved
 lexer.adb:642:10: info: precondition proved (CVC4: 3 VC)
-lexer.adb:642:21: info: initialization of "K" proved
-lexer.adb:642:24: info: initialization of "Str" proved
-lexer.adb:645:12: info: initialization of "State" proved
-lexer.adb:647:13: info: initialization of "First_Col" proved
-lexer.adb:647:13: info: initialization of "First_Line" proved
 lexer.adb:647:13: info: precondition proved (CVC4: 1 VC)
-lexer.adb:649:13: info: initialization of "First_Col" proved
-lexer.adb:649:13: info: initialization of "First_Line" proved
 lexer.adb:649:13: info: precondition proved (CVC4: 1 VC)
-lexer.adb:651:13: info: initialization of "First_Col" proved
-lexer.adb:651:13: info: initialization of "First_Line" proved
 lexer.adb:651:13: info: precondition proved (CVC4: 1 VC)
 lexer.adb:667:12: info: precondition proved (CVC4: 1 VC)
-lexer.ads:76:17: info: initialization of "Current_Idx" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "Current_Read.C" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "Next_Idx" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "Next_Read.C" constituent of "State" proved
-lexer.ads:76:17: info: initialization of "The_File" constituent of "State" proved
+lexer.ads:62:09: info: data dependencies proved
+lexer.ads:68:09: info: data dependencies proved
+lexer.ads:73:09: info: data dependencies proved
 lexer.ads:76:17: info: postcondition proved (CVC4: 1 VC)
-lexer.ads:79:26: info: initialization of "T.Col" proved
-lexer.ads:79:26: info: initialization of "T.Length" proved
-lexer.ads:79:26: info: initialization of "T.Line" proved
-lexer.ads:79:26: info: initialization of "T.Value" proved
+lexer.ads:79:26: info: initialization of "T" proved
+lexer.ads:80:09: info: data dependencies proved
 lexer.ads:83:19: info: postcondition proved (CVC4: 1 VC)
+lexer.ads:88:09: info: data dependencies proved

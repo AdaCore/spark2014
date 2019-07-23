@@ -1,5 +1,4 @@
-cst.ads:7:28: info: initialization of "X" proved
-use_cst.adb:13:12: info: precondition proved (CVC4: 1 VC)
+use_cst.adb:13:12: info: precondition proved (Trivial: 1 VC)
 use_cst.ads:4:14: warning: subprogram "P" has no effect
 use_indirect_cst.adb:5:14: warning: subprogram "Local" has no effect
-use_indirect_cst.adb:10:04: info: precondition proved (CVC4: 1 VC)
+use_indirect_cst.adb:10:04: info: precondition proved (Trivial: 1 VC)

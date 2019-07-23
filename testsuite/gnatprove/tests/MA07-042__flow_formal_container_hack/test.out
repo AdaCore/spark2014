@@ -1,14 +1,14 @@
-a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
-a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
-a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
-a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
-a-cofove.ads:764:35: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at formal_list.ads:8
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
+a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
+a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at formal_list.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at formal_list.ads:8
 formal_list.ads:15:30: info: range check proved (CVC4: 1 VC)
 formal_list.ads:19:30: info: range check proved (CVC4: 1 VC)
 test.adb:4:17: info: initialization of "A" proved
@@ -17,6 +17,6 @@ test.adb:6:17: medium: "C" is not set in "Test"
 test.adb:6:17: warning: unused variable "C"
 test.adb:7:17: medium: private part of "D" is not set in "Test"
 test.adb:7:17: warning: unused variable "D"
-test.adb:12:04: info: initialization of private part of "Tmp_D" proved
+test.adb:12:04: info: initialization of "Tmp_D" proved
 test.adb:14:09: high: "Tmp_A" is not initialized
 test.adb:15:09: high: "Tmp_B" is not initialized

@@ -1,1 +1,2 @@
 instructions.adb:5:28: info: unrolling loop
+instructions.ads:5:24: info: data dependencies proved

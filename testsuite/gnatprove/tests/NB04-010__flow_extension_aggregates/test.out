@@ -1,3 +1,2 @@
 foo.adb:3:04: warning: analyzing unreferenced procedure "Improve"
-foo.adb:4:23: info: initialization of "Y.A" proved
-foo.adb:4:23: info: initialization of "Y.B" proved
+foo.adb:4:23: info: initialization of "Y" proved

@@ -1,10 +1,4 @@
 test.adb:5:23: warning: unused initial value of "Y"
-test.adb:6:33: info: initialization of "A" proved, in call inlined at test.adb:16
-test.adb:8:12: info: initialization of "A" proved, in call inlined at test.adb:16
-test.adb:13:23: info: initialization of "A" proved
-test.adb:17:04: warning: assuming "Put_Line" has no effect on global items
-test.adb:17:04: warning: no Global contract available for "Put_Line"
-test.adb:17:29: info: initialization of "A" proved
+test.adb:13:04: warning: initialization of "B" has no effect
 test.adb:17:32: info: range check proved (CVC4: 1 VC)
 test.adb:17:39: info: range check proved (CVC4: 1 VC)
-test.adb:17:56: info: initialization of "B" proved

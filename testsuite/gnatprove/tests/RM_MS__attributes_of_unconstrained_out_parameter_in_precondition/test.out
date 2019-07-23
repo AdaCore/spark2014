@@ -1,7 +1,6 @@
-p.adb:6:09: info: length check proved (CVC4: 4 VC)
+p.adb:6:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:8:20: info: initialization of "X" proved
 p.ads:10:19: info: postcondition proved (CVC4: 3 VC)
-p.ads:10:33: info: initialization of "X" proved
 p.ads:11:40: info: index check proved (CVC4: 2 VC)
 p.ads:12:44: info: index check proved (CVC4: 2 VC)
 p.ads:13:31: info: index check proved (CVC4: 2 VC)

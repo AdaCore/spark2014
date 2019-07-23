@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
---                  Copyright (C) 2013-2018, AdaCore                        --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
+--                     Copyright (C) 2013-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,13 +32,18 @@ with Common_Containers;         use Common_Containers;
 with Einfo;                     use Einfo;
 with Errout;                    use Errout;
 with Erroutc;                   use Erroutc;
+with Flow_Refinement;           use Flow_Refinement;
 with Flow_Utility;              use Flow_Utility;
 with Gnat2Why.Counter_Examples; use Gnat2Why.Counter_Examples;
 with Gnat2Why.Expr.Loops;
 with Gnat2Why_Args;             use Gnat2Why_Args;
+with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with GNATCOLL.Utils;            use GNATCOLL.Utils;
+with Lib.Xref;
 with Namet;                     use Namet;
 with Nlists;                    use Nlists;
+with Sem_Aux;                   use Sem_Aux;
+with Sem_Util;                  use Sem_Util;
 with Sinfo;                     use Sinfo;
 with Sinput;                    use Sinput;
 with Snames;                    use Snames;
@@ -47,14 +52,16 @@ with SPARK_Atree;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 with Stringt;                   use Stringt;
+with String_Utils;
 
 package body Flow_Error_Messages is
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
 
-   function Get_Explanation (N : Node_Id) return String;
+   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String;
    --  @param N node associated to an unproved check
+   --  @param Tag associated unproved check
    --  @result message part explaining why the check was not proved
 
    function Msg_Severity_To_String (Severity : Msg_Severity) return String;
@@ -512,6 +519,8 @@ package body Flow_Error_Messages is
                F : Flow_Id renames FA.PDG.Get_Key (V);
 
             begin
+               --  ??? we should only print vertices whose Atr.Is_Program_Node
+               --  is True (taking into account various special-cases).
                if F.Kind = Direct_Mapping then
                   Ada.Text_IO.Put_Line
                     (FD, Vertex_Sloc_Location (FA.PDG, FA.Atr, V));
@@ -545,11 +554,19 @@ package body Flow_Error_Messages is
                       Tracefile    => Tracefile,
                       Continuation => Continuation);
 
-      --  Set the No_Errors_Or_Warnings flag to False for this entity if we are
+      --  Set the Errors_Or_Warnings flag to True for this entity if we are
       --  with anything but a suppressed warning.
 
       if not Suppressed then
-         FA.No_Errors_Or_Warnings := False;
+         FA.Errors_Or_Warnings := True;
+
+         if Tag in Data_Dependency_Tag then
+            FA.Data_Dependency_Errors := True;
+         end if;
+
+         if Tag in Flow_Dependency_Tag then
+            FA.Flow_Dependency_Errors := True;
+         end if;
       end if;
    end Error_Msg_Flow;
 
@@ -664,7 +681,7 @@ package body Flow_Error_Messages is
                Suppr := Info.Reason;
             else
                declare
-                  Expl : constant String := Get_Explanation (N);
+                  Expl : constant String := Get_Explanation (N, Tag);
                   Msg4 : constant String :=
                     (if Expl = "" then Msg3
                      else Msg3 & " [possible explanation: " & Expl & "]");
@@ -741,7 +758,7 @@ package body Flow_Error_Messages is
    -- Get_Explanation --
    ---------------------
 
-   function Get_Explanation (N : Node_Id) return String is
+   function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String is
 
       -----------------------
       -- Local subprograms --
@@ -752,6 +769,7 @@ package body Flow_Error_Messages is
                     | N_Pragma
                     | N_Statement_Other_Than_Procedure_Call
                     | N_Declaration
+                    | N_Later_Decl_Item
                     | N_Handled_Sequence_Of_Statements);
 
       function Enclosing_Stmt_Or_Prag_Or_Decl is new
@@ -763,7 +781,13 @@ package body Flow_Error_Messages is
                              | N_Assignment_Statement
                              | N_Procedure_Call_Statement
                              | N_Loop_Statement
-                             | N_Subprogram_Body;
+                             | N_Subprogram_Body
+                             | N_Subprogram_Declaration;
+
+      function Explain_Output_Variables
+        (Vars : Flow_Id_Sets.Set) return Unbounded_String;
+      --  Return part of the explanation listing the bounds and discriminants
+      --  of output variables in [Vars].
 
       function Explain_Variables
         (Vars : Flow_Id_Sets.Set;
@@ -771,6 +795,10 @@ package body Flow_Error_Messages is
          return Unbounded_String;
       --  Return part of the explanation listing the variables in [Vars], using
       --  [Map] for the translation from actuals to formals in a call.
+
+      function Get_Line_Number (N : Node_Id; Flag : Source_Ptr) return String;
+      --  Return a string describing the location Flag wrt the origin of the
+      --  message on node N.
 
       function Get_Loop_Condition_Or_Variable
         (Stmt : Node_Id) return Node_Or_Entity_Id
@@ -781,6 +809,12 @@ package body Flow_Error_Messages is
             Ekind (Get_Loop_Condition_Or_Variable'Result) = E_Loop_Parameter;
       --  Get the loop condition for a WHILE loop or the loop variable for a
       --  FOR loop. Return Empty for a plain loop.
+
+      function Get_Pre_Post
+        (Proc    : Entity_Id;
+         Prag_Id : Pragma_Id) return Node_Lists.List;
+      --  Return the list of expressions mentioned in a precondition or a
+      --  postcondition, including the class-wide ones.
 
       function Get_Previous_Explain_Node (N : Node_Id) return Node_Id with
         Pre  => Is_Stmt_Or_Prag_Or_Decl (N),
@@ -815,6 +849,68 @@ package body Flow_Error_Messages is
       --  Extract all the entire variables corresponding to flow ids in the
       --  expression [Expr].
 
+      function Get_Variables_From_Node
+        (N   : Node_Id;
+         Tag : VC_Kind) return Flow_Id_Sets.Set;
+      --  Return the set of flow ids to consider for the check of kind Tag
+      --  associated to node N.
+
+      function Has_Attribute_Result (N : Node_Id) return Boolean;
+      --  Return whether N refers to some attribute Func'Result
+
+      function Has_Post_State (N : Node_Id) return Boolean;
+      --  Return whether N as a node inside a postcondition possibly refers to
+      --  some post state of the subprogram.
+
+      ------------------------------
+      -- Explain_Output_Variables --
+      ------------------------------
+
+      function Explain_Output_Variables
+        (Vars : Flow_Id_Sets.Set) return Unbounded_String
+      is
+         Nodes     : constant Node_Sets.Set := To_Node_Set (Vars);
+         Expl      : Unbounded_String;
+         First_Var : Boolean := True;
+      begin
+         for V of Nodes loop
+            if Is_Array_Type (Etype (V))
+              or else Has_Discriminants (Etype (V))
+            then
+               if First_Var then
+                  First_Var := False;
+               else
+                  Append (Expl, " or ");
+               end if;
+
+               declare
+                  Id    : constant Flow_Id := Direct_Mapping_Id (V);
+                  Str   : constant String :=
+                    Flow_Id_To_String (Id, Pretty => True);
+                  Discr : Entity_Id;
+               begin
+                  if Is_Array_Type (Etype (V)) then
+                     Append (Expl, Str & "'Length");
+                     Append (Expl, " or " & Str & "'First");
+                     Append (Expl, " or " & Str & "'Last");
+
+                  else
+                     Append (Expl, Str & "'Constrained");
+
+                     Discr := First_Discriminant (Etype (V));
+                     while Present (Discr) loop
+                        Append (Expl, " or " & Str & "."
+                                & Flow_Id_To_String (Direct_Mapping_Id (Discr),
+                                                     Pretty => True));
+                        Next_Discriminant (Discr);
+                     end loop;
+                  end if;
+               end;
+            end if;
+         end loop;
+         return Expl;
+      end Explain_Output_Variables;
+
       -----------------------
       -- Explain_Variables --
       -----------------------
@@ -847,6 +943,42 @@ package body Flow_Error_Messages is
          return Expl;
       end Explain_Variables;
 
+      ---------------------
+      -- Get_Line_Number --
+      ---------------------
+
+      --  This function was inspired by Erroutc.Set_Msg_Insertion_Line_Number
+      --  to decide when to refer to the filename in the location.
+
+      function Get_Line_Number (N : Node_Id; Flag : Source_Ptr) return String
+      is
+         Loc         : constant Source_Ptr := Sloc (N);
+         Sindex_Loc  : constant Source_File_Index :=
+           Get_Source_File_Index (Loc);
+         Sindex_Flag : constant Source_File_Index :=
+           Get_Source_File_Index (Flag);
+         Fname       : File_Name_Type;
+         Line        : constant String :=
+           String_Utils.Trimi (Get_Physical_Line_Number (Flag)'Img, ' ');
+
+      begin
+         --  Use "at file-name:line-num" if reference is to other than the
+         --  source file in which the unproved check message is placed.
+         --  Note that we check full file names, rather than just the source
+         --  indexes, to deal with generic instantiations from the current
+         --  file.
+
+         if Full_File_Name (Sindex_Loc) /= Full_File_Name (Sindex_Flag) then
+            Fname := Reference_Name (Get_Source_File_Index (Flag));
+            return "at " & Get_Name_String (Fname) & ":" & Line;
+
+         --  If in current file, use text "at line line-num"
+
+         else
+            return "at line " & Line;
+         end if;
+      end Get_Line_Number;
+
       ------------------------------------
       -- Get_Loop_Condition_Or_Variable --
       ------------------------------------
@@ -877,6 +1009,23 @@ package body Flow_Error_Messages is
          end if;
       end Get_Loop_Condition_Or_Variable;
 
+      ------------------
+      -- Get_Pre_Post --
+      ------------------
+
+      function Get_Pre_Post
+        (Proc    : Entity_Id;
+         Prag_Id : Pragma_Id) return Node_Lists.List
+      is
+         Prag       : Node_Lists.List :=
+           Find_Contracts (Proc, Prag_Id);
+         Class_Prag : constant Node_Lists.List :=
+           Find_Contracts (Proc, Prag_Id, Classwide => True);
+      begin
+         SPARK_Util.Append (To => Prag, Elmts => Class_Prag);
+         return Prag;
+      end Get_Pre_Post;
+
       -------------------------------
       -- Get_Previous_Explain_Node --
       -------------------------------
@@ -897,13 +1046,15 @@ package body Flow_Error_Messages is
             end loop;
          end if;
 
-         --  Then look at the parent node of [N]
+         --  Then look at a suitable node up the chain from [N]
 
-         M := Atree.Parent (N);
+         M := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+
          if Nkind (M) in Explain_Node_Kind then
             return M;
 
-         --  If not done yet, continue looking from the parent node of [N]
+         --  If not done yet, continue looking from the parent node of [N] if
+         --  possible.
 
          elsif Is_Stmt_Or_Prag_Or_Decl (M) then
             return Get_Previous_Explain_Node (M);
@@ -926,7 +1077,7 @@ package body Flow_Error_Messages is
          return Flow_Id_Sets.Set
       is
          Expr_Vars : constant Flow_Id_Sets.Set :=
-           To_Entire_Variables (Get_Variables_For_Proof (Expr, Context));
+           Get_Variables_For_Proof (Expr, Context);
          Mapped_Vars : Flow_Id_Sets.Set;
 
          use type Flow_Id_Sets.Set;
@@ -941,27 +1092,252 @@ package body Flow_Error_Messages is
          return Expr_Vars or Mapped_Vars;
       end Get_Variables_From_Expr;
 
+      -----------------------------
+      -- Get_Variables_From_Node --
+      -----------------------------
+
+      function Get_Variables_From_Node
+        (N   : Node_Id;
+         Tag : VC_Kind) return Flow_Id_Sets.Set
+      is
+         Vars : Flow_Id_Sets.Set;
+      begin
+         --  For a precondition check on a call, retrieve the precondition of
+         --  the called subprogram as source for the explanation, and translate
+         --  back variables mentioned in the precondition into actuals.
+
+         if Tag = VC_Precondition
+           and then Nkind (N) in N_Subprogram_Call
+         then
+            Handle_Precondition_Check : declare
+               Subp : constant Entity_Id := SPARK_Atree.Get_Called_Entity (N);
+               Prag : constant Node_Id :=
+                 Get_Pragma (Subp, Pragma_Precondition);
+               Pre  : constant Node_Id :=
+                 (if Present (Prag) then
+                    Expression (First (Pragma_Argument_Associations (Prag)))
+                  else Empty);
+
+               Formal_To_Actual : Flow_Id_Surjection.Map;
+
+               procedure Treat_Param
+                 (Formal : Entity_Id; Actual : Node_Id);
+               --  Fill the mapping formal->actual
+
+               procedure Treat_Param
+                 (Formal : Entity_Id; Actual : Node_Id)
+               is
+                  Var : Entity_Id;
+                  Id  : Flow_Id;
+               begin
+                  if Ekind (Formal) in E_In_Parameter
+                                     | E_In_Out_Parameter
+                  then
+                     Var := SPARK_Atree.Get_Enclosing_Object (Actual);
+
+                     --  We only insert into the mapping when the actual is
+                     --  rooted in a variable. A more elaborate solution would
+                     --  consist in computing all the variables involved in the
+                     --  actual expression.
+
+                     if Present (Var) then
+                        Id := Direct_Mapping_Id (Var);
+
+                        --  Store the mapping formal->actual for possibly
+                        --  replacing the formal by the actual when the
+                        --  formal is mentioned in the precondition.
+
+                        Formal_To_Actual.Insert
+                          (Direct_Mapping_Id (Formal), Id);
+                     end if;
+                  end if;
+               end Treat_Param;
+
+               procedure Iterate_Call is new
+                 SPARK_Atree.Iterate_Call_Parameters (Treat_Param);
+
+            begin
+               if Present (Pre) then
+                  Iterate_Call (N);
+                  Vars := Get_Variables_From_Expr (Pre, Pre, Formal_To_Actual);
+               end if;
+            end Handle_Precondition_Check;
+
+         elsif Nkind (N) = N_Assignment_Statement then
+            declare
+               --  If the target of the assignment has a pointer dereference,
+               --  it does not have an enclosing object. Possibly change that
+               --  to get the root object in some cases of dereferences.
+
+               V : constant Entity_Id := Get_Enclosing_Object (Name (N));
+            begin
+               if Present (V) then
+                  Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
+               end if;
+            end;
+
+         --  As Get_Variables_For_Proof only apply to expressions, we do not
+         --  try to get an explanation for other cases of procedure calls,
+         --  i.e. when the check is not a precondition.
+
+         elsif Nkind (N) = N_Procedure_Call_Statement then
+            pragma Assert (Tag /= VC_Precondition);
+
+         else
+            pragma Assert (Nkind (N) in N_Subexpr
+                           and then Nkind (N) /= N_Procedure_Call_Statement);
+
+            Vars := Get_Variables_For_Proof (N, N);
+         end if;
+
+         return Vars;
+      end Get_Variables_From_Node;
+
+      --------------------------
+      -- Has_Attribute_Result --
+      --------------------------
+
+      function Has_Attribute_Result (N : Node_Id) return Boolean is
+
+         function Is_Function_Result (N : Node_Id) return Traverse_Result is
+           (if Is_Attribute_Result (N)
+            then Abandon
+            else OK);
+
+         function Check_Function_Result is
+           new Traverse_Func (Is_Function_Result);
+
+      --  Start of processing for Has_Attribute_Result
+
+      begin
+         return Check_Function_Result (N) = Abandon;
+      end Has_Attribute_Result;
+
+      --------------------
+      -- Has_Post_State --
+      --------------------
+
+      --  This function is similar to the one in sem_util.adb to warn about
+      --  postconditions which do not refer to the post state. We keep it
+      --  separate in order to possibly evolve this version differently, as
+      --  we can assume SPARK code here and query flow analysis for effects.
+
+      function Has_Post_State (N : Node_Id) return Boolean is
+
+         function Is_Post_State (N : Node_Id) return Traverse_Result;
+         --  Attempt to find a construct that denotes a post-state. If this
+         --  is the case, set flag Post_State_Seen.
+
+         -------------------
+         -- Is_Post_State --
+         -------------------
+
+         function Is_Post_State (N : Node_Id) return Traverse_Result is
+            Ent : Entity_Id;
+
+         begin
+            if Nkind_In (N, N_Explicit_Dereference, N_Function_Call) then
+               return Abandon;
+
+            elsif Nkind_In (N, N_Expanded_Name, N_Identifier) then
+               Ent := Entity (N);
+
+               --  Treat an undecorated reference as OK
+
+               if No (Ent)
+
+                 --  A reference to an assignable entity is considered a
+                 --  change in the post-state of a subprogram.
+
+                 or else Is_Assignable (Ent)
+
+                 --  The reference may be modified through a dereference
+
+                 or else (Is_Access_Type (Etype (Ent))
+                          and then Nkind (Parent (N)) =
+                            N_Selected_Component)
+               then
+                  return Abandon;
+               end if;
+
+            elsif Nkind (N) = N_Attribute_Reference then
+               if Attribute_Name (N) = Name_Old then
+                  return Skip;
+
+               elsif Attribute_Name (N) = Name_Result then
+                  return Abandon;
+               end if;
+            end if;
+
+            return OK;
+         end Is_Post_State;
+
+         function Find_Post_State is new Traverse_Func (Is_Post_State);
+
+      --  Start of processing for Has_Post_State
+
+      begin
+         return Find_Post_State (N) = Abandon;
+      end Has_Post_State;
+
+      --  Local variables
+
+      Enclosing_Subp : Entity_Id :=
+        Lib.Xref.SPARK_Specific.Enclosing_Subprogram_Or_Library_Package (N);
+      --  Approximate search for the enclosing subprogram or library package.
+      --  It is fine to use this function here even if not always correct, as
+      --  it's only used for adding or not an explanation.
+
    --  Start of processing for Get_Explanation
 
    begin
-      --  Only attempt explanation when the node associated to the unproved
-      --  check is an expression. We have to deal specially with procedure
-      --  calls as N_Procedure_Call_Statement is in N_Subexpr (to allow node
-      --  kinds for function calls and procedure calls to define a subtype).
+      --  Adjust the enclosing subprogram entity
 
-      if Nkind (N) not in N_Subexpr
-        or else Nkind (N) = N_Procedure_Call_Statement
+      if Present (Enclosing_Subp) then
+         Enclosing_Subp := Unique_Entity (Enclosing_Subp);
+      end if;
+
+      --  Only attempt explanation when the node associated to the unproved
+      --  check is an expression, an assignment or a procedure call (which are
+      --  part of N_Subexpr). When it's a procedure call, only handle the case
+      --  where the VC is a precondition check.
+
+      if Nkind (N) not in N_Subexpr | N_Assignment_Statement
+        and then (if Nkind (N) = N_Procedure_Call_Statement
+                  then Tag = VC_Precondition)
       then
+         return "";
+
+      --  Do not attempt to generate an explanation for a check inside a
+      --  DIC procedure or an invariant procedure, as these are generated
+      --  procedures on which the user can put no precondition.
+
+      elsif Present (Enclosing_Subp)
+        and then Is_Subprogram (Enclosing_Subp)
+        and then (Is_DIC_Procedure (Enclosing_Subp)
+                   or else Is_Invariant_Procedure (Enclosing_Subp))
+      then
+         return "";
+
+      --  We do not relate the expression in return statements and the
+      --  pseudo-variable Func'Result, hence it is better not to try to find
+      --  an explanation for a check involving Func'Result.
+
+      elsif Has_Attribute_Result (N) then
          return "";
 
       else
          declare
-            Check_Vars  : Flow_Id_Sets.Set :=
-              To_Entire_Variables (Get_Variables_For_Proof (N, N));
+            Check_Vars  : Flow_Id_Sets.Set := Get_Variables_From_Node (N, Tag);
             --  Retrieve variables from the node associated to the failed
             --  proof. This set can be reduced during our traversal back in the
             --  control-flow graph, as we bump into assignments that provide a
             --  value to some variables.
+
+            Restarted_Search : Boolean := False;
+            --  Flag set to True if the search was restarted from the last
+            --  statement of the subprogram. This is done for checks inside
+            --  postconditions.
 
             Stmt        : Node_Id;
             Vars        : Flow_Id_Sets.Set;
@@ -971,10 +1347,20 @@ package body Flow_Error_Messages is
             Info_Vars   : Flow_Id_Sets.Set;
             Pragmas     : Node_Lists.List;
             Expl        : Unbounded_String;
+            Prag_N      : Node_Id;
 
             use type Flow_Id_Sets.Set;
 
          begin
+            --  Compute the enclosing pragma if any, for use later to decide
+            --  when a subprogram declaration is a suitable explanation node.
+
+            Prag_N := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+
+            if Nkind (Prag_N) /= N_Pragma then
+               Prag_N := Empty;
+            end if;
+
             --  Filter out variables which are generated by the compiler
 
             declare
@@ -990,9 +1376,19 @@ package body Flow_Error_Messages is
                Check_Vars.Difference (Internal_Vars);
             end;
 
+            --  Nothing to propagate if the set of checked variables is empty
+
+            if Check_Vars.Is_Empty then
+               return "";
+            end if;
+
             --  Start looking for an explanation
 
-            Stmt := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+            if Nkind (N) = N_Procedure_Call_Statement then
+               Stmt := N;
+            else
+               Stmt := Enclosing_Stmt_Or_Prag_Or_Decl (N);
+            end if;
 
             if No (Stmt) then
                return "";
@@ -1100,17 +1496,19 @@ package body Flow_Error_Messages is
                      --  Get the variables written in the call, both global
                      --  variables and parameters.
 
-                     Get_Proof_Globals (Subprogram => Proc,
-                                        Classwide  => True,
-                                        Reads      => Ignore_Vars,
-                                        Writes     => Write_Vars);
+                     Get_Proof_Globals (Subprogram      => Proc,
+                                        Reads           => Ignore_Vars,
+                                        Writes          => Write_Vars,
+                                        Erase_Constants => True,
+                                        Scop            =>
+                                          Get_Flow_Scope (Stmt));
 
                      Iterate_Call (Stmt);
 
                      --  Retrieve those variables mentioned in a postcondition
 
                      Info_Vars.Clear;
-                     Pragmas := Find_Contracts (Proc, Pragma_Postcondition);
+                     Pragmas := Get_Pre_Post (Proc, Pragma_Postcondition);
                      for Expr of Pragmas loop
                         Info_Vars.Union (Get_Variables_From_Expr
                                           (Expr, N, Formal_To_Actual));
@@ -1129,15 +1527,13 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars, Actual_To_Formal);
 
                         if Pragmas.Is_Empty then
-                           Expl := "call at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "call "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a postcondition";
                         else
-                           Expl := "postcondition of call at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "postcondition of call "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl;
                         end if;
 
@@ -1158,8 +1554,7 @@ package body Flow_Error_Messages is
                      --  Get the variables written in the loop
 
                      Write_Vars :=
-                       To_Entire_Variables
-                         (Get_Loop_Writes (Entity (Identifier (Stmt))));
+                       Get_Loop_Writes (Entity (Identifier (Stmt)));
                      Pragmas :=
                        Gnat2Why.Expr.Loops.Get_Loop_Invariant (Stmt);
 
@@ -1223,14 +1618,14 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars);
 
                         if Pragmas.Is_Empty then
-                           Expl := "loop at line"
-                             & Get_Physical_Line_Number (Sloc (Stmt))'Img
+                           Expl := "loop "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a loop invariant";
                         else
-                           Expl := "loop invariant at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Pragmas.First_Element))'Img
+                           Expl := "loop invariant "
+                             & Get_Line_Number
+                                 (N, Sloc (Pragmas.First_Element))
                              & " should mention " & Expl;
                         end if;
 
@@ -1249,34 +1644,145 @@ package body Flow_Error_Messages is
                      end if;
                   end if;
 
-               when N_Subprogram_Body =>
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+               =>
                   declare
                      Proc : constant Entity_Id :=
                        SPARK_Atree.Unique_Defining_Entity (Stmt);
+                     Out_Vars : Flow_Id_Sets.Set;
 
                   begin
+                     --  A subprogram declaration is the explaining node
+                     --  for checks that happen in the precondition or
+                     --  postcondition attached to this subprogram. Check
+                     --  whether we are in the case, otherwise continue the
+                     --  search.
+
+                     if Nkind (Stmt) = N_Subprogram_Declaration then
+                        if No (Prag_N)
+                          or else
+                            Get_Pragma (Proc, Get_Pragma_Id (Prag_N)) /= Prag_N
+                        then
+                           --  Retrieve the next explanation node to continue
+                           --  the search.
+
+                           Stmt := Get_Previous_Explain_Node (Stmt);
+
+                           goto SEARCH;
+                        end if;
+                     end if;
+
+                     --  If we're looking for an explanation for a check inside
+                     --  a postcondition attached to that subprogram, restart
+                     --  the search from the last statement of the subprogram
+                     --  body.
+
+                     if not Restarted_Search
+                       and then Present (Prag_N)
+                       and then Get_Pragma_Id (Prag_N) in
+                                  Pragma_Post
+                                | Pragma_Postcondition
+                                | Pragma_Post_Class
+                                | Pragma_Refined_Post
+                     then
+                        declare
+                           Body_N : constant Node_Id := Get_Body (Proc);
+                        begin
+                           if Present (Body_N) then
+                              Stmt := Last (Statements
+                                        (Handled_Statement_Sequence (Body_N)));
+
+                              --  Retrieve the next explanation node to restart
+                              --  the search.
+
+                              if Nkind (Stmt) not in Explain_Node_Kind then
+                                 Stmt := Get_Previous_Explain_Node (Stmt);
+                              end if;
+
+                              Restarted_Search := True;
+                              goto SEARCH;
+                           end if;
+                        end;
+                     end if;
+
+                     --  Report the missing precondition on the spec of the
+                     --  subprogram if any.
+
+                     declare
+                        Subp_Spec : constant Node_Id := Subprogram_Spec (Proc);
+                     begin
+                        if Present (Subp_Spec) then
+                           Stmt := Subp_Spec;
+                        end if;
+                     end;
+
+                     --  Do not try to explain unproved postcondition checks
+                     --  by missing information in the precondition, as it's
+                     --  unlikely the cause. In such a case, stop the search
+                     --  for an explanation.
+
+                     if Tag in VC_Postcondition
+                             | VC_Refined_Post
+                             | VC_Contract_Case
+                     then
+                        return "";
+                     end if;
+
+                     --  For a check inside a postcondition, only explain
+                     --  it by missing information in the precondition if
+                     --  the corresponding node does not possibly refer
+                     --  to post-state. Otherwise, stop the search for
+                     --  an explanation.
+
+                     if Present (Prag_N)
+                       and then Get_Pragma_Id (Prag_N) in
+                                  Pragma_Post
+                                | Pragma_Postcondition
+                                | Pragma_Post_Class
+                                | Pragma_Refined_Post
+                       and then Has_Post_State (N)
+                     then
+                        return "";
+                     end if;
+
                      --  Get the variables read in the subprogram, both global
                      --  variables and parameters.
 
-                     Get_Proof_Globals (Subprogram => Proc,
-                                        Classwide  => True,
-                                        Reads      => Read_Vars,
-                                        Writes     => Ignore_Vars);
+                     Get_Proof_Globals (Subprogram      => Proc,
+                                        Reads           => Read_Vars,
+                                        Writes          => Ignore_Vars,
+                                        Erase_Constants => True,
+                                        Scop            =>
+                                          (Ent => Proc, Part => Body_Part));
+
+                     --  Include the formal in the variables read/written in
+                     --  the subprogram.
 
                      declare
                         Formal : Entity_Id := First_Formal (Proc);
                         Id     : Flow_Id;
                      begin
                         while Present (Formal) loop
+                           Id := Direct_Mapping_Id (Formal);
+
                            if Ekind (Formal) in E_In_Parameter
                                               | E_In_Out_Parameter
                            then
-                              Id := Direct_Mapping_Id (Formal);
-
                               --  Include the formal in the variables read in
                               --  the subprogram.
-
                               Read_Vars.Include (Id);
+
+                           --  Only keep in Out_Vars output formals of
+                           --  unconstrained array/record type whose
+                           --  bounds/discriminants are passed as inputs.
+
+                           elsif not Is_Constrained (Etype (Formal))
+                             and then (Is_Array_Type (Etype (Formal))
+                                         or else
+                                       Has_Discriminants (Etype (Formal)))
+                           then
+                              Out_Vars.Include (Id);
                            end if;
 
                            Next_Formal (Formal);
@@ -1286,9 +1792,9 @@ package body Flow_Error_Messages is
                      --  Retrieve those variables mentioned in a precondition
 
                      Info_Vars.Clear;
-                     Pragmas := Find_Contracts (Proc, Pragma_Precondition);
+                     Pragmas := Get_Pre_Post (Proc, Pragma_Precondition);
                      for Expr of Pragmas loop
-                        Info_Vars := Get_Variables_From_Expr (Expr, N);
+                        Info_Vars.Union (Get_Variables_From_Expr (Expr, N));
                      end loop;
 
                      --  Compute variables that are both relevant for proving
@@ -1297,6 +1803,13 @@ package body Flow_Error_Messages is
 
                      Vars := Check_Vars and (Read_Vars - Info_Vars);
 
+                     --  Compute output variables that are both relevant for
+                     --  proving the property and whose bounds/discriminants
+                     --  are possibly read in the subprogram with no
+                     --  information on the input value.
+
+                     Out_Vars := Check_Vars and (Out_Vars - Info_Vars);
+
                      --  These variables are a possible explanation for the
                      --  proof failure.
 
@@ -1304,22 +1817,35 @@ package body Flow_Error_Messages is
                         Expl := Explain_Variables (Vars);
 
                         if Is_Predicate_Function (Proc) then
-                           Expl := "predicate at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "predicate "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a guard G as in (if G then Condition)";
 
                         elsif Pragmas.Is_Empty then
-                           Expl := "subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl
                              & " in a precondition";
                         else
-                           Expl := "precondition of subprogram at line"
-                             & Get_Physical_Line_Number
-                             (Sloc (Stmt))'Img
+                           Expl := "precondition of subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
+                             & " should mention " & Expl;
+                        end if;
+
+                        return To_String (Expl);
+
+                     elsif not Out_Vars.Is_Empty then
+                        Expl := Explain_Output_Variables (Out_Vars);
+
+                        if Pragmas.Is_Empty then
+                           Expl := "subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
+                             & " should mention " & Expl
+                             & " in a precondition";
+                        else
+                           Expl := "precondition of subprogram "
+                             & Get_Line_Number (N, Sloc (Stmt))
                              & " should mention " & Expl;
                         end if;
 
@@ -1336,6 +1862,9 @@ package body Flow_Error_Messages is
                end case;
 
                Stmt := Get_Previous_Explain_Node (Stmt);
+
+            << SEARCH >>
+
             end loop;
 
             --  No explanation was found
@@ -1675,7 +2204,8 @@ package body Flow_Error_Messages is
                   --  ??? we may want to use __gnat_decode() here instead
                   Append_Quote;
                   declare
-                     F_Name_String : constant String := To_String (F.Name);
+                     F_Name_String : constant String :=
+                       Strip_Child_Prefixes (To_String (F.Name));
 
                   begin
                      if F_Name_String = "__HEAP" then

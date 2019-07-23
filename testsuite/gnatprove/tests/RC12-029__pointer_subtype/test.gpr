@@ -1,0 +1,11 @@
+project Test is
+
+   for Languages use ("Ada");
+   for Main use ("constr_ty.adb");
+
+   package Compiler is
+      for Default_Switches ("ada") use ("-gnata");
+   end Compiler;
+
+end Test;
+

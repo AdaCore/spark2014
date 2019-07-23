@@ -1,0 +1,3 @@
+p.ads:5:09: "Limited_Controlled" is not allowed in SPARK (due to controlled types)
+p.ads:5:09: violation of aspect SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

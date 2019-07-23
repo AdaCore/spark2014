@@ -1,13 +1,9 @@
-main.adb:8:14: warning: subprogram "Test" has no effect
-main.adb:11:21: warning: assuming "Put_Line" has no effect on global items
-main.adb:11:21: warning: no Global contract available for "Put_Line"
+longest_common_prefix.ads:2:08: info: flow dependencies proved
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:19
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:20
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:21
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:22
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:23
-main.adb:13:21: warning: assuming "Put_Line" has no effect on global items
-main.adb:13:21: warning: no Global contract available for "Put_Line"
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:19
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:20
 main.adb:13:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:21
@@ -27,6 +23,6 @@ main.adb:19:04: info: precondition proved (CVC4: 4 VC)
 main.adb:20:04: info: precondition proved (CVC4: 4 VC)
 main.adb:21:04: info: precondition proved (CVC4: 4 VC)
 main.adb:22:04: info: precondition proved (CVC4: 4 VC)
-main.adb:23:04: medium: precondition might fail
+main.adb:23:04: medium: precondition might fail, cannot prove Y in A'range
 main.adb:25:11: warning: unused assignment
-main.adb:25:35: medium: precondition might fail
+main.adb:25:35: medium: precondition might fail, cannot prove Y in A'range

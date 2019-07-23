@@ -1,4 +1,4 @@
 wrong_lsp.ads:6:26: warning: "R" is not modified, could be IN
 wrong_lsp.ads:7:20: info: postcondition proved (CVC4: 1 VC)
 wrong_lsp.ads:14:20: info: postcondition proved (CVC4: 1 VC)
-wrong_lsp.ads:14:20: medium: class-wide postcondition might be weaker than overridden one (e.g. when R = (F1 => 1, F2 => ?))
+wrong_lsp.ads:14:20: medium: class-wide postcondition might be weaker than overridden one, cannot prove R.F1 = R.F1'old (e.g. when R = (F1 => 1, F2 => 0))

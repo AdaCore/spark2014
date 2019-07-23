@@ -1,0 +1,2 @@
+stack.adb:3:14: warning: generic compilation unit is not analyzed
+stack.adb:3:14: warning: only instantiations of the generic will be analyzed

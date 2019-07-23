@@ -5,9 +5,14 @@ pack-inner.adb:8:58: info: initialization of "Inner.Inner_Var" constituent of "P
 pack.adb:5:04: info: initialization of "A" constituent of "State1" proved
 pack.adb:5:07: info: initialization of "B" constituent of "State1" proved
 pack.adb:8:29: info: initialization of "Inner.Inner_State" constituent of "Pack.State2" proved
+pack.adb:9:11: info: flow dependencies proved
 pack.adb:12:07: info: initialization of "Inner.Inner_Var" constituent of "Pack.State2" proved
-pack.adb:12:07: info: initialization of "Var" proved
+pack.adb:15:14: info: data dependencies proved
+pack.adb:17:14: info: flow dependencies proved
 pack.adb:24:41: info: initialization of "A" constituent of "State1" proved
 pack.adb:24:44: info: initialization of "B" constituent of "State1" proved
-pack.adb:33:04: info: initialization of "B" constituent of "State1" proved
-pack.ads:5:04: info: initialization of "Var" proved
+pack.adb:28:11: info: data dependencies proved
+pack.adb:29:11: info: flow dependencies proved
+pack.ads:3:08: info: flow dependencies proved
+pack.ads:8:11: info: data dependencies proved
+pack.ads:9:11: info: flow dependencies proved

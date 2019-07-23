@@ -1,19 +1,12 @@
+g.adb:9:07: info: initialization of "Tmp" proved, in instantiation at g.adb:18
 g.adb:21:19: medium: assertion might fail, cannot prove Inst.Foo = 10
-g.adb:21:23: info: initialization of "Tmp" proved
-generate_initializes.ads:8:14: info: initialization of "X" constituent of "State" proved
-generate_initializes.ads:8:14: info: initialization of "Y" constituent of "State" proved
+generate_initializes.ads:9:11: info: data dependencies proved
 other.adb:14:04: high: modification of "G2" in elaboration requires Elaborate_Body on package "Other" (SPARK RM 7.7.1(5))
-other.ads:5:14: info: initialization of "G2" proved
-outer.adb:16:47: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention Hidden and Visible in a precondition]
-outer.adb:18:17: info: initialization of "Hidden" proved
-outer.adb:18:17: info: initialization of "Visible" proved
-outer.adb:24:21: info: initialization of "Tmp" proved
-outer.adb:24:21: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
-outer.adb:25:21: info: initialization of "Tmp" proved
-outer.adb:25:21: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
+outer.adb:16:47: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Hidden and Visible in a precondition]
+outer.adb:21:10: info: initialization of "Tmp" proved
+outer.adb:21:10: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
 outer.ads:2:14: warning: subprogram "P" has no effect
 p.adb:1:14: info: initialization of "X" proved
-p.adb:13:36: info: initialization of "Hidden" constituent of "State" proved
-p.adb:15:46: medium: overflow check might fail [possible explanation: precondition of subprogram at line 15 should mention Hidden]
-p.adb:18:15: info: initialization of "Nested.State" proved
-p.adb:18:15: info: precondition proved (CVC4: 1 VC)
+p.adb:3:29: info: initialization of "Nested.State" proved
+p.adb:15:46: medium: overflow check might fail [possible explanation: precondition of subprogram at line 5 should mention Hidden]
+p.adb:18:15: info: precondition proved (Trivial: 1 VC)

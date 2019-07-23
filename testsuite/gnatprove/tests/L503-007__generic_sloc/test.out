@@ -1,10 +1,10 @@
-gen.adb:9:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at main.adb:5 (e.g. when X = 0) [possible explanation: subprogram at line 7 should mention X in a precondition]
-gen.adb:9:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at main.adb:6 (e.g. when X = 1) [possible explanation: subprogram at line 7 should mention X in a precondition]
+gen.adb:9:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at main.adb:5 [possible explanation: subprogram at gen.ads:4 should mention X in a precondition]
+gen.adb:9:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at main.adb:6 (e.g. when X = 1) [possible explanation: subprogram at gen.ads:4 should mention X in a precondition]
 gen.ads:4:14: warning: subprogram "R" has no effect, in instantiation at main.adb:5
 gen.ads:4:14: warning: subprogram "R" has no effect, in instantiation at main.adb:6
-gen2.adb:5:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:5 (e.g. when X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
-gen2.adb:5:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:6 (e.g. when X = 1) [possible explanation: subprogram at line 3 should mention X in a precondition]
+gen2.adb:5:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:5 [possible explanation: subprogram at gen2.ads:4 should mention X in a precondition]
+gen2.adb:5:22: medium: assertion might fail, cannot prove T'Last = X, in instantiation at gen.adb:5, in instantiation at main.adb:6 (e.g. when X = 1) [possible explanation: subprogram at gen2.ads:4 should mention X in a precondition]
 gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.adb:5, in instantiation at main.adb:5
 gen2.ads:4:14: warning: subprogram "B" has no effect, in instantiation at gen.adb:5, in instantiation at main.adb:6
-main.adb:10:09: info: initialization of "X" proved
-main.adb:11:09: info: initialization of "Y" proved
+gen2.adb:1:14: warning: generic compilation unit is not analyzed
+gen2.adb:1:14: warning: only instantiations of the generic will be analyzed

@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at my_lists.ads:11
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at my_lists.ads:11
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:11
@@ -19,23 +20,14 @@ a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:11
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:11
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:11
-my_lists.adb:5:07: info: initialization of private part of "L1" proved
+my_lists.adb:5:07: info: initialization of "L1" proved
 my_lists.adb:5:18: info: range check proved (CVC4: 1 VC)
-my_lists.adb:6:07: info: initialization of private part of "L2" proved
 my_lists.adb:6:23: info: discriminant check proved (CVC4: 1 VC)
-my_lists.adb:6:23: info: initialization of private part of "L1" proved
-my_lists.adb:7:07: info: initialization of private part of "L3" proved
-my_lists.adb:8:07: info: initialization of private part of "L4" proved
-my_lists.adb:9:07: info: initialization of private part of "L5" proved
-my_lists.adb:10:07: info: initialization of private part of "L6" proved
-my_lists.adb:11:07: info: initialization of private part of "L7" proved
-my_lists.adb:13:14: info: initialization of private part of "L1" proved
-my_lists.adb:14:14: info: initialization of private part of "L2" proved
-my_lists.adb:15:14: info: initialization of private part of "L3" proved
-my_lists.adb:16:14: info: initialization of private part of "L4" proved
-my_lists.adb:17:14: info: initialization of private part of "L5" proved
-my_lists.adb:18:14: info: initialization of private part of "L6" proved
-my_lists.adb:19:14: info: initialization of private part of "L7" proved
+my_lists.adb:7:07: info: initialization of "L3" proved
+my_lists.adb:8:07: info: initialization of "L4" proved
+my_lists.adb:9:07: info: initialization of "L5" proved
+my_lists.adb:10:07: info: initialization of "L6" proved
+my_lists.adb:11:07: info: initialization of "L7" proved
 my_lists.adb:20:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:21:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:22:22: info: assertion proved (CVC4: 1 VC)

@@ -1,14 +1,7 @@
-preserved_components.adb:11:26: info: initialization of "M" proved
+preserved_components.adb:7:04: info: initialization of "M" proved
 preserved_components.adb:13:10: info: assertion proved
-preserved_components.adb:17:30: info: initialization of "M" proved
-preserved_components.adb:17:48: info: initialization of "M" proved
 preserved_components.adb:21:07: info: range check proved
-preserved_components.adb:21:31: info: initialization of "M" proved
 preserved_components.adb:21:31: info: length check proved
 preserved_components.adb:21:34: info: length check proved
-preserved_components.adb:27:30: info: initialization of "M" proved
-preserved_components.adb:27:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when I = 0 and K1 = 0 and K2 = 0 and K3 = 0) [possible explanation: loop at line 20 should mention M in a loop invariant]
-preserved_components.adb:27:48: info: initialization of "M" proved
-preserved_components.adb:33:30: info: initialization of "M" proved
-preserved_components.adb:33:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when K1 = 0 and K2 = 0 and K3 = 0) [possible explanation: loop at line 20 should mention M in a loop invariant]
-preserved_components.adb:33:48: info: initialization of "M" proved
+preserved_components.adb:27:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when K1 = 4 and K2 = 1 and K3 = 1) [possible explanation: loop at line 20 should mention M in a loop invariant]
+preserved_components.adb:33:30: medium: assertion might fail, cannot prove M (K1, K2) (K3) = M'Loop_Entry (K1, K2) (K3) (e.g. when K1 = 1 and K2 = 2 and K3 = 1) [possible explanation: loop at line 20 should mention M in a loop invariant]

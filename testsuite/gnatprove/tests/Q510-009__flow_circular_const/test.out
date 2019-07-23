@@ -1,14 +1,18 @@
-error: elaboration circularity detected
-info:    "q (body)" must be elaborated before "p (spec)"
-info:       reason: implicit Elaborate_All in unit "p (spec)"
-info:       recompile "p (spec)" with -gnatel for full details
-info:          "q (body)"
-info:             must be elaborated along with its spec:
-info:          "q (spec)"
-info:             which is withed by:
-info:          "p (spec)"
-
-info:    "p (spec)" must be elaborated before "q (body)"
-info:       reason: with clause
+error: Elaboration circularity detected
+info:
+info:    Reason:
+info:
+info:      unit "p (spec)" depends on its own elaboration
+info:
+info:    Circularity:
+info:
+info:      unit "p (spec)" invokes a construct of unit "q (body)" at elaboration time
+info:      unit "q (body)" has with clause for unit "p (spec)"
+info:
+info:    Suggestions:
+info:
+info:      use the dynamic elaboration model (compiler switch -gnatE)
+info:      use detailed invocation information (compiler switch -gnatd_F)
+info:
 
 gnatmake: *** bind failed.

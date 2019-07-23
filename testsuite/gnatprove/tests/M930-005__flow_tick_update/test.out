@@ -1,12 +1,14 @@
 foo.adb:20:23: info: initialization of "D" proved
 foo.adb:20:26: info: initialization of "E" proved
 foo.adb:20:29: info: initialization of "F" proved
-foo.adb:28:14: info: initialization of "Tmp.X" proved
-foo.adb:30:12: info: initialization of "Tmp.X" proved
-foo.adb:31:12: info: initialization of "Tmp.Y" proved
-foo.adb:32:12: info: initialization of "Tmp.Z" proved
+foo.adb:21:09: info: data dependencies proved
+foo.adb:22:09: info: flow dependencies proved
 foo.adb:37:23: info: initialization of "W" proved
+foo.adb:38:09: info: data dependencies proved
+foo.adb:39:09: info: flow dependencies proved
 foo.adb:44:21: medium: range check might fail [possible explanation: subprogram at line 35 should mention Y in a precondition]
 foo.adb:45:21: medium: range check might fail [possible explanation: subprogram at line 35 should mention N in a precondition]
+foo.adb:51:06: info: data dependencies proved
+foo.adb:52:06: info: flow dependencies proved
 foo.adb:55:38: medium: range check might fail [possible explanation: subprogram at line 48 should mention N in a precondition]
 foo.adb:55:48: medium: array index check might fail [possible explanation: subprogram at line 48 should mention M in a precondition]

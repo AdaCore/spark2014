@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,7 @@
 
 with Ada;                        use Ada;
 with Ada.Containers.Hashed_Maps;
-with Common_Containers;
+with GNATCOLL.Symbols;
 with SPARK_Definition;           use SPARK_Definition;
 with Why.Ids;                    use Why.Ids;
 with Why.Gen.Names;              use Why.Gen.Names;
@@ -38,11 +38,11 @@ package Why.Atree.Modules is
    --  Predefined Why Files --
    ---------------------------
 
-   Int_File                : Name_Id;
-   Real_File               : Name_Id;
-   Ref_File                : Name_Id;
-   Gnatprove_Standard_File : Name_Id;
-   Ada_Model_File          : Name_Id;
+   Int_File                : Symbol;
+   Real_File               : Symbol;
+   Ref_File                : Symbol;
+   Gnatprove_Standard_File : Symbol;
+   Ada_Model_File          : Symbol;
 
    -----------------------------
    --  Predefined Why modules --
@@ -102,6 +102,7 @@ package Why.Atree.Modules is
    Rep_Proj_16            : W_Module_Id;
    Rep_Proj_32            : W_Module_Id;
    Rep_Proj_64            : W_Module_Id;
+   Access_To_Incomp_Ty    : W_Module_Id;
 
    Constr_Arrays                : W_Module_Array (1 .. Max_Array_Dimensions);
    Unconstr_Arrays              : W_Module_Array (1 .. Max_Array_Dimensions);
@@ -346,6 +347,8 @@ package Why.Atree.Modules is
       Rotate_Left    : W_Identifier_Id;
       Rotate_Right   : W_Identifier_Id;
       Two_Power_Size : W_Identifier_Id;
+      Prog_Eq        : W_Identifier_Id;
+      Prog_Neq       : W_Identifier_Id;
    end record;
 
    type M_BV_Conv_Type is record
@@ -360,7 +363,6 @@ package Why.Atree.Modules is
       T           : W_Type_Id;
       Mult_Int    : W_Identifier_Id;
       Div_Int     : W_Identifier_Id;
-      Div_Int_Res : W_Identifier_Id;
       Of_Int      : W_Identifier_Id;
       To_Int      : W_Identifier_Id;
    end record;
@@ -390,33 +392,33 @@ package Why.Atree.Modules is
    --  and can be accessed through "Get_array_Theory(_..)" functions.
 
    package Name_Id_Array_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays : Name_Id_Array_Map.Map;
 
    package Name_Id_Array_1_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1 : Name_Id_Array_1_Map.Map;
 
    package Name_Id_Array_1_Comp_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Comp_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1_Comp : Name_Id_Array_1_Comp_Map.Map;
 
    package Name_Id_Array_1_Bool_Op_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Array_1_Bool_Op_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Arrays_1_Bool_Op : Name_Id_Array_1_Bool_Op_Map.Map;
@@ -427,16 +429,16 @@ package Why.Atree.Modules is
    --  "Create_Array_Conversion_Function_If_Needed".
 
    package Name_Id_Conversion_Name_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => W_Identifier_Id,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    package Name_Id_Name_Id_Conversion_Name_Map is new
      Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => Name_Id_Conversion_Name_Map.Map,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=",
       "="             => Name_Id_Conversion_Name_Map."=");
 
@@ -472,9 +474,9 @@ package Why.Atree.Modules is
    --  small.
 
    package Name_Id_Fixed_Point_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Fixed_Point_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Fixed_Points : Name_Id_Fixed_Point_Map.Map;
@@ -485,9 +487,9 @@ package Why.Atree.Modules is
    --  smalls.
 
    package Name_Id_Fixed_Point_Mult_Div_Map is new Ada.Containers.Hashed_Maps
-     (Key_Type        => Name_Id,
+     (Key_Type        => Symbol,
       Element_Type    => M_Fixed_Point_Mult_Div_Type,
-      Hash            => Common_Containers.Name_Id_Hash,
+      Hash            => GNATCOLL.Symbols.Hash,
       Equivalent_Keys => "=");
 
    M_Fixed_Point_Mult_Div : Name_Id_Fixed_Point_Mult_Div_Map.Map;
@@ -523,17 +525,16 @@ package Why.Atree.Modules is
 
    --  Other identifiers
 
-   Old_Tag  : Name_Id;
+   Old_Tag  : Symbol;
    Def_Name : W_Identifier_Id;
 
    --  Labels
 
-   Model_Trace       : Name_Id;
-   Model_Projected   : Name_Id;
-   Model_VC          : Name_Id;
-   Model_VC_Post     : Name_Id;
-   GP_Already_Proved : Name_Id;
-   Keep_On_Simp      : Name_Id;
+   Model_Trace       : Symbol;
+   Model_Projected   : Symbol;
+   VC_Annotation     : Symbol;
+   Model_VC_Post     : Symbol;
+   GP_Already_Proved : Symbol;
 
    procedure Initialize;
    --  Call this procedure before using any of the entities in this package
@@ -552,9 +553,20 @@ package Why.Atree.Modules is
 
    function E_Axiom_Module (E : Entity_Id) return W_Module_Id;
 
+   function E_Compl_Module (E : Entity_Id) return W_Module_Id;
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__compl"). Memoization may be used. Returns Empty when it is called
+   --  with a node which is not an entity, and no module is known for this
+   --  entity.
+
    function E_Rep_Module (E : Entity_Id) return W_Module_Id;
    --  Returns the module where File = No_Name and Name = (Full_Name (E) &
    --  "__rep"). Memoization may be used. Returns Empty when it is called with
+   --  a node which is not an entity, and no module is known for this entity.
+
+   function E_Init_Module (E : Entity_Id) return W_Module_Id;
+   --  Returns the module where File = No_Name and Name = (Full_Name (E) &
+   --  "__init"). Memoization may be used. Returns Empty when it is called with
    --  a node which is not an entity, and no module is known for this entity.
 
    function Get_Module_Name (M : W_Module_Id) return String;

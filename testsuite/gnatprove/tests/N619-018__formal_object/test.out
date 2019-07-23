@@ -1,10 +1,12 @@
+gen.ads:5:06: info: data dependencies proved, in instantiation at user.adb:7
+gen.ads:5:06: info: data dependencies proved, in instantiation at user.adb:8
 gen.ads:5:27: info: initialization of "X" proved, in instantiation at user.adb:7
 gen.ads:5:27: info: initialization of "Y" proved, in instantiation at user.adb:8
-gen.ads:6:16: info: initialization of "X" proved, in instantiation at user.adb:7
-gen.ads:6:16: info: initialization of "Y" proved, in instantiation at user.adb:8
 gen.ads:6:16: info: postcondition proved (CVC4: 1 VC), in instantiation at user.adb:7
 gen.ads:6:16: info: postcondition proved (CVC4: 1 VC), in instantiation at user.adb:8
-user.adb:11:19: medium: assertion might fail, cannot prove Gen_X.Get = 0 (e.g. when X = 0)
-user.adb:11:24: info: initialization of "X" proved
+gen.ads:8:06: info: data dependencies proved, in instantiation at user.adb:7
+gen.ads:8:06: info: data dependencies proved, in instantiation at user.adb:8
+user.adb:5:04: info: initialization of "X" proved
+user.adb:6:04: info: initialization of "Y" proved
+user.adb:11:19: medium: assertion might fail, cannot prove Gen_X.Get = 0
 user.adb:13:19: medium: assertion might fail, cannot prove Gen_Y.Get = 0 (e.g. when Y = 1)
-user.adb:13:24: info: initialization of "Y" proved

@@ -1,4 +1,4 @@
-b.adb:3:11: medium: "A" might not be initialized after elaboration of main program "Main"
+b.adb:4:31: medium: "A" might not be initialized after elaboration of main program "Main"
 b.adb:7:19: info: assertion proved (CVC4: 1 VC)
-b.adb:3:11: medium: "A" might not be initialized after elaboration of main program "Main"
-b.adb:7:19: medium: assertion might fail, cannot prove Tmp = A.a (e.g. when A = 0 and Tmp = -1) [possible explanation: call at line 6 should mention A in a postcondition]
+b.adb:4:31: medium: "A" might not be initialized after elaboration of main program "Main"
+b.adb:7:19: medium: assertion might fail, cannot prove Tmp = A.a (e.g. when A = 1 and Tmp = 0) [possible explanation: call at line 6 should mention A in a postcondition]

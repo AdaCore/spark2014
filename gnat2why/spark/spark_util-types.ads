@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2016-2018, AdaCore                  --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -96,6 +96,9 @@ package SPARK_Util.Types is
    --  confusion, the wrapper for function Einfo.Is_Such_And_Such_Type is
    --  called Has_Such_And_Such_Type.
 
+   function Has_Access_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Access_Kind);
+
    function Has_Array_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Array_Kind);
 
@@ -113,6 +116,9 @@ package SPARK_Util.Types is
 
    function Has_Enumeration_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Enumeration_Kind);
+
+   function Has_Integer_Type (T : Entity_Id) return Boolean is
+     (Retysp_Kind (T) in Integer_Kind);
 
    function Has_Modular_Integer_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Modular_Integer_Kind);
@@ -173,15 +179,6 @@ package SPARK_Util.Types is
    --  @return whether a check may be needed when converting an expression
    --     of type From to type To. Currently a very coarse approximation
    --     to rule out obvious cases.
-
-   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id;
-   --  Find the aspect specification Predicate or Dynamic_Predicate or
-   --  Static_Predicate associated with entity Typ. Return Empty if Typ does
-   --  not have any of these aspects. Typ might still inherit the aspect in
-   --  such cases.
-   --  This is only used to give better locations for error messages. To get
-   --  the predicate expression, use the procedure generated to check the
-   --  predicate.
 
    function Get_Initial_DIC_Procedure (E : Entity_Id) return Entity_Id with
      Pre => Is_Type (E) and then Has_DIC (E);
@@ -278,6 +275,12 @@ package SPARK_Util.Types is
    --  @return True if E needs a specific module to check its default
    --     expression at declaration.
 
+   function Has_Init_By_Proof (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  @param E type
+   --  @return True if initialization of objects of type E should be checked by
+   --     proof.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------
@@ -316,9 +319,8 @@ package SPARK_Util.Types is
    --     field to represent invisible fields that are not derived from an
    --     ancestor.
 
-   function Root_Record_Type (E : Entity_Id) return Entity_Id;
-   --  Given a record type (or private type whose implementation is a record
-   --  type, etc.), return the root type, including traversing private types.
+   function Root_Retysp (E : Entity_Id) return Entity_Id;
+   --  Given a type, return the root type, including traversing private types.
    --  ??? Need to update comment to reflect dependence on Retysp of root by
    --  calling Full_View_Not_In_SPARK.
 

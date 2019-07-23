@@ -1,45 +1,27 @@
-test_trigo.adb:9:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:9:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:11:10: info: initialization of "F" proved
-test_trigo.adb:12:21: medium: precondition might fail
-test_trigo.adb:12:27: info: initialization of "F" proved
-test_trigo.adb:13:24: info: initialization of "F" proved
+test_trigo.adb:6:04: info: initialization of "F" proved
+test_trigo.adb:10:06: warning: unused assignment
+test_trigo.adb:11:19: warning: statement has no effect
+test_trigo.adb:12:21: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
+test_trigo.adb:13:09: warning: unused assignment
 test_trigo.adb:13:24: info: overflow check proved (CVC4: 1 VC)
-test_trigo.adb:15:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:15:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:17:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:17:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:19:10: info: initialization of "F" proved
-test_trigo.adb:20:21: medium: precondition might fail
-test_trigo.adb:20:27: info: initialization of "F" proved
-test_trigo.adb:21:24: info: initialization of "F" proved
+test_trigo.adb:18:06: warning: unused assignment
+test_trigo.adb:19:19: warning: statement has no effect
+test_trigo.adb:20:21: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
+test_trigo.adb:21:09: warning: unused assignment
 test_trigo.adb:21:24: info: overflow check proved (CVC4: 1 VC)
-test_trigo.adb:23:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:23:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:25:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:25:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:27:10: info: initialization of "F" proved
-test_trigo.adb:28:21: medium: precondition might fail
-test_trigo.adb:28:27: info: initialization of "F" proved
-test_trigo.adb:29:24: info: initialization of "F" proved
+test_trigo.adb:26:06: warning: unused assignment
+test_trigo.adb:27:19: warning: statement has no effect
+test_trigo.adb:28:21: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
+test_trigo.adb:29:09: warning: unused assignment
 test_trigo.adb:29:24: info: overflow check proved (CVC4: 1 VC)
-test_trigo.adb:31:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:31:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:33:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:33:04: warning: no Global contract available for "Put_Line"
-test_trigo.adb:35:10: info: initialization of "F" proved
 test_trigo.adb:36:22: medium: assertion might fail, cannot prove abs (Trigo.Tan (F) - Trigo.Sin (F) / Trigo.Cos (F)) < 1.0E-3
-test_trigo.adb:36:32: medium: precondition might fail
-test_trigo.adb:36:38: info: initialization of "F" proved
+test_trigo.adb:36:32: medium: precondition might fail, cannot prove X in -0.5 .. 0.5
 test_trigo.adb:36:41: medium: float overflow check might fail
-test_trigo.adb:36:48: medium: precondition might fail
+test_trigo.adb:36:48: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:36:57: medium: divide by zero might fail
 test_trigo.adb:36:57: medium: float overflow check might fail
-test_trigo.adb:36:64: medium: precondition might fail
-test_trigo.adb:37:24: info: initialization of "F" proved
+test_trigo.adb:36:64: medium: precondition might fail, cannot prove X in -1.0 .. 1.0
 test_trigo.adb:37:24: info: overflow check proved (CVC4: 1 VC)
-test_trigo.adb:39:04: warning: assuming "Put_Line" has no effect on global items
-test_trigo.adb:39:04: warning: no Global contract available for "Put_Line"
 trigo.ads:4:49: medium: float overflow check might fail [possible explanation: subprogram at line 4 should mention X in a precondition]
 trigo.ads:5:49: medium: float overflow check might fail [possible explanation: subprogram at line 5 should mention X in a precondition]
 trigo.ads:5:53: medium: float overflow check might fail [possible explanation: subprogram at line 5 should mention X in a precondition]

@@ -1,8 +1,6 @@
 competition.adb:10:07: info: range check proved (CVC4: 2 VC)
-competition.adb:10:38: info: length check proved (CVC4: 4 VC)
+competition.adb:10:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 competition.adb:12:43: info: overflow check proved (CVC4: 1 VC)
-competition.adb:12:43: medium: range check might fail (e.g. when Count = 0)
+competition.adb:12:43: medium: range check might fail (e.g. when Result'First = 0)
 competition.adb:14:14: info: range check proved (CVC4: 4 VC)
-competition.adb:14:22: info: initialization of "Result" proved
-competition.adb:14:38: info: initialization of "Count" proved
-competition.ads:12:15: info: postcondition proved (CVC4: 1 VC)
+competition.ads:12:15: info: postcondition proved (Trivial: 1 VC)

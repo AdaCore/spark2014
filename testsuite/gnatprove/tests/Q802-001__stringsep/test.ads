@@ -1,3 +1,6 @@
+pragma Warnings (Off, "function contract not available for proof");
+pragma Warnings (Off, "no Global contract available");
+
 with Ada.Strings.Bounded;
 with Ada.Strings.Bounded.Hash;
 with Ada.Containers.Formal_Hashed_Maps;

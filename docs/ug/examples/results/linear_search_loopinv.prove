@@ -1,2 +1,2 @@
 linear_search.adb:22:21: medium: range check might fail (e.g. when Pos = 10)
-linear_search.ads:35:67: medium: contract case might fail (e.g. when A = (10 => 0, others => 1) and Search'Result = (Found => False, At_Index => 1) and Search'Result'Constrained = False and Val = 0)
+linear_search.ads:35:67: medium: contract case might fail (e.g. when Search'Result = (Found => False, At_Index => 10) and Search'Result'Constrained = False)

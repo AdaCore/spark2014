@@ -1,8 +1,3 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:15:13: medium: "Tmp1" might not be initialized
-p.adb:15:16: medium: range check might fail (e.g. when X = 0) [possible explanation: subprogram at line 1 should mention X in a precondition]
-p.adb:17:13: medium: "Tmp3" might not be initialized
-p.adb:18:13: medium: "Tmp4" might not be initialized
-p.adb:19:13: medium: "Tmp5" might not be initialized
+p.adb:15:16: medium: range check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
 p.adb:21:35: info: unrolling loop
-p.adb:22:16: info: initialization of "Tmp1" proved

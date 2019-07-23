@@ -1,5 +1,5 @@
 fp_test.adb:6:17: medium: overflow check might fail (e.g. when A = 32767/400 and B = 1/400)
-fp_test.ads:13:23: medium: overflow check might fail (e.g. when A = -32768/400 and B = -1/400)
+fp_test.ads:13:23: medium: overflow check might fail (e.g. when A = -1/400 and B = -32768/400)
 fp_test_div.adb:6:14: info: division check proved (CVC4: 1 VC)
 fp_test_div.adb:6:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.adb:6:14: info: range check proved (CVC4: 1 VC)
@@ -22,22 +22,18 @@ fp_test_div.ads:9:38: info: initialization of "U" proved
 fp_test_div.ads:9:51: info: initialization of "V" proved
 fp_test_div.ads:11:39: info: initialization of "U" proved
 fp_test_div.ads:11:52: info: initialization of "V" proved
-fp_test_div.ads:13:14: info: initialization of "U" proved
 fp_test_div.ads:13:14: info: postcondition proved (CVC4: 2 VC)
-fp_test_div.ads:13:26: info: initialization of "V" proved
 fp_test_div.ads:15:39: info: initialization of "U" proved
 fp_test_div.ads:15:52: info: initialization of "V" proved
 fp_test_div.ads:16:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.ads:16:31: info: overflow check proved (CVC4: 1 VC)
 fp_test_div.ads:17:14: info: overflow check proved (CVC4: 1 VC)
-fp_test_div.ads:17:14: medium: postcondition might fail, cannot prove abs U <= 4.0 (e.g. when U = -65/15)
-fp_test_div.ads:17:18: info: initialization of "U" proved
+fp_test_div.ads:17:14: medium: postcondition might fail, cannot prove abs U <= 4.0 (e.g. when U = 63/15)
 fp_test_div.ads:17:31: info: overflow check proved (CVC4: 1 VC)
-fp_test_div.ads:17:35: info: initialization of "V" proved
 fp_test_mult.adb:6:14: info: overflow check proved (CVC4: 1 VC)
-fp_test_mult.adb:6:14: medium: range check might fail (e.g. when U = 0 and X = -1 and Y = 6/5) [possible explanation: subprogram at line 4 should mention X and Y in a precondition]
+fp_test_mult.adb:6:14: medium: range check might fail (e.g. when X = -1 and Y = 6/5) [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:7:14: info: overflow check proved (CVC4: 1 VC)
-fp_test_mult.adb:7:14: medium: range check might fail (e.g. when X = -1 and Y = 6/5) [possible explanation: subprogram at line 4 should mention X and Y in a precondition]
+fp_test_mult.adb:7:14: medium: range check might fail (e.g. when X = -1 and Y = 6/5) [possible explanation: subprogram at fp_test_mult.ads:9 should mention X and Y in a precondition]
 fp_test_mult.adb:12:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_mult.adb:12:14: info: range check proved (CVC4: 1 VC)
 fp_test_mult.adb:13:14: info: overflow check proved (CVC4: 1 VC)
@@ -50,18 +46,12 @@ fp_test_mult.ads:9:38: info: initialization of "U" proved
 fp_test_mult.ads:9:51: info: initialization of "V" proved
 fp_test_mult.ads:11:39: info: initialization of "U" proved
 fp_test_mult.ads:11:52: info: initialization of "V" proved
-fp_test_mult.ads:13:14: info: initialization of "U" proved
 fp_test_mult.ads:13:14: info: postcondition proved (CVC4: 2 VC)
-fp_test_mult.ads:13:26: info: initialization of "V" proved
 fp_test_mult.ads:15:39: info: initialization of "U" proved
 fp_test_mult.ads:15:52: info: initialization of "V" proved
 fp_test_mult.ads:16:14: info: overflow check proved (CVC4: 1 VC)
 fp_test_mult.ads:16:31: info: overflow check proved (CVC4: 1 VC)
-fp_test_mult.ads:17:14: info: overflow check proved (CVC4: 1 VC)
-fp_test_mult.ads:17:14: info: postcondition proved (CVC4: 2 VC)
-fp_test_mult.ads:17:18: info: initialization of "U" proved
-fp_test_mult.ads:17:31: info: overflow check proved (CVC4: 1 VC)
-fp_test_mult.ads:17:35: info: initialization of "V" proved
-main.adb:7:32: medium: precondition might fail (e.g. when C = 1/400)
-main.adb:9:04: warning: assuming "Put_Line" has no effect on global items
-main.adb:9:04: warning: no Global contract available for "Put_Line"
+fp_test_mult.ads:17:14: info: overflow check proved (Z3: 1 VC)
+fp_test_mult.ads:17:14: info: postcondition proved (Z3: 2 VC)
+fp_test_mult.ads:17:31: info: overflow check proved (Z3: 1 VC)
+main.adb:7:32: medium: precondition might fail, cannot prove (A + B) > 0.0 (e.g. when C = 1/400)

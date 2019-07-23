@@ -1,3 +1,4 @@
-foo.adb:22:38: info: initialization of "PO" constituent of "S" proved
 foo.adb:25:07: medium: "PO" constituent of "S" is not set
+foo.ads:7:09: info: data dependencies proved
 foo.ads:9:19: info: initialization of "X" proved
+foo.ads:10:09: info: data dependencies proved

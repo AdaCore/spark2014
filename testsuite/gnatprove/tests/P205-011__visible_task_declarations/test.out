@@ -1,0 +1,3 @@
+c.ads:9:24: access to "Integer" is not allowed in SPARK
+c.ads:9:24: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

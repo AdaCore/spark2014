@@ -1,48 +1,47 @@
 enums.adb:10:19: info: postcondition proved (CVC4: 2 VC)
-enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True) [possible explanation: subprogram at line 16 should mention A and B in a precondition]
-enums.adb:23:14: info: initialization of "Tmp" proved
-enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True) [possible explanation: subprogram at line 26 should mention A and B in a precondition]
+enums.adb:17:11: info: flow dependencies proved
+enums.adb:19:22: medium: postcondition might fail, cannot prove Enum_Equals_Broken_A'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1)
+enums.adb:27:19: medium: postcondition might fail, cannot prove Enum_Equals_Broken_B'Result = (A = B) (e.g. when A = Elem_0 and B = Elem_1)
 enums.adb:36:19: info: postcondition proved (CVC4: 2 VC)
 enums.adb:43:19: info: postcondition proved (CVC4: 2 VC)
-enums.adb:63:14: info: initialization of "R" proved
-enums.adb:67:19: medium: postcondition might fail, cannot prove Enum_LT_5_Broken_A'Result = (A < Elem_5) (e.g. when A = Elem_7 and Enum_LT_5_Broken_A'Result = True) [possible explanation: subprogram at line 66 should mention A in a precondition]
-enums.adb:85:14: info: initialization of "R" proved
+enums.adb:45:07: info: initialization of "R" proved
+enums.adb:67:19: medium: postcondition might fail, cannot prove Enum_LT_5_Broken_A'Result = (A < Elem_5) (e.g. when A = Elem_7)
+enums.adb:69:07: info: initialization of "R" proved
 enums.adb:89:19: info: postcondition proved (CVC4: 2 VC)
-enums.adb:102:14: info: initialization of "R" proved
+enums.adb:91:07: info: initialization of "R" proved
 enums.adb:106:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:106:41: info: range check proved (CVC4: 1 VC)
-enums.adb:138:14: info: initialization of "R" proved
+enums.adb:108:07: info: initialization of "R" proved
 enums.adb:142:39: info: initialization of "Result" proved
 enums.adb:143:39: info: initialization of "Success" proved
-enums.adb:145:22: info: postcondition proved (CVC4: 2 VC)
-enums.adb:145:26: info: initialization of "Success" proved
-enums.adb:145:39: info: initialization of "Result" proved
+enums.adb:144:11: info: flow dependencies proved
+enums.adb:145:22: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 enums.adb:145:66: info: range check proved (CVC4: 1 VC)
 enums.adb:152:33: info: range check proved (CVC4: 1 VC)
 enums.adb:152:39: info: range check proved (CVC4: 1 VC)
-enums.adb:160:19: info: postcondition proved (CVC4: 3 VC)
+enums.adb:160:19: info: postcondition proved (CVC4: 3 VC; Trivial: 3 VC)
+enums.adb:164:07: info: initialization of "R" proved
 enums.adb:167:27: info: range check proved (CVC4: 1 VC)
 enums.adb:167:34: info: range check proved (CVC4: 1 VC)
-enums.adb:171:14: info: initialization of "R" proved
-enums.adb:175:19: info: postcondition proved (CVC4: 2 VC)
+enums.adb:175:19: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 enums.adb:176:71: info: range check proved (CVC4: 1 VC)
-enums.adb:187:14: info: initialization of "R" proved
+enums.adb:180:07: info: initialization of "R" proved
 enums.adb:191:19: info: postcondition proved (CVC4: 1 VC)
 enums.adb:191:50: info: range check proved (CVC4: 1 VC)
-enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8 and Succ_A'Result = Elem_0) [possible explanation: subprogram at line 190 should mention A in a precondition]
+enums.adb:194:29: medium: range check might fail (e.g. when A = Elem_8) [possible explanation: subprogram at line 190 should mention A in a precondition]
 enums.adb:197:04: warning: analyzing unreferenced function "Subtypes_Broken"
-enums.adb:206:14: info: initialization of "Tmp.F" proved
+enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19
   trace at enums.adb:16 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:19 --> A = Elem_0 and B = Elem_1
   trace at enums.adb:21 --> Tmp = Elem_0
   trace at enums.adb:23 --> Enum_Equals_Broken_A'Result = True
 counterexample expected for check at enums.adb:27
   trace at enums.adb:26 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:27 --> A = Elem_0 and B = Elem_1 and Enum_Equals_Broken_B'Result = True
+  trace at enums.adb:27 --> A = Elem_0 and B = Elem_1
   trace at enums.adb:30 --> Enum_Equals_Broken_B'Result = True
 counterexample expected for check at enums.adb:67
   trace at enums.adb:66 --> A = Elem_7
-  trace at enums.adb:67 --> A = Elem_7 and Enum_LT_5_Broken_A'Result = True
+  trace at enums.adb:67 --> A = Elem_7
   trace at enums.adb:81 --> R = True
-  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True
+  trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True and R = True

@@ -1,4 +1,4 @@
-cursor_location.adb:12:56: info: initialization of "Other_Side" proved
+cursor_location.adb:8:07: info: initialization of "Other_Side" proved
 cursor_location.adb:16:07: warning: postcondition does not mention function result
 cursor_location.adb:17:11: info: postcondition proved (CVC4: 2 VC)
 cursor_location.adb:17:11: medium: assertion might fail, cannot prove not DU_Available (Left) (e.g. when DU_Available = (Left => True, others => False)) [possible explanation: subprogram at line 15 should mention DU_Available in a precondition]
@@ -7,5 +7,5 @@ cursor_location.adb:17:39: warning: conjunct in postcondition does not check the
 cursor_location.ads:17:12: warning: postcondition does not mention function result
 cursor_location.ads:18:10: medium: postcondition might fail, cannot prove DU_Available (Side) (e.g. when DU_Available = (others => False) and Side = Left)
 cursor_location.ads:18:10: warning: conjunct in postcondition does not check the outcome of calling "Fulfill_Condition"
-cursor_location.ads:27:09: info: postcondition proved (CVC4: 2 VC)
+cursor_location.ads:27:09: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
 cursor_location.ads:27:43: warning: unreachable branch (CVC4: 1 VC)

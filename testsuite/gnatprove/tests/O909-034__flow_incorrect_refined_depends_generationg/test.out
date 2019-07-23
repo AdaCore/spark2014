@@ -1,3 +1,5 @@
-c.adb:21:17: info: initialization of "Value" proved
+c.adb:18:07: info: initialization of "Value" proved
 c.ads:6:09: info: initialization of "Value" proved
+c.ads:8:07: info: data dependencies proved
+c.ads:9:07: info: flow dependencies proved
 c.ads:11:27: info: initialization of "Result" proved

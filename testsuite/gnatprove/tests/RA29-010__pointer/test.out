@@ -1,0 +1,4 @@
+walker_bad.adb:8:08: local borrower of an access object is not yet supported
+walker_bad.adb:8:31: expression must be part of stand-alone object or parameter
+walker_bad.adb:8:31: incorrect borrow or observe (SPARK RM 3.10(3))
+gnatprove: error during flow analysis and proof

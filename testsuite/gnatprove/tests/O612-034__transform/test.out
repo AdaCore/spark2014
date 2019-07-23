@@ -1,6 +1,6 @@
-test.adb:5:22: medium: assertion might fail, cannot prove 1 <= X (e.g. when X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
+test.adb:5:22: medium: assertion might fail, cannot prove 1 <= X [possible explanation: subprogram at test.ads:3 should mention X in a precondition]
 test.ads:3:14: warning: subprogram "P" has no effect
 5
-test.adb:5:22: medium: assertion might fail, cannot prove 1 <= X (e.g. when X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
+test.adb:5:22: medium: assertion might fail, cannot prove 1 <= X [possible explanation: subprogram at test.ads:3 should mention X in a precondition]
 test.ads:3:14: warning: subprogram "P" has no effect
 7

@@ -1,0 +1,3 @@
+my_pack.ads:2:03: info: flow dependencies proved
+my_pack.ads:3:24: high: "X" is not initialized
+my_pack.ads:6:04: high: "X" is not initialized in "My_Pack"

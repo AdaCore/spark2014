@@ -1,25 +1,16 @@
-p.adb:12:10: info: initialization of "X" proved
 p.adb:12:10: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:12:10: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:12:10: info: range check proved (CVC4: 8 VC)
-p.adb:12:31: info: initialization of "X" proved
 p.adb:12:32: info: range check proved (CVC4: 8 VC)
-p.adb:15:13: info: initialization of "X" proved
 p.adb:15:13: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:15:13: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:15:13: info: range check proved (CVC4: 8 VC)
-p.adb:15:34: info: initialization of "X" proved
 p.adb:15:35: info: range check proved (CVC4: 8 VC)
-p.adb:18:16: info: initialization of "X" proved
 p.adb:18:16: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:18:16: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:18:16: info: range check proved (CVC4: 8 VC)
-p.adb:18:37: info: initialization of "X" proved
 p.adb:18:38: info: range check proved (CVC4: 8 VC)
-p.adb:20:39: info: initialization of "X" proved
-p.adb:22:19: info: initialization of "X" proved
 p.adb:22:19: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:22:19: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:22:19: info: range check proved (CVC4: 8 VC)
-p.adb:22:40: info: initialization of "X" proved
 p.adb:22:41: info: range check proved (CVC4: 8 VC)

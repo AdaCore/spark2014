@@ -1,1 +1,2 @@
 copy_values.adb:8:25: info: float overflow check proved (CVC4: 1 VC)
+copy_values.ads:9:06: info: flow dependencies proved

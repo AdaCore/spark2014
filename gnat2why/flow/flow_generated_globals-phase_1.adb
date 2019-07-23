@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2014-2018, Altran UK Limited                 --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Elists;                  use Elists;
 with Lib.Util;                use Lib.Util;
 with Namet;                   use Namet;
 with Osint.C;                 use Osint.C;
@@ -52,11 +53,11 @@ package body Flow_Generated_Globals.Phase_1 is
    --  State abstractions referenced in the current compilation unit but
    --  declared outside of it.
 
-   Predefined_Initialized_Variables : Node_Sets.Set;
-   --  Variables in predefined units that are known to be initialized. We
-   --  attach them to units where they are used as inputs or proof_ins, because
-   --  in phase 2 we might only know them by Entity_Name (which is not enough
-   --  to decide their initialization status).
+   Predefined_Initialized_Entities : Node_Sets.Set;
+   --  Variables and abstract states in predefined units that are known to be
+   --  initialized. We attach them to units where they are used as inputs or
+   --  proof_ins, because in phase 2 we might only know them by Entity_Name
+   --  (which is not enough to decide their initialization status).
 
    Ghost_Entities : Node_Sets.Set;
    --  Entities marked with a Ghost aspect
@@ -188,16 +189,11 @@ package body Flow_Generated_Globals.Phase_1 is
       --  processing local variables for a run-time check that they do not
       --  represent remote states.
 
-      procedure Process_Predefined_Variables (Objects : Node_Sets.Set);
+      procedure Process_Predefined_Entities (Objects : Node_Sets.Set);
       --  Similarly to registering so called "remote states", i.e. states that
       --  are pulled from other compilation units and might only be known by
-      --  Entity_Name in phase 2, we need to register variables in predefined
-      --  units to know their initialization status.
-      --
-      --  ??? this routine repeats conversion from Entity_Name to Entity_Id,
-      --  which is already done in Process_Volatiles_And_States; however, those
-      --  conversion will be eliminated by rewriting front-end globals to
-      --  work on Entity_Id, not by refactoring those two routines.
+      --  Entity_Name in phase 2, we need to register variables and abstract
+      --  states in predefined units to know their initialization status.
 
       procedure Process_Ghost (Objects : Node_Sets.Set);
       --  Picks ghost entities from Objects and stores them in the appropriate
@@ -253,20 +249,20 @@ package body Flow_Generated_Globals.Phase_1 is
          end loop;
       end Serialize;
 
-      ----------------------------------
-      -- Process_Predefined_Variables --
-      ----------------------------------
+      ---------------------------------
+      -- Process_Predefined_Entities --
+      ---------------------------------
 
-      procedure Process_Predefined_Variables (Objects : Node_Sets.Set) is
+      procedure Process_Predefined_Entities (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-              and then Is_Predefined_Initialized_Variable (E)
+              and then Is_Predefined_Initialized_Entity (E)
             then
-               Predefined_Initialized_Variables.Include (E);
+               Predefined_Initialized_Entities.Include (E);
             end if;
          end loop;
-      end Process_Predefined_Variables;
+      end Process_Predefined_Entities;
 
       ----------------------------------
       -- Process_Volatiles_And_States --
@@ -289,13 +285,16 @@ package body Flow_Generated_Globals.Phase_1 is
 
                if Ekind (E) in E_Abstract_State | E_Constant | E_Variable then
                   declare
-                     Capsule : constant Entity_Id := Encapsulating_State (E);
+                     State : constant Entity_Id := Encapsulating_State (E);
+                     --  This is either an abstract state, a single concurrent
+                     --  object or an Empty entity.
 
                   begin
-                     if Present (Capsule)
-                       and then Ekind (Capsule) = E_Abstract_State
+                     if Present (State)
+                       and then Ekind (State) = E_Abstract_State
+                       and then Contains (Part_Of_Constituents (State), E)
                      then
-                        Part_Of_States.Include (Key => E, New_Item => Capsule);
+                        Part_Of_States.Include (Key => E, New_Item => State);
                      end if;
                   end;
                end if;
@@ -311,7 +310,8 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-                 and then Is_Ghost_Entity (E)
+              and then Is_Library_Level_Entity (E)
+              and then Is_Ghost_Entity (E)
             then
                Ghost_Entities.Include (E);
             end if;
@@ -358,7 +358,7 @@ package body Flow_Generated_Globals.Phase_1 is
       if Ekind (E) in E_Function | E_Procedure then
          Serialize (Is_Protected);
       end if;
-      if Ekind (E) in E_Package then
+      if Ekind (E) = E_Package then
          Serialize (Is_Library_Level);
       end if;
       Serialize (Origin);
@@ -405,6 +405,10 @@ package body Flow_Generated_Globals.Phase_1 is
          --  instead of doing an expensive union to have a single procedure
          --  call.
 
+         Process_Volatiles_And_States (Globals.Refined.Proof_Ins);
+         Process_Volatiles_And_States (Globals.Refined.Inputs);
+         Process_Volatiles_And_States (Globals.Refined.Outputs);
+
          Process_Volatiles_And_States (Globals.Proper.Proof_Ins);
          Process_Volatiles_And_States (Globals.Proper.Inputs);
          Process_Volatiles_And_States (Globals.Proper.Outputs);
@@ -425,8 +429,8 @@ package body Flow_Generated_Globals.Phase_1 is
          --  In phase 2 we only need to know the initialization status of
          --  proof_ins and inputs; outputs are irrelevant.
 
-         Process_Predefined_Variables (Globals.Proper.Proof_Ins);
-         Process_Predefined_Variables (Globals.Proper.Inputs);
+         Process_Predefined_Entities (Globals.Proper.Proof_Ins);
+         Process_Predefined_Entities (Globals.Proper.Inputs);
       end if;
    end GG_Register_Global_Info;
 
@@ -652,9 +656,9 @@ package body Flow_Generated_Globals.Phase_1 is
          Terminate_GG_Line;
       end if;
 
-      if not Predefined_Initialized_Variables.Is_Empty then
-         New_GG_Line (EK_Predef_Init_Vars);
-         Serialize (Predefined_Initialized_Variables);
+      if not Predefined_Initialized_Entities.Is_Empty then
+         New_GG_Line (EK_Predef_Init_Entities);
+         Serialize (Predefined_Initialized_Entities);
          Terminate_GG_Line;
       end if;
 

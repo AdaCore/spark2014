@@ -1,37 +1,28 @@
-a-cofove.ads:596:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:724:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:727:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:760:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofove.ads:764:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:20
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:20
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:20
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:20
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at partition_refinement.ads:20
+a-cofove.ads:579:57: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:707:23: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:710:38: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:743:14: info: precondition proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofove.ads:747:35: info: range check proved (CVC4: 1 VC), in instantiation at partition_refinement.ads:20
+a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
+a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
+a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
+a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
+a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at partition_refinement.ads:20
 p.adb:9:36: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F = (1 => 2, others => 1) and Saved = (1 => 1, others => 2))
+p.adb:9:36: medium: loop invariant might fail in first iteration, cannot prove F'Loop_Entry = Saved (e.g. when F = (1 => 1, others => 2) and Saved = (1 => 2, others => 1))
+partition_refinement.adb:8:07: info: initialization of "P_Elem" proved
+partition_refinement.adb:8:15: info: initialization of "P_Prime" proved
+partition_refinement.adb:9:07: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:12:20: info: precondition proved (CVC4: 2 VC)
-partition_refinement.adb:13:13: info: initialization of "P_Elem.Count" proved
-partition_refinement.adb:13:34: info: initialization of "P_Elem.Last" proved
-partition_refinement.adb:13:48: info: initialization of "P_Elem.First" proved
-partition_refinement.adb:14:43: info: initialization of "P_Elem.First" proved
 partition_refinement.adb:14:56: info: range check proved (CVC4: 1 VC)
-partition_refinement.adb:14:58: info: initialization of "P_Elem.Count" proved
-partition_refinement.adb:15:43: info: initialization of "P_Elem.Last" proved
-partition_refinement.adb:17:47: medium: range check might fail (e.g. when P_Prime_Index = 0) [possible explanation: subprogram at line 4 should mention P in a precondition]
-partition_refinement.adb:19:22: info: initialization of "P_Prime.First" proved
-partition_refinement.adb:19:39: info: initialization of "P_Prime.Last" proved
-partition_refinement.adb:20:24: info: initialization of "P_Prime_Index" proved
+partition_refinement.adb:17:47: medium: range check might fail [possible explanation: subprogram at partition_refinement.ads:28 should mention P in a precondition]
 partition_refinement.adb:21:39: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:21:39: info: loop invariant preservation proved (CVC4: 1 VC)
 partition_refinement.adb:21:47: info: range check proved (CVC4: 4 VC)
-partition_refinement.adb:21:64: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:21:88: info: index check proved (CVC4: 4 VC)
-partition_refinement.adb:21:93: info: initialization of "P_Prime_Index" proved
 partition_refinement.adb:22:39: info: loop invariant initialization proved (CVC4: 1 VC)
 partition_refinement.adb:22:39: info: loop invariant preservation proved (CVC4: 1 VC)
 partition_refinement.adb:22:47: info: range check proved (CVC4: 4 VC)
-partition_refinement.adb:22:69: info: initialization of "P_Prime.First" proved
 partition_refinement.adb:22:92: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:22:110: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:23:39: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -40,4 +31,4 @@ partition_refinement.adb:23:47: info: range check proved (CVC4: 4 VC)
 partition_refinement.adb:23:66: info: overflow check proved (CVC4: 2 VC)
 partition_refinement.adb:23:89: info: index check proved (CVC4: 4 VC)
 partition_refinement.adb:23:107: info: index check proved (CVC4: 4 VC)
-partition_refinement.ads:30:07: warning: "P" is not modified, could be IN
+partition_refinement.ads:29:07: warning: "P" is not modified, could be IN

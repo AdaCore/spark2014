@@ -1,0 +1,45 @@
+main bin/ dir
+gnatprove
+libexec/spark/bin/ dir
+alt-ergo
+codepeer-gcc
+codepeer-gnatls
+codepeer-gprbuild
+codepeer_be
+cvc4
+gcc
+gnat2why
+gnat_server
+gnatbind
+gnathub
+gnatls
+gnatwhy3
+gprbuild
+gprclean
+gprconfig
+gprls
+gprname
+gprslave
+scilrm
+spark_codepeer_wrapper
+spark_memcached_wrapper
+spark_report
+target.atp
+why3config
+why3cpulimit
+why3realize
+why3server
+why3session
+z3
+libexec/spark/share dir
+codepeer
+doc
+gcc-7.4.1
+gnathub
+gpr
+gprconfig
+info
+javascript
+lal-checkers
+man
+sonar

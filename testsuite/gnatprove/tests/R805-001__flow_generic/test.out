@@ -1,3 +1,8 @@
 main1.adb:1:18: warning: unused variable "Arg"
+main1.adb:1:36: info: data dependencies proved
+main1.adb:5:19: info: flow dependencies proved, in instantiation at main1.adb:9
+main1.adb:8:23: info: flow dependencies proved
 main2.adb:1:18: warning: unused variable "Arg"
+main2.adb:1:36: info: data dependencies proved
 main3.adb:1:18: warning: unused variable "Arg"
+main3.adb:1:36: info: data dependencies proved

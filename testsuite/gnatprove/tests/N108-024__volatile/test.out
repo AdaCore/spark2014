@@ -1,2 +1,1 @@
 foo.adb:4:04: warning: analyzing unreferenced procedure "P3"
-foo.adb:4:14: info: initialization of "Vol2.X" proved

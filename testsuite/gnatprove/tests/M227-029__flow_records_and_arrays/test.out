@@ -12,73 +12,40 @@ message_tests.adb:48:04: warning: analyzing unreferenced procedure "Not_All_Used
 message_tests.adb:48:32: high: "C.Flags.A" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: high: "C.Flags.B" is not initialized in "Not_All_Used_Out"
 message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out"
-message_tests.adb:48:32: info: initialization of "C.X" proved
-message_tests.adb:48:32: info: initialization of "C.Y" proved
 message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
-message_tests.adb:56:32: info: initialization of "C.Flags.A" proved
-message_tests.adb:56:32: info: initialization of "C.Flags.B" proved
-message_tests.adb:56:32: info: initialization of "C.W" proved
-message_tests.adb:56:32: info: initialization of "C.X" proved
-message_tests.adb:56:32: info: initialization of "C.Y" proved
+message_tests.adb:56:32: info: initialization of "C" proved
 message_tests.adb:66:18: high: "F.B" is not initialized
-message_tests.adb:66:18: info: initialization of "F.A" proved
 parameter_tests.adb:15:27: info: initialization of "F" proved
-parameter_tests.adb:21:32: info: initialization of "C.X" proved
-parameter_tests.adb:21:32: info: initialization of "C.Y" proved
+parameter_tests.adb:21:32: info: initialization of "C" proved
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
+parameter_tests.adb:36:11: info: data dependencies proved
 parameter_tests.adb:36:32: high: "G.Y" is not an input in the Global contract of subprogram "Set_Global_X" at line 35
 parameter_tests.adb:36:32: high: "G.Y" is not initialized
 parameter_tests.adb:36:32: high: either make "G.Y" an input in the Global contract or initialize it before use
-parameter_tests.adb:36:32: info: initialization of "G.X" proved
+parameter_tests.adb:43:11: info: data dependencies proved
+parameter_tests.adb:50:11: info: data dependencies proved
 parameter_tests.adb:50:33: warning: unused initial value of "G"
 parameter_tests.adb:50:36: warning: "H" is not modified, could be INPUT
 test.adb:26:04: warning: analyzing unreferenced function "New_Player_01"
-test.adb:33:14: info: initialization of "P.Ammo" proved
-test.adb:33:14: info: initialization of "P.Look_Pitch" proved
-test.adb:33:14: info: initialization of "P.Look_Yaw" proved
-test.adb:33:14: info: initialization of "P.Position.X" proved
-test.adb:33:14: info: initialization of "P.Position.Y" proved
-test.adb:33:14: info: initialization of "P.Position.Z" proved
+test.adb:27:07: info: initialization of "P" proved
 test.adb:36:04: warning: analyzing unreferenced function "New_Player_02"
-test.adb:43:14: info: initialization of "P.Ammo" proved
-test.adb:43:14: info: initialization of "P.Look_Pitch" proved
-test.adb:43:14: info: initialization of "P.Look_Yaw" proved
-test.adb:43:14: info: initialization of "P.Position.X" proved
-test.adb:43:14: info: initialization of "P.Position.Y" proved
-test.adb:43:14: info: initialization of "P.Position.Z" proved
+test.adb:37:07: info: initialization of "P" proved
 test.adb:46:04: warning: analyzing unreferenced function "New_Player_03"
-test.adb:55:14: info: initialization of "P.Ammo" proved
-test.adb:55:14: info: initialization of "P.Look_Pitch" proved
-test.adb:55:14: info: initialization of "P.Look_Yaw" proved
-test.adb:55:14: info: initialization of "P.Position.X" proved
-test.adb:55:14: info: initialization of "P.Position.Y" proved
-test.adb:55:14: info: initialization of "P.Position.Z" proved
+test.adb:47:07: info: initialization of "P" proved
 untangle_tests.adb:22:04: warning: analyzing unreferenced function "New_Coordinate"
-untangle_tests.adb:30:14: info: initialization of "R.W" proved
-untangle_tests.adb:30:14: info: initialization of "R.X" proved
-untangle_tests.adb:30:14: info: initialization of "R.Y" proved
-untangle_tests.adb:30:14: info: initialization of "R.Z" proved
+untangle_tests.adb:24:07: info: initialization of "R" proved
 untangle_tests.adb:34:04: warning: analyzing unreferenced procedure "Swap_Triangle"
 untangle_tests.adb:37:28: medium: array index check might fail [possible explanation: subprogram at line 34 should mention A in a precondition]
 untangle_tests.adb:39:10: info: index check proved (CVC4: 2 VC)
 untangle_tests.adb:39:19: medium: array index check might fail [possible explanation: subprogram at line 34 should mention B in a precondition]
 untangle_tests.adb:40:10: info: index check proved (CVC4: 2 VC)
-untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.W" proved
-untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.X" proved
-untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Y" proved
-untangle_tests.adb:40:16: info: initialization of "Tmp.Normal.Z" proved
-untangle_tests.adb:40:16: info: initialization of "Tmp.Vertices" proved
 untangle_tests.adb:44:04: warning: analyzing unreferenced procedure "Sieve"
 untangle_tests.adb:44:21: info: initialization of "P" proved
+untangle_tests.adb:46:07: info: initialization of "N" proved
 untangle_tests.adb:51:46: info: cannot unroll loop (too many loop iterations)
-untangle_tests.adb:52:13: info: initialization of "P" proved
 untangle_tests.adb:53:20: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:53:20: info: range check proved (CVC4: 1 VC)
-untangle_tests.adb:54:19: info: initialization of "N" proved
 untangle_tests.adb:55:19: info: index check proved (CVC4: 2 VC)
-untangle_tests.adb:55:22: info: initialization of "N" proved
-untangle_tests.adb:55:22: info: initialization of "P" proved
-untangle_tests.adb:56:21: info: initialization of "N" proved
 untangle_tests.adb:56:23: info: overflow check proved (CVC4: 1 VC)
 untangle_tests.adb:63:04: warning: analyzing unreferenced procedure "Transform"
 untangle_tests.adb:67:51: info: cannot unroll loop (too many loop iterations)

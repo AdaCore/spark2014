@@ -1,7 +1,9 @@
+mainpre.adb:3:09: info: data dependencies proved
 mainpre.adb:4:16: info: precondition of main program proved (CVC4: 1 VC)
 mainpre.adb:7:04: info: precondition proved (CVC4: 1 VC)
-pack.adb:4:04: info: initialization of "X" constituent of "State" proved
 pack.adb:4:04: warning: initialization of "X" constituent of "State" has no effect
-pack.adb:10:30: medium: "X" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+pack.adb:10:30: medium: "X" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+pack.ads:3:09: info: flow dependencies proved
 pack.ads:4:09: info: initial condition proved (CVC4: 1 VC)
-pack.ads:4:30: info: initialization of "X" constituent of "State" proved
+pack.ads:8:12: info: data dependencies proved
+pack.ads:11:12: info: data dependencies proved

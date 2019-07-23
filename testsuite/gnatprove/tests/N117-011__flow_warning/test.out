@@ -1,9 +1,15 @@
-device.adb:10:04: info: initialization of "OldX" constituent of "State" proved
-device.adb:25:04: info: initialization of "Register" constituent of "State" proved
+device.adb:32:11: info: data dependencies proved
 device.adb:32:33: info: initialization of "Register" constituent of "State" proved
-device.adb:46:13: info: initialization of "RawValue" proved
+device.adb:33:11: info: flow dependencies proved
+device.adb:43:07: info: initialization of "RawValue" proved
 device.adb:62:41: medium: "Register" constituent of "State" might not be written
-device.adb:77:23: info: initialization of "OK" proved
+device.adb:69:07: info: initialization of "OK" proved
 device.adb:82:04: warning: no check message justified by this pragma
+device.ads:5:08: info: flow dependencies proved
+device.ads:8:11: info: data dependencies proved
+device.ads:9:10: info: flow dependencies proved
 device.ads:11:23: info: initialization of "OK" proved
+device.ads:12:11: info: data dependencies proved
+device.ads:13:11: info: flow dependencies proved
+device.ads:17:11: info: data dependencies proved
 gnatprove: error during flow analysis and proof

@@ -1,6 +1,6 @@
-main.adb:12:28: info: precondition proved (CVC4: 1 VC)
+main.adb:12:28: info: precondition proved (Trivial: 1 VC)
 main.adb:14:19: medium: assertion might fail, cannot prove X < 9 (e.g. when X = 9)
 main.adb:15:19: info: assertion proved (CVC4: 1 VC)
-main.adb:12:28: info: precondition proved (CVC4: 1 VC)
+main.adb:12:28: info: precondition proved (Trivial: 1 VC)
 main.adb:14:19: medium: assertion might fail, cannot prove X < 8
 main.adb:15:19: medium: assertion might fail, cannot prove X < 10

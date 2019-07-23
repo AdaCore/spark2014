@@ -1,60 +1,50 @@
 uninitialized.adb:18:19: info: initialization of "Y" proved
-uninitialized.adb:20:09: info: initialization of "An_Arr" proved, in call inlined at uninitialized.adb:110
 uninitialized.adb:24:04: warning: analyzing unreferenced procedure "Init_Var_Warn"
-uninitialized.adb:24:29: info: initialization of "X" proved
 uninitialized.adb:29:12: medium: "X" might not be initialized
 uninitialized.adb:29:14: info: overflow check proved (CVC4: 1 VC)
-uninitialized.adb:34:32: info: initialization of "Var" constituent of "State" proved
+uninitialized.adb:34:11: info: data dependencies proved
 uninitialized.adb:40:17: high: "Var" constituent of "State" is not an input in the Global contract of subprogram "Init_Var_Error" at line 33
 uninitialized.adb:40:17: high: "Var" constituent of "State" is not initialized
 uninitialized.adb:40:17: high: either make "Var" constituent of "State" an input in the Global contract or initialize it before use
 uninitialized.adb:40:21: info: overflow check proved (CVC4: 1 VC)
+uninitialized.adb:46:11: info: data dependencies proved
 uninitialized.adb:46:32: medium: "Var" constituent of "State" might not be initialized
 uninitialized.adb:55:04: warning: analyzing unreferenced procedure "Init_Arr_Warn"
 uninitialized.adb:55:29: info: initialization of "An_Arr" proved
 uninitialized.adb:57:24: info: unrolling loop
-uninitialized.adb:58:21: info: initialization of "An_Arr" proved
-uninitialized.adb:64:32: info: initialization of "Arr" constituent of "State" proved
+uninitialized.adb:64:11: info: data dependencies proved
 uninitialized.adb:67:24: info: unrolling loop
 uninitialized.adb:68:21: high: "Arr" constituent of "State" is not an input in the Global contract of subprogram "Init_Arr_Error" at line 63
 uninitialized.adb:68:21: high: "Arr" constituent of "State" is not initialized
 uninitialized.adb:68:21: high: either make "Arr" constituent of "State" an input in the Global contract or initialize it before use
 uninitialized.adb:68:28: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:68:28: medium: array index check might fail
-uninitialized.adb:74:32: info: initialization of "Rec.Arr" constituent of "State" proved
-uninitialized.adb:74:32: info: initialization of "Rec.Boo" constituent of "State" proved
+uninitialized.adb:74:11: info: data dependencies proved
 uninitialized.adb:80:22: medium: "Rec.Boo" constituent of "State" might not be initialized
 uninitialized.adb:82:24: info: unrolling loop
-uninitialized.adb:83:22: info: initialization of "Rec.Arr" constituent of "State" proved
 uninitialized.adb:88:04: warning: analyzing unreferenced procedure "Init_Record_Error"
-uninitialized.adb:88:33: info: initialization of "A_Rec.Arr" proved
-uninitialized.adb:88:33: info: initialization of "A_Rec.Boo" proved
 uninitialized.adb:90:24: high: "A_Rec.Boo" is not initialized
 uninitialized.adb:92:24: info: unrolling loop
 uninitialized.adb:93:27: high: "A_Rec.Arr" is not initialized
 uninitialized.adb:93:40: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:93:40: medium: array index check might fail
 uninitialized.adb:98:04: warning: analyzing unreferenced procedure "Init_Record_Error_2"
-uninitialized.adb:98:35: info: initialization of "A_Rec.Arr" proved
-uninitialized.adb:98:35: info: initialization of "A_Rec.Boo" proved
+uninitialized.adb:98:35: info: initialization of "A_Rec" proved
 uninitialized.adb:103:16: high: "Another_Rec.Arr" is not initialized
-uninitialized.adb:103:16: info: initialization of "Another_Rec.Boo" proved
 uninitialized.adb:107:04: warning: analyzing unreferenced procedure "Init_Array_Through_Call_Warn"
 uninitialized.adb:107:44: info: initialization of "An_Arr" proved
 uninitialized.adb:109:24: info: unrolling loop
 uninitialized.adb:115:04: warning: analyzing unreferenced procedure "Init_Array_Through_Call_Error"
-uninitialized.adb:115:45: info: initialization of "An_Arr" proved
+uninitialized.adb:115:45: medium: "An_Arr" might not be initialized in "Init_Array_Through_Call_Error"
 uninitialized.adb:117:24: info: unrolling loop
 uninitialized.adb:118:15: high: "An_Arr" is not initialized
-uninitialized.adb:118:15: medium: "An_Arr" might not be initialized
 uninitialized.adb:118:25: info: division check proved (CVC4: 10 VC)
 uninitialized.adb:118:25: medium: array index check might fail
 uninitialized.adb:123:04: warning: analyzing unreferenced procedure "Tab"
 uninitialized.adb:123:14: warning: subprogram "Tab" has no effect
+uninitialized.adb:125:07: info: initialization of "Tmp" proved
 uninitialized.adb:127:30: info: unrolling loop
 uninitialized.adb:128:18: high: "A" is not initialized
-uninitialized.adb:128:18: medium: "A" might not be initialized
-uninitialized.adb:129:18: info: initialization of "Tmp" proved
 uninitialized.adb:134:04: warning: analyzing unreferenced procedure "Local"
 uninitialized.adb:134:21: info: initialization of "Y" proved
 uninitialized.adb:137:07: warning: statement has no effect

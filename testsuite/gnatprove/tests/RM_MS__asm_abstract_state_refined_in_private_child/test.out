@@ -1,8 +1,15 @@
-power_14-source_a_14.adb:5:04: info: initialization of "S" constituent of "State" proved
+power_14-source_a_14.ads:4:08: info: flow dependencies proved
 power_14-source_a_14.ads:6:20: info: initialization of "Level" proved
-power_14-source_b_14.adb:5:04: info: initialization of "S" constituent of "State" proved
+power_14-source_a_14.ads:7:11: info: data dependencies proved
+power_14-source_a_14.ads:8:11: info: flow dependencies proved
+power_14-source_b_14.ads:4:08: info: flow dependencies proved
 power_14-source_b_14.ads:6:20: info: initialization of "Level" proved
-power_14.adb:19:16: info: initialization of "Level_A" proved
-power_14.adb:19:24: medium: overflow check might fail (e.g. when Level_A = Integer'First and Level_B = -1) [possible explanation: call at line 18 should mention Level (for argument Level_B) in a postcondition]
-power_14.adb:19:26: info: initialization of "Level_B" proved
+power_14-source_b_14.ads:7:11: info: data dependencies proved
+power_14-source_b_14.ads:8:11: info: flow dependencies proved
+power_14.adb:14:07: info: initialization of "Level_A" proved
+power_14.adb:15:07: info: initialization of "Level_B" proved
+power_14.adb:19:24: medium: overflow check might fail (e.g. when Level_A = -1 and Level_B = Integer'First) [possible explanation: call at line 18 should mention Level (for argument Level_B) in a postcondition]
+power_14.ads:5:08: info: flow dependencies proved
 power_14.ads:7:25: info: initialization of "Level" proved
+power_14.ads:8:11: info: data dependencies proved
+power_14.ads:9:11: info: flow dependencies proved

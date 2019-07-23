@@ -2,6 +2,6 @@ classwide.adb:6:09: high: "Var.J" is not initialized
 types.ads:4:20: warning: unused variable "X"
 types.ads:5:19: warning: "X" is not modified, could be IN
 types.ads:6:20: info: postcondition proved (CVC4: 1 VC)
-types.ads:6:20: medium: postcondition might fail, cannot prove Check (X), in inherited contract at types.ads:10 (e.g. when X = (J => 0))
+types.ads:6:20: medium: postcondition might fail, cannot prove Check (X), in inherited contract at types.ads:10
 types.ads:9:20: warning: unused variable "X"
 types.ads:10:19: warning: "X" is not modified, could be IN

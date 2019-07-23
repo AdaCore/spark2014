@@ -3,17 +3,11 @@ test_globals.adb:4:04: info: range check proved (CVC4: 2 VC)
 test_globals.adb:8:35: info: range check proved (CVC4: 1 VC)
 test_globals.adb:9:34: info: range check proved (CVC4: 1 VC)
 test_globals.adb:11:24: info: range check proved (CVC4: 2 VC)
-test_globals.adb:13:25: info: length check proved (CVC4: 4 VC)
+test_globals.adb:13:25: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 test_globals.adb:13:28: info: range check proved (CVC4: 2 VC)
 test_globals.adb:15:24: info: discriminant check proved (CVC4: 1 VC)
 test_globals.adb:16:23: info: discriminant check proved (CVC4: 1 VC)
 test_globals.adb:19:25: info: index check proved (CVC4: 2 VC)
 test_globals.adb:19:65: info: index check proved (CVC4: 2 VC)
 test_globals.adb:24:19: info: assertion proved (CVC4: 1 VC)
-test_globals.adb:24:19: info: initialization of "AD" proved
-test_globals.adb:24:19: info: initialization of "AS" proved
-test_globals.adb:24:19: info: initialization of "AU" proved
-test_globals.adb:24:19: info: initialization of "RD.F" proved
-test_globals.adb:24:19: info: initialization of "RS.F" proved
-test_globals.adb:24:19: info: initialization of "RU.F" proved
 test_globals.adb:24:19: info: precondition proved (CVC4: 2 VC)

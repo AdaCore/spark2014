@@ -1,7 +1,5 @@
-protected_sequence.adb:22:20: info: initialization of "Local" proved
 protected_sequence.adb:22:26: medium: overflow check might fail (e.g. when Local = Integer'Last) [possible explanation: loop at line 21 should mention Local in a loop invariant]
 protected_sequence.adb:22:31: info: division check proved (CVC4: 1 VC)
-protected_sequence.adb:23:18: info: initialization of "Local" proved
-protected_sequence.ads:11:17: medium: ceiling priority protocol might not be respected (e.g. when Value = 0)
+protected_sequence.ads:11:17: medium: ceiling priority protocol might not be respected
 protected_sequence.ads:14:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 protected_sequence.ads:14:14: info: nontermination of task proved (CVC4: 1 VC)

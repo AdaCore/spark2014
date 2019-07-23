@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,10 +24,12 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Indefinite_Hashed_Sets;
+with Ada.Containers.Indefinite_Hashed_Maps;
 with Ada.Directories;   use Ada.Directories;
 with Ada.Strings.Hash;
+with Call;              use Call;
 with GNAT.Strings;
-with Gnat2Why_Args;     use Gnat2Why_Args;
+with Gnat2Why_Opts;     use Gnat2Why_Opts;
 with GNATCOLL.Projects; use GNATCOLL.Projects;
 with GNATCOLL.Utils;    use GNATCOLL.Utils;
 with GNATCOLL.VFS;      use GNATCOLL.VFS;
@@ -53,7 +55,11 @@ package Configuration is
    package CL_Switches is
 
       --  These are the variables that contain the values of the corresponding
-      --  switches of gnatprove:
+      --  switches of gnatprove. Note that these correspond exactly to the
+      --  commandline as given by the user. If some postprocessing is applied
+      --  to the switch (for example timeout, steps etc are influenced by the
+      --  level switch) another variable is introduced outside of this package.
+      --  Naming of the variable:
       --  * single letter variables correspond to single letter switches with
       --    one dash, like -j, -v
       --  * variable UU corresponds to -U
@@ -72,6 +78,7 @@ package Configuration is
       CWE                  : aliased Boolean;
       D                    : aliased Boolean;
       Debug_Save_VCs       : aliased Boolean;
+      Debug_Trivial        : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
       F                    : aliased Boolean;
       File_List            : String_Lists.List;
@@ -121,6 +128,7 @@ package Configuration is
       Version              : aliased Boolean;
       Warnings             : aliased GNAT.Strings.String_Access;
       Why3_Conf            : aliased GNAT.Strings.String_Access;
+      Why3_Debug           : aliased GNAT.Strings.String_Access;
       X                    : String_Lists.List;
       --  Scenario variables to be passed to gprbuild
       Z3_Counterexample    : aliased Boolean;
@@ -140,7 +148,13 @@ package Configuration is
       end Builder;
 
       package Prove is
-         Proof_Dir : GNAT.Strings.String_Access;
+         Proof_Dir              : GNAT.Strings.String_Access;
+         Switches               : GNAT.Strings.String_List_Access;
+         Proof_Switches_Ada     : GNAT.Strings.String_List_Access;
+         Proof_Switches_Indices : GNAT.Strings.String_List_Access;
+
+         function Proof_Switches (Proj : Project_Type; Index : String)
+                                  return GNAT.Strings.String_List_Access;
       end Prove;
    end Prj_Attr;
 
@@ -156,52 +170,56 @@ package Configuration is
 
    type Proof_Mode is (Progressive, No_WP, All_Split, Per_Path, Per_Check);
 
-   --  Attributes that are synthetized from the command line and project file.
-   --  See the Postprocess function which defines these variables.
-   --  ??? Some of the below variable are simple copies of the corresponding
-   --  command line switch, could be removed.
+   --  Attributes that are synthesized from the command line and project file.
+   --  They are either defined in the Postprocess procedure or are simple
+   --  renamings of the command line switches (for them we still prefer to
+   --  use a clearer name, e.g. Continue_On_Error vs K).
 
-   Verbose              : Boolean;
-   Quiet                : Boolean;
-   Debug                : Boolean;
-   Force                : Boolean;
-   Minimal_Compile      : Boolean;
-   Flow_Extra_Debug     : Boolean;
-   Flow_Termination     : Boolean;
-   Flow_Show_GG         : Boolean;
-   Continue_On_Error    : Boolean;
-   All_Projects         : Boolean;
-   IDE_Mode             : Boolean;
-   Limit_Line           : GNAT.Strings.String_Access;
-   Limit_Region         : GNAT.Strings.String_Access;
-   Limit_Subp           : GNAT.Strings.String_Access;
-   Only_Given           : Boolean;
-   CodePeer             : Boolean;
-   Counterexample       : Boolean;
-   No_Axiom_Guard       : Boolean;
-   Z3_Counterexample    : Boolean;
-   No_Inlining          : Boolean;
-   No_Global_Generation : Boolean;
-   Mode                 : GP_Mode;
-   Warning_Mode         : Gnat2Why_Args.SPARK_Warning_Mode_Type;
-   Memcached_Server     : GNAT.Strings.String_Access;
-   --  enable caching through memcached
-   Report               : Report_Mode_Type;
-   Proof                : Proof_Mode;
-   Lazy                 : Boolean;
-   Parallel             : Integer;
-   Provers              : String_Lists.List;
-   Timeout              : Integer;
-   Steps                : Integer;
-   Memlimit            : Integer;
-   Why3_Config_File     : GNAT.Strings.String_Access;
-   CE_Timeout           : Integer;
+   CodePeer       : Boolean;
+   Counterexample : Boolean;
+   Debug          : Boolean;
+   Mode           : GP_Mode;
+   Only_Given     : Boolean;
+   Parallel       : Integer;
+   Report         : Report_Mode_Type;
+   Warning_Mode   : Gnat2Why_Opts.SPARK_Warning_Mode_Type;
+
+   All_Projects      : Boolean renames CL_Switches.UU;
+   Continue_On_Error : Boolean renames CL_Switches.K;
+   Flow_Extra_Debug  : Boolean renames CL_Switches.Flow_Debug;
+   Force             : Boolean renames CL_Switches.F;
+   IDE_Mode          : Boolean renames CL_Switches.IDE_Progress_Bar;
+   Minimal_Compile   : Boolean renames CL_Switches.M;
+   Quiet             : Boolean renames CL_Switches.Q;
+   Verbose           : Boolean renames CL_Switches.V;
+
+   type File_Specific is record
+      Proof             : Proof_Mode;
+      Lazy              : Boolean;
+      Provers           : String_Lists.List;
+      Timeout           : Integer;
+      Steps             : Integer;
+      Memlimit          : Integer;
+      CE_Timeout        : Integer;
+      No_Inlining       : Boolean;
+      Info              : Boolean;
+      No_Loop_Unrolling : Boolean;
+      Proof_Warnings    : Boolean;
+   end record;
+
+   package File_Specific_Maps is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => String,
+      Element_Type    => File_Specific,
+      Hash            => Ada.Strings.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   File_Specific_Map : File_Specific_Maps.Map;
 
    Max_Non_Blank_Lines : constant := 6;
    --  Maximum number of consecutive non blank lines on standard output
 
-   package File_System is
-      package Install is
+   package SPARK_Install is
          use GNAT.Strings;
 
          --  Here we set the various paths that are needed during a run of
@@ -251,22 +269,25 @@ package Configuration is
            Compose (Share_Spark_Config, "gnatprove.conf");
          Z3_Present               : Boolean;
          CVC4_Present             : Boolean;
-      end Install;
-   end File_System;
+         Help_Message             : constant String :=
+           Read_File_Into_String (Help_Msg_File);
+   end SPARK_Install;
 
    Label_Length : constant := 26;
    --  Maximum length of label in report. Other characters are discarded
 
    Default_Steps : constant Natural := 100;
 
-   Subdir : Virtual_File := Create ("gnatprove");
-   --  The name of the directory in which all work takes place. A directory can
-   --  be prepended to this default value by using the --subdirs switch.
-
-   Main_Subdir : GNAT.Strings.String_Access := null;
-   --  The name of the main sub-directory "gnatprove" in which files are
-   --  generated. This is the same as
-   --  <obj-dir-for-the-main-project>/Subdir_Name
+   Phase1_Subdir : constant Virtual_File := Create ("phase1");
+   Phase2_Subdir : Virtual_File := Create ("gnatprove");
+   --  The subdir names for the storage of intermediate files (ALI, why3 files,
+   --  etc). This is the subdir of the object dir, which might be further
+   --  modified via the --subdirs switch. Overall, phase 2 will store files in
+   --    <objdir>/<subdirs>/gnatprove
+   --  and phase 1 will store files in
+   --    <objdir>/<subdirs>/gnatprove/phase1
+   --  The fact that the phase 1 dir is a subdir of phase2 makes copying files
+   --  easier later on, and makes cleaning up easier as well.
 
    Proof_Dir : GNAT.Strings.String_Access := null;
    --  The name of the directory in which will be stored Why3 session file and
@@ -275,7 +296,7 @@ package Configuration is
    --  The name of a why3 configuration file to be used in a single run of
    --  gnatprove.
 
-   Socket_Name : GNAT.Strings.String_Access := null;
+   Socket_Name : GNAT.Strings.String_Access;
    --  Name of the socket used by why3server, based on a hash of the main
    --  object directory.
 
@@ -291,7 +312,13 @@ package Configuration is
    function To_String (P : Proof_Mode) return String;
    --  transform the proof mode into a string for gnatwhy3 command line option
 
-   function Prover_List return String
-   with Pre => not Provers.Is_Empty;
-   --  return comma-separated list of provers
+   function Prover_List (Source_File : String) return String;
+   function Prover_List (FS : File_Specific) return String;
+
+   function Compute_Why3_Args (Obj_Dir : String;
+                               FS      : File_Specific)
+                               return String_Lists.List;
+   --  Compute the list of arguments of gnatwhy3. This list is passed first to
+   --  gnat2why, which then passes it to gnatwhy3.
+
 end Configuration;

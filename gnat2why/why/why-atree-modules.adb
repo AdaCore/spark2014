@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d Y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Characters.Handling;    use Ada.Characters.Handling;
 with Ada.Containers;             use Ada.Containers;
 with Common_Containers;          use Common_Containers;
 with GNATCOLL.Utils;             use GNATCOLL.Utils;
@@ -41,6 +42,7 @@ with Why.Atree.Accessors;        use Why.Atree.Accessors;
 with Why.Atree.Builders;         use Why.Atree.Builders;
 with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Arrays;             use Why.Gen.Arrays;
+with Why.Images;                 use Why.Images;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Inter;                  use Why.Inter;
 
@@ -92,6 +94,8 @@ package body Why.Atree.Modules is
    Why_Symb_Map   : Why_Symb_Maps.Map := Why_Symb_Maps.Empty_Map;
    Entity_Modules : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Axiom_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Compl_Modules  : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
+   Init_Modules   : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
    Rep_Modules    : Ada_To_Why.Map := Ada_To_Why.Empty_Map;
 
    --------------
@@ -111,8 +115,8 @@ package body Why.Atree.Modules is
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,
-                 File     => No_Name,
-                 Name     => NID (Full_Name (E)));
+                 File     => No_Symbol,
+                 Name     => Full_Name (E));
             --  ??? why New_Mode is called with E and not E2?
          begin
             Entity_Modules.Insert (E2, Why_Node_Id (M));
@@ -155,14 +159,14 @@ package body Why.Atree.Modules is
          return W_Module_Id (Element (C));
       elsif Nkind (E) in N_Entity then
          declare
-            Name : constant Name_Id :=
-              NID (Full_Name (E) &
-                   (if Entity_In_Ext_Axioms (E) then ""
-                    else To_String (WNE_Axiom_Suffix)));
+            Name : constant String :=
+              Full_Name (E) &
+            (if Entity_In_Ext_Axioms (E) then ""
+             else To_String (WNE_Axiom_Suffix));
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,
-                 File     => No_Name,
+                 File     => No_Symbol,
                  Name     => Name);
          begin
             Axiom_Modules.Insert (E, Why_Node_Id (M));
@@ -172,6 +176,58 @@ package body Why.Atree.Modules is
          return Why_Empty;
       end if;
    end E_Axiom_Module;
+
+   --------------------
+   -- E_Compl_Module --
+   --------------------
+
+   function E_Compl_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Compl_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Symbol,
+                 Name     => Full_Name (E) & "__compl");
+         begin
+            Compl_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Compl_Module;
+
+   -------------------
+   -- E_Init_Module --
+   -------------------
+
+   function E_Init_Module (E : Entity_Id) return W_Module_Id is
+      use Ada_To_Why;
+      C : constant Ada_To_Why.Cursor := Init_Modules.Find (E);
+   begin
+      if Has_Element (C) then
+         return W_Module_Id (Element (C));
+      elsif Nkind (E) in N_Entity then
+         declare
+            M : constant W_Module_Id :=
+              New_Module
+                (Ada_Node => E,
+                 File     => No_Symbol,
+                 Name     => Full_Name (E) & "__init");
+         begin
+            Init_Modules.Insert (E, Why_Node_Id (M));
+            return M;
+         end;
+      else
+         return Why_Empty;
+      end if;
+   end E_Init_Module;
 
    ------------------
    -- E_Rep_Module --
@@ -188,8 +244,8 @@ package body Why.Atree.Modules is
             M : constant W_Module_Id :=
               New_Module
                 (Ada_Node => E,
-                 File     => No_Name,
-                 Name     => NID (Full_Name (E) & "__rep"));
+                 File     => No_Symbol,
+                 Name     => Full_Name (E) & "__rep");
          begin
             Rep_Modules.Insert (E, Why_Node_Id (M));
             return M;
@@ -205,7 +261,7 @@ package body Why.Atree.Modules is
 
    function Get_Module_Name (M : W_Module_Id) return String is
    begin
-      return Get_Name_String (Module_Get_Name (+M));
+      return Img (Module_Get_Name (+M));
    end Get_Module_Name;
 
    ----------------
@@ -226,31 +282,31 @@ package body Why.Atree.Modules is
 
       --  Modules of the Why standard library
 
-      Int_Module := New_Module (File => Int_File,  Name => NID ("Int"));
-      RealInfix  := New_Module (File => Real_File, Name => NID ("RealInfix"));
-      Ref_Module := New_Module (File => Ref_File,  Name => NID ("Ref"));
+      Int_Module := New_Module (File => Int_File,  Name => "Int");
+      RealInfix  := New_Module (File => Real_File, Name => "RealInfix");
+      Ref_Module := New_Module (File => Ref_File,  Name => "Ref");
 
       --  Builtin Why types
 
       EW_Bool_Type :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("bool")),
+                  Name       => New_Name (Symb => NID ("bool")),
                   Is_Mutable => False);
       EW_Int_Type :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("int")),
+                  Name       => New_Name (Symb => NID ("int")),
                   Is_Mutable => False);
       EW_Prop_Type :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("prop")),
+                  Name       => New_Name (Symb => NID ("prop")),
                   Is_Mutable => False);
       EW_Real_Type :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("real")),
+                  Name       => New_Name (Symb => NID ("real")),
                   Is_Mutable => False);
       EW_Unit_Type :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("unit")),
+                  Name       => New_Name (Symb => NID ("unit")),
                   Is_Mutable => False);
 
       --  built-in void ident
@@ -273,270 +329,274 @@ package body Why.Atree.Modules is
       Static_Modular_lt8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt8"));
+           Name => "Static_Modular_lt8");
       Static_Modular_lt16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt16"));
+           Name => "Static_Modular_lt16");
       Static_Modular_lt32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt32"));
+           Name => "Static_Modular_lt32");
       Static_Modular_lt64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_lt64"));
+           Name => "Static_Modular_lt64");
       Static_Modular_8 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_8"));
+           Name => "Static_Modular_8");
       Static_Modular_16 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_16"));
+           Name => "Static_Modular_16");
       Static_Modular_32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_32"));
+           Name => "Static_Modular_32");
       Static_Modular_64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Modular_64"));
+           Name => "Static_Modular_64");
       Static_Discrete :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Discrete"));
+           Name => "Static_Discrete");
       Dynamic_Modular :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Modular"));
+           Name => "Dynamic_Modular");
       Dynamic_Discrete :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Discrete"));
+           Name => "Dynamic_Discrete");
       Static_Fixed_Point :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Fixed_Point"));
+           Name => "Static_Fixed_Point");
       Dynamic_Fixed_Point :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Fixed_Point"));
+           Name => "Dynamic_Fixed_Point");
       Fixed_Point_Rep :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Fixed_Point_Rep"));
+           Name => "Fixed_Point_Rep");
       Fixed_Point_Mult_Div :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Fixed_Point_Mult_Div"));
+           Name => "Fixed_Point_Mult_Div");
       Static_Float32 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Float32"));
+           Name => "Static_Float32");
       Static_Float64 :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Static_Float64"));
+           Name => "Static_Float64");
       Dynamic_Float :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Dynamic_Floating_Point"));
+           Name => "Dynamic_Floating_Point");
       Rep_Proj_Float32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Float32"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_Float32");
       Rep_Proj_Float64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Float64"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_Float64");
       Rep_Proj_Fixed :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Fixed"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_Fixed");
       Rep_Proj_Int :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_Int"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_Int");
       Rep_Proj_Lt8 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV8"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_ltBV8");
       Rep_Proj_Lt16 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV16"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_ltBV16");
       Rep_Proj_Lt32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV32"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_ltBV32");
       Rep_Proj_Lt64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_ltBV64"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_ltBV64");
       Rep_Proj_8 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV8"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_BV8");
       Rep_Proj_16 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV16"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_BV16");
       Rep_Proj_32 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV32"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_BV32");
       Rep_Proj_64 :=
         New_Module
-          (File     => Ada_Model_File,
-           Name     => NID ("Rep_Proj_BV64"));
+          (File => Ada_Model_File,
+           Name => "Rep_Proj_BV64");
+      Access_To_Incomp_Ty :=
+        New_Module
+          (File => Ada_Model_File,
+           Name => "Access_to_incomplete_type");
 
       Constr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array")),
+                          Name => "Constr_Array"),
          2 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_2")),
+                          Name => "Constr_Array_2"),
          3 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_3")),
+                          Name => "Constr_Array_3"),
          4 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Constr_Array_4")));
+                          Name => "Constr_Array_4"));
       Unconstr_Arrays :=
         (1 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array")),
+                          Name => "Unconstr_Array"),
          2 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_2")),
+                          Name => "Unconstr_Array_2"),
          3 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_3")),
+                          Name => "Unconstr_Array_3"),
          4 => New_Module (File => Ada_Model_File,
-                          Name => NID ("Unconstr_Array_4")));
+                          Name => "Unconstr_Array_4"));
 
       Array_Concat_Axioms :=
         New_Module
           (File => Gnatprove_Standard_File,
-           Name => NID ("Array__1__Concat"));
+           Name => "Array__1__Concat");
 
       Array_Int_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_Int_Rep_Comparison_Axiom"));
+           Name => "Array_Int_Rep_Comparison_Axiom");
 
       Array_BV8_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV8_Rep_Comparison_Axiom"));
+           Name => "Array_BV8_Rep_Comparison_Axiom");
 
       Array_BV16_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV16_Rep_Comparison_Axiom"));
+           Name => "Array_BV16_Rep_Comparison_Axiom");
 
       Array_BV32_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV32_Rep_Comparison_Axiom"));
+           Name => "Array_BV32_Rep_Comparison_Axiom");
 
       Array_BV64_Rep_Comparison_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Array_BV64_Rep_Comparison_Axiom"));
+           Name => "Array_BV64_Rep_Comparison_Axiom");
 
       Standard_Array_Logical_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Standard_Array_Logical_Op_Axioms"));
+           Name => "Standard_Array_Logical_Op_Axioms");
 
       Subtype_Array_Logical_Ax :=
         New_Module
           (File => Ada_Model_File,
-           Name => NID ("Subtype_Array_Logical_Op_Axioms"));
+           Name => "Subtype_Array_Logical_Op_Axioms");
 
       --  Builtin unary minus and void
 
       Int_Unary_Minus :=
         New_Identifier (Domain => EW_Term,
-                        Symbol => NID ("-"),
+                        Symb   => NID ("-"),
                         Typ    => EW_Int_Type);
       Fixed_Unary_Minus :=
         New_Identifier (Domain => EW_Term,
-                        Symbol => NID ("-"),
+                        Symb   => NID ("-"),
                         Typ    => M_Main.Fixed_Type);
 
       Void := New_Identifier (Domain => EW_Term,
-                              Symbol => NID ("()"),
+                              Symb   => NID ("()"),
                               Typ    => EW_Unit_Type);
 
       --  Builtin infix operations
 
       Why_Eq :=
         New_Identifier (Domain => EW_Term,
-                        Symbol => NID ("="),
+                        Symb   => NID ("="),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
       Why_Neq :=
         New_Identifier (Domain => EW_Term,
-                        Symbol => NID ("<>"),
+                        Symb   => NID ("<>"),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
 
       Int_Infix_Add :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("+"),
+                        Symb   => NID ("+"),
                         Typ    => EW_Int_Type,
                         Infix  => True);
       Int_Infix_Subtr :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("-"),
+                        Symb   => NID ("-"),
                         Typ    => EW_Int_Type,
                         Infix  => True);
       Int_Infix_Mult :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("*"),
+                        Symb   => NID ("*"),
                         Typ    => EW_Int_Type,
                         Infix  => True);
       Int_Infix_Le :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("<="),
+                        Symb   => NID ("<="),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
       Int_Infix_Lt :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("<"),
+                        Symb   => NID ("<"),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
       Int_Infix_Ge :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID (">="),
+                        Symb   => NID (">="),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
       Int_Infix_Gt :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID (">"),
+                        Symb   => NID (">"),
                         Typ    => EW_Bool_Type,
                         Infix  => True);
 
       Fixed_Infix_Add :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("+"),
+                        Symb   => NID ("+"),
                         Typ    => M_Main.Fixed_Type,
                         Infix  => True);
       Fixed_Infix_Subtr :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("-"),
+                        Symb   => NID ("-"),
                         Typ    => M_Main.Fixed_Type,
                         Infix  => True);
       Fixed_Infix_Mult :=
         New_Identifier (Module => Int_Module,
                         Domain => EW_Term,
-                        Symbol => NID ("*"),
+                        Symb   => NID ("*"),
                         Typ    => M_Main.Fixed_Type,
                         Infix  => True);
 
@@ -545,27 +605,27 @@ package body Why.Atree.Modules is
       String_Image_Module :=
         New_Module
           (Ada_Node => Empty,
-           File     => No_Name,
-           Name     => NID ("Standard_String__Img"));
+           File     => No_Symbol,
+           Name     => "Standard_String__Img");
 
       To_String_Id :=
         New_Identifier (Ada_Node => Standard_String,
                         Domain   => EW_Term,
                         Module   => String_Image_Module,
-                        Symbol   => NID ("to_string"));
+                        Symb     => NID ("to_string"));
 
       Of_String_Id :=
         New_Identifier (Ada_Node => Standard_String,
                         Domain   => EW_Term,
                         Module   => String_Image_Module,
-                        Symbol   => NID ("from_string"));
+                        Symb     => NID ("from_string"));
 
       --  Other identifiers
 
       Old_Tag := NID ("old");
       Def_Name :=
         New_Identifier
-          (Symbol => NID ("def"),
+          (Symb   => NID ("def"),
            Domain => EW_Term);
 
       --  Modules of _gnatprove_standard file
@@ -573,16 +633,16 @@ package body Why.Atree.Modules is
       Array_Modules :=
         (1 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__1")),
+                       Name => "Array__1"),
          2 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__2")),
+                       Name => "Array__2"),
          3 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__3")),
+                       Name => "Array__3"),
          4 =>
            New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("Array__4")));
+                       Name => "Array__4"));
    end Initialize;
 
    -----------------------
@@ -594,12 +654,12 @@ package body Why.Atree.Modules is
       M_Array : M_Array_Type;
       Ty      : constant W_Type_Id :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("map"),
+                  Name       => New_Name (Symb   => NID ("map"),
                                           Module => Module),
                   Is_Mutable => False);
       Comp_Ty : constant W_Type_Id :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("component_type"),
+                  Name       => New_Name (Symb   => NID ("component_type"),
                                           Module => Module),
                   Is_Mutable => False);
    begin
@@ -610,22 +670,22 @@ package body Why.Atree.Modules is
       M_Array.Get :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("get"),
+                        Symb   => NID ("get"),
                         Typ    => Comp_Ty);
       M_Array.Set :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("set"),
+                        Symb   => NID ("set"),
                         Typ    => Ty);
       M_Array.Bool_Eq :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_eq"),
+                        Symb   => NID ("bool_eq"),
                         Typ    => EW_Bool_Type);
       M_Array.Slide :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("slide"),
+                        Symb   => NID ("slide"),
                         Typ    => Ty);
 
       return M_Array;
@@ -640,7 +700,7 @@ package body Why.Atree.Modules is
       M_Array_1 : M_Array_1_Type;
       Ty : constant W_Type_Id :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("map"),
+                  Name       => New_Name (Symb   => NID ("map"),
                                           Module => Module),
                   Is_Mutable => False);
    begin
@@ -650,28 +710,28 @@ package body Why.Atree.Modules is
            (False =>
                 New_Identifier (Module => Module,
                                 Domain => EW_Term,
-                                Symbol => NID ("concat"),
+                                Symb   => NID ("concat"),
                                 Typ    => Ty),
             True  =>
                 New_Identifier (Module => Module,
                                 Domain => EW_Term,
-                                Symbol => NID ("concat_singleton_right"),
+                                Symb   => NID ("concat_singleton_right"),
                                 Typ    => Ty)),
          True  =>
            (False =>
                 New_Identifier (Module => Module,
                                 Domain => EW_Term,
-                                Symbol => NID ("concat_singleton_left"),
+                                Symb   => NID ("concat_singleton_left"),
                                 Typ    => Ty),
             True  =>
                 New_Identifier (Module => Module,
                                 Domain => EW_Term,
-                                Symbol => NID ("concat_singletons"),
+                                Symb   => NID ("concat_singletons"),
                                 Typ    => Ty)));
       M_Array_1.Singleton :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("singleton"),
+                        Symb   => NID ("singleton"),
                         Typ    => Ty);
 
       return M_Array_1;
@@ -691,7 +751,7 @@ package body Why.Atree.Modules is
       M_Array_1.Compare :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("compare"),
+                        Symb   => NID ("compare"),
                         Typ    => EW_Int_Type);
 
       return M_Array_1;
@@ -703,7 +763,7 @@ package body Why.Atree.Modules is
       M_Array_1 : M_Array_1_Bool_Op_Type;
       Ty : constant W_Type_Id :=
         New_Type (Type_Kind  => EW_Builtin,
-                  Name       => New_Name (Symbol => NID ("map"),
+                  Name       => New_Name (Symb   => NID ("map"),
                                           Module => Module),
                   Is_Mutable => False);
 
@@ -712,22 +772,22 @@ package body Why.Atree.Modules is
       M_Array_1.Xorb :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("xorb"),
+                        Symb   => NID ("xorb"),
                         Typ    => Ty);
       M_Array_1.Andb :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("andb"),
+                        Symb   => NID ("andb"),
                         Typ    => Ty);
       M_Array_1.Orb :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("orb"),
+                        Symb   => NID ("orb"),
                         Typ    => Ty);
       M_Array_1.Notb :=
         New_Identifier (Module => Module,
                         Domain => EW_Term,
-                        Symbol => NID ("notb"),
+                        Symb   => NID ("notb"),
                         Typ    => Ty);
 
       return M_Array_1;
@@ -739,118 +799,118 @@ package body Why.Atree.Modules is
 
    procedure Init_Boolean_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Boolean"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Boolean");
    begin
       M_Boolean.Module := M;
       M_Boolean.Bool_Eq :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_eq"),
+                        Symb   => NID ("bool_eq"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Bool_Ne :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_ne"),
+                        Symb   => NID ("bool_ne"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Bool_Le :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_le"),
+                        Symb   => NID ("bool_le"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Bool_Lt :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_lt"),
+                        Symb   => NID ("bool_lt"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Bool_Ge :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_ge"),
+                        Symb   => NID ("bool_ge"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Bool_Gt :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_gt"),
+                        Symb   => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Notb :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("notb"),
+                        Symb   => NID ("notb"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Andb :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("andb"),
+                        Symb   => NID ("andb"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Notb :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("notb"),
+                        Symb   => NID ("notb"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Orb :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("orb"),
+                        Symb   => NID ("orb"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Xorb :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("xorb"),
+                        Symb   => NID ("xorb"),
                         Typ    => EW_Bool_Type);
       M_Boolean.To_Int :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("to_int"),
+                        Symb   => NID ("to_int"),
                         Typ    => EW_Int_Type);
       M_Boolean.Of_Int :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("of_int"),
+                        Symb   => NID ("of_int"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Range_Check :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("range_check_"),
+                        Symb   => NID ("range_check_"),
                         Typ    => EW_Int_Type);
       M_Boolean.Check_Not_First :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("check_not_first"),
+                        Symb   => NID ("check_not_first"),
                         Typ    => EW_Int_Type);
       M_Boolean.Check_Not_Last :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("check_not_last"),
+                        Symb   => NID ("check_not_last"),
                         Typ    => EW_Int_Type);
       M_Boolean.First :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("first"),
+                        Symb   => NID ("first"),
                         Typ    => EW_Int_Type);
       M_Boolean.Last :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("last"),
+                        Symb   => NID ("last"),
                         Typ    => EW_Int_Type);
       M_Boolean.Range_Pred :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("in_range"),
+                        Symb   => NID ("in_range"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Dynamic_Prop :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("dynamic_property"),
+                        Symb   => NID ("dynamic_property"),
                         Typ    => EW_Bool_Type);
       M_Boolean.Image :=
         New_Identifier
-          (Symbol => NID ("attr__ATTRIBUTE_IMAGE"),
+          (Symb   => NID ("attr__ATTRIBUTE_IMAGE"),
            Module => M,
            Domain => EW_Term,
            Typ    => M_Main.String_Image_Type);
       M_Boolean.Value :=
         New_Identifier
-          (Symbol => NID ("attr__ATTRIBUTE_VALUE"),
+          (Symb   => NID ("attr__ATTRIBUTE_VALUE"),
            Module => M,
            Domain => EW_Term,
            Typ    => EW_Bool_Type);
@@ -864,123 +924,123 @@ package body Why.Atree.Modules is
       M : W_Module_Id;
    begin
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_32_64"));
+                       Name => "BVConv_32_64");
       M_BV_Conv_32_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_64_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_32_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_16_64"));
+                       Name => "BVConv_16_64");
       M_BV_Conv_16_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_64_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_16_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_64"));
+                       Name => "BVConv_8_64");
       M_BV_Conv_8_64 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_64_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_8_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_64_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_16_32"));
+                       Name => "BVConv_16_32");
       M_BV_Conv_16_32 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_32_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_16_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_32_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_32"));
+                       Name => "BVConv_8_32");
       M_BV_Conv_8_32 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_32_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_8_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_32_Type));
 
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("BVConv_8_16"));
+                       Name => "BVConv_8_16");
       M_BV_Conv_8_16 :=
         M_BV_Conv_Type'(Module => M,
                         To_Big =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toBig"),
+                                          Symb   => NID ("toBig"),
                                           Typ => EW_BitVector_16_Type),
                         To_Small =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("toSmall"),
+                                          Symb   => NID ("toSmall"),
                                           Typ => EW_BitVector_8_Type),
                         Range_Check =>
                           New_Identifier (Module => M,
                                           Domain => EW_Term,
-                                          Symbol => NID ("range_check_"),
+                                          Symb   => NID ("range_check_"),
                                           Typ => EW_BitVector_16_Type));
 
    end Init_BV_Conv_Modules;
@@ -993,192 +1053,202 @@ package body Why.Atree.Modules is
    begin
       M_BVs (BV8).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV8"));
+                    Name => "BV8");
       M_BVs (BV16).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV16"));
+                    Name => "BV16");
       M_BVs (BV32).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV32"));
+                    Name => "BV32");
       M_BVs (BV64).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("BV64"));
+                    Name => "BV64");
       for BV in BV_Kind loop
          M_BVs (BV).T :=
            New_Type (Type_Kind  => EW_Builtin,
-                     Name       => New_Name (Symbol => NID ("t"),
+                     Name       => New_Name (Symb   => NID ("t"),
                                              Module => M_BVs (BV).Module),
                      Is_Mutable => False);
          M_BVs (BV).Ult :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("ult"),
+                           Symb   => NID ("ult"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Ule :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("ule"),
+                           Symb   => NID ("ule"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Ugt :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("ugt"),
+                           Symb   => NID ("ugt"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Uge :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("uge"),
+                           Symb   => NID ("uge"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).BV_Min :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bv_min"),
+                           Symb   => NID ("bv_min"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BV_Max :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bv_max"),
+                           Symb   => NID ("bv_max"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Bool_Eq :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_eq"),
+                           Symb   => NID ("bool_eq"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Bool_Ne :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_ne"),
+                           Symb   => NID ("bool_ne"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Bool_Le :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_le"),
+                           Symb   => NID ("bool_le"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Bool_Lt :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_lt"),
+                           Symb   => NID ("bool_lt"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Bool_Ge :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_ge"),
+                           Symb   => NID ("bool_ge"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).Bool_Gt :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bool_gt"),
+                           Symb   => NID ("bool_gt"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Bool_Type);
          M_BVs (BV).One :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("one"),
+                           Symb   => NID ("one"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Add :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("add"),
+                           Symb   => NID ("add"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Sub :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("sub"),
+                           Symb   => NID ("sub"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Neg :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("neg"),
+                           Symb   => NID ("neg"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Mult :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("mul"),
+                           Symb   => NID ("mul"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Power :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("power"),
+                           Symb   => NID ("power"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Udiv :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("udiv"),
+                           Symb   => NID ("udiv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Urem :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("urem"),
+                           Symb   => NID ("urem"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Urem :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("urem"),
+                           Symb   => NID ("urem"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BW_And :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bw_and"),
+                           Symb   => NID ("bw_and"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BW_Or :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bw_or"),
+                           Symb   => NID ("bw_or"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BW_Xor :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bw_xor"),
+                           Symb   => NID ("bw_xor"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BW_Not :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("bw_not"),
+                           Symb   => NID ("bw_not"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).BV_Abs :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("abs"),
+                           Symb   => NID ("abs"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Lsl :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("lsl_bv"),
+                           Symb   => NID ("lsl_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Lsr :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("lsr_bv"),
+                           Symb   => NID ("lsr_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Asr :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("asr_bv"),
+                           Symb   => NID ("asr_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Rotate_Left :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("rotate_left_bv"),
+                           Symb   => NID ("rotate_left_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Rotate_Right :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("rotate_right_bv"),
+                           Symb   => NID ("rotate_right_bv"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).Of_Int :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("of_int"),
+                           Symb   => NID ("of_int"),
                            Module => M_BVs (BV).Module,
                            Typ    => M_BVs (BV).T);
          M_BVs (BV).To_Int :=
            New_Identifier (Domain => EW_Term,
-                           Symbol => NID ("t'int"),
+                           Symb   => NID ("t_int"),
                            Module => M_BVs (BV).Module,
                            Typ    => EW_Int_Type);
          M_BVs (BV).Two_Power_Size :=
            New_Identifier (Module => M_BVs (BV).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("two_power_size"),
-                           Typ => EW_Int_Type);
+                           Symb   => NID ("_two_power_size"),
+                           Typ    => EW_Int_Type);
+         M_BVs (BV).Prog_Eq :=
+           New_Identifier (Module => M_BVs (BV).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("eq"),
+                           Typ    => EW_Bool_Type);
+         M_BVs (BV).Prog_Neq :=
+           New_Identifier (Module => M_BVs (BV).Module,
+                           Domain => EW_Term,
+                           Symb   => NID ("neq"),
+                           Typ    => EW_Bool_Type);
       end loop;
       EW_BitVector_8_Type  := M_BVs (BV8).T;
       EW_BitVector_16_Type := M_BVs (BV16).T;
@@ -1193,13 +1263,13 @@ package body Why.Atree.Modules is
    procedure Init_Compat_Tags_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Compatible_Tags"));
+                    Name => "Compatible_Tags");
    begin
       M_Compat_Tags.Module := M;
       M_Compat_Tags.Compat_Tags_Id :=
         New_Identifier (Domain => EW_Pred,
                         Module => M,
-                        Symbol => NID ("__compatible_tags"),
+                        Symb   => NID ("__compatible_tags"),
                         Typ    => EW_Bool_Type);
    end Init_Compat_Tags_Module;
 
@@ -1211,25 +1281,25 @@ package body Why.Atree.Modules is
       M : W_Module_Id;
    begin
       M := New_Module (File => Gnatprove_Standard_File,
-                       Name => NID ("FloatConv"));
+                       Name => "FloatConv");
       M_Floating_Conv :=
         M_Floating_Conv_Type'(Module      => M,
                               To_Float64  =>
                                 New_Identifier (Module => M,
                                                 Domain => EW_Term,
-                                                Symbol =>
+                                                Symb   =>
                                                   NID ("to_float64_rne"),
                                                 Typ    => EW_Float_64_Type),
                               To_Float32  =>
                                 New_Identifier (Module => M,
                                                 Domain => EW_Term,
-                                                Symbol =>
+                                                Symb   =>
                                                   NID ("to_float32_rne"),
                                                 Typ    => EW_Float_32_Type),
                               Range_Check =>
                                 New_Identifier (Module => M,
                                                 Domain => EW_Term,
-                                                Symbol => NID ("range_check_"),
+                                                Symb   => NID ("range_check_"),
                                                 Typ    => EW_Float_64_Type));
    end Init_Floating_Conv_Module;
 
@@ -1240,324 +1310,324 @@ package body Why.Atree.Modules is
    procedure Init_Floating_Module is
       Float32_BV_Converter : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_BV_Converter"));
+                    Name => "Float32_BV_Converter");
       Float64_BV_Converter : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_BV_Converter"));
+                    Name => "Float64_BV_Converter");
    begin
       M_Floats (Float32).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32"));
+                    Name => "Float32");
       M_Floats (Float64).Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64"));
+                    Name => "Float64");
       M_Floats (Float32).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_power"));
+                    Name => "Float32_power");
       M_Floats (Float64).Power_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_power"));
+                    Name => "Float64_power");
       M_Floats (Float32).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float32_next_prev"));
+                    Name => "Float32_next_prev");
       M_Floats (Float64).Next_Prev_Module :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Float64_next_prev"));
+                    Name => "Float64_next_prev");
 
       for Fl in Floating_Kind loop
          M_Floats (Fl).T :=
            New_Type (Type_Kind  => EW_Builtin,
-                     Name       => New_Name (Symbol => NID ("t"),
+                     Name       => New_Name (Symb   => NID ("t"),
                                              Module => M_Floats (Fl).Module),
                      Is_Mutable => False);
          M_Floats (Fl).Bool_Eq :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_eq"),
+                           Symb   => NID ("bool_eq"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Bool_Ne :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_neq"),
+                           Symb   => NID ("bool_neq"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Bool_Le :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_le"),
+                           Symb   => NID ("bool_le"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Bool_Lt :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_lt"),
+                           Symb   => NID ("bool_lt"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Bool_Ge :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_ge"),
+                           Symb   => NID ("bool_ge"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Bool_Gt :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("bool_gt"),
+                           Symb   => NID ("bool_gt"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Max :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("max"),
+                           Symb   => NID ("max"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Min :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("min"),
+                           Symb   => NID ("min"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Abs_Float :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("abs"),
+                           Symb   => NID ("abs"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Ceil :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("ceil"),
+                           Symb   => NID ("ceil"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Floor :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("floor"),
+                           Symb   => NID ("floor"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Is_Finite :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("t'isFinite"),
+                           Symb   => NID ("t'isFinite"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Power :=
            New_Identifier (Module => M_Floats (Fl).Power_Module,
                            Domain => EW_Term,
-                           Symbol => NID ("power"),
+                           Symb   => NID ("power"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).To_Int :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("to_int_rna"),
+                           Symb   => NID ("to_int_rna"),
                            Typ    => EW_Int_Type);
          M_Floats (Fl).Rounding :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("rounding"),
+                           Symb   => NID ("rounding"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_Int :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("of_int_rne"),
+                           Symb   => NID ("of_int_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Truncate :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("truncate"),
+                           Symb   => NID ("truncate"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Unary_Minus :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("neg"),
+                           Symb   => NID ("neg"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Add :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("add_rne"),
+                           Symb   => NID ("add_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Subtr :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("sub_rne"),
+                           Symb   => NID ("sub_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Mult :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("mul_rne"),
+                           Symb   => NID ("mul_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Div :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("div_rne"),
+                           Symb   => NID ("div_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Remainder :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("rem"),
+                           Symb   => NID ("rem"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Le :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("le"),
+                           Symb   => NID ("le"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Lt :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("lt"),
+                           Symb   => NID ("lt"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Ge :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("ge"),
+                           Symb   => NID ("ge"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Gt :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("gt"),
+                           Symb   => NID ("gt"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Eq :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("eq"),
+                           Symb   => NID ("eq"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Neq :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("neq"),
+                           Symb   => NID ("neq"),
                            Typ    => EW_Bool_Type);
          M_Floats (Fl).Prev_Rep :=
            New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
                            Domain => EW_Term,
-                           Symbol => NID ("prev_representable"),
+                           Symb   => NID ("prev_representable"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Next_Rep :=
            New_Identifier (Module => M_Floats (Fl).Next_Prev_Module,
                            Domain => EW_Term,
-                           Symbol => NID ("next_representable"),
+                           Symb   => NID ("next_representable"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Plus_Zero :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("zeroF"),
+                           Symb   => NID ("_zeroF"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).One :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("one"),
+                           Symb   => NID ("one"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Sqrt :=
            New_Identifier (Module => M_Floats (Fl).Module,
                            Domain => EW_Term,
-                           Symbol => NID ("sqrt_rne"),
+                           Symb   => NID ("sqrt_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv8_rne"),
+                           Symb   => NID ("of_ubv8_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV16 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv16_rne"),
+                           Symb   => NID ("of_ubv16_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV32 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv32_rne"),
+                           Symb   => NID ("of_ubv32_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV64 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv64_rne"),
+                           Symb   => NID ("of_ubv64_rne"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8_RTN :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv8_rtn"),
+                           Symb   => NID ("of_ubv8_rtn"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV16_RTN :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv16_rtn"),
+                           Symb   => NID ("of_ubv16_rtn"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV32_RTN :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv32_rtn"),
+                           Symb   => NID ("of_ubv32_rtn"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV64_RTN :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv64_rtn"),
+                           Symb   => NID ("of_ubv64_rtn"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV8_RTP :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv8_rtp"),
+                           Symb   => NID ("of_ubv8_rtp"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV16_RTP :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv16_rtp"),
+                           Symb   => NID ("of_ubv16_rtp"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV32_RTP :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv32_rtp"),
+                           Symb   => NID ("of_ubv32_rtp"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).Of_BV64_RTP :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("of_ubv64_rtp"),
+                           Symb   => NID ("of_ubv64_rtp"),
                            Typ    => M_Floats (Fl).T);
          M_Floats (Fl).To_BV8 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("to_ubv8_rna"),
+                           Symb   => NID ("to_ubv8_rna"),
                            Typ    => EW_BitVector_8_Type);
          M_Floats (Fl).To_BV16 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("to_ubv16_rna"),
+                           Symb   => NID ("to_ubv16_rna"),
                            Typ    => EW_BitVector_16_Type);
          M_Floats (Fl).To_BV32 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("to_ubv32_rna"),
+                           Symb   => NID ("to_ubv32_rna"),
                            Typ    => EW_BitVector_32_Type);
          M_Floats (Fl).To_BV64 :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("to_ubv64_rna"),
+                           Symb   => NID ("to_ubv64_rna"),
                            Typ    => EW_BitVector_64_Type);
          M_Floats (Fl).Range_Check :=
            New_Identifier (Module => (if Fl = Float32
                                       then Float32_BV_Converter
                                       else Float64_BV_Converter),
                            Domain => EW_Term,
-                           Symbol => NID ("range_check_"),
+                           Symb   => NID ("range_check_"),
                            Typ    => M_Floats (Fl).T);
       end loop;
 
@@ -1572,13 +1642,13 @@ package body Why.Atree.Modules is
    procedure Init_Int_Abs_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Abs"));
+                    Name => "Int_Abs");
    begin
       M_Int_Abs.Module := M;
       M_Int_Abs.Abs_Id :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("abs"),
+                        Symb   => NID ("abs"),
                         Typ    => EW_Int_Type);
    end Init_Int_Abs_Module;
 
@@ -1589,33 +1659,33 @@ package body Why.Atree.Modules is
    procedure Init_Int_Div_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Division"));
+                    Name => "Int_Division");
    begin
       M_Int_Div.Module := M;
       M_Int_Div.Div :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("div"),
+                        Symb   => NID ("div"),
                         Typ    => EW_Int_Type);
       M_Int_Div.Euclid :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("euclid_div"),
+                        Symb   => NID ("euclid_div"),
                         Typ    => EW_Int_Type);
       M_Int_Div.Rem_Id :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("rem"),
+                        Symb   => NID ("rem"),
                         Typ    => EW_Int_Type);
       M_Int_Div.Mod_Id :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("mod"),
+                        Symb   => NID ("mod"),
                         Typ    => EW_Int_Type);
       M_Int_Div.Math_Mod :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("math_mod"),
+                        Symb   => NID ("math_mod"),
                         Typ    => EW_Int_Type);
    end Init_Int_Div_Module;
 
@@ -1626,19 +1696,19 @@ package body Why.Atree.Modules is
    procedure Init_Int_Minmax_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Minmax"));
+                    Name => "Int_Minmax");
 
    begin
       M_Int_Minmax.Module := M;
       M_Int_Minmax.Max :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("int_max"),
+                        Symb   => NID ("int_max"),
                         Typ    => EW_Int_Type);
       M_Int_Minmax.Min :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("int_min"),
+                        Symb   => NID ("int_min"),
                         Typ    => EW_Int_Type);
    end Init_Int_Minmax_Module;
 
@@ -1648,43 +1718,43 @@ package body Why.Atree.Modules is
 
    procedure Init_Integer_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Integer"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Integer");
    begin
       M_Integer.Module := M;
       M_Integer.Bool_Eq :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_eq"),
+                        Symb   => NID ("bool_eq"),
                         Typ    => EW_Bool_Type);
       M_Integer.Bool_Ne :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_ne"),
+                        Symb   => NID ("bool_ne"),
                         Typ    => EW_Bool_Type);
       M_Integer.Bool_Le :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_le"),
+                        Symb   => NID ("bool_le"),
                         Typ    => EW_Bool_Type);
       M_Integer.Bool_Lt :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_lt"),
+                        Symb   => NID ("bool_lt"),
                         Typ    => EW_Bool_Type);
       M_Integer.Bool_Ge :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_ge"),
+                        Symb   => NID ("bool_ge"),
                         Typ    => EW_Bool_Type);
       M_Integer.Bool_Gt :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("bool_gt"),
+                        Symb   => NID ("bool_gt"),
                         Typ    => EW_Bool_Type);
       M_Integer.Length :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("length"),
+                        Symb   => NID ("length"),
                         Typ    => EW_Int_Type);
    end Init_Integer_Module;
 
@@ -1695,13 +1765,13 @@ package body Why.Atree.Modules is
    procedure Init_Int_Power_Module is
       M : constant W_Module_Id :=
         New_Module (File => Gnatprove_Standard_File,
-                    Name => NID ("Int_Power"));
+                    Name => "Int_Power");
    begin
       M_Int_Power.Module := M;
       M_Int_Power.Power :=
         New_Identifier (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("power"),
+                        Symb   => NID ("power"),
                         Typ    => EW_Int_Type);
    end Init_Int_Power_Module;
 
@@ -1713,10 +1783,9 @@ package body Why.Atree.Modules is
    begin
       Model_Trace       := NID (Model_Trace_Label);
       Model_Projected   := NID (Model_Proj_Label);
-      Model_VC          := NID (Model_VC_Label);
+      VC_Annotation     := NID (VC_Annotation_Label);
       Model_VC_Post     := NID (Model_VC_Post_Label);
       GP_Already_Proved := NID (GP_Already_Proved_Marker);
-      Keep_On_Simp      := NID (Keep_On_Simp_Marker);
    end Init_Labels;
 
    ----------------------
@@ -1725,49 +1794,49 @@ package body Why.Atree.Modules is
 
    procedure Init_Main_Module is
       M : constant W_Module_Id :=
-        New_Module (File => Gnatprove_Standard_File, Name => NID ("Main"));
+        New_Module (File => Gnatprove_Standard_File, Name => "Main");
    begin
       M_Main.Module := M;
       M_Main.String_Image_Type :=
         New_Type (Type_Kind  => EW_Abstract,
                   Name       =>
-                    New_Name (Symbol => NID ("__image"), Module => M),
+                    New_Name (Symb => NID ("__image"), Module => M),
                   Is_Mutable => False);
 
       M_Main.Type_Of_Heap :=
         New_Type (Type_Kind  => EW_Abstract,
-                  Name       => New_Name (Symbol => NID ("__type_of_heap"),
+                  Name       => New_Name (Symb   => NID ("__type_of_heap"),
                                           Module => M),
                   Is_Mutable => False);
       M_Main.Fixed_Type :=
         New_Type (Type_Kind  => EW_Builtin,
                   Name       =>
-                    New_Name (Symbol => NID ("__fixed"), Module => M),
+                    New_Name (Symb => NID ("__fixed"), Module => M),
                   Is_Mutable => False);
       M_Main.Private_Type :=
         New_Type (Type_Kind  => EW_Builtin,
                   Name       =>
-                    New_Name (Symbol => NID ("__private"), Module => M),
+                    New_Name (Symb => NID ("__private"), Module => M),
                   Is_Mutable => False);
       M_Main.Private_Bool_Eq :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("private__bool_eq"),
+                        Symb   => NID ("private__bool_eq"),
                         Typ    => EW_Bool_Type);
 
       M_Main.Return_Exc :=
-        New_Name (Symbol => NID ("Return__exc"));
+        New_Name (Symb => NID ("Return__exc"));
 
       M_Main.Null_Extension :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("__null_ext__"),
+                        Symb   => NID ("__null_ext__"),
                         Typ    => M_Main.Private_Type);
 
       M_Main.Spark_CE_Branch :=
         New_Identifier (Domain => EW_Term,
                         Module => M,
-                        Symbol => NID ("spark__branch"),
+                        Symb   => NID ("spark__branch"),
                         Typ    => EW_Bool_Type);
 
       EW_Private_Type := M_Main.Private_Type;
@@ -1848,28 +1917,28 @@ package body Why.Atree.Modules is
          Insert_Symbol
            (E, WNE_Attr_Address,
             New_Identifier
-              (Symbol => NID ("attr__ATTRIBUTE_ADDRESS"),
+              (Symb   => NID ("attr__ATTRIBUTE_ADDRESS"),
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Int_Type));
          Insert_Symbol
            (E, WNE_Attr_First_Bit,
             New_Identifier
-              (Symbol => NID (Name & "__first__bit"),
+              (Symb   => NID (Name & "__first__bit"),
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Int_Type));
          Insert_Symbol
            (E, WNE_Attr_Last_Bit,
             New_Identifier
-              (Symbol => NID (Name & "__last__bit"),
+              (Symb   => NID (Name & "__last__bit"),
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Int_Type));
          Insert_Symbol
            (E, WNE_Attr_Position,
             New_Identifier
-              (Symbol => NID (Name & "__position"),
+              (Symb   => NID (Name & "__position"),
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Int_Type));
@@ -1889,7 +1958,7 @@ package body Why.Atree.Modules is
          Insert_Symbol
            (E, WNE_Check_Invariants_On_Call,
             New_Identifier
-              (Symbol => NID (Name & "__check_invariants_on_call"),
+              (Symb   => NID (Name & "__check_invariants_on_call"),
                Module => M_Ax,
                Domain => EW_Prog,
                Typ    => EW_Unit_Type));
@@ -1897,7 +1966,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Func_Guard,
                New_Identifier
-                 (Symbol => NID (Name & "__" & Function_Guard),
+                 (Symb   => NID (Name & "__" & Function_Guard),
                   Module => M,
                   Domain => EW_Pred,
                   Typ    => EW_Unit_Type));
@@ -1908,7 +1977,7 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Refined_Func_Guard,
                   New_Identifier
-                    (Symbol    => NID (Name & "__" & Function_Guard),
+                    (Symb      => NID (Name & "__" & Function_Guard),
                      Module    => M,
                      Namespace => NID (To_String (WNE_Refine_Module)),
                      Domain    => EW_Pred,
@@ -1919,7 +1988,7 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Dispatch_Func_Guard,
                   New_Identifier
-                    (Symbol    => NID (Name & "__" & Function_Guard),
+                    (Symb      => NID (Name & "__" & Function_Guard),
                      Module    => M,
                      Namespace => NID (To_String (WNE_Dispatch_Module)),
                      Domain    => EW_Pred,
@@ -1929,7 +1998,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Specific_Post,
                New_Identifier
-                 (Symbol    => NID (Name & "__" & Specific_Post),
+                 (Symb      => NID (Name & "__" & Specific_Post),
                   Module    => M,
                   Namespace => NID (To_String (WNE_Dispatch_Module)),
                   Domain    => EW_Pred,
@@ -1948,10 +2017,33 @@ package body Why.Atree.Modules is
          Ty   : constant W_Type_Id   := EW_Abstract (E);
 
       begin
+         --  Insert symbols for the initialization wrapper if any
+
+         if Needs_Init_Wrapper_Type (E) then
+            declare
+               WM  : constant W_Module_Id := E_Init_Module (E);
+            begin
+               Insert_Symbol
+                 (E, WNE_Init_Value,
+                  New_Identifier
+                    (Symb   => NID ("rec__value"),
+                     Module => WM,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+               Insert_Symbol
+                 (E, WNE_Attr_Init,
+                  New_Identifier
+                    (Symb   => NID ("attr__init"),
+                     Module => WM,
+                     Domain => EW_Term,
+                     Typ    => EW_Bool_Type));
+            end;
+         end if;
+
          Insert_Symbol
            (E, WNE_Bool_Eq,
             New_Identifier
-              (Symbol => NID ("bool_eq"),
+              (Symb   => NID ("bool_eq"),
                Module => M,
                Domain => EW_Term,
                Typ    => EW_Bool_Type));
@@ -1959,7 +2051,7 @@ package body Why.Atree.Modules is
          Insert_Symbol
            (E, WNE_Dummy,
             New_Identifier
-              (Symbol => NID ("dummy"),
+              (Symb   => NID ("dummy"),
                Module => M,
                Domain => EW_Term,
                Typ    => Ty));
@@ -1975,7 +2067,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Dynamic_Predicate,
                New_Identifier
-                 (Symbol => NID ("dynamic_predicate"),
+                 (Symb   => NID ("dynamic_predicate"),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -1992,7 +2084,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Dynamic_Invariant,
                New_Identifier
-                 (Symbol => NID ("dynamic_invariant"),
+                 (Symb   => NID ("dynamic_invariant"),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -2009,7 +2101,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Type_Invariant,
                New_Identifier
-                 (Symbol => NID ("type_invariant"),
+                 (Symb   => NID ("type_invariant"),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -2026,7 +2118,7 @@ package body Why.Atree.Modules is
             Insert_Symbol
               (E, WNE_Default_Init,
                New_Identifier
-                 (Symbol => NID ("default_initial_assumption"),
+                 (Symb   => NID ("default_initial_assumption"),
                   Module => AM,
                   Domain => EW_Term,
                   Typ    => EW_Bool_Type));
@@ -2042,42 +2134,42 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Attr_Image,
                   New_Identifier
-                    (Symbol => NID ("attr__ATTRIBUTE_IMAGE"),
+                    (Symb   => NID ("attr__ATTRIBUTE_IMAGE"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => M_Main.String_Image_Type));
                Insert_Symbol
                  (E, WNE_Attr_Value,
                   New_Identifier
-                    (Symbol => NID ("attr__ATTRIBUTE_VALUE"),
+                    (Symb   => NID ("attr__ATTRIBUTE_VALUE"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
                Insert_Symbol
                  (E, WNE_Check_Not_First,
                   New_Identifier
-                    (Symbol => NID ("check_not_first"),
+                    (Symb   => NID ("check_not_first"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
                Insert_Symbol
                  (E, WNE_Check_Not_Last,
                   New_Identifier
-                    (Symbol => NID ("check_not_last"),
+                    (Symb   => NID ("check_not_last"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
                Insert_Symbol
                  (E, WNE_Range_Check_Fun,
                   New_Identifier
-                    (Symbol => NID ("range_check_"),
+                    (Symb   => NID ("range_check_"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
                Insert_Symbol
                  (E, WNE_Dynamic_Property,
                   New_Identifier
-                    (Symbol => NID ("dynamic_property"),
+                    (Symb   => NID ("dynamic_property"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
@@ -2091,7 +2183,7 @@ package body Why.Atree.Modules is
                      New_Identifier
                        (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID (Name & "'int"),
+                        Symb   => NID (Name & "'int"),
                         Typ    => EW_Int_Type));
                end if;
 
@@ -2108,7 +2200,7 @@ package body Why.Atree.Modules is
                      New_Identifier
                        (Module => RM,
                         Domain => EW_Term,
-                        Symbol => NID ("to_rep"),
+                        Symb   => NID ("to_rep"),
                         Typ    => Base));
 
                   Insert_Symbol
@@ -2116,21 +2208,21 @@ package body Why.Atree.Modules is
                      New_Identifier
                        (Module => RM,
                         Domain => EW_Term,
-                        Symbol => NID ("of_rep"),
+                        Symb   => NID ("of_rep"),
                         Typ    => Ty));
                end;
 
                Insert_Symbol
                  (E, WNE_Attr_First,
                   New_Identifier
-                    (Symbol => NID ("first"),
+                    (Symb   => NID ("first"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
                Insert_Symbol
                  (E, WNE_Attr_Last,
                   New_Identifier
-                    (Symbol => NID ("last"),
+                    (Symb   => NID ("last"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Base));
@@ -2143,7 +2235,7 @@ package body Why.Atree.Modules is
                      New_Identifier
                        (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("in_range"),
+                        Symb   => NID ("in_range"),
                         Typ    => EW_Bool_Type));
                end if;
 
@@ -2155,7 +2247,7 @@ package body Why.Atree.Modules is
 
                      To_Int : constant W_Identifier_Id :=
                        New_Identifier
-                         (Symbol => NID ("to_int"),
+                         (Symb   => NID ("to_int"),
                           Module => RM,
                           Domain => EW_Term,
                           Typ    => EW_Int_Type);
@@ -2165,28 +2257,28 @@ package body Why.Atree.Modules is
                      Insert_Symbol
                        (E, WNE_Of_BitVector,
                         New_Identifier
-                          (Symbol => NID ("of_int"),
+                          (Symb   => NID ("of_int"),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => Base));
                      Insert_Symbol
                        (E, WNE_Dynamic_Property_BV_Int,
                         New_Identifier
-                          (Symbol => NID ("dynamic_property_int"),
+                          (Symb   => NID ("dynamic_property_int"),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
                      Insert_Symbol
                        (E, WNE_Attr_Modulus,
                         New_Identifier
-                          (Symbol => NID ("attr__ATTRIBUTE_MODULUS"),
+                          (Symb   => NID ("attr__ATTRIBUTE_MODULUS"),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => Base));
                      Insert_Symbol
                        (E, WNE_Range_Check_Fun_BV_Int,
                         New_Identifier
-                          (Symbol => NID ("range_check_int_"),
+                          (Symb   => NID ("range_check_int_"),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Int_Type));
@@ -2203,7 +2295,7 @@ package body Why.Atree.Modules is
                      New_Identifier
                        (Module => M,
                         Domain => EW_Term,
-                        Symbol => NID ("in_range_int"),
+                        Symb   => NID ("in_range_int"),
                         Typ    => EW_Bool_Type));
                end if;
 
@@ -2213,57 +2305,67 @@ package body Why.Atree.Modules is
                   Insert_Symbol
                     (E, WNE_Small_Num,
                      New_Identifier
-                       (Symbol => NID ("num_small"),
+                       (Symb   => NID ("num_small"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Base));
                   Insert_Symbol
                     (E, WNE_Small_Den,
                      New_Identifier
-                       (Symbol => NID ("den_small"),
+                       (Symb   => NID ("den_small"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => Base));
+
+               --  Symbol for enum_rep attribute of enumeration types
+
+               elsif Is_Enumeration_Type (E)
+                 and then Has_Enumeration_Rep_Clause (E)
+               then
+                  Insert_Symbol
+                    (E, WNE_Pos_To_Rep,
+                     New_Identifier
+                       (Symb   => NID ("pos_to_rep"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => EW_Int_Type));
                end if;
             end;
 
          --  Symbols for record types
 
-         elsif Is_Record_Type (E)
-           or else Full_View_Not_In_SPARK (E)
-           or else Is_Concurrent_Type (E)
-         then
+         elsif Is_Record_Type_In_Why (E) then
             declare
                Root    : constant Entity_Id :=
-                 Root_Record_Type (E);
+                 Root_Retysp (E);
                Root_Ty : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
             begin
                Insert_Symbol
                  (E, WNE_Attr_Alignment,
                   New_Identifier
-                    (Symbol => NID ("alignment"),
+                    (Symb   => NID ("alignment"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Value_Size,
                   New_Identifier
-                    (Symbol => NID ("value__size"),
+                    (Symb   => NID ("value__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Object_Size,
                   New_Identifier
-                    (Symbol => NID ("object__size"),
+                    (Symb   => NID ("object__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Range_Check_Fun,
                   New_Identifier
-                    (Symbol => NID ("range_check_"),
+                    (Symb   => NID ("range_check_"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Root_Ty));
@@ -2272,32 +2374,32 @@ package body Why.Atree.Modules is
                   New_Identifier
                     (Module => M,
                      Domain => EW_Term,
-                     Symbol => NID ("in_range"),
+                     Symb   => NID ("in_range"),
                      Typ    => EW_Bool_Type));
                Insert_Symbol
                  (E, WNE_To_Base,
                   New_Identifier
-                    (Symbol => NID ("to_base"),
+                    (Symb   => NID ("to_base"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Root_Ty));
                Insert_Symbol
                  (E, WNE_Of_Base,
                   New_Identifier
-                    (Symbol => NID ("of_base"),
+                    (Symb   => NID ("of_base"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
                Insert_Symbol
                  (E, WNE_Rec_Split_Discrs,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Split_Discrs)),
+                    (Symb   => NID (To_String (WNE_Rec_Split_Discrs)),
                      Module => M,
                      Domain => EW_Term));
                Insert_Symbol
                  (E, WNE_Rec_Split_Fields,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Split_Fields)),
+                    (Symb   => NID (To_String (WNE_Rec_Split_Fields)),
                      Module => M,
                      Domain => EW_Term));
 
@@ -2305,13 +2407,13 @@ package body Why.Atree.Modules is
                   Insert_Symbol
                     (E, WNE_Private_Type,
                      New_Identifier
-                       (Symbol => NID ("__main_type"),
+                       (Symb   => NID ("__main_type"),
                         Module => M,
                         Domain => EW_Term));
                   Insert_Symbol
                     (E, WNE_Private_Eq,
                      New_Identifier
-                       (Symbol => NID ("__main_eq"),
+                       (Symb   => NID ("__main_eq"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Bool_Type));
@@ -2321,28 +2423,28 @@ package body Why.Atree.Modules is
                   Insert_Symbol
                     (E, WNE_Dispatch_Eq,
                      New_Identifier
-                       (Symbol => NID ("__dispatch_eq"),
+                       (Symb   => NID ("__dispatch_eq"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Bool_Type));
                   Insert_Symbol
                     (E, WNE_Attr_Tag,
                      New_Identifier
-                       (Symbol => NID ("attr__tag"),
+                       (Symb   => NID ("attr__tag"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
                   Insert_Symbol
                     (E, WNE_Tag,
                      New_Identifier
-                       (Symbol => NID ("__tag"),
+                       (Symb   => NID ("__tag"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Int_Type));
                   Insert_Symbol
                     (E, WNE_Rec_Extension,
                      New_Identifier
-                       (Symbol => NID ("rec__ext__"),
+                       (Symb   => NID ("rec__ext__"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Private_Type));
@@ -2352,7 +2454,7 @@ package body Why.Atree.Modules is
                   Insert_Symbol
                     (E, WNE_Attr_Constrained,
                      New_Identifier
-                       (Symbol => NID ("attr__constrained"),
+                       (Symb   => NID ("attr__constrained"),
                         Module => M,
                         Domain => EW_Term,
                         Typ    => EW_Bool_Type));
@@ -2368,56 +2470,56 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Attr_Alignment,
                   New_Identifier
-                    (Symbol => NID ("alignment"),
+                    (Symb   => NID ("alignment"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Value_Size,
                   New_Identifier
-                    (Symbol => NID ("value__size"),
+                    (Symb   => NID ("value__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Object_Size,
                   New_Identifier
-                    (Symbol => NID ("object__size"),
+                    (Symb   => NID ("object__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Attr_Component_Size,
                   New_Identifier
-                    (Symbol => NID ("component__size"),
+                    (Symb   => NID ("component__size"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Int_Type));
                Insert_Symbol
                  (E, WNE_Dynamic_Property,
                   New_Identifier
-                    (Symbol => NID ("dynamic_property"),
+                    (Symb   => NID ("dynamic_property"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => EW_Bool_Type));
                Insert_Symbol
                  (E, WNE_To_Array,
                   New_Identifier
-                    (Symbol => NID ("to_array"),
+                    (Symb   => NID ("to_array"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Get_Array_Theory (E).Ty));
                Insert_Symbol
                  (E, WNE_Of_Array,
                   New_Identifier
-                    (Symbol => NID ("of_array"),
+                    (Symb   => NID ("of_array"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Ty));
                Insert_Symbol
                  (E, WNE_Array_Elts,
                   New_Identifier
-                    (Symbol => NID ("elts"),
+                    (Symb   => NID ("elts"),
                      Module => M,
                      Domain => EW_Term,
                      Typ    => Get_Array_Theory (E).Ty));
@@ -2435,7 +2537,7 @@ package body Why.Atree.Modules is
                         New_Identifier
                           (Module => RM,
                            Domain => EW_Term,
-                           Symbol => NID ("to_rep"),
+                           Symb   => NID ("to_rep"),
                            Typ    => EW_Abstract (Component_Type (E))));
                   end;
                end if;
@@ -2462,42 +2564,42 @@ package body Why.Atree.Modules is
                      Insert_Symbol
                        (E, WNE_Attr_First (Dim),
                         New_Identifier
-                          (Symbol => NID (First_Str),
+                          (Symb   => NID (First_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_Attr_Last (Dim),
                         New_Identifier
-                          (Symbol => NID (Last_Str),
+                          (Symb   => NID (Last_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_Attr_Length (Dim),
                         New_Identifier
-                          (Symbol => NID (Length_Str),
+                          (Symb   => NID (Length_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_To_Int (Dim),
                         New_Identifier
-                          (Symbol => NID (Int_Str),
+                          (Symb   => NID (Int_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Int_Type));
                      Insert_Symbol
                        (E, WNE_Array_Base_Range_Pred (Dim),
                         New_Identifier
-                          (Symbol => NID (Base_Range_Str),
+                          (Symb   => NID (Base_Range_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
                      Insert_Symbol
                        (E, WNE_Index_Dynamic_Property (Dim),
                         New_Identifier
-                          (Symbol => NID (Index_Str),
+                          (Symb   => NID (Index_Str),
                            Module => M,
                            Domain => EW_Term,
                            Typ    => EW_Bool_Type));
@@ -2507,49 +2609,32 @@ package body Why.Atree.Modules is
 
          --  Symbols for access types
 
-         elsif Is_Access_Type (E) then
+         elsif Has_Access_Type (E) then
             declare
+               Is_Incompl     : constant Boolean :=
+                 Designates_Incomplete_Type (Repr_Pointer_Type (E));
                Root           : constant Entity_Id := Root_Pointer_Type (E);
                Root_Ty        : constant W_Type_Id :=
                  New_Named_Type (To_Why_Type (Root));
                Full_Name_Node : constant String := Full_Name (Root);
+               M_C            : constant W_Module_Id :=
+                 (if Is_Incompl then E_Compl_Module (Repr_Pointer_Type (E))
+                  else M);
                Des_Ty         : constant W_Type_Id :=
-                 EW_Abstract (Directly_Designated_Type (E));
+                 EW_Abstract (Directly_Designated_Type (Retysp (E)));
 
             begin
                Insert_Symbol
-                 (E, WNE_Rec_Rep,
-                  New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Rep)),
-                     Module => M,
-                     Domain => EW_Term));
-
-               Insert_Symbol
-                 (E, WNE_To_Base,
-                  New_Identifier
-                    (Symbol => NID ("to_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-               Insert_Symbol
-                 (E, WNE_Of_Base,
-                  New_Identifier
-                    (Symbol => NID ("of_base"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Ty));
-
-               Insert_Symbol
                  (E, WNE_Null_Pointer,
                   New_Identifier
-                    (Symbol => NID ("__null_pointer"),
-                     Module => M,
+                    (Symb   => NID ("__null_pointer"),
+                     Module => M_C,
                      Domain => EW_Term));
 
                Insert_Symbol
                  (E, WNE_Is_Null_Pointer,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                              Full_Name_Node & "__is_null_pointer"),
                      Module => M,
                      Domain => EW_Term,
@@ -2558,7 +2643,7 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Pointer_Address,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                        Full_Name_Node & "__pointer_address"),
                      Module => M,
                      Domain => EW_Term,
@@ -2567,51 +2652,104 @@ package body Why.Atree.Modules is
                Insert_Symbol
                  (E, WNE_Pointer_Value,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Rec_Comp_Prefix) &
+                    (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
                        Full_Name_Node & "__pointer_value"),
-                     Module => M,
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Des_Ty));
 
                Insert_Symbol
+                 (E, WNE_To_Base,
+                  New_Identifier
+                    (Symb   => NID ("to_base"),
+                     Module => M_C,
+                     Domain => EW_Term,
+                     Typ    => Root_Ty));
+               Insert_Symbol
+                 (E, WNE_Of_Base,
+                  New_Identifier
+                    (Symb   => NID ("of_base"),
+                     Module => M_C,
+                     Domain => EW_Term,
+                     Typ    => Ty));
+
+               if Root /= Repr_Pointer_Type (E) then
+                  Insert_Symbol
+                    (E, WNE_Range_Check_Fun,
+                     New_Identifier
+                       (Symb   => NID ("range_check_"),
+                        Module => M_C,
+                        Domain => EW_Term,
+                        Typ    => Root_Ty));
+                  Insert_Symbol
+                    (E, WNE_Range_Pred,
+                     New_Identifier
+                       (Module => M_C,
+                        Domain => EW_Term,
+                        Symb   => NID ("in_range"),
+                        Typ    => EW_Bool_Type));
+               end if;
+
+               Insert_Symbol
                  (E, WNE_Init_Allocator,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Init_Allocator)),
-                     Module => AM,
+                    (Symb   => NID (To_String (WNE_Init_Allocator)),
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
 
                Insert_Symbol
                  (E, WNE_Uninit_Allocator,
                   New_Identifier
-                    (Symbol => NID (To_String (WNE_Uninit_Allocator)),
-                     Module => AM,
+                    (Symb   => NID (To_String (WNE_Uninit_Allocator)),
+                     Module => M_C,
                      Domain => EW_Term,
                      Typ    => Ty));
 
                Insert_Symbol
-                 (E, WNE_Range_Check_Fun,
-                  New_Identifier
-                    (Symbol => NID ("range_check_"),
-                     Module => M,
-                     Domain => EW_Term,
-                     Typ    => Root_Ty));
-
-               Insert_Symbol
-                 (E, WNE_Range_Pred,
-                  New_Identifier
-                    (Module => M,
-                     Domain => EW_Term,
-                     Symbol => NID ("in_range"),
-                     Typ    => EW_Bool_Type));
-
-               Insert_Symbol
                  (E, WNE_Assign_Null_Check,
                   New_Identifier
-                    (Symbol => NID ("assign_null_check"),
-                     Module => M,
+                    (Symb   => NID ("assign_null_check"),
+                     Module => M_C,
                      Domain => EW_Term,
-                     Typ    => Root_Ty));
+                     Typ    => Ty));
+
+               if Is_Incompl then
+                  Insert_Symbol
+                    (E, WNE_Private_Type,
+                     New_Identifier
+                       (Symb   => NID ("__main_type"),
+                        Module => M,
+                        Domain => EW_Term));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Value_Abstr,
+                     New_Identifier
+                       (Symb   => NID (To_String (WNE_Rec_Comp_Prefix) &
+                          Full_Name_Node & "__pointer_value_abstr"),
+                        Module => M,
+                        Domain => EW_Term,
+                        Typ    => New_Named_Type
+                          (Name => New_Name
+                               (Symb   => NID ("__main_type"),
+                                Module => M))));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Open,
+                     New_Identifier
+                       (Symb   => NID ("__open"),
+                        Module => M_C,
+                        Domain => EW_Term,
+                        Typ    => Des_Ty));
+                  Insert_Symbol
+                    (E, WNE_Pointer_Close,
+                     New_Identifier
+                       (Symb   => NID ("__close"),
+                        Module => M_C,
+                        Domain => EW_Term,
+                        Typ    => New_Named_Type
+                          (Name => New_Name
+                               (Symb   => NID ("__main_type"),
+                                Module => M))));
+               end if;
             end;
          end if;
       end Insert_Type_Symbols;

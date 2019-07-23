@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -87,6 +87,10 @@ package body VC_Kinds is
 
          when VC_Null_Pointer_Dereference  => "476",
 
+         --  CWE-457: Use of Uninitialized Variable
+
+         when VC_Initialization_Check      => "457",
+
             --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
@@ -139,6 +143,10 @@ package body VC_Kinds is
          when Unused
             | Unused_Initial_Value          => "563",
 
+         --  CWE-1164: Irrelevant Code
+
+         when Ineffective                   => "1164",
+
          when Aliasing
             | Depends_Null
             | Depends_Missing
@@ -150,7 +158,6 @@ package body VC_Kinds is
             | Hidden_Unexposed_State
             | Illegal_Update
             | Impossible_To_Initialize_State
-            | Ineffective
             | Initializes_Wrong
             | Inout_Only_Read
             | Missing_Return
@@ -306,8 +313,18 @@ package body VC_Kinds is
             return "Check that the class-wide postcondition aspect of the " &
               "subprogram is stronger than its overridden class-wide " &
               "postcondition.";
-         when VC_Warning_Kind                     =>
-            return "";
+         when VC_Inconsistent_Pre                 =>
+            return "Warn if precondition is found to be always False";
+         when VC_Inconsistent_Post                =>
+            return "Warn if postcondition is found to be always False";
+         when VC_Inconsistent_Assume              =>
+            return "Warn if pragma Assume is found to be always False";
+         when VC_Unreachable_Branch               =>
+            return "Warn if branch is found to be unreachable";
+         when VC_Dead_Code                        =>
+            return "Warn if code is found to be unreachable";
+         when VC_Initialization_Check             =>
+            return "Check that a variable is initialized";
       end case;
    end Description;
 
@@ -530,6 +547,10 @@ package body VC_Kinds is
          return Cnt_Record;
       end if;
 
+      if E = "Proj" then
+         return Cnt_Projection;
+      end if;
+
       return Cnt_Invalid;
    end From_JSON;
 
@@ -541,9 +562,10 @@ package body VC_Kinds is
         Cntexample_Elt'(Kind        => From_JSON (Get (V, "kind")),
                         Name        => Get (Get (V, "name")),
                         Labels      =>
-                          From_JSON_Labels (Get (Get (V, "labels"))),
+                          From_JSON_Labels (Get (Get (V, "attrs"))),
                         Value       => Cnt_Value,
-                        Val_Str     => Null_Unbounded_String);
+                        Val_Str     => (Nul => False,
+                                        Str => Null_Unbounded_String));
    end From_JSON;
 
    function From_JSON (V : JSON_Value) return Cntexample_Elt_Lists.List is
@@ -679,6 +701,11 @@ package body VC_Kinds is
                        Fi => Field_Value_List);
             end;
 
+         when Cnt_Projection =>
+            --  All projections that gets to here should be removed. They are
+            --  mostly to_reps.
+            return Get_Typed_Cntexmp_Value (Get (V, "value"));
+
          when Cnt_Array     =>
             declare
                JS_Array     : constant JSON_Array := Get (V, "val");
@@ -703,8 +730,13 @@ package body VC_Kinds is
                         end;
                      else
                         declare
+                           --  Indices are sent by Why3 as JSON model_value.
+                           --  This is only accepted here if the model_value
+                           --  is actually a simple value: integer, boolean...
+                           --  And, on SPARK input, non simple value cannot
+                           --  be produced.
                            Indice   : constant String :=
-                                        Get (Json_Element, "indice");
+                              Get (Get (Json_Element, "indice"), "val");
                            Elem_Ptr : constant Cntexmp_Value_Ptr :=
                                         new Cntexmp_Value'(
                                           Get_Typed_Cntexmp_Value
@@ -791,7 +823,18 @@ package body VC_Kinds is
                "class-wide precondition weaker than overridden one",
              when VC_Stronger_Classwide_Post =>
                "class-wide postcondition stronger than overridden one",
-             when VC_Warning_Kind => "");
+             when VC_Inconsistent_Pre =>
+               "precondition always False",
+             when VC_Inconsistent_Post =>
+               "postcondition always False",
+             when VC_Inconsistent_Assume =>
+               "pragma Assume always False",
+             when VC_Unreachable_Branch =>
+               "unreachable branch",
+             when VC_Dead_Code =>
+               "unreachable code",
+             when VC_Initialization_Check =>
+               "use of an uninitialized variable");
    end Kind_Name;
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
@@ -960,7 +1003,7 @@ package body VC_Kinds is
       Obj : constant JSON_Value := Create_Object;
    begin
       Set_Field (Obj, "name", C.Name);
-      Set_Field (Obj, "value", C.Val_Str);
+      Set_Field (Obj, "value", C.Val_Str.Str);
       Set_Field (Obj, "kind", To_JSON (C.Kind));
       return Obj;
    end To_JSON;

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2012-2018, AdaCore                  --
+--                     Copyright (C) 2012-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -47,6 +47,37 @@ package SPARK_Util is
    ---------------------------------------------------
    --  Utility types related to entities and nodes  --
    ---------------------------------------------------
+
+   subtype N_Ignored_In_SPARK is Node_Kind with
+     Predicate =>
+       N_Ignored_In_SPARK in
+           N_Call_Marker
+         | N_Exception_Declaration
+         | N_Freeze_Entity
+         | N_Freeze_Generic_Entity
+         | N_Implicit_Label_Declaration
+         | N_Incomplete_Type_Declaration
+         | N_Itype_Reference
+         | N_Label
+         | N_Null_Statement
+         | N_Number_Declaration
+
+         --  Renamings are replaced by the renamed object in the frontend, but
+         --  the renaming objects are not removed from the tree. We can safely
+         --  ignore them.
+
+         | N_Object_Renaming_Declaration
+
+         --  Generic instantiations are expanded into the corresponding
+         --  declarations in the frontend. The instantiations themselves can be
+         --  ignored.
+
+         | N_Package_Instantiation
+         | N_Subprogram_Instantiation
+         | N_Use_Package_Clause
+         | N_Use_Type_Clause
+         | N_Validate_Unchecked_Conversion
+         | N_Variable_Reference_Marker;
 
    type Execution_Kind_T is
      (Normal_Execution,      --  regular subprogram
@@ -111,7 +142,7 @@ package SPARK_Util is
    --     constant
 
    function Is_Partial_View (E : Entity_Id) return Boolean;
-   --  @param E type or constant
+   --  @param E any entity
    --  @return True iff E is the partial view of a private type or deferred
    --     constant
 
@@ -177,16 +208,14 @@ package SPARK_Util is
    --  @return entity of the enclosing generic instance package, if any
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id with
-     Post => (if Present (Enclosing_Unit'Result)
-              then Ekind (Enclosing_Unit'Result) in E_Function
-                                                  | E_Procedure
-                                                  | Entry_Kind
-                                                  | E_Protected_Type
-                                                  | E_Task_Type
-                                                  | E_Package
-                                                  | Generic_Unit_Kind);
-   --  Returns the entity of the package, subprogram, entry, protected object,
-   --  or task enclosing E, if any. Returns Empty otherwise.
+     Post => Ekind (Enclosing_Unit'Result) in E_Function
+                                            | E_Procedure
+                                            | Entry_Kind
+                                            | E_Protected_Type
+                                            | E_Task_Type
+                                            | E_Package;
+   --  Returns the entity of the package, subprogram, entry, protected type,
+   --  or task type enclosing E.
 
    function Directly_Enclosing_Subprogram_Or_Entry
      (E : Entity_Id) return Entity_Id;
@@ -292,10 +321,12 @@ package SPARK_Util is
    --  @return concurrent type
 
    function Has_Volatile (E : Checked_Entity_Id) return Boolean
-   with Pre => Ekind (E) in E_Abstract_State
-                          | E_Protected_Type
-                          | E_Task_Type
-                          | Object_Kind;
+   with Pre  => Ekind (E) in E_Abstract_State
+                           | E_Protected_Type
+                           | E_Task_Type
+                           | Object_Kind,
+        Post => (if Ekind (E) in E_Protected_Type | E_Task_Type
+                 then not Has_Volatile'Result);
    --  @param E an abstract state or object (including concurrent types, which
    --     might be implicit parameters and globals)
    --  @return True iff E is an external state or a volatile object
@@ -343,7 +374,7 @@ package SPARK_Util is
    --  @return True iff the object has a Part_Of pragma that makes it part of a
    --    protected object.
 
-   function Is_Predefined_Initialized_Variable (E : Entity_Id) return Boolean;
+   function Is_Predefined_Initialized_Entity (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True if E is predefined and initialized variable (see below)
    --
@@ -382,7 +413,7 @@ package SPARK_Util is
    --  Given a component or discriminant of a record (sub-)type, return the
    --  corresponding component or discriminant of the root type, if any. This
    --  is the identity when E is the component of a root type.
-   --  ??? Same update needed as for Root_Record_Type
+   --  ??? Same update needed as for Root_Retysp
 
    function Search_Component_By_Name
      (Rec  : Entity_Id;
@@ -658,8 +689,14 @@ package SPARK_Util is
 
    function String_Value (Str_Id : String_Id) return String;
 
+   function Append_Multiple_Index (S : String) return String;
+   --  If the current file contains multiple units, add a suffix to S that
+   --  corresponds to the currently analyzed unit.
+
    function Unit_Name return String is
-     (File_Name_Without_Suffix (Get_Name_String (Unit_File_Name (Main_Unit))));
+     (Append_Multiple_Index
+        (File_Name_Without_Suffix
+             (Get_Name_String (Unit_File_Name (Main_Unit)))));
 
    function File_Name (Loc : Source_Ptr) return String is
      (Get_Name_String (File_Name (Get_Source_File_Index (Loc))));

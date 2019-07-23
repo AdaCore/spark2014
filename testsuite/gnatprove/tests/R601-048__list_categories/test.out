@@ -1,4 +1,4 @@
-[Flow analysis categories]
+[Flow analysis check categories]
 ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects.
 DEAD_CODE - dead code - A statement is never executed.
 DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default.
@@ -28,7 +28,7 @@ UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial valu
 NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
 VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile.
 REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation
-[Proof categories]
+[Proof check categories]
 VC_DIVISION_CHECK - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero.
 VC_INDEX_CHECK - index check - Check that the given index is within the bounds of the array.
 VC_OVERFLOW_CHECK - overflow check - Check that the result of the given integer arithmetic operation is within the bounds of the base type.
@@ -42,6 +42,7 @@ VC_LENGTH_CHECK - length check - Check that the given array is of the length of 
 VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
 VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.
 VC_CEILING_INTERRUPT - ceiling priority in Interrupt_Priority - Check that the ceiling priority specified for a protected object containing a procedure with an aspect Attach_Handler is in Interrupt_Priority.
+VC_INITIALIZATION_CHECK - use of an uninitialized variable - Check that a variable is initialized
 VC_INTERRUPT_RESERVED - interrupt is reserved - Check that the interrupt specified by Attach_Handler is not reserved.
 VC_INVARIANT_CHECK - invariant check - Check that the given value respects the applicable type invariant.
 VC_INVARIANT_CHECK_ON_DEFAULT_VALUE - invariant check on default value - Check that the default value for the type respects the applicable type invariant.
@@ -68,3 +69,9 @@ VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is T
 VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.
 VC_WEAKER_CLASSWIDE_PRE - class-wide precondition weaker than overridden one - Check that the class-wide precondition aspect of the subprogram is weaker than its overridden class-wide precondition.
 VC_STRONGER_CLASSWIDE_POST - class-wide postcondition stronger than overridden one - Check that the class-wide postcondition aspect of the subprogram is stronger than its overridden class-wide postcondition.
+[Proof warnings categories]
+VC_INCONSISTENT_PRE - precondition always False - Warn if precondition is found to be always False
+VC_INCONSISTENT_POST - postcondition always False - Warn if postcondition is found to be always False
+VC_INCONSISTENT_ASSUME - pragma Assume always False - Warn if pragma Assume is found to be always False
+VC_UNREACHABLE_BRANCH - unreachable branch - Warn if branch is found to be unreachable
+VC_DEAD_CODE - unreachable code - Warn if code is found to be unreachable

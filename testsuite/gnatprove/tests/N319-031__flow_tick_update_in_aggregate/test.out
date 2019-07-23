@@ -1,7 +1,3 @@
-aggregates.adb:16:20: info: initialization of "Output.C1.X" proved
-aggregates.adb:16:20: info: initialization of "Output.C1.Y" proved
-aggregates.adb:16:20: info: initialization of "Output.C1.Z" proved
-aggregates.adb:16:20: info: initialization of "Output.C2.X" proved
-aggregates.adb:16:20: info: initialization of "Output.C2.Y" proved
-aggregates.adb:16:20: info: initialization of "Output.C2.Z" proved
-aggregates.adb:26:23: info: initialization of "Output.C2.X" proved
+aggregates.adb:16:20: info: initialization of "Output" proved
+aggregates.adb:17:11: info: data dependencies proved
+aggregates.adb:18:11: info: flow dependencies proved

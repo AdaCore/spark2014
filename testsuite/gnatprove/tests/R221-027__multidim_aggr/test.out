@@ -1,3 +1,3 @@
 array_types.ads:6:10: info: range check proved (CVC4: 2 VC)
 array_types.ads:6:23: info: range check proved (CVC4: 2 VC)
-array_types.ads:9:19: medium: assertion might fail, cannot prove A'First (1) = A'first (e.g. when A'First (1) = 2 and A'First (2) = 3)
+array_types.ads:9:19: medium: assertion might fail, cannot prove A'First (1) = A'first (e.g. when A'First (1) = 0 and A'First (2) = -1)

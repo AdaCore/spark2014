@@ -1,5 +1,3 @@
-pack.ads:5:09: access type is not allowed in SPARK
-pack.ads:5:09: violation of pragma SPARK_Mode at line 2
-pack.ads:15:30: explicit dereference is not allowed in SPARK
-pack.ads:15:30: violation of pragma SPARK_Mode at line 2
-gnatprove: error during flow analysis and proof
+pack.adb:6:15: cannot use global variable "Y" of deep type
+pack.adb:6:15: without prior declaration in a Global aspect
+gnatprove: error during generation of Global contracts

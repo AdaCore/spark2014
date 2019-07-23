@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,8 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNAT.OS_Lib;  use GNAT.OS_Lib;
-with String_Utils; use String_Utils;
+with GNAT.OS_Lib;   use GNAT.OS_Lib;
+with GNATCOLL.JSON; use GNATCOLL.JSON;
+with String_Utils;  use String_Utils;
 
 package Call is
 
@@ -47,23 +48,11 @@ package Call is
       Output_FD : File_Descriptor := Standout;
       Verbose   : Boolean := False);
 
-   function Get_Process_Id return Integer;
-   --  Return the process ID of the current process
-   pragma Import (C, Get_Process_Id, "getpid");
-
-   generic
-      with procedure Handle_Line (Line : String);
-   procedure For_Line_In_File
-      (File : String);
-   --  Do something for each line of a file
-
    function Read_File_Into_String (Fn : String) return String;
    --  Return a string with the contents of the file in argument
 
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0);
-   --  Print the file to stdout
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String);
-   --  chdir to given directory; if it does not exist, create it before
+   function Read_File_Into_JSON (Fn : String) return JSON_Value;
+   --  Same as Read_File_Into_String, but directly parse the file into a JSON
+   --  value. Works for large files as well.
 
 end Call;

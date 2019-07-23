@@ -1,1 +1,3 @@
-foo.adb:22:14: info: initialization of "Tmp.X" proved
+foo.adb:10:09: info: data dependencies proved
+foo.adb:17:09: info: data dependencies proved
+foo.adb:19:07: info: initialization of "Tmp" proved

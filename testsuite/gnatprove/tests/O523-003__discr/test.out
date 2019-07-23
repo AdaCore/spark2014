@@ -1,14 +1,14 @@
+bounded_strings.adb:8:07: info: initialization of "B" proved
 bounded_strings.adb:8:26: info: range check proved (CVC4: 1 VC)
-bounded_strings.adb:10:14: info: length check proved (CVC4: 4 VC)
-bounded_strings.adb:10:17: info: length check proved (CVC4: 4 VC)
+bounded_strings.adb:10:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:10:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.adb:11:08: info: range check proved (CVC4: 4 VC)
 bounded_strings.adb:11:30: info: range check proved (CVC4: 1 VC)
-bounded_strings.adb:11:39: info: initialization of "B.Text" proved
-bounded_strings.adb:11:39: info: length check proved (CVC4: 4 VC)
-bounded_strings.adb:11:42: info: length check proved (CVC4: 4 VC)
+bounded_strings.adb:11:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:11:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.adb:12:28: info: range check proved (CVC4: 1 VC)
-bounded_strings.adb:13:14: info: initialization of "B.Size" proved
-bounded_strings.adb:13:14: info: initialization of "B.Text" proved
+bounded_strings.ads:13:11: info: data dependencies proved
+bounded_strings.ads:18:08: info: data dependencies proved
 bounded_strings.ads:19:26: info: range check proved (CVC4: 1 VC)
 bounded_strings.ads:20:16: info: postcondition proved (CVC4: 1 VC)
 bounded_strings.ads:20:47: info: range check proved (CVC4: 1 VC)

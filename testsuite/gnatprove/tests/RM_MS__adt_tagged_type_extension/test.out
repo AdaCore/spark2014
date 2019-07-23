@@ -1,8 +1,6 @@
-stacks_14-monitored_14.adb:19:25: medium: array index check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 0, Monitor_Vector => (others => 0), Next_Identity_Value => 0)) [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
-stacks_14-monitored_14.adb:20:54: medium: overflow check might fail (e.g. when S = (Next_Identity_Value => Integer'Last, others => ?)) [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
-stacks_14-monitored_14.adb:25:30: medium: array index check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => 0, Monitor_Vector => (others => 0), Next_Identity_Value => 0)) [possible explanation: subprogram at line 23 should mention S in a precondition]
-stacks_14-monitored_14.ads:7:20: info: initialization of "S.Monitor_Vector" proved
-stacks_14-monitored_14.ads:7:20: info: initialization of "S.Next_Identity_Value" proved
-stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Pointer" proved
-stacks_14-monitored_14.ads:7:20: info: initialization of "S.Stack_Vector" proved
+stacks_14-monitored_14.adb:19:25: medium: array index check might fail [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
+stacks_14-monitored_14.adb:20:54: medium: overflow check might fail (e.g. when S = (Stack_Vector => (others => Integer'Last), Stack_Pointer => 1, Monitor_Vector => (others => Integer'Last), Next_Identity_Value => Integer'Last)) [possible explanation: call at line 18 should mention S (for argument S) in a postcondition]
+stacks_14-monitored_14.adb:25:30: medium: array index check might fail [possible explanation: subprogram at stacks_14-monitored_14.ads:15 should mention S in a precondition]
+stacks_14-monitored_14.ads:7:20: info: initialization of "S" proved
 stacks_14-monitored_14.ads:9:31: medium: incorrect dependency "null => S"
+stacks_14-monitored_14.ads:13:11: info: flow dependencies proved

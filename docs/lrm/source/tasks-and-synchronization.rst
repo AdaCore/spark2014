@@ -43,7 +43,9 @@ are in |SPARK|.
      inherited), and all of whose nondiscriminant component types
      yield synchronized objects; or
 
-   * a descendant of the type Ada.Synchronous_Task_Control.Suspension_Object.
+   * a descendant of the type Ada.Synchronous_Task_Control.Suspension_Object; or
+
+   * a private type whose completion yields synchronized objects.
 
    An object is said to be *synchronized* if it is
 
@@ -145,11 +147,7 @@ are in |SPARK|.
 5. A type which does not yield synchronized objects shall not have
    a component type which yields synchronized objects.
    [Roughly speaking, no mixing of synchronized and unsynchronized
-   component types.] In enforcing this rule, privacy of types is
-   ignored (that is, any partial views of types are ignored and the
-   corresponding full view is unconditionally used instead).
-   [TBD: add an aspect to allow this property to be expressed explicitly
-   when a partial view of a type is declared.]
+   component types.]
 
 .. _tu-tasks_and_synchronization-06:
 

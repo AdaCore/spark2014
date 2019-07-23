@@ -12,9 +12,15 @@ procedure Traversal with SPARK_Mode is
 
    function Id (X : Int_Acc) return access Integer is (X);
 
-   X : Two_Acc_Acc := new Two_Acc'(new Integer'(1), new Integer'(2));
+   V : Int_Acc := new Integer'(1);
+   W : Int_Acc := new Integer'(2);
+   X : Two_Acc_Acc := new Two_Acc'(V, W);
 begin
-   Get_Fst (X).all := 4;
+   declare
+      Y : access Integer := Get_Fst (X);
+   begin
+      Y.all := 4;
+   end;
 
    pragma Assert (X.Fst.all = 1);
 end Traversal;

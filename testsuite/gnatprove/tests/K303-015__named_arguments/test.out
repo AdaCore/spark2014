@@ -1,6 +1,6 @@
-substract.adb:4:20: medium: overflow check might fail (e.g. when First = Integer'First and Second = 1 and Sub'Result = 0) [possible explanation: subprogram at line 2 should mention First and Second in a precondition]
-substract.adb:10:20: medium: overflow check might fail (e.g. when First = Integer'First and Second = -1) [possible explanation: subprogram at line 7 should mention First and Second in a precondition]
-substract.adb:10:29: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention First and Second and Third in a precondition]
+substract.adb:4:20: medium: overflow check might fail (e.g. when First = -2 and Second = Integer'Last) [possible explanation: subprogram at substract.ads:2 should mention First and Second in a precondition]
+substract.adb:10:20: medium: overflow check might fail (e.g. when First = -1 and Second = Integer'First) [possible explanation: subprogram at substract.ads:14 should mention First and Second in a precondition]
+substract.adb:10:29: medium: overflow check might fail (e.g. when First = -1 and Second = 0 and Third = Integer'First) [possible explanation: subprogram at substract.ads:14 should mention First and Second and Third in a precondition]
 substract.ads:3:20: info: postcondition proved (CVC4: 1 VC)
 substract.ads:3:40: info: overflow check proved (CVC4: 1 VC)
 substract.ads:6:20: info: postcondition proved (CVC4: 1 VC)

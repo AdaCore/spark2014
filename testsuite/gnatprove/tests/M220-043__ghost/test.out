@@ -1,4 +1,4 @@
-semantics.adb:9:22: medium: assertion might fail, cannot prove Formal + Ghost_Func > 0 (e.g. when Formal = 0)
+semantics.adb:9:22: medium: assertion might fail, cannot prove Formal + Ghost_Func > 0
 semantics.adb:9:29: medium: overflow check might fail (e.g. when Formal = -1073741825)
 semantics.adb:10:29: medium: overflow check might fail (e.g. when Formal = 1073741824)
 semantics.adb:13:27: medium: overflow check might fail (e.g. when Formal = Integer'Last)
@@ -11,7 +11,7 @@ semantics.adb:35:21: medium: overflow check might fail, in call inlined at seman
 semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.ads:12:19: info: postcondition proved (CVC4: 1 VC)
 semantics.ads:12:43: info: overflow check proved (CVC4: 1 VC)
-semantics.ads:13:41: info: contract case proved (CVC4: 2 VC)
+semantics.ads:13:41: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 semantics.ads:13:44: warning: unreachable branch (CVC4: 1 VC)
 semantics.ads:14:41: medium: contract case might fail (e.g. when Formal = 0)
 semantics.ads:14:68: info: overflow check proved (CVC4: 1 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,17 +23,17 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;          use Gnat2Why.Util;
-with Namet;                  use Namet;
-with Snames;                 use Snames;
-with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with Types;                  use Types;
-with Why.Atree.Accessors;    use Why.Atree.Accessors;
-with Why.Atree.Modules;      use Why.Atree.Modules;
-with Why.Gen.Expr;           use Why.Gen.Expr;
-with Why.Ids;                use Why.Ids;
-with Why.Sinfo;              use Why.Sinfo;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Snames;               use Snames;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
+with Types;                use Types;
+with Why.Atree.Accessors;  use Why.Atree.Accessors;
+with Why.Atree.Modules;    use Why.Atree.Modules;
+with Why.Gen.Expr;         use Why.Gen.Expr;
+with Why.Ids;              use Why.Ids;
+with Why.Sinfo;            use Why.Sinfo;
 
 package Why.Gen.Arrays is
    --  This package encapsulates the encoding of Ada arrays into Why.
@@ -149,7 +149,8 @@ package Why.Gen.Arrays is
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
-      Arg_Ind : in out Positive)
+      Arg_Ind : in out Positive;
+      Params  : Transformation_Params := Body_Params)
    with Pre => Is_Constrained (Ty);
    --  This variant of Add_Attr_Arg will only work for constrained types
 
@@ -165,10 +166,10 @@ package Why.Gen.Arrays is
    --  attributes.
 
    function New_Array_Access
-     (Ada_Node  : Node_Id;
-      Ar        : W_Expr_Id;
-      Index     : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id;
+     (Ada_Node : Node_Id;
+      Ar       : W_Expr_Id;
+      Index    : W_Expr_Array;
+      Domain   : EW_Domain) return W_Expr_Id;
    --  Generate an expr that corresponds to an array access
 
    function Array_Convert_To_Base
@@ -237,6 +238,22 @@ package Why.Gen.Arrays is
    --
    --    <left_arr>.first1 = <right_arr>.first1 /\
    --    <left_arr>.last1 = <right_arr>.last1 /\ ...
+
+   function New_Bounds_Equality
+     (Left_Arr : W_Expr_Id;
+      Right_Ty : Entity_Id;
+      Domain   : EW_Domain := EW_Pred;
+      Params   : Transformation_Params := Body_Params) return W_Expr_Id
+   with Pre => Is_Constrained (Right_Ty);
+   --  same as above but takes the bounds of a type for Right
+
+   function New_Bounds_Equality
+     (Left_Arr     : W_Expr_Id;
+      Right_Bounds : W_Expr_Array;
+      Dim          : Positive;
+      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
+   with Pre => Right_Bounds'Length = Dim * 2;
+   --  same as above but with the bounds stored in an array
 
    function New_Length_Equality
      (Left_Arr  : W_Expr_Id;
@@ -335,7 +352,7 @@ package Why.Gen.Arrays is
    --  the last argument filled in by this procedure.
 
    function Get_Entity_Of_Variable (E : W_Expr_Id) return Entity_Id
-     with Pre => Get_Type_Kind (Get_Type (E)) = EW_Split;
+     with Pre => Get_Type_Kind (Get_Type (E)) in EW_Split | EW_Wrapper;
    --  Return the Ada entity associated to an array expression in split form.
    --  There is always one or we cannot reach to the object's bounds.
    --  @param E Why expression for which we want an ada entity.
@@ -397,7 +414,7 @@ package Why.Gen.Arrays is
       Pos    : W_Expr_Id) return W_Expr_Id;
    --  Return a call to the singleton function in Why array theory
 
-   function Get_Array_Theory_Name (E : Entity_Id) return Name_Id with
+   function Get_Array_Theory_Name (E : Entity_Id) return Symbol with
      Pre => Is_Type (E) and then Has_Array_Type (E);
    --  @param E the entity of an array type
    --  @return A name of the form "Array_(_(Int|BV8|BV16|BV32|BV64))*__t"

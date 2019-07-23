@@ -1,11 +1,17 @@
-device.adb:10:04: info: initialization of "OldX" constituent of "State" proved
 device.adb:17:04: high: "Register" constituent of "State" is not written in "Device"
 device.adb:17:04: high: initialization of "Device.State" is specified at device.ads:5
+device.adb:23:11: info: data dependencies proved
 device.adb:23:33: info: initialization of "Register" constituent of "State" proved
+device.adb:24:11: info: flow dependencies proved
 device.adb:30:23: info: initialization of "OK" proved
-device.adb:37:13: info: initialization of "RawValue" proved
+device.adb:31:11: info: data dependencies proved
+device.adb:32:11: info: flow dependencies proved
+device.adb:34:07: info: initialization of "RawValue" proved
 device.adb:42:41: medium: "Register" constituent of "State" might not be written
+device.adb:49:07: info: initialization of "OK" proved
 device.adb:55:13: warning: statement has no effect
 device.adb:55:22: warning: unused assignment to "OK"
 device.adb:56:13: warning: statement has no effect
-device.adb:56:23: info: initialization of "OK" proved
+device.ads:5:08: info: flow dependencies proved
+device.ads:8:10: info: data dependencies proved
+device.ads:9:10: info: flow dependencies proved

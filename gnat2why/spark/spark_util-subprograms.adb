@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2016-2018, AdaCore                  --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -452,8 +452,7 @@ package body SPARK_Util.Subprograms is
       function Has_No_Output return Boolean is
          Formal : Entity_Id := First_Formal (E);
 
-         Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-         Write_Ids : Flow_Types.Flow_Id_Sets.Set;
+         Globals : Global_Flow_Ids;
 
       begin
          --  Consider output parameters
@@ -475,12 +474,13 @@ package body SPARK_Util.Subprograms is
          --  supplied them.
 
          if After_GG or else Has_User_Supplied_Globals (E) then
-            Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Classwide  => True,
-                                            Reads      => Read_Ids,
-                                            Writes     => Write_Ids);
+            Get_Globals (Subprogram          => E,
+                         Scope               => Get_Flow_Scope (E),
+                         Classwide           => True,
+                         Globals             => Globals,
+                         Use_Deduced_Globals => After_GG);
 
-            return Write_Ids.Is_Empty;
+            return Globals.Outputs.Is_Empty;
 
          --  Otherwise we don't know, return False to be on the safe side
 
@@ -1088,26 +1088,21 @@ package body SPARK_Util.Subprograms is
       end if;
    end Is_Local_Subprogram_Always_Inlined;
 
-   ----------------------------
-   -- Is_Protected_Operation --
-   ----------------------------
-
-   function Is_Protected_Operation (E : Entity_Id) return Boolean is
-     (Is_Entry (E)
-        or else
-      (Is_Subprogram (E)
-         and then Nkind (Parent (Unit_Declaration_Node (E))) =
-                  N_Protected_Definition));
-
    -------------------------------------
    -- Is_Requested_Subprogram_Or_Task --
    -------------------------------------
 
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean is
-     (Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
-        and then
-      GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp) =
-        SPARK_Util.Subprograms.Subp_Location (E));
+      Limit_Str : constant String :=
+        GP_Subp_Marker & To_String (Gnat2Why_Args.Limit_Subp);
+   begin
+      return
+        Ekind (E) in Subprogram_Kind | Task_Kind | E_Task_Body | Entry_Kind
+          and then
+        (Limit_Str = SPARK_Util.Subprograms.Subp_Location (E)
+          or else
+         Limit_Str = SPARK_Util.Subprograms.Subp_Body_Location (E));
+   end Is_Requested_Subprogram_Or_Task;
 
    -------------------------------
    -- Is_Simple_Shift_Or_Rotate --
@@ -1203,6 +1198,48 @@ package body SPARK_Util.Subprograms is
              );
    end Might_Be_Main;
 
+   ------------------------
+   -- Subp_Body_Location --
+   ------------------------
+
+   function Subp_Body_Location (E : Entity_Id) return String is
+      Body_N : Node_Id;
+      Body_E : Entity_Id := Empty;
+      Slc    : Source_Ptr;
+      Line   : Positive;
+
+   begin
+      case Ekind (E) is
+         when E_Function
+            | E_Procedure
+            | E_Task_Type
+            | Entry_Kind
+         =>
+            --  A derived task type has no body itself, so exclude this case
+            if not Is_Derived_Type (E) then
+               Body_E := Get_Body_Entity (E);
+            end if;
+
+         when E_Package =>
+            Body_N := Package_Body (E);
+            if Present (Body_N) then
+               Body_E := Defining_Entity (Body_N);
+            end if;
+
+         when others =>
+            null;
+      end case;
+
+      if Present (Body_E) then
+         Slc := Sloc (Body_E);
+         Line := Positive (Get_Physical_Line_Number (Slc));
+         return
+           GP_Subp_Marker & SPARK_Util.File_Name (Slc) & ":" & Image (Line, 1);
+      else
+         return "";
+      end if;
+   end Subp_Body_Location;
+
    -------------------
    -- Subp_Location --
    -------------------
@@ -1250,10 +1287,10 @@ package body SPARK_Util.Subprograms is
          end;
       end if;
 
-      Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                      Classwide  => True,
-                                      Reads      => Read_Ids,
-                                      Writes     => Write_Ids);
+      Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                      Reads           => Read_Ids,
+                                      Writes          => Write_Ids,
+                                      Erase_Constants => True);
 
       --  Consider invariants of the variables read by E
 
@@ -1267,16 +1304,14 @@ package body SPARK_Util.Subprograms is
          if F.Kind = Direct_Mapping then
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
             begin
-               --  Global variables accessed by the subprogram
-               if (Is_Object (E)
-                   and then Entity_In_SPARK (E)
-                   and then Invariant_Check_Needed (Etype (E)))
+               --  Global variables accessed by the subprogram are either
+               --  objects or concurrent types.
 
-                  --  Self reference of protected subprograms
-
-                   or else (Is_Type (E) and then Invariant_Check_Needed (E))
-
+               if Invariant_Check_Needed ((if Is_Type (E)
+                                           then E
+                                           else Etype (E)))
                then
                   return True;
                end if;

@@ -1,18 +1,9 @@
 patris.adb:41:04: info: initialization of "Score_Nbr" constituent of "Score_State" proved
 patris.adb:42:04: info: initialization of "Level_Nbr" constituent of "Score_State" proved
 patris.adb:43:04: info: initialization of "Line_Counter" constituent of "Score_State" proved
-patris.adb:46:04: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
-patris.adb:49:04: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:49:04: warning: initialization of "Cur_Board" constituent of "Game_State" has no effect
-patris.adb:50:04: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:50:04: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:51:04: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
-patris.adb:52:04: info: initialization of "Cur_State" constituent of "Game_State" proved
+patris.adb:50:04: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:51:04: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_State" has no effect
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
@@ -32,56 +23,35 @@ patris.adb:107:33: info: index check proved (CVC4: 2 VC)
 patris.adb:107:50: info: index check proved (CVC4: 2 VC)
 patris.adb:108:36: info: index check proved (CVC4: 2 VC)
 patris.adb:108:54: info: index check proved (CVC4: 2 VC)
-patris.adb:113:16: info: assertion proved (altergo: 1 VC)
+patris.adb:116:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => I, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 1)
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
-patris.adb:121:45: medium: array index check might fail
-patris.adb:121:63: medium: array index check might fail
-patris.adb:129:16: info: assertion proved (altergo: 1 VC)
+patris.adb:121:45: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => 1, Y => PY_Coord'First+1) and Y = 0)
+patris.adb:121:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => -1, Y => PY_Coord'First+1) and X = 1)
 patris.adb:131:57: info: index check proved (CVC4: 2 VC)
+patris.adb:132:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 0)
 patris.adb:134:34: info: unrolling loop
 patris.adb:135:37: info: unrolling loop
 patris.adb:136:54: info: index check proved (CVC4: 18 VC)
-patris.adb:137:45: medium: array index check might fail
-patris.adb:137:63: medium: array index check might fail
-patris.adb:165:31: info: initialization of "Complete_Lines" proved
+patris.adb:137:45: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 1, Y => PY_Coord'First+1) and Y = 0)
+patris.adb:137:63: medium: array index check might fail (e.g. when Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and X = 0)
 patris.adb:166:28: info: assertion proved (CVC4: 2 VC)
 patris.adb:169:13: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:169:13: info: loop invariant preservation proved (CVC4: 1 VC)
 patris.adb:169:88: info: index check proved (CVC4: 4 VC)
 patris.adb:172:22: info: assertion proved (CVC4: 1 VC)
-patris.adb:176:10: info: initialization of "Complete_Lines" proved
-patris.adb:177:52: info: initialization of "To_Line" proved
 patris.adb:178:36: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:178:36: info: loop invariant preservation proved (CVC4: 1 VC)
 patris.adb:179:36: info: loop invariant initialization proved (CVC4: 1 VC)
 patris.adb:179:36: info: loop invariant preservation proved (CVC4: 1 VC)
-patris.adb:179:48: info: initialization of "To_Line" proved
-patris.adb:181:36: info: initialization of "To_Line" proved
-patris.adb:183:27: info: initialization of "To_Line" proved
 patris.adb:183:35: info: range check proved (CVC4: 1 VC)
 patris.adb:184:31: info: assertion proved (CVC4: 1 VC)
-patris.adb:189:12: info: initialization of "Complete_Lines" proved
-patris.adb:197:38: info: initialization of "Complete_Lines" proved
+patris.adb:214:07: info: initialization of "Candidate" proved
 patris.adb:217:23: info: precondition proved (CVC4: 1 VC)
-patris.adb:219:36: info: initialization of "Candidate.D" proved
-patris.adb:219:36: info: initialization of "Candidate.S" proved
-patris.adb:219:36: info: initialization of "Candidate.X" proved
-patris.adb:219:36: info: initialization of "Candidate.Y" proved
-patris.adb:220:26: info: initialization of "Candidate.D" proved
-patris.adb:220:26: info: initialization of "Candidate.S" proved
-patris.adb:220:26: info: initialization of "Candidate.X" proved
-patris.adb:220:26: info: initialization of "Candidate.Y" proved
 patris.adb:234:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:234:52: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:234:63: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:235:41: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:234:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:235:41: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:235:53: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:236:41: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:236:61: info: initialization of "Level_Nbr" constituent of "Score_State" proved
@@ -89,30 +59,28 @@ patris.adb:237:41: info: initialization of "Score_Nbr" constituent of "Score_Sta
 patris.adb:237:52: info: initialization of "Line_Counter" constituent of "Score_State" proved
 patris.adb:260:41: info: initialization of "Cur_Board" constituent of "Game_State" proved
 patris.adb:260:52: info: initialization of "Cur_State" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.adb:260:63: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.D" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.S" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.X" constituent of "Game_State" proved
-patris.adb:261:41: info: initialization of "Next_Piece.Y" constituent of "Game_State" proved
+patris.adb:260:63: info: initialization of "Cur_Piece" constituent of "Game_State" proved
+patris.adb:261:41: info: initialization of "Next_Piece" constituent of "Game_State" proved
 patris.adb:261:53: info: initialization of "Speed_Up" constituent of "Game_State" proved
 patris.adb:262:41: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
+patris.adb:280:07: info: initialization of "Success" proved
 patris.adb:290:10: info: precondition proved (CVC4: 2 VC)
-patris.adb:292:17: info: initialization of "Success" proved
 patris.adb:294:13: info: precondition proved (CVC4: 2 VC)
 patris.adb:295:13: info: precondition proved (CVC4: 2 VC)
 patris.adb:306:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:323:27: info: analyzing call to "Get_New_Piece" in context
+patris.adb:408:07: info: initialization of "Success" proved
 patris.adb:419:13: info: precondition proved (CVC4: 2 VC)
-patris.adb:420:16: info: initialization of "Success" proved
 patris.adb:421:57: info: overflow check proved (CVC4: 1 VC)
 patris.adb:432:56: info: division check proved (CVC4: 1 VC)
 patris.adb:432:64: info: overflow check proved (CVC4: 1 VC)
 patris.adb:432:64: info: range check proved (CVC4: 1 VC)
 patris.adb:434:41: info: division check proved (CVC4: 1 VC)
-patris.adb:434:50: info: initialization of "Interval" proved
+patris.ads:33:03: info: flow dependencies proved
+patris.ads:59:11: info: data dependencies proved
+patris.ads:80:11: info: data dependencies proved
+patris.ads:83:11: info: data dependencies proved
+patris.ads:97:11: info: data dependencies proved
 patris.ads:158:54: info: index check proved (CVC4: 2 VC)
 patris.ads:158:57: info: index check proved (CVC4: 2 VC)
 patris.ads:184:46: info: index check proved (CVC4: 2 VC)
@@ -124,30 +92,27 @@ patris.ads:231:49: info: range check proved (CVC4: 1 VC)
 patris.ads:232:66: info: range check proved (CVC4: 1 VC)
 patris.ads:236:37: info: initialization of "Success" proved
 patris.ads:239:14: info: postcondition proved (CVC4: 1 VC)
+patris.ads:242:06: info: data dependencies proved
 patris.ads:245:16: info: postcondition proved (CVC4: 2 VC)
-patris.ads:254:16: medium: postcondition might fail, cannot prove Get_State = Board_After_Clean
-patris.ads:260:14: info: initialization of "Cur_State" constituent of "Game_State" proved
+patris.ads:251:06: info: data dependencies proved
+patris.ads:254:16: info: postcondition proved (CVC4: 2 VC)
+patris.ads:259:06: info: data dependencies proved
 patris.ads:260:14: info: postcondition proved (CVC4: 3 VC)
-patris.ads:261:24: info: initialization of "Cur_Board" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.ads:262:14: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_Board" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_Piece.D" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_Piece.S" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_Piece.X" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_Piece.Y" constituent of "Game_State" proved
-patris.ads:269:14: info: initialization of "Cur_State" constituent of "Game_State" proved
+patris.ads:267:06: info: data dependencies proved
 patris.ads:269:14: info: postcondition proved (CVC4: 1 VC)
 patris.ads:272:07: info: initialization of "Redraw_Board" proved
 patris.ads:272:21: info: initialization of "Redraw_Score" proved
 patris.ads:272:35: info: initialization of "Redraw_Current_Piece" proved
 patris.ads:274:14: info: postcondition proved (CVC4: 1 VC)
 patris.ads:278:14: info: postcondition proved (CVC4: 1 VC)
-patris.ads:283:14: info: initialization of "Score_Nbr" constituent of "Score_State" proved
-patris.ads:289:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
-patris.ads:295:14: info: initialization of "Level_Nbr" constituent of "Score_State" proved
-patris.ads:301:14: info: initialization of "Line_Counter" constituent of "Score_State" proved
+patris.ads:281:11: info: data dependencies proved
+patris.ads:284:06: info: data dependencies proved
+patris.ads:287:11: info: data dependencies proved
+patris.ads:290:06: info: data dependencies proved
+patris.ads:293:11: info: data dependencies proved
+patris.ads:296:06: info: data dependencies proved
+patris.ads:299:11: info: data dependencies proved
+patris.ads:302:06: info: data dependencies proved
+patris.ads:305:11: info: data dependencies proved
 pebble.ads:108:48: warning: return type of "Equal" is an 8-bit Ada Boolean
 pebble.ads:108:48: warning: use appropriate corresponding type in C (e.g. char)

@@ -1,52 +1,32 @@
+frame_condition.adb:4:07: info: initialization of "K" proved
+frame_condition.adb:5:07: info: initialization of "Max" proved
 frame_condition.adb:11:13: info: range check proved (CVC4: 1 VC)
 frame_condition.adb:15:16: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:15:16: info: initialization of "K" proved
-frame_condition.adb:15:27: info: initialization of "Max" proved
 frame_condition.adb:16:23: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:16:23: info: initialization of "K" proved
 frame_condition.adb:18:13: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:18:25: info: initialization of "K" proved
-frame_condition.adb:18:28: info: initialization of "Max" proved
-frame_condition.adb:19:33: info: initialization of "K" proved
 frame_condition.adb:19:33: info: loop invariant initialization proved (CVC4: 2 VC)
 frame_condition.adb:19:33: info: loop invariant preservation proved (CVC4: 2 VC)
 frame_condition.adb:21:13: info: loop invariant initialization proved (CVC4: 1 VC)
 frame_condition.adb:21:13: info: loop invariant preservation proved (CVC4: 1 VC)
-frame_condition.adb:21:37: info: initialization of "K" proved
 frame_condition.adb:21:45: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:21:57: info: initialization of "Max" proved
 frame_condition.adb:23:13: info: loop invariant initialization proved (CVC4: 1 VC)
 frame_condition.adb:23:13: info: loop invariant preservation proved (CVC4: 1 VC)
-frame_condition.adb:23:37: info: initialization of "K" proved
 frame_condition.adb:25:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:25:38: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:26:20: info: initialization of "K" proved
-frame_condition.adb:27:15: info: initialization of "K" proved
 frame_condition.adb:27:17: info: overflow check proved (CVC4: 1 VC)
 frame_condition.adb:30:13: info: range check proved (CVC4: 1 VC)
 frame_condition.adb:34:16: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:34:16: info: initialization of "K" proved
-frame_condition.adb:34:27: info: initialization of "Max" proved
 frame_condition.adb:35:23: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:35:23: info: initialization of "K" proved
 frame_condition.adb:37:13: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:37:26: info: initialization of "K" proved
-frame_condition.adb:37:29: info: initialization of "Max" proved
-frame_condition.adb:38:33: info: initialization of "K" proved
 frame_condition.adb:38:33: info: loop invariant initialization proved (CVC4: 2 VC)
 frame_condition.adb:38:33: info: loop invariant preservation proved (CVC4: 2 VC)
 frame_condition.adb:40:13: info: loop invariant initialization proved (CVC4: 1 VC)
 frame_condition.adb:40:13: info: loop invariant preservation proved (CVC4: 1 VC)
-frame_condition.adb:40:26: info: initialization of "K" proved
 frame_condition.adb:40:44: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:40:56: info: initialization of "Max" proved
 frame_condition.adb:42:13: info: loop invariant initialization proved (CVC4: 1 VC)
 frame_condition.adb:42:13: info: loop invariant preservation proved (CVC4: 1 VC)
-frame_condition.adb:42:26: info: initialization of "K" proved
 frame_condition.adb:44:23: info: index check proved (CVC4: 4 VC)
 frame_condition.adb:44:38: info: index check proved (CVC4: 4 VC)
-frame_condition.adb:45:20: info: initialization of "K" proved
-frame_condition.adb:46:15: info: initialization of "K" proved
 frame_condition.adb:46:17: info: range check proved (CVC4: 1 VC)
 frame_condition.adb:57:40: info: range check proved (CVC4: 1 VC)
 frame_condition.adb:58:40: info: range check proved (CVC4: 1 VC)
@@ -66,22 +46,12 @@ frame_condition.adb:74:55: info: range check proved (CVC4: 1 VC), in instantiati
 frame_condition.adb:74:55: info: range check proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:75:16: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:75:16: info: precondition proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:75:31: info: data dependencies proved, in instantiation at frame_condition.adb:122
+frame_condition.adb:75:31: info: data dependencies proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:82:22: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:82:22: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:82:22: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:82:22: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
-frame_condition.adb:82:33: info: initialization of "Max" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:82:33: info: initialization of "Max" proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:83:29: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:83:29: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:83:29: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:83:29: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
-frame_condition.adb:85:16: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:85:16: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
-frame_condition.adb:85:16: info: initialization of "Max" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:85:16: info: initialization of "Max" proved, in instantiation at frame_condition.adb:150
-frame_condition.adb:86:39: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:86:39: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:86:39: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:86:39: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:86:39: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
@@ -90,20 +60,14 @@ frame_condition.adb:88:20: info: loop invariant initialization proved (CVC4: 2 V
 frame_condition.adb:88:20: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:88:20: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:88:20: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:88:42: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:88:42: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:88:50: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:88:50: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:88:62: info: initialization of "Max" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:88:62: info: initialization of "Max" proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:89:54: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:89:54: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:91:20: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:91:20: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
+frame_condition.adb:91:20: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:91:20: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:122
-frame_condition.adb:91:20: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:91:42: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:91:42: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
 frame_condition.adb:93:30: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:93:30: info: index check proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:93:42: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
@@ -122,15 +86,11 @@ frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 1 VC)
 frame_condition.adb:98:39: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at frame_condition.adb:150
 frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:122
 frame_condition.adb:98:39: info: precondition proved (CVC4: 4 VC), in instantiation at frame_condition.adb:150
-frame_condition.adb:99:26: info: initialization of "K" proved, in instantiation at frame_condition.adb:122
-frame_condition.adb:99:26: info: initialization of "K" proved, in instantiation at frame_condition.adb:150
-frame_condition.adb:106:22: info: initialization of "K" proved, in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:122
 frame_condition.adb:106:28: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:122
 frame_condition.adb:111:16: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:122
 frame_condition.adb:115:16: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:119:40: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:119:58: info: index check proved (CVC4: 2 VC)
-frame_condition.adb:132:22: info: initialization of "K" proved, in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:150
 frame_condition.adb:132:28: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:100, in instantiation at frame_condition.adb:150
 frame_condition.adb:137:16: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:85, in instantiation at frame_condition.adb:150
 frame_condition.adb:141:16: info: index check proved (CVC4: 2 VC)
@@ -140,14 +100,8 @@ frame_condition.adb:147:19: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:147:40: info: index check proved (CVC4: 2 VC)
 frame_condition.adb:159:10: info: precondition proved (CVC4: 1 VC)
 frame_condition.adb:160:10: info: precondition proved (CVC4: 1 VC)
-frame_condition.adb:170:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224
-frame_condition.adb:170:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
-frame_condition.adb:170:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:170:42: info: overflow check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
-frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224
-frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
-frame_condition.adb:171:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:233
 frame_condition.adb:171:42: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:224, in call inlined at frame_condition.adb:234
 frame_condition.adb:178:30: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:204, in call inlined at frame_condition.adb:233
@@ -164,26 +118,8 @@ frame_condition.adb:195:31: info: range check proved (CVC4: 1 VC), in call inlin
 frame_condition.adb:195:31: info: range check proved (CVC4: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:201:19: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:201:19: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:201:19: info: initialization of "K" proved
-frame_condition.adb:201:19: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:201:19: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
-frame_condition.adb:201:30: info: initialization of "Max" proved
-frame_condition.adb:201:30: info: initialization of "Max" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:201:30: info: initialization of "Max" proved, in call inlined at frame_condition.adb:234
 frame_condition.adb:202:26: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:202:26: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:202:26: info: initialization of "K" proved
-frame_condition.adb:202:26: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:202:26: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
-frame_condition.adb:204:13: info: initialization of "K" proved
-frame_condition.adb:204:13: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:204:13: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
-frame_condition.adb:204:13: info: initialization of "Max" proved
-frame_condition.adb:204:13: info: initialization of "Max" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:204:13: info: initialization of "Max" proved, in call inlined at frame_condition.adb:234
-frame_condition.adb:205:36: info: initialization of "K" proved
-frame_condition.adb:205:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:205:36: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
 frame_condition.adb:205:36: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:205:36: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:205:36: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
@@ -192,49 +128,34 @@ frame_condition.adb:207:17: info: loop invariant initialization proved (CVC4: 2 
 frame_condition.adb:207:17: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:207:17: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:17: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:207:39: info: initialization of "K" proved
-frame_condition.adb:207:39: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:207:39: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
 frame_condition.adb:207:47: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:207:47: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:207:59: info: initialization of "Max" proved
-frame_condition.adb:207:59: info: initialization of "Max" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:207:59: info: initialization of "Max" proved, in call inlined at frame_condition.adb:234
 frame_condition.adb:208:51: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:208:51: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:210:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:210:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:210:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:210:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:211:44: info: initialization of "K" proved
-frame_condition.adb:211:44: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:211:44: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
+frame_condition.adb:210:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:210:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:210:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:210:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:213:32: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:213:32: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:213:47: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:213:47: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:215:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:215:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:215:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:215:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:216:32: info: initialization of "K" proved
-frame_condition.adb:216:32: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:216:32: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
+frame_condition.adb:215:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:215:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:215:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:215:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:218:31: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:218:31: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:218:46: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:218:46: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:220:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:220:16: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:220:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:233
-frame_condition.adb:220:16: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:220:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:220:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
+frame_condition.adb:220:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:233
+frame_condition.adb:220:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:222:26: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:222:26: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
 frame_condition.adb:222:54: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:233
 frame_condition.adb:222:54: info: index check proved (CVC4: 4 VC), in call inlined at frame_condition.adb:234
-frame_condition.adb:223:23: info: initialization of "K" proved
-frame_condition.adb:223:23: info: initialization of "K" proved, in call inlined at frame_condition.adb:233
-frame_condition.adb:223:23: info: initialization of "K" proved, in call inlined at frame_condition.adb:234
 frame_condition.ads:11:14: info: postcondition proved (CVC4: 3 VC)
 frame_condition.ads:12:20: info: index check proved (CVC4: 2 VC)
 frame_condition.ads:12:38: info: index check proved (CVC4: 2 VC)

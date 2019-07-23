@@ -2,117 +2,130 @@ fruit-priv_child.adb:9:41: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:10:43: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:21:42: info: overflow check proved (CVC4: 1 VC)
 fruit-priv_child.adb:22:45: info: overflow check proved (CVC4: 1 VC)
-fruit-priv_child.adb:34:18: info: initialization of "Fruit_Salads" proved
+fruit-priv_child.adb:29:07: info: initialization of "Money" proved
+fruit-priv_child.adb:30:07: info: initialization of "Fruit_Salads" proved
 fruit-priv_child.adb:34:31: info: range check proved (CVC4: 1 VC)
-fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Oranges and Price_Of_Apple and Price_Of_Orange and Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Fruit.Fruits in a postcondition]
-fruit-priv_child.adb:36:18: info: initialization of "Money" proved
+fruit-priv_child.adb:34:31: medium: overflow check might fail [possible explanation: call at line 33 should mention Fruit_Salads_Made (for argument Fruit_Salads) and Extra_Cost and Apples and Oranges and Price_Of_Apple and Price_Of_Orange in a postcondition]
 fruit-priv_child.adb:36:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:36:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
 fruit-priv_child.adb:36:33: medium: overflow check might fail [possible explanation: call at line 33 should mention Apples and Price_Of_Apple in a postcondition]
-fruit-priv_child.adb:37:18: info: initialization of "Money" proved
 fruit-priv_child.adb:37:24: info: range check proved (CVC4: 1 VC)
 fruit-priv_child.adb:37:24: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
 fruit-priv_child.adb:37:34: medium: overflow check might fail [possible explanation: call at line 33 should mention Oranges and Price_Of_Orange in a postcondition]
-fruit-priv_child.adb:41:18: info: initialization of "Money" proved
+fruit-priv_child.ads:5:08: info: flow dependencies proved
+fruit-priv_child.ads:8:11: info: data dependencies proved
+fruit-priv_child.ads:12:11: info: data dependencies proved
+fruit-priv_child.ads:16:11: info: data dependencies proved
+fruit-priv_child.ads:19:11: info: data dependencies proved
 fruit-priv_child.ads:21:46: info: initialization of "Profit" proved
-fruit-priv_child.ads:25:04: info: initialization of "Extra_Cost" constituent of "Price_Related_Stuff" proved
-fruit-pub_child.adb:20:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:21:33: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:23:30: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:23:30: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Apples_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:25:31: medium: divide by zero might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
-fruit-pub_child.adb:25:31: medium: range check might fail [possible explanation: subprogram at line 7 should mention Price_Of_Apple and Price_Of_Orange and Oranges_In_Fruit_Salad and Fruit.Apples and Fruit.Fruits and Fruit.Oranges and Fruit.Priv_Child.Price_Related_Stuff in a precondition]
+fruit-priv_child.ads:22:09: info: data dependencies proved
+fruit-pub_child.adb:20:30: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:21:33: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:23:30: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:23:30: medium: range check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Apples_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:25:31: medium: divide by zero might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
+fruit-pub_child.adb:25:31: medium: range check might fail [possible explanation: subprogram at fruit-pub_child.ads:5 should mention Oranges_In_Fruit_Salad and Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a precondition]
 fruit-pub_child.adb:27:07: info: precondition proved (CVC4: 1 VC)
-fruit-pub_child.adb:27:23: info: initialization of "Fruit_Salads_Made" proved
 fruit-pub_child.adb:27:41: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:27:41: info: range check proved (CVC4: 1 VC)
-fruit-pub_child.adb:28:07: medium: precondition might fail
-fruit-pub_child.adb:28:24: info: initialization of "Fruit_Salads_Made" proved
+fruit-pub_child.adb:28:07: medium: precondition might fail, cannot prove Oranges_To_Consume <= (Number_Of_Oranges) [possible explanation: call at line 27 should mention Price_Of_Apple and Price_Of_Orange and Fruit.Priv_Child.Extra_Cost and Fruit.Apples and Fruit.Oranges in a postcondition]
 fruit-pub_child.adb:28:42: info: overflow check proved (CVC4: 1 VC)
 fruit-pub_child.adb:28:42: info: range check proved (CVC4: 1 VC)
 fruit-pub_child.adb:33:31: info: range check proved (CVC4: 1 VC)
-fruit-pub_child.adb:33:31: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention Price_Of_Apple and Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
-fruit-pub_child.adb:33:56: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
+fruit-pub_child.adb:33:31: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad and Price_Of_Apple in a precondition]
+fruit-pub_child.adb:33:56: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
 fruit-pub_child.adb:34:32: info: range check proved (CVC4: 1 VC)
-fruit-pub_child.adb:34:32: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention Price_Of_Orange and Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
-fruit-pub_child.adb:34:57: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
+fruit-pub_child.adb:34:32: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad and Price_Of_Orange in a precondition]
+fruit-pub_child.adb:34:57: medium: overflow check might fail [possible explanation: subprogram at fruit-pub_child.ads:13 should mention Apples_In_Fruit_Salad and Oranges_In_Fruit_Salad in a precondition]
+fruit-pub_child.ads:3:08: info: flow dependencies proved
 fruit-pub_child.ads:5:37: info: initialization of "Fruit_Salads_Made" proved
-fruit-pub_child.ads:17:04: info: initialization of "Apples_In_Fruit_Salad" constituent of "Fruit_Salad" proved
-fruit-pub_child.ads:19:04: info: initialization of "Oranges_In_Fruit_Salad" constituent of "Fruit_Salad" proved
+fruit-pub_child.ads:6:11: info: data dependencies proved
+fruit-pub_child.ads:8:11: info: flow dependencies proved
+fruit-pub_child.ads:14:11: info: data dependencies proved
 fruit.adb:21:24: info: overflow check proved (CVC4: 1 VC)
 fruit.adb:21:24: info: range check proved (CVC4: 1 VC)
 fruit.adb:29:26: info: overflow check proved (CVC4: 1 VC)
 fruit.adb:29:26: info: range check proved (CVC4: 1 VC)
 fruit.adb:38:26: info: overflow check proved (CVC4: 1 VC)
 fruit.adb:50:29: info: overflow check proved (CVC4: 1 VC)
+fruit.ads:3:08: info: flow dependencies proved
+fruit.ads:6:11: info: data dependencies proved
+fruit.ads:9:11: info: data dependencies proved
+fruit.ads:12:11: info: data dependencies proved
+fruit.ads:13:11: info: flow dependencies proved
+fruit.ads:17:11: info: data dependencies proved
+fruit.ads:18:11: info: flow dependencies proved
 fruit.ads:22:24: medium: overflow check might fail [possible explanation: subprogram at line 21 should mention Apples and Oranges in a precondition]
-fruit.ads:37:04: info: initialization of "Apples" constituent of "Fruits" proved
-fruit.ads:40:04: info: initialization of "Oranges" constituent of "Fruits" proved
-fruit.ads:43:04: info: initialization of "Price_Of_Apple" constituent of "Fruits" proved
-fruit.ads:46:04: info: initialization of "Price_Of_Orange" constituent of "Fruits" proved
+fruit.ads:23:11: info: data dependencies proved
+fruit.ads:26:11: info: data dependencies proved
+fruit.ads:27:11: info: flow dependencies proved
+fruit.ads:30:11: info: data dependencies proved
+fruit.ads:31:11: info: flow dependencies proved
+fruit.ads:34:11: info: data dependencies proved
+fruit.ads:35:11: info: flow dependencies proved
 levels.adb:9:27: warning: no procedure exists that can initialize abstract state "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:13:12: info: data dependencies proved
+levels.adb:16:12: info: data dependencies proved
 levels.adb:18:26: info: initialization of "A" proved
-levels.adb:20:20: info: initialization of "A" proved
+levels.adb:19:12: info: data dependencies proved
 levels.adb:20:20: medium: postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + (Read_Partial_1_Inner)
 levels.adb:20:39: medium: overflow check might fail
 levels.adb:20:56: medium: overflow check might fail
 levels.adb:22:28: info: initialization of "X" proved
+levels.adb:23:12: info: data dependencies proved
+levels.adb:24:12: info: flow dependencies proved
 levels.adb:36:45: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:36:57: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
 levels.adb:37:27: info: refined post proved (CVC4: 1 VC)
-levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-levels.adb:45:27: medium: refined postcondition might fail [possible explanation: subprogram at line 43 should mention X0 in a precondition]
-levels.adb:45:42: medium: overflow check might fail [possible explanation: subprogram at line 43 should mention X0 in a precondition]
+levels.adb:44:27: medium: "X0" constituent of "Abs_0" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+levels.adb:45:27: medium: refined postcondition might fail, cannot prove Read_Partial_0 + 1 > X0
+levels.adb:45:42: medium: overflow check might fail
 levels.adb:52:23: info: initialization of "A" proved
-levels.adb:66:15: medium: overflow check might fail [possible explanation: subprogram at line 59 should mention X0 in a precondition]
-levels.adb:67:14: medium: overflow check might fail [possible explanation: subprogram at line 59 should mention Y and X0 in a precondition]
+levels.adb:53:09: info: data dependencies proved
+levels.adb:66:15: medium: overflow check might fail [possible explanation: subprogram at levels.ads:25 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
+levels.adb:67:14: medium: overflow check might fail [possible explanation: subprogram at levels.ads:25 should mention Y and X0 in a precondition]
 levels.adb:70:23: info: initialization of "A" proved
+levels.adb:71:09: info: data dependencies proved
 levels.adb:71:24: low: unused global "Y0" constituent of "Abs_0"
 levels.adb:71:36: low: unused global "Nested_1.Abs_1" constituent of "Levels.Abs_0"
+levels.adb:87:09: info: flow dependencies proved
 levels.adb:88:09: medium: initial condition might fail
-levels.adb:88:30: info: initialization of "X2" constituent of "Abs_2" proved
-levels.adb:99:10: info: initialization of "X2" constituent of "Abs_2" proved
-levels.adb:100:10: info: initialization of "Y2" constituent of "Abs_2" proved
-levels.adb:127:25: info: initialization of "A" proved
-levels.adb:127:25: medium: refined postcondition might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:127:44: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:127:61: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:130:18: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:130:23: medium: overflow check might fail [possible explanation: subprogram at line 125 should mention X1 and X0 in a precondition]
-levels.adb:139:24: info: initialization of "Tmp" proved
-levels.adb:140:15: info: initialization of "X" proved
+levels.adb:92:15: info: data dependencies proved
+levels.adb:127:25: medium: refined postcondition might fail, cannot prove A = Read_Partial_0 + Read_Partial_1 + Nested_2(Nested_2.read_partial_2)
+levels.adb:127:44: medium: overflow check might fail
+levels.adb:127:61: medium: overflow check might fail
+levels.adb:130:18: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention X1 and X0 in a precondition]
+levels.adb:130:23: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention X2 and Y2 and X1 and X0 in a precondition]
 levels.adb:140:17: medium: overflow check might fail [possible explanation: call at line 139 should mention Y (for argument Tmp) and X (for argument X) in a postcondition]
-levels.adb:140:19: info: initialization of "Tmp" proved
-levels.adb:147:25: info: initialization of "A" proved
-levels.adb:147:25: medium: refined postcondition might fail [possible explanation: subprogram at line 145 should mention X0 in a precondition]
-levels.adb:147:44: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention X0 in a precondition]
-levels.adb:147:70: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention X0 in a precondition]
-levels.adb:157:17: medium: overflow check might fail [possible explanation: subprogram at line 153 should mention X0 in a precondition]
+levels.adb:147:25: info: refined post proved (CVC4: 1 VC)
+levels.adb:147:44: medium: overflow check might fail
+levels.adb:147:70: info: overflow check proved (CVC4: 1 VC)
+levels.adb:157:17: medium: overflow check might fail [possible explanation: subprogram at levels.ads:8 should mention X2 and Y2 and X1 and Y1 and X0 in a precondition]
 levels.ads:2:26: warning: no procedure exists that can initialize abstract state "Levels.Abs_0"
+levels.ads:6:11: info: data dependencies proved
+levels.ads:9:11: info: data dependencies proved
 levels.ads:11:56: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention X0 in a precondition]
+levels.ads:12:11: info: data dependencies proved
+levels.ads:15:11: info: data dependencies proved
 levels.ads:16:21: info: postcondition proved (CVC4: 1 VC)
+levels.ads:19:11: info: data dependencies proved
 levels.ads:20:21: info: postcondition proved (CVC4: 1 VC)
 levels.ads:20:36: medium: overflow check might fail
 levels.ads:22:23: info: initialization of "A" proved
+levels.ads:23:09: info: data dependencies proved
 levels.ads:25:25: info: initialization of "X" proved
-par-priv.adb:8:18: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention X and Y in a precondition]
+levels.ads:27:11: info: data dependencies proved
+levels.ads:28:11: info: flow dependencies proved
+par-priv.adb:8:18: medium: overflow check might fail [possible explanation: subprogram at par-priv.ads:9 should mention X and Y in a precondition]
 par-priv.adb:13:04: warning: analyzing unreferenced procedure "Test"
-par-priv.adb:13:14: info: initialization of "Priv.D" constituent of "Par.State" proved
-par-priv.ads:9:14: info: initialization of "E" constituent of "Private_Child_State" proved
 par-priv.ads:11:40: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention X and Y in a precondition]
 par-priv2.ads:4:27: warning: no procedure exists that can initialize abstract state "Priv2.More_Private_State" constituent of "Par.State"
-par-priv2.ads:9:14: info: initialization of "Priv2.D2" constituent of "Par.State" proved
-par-pub.adb:9:18: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
+par-pub.adb:9:18: medium: overflow check might fail [possible explanation: subprogram at par-pub.ads:8 should mention X and Y in a precondition]
 par-pub.adb:14:04: warning: analyzing unreferenced procedure "Test"
-par-pub.adb:14:14: info: initialization of "A" proved
-par-pub.ads:8:14: info: initialization of "A" proved
 par-pub.ads:15:40: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention X and Y in a precondition]
-par.adb:20:16: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention X and Y in a precondition]
-par.adb:20:20: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention X and Y and Z in a precondition]
-par.adb:26:14: medium: overflow check might fail [possible explanation: subprogram at line 23 should mention X and Y in a precondition]
+par.adb:20:16: medium: overflow check might fail [possible explanation: subprogram at par.ads:15 should mention X and Y in a precondition]
+par.adb:20:20: medium: overflow check might fail [possible explanation: subprogram at par.ads:15 should mention X and Y and Z in a precondition]
+par.adb:26:14: medium: overflow check might fail [possible explanation: subprogram at par.ads:7 should mention X and Y in a precondition]
 par.adb:29:04: warning: analyzing unreferenced procedure "Test_1"
-par.adb:29:14: info: initialization of "Z" constituent of "State" proved
 par.adb:37:04: warning: analyzing unreferenced procedure "Test_2"
-par.adb:37:14: info: initialization of "Z" constituent of "State" proved
 par.ads:2:27: warning: no procedure exists that can initialize abstract state "Par.State"
-par.ads:7:14: info: initialization of "Z" constituent of "State" proved

@@ -3,31 +3,24 @@ actions.adb:1:23: warning: "Y" is not modified, could be IN
 actions.adb:1:63: warning: unused initial value of "B6"
 actions.adb:6:04: warning: unused variable "B"
 actions.adb:15:06: info: index check proved (CVC4: 2 VC)
-actions.adb:15:09: info: initialization of "A" proved
 actions.adb:18:22: info: assertion proved (altergo: 1 VC)
 actions.adb:18:59: info: overflow check proved (CVC4: 1 VC)
-actions.adb:18:66: info: initialization of "A" proved
 actions.adb:18:69: info: index check proved (CVC4: 2 VC)
-actions.adb:21:22: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+actions.adb:21:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 actions.adb:22:69: info: overflow check proved (CVC4: 1 VC)
-actions.adb:22:76: info: initialization of "A" proved
 actions.adb:22:79: info: index check proved (CVC4: 2 VC)
-actions.adb:25:22: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+actions.adb:25:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 actions.adb:25:69: info: overflow check proved (CVC4: 1 VC)
-actions.adb:25:76: info: initialization of "A" proved
 actions.adb:25:79: info: index check proved (CVC4: 2 VC)
-actions.adb:28:22: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+actions.adb:28:22: info: assertion proved (Trivial: 1 VC; altergo: 1 VC)
 actions.adb:28:58: info: overflow check proved (CVC4: 1 VC)
-actions.adb:28:65: info: initialization of "A" proved
 actions.adb:28:68: info: index check proved (CVC4: 2 VC)
 actions.adb:33:35: info: overflow check proved (CVC4: 1 VC)
-actions.adb:33:42: info: initialization of "A" proved
 actions.adb:33:45: info: index check proved (CVC4: 2 VC)
 actions.adb:37:25: info: assertion proved (altergo: 2 VC)
 actions.adb:37:40: warning: unreachable branch (CVC4: 1 VC)
 actions.adb:40:04: warning: statement has no effect
 actions.adb:41:35: info: overflow check proved (CVC4: 1 VC)
-actions.adb:41:42: info: initialization of "A" proved
 actions.adb:41:45: info: index check proved (CVC4: 2 VC)
 actions.adb:41:53: warning: statement has no effect
 actions.adb:47:10: warning: initialization of "V" has no effect

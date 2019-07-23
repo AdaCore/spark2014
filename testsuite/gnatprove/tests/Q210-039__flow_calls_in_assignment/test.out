@@ -1,4 +1,3 @@
 p.adb:4:18: warning: statement has no effect
 p.ads:2:13: warning: subprogram "Fun" might not terminate
 q.adb:2:11: warning: subprogram "Q" might not terminate
-q.adb:8:14: info: initialization of "A" proved

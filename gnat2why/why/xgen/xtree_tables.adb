@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -254,7 +254,7 @@ package body Xtree_Tables is
    -- Is_Why_Id --
    ---------------
 
-   function Is_Why_Id  (FI : Field_Info) return Boolean is
+   function Is_Why_Id (FI : Field_Info) return Boolean is
    begin
       return FI.Is_Why_Id;
    end Is_Why_Id;

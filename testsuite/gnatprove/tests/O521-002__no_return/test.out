@@ -1,2 +1,4 @@
 p.adb:23:06: medium: call to nonreturning subprogram might be executed
+p.ads:7:40: info: data dependencies proved
 p.ads:9:13: high: all paths in "Do_Something" raise exceptions or do not terminate normally
+p.ads:9:31: info: data dependencies proved

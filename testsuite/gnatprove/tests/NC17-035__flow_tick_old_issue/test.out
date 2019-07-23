@@ -1,15 +1,12 @@
+tick_old_implies_input.ads:5:11: info: data dependencies proved
 tick_old_implies_input.ads:5:32: info: initialization of "G" proved
-tick_old_implies_input.ads:6:21: info: initialization of "G" proved
 tick_old_implies_input.ads:6:21: medium: postcondition might fail, cannot prove G = G'Old + 1
 tick_old_implies_input.ads:6:25: high: "G" is not initialized at subprogram entry
 tick_old_implies_input.ads:6:31: medium: overflow check might fail
 tick_old_implies_input.ads:8:18: info: initialization of "X" proved
-tick_old_implies_input.ads:9:19: info: initialization of "X" proved
 tick_old_implies_input.ads:9:19: medium: postcondition might fail, cannot prove X = X'Old + 1
 tick_old_implies_input.ads:9:23: high: "X" is not initialized at subprogram entry
 tick_old_implies_input.ads:9:29: medium: overflow check might fail
-tick_old_implies_input.ads:11:14: info: initialization of "G" proved
-tick_old_implies_input.ads:12:21: info: initialization of "G" proved
 tick_old_implies_input.ads:12:21: medium: postcondition might fail, cannot prove G = G'Old + 1
 tick_old_implies_input.ads:12:25: high: "G" is not initialized at subprogram entry
 tick_old_implies_input.ads:12:31: medium: overflow check might fail

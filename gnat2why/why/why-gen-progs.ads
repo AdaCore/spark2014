@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,8 +26,11 @@
 with SPARK_Util;         use SPARK_Util;
 with Types;              use Types;
 with VC_Kinds;           use VC_Kinds;
+with SPARK_Atree;        use SPARK_Atree;
 with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Gen.Preds;      use Why.Gen.Preds;
+with Why.Atree.Modules;  use Why.Atree.Modules;
+with Why.Conversions;    use Why.Conversions;
+with Why.Gen.Expr;       use Why.Gen.Expr;
 with Why.Ids;            use Why.Ids;
 with Why.Sinfo;          use Why.Sinfo;
 with Why.Types;          use Why.Types;
@@ -43,13 +46,28 @@ package Why.Gen.Progs is
 
    function New_Any_Statement
      (Ada_Node    : Node_Id := Empty;
-      Pre         : W_Pred_Id := True_Pred;
       Post        : W_Pred_Id;
       Return_Type : W_Type_Id := Why_Empty)
       return W_Prog_Id;
-   --  Generate a node of the form "any type requires {pre} ensures {post}"
-   --  Such a node in Why is a bit like a function call with pre, post and
+   --  Generate a node of the form "any type requires ensures {post}"
+   --  Such a node in Why is a bit like a function call with post and
    --  return type, but can be used at any place.
+   --  @param Ada_Node Ada_Node used for the any node
+   --  @param Post the postcondition used for the any statement
+   --  @param Return_Type the type used for the any statement
+   --  @return an any node
+
+   function New_Any_Statement
+     (Ada_Node    : Node_Id;
+      Pre         : W_Pred_Id;
+      Post        : W_Pred_Id;
+      Reason      : VC_Kind;
+      Return_Type : W_Type_Id := Why_Empty)
+      return W_Prog_Id
+   with Pre => Present (Ada_Node);
+   --  Generate a node of the form "any type requires {pre} ensures {post}"
+   --  Same as above except that a VC will be generated for the precondition
+   --  so a reason and an Ada node should be provided.
    --  @param Ada_Node Ada_Node used for the any node
    --  @param Pre the precondition used for the any statement
    --  @param Post the postcondition used for the any statement
@@ -96,7 +114,9 @@ package Why.Gen.Progs is
    function Sequence (Ada_Node    : Node_Id;
                       Left, Right : W_Prog_Id) return W_Prog_Id;
    function Sequence (Left, Right : W_Prog_Id) return W_Prog_Id is
-     (Sequence (Empty, Left, Right));
+     (Sequence (Empty, Left, Right))
+   with Pre => Get_Type (+Left) = Why_Empty
+     or else Get_Type (+Left) = EW_Unit_Type;
    --  Build a statement sequence of the two arguments, but try to minimize
    --  nesting of W_Statement_Sequence constructors.
 

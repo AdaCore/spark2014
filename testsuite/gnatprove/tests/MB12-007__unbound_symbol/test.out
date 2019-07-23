@@ -1,10 +1,7 @@
+pupils.adb:17:06: info: initialization of "Subject_Scores" proved
 pupils.adb:23:36: info: unrolling loop
 pupils.adb:25:49: info: index check proved (CVC4: 20 VC)
-pupils.adb:26:15: info: initialization of "Subject_Scores" proved
-pupils.adb:27:23: info: initialization of "Success" proved
 pupils.adb:29:43: info: index check proved (CVC4: 20 VC)
-pupils.adb:30:46: info: initialization of "Subject_Scores" proved
-pupils.adb:32:09: info: initialization of "Success" proved
 pupils.adb:33:46: info: range check proved (CVC4: 1 VC)
 pupils.adb:34:26: info: index check proved (CVC4: 2 VC)
 pupils.adb:35:26: info: index check proved (CVC4: 2 VC)
@@ -13,7 +10,6 @@ pupils.ads:99:44: info: initialization of "Success" proved
 pupils.ads:102:25: info: range check proved (CVC4: 2 VC)
 pupils.ads:103:35: info: index check proved (CVC4: 2 VC)
 pupils.ads:103:60: info: index check proved (CVC4: 2 VC)
-pupils.ads:104:20: info: initialization of "Success" proved
-pupils.ads:107:25: medium: postcondition might fail, cannot prove (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (I) /= Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (J)) or (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Su...)) (e.g. when I = 0 and J = 1 and Subj0 = EnglishLanguage and Subj1 = EnglishLanguage and Subj2 = EnglishLanguage and Subj3 = EnglishLanguage and Subj4 = EnglishLanguage and Subj5 = EnglishLanguage and Subj6 = EnglishLanguage and Subj7 = EnglishLanguage and Subj8 = EnglishLanguage and Subj9 = EnglishLanguage and Success = True)
+pupils.ads:107:25: medium: postcondition might fail, cannot prove (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (I) /= Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Subj8, Subj9) (J)) or (Subject_List'(Subj0, Subj1, Subj2, Subj3, Subj4, Subj5, Subj6, Subj7, Su...)) (e.g. when I = 0 and J = 1 and Subj0 = EnglishLanguage and Subj1 = EnglishLanguage and Subj2 = EnglishLanguage and Subj3 = EnglishLanguage and Subj4 = EnglishLanguage and Subj5 = EnglishLanguage and Subj6 = EnglishLanguage and Subj7 = EnglishLanguage and Subj8 = EnglishLanguage and Subj9 = EnglishLanguage)
 pupils.ads:116:38: info: index check proved (CVC4: 2 VC)
 pupils.ads:122:68: info: index check proved (CVC4: 2 VC)

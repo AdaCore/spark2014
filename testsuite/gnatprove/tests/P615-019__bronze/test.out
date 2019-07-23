@@ -1,15 +1,12 @@
-my_package.adb:27:13: info: initialization of "A" proved
-my_package.adb:28:13: info: initialization of "A" proved
 my_package.adb:31:04: warning: analyzing unreferenced procedure "Do_Not_Modify_X"
 my_package.adb:31:31: warning: "X" is not modified, could be IN
 my_package.adb:36:04: warning: analyzing unreferenced procedure "Write_X_Twice"
 my_package.adb:36:29: info: initialization of "X" proved
 my_package.adb:38:09: warning: unused assignment
 my_package.adb:42:04: warning: analyzing unreferenced procedure "Write_X_To_Same"
-my_package.adb:46:12: info: initialization of "Y" proved
+my_package.adb:43:07: info: initialization of "Y" proved
 my_package.adb:49:04: warning: analyzing unreferenced function "Init_Result_Twice"
 my_package.adb:50:07: warning: initialization of "Result" has no effect
-my_package.adb:53:14: info: initialization of "Result" proved
 my_package.adb:56:26: info: initialization of "X" proved
 my_package.adb:61:04: warning: analyzing unreferenced procedure "Initialize_X"
 my_package.adb:61:28: info: initialization of "X" proved
@@ -20,19 +17,14 @@ my_package.adb:68:29: warning: unused initial value of "X"
 my_package.adb:73:04: warning: analyzing unreferenced procedure "Do_Nothing"
 my_package.adb:73:14: warning: subprogram "Do_Nothing" has no effect
 my_package.adb:82:26: info: initialization of "X" proved
+my_package.adb:83:06: info: data dependencies proved
+my_package.adb:87:09: info: data dependencies proved
 my_package.adb:87:42: info: initialization of "X" proved
-my_package.adb:99:17: info: initialization of "B" constituent of "State" proved
-my_package.adb:99:17: info: initialization of "H" constituent of "State" proved
-my_package.adb:100:31: info: initialization of "V" proved
-my_package.adb:120:17: info: initialization of "H" constituent of "State1" proved
-my_package.adb:164:37: info: initialization of "Y.F1" proved
-my_package.adb:164:37: info: initialization of "Y.F2" proved
-my_package.adb:169:14: info: initialization of "YY.F1" proved
-my_package.adb:169:14: info: initialization of "YY.F2" proved
-my_package.adb:174:28: info: initialization of "Y.F1" proved
-my_package.adb:174:28: info: initialization of "Y.F2" proved
+my_package.adb:100:09: info: data dependencies proved
+my_package.adb:121:09: info: data dependencies proved
+my_package.adb:164:37: info: initialization of "Y" proved
+my_package.adb:174:28: info: initialization of "Y" proved
 my_package.adb:179:43: info: initialization of "Y" proved
-my_package.adb:184:14: info: initialization of "Y" proved
 my_package.adb:190:28: info: initialization of "Y" proved
 my_package.adb:195:33: info: initialization of "Y" proved
 my_package.adb:200:04: warning: analyzing unreferenced procedure "Bad_Aliasing"
@@ -41,16 +33,10 @@ my_package.adb:202:07: warning: initialization of "A" has no effect
 my_package.adb:205:20: high: formal parameter "X" and global "Y" are aliased (SPARK RM 6.4.2)
 my_package.adb:207:07: warning: statement has no effect
 my_package.adb:207:20: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-my_package.adb:207:20: info: initialization of "Z.F1" proved
-my_package.adb:207:20: info: initialization of "Z.F2" proved
 my_package.adb:207:23: warning: unused assignment to "Z"
 my_package.adb:210:21: high: formal parameter "Y" and global "XX" are aliased (SPARK RM 6.4.2)
 my_package.adb:211:21: high: formal parameter "Y" and global "X" are aliased (SPARK RM 6.4.2)
-my_package.adb:227:22: info: initialization of "I" proved
 my_package.adb:228:07: warning: statement has no effect
-my_package.adb:228:13: info: initialization of "A" proved
 my_package.adb:228:13: warning: unused assignment
-my_package.adb:228:20: info: initialization of "A" proved
 my_package.adb:228:20: warning: unused assignment
-my_package.adb:228:23: info: initialization of "I" proved
 my_package.ads:8:22: info: initialization of "Found" proved

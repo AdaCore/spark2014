@@ -1,4 +1,1 @@
-use_data.ads:10:04: info: initialization of "S0" proved
-use_data.ads:11:04: info: initialization of "SV" proved
-use_data.ads:12:04: info: initialization of "S0b" proved
-use_data.ads:13:04: info: initialization of "SVb" proved
+use_data.ads:5:03: info: flow dependencies proved

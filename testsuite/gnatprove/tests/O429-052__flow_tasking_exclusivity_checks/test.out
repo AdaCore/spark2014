@@ -1,16 +1,19 @@
 entry_call_from_elaboration.adb:5:14: info: nontermination of task proved (CVC4: 1 VC)
+entry_call_from_elaboration.adb:5:22: info: data dependencies proved
 entry_call_from_elaboration.adb:23:04: high: possible data race when accessing variable "entry_call_from_elaboration.x"
 entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t1"
 entry_call_from_elaboration.adb:23:04: high: with task "entry_call_from_elaboration.t2"
 nested_po.adb:4:24: warning: statement has no effect
 nested_po.ads:21:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 nested_po.ads:21:14: medium: the task might terminate, which is not allowed in SPARK
-pack.adb:7:18: warning: assuming "Put_Line" has no effect on global items
-pack.adb:7:18: warning: no Global contract available for "Put_Line"
-pack.adb:12:18: warning: assuming "Put_Line" has no effect on global items
-pack.adb:12:18: warning: no Global contract available for "Put_Line"
 pack.ads:5:14: medium: the task might terminate, which is not allowed in SPARK
 pack.ads:6:14: medium: the task might terminate, which is not allowed in SPARK
+pack.ads:14:04: high: possible data race when accessing variable "ada.text_io.file_system"
+pack.ads:14:04: high: with task "pack.r"
+pack.ads:14:04: high: with task "pack.ta"
+pack.ads:25:04: high: possible data race when accessing variable "ada.text_io.file_system"
+pack.ads:25:04: high: with task "pack.r"
+pack.ads:25:04: high: with task "pack.ta"
 task_and_po_arrays.adb:9:24: warning: statement has no effect
 task_and_po_arrays.ads:5:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 task_and_po_arrays.ads:5:14: medium: the task might terminate, which is not allowed in SPARK

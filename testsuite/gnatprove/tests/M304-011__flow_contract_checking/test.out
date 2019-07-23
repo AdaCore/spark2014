@@ -1,20 +1,26 @@
+test.adb:9:07: info: initialization of "Temp" proved
 test.adb:11:07: warning: statement has no effect
 test.adb:12:15: warning: unused assignment
-test.adb:15:14: info: initialization of "Temp" proved
-test.adb:26:13: info: initialization of "Temp" proved
 test.adb:27:23: info: overflow check proved (CVC4: 1 VC)
-test.adb:27:25: info: initialization of "Temp" proved
-test.adb:70:14: medium: overflow check might fail [possible explanation: subprogram at line 61 should mention X and Z in a precondition]
-test.adb:95:16: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention X and Y in a precondition]
-test.adb:95:20: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention X and Y in a precondition]
-test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(13))
-test.adb:105:14: medium: overflow check might fail [possible explanation: subprogram at line 102 should mention X and Y in a precondition]
-test.adb:105:18: medium: overflow check might fail [possible explanation: subprogram at line 102 should mention X and Y in a precondition]
-test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(13))
+test.adb:70:14: medium: overflow check might fail [possible explanation: subprogram at test.ads:22 should mention X and Z in a precondition]
+test.adb:95:16: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]
+test.adb:95:20: medium: overflow check might fail [possible explanation: subprogram at test.ads:36 should mention X and Y in a precondition]
+test.adb:95:22: high: "Z" must be listed in the Global aspect of "Check_Contract_7" (SPARK RM 6.1.4(14))
+test.adb:105:14: medium: overflow check might fail [possible explanation: subprogram at test.ads:40 should mention X and Y in a precondition]
+test.adb:105:18: medium: overflow check might fail [possible explanation: subprogram at test.ads:40 should mention X and Y in a precondition]
+test.adb:105:20: high: "Z" must be listed in the Global aspect of "Check_Contract_8" (SPARK RM 6.1.4(14))
+test.ads:10:12: info: flow dependencies proved
 test.ads:12:54: info: initialization of "Z" proved
 test.ads:15:24: medium: missing self-dependency "Y => Y"
 test.ads:15:29: medium: incorrect dependency "Y => X"
 test.ads:18:47: info: initialization of "Equals" proved
+test.ads:20:12: info: data dependencies proved
+test.ads:24:12: info: data dependencies proved
 test.ads:25:34: info: initialization of "Y" proved
+test.ads:27:12: info: flow dependencies proved
 test.ads:30:47: medium: "Par2" might not be initialized in "Check_Contract_6"
+test.ads:32:12: info: data dependencies proved
 test.ads:34:24: medium: missing dependency "X => Par1"
+test.ads:38:12: info: data dependencies proved
+test.ads:42:12: info: data dependencies proved
+test.ads:44:12: info: flow dependencies proved

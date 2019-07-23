@@ -1,4 +1,5 @@
 p_gen.ads:4:18: info: assertion proved (CVC4: 1 VC), in instantiation at p_inst.adb:5
 p_inst.adb:3:19: warning: "Y" is not modified, could be IN
 s_gen.adb:3:19: info: assertion proved (CVC4: 1 VC), in instantiation at s_inst.adb:5
+s_gen.ads:3:22: info: data dependencies proved, in instantiation at s_inst.adb:5
 s_inst.adb:3:19: warning: "Y" is not modified, could be IN

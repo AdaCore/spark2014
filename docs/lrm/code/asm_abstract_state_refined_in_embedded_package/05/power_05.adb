@@ -5,7 +5,7 @@ is
 
   --  Embedded package spec for Source_A
   package Source_A
-  --# own State;        
+  --# own State;
   is
      procedure Read (Level : out Integer);
       --# global State;

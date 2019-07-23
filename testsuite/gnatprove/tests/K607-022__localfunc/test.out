@@ -1,8 +1,7 @@
+locfunc.adb:6:14: info: data dependencies proved
 locfunc.adb:6:36: info: initialization of "X" proved
 locfunc.adb:6:39: info: initialization of "Y" proved
 locfunc.adb:7:22: info: postcondition proved (CVC4: 2 VC)
-locfunc.adb:7:23: info: initialization of "X" proved
-locfunc.adb:7:38: info: initialization of "Y" proved
 locfunc.adb:16:07: warning: unused assignment to "Y"
 locfunc.ads:2:17: warning: unused initial value of "X"
 locfunc.ads:3:20: info: postcondition proved (CVC4: 1 VC)

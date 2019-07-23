@@ -1,0 +1,9 @@
+library project Lib
+is
+
+   for Library_Name use "mylib";
+   for Library_Dir use ".";
+   for Externally_Built use "true";
+   for Source_Dirs use ("include");
+
+end Lib;

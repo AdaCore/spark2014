@@ -1,3 +1,4 @@
 diff2.adb:1:37: info: initialization of "Z" proved
+diff2.adb:3:03: info: flow dependencies proved
 diff2.adb:6:11: info: overflow check proved
-diff2.adb:6:11: medium: range check might fail [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
+diff2.adb:6:11: medium: range check might fail (e.g. when X = 0 and Y = 1) [possible explanation: subprogram at line 1 should mention X and Y in a precondition]

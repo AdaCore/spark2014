@@ -1,17 +1,20 @@
 bounded_strings.adb:9:33: info: index check proved (CVC4: 2 VC)
 bounded_strings.adb:10:38: info: range check proved (CVC4: 1 VC)
-bounded_strings.adb:16:19: info: length check proved (CVC4: 4 VC)
-bounded_strings.adb:16:22: info: length check proved (CVC4: 4 VC)
+bounded_strings.adb:16:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bounded_strings.adb:16:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 bounded_strings.ads:9:09: info: default initial condition proved (CVC4: 1 VC)
+bounded_strings.ads:17:08: info: data dependencies proved
+bounded_strings.ads:22:08: info: data dependencies proved
+bounded_strings.ads:23:08: info: flow dependencies proved
 bounded_strings.ads:25:16: info: postcondition proved (CVC4: 1 VC)
-bounded_strings.ads:28:20: info: initialization of "Target.Length" proved
-bounded_strings.ads:28:20: info: initialization of "Target.Text" proved
+bounded_strings.ads:28:20: info: initialization of "Target" proved
+bounded_strings.ads:30:08: info: data dependencies proved
+bounded_strings.ads:31:08: info: flow dependencies proved
 bounded_strings.ads:32:16: info: postcondition proved (CVC4: 1 VC)
-bounded_strings.ads:32:23: info: initialization of "Target.Length" proved
-bounded_strings.ads:32:23: info: initialization of "Target.Text" proved
 bounded_strings.ads:38:10: info: range check proved (CVC4: 2 VC)
-bounded_strings.ads:38:39: info: length check proved (CVC4: 4 VC)
-test.adb:8:22: medium: precondition might fail
+bounded_strings.ads:38:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+test.adb:8:22: medium: precondition might fail, cannot prove Length(Target) + 1 <= Target.Bound
 test.adb:8:30: medium: private part of "TLV_Information.Filestore_Message" is not set
 test.ads:9:61: info: range check proved (CVC4: 1 VC)
-test.ads:12:25: info: initialization of private part of "TLV_Information.Filestore_Message" proved
+test.ads:14:08: info: data dependencies proved
+test.ads:15:08: info: flow dependencies proved

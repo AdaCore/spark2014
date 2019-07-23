@@ -1,4 +1,2 @@
-main.adb:6:11: info: initialization of "X" proved
-main.adb:7:11: info: initialization of "X" proved
 test1.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 1 should mention X in a precondition]
 test2.adb:3:11: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 1 should mention X in a precondition]

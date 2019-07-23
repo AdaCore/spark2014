@@ -1,0 +1,9 @@
+project Test is
+   package Compiler is
+      for Switches ("Ada") use ("-Og", "-Ofast", "-whatever");
+   end Compiler;
+
+   package Builder is
+      for Switches ("Ada") use ("-C");
+   end Builder;
+end Test;

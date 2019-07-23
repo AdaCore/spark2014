@@ -1,3 +1,1 @@
-inner_use.ads:5:14: info: initialization of "X" proved
-inner_use.ads:6:14: info: initialization of "X" proved
 inner_use.ads:6:14: info: postcondition proved (CVC4: 1 VC)

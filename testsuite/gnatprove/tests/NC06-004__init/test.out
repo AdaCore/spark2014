@@ -1,39 +1,30 @@
-circle_demo.adb:14:14: medium: precondition might fail
-circle_demo.adb:14:54: info: initialization of "My_Circle" proved
-circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-shapes5.adb:8:08: medium: refined postcondition might fail
+circle_demo.adb:10:04: info: initialization of "My_Circle" proved
+circle_demo.adb:14:14: medium: precondition might fail, cannot prove In_Bounds (C)
+shapes5.adb:8:09: medium: refined postcondition might fail, cannot prove Make_Circle'Result.Center_X + Make_Circle'Result.Radius in Coordinate_Type
 shapes5.adb:8:37: info: float overflow check proved (Interval)
 shapes5.adb:10:37: info: float overflow check proved (Interval)
 shapes5.adb:12:37: info: float overflow check proved (Interval)
 shapes5.adb:14:37: info: float overflow check proved (Interval)
-shapes5.adb:19:10: info: initialization of "R" proved
 shapes5.adb:19:36: info: float overflow check proved (Interval)
 shapes5.adb:20:36: info: float overflow check proved (Interval)
 shapes5.adb:20:36: info: range check proved (CVC4: 1 VC)
-shapes5.adb:22:10: info: initialization of "R" proved
 shapes5.adb:22:17: info: float overflow check proved (Interval)
 shapes5.adb:23:17: info: float overflow check proved (Interval)
 shapes5.adb:23:17: info: range check proved (CVC4: 1 VC)
-shapes5.adb:25:10: info: initialization of "R" proved
 shapes5.adb:25:36: info: float overflow check proved (Interval)
 shapes5.adb:26:36: info: float overflow check proved (Interval)
 shapes5.adb:26:36: info: range check proved (CVC4: 1 VC)
-shapes5.adb:28:10: info: initialization of "R" proved
 shapes5.adb:28:17: info: float overflow check proved (Interval)
 shapes5.adb:29:17: info: float overflow check proved (Interval)
-shapes5.adb:29:17: medium: range check might fail [possible explanation: subprogram at line 5 should mention Y in a precondition]
-shapes5.adb:31:21: info: initialization of "R" proved
+shapes5.adb:29:17: medium: range check might fail [possible explanation: subprogram at shapes5.ads:10 should mention Y in a precondition]
+shapes5.adb:39:07: info: initialization of "Delta_X" proved
+shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:42:41: info: float overflow check proved (Interval)
 shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:43:41: info: float overflow check proved (Interval)
-shapes5.adb:44:14: info: initialization of "Delta_X" proved
 shapes5.adb:44:21: info: float overflow check proved (Interval)
 shapes5.adb:44:30: info: float overflow check proved (Interval)
-shapes5.adb:44:32: info: initialization of "Delta_Y" proved
 shapes5.adb:44:39: info: float overflow check proved (Interval)
 shapes5.adb:44:75: info: float overflow check proved (Interval)
 shapes5.adb:44:75: info: range check proved (Interval)
@@ -42,3 +33,4 @@ shapes5.adb:55:29: info: float overflow check proved (Interval)
 shapes5.adb:56:29: info: float overflow check proved (Interval)
 shapes5.adb:57:29: info: float overflow check proved (Interval)
 shapes5.ads:13:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
+shapes5.ads:24:11: info: data dependencies proved

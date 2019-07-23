@@ -1,22 +1,14 @@
 tests.adb:17:23: info: initialization of "X" proved
 tests.adb:18:23: info: initialization of "Y" proved
 tests.adb:19:23: info: initialization of "Z" proved
+tests.adb:20:09: info: data dependencies proved
 tests.adb:21:21: medium: missing dependency "X => C"
 tests.adb:22:21: medium: missing dependency "Y => A"
 tests.adb:22:21: medium: missing dependency "Y => B"
 tests.adb:23:21: medium: missing dependency "Z => A"
-tests.adb:32:35: info: initialization of "Obj.X" proved
-tests.adb:32:35: info: initialization of "Obj.Y" proved
-tests.adb:33:25: info: initialization of "Obj.Round" proved
-tests.adb:33:25: info: initialization of "Obj.X" proved
-tests.adb:33:25: info: initialization of "Obj.Y" proved
-tests.adb:34:35: info: initialization of "Tmp.B.X" proved
-tests.adb:34:35: info: initialization of "Tmp.B.Y" proved
-tests.adb:36:25: info: initialization of "Tmp2.X" proved
-tests.adb:36:25: info: initialization of "Tmp2.Y" proved
-tests.adb:37:25: info: initialization of "Tmp.B.Round" proved
-tests.adb:38:25: info: initialization of "Tmp.A.Y" proved
+tests.adb:25:07: info: initialization of "Obj" proved
+tests.adb:26:07: info: initialization of "Tmp" proved
+tests.adb:27:07: info: initialization of "Tmp2" proved
 tests.adb:42:23: info: initialization of "X" proved
-tests.adb:56:13: info: discriminant check proved (CVC4: 2 VC)
-tests.adb:56:13: info: initialization of "A" proved
-tests.adb:57:16: info: initialization of "A" proved
+tests.adb:43:09: info: data dependencies proved
+tests.adb:56:13: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)

@@ -1,0 +1,27 @@
+c57004a.adb:7:20: info: unrolling loop
+c57004a.adb:9:38: info: unrolling loop
+c57004a.adb:9:38: warning: this statement is never reached
+c57004a.adb:13:16: warning: this statement is never reached
+c57004a.adb:15:10: warning: this statement is never reached
+p.ads:3:48: info: initialization of "Y" proved
+p.ads:3:70: info: data dependencies proved
+p.ads:4:48: info: initialization of "Y" proved
+p.ads:4:70: info: data dependencies proved
+q.ads:10:49: info: initialization of "Y" proved
+q.ads:10:71: info: data dependencies proved
+q.ads:11:49: info: initialization of "Y" proved
+q.ads:11:71: info: data dependencies proved
+q.ads:12:49: info: initialization of "Y" proved
+q.ads:12:71: info: data dependencies proved
+q.ads:13:49: info: initialization of "Y" proved
+q.ads:13:71: info: data dependencies proved
+q.ads:14:49: info: initialization of "Y" proved
+q.ads:14:71: info: data dependencies proved
+q.ads:15:49: info: initialization of "Y" proved
+q.ads:15:71: info: data dependencies proved
+q.ads:17:49: info: initialization of "Y" proved
+q.ads:17:71: info: data dependencies proved
+q.ads:18:49: info: initialization of "Y" proved
+q.ads:18:71: info: data dependencies proved
+q.ads:20:49: info: initialization of "Y" proved
+q.ads:20:71: info: flow dependencies proved

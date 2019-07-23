@@ -1,4 +1,4 @@
-default.adb:11:16: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: subprogram at line 8 should mention X and Y in a precondition]
+default.adb:11:16: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at default.ads:2 should mention X and Y in a precondition]
 default.adb:14:04: warning: analyzing unreferenced function "Use_Sub"
 default.adb:19:04: warning: analyzing unreferenced function "Use_Add"
 default.adb:21:25: info: overflow check proved (CodePeer)

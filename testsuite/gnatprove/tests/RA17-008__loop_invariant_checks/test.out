@@ -1,27 +1,20 @@
 repro.adb:19:07: info: range check proved (CVC4: 2 VC)
 repro.adb:22:14: warning: subprogram "Local" has no effect
 repro.adb:25:07: info: range check proved (CVC4: 2 VC)
-repro.adb:25:52: info: length check proved (CVC4: 4 VC)
+repro.adb:25:52: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 repro.adb:30:07: info: range check proved (CVC4: 2 VC)
-repro.adb:35:26: info: length check proved (CVC4: 8 VC)
-repro.adb:35:29: info: initialization of "Result_Arr" proved
-repro.adb:35:29: info: length check proved (CVC4: 8 VC)
-repro.adb:39:24: info: initialization of "Result_Pos" proved
+repro.adb:35:26: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
+repro.adb:35:29: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
 repro.adb:39:35: info: range check proved (CVC4: 2 VC)
 repro.adb:40:21: info: index check proved (CVC4: 4 VC)
-repro.adb:40:33: info: initialization of "Result_Arr" proved
-repro.adb:40:33: info: initialization of "Result_Pos" proved
 repro.adb:41:34: info: index check proved (CVC4: 4 VC)
 repro.adb:41:69: info: index check proved (CVC4: 4 VC)
 repro.adb:41:69: info: overflow check proved (CVC4: 2 VC)
-repro.adb:44:33: info: initialization of "Result_Pos" proved
 repro.adb:44:33: info: loop invariant initialization proved (CVC4: 1 VC)
 repro.adb:44:33: info: loop invariant preservation proved (CVC4: 1 VC)
 repro.adb:44:53: info: overflow check proved (CVC4: 2 VC)
-repro.adb:45:33: info: initialization of "Result_Arr" proved
 repro.adb:45:33: info: loop invariant initialization proved (CVC4: 1 VC)
 repro.adb:45:33: info: loop invariant preservation proved (CVC4: 1 VC)
 repro.adb:45:44: info: index check proved (CVC4: 4 VC)
-repro.adb:45:44: info: initialization of "Result_Pos" proved
 repro.adb:45:75: info: index check proved (CVC4: 4 VC)
 repro.adb:45:75: info: overflow check proved (CVC4: 2 VC)

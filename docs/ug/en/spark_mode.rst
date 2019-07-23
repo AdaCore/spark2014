@@ -31,8 +31,10 @@ mixed at a fine level in accordance with the following two general principles:
 * |SPARK| code shall only reference |SPARK| declarations, but a |SPARK|
   declaration which requires a completion may have a non-|SPARK| completion.
 
-* |SPARK| code shall only enclose |SPARK| code, except that |SPARK| code
-  may enclose a non-|SPARK| completion of an enclosed |SPARK| declaration.
+* |SPARK| code may enclose non-|SPARK| code.
+
+* non-|SPARK| code may enclose |SPARK| code only at library level. A subprogram
+  body which is not in |SPARK| cannot contain |SPARK| code.
 
 More specifically, non-|SPARK| completions of |SPARK| declarations are
 allowed for subprogram declarations, package declarations, task type
@@ -55,6 +57,13 @@ analysis (proofs and/or flow analysis) associated with the |SPARK|
 portion of a program. A non-|SPARK| completion meets this obligation if
 it is semantically equivalent (with respect to dynamic semantics) to
 some notional completion that could have been written in |SPARK|.
+
+When a non-|SPARK| package declaration or body is included in a |SPARK|
+subprogram or package, the user has an obligation to ensure that the
+non-|SPARK| declaration is consistent (with respect to the semantics of
+|SPARK|) with a hypothetical equivalent |SPARK| declaration. For example,
+|SPARK| requires that package elaboration code cannot modify variables defined
+outside of the package.
 
 The |SPARK| semantics (specifically including flow analysis and
 proof) of a "mixed" program which meets the aforementioned
@@ -91,6 +100,9 @@ For example, the following combinations may be typical:
 Task types and protected types are similar to packages but only have 3
 sections instead of 4. The statement list section of the body is
 missing.
+
+Another typical use is to exempt part of a subprogram from analysis by
+isolating it in a local subprogram whose body is not in |SPARK|.
 
 Such patterns are intended to allow for application of formal verification to a
 subset of a program, and the combination of formal verification with more

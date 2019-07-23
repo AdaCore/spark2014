@@ -4,6 +4,8 @@ spark-arithmetic_lemmas.adb:100:25: info: assertion proved (CVC4: 1 VC), in inst
 spark-arithmetic_lemmas.adb:100:25: info: assertion proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:59:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:59:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:61:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:61:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:61:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -12,6 +14,8 @@ spark-arithmetic_lemmas.ads:61:35: info: division check proved (CVC4: 1 VC), in 
 spark-arithmetic_lemmas.ads:61:35: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:63:14: info: subprogram "Lemma_Div_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:63:14: info: subprogram "Lemma_Div_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:68:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:68:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:71:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:71:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:71:18: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -20,12 +24,16 @@ spark-arithmetic_lemmas.ads:71:34: info: division check proved (CVC4: 1 VC), in 
 spark-arithmetic_lemmas.ads:71:34: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:73:14: info: subprogram "Lemma_Mod_Range" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:73:14: info: subprogram "Lemma_Mod_Range" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:77:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:77:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:78:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:78:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
-spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 2 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:78:19: info: division check proved (CVC4: 2 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:80:14: info: subprogram "Lemma_Mod_Symmetry" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:80:14: info: subprogram "Lemma_Mod_Symmetry" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:84:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:86:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:86:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:86:22: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
@@ -34,46 +42,64 @@ spark-arithmetic_lemmas.ads:86:43: info: division check proved (CVC4: 1 VC), in 
 spark-arithmetic_lemmas.ads:86:43: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:88:14: info: subprogram "Lemma_Mult_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:88:14: info: subprogram "Lemma_Mult_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:93:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:93:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:95:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:95:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:97:14: info: subprogram "Lemma_Mult_Is_Strictly_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:97:14: info: subprogram "Lemma_Mult_Is_Strictly_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:102:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:102:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:104:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:104:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:106:14: info: subprogram "Lemma_Mult_Protect" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:106:14: info: subprogram "Lemma_Mult_Protect" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:111:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:111:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:113:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:113:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:115:14: info: subprogram "Lemma_Mult_Scale" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:115:14: info: subprogram "Lemma_Mult_Scale" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:121:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:121:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:124:14: info: postcondition proved (CVC4: 3 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:124:14: info: postcondition proved (CVC4: 3 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:127:14: info: subprogram "Lemma_Mult_Then_Div_Is_Ident" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:127:14: info: subprogram "Lemma_Mult_Then_Div_Is_Ident" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:131:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:131:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:132:15: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:132:15: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:132:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:132:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:134:14: info: subprogram "Lemma_Mult_Then_Mod_Is_Zero" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:134:14: info: subprogram "Lemma_Mult_Then_Mod_Is_Zero" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:138:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:138:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:139:15: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:139:15: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:139:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:139:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:141:14: info: subprogram "Lemma_Exp_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:141:14: info: subprogram "Lemma_Exp_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:146:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:146:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:148:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:148:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:150:14: info: subprogram "Lemma_Exp_Is_Monotonic_2" will terminate, terminating annotation has been proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:150:14: info: subprogram "Lemma_Exp_Is_Monotonic_2" will terminate, terminating annotation has been proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:155:06: info: data dependencies proved, in instantiation at spark-integer_arithmetic_lemmas.ads:31
+spark-arithmetic_lemmas.ads:155:06: info: data dependencies proved, in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:157:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:157:14: info: postcondition proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-floating_point_arithmetic_lemmas.ads:55:14: info: subprogram "Lemma_Add_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:55:14: info: subprogram "Lemma_Add_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:60:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:60:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:66:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:66:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:66:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -82,6 +108,8 @@ spark-floating_point_arithmetic_lemmas.ads:66:36: info: float overflow check pro
 spark-floating_point_arithmetic_lemmas.ads:66:36: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:68:14: info: subprogram "Lemma_Sub_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:68:14: info: subprogram "Lemma_Sub_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:73:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:73:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:79:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:79:16: info: postcondition proved (altergo: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:79:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -90,6 +118,8 @@ spark-floating_point_arithmetic_lemmas.ads:79:36: info: float overflow check pro
 spark-floating_point_arithmetic_lemmas.ads:79:36: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:81:14: info: subprogram "Lemma_Mul_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:81:14: info: subprogram "Lemma_Mul_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:86:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:86:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:92:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:92:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:92:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -98,6 +128,8 @@ spark-floating_point_arithmetic_lemmas.ads:92:36: info: float overflow check pro
 spark-floating_point_arithmetic_lemmas.ads:92:36: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:94:14: info: subprogram "Lemma_Mul_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:94:14: info: subprogram "Lemma_Mul_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:99:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:99:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:105:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:105:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:105:21: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -106,6 +138,8 @@ spark-floating_point_arithmetic_lemmas.ads:105:36: info: float overflow check pr
 spark-floating_point_arithmetic_lemmas.ads:105:36: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:107:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:107:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:112:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:112:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:118:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:118:16: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:118:21: info: division check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -118,6 +152,8 @@ spark-floating_point_arithmetic_lemmas.ads:118:36: info: float overflow check pr
 spark-floating_point_arithmetic_lemmas.ads:118:36: info: float overflow check proved (CVC4: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:120:14: info: subprogram "Lemma_Div_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:120:14: info: subprogram "Lemma_Div_Is_Antimonotonic" will terminate, terminating annotation has been proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:125:08: info: data dependencies proved, in instantiation at spark-float_arithmetic_lemmas.ads:32
+spark-floating_point_arithmetic_lemmas.ads:125:08: info: data dependencies proved, in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:131:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:131:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-long_float_arithmetic_lemmas.ads:32
 spark-floating_point_arithmetic_lemmas.ads:131:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-float_arithmetic_lemmas.ads:32
@@ -134,6 +170,8 @@ spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (Coq: 1 VC), in in
 spark-mod_arithmetic_lemmas.adb:51:22: info: assertion proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:54:14: info: subprogram "Lemma_Div_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:59:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:59:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:61:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:61:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:61:19: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -142,30 +180,40 @@ spark-mod_arithmetic_lemmas.ads:61:35: info: division check proved (CVC4: 1 VC),
 spark-mod_arithmetic_lemmas.ads:61:35: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:63:14: info: subprogram "Lemma_Div_Then_Mult_Bounds" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:63:14: info: subprogram "Lemma_Div_Then_Mult_Bounds" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:68:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:68:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:69:26: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:70:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:70:14: info: postcondition proved (CVC4: 2 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:73:14: info: subprogram "Lemma_Mult_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:73:14: info: subprogram "Lemma_Mult_Is_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:78:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:78:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:80:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:80:52: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:81:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:81:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:83:14: info: subprogram "Lemma_Mult_Is_Strictly_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:83:14: info: subprogram "Lemma_Mult_Is_Strictly_Monotonic" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:88:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:88:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:90:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:90:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:91:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:91:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:93:14: info: subprogram "Lemma_Mult_Protect" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:93:14: info: subprogram "Lemma_Mult_Protect" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:98:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:98:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:99:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:99:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:100:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:100:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:102:14: info: subprogram "Lemma_Mult_Scale" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:102:14: info: subprogram "Lemma_Mult_Scale" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:108:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:108:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:110:54: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:110:54: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:111:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -174,6 +222,8 @@ spark-mod_arithmetic_lemmas.ads:112:14: info: postcondition proved (Coq: 1 VC), 
 spark-mod_arithmetic_lemmas.ads:112:14: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:114:14: info: subprogram "Lemma_Mult_Then_Div_Is_Ident" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:114:14: info: subprogram "Lemma_Mult_Then_Div_Is_Ident" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:118:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:118:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:119:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:119:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:120:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
@@ -182,44 +232,52 @@ spark-mod_arithmetic_lemmas.ads:120:28: info: division check proved (CVC4: 1 VC)
 spark-mod_arithmetic_lemmas.ads:120:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:122:14: info: subprogram "Lemma_Mult_Then_Mod_Is_Zero" will terminate, terminating annotation has been proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:122:14: info: subprogram "Lemma_Mult_Then_Mod_Is_Zero" will terminate, terminating annotation has been proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:126:06: info: data dependencies proved, in instantiation at spark-mod32_arithmetic_lemmas.ads:33
+spark-mod_arithmetic_lemmas.ads:126:06: info: data dependencies proved, in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:127:32: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:128:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:128:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:128:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod32_arithmetic_lemmas.ads:33
 spark-mod_arithmetic_lemmas.ads:128:28: info: division check proved (CVC4: 1 VC), in instantiation at spark-mod64_arithmetic_lemmas.ads:33
-spark-test_array_lemmas.adb:60:18: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:60:18: info: precondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.adb:61:10: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:61:35: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:67:18: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:67:18: info: precondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.adb:67:43: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:72:16: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:72:16: info: precondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.adb:73:10: info: range check proved (CVC4: 1 VC)
 spark-test_array_lemmas.adb:73:33: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.adb:78:16: info: precondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.adb:78:16: info: precondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.adb:78:41: info: range check proved (CVC4: 1 VC)
-spark-test_array_lemmas.ads:44:14: info: postcondition proved (CVC4: 1 VC)
-spark-test_array_lemmas.ads:53:14: info: postcondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:40:06: info: data dependencies proved
+spark-test_array_lemmas.ads:44:14: info: postcondition proved (CVC4: 2 VC)
+spark-test_array_lemmas.ads:49:06: info: data dependencies proved
+spark-test_array_lemmas.ads:53:14: info: postcondition proved (CVC4: 2 VC)
+spark-test_array_lemmas.ads:61:06: info: data dependencies proved
 spark-test_array_lemmas.ads:64:19: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:64:31: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:65:14: info: postcondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:65:14: info: postcondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:67:42: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:67:52: info: index check proved (CVC4: 2 VC)
+spark-test_array_lemmas.ads:70:06: info: data dependencies proved
 spark-test_array_lemmas.ads:73:19: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:73:31: info: index check proved (CVC4: 2 VC)
-spark-test_array_lemmas.ads:74:14: info: postcondition proved (CVC4: 1 VC)
+spark-test_array_lemmas.ads:74:14: info: postcondition proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:76:42: info: index check proved (CVC4: 2 VC)
 spark-test_array_lemmas.ads:76:52: info: index check proved (CVC4: 2 VC)
 spark-unconstrained_array_lemmas.ads:52:14: info: subprogram "Lemma_Transitive_Order" will terminate, terminating annotation has been proved, in instantiation at spark-test_array_lemmas.adb:43
 spark-unconstrained_array_lemmas.ads:52:14: info: subprogram "Lemma_Transitive_Order" will terminate, terminating annotation has been proved, in instantiation at spark-test_array_lemmas.adb:49
+spark-unconstrained_array_lemmas.ads:53:06: info: data dependencies proved, in instantiation at spark-test_array_lemmas.adb:43
+spark-unconstrained_array_lemmas.ads:53:06: info: data dependencies proved, in instantiation at spark-test_array_lemmas.adb:49
 spark-unconstrained_array_lemmas.ads:56:39: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:43
 spark-unconstrained_array_lemmas.ads:56:39: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:49
 spark-unconstrained_array_lemmas.ads:56:46: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-test_array_lemmas.adb:43
 spark-unconstrained_array_lemmas.ads:56:46: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-test_array_lemmas.adb:49
 spark-unconstrained_array_lemmas.ads:56:56: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:43
 spark-unconstrained_array_lemmas.ads:56:56: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:49
-spark-unconstrained_array_lemmas.ads:57:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-test_array_lemmas.adb:43
-spark-unconstrained_array_lemmas.ads:57:15: info: postcondition proved (Coq: 1 VC), in instantiation at spark-test_array_lemmas.adb:49
+spark-unconstrained_array_lemmas.ads:57:15: info: postcondition proved (CVC4: 1 VC; Coq: 1 VC), in instantiation at spark-test_array_lemmas.adb:43
+spark-unconstrained_array_lemmas.ads:57:15: info: postcondition proved (CVC4: 1 VC; Coq: 1 VC), in instantiation at spark-test_array_lemmas.adb:49
 spark-unconstrained_array_lemmas.ads:59:44: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:43
 spark-unconstrained_array_lemmas.ads:59:44: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:49
 spark-unconstrained_array_lemmas.ads:59:53: info: index check proved (CVC4: 2 VC), in instantiation at spark-test_array_lemmas.adb:43

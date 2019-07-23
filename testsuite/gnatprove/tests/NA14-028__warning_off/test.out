@@ -1,12 +1,10 @@
-foo.adb:8:04: info: initialization of "Value" constituent of "State" proved
 foo.adb:15:25: info: refined post proved (CVC4: 1 VC)
 foo.adb:25:37: info: initialization of "Value" constituent of "State" proved
-foo.adb:27:26: info: initialization of "Value" constituent of "State" proved
 foo.adb:27:26: info: refined post proved (CVC4: 1 VC)
+foo.ads:5:04: info: flow dependencies proved
+foo.ads:10:07: info: data dependencies proved
+foo.ads:14:07: info: data dependencies proved
+foo.ads:15:07: info: flow dependencies proved
+main.adb:6:04: info: data dependencies proved
 main.adb:6:28: info: initialization of "Foo.State" proved
-main.adb:12:07: info: initialization of "Value" proved
-main.adb:15:29: info: initialization of "Value" proved
-main.adb:18:29: info: initialization of "Value" proved
-main.adb:21:19: medium: assertion might fail, cannot prove Foo.Get_Data = Value (e.g. when Value = 0)
-main.adb:21:22: info: initialization of "Foo.State" proved
-main.adb:21:34: info: initialization of "Value" proved
+main.adb:21:19: medium: assertion might fail, cannot prove Foo.Get_Data = Value

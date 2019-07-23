@@ -1,1 +1,1 @@
-synchronous_abstractions.adb:29:12: info: initialization of "R" proved
+synchronous_abstractions.ads:9:06: info: data dependencies proved

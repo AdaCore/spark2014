@@ -1,0 +1,42 @@
+generic_ring_buffer.adb:27:24: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:33:28: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:39:28: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:48:38: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:50:14: info: discriminant check proved (Trivial: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:50:23: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:51:76: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:52:31: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:62:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 2, Tail => 2, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2)
+generic_ring_buffer.adb:64:16: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 2, Tail => 1, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2)
+generic_ring_buffer.adb:64:37: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:67:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:67:27: info: index check proved (CVC4: 2 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:68:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:68:36: info: range check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.adb:76:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 2, Tail => 2, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible explanation: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
+generic_ring_buffer.adb:77:13: medium: predicate check might fail, in instantiation at tester.adb:9 (e.g. when Buffer = (Max_Size => ?, Count => 0, Head => 1, Tail => 1, Items => (others => 0)) and Buffer.Items'First = 1 and Buffer.Items'Last = 2) [possible explanation: subprogram at generic_ring_buffer.ads:81 should mention Buffer in a precondition]
+generic_ring_buffer.adb:78:13: info: predicate check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:19:09: info: default initial condition proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:19:09: info: predicate check proved on default value (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:24:13: info: subprogram "Empty" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:29:13: info: subprogram "Full" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:34:13: info: subprogram "Size" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:39:13: info: subprogram "Free" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:44:13: info: subprogram "First" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:51:13: info: subprogram "Last" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:59:14: info: subprogram "Get" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:61:07: info: initialization of "Element" proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:65:15: info: postcondition proved (CVC4: 3 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:66:25: info: precondition proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:70:14: info: subprogram "Put" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:75:15: info: postcondition proved (CVC4: 3 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:76:15: info: precondition proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:77:49: info: overflow check proved (CVC4: 1 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:81:14: info: subprogram "Clear" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:84:14: info: postcondition proved (CVC4: 3 VC), in instantiation at tester.adb:9
+generic_ring_buffer.ads:93:04: medium: type "Ring_Buffer_Type" is not fully initialized, in instantiation at tester.adb:9
+generic_ring_buffer.ads:93:09: info: subprogram "Ring_Buffer_Typepredicate" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
+generic_ring_buffer.ads:97:07: info: range check proved (CVC4: 2 VC), in instantiation at tester.adb:9
+tester.adb:13:04: info: initialization of "X" proved
+tester.adb:13:26: info: range check proved (CVC4: 1 VC)
+tester.adb:16:04: info: precondition proved (CVC4: 1 VC)

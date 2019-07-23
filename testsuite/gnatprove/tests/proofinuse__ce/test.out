@@ -1,9 +1,7 @@
 counter_examples.adb:8:38: info: float overflow check proved (CVC4: 1 VC)
-counter_examples.adb:9:16: medium: float overflow check might fail (e.g. when X = 3.4027961E+38 and Y = -2.7482665E+33) [possible explanation: subprogram at line 5 should mention X and Y in a precondition]
+counter_examples.adb:9:16: medium: float overflow check might fail (e.g. when X = 3.3895318E+38 and Y = -1.3291773E+36) [possible explanation: subprogram at counter_examples.ads:8 should mention X and Y in a precondition]
 counter_examples.adb:17:24: info: division check proved (CVC4: 1 VC)
-counter_examples.adb:19:25: info: initialization of "Res" proved
-counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32) [possible explanation: subprogram at line 12 should mention X in a precondition]
-counter_examples.adb:21:25: info: initialization of "Res" proved
-counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967257) [possible explanation: subprogram at line 12 should mention X in a precondition]
+counter_examples.adb:19:25: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 64 and X = 32) [possible explanation: subprogram at counter_examples.ads:11 should mention X in a precondition]
+counter_examples.adb:21:25: medium: assertion might fail, cannot prove Res >= X (e.g. when Res = 0 and X = 4294967233) [possible explanation: subprogram at counter_examples.ads:11 should mention X in a precondition]
 counter_examples.ads:8:40: info: initialization of "Res" proved
 counter_examples.ads:14:07: info: initialization of "Res" proved

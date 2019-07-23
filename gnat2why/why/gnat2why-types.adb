@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Text_IO;  --  For debugging, to print info before raising an exception
 with Common_Containers;       use Common_Containers;
 with Flow_Types;              use Flow_Types;
 with GNAT.Source_Info;
+with GNATCOLL.Symbols;        use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -46,6 +48,7 @@ with Why.Gen.Arrays;          use Why.Gen.Arrays;
 with Why.Gen.Binders;         use Why.Gen.Binders;
 with Why.Gen.Decl;            use Why.Gen.Decl;
 with Why.Gen.Expr;            use Why.Gen.Expr;
+with Why.Gen.Init;            use Why.Gen.Init;
 with Why.Gen.Names;           use Why.Gen.Names;
 with Why.Gen.Pointers;        use Why.Gen.Pointers;
 with Why.Gen.Progs;           use Why.Gen.Progs;
@@ -76,9 +79,12 @@ package body Gnat2Why.Types is
       --  Create a function to express type E's default initial assumption
 
       procedure Create_Dynamic_Invariant
-        (File : W_Section_Id;
-         E    : Entity_Id);
-      --  Create a function to express type E's dynamic invariant
+        (File   : W_Section_Id;
+         E      : Entity_Id;
+         Module : W_Module_Id);
+      --  Create a function to express type E's dynamic invariant. Module is
+      --  the module in which dynamic invariants for access to incomplete
+      --  types will be created if any.
 
       procedure Create_Dynamic_Predicate
         (File : W_Section_Id;
@@ -217,7 +223,7 @@ package body Gnat2Why.Types is
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, WNE_Default_Init)),
                      Def      => +Def,
-                     Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                     Labels   => Symbol_Sets.To_Set (NID ("inline")),
                      Location => No_Location,
                      Binders  =>
                        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
@@ -235,87 +241,183 @@ package body Gnat2Why.Types is
       ------------------------------
 
       procedure Create_Dynamic_Invariant
-        (File : W_Section_Id;
-         E    : Entity_Id)
+        (File   : W_Section_Id;
+         E      : Entity_Id;
+         Module : W_Module_Id)
       is
-         Variables : Flow_Id_Sets.Set;
 
-      begin
-         --  Get the set of variables used in E's dynamic property
+         procedure Create_Dynamic_Invariant
+           (E       : Entity_Id;
+            Name    : W_Identifier_Id;
+            For_Acc : Boolean);
+         --  Emit a declaration for the predicate symbol Name and define it to
+         --  be the dynamic invariant for E. If For_Acc is true, split the
+         --  definition into a declaration and a separate axiom to handle
+         --  circularity.
 
-         Variables_In_Dynamic_Invariant (E, Variables);
+         package Decl_Lists is new Ada.Containers.Doubly_Linked_Lists
+           (W_Declaration_Id);
 
-         declare
-            Items    : Item_Array := Get_Binders_From_Variables (Variables);
-            Init_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "is_init");
-            --  Is the object known to be initialized
+         Loc_Incompl_Acc : Ada_To_Why_Ident.Map;
+         --  Map of all local symbols introduced for predicates of access to
+         --  incomplete access types.
 
-            Ovar_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "skip_constant");
-            --  Do we need to assume the properties on constant parts
+         Axioms          : Decl_Lists.List;
+         --  Axioms for predicates of access to incomplete access types
 
-            Top_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "do_toplevel");
-            --  Should we include the toplevel predicate
+         ------------------------------
+         -- Create_Dynamic_Invariant --
+         ------------------------------
 
-            Inv_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => EW_Bool_Type,
-                                   Base_Name => "do_typ_inv");
-            --  Should we include the non local type invariants
-
-            Main_Arg : constant W_Identifier_Id :=
-              New_Temp_Identifier (Typ       => Type_Of_Node (E),
-                                   Base_Name => "expr");
-            --  Expression on which we want to assume the property
-
-            Def      : W_Pred_Id;
+         procedure Create_Dynamic_Invariant
+           (E       : Entity_Id;
+            Name    : W_Identifier_Id;
+            For_Acc : Boolean)
+         is
+            Variables : Flow_Id_Sets.Set;
 
          begin
-            --  Use local names for variables
+            --  Get the set of variables used in E's dynamic property
 
-            Localize_Variable_Parts (Items);
+            Variables_In_Dynamic_Invariant (E, Variables);
 
-            --  Push the names to Symbol_Table
+            declare
+               Items    : Item_Array := Get_Binders_From_Variables (Variables);
+               Init_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                      Base_Name => "is_init");
+               --  Is the object known to be initialized
 
-            Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-            Push_Binders_To_Symbol_Table (Items);
+               Ovar_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                      Base_Name => "skip_constant");
+               --  Do we need to assume the properties on constant parts
 
-            Def := Compute_Dynamic_Invariant
-              (Expr             => +Main_Arg,
-               Ty               => E,
-               Initialized      => +Init_Arg,
-               Only_Var         => +Ovar_Arg,
-               Top_Predicate    => +Top_Arg,
-               Include_Type_Inv => +Inv_Arg,
-               Params           => Logic_Params (File),
-               Use_Pred         => False);
+               Top_Arg  : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                      Base_Name => "do_toplevel");
+               --  Should we include the toplevel predicate
 
-            Emit (File,
-                  New_Function_Decl
-                    (Domain   => EW_Pred,
-                     Name     => To_Local (E_Symb (E, WNE_Dynamic_Invariant)),
-                     Def      => +Def,
-                     Location => No_Location,
-                     Labels   => Name_Id_Sets.To_Set (NID ("inline")),
-                     Binders  =>
-                       Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
-                                                       others => <>),
-                                     2 => Binder_Type'(B_Name => Init_Arg,
-                                                       others => <>),
-                                     3 => Binder_Type'(B_Name => Ovar_Arg,
-                                                       others => <>),
-                                     4 => Binder_Type'(B_Name => Top_Arg,
-                                                       others => <>),
-                                     5 => Binder_Type'(B_Name => Inv_Arg,
-                                                       others => <>))
-                     & To_Binder_Array (Items)));
+               Inv_Arg  : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ       => EW_Bool_Type,
+                                      Base_Name => "do_typ_inv");
+               --  Should we include the non local type invariants
 
-            Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-         end;
+               Main_Arg : constant W_Identifier_Id :=
+                 New_Temp_Identifier (Typ       => Type_Of_Node (E),
+                                      Base_Name => "expr");
+               --  Expression on which we want to assume the property
+
+               Def             : W_Pred_Id;
+               New_Incompl_Acc : Ada_To_Why_Ident.Map;
+               use Ada_To_Why_Ident;
+
+            begin
+               --  Use local names for variables
+
+               Localize_Variable_Parts (Items);
+
+               --  Push the names to Symbol_Table
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+               Push_Binders_To_Symbol_Table (Items);
+
+               --  Compute the predicate for E
+
+               Compute_Dynamic_Invariant
+                 (Expr             => +Main_Arg,
+                  Ty               => E,
+                  Initialized      => +Init_Arg,
+                  Only_Var         => +Ovar_Arg,
+                  Top_Predicate    => +Top_Arg,
+                  Include_Type_Inv => +Inv_Arg,
+                  Params           => Logic_Params (File),
+                  Use_Pred         => False,
+                  New_Preds_Module => Module,
+                  T                => Def,
+                  Loc_Incompl_Acc  => Loc_Incompl_Acc,
+                  New_Incompl_Acc  => New_Incompl_Acc,
+                  Expand_Incompl   => True);
+
+               --  Copy new predicate symbols to the map of local symbols
+
+               for C in New_Incompl_Acc.Iterate loop
+                  Loc_Incompl_Acc.Insert (Key (C), Element (C));
+               end loop;
+
+               --  Introduce function symbols (with no definitions) for
+               --  new predicate symbols. Store their axioms in Axioms.
+
+               for C in New_Incompl_Acc.Iterate loop
+                  Create_Dynamic_Invariant
+                    (E       => Key (C),
+                     Name    => Element (C),
+                     For_Acc => True);
+               end loop;
+
+               declare
+                  Binders : constant Binder_Array := Binder_Array'
+                    (1 => Binder_Type'(B_Name => Main_Arg,
+                                       others => <>),
+                     2 => Binder_Type'(B_Name => Init_Arg,
+                                       others => <>),
+                     3 => Binder_Type'(B_Name => Ovar_Arg,
+                                       others => <>),
+                     4 => Binder_Type'(B_Name => Top_Arg,
+                                       others => <>),
+                     5 => Binder_Type'(B_Name => Inv_Arg,
+                                       others => <>))
+                    & To_Binder_Array (Items);
+               begin
+
+                  --  If we are defining a symbol for an access to an
+                  --  incomplete type, split the predicate into a declaration
+                  --  and a defining axiom to avoid circularity.
+
+                  if For_Acc then
+                     Emit (File,
+                           New_Function_Decl
+                             (Domain   => EW_Pred,
+                              Name     => Name,
+                              Labels   => Symbol_Sets.Empty_Set,
+                              Binders  => Binders,
+                              Location => No_Location));
+
+                     Axioms.Append
+                       (New_Defining_Bool_Axiom
+                          (Name    => Name,
+                           Binders => Binders,
+                           Def     => +Def));
+
+                  --  Otherwise, define the symbol at declaration
+
+                  else
+                     Emit (File,
+                           New_Function_Decl
+                             (Domain   => EW_Pred,
+                              Name     => Name,
+                              Def      => +Def,
+                              Location => No_Location,
+                              Labels   => Symbol_Sets.To_Set (NID ("inline")),
+                              Binders  => Binders));
+                  end if;
+               end;
+
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+            end;
+         end Create_Dynamic_Invariant;
+
+      --  Start of processing for Create_Dynamic_Invariant
+
+      begin
+         Create_Dynamic_Invariant
+           (E, To_Local (E_Symb (E, WNE_Dynamic_Invariant)), False);
+
+         --  Emit axioms for local predicate symbols
+
+         for Ax of Axioms loop
+            Emit (File, Ax);
+         end loop;
       end Create_Dynamic_Invariant;
 
       ------------------------------
@@ -363,7 +465,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -418,7 +520,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Type_Invariant)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -446,11 +548,12 @@ package body Gnat2Why.Types is
 
       if Is_Access_Type (E) then
          declare
-            Ancestor   : constant Entity_Id := Root_Pointer_Type (E);
+            Ancestor   : constant Entity_Id := Repr_Pointer_Type (E);
             Name       : constant String :=
               Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
-            Rep_Module : constant W_Module_Id := New_Module (File => No_Name,
-                                                       Name => NID (Name));
+            Rep_Module : constant W_Module_Id :=
+              New_Module (File => No_Symbol,
+                          Name => Name);
          begin
             --  Export the theory containing the pointer record definition
 
@@ -521,7 +624,7 @@ package body Gnat2Why.Types is
       --  depend on locally defined constants such as 'Old.
 
       if not Is_Itype (E) then
-         Create_Dynamic_Invariant (File, E);
+         Create_Dynamic_Invariant (File, E, E_Axiom_Module (E));
 
          --  Generate a predicate for E's default initialization.
          --  We do not generate default initialization for unconstrained types.
@@ -546,14 +649,6 @@ package body Gnat2Why.Types is
          Create_Axioms_For_Scalar_Bounds (File, E);
       end if;
 
-      --  If E is an access type, we declare the new Why program function in
-      --  this module since we make use of the default initial assumption
-      --  when the allocator is uninitialized.
-
-      if Is_Access_Type (E) then
-         Declare_Allocation_Function (E, File);
-      end if;
-
       Close_Theory (File,
                     Kind => Axiom_Theory,
                     Defined_Entity => E);
@@ -575,8 +670,8 @@ package body Gnat2Why.Types is
    begin
       Open_Theory (File,
                    New_Module
-                     (Name => NID (Name & "__default_checks"),
-                      File => No_Name),
+                     (Name => Name & "__default_checks",
+                      File => No_Symbol),
                    Comment =>
                      "Module for checking DIC of default value and absence"
                    & " of runtime errors in the private part of "
@@ -589,7 +684,7 @@ package body Gnat2Why.Types is
       Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Body,
-         Gen_Marker  => False,
+         Gen_Marker  => GM_None,
          Ref_Allowed => True,
          Old_Allowed => True);
 
@@ -617,7 +712,8 @@ package body Gnat2Why.Types is
 
       if Has_DIC (E) and then Needs_DIC_Check_At_Decl (E) then
          Why_Body := Sequence
-           (Why_Body,
+           (New_Ignore (Ada_Node => E,
+                        Prog     => Why_Body),
             Check_Type_With_DIC (Params => Params,
                                  N      => E));
       end if;
@@ -626,19 +722,14 @@ package body Gnat2Why.Types is
 
       Assume_Value_Of_Constants (Why_Body, E, Params);
 
-      declare
-         Label_Set : Name_Id_Set := Name_Id_Sets.To_Set (Cur_Subp_Sloc);
-      begin
-         Label_Set.Include (NID ("W:diverges:N"));
-         Emit (File,
-               Why.Gen.Binders.New_Function_Decl
-                 (Domain   => EW_Prog,
-                  Name     => Def_Name,
-                  Binders  => (1 => Unit_Param),
-                  Location => No_Location,
-                  Labels   => Label_Set,
-                  Def      => +Why_Body));
-      end;
+      Emit (File,
+            Why.Gen.Binders.New_Function_Decl
+              (Domain   => EW_Prog,
+               Name     => Def_Name,
+               Binders  => (1 => Unit_Param),
+               Location => No_Location,
+               Labels   => Symbol_Sets.To_Set (Cur_Subp_Sloc),
+               Def      => +Why_Body));
 
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
@@ -722,7 +813,7 @@ package body Gnat2Why.Types is
            Private_Kind | E_Record_Type | E_Record_Subtype | Concurrent_Kind
          then
             Create_Rep_Record_Theory_If_Needed (File, Retysp (E));
-         elsif Is_Access_Type (E) then
+         elsif Has_Access_Type (E) then
             Create_Rep_Pointer_Theory_If_Needed (File, Retysp (E));
          end if;
 
@@ -748,10 +839,10 @@ package body Gnat2Why.Types is
             Emit
               (File,
                Why.Atree.Builders.New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Dummy)),
                   Binders     => (1 .. 0 => <>),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type =>
                     +New_Named_Type (Name => To_Why_Type (E, Local => True))));
@@ -834,6 +925,32 @@ package body Gnat2Why.Types is
 
             Close_Theory (File, Kind => Standalone_Theory);
          end if;
+      end if;
+
+      if Needs_Init_Wrapper_Type (E) then
+         Open_Theory
+           (File, E_Init_Module (E),
+            Comment =>
+              "Module defining a wrapper to verify initialization for type "
+            & """" & Get_Name_String (Chars (E)) & """"
+            & (if SPARK_Atree.Sloc (E) > 0 then
+                 " defined at " & Build_Location_String (Sloc (E))
+              else "")
+            & ", created in " & GNAT.Source_Info.Enclosing_Entity);
+
+         Declare_Init_Wrapper (File, E);
+
+         Close_Theory (File, Kind => Standalone_Theory);
+      end if;
+
+      --  After translating the full view of an incomplete type, complete the
+      --  representation of the corresponding access type representative
+      --  theory.
+
+      if Has_Incomplete_Access (E) then
+         Create_Rep_Pointer_Theory_If_Needed (File, Get_Incomplete_Access (E));
+         Declare_Rep_Pointer_Compl_If_Needed
+           (File, Repr_Pointer_Type (Get_Incomplete_Access (E)));
       end if;
    end Translate_Type;
 

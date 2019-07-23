@@ -1,18 +1,21 @@
 main.adb:11:27: info: unrolling loop
-main.adb:12:15: info: initialization of "Temp" proved
 main.adb:12:20: info: overflow check proved (CVC4: 5 VC)
-main2.adb:4:32: medium: "X" might not be initialized after elaboration of main program "Main2"
+main2.adb:3:10: medium: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
+main2.adb:4:09: info: data dependencies proved
 main2.adb:4:48: low: unused global "Some_Package.State"
-main2.adb:4:48: medium: "Some_Package.State" might not be initialized after elaboration of main program "Main2"
+main2.adb:8:30: medium: "X" might not be initialized after elaboration of main program "Main2"
 main2.adb:8:33: info: cannot unroll loop (too many loop iterations)
-main2.adb:9:15: info: initialization of "Temp" proved
 main2.adb:9:20: medium: overflow check might fail [possible explanation: loop at line 8 should mention Temp in a loop invariant]
-main2.adb:11:11: info: initialization of "Temp" proved
+not_main.adb:7:12: info: data dependencies proved
 not_main.adb:10:16: medium: overflow check might fail [possible explanation: subprogram at line 6 should mention X and Y in a precondition]
+not_main.adb:14:12: info: data dependencies proved
 not_main.adb:17:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
 not_main.adb:18:14: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention Y in a precondition]
+not_main.adb:23:12: info: data dependencies proved
 not_main.ads:5:17: warning: subprogram "Do_Nothing" has no effect
 not_main2.ads:5:14: warning: subprogram "Not_Main_Generic_Instantiation" has no effect
-p-main.adb:3:19: medium: assertion might fail, cannot prove Some_Package.X = 0 [possible explanation: subprogram at line 1 should mention X in a precondition]
-p-main.ads:3:58: medium: "X" might not be initialized after elaboration of main program "Main"
+p-main.adb:3:19: medium: assertion might fail, cannot prove Some_Package.X = 0 [possible explanation: subprogram at p-main.ads:3 should mention X in a precondition]
+p-main.adb:3:31: medium: "X" might not be initialized after elaboration of main program "Main"
+p-main.ads:3:23: info: data dependencies proved
 some_package.adb:3:53: info: initialization of "Y" constituent of "State" proved
+some_package.ads:4:24: info: data dependencies proved

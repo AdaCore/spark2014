@@ -1,18 +1,20 @@
+foo.adb:17:09: info: data dependencies proved
 foo.adb:20:14: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention X in a precondition]
-foo.adb:20:16: high: "Y" must be listed in the Global aspect of "Test_SRM_6_1_4_Rule_12" (SPARK RM 6.1.4(13))
+foo.adb:20:16: high: "Y" must be listed in the Global aspect of "Test_SRM_6_1_4_Rule_12" (SPARK RM 6.1.4(14))
 foo.adb:24:38: info: initialization of "N" proved
+foo.adb:25:09: info: data dependencies proved
 foo.adb:25:23: low: unused global "Y"
-foo.adb:40:09: high: "X" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(16))
+foo.adb:40:09: high: "X" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
 foo.adb:40:14: medium: overflow check might fail [possible explanation: subprogram at line 36 should mention X in a precondition]
-foo.adb:41:09: high: "Y" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(16))
+foo.adb:41:09: high: "Y" must be a global output of "Test_SRM_6_1_4_Rule_15_A" (SPARK RM 6.1.4(17))
 foo.adb:46:40: info: initialization of "N" proved
 foo.adb:47:40: info: initialization of "M" proved
 foo.adb:48:40: info: initialization of "O" proved
+foo.adb:49:09: info: data dependencies proved
 foo.adb:49:31: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:49:31: high: "X" is not initialized
 foo.adb:49:31: high: either make "X" an input in the Global contract or initialize it before use
-foo.adb:49:34: info: initialization of "Y" proved
-foo.adb:49:37: info: initialization of "Z.F" proved
+foo.adb:49:37: info: initialization of "Z" proved
 foo.adb:49:40: info: initialization of "W" proved
 foo.adb:52:12: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:52:12: high: "X" is not initialized
@@ -21,15 +23,16 @@ foo.adb:53:12: high: "Y" is not an input in the Global contract of subprogram "T
 foo.adb:53:12: high: "Y" is not initialized
 foo.adb:53:12: high: either make "Y" an input in the Global contract or initialize it before use
 foo.adb:53:14: medium: overflow check might fail
-foo.adb:56:09: info: discriminant check proved (CVC4: 2 VC)
+foo.adb:56:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 foo.adb:63:40: info: initialization of "N" proved
+foo.adb:64:09: info: data dependencies proved
 foo.adb:64:31: warning: "X" is not modified, could be INPUT
 foo.adb:64:34: warning: unused initial value of "Y"
 foo.adb:72:38: info: initialization of "N" proved
 foo.adb:73:38: info: initialization of "M" proved
-foo.adb:74:29: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-foo.adb:75:32: medium: export "M" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
-foo.adb:75:32: medium: export "N" must not depend on Proof_In "Y" (SPARK RM 6.1.4(17))
+foo.adb:74:29: medium: "X" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+foo.adb:75:32: medium: export "M" must not depend on Proof_In "Y" (SPARK RM 6.1.4(18))
+foo.adb:75:32: medium: export "N" must not depend on Proof_In "Y" (SPARK RM 6.1.4(18))
+foo.adb:77:07: info: initialization of "Tmp1" proved
 foo.adb:80:22: medium: assertion might fail, cannot prove X = 12 [possible explanation: subprogram at line 72 should mention X in a precondition]
 foo.adb:83:12: warning: unused assignment
-foo.adb:84:15: info: initialization of "Tmp1" proved

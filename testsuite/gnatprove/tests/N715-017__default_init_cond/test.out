@@ -3,56 +3,42 @@ default_init.adb:11:07: info: initialization of "P1" proved
 default_init.adb:12:07: info: initialization of "P2" proved
 default_init.adb:13:07: info: initialization of "P3" proved
 default_init.adb:15:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:15:38: info: initialization of "P1" proved
 default_init.adb:16:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:16:37: info: initialization of "P2" proved
 default_init.adb:17:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:17:41: info: initialization of "P3" proved
 default_init.adb:19:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:19:38: info: initialization of "P1" proved
 default_init.adb:20:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:20:37: info: initialization of "P2" proved
 default_init.adb:21:22: medium: assertion might fail, cannot prove Priv_With_Glob_Ok (P3) [possible explanation: call at line 18 should mention Private_Default.Glob in a postcondition]
-default_init.adb:21:41: info: initialization of "P3" proved
-default_init.adb:25:07: info: initialization of "R.F" proved
+default_init.adb:25:07: info: initialization of "R" proved
 default_init.adb:26:07: info: initialization of "N" proved
 default_init.adb:27:07: info: initialization of "A" proved
 default_init.adb:29:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:29:22: info: initialization of "R.F" proved
 default_init.adb:30:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:30:22: info: initialization of "N" proved
 default_init.adb:31:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:31:22: info: initialization of "A" proved
 default_init.adb:35:07: info: initialization of "W" proved
 default_init.adb:37:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:37:22: info: initialization of "W" proved
-default_init.adb:37:33: info: precondition proved (CVC4: 1 VC)
+default_init.adb:37:33: info: precondition proved (Trivial: 1 VC)
 default_init.adb:41:07: info: initialization of "R" proved
 default_init.adb:44:25: info: assertion proved (CVC4: 1 VC)
-default_init.adb:44:25: info: initialization of "R" proved
 default_init.adb:44:28: info: index check proved (CVC4: 2 VC)
-default_init.adb:49:07: info: initialization of "G.F" proved
+default_init.adb:49:07: info: initialization of "G" proved
 default_init.adb:51:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:51:22: info: initialization of "G.F" proved
-default_init.adb:58:10: info: initialization of "G.F" proved
+default_init.adb:58:10: info: initialization of "G" proved
 default_init.adb:60:25: info: assertion proved (CVC4: 1 VC)
-default_init.adb:60:25: info: initialization of "G.F" proved
-default_init.adb:65:07: info: initialization of "D1.F" proved
+default_init.adb:65:07: info: initialization of "D1" proved
 default_init.adb:65:19: info: range check proved (CVC4: 1 VC)
 default_init.adb:66:19: info: range check proved (CVC4: 1 VC)
-default_init.adb:67:07: info: initialization of "D3.F" proved
+default_init.adb:67:07: info: initialization of "D3" proved
 default_init.adb:68:23: info: range check proved (CVC4: 1 VC)
-default_init.adb:69:07: info: initialization of "D5.F" proved
+default_init.adb:69:07: info: initialization of "D5" proved
 default_init.adb:69:23: info: range check proved (CVC4: 1 VC)
 default_init.adb:71:22: info: assertion proved (CVC4: 1 VC)
-default_init.adb:71:22: info: initialization of "D1.F" proved
 default_init.adb:71:24: info: discriminant check proved (CVC4: 1 VC)
 default_init.ads:3:09: info: default initial condition proved (CVC4: 1 VC)
 default_init.ads:5:09: info: default initial condition proved (CVC4: 1 VC)
 default_init.ads:7:09: info: default initial condition proved (CVC4: 1 VC)
 default_init.ads:9:09: medium: default initial condition might fail
 default_init.ads:11:09: info: default initial condition proved (CVC4: 1 VC)
-default_init.ads:12:35: medium: precondition might fail (e.g. when N = 0)
+default_init.ads:12:35: medium: precondition might fail, cannot prove (Pre_Rte_Ok)
 default_init.ads:13:09: medium: default initial condition might fail (e.g. when N = -1)
 default_init.ads:15:09: medium: default initial condition might fail (e.g. when N = -1)
 default_init.ads:17:09: info: default initial condition proved (CVC4: 1 VC)
@@ -64,6 +50,6 @@ default_init.ads:42:14: warning: subprogram "Def_Glob1" has no effect
 default_init.ads:46:14: warning: subprogram "Def_Discr" has no effect
 default_init.ads:61:50: info: range check proved (CVC4: 1 VC)
 default_init.ads:63:52: info: range check proved (CVC4: 1 VC)
-default_init.ads:85:39: info: precondition proved (CVC4: 1 VC)
-default_init.ads:92:64: info: precondition proved (CVC4: 1 VC)
+default_init.ads:85:39: info: precondition proved (Trivial: 1 VC)
+default_init.ads:92:64: info: precondition proved (Trivial: 1 VC)
 default_init.ads:98:20: info: discriminant check proved (CVC4: 1 VC)

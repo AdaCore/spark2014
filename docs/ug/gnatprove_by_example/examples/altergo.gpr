@@ -4,7 +4,7 @@ project Altergo is
    for Source_List_File use "altergo.txt";
 
    package Prove is
-      for Switches use ("--prover=altergo");
+      for Proof_Switches ("Ada") use ("--prover=altergo");
    end Prove;
 
 end Altergo;

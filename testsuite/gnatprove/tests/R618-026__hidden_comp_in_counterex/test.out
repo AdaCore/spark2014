@@ -1,15 +1,6 @@
-test_record_cnt_ex.ads:30:19: info: initialization of "X_1.F1" proved
-test_record_cnt_ex.ads:30:19: info: initialization of "X_1.F2" proved
-test_record_cnt_ex.ads:30:19: info: initialization of private part of "X_1" proved
 test_record_cnt_ex.ads:30:19: medium: assertion might fail, cannot prove X_1 = Y_1 (e.g. when X_1 = (F1 => 1, F2 => 2 <hidden, defined at test_record_cnt_ex.ads:19>, F2 => 3) and Y_1 = (F1 => 1, F2 => 2 <hidden, defined at test_record_cnt_ex.ads:19>, F2 => 0))
-test_record_cnt_ex.ads:30:25: info: initialization of "Y_1.F1" proved
-test_record_cnt_ex.ads:30:25: info: initialization of "Y_1.F2" proved
-test_record_cnt_ex.ads:30:25: info: initialization of private part of "Y_1" proved
-test_record_cnt_ex.ads:51:19: info: initialization of "X_2.F1" proved
-test_record_cnt_ex.ads:51:19: info: initialization of "X_2.F2" proved
-test_record_cnt_ex.ads:51:19: medium: assertion might fail, cannot prove X_2 = Y_2 (e.g. when X_2 = (F1 => 0, F2 => 4, others => ?) and Y_2 = (F1 => 0, F2 => 0, others => ?))
-test_record_cnt_ex.ads:51:25: info: initialization of "Y_2.F1" proved
-test_record_cnt_ex.ads:51:25: info: initialization of "Y_2.F2" proved
+test_record_cnt_ex.ads:51:19: medium: assertion might fail, cannot prove X_2 = Y_2
+test_record_cnt_ex.ads:55:50: info: flow dependencies proved
 test_record_cnt_ex.ads:71:33: info: range check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:72:38: info: range check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:73:28: info: discriminant check proved (CVC4: 1 VC)
@@ -22,5 +13,5 @@ test_record_cnt_ex.ads:85:25: info: discriminant check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:86:25: info: discriminant check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:87:30: info: discriminant check proved (CVC4: 1 VC)
 test_record_cnt_ex.ads:88:30: info: discriminant check proved (CVC4: 1 VC)
-test_record_cnt_ex.ads:90:19: medium: assertion might fail, cannot prove X = Y (e.g. when X = (B => False, G => 7 <hidden, defined at test_record_cnt_ex.ads:63>, F => 0, G => 2) and Y = (B => False, G => 0 <hidden, defined at test_record_cnt_ex.ads:63>, F => 0, G => 2))
-test_record_cnt_ex.ads:94:19: medium: assertion might fail, cannot prove Z = W (e.g. when W = (B => True, G => 3, F => 6, H => 2) and Z = (B => True, G => 3, F => 0, H => 2))
+test_record_cnt_ex.ads:90:19: medium: assertion might fail, cannot prove X = Y (e.g. when X = (B => False, G => 7 <hidden, defined at test_record_cnt_ex.ads:63>, F => 0, G => 8) and Y = (B => False, G => 0 <hidden, defined at test_record_cnt_ex.ads:63>, F => 0, G => 8))
+test_record_cnt_ex.ads:94:19: medium: assertion might fail, cannot prove Z = W (e.g. when W = (B => True, G => 3, F => 6, H => 8) and Z = (B => True, G => 3, F => 0, H => 8))

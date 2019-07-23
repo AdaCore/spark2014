@@ -1,8 +1,6 @@
 dic.ads:3:09: info: default initial condition proved (CVC4: 1 VC)
 dic.ads:8:09: medium: default initial condition might fail
-dic.ads:23:04: info: initialization of "P0.B" proved
-dic.ads:24:04: info: initialization of "C0.B" proved
-dic.ads:26:04: info: initialization of "P1.B" proved
-dic.ads:27:04: info: initialization of "C1.B" proved
+dic.ads:23:04: info: initialization of "P0" proved
+dic.ads:24:04: info: initialization of "C0" proved
 dic2.ads:23:09: medium: default initial condition might fail
 dic2.ads:32:04: info: initialization of "C0" proved

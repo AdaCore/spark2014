@@ -1,2 +1,2 @@
-crash.adb:10:18: medium: float overflow check might fail (e.g. when X = 1.7014118E+38) [possible explanation: subprogram at line 5 should mention X in a precondition]
-crash.adb:11:14: info: initialization of "X_New" proved
+crash.adb:8:07: info: initialization of "X_New" proved
+crash.adb:10:18: medium: float overflow check might fail (e.g. when X = 1.7014120E+38) [possible explanation: subprogram at line 5 should mention X in a precondition]

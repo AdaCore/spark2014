@@ -7,9 +7,7 @@ aida.adb:13:07: info: range check proved (CVC4: 2 VC)
 aida.adb:13:32: info: range check proved (CVC4: 1 VC)
 aida.adb:14:07: warning: initialization of "From" has no effect
 aida.adb:15:07: warning: unused variable "Code"
-aida.adb:17:13: info: initialization of "From" proved
 aida.adb:17:32: warning: statement has no effect
-aida.adb:18:22: info: initialization of "From" proved
 aida.adb:18:22: info: range check proved (CVC4: 1 VC)
 aida.adb:20:14: high: "Result" is not initialized
 aida.ads:4:27: warning: unused initial value of "Value"

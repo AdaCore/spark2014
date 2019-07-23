@@ -1,10 +1,10 @@
-p1.adb:5:18: medium: assertion might fail, cannot prove P2.body2_elaborated (e.g. when Body2_Elaborated = False)
+p1.adb:5:18: medium: assertion might fail, cannot prove P2.body2_elaborated
 p1.adb:6:20: high: modification of "Body1_Elaborated" in elaboration requires Elaborate_Body on package "P1" (SPARK RM 7.7.1(5))
 p1.ads:1:17: info: initial condition proved (CVC4: 1 VC)
-p1.ads:1:38: info: initialization of "Body1_Elaborated" proved
+p1.ads:2:03: info: initialization of "Body1_Elaborated" proved
 p1.ads:3:13: warning: subprogram "P" has no effect
-p2.adb:5:18: medium: assertion might fail, cannot prove P1.body1_elaborated (e.g. when Body1_Elaborated = False)
+p2.adb:5:18: medium: assertion might fail, cannot prove P1.body1_elaborated
 p2.adb:6:20: high: modification of "Body2_Elaborated" in elaboration requires Elaborate_Body on package "P2" (SPARK RM 7.7.1(5))
 p2.ads:1:17: info: initial condition proved (CVC4: 1 VC)
-p2.ads:1:38: info: initialization of "Body2_Elaborated" proved
+p2.ads:2:03: info: initialization of "Body2_Elaborated" proved
 p2.ads:3:13: warning: subprogram "P" has no effect

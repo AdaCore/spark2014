@@ -1,4 +1,3 @@
+r.adb:30:07: info: initialization of "Total_Ones" proved
 r.adb:34:22: info: cannot unroll loop (too many loop iterations)
-r.adb:35:24: info: initialization of "Total_Ones" proved
-r.adb:35:35: medium: range check might fail (e.g. when D = (others => 1) and I = 1 and Total_Ones = Seq_Bit_Count'Last) [possible explanation: loop at line 34 should mention Total_Ones in a loop invariant]
-r.adb:42:14: info: initialization of "Total_Ones" proved
+r.adb:35:35: medium: range check might fail (e.g. when D = (others => 0) and I = 1 and Total_Ones = 0) [possible explanation: loop at line 34 should mention Total_Ones in a loop invariant]

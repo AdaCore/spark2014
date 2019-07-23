@@ -1,11 +1,15 @@
 foo.adb:6:19: info: initialization of "N" proved
 foo.adb:13:19: info: initialization of "N" proved
+foo.adb:14:09: info: data dependencies proved
+foo.adb:15:09: info: flow dependencies proved
 foo.adb:21:23: info: initialization of "N" proved
 foo.adb:22:09: medium: expected to see "X" on the left-hand-side of a dependency relation
 foo.adb:22:09: medium: missing self-dependency "X => X"
 foo.adb:28:26: info: initialization of "N" proved
-foo.adb:32:07: info: precondition proved (CVC4: 1 VC)
+foo.adb:29:09: info: flow dependencies proved
+foo.adb:32:07: info: precondition proved (Trivial: 1 VC)
 foo.adb:35:26: info: initialization of "N" proved
+foo.adb:36:09: info: flow dependencies proved
 foo.adb:42:30: info: initialization of "N" proved
 foo.adb:43:09: medium: expected to see "X" on the left-hand-side of a dependency relation
 foo.adb:43:09: medium: missing self-dependency "X => X"

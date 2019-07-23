@@ -1,0 +1,8 @@
+constr_ty.adb:1:11: warning: subprogram "Constr_Ty" has no effect
+constr_ty.adb:8:26: info: range check proved (CVC4: 2 VC)
+constr_ty.adb:9:19: medium: range check might fail (e.g. when Z.all = (others => 1) and Z.all'First = 1 and Z.all'Last = 0)
+constr_ty.adb:20:20: info: cannot unroll loop (too many loop iterations)
+constr_ty.adb:23:32: info: range check proved (CVC4: 2 VC)
+constr_ty.adb:24:25: medium: range check might fail (e.g. when I = 1 and M.all = (others => 1) and M.all'First = 1 and M.all'Last = 2) [possible explanation: loop at line 20 should mention M in a loop invariant]
+constr_ty.adb:29:19: medium: assertion might fail (e.g. when W.all = (others => 1))
+constr_ty.adb:29:35: info: pointer dereference check proved (CVC4: 1 VC)

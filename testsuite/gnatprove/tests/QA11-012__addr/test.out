@@ -1,4 +1,3 @@
-addr.adb:4:23: info: cannot unroll loop (too many loop iterations)
-addr.adb:6:46: info: index check proved (CVC4: 2 VC)
+addr.adb:4:23: info: unrolling loop
 addr.adb:8:33: high: "Val" is not initialized
-addr.adb:8:33: medium: range check might fail (e.g. when Val = 'NUL') [possible explanation: loop at line 4 should mention Val in a loop invariant]
+addr.adb:8:33: medium: range check might fail (e.g. when Val = 'NUL')

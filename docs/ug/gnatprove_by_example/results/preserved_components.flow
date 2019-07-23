@@ -1,8 +1,1 @@
-preserved_components.adb:11:26: info: initialization of "M" proved
-preserved_components.adb:17:30: info: initialization of "M" proved
-preserved_components.adb:17:48: info: initialization of "M" proved
-preserved_components.adb:21:31: info: initialization of "M" proved
-preserved_components.adb:27:30: info: initialization of "M" proved
-preserved_components.adb:27:48: info: initialization of "M" proved
-preserved_components.adb:33:30: info: initialization of "M" proved
-preserved_components.adb:33:48: info: initialization of "M" proved
+preserved_components.adb:7:04: info: initialization of "M" proved

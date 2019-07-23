@@ -1,24 +1,20 @@
-a-cofove.ads:596:57: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:724:23: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:727:38: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:760:14: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofove.ads:764:35: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at list.ads:8
-list.adb:18:07: info: initialization of private part of "Res" proved
-list.adb:18:14: info: initialization of private part of "Res" proved
-list.adb:19:14: info: initialization of private part of "Res" proved
+a-cofove.ads:579:57: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:707:23: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:710:38: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:743:14: info: precondition proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofove.ads:747:35: info: range check proved (Z3: 1 VC), in instantiation at list.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:85, in instantiation at list.ads:8
+list.adb:18:14: info: initialization of "Res" proved
 list.adb:22:10: info: precondition proved (Z3: 2 VC)
-list.adb:22:16: info: initialization of "S" proved
 list.adb:22:19: info: precondition proved (Z3: 4 VC)
 list.adb:22:31: info: range check proved (Z3: 2 VC)
 list.adb:25:13: info: loop invariant initialization proved (Z3: 2 VC)
 list.adb:25:13: info: loop invariant preservation proved (Z3: 2 VC)
-list.adb:25:23: info: initialization of "S" proved
 list.adb:25:35: info: overflow check proved (Z3: 2 VC)
 list.adb:25:43: info: overflow check proved (Z3: 2 VC)
 list.adb:28:35: info: overflow check proved (Z3: 2 VC)
@@ -26,17 +22,14 @@ list.adb:28:43: info: index check proved (Z3: 4 VC)
 list.adb:28:43: info: overflow check proved (Z3: 2 VC)
 list.adb:28:50: info: precondition proved (Z3: 4 VC)
 list.adb:28:62: info: range check proved (Z3: 2 VC)
-list.adb:34:13: info: loop invariant initialization proved (Z3: 3 VC)
+list.adb:34:13: info: loop invariant initialization proved (Z3: 4 VC)
 list.adb:34:13: info: loop invariant preservation proved (Z3: 4 VC)
-list.adb:34:30: info: initialization of private part of "Res" proved
 list.adb:34:40: info: overflow check proved (Z3: 2 VC)
-list.adb:36:23: info: initialization of "S" proved
 list.adb:36:38: info: overflow check proved (Z3: 2 VC)
 list.adb:36:42: info: overflow check proved (Z3: 2 VC)
 list.adb:38:39: info: overflow check proved (Z3: 2 VC)
 list.adb:38:43: info: overflow check proved (Z3: 2 VC)
 list.adb:39:34: info: index check proved (Z3: 4 VC)
-list.adb:39:49: info: initialization of "S" proved
 list.adb:39:64: info: index check proved (Z3: 4 VC)
 list.adb:41:40: info: overflow check proved (Z3: 2 VC)
 list.adb:42:20: info: precondition proved (Z3: 4 VC)
@@ -46,11 +39,8 @@ list.adb:42:56: info: overflow check proved (Z3: 2 VC)
 list.adb:42:60: info: overflow check proved (Z3: 2 VC)
 list.adb:42:60: info: range check proved (Z3: 2 VC)
 list.adb:43:10: info: precondition proved (Z3: 1 VC)
-list.adb:43:18: info: initialization of private part of "Res" proved
 list.adb:43:23: info: precondition proved (Z3: 1 VC)
-list.adb:43:28: info: initialization of "S" proved
 list.adb:44:10: info: precondition proved (Z3: 1 VC)
-list.adb:44:15: info: initialization of "S" proved
 list.ads:9:38: info: range check proved (Z3: 1 VC)
 list.ads:12:14: info: postcondition proved (Z3: 1 VC)
 list.ads:13:19: info: precondition proved (Z3: 2 VC)
@@ -64,8 +54,7 @@ stack.adb:5:47: info: range check proved (Z3: 4 VC)
 stack.adb:17:22: info: range check proved (Z3: 1 VC)
 stack.adb:18:19: info: index check proved (Z3: 2 VC)
 stack.adb:29:22: info: range check proved (Z3: 1 VC)
-stack.adb:38:14: info: initialization of "E.Content" proved
-stack.adb:38:14: info: initialization of "E.Top" proved
+stack.adb:34:07: info: initialization of "E" proved
 stack.ads:12:17: info: postcondition proved (Z3: 2 VC)
 stack.ads:23:14: info: postcondition proved (Z3: 1 VC)
 stack.ads:27:14: info: postcondition proved (Z3: 1 VC)

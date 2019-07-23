@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -129,11 +129,6 @@ package Gnat2Why.Subprograms is
       Domain : EW_Domain) return Item_Array;
    --  Return Why binders for the parameters of subprogram E.
    --  If Domain is EW_Term also generates binders for E's read effects.
-
-   procedure Add_Dependencies_For_Effects
-     (T : W_Section_Id;
-      E : Entity_Id);
-   --  Adds imports for the globals of a subprogram E in the current theory
 
    procedure Update_Symbol_Table_For_Inherited_Contracts (E : Entity_Id);
    --  The inherited precondition and postcondition for E is expressed wrt the

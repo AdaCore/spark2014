@@ -1,30 +1,20 @@
 indexbis.adb:8:33: info: range check proved (CVC4: 1 VC)
-indexbis.adb:12:16: info: initialization of "Courant" proved
 indexbis.adb:12:16: info: loop invariant initialization proved (CVC4: 3 VC)
 indexbis.adb:12:16: info: loop invariant preservation proved (CVC4: 3 VC)
 indexbis.adb:13:99: info: index check proved (CVC4: 4 VC)
 indexbis.adb:13:107: info: index check proved (CVC4: 4 VC)
 indexbis.adb:15:40: info: range check proved (CVC4: 1 VC)
-indexbis.adb:19:22: info: initialization of "Courant" proved
 indexbis.adb:19:22: info: loop invariant initialization proved (CVC4: 6 VC)
 indexbis.adb:19:22: info: loop invariant preservation proved (CVC4: 6 VC)
 indexbis.adb:20:105: info: index check proved (CVC4: 4 VC)
 indexbis.adb:20:113: info: index check proved (CVC4: 4 VC)
-indexbis.adb:21:31: info: initialization of "Possible" proved
 indexbis.adb:22:80: info: index check proved (CVC4: 4 VC)
 indexbis.adb:22:94: info: index check proved (CVC4: 4 VC)
 indexbis.adb:23:25: info: index check proved (CVC4: 2 VC)
-indexbis.adb:23:25: info: initialization of "Courant" proved
 indexbis.adb:23:39: info: index check proved (CVC4: 2 VC)
-indexbis.adb:23:39: info: initialization of "Possible" proved
-indexbis.adb:24:29: info: initialization of "Courant" proved
-indexbis.adb:26:22: info: initialization of "Possible" proved
 indexbis.adb:26:42: info: range check proved (CVC4: 1 VC)
-indexbis.adb:26:49: info: initialization of "Possible" proved
 indexbis.adb:26:49: info: overflow check proved (CVC4: 1 VC)
-indexbis.adb:32:16: info: initialization of "Courant" proved
 indexbis.adb:33:35: info: range check proved (CVC4: 1 VC)
-indexbis.adb:33:42: info: initialization of "Courant" proved
 indexbis.adb:33:42: info: overflow check proved (CVC4: 1 VC)
 indexbis.ads:4:05: info: postcondition proved (CVC4: 5 VC)
 indexbis.ads:5:72: info: index check proved (CVC4: 2 VC)

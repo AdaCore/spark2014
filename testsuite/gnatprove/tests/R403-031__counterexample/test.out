@@ -1,35 +1,13 @@
+p.adb:21:07: info: initialization of "Num" proved
+p.adb:21:12: info: initialization of "Bits" proved
+p.adb:21:18: info: initialization of "Res" proved
+p.adb:21:23: info: initialization of "B" proved
+p.adb:25:07: info: initialization of "M" proved
+p.adb:25:10: info: initialization of "Bits_G" proved
+p.adb:25:18: info: initialization of "Res_G" proved
 p.adb:29:22: info: assertion proved (CVC4: 1 VC)
-p.adb:29:22: info: initialization of "Num" proved
-p.adb:37:14: info: initialization of "Bits" proved
-p.adb:38:15: info: initialization of "M" proved
-p.adb:39:25: info: initialization of "Res" proved
-p.adb:39:25: medium: assertion might fail, cannot prove Res = Res_G * (pow2 (M + 1)) (e.g. when M = 65535 and Res = 0 and Res_G = 0) [possible explanation: loop at line 37 should mention M and Res and Res_G in a loop invariant]
-p.adb:39:31: info: initialization of "Res_G" proved
-p.adb:39:46: info: initialization of "M" proved
-p.adb:40:25: info: initialization of "Bits_G" proved
-p.adb:40:25: medium: assertion might fail, cannot prove Bits_G = Pow2(M) (e.g. when Bits_G = 0 and M = 65535) [possible explanation: loop at line 37 should mention Bits_G and M in a loop invariant]
-p.adb:40:39: info: initialization of "M" proved
-p.adb:41:15: info: initialization of "Res" proved
-p.adb:41:22: info: initialization of "Bits" proved
-p.adb:42:25: info: initialization of "B" proved
-p.adb:42:25: medium: assertion might fail, cannot prove B = Res + Bits (e.g. when B = 0 and Bits = 0 and Res = 0) [possible explanation: loop at line 37 should mention B and Res in a loop invariant]
-p.adb:42:29: info: initialization of "Res" proved
-p.adb:42:35: info: initialization of "Bits" proved
-p.adb:43:25: info: initialization of "B" proved
-p.adb:43:25: medium: assertion might fail, cannot prove B = ((2 * Res_G) + Bits_G) * Pow2(M) (e.g. when B = 0 and Bits_G = 0 and M = 65535 and Res_G = 0) [possible explanation: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
-p.adb:43:35: info: initialization of "Res_G" proved
-p.adb:43:44: info: initialization of "Bits_G" proved
-p.adb:43:59: info: initialization of "M" proved
-p.adb:44:30: info: initialization of "Res" proved
-p.adb:46:14: info: initialization of "Num" proved
-p.adb:46:21: info: initialization of "B" proved
-p.adb:47:20: info: initialization of "Num" proved
-p.adb:47:26: info: initialization of "B" proved
-p.adb:48:21: info: initialization of "Res" proved
-p.adb:48:28: info: initialization of "Bits" proved
-p.adb:50:22: info: initialization of "Res_G" proved
-p.adb:50:30: info: initialization of "Bits_G" proved
-p.adb:53:18: info: initialization of "Bits" proved
+p.adb:39:25: medium: assertion might fail, cannot prove Res = Res_G * (pow2 (M + 1)) (e.g. when M = 32767 and Res = 0 and Res_G = 65535) [possible explanation: loop at line 37 should mention M and Res and Res_G in a loop invariant]
+p.adb:40:25: medium: assertion might fail, cannot prove Bits_G = Pow2(M) (e.g. when Bits_G = 0 and M = 32767) [possible explanation: loop at line 37 should mention Bits_G and M in a loop invariant]
+p.adb:42:25: medium: assertion might fail, cannot prove B = Res + Bits (e.g. when B = 1 and Bits = 1 and Res = 1) [possible explanation: loop at line 37 should mention B and Res in a loop invariant]
+p.adb:43:25: medium: assertion might fail, cannot prove B = ((2 * Res_G) + Bits_G) * Pow2(M) (e.g. when B = 1 and Bits_G = 0 and M = 32767 and Res_G = 0) [possible explanation: loop at line 37 should mention B and Bits_G and M and Res_G in a loop invariant]
 p.adb:53:23: info: division check proved (CVC4: 1 VC)
-p.adb:54:33: info: initialization of "Bits_G" proved
-p.adb:57:14: info: initialization of "Res" proved

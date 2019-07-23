@@ -1,6 +1,6 @@
 client1.ads:5:04: high: possible data race when accessing variable "t.x"
 client1.ads:5:04: high: with task "client1.t1"
 client1.ads:5:04: high: with task "client2.t2"
+t.adb:12:18: medium: "X" might not be initialized before start of tasks of type "TT"
 t.ads:4:22: warning: unused initial value of "X"
 t.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
-t.ads:5:14: medium: "X" might not be initialized before start of tasks of type "TT"

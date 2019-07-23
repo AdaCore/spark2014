@@ -1,4 +1,6 @@
 foo.adb:2:16: info: initialization of "B" proved
 foo.adb:3:16: info: initialization of "C" proved
+foo.adb:4:06: info: data dependencies proved
+foo.adb:5:06: info: flow dependencies proved
 foo.adb:10:14: info: range check proved (CVC4: 1 VC)
 foo.adb:11:14: info: range check proved (CVC4: 1 VC)

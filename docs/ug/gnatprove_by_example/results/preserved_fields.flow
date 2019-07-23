@@ -1,5 +1,1 @@
-preserved_fields.adb:18:19: info: initialization of "D.F3" proved
-preserved_fields.adb:20:24: info: initialization of "D.F3" proved
-preserved_fields.adb:20:38: info: initialization of "D.F3" proved
-preserved_fields.adb:21:22: info: initialization of "D.F4" proved
-preserved_fields.adb:21:29: info: initialization of "D.F4" proved
+preserved_fields.adb:14:04: info: initialization of "D" proved

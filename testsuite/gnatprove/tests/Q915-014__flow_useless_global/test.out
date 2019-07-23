@@ -1,8 +1,13 @@
+bar.ads:5:21: info: data dependencies proved
+bar.ads:7:21: info: data dependencies proved
 bar.ads:7:44: low: unused global "Foo.State"
+bar.ads:9:21: info: data dependencies proved
 bar.ads:9:45: high: "Foo.State" is not an input in the Global contract of subprogram "R" at line 9
 bar.ads:9:45: high: "Foo.State" is not initialized
 bar.ads:9:45: high: either make "Foo.State" an input in the Global contract or initialize it before use
 bar.ads:9:45: low: unused global "Foo.State"
+bar.ads:11:21: info: data dependencies proved
 bar.ads:11:45: low: unused global "Foo.State"
 bar.ads:11:45: warning: "Foo.State" is not modified, could be INPUT
-foo.adb:4:04: info: initialization of "X" constituent of "State" proved
+foo.ads:2:33: info: flow dependencies proved
+foo.ads:5:25: info: data dependencies proved

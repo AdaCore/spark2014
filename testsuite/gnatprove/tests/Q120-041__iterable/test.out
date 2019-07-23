@@ -1,0 +1,14 @@
+composite_cursors.ads:17:20: warning: unused variable "C"
+composite_cursors.ads:21:18: info: overflow check proved (CVC4: 1 VC)
+composite_cursors.ads:28:19: info: index check proved (CVC4: 2 VC)
+composite_cursors.ads:46:20: warning: unused variable "C"
+composite_cursors.ads:50:28: info: overflow check proved (CVC4: 1 VC)
+composite_cursors.ads:57:20: info: index check proved (CVC4: 2 VC)
+loop_iterable.adb:3:18: info: predicate check proved (CVC4: 1 VC)
+loop_iterable.adb:5:18: info: predicate check proved (CVC4: 1 VC)
+loop_iterable.adb:8:08: info: precondition proved (CVC4: 1 VC)
+loop_iterable.adb:8:08: info: precondition proved (Trivial: 1 VC)
+loop_iterable.adb:9:22: info: assertion proved (CVC4: 1 VC)
+loop_iterable.adb:12:08: info: precondition proved (CVC4: 1 VC)
+loop_iterable.adb:12:08: info: precondition proved (Trivial: 1 VC)
+loop_iterable.adb:13:22: info: assertion proved (CVC4: 1 VC)

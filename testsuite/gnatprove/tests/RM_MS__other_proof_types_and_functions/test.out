@@ -1,23 +1,28 @@
-stack.adb:18:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack.adb:18:04: info: initialization of "My_Stack.S" constituent of "State" proved
+stack.adb:18:04: info: initialization of "My_Stack" constituent of "State" proved
 stack.adb:26:32: info: range check proved (CVC4: 1 VC)
 stack.adb:34:44: info: range check proved (CVC4: 1 VC)
 stack.adb:35:26: info: index check proved (CVC4: 2 VC)
 stack.adb:42:32: info: index check proved (CVC4: 2 VC)
 stack.adb:43:44: info: range check proved (CVC4: 1 VC)
+stack.adb:49:07: info: initialization of "Temp" proved
 stack.adb:51:35: info: index check proved (CVC4: 2 VC)
 stack.adb:52:27: info: index check proved (CVC4: 2 VC)
 stack.adb:52:69: info: index check proved (CVC4: 2 VC)
 stack.adb:53:36: info: index check proved (CVC4: 2 VC)
-stack.adb:53:44: info: initialization of "Temp" proved
+stack.ads:4:08: info: flow dependencies proved
 stack.ads:5:08: info: initial condition proved (CVC4: 1 VC)
-stack.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
+stack.ads:23:11: info: data dependencies proved
+stack.ads:29:11: info: data dependencies proved
+stack.ads:36:11: info: data dependencies proved
+stack.ads:40:11: info: data dependencies proved
+stack.ads:51:11: info: data dependencies proved
 stack.ads:53:21: info: postcondition proved (CVC4: 3 VC)
 stack.ads:53:39: info: overflow check proved (CVC4: 1 VC)
 stack.ads:55:21: info: precondition proved (CVC4: 2 VC)
 stack.ads:60:19: info: initialization of "X" proved
+stack.ads:61:11: info: data dependencies proved
 stack.ads:63:21: info: postcondition proved (CVC4: 1 VC)
+stack.ads:67:11: info: data dependencies proved
 stack.ads:69:21: info: postcondition proved (CVC4: 3 VC)
 stack.ads:70:21: info: precondition proved (CVC4: 2 VC)
 stack.ads:70:43: info: precondition proved (CVC4: 2 VC)
@@ -25,53 +30,57 @@ stack.ads:70:62: info: range check proved (CVC4: 1 VC)
 stack.ads:71:21: info: precondition proved (CVC4: 2 VC)
 stack.ads:71:40: info: range check proved (CVC4: 1 VC)
 stack.ads:71:47: info: precondition proved (CVC4: 2 VC)
-stack_external_prover.adb:18:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack_external_prover.adb:18:04: info: initialization of "My_Stack.S" constituent of "State" proved
+stack_external_prover.adb:18:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_external_prover.adb:24:44: medium: range check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => Pointer_Range'Last))
 stack_external_prover.adb:25:26: info: index check proved (CVC4: 2 VC)
-stack_external_prover.adb:32:32: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0) and X = 0)
+stack_external_prover.adb:32:32: medium: array index check might fail
 stack_external_prover.adb:33:44: info: range check proved (CVC4: 1 VC)
-stack_external_prover.adb:41:35: medium: array index check might fail (e.g. when My_Stack = (S => ?, Pointer => 0) and Temp = 0)
+stack_external_prover.adb:39:07: info: initialization of "Temp" proved
+stack_external_prover.adb:41:35: medium: array index check might fail
 stack_external_prover.adb:42:27: info: index check proved (CVC4: 2 VC)
 stack_external_prover.adb:42:69: medium: array index check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 1))
 stack_external_prover.adb:43:36: info: index check proved (CVC4: 2 VC)
-stack_external_prover.adb:43:44: info: initialization of "Temp" proved
-stack_external_prover.ads:5:08: medium: initial condition might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
-stack_external_prover.ads:5:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack_external_prover.ads:5:29: info: initialization of "My_Stack.S" constituent of "State" proved
-stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove Count = Count'Old + 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
-stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => -1), Pointer => 0))
+stack_external_prover.ads:4:08: info: flow dependencies proved
+stack_external_prover.ads:5:08: medium: initial condition might fail
+stack_external_prover.ads:40:11: info: data dependencies proved
+stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove Count = Count'Old + 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 1))
+stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
 stack_external_prover.ads:45:19: info: initialization of "X" proved
-stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 1))
-stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => -1, others => 0), Pointer => 2))
+stack_external_prover.ads:46:11: info: data dependencies proved
+stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1
+stack_external_prover.ads:51:11: info: data dependencies proved
+stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2))
 stack_external_prover.ads:54:62: info: range check proved (CVC4: 1 VC)
-stack_external_prover.ads:55:40: medium: range check might fail
-stack_functional_spec.adb:20:04: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack_functional_spec.adb:20:04: info: initialization of "My_Stack.S" constituent of "State" proved
+stack_external_prover.ads:55:40: medium: range check might fail (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2))
+stack_functional_spec.adb:20:04: info: initialization of "My_Stack" constituent of "State" proved
 stack_functional_spec.adb:32:25: info: range check proved (CVC4: 1 VC)
 stack_functional_spec.adb:38:44: info: range check proved (CVC4: 1 VC)
 stack_functional_spec.adb:39:26: info: index check proved (CVC4: 2 VC)
 stack_functional_spec.adb:46:32: info: index check proved (CVC4: 2 VC)
 stack_functional_spec.adb:47:44: info: range check proved (CVC4: 1 VC)
+stack_functional_spec.adb:53:07: info: initialization of "Temp" proved
 stack_functional_spec.adb:55:35: info: index check proved (CVC4: 2 VC)
 stack_functional_spec.adb:56:27: info: index check proved (CVC4: 2 VC)
 stack_functional_spec.adb:56:69: info: index check proved (CVC4: 2 VC)
 stack_functional_spec.adb:57:36: info: index check proved (CVC4: 2 VC)
-stack_functional_spec.adb:57:44: info: initialization of "Temp" proved
+stack_functional_spec.ads:5:08: info: flow dependencies proved
 stack_functional_spec.ads:6:08: info: initial condition proved (CVC4: 1 VC)
-stack_functional_spec.ads:6:29: info: initialization of "My_Stack.Pointer" constituent of "State" proved
-stack_functional_spec.ads:6:29: info: initialization of "My_Stack.S" constituent of "State" proved
+stack_functional_spec.ads:20:11: info: data dependencies proved
+stack_functional_spec.ads:40:11: info: data dependencies proved
+stack_functional_spec.ads:44:11: info: data dependencies proved
+stack_functional_spec.ads:56:11: info: data dependencies proved
 stack_functional_spec.ads:58:21: info: postcondition proved (CVC4: 4 VC)
 stack_functional_spec.ads:58:55: info: overflow check proved (CVC4: 1 VC)
 stack_functional_spec.ads:60:21: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:62:25: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:62:50: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:69:19: info: initialization of "X" proved
+stack_functional_spec.ads:70:11: info: data dependencies proved
 stack_functional_spec.ads:72:21: info: postcondition proved (CVC4: 3 VC)
-stack_functional_spec.ads:73:21: info: initialization of "X" proved
 stack_functional_spec.ads:73:25: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:75:24: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:75:49: info: precondition proved (CVC4: 2 VC)
+stack_functional_spec.ads:82:11: info: data dependencies proved
 stack_functional_spec.ads:84:21: info: postcondition proved (CVC4: 4 VC)
 stack_functional_spec.ads:85:21: info: precondition proved (CVC4: 2 VC)
 stack_functional_spec.ads:86:24: info: precondition proved (CVC4: 2 VC)

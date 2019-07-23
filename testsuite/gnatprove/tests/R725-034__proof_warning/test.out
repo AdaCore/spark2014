@@ -1,26 +1,23 @@
 contradictions.adb:18:14: info: overflow check proved (CVC4: 1 VC)
-contradictions.adb:30:09: info: length check proved (CVC4: 4 VC)
+contradictions.adb:30:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 contradictions.ads:21:39: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:24:17: info: initialization of "V" proved
-contradictions.ads:25:19: info: postcondition proved (CVC4: 2 VC)
-contradictions.ads:25:23: info: initialization of "V" proved
+contradictions.ads:25:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 contradictions.ads:25:34: warning: unreachable branch (CVC4: 1 VC)
-contradictions.ads:30:14: info: postcondition proved (CVC4: 2 VC)
+contradictions.ads:30:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 contradictions.ads:30:29: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:34:18: info: initialization of "V" proved
-contradictions.ads:35:19: info: postcondition proved (CVC4: 2 VC)
-contradictions.ads:35:23: info: initialization of "V" proved
+contradictions.ads:35:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 contradictions.ads:35:45: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:40:18: info: initialization of "V" proved
 contradictions.ads:42:14: info: postcondition proved (CVC4: 2 VC)
-contradictions.ads:42:33: info: initialization of "V" proved
 contradictions.ads:42:43: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:42:46: info: index check proved (CVC4: 2 VC)
 contradictions.ads:42:60: info: index check proved (CVC4: 2 VC)
-contradictions.ads:48:35: info: contract case proved (CVC4: 2 VC)
-contradictions.ads:49:16: info: contract case proved (CVC4: 3 VC)
+contradictions.ads:48:35: info: contract case proved (Trivial: 2 VC)
+contradictions.ads:49:16: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
 contradictions.ads:49:19: warning: unreachable branch (CVC4: 1 VC)
-contradictions.ads:54:16: info: postcondition proved (CVC4: 3 VC)
+contradictions.ads:54:16: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 contradictions.ads:54:75: warning: unreachable branch (CVC4: 1 VC)
 contradictions.ads:59:14: info: postcondition proved (CVC4: 1 VC)
 contradictions.ads:59:30: warning: unreachable branch (CVC4: 1 VC)

@@ -1,0 +1,4 @@
+with "lib";
+
+project Test is
+end Test;

@@ -1,9 +1,9 @@
 test.adb:11:16: medium: postcondition might fail
-{"ide_request": "Command_req", "node_ID":98, "command" : "introduce_premises" }
+{"ide_request": "Command_req", "node_ID":18, "command" : "introduce_premises" }
 
-{"ide_request": "Command_req", "node_ID":98, "command" : "z3" }
+{"ide_request": "Command_req", "node_ID":18, "command" : "z3" }
 
-{"ide_request": "Get_task", "node_ID":98, "loc": false, "full_context": false}
+{"ide_request": "Get_task", "node_ID":18, "loc": false, "full_context": false}
 
 Message
 Task
@@ -11,25 +11,17 @@ Task
 
 ------------------------------- Goal --------------------------------
 
-goal WP_parameter def :
-  forall test__parity__result:int, result:int, test__parity__result1:int,
-   test__parity__result2:int, test__parity__result3:int,
-   test__parity__result4:int, test__parity__result5:int.
-   forall result1:int.
-    dynamic_property first last A //
-    A > 0 //
-    (((test__parity__result1 = test__parity__result2 //
-       test__parity__result3 = test__parity__result1) //
-      result = test__parity__result // test__parity__result1 = A) //
-     mk int__ref test__parity__result4 = mk int__ref test__parity__result2 //
-     test__parity__result5 = test__parity__result3) //
-    result1 = test__parity__result4 ->
-    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2)))
+goal VC def :
+  dynamic_invariant A True False True True ->
+  A > 0 ->
+  (forall test__parity__result:int.
+    test__parity__result = A ->
+    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
 
 
 Process Ended
-Children 96 OK
-Children 97 OK
+Children CST_NODE OK
+Children CST_SPLIT OK
 Children OK
 Unparsed JSON = 0
 Next_unproven = 0

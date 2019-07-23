@@ -1,5 +1,3 @@
-simple.adb:4:54: medium: overflow check might fail (e.g. when Arr = (others => 10) and Init_Val = Integer'Last) [possible explanation: subprogram at line 3 should mention Init_Val in a precondition]
-simple.adb:6:14: info: initialization of "Arr" proved
-simple.adb:7:14: info: initialization of "Arr" proved
+simple.adb:4:54: medium: overflow check might fail (e.g. when Init_Val = Integer'Last) [possible explanation: subprogram at simple.ads:7 should mention Init_Val in a precondition]
 simple.ads:8:17: info: postcondition proved (CVC4: 1 VC)
 simple.ads:8:69: info: overflow check proved (CVC4: 1 VC)

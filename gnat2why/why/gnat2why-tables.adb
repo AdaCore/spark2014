@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2017-2018, AdaCore                  --
+--                     Copyright (C) 2017-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -113,7 +113,7 @@ package body Gnat2Why.Tables is
    --      Info if any.
 
    procedure Store_In_Ancestors (E : Entity_Id) with
-     Pre => Is_Tagged_Type (Root_Record_Type (E));
+     Pre => Is_Tagged_Type (Root_Retysp (E));
    --  @param E a tagged record type
    --  Store E in the descendant map of each of its ancestors
 
@@ -276,13 +276,13 @@ package body Gnat2Why.Tables is
 
    function Has_Variant_Info (Rec, Comp : Entity_Id) return Boolean is
       Rec_Ty  : constant Entity_Id := Find_Rec_Node_For_Variant (Rec);
-      C_I_Map : constant Component_Info_Map :=
+      C_I_Map : Component_Info_Map renames
         Comp_Info (Rec_Ty).Variant_Info;
       Curs    : constant Component_Info_Maps.Cursor :=
         C_I_Map.Find (Search_Component_In_Type (Rec_Ty, Comp));
    begin
       return Component_Info_Maps.Has_Element (Curs)
-        and then Present (Component_Info_Maps.Element (Curs).Parent_Variant);
+        and then Present (C_I_Map (Curs).Parent_Variant);
    end Has_Variant_Info;
 
    -------------------------
@@ -468,7 +468,7 @@ package body Gnat2Why.Tables is
          Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
       end if;
 
-      if Is_Tagged_Type (Root_Record_Type (E)) then
+      if Is_Tagged_Type (Root_Retysp (E)) then
          Descendants.Include (E, Node_Sets.Empty_Set);
          Store_In_Ancestors (E);
       end if;
@@ -601,7 +601,7 @@ package body Gnat2Why.Tables is
      (if Is_Type (Comp) then Comp
       elsif Is_Tagged_Type (Retysp (Scope (Comp)))
       then Retysp (Scope (Original_Record_Component (Comp)))
-      else Root_Record_Type (Scope (Comp)));
+      else Root_Retysp (Scope (Comp)));
 
    ------------------------------
    -- Search_Component_In_Info --

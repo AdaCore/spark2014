@@ -1,11 +1,19 @@
-p.adb:14:10: high: "B" constituent of "State2" must be listed in the Refined_Global aspect of "Proc1" (SPARK RM 6.1.4(13))
-p.adb:14:10: high: as a result "P.State2" must be listed in the Global of "Proc1" (SPARK RM 6.1.4(13))
-p.adb:25:12: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc2" (SPARK RM 6.1.4(13))
-p.adb:25:12: high: as a result "P.State2" must be listed in the Depends of "Proc2" (SPARK RM 6.1.4(13))
-p.adb:32:24: high: "E" constituent of "State3" must be listed in the Refined_Global aspect of "Proc3" (SPARK RM 6.1.4(13))
-p.adb:41:14: medium: overflow check might fail [possible explanation: subprogram at line 37 should mention D in a precondition]
-p.adb:41:16: high: "E" constituent of "State3" must be listed in the Refined_Depends aspect of "Proc4" (SPARK RM 6.1.4(13))
-p.adb:49:07: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc5" (SPARK RM 6.1.4(13))
-p.adb:49:07: high: as a result "P.State2" must be listed in the Global and Depends of "Proc5" (SPARK RM 6.1.4(13))
-p.adb:57:07: high: "B" constituent of "State2" must be listed in the Refined_Global aspect of "Proc6" (SPARK RM 6.1.4(13))
-p.adb:57:07: high: as a result "P.State2" must be listed in the Global and Depends of "Proc6" (SPARK RM 6.1.4(13))
+p.adb:14:10: high: "B" constituent of "State2" must be listed in the Refined_Global aspect of "Proc1" (SPARK RM 6.1.4(14))
+p.adb:14:10: high: as a result "P.State2" must be listed in the Global of "Proc1" (SPARK RM 6.1.4(14))
+p.adb:25:12: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc2" (SPARK RM 6.1.4(14))
+p.adb:25:12: high: as a result "P.State2" must be listed in the Depends of "Proc2" (SPARK RM 6.1.4(14))
+p.adb:32:24: high: "E" constituent of "State3" must be listed in the Refined_Global aspect of "Proc3" (SPARK RM 6.1.4(14))
+p.adb:41:14: medium: overflow check might fail [possible explanation: subprogram at p.ads:11 should mention D in a precondition]
+p.adb:41:16: high: "E" constituent of "State3" must be listed in the Refined_Depends aspect of "Proc4" (SPARK RM 6.1.4(14))
+p.adb:49:07: high: "B" constituent of "State2" must be listed in the Refined_Depends aspect of "Proc5" (SPARK RM 6.1.4(14))
+p.adb:49:07: high: as a result "P.State2" must be listed in the Global and Depends of "Proc5" (SPARK RM 6.1.4(14))
+p.adb:57:07: high: "B" constituent of "State2" must be listed in the Refined_Global aspect of "Proc6" (SPARK RM 6.1.4(14))
+p.adb:57:07: high: as a result "P.State2" must be listed in the Global and Depends of "Proc6" (SPARK RM 6.1.4(14))
+p.ads:3:11: info: data dependencies proved
+p.ads:6:11: info: flow dependencies proved
+p.ads:9:11: info: data dependencies proved
+p.ads:12:11: info: flow dependencies proved
+p.ads:15:11: info: data dependencies proved
+p.ads:16:11: info: flow dependencies proved
+p.ads:19:11: info: data dependencies proved
+p.ads:20:11: info: flow dependencies proved

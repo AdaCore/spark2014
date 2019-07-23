@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,12 +23,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Why.Atree.Modules;    use Why.Atree.Modules;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
-with Namet;                use Namet;
 with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with Types;                use Types;
+with Why.Atree.Modules;    use Why.Atree.Modules;
 
 package Why.Gen.Scalars is
    --  This package implements the generation of Why modules for scalar types
@@ -61,7 +61,7 @@ package Why.Gen.Scalars is
    with Pre => Is_Type (Typ);
    --  Return a module name based for operations on fixed-points of type Typ.
 
-   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Name_Id
+   function Get_Fixed_Point_Theory_Name (Typ : Entity_Id) return Symbol
    with Pre => Is_Type (Typ);
    --  Return a unique name based on the values of small of Typ, to be used as
    --  the name of the theory for operations on fixed-points of type Typ.
@@ -78,7 +78,7 @@ package Why.Gen.Scalars is
    --  signed integer type for type conversion from Typ_Left to Typ_Result.
 
    function Get_Fixed_Point_Mult_Div_Theory_Name
-     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Name_Id
+     (Typ_Left, Typ_Right, Typ_Result : Entity_Id) return Symbol
    with Pre => Is_Type (Typ_Left)
      and then Is_Type (Typ_Right)
      and then Is_Type (Typ_Result);

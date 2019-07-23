@@ -18,37 +18,24 @@ size_attr.adb:116:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:117:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:118:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:119:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:123:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:123:19: info: initialization of "B" proved
-size_attr.adb:124:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:124:19: info: initialization of "I" proved
+size_attr.adb:123:19: info: assertion proved (Trivial: 1 VC)
+size_attr.adb:124:19: info: assertion proved (Trivial: 1 VC)
 size_attr.adb:125:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:125:19: info: initialization of "MI" proved
 size_attr.adb:127:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:127:19: info: initialization of "S" proved
 size_attr.adb:128:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:128:19: info: initialization of "Ca" proved
 size_attr.adb:129:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:129:19: info: initialization of "Ua" proved
 size_attr.adb:131:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:131:19: info: initialization of "Ca2" proved
 size_attr.adb:132:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:132:19: info: initialization of "Ua2" proved
 size_attr.adb:133:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:133:19: info: initialization of "Ca3" proved
 size_attr.adb:134:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:134:19: info: initialization of "Ua3" proved
 size_attr.adb:135:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:135:19: info: initialization of "Ca4" proved
 size_attr.adb:136:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:136:19: info: initialization of "Ua4" proved
 size_attr.adb:138:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:139:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:140:19: high: "V2.X" is not initialized
 size_attr.adb:140:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:141:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:142:19: info: assertion proved (CVC4: 1 VC)
-size_attr.adb:142:19: info: initialization of "V4.X" proved
 size_attr.adb:143:19: high: "V5.X" is not initialized
 size_attr.adb:143:19: info: assertion proved (CVC4: 1 VC)
 size_attr.adb:144:19: high: "V6.X" is not initialized

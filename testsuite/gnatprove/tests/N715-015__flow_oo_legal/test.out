@@ -1,91 +1,52 @@
-main.adb:8:11: info: initialization of "Professionals.State" proved
-main.adb:11:52: info: initialization of "Kenny" proved
-main.adb:29:14: info: initialization of "Professionals.State" proved
-main.adb:34:13: info: initialization of "Professionals.State" proved
-main.adb:34:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:34:27: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
-main.adb:35:13: info: initialization of "Professionals.State" proved
-main.adb:35:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:35:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
-main.adb:35:20: info: initialization of "Uni_Student" proved, in call inlined at main.adb:70
-main.adb:38:13: info: initialization of "Professionals.State" proved
-main.adb:38:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:38:27: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
-main.adb:39:13: info: initialization of "Professionals.State" proved
-main.adb:39:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:39:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
-main.adb:39:20: info: initialization of "ZeroCool" proved, in call inlined at main.adb:70
-main.adb:42:13: info: initialization of "Professionals.State" proved
-main.adb:42:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:42:27: info: initialization of "Rambo" proved, in call inlined at main.adb:70
-main.adb:43:13: info: initialization of "Professionals.State" proved
-main.adb:43:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:43:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
-main.adb:43:20: info: initialization of "Rambo" proved, in call inlined at main.adb:70
-main.adb:46:13: info: initialization of "Professionals.State" proved
-main.adb:46:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
-main.adb:46:27: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
-main.adb:47:13: info: initialization of "Professionals.State" proved
-main.adb:47:13: info: initialization of "Professionals.State" proved, in call inlined at main.adb:70
 main.adb:47:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
-main.adb:47:20: info: initialization of "Dr_House" proved, in call inlined at main.adb:70
-main.adb:54:07: medium: precondition might fail, in call inlined at main.adb:71
-main.adb:54:35: info: initialization of "Rambo" proved, in call inlined at main.adb:71
-main.adb:55:35: info: initialization of "Uni_Student" proved, in call inlined at main.adb:71
-main.adb:57:07: medium: precondition might fail, in call inlined at main.adb:71
-main.adb:57:35: info: initialization of "Dr_House" proved, in call inlined at main.adb:71
-main.adb:58:35: info: initialization of "Kenny" proved, in call inlined at main.adb:71
+main.adb:54:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
+main.adb:57:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:58:35: warning: unused assignment to "Kenny", in call inlined at main.adb:71
 main.adb:61:14: warning: subprogram "Print_Everyone" has no effect
-main.adb:63:14: info: initialization of "Uni_Student" proved, in call inlined at main.adb:72
-main.adb:64:14: info: initialization of "ZeroCool" proved, in call inlined at main.adb:72
-main.adb:65:14: info: initialization of "Rambo" proved, in call inlined at main.adb:72
-main.adb:66:14: info: initialization of "Dr_House" proved, in call inlined at main.adb:72
 main.adb:70:04: info: in inlined body at line 31
 main.adb:70:04: info: unrolling loop
 people.adb:4:04: info: initialization of "Today" constituent of "Date" proved
 people.adb:7:40: info: initialization of "Today" constituent of "Date" proved
-professionals.adb:37:40: low: range check might fail [possible explanation: subprogram at line 34 should mention This in a precondition]
-professionals.adb:45:32: info: range check proved (CVC4: 1 VC)
-professionals.adb:47:28: info: unrolling loop
-professionals.adb:48:34: info: range check proved (CVC4: 4 VC)
-professionals.adb:68:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
-professionals.adb:68:14: info: initialization of "Tmp.Profession" proved
-professionals.adb:68:14: info: initialization of "Tmp.Skilled_In" proved
-professionals.adb:68:14: info: initialization of private part of "Tmp" proved
-professionals.adb:83:14: info: initialization of "Tmp.Number_Of_People_Killed" proved
-professionals.adb:83:14: info: initialization of "Tmp.Profession" proved
-professionals.adb:83:14: info: initialization of "Tmp.Skilled_In" proved
-professionals.adb:83:14: info: initialization of private part of "Tmp" proved
-professionals.adb:93:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
-professionals.adb:155:28: info: unrolling loop
-professionals.adb:205:72: medium: overflow check might fail [possible explanation: subprogram at line 201 should mention Killer in a precondition]
-professionals.ads:33:14: warning: subprogram "Print" has no effect
+people.ads:8:08: info: flow dependencies proved
+people.ads:13:11: info: data dependencies proved
+people.ads:21:11: info: data dependencies proved
+professionals.adb:62:07: info: initialization of "Tmp" proved
+professionals.adb:77:07: info: initialization of "Tmp" proved
+professionals.adb:94:40: info: initialization of "Skill_Of_The_Day" constituent of "State" proved
+professionals.adb:156:28: info: unrolling loop
+professionals.adb:206:72: medium: overflow check might fail
+professionals.ads:50:11: info: data dependencies proved
+professionals.ads:59:11: info: data dependencies proved
+professionals.ads:63:11: info: data dependencies proved
 professionals.ads:72:25: medium: postcondition might fail, cannot prove Is_Alive (Killer)
-simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at line 2 should mention G1 and G2 in a precondition]
-simple_oo_with_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention G2 and G3 in a precondition]
-simple_oo_with_contracts.adb:6:19: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention Par and G3 in a precondition]
-simple_oo_with_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at line 10 should mention G1 and G2 in a precondition]
-simple_oo_with_contracts.adb:13:16: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Par and G3 in a precondition]
-simple_oo_with_contracts.adb:13:24: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Par and G3 in a precondition]
-simple_oo_with_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1 [possible explanation: subprogram at line 17 should mention Par and G3 in a precondition]
+simple_oo_with_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G1 and G2 in a precondition]
+simple_oo_with_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention G2 and G3 in a precondition]
+simple_oo_with_contracts.adb:6:19: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:8 should mention Par and G3 in a precondition]
+simple_oo_with_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_with_contracts.ads:19 should mention G1 and G2 in a precondition]
+simple_oo_with_contracts.adb:13:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:19 should mention Par and G3 in a precondition]
+simple_oo_with_contracts.adb:13:24: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:19 should mention Par and G3 in a precondition]
+simple_oo_with_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1 [possible explanation: subprogram at simple_oo_with_contracts.ads:29 should mention Par and G3 in a precondition]
 simple_oo_with_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
-simple_oo_with_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2 [possible explanation: subprogram at line 24 should mention Par and G2 in a precondition]
-simple_oo_with_contracts.adb:27:33: medium: overflow check might fail [possible explanation: subprogram at line 24 should mention Par in a precondition]
+simple_oo_with_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2 [possible explanation: subprogram at simple_oo_with_contracts.ads:38 should mention Par and G2 in a precondition]
+simple_oo_with_contracts.adb:27:33: medium: overflow check might fail [possible explanation: subprogram at simple_oo_with_contracts.ads:38 should mention Par in a precondition]
+simple_oo_with_contracts.ads:9:11: info: data dependencies proved
 simple_oo_with_contracts.ads:12:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:20:11: info: data dependencies proved
 simple_oo_with_contracts.ads:22:34: info: initialization of "G4" proved
+simple_oo_with_contracts.ads:30:11: info: data dependencies proved
 simple_oo_with_contracts.ads:31:34: info: initialization of "G4" proved
-simple_oo_without_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at line 2 should mention G1 and G2 in a precondition]
-simple_oo_without_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention G2 and G3 in a precondition]
-simple_oo_without_contracts.adb:6:19: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention Par and G3 in a precondition]
-simple_oo_without_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at line 10 should mention G1 and G2 in a precondition]
-simple_oo_without_contracts.adb:13:16: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Par and G3 in a precondition]
-simple_oo_without_contracts.adb:13:24: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Par and G3 in a precondition]
-simple_oo_without_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1 [possible explanation: subprogram at line 17 should mention Par and G3 in a precondition]
+simple_oo_with_contracts.ads:39:11: info: data dependencies proved
+simple_oo_without_contracts.adb:4:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention G1 and G2 in a precondition]
+simple_oo_without_contracts.adb:5:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention G2 and G3 in a precondition]
+simple_oo_without_contracts.adb:6:19: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:8 should mention Par and G3 in a precondition]
+simple_oo_without_contracts.adb:12:22: medium: assertion might fail, cannot prove G1 = G2 [possible explanation: subprogram at simple_oo_without_contracts.ads:15 should mention G1 and G2 in a precondition]
+simple_oo_without_contracts.adb:13:16: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:15 should mention Par and G3 in a precondition]
+simple_oo_without_contracts.adb:13:24: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:15 should mention Par and G3 in a precondition]
+simple_oo_without_contracts.adb:19:22: medium: assertion might fail, cannot prove G3 = Par.Z1 [possible explanation: subprogram at simple_oo_without_contracts.ads:22 should mention Par and G3 in a precondition]
 simple_oo_without_contracts.adb:26:24: info: cannot unroll loop (too many loop iterations)
-simple_oo_without_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2 [possible explanation: subprogram at line 24 should mention Par and G2 in a precondition]
-simple_oo_without_contracts.adb:27:33: medium: overflow check might fail [possible explanation: subprogram at line 24 should mention Par in a precondition]
-simple_oo_without_contracts.ads:8:14: info: initialization of "G4" proved
-simple_oo_without_contracts.ads:15:14: info: initialization of "G4" proved
-simple_oo_without_contracts.ads:22:14: info: initialization of "G4" proved
+simple_oo_without_contracts.adb:27:25: medium: assertion might fail, cannot prove G2 /= I + Par.Z2 [possible explanation: subprogram at simple_oo_without_contracts.ads:29 should mention Par and G2 in a precondition]
+simple_oo_without_contracts.adb:27:33: medium: overflow check might fail [possible explanation: subprogram at simple_oo_without_contracts.ads:29 should mention Par in a precondition]
 simple_oo_without_contracts.ads:29:14: warning: subprogram "Do_Stuff" has no effect

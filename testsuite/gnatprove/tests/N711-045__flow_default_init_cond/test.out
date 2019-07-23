@@ -1,29 +1,23 @@
+caller.adb:5:07: info: initialization of "I" proved
+caller.adb:6:07: info: initialization of "R" proved
 caller.adb:8:22: medium: assertion might fail, cannot prove Evaluate (Pr_T (I)) = 0
-caller.adb:8:38: info: initialization of "I" proved
 caller.adb:9:22: medium: assertion might fail, cannot prove Add2 (R) = 0
-caller.adb:9:28: info: initialization of "R" proved
 caller.ads:11:14: warning: subprogram "Test" has no effect
 caller.ads:13:04: medium: type "Pr_TT" is not fully initialized
 callers_caller.adb:8:22: medium: assertion might fail, cannot prove Add3 (R) = 0
 callers_caller.adb:8:28: high: "R" is not initialized
 callers_caller.ads:8:14: warning: subprogram "Test2" has no effect
 dic.adb:3:04: high: "G" is not initialized
-dic.adb:3:04: info: initialization of "B.X" proved
-dic.adb:3:04: info: initialization of "B.Y" proved
-dic.adb:11:58: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention R in a precondition]
-dic.adb:13:63: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention Par in a precondition]
-dic.adb:17:14: medium: overflow check might fail [possible explanation: subprogram at line 15 should mention A in a precondition]
+dic.adb:3:04: info: initialization of "B" proved
+dic.adb:11:58: medium: overflow check might fail [possible explanation: subprogram at dic.ads:22 should mention R in a precondition]
+dic.adb:13:63: medium: overflow check might fail [possible explanation: subprogram at dic.ads:24 should mention Par in a precondition]
+dic.adb:17:14: medium: overflow check might fail [possible explanation: subprogram at dic.ads:26 should mention A in a precondition]
 dic.ads:9:09: medium: default initial condition might fail
-dic.ads:26:14: info: initialization of "C.X" proved
-dic.ads:26:14: info: initialization of "C.Y" proved
 dic.ads:45:04: medium: type "Pr_Liar_T" is not fully initialized
 dic2.adb:7:07: info: initialization of "T_Var" proved
 dic2.adb:8:07: info: initialization of "U_Var" proved
+dic2.adb:9:07: info: initialization of "R_Var" proved
 dic2.adb:11:22: info: assertion proved (CVC4: 2 VC)
-dic2.adb:11:22: info: initialization of "T_Var" proved
-dic2.adb:11:30: info: initialization of "R_Var.X" proved
-dic2.adb:11:42: info: initialization of "U_Var" proved
-dic2.adb:11:50: info: initialization of "R_Var.Y" proved
 dic2.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
 dic2.ads:5:09: info: default initial condition proved (CVC4: 1 VC)
 dic2.ads:17:14: warning: subprogram "Test" has no effect
@@ -32,8 +26,6 @@ dic2.ads:23:28: info: range check proved (CVC4: 1 VC)
 dic3.adb:7:07: info: initialization of "X" proved
 dic3.adb:8:07: info: initialization of "Y" proved
 dic3.adb:10:22: info: assertion proved (CVC4: 1 VC)
-dic3.adb:10:31: info: initialization of "X" proved
-dic3.adb:10:45: info: initialization of "Y" proved
 dic3.ads:2:09: info: default initial condition proved (CVC4: 1 VC)
 dic3.ads:5:09: info: default initial condition proved (CVC4: 2 VC)
 dic3.ads:12:14: warning: subprogram "Test" has no effect

@@ -1,2 +1,2 @@
-p.ads:2:04: info: initialization of "X" proved
-p.ads:4:07: info: initialization of "Y" proved
+p.ads:1:16: info: flow dependencies proved
+p.ads:3:19: info: flow dependencies proved

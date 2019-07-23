@@ -22,15 +22,15 @@ with Ada.Numerics.Discrete_Random;
 
 
 package ACHash is
-   
+
    type Hash_Type is mod 2 ** 64 with Size => 64;
-   
+
    package Hash_Random is new Ada.Numerics.Discrete_Random(Hash_Type);
    use Hash_Random;
-   
+
    Seed : Hash_Random.Generator;
-   
+
    procedure Reset (Seed : Generator) renames Hash_Random.Reset;
    function Random (Seed : Generator) return Hash_Type renames Hash_Random.Random;
-   
+
 end ACHash;

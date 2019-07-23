@@ -1,15 +1,11 @@
 p.ads:3:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 p.ads:3:19: violation of pragma SPARK_Mode at test.adc:1
-q.adb:7:17: info: initialization of "X" proved
 q.adb:9:12: warning: unused assignment, in call inlined at q.adb:18
-q.adb:12:17: info: initialization of "Y" proved
 q.adb:14:12: warning: unused assignment, in call inlined at q.adb:19
 q.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
 s.ads:3:19: protected type with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 s.ads:3:19: violation of pragma SPARK_Mode at test.adc:1
-t-tt.adb:6:14: info: initialization of "X" proved
 t-tt.adb:8:09: warning: unused assignment, in call inlined at t-tt.adb:17
-t-tt.adb:11:14: info: initialization of "Y" proved
 t-tt.adb:13:09: warning: unused assignment, in call inlined at t-tt.adb:18
 t.ads:3:14: medium: the task might terminate, which is not allowed in SPARK
 gnatprove: error during flow analysis and proof

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2014-2018, Altran UK Limited              --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -612,10 +612,10 @@ package body Flow_Utility.Initialization is
             --  We need to check if the type itself is always initialized
             return Get_Simple_Default (Etype (F.Component.Last_Element));
 
-         when Magic_String | Synthetic_Null_Export =>
-            return Empty;
-
-         when Null_Value =>
+         when Magic_String
+            | Synthetic_Null_Export
+            | Null_Value
+         =>
             raise Why.Unexpected_Node;
       end case;
    end Get_Default_Initialization;

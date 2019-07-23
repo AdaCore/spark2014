@@ -1,5 +1,4 @@
 inline_init.adb:7:22: info: no contextual analysis of "Id" (in default expression)
-inline_init.adb:18:19: info: initialization of "Y" proved
-inline_init.adb:18:19: medium: assertion might fail, cannot prove Y = 3 (e.g. when Y = 0)
+inline_init.adb:15:04: info: initialization of "R" proved
+inline_init.adb:18:19: medium: assertion might fail, cannot prove Y = 3
 inline_init.adb:19:19: info: assertion proved (CVC4: 1 VC)
-inline_init.adb:19:19: info: initialization of "R.C" proved

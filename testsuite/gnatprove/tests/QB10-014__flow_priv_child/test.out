@@ -1,2 +1,3 @@
-p-c.ads:2:04: info: initialization of "C.X" constituent of "P.S" proved
+p-c.ads:1:26: info: flow dependencies proved
+p.ads:1:37: info: flow dependencies proved
 p.ads:3:04: info: initialization of "Z" proved

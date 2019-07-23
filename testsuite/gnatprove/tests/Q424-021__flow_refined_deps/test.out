@@ -1,2 +1,5 @@
-state.adb:14:14: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention S and Foo.F in a precondition]
-state.ads:18:04: info: initialization of "S" constituent of "State" proved
+main.adb:7:03: info: data dependencies proved
+state.adb:14:14: medium: overflow check might fail [possible explanation: subprogram at state.ads:11 should mention S and Foo.F in a precondition]
+state.ads:8:03: info: flow dependencies proved
+state.ads:13:06: info: data dependencies proved
+state.ads:15:06: info: flow dependencies proved

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -39,6 +39,10 @@ package Why.Atree.Sprint is
 
    procedure Print_Section
      (WF : Why_Section; To : Output_Id := Stdout);
+
+   procedure Print_Modules_List
+     (L : Why_Node_Lists.List; To : Output_Id);
+   --  Print a list of modules
 
    procedure wpg (Node : Why_Node_Id);
    pragma Export (Ada, wpg);

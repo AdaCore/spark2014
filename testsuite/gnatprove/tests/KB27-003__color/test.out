@@ -1,4 +1,4 @@
 p.adb:4:22: info: unrolling loop
-p.ads:10:14: medium: postcondition might fail (e.g. when C = Red)
+p.ads:10:37: medium: postcondition might fail, cannot prove false (e.g. when C = Red)
 p.ads:15:20: medium: postcondition might fail, cannot prove P'Result = 8 (e.g. when P'Result = 2)
 p.ads:20:20: info: postcondition proved (CVC4: 1 VC)

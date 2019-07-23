@@ -1,3 +1,0 @@
-report.adb:7:07: warning: assuming "Put_Line" has no effect on global items
-report.adb:7:07: warning: no Global contract available for "Put_Line"
-report.ads:3:14: warning: subprogram "Put_Msg" has no effect

@@ -1,11 +1,10 @@
+early_init.adb:17:09: info: flow dependencies proved
 early_init.adb:19:07: info: initialization of "V3" proved
-early_init.adb:25:07: info: initialization of "V4" proved
+early_init.adb:23:09: info: flow dependencies proved
 early_init.adb:25:31: high: "V3" is not initialized
+early_init.ads:4:09: info: flow dependencies proved
 early_init.ads:5:09: info: initial condition proved (CVC4: 1 VC)
-early_init.ads:5:30: info: initialization of "V1" proved
 early_init.ads:7:07: info: initialization of "V1" proved
+early_init.ads:13:09: info: flow dependencies proved
 early_init.ads:14:09: info: initial condition proved (CVC4: 1 VC)
-early_init.ads:14:30: info: initialization of "V2" proved
-early_init.ads:16:07: info: initialization of "V1" proved
-early_init.ads:16:07: info: initialization of "V2" proved
 early_init.ads:16:31: high: "V1" is not initialized

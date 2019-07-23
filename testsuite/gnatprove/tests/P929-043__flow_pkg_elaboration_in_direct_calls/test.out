@@ -7,7 +7,7 @@ nest_in_proc.adb:9:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:9:07: warning: no Global contract available for "OS_Exit"
 nest_in_proc.adb:13:17: info: subprogram "Nothing" will terminate
 nest_in_proc.adb:13:17: warning: subprogram "Nothing" has no effect
-nest_in_proc.adb:22:07: info: precondition proved (CVC4: 1 VC)
+nest_in_proc.adb:22:07: info: precondition proved (Trivial: 1 VC)
 nest_in_task.adb:18:20: info: subprogram "P" will terminate
 nest_in_task.adb:18:20: warning: subprogram "P" has no effect
 nest_in_task.adb:24:11: high: cannot write "A" during elaboration of "Pkg" (SPARK RM 7.7.1(6))

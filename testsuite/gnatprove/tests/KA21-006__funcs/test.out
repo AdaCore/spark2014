@@ -2,64 +2,49 @@ funcs.adb:21:17: warning: unused variable "X"
 funcs.adb:23:17: warning: unused variable "X"
 funcs.adb:53:58: info: postcondition proved (CVC4: 2 VC)
 funcs.adb:61:04: warning: analyzing unreferenced procedure "Test"
+funcs.adb:62:07: info: initialization of "Y" proved
 funcs.adb:64:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:65:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:65:35: info: initialization of "Y" proved
 funcs.adb:66:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:67:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:67:35: info: initialization of "Y" proved
 funcs.adb:68:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:69:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:69:35: info: initialization of "Y" proved
 funcs.adb:70:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:71:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:71:35: info: initialization of "Y" proved
 funcs.adb:72:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:73:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:73:35: info: initialization of "Y" proved
 funcs.adb:77:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:78:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:78:35: info: initialization of "Y" proved
 funcs.adb:79:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:80:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:80:35: info: initialization of "Y" proved
 funcs.adb:81:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:82:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:82:35: info: initialization of "Y" proved
 funcs.adb:83:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:84:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:84:35: info: initialization of "Y" proved
 funcs.adb:85:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:86:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:86:35: info: initialization of "Y" proved
 funcs.adb:90:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:90:22: info: precondition proved (CVC4: 1 VC)
 funcs.adb:91:12: info: precondition proved (CVC4: 1 VC)
 funcs.adb:91:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:91:35: info: initialization of "Y" proved
 funcs.adb:91:39: info: precondition proved (CVC4: 1 VC)
 funcs.adb:94:22: info: assertion proved (CVC4: 1 VC)
 funcs.adb:94:22: info: precondition proved (CVC4: 1 VC)
 funcs.adb:95:12: info: precondition proved (CVC4: 1 VC)
 funcs.adb:95:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:95:35: info: initialization of "Y" proved
 funcs.adb:95:39: info: precondition proved (CVC4: 1 VC)
 funcs.adb:96:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:96:22: info: precondition proved (CVC4: 1 VC)
 funcs.adb:96:31: info: precondition proved (CVC4: 1 VC)
 funcs.adb:97:12: info: precondition proved (CVC4: 1 VC)
 funcs.adb:97:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:97:35: info: initialization of "Y" proved
 funcs.adb:97:39: info: precondition proved (CVC4: 1 VC)
 funcs.adb:101:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:102:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:102:35: info: initialization of "Y" proved
 funcs.adb:105:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:106:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:106:35: info: initialization of "Y" proved
 funcs.adb:107:22: info: assertion proved (CVC4: 2 VC)
 funcs.adb:108:35: info: assertion proved (CVC4: 2 VC)
-funcs.adb:108:35: info: initialization of "Y" proved
 funcs.ads:8:17: warning: unused variable "X"
 funcs.ads:9:17: warning: unused variable "X"
 funcs.ads:10:17: warning: unused variable "X"

@@ -1,26 +1,16 @@
-p.adb:8:15: info: initialization of "Tmp" proved, in instantiation at q.adb:13
-p.adb:8:15: info: initialization of "Tmp" proved, in instantiation at q.ads:9
+p.adb:4:07: info: initialization of "Result" proved, in instantiation at q.adb:13
+p.adb:4:07: info: initialization of "Result" proved, in instantiation at q.ads:9
+p.adb:5:07: info: initialization of "Tmp" proved, in instantiation at q.adb:13
+p.adb:5:07: info: initialization of "Tmp" proved, in instantiation at q.ads:9
 p.adb:8:19: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 4)
 p.adb:8:19: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 1)
-p.adb:8:29: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 0)
-p.adb:8:29: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 0)
-p.adb:9:07: medium: precondition might fail, in instantiation at q.adb:13 (e.g. when Tmp = Integer'Last)
-p.adb:9:07: medium: precondition might fail, in instantiation at q.ads:9 (e.g. when Tmp = Integer'Last)
-p.adb:9:11: info: initialization of "Tmp" proved, in instantiation at q.adb:13
-p.adb:9:11: info: initialization of "Tmp" proved, in instantiation at q.ads:9
-p.adb:10:27: info: initialization of "Tmp" proved, in instantiation at q.adb:13
-p.adb:10:27: info: initialization of "Tmp" proved, in instantiation at q.ads:9
-p.adb:11:14: info: initialization of "Result.A" proved, in instantiation at q.adb:13
-p.adb:11:14: info: initialization of "Result.A" proved, in instantiation at q.ads:9
-p.adb:11:14: info: initialization of "Result.B" proved, in instantiation at q.adb:13
-p.adb:11:14: info: initialization of "Result.B" proved, in instantiation at q.ads:9
-p.adb:11:14: info: initialization of "Result.C" proved, in instantiation at q.adb:13
-p.adb:11:14: info: initialization of "Result.C" proved, in instantiation at q.ads:9
-p.adb:11:14: info: initialization of "Result.D" proved, in instantiation at q.adb:13
-p.adb:11:14: info: initialization of "Result.D" proved, in instantiation at q.ads:9
+p.adb:8:29: medium: overflow check might fail, in instantiation at q.adb:13 (e.g. when Tmp = 4)
+p.adb:8:29: medium: overflow check might fail, in instantiation at q.ads:9 (e.g. when Tmp = 1)
+p.adb:9:07: medium: precondition might fail, cannot prove J < Integer'last, in instantiation at q.adb:13 (e.g. when Tmp = Integer'Last)
+p.adb:9:07: medium: precondition might fail, cannot prove J < Integer'last, in instantiation at q.ads:9 (e.g. when Tmp = Integer'Last)
 q.adb:10:14: info: overflow check proved (CVC4: 1 VC)
-q.adb:21:13: info: initialization of "R1.D" proved
-q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (D => Integer'First, others => ?) and R2 = (D => -1, others => ?))
-q.adb:21:20: info: initialization of "R2.D" proved
+q.adb:16:07: info: initialization of "R1" proved
+q.adb:17:07: info: initialization of "R2" proved
+q.adb:21:18: medium: overflow check might fail (e.g. when R1 = (A => 0, B => False, C => 0, D => -1) and R2 = (A => False, B => 0, C => 0, D => Integer'First))
 q.ads:5:18: warning: unused variable "J"
 q.ads:11:60: info: initialization of "X4" proved

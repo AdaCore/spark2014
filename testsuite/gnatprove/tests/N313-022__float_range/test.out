@@ -1,4 +1,5 @@
-fr.adb:10:14: info: initialization of "Z" proved
+fr.adb:6:04: info: initialization of "X" proved
+fr.adb:7:04: info: initialization of "Y" proved
 fr.adb:12:09: warning: unused assignment
 fr.adb:12:14: info: float overflow check proved (Interval)
 fr.adb:13:14: info: float overflow check proved (Interval)
@@ -7,8 +8,7 @@ fr.adb:14:14: info: range check proved (Interval)
 fr.adb:15:14: info: float overflow check proved (Interval)
 fr.adb:15:20: info: float overflow check proved (Interval)
 fr.adb:15:24: info: float overflow check proved (Interval)
-fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999998E-1 and Y = 8.9062393E-1) [possible explanation: precondition of subprogram at line 10 should mention X and Y]
-fr.adb:18:14: info: initialization of "Z" proved
+fr.adb:15:24: medium: range check might fail (e.g. when X = 8.9999980E-1 and Y = 8.9056396E-1) [possible explanation: precondition of subprogram at line 10 should mention X and Y]
 fr.adb:20:09: warning: unused assignment
 fr.adb:20:14: info: float overflow check proved (Interval)
 fr.adb:21:14: info: float overflow check proved (Interval)
@@ -16,27 +16,19 @@ fr.adb:21:14: info: range check proved (Interval)
 fr.adb:22:14: info: float overflow check proved (Interval)
 fr.adb:22:20: info: float overflow check proved (Interval)
 fr.adb:22:20: medium: range check might fail (e.g. when X = 5.0000000E-1) [possible explanation: precondition of subprogram at line 18 should mention X]
-fr.adb:25:14: info: initialization of "Z" proved
 fr.adb:27:09: warning: unused assignment
 fr.adb:27:17: info: float overflow check proved (Interval)
 fr.adb:27:17: info: range check proved (Interval)
 fr.adb:28:17: info: float overflow check proved (Interval)
-fr.adb:28:17: medium: range check might fail (e.g. when X = 8.9744502E-1) [possible explanation: precondition of subprogram at line 25 should mention X]
-fr.adb:31:14: info: initialization of "Z" proved
+fr.adb:28:17: medium: range check might fail (e.g. when X = 8.9844328E-1) [possible explanation: precondition of subprogram at line 25 should mention X]
 fr.adb:33:09: warning: unused assignment
 fr.adb:33:14: info: division check proved (CVC4: 1 VC)
 fr.adb:33:14: info: float overflow check proved (Interval)
 fr.adb:33:14: info: range check proved (Interval)
 fr.adb:34:14: info: division check proved (CVC4: 1 VC)
 fr.adb:34:14: info: float overflow check proved (Interval)
-fr.adb:34:14: medium: range check might fail (e.g. when X = 8.9999998E-1) [possible explanation: precondition of subprogram at line 31 should mention X]
-fr.adb:41:04: info: initialization of "X" proved
-fr.adb:41:04: info: initialization of "Y" proved
-fr.adb:41:04: info: precondition proved (CVC4: 1 VC)
-fr.adb:43:04: info: initialization of "X" proved
-fr.adb:43:04: info: precondition proved (CVC4: 1 VC)
-fr.adb:45:04: info: initialization of "X" proved
-fr.adb:45:04: info: precondition proved (CVC4: 1 VC)
-fr.adb:47:04: info: initialization of "X" proved
-fr.adb:47:04: info: initialization of "Y" proved
-fr.adb:47:04: info: precondition proved (CVC4: 1 VC)
+fr.adb:34:14: medium: range check might fail (e.g. when X = 8.9639997E-1) [possible explanation: precondition of subprogram at line 31 should mention X]
+fr.adb:41:04: info: precondition proved (Trivial: 1 VC)
+fr.adb:43:04: info: precondition proved (Trivial: 1 VC)
+fr.adb:45:04: info: precondition proved (Trivial: 1 VC)
+fr.adb:47:04: info: precondition proved (Trivial: 1 VC)

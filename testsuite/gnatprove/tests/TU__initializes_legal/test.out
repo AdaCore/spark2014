@@ -1,2 +1,5 @@
+initializes_legal.ads:10:08: info: flow dependencies proved
 initializes_legal.ads:19:29: warning: no procedure exists that can initialize abstract state "Embedded.ES1"
+initializes_legal.ads:20:11: info: flow dependencies proved
+initializes_legal_helper.ads:3:06: info: flow dependencies proved
 initializes_legal_helper.ads:6:04: info: initialization of "Var_H1" proved

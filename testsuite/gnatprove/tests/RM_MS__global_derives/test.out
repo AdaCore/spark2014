@@ -1,2 +1,5 @@
-swap_add_14.adb:9:20: info: initialization of "Temporary" proved
-swap_add_14.adb:12:38: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: subprogram at line 12 should mention X and Y in a precondition]
+swap_add_14.adb:5:07: info: initialization of "Temporary" proved
+swap_add_14.adb:12:38: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at swap_add_14.ads:12 should mention X and Y in a precondition]
+swap_add_14.ads:8:11: info: data dependencies proved
+swap_add_14.ads:9:11: info: flow dependencies proved
+swap_add_14.ads:13:11: info: data dependencies proved

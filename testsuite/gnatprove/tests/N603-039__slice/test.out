@@ -1,2 +1,3 @@
-pack.adb:6:35: medium: range check might fail (e.g. when Glob'First = 2) [possible explanation: subprogram at line 5 should mention Glob in a precondition]
-pack.ads:2:14: warning: subprogram "A2" has no effect
+pack.adb:6:46: "Constraint_Error" would have been raised at run time
+pack.adb:6:46: static value out of range of subtype of "Standard.Integer" defined at line 3
+gnatprove: error during generation of Global contracts

@@ -1,9 +1,5 @@
 check.adb:7:04: info: precondition proved (CVC4: 1 VC)
-check.adb:7:09: info: initialization of "X" proved
-check.adb:7:12: info: initialization of "Y" proved
 check.adb:8:19: info: assertion proved (CVC4: 1 VC)
-check.adb:8:19: info: initialization of "X" proved
-check.adb:8:23: info: initialization of "Y" proved
-sub.adb:2:13: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
-sub.adb:2:17: medium: overflow check might fail
-sub.adb:3:11: medium: postcondition might fail, cannot prove X = Integer'last (e.g. when X'Old = 1)
+sub.adb:2:13: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
+sub.adb:2:17: medium: overflow check might fail (e.g. when X = 0 and Y = Integer'First)
+sub.adb:3:11: medium: postcondition might fail, cannot prove X = Integer'last (e.g. when X = 1)

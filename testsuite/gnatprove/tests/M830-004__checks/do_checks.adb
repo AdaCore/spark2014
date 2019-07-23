@@ -112,7 +112,6 @@ procedure Do_Checks is
             end;
 
          --  subtype_indication in a slice
-         --  UNCOMMENT AFTER M919-016 HAS BEEN CORRECTED
          when 14 =>
             declare
                A : String := "hello world";

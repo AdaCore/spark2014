@@ -1,9 +1,10 @@
 mixed.adb:14:19: info: postcondition proved (CVC4: 1 VC)
 mixed.adb:21:19: info: postcondition proved (CVC4: 1 VC)
-mixed.adb:34:22: info: initialization of "N" proved
+mixed.adb:29:11: info: flow dependencies proved
+mixed.adb:31:07: info: initialization of "N" proved
 mixed.adb:34:22: medium: assertion might fail, cannot prove N = 0 (e.g. when N = -1)
 mixed.adb:39:24: info: initialization of "X" proved
-mixed.adb:46:12: info: initialization of "S.I" proved
-mixed.adb:47:12: info: initialization of "N" proved
-mixed.adb:48:22: info: initialization of "X" proved
+mixed.adb:40:11: info: flow dependencies proved
+mixed.adb:42:07: info: initialization of "N" proved
+mixed.adb:43:07: info: initialization of "S" proved
 mixed.adb:48:22: medium: assertion might fail, cannot prove X (e.g. when X = False)

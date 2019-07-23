@@ -1,10 +1,9 @@
 perm.adb:4:07: info: range check proved (CVC4: 2 VC)
 perm.adb:4:51: info: overflow check proved (CVC4: 1 VC)
 perm.adb:6:09: info: range check proved (CVC4: 4 VC)
-perm.adb:6:24: info: length check proved (CVC4: 4 VC)
+perm.adb:6:24: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 perm.adb:6:24: info: range check proved (CVC4: 1 VC)
 perm.adb:6:26: info: range check proved (CVC4: 4 VC)
-perm.adb:8:14: info: initialization of "Result" proved
 perm.adb:13:36: info: index check proved (CVC4: 2 VC)
 perm.adb:13:45: info: index check proved (CVC4: 2 VC)
 perm.adb:14:11: info: precondition proved (CVC4: 2 VC)
@@ -24,7 +23,7 @@ perm.adb:24:37: info: precondition proved (CVC4: 6 VC)
 perm.adb:24:48: info: range check proved (CVC4: 2 VC)
 perm.adb:26:20: info: range check proved (CVC4: 2 VC)
 perm.adb:29:13: info: loop invariant initialization proved (CVC4: 1 VC)
-perm.adb:29:13: info: loop invariant preservation proved (CVC4: 1 VC)
+perm.adb:30:16: medium: loop invariant might fail after first iteration, cannot prove not (A (Ia) = B (Kb) and then Is_Perm (Remove (A, Ia), Remove (B, Kb)))
 perm.adb:30:24: info: index check proved (CVC4: 4 VC)
 perm.adb:30:33: info: index check proved (CVC4: 4 VC)
 perm.adb:31:15: info: precondition proved (CVC4: 4 VC)
@@ -60,10 +59,10 @@ perm.adb:62:44: info: precondition proved (CVC4: 6 VC)
 perm.adb:62:55: info: range check proved (CVC4: 2 VC)
 perm.adb:64:07: info: assertion proved (CVC4: 1 VC)
 perm.adb:69:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
-perm.adb:71:17: info: postcondition proved (CVC4: 2 VC)
+perm.adb:71:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.adb:71:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:80:15: info: function contract not available for proof ("Induction_Hypothesis" is recursive)
-perm.adb:80:15: medium: precondition might fail
+perm.adb:80:15: medium: precondition might fail, cannot prove A = B
 perm.adb:80:37: info: precondition proved (CVC4: 3 VC)
 perm.adb:80:49: info: range check proved (CVC4: 1 VC)
 perm.adb:80:58: info: precondition proved (CVC4: 3 VC)
@@ -72,7 +71,7 @@ perm.adb:82:28: info: assertion proved (CVC4: 1 VC)
 perm.adb:88:14: info: precondition proved (CVC4: 3 VC)
 perm.adb:93:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:94:63: info: precondition proved (CVC4: 2 VC)
-perm.adb:95:17: info: postcondition proved (CVC4: 2 VC)
+perm.adb:95:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.adb:95:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:103:40: info: precondition proved (CVC4: 4 VC)
 perm.adb:105:15: info: function contract not available for proof ("Induction_Hypothesis" is recursive)
@@ -111,7 +110,7 @@ perm.adb:130:45: info: index check proved (CVC4: 2 VC)
 perm.adb:130:45: info: overflow check proved (CVC4: 1 VC)
 perm.adb:135:35: info: precondition proved (CVC4: 3 VC)
 perm.adb:136:35: info: precondition proved (CVC4: 3 VC)
-perm.adb:138:46: medium: assertion might fail, cannot prove A (J) = B (J)
+perm.adb:138:22: info: assertion proved (CVC4: 1 VC)
 perm.adb:138:49: info: index check proved (CVC4: 2 VC)
 perm.adb:138:57: info: index check proved (CVC4: 2 VC)
 perm.adb:139:22: info: assertion proved (CVC4: 4 VC)
@@ -126,7 +125,7 @@ perm.adb:141:62: info: index check proved (CVC4: 2 VC)
 perm.adb:141:72: info: index check proved (CVC4: 2 VC)
 perm.adb:141:72: info: overflow check proved (CVC4: 1 VC)
 perm.adb:147:30: info: precondition proved (CVC4: 2 VC)
-perm.adb:148:14: info: postcondition proved (CVC4: 2 VC)
+perm.adb:148:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.adb:148:43: info: precondition proved (CVC4: 2 VC)
 perm.adb:152:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:154:33: info: precondition proved (CVC4: 2 VC)
@@ -134,14 +133,14 @@ perm.adb:155:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:155:54: medium: postcondition might fail, cannot prove Is_Perm (C, B)
 perm.adb:164:39: info: precondition proved (CVC4: 4 VC)
 perm.adb:166:15: info: function contract not available for proof ("Induction_Hypothesis" is recursive)
-perm.adb:166:15: medium: precondition might fail
+perm.adb:166:15: medium: precondition might fail, cannot prove A = C
 perm.adb:167:18: info: precondition proved (CVC4: 3 VC)
 perm.adb:167:36: info: precondition proved (CVC4: 3 VC)
 perm.adb:167:54: info: precondition proved (CVC4: 3 VC)
 perm.adb:169:28: info: assertion proved (CVC4: 1 VC)
 perm.adb:175:14: info: precondition proved (CVC4: 5 VC)
 perm.adb:180:30: info: precondition proved (CVC4: 2 VC)
-perm.adb:181:14: info: postcondition proved (CVC4: 2 VC)
+perm.adb:181:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.adb:181:43: info: precondition proved (CVC4: 2 VC)
 perm.adb:185:22: info: assertion proved (CVC4: 1 VC)
 perm.adb:185:22: info: precondition proved (CVC4: 3 VC)
@@ -163,31 +162,25 @@ perm.adb:205:37: info: precondition proved (CVC4: 3 VC)
 perm.adb:206:37: info: precondition proved (CVC4: 3 VC)
 perm.adb:207:28: info: precondition proved (CVC4: 3 VC)
 perm.adb:209:25: info: assertion proved (CVC4: 1 VC)
-perm.adb:209:25: info: initialization of "IH" proved
+perm.adb:212:16: info: initialization of "Ib" proved
 perm.adb:215:22: warning: unused assignment
 perm.adb:217:25: info: precondition proved (CVC4: 12 VC)
 perm.adb:217:41: info: range check proved (CVC4: 2 VC)
 perm.adb:218:34: info: assertion proved (CVC4: 2 VC)
-perm.adb:218:34: info: initialization of "IH" proved
 perm.adb:219:25: medium: precondition might fail
 perm.adb:219:46: info: range check proved (CVC4: 2 VC)
-perm.adb:220:25: medium: precondition might fail
+perm.adb:220:25: info: precondition proved (CVC4: 10 VC)
 perm.adb:220:39: info: precondition proved (CVC4: 6 VC)
 perm.adb:220:51: info: range check proved (CVC4: 2 VC)
 perm.adb:220:56: info: precondition proved (CVC4: 6 VC)
-perm.adb:220:68: info: initialization of "Ib" proved
 perm.adb:221:39: info: precondition proved (CVC4: 6 VC)
 perm.adb:221:47: info: precondition proved (CVC4: 6 VC)
 perm.adb:221:58: info: range check proved (CVC4: 2 VC)
 perm.adb:221:68: info: range check proved (CVC4: 2 VC)
 perm.adb:222:34: info: assertion proved (CVC4: 2 VC)
-perm.adb:222:34: info: initialization of "IH" proved
-perm.adb:223:22: info: initialization of "Ib" proved
 perm.adb:224:28: info: precondition proved (CVC4: 12 VC)
-perm.adb:224:44: info: initialization of "Ib" proved
 perm.adb:225:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:225:37: info: initialization of "IH" proved
-perm.adb:226:28: medium: precondition might fail
+perm.adb:226:28: info: precondition proved (CVC4: 10 VC)
 perm.adb:227:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:227:33: info: precondition proved (CVC4: 6 VC)
 perm.adb:227:44: info: range check proved (CVC4: 2 VC)
@@ -195,10 +188,8 @@ perm.adb:227:54: info: range check proved (CVC4: 2 VC)
 perm.adb:228:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:228:42: info: precondition proved (CVC4: 6 VC)
 perm.adb:228:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:228:61: info: initialization of "Ib" proved
 perm.adb:228:71: info: range check proved (CVC4: 2 VC)
 perm.adb:229:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:229:37: info: initialization of "IH" proved
 perm.adb:231:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:231:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:231:34: info: precondition proved (CVC4: 6 VC)
@@ -207,20 +198,15 @@ perm.adb:231:53: info: range check proved (CVC4: 2 VC)
 perm.adb:231:63: info: range check proved (CVC4: 2 VC)
 perm.adb:232:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:232:33: info: precondition proved (CVC4: 6 VC)
-perm.adb:232:44: info: initialization of "Ib" proved
 perm.adb:232:54: info: range check proved (CVC4: 2 VC)
 perm.adb:234:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:234:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:234:34: info: precondition proved (CVC4: 6 VC)
 perm.adb:234:45: info: range check proved (CVC4: 2 VC)
 perm.adb:234:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:234:61: info: initialization of "Ib" proved
-perm.adb:236:28: info: initialization of "Ib" proved
 perm.adb:236:31: info: range check proved (CVC4: 2 VC)
 perm.adb:237:28: info: precondition proved (CVC4: 12 VC)
-perm.adb:237:50: info: initialization of "Ib" proved
 perm.adb:238:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:238:37: info: initialization of "IH" proved
 perm.adb:239:28: info: precondition proved (CVC4: 10 VC)
 perm.adb:240:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:240:33: info: precondition proved (CVC4: 6 VC)
@@ -230,9 +216,7 @@ perm.adb:241:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:241:40: info: range check proved (CVC4: 2 VC)
 perm.adb:241:46: info: precondition proved (CVC4: 6 VC)
 perm.adb:241:54: info: precondition proved (CVC4: 6 VC)
-perm.adb:241:65: info: initialization of "Ib" proved
 perm.adb:242:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:242:37: info: initialization of "IH" proved
 perm.adb:244:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:244:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:244:34: info: precondition proved (CVC4: 6 VC)
@@ -241,17 +225,14 @@ perm.adb:244:53: info: range check proved (CVC4: 2 VC)
 perm.adb:244:63: info: range check proved (CVC4: 2 VC)
 perm.adb:245:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:245:33: info: precondition proved (CVC4: 6 VC)
-perm.adb:245:44: info: initialization of "Ib" proved
 perm.adb:247:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:247:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:247:34: info: precondition proved (CVC4: 6 VC)
 perm.adb:247:45: info: range check proved (CVC4: 2 VC)
 perm.adb:247:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:247:61: info: initialization of "Ib" proved
 perm.adb:250:25: info: precondition proved (CVC4: 12 VC)
 perm.adb:250:47: info: range check proved (CVC4: 2 VC)
 perm.adb:251:34: info: assertion proved (CVC4: 2 VC)
-perm.adb:251:34: info: initialization of "IH" proved
 perm.adb:252:25: medium: precondition might fail
 perm.adb:252:49: info: overflow check proved (CVC4: 2 VC)
 perm.adb:252:49: info: range check proved (CVC4: 2 VC)
@@ -260,17 +241,12 @@ perm.adb:253:39: info: precondition proved (CVC4: 6 VC)
 perm.adb:253:54: info: overflow check proved (CVC4: 2 VC)
 perm.adb:253:54: info: range check proved (CVC4: 2 VC)
 perm.adb:253:60: info: precondition proved (CVC4: 6 VC)
-perm.adb:253:72: info: initialization of "Ib" proved
 perm.adb:254:39: info: precondition proved (CVC4: 6 VC)
 perm.adb:254:47: info: precondition proved (CVC4: 6 VC)
 perm.adb:254:58: info: range check proved (CVC4: 2 VC)
 perm.adb:255:34: info: assertion proved (CVC4: 2 VC)
-perm.adb:255:34: info: initialization of "IH" proved
-perm.adb:256:22: info: initialization of "Ib" proved
 perm.adb:257:28: info: precondition proved (CVC4: 12 VC)
-perm.adb:257:44: info: initialization of "Ib" proved
 perm.adb:258:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:258:37: info: initialization of "IH" proved
 perm.adb:259:28: info: precondition proved (CVC4: 10 VC)
 perm.adb:260:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:260:33: info: precondition proved (CVC4: 6 VC)
@@ -278,10 +254,8 @@ perm.adb:260:44: info: range check proved (CVC4: 2 VC)
 perm.adb:261:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:261:42: info: precondition proved (CVC4: 6 VC)
 perm.adb:261:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:261:61: info: initialization of "Ib" proved
 perm.adb:261:71: info: range check proved (CVC4: 2 VC)
 perm.adb:262:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:262:37: info: initialization of "IH" proved
 perm.adb:264:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:264:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:264:34: info: precondition proved (CVC4: 6 VC)
@@ -289,20 +263,15 @@ perm.adb:264:42: info: precondition proved (CVC4: 6 VC)
 perm.adb:264:53: info: range check proved (CVC4: 2 VC)
 perm.adb:265:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:265:33: info: precondition proved (CVC4: 6 VC)
-perm.adb:265:44: info: initialization of "Ib" proved
 perm.adb:265:54: info: range check proved (CVC4: 2 VC)
 perm.adb:267:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:267:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:267:34: info: precondition proved (CVC4: 6 VC)
 perm.adb:267:45: info: range check proved (CVC4: 2 VC)
 perm.adb:267:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:267:61: info: initialization of "Ib" proved
-perm.adb:269:28: info: initialization of "Ib" proved
 perm.adb:269:31: info: range check proved (CVC4: 2 VC)
 perm.adb:270:28: info: precondition proved (CVC4: 12 VC)
-perm.adb:270:50: info: initialization of "Ib" proved
 perm.adb:271:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:271:37: info: initialization of "IH" proved
 perm.adb:272:28: info: precondition proved (CVC4: 10 VC)
 perm.adb:273:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:273:33: info: precondition proved (CVC4: 6 VC)
@@ -311,9 +280,7 @@ perm.adb:274:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:274:40: info: range check proved (CVC4: 2 VC)
 perm.adb:274:46: info: precondition proved (CVC4: 6 VC)
 perm.adb:274:54: info: precondition proved (CVC4: 6 VC)
-perm.adb:274:65: info: initialization of "Ib" proved
 perm.adb:275:37: info: assertion proved (CVC4: 2 VC)
-perm.adb:275:37: info: initialization of "IH" proved
 perm.adb:277:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:277:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:277:34: info: precondition proved (CVC4: 6 VC)
@@ -321,13 +288,11 @@ perm.adb:277:42: info: precondition proved (CVC4: 6 VC)
 perm.adb:277:53: info: range check proved (CVC4: 2 VC)
 perm.adb:278:25: info: precondition proved (CVC4: 6 VC)
 perm.adb:278:33: info: precondition proved (CVC4: 6 VC)
-perm.adb:278:44: info: initialization of "Ib" proved
 perm.adb:280:25: info: assertion proved (CVC4: 2 VC)
 perm.adb:280:25: info: precondition proved (CVC4: 4 VC)
 perm.adb:280:34: info: precondition proved (CVC4: 6 VC)
 perm.adb:280:45: info: range check proved (CVC4: 2 VC)
 perm.adb:280:50: info: precondition proved (CVC4: 6 VC)
-perm.adb:280:61: info: initialization of "Ib" proved
 perm.adb:284:19: medium: assertion might fail
 perm.adb:284:48: info: index check proved (CVC4: 4 VC)
 perm.adb:284:57: info: index check proved (CVC4: 4 VC)
@@ -345,13 +310,11 @@ perm.adb:290:28: info: precondition proved (CVC4: 6 VC)
 perm.adb:290:39: info: range check proved (CVC4: 2 VC)
 perm.adb:290:43: info: precondition proved (CVC4: 6 VC)
 perm.adb:290:54: info: range check proved (CVC4: 2 VC)
-perm.adb:292:17: info: initialization of "IH" proved
 perm.adb:297:25: info: precondition proved (CVC4: 3 VC)
-perm.adb:299:14: info: initialization of "HR" proved
 perm.adb:304:16: medium: subprogram "Induction_Hypothesis" might not terminate, terminating annotation could be incorrect
 perm.adb:306:18: info: precondition proved (CVC4: 2 VC)
 perm.adb:306:42: info: precondition proved (CVC4: 2 VC)
-perm.adb:307:17: info: postcondition proved (CVC4: 2 VC)
+perm.adb:307:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.adb:307:54: info: precondition proved (CVC4: 2 VC)
 perm.adb:315:41: info: precondition proved (CVC4: 4 VC)
 perm.adb:316:41: info: function contract not available for proof ("Extended_Perm" is recursive)
@@ -368,39 +331,31 @@ perm.adb:330:31: medium: precondition might fail
 perm.adb:331:35: info: precondition proved (CVC4: 3 VC)
 perm.adb:332:35: info: precondition proved (CVC4: 3 VC)
 perm.adb:333:35: info: precondition proved (CVC4: 3 VC)
+perm.adb:334:07: info: initialization of "Ia2" proved
 perm.adb:340:12: info: precondition proved (CVC4: 3 VC)
 perm.adb:341:22: info: assertion proved (CVC4: 1 VC)
-perm.adb:341:22: info: initialization of "H" proved
 perm.adb:343:12: info: precondition proved (CVC4: 3 VC)
 perm.adb:344:22: info: assertion proved (CVC4: 1 VC)
-perm.adb:344:22: info: initialization of "H" proved
 perm.adb:347:17: medium: precondition might fail
 perm.adb:348:15: info: precondition proved (CVC4: 6 VC)
 perm.adb:349:25: info: assertion proved (CVC4: 1 VC)
-perm.adb:349:25: info: initialization of "H" proved
-perm.adb:350:15: medium: precondition might fail
+perm.adb:350:15: info: precondition proved (CVC4: 5 VC)
 perm.adb:350:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:350:47: info: precondition proved (CVC4: 3 VC)
-perm.adb:350:59: info: initialization of "Ia2" proved
 perm.adb:351:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:351:45: info: range check proved (CVC4: 1 VC)
 perm.adb:352:25: info: assertion proved (CVC4: 1 VC)
-perm.adb:352:25: info: initialization of "H" proved
 perm.adb:354:17: medium: precondition might fail
 perm.adb:354:42: info: range check proved (CVC4: 1 VC)
 perm.adb:355:15: info: precondition proved (CVC4: 6 VC)
 perm.adb:356:25: info: assertion proved (CVC4: 1 VC)
-perm.adb:356:25: info: initialization of "H" proved
-perm.adb:357:15: medium: precondition might fail
+perm.adb:357:15: info: precondition proved (CVC4: 5 VC)
 perm.adb:357:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:357:45: info: range check proved (CVC4: 1 VC)
 perm.adb:357:51: info: precondition proved (CVC4: 3 VC)
-perm.adb:357:63: info: initialization of "Ia2" proved
 perm.adb:358:29: info: precondition proved (CVC4: 3 VC)
 perm.adb:359:25: info: assertion proved (CVC4: 1 VC)
-perm.adb:359:25: info: initialization of "H" proved
 perm.adb:361:12: info: precondition proved (CVC4: 3 VC)
-perm.adb:362:14: info: initialization of "H" proved
 perm.ads:11:14: info: postcondition proved (CVC4: 5 VC)
 perm.ads:12:34: info: overflow check proved (CVC4: 1 VC)
 perm.ads:13:37: info: index check proved (CVC4: 2 VC)
@@ -429,14 +384,14 @@ perm.ads:37:30: info: precondition proved (CVC4: 3 VC)
 perm.ads:37:41: info: range check proved (CVC4: 1 VC)
 perm.ads:37:46: info: precondition proved (CVC4: 3 VC)
 perm.ads:37:57: info: range check proved (CVC4: 1 VC)
-perm.ads:40:14: info: postcondition proved (CVC4: 2 VC)
+perm.ads:40:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.ads:40:45: info: precondition proved (CVC4: 2 VC)
 perm.ads:43:60: info: precondition proved (CVC4: 2 VC)
-perm.ads:44:14: info: postcondition proved (CVC4: 2 VC)
+perm.ads:44:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.ads:44:45: info: precondition proved (CVC4: 2 VC)
 perm.ads:48:06: info: precondition proved (CVC4: 2 VC)
 perm.ads:48:30: info: precondition proved (CVC4: 2 VC)
-perm.ads:49:14: info: postcondition proved (CVC4: 2 VC)
+perm.ads:49:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.ads:49:46: info: precondition proved (CVC4: 2 VC)
 perm.ads:52:59: info: precondition proved (CVC4: 2 VC)
 perm.ads:53:14: medium: postcondition might fail
@@ -445,12 +400,14 @@ perm.ads:55:61: info: index check proved (CVC4: 2 VC)
 perm.ads:59:52: info: precondition proved (CVC4: 2 VC)
 perm.ads:60:18: info: index check proved (CVC4: 2 VC)
 perm.ads:60:27: info: index check proved (CVC4: 2 VC)
-perm.ads:61:14: info: postcondition proved (CVC4: 2 VC)
+perm.ads:61:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 perm.ads:62:17: info: precondition proved (CVC4: 2 VC)
 perm.ads:62:26: info: precondition proved (CVC4: 3 VC)
 perm.ads:62:42: info: precondition proved (CVC4: 3 VC)
 sort.adb:14:15: info: postcondition proved (CVC4: 1 VC)
 sort.adb:14:15: info: precondition proved (CVC4: 2 VC)
+sort.adb:16:07: info: initialization of "Temp" proved
+sort.adb:20:07: info: initialization of "Interm" proved
 sort.adb:23:29: info: index check proved (CVC4: 2 VC)
 sort.adb:24:15: info: index check proved (CVC4: 2 VC)
 sort.adb:24:29: info: index check proved (CVC4: 2 VC)
@@ -458,44 +415,37 @@ sort.adb:28:22: info: precondition proved (CVC4: 3 VC)
 sort.adb:28:22: medium: assertion might fail, cannot prove Remove (Init, X) = Remove (Interm, X)
 sort.adb:28:36: info: range check proved (CVC4: 1 VC)
 sort.adb:28:41: info: precondition proved (CVC4: 3 VC)
-sort.adb:28:49: info: initialization of "Interm" proved
 sort.adb:28:57: info: range check proved (CVC4: 1 VC)
 sort.adb:30:15: info: index check proved (CVC4: 2 VC)
-sort.adb:30:21: info: initialization of "Temp" proved
 sort.adb:30:21: info: range check proved (CVC4: 1 VC)
 sort.adb:31:22: info: precondition proved (CVC4: 3 VC)
 sort.adb:31:22: medium: assertion might fail, cannot prove Remove (Interm, Y) = Remove (Values, Y) [possible explanation: precondition of subprogram at line 6 should mention Values]
-sort.adb:31:30: info: initialization of "Interm" proved
 sort.adb:31:38: info: range check proved (CVC4: 1 VC)
 sort.adb:31:43: info: precondition proved (CVC4: 3 VC)
 sort.adb:31:59: info: range check proved (CVC4: 1 VC)
 sort.adb:38:16: warning: unused assignment
-sort.adb:38:19: medium: precondition might fail [possible explanation: precondition of subprogram at line 6 should mention Values]
+sort.adb:38:19: info: precondition proved (CVC4: 5 VC)
 sort.adb:38:30: info: precondition proved (CVC4: 3 VC)
-sort.adb:38:38: info: initialization of "Interm" proved
 sort.adb:38:46: info: range check proved (CVC4: 1 VC)
 sort.adb:38:50: info: precondition proved (CVC4: 3 VC)
 sort.adb:38:66: info: range check proved (CVC4: 1 VC)
 sort.adb:38:72: info: range check proved (CVC4: 1 VC)
 sort.adb:39:16: warning: unused assignment
 sort.adb:39:19: info: precondition proved (CVC4: 6 VC)
-sort.adb:39:32: info: initialization of "Interm" proved
 sort.adb:39:40: info: range check proved (CVC4: 1 VC)
 sort.adb:39:43: info: range check proved (CVC4: 1 VC)
 sort.adb:40:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:40:28: info: precondition proved (CVC4: 3 VC)
 sort.adb:40:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:40:44: info: initialization of "Interm" proved
 sort.adb:40:52: info: range check proved (CVC4: 1 VC)
 sort.adb:40:56: info: range check proved (CVC4: 1 VC)
 sort.adb:41:30: info: precondition proved (CVC4: 3 VC)
 sort.adb:41:38: info: precondition proved (CVC4: 3 VC)
 sort.adb:41:54: info: range check proved (CVC4: 1 VC)
 sort.adb:41:60: info: range check proved (CVC4: 1 VC)
+sort.adb:42:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:42:28: info: precondition proved (CVC4: 3 VC)
-sort.adb:42:28: medium: assertion might fail, cannot prove Remove (Remove (Interm, X), Y) = Remove (Remove (Values, Y), X - 1) [possible explanation: precondition of subprogram at line 6 should mention Values]
 sort.adb:42:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:42:44: info: initialization of "Interm" proved
 sort.adb:42:52: info: range check proved (CVC4: 1 VC)
 sort.adb:42:56: info: range check proved (CVC4: 1 VC)
 sort.adb:43:30: info: precondition proved (CVC4: 3 VC)
@@ -509,7 +459,6 @@ sort.adb:44:43: info: range check proved (CVC4: 1 VC)
 sort.adb:45:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:45:28: info: precondition proved (CVC4: 3 VC)
 sort.adb:45:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:45:44: info: initialization of "Interm" proved
 sort.adb:45:52: info: range check proved (CVC4: 1 VC)
 sort.adb:45:56: info: range check proved (CVC4: 1 VC)
 sort.adb:46:30: info: precondition proved (CVC4: 3 VC)
@@ -521,7 +470,6 @@ sort.adb:47:19: info: precondition proved (CVC4: 5 VC)
 sort.adb:47:30: info: precondition proved (CVC4: 3 VC)
 sort.adb:47:44: info: range check proved (CVC4: 1 VC)
 sort.adb:47:48: info: precondition proved (CVC4: 3 VC)
-sort.adb:47:56: info: initialization of "Interm" proved
 sort.adb:47:64: info: range check proved (CVC4: 1 VC)
 sort.adb:47:68: info: range check proved (CVC4: 1 VC)
 sort.adb:48:36: info: assertion proved (CVC4: 1 VC)
@@ -587,20 +535,17 @@ sort.adb:60:68: info: range check proved (CVC4: 1 VC)
 sort.adb:65:16: warning: unused assignment
 sort.adb:65:19: info: precondition proved (CVC4: 5 VC)
 sort.adb:65:30: info: precondition proved (CVC4: 3 VC)
-sort.adb:65:38: info: initialization of "Interm" proved
 sort.adb:65:46: info: range check proved (CVC4: 1 VC)
 sort.adb:65:50: info: precondition proved (CVC4: 3 VC)
 sort.adb:65:66: info: range check proved (CVC4: 1 VC)
 sort.adb:65:70: info: range check proved (CVC4: 1 VC)
 sort.adb:66:16: warning: unused assignment
 sort.adb:66:19: info: precondition proved (CVC4: 6 VC)
-sort.adb:66:32: info: initialization of "Interm" proved
 sort.adb:66:40: info: range check proved (CVC4: 1 VC)
 sort.adb:66:43: info: range check proved (CVC4: 1 VC)
 sort.adb:67:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:67:28: info: precondition proved (CVC4: 3 VC)
 sort.adb:67:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:67:44: info: initialization of "Interm" proved
 sort.adb:67:52: info: range check proved (CVC4: 1 VC)
 sort.adb:67:58: info: range check proved (CVC4: 1 VC)
 sort.adb:68:30: info: precondition proved (CVC4: 3 VC)
@@ -610,7 +555,6 @@ sort.adb:68:58: info: range check proved (CVC4: 1 VC)
 sort.adb:69:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:69:28: info: precondition proved (CVC4: 3 VC)
 sort.adb:69:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:69:44: info: initialization of "Interm" proved
 sort.adb:69:52: info: range check proved (CVC4: 1 VC)
 sort.adb:69:58: info: range check proved (CVC4: 1 VC)
 sort.adb:70:30: info: precondition proved (CVC4: 3 VC)
@@ -624,7 +568,6 @@ sort.adb:71:43: info: range check proved (CVC4: 1 VC)
 sort.adb:72:28: info: assertion proved (CVC4: 1 VC)
 sort.adb:72:28: info: precondition proved (CVC4: 3 VC)
 sort.adb:72:36: info: precondition proved (CVC4: 3 VC)
-sort.adb:72:44: info: initialization of "Interm" proved
 sort.adb:72:52: info: range check proved (CVC4: 1 VC)
 sort.adb:72:58: info: range check proved (CVC4: 1 VC)
 sort.adb:73:30: info: precondition proved (CVC4: 3 VC)
@@ -636,7 +579,6 @@ sort.adb:74:19: info: precondition proved (CVC4: 5 VC)
 sort.adb:74:30: info: precondition proved (CVC4: 3 VC)
 sort.adb:74:44: info: range check proved (CVC4: 1 VC)
 sort.adb:74:48: info: precondition proved (CVC4: 3 VC)
-sort.adb:74:56: info: initialization of "Interm" proved
 sort.adb:74:64: info: range check proved (CVC4: 1 VC)
 sort.adb:74:70: info: range check proved (CVC4: 1 VC)
 sort.adb:75:36: info: assertion proved (CVC4: 1 VC)
@@ -700,23 +642,19 @@ sort.adb:87:48: info: range check proved (CVC4: 1 VC)
 sort.adb:87:52: info: precondition proved (CVC4: 3 VC)
 sort.adb:87:68: info: range check proved (CVC4: 1 VC)
 sort.adb:97:16: info: postcondition proved (CVC4: 2 VC)
-sort.adb:103:33: info: initialization of "Min" proved
+sort.adb:99:07: info: initialization of "Min" proved
 sort.adb:103:33: info: loop invariant initialization proved (CVC4: 2 VC)
 sort.adb:103:33: info: loop invariant preservation proved (CVC4: 2 VC)
 sort.adb:104:38: info: index check proved (CVC4: 2 VC)
-sort.adb:104:38: info: initialization of "Min" proved
-sort.adb:108:14: info: initialization of "Min" proved
+sort.adb:113:07: info: initialization of "Smallest" proved
 sort.adb:117:07: warning: initialization of "Prec" has no effect
 sort.adb:121:10: warning: unused assignment
-sort.adb:121:13: info: precondition proved (CVC4: 2 VC)
+sort.adb:121:13: info: precondition proved (CVC4: 3 VC)
 sort.adb:123:22: info: precondition proved (CVC4: 10 VC)
-sort.adb:125:13: info: initialization of "Smallest" proved
 sort.adb:126:18: warning: unused assignment
 sort.adb:128:13: info: precondition proved (CVC4: 10 VC)
-sort.adb:130:29: info: initialization of "Smallest" proved
 sort.adb:132:16: warning: unused assignment
 sort.adb:132:19: info: precondition proved (CVC4: 10 VC)
-sort.adb:132:42: info: initialization of "Prec" proved
 sort.adb:135:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sort.adb:135:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sort.adb:135:33: info: precondition proved (CVC4: 4 VC)

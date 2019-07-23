@@ -1,3 +1,4 @@
+foo.ads:11:07: info: data dependencies proved
 foo.ads:16:07: low: global Input "Foo.State" of "Check" not read
 main.adb:5:14: warning: subprogram "Run" has no effect
 main.adb:8:15: info: postcondition proved (CVC4: 1 VC)

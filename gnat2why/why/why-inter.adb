@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,12 +23,11 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Flow_Utility;
 with Flow_Types;                 use Flow_Types;
-with Namet;                      use Namet;
 with Gnat2Why.Tables;            use Gnat2Why.Tables;
 with Snames;                     use Snames;
-with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Util;                 use SPARK_Util;
@@ -48,12 +47,21 @@ with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Gen.Pointers;           use Why.Gen.Pointers;
 with Why.Gen.Scalars;            use Why.Gen.Scalars;
+with Why.Images;                 use Why.Images;
 
 ---------------
 -- Why.Inter --
 ---------------
 
 package body Why.Inter is
+
+   package Symbol_To_Theory_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Symbol,
+      Element_Type    => W_Theory_Declaration_Id,
+      Hash            => GNATCOLL.Symbols.Hash,
+      Equivalent_Keys => "=");
+
+   Symbol_To_Theory_Map : Symbol_To_Theory_Maps.Map;
 
    -----------------------
    -- Local Subprograms --
@@ -267,46 +275,6 @@ package body Why.Inter is
       return SS.S;
    end Compute_Module_Set;
 
-   -----------------------
-   -- Add_Effect_Import --
-   -----------------------
-
-   procedure Add_Effect_Import (T : W_Theory_Declaration_Id;
-                                N : Entity_Name)
-   is
-   begin
-      if not Is_Heap_Variable (N) then
-         declare
-            S : constant String := Capitalize_First (To_String (N));
-            --  ??? To_String was already called by Is_Heap_Variable
-         begin
-            Add_With_Clause (T,
-                             New_Module (File => No_Name, Name => NID (S)),
-                             EW_Clone_Default);
-         end;
-      end if;
-   end Add_Effect_Import;
-
-   procedure Add_Effect_Import (P : W_Section_Id;
-                                N : Entity_Name)
-   is
-   begin
-      Add_Effect_Import (Why_Sections (P).Cur_Theory, N);
-   end Add_Effect_Import;
-
-   --------------------------
-   -- Add_Extra_Dependency --
-   --------------------------
-
-   procedure Add_Extra_Dependency
-     (Defined_Entity : Entity_Id;
-      New_Dependency : Entity_Id) is
-   begin
-      Add_To_Graph (Map  => Entity_Dependencies,
-                    From => Defined_Entity,
-                    To   => New_Dependency);
-   end Add_Extra_Dependency;
-
    ------------------------
    -- Add_Use_For_Entity --
    ------------------------
@@ -380,6 +348,7 @@ package body Why.Inter is
       case Kind is
          when EW_Abstract
             | EW_Split
+            | EW_Wrapper
          =>
             return Base_Why_Type (Get_Ada_Node (+W));
 
@@ -472,11 +441,26 @@ package body Why.Inter is
       S : constant Why_Node_Sets.Set :=
         Compute_Module_Set (+(Why_Sections (P).Cur_Theory));
 
-      function Is_Relevant_Node_For_Imports
-        (N             : Node_Id;
-         Filter_Entity : Node_Id := Empty) return Boolean;
-      --  Returns True if N is relevant for theory imports. Filter_Entity is a
-      --  node that should not be considered in these imports.
+      function Is_Relevant_For_Imports
+        (N : Node_Or_Entity_Id)
+         return Boolean
+      with Pre => (if Present (N)
+                   then (if Nkind (N) in N_Entity
+                         then Ekind (N) /= E_Void
+                           and then
+                             (if Is_Full_View (N)
+                              then Present (Partial_View (N)))
+                           and then
+                             (if Ekind (N) = E_Loop_Parameter
+                              then not Is_Quantified_Loop_Param (N))
+                         else Nkind (N) = N_Aggregate
+                           and then Is_Array_Type (Etype (N))));
+      --  Returns True if N is relevant for theory imports
+      --
+      --  We need to consider entities and some non-entities such as string
+      --  literals. We do *not* consider its Full_View. Loop parameters are a
+      --  bit special, we want to deal with them only if they are from loop,
+      --  but not from a quantifier.
 
       procedure Add_Definition_Imports
         (Filter_Module : W_Module_Id := Why_Empty);
@@ -519,30 +503,14 @@ package body Why.Inter is
          end loop;
       end Add_Definition_Imports;
 
-      ----------------------------------
-      -- Is_Relevant_Node_For_Imports --
-      ----------------------------------
+      -----------------------------
+      -- Is_Relevant_For_Imports --
+      -----------------------------
 
-      --  Here we need to consider entities and some non-entities such as
-      --  string literals. We do *not* consider the Filter_Entity, nor its
-      --  Full_View. Loop parameters are a bit special, we want to deal with
-      --  them only if they are from loop, but not from a quantifier.
-
-      function Is_Relevant_Node_For_Imports
-        (N             : Node_Id;
-         Filter_Entity : Node_Id := Empty) return Boolean is
-      begin
-         return N /= Filter_Entity
-           and then
-             (if Nkind (N) in N_Entity then Ekind (N) /= E_Void)
-           and then
-             (if Nkind (N) in N_Entity and then Is_Full_View (N) then
-                Partial_View (N) /= Filter_Entity)
-           and then
-             (if Nkind (N) in N_Entity
-                and then Ekind (N) = E_Loop_Parameter
-              then not Is_Quantified_Loop_Param (N));
-      end Is_Relevant_Node_For_Imports;
+      function Is_Relevant_For_Imports
+        (N : Node_Or_Entity_Id)
+         return Boolean
+         renames Present;
 
       -------------------------
       -- Record_Dependencies --
@@ -551,11 +519,16 @@ package body Why.Inter is
       procedure Record_Dependencies (Defined_Entity : Entity_Id) is
       begin
          for M of S loop
-            if Is_Relevant_Node_For_Imports (Get_Ada_Node (M)) then
-               Add_To_Graph (Entity_Dependencies,
-                             Defined_Entity,
-                             Get_Ada_Node (M));
-            end if;
+            declare
+               Ada_Node : constant Node_Id := Get_Ada_Node (M);
+
+            begin
+               if Is_Relevant_For_Imports (Ada_Node) then
+                  Add_To_Graph (Entity_Dependencies,
+                                Defined_Entity,
+                                Ada_Node);
+               end if;
+            end;
          end loop;
       end Record_Dependencies;
 
@@ -563,6 +536,7 @@ package body Why.Inter is
 
    begin
       Add_With_Clause (P, M_Main.Module, EW_Import);
+      Add_With_Clause (P, Int_Module, EW_Import);
 
       case Kind is
          --  case 1: a standalone theory with no imports
@@ -610,26 +584,20 @@ package body Why.Inter is
 
          when VC_Generation_Theory =>
             Add_Definition_Imports;
-            declare
-               NS : Node_Sets.Set := Compute_Ada_Node_Set (S);
-            begin
-               NS.Union (Get_Graph_Closure (Entity_Dependencies, NS));
-               Add_Axiom_Imports (NS);
-            end;
+            Add_Axiom_Imports
+              (Get_Graph_Closure (Map  => Entity_Dependencies,
+                                  From => Compute_Ada_Node_Set (S)));
       end case;
 
-      Why_Sections (P).Theories.Append (+Why_Sections (P).Cur_Theory);
+      declare
+         Th : constant W_Theory_Declaration_Id := Why_Sections (P).Cur_Theory;
+         N  : constant Symbol := Get_Name (Th);
+      begin
+         Why_Sections (P).Theories.Append (+Th);
+         Symbol_To_Theory_Map.Insert (N, Th);
+      end;
       Why_Sections (P).Cur_Theory := Why_Empty;
    end Close_Theory;
-
-   --------------------
-   -- Discard_Theory --
-   --------------------
-
-   procedure Discard_Theory (P : W_Section_Id) is
-   begin
-      Why_Sections (P).Cur_Theory := Why_Empty;
-   end Discard_Theory;
 
    ---------------------
    -- Dispatch_Entity --
@@ -730,7 +698,7 @@ package body Why.Inter is
 
       --  Builtin nodes can be compared directly
 
-      elsif Get_Type_Kind (Left) = EW_Builtin then
+      elsif Get_Type_Kind (Left) in EW_Builtin | EW_Wrapper then
          return False;
 
       --  Two types with different kinds cannot be equal
@@ -783,7 +751,7 @@ package body Why.Inter is
                and then M2 /= Why_Empty
                and then Get_Name (M1) = Get_Name (M2))
             then
-               return Get_Symbol (N1) = Get_Symbol (N2);
+               return Get_Symb (N1) = Get_Symb (N2);
             else
                return False;
             end if;
@@ -868,6 +836,15 @@ package body Why.Inter is
          return Obj;
       end if;
    end Extract_Object_Name;
+
+   ---------------
+   -- Find_Decl --
+   ---------------
+
+   function Find_Decl (S : Symbol) return W_Theory_Declaration_Id is
+   begin
+      return Symbol_To_Theory_Map.Element (S);
+   end Find_Decl;
 
    -----------------
    -- Get_EW_Type --
@@ -1008,8 +985,7 @@ package body Why.Inter is
             Expr2 : constant W_Identifier_Id := W_Identifier_Id (Expr);
             Name  : constant W_Name_Id := Get_Name (Expr2);
          begin
-            return Get_Name_String (Get_Symbol (Name)) /=
-              To_String (WNE_Null_Pointer);
+            return Img (Get_Symb (Name)) /= To_String (WNE_Null_Pointer);
          end;
 
       else
@@ -1072,16 +1048,16 @@ package body Why.Inter is
       Local : Boolean := False)
       return W_Name_Id
    is
-      Suffix : constant Name_Id :=
+      Suffix : constant Symbol :=
         NID (Capitalize_First (Short_Name (E)));
    begin
       if Local then
-         return New_Name (Ada_Node => E, Symbol => Suffix);
+         return New_Name (Ada_Node => E, Symb => Suffix);
       else
          return
            New_Name
              (Ada_Node => E,
-              Symbol   => Suffix,
+              Symb     => Suffix,
               Module   => E_Module (E));
       end if;
    end Loop_Exception_Name;
@@ -1120,9 +1096,11 @@ package body Why.Inter is
             Name       =>
               New_Name
                 (Ada_Node => E,
-                 Symbol   => NID ("map"),
-                 Module   => New_Module (File => No_Name,
-                                         Name => Get_Array_Theory_Name (E))));
+                 Symb     => NID ("map"),
+                 Module   =>
+                   New_Module
+                     (File => No_Symbol,
+                      Name => Img (Get_Array_Theory_Name (E)))));
       elsif Kind = EW_Split and then Has_Fixed_Point_Type (E) then
 
          --  The base type of a fixed point type is __fixed. Do not call
@@ -1166,7 +1144,7 @@ package body Why.Inter is
 
    function New_Named_Type (S : String) return W_Type_Id is
    begin
-      return New_Named_Type (Name => New_Name (Symbol => NID (S)));
+      return New_Named_Type (Name => New_Name (Symb => NID (S)));
    end New_Named_Type;
 
    ------------------
@@ -1193,13 +1171,10 @@ package body Why.Inter is
    procedure Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
-      Comment : String)
-   is
-      S : constant String :=
-        Capitalize_First (Get_Name_String (Get_Name (Module)));
+      Comment : String) is
    begin
       Why_Sections (P).Cur_Theory :=
-        New_Theory_Declaration (Name    => NID (S),
+        New_Theory_Declaration (Name    => Get_Name (Module),
                                 Kind    => EW_Module,
                                 Comment => NID (Comment));
    end Open_Theory;
@@ -1265,12 +1240,12 @@ package body Why.Inter is
                  E_Axiom_Module (E)
                else
                  E_Module (E));
-            Namespace : constant Name_Id :=
+            Namespace : constant Symbol :=
               (case Selector is
                  when Dispatch  => NID (To_String (WNE_Dispatch_Module)),
                  when No_Return => NID (To_String (WNE_No_Return_Module)),
                  when Refine    => NID (To_String (WNE_Refine_Module)),
-                 when Standard  => No_Name);
+                 when Standard  => No_Symbol);
          begin
             return
               New_Identifier
@@ -1303,8 +1278,8 @@ package body Why.Inter is
                                       Typ  => EW_Private_Type);
             else
                return New_Identifier
-                 (Module => New_Module (File => No_Name,
-                                        Name => NID (Ada_Name)),
+                 (Module => New_Module (File => No_Symbol,
+                                        Name => Ada_Name),
                   Name   => Why_Name,
                   Typ    => EW_Private_Type);
             end if;
@@ -1329,13 +1304,13 @@ package body Why.Inter is
          return To_Why_Type (Specific_Tagged (E), Local);
 
       elsif Local then
-         return New_Name (Ada_Node => E, Symbol => NID (Suffix));
+         return New_Name (Ada_Node => E, Symb => NID (Suffix));
 
       else
          return
            New_Name
              (Ada_Node => E,
-              Symbol   => NID (Suffix),
+              Symb     => NID (Suffix),
               Module   => E_Module (E));
       end if;
 

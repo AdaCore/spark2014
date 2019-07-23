@@ -5,22 +5,10 @@ dead_code.adb:23:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:26:07: info: raise statement proved unreachable (CVC4: 1 VC)
 dead_code.adb:31:23: info: cannot unroll loop (too many loop iterations)
 dead_code.adb:34:07: warning: unreachable code (CVC4: 1 VC)
-dead_code.adb:40:13: info: initialization of "J" proved
-dead_code.adb:41:17: info: initialization of "J" proved
-dead_code.adb:49:13: info: initialization of "J" proved
-dead_code.adb:50:17: info: initialization of "J" proved
 dead_code.adb:52:07: info: assertion proved (CVC4: 1 VC)
-dead_code.adb:59:13: info: initialization of "J" proved
-dead_code.adb:60:17: info: initialization of "J" proved
 dead_code.adb:62:07: info: raise statement proved unreachable (CVC4: 1 VC)
-dead_code.adb:68:13: info: initialization of "J" proved
-dead_code.adb:69:17: info: initialization of "J" proved
 dead_code.adb:71:07: warning: unreachable code (CVC4: 1 VC)
-dead_code.adb:79:17: info: initialization of "J" proved
 dead_code.adb:81:07: warning: unreachable code (CVC4: 1 VC)
-dead_code.adb:89:17: info: initialization of "J" proved
 dead_code.adb:91:07: info: assertion proved (CVC4: 1 VC)
-dead_code.adb:100:17: info: initialization of "J" proved
 dead_code.adb:102:07: info: raise statement proved unreachable (CVC4: 1 VC)
-dead_code.adb:110:17: info: initialization of "J" proved
 dead_code.adb:112:07: warning: unreachable code (CVC4: 1 VC)

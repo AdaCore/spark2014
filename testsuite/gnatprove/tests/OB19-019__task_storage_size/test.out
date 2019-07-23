@@ -1,10 +1,7 @@
-aspect.adb:7:20: info: initialization of "X" proved
 aspect.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 aspect.ads:3:22: warning: pragma "Storage_Size" ignored (not yet supported)
-prag.adb:7:20: info: initialization of "X" proved
 prag.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 prag.ads:4:06: warning: pragma "Storage_Size" ignored (not yet supported)
-rep.adb:7:20: info: initialization of "X" proved
 rep.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 ss_default.ads:5:36: attribute "Storage_Size" is not allowed in SPARK
 ss_default.ads:5:36: violation of pragma SPARK_Mode at test.adc:1
@@ -15,6 +12,6 @@ ss_defined.ads:7:20: attribute "Storage_Size" is not allowed in SPARK
 ss_defined.ads:7:20: violation of pragma SPARK_Mode at test.adc:1
 ss_defined.ads:7:39: attribute "Storage_Size" is not allowed in SPARK
 ss_defined.ads:7:39: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:3:09: access type is not allowed in SPARK
+unsupported.adb:3:09: general access type is not allowed in SPARK
 unsupported.adb:3:09: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof

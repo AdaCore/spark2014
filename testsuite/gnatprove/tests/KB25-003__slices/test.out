@@ -1,71 +1,56 @@
-pack.adb:4:32: info: initialization of "Glob" proved
 pack.adb:4:32: info: range check proved (CVC4: 4 VC)
-pack.adb:12:51: medium: array index check might fail (e.g. when Glob'First = 2 and My_S1 = (others => 'NUL'))
 pack.adb:14:41: info: range check proved (CVC4: 4 VC)
 pack.adb:16:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:17:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1 .. 4 => 42) (e.g. when My_B = (others => 1))
-pack.adb:23:34: medium: range check might fail (e.g. when Glob'First = 2 and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 22 should mention Glob in a precondition]
+pack.adb:18:22: medium: assertion might fail, cannot prove My_B /= (1 .. 4 => 42) (e.g. when My_B = (others => 42))
+pack.adb:23:34: info: range check proved (CVC4: 4 VC)
 pack.adb:25:41: info: range check proved (CVC4: 4 VC)
 pack.adb:27:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:27:22: info: initialization of "My_S2" proved
 pack.adb:27:22: info: range check proved (CVC4: 4 VC)
 pack.adb:27:39: info: range check proved (CVC4: 4 VC)
 pack.adb:28:22: info: assertion proved (CVC4: 1 VC)
 pack.adb:28:29: info: range check proved (CVC4: 4 VC)
-pack.adb:29:22: info: initialization of "My_S2" proved
 pack.adb:29:22: info: range check proved (CVC4: 4 VC)
-pack.adb:29:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 22 should mention Glob in a precondition]
+pack.adb:29:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at pack.ads:5 should mention Glob in a precondition]
 pack.adb:29:40: info: range check proved (CVC4: 4 VC)
 pack.adb:33:04: warning: analyzing unreferenced procedure "AN21"
 pack.adb:33:14: warning: subprogram "AN21" has no effect
-pack.adb:34:34: medium: range check might fail (e.g. when Glob'First = 2 and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 33 should mention Glob in a precondition]
+pack.adb:34:34: info: range check proved (CVC4: 4 VC)
 pack.adb:36:41: info: range check proved (CVC4: 4 VC)
 pack.adb:38:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:38:22: info: initialization of "My_S2" proved
 pack.adb:38:22: info: range check proved (CVC4: 4 VC)
 pack.adb:38:39: info: range check proved (CVC4: 4 VC)
-pack.adb:39:22: info: initialization of "My_S2" proved
 pack.adb:39:22: info: range check proved (CVC4: 4 VC)
 pack.adb:39:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 33 should mention Glob in a precondition]
 pack.adb:39:40: info: range check proved (CVC4: 4 VC)
 pack.adb:43:04: warning: analyzing unreferenced procedure "AN22"
 pack.adb:43:14: warning: subprogram "AN22" has no effect
-pack.adb:44:34: medium: range check might fail (e.g. when Glob'First = 2 and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 43 should mention Glob in a precondition]
+pack.adb:44:34: info: range check proved (CVC4: 4 VC)
 pack.adb:46:41: info: range check proved (CVC4: 4 VC)
 pack.adb:48:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:48:22: info: initialization of "My_S2" proved
 pack.adb:48:22: info: range check proved (CVC4: 4 VC)
 pack.adb:48:39: info: range check proved (CVC4: 4 VC)
-pack.adb:49:22: info: initialization of "My_S2" proved
 pack.adb:49:22: info: range check proved (CVC4: 4 VC)
 pack.adb:49:22: medium: assertion might fail, cannot prove My_S2 (1 .. 3) /= Glob (1..3) (e.g. when Glob = (others => 'NUL') and My_S2 = (others => 'NUL')) [possible explanation: subprogram at line 43 should mention Glob in a precondition]
 pack.adb:49:40: info: range check proved (CVC4: 4 VC)
 pack.adb:53:04: warning: analyzing unreferenced procedure "A3"
 pack.adb:53:14: warning: subprogram "A3" has no effect
-pack.adb:54:34: medium: range check might fail (e.g. when Glob'First = 3) [possible explanation: subprogram at line 53 should mention Glob in a precondition]
+pack.adb:54:34: info: range check proved (CVC4: 4 VC)
 pack.adb:59:04: warning: analyzing unreferenced procedure "A4"
 pack.adb:59:14: warning: subprogram "A4" has no effect
-pack.adb:63:22: info: initialization of "My_S4" proved
 pack.adb:64:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:64:22: info: initialization of "My_S4" proved
-pack.adb:65:22: info: initialization of "My_S4" proved
-pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) (e.g. when G = (2 => 'NUL', others => 'NUL') and My_S4 = (others => 'NUL')) [possible explanation: subprogram at line 59 should mention G in a precondition]
-pack.adb:66:22: info: initialization of "My_S4" proved
+pack.adb:65:22: medium: assertion might fail, cannot prove My_S4 (2) /= G (2) [possible explanation: subprogram at line 59 should mention G in a precondition]
 pack.adb:66:25: info: range check proved (CVC4: 4 VC)
 pack.adb:69:04: warning: analyzing unreferenced procedure "A11"
 pack.adb:69:14: warning: subprogram "A11" has no effect
-pack.adb:71:36: info: initialization of "My_S111" proved
 pack.adb:76:20: info: initialization of "A" proved
 pack.adb:77:19: info: postcondition proved (CVC4: 1 VC)
-pack.adb:77:33: info: initialization of "A" proved
 pack.adb:77:47: info: index check proved (CVC4: 2 VC)
-pack.adb:81:09: info: length check proved (CVC4: 4 VC)
+pack.adb:81:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pack.adb:84:04: warning: analyzing unreferenced procedure "P"
 pack.adb:84:14: warning: subprogram "P" has no effect
+pack.adb:85:07: info: initialization of "A" proved
 pack.adb:88:22: info: assertion proved (CVC4: 1 VC)
-pack.adb:88:22: info: initialization of "A" proved
-pack.adb:89:22: info: initialization of "A" proved
-pack.adb:89:22: medium: assertion might fail, cannot prove A (9) = 2 (e.g. when A = (8 => 1, 9 => 1, others => 7))
+pack.adb:89:22: medium: assertion might fail, cannot prove A (9) = 2 (e.g. when A = (8 => 1, 9 => 1, others => 10))
 pack.ads:3:14: warning: subprogram "A1" has no effect
 pack.ads:5:14: warning: subprogram "A2" has no effect

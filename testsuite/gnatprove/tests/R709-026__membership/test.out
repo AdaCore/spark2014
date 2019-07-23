@@ -1,18 +1,7 @@
 member_alt.adb:9:14: warning: subprogram "Bad" has no effect
-member_alt.adb:14:22: info: assertion proved (CVC4: 1 VC), in call inlined at member_alt.adb:28
-member_alt.adb:14:22: info: initialization of "X.F" proved
-member_alt.adb:14:22: info: initialization of "X.F" proved, in call inlined at member_alt.adb:28
-member_alt.adb:14:26: info: initialization of "Y.F" proved
-member_alt.adb:14:26: info: initialization of "Y.F" proved, in call inlined at member_alt.adb:28
-member_alt.adb:15:22: info: initialization of "X.F" proved
-member_alt.adb:15:22: info: initialization of "X.F" proved, in call inlined at member_alt.adb:28
-member_alt.adb:15:22: medium: assertion might fail, in call inlined at member_alt.adb:28 (e.g. when X = (D => True, F => 0) and Y = (D => True, F => 1))
-member_alt.adb:15:31: info: initialization of "Y.F" proved
-member_alt.adb:15:31: info: initialization of "Y.F" proved, in call inlined at member_alt.adb:28
-member_alt.adb:15:35: info: initialization of "Z.F" proved
-member_alt.adb:15:35: info: initialization of "Z.F" proved, in call inlined at member_alt.adb:28
+member_alt.adb:14:22: info: assertion proved (altergo: 1 VC), in call inlined at member_alt.adb:28
+member_alt.adb:15:22: medium: assertion might fail, in call inlined at member_alt.adb:28 (e.g. when X = (D => ?, F => 0) and Y = (D => ?, F => 1) and Z = (D => ?, F => 2))
 member_alt.adb:18:14: warning: subprogram "Bad2" has no effect
 member_alt.adb:25:22: info: assertion proved (CVC4: 1 VC)
-member_alt.adb:25:22: info: initialization of "X.F" proved
-member_alt.adb:25:27: medium: precondition might fail
+member_alt.adb:25:27: medium: precondition might fail, cannot prove X /= 1
 member_alt.adb:25:35: info: precondition proved (CVC4: 1 VC)

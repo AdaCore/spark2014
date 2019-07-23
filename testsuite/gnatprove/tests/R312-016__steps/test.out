@@ -5,88 +5,72 @@ ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:6:05: info: unrolling loop
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
+ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved
+ethernet_dissector.adb:13:09: info: initialization of "EtherType_Length_3" proved
+ethernet_dissector.adb:14:09: info: initialization of "Length" proved
 ethernet_dissector.adb:20:23: info: assertion proved (CVC4: 1 VC)
 ethernet_dissector.adb:21:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:23:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:23:41: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:23:61: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:25:31: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:25:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:25:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC)
-ethernet_dissector.adb:26:37: info: initialization of "EtherType_Length_1" proved
+ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC; Trivial: 2 VC)
 ethernet_dissector.adb:28:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:28:70: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:29:27: info: initialization of "Offset" proved
 ethernet_dissector.adb:29:34: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:31:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:31:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:31:70: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:32:27: info: initialization of "Offset" proved
 ethernet_dissector.adb:32:34: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:33:39: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:33:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:33:39: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:45: info: initialization of "EtherType_Length_2" proved
+ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:36:36: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:36:78: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:37:35: info: initialization of "Offset" proved
 ethernet_dissector.adb:37:42: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:31: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:45:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:45:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:45:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:57: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:59: info: initialization of "Offset" proved
 ethernet_dissector.adb:45:82: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:87: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:89: info: initialization of "Offset" proved
-ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC)
-ethernet_dissector.adb:46:37: info: initialization of "EtherType_Length_3" proved
-ethernet_dissector.adb:48:27: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC; Trivial: 4 VC)
+ethernet_dissector.adb:48:27: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:48:27: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:48:48: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:48:53: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:48:55: info: initialization of "Offset" proved
 ethernet_dissector.adb:48:78: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:48:83: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:48:85: info: initialization of "Offset" proved
-ethernet_dissector.adb:49:28: info: initialization of "Length" proved
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:25: info: initialization of "Offset" proved
 ethernet_dissector.adb:50:32: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:66: info: initialization of "Length" proved
+ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:50:88: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:53:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:99: info: initialization of "Length" proved
+ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:57:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:54: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:57:56: info: initialization of "Offset" proved
 ethernet_dissector.adb:57:79: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:57:86: info: initialization of "Offset" proved
 ethernet_dissector.adb:58:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:58:65: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:73: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:58:88: info: initialization of "Offset" proved
 ethernet_dissector.adb:60:22: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.ads:13:17: info: postcondition proved (CVC4: 1 VC)
 ethernet_dissector.ads:13:38: info: range check proved (CVC4: 1 VC)
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:5
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:6
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC4: 12 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:55: info: index check proved (CVC4: 8 VC), in instantiation at ethernet_dissector.adb:6
@@ -99,9 +83,9 @@ types.adb:29:71: info: overflow check proved (CVC4: 6 VC), in instantiation at e
 types.adb:29:71: info: range check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:71: info: range check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:71: info: range check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:5
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:6
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:7
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:5
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:6
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:7
 incorrect variant
 ethernet_dissector.adb:5:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:5:05: info: unrolling loop
@@ -109,88 +93,72 @@ ethernet_dissector.adb:6:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:6:05: info: unrolling loop
 ethernet_dissector.adb:7:05: info: in instantiation at types.adb:28
 ethernet_dissector.adb:7:05: info: unrolling loop
+ethernet_dissector.adb:11:09: info: initialization of "EtherType_Length_1" proved
+ethernet_dissector.adb:12:09: info: initialization of "EtherType_Length_2" proved
+ethernet_dissector.adb:13:09: info: initialization of "EtherType_Length_3" proved
+ethernet_dissector.adb:14:09: info: initialization of "Length" proved
 ethernet_dissector.adb:20:23: info: assertion proved (CVC4: 1 VC)
 ethernet_dissector.adb:21:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:21:57: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:23:20: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:23:41: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:23:61: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:25:31: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:25:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:25:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:25:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:25:73: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC)
-ethernet_dissector.adb:26:37: info: initialization of "EtherType_Length_1" proved
+ethernet_dissector.adb:26:14: info: precondition proved (CVC4: 2 VC; Trivial: 2 VC)
 ethernet_dissector.adb:28:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:28:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:28:70: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:29:27: info: initialization of "Offset" proved
 ethernet_dissector.adb:29:34: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:31:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:31:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:31:70: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:32:27: info: initialization of "Offset" proved
 ethernet_dissector.adb:32:34: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:33:39: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:33:39: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:33:39: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:33:60: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:33:81: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:34:45: info: initialization of "EtherType_Length_2" proved
+ethernet_dissector.adb:34:22: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:36:36: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:36:57: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:36:78: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:37:35: info: initialization of "Offset" proved
 ethernet_dissector.adb:37:42: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:31: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:45:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:45:31: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:45:52: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:57: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:59: info: initialization of "Offset" proved
 ethernet_dissector.adb:45:82: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:45:87: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:45:89: info: initialization of "Offset" proved
-ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC)
-ethernet_dissector.adb:46:37: info: initialization of "EtherType_Length_3" proved
-ethernet_dissector.adb:48:27: info: length check proved (CVC4: 4 VC)
+ethernet_dissector.adb:46:14: info: precondition proved (CVC4: 4 VC; Trivial: 4 VC)
+ethernet_dissector.adb:48:27: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 ethernet_dissector.adb:48:27: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:48:48: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:48:53: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:48:55: info: initialization of "Offset" proved
 ethernet_dissector.adb:48:78: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:48:83: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:48:85: info: initialization of "Offset" proved
-ethernet_dissector.adb:49:28: info: initialization of "Length" proved
 ethernet_dissector.adb:50:23: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:25: info: initialization of "Offset" proved
 ethernet_dissector.adb:50:32: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:50:66: info: initialization of "Length" proved
+ethernet_dissector.adb:50:43: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:50:88: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:53:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:53:65: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC)
-ethernet_dissector.adb:53:99: info: initialization of "Length" proved
+ethernet_dissector.adb:53:76: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 ethernet_dissector.adb:53:108: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:28: info: range check proved (CVC4: 4 VC)
 ethernet_dissector.adb:57:49: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:54: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:57:56: info: initialization of "Offset" proved
 ethernet_dissector.adb:57:79: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:57:84: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:57:86: info: initialization of "Offset" proved
 ethernet_dissector.adb:58:28: info: range check proved (CVC4: 4 VC)
-ethernet_dissector.adb:58:65: medium: overflow check might fail
+ethernet_dissector.adb:58:65: medium: overflow check might fail (e.g. when Buffer = (others => 0) and Buffer'First = 2147482128 and Buffer'Last = 2147483647)
 ethernet_dissector.adb:58:73: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:81: info: overflow check proved (CVC4: 1 VC)
 ethernet_dissector.adb:58:86: info: overflow check proved (CVC4: 1 VC)
-ethernet_dissector.adb:58:88: info: initialization of "Offset" proved
 ethernet_dissector.adb:60:22: info: range check proved (CVC4: 1 VC)
 ethernet_dissector.ads:13:17: info: postcondition proved (CVC4: 1 VC)
 ethernet_dissector.ads:13:38: info: range check proved (CVC4: 1 VC)
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:5
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:6
-types.adb:29:22: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC4: 12 VC), in instantiation at ethernet_dissector.adb:7
 types.adb:29:55: info: index check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:55: info: index check proved (CVC4: 8 VC), in instantiation at ethernet_dissector.adb:6
@@ -203,6 +171,6 @@ types.adb:29:71: info: overflow check proved (CVC4: 6 VC), in instantiation at e
 types.adb:29:71: info: range check proved (CVC4: 2 VC), in instantiation at ethernet_dissector.adb:5
 types.adb:29:71: info: range check proved (CVC4: 4 VC), in instantiation at ethernet_dissector.adb:6
 types.adb:29:71: info: range check proved (CVC4: 6 VC), in instantiation at ethernet_dissector.adb:7
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:5
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:6
-types.adb:31:16: info: initialization of "Value" proved, in instantiation at ethernet_dissector.adb:7
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:5
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:6
+types.ads:13:09: info: flow dependencies proved, in instantiation at ethernet_dissector.adb:7

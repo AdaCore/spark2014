@@ -1,4 +1,2 @@
-bar.ads:11:14: info: initialization of "Instance.Data" proved
-bar.ads:11:14: info: initialization of "Instance.Header" proved
-foo.ads:12:07: info: initialization of "Item.Data" proved
-foo.ads:12:07: info: initialization of "Item.Header" proved
+foo.ads:12:07: info: initialization of "Item" proved
+foo.ads:15:08: info: flow dependencies proved

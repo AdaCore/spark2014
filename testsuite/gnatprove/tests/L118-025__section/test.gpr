@@ -4,6 +4,6 @@ project Test is
    end Compiler;
 
    package Prove is
-      for Switches use ("--mode=prove", "--report=all", "--timeout=120", "--steps=100", "--quiet");
+      for Proof_Switches ("Ada") use ("--mode=prove", "--report=all", "--timeout=120", "--steps=100", "--quiet");
    end Prove;
 end Test;

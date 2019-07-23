@@ -1,3 +1,4 @@
-main.adb:11:22: medium: assertion might fail, cannot prove (Read) [possible explanation: subprogram at line 9 should mention Remote.X in a precondition]
+main.adb:11:22: medium: assertion might fail, cannot prove (Read) [possible explanation: subprogram at main.ads:3 should mention Remote.X in a precondition]
+main.ads:3:24: info: flow dependencies proved
 main.ads:3:24: low: global Input "Main.S" of "Test" not read
 main.ads:3:24: medium: "remote.x" must be a global Proof_In of "Test"

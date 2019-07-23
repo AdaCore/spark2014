@@ -55,14 +55,13 @@ Defined.
 
 (* Why3 goal *)
 Definition get: map -> t -> component_type.
-exact map.Map.get.
+exact (fun f a => f a).
 Defined.
 
 (* Why3 goal *)
 Definition concat: map -> t -> t -> map -> t -> t -> map.
-intros (a) af al (b) bf bl.
-exact (Map._map_constr _ _
-       (fun x => if Zle_bool x al then a x else b ((x - al) + (bf - 1))%Z)).
+intros a af al b bf bl.
+exact (fun x => if Zle_bool x al then a x else b ((x - al) + (bf - 1))%Z).
 Defined.
 
 (* Why3 goal *)
@@ -79,25 +78,24 @@ forall (a:map) (b:map),
                                                                     a_last)
                                                                  (sub b_first
                                                                    one))))).
-intros (a) (b) a_first a_last b_first b_last i.
-unfold Map.get; unfold concat; unfold sub; unfold add; unfold one;
+intros a b a_first a_last b_first b_last i.
+unfold concat; unfold sub; unfold add; unfold one;
 unfold le; unfold gt; simpl.
 split.
- - intros [_ Hi].
+ - intros [_ Hi]. unfold get.
    apply Zle_imp_le_bool in Hi; rewrite Hi; auto.
  - intro Hi.
    apply Zgt_not_le in Hi.
    rewrite <- Z.leb_nle in Hi.
+   unfold get.
    rewrite Hi; auto.
 Qed.
 
 (* Why3 goal *)
 Definition concat_singleton_left: component_type -> t -> map -> t -> t ->
   map.
-intros a af (b) bf bl.
-exact (Map._map_constr _ _
-       (fun x => if Zle_bool x af then a else b ((x - af) + (bf - 1))%Z)).
-
+intros a af b bf bl.
+exact (fun x => if Zle_bool x af then a else b ((x - af) + (bf - 1))%Z).
 Defined.
 
 (* Why3 goal *)
@@ -110,10 +108,10 @@ forall (a:component_type),
        (gt i a_first) ->
        ((get (concat_singleton_left a a_first b b_first b_last) i) = 
        (get b (add (sub i a_first) (sub b_first one)))).
-intros a (b) a_first b_first b_last.
-unfold Map.get; unfold concat_singleton_left; unfold sub; unfold add;
+intros a b a_first b_first b_last.
+unfold concat_singleton_left; unfold sub; unfold add;
 unfold one; unfold gt; simpl.
-split.
+split; unfold get.
  - rewrite Z.leb_refl; auto.
  - intros i Hi.
    apply Zgt_not_le in Hi.
@@ -123,9 +121,8 @@ Qed.
 
 (* Why3 goal *)
 Definition concat_singleton_right: map -> t -> t -> component_type -> map.
-intros (a) af al b.
-exact (Map._map_constr _ _
-       (fun x => if Zle_bool x al then a x else b)).
+intros a af al b.
+exact (fun x => if Zle_bool x al then a x else b).
 Defined.
 
 (* Why3 goal *)
@@ -137,10 +134,10 @@ forall (a:map),
    /\ forall (i:t),
        ((le a_first i) /\ (le i a_last)) ->
        ((get (concat_singleton_right a a_first a_last b) i) = (get a i)).
-intros (a) b a_first a_last.
-unfold Map.get; unfold concat_singleton_right; unfold le;
+intros a b a_first a_last.
+unfold concat_singleton_right; unfold le;
 unfold add; unfold one; simpl.
-split.
+split; unfold get.
  - assert ((a_last + 1 <=? a_last)%Z = false) by (rewrite Z.leb_nle; omega).
    rewrite H; simpl; auto.
  - intros i [_ Hi].
@@ -150,8 +147,7 @@ Qed.
 (* Why3 goal *)
 Definition concat_singletons: component_type -> t -> component_type -> map.
 intros a af b.
-exact (Map._map_constr _ _
-       (fun x => if Zle_bool x af then a else b)).
+exact (fun x => if Zle_bool x af then a else b).
 Defined.
 
 (* Why3 goal *)
@@ -161,8 +157,8 @@ forall (a:component_type) (b:component_type),
   ((get (concat_singletons a a_first b) a_first) = a)
   /\ ((get (concat_singletons a a_first b) (add a_first one)) = b).
 intros a b a_first.
-unfold Map.get; unfold concat_singletons; unfold add; unfold one; simpl.
-split.
+unfold concat_singletons; unfold add; unfold one; simpl.
+split; unfold get.
  - rewrite Z.leb_refl; auto.
  - assert ((a_first + 1 <=? a_first)%Z = false) by (rewrite Z.leb_nle; omega).
    rewrite H; simpl; auto.
@@ -180,6 +176,6 @@ Defined.
 Lemma singleton_def :
 forall (v:component_type), forall (i:t), ((get (singleton v i) i) = v).
 intros v i.
-apply map.Const.Const.
+reflexivity.
 Qed.
 

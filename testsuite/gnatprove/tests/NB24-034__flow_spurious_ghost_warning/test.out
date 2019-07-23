@@ -1,44 +1,42 @@
-sorters.adb:20:19: info: postcondition proved (CVC4: 4 VC)
+sorters.adb:16:11: info: flow dependencies proved
+sorters.adb:20:19: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 sorters.adb:21:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:21:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:24:58: info: index check proved (CVC4: 2 VC)
 sorters.adb:24:75: info: index check proved (CVC4: 2 VC)
+sorters.adb:28:07: info: initialization of "Temp" proved
 sorters.adb:30:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:31:15: info: index check proved (CVC4: 2 VC)
 sorters.adb:31:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:32:15: info: index check proved (CVC4: 2 VC)
-sorters.adb:32:21: info: initialization of "Temp" proved
 sorters.adb:40:19: info: postcondition proved (CVC4: 3 VC)
 sorters.adb:42:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:42:67: info: index check proved (CVC4: 2 VC)
+sorters.adb:44:07: info: initialization of "Min" proved
 sorters.adb:46:22: info: range check proved (CVC4: 1 VC)
-sorters.adb:49:13: info: initialization of "Min" proved
 sorters.adb:49:13: info: loop invariant initialization proved (CVC4: 3 VC)
 sorters.adb:49:13: info: loop invariant preservation proved (CVC4: 3 VC)
 sorters.adb:50:50: info: overflow check proved (CVC4: 2 VC)
 sorters.adb:51:25: info: index check proved (CVC4: 4 VC)
 sorters.adb:51:43: info: index check proved (CVC4: 4 VC)
 sorters.adb:53:42: info: index check proved (CVC4: 2 VC)
-sorters.adb:53:42: info: initialization of "Min" proved
 sorters.adb:54:20: info: range check proved (CVC4: 1 VC)
-sorters.adb:57:14: info: initialization of "Min" proved
+sorters.adb:62:07: info: initialization of "Values_Last" proved
 sorters.adb:62:07: info: range check proved (CVC4: 2 VC)
+sorters.adb:64:07: info: initialization of "Smallest" proved
 sorters.adb:67:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:68:22: info: length check proved (CVC4: 8 VC)
-sorters.adb:68:25: info: length check proved (CVC4: 6 VC)
+sorters.adb:68:22: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
+sorters.adb:68:25: info: length check proved (CVC4: 4 VC; Trivial: 4 VC)
 sorters.adb:69:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:69:40: info: range check proved (CVC4: 8 VC)
-sorters.adb:71:13: info: initialization of "Smallest" proved
 sorters.adb:72:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:73:29: info: range check proved (CVC4: 2 VC)
-sorters.adb:74:29: info: initialization of "Smallest" proved
-sorters.adb:77:61: info: initialization of "Values_Last" proved
 sorters.adb:79:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:79:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:81:13: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:81:13: info: loop invariant preservation proved (CVC4: 1 VC)
+sorters.adb:82:18: medium: loop invariant might fail after first iteration, cannot prove Values (Current) <= Values (J)
 sorters.adb:82:26: info: index check proved (CVC4: 4 VC)
 sorters.adb:82:46: info: index check proved (CVC4: 4 VC)
 sorters.adb:84:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -46,6 +44,7 @@ sorters.adb:85:16: medium: loop invariant might fail after first iteration, cann
 sorters.adb:85:24: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:40: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:40: info: overflow check proved (CVC4: 2 VC)
+sorters.ads:15:11: info: flow dependencies proved
 sorters.ads:18:22: info: postcondition proved (CVC4: 2 VC)
 sorters.ads:19:64: info: overflow check proved (CVC4: 1 VC)
 sorters.ads:20:34: info: index check proved (CVC4: 2 VC)

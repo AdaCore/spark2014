@@ -19,7 +19,7 @@ default_vc_timeout = 120
 parallel_procs = 1
 default_project = "test.gpr"
 default_provers = ["cvc4", "altergo", "z3"]
-provers_output_regex = re.compile("\((Interval|CVC4|Z3|altergo).*\)")
+provers_output_regex = re.compile("\((Trivial|Interval|CVC4|Z3|altergo).*\)")
 
 #  Change directory
 
@@ -37,14 +37,15 @@ os.chdir(TESTDIR)
 #  - the text (group 5)
 #
 #  In particular, we separate out the extra_text which starts with a comma or
-#  an opening parenthesis, that introduce additional information about the part
-#  of a property that cannot be proved (", cannot prove bla") or that give
-#  counterexample values ("(e.g. when bla)"), as including these in the text of
-#  the message can lead to bad identification of the message category when a
+#  an opening parenthesis/bracket, that introduce additional information about
+#  the part of a property that cannot be proved (", cannot prove bla"), that
+#  give counterexample values ("(e.g. when bla)"), or that give an explanation
+#  ("[possible explanation: bla]") as including these in the text of the
+#  message can lead to bad identification of the message category when a
 #  variable name coincides with some substrings that are searched in text.
 
 is_msg = re.compile(r"([\w-]*\.ad.?):(\d*):\d*:" +
-                    r" (info|warning|low|medium|high)?(: )?([^(,]*)(.*)?$")
+                    r" (info|warning|low|medium|high)?(: )?([^(,[]*)(.*)?$")
 is_mark = re.compile(r"@(\w*):(\w*)")
 
 
@@ -334,6 +335,10 @@ def check_marks(strlist):
             return 'DISCRIMINANT_CHECK'
         elif 'tag check' in text:
             return 'TAG_CHECK'
+        elif 'initialization check' in text:
+            return 'INIT_BY_PROOF'
+        elif 'null exclusion check' in text:
+            return 'NULL_EXCLUSION'
         elif 'default initial condition' in text:
             return 'DEFAULT_INITIAL_CONDITION'
         elif 'initial condition' in text:
@@ -420,7 +425,9 @@ def check_marks(strlist):
                        "WEAKER_PRE",
                        "STRONGER_POST",
                        "WEAKER_CLASSWIDE_PRE",
-                       "STRONGER_CLASSWIDE_POST")
+                       "STRONGER_CLASSWIDE_POST",
+                       "INIT_BY_PROOF",
+                       "NULL_EXCLUSION")
 
     def is_negative_result(result):
         """Returns True if the given result corresponds to a negative one"""
@@ -640,10 +647,6 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
     # running the tool:
     # process = open("test.out", 'r').read()
 
-    # Check that the exit status is as expected
-    if exit_status is not None and process.status != exit_status:
-        print "Unexpected exit status of", process.status
-
     # Check marks in source code and print the command output sorted
     strlist = str.splitlines(process.out)
     # Replace line above by the one below for testing the scripts without
@@ -659,10 +662,17 @@ def gnatprove(opt=["-P", default_project], no_fail=False, no_output=False,
 
     check_marks(strlist)
     check_fail(strlist, no_fail)
+    # Check that the exit status is as expected
+    if exit_status is not None and process.status != exit_status:
+        print "Unexpected exit status of", process.status
+        failure = True
+    else:
+        failure = False
+
     if filter_output is not None:
         strlist = grep(filter_output, strlist, invert=True)
 
-    if not no_output:
+    if not no_output or failure:
         if sort_output:
             print_sorted(strlist)
         else:
@@ -771,6 +781,14 @@ def do_flow_only(opt=None, procs=parallel_procs, no_fail=False):
     """
 
     do_flow(opt, procs, no_fail, mode="flow")
+
+
+def no_crash():
+    """
+    Only attempt to detect crashes and other unexpected behavior. No expected
+    tool output is filed for such tests.
+    """
+    gnatprove(no_output=True, exit_status=0)
 
 
 def clean():

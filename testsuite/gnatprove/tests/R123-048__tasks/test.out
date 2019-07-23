@@ -1,38 +1,32 @@
 psu_monitoring.adb:69:41: info: float overflow check proved (CVC4: 1 VC)
-psu_monitoring.adb:79:14: info: initialization of "within_limits" proved
+psu_monitoring.adb:86:07: info: initialization of "expanded_lower_threshold" proved
+psu_monitoring.adb:87:07: info: initialization of "expanded_upper_threshold" proved
 psu_monitoring.adb:91:41: info: float overflow check proved (CVC4: 1 VC)
 psu_monitoring.adb:91:94: info: float overflow check proved (Interval)
 psu_monitoring.adb:98:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:98:75: info: float overflow check proved (Interval)
 psu_monitoring.adb:98:75: info: range check proved (Interval)
 psu_monitoring.adb:100:75: info: float overflow check proved (Interval)
-psu_monitoring.adb:100:75: medium: range check might fail (e.g. when expanded_lower_threshold = 0.0 and monitor = (config => (monitoring_mode => threshold_based, maximum_deviation => 0.0, others => ?), timer => ?, current_state => reset, next_state => reset))
+psu_monitoring.adb:100:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:104:75: info: float overflow check proved (Interval)
-psu_monitoring.adb:104:75: medium: range check might fail (e.g. when monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => reset, next_state => reset))
+psu_monitoring.adb:104:75: medium: range check might fail [possible explanation: subprogram at psu_monitoring.ads:94 should mention monitor in a precondition]
 psu_monitoring.adb:106:75: info: division check proved (CVC4: 1 VC)
 psu_monitoring.adb:106:75: info: float overflow check proved (Interval)
 psu_monitoring.adb:106:75: info: range check proved (Interval)
-psu_monitoring.adb:110:32: info: initialization of "expanded_lower_threshold" proved
-psu_monitoring.adb:110:76: info: initialization of "expanded_upper_threshold" proved
-psu_monitoring.adb:115:14: info: initialization of "within_expanded_limits" proved
 psu_monitoring.adb:122:22: medium: assertion might fail, cannot prove all_config_is_set (e.g. when all_config_is_set = False)
-psu_monitoring.adb:135:16: medium: precondition might fail (e.g. when monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => startup, next_state => startup))
-psu_monitoring.adb:158:16: medium: precondition might fail (e.g. when monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => active, next_state => active))
-psu_monitoring.adb:166:16: medium: precondition might fail (e.g. when monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => alert, next_state => alert))
-psu_monitoring.adb:197:22: medium: assertion might fail, cannot prove U_C1 in Float_Signed1000 (e.g. when U_C1 = -1.4411519E+20)
-psu_monitoring.adb:198:22: medium: assertion might fail, cannot prove I_L1 in Float_Signed1000 (e.g. when I_L1 = -1.4411521E+20)
-psu_monitoring.adb:199:22: medium: assertion might fail, cannot prove U_C2 in Float_Signed1000 (e.g. when U_C2 = -1.2800001E+5)
-psu_monitoring.adb:200:22: medium: assertion might fail, cannot prove I_L2 in Float_Signed1000 (e.g. when I_L2 = -1.0000001E+3)
-psu_monitoring.adb:217:10: warning: assuming "Put_Line" has no effect on global items
-psu_monitoring.adb:217:10: warning: no Global contract available for "Put_Line"
-psu_monitoring.adb:235:23: info: initialization of "next_time" proved
-psu_monitoring.adb:236:22: info: initialization of "next_time" proved
+psu_monitoring.adb:135:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:158:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:166:16: medium: precondition might fail, cannot prove monitor.config.maximum_deviation /= 0.0 [possible explanation: subprogram at psu_monitoring.ads:88 should mention monitor in a precondition]
+psu_monitoring.adb:197:22: medium: assertion might fail, cannot prove U_C1 in Float_Signed1000 (e.g. when U_C1 = -1.8446746E+19)
+psu_monitoring.adb:198:22: medium: assertion might fail, cannot prove I_L1 in Float_Signed1000 (e.g. when I_L1 = -1.8446746E+19)
+psu_monitoring.adb:199:22: medium: assertion might fail, cannot prove U_C2 in Float_Signed1000 (e.g. when U_C2 = -1.8446746E+19)
+psu_monitoring.adb:200:22: medium: assertion might fail, cannot prove I_L2 in Float_Signed1000 (e.g. when I_L2 = -1.8446746E+19)
 psu_monitoring.ads:74:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 psu_monitoring.ads:74:09: info: nontermination of task proved (CVC4: 1 VC)
 psu_monitoring.ads:75:39: info: range check proved (CVC4: 2 VC)
-psu_monitoring.ads:89:47: medium: postcondition might fail, cannot prove monitor.timer < Milliseconds (200) (e.g. when monitor = (config => (monitoring_mode => threshold_based, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => reset, next_state => startup))
+psu_monitoring.ads:89:47: medium: postcondition might fail, cannot prove monitor.timer < Milliseconds (200)
 psu_monitoring.ads:92:07: info: complete contract cases proved (CVC4: 1 VC)
 psu_monitoring.ads:92:07: info: disjoint contract cases proved (CVC4: 1 VC)
-psu_monitoring.ads:92:70: info: contract case proved (CVC4: 2 VC)
+psu_monitoring.ads:92:70: info: contract case proved (CVC4: 1 VC; Trivial: 2 VC)
 psu_monitoring.ads:92:132: info: float overflow check proved (CVC4: 1 VC)
-psu_monitoring.ads:93:75: medium: contract case might fail (e.g. when is_within_limits'Result = True and monitor = (config => (monitoring_mode => mean_based, mean => 0.0, maximum_deviation => 0.0, lower_threshold => 0.0, upper_threshold => 0.0, settling_tolerance_expansion => 0.0, others => ?), timer => ?, current_state => reset, next_state => reset) and signal_value = 0.0)
+psu_monitoring.ads:93:75: medium: contract case might fail (e.g. when signal_value = 1.0000302E+0)

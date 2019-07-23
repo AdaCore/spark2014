@@ -1,23 +1,11 @@
 dynamic_in_post.adb:2:14: warning: subprogram "Test_1" has no effect
-dynamic_in_post.adb:3:57: info: range check proved (CVC4: 4 VC)
-dynamic_in_post.adb:3:57: info: range check proved (CVC4: 4 VC), in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:22: medium: assertion might fail, cannot prove Get_Last (X) = Get_Last (Y), in call inlined at dynamic_in_post.adb:35 (e.g. when X = (2 => 'e', 3 => 'l', 4 => 'l', 5 => 'o', others => 'h') and X'First = 1 and X'Last = 5 and Y = (1 => 'y', 2 => 'o', 3 => 'u', others => 'e') and Y'First = 1 and Y'Last = 3)
-dynamic_in_post.adb:7:32: info: initialization of "X" proved
-dynamic_in_post.adb:7:32: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:35
-dynamic_in_post.adb:7:47: info: initialization of "Y" proved
-dynamic_in_post.adb:7:47: info: initialization of "Y" proved, in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:3:57: info: range check proved (CVC4: 8 VC)
+dynamic_in_post.adb:3:57: info: range check proved (CVC4: 8 VC), in call inlined at dynamic_in_post.adb:35
+dynamic_in_post.adb:7:22: medium: assertion might fail, cannot prove Get_Last (X) = Get_Last (Y), in call inlined at dynamic_in_post.adb:35 (e.g. when X = (1 => 'h', 2 => 'e', 3 => 'l', 4 => 'l', others => 'o') and Y = (1 => 'y', 2 => 'o', 3 => 'u', others => 'l'))
 dynamic_in_post.adb:10:14: warning: subprogram "Test_2" has no effect
 dynamic_in_post.adb:12:22: info: postcondition proved (CVC4: 1 VC)
-dynamic_in_post.adb:12:40: info: range check proved (CVC4: 4 VC)
-dynamic_in_post.adb:19:32: info: initialization of "X" proved
-dynamic_in_post.adb:20:32: info: initialization of "Y" proved
-dynamic_in_post.adb:22:22: info: initialization of "A" proved
+dynamic_in_post.adb:12:40: info: range check proved (CVC4: 8 VC)
 dynamic_in_post.adb:22:22: medium: assertion might fail, cannot prove A = B (e.g. when A = 5 and B = 3)
-dynamic_in_post.adb:22:26: info: initialization of "B" proved
 dynamic_in_post.adb:25:14: warning: subprogram "Test_3" has no effect
-dynamic_in_post.adb:29:13: info: range check proved (CVC4: 8 VC), in call inlined at dynamic_in_post.adb:37
-dynamic_in_post.adb:29:26: info: initialization of "X" proved
-dynamic_in_post.adb:29:26: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37
+dynamic_in_post.adb:29:13: info: range check proved (CVC4: 16 VC), in call inlined at dynamic_in_post.adb:37
 dynamic_in_post.adb:30:25: info: assertion proved (CVC4: 1 VC), in call inlined at dynamic_in_post.adb:37
-dynamic_in_post.adb:30:25: info: initialization of "X" proved
-dynamic_in_post.adb:30:25: info: initialization of "X" proved, in call inlined at dynamic_in_post.adb:37

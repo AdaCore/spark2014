@@ -1,4 +1,6 @@
-p1-p2.adb:2:04: info: initialization of "X2" constituent of "State2" proved
-p1-p2.adb:6:37: high: "P1.State1" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(13))
-p1-p2.adb:6:45: "P1.State1" is referenced in expression function but missing from the Global
-gnatprove: error during flow analysis and proof
+p1-p2.adb:6:37: high: "P1.State1" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14))
+p1-p2.adb:6:45: info: data dependencies proved
+p1-p2.ads:3:03: info: flow dependencies proved
+p1-p2.ads:5:35: info: data dependencies proved
+p1.ads:3:03: info: flow dependencies proved
+p1.ads:5:25: info: data dependencies proved

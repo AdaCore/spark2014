@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2014-2018, Altran UK Limited                 --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -30,6 +30,7 @@ with ALI;                        use ALI;
 with Namet;                      use Namet;
 with Osint;                      use Osint;
 with Output;                     use Output;
+with Sem_Aux;                    use Sem_Aux;
 with Sem_Util;                   use Sem_Util;
 
 with Call;                       use Call;
@@ -40,6 +41,7 @@ with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Frame_Conditions;     use SPARK_Frame_Conditions;
 with SPARK_Xrefs;                use SPARK_Xrefs;
 
+with Common_Iterators;           use Common_Iterators;
 with Flow_Refinement;            use Flow_Refinement;
 with Flow_Utility;               use Flow_Utility;
 with Graphs;
@@ -50,6 +52,7 @@ use Flow_Generated_Globals.ALI_Serialization;
 
 with Flow_Generated_Globals.Phase_2.Read;
 with Flow_Generated_Globals.Phase_2.Visibility;
+use Flow_Generated_Globals.Phase_2.Visibility;
 
 package body Flow_Generated_Globals.Phase_2 is
 
@@ -92,7 +95,7 @@ package body Flow_Generated_Globals.Phase_2 is
    ----------------------------------------------------
 
    Current_Task : constant Entity_Name :=
-     To_Entity_Name ("ada__task_identification__current_task");
+     To_Entity_Name (Child_Prefix & "ada__task_identification__current_task");
    --  This is used to detect calls to Ada.Task_Identification.Current_Task
 
    --------------------
@@ -352,6 +355,53 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Note: subprogram may still not return because of a call to non-returning
    --  subprogram.
 
+   function Down_Project
+     (Var    : Entity_Name;
+      Caller : Entity_Name)
+      return Name_Sets.Set;
+   --  If Var is an abstract state whose refinement is visible in the body of
+   --  Caller, then return the state constituents; otherwise, return a
+   --  singleton set with Var itself.
+
+   function Down_Project
+     (Vars   : Name_Sets.Set;
+      Caller : Entity_Name)
+      return Name_Sets.Set;
+   --  Same as above but lifted to sets of variables
+
+   function Down_Project
+     (G      : Global_Names;
+      Caller : Entity_Name)
+      return Global_Names;
+   --  Same as above but lifted to sets with proof_ins, inputs and outputs
+
+   procedure Up_Project (Vars      :     Name_Sets.Set;
+                         Scope     :     Name_Scope;
+                         Projected : out Name_Sets.Set;
+                         Partial   : out Name_Sets.Set);
+   --  Opposite of Down_Project: constituents from Vars that are no longer
+   --  visible at Scope are converted to their encapsulating abstract states
+   --  and returned in the Partial parameter; objects that remain visible are
+   --  returned in Projected.
+
+   --  ??? This routine historically belongs to Flow_Refinement, but we can't
+   --  have it there and keep name visibility a private child of Phase_2.
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Scope          :     Name_Scope);
+   --  Same as above but lifter to sets with proof_ins, inputs and outputs
+
+   function Is_Fully_Contained (State   : Entity_Name;
+                                Outputs : Name_Sets.Set;
+                                Scop    : Name_Scope)
+                                return Boolean;
+   --  Returns True iff all constituents of State that are visible when
+   --  up-projecting to Scop are among Outputs.
+
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
+   --  Returns the constituents of AS if it is an abstract state, AS otherwise
+
    ----------------------------------------------------------------------
    --  Debug routines
    ----------------------------------------------------------------------
@@ -541,14 +591,19 @@ package body Flow_Generated_Globals.Phase_2 is
       return Local_Variables;
    end GG_Get_Local_Variables;
 
+   --------------------
+   -- GG_Has_Globals --
+   --------------------
+
+   function GG_Has_Globals (E : Entity_Id) return Boolean is
+     (Global_Contracts.Contains (To_Entity_Name (E)));
+
    -------------------
    -- Is_Predefined --
    -------------------
 
    function Is_Predefined (EN : Entity_Name) return Boolean is
-   begin
-      return Match (Predefined, To_String (EN));
-   end Is_Predefined;
+     (Match (Predefined, Strip_Child_Prefixes (To_String (EN))));
 
    -------------
    -- GG_Read --
@@ -1229,12 +1284,14 @@ package body Flow_Generated_Globals.Phase_2 is
                        (Inserted
                           or else
                         Part_State_Map (Part_Pos) = State);
+
+                     State_Abstractions.Include (State);
                   end;
 
                when EK_Remote_States =>
                   Serialize (State_Abstractions);
 
-               when EK_Predef_Init_Vars =>
+               when EK_Predef_Init_Entities =>
                   Serialize (Initialized_Vars_And_States);
 
                when EK_Ghost_Entities =>
@@ -1421,8 +1478,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_Flow_Scope =>
                   declare
-                     use Flow_Generated_Globals.Phase_2.Visibility;
-
                      Entity : Entity_Name;
                      Info   : Name_Info_T;
 
@@ -1937,21 +1992,6 @@ package body Flow_Generated_Globals.Phase_2 is
 
             function Collect (Caller : Entity_Name) return Global_Names;
 
-            function Down_Project
-              (Var    : Entity_Name;
-               Caller : Entity_Name)
-               return Name_Sets.Set;
-
-            function Down_Project
-              (Vars   : Name_Sets.Set;
-               Caller : Entity_Name)
-               return Name_Sets.Set;
-
-            function Down_Project
-              (G      : Global_Names;
-               Caller : Entity_Name)
-               return Global_Names;
-
             --------------------
             -- Callee_Globals --
             --------------------
@@ -2060,72 +2100,8 @@ package body Flow_Generated_Globals.Phase_2 is
                        Outputs   => Result_Outputs);
             end Collect;
 
-            ------------------
-            -- Down_Project --
-            ------------------
-
-            function Down_Project
-              (G      : Global_Names;
-               Caller : Entity_Name)
-               return Global_Names
-            is
-              (Proof_Ins => Down_Project (G.Proof_Ins, Caller),
-               Inputs    => Down_Project (G.Inputs,    Caller),
-               Outputs   => Down_Project (G.Outputs,   Caller));
-
-            function Down_Project
-              (Vars   : Name_Sets.Set;
-               Caller : Entity_Name)
-               return Name_Sets.Set
-            is
-               Projected : Name_Sets.Set;
-            begin
-               for Var of Vars loop
-                  Projected.Union (Down_Project (Var, Caller));
-               end loop;
-
-               return Projected;
-            end Down_Project;
-
-            function Down_Project
-              (Var    : Entity_Name;
-               Caller : Entity_Name)
-               return Name_Sets.Set
-            is
-               use Flow_Generated_Globals.Phase_2.Visibility;
-
-               Target_Scope : constant Name_Scope :=
-                 (Ent => Caller, Part => Body_Part);
-
-            begin
-               if Is_Heap_Variable (Var) then
-                  return Name_Sets.To_Set (Var);
-               else
-                  if State_Abstractions.Contains (Var) then
-
-                     --  ??? recursive call to Down_Project?
-
-                     if State_Refinement_Is_Visible (Var, Target_Scope) then
-                        return State_Comp_Map (Var);
-                     elsif Part_Of_Is_Visible (Var, Target_Scope) then
-                        if State_Part_Map.Contains (Var) then
-                           return State_Part_Map (Var);
-                        else
-                           return Name_Sets.To_Set (Var);
-                        end if;
-                     else
-                        return Name_Sets.To_Set (Var);
-                     end if;
-                  else
-                     return Name_Sets.To_Set (Var);
-                  end if;
-               end if;
-            end Down_Project;
-
             --  Local_Variables
             Update : Flow_Names;
-
-            use Flow_Generated_Globals.Phase_2.Visibility;
 
          --  Start of processing for Fold
 
@@ -2634,20 +2610,37 @@ package body Flow_Generated_Globals.Phase_2 is
    -- Get_Constituents --
    ----------------------
 
-   function Get_Constituents (E : Entity_Name) return Name_Sets.Set
-   is (State_Comp_Map (E));
+   function Get_Constituents (E : Entity_Name) return Name_Sets.Set is
+      C : constant Name_Graphs.Cursor := State_Comp_Map.Find (E);
+   begin
+      if Name_Graphs.Has_Element (C) then
+         return State_Comp_Map (C);
+      else
+         return State_Part_Map (E).Union (Name_Sets.To_Set (E));
+      end if;
+   end Get_Constituents;
 
    ----------------------------
    -- GG_Encapsulating_State --
    ----------------------------
 
    function GG_Encapsulating_State (EN : Entity_Name) return Any_Entity_Name is
-      C : constant Name_Maps.Cursor := Comp_State_Map.Find (EN);
+      C : Name_Maps.Cursor;
       use Name_Maps;
    begin
-      return (if Has_Element (C)
-              then Element (C)
-              else Null_Entity_Name);
+      C := Comp_State_Map.Find (EN);
+
+      if Has_Element (C) then
+         return Element (C);
+      end if;
+
+      C := Part_State_Map.Find (EN);
+
+      if Has_Element (C) then
+         return Element (C);
+      end if;
+
+      return Null_Entity_Name;
    end GG_Encapsulating_State;
 
    ---------------------------
@@ -2709,8 +2702,8 @@ package body Flow_Generated_Globals.Phase_2 is
    -- GG_Is_Constituent --
    -----------------------
 
-   function GG_Is_Constituent (EN : Entity_Name) return Boolean
-     renames Comp_State_Map.Contains;
+   function GG_Is_Constituent (EN : Entity_Name) return Boolean is
+     (Comp_State_Map.Contains (EN) or else Part_State_Map.Contains (EN));
 
    --------------------------------------
    -- GG_Is_Initialized_At_Elaboration --
@@ -2993,31 +2986,29 @@ package body Flow_Generated_Globals.Phase_2 is
    function Refinement_Exists (AS : Entity_Id) return Boolean is
      (State_Comp_Map.Contains (To_Entity_Name (AS)));
 
-   function Refinement_Exists (AS : Entity_Name) return Boolean
-     renames State_Comp_Map.Contains;
-
    ------------------------------
    -- GG_Expand_Abstract_State --
    ------------------------------
 
-   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set
-   is
-   begin
-      if GG_Is_Abstract_State (AS)
-        and then Refinement_Exists (AS)
-      then
-         declare
-            Constituents : Name_Sets.Set;
+   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set is
+      Constituents : Name_Sets.Set;
 
-         begin
-            for Constituent of Get_Constituents (AS) loop
-               Constituents.Union (GG_Expand_Abstract_State (Constituent));
-            end loop;
-            return Constituents;
-         end;
+   begin
+      if State_Comp_Map.Contains (AS) then
+         for C of State_Comp_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+      elsif State_Part_Map.Contains (AS) then
+         for C of State_Part_Map (AS) loop
+            Constituents.Union (GG_Expand_Abstract_State (C));
+         end loop;
+
+         Constituents.Insert (AS);
       else
-         return Name_Sets.To_Set (AS);
+         Constituents.Insert (AS);
       end if;
+
+      return Constituents;
    end GG_Expand_Abstract_State;
 
    --------------------------
@@ -3336,7 +3327,7 @@ package body Flow_Generated_Globals.Phase_2 is
       function Compare_Names return Boolean is
         (To_String (Left.Name) < To_String (Right.Name));
 
-      --  Local variables:
+      --  Local variables
       Has_Left_Node  : constant Boolean := Present (Left.Node);
       Has_Right_Node : constant Boolean := Present (Right.Node);
 
@@ -3451,5 +3442,222 @@ package body Flow_Generated_Globals.Phase_2 is
             Edge_Info => EDI'Access);
       end if;
    end Print;
+
+   ------------------
+   -- Down_Project --
+   ------------------
+
+   function Down_Project
+     (G      : Global_Names;
+      Caller : Entity_Name)
+               return Global_Names
+   is
+     (Proof_Ins => Down_Project (G.Proof_Ins, Caller),
+      Inputs    => Down_Project (G.Inputs,    Caller),
+      Outputs   => Down_Project (G.Outputs,   Caller));
+
+   function Down_Project
+     (Vars   : Name_Sets.Set;
+      Caller : Entity_Name)
+               return Name_Sets.Set
+   is
+      Projected : Name_Sets.Set;
+   begin
+      for Var of Vars loop
+         Projected.Union (Down_Project (Var, Caller));
+      end loop;
+
+      return Projected;
+   end Down_Project;
+
+   function Down_Project
+     (Var    : Entity_Name;
+      Caller : Entity_Name)
+      return Name_Sets.Set
+   is
+      Target_Scope : constant Name_Scope :=
+        (Ent => Caller, Part => Body_Part);
+
+   begin
+      if Is_Heap_Variable (Var) then
+         return Name_Sets.To_Set (Var);
+      else
+         if State_Abstractions.Contains (Var) then
+
+            --  ??? recursive call to Down_Project?
+
+            if State_Refinement_Is_Visible (Var, Target_Scope) then
+               return State_Comp_Map (Var);
+            elsif Part_Of_Is_Visible (Var, Target_Scope) then
+               if State_Part_Map.Contains (Var) then
+                  return Name_Sets.Union
+                    (State_Part_Map (Var),
+                     Name_Sets.To_Set (Var));
+               else
+                  return Name_Sets.To_Set (Var);
+               end if;
+            else
+               return Name_Sets.To_Set (Var);
+            end if;
+         else
+            return Name_Sets.To_Set (Var);
+         end if;
+      end if;
+   end Down_Project;
+
+   ------------------------
+   -- Is_Fully_Contained --
+   ------------------------
+
+   function Is_Fully_Contained (State   : Entity_Name;
+                                Outputs : Name_Sets.Set;
+                                Scop    : Name_Scope)
+                                return Boolean
+   is
+     (Name_Sets.Is_Subset (Subset => Down_Project (State, Scop.Ent),
+                           Of_Set => Outputs));
+
+   ----------------
+   -- Up_Project --
+   ----------------
+
+   procedure Up_Project (Vars       :     Name_Sets.Set;
+                         Scope      :     Name_Scope;
+                         Projected  : out Name_Sets.Set;
+                         Partial    : out Name_Sets.Set)
+   is
+   begin
+      Projected.Clear;
+      Partial.Clear;
+
+      for Var of Vars loop
+         if GG_Is_Constituent (Var) then
+
+            --  We project depending on whether the constituent is visible (and
+            --  not its enclosing state refinement), because when projecting
+            --  to a private part of a package spec where that constituent
+            --  is declared (as a Part_Of an abstract state) we want the
+            --  constituent, which is the most precise result we can get.
+
+            declare
+               State : constant Entity_Name := GG_Encapsulating_State (Var);
+
+            begin
+               if State_Refinement_Is_Visible (State, Scope)
+                 or else (GG_Is_Part_Of_Constituent (Var)
+                          and then Part_Of_Is_Visible (State, Scope))
+               then
+                  Projected.Include (Var);
+               else
+                  Partial.Include (State);
+               end if;
+            end;
+         else
+            Projected.Include (Var);
+         end if;
+      end loop;
+   end Up_Project;
+
+   procedure Up_Project (Vars           :     Global_Names;
+                         Projected_Vars : out Global_Names;
+                         Scope          :     Name_Scope)
+   is
+      Projected, Partial : Name_Sets.Set;
+
+   begin
+      Up_Project (Vars.Inputs, Scope, Projected, Partial);
+      Projected_Vars.Inputs := Projected or Partial;
+
+      Up_Project (Vars.Outputs, Scope, Projected, Partial);
+      for State of Partial loop
+         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
+            Projected_Vars.Inputs.Include (State);
+         end if;
+      end loop;
+      Projected_Vars.Outputs := Projected or Partial;
+
+      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
+      Projected_Vars.Proof_Ins :=
+        (Projected or Partial) -
+        (Projected_Vars.Inputs or Projected_Vars.Outputs);
+   end Up_Project;
+
+   ---------------------------
+   -- Expand_Abstract_State --
+   ---------------------------
+
+   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set is
+   begin
+      --  Abstract state is expanded as much as possible using refinement
+      --  recorded in the ALI file.
+
+      if Is_Abstract_State (F) then
+         declare
+            State : constant Entity_Name :=
+              (if F.Kind = Direct_Mapping
+               then To_Entity_Name (F.Node)
+               else F.Name);
+
+            Expanded : Flow_Id_Sets.Set;
+
+         begin
+            if State_Comp_Map.Contains (State) then
+               for C of State_Comp_Map (State) loop
+                  Expanded.Union (Expand_Abstract_State (Get_Flow_Id (C)));
+               end loop;
+            elsif State_Part_Map.Contains (State) then
+               for C of State_Part_Map (State) loop
+                  Expanded.Union (Expand_Abstract_State (Get_Flow_Id (C)));
+               end loop;
+
+               Expanded.Insert (Magic_String_Id (State));
+            else
+               --  Expand Part_Of constituents that are not known to "generated
+               --  globals" machinery, e.g. because they appear in the (down
+               --  projected) Pre/Post of subprograms from external units.
+
+               if F.Kind = Direct_Mapping then
+                  for C of Iter (Part_Of_Constituents (F.Node)) loop
+                     Expanded.Union
+                       (Expand_Abstract_State (Direct_Mapping_Id (C)));
+                  end loop;
+               end if;
+
+               Expanded.Insert (Magic_String_Id (State));
+            end if;
+
+            return Expanded;
+         end;
+
+      --  Other objects are merely converted to the proof view convention
+
+      else
+         case F.Kind is
+            when Direct_Mapping =>
+               declare
+                  E : constant Entity_Id := Get_Direct_Mapping_Id (F);
+
+               begin
+                  --  Entities in SPARK are represented by Entity_Id; those
+                  --  not in SPARK are represented by Entity_Name, because
+                  --  they behave as "blobs".
+
+                  return Flow_Id_Sets.To_Set
+                    (if Entity_In_SPARK (E)
+                     then Change_Variant (F, Normal_Use)
+                     else Magic_String_Id (To_Entity_Name (E)));
+               end;
+
+            when Magic_String =>
+               return Flow_Id_Sets.To_Set (Change_Variant (F, Normal_Use));
+
+            when Null_Value =>
+               return Flow_Id_Sets.Empty_Set;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end if;
+   end Expand_Abstract_State;
 
 end Flow_Generated_Globals.Phase_2;

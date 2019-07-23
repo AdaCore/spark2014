@@ -9,16 +9,12 @@ perm-lemma_subprograms.adb:19:15: info: precondition proved
 perm-lemma_subprograms.adb:19:32: info: precondition proved
 perm-lemma_subprograms.adb:25:23: info: precondition proved
 perm-lemma_subprograms.adb:32:10: info: precondition proved
-perm-lemma_subprograms.adb:32:18: info: initialization of "B" proved
 perm-lemma_subprograms.adb:32:21: info: precondition proved
 perm-lemma_subprograms.adb:34:13: info: index check proved
-perm-lemma_subprograms.adb:34:16: info: initialization of "B" proved
 perm-lemma_subprograms.adb:35:10: info: precondition proved
 perm-lemma_subprograms.adb:35:18: info: precondition proved
-perm-lemma_subprograms.adb:35:35: info: initialization of "B" proved
 perm-lemma_subprograms.adb:36:10: info: precondition proved
 perm-lemma_subprograms.adb:36:19: info: precondition proved
-perm-lemma_subprograms.adb:36:45: info: initialization of "B" proved
 perm-lemma_subprograms.ads:6:20: info: index check proved
 perm-lemma_subprograms.ads:8:39: info: index check proved
 perm-lemma_subprograms.ads:8:47: info: index check proved

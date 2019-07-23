@@ -1,7 +1,6 @@
 types_with_invariants.adb:5:18: info: index check proved (CVC4: 2 VC)
 types_with_invariants.adb:15:22: info: assertion proved (CVC4: 1 VC)
-types_with_invariants.adb:15:22: info: initialization of "T.Val" proved
-types_with_invariants.adb:16:22: info: assertion proved (CVC4: 2 VC)
+types_with_invariants.adb:16:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 types_with_invariants.adb:17:25: info: precondition proved (CVC4: 1 VC)
 types_with_invariants.adb:18:22: info: assertion proved (CVC4: 1 VC)
 types_with_invariants.adb:18:44: info: invariant check proved (CVC4: 1 VC)
@@ -13,14 +12,14 @@ types_with_invariants.adb:26:22: info: precondition proved (CVC4: 1 VC)
 types_with_invariants.adb:27:22: info: assertion proved (CVC4: 1 VC)
 types_with_invariants.adb:27:44: info: invariant check proved (CVC4: 1 VC)
 types_with_invariants.adb:27:46: info: precondition proved (CVC4: 1 VC)
-types_with_invariants.adb:28:07: info: precondition proved (CVC4: 1 VC)
+types_with_invariants.adb:28:07: info: precondition proved (Trivial: 1 VC)
 types_with_invariants.ads:6:13: info: invariant check proved (CVC4: 1 VC)
-types_with_invariants.ads:9:14: info: invariant check proved (CVC4: 1 VC)
+types_with_invariants.ads:9:14: info: invariant check proved (CVC4: 1 VC; Trivial: 2 VC)
 types_with_invariants.ads:23:09: info: invariant check proved on default value (CVC4: 1 VC)
 types_with_invariants.ads:33:31: info: overflow check proved (CVC4: 1 VC)
 types_with_invariants.ads:33:31: info: range check proved (CVC4: 1 VC)
-types_with_invariants.ads:37:09: info: invariant check proved on default value (CVC4: 1 VC)
-types_with_invariants.ads:39:09: info: invariant check proved on default value (CVC4: 1 VC)
+types_with_invariants.ads:37:09: info: invariant check proved on default value (CVC4: 1 VC; Trivial: 1 VC)
+types_with_invariants.ads:39:09: info: invariant check proved on default value (CVC4: 1 VC; Trivial: 2 VC)
 types_with_invariants.ads:40:07: info: range check proved (CVC4: 2 VC)
 types_with_invariants.ads:44:18: info: index check proved (CVC4: 2 VC)
 types_with_invariants.ads:46:09: info: invariant check proved on default value (CVC4: 1 VC)
@@ -34,11 +33,11 @@ types_with_invariants.ads:58:09: medium: invariant check might fail on default v
 types_with_invariants.ads:59:37: medium: array index check might fail
 types_with_invariants.ads:59:87: info: index check proved (CVC4: 2 VC)
 use_types_with_invariants_no_spark.adb:5:18: info: index check proved (CVC4: 2 VC)
-use_types_with_invariants_no_spark.adb:11:22: medium: assertion might fail, cannot prove From_Integer (To_Integer (E)) = E [possible explanation: subprogram at line 8 should mention E in a precondition]
-use_types_with_invariants_no_spark.adb:11:22: medium: precondition might fail [possible explanation: subprogram at line 8 should mention E in a precondition]
+use_types_with_invariants_no_spark.adb:11:22: medium: assertion might fail, cannot prove From_Integer (To_Integer (E)) = E [possible explanation: subprogram at use_types_with_invariants_no_spark.ads:13 should mention E in a precondition]
+use_types_with_invariants_no_spark.adb:11:22: medium: precondition might fail, cannot prove X > Integer'first
 use_types_with_invariants_no_spark.adb:11:36: info: implicit function contract not available for proof ("To_Integer" might not return)
 use_types_with_invariants_no_spark.adb:12:22: info: implicit function contract not available for proof ("To_Integer" might not return)
-use_types_with_invariants_no_spark.adb:12:22: medium: assertion might fail, cannot prove To_Integer (My_Integer'(From_Integer (I))) = I (e.g. when I = 1) [possible explanation: subprogram at line 8 should mention I in a precondition]
+use_types_with_invariants_no_spark.adb:12:22: medium: assertion might fail, cannot prove To_Integer (My_Integer'(From_Integer (I))) = I (e.g. when I = 1) [possible explanation: subprogram at use_types_with_invariants_no_spark.ads:13 should mention I in a precondition]
 use_types_with_invariants_no_spark.adb:12:46: info: precondition proved (CVC4: 1 VC)
 use_types_with_invariants_no_spark.ads:21:07: info: range check proved (CVC4: 2 VC)
 use_types_with_invariants_no_spark.ads:25:19: info: index check proved (CVC4: 2 VC)

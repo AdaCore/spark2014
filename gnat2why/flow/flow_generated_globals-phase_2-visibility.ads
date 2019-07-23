@@ -7,7 +7,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                  Copyright (C) 2018, Altran UK Limited                   --
+--                Copyright (C) 2018-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -47,6 +47,10 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
    procedure Connect_Name_Scopes;
    --  Creates edges in the visibility graph
 
+   ----------------------------------------------------------------------------
+   --  Utilities
+   ----------------------------------------------------------------------------
+
    function State_Refinement_Is_Visible
      (State : Entity_Name;
       From  : Name_Scope)
@@ -58,18 +62,6 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
       From  : Name_Scope)
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
-
-   procedure Up_Project (Vars      :     Name_Sets.Set;
-                         Scope     :     Name_Scope;
-                         Projected : out Name_Sets.Set;
-                         Partial   : out Name_Sets.Set);
-   --  ??? This routine historically belongs to Flow_Refinement, but we can't
-   --  have it there and keep this a private child of Phase_2.
-   --  Note that here we only have the Caller parameter and not a full scope.
-
-   procedure Up_Project (Vars           :     Global_Names;
-                         Projected_Vars : out Global_Names;
-                         Scope          :     Name_Scope);
 
 --     procedure Dump_Tree;
 --     --  Print the inter

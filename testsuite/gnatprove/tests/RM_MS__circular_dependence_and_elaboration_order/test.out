@@ -1,15 +1,15 @@
 p_14.adb:7:04: info: initialization of "P_S" constituent of "P_State" proved
-p_14.adb:19:19: info: initialization of "Global_Var" proved
+p_14.ads:4:08: info: flow dependencies proved
 p_14.ads:7:04: info: initialization of "Global_Var" proved
 p_14.ads:9:20: info: initialization of "S" proved
 q_14.adb:8:04: info: initialization of "Q_S" constituent of "Q_State" proved
-q_14.adb:14:10: info: initialization of "V" proved
-q_14.adb:15:17: info: initialization of "V" proved
+q_14.adb:11:07: info: initialization of "V" proved
 q_14.adb:15:19: info: overflow check proved (CVC4: 1 VC)
+q_14.ads:4:08: info: flow dependencies proved
 q_14.ads:8:20: info: initialization of "S" proved
 r_14.adb:10:04: info: initialization of "R_S" constituent of "State" proved
 r_14.adb:16:21: info: overflow check proved (CVC4: 1 VC)
-r_14.adb:24:15: info: initialization of "R_S" constituent of "State" proved
 r_14.adb:24:34: info: overflow check proved (CVC4: 1 VC)
-r_14.adb:26:14: info: initialization of "R_S" constituent of "State" proved
 r_14.adb:26:18: info: overflow check proved (CVC4: 1 VC)
+r_14.ads:7:08: info: flow dependencies proved
+r_14.ads:10:11: info: data dependencies proved

@@ -1,16 +1,11 @@
-foo.adb:9:16: info: initialization of "Tmp_A" proved
-foo.adb:9:16: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:26
-foo.adb:9:16: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:44
-foo.adb:10:14: info: initialization of "Tmp_A" proved
-foo.adb:10:14: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:26
-foo.adb:10:14: info: initialization of "Tmp_A" proved, in call inlined at foo.adb:44
-foo.adb:18:16: info: initialization of "Tmp_A" proved
+foo.adb:14:09: info: data dependencies proved
 foo.adb:18:22: info: division check proved (CVC4: 1 VC)
-foo.adb:19:14: info: initialization of "Tmp_A" proved
 foo.adb:23:23: info: initialization of "B" proved
+foo.adb:24:09: info: flow dependencies proved
 foo.adb:27:15: info: range check proved (CVC4: 2 VC)
 foo.adb:29:13: info: range check proved (CVC4: 1 VC)
 foo.adb:33:23: info: initialization of "B" proved
+foo.adb:34:09: info: flow dependencies proved
 foo.adb:37:15: info: range check proved (CVC4: 2 VC)
 foo.adb:39:13: info: range check proved (CVC4: 1 VC)
 foo.adb:42:23: info: initialization of "A" proved

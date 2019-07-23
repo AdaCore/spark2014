@@ -1,2 +1,2 @@
 subtype_check.ads:6:12: info: range check proved (CVC4: 2 VC)
-subtype_check.ads:12:24: medium: range check might fail
+subtype_check.ads:14:24: medium: range check might fail

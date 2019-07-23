@@ -1,0 +1,26 @@
+a-cforse.ads:66:06: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:129:09: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:142:09: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:1413:06: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:1413:06: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:1428:06: "moth.config.read_only_conf" is referenced in Post but missing from the Global, in instantiation at moth.ads:124
+a-cforse.ads:1428:06: "moth.config.read_only_conf" is referenced in Pre but missing from the Global, in instantiation at moth.ads:124
+moth-config.ads:37:08: info: data dependencies proved
+moth-config.ads:45:07: info: data dependencies proved
+moth-mailbox.adb:192:07: info: initialization of "status" proved
+moth-mailbox.adb:229:07: info: initialization of "status" proved
+moth-mailbox.adb:237:07: info: initialization of "ret" proved
+moth-mailbox.adb:354:07: info: initialization of "mbx_index" proved
+moth-scheduler.adb:290:24: info: initialization of "task_id" proved
+moth-scheduler.adb:354:07: info: initialization of "tmp_mask" proved
+moth.ads:114:10: info: flow dependencies proved
+moth.ads:141:10: info: initialization of "Model" proved
+moth.ads:190:23: info: initialization of "task_id" proved
+moth.ads:205:24: info: initialization of "task_id" proved
+moth.ads:217:28: info: initialization of "task_id" proved
+moth.ads:242:23: info: initialization of "task_id" proved
+moth.ads:292:26: info: initialization of "status" proved
+moth.ads:293:26: info: initialization of "mbx_entry" proved
+moth.ads:303:23: info: initialization of "status" proved
+moth.ads:323:20: info: initialization of "task_id" proved
+gnatprove: error during flow analysis and proof

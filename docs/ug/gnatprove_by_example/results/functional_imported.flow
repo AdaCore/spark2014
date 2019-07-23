@@ -1,2 +1,1 @@
-functional_imported.adb:7:04: info: initialization of "Max" constituent of "Max_And_Snd" proved
-functional_imported.adb:10:04: info: initialization of "Snd" constituent of "Max_And_Snd" proved
+functional_imported.ads:6:03: info: flow dependencies proved

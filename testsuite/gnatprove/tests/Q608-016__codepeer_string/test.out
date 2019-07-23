@@ -1,4 +1,3 @@
 bad.adb:4:14: warning: subprogram "P" has no effect
 bad.adb:5:25: medium: range check might fail (e.g. when X = (others => 'NUL') and X'First = 0 and X'Last = -1)
-bad.adb:12:04: info: precondition proved (CVC4: 1 VC)
-bad.adb:12:07: info: initialization of "Bad_Lo" proved
+bad.adb:12:04: info: precondition proved (Trivial: 1 VC)

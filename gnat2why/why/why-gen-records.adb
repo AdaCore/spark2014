@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,31 +23,34 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;          use Common_Containers;
-with Elists;                     use Elists;
+with Common_Containers;   use Common_Containers;
+with Elists;              use Elists;
 with GNAT.Source_Info;
-with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with Gnat2Why.Tables;            use Gnat2Why.Tables;
-with Namet;                      use Namet;
-with Nlists;                     use Nlists;
-with Sinput;                     use Sinput;
-with Snames;                     use Snames;
-with SPARK_Definition;           use SPARK_Definition;
-with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Types;           use SPARK_Util.Types;
-with Uintp;                      use Uintp;
-with VC_Kinds;                   use VC_Kinds;
-with Why.Atree.Accessors;        use Why.Atree.Accessors;
-with Why.Atree.Builders;         use Why.Atree.Builders;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Decl;               use Why.Gen.Decl;
-with Why.Gen.Expr;               use Why.Gen.Expr;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Gen.Preds;              use Why.Gen.Preds;
-with Why.Gen.Progs;              use Why.Gen.Progs;
-with Why.Gen.Terms;              use Why.Gen.Terms;
-with Why.Inter;                  use Why.Inter;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Gnat2Why.Expr;       use Gnat2Why.Expr;
+with Gnat2Why.Tables;     use Gnat2Why.Tables;
+with Namet;               use Namet;
+with Nlists;              use Nlists;
+with Sinput;              use Sinput;
+with Snames;              use Snames;
+with SPARK_Definition;    use SPARK_Definition;
+with SPARK_Util;          use SPARK_Util;
+with SPARK_Util.Types;    use SPARK_Util.Types;
+with Uintp;               use Uintp;
+with VC_Kinds;            use VC_Kinds;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Conversions;     use Why.Conversions;
+with Why.Gen.Decl;        use Why.Gen.Decl;
+with Why.Gen.Expr;        use Why.Gen.Expr;
+with Why.Gen.Init;        use Why.Gen.Init;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Gen.Preds;       use Why.Gen.Preds;
+with Why.Gen.Progs;       use Why.Gen.Progs;
+with Why.Gen.Terms;       use Why.Gen.Terms;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
 
 package body Why.Gen.Records is
 
@@ -146,7 +149,8 @@ package body Why.Gen.Records is
        elsif Is_Type (Field) then
            New_Named_Type
              (Name => Get_Name (E_Symb (Field, WNE_Private_Type)))
-       else EW_Abstract (Etype (Field)));
+       elsif Ekind (Field) = E_Discriminant then EW_Abstract (Etype (Field))
+       else EW_Init_Wrapper (Etype (Field), EW_Abstract));
    --  Compute the expected Why type of a record component. If the component is
    --  a type, it stands for the invisible fields of the type and is translated
    --  as the appropriate private type. Otherwise, return the abstract type of
@@ -220,7 +224,7 @@ package body Why.Gen.Records is
          Conjuncts : W_Expr_Array (1 .. Natural (Fields.Length));
          Count     : Natural := 0;
       begin
-         for Field of Get_Component_Set (Ty_Ext) loop
+         for Field of Fields loop
 
             --  Only consider components and part of variables
 
@@ -278,7 +282,7 @@ package body Why.Gen.Records is
    ------------------------------
 
    function Count_Fields_Not_In_Root (E : Entity_Id) return Natural is
-      Root  : constant Entity_Id := Root_Record_Type (E);
+      Root  : constant Entity_Id := Root_Retysp (E);
       Count : Natural := 0;
    begin
       if Is_Record_Type (E) then
@@ -340,7 +344,7 @@ package body Why.Gen.Records is
      (P : W_Section_Id;
       E : Entity_Id)
    is
-      Root     : constant Entity_Id := Root_Record_Type (E);
+      Root     : constant Entity_Id := Root_Retysp (E);
       Is_Root  : constant Boolean   := Root = E;
       Ty_Name  : constant W_Name_Id := To_Why_Type (E, Local => True);
       Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
@@ -363,7 +367,7 @@ package body Why.Gen.Records is
             Emit (P,
                   New_Type_Decl
                     (Name   => Ty_Name,
-                     Labels => Name_Id_Sets.Empty_Set));
+                     Labels => Symbol_Sets.Empty_Set));
          else
             Emit (P,
                   New_Type_Decl
@@ -381,23 +385,23 @@ package body Why.Gen.Records is
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_To_Base)),
                   Binders     => R_Binder,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
                   Return_Type => (if Is_Root then Abstr_Ty
                                   else EW_Abstract (Root)),
                   Def         => +A_Ident));
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                   Binders     => Binder_Array'(1 => (B_Name => R_Ident,
                                                      others => <>)),
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
                   Return_Type => Abstr_Ty,
                   Def         => +R_Ident));
          end;
@@ -412,7 +416,7 @@ package body Why.Gen.Records is
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
                   Binders     =>
                     R_Binder &
@@ -420,20 +424,20 @@ package body Why.Gen.Records is
                                                     others => <>)),
                   Return_Type => +EW_Bool_Type,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
                   Def         => +True_Term));
 
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => New_Identifier (Name => "user_eq"),
                   Return_Type => EW_Bool_Type,
                   Binders     => R_Binder &
                     Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
                                                     others => <>)),
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set));
+                  Labels      => Symbol_Sets.Empty_Set));
          end;
 
          Declare_Attributes (P, E);
@@ -484,9 +488,9 @@ package body Why.Gen.Records is
       if Is_Tagged_Type (E) then
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Tag)),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Int_Type));
       end if;
@@ -510,14 +514,14 @@ package body Why.Gen.Records is
          Emit
            (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => New_Identifier (Name => "user_eq"),
                Return_Type => EW_Bool_Type,
                Binders     => R_Binder &
                  Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
                                                  others => <>)),
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set));
+               Labels      => Symbol_Sets.Empty_Set));
       end;
 
    end Declare_Ada_Record;
@@ -535,9 +539,9 @@ package body Why.Gen.Records is
 
       Emit (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Value_Size)),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
@@ -545,9 +549,9 @@ package body Why.Gen.Records is
 
       Emit (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Object_Size)),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
@@ -555,9 +559,9 @@ package body Why.Gen.Records is
 
       Emit (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Attr_Alignment)),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Location    => No_Location,
                Return_Type => EW_Int_Type));
 
@@ -681,28 +685,28 @@ package body Why.Gen.Records is
       begin
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        =>
                     To_Local (E_Symb (Field, WNE_Attr_First_Bit)),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Int_Type));
 
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        =>
                     To_Local (E_Symb (Field, WNE_Attr_Last_Bit)),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Int_Type));
 
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        =>
                     To_Local (E_Symb (Field, WNE_Attr_Position)),
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Int_Type));
 
@@ -816,17 +820,12 @@ package body Why.Gen.Records is
          exit when No (Discr);
       end loop;
 
-      --  ??? here we need locations because otherwise counterexamples
-      --  disappear when located in the precondition of these functions. This
-      --  is a bug in Why3 as the checks for precondtions should be located
-      --  at the point of call and not at the point of declaration.
-
       Emit (Section,
             New_Function_Decl
               (Domain   => EW_Pred,
                Name     => To_Local (E_Symb (E, WNE_Range_Pred)),
-               Location => Safe_First_Sloc (E),
-               Labels   => Name_Id_Sets.Empty_Set,
+               Location => No_Location,
+               Labels   => Symbol_Sets.Empty_Set,
                Binders  => R_Binder,
                Def      => +Check_Pred));
       Pre_Cond :=
@@ -837,8 +836,8 @@ package body Why.Gen.Records is
               (Domain      => EW_Prog,
                Name        => To_Local (E_Symb (E, WNE_Range_Check_Fun)),
                Binders     => R_Binder,
-               Location    => Safe_First_Sloc (E),
-               Labels      => Name_Id_Sets.Empty_Set,
+               Location    => No_Location,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Root_Abstr,
                Pre         => Pre_Cond,
                Post        => Post));
@@ -945,7 +944,7 @@ package body Why.Gen.Records is
       -- Local Variables --
       ---------------------
 
-      Root      : constant Entity_Id     := Root_Record_Type (E);
+      Root      : constant Entity_Id     := Root_Retysp (E);
       Is_Root   : constant Boolean       := Root = E;
       Ty_Name   : constant W_Name_Id     := To_Name (WNE_Rec_Rep);
       Abstr_Ty  : constant W_Type_Id     := New_Named_Type (Name => Ty_Name);
@@ -1368,11 +1367,11 @@ package body Why.Gen.Records is
          Emit
            (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_To_Base)),
                Binders     => R_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => EW_Abstract (Root),
                Def         =>
                  New_Record_Aggregate
@@ -1380,11 +1379,11 @@ package body Why.Gen.Records is
          Emit
            (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                Binders     => From_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         =>
                  New_Record_Aggregate
@@ -1402,10 +1401,12 @@ package body Why.Gen.Records is
            New_Identifier (Name => "b", Typ => Abstr_Ty);
 
          function New_Field_Equality
-           (Field_Id, Enclosing_Id : W_Identifier_Id;
+           (Is_Discr               : Boolean;
+            Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
             Field_Type             : Entity_Id)
             return W_Pred_Id;
+         --  @param Is_Discr true if the field is a discriminant
          --  @param Field_Id why id for a component or discriminant
          --  @param Enclosing_Id why id for the appropriate top level why
          --         record field
@@ -1420,7 +1421,8 @@ package body Why.Gen.Records is
          ------------------------
 
          function New_Field_Equality
-           (Field_Id, Enclosing_Id : W_Identifier_Id;
+           (Is_Discr               : Boolean;
+            Field_Id, Enclosing_Id : W_Identifier_Id;
             Is_Private             : Boolean;
             Field_Type             : Entity_Id)
             return W_Pred_Id
@@ -1456,19 +1458,47 @@ package body Why.Gen.Records is
                                    Typ   => EW_Private_Type)));
                end;
             else
-               return +New_Ada_Equality
-                 (Typ    => Field_Type,
-                  Domain => EW_Pred,
-                  Left   =>
-                    New_Record_Access
-                      (Name  => A_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Abstract (Field_Type)),
-                  Right  =>
-                    New_Record_Access
-                      (Name  => B_Access,
-                       Field => Field_Id,
-                       Typ   => EW_Abstract (Field_Type)));
+               declare
+                  A_F_Access : constant W_Expr_Id :=
+                    (if Is_Discr then
+                        New_Record_Access
+                          (Name  => A_Access,
+                           Field => Field_Id,
+                           Typ   => EW_Abstract (Field_Type))
+                     else
+                        New_Init_Wrapper_Value_Access
+                          (Ada_Node => Empty,
+                           E        => Field_Type,
+                           Name     => New_Record_Access
+                             (Name  => A_Access,
+                              Field => Field_Id,
+                              Typ   => EW_Init_Wrapper
+                                (Field_Type, EW_Abstract)),
+                           Domain   => EW_Term));
+                  B_F_Access : constant W_Expr_Id :=
+                    (if Is_Discr then
+                        New_Record_Access
+                          (Name  => B_Access,
+                           Field => Field_Id,
+                           Typ   => EW_Abstract (Field_Type))
+                     else
+                        New_Init_Wrapper_Value_Access
+                          (Ada_Node => Empty,
+                           E        => Field_Type,
+                           Name     => New_Record_Access
+                             (Name  => B_Access,
+                              Field => Field_Id,
+                              Typ   => EW_Init_Wrapper
+                                (Field_Type, EW_Abstract)),
+                           Domain   => EW_Term));
+
+               begin
+                  return +New_Ada_Equality
+                    (Typ    => Field_Type,
+                     Domain => EW_Pred,
+                     Left   => A_F_Access,
+                     Right  => B_F_Access);
+               end;
             end if;
          end New_Field_Equality;
 
@@ -1495,7 +1525,8 @@ package body Why.Gen.Records is
                            else To_Why_Id (Discr, Rec => Root));
                         Comparison : constant W_Pred_Id :=
                           New_Field_Equality
-                            (Field_Id     => Discr_Id,
+                            (Is_Discr     => True,
+                             Field_Id     => Discr_Id,
                              Enclosing_Id => Discrs_Id,
                              Is_Private   => False,
                              Field_Type   => Retysp (Etype (Discr)));
@@ -1530,7 +1561,8 @@ package body Why.Gen.Records is
                                 To_Why_Id (Comp, Local => True, Rec => E);
                               Comparison     : constant W_Pred_Id :=
                                 New_Field_Equality
-                                  (Field_Id     => Field_Id,
+                                  (Is_Discr     => False,
+                                   Field_Id     => Field_Id,
                                    Enclosing_Id => Fields_Id,
                                    Is_Private   => Is_Type (Comp),
                                    Field_Type   =>
@@ -1571,7 +1603,7 @@ package body Why.Gen.Records is
                Emit
                  (P,
                   New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => To_Local (E_Symb (E, WNE_Bool_Eq)),
                      Binders     =>
                        R_Binder &
@@ -1580,7 +1612,7 @@ package body Why.Gen.Records is
                                                       others => <>)),
                      Return_Type => +EW_Bool_Type,
                      Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Def         =>
                        (if Is_Simple_Private_Type (E) then Why_Empty
                         else New_Conditional
@@ -1596,14 +1628,14 @@ package body Why.Gen.Records is
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Dispatch_Eq)),
                   Return_Type => EW_Bool_Type,
                   Binders     => R_Binder &
                     Binder_Array'(1 => Binder_Type'(B_Name => B_Ident,
                                                     others => <>)),
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set));
+                  Labels      => Symbol_Sets.Empty_Set));
          end if;
       end Declare_Equality_Function;
 
@@ -1651,10 +1683,10 @@ package body Why.Gen.Records is
 
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => Hide_Name,
                   Binders     => Hide_Binders,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Location    => No_Location,
                   Return_Type => EW_Private_Type));
 
@@ -1685,10 +1717,10 @@ package body Why.Gen.Records is
             begin
                Emit (P,
                      New_Function_Decl
-                       (Domain      => EW_Term,
+                       (Domain      => EW_Pterm,
                         Name        => Extract_Fun (Field, Rec => E),
                         Binders     => Binder,
-                        Labels      => Name_Id_Sets.Empty_Set,
+                        Labels      => Symbol_Sets.Empty_Set,
                         Location    => No_Location,
                         Return_Type => W_Type_Of_Component (Field, E),
                         Def         => Definition));
@@ -1700,7 +1732,7 @@ package body Why.Gen.Records is
             Emit (P,
                   New_Guarded_Axiom
                     (Name     =>
-                       NID (Get_Name_String (Get_Symbol
+                       NID (Img (Get_Symb
                          (Get_Name (Extract_Fun (Field, Rec => E))))
                          & "__conv"),
                      Binders  => Hide_Binders,
@@ -1727,11 +1759,11 @@ package body Why.Gen.Records is
 
          Emit (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => Extract_Func,
                   Binders     => Binder,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => EW_Private_Type));
       end Declare_Extraction_Functions;
 
@@ -1804,7 +1836,7 @@ package body Why.Gen.Records is
                      Name        => Prog_Name,
                      Binders     => R_Binder,
                      Location    => No_Location,
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Return_Type => W_Type_Of_Component (Field, E),
                      Pre         => Precond,
                      Post        => Post));
@@ -1843,12 +1875,12 @@ package body Why.Gen.Records is
                begin
                   Emit (P,
                         New_Function_Decl
-                          (Domain  => EW_Pred,
-                           Name    => Pred_Name,
-                           Binders => R_Binder,
-                           Location    => No_Location,
-                           Labels  => Name_Id_Sets.Empty_Set,
-                           Def     => +Pre_Cond));
+                          (Domain   => EW_Pred,
+                           Name     => Pred_Name,
+                           Binders  => R_Binder,
+                           Location => No_Location,
+                           Labels   => Symbol_Sets.Empty_Set,
+                           Def      => +Pre_Cond));
                end;
             end if;
 
@@ -2141,16 +2173,16 @@ package body Why.Gen.Records is
          begin
             Emit (P,
                   New_Type_Decl
-                    (Name  => Get_Name_String (Get_Symbol (Priv_Name))));
+                    (Name  => Img (Get_Symb (Priv_Name))));
             Emit
               (P,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => To_Local (E_Symb (E, WNE_Private_Eq)),
                   Binders     => Binders,
                   Return_Type => +EW_Bool_Type,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set));
+                  Labels      => Symbol_Sets.Empty_Set));
          end;
       end if;
 
@@ -2174,21 +2206,21 @@ package body Why.Gen.Records is
          Emit
            (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_To_Base)),
                Binders     => R_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
          Emit
            (P,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (E_Symb (E, WNE_Of_Base)),
                Binders     => R_Binder,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Return_Type => Abstr_Ty,
                Def         => +A_Ident));
       end if;
@@ -2236,7 +2268,7 @@ package body Why.Gen.Records is
                 Is_Mutable => False,
                 Type_Kind  => EW_Abstract,
                 Name       =>
-                   Get_Name (E_Symb (Root_Record_Type (E),
+                   Get_Name (E_Symb (Root_Retysp (E),
                                      WNE_Rec_Split_Discrs))));
 
    ---------------------------
@@ -2314,8 +2346,8 @@ package body Why.Gen.Records is
       Name     : constant String :=
         Full_Name (Ancestor) & To_String (WNE_Rec_Rep);
    begin
-      return New_Module (File => No_Name,
-                         Name => NID (Name));
+      return New_Module (File => No_Symbol,
+                         Name => Name);
    end Get_Rep_Record_Module;
 
    ---------------------------------------
@@ -2328,7 +2360,7 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id)
       return W_Prog_Id
    is
-      Root : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Root : constant Entity_Id := Root_Retysp (Check_Ty);
    begin
       --  We make a last verification here to see whether a discriminant check
       --  is actually necessary.
@@ -2336,12 +2368,7 @@ package body Why.Gen.Records is
       --  If the type does not have any discriminants, no check is needed
       --  obviously.
 
-      --  ??? Test on the access type is a hack to test the check in case of
-      --  access subtype in which the Has_Discriminants has disappeared.
-
-      if not Has_Discriminants (Check_Ty) and then
-        not Is_Access_Type (Check_Ty)
-      then
+      if not Has_Discriminants (Check_Ty) then
          return Expr;
       end if;
 
@@ -2382,7 +2409,7 @@ package body Why.Gen.Records is
       Expr     : W_Prog_Id)
       return W_Prog_Id
    is
-      Root  : constant Entity_Id := Root_Record_Type (Check_Ty);
+      Root  : constant Entity_Id := Root_Retysp (Check_Ty);
       Id    : constant W_Expr_Id := New_Temp_For_Expr (+Expr);
       Call  : constant W_Expr_Id := New_Call
         (Ada_Node => Ada_Node,
@@ -2423,7 +2450,7 @@ package body Why.Gen.Records is
    is
       Rec       : constant Entity_Id :=
         (if Ekind (Field) /= E_Discriminant then Ty
-         else Root_Record_Type (Ty));
+         else Root_Retysp (Ty));
       Call_Id   : constant W_Identifier_Id := To_Why_Id (Field, Rec => Rec);
 
       Ret_Ty    : constant W_Type_Id :=
@@ -2452,11 +2479,10 @@ package body Why.Gen.Records is
 
       else
          return
-           New_Call
+           New_Record_Access
              (Ada_Node => Ada_Node,
-              Name     => Call_Id,
-              Args     => (1 => Top_Field),
-              Domain   => Domain,
+              Field    => Call_Id,
+              Name     => Top_Field,
               Typ      => Ret_Ty);
       end if;
    end New_Ada_Record_Access;
@@ -2520,7 +2546,9 @@ package body Why.Gen.Records is
                     New_Field_Association
                       (Domain => Domain,
                        Field  => To_Why_Id (Comp, Rec => Ty),
-                       Value  => Why_Default_Value (EW_Term, Etype (Comp)));
+                       Value  => Reconstruct_Init_Wrapper
+                         (Ty    => Etype (Comp),
+                          Value => Why_Default_Value (EW_Term, Etype (Comp))));
                end if;
             end loop;
 
@@ -2660,7 +2688,9 @@ package body Why.Gen.Records is
                   (1 => New_Field_Association
                      (Domain => Domain,
                       Field  => To_Why_Id (Field, Domain, Rec => Ty),
-                      Value  => Value))),
+                      Value  => Reconstruct_Init_Wrapper
+                        (Ty    => Retysp (Etype (Field)),
+                         Value => Value)))),
            Ty       => Ty);
       T           : W_Expr_Id;
    begin
@@ -2722,11 +2752,10 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-     (New_Call
+     (New_Record_Access
         (Ada_Node => Ada_Node,
-         Name     => E_Symb (Ty, WNE_Rec_Split_Discrs),
-         Args     => (1 => Name),
-         Domain   => Domain));
+         Field    => E_Symb (Ty, WNE_Rec_Split_Discrs),
+         Name     => Name));
 
    ------------------------------
    -- New_Discriminants_Update --
@@ -2761,11 +2790,10 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-     (New_Call
+     (New_Record_Access
          (Ada_Node => Ada_Node,
-          Name     => E_Symb (Ty, WNE_Rec_Split_Fields),
-          Args     => (1 => Name),
-          Domain   => Domain));
+          Field    => E_Symb (Ty, WNE_Rec_Split_Fields),
+          Name     => Name));
 
    -----------------------
    -- New_Fields_Update --
@@ -2965,7 +2993,7 @@ package body Why.Gen.Records is
       --  If E is not tagged then the root type has the same fields as E
 
       if not Is_Tagged_Type (Current) then
-         return Root_Record_Type (Current);
+         return Root_Retysp (Current);
 
       else
          --  Otherwise, we follow the Etype link until we find a type with
@@ -3027,19 +3055,11 @@ package body Why.Gen.Records is
       Expr     : W_Expr_Id)
       return W_Expr_Array
    is
-
-      --  This is a hack to use this function for pointer conversion.
-      --  Should be fixed later [R525-018].
-      E_Check_Ty : constant Entity_Id :=
-        (if Is_Access_Type (Check_Ty) then
-              Directly_Designated_Type (Check_Ty)
-         else Check_Ty);
-
-      Num_Discr : constant Natural := Count_Discriminants (E_Check_Ty);
+      Num_Discr : constant Natural := Count_Discriminants (Check_Ty);
       Args      : W_Expr_Array (1 .. Num_Discr + 1);
       Count     : Natural := 1;
-      Discr     : Entity_Id := First_Discriminant (E_Check_Ty);
-      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (E_Check_Ty));
+      Discr     : Entity_Id := First_Discriminant (Check_Ty);
+      Elmt      : Elmt_Id := First_Elmt (Discriminant_Constraint (Check_Ty));
 
    begin
       Args (Num_Discr + 1) := +Expr;
@@ -3237,6 +3257,7 @@ package body Why.Gen.Records is
 
       elsif Ekind (E) = E_Record_Subtype
         and then Present (Cloned_Subtype (E))
+        and then Is_Constrained (Cloned_Subtype (E)) = Is_Constrained (E)
       then
          return True;
 

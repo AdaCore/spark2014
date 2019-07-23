@@ -4,11 +4,8 @@ alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "P"
 alignment_attribute.adb:50:22: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:53:04: warning: analyzing unreferenced procedure "Q"
 alignment_attribute.adb:53:14: warning: subprogram "Q" has no effect
-alignment_attribute.adb:56:22: info: length check proved (CVC4: 4 VC)
-alignment_attribute.adb:57:33: info: initialization of "A1" proved
+alignment_attribute.adb:56:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 alignment_attribute.adb:59:22: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:59:22: info: initialization of "A2" proved
-alignment_attribute.adb:60:22: info: initialization of "A2" proved
 alignment_attribute.adb:60:22: medium: assertion might fail, cannot prove A2'Alignment < 0
 alignment_attribute.adb:66:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:67:19: info: assertion proved (CVC4: 1 VC)
@@ -22,11 +19,8 @@ alignment_attribute.adb:74:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:75:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:76:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:80:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:80:19: info: initialization of "S" proved
 alignment_attribute.adb:81:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:81:19: info: initialization of "M" proved
 alignment_attribute.adb:82:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:82:19: info: initialization of "B" proved
 alignment_attribute.adb:83:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:84:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:85:19: info: assertion proved (CVC4: 1 VC)
@@ -38,16 +32,11 @@ alignment_attribute.adb:88:19: high: "RT4.I" is not initialized
 alignment_attribute.adb:88:19: high: "RT4.J" is not initialized
 alignment_attribute.adb:88:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:89:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:89:19: info: initialization of "CA" proved
 alignment_attribute.adb:90:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:90:19: info: initialization of "UA" proved
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P"
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
-component_size_attribute.adb:17:22: info: length check proved (CVC4: 4 VC)
-component_size_attribute.adb:18:33: info: initialization of "A1" proved
+component_size_attribute.adb:17:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 component_size_attribute.adb:20:22: info: assertion proved (CVC4: 1 VC)
-component_size_attribute.adb:20:22: info: initialization of "A2" proved
-component_size_attribute.adb:21:22: info: initialization of "A2" proved
 component_size_attribute.adb:21:22: medium: assertion might fail, cannot prove A2'Component_size = 32
 component_size_attribute.adb:28:04: warning: analyzing unreferenced procedure "Test1"
 component_size_attribute.adb:28:14: warning: subprogram "Test1" has no effect
@@ -76,17 +65,14 @@ component_size_attribute.adb:55:07: medium: assertion might fail
 storage_place_attributes.adb:21:23: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:27:22: info: range check proved (CVC4: 1 VC)
 storage_place_attributes.adb:28:22: info: range check proved (CVC4: 1 VC)
-storage_place_attributes.adb:39:19: info: initialization of "O2a.D3" proved
+storage_place_attributes.adb:33:04: info: initialization of "R2a_arr" proved
+storage_place_attributes.adb:35:04: info: initialization of "O2a" proved
+storage_place_attributes.adb:37:04: info: initialization of "O2b" proved
 storage_place_attributes.adb:39:19: medium: assertion might fail, cannot prove O2a.D3'First_bit = O2b.D3'first_bit
-storage_place_attributes.adb:39:38: info: initialization of "O2b.D3" proved
-storage_place_attributes.adb:40:19: info: assertion proved (CVC4: 1 VC)
-storage_place_attributes.adb:40:19: info: initialization of "O2a.D3" proved
-storage_place_attributes.adb:40:38: info: initialization of "R2a_arr" proved
-storage_place_attributes.adb:41:19: info: assertion proved (CVC4: 1 VC)
-storage_place_attributes.adb:41:19: info: initialization of "O2a.D3" proved
-storage_place_attributes.adb:45:19: info: initialization of "O2.D3" proved
+storage_place_attributes.adb:40:19: info: assertion proved (Trivial: 1 VC)
+storage_place_attributes.adb:41:19: info: assertion proved (Trivial: 1 VC)
+storage_place_attributes.adb:43:04: info: initialization of "O2" proved
 storage_place_attributes.adb:45:19: medium: assertion might fail, cannot prove O2.D3'First_Bit = O2a.D3'first_bit
-storage_place_attributes.adb:45:37: info: initialization of "O2a.D3" proved
 storage_place_attributes.adb:49:04: warning: analyzing unreferenced procedure "First1"
 storage_place_attributes.adb:49:14: warning: subprogram "First1" has no effect
 storage_place_attributes.adb:51:22: info: assertion proved (CVC4: 1 VC)

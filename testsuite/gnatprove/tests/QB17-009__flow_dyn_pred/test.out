@@ -1,3 +1,1 @@
-pred.ads:18:04: info: initialization of "Pair.Left" constituent of "State" proved
-pred.ads:18:04: info: initialization of "Pair.Right" constituent of "State" proved
 pred.ads:18:34: info: predicate check proved (CVC4: 1 VC)

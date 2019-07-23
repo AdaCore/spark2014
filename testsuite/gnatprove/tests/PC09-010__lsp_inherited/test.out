@@ -1,5 +1,5 @@
 check_lsp.ads:8:23: info: postcondition proved (CVC4: 1 VC)
-check_lsp.ads:8:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:14 (e.g. when Get_F'Result = -1 and X = (F => 0, G => -1))
-check_lsp.ads:8:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:14 (e.g. when Get_F'Result = -1 and X = (F => 0, G => -1, H => -1))
+check_lsp.ads:8:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:14 (e.g. when Get_F'Result = 0 and X = (F => 1, G => 0))
+check_lsp.ads:8:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:14 (e.g. when Get_F'Result = 0 and X = (F => 1, G => 1, H => 0))
 check_lsp.ads:29:23: info: postcondition proved (CVC4: 1 VC)
-check_lsp.ads:29:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:39 (e.g. when Get_F'Result = -1 and X = (F => 0, G => -1, H => -1))
+check_lsp.ads:29:23: medium: postcondition might fail, cannot prove Get_F'Result = X.F, in inherited contract at check_lsp.ads:39 (e.g. when Get_F'Result = 0 and X = (F => 1, G => 1, H => 0))

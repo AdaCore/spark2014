@@ -1,5 +1,2 @@
-union_init.adb:9:12: medium: discriminant check might fail
-union_init.ads:23:26: info: initialization of "test.field1" proved
-union_init.ads:23:26: info: initialization of "test.field2.basic_array" proved
-union_init.ads:23:26: info: initialization of "test.field2.length" proved
-union_init.ads:23:26: info: initialization of "test.field3" proved
+union_init.adb:9:12: medium: discriminant check might fail [possible explanation: subprogram at union_init.ads:23 should mention test'Constrained or test.discr in a precondition]
+union_init.ads:23:26: info: initialization of "test" proved

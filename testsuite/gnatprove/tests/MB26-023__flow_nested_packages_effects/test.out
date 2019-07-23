@@ -1,25 +1,22 @@
 flo_review_tests.adb:5:23: info: initialization of "Y" proved
-flo_review_tests.adb:15:10: info: initialization of "M" proved
-flo_review_tests.adb:15:25: info: initialization of "N" proved
-flo_review_tests.adb:18:14: info: initialization of "M" proved
-init.ads:5:04: info: initialization of "Var" proved
-outer.adb:12:04: info: initialization of "Foo" constituent of "State" proved
-outer.adb:15:30: info: initialization of "Foo" constituent of "State" proved
+flo_review_tests.adb:7:07: info: data dependencies proved
+flo_review_tests.adb:8:07: info: flow dependencies proved
+flo_review_tests.adb:13:12: info: flow dependencies proved
+init.ads:3:08: info: flow dependencies proved
 outer.adb:15:30: info: initialization of "Inner.Inner_State" constituent of "Outer.State" proved
 outer.adb:16:30: info: initialization of "Inner.Inner_State_2" constituent of "Outer.State" proved
-outer.adb:22:07: info: initialization of "Inner.X" constituent of "Outer.State" proved
-outer.adb:27:10: info: initialization of "Nested_In_Spec.Nested_In_Spec_Var" constituent of "Outer.State" proved
-outer.adb:37:07: info: initialization of "Inner_2.Y" constituent of "Outer.State" proved
-outer.adb:37:10: info: initialization of "Inner_2.Z" constituent of "Outer.State" proved
-outer.adb:43:07: info: initialization of "Inner_3.W" constituent of "Outer.State" proved
+outer.adb:17:11: info: flow dependencies proved
+outer.adb:25:14: info: flow dependencies proved
+outer.adb:31:14: info: data dependencies proved
+outer.adb:35:11: info: flow dependencies proved
+outer.adb:41:11: info: flow dependencies proved
+outer.adb:47:11: info: flow dependencies proved
 outer.adb:49:58: medium: overflow check might fail [possible explanation: subprogram at line 49 should mention X and Y in a precondition]
 outer.adb:59:32: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
-outer.adb:63:10: info: initialization of "Nested_In_Body.Deep_Var" constituent of "Inner.Inner_State" proved
+outer.adb:60:14: info: flow dependencies proved
+outer.adb:66:17: info: data dependencies proved
 outer.adb:69:07: info: initialization of "Y" constituent of "Inner_State" proved
 outer.adb:70:07: info: initialization of "Z" constituent of "Inner_State_2" proved
-outer.adb:75:10: info: initialization of "Deep_Ref" constituent of "Deep_State" proved
-outer.adb:84:12: info: initialization of "Inner.X" constituent of "Outer.State" proved
 outer.adb:84:14: info: overflow check proved (CVC4: 1 VC)
-outer.adb:85:26: info: initialization of "Nested_In_Body.Deep_Var" constituent of "Inner.Inner_State" proved
 outer.adb:85:36: medium: overflow check might fail
-outer.adb:85:52: info: initialization of "Nested_In_Body.Deep_State" constituent of "Inner.Inner_State" proved
+outer.ads:6:08: info: flow dependencies proved

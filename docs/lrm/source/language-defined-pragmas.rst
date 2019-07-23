@@ -15,7 +15,7 @@ Pragma                        Allowed in SPARK 2014  Comment
 ============================= ====================== ===============================================
 All_Calls_Remote	      No
 Assert             	      Yes
-Assertion_Policy	      Yes
+Assertion_Policy	      Yes                    No effect on provability (see section "Assertion Pragmas" in the SPARK User's Guide)
 Asynchronous       	      No
 Atomic          	      Yes
 Atomic_Components  	      Yes
@@ -124,9 +124,10 @@ Ada_05			      Yes
 Ada_2005		      Yes
 Ada_12             	      Yes
 Ada_2012           	      Yes
+Ada_2020           	      Yes
 Annotate		      Yes
 Check	 		      Yes
-Check_Policy 		      Yes
+Check_Policy 		      Yes                    No effect on provability (see section "Assertion Pragmas" in the SPARK User's Guide)
 Compile_Time_Error	      Yes		     Ignored (replaced by null statement)
 Compile_Time_Warning	      Yes		     Ignored (replaced by null statement)
 Debug			      Yes		     Ignored (replaced by null statement)

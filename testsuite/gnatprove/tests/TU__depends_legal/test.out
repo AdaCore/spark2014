@@ -1,18 +1,8 @@
-depends_legal_2.adb:14:04: info: initialization of "Rec1.A" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.B" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.X" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.Y" constituent of "State" proved
-depends_legal_2.adb:14:04: info: initialization of "Rec1.Z" constituent of "State" proved
-depends_legal_2.adb:17:18: info: initialization of "Par1.A" proved
-depends_legal_2.adb:17:18: info: initialization of "Par1.B" proved
-depends_legal_2.adb:17:18: info: initialization of "Par1.X" proved
-depends_legal_2.adb:17:18: info: initialization of "Par1.Y" proved
-depends_legal_2.adb:17:18: info: initialization of "Par1.Z" proved
-depends_legal_2.adb:37:33: info: initialization of "Rec1.A" constituent of "State" proved
-depends_legal_2.adb:37:33: info: initialization of "Rec1.B" constituent of "State" proved
-depends_legal_2.adb:37:33: info: initialization of "Rec1.X" constituent of "State" proved
-depends_legal_2.adb:37:33: info: initialization of "Rec1.Y" constituent of "State" proved
-depends_legal_2.adb:37:33: info: initialization of "Rec1.Z" constituent of "State" proved
-depends_legal_2.adb:43:15: info: discriminant check proved (CVC4: 2 VC)
-depends_legal_2.adb:45:15: info: discriminant check proved (CVC4: 2 VC)
-depends_legal_2.adb:48:12: info: discriminant check proved (CVC4: 2 VC)
+depends_legal_2.adb:17:18: info: initialization of "Par1" proved
+depends_legal_2.adb:37:11: info: data dependencies proved
+depends_legal_2.adb:37:33: info: initialization of "Rec1" constituent of "State" proved
+depends_legal_2.adb:38:11: info: flow dependencies proved
+depends_legal_2.adb:43:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+depends_legal_2.adb:45:15: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+depends_legal_2.adb:48:12: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+depends_legal_2.ads:4:08: info: flow dependencies proved

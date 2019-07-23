@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at cursors.ads:5
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at cursors.ads:5
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at cursors.ads:5

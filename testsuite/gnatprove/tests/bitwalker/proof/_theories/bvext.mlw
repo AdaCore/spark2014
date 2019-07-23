@@ -1,5 +1,5 @@
 module Bvext__nth
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV64
  use        Standard__natural
  use        Interfaces__unsigned_64
@@ -13,7 +13,7 @@ module Bvext__nth
 end
 
 module Bvext__nth__2
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV8
  use        Standard__natural
  use        Interfaces__unsigned_8
@@ -27,7 +27,7 @@ module Bvext__nth__2
 end
 
 module Bvext__nth_bv
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV64
  use        Standard__natural
  use        Interfaces__unsigned_64
@@ -41,7 +41,7 @@ module Bvext__nth_bv
 end
 
 module Bvext__nth_bv__2
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV8
  use        Standard__natural
  use        Interfaces__unsigned_8
@@ -56,7 +56,7 @@ module Bvext__nth_bv__2
 end
 
 module Bvext__eq_sub
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV64
 
  function eq_sub__logic (a : BV64.t) (b : BV64.t) (i n : int) : bool
@@ -68,7 +68,7 @@ module Bvext__eq_sub
 end
 
 module Bvext__eq_sub_bv
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV64
 
  function eq_sub_bv__logic (a : BV64.t) (b : BV64.t) (i n : BV64.t) : bool
@@ -80,11 +80,11 @@ module Bvext__eq_sub_bv
 end
 
 module Bvext__eq
- use import "_gnatprove_standard".Main
+ use        "_gnatprove_standard".Main
  use        "_gnatprove_standard".BV64
 
- function eq__logic (a : BV64.t) (b : BV64.t) : bool
-          = BV64.eq a b
+ predicate eq__logic (a : BV64.t) (b : BV64.t)
+          = (a = b)
 
  val eq (a : BV64.t) (b : BV64.t) : bool
   requires { true }

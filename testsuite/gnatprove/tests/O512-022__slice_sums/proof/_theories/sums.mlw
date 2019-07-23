@@ -1,22 +1,25 @@
 module Sums__extended_index
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use import "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use "int".Int
 
  type extended_index = < range 0 65536 >
 
- function first : int = 0
+ val constant first : int
+ ensures { result = 0 }
 
- function last  : int = 65536
+ val constant last  : int
+ ensures { result = 65536 }
 
  predicate in_range (x : int) = first <= x /\ x <= last
 
  (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
- type t = extended_index,
- function first = first,
- function last = last,
- predicate in_range = in_range
+   axiom .,
+   type t = extended_index,
+   function first = first,
+   function last = last,
+   predicate in_range = in_range
  
  (* Type for mutable variables of type extended_index *)
  type extended_index__ref = { mutable extended_index__content : extended_index }
@@ -33,37 +36,41 @@ module Sums__extended_index
 end
 
 module Sums__extended_index__rep
- use import Sums__extended_index
- use import "_gnatprove_standard".Main
+ use Sums__extended_index
+ use "_gnatprove_standard".Main
 
  function to_rep (x : extended_index) : int = (extended_index'int x)
 
  (* Projection functions from extended_index to int *)
  clone export "ada__model".Rep_Proj_Int with
+   axiom .,
    type t = extended_index,
    predicate in_range = in_range,
    function to_rep = to_rep
 end
 
 module Sums__index
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use import "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use "int".Int
 
  type index = < range 1 65536 >
 
- function first : int = 1
+ val constant first : int
+ ensures { result = 1 }
 
- function last  : int = 65536
+ val constant last  : int
+ ensures { result = 65536 }
 
  predicate in_range (x : int) = first <= x /\ x <= last
 
  (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
- type t = index,
- function first = first,
- function last = last,
- predicate in_range = in_range
+   axiom .,
+   type t = index,
+   function first = first,
+   function last = last,
+   predicate in_range = in_range
 
  (* Type for mutable variables of type index *)
  type index__ref = { mutable index__content : index }
@@ -80,37 +87,41 @@ module Sums__index
 end
 
 module Sums__index__rep
- use import Sums__index
- use import "_gnatprove_standard".Main
+ use Sums__index
+ use "_gnatprove_standard".Main
 
  function to_rep (x : index) : int = (index'int x)
 
  (* Projection functions from index to int *)
  clone export "ada__model".Rep_Proj_Int with
+   axiom .,
    type t = index,
    predicate in_range = in_range,
    function to_rep = to_rep
 end
 
 module Sums__vector_element
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Int_Division
- use import "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Int_Division as Int_Division
+ use "int".Int
 
  type vector_element = < range -32768 32767 >
  
- constant first : int = - 32768
+ val constant first : int
+ ensures { result = - 32768 }
 
- constant last  : int = 32767
+ val constant last  : int
+ ensures { result = 32767 }
 
  predicate in_range (x : int)  = first <= x /\ x <= last
 
  (* Clone of the model module for discrete types with static bounds *)
  clone export "ada__model".Static_Discrete with
- type t = vector_element,
- function first = first,
- function last = last,
- predicate in_range = in_range
+   axiom .,
+   type t = vector_element,
+   function first = first,
+   function last = last,
+   predicate in_range = in_range
 
  (* Type for mutable variables of type vector_element *)
  type vector_element__ref = { mutable vector_element__content : vector_element }
@@ -120,13 +131,14 @@ module Sums__vector_element
 end
 
 module Sums__vector_element__rep
- use import Sums__vector_element
- use import "_gnatprove_standard".Main
+ use Sums__vector_element
+ use "_gnatprove_standard".Main
 
  function to_rep (x : vector_element) : int = (vector_element'int x)
 
  (* Projection functions from vector_element to int *)
  clone export "ada__model".Rep_Proj_Int with
+   axiom .,
    type t = vector_element,
    predicate in_range = in_range,
    function to_rep = to_rep
@@ -135,26 +147,28 @@ end
 (* Module for any array type ranging over signed integer types and
    containing vector_element *)
 module Array__Int__Sums__vector_element
- use import "_gnatprove_standard".Main
- use import "int".Int
- use        Sums__vector_element
- use        Sums__vector_element__rep
+ use "_gnatprove_standard".Main
+ use "int".Int
+ use Sums__vector_element as Sums__vector_element
+ use Sums__vector_element__rep as Sums__vector_element__rep
 
- function one : int = 1
+ val constant one : int
+ ensures { result = 1 }
 
  type component_type = Sums__vector_element.vector_element
 
  (* Clone of the model module for logical arrays containing vector_element
     and indexed by mathematical integers *)
  clone export "_gnatprove_standard".Array__1 with
- type I1.t = int,
- predicate I1.le = Int.(<=),
- predicate I1.lt = Int.(<),
- predicate I1.gt = Int.(>),
- function I1.add = Int.(+),
- function I1.sub = Int.(-),
- function I1.one = one,
- type component_type = component_type
+   axiom .,
+   type I1.t = int,
+   predicate I1.le = Int.(<=),
+   predicate I1.lt = Int.(<),
+   predicate I1.gt = Int.(>),
+   function I1.add = Int.(+),
+   function I1.sub = Int.(-),
+   function I1.one = one,
+   type component_type = component_type
 
  (* Primitive equality between arrays *)
  function bool_eq (a:map) (af:int) (al:int) (b:map) (bf:int) (bl:int) : bool =
@@ -163,34 +177,38 @@ module Array__Int__Sums__vector_element
         else bf > bl) /\
          (forall idx : int. af <= idx <= al ->
              (get a idx) = (get b (bf - af + idx)))
+
+ val bool_eq (a:map) (af:int) (al:int) (b:map) (bf:int) (bl:int) : bool
+ ensures { result = bool_eq a af al b bf bl }
  
  (* Clone of the model module for comparison of arrays *)
  clone export "ada__model".Array_Int_Rep_Comparison_Axiom with
- type component_type = component_type,
- function to_rep = Sums__vector_element__rep.to_rep,
- type map = map,
- type Index.t = int,
- predicate Index.le = Int.(<=),
- predicate Index.lt = Int.(<),
- predicate Index.gt = Int.(>),
- function Index.add = Int.(+),
- function Index.sub = Int.(-),
- function Index.one = one,
- function get = get,
- function bool_eq = bool_eq
+   axiom .,
+   type component_type = component_type,
+   function to_rep = Sums__vector_element__rep.to_rep,
+   type map = map,
+   type Index.t = int,
+   predicate Index.le = Int.(<=),
+   predicate Index.lt = Int.(<),
+   predicate Index.gt = Int.(>),
+   function Index.add = Int.(+),
+   function Index.sub = Int.(-),
+   function Index.one = one,
+   function get = get,
+   function bool_eq = bool_eq
 
 end
 
 module Sums__vector
- use import "int".Int
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use import Standard__integer
- use import Sums__index
- use import Sums__vector_element
- use        Array__Int__Sums__vector_element
- use        Standard__integer__rep
- use        Sums__vector_element__rep
+ use "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use Standard__integer
+ use Sums__index
+ use Sums__vector_element
+ use Array__Int__Sums__vector_element as Array__Int__Sums__vector_element
+ use Standard__integer__rep as Standard__integer__rep
+ use Sums__vector_element__rep as Sums__vector_element__rep
 
  predicate index_dynamic_property (first : int) (last : int) (x : int) =
       first <= x /\ x <= last
@@ -203,15 +221,16 @@ module Sums__vector
 
  (* Clone of the model module for unconstrained arrays *)
  clone export "ada__model".Unconstr_Array with
- type map = Array__Int__Sums__vector_element.map,
- function array_bool_eq = Array__Int__Sums__vector_element.bool_eq,
- type index_base_type = Standard__integer.integer,
- type index_rep_type = int,
- function to_rep = Standard__integer__rep.to_rep,
- function rep_to_int = id,
- predicate in_range_base = Standard__integer.in_range,
- predicate index_dynamic_property = index_dynamic_property,
- predicate index_rep_le = Int.(<=)
+   axiom .,
+   type map = Array__Int__Sums__vector_element.map,
+   function array_bool_eq = Array__Int__Sums__vector_element.bool_eq,
+   type index_base_type = Standard__integer.integer,
+   type index_rep_type = int,
+   function to_rep = Standard__integer__rep.to_rep,
+   function rep_to_int = id,
+   predicate in_range_base = Standard__integer.in_range,
+   predicate index_dynamic_property = index_dynamic_property,
+   predicate index_rep_le = Int.(<=)
 
  type vector  = __t
 
@@ -221,8 +240,8 @@ module Sums__vector
    writes { x }
 
  (* Helper function *)
- function _get "inline" (v : vector) (i : int) : int =
-   	  Sums__vector_element__rep.to_rep (Array__Int__Sums__vector_element.get (to_array v) i)
+ function _get [@inline] (v : vector) (i : int) : int =
+   Sums__vector_element__rep.to_rep (Array__Int__Sums__vector_element.get (to_array v) i)
 
  (* If vectors are not empty, their bounds are between Index.first and
     Index.last *)
@@ -233,13 +252,13 @@ module Sums__vector
 end
 
 module Sums__slice_bounds
- use import "int".Int
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use import Sums__index
- use        Sums__index__rep
- use import Sums__extended_index
- use        Sums__extended_index__rep
+ use "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use Sums__index
+ use Sums__index__rep as Sums__index__rep
+ use Sums__extended_index
+ use Sums__extended_index__rep as Sums__extended_index__rep
 
  (* Fields for record type *)
  type __split_fields  =
@@ -259,12 +278,12 @@ module Sums__slice_bounds
    writes { x }
 
  (* Helper function *)
- function _rec__lo "inline" (b : slice_bounds) : int =
-   	  Sums__index__rep.to_rep (rec__sums__slice_bounds__lo (__split_fields (b)))
+ function _rec__lo [@inline] (b : slice_bounds) : int =
+    Sums__index__rep.to_rep (rec__sums__slice_bounds__lo (__split_fields (b)))
 
  (* Helper function *)
- function _rec__hi "inline" (b : slice_bounds) : int =
-   	  Sums__extended_index__rep.to_rep (rec__sums__slice_bounds__hi (__split_fields (b)))
+ function _rec__hi [@inline] (b : slice_bounds) : int =
+    Sums__extended_index__rep.to_rep (rec__sums__slice_bounds__hi (__split_fields (b)))
 
  (* Condition to be allowed to access Lo *)
  predicate sums__slice_bounds__lo__pred  (a : slice_bounds) =
@@ -300,24 +319,23 @@ module Sums__slice_bounds
 end
 
 module Sums__sum
- use import "int".Int
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use        "_gnatprove_standard".Array__1
- use import Sums__slice_bounds
- use import Sums__index
- use        Sums__index__rep
- use import Standard__integer
- use import Sums__extended_index
- use        Sums__extended_index__rep
- use import Sums__vector
+ use "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use "_gnatprove_standard".Array__1 as Array__1
+ use Sums__slice_bounds
+ use Sums__index
+ use Sums__index__rep as Sums__index__rep
+ use Standard__integer
+ use Sums__extended_index
+ use Sums__extended_index__rep as Sums__extended_index__rep
+ use Sums__vector
 
  (* Logic complete function for sum *)
- function sum__logic
-   (x : vector) (bounds : slice_bounds)  :int
+ val function sum__logic (x : vector) (bounds : slice_bounds)  :int
 
  (* Helper function *)
- function _sum "inline" (x : vector) (bounds : slice_bounds)  :int =
+ function _sum [@inline] (x : vector) (bounds : slice_bounds)  :int =
    	  sum__logic x bounds
 
  (* Axiom for defining the sum function *)

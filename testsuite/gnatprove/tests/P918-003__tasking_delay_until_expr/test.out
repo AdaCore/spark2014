@@ -1,3 +1,1 @@
-main.adb:6:46: info: initialization of "Zero" proved
-main2.adb:16:29: medium: precondition might fail (e.g. when Zero = 0)
-main2.adb:16:50: info: initialization of "Zero" proved
+main2.adb:16:29: medium: precondition might fail, cannot prove B /= 0

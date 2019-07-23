@@ -1,0 +1,3 @@
+cli.ads:6:06: info: data dependencies proved
+cli.ads:6:33: warning: "Engine.State" is not modified, could be INPUT
+cli.ads:8:14: medium: postcondition might fail, cannot prove (Has_Piece)

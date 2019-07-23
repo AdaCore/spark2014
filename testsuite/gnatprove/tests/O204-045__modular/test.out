@@ -1,15 +1,11 @@
 simple1_zstspark.adb:7:33: info: range check proved (CVC4: 1 VC)
 simple1_zstspark.adb:13:22: info: assertion proved (CVC4: 1 VC)
-simple1_zstspark.adb:13:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:42:21: warning: unused assignment
 simple1_zstspark.adb:103:22: info: assertion proved (CVC4: 1 VC)
-simple1_zstspark.adb:103:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:106:22: info: assertion proved (CVC4: 1 VC)
-simple1_zstspark.adb:106:33: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:107:22: info: assertion proved (CVC4: 1 VC)
-simple1_zstspark.adb:107:32: info: initialization of "SaveRSP" proved
 simple1_zstspark.adb:108:22: info: assertion proved (CVC4: 1 VC)
-simple1_zstspark.adb:108:32: info: initialization of "SaveRSP" proved
+simple1_zstspark.ads:13:06: info: data dependencies proved
 simple1_zstspark.ads:14:40: warning: "RDI" is not modified, could be INPUT
 simple1_zstspark.ads:14:58: warning: "RSI" is not modified, could be INPUT
 simple1_zstspark.ads:15:32: warning: unused initial value of "SignFlag"
@@ -83,124 +79,194 @@ x86.adb:452:53: info: range check proved (CVC4: 2 VC)
 x86.adb:453:42: info: division check proved (CVC4: 1 VC)
 x86.adb:453:53: info: division check proved (CVC4: 1 VC)
 x86.adb:453:53: info: range check proved (CVC4: 2 VC)
+x86.adb:481:07: info: initialization of "Val1" proved
+x86.adb:481:13: info: initialization of "Val2" proved
 x86.adb:485:25: info: assertion proved (CVC4: 1 VC)
-x86.adb:490:24: info: initialization of "Val1" proved
-x86.adb:490:31: info: initialization of "Val2" proved
-x86.adb:491:35: info: initialization of "Val1" proved
-x86.adb:491:54: info: initialization of "Val2" proved
+x86.adb:505:07: info: initialization of "Val1" proved
+x86.adb:505:13: info: initialization of "Val2" proved
 x86.adb:509:25: info: assertion proved (CVC4: 1 VC)
-x86.adb:514:24: info: initialization of "Val1" proved
-x86.adb:514:31: info: initialization of "Val2" proved
-x86.adb:515:35: info: initialization of "Val1" proved
-x86.adb:515:54: info: initialization of "Val2" proved
+x86.ads:36:06: info: data dependencies proved
 x86.ads:36:27: info: initialization of "Exit_Called" proved
 x86.ads:37:14: info: postcondition proved (CVC4: 1 VC)
-x86.ads:37:15: info: initialization of "Exit_Called" proved
+x86.ads:46:06: info: data dependencies proved
 x86.ads:47:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:47:41: info: range check proved (CVC4: 2 VC)
+x86.ads:50:06: info: data dependencies proved
 x86.ads:51:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:54:06: info: data dependencies proved
 x86.ads:55:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:55:72: info: division check proved (CVC4: 1 VC)
+x86.ads:58:06: info: data dependencies proved
 x86.ads:59:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:63:06: info: data dependencies proved
 x86.ads:64:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:64:42: info: range check proved (CVC4: 2 VC)
+x86.ads:67:06: info: data dependencies proved
 x86.ads:68:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:71:06: info: data dependencies proved
 x86.ads:72:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:72:45: info: range check proved (CVC4: 2 VC)
+x86.ads:75:06: info: data dependencies proved
 x86.ads:76:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:85:06: info: data dependencies proved
 x86.ads:86:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:86:41: info: range check proved (CVC4: 2 VC)
+x86.ads:89:06: info: data dependencies proved
 x86.ads:90:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:93:06: info: data dependencies proved
 x86.ads:94:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:94:72: info: division check proved (CVC4: 1 VC)
+x86.ads:97:06: info: data dependencies proved
 x86.ads:98:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:102:06: info: data dependencies proved
 x86.ads:103:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:103:42: info: range check proved (CVC4: 2 VC)
+x86.ads:106:06: info: data dependencies proved
 x86.ads:107:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:110:06: info: data dependencies proved
 x86.ads:111:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:111:45: info: range check proved (CVC4: 2 VC)
+x86.ads:114:06: info: data dependencies proved
 x86.ads:115:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:124:06: info: data dependencies proved
 x86.ads:125:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:125:41: info: range check proved (CVC4: 2 VC)
+x86.ads:128:06: info: data dependencies proved
 x86.ads:129:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:132:06: info: data dependencies proved
 x86.ads:133:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:133:72: info: division check proved (CVC4: 1 VC)
+x86.ads:136:06: info: data dependencies proved
 x86.ads:137:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:141:06: info: data dependencies proved
 x86.ads:142:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:142:42: info: range check proved (CVC4: 2 VC)
+x86.ads:145:06: info: data dependencies proved
 x86.ads:146:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:149:06: info: data dependencies proved
 x86.ads:150:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:150:45: info: range check proved (CVC4: 2 VC)
+x86.ads:153:06: info: data dependencies proved
 x86.ads:154:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:163:06: info: data dependencies proved
 x86.ads:164:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:164:41: info: range check proved (CVC4: 2 VC)
+x86.ads:167:06: info: data dependencies proved
 x86.ads:168:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:171:06: info: data dependencies proved
 x86.ads:172:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:172:72: info: division check proved (CVC4: 1 VC)
+x86.ads:175:06: info: data dependencies proved
 x86.ads:176:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:180:06: info: data dependencies proved
 x86.ads:181:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:181:42: info: range check proved (CVC4: 2 VC)
+x86.ads:184:06: info: data dependencies proved
 x86.ads:185:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:188:06: info: data dependencies proved
 x86.ads:189:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:189:45: info: range check proved (CVC4: 2 VC)
+x86.ads:192:06: info: data dependencies proved
 x86.ads:193:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:203:06: info: data dependencies proved
 x86.ads:204:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:204:42: info: range check proved (CVC4: 2 VC)
+x86.ads:207:06: info: data dependencies proved
 x86.ads:208:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:211:06: info: data dependencies proved
 x86.ads:212:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:212:45: info: range check proved (CVC4: 2 VC)
+x86.ads:215:06: info: data dependencies proved
 x86.ads:216:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:226:06: info: data dependencies proved
 x86.ads:227:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:227:42: info: range check proved (CVC4: 2 VC)
+x86.ads:230:06: info: data dependencies proved
 x86.ads:231:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:234:06: info: data dependencies proved
 x86.ads:235:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:235:45: info: range check proved (CVC4: 2 VC)
+x86.ads:238:06: info: data dependencies proved
 x86.ads:239:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:249:06: info: data dependencies proved
 x86.ads:250:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:250:42: info: range check proved (CVC4: 2 VC)
+x86.ads:253:06: info: data dependencies proved
 x86.ads:254:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:257:06: info: data dependencies proved
 x86.ads:258:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:258:45: info: range check proved (CVC4: 2 VC)
+x86.ads:261:06: info: data dependencies proved
 x86.ads:262:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:272:06: info: data dependencies proved
 x86.ads:273:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:273:42: info: range check proved (CVC4: 2 VC)
+x86.ads:276:06: info: data dependencies proved
 x86.ads:277:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:280:06: info: data dependencies proved
 x86.ads:281:16: info: postcondition proved (CVC4: 1 VC)
 x86.ads:281:45: info: range check proved (CVC4: 2 VC)
+x86.ads:284:06: info: data dependencies proved
 x86.ads:285:16: info: postcondition proved (CVC4: 1 VC)
+x86.ads:295:06: info: data dependencies proved
 x86.ads:296:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:296:41: info: range check proved (CVC4: 2 VC)
+x86.ads:299:06: info: data dependencies proved
 x86.ads:300:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:310:06: info: data dependencies proved
 x86.ads:311:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:311:41: info: range check proved (CVC4: 2 VC)
+x86.ads:314:06: info: data dependencies proved
 x86.ads:315:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:325:06: info: data dependencies proved
 x86.ads:326:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:326:43: info: range check proved (CVC4: 2 VC)
+x86.ads:329:06: info: data dependencies proved
 x86.ads:330:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:340:06: info: data dependencies proved
 x86.ads:341:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:341:43: info: range check proved (CVC4: 2 VC)
+x86.ads:344:06: info: data dependencies proved
 x86.ads:345:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:355:06: info: data dependencies proved
 x86.ads:356:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:356:43: info: range check proved (CVC4: 2 VC)
+x86.ads:359:06: info: data dependencies proved
 x86.ads:360:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:370:06: info: data dependencies proved
 x86.ads:371:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:371:43: info: range check proved (CVC4: 2 VC)
+x86.ads:374:06: info: data dependencies proved
 x86.ads:375:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:385:06: info: data dependencies proved
 x86.ads:386:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:386:43: info: range check proved (CVC4: 2 VC)
+x86.ads:389:06: info: data dependencies proved
 x86.ads:390:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:400:06: info: data dependencies proved
 x86.ads:401:14: info: postcondition proved (CVC4: 1 VC)
 x86.ads:401:43: info: range check proved (CVC4: 2 VC)
+x86.ads:404:06: info: data dependencies proved
 x86.ads:405:14: info: postcondition proved (CVC4: 1 VC)
+x86.ads:413:06: info: data dependencies proved
 x86.ads:414:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:419:06: info: data dependencies proved
 x86.ads:420:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:426:06: info: data dependencies proved
 x86.ads:427:14: info: postcondition proved (CVC4: 2 VC)
-x86.ads:435:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:434:06: info: data dependencies proved
+x86.ads:435:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+x86.ads:446:06: info: data dependencies proved
 x86.ads:447:14: info: postcondition proved (CVC4: 2 VC)
-x86.ads:455:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:454:06: info: data dependencies proved
+x86.ads:455:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 x86.ads:475:14: info: postcondition proved (CVC4: 2 VC)
 x86.ads:479:14: info: postcondition proved (CVC4: 2 VC)
-x86.ads:488:14: info: postcondition proved (CVC4: 1 VC)
-x86.ads:494:14: info: postcondition proved (CVC4: 1 VC)
-x86.ads:503:14: info: postcondition proved (CVC4: 2 VC)
-x86.ads:508:14: info: postcondition proved (CVC4: 2 VC)
+x86.ads:486:06: info: data dependencies proved
+x86.ads:488:14: info: postcondition proved (Trivial: 1 VC)
+x86.ads:492:06: info: data dependencies proved
+x86.ads:494:14: info: postcondition proved (Trivial: 1 VC)
+x86.ads:502:06: info: data dependencies proved
+x86.ads:503:14: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+x86.ads:507:06: info: data dependencies proved
+x86.ads:508:14: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)

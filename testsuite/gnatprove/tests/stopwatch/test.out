@@ -1,17 +1,28 @@
 display.adb:10:34: info: range check proved (CVC4: 2 VC)
 display.adb:37:32: info: overflow check proved (CVC4: 1 VC)
-display.adb:44:36: info: initialization of "Control" constituent of "LCD" proved
+display.ads:10:06: info: data dependencies proved
+display.ads:11:06: info: flow dependencies proved
+display.ads:14:06: info: data dependencies proved
+display.ads:15:06: info: flow dependencies proved
+main.adb:5:03: info: data dependencies proved
 timer.adb:10:34: info: range check proved (CVC4: 2 VC)
 timer.adb:16:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-timer.adb:68:26: info: initialization of "Release_Time" proved
-timer.adb:69:22: info: initialization of "Release_Time" proved
-timer.adb:74:19: info: initialization of "Display.LCD" proved
+timer.adb:17:14: info: data dependencies proved
 timer.ads:18:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 timer.ads:18:09: info: nontermination of task proved (CVC4: 1 VC)
+timer.ads:19:11: info: data dependencies proved
 timer.ads:21:39: info: initialization of "Display.LCD" proved
+timer.ads:22:06: info: flow dependencies proved
+timer.ads:28:06: info: data dependencies proved
+timer.ads:29:06: info: flow dependencies proved
+timer.ads:32:06: info: data dependencies proved
+timer.ads:33:06: info: flow dependencies proved
 user.ads:9:14: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
 user.ads:10:44: info: range check proved (CVC4: 2 VC)
 user.ads:12:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:13:09: info: data dependencies proved
 user.ads:19:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:20:09: info: data dependencies proved
 user.ads:26:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
+user.ads:27:09: info: data dependencies proved
 user.ads:27:37: info: initialization of "Display.LCD" proved

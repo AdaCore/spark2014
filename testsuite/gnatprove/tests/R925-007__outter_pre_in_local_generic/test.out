@@ -11,7 +11,7 @@ foo.ads:13:54: info: division check proved (CVC4: 2 VC), in instantiation at use
 foo.ads:13:54: info: overflow check proved (CVC4: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:54: info: range check proved (CVC4: 2 VC), in instantiation at usefoo.adb:9
 foo.ads:13:54: info: range check proved (CVC4: 8 VC), in instantiation at usefoo.adb:9
-foo.ads:13:60: medium: range check might fail, in instantiation at usefoo.adb:9 (e.g. when B'First = 1 and B'Last = 0)
+foo.ads:13:60: medium: range check might fail, in instantiation at usefoo.adb:9 (e.g. when B = (others => Integer'Last-2) and B'First = 2147483646 and B'Last = 2147483646)
 usefoo.adb:11:27: info: overflow check proved (CVC4: 1 VC)
 usefoo.adb:11:30: info: range check proved (CVC4: 1 VC)
 usefoo.adb:11:38: info: division check proved (CVC4: 1 VC)

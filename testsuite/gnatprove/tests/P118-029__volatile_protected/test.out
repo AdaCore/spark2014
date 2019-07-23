@@ -1,7 +1,2 @@
 concurrency_example_fixed_bis.adb:7:10: protected function with effective reads "Ext_Data" is not allowed in SPARK
-concurrency_example_fixed_bis.adb:23:13: info: initialization of "Flip" proved
-concurrency_example_fixed_bis.adb:28:20: info: initialization of "Wakeup" proved
-concurrency_example_fixed_bis.adb:29:22: info: initialization of "Wakeup" proved
-concurrency_example_fixed_bis.adb:40:20: info: initialization of "Wakeup" proved
-concurrency_example_fixed_bis.adb:41:22: info: initialization of "Wakeup" proved
 gnatprove: error during flow analysis and proof

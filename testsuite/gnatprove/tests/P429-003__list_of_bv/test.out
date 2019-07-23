@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at foo.adb:10
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
@@ -21,9 +22,8 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at foo.adb:10
 foo.adb:15:04: warning: analyzing unreferenced procedure "Test_01"
 foo.adb:15:23: info: initialization of "X" proved
-foo.adb:17:07: info: initialization of private part of "L" proved
+foo.adb:17:07: info: initialization of "L" proved
 foo.adb:17:17: info: range check proved (CVC4: 1 VC)
 foo.adb:20:07: info: precondition proved (CVC4: 1 VC)
 foo.adb:20:07: warning: statement has no effect
-foo.adb:20:15: info: initialization of private part of "L" proved
 foo.adb:20:15: warning: unused assignment to "L"

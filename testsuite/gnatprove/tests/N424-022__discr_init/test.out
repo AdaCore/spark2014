@@ -1,7 +1,6 @@
 discr_init.adb:8:13: info: range check proved (CVC4: 2 VC)
-discr_init.adb:8:33: info: length check proved (CVC4: 4 VC)
+discr_init.adb:8:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 discr_init.adb:13:21: info: range check proved (CVC4: 1 VC)
+discr_init.adb:16:04: info: initialization of "Y" proved
 discr_init.adb:18:05: info: discriminant check proved (CVC4: 1 VC)
-discr_init.adb:18:13: info: initialization of "X.Arr" proved
-discr_init.adb:18:16: info: initialization of "Y.Arr" proved
 discr_init.adb:18:17: info: discriminant check proved (CVC4: 1 VC)

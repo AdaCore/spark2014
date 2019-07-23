@@ -29,9 +29,9 @@ procedure treeinsert is
   end buildLeaf2;
 
 
-procedure Insert (T : in Tree; V : Natural) is  
+procedure Insert (T : in Tree; V : Natural) is
   Walker : access Rec := T;
-begin     
+begin
   loop
 	if V < Walker.Data then
 	  if Walker.Left /= null then

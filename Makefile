@@ -77,9 +77,7 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 
 setup:
 	cd why3 && ./configure --prefix=$(INSTALLDIR) \
-		--enable-relocation \
-		--enable-coq-tactic=no \
-		--disable-menhirLib
+		--enable-relocation
 
 why3:
 	$(MAKE) -C why3
@@ -139,6 +137,10 @@ gnat2why-nightly:
 	$(MAKE) -C gnat2why AUTOMATED=1 GPRARGS=$(PROD)
 
 gnat2why:
+	# Produce Ada code that stores the reserved keywords of Why3
+	# This script should be run *ONLY* in developper build not in prod
+	# (gnat2why-nightly)
+	python scripts/why3keywords.py why3/src/parser/lexer.mll gnat2why/why/why-keywords.adb
 	$(MAKE) -C gnat2why
 
 coverage:
@@ -149,8 +151,16 @@ codepeer-run:
 	$(MAKE) --no-print-directory -C gnatprove codepeer-run
 
 codepeer: codepeer-run
-	@$(MAKE) --no-print-directory -C gnat2why codepeer > testsuite/codepeer_analysis_results.txt
-	@$(MAKE) --no-print-directory -C gnatprove codepeer >> testsuite/codepeer_analysis_results.txt
+	mkdir -p out
+	codepeer --version | tee out/version.out
+	@echo "version:XFAIL:always fails" > out/results
+	@$(MAKE) --no-print-directory -C gnat2why codepeer 2>&1 | tee out/codepeer.out
+	@$(MAKE) --no-print-directory -C gnatprove codepeer 2>&1 | tee --append out/codepeer.out
+	@if [ -s out/codepeer.out ]; then \
+	  echo "codepeer:FAILED:unexpected messages" >> out/results; \
+	else \
+	  echo "codepeer:PASSED" >> out/results; \
+	fi
 
 gnatprove:
 	$(MAKE) -C gnatprove build

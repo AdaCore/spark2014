@@ -6,8 +6,8 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                     Copyright (C) 2011-2018, AdaCore                     --
---                     Copyright (C) 2014-2018, Altran UK Limited           --
+--                     Copyright (C) 2011-2019, AdaCore                     --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -188,6 +188,16 @@ package SPARK_Definition is
    procedure Mark_Standard_Package;
    --  Put marks on package Standard
 
+   function Has_Incomplete_Access (E : Entity_Id) return Boolean with
+     Pre => Is_Type (E);
+   --  Return True if E is the full view of an incomplete type
+
+   function Get_Incomplete_Access (E : Entity_Id) return Entity_Id with
+     Pre  => Is_Type (E) and then Has_Incomplete_Access (E),
+     Post => Present (Get_Incomplete_Access'Result)
+     and then Is_Access_Type (Get_Incomplete_Access'Result);
+   --  Return an access type to E
+
    ----------------------------------------------------------------------
    --  Marked entity collections
    ----------------------------------------------------------------------
@@ -214,6 +224,12 @@ package SPARK_Definition is
    function Get_Element (Kind : Entity_Collection;
                          C    : Cursor)
                          return Entity_Id;
+
+   Ownership_Errors : Boolean := False;
+   --  When ownership errors are detected then we must stop before flow
+   --  analysis, just like we stop when legality errors or SPARK violations are
+   --  detected. ??? This flag is needed because ownership checking is not yet
+   --  integrated with marking.
 
 private
 

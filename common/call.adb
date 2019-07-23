@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.IO_Exceptions;
-with Ada.Strings.Unbounded;
+with Ada.Directories;
+with Ada.Direct_IO;
 with Ada.Text_IO;
-with GNAT.Directory_Operations;
+with GNATCOLL.Mmap;
 with GNATCOLL.Utils;
 
 package body Call is
@@ -94,91 +94,6 @@ package body Call is
       Free (Executable);
    end Call_With_Status;
 
-   ---------
-   -- Cat --
-   ---------
-
-   procedure Cat (File : String; Cut_Non_Blank_Line_At : Natural := 0) is
-
-      Count_Non_Blank_Lines : Natural := 0;
-      First_Line_Skipped    : Boolean := False;
-
-      procedure Print_Line (Line : String);
-      --  Print a single line to stdout. Skip the line if not blank and count
-      --  of non-blank lines exceeds the positive value (if non-zero) of
-      --  Cut_Non_Blank_Line_At. Instead, prints a line suggesting
-      --  continuation "(...)".
-
-      ----------------
-      -- Print_Line --
-      ----------------
-
-      procedure Print_Line (Line : String) is
-      begin
-         if GNATCOLL.Utils.Is_Blank_Line (Line) then
-            First_Line_Skipped := False;
-            Count_Non_Blank_Lines := 0;
-            Ada.Text_IO.Put_Line (Line);
-
-         elsif Cut_Non_Blank_Line_At > 0
-           and then Count_Non_Blank_Lines > Cut_Non_Blank_Line_At
-         then
-            if not First_Line_Skipped then
-               First_Line_Skipped := True;
-               Ada.Text_IO.Put_Line ("(...)");
-            end if;
-
-         else
-            First_Line_Skipped := False;
-            Count_Non_Blank_Lines := Count_Non_Blank_Lines + 1;
-            Ada.Text_IO.Put_Line (Line);
-         end if;
-      end Print_Line;
-
-      procedure My_Cat is new For_Line_In_File (Print_Line);
-
-   --  Start of processing for Cat
-
-   begin
-      My_Cat (File);
-   end Cat;
-
-   -----------------------------
-   -- Ch_Dir_Create_If_Needed --
-   -----------------------------
-
-   procedure Ch_Dir_Create_If_Needed (Dir : String) is
-      use GNAT.Directory_Operations;
-   begin
-      Change_Dir (Dir);
-   exception
-      when Directory_Error =>
-         Make_Dir (Dir);
-         Change_Dir (Dir);
-   end Ch_Dir_Create_If_Needed;
-
-   ----------------------
-   -- For_Line_In_File --
-   ----------------------
-
-   procedure For_Line_In_File (File : String)
-   is
-      use Ada.Text_IO;
-      File_Handle : File_Type;
-   begin
-      Open (File_Handle, In_File, File);
-      while True loop
-         declare
-            Line : constant String := Get_Line (File_Handle);
-         begin
-            Handle_Line (Line);
-         end;
-      end loop;
-   exception
-      when Ada.IO_Exceptions.End_Error =>
-         Close (File_Handle);
-   end For_Line_In_File;
-
    ------------------------
    -- Print_Command_Line --
    ------------------------
@@ -196,33 +111,54 @@ package body Call is
       end loop;
    end Print_Command_Line;
 
+   -------------------------
+   -- Read_File_Into_JSON --
+   -------------------------
+
+   function Read_File_Into_JSON (Fn : String) return JSON_Value
+   is
+      use GNATCOLL.Mmap;
+      File   : Mapped_File;
+      Region : Mapped_Region;
+
+      Result : JSON_Value;
+   begin
+      File := Open_Read (Fn);
+
+      Read (File, Region);
+
+      declare
+         S : String (1 .. Integer (Length (File)));
+         for S'Address use Data (Region).all'Address;
+         --  A fake string directly mapped onto the file contents
+
+      begin
+         Result := Read (S, Fn);
+      end;
+
+      Free (Region);
+      return Result;
+   end Read_File_Into_JSON;
+
    ---------------------------
    -- Read_File_Into_String --
    ---------------------------
 
    function Read_File_Into_String (Fn : String) return String
    is
-      use Ada.Strings.Unbounded;
-      U : Unbounded_String := Null_Unbounded_String;
+      File_Size : constant Natural := Natural (Ada.Directories.Size (Fn));
 
-      procedure Append_To_Buf (S : String);
+      subtype File_String    is String (1 .. File_Size);
+      package File_String_IO is new Ada.Direct_IO (File_String);
 
-      -------------------
-      -- Append_To_Buf --
-      -------------------
-
-      procedure Append_To_Buf (S : String) is
-      begin
-         Append (U, S);
-      end Append_To_Buf;
-
-      procedure Do_It is new Call.For_Line_In_File (Append_To_Buf);
-
-   --  Start of processing for Read_File_Into_String
-
+      File     : File_String_IO.File_Type;
+      Contents : File_String;
    begin
-      Do_It (Fn);
-      return To_String (U);
+      File_String_IO.Open  (File, Mode => File_String_IO.In_File, Name => Fn);
+      File_String_IO.Read  (File, Item => Contents);
+      File_String_IO.Close (File);
+
+      return Contents;
    end Read_File_Into_String;
 
 end Call;

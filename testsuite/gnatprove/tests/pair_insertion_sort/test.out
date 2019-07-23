@@ -1,14 +1,17 @@
-pair_insertion_sort.adb:11:14: info: postcondition proved (Z3: 4 VC)
+pair_insertion_sort.adb:11:14: info: postcondition proved (Trivial: 1 VC; Z3: 4 VC)
 pair_insertion_sort.adb:12:25: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:12:42: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:13:25: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:13:42: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:15:55: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:15:72: info: index check proved (Z3: 2 VC)
+pair_insertion_sort.adb:17:07: info: initialization of "Temp" proved
 pair_insertion_sort.adb:20:07: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:20:47: info: length check proved (Z3: 3 VC)
+pair_insertion_sort.adb:20:47: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
 pair_insertion_sort.adb:20:47: info: predicate check proved (Z3: 1 VC)
+pair_insertion_sort.adb:21:07: info: initialization of "Interm" proved
 pair_insertion_sort.adb:21:07: info: range check proved (Z3: 2 VC)
+pair_insertion_sort.adb:25:09: info: data dependencies proved
 pair_insertion_sort.adb:28:20: info: precondition proved (Z3: 2 VC)
 pair_insertion_sort.adb:28:43: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:29:20: info: precondition proved (Z3: 2 VC)
@@ -27,226 +30,167 @@ pair_insertion_sort.adb:44:29: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.adb:47:22: info: assertion proved (Z3: 1 VC)
 pair_insertion_sort.adb:47:22: info: precondition proved (Z3: 2 VC)
 pair_insertion_sort.adb:47:45: info: index check proved (Z3: 2 VC)
-pair_insertion_sort.adb:48:14: info: length check proved (Z3: 4 VC)
-pair_insertion_sort.adb:48:17: info: length check proved (Z3: 3 VC)
+pair_insertion_sort.adb:48:14: info: length check proved (Trivial: 1 VC; Z3: 3 VC)
+pair_insertion_sort.adb:48:17: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
 pair_insertion_sort.adb:48:17: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:50:07: info: predicate check proved (Z3: 1 VC)
 pair_insertion_sort.adb:50:15: info: index check proved (Z3: 2 VC)
-pair_insertion_sort.adb:50:21: info: initialization of "Temp" proved
 pair_insertion_sort.adb:53:22: info: assertion proved (Z3: 1 VC)
 pair_insertion_sort.adb:53:22: info: precondition proved (Z3: 2 VC)
-pair_insertion_sort.adb:53:30: info: initialization of "Interm" proved
 pair_insertion_sort.adb:53:47: info: index check proved (Z3: 2 VC)
-pair_insertion_sort.adb:54:07: info: initialization of "Interm" proved
 pair_insertion_sort.adb:54:07: info: precondition proved (Z3: 6 VC)
+pair_insertion_sort.adb:58:07: info: initialization of "I" proved
+pair_insertion_sort.adb:58:10: info: initialization of "J" proved
+pair_insertion_sort.adb:58:13: info: initialization of "X" proved
+pair_insertion_sort.adb:58:16: info: initialization of "Y" proved
+pair_insertion_sort.adb:58:19: info: initialization of "Z" proved
 pair_insertion_sort.adb:59:07: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:59:36: info: length check proved (Z3: 3 VC)
+pair_insertion_sort.adb:59:36: info: length check proved (Trivial: 2 VC; Z3: 2 VC)
 pair_insertion_sort.adb:59:36: info: predicate check proved (Z3: 1 VC)
-pair_insertion_sort.adb:62:13: info: initialization of "I" proved
 pair_insertion_sort.adb:62:18: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:63:17: info: index check proved (Z3: 4 VC)
-pair_insertion_sort.adb:63:17: info: initialization of "I" proved
-pair_insertion_sort.adb:64:17: info: initialization of "I" proved
 pair_insertion_sort.adb:64:18: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:64:18: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:65:13: info: initialization of "X" proved
-pair_insertion_sort.adb:65:17: info: initialization of "Y" proved
-pair_insertion_sort.adb:66:18: info: initialization of "X" proved
-pair_insertion_sort.adb:67:18: info: initialization of "Y" proved
-pair_insertion_sort.adb:68:18: info: initialization of "Z" proved
-pair_insertion_sort.adb:71:15: info: initialization of "I" proved
 pair_insertion_sort.adb:71:17: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:72:16: info: initialization of "J" proved
 pair_insertion_sort.adb:72:34: info: index check proved (Z3: 8 VC)
-pair_insertion_sort.adb:72:39: info: initialization of "X" proved
 pair_insertion_sort.adb:73:13: info: precondition proved (Z3: 20 VC)
 pair_insertion_sort.adb:73:19: info: predicate check proved (Z3: 4 VC)
-pair_insertion_sort.adb:73:22: info: initialization of "J" proved
 pair_insertion_sort.adb:73:23: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:73:23: info: range check proved (Z3: 4 VC)
-pair_insertion_sort.adb:73:27: info: initialization of "J" proved
 pair_insertion_sort.adb:73:27: info: range check proved (Z3: 4 VC)
-pair_insertion_sort.adb:75:36: info: initialization of "J" proved
 pair_insertion_sort.adb:75:36: info: loop invariant initialization proved (Z3: 4 VC)
 pair_insertion_sort.adb:75:36: info: loop invariant preservation proved (Z3: 4 VC)
 pair_insertion_sort.adb:75:47: info: range check proved (Z3: 4 VC)
 pair_insertion_sort.adb:77:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:77:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:77:36: info: precondition proved (Z3: 20 VC)
-pair_insertion_sort.adb:77:50: info: initialization of "J" proved
+pair_insertion_sort.adb:77:36: info: precondition proved (Trivial: 4 VC; Z3: 20 VC)
 pair_insertion_sort.adb:77:51: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:78:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:78:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:78:36: info: precondition proved (Z3: 20 VC)
-pair_insertion_sort.adb:78:47: info: initialization of "J" proved
+pair_insertion_sort.adb:78:36: info: precondition proved (Trivial: 4 VC; Z3: 20 VC)
 pair_insertion_sort.adb:78:48: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:78:52: info: initialization of "I" proved
 pair_insertion_sort.adb:78:53: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:79:36: info: loop invariant initialization proved (Z3: 4 VC)
-pair_insertion_sort.adb:79:36: info: loop invariant preservation proved (Z3: 4 VC)
-pair_insertion_sort.adb:79:52: info: initialization of "J" proved
+pair_insertion_sort.adb:79:36: info: loop invariant initialization proved (Trivial: 2 VC; Z3: 2 VC)
+pair_insertion_sort.adb:79:36: info: loop invariant preservation proved (Trivial: 2 VC; Z3: 2 VC)
 pair_insertion_sort.adb:79:53: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:79:53: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:79:63: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:79:63: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:80:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:80:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:80:38: info: initialization of "J" proved
 pair_insertion_sort.adb:80:39: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:80:39: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:80:45: info: initialization of "X" proved
 pair_insertion_sort.adb:82:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:82:36: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:83:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:83:36: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:83:39: info: index check proved (Z3: 8 VC)
-pair_insertion_sort.adb:83:39: info: initialization of "J" proved
-pair_insertion_sort.adb:83:44: info: initialization of "X" proved
 pair_insertion_sort.adb:83:53: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:83:53: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:83:59: info: initialization of "Y" proved
 pair_insertion_sort.adb:83:68: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:83:82: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:83:82: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:84:18: info: initialization of "J" proved
 pair_insertion_sort.adb:84:20: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:86:15: info: initialization of "J" proved
 pair_insertion_sort.adb:86:16: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:86:16: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:86:23: info: initialization of "X" proved
 pair_insertion_sort.adb:87:13: info: precondition proved (Z3: 10 VC)
 pair_insertion_sort.adb:87:19: info: predicate check proved (Z3: 2 VC)
-pair_insertion_sort.adb:87:22: info: initialization of "J" proved
 pair_insertion_sort.adb:87:23: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:87:23: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:87:27: info: initialization of "J" proved
 pair_insertion_sort.adb:87:28: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:87:28: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:90:16: info: initialization of "J" proved
 pair_insertion_sort.adb:90:34: info: index check proved (Z3: 8 VC)
-pair_insertion_sort.adb:90:39: info: initialization of "Y" proved
 pair_insertion_sort.adb:91:13: info: precondition proved (Z3: 20 VC)
 pair_insertion_sort.adb:91:19: info: predicate check proved (Z3: 4 VC)
-pair_insertion_sort.adb:91:22: info: initialization of "J" proved
 pair_insertion_sort.adb:91:23: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:91:23: info: range check proved (Z3: 4 VC)
-pair_insertion_sort.adb:91:27: info: initialization of "J" proved
 pair_insertion_sort.adb:91:27: info: range check proved (Z3: 4 VC)
-pair_insertion_sort.adb:93:36: info: initialization of "J" proved
 pair_insertion_sort.adb:93:36: info: loop invariant initialization proved (Z3: 4 VC)
 pair_insertion_sort.adb:93:36: info: loop invariant preservation proved (Z3: 4 VC)
 pair_insertion_sort.adb:93:47: info: range check proved (Z3: 4 VC)
 pair_insertion_sort.adb:95:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:95:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:95:36: info: precondition proved (Z3: 20 VC)
-pair_insertion_sort.adb:95:50: info: initialization of "J" proved
+pair_insertion_sort.adb:95:36: info: precondition proved (Trivial: 4 VC; Z3: 20 VC)
 pair_insertion_sort.adb:95:51: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:96:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:96:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:96:36: info: precondition proved (Z3: 20 VC)
-pair_insertion_sort.adb:96:47: info: initialization of "J" proved
+pair_insertion_sort.adb:96:36: info: precondition proved (Trivial: 4 VC; Z3: 20 VC)
 pair_insertion_sort.adb:96:48: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:96:52: info: initialization of "I" proved
 pair_insertion_sort.adb:96:53: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:97:36: info: loop invariant initialization proved (Z3: 4 VC)
-pair_insertion_sort.adb:97:36: info: loop invariant preservation proved (Z3: 4 VC)
-pair_insertion_sort.adb:97:52: info: initialization of "J" proved
+pair_insertion_sort.adb:97:36: info: loop invariant initialization proved (Trivial: 2 VC; Z3: 2 VC)
+pair_insertion_sort.adb:97:36: info: loop invariant preservation proved (Trivial: 2 VC; Z3: 2 VC)
 pair_insertion_sort.adb:97:53: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:97:53: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:97:63: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:97:63: info: overflow check proved (Z3: 4 VC)
 pair_insertion_sort.adb:98:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:98:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:98:38: info: initialization of "J" proved
 pair_insertion_sort.adb:98:39: info: index check proved (Z3: 8 VC)
 pair_insertion_sort.adb:98:39: info: overflow check proved (Z3: 4 VC)
-pair_insertion_sort.adb:98:45: info: initialization of "Y" proved
 pair_insertion_sort.adb:100:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:100:36: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:101:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:101:36: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:101:38: info: index check proved (Z3: 8 VC)
-pair_insertion_sort.adb:101:38: info: initialization of "J" proved
-pair_insertion_sort.adb:101:43: info: initialization of "Y" proved
-pair_insertion_sort.adb:102:18: info: initialization of "J" proved
 pair_insertion_sort.adb:102:20: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:106:33: info: initialization of "I" proved
 pair_insertion_sort.adb:106:33: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:106:33: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:106:44: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:108:33: info: initialization of "J" proved
 pair_insertion_sort.adb:108:33: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:108:33: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:108:45: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:109:33: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:109:33: info: loop invariant preservation proved (Z3: 1 VC)
-pair_insertion_sort.adb:109:33: info: precondition proved (Z3: 10 VC)
-pair_insertion_sort.adb:109:47: info: initialization of "I" proved
+pair_insertion_sort.adb:109:33: info: precondition proved (Trivial: 2 VC; Z3: 10 VC)
 pair_insertion_sort.adb:109:48: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:111:33: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:111:33: info: loop invariant preservation proved (Z3: 1 VC)
-pair_insertion_sort.adb:112:15: info: initialization of "I" proved
 pair_insertion_sort.adb:112:16: info: overflow check proved (Z3: 1 VC)
-pair_insertion_sort.adb:115:10: info: initialization of "I" proved
 pair_insertion_sort.adb:115:15: info: range check proved (Z3: 1 VC)
 pair_insertion_sort.adb:116:17: info: index check proved (Z3: 2 VC)
-pair_insertion_sort.adb:116:17: info: initialization of "I" proved
-pair_insertion_sort.adb:117:15: info: initialization of "I" proved
 pair_insertion_sort.adb:117:17: info: overflow check proved (Z3: 1 VC)
-pair_insertion_sort.adb:118:16: info: initialization of "J" proved
 pair_insertion_sort.adb:118:34: info: index check proved (Z3: 4 VC)
-pair_insertion_sort.adb:118:39: info: initialization of "Y" proved
 pair_insertion_sort.adb:119:13: info: precondition proved (Z3: 10 VC)
 pair_insertion_sort.adb:119:19: info: predicate check proved (Z3: 2 VC)
-pair_insertion_sort.adb:119:22: info: initialization of "J" proved
 pair_insertion_sort.adb:119:23: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:119:23: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:119:27: info: initialization of "J" proved
 pair_insertion_sort.adb:119:27: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:121:36: info: initialization of "J" proved
 pair_insertion_sort.adb:121:36: info: loop invariant initialization proved (Z3: 2 VC)
 pair_insertion_sort.adb:121:36: info: loop invariant preservation proved (Z3: 2 VC)
 pair_insertion_sort.adb:121:47: info: range check proved (Z3: 2 VC)
 pair_insertion_sort.adb:123:36: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:123:36: info: loop invariant preservation proved (Z3: 1 VC)
-pair_insertion_sort.adb:123:36: info: precondition proved (Z3: 10 VC)
-pair_insertion_sort.adb:123:50: info: initialization of "J" proved
+pair_insertion_sort.adb:123:36: info: precondition proved (Trivial: 2 VC; Z3: 10 VC)
 pair_insertion_sort.adb:123:51: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:124:36: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:124:36: info: loop invariant preservation proved (Z3: 1 VC)
-pair_insertion_sort.adb:124:36: info: precondition proved (Z3: 10 VC)
-pair_insertion_sort.adb:124:47: info: initialization of "J" proved
+pair_insertion_sort.adb:124:36: info: precondition proved (Trivial: 2 VC; Z3: 10 VC)
 pair_insertion_sort.adb:124:48: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:124:53: info: range check proved (Z3: 2 VC)
-pair_insertion_sort.adb:125:36: info: loop invariant initialization proved (Z3: 2 VC)
-pair_insertion_sort.adb:125:36: info: loop invariant preservation proved (Z3: 2 VC)
-pair_insertion_sort.adb:125:52: info: initialization of "J" proved
+pair_insertion_sort.adb:125:36: info: loop invariant initialization proved (Trivial: 1 VC; Z3: 1 VC)
+pair_insertion_sort.adb:125:36: info: loop invariant preservation proved (Trivial: 1 VC; Z3: 1 VC)
 pair_insertion_sort.adb:125:53: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:125:53: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:125:63: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:125:63: info: overflow check proved (Z3: 2 VC)
 pair_insertion_sort.adb:126:36: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:126:36: info: loop invariant preservation proved (Z3: 1 VC)
-pair_insertion_sort.adb:126:38: info: initialization of "J" proved
 pair_insertion_sort.adb:126:39: info: index check proved (Z3: 4 VC)
 pair_insertion_sort.adb:126:39: info: overflow check proved (Z3: 2 VC)
-pair_insertion_sort.adb:126:45: info: initialization of "Y" proved
 pair_insertion_sort.adb:128:36: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:128:36: info: loop invariant preservation proved (Z3: 1 VC)
 pair_insertion_sort.adb:129:36: info: loop invariant initialization proved (Z3: 1 VC)
 pair_insertion_sort.adb:129:36: info: loop invariant preservation proved (Z3: 1 VC)
 pair_insertion_sort.adb:129:38: info: index check proved (Z3: 4 VC)
-pair_insertion_sort.adb:129:38: info: initialization of "J" proved
-pair_insertion_sort.adb:129:43: info: initialization of "Y" proved
-pair_insertion_sort.adb:130:18: info: initialization of "J" proved
 pair_insertion_sort.adb:130:20: info: overflow check proved (Z3: 1 VC)
 pair_insertion_sort.ads:8:27: info: overflow check proved (Z3: 1 VC)
 pair_insertion_sort.ads:8:35: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.ads:8:44: info: index check proved (Z3: 2 VC)
 pair_insertion_sort.ads:8:44: info: overflow check proved (Z3: 1 VC)
 pair_insertion_sort.ads:14:14: info: postcondition proved (Z3: 2 VC)
-pair_insertion_sort.ads:14:14: info: precondition proved (Z3: 5 VC)
+pair_insertion_sort.ads:14:14: info: precondition proved (Trivial: 1 VC; Z3: 5 VC)
 pair_insertion_sort.ads:14:29: info: range check proved (Z3: 1 VC)
+perm.adb:5:06: info: data dependencies proved
 perm.adb:7:14: info: postcondition proved (Z3: 1 VC)
 perm.adb:15:14: info: index check proved (Z3: 2 VC)
 perm.adb:16:25: info: assertion proved (Z3: 1 VC)
@@ -256,20 +200,15 @@ perm.adb:18:29: info: index check proved (Z3: 2 VC)
 perm.adb:21:07: info: precondition proved (Z3: 1 VC)
 perm.adb:21:15: info: precondition proved (Z3: 1 VC)
 perm.adb:21:32: info: precondition proved (Z3: 1 VC)
-perm.adb:25:07: info: initialization of "B" proved
 perm.adb:25:17: info: precondition proved (Z3: 1 VC)
 perm.adb:32:10: info: precondition proved (Z3: 1 VC)
-perm.adb:32:18: info: initialization of "B" proved
 perm.adb:32:21: info: precondition proved (Z3: 1 VC)
 perm.adb:34:10: info: predicate check proved (Z3: 1 VC)
 perm.adb:34:13: info: index check proved (Z3: 2 VC)
-perm.adb:34:16: info: initialization of "B" proved
 perm.adb:35:10: info: precondition proved (Z3: 1 VC)
 perm.adb:35:18: info: precondition proved (Z3: 1 VC)
-perm.adb:35:35: info: initialization of "B" proved
 perm.adb:36:10: info: precondition proved (Z3: 3 VC)
 perm.adb:36:19: info: precondition proved (Z3: 1 VC)
-perm.adb:36:45: info: initialization of "B" proved
 perm.ads:10:07: info: range check proved (Z3: 4 VC)
 perm.ads:10:28: info: overflow check proved (Z3: 1 VC)
 perm.ads:15:17: info: index check proved (Z3: 2 VC)
@@ -286,6 +225,7 @@ perm.ads:24:29: info: range check proved (Z3: 1 VC)
 perm.ads:29:20: info: index check proved (Z3: 2 VC)
 perm.ads:30:61: info: index check proved (Z3: 2 VC)
 perm.ads:30:69: info: index check proved (Z3: 2 VC)
+perm.ads:36:06: info: data dependencies proved
 perm.ads:38:17: info: precondition proved (Z3: 2 VC)
 perm.ads:40:08: info: postcondition proved (Z3: 4 VC)
 perm.ads:40:19: info: index check proved (Z3: 2 VC)

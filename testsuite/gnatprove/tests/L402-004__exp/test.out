@@ -3,4 +3,4 @@ p.adb:4:14: info: overflow check proved (CVC4: 1 VC)
 p.adb:5:14: info: float overflow check proved (CVC4: 1 VC)
 p.adb:6:12: medium: overflow check might fail (e.g. when X = -1000) [possible explanation: subprogram at line 1 should mention X in a precondition]
 p.adb:7:14: info: overflow check proved (CVC4: 1 VC)
-p.adb:8:14: medium: float overflow check might fail (e.g. when Y = 3.3230700E+35)
+p.adb:8:14: medium: float overflow check might fail (e.g. when Y = 7.9073774E+28) [possible explanation: subprogram at line 1 should mention Y in a precondition]

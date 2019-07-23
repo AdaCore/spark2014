@@ -5,33 +5,32 @@ contracts.adb:8:44: info: initialization of "U" proved
 contracts.adb:12:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:15:45: info: initialization of "U" proved
 contracts.adb:17:19: info: postcondition proved (CVC4: 1 VC)
-contracts.adb:17:23: info: initialization of "U" proved
 contracts.adb:20:12: info: range check proved (CVC4: 1 VC)
 contracts.adb:23:04: warning: analyzing unreferenced procedure "Call_Convert_Integer"
+contracts.adb:24:07: info: initialization of "Z" proved
 contracts.adb:26:07: info: precondition proved (CVC4: 1 VC)
 contracts.adb:27:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:27:14: medium: range check might fail [possible explanation: call at line 26 should mention U (for argument Z) in a postcondition]
-contracts.adb:27:16: info: initialization of "Z" proved
 contracts.adb:30:04: warning: analyzing unreferenced procedure "Call_Convert_Integer1"
+contracts.adb:31:07: info: initialization of "Z" proved
 contracts.adb:33:07: info: precondition proved (CVC4: 1 VC)
 contracts.adb:34:14: info: overflow check proved (CVC4: 1 VC)
 contracts.adb:34:14: info: range check proved (CVC4: 1 VC)
-contracts.adb:34:16: info: initialization of "Z" proved
 discriminant_check.adb:12:04: warning: analyzing unreferenced function "Get_X"
 discriminant_check.adb:14:15: medium: discriminant check might fail [possible explanation: subprogram at line 12 should mention R in a precondition]
 discriminant_check.adb:17:04: warning: analyzing unreferenced procedure "Set_X"
 discriminant_check.adb:19:08: medium: discriminant check might fail [possible explanation: subprogram at line 17 should mention R in a precondition]
 division_by_zero.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 division_by_zero.adb:9:55: info: initialization of "U" proved
-division_by_zero.adb:12:27: medium: divide by zero might fail
-division_by_zero.adb:12:27: medium: overflow check might fail
-division_by_zero.adb:13:27: medium: divide by zero might fail
-division_by_zero.adb:14:27: medium: divide by zero might fail
+division_by_zero.adb:12:27: medium: divide by zero might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+division_by_zero.adb:12:27: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+division_by_zero.adb:13:27: medium: divide by zero might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+division_by_zero.adb:14:27: medium: divide by zero might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
 division_by_zero.adb:18:04: warning: analyzing unreferenced procedure "Oper_Unsigned"
 division_by_zero.adb:18:57: info: initialization of "U" proved
-division_by_zero.adb:21:27: medium: divide by zero might fail
-division_by_zero.adb:22:27: medium: divide by zero might fail
-division_by_zero.adb:23:27: medium: divide by zero might fail
+division_by_zero.adb:21:27: medium: divide by zero might fail [possible explanation: subprogram at line 18 should mention X and Y in a precondition]
+division_by_zero.adb:22:27: medium: divide by zero might fail [possible explanation: subprogram at line 18 should mention X and Y in a precondition]
+division_by_zero.adb:23:27: medium: divide by zero might fail [possible explanation: subprogram at line 18 should mention X and Y in a precondition]
 division_by_zero.adb:27:04: warning: analyzing unreferenced procedure "Div_Float"
 division_by_zero.adb:27:39: info: initialization of "U" proved
 division_by_zero.adb:29:14: medium: divide by zero might fail [possible explanation: subprogram at line 27 should mention X and Y in a precondition]
@@ -50,33 +49,33 @@ index_check.adb:8:04: warning: analyzing unreferenced procedure "Set"
 index_check.adb:10:09: medium: array index check might fail [possible explanation: subprogram at line 8 should mention J in a precondition]
 overflow_check.adb:9:04: warning: analyzing unreferenced procedure "Oper_Integer"
 overflow_check.adb:9:68: info: initialization of "U" proved
-overflow_check.adb:12:30: medium: overflow check might fail
-overflow_check.adb:13:30: medium: overflow check might fail
-overflow_check.adb:14:32: medium: overflow check might fail
-overflow_check.adb:15:32: medium: overflow check might fail
-overflow_check.adb:16:32: medium: overflow check might fail
-overflow_check.adb:17:32: medium: divide by zero might fail
-overflow_check.adb:17:32: medium: overflow check might fail
-overflow_check.adb:18:32: medium: overflow check might fail
+overflow_check.adb:12:30: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X in a precondition]
+overflow_check.adb:13:30: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X in a precondition]
+overflow_check.adb:14:32: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+overflow_check.adb:15:32: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+overflow_check.adb:16:32: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+overflow_check.adb:17:32: medium: divide by zero might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+overflow_check.adb:17:32: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention X and Y in a precondition]
+overflow_check.adb:18:32: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention E and X in a precondition]
 overflow_check.adb:22:04: warning: analyzing unreferenced procedure "Oper_Float"
 overflow_check.adb:22:64: info: initialization of "U" proved
-overflow_check.adb:27:32: medium: float overflow check might fail
-overflow_check.adb:28:32: medium: float overflow check might fail
-overflow_check.adb:29:32: medium: float overflow check might fail
-overflow_check.adb:30:32: medium: divide by zero might fail
-overflow_check.adb:30:32: medium: float overflow check might fail
-overflow_check.adb:31:32: info: division check proved (CVC4: 2 VC)
-overflow_check.adb:31:32: medium: float overflow check might fail
+overflow_check.adb:27:32: medium: float overflow check might fail [possible explanation: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:28:32: medium: float overflow check might fail [possible explanation: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:29:32: medium: float overflow check might fail [possible explanation: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:30:32: medium: divide by zero might fail [possible explanation: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:30:32: medium: float overflow check might fail [possible explanation: subprogram at line 22 should mention X and Y in a precondition]
+overflow_check.adb:31:32: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
+overflow_check.adb:31:32: medium: float overflow check might fail [possible explanation: subprogram at line 22 should mention E and X in a precondition]
 overflow_check.adb:35:04: warning: analyzing unreferenced procedure "Oper_Fixed"
 overflow_check.adb:35:51: warning: unused variable "E"
 overflow_check.adb:35:64: medium: "U" might not be initialized in "Oper_Fixed"
-overflow_check.adb:38:30: medium: overflow check might fail
-overflow_check.adb:39:30: medium: overflow check might fail
-overflow_check.adb:40:32: medium: overflow check might fail
-overflow_check.adb:41:32: medium: overflow check might fail
-overflow_check.adb:42:32: medium: overflow check might fail
-overflow_check.adb:43:32: medium: divide by zero might fail
-overflow_check.adb:43:32: medium: overflow check might fail
+overflow_check.adb:38:30: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X in a precondition]
+overflow_check.adb:39:30: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X in a precondition]
+overflow_check.adb:40:32: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:41:32: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:42:32: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:43:32: medium: divide by zero might fail [possible explanation: subprogram at line 35 should mention X and Y in a precondition]
+overflow_check.adb:43:32: medium: overflow check might fail [possible explanation: subprogram at line 35 should mention X and Y in a precondition]
 range_check.adb:16:04: warning: analyzing unreferenced procedure "Convert_Enum"
 range_check.adb:16:38: info: initialization of "U" proved
 range_check.adb:18:12: medium: range check might fail [possible explanation: subprogram at line 16 should mention X in a precondition]

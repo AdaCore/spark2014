@@ -1,36 +1,28 @@
-binary_search.adb:20:13: info: initialization of "Left" proved
-binary_search.adb:20:34: info: initialization of "Right" proved
+binary_search.adb:13:07: info: initialization of "Left" proved
+binary_search.adb:14:07: info: initialization of "Right" proved
+binary_search.adb:15:07: info: initialization of "Med" proved
 binary_search.adb:25:24: info: unrolling loop
-binary_search.adb:32:17: info: initialization of "Left" proved
 binary_search.adb:32:22: info: range check proved (CVC4: 10 VC)
-binary_search.adb:32:25: info: initialization of "Right" proved
 binary_search.adb:32:39: info: division check proved (CVC4: 10 VC)
-binary_search.adb:34:16: info: initialization of "Med" proved
-binary_search.adb:35:21: info: initialization of "Med" proved
 binary_search.adb:35:25: info: range check proved (CVC4: 10 VC)
-binary_search.adb:37:22: info: initialization of "Med" proved
 binary_search.adb:37:26: info: range check proved (CVC4: 10 VC)
-binary_search.adb:39:20: info: initialization of "Med" proved
 binary_search.ads:21:33: info: index check proved (CVC4: 2 VC)
 binary_search.ads:23:14: info: postcondition proved (CVC4: 2 VC)
 binary_search.ads:23:57: info: index check proved (CVC4: 2 VC)
 langley.adb:7:14: info: postcondition proved (CVC4: 1 VC)
 langley.adb:7:63: info: overflow check proved (CVC4: 1 VC)
+langley.adb:10:07: info: initialization of "Sum" proved
 langley.adb:12:27: info: unrolling loop
-langley.adb:13:17: info: initialization of "Sum" proved
 langley.adb:13:25: info: overflow check proved (CVC4: 10 VC)
-langley.adb:15:14: info: initialization of "Sum" proved
+lcp.adb:14:04: info: initialization of "L" proved
 lcp.adb:17:19: info: unrolling loop
 lcp.adb:18:24: info: overflow check proved (CVC4: 10 VC)
-lcp.adb:18:26: info: initialization of "L" proved
 lcp.adb:19:33: info: overflow check proved (CVC4: 10 VC)
 lcp.adb:20:36: info: index check proved (CVC4: 20 VC)
 lcp.adb:20:36: info: overflow check proved (CVC4: 10 VC)
 lcp.adb:20:48: info: index check proved (CVC4: 20 VC)
 lcp.adb:20:48: info: overflow check proved (CVC4: 10 VC)
-lcp.adb:21:12: info: initialization of "L" proved
 lcp.adb:21:14: info: overflow check proved (CVC4: 10 VC)
-lcp.adb:24:11: info: initialization of "L" proved
 lcp.ads:14:05: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
 lcp.ads:14:47: info: index check proved (CVC4: 2 VC)
 lcp.ads:14:47: info: overflow check proved (CVC4: 1 VC)
@@ -47,23 +39,19 @@ lcp.ads:17:54: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:18:03: info: disjoint contract cases proved (CVC4: 1 VC)
 lcp.ads:19:10: info: index check proved (CVC4: 2 VC)
 lcp.ads:19:19: info: index check proved (CVC4: 2 VC)
-lcp.ads:19:22: info: contract case proved (CVC4: 2 VC)
-lcp.ads:20:22: info: contract case proved (CVC4: 2 VC)
+lcp.ads:19:22: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+lcp.ads:20:22: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 lcp.ads:20:45: info: overflow check proved (CVC4: 1 VC)
 lcp.ads:20:49: info: overflow check proved (CVC4: 1 VC)
-lcp.ads:21:22: info: contract case proved (CVC4: 2 VC)
+lcp.ads:21:22: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+loopstat.adb:2:04: info: initialization of "K" proved
+loopstat.adb:4:04: info: initialization of "A" proved
 loopstat.adb:8:21: info: unrolling loop
-loopstat.adb:9:12: info: initialization of "K" proved
 loopstat.adb:9:14: info: overflow check proved (CVC4: 10 VC)
 loopstat.adb:11:19: info: assertion proved (CVC4: 1 VC)
-loopstat.adb:11:19: info: initialization of "K" proved
 loopstat.adb:14:21: info: unrolling loop
 loopstat.adb:15:24: info: unrolling loop
-loopstat.adb:16:15: info: initialization of "K" proved
 loopstat.adb:16:17: info: overflow check proved (CVC4: 100 VC)
 loopstat.adb:19:19: info: assertion proved (CVC4: 1 VC)
-loopstat.adb:19:19: info: initialization of "K" proved
 loopstat.adb:21:21: info: unrolling loop
-loopstat.adb:22:12: info: initialization of "A" proved
 loopstat.adb:24:19: info: assertion proved (CVC4: 1 VC)
-loopstat.adb:24:43: info: initialization of "A" proved

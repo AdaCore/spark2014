@@ -1,2 +1,2 @@
 p.ads:1:14: warning: unused initial value of "X"
-p.ads:2:11: medium: postcondition might fail, cannot prove X = 1 (e.g. when X = 0)
+p.ads:2:11: medium: postcondition might fail, cannot prove X = 1

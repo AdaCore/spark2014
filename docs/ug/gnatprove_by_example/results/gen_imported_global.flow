@@ -1,4 +1,5 @@
 gen_imported_global.adb:12:07: warning: statement has no effect
 gen_imported_global.adb:12:07: warning: unused assignment to "V" constituent of "State"
 gen_imported_global.adb:17:36: info: initialization of "V" constituent of "State" proved
-gen_imported_global.ads:10:14: info: initialization of "V" constituent of "State" proved
+gen_imported_global.ads:13:06: info: data dependencies proved
+gen_imported_global.ads:14:06: info: flow dependencies proved

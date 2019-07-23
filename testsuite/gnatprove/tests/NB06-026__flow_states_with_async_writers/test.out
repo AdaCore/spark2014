@@ -2,4 +2,4 @@ initializing_state_abstractions.adb:5:04: high: "A_1" constituent of "State_A" i
 initializing_state_abstractions.adb:5:04: high: initialization of "Initializing_State_Abstractions.State_A" is specified at initializing_state_abstractions.ads:4
 initializing_state_abstractions.adb:7:04: high: "B_1" constituent of "State_B" is not initialized in "Initializing_State_Abstractions"
 initializing_state_abstractions.adb:7:04: high: initialization of "Initializing_State_Abstractions.State_B" is specified at initializing_state_abstractions.ads:4
-initializing_state_abstractions.adb:8:04: info: initialization of "B_2" constituent of "State_B" proved
+initializing_state_abstractions.ads:4:03: info: flow dependencies proved

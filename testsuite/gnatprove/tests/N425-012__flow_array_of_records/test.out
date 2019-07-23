@@ -1,2 +1,3 @@
-subjects.ads:22:07: info: initialization of "GPRs.A" proved
-subjects.ads:22:07: info: initialization of "GPRs.B" proved
+subjects.ads:22:07: info: initialization of "GPRs" proved
+subjects.ads:24:07: info: data dependencies proved
+subjects.ads:25:07: info: flow dependencies proved

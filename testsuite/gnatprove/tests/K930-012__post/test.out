@@ -2,7 +2,6 @@ p.adb:3:26: info: index check proved (CVC4: 2 VC)
 p.adb:5:09: info: index check proved (CVC4: 2 VC)
 p.adb:5:17: info: index check proved (CVC4: 2 VC)
 p.adb:6:09: info: index check proved (CVC4: 2 VC)
-p.adb:6:15: info: initialization of "Tmp" proved
 p.ads:6:14: info: postcondition proved (CVC4: 2 VC)
 p.ads:6:16: info: index check proved (CVC4: 2 VC)
 p.ads:6:23: info: index check proved (CVC4: 2 VC)

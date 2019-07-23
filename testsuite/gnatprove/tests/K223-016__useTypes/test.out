@@ -1,1 +1,1 @@
-iandatypes.adb:6:37: medium: range check might fail (e.g. when X = 10 and Y = 1) [possible explanation: subprogram at line 3 should mention X and Y in a precondition]
+iandatypes.adb:6:37: medium: range check might fail (e.g. when X = 1 and Y = 10) [possible explanation: subprogram at iandatypes.ads:5 should mention X and Y in a precondition]

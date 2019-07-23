@@ -1,6 +1,4 @@
 c86004c01.adb:3:11: warning: subprogram "C86004C01" has no effect
-c86004c01.adb:6:25: medium: range check might fail (e.g. when A = 0)
-c86004c01.adb:7:25: medium: range check might fail [possible explanation: subprogram at line 3 should mention INTGR in a precondition]
+c86004c01.adb:6:25: medium: range check might fail
+c86004c01.adb:7:25: medium: range check might fail (e.g. when INTGR = Integer'First) [possible explanation: subprogram at line 3 should mention INTGR in a precondition]
 c86004c01.adb:9:16: warning: subprogram "C86004C1" has no effect
-c86004c01.adb:12:06: info: initialization of "A" proved
-c86004c01.adb:12:06: info: initialization of "B" proved

@@ -1,0 +1,6 @@
+use_my_eq.adb:6:04: info: initialization of "X" proved
+use_my_eq.adb:6:07: info: initialization of "Y" proved
+use_my_eq.adb:9:19: info: assertion proved (CVC4: 1 VC)
+use_my_eq_arr.adb:4:04: info: initialization of "W" proved
+use_my_eq_arr.adb:4:07: info: initialization of "Z" proved
+use_my_eq_arr.adb:7:19: info: assertion proved (CVC4: 1 VC)

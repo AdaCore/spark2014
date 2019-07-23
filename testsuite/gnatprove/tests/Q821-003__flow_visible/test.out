@@ -1,1 +1,2 @@
-p.adb:3:04: info: initialization of "X" constituent of "State" proved
+p.ads:1:41: info: flow dependencies proved
+p.ads:4:24: info: data dependencies proved, in instantiation at main.adb:4

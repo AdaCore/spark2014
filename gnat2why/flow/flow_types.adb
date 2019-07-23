@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -614,7 +614,7 @@ package body Flow_Types is
    function Is_Function_Entity (F : Flow_Id) return Boolean is
      (F.Kind in Direct_Mapping | Record_Field
       and then Nkind (F.Node) in N_Entity
-      and then Ekind (F.Node) in E_Function);
+      and then Ekind (F.Node) = E_Function);
 
    -----------------
    -- Is_Internal --
@@ -854,7 +854,7 @@ package body Flow_Types is
       ------------------
 
       function Pretty_Print (EN : Entity_Name) return String is
-         Original : constant String := To_String (EN);
+         Original : constant String := Strip_Child_Prefixes (To_String (EN));
 
          Pretty : String (1 .. Original'Length);
          --  A placeholder for the pretty-printed string; it will be as long as
@@ -867,7 +867,6 @@ package body Flow_Types is
          Capitalize : Boolean := True;
          --  Control variables for skipping a second consecutive underscore and
          --  capitalizing the first letter of a compound string.
-
       begin
          for J in Original'Range loop
             if Skip then

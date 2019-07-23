@@ -2,8 +2,10 @@ angles-hall.ads:4:06: global Output "Angles.State" of "Update" not written
 angles-hall.ads:4:06: global Output "Hall.State" of "Update" not written
 angles-hall.ads:4:06: low: global Input "Angles.State" of "Update" not read
 angles-hall.ads:4:06: low: global Input "Hall.State" of "Update" not read
+angles-hall.ads:5:06: info: flow dependencies proved
 angles-hall.ads:11:06: global Output "Angles.State" of "Update" not written
 angles-hall.ads:11:06: global Output "Hall.State" of "Update" not written
 angles-hall.ads:11:06: low: global Input "Angles.State" of "Update" not read
 angles-hall.ads:11:06: low: global Input "Hall.State" of "Update" not read
+angles-hall.ads:12:06: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

@@ -2,3 +2,5 @@ sandbox.adb:14:26: info: range check proved (CVC4: 2 VC)
 sandbox.adb:15:32: info: range check proved (CVC4: 2 VC)
 sandbox.ads:9:44: info: initialization of "MSW" proved
 sandbox.ads:9:49: info: initialization of "LSW" proved
+sandbox.ads:11:08: info: data dependencies proved
+sandbox.ads:12:08: info: flow dependencies proved

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,7 +26,6 @@
 with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Common_Containers; use Common_Containers;
-
 package Why.Types is
 
    --  This package hierarchy provides basic types for Why syntax trees
@@ -48,7 +47,7 @@ package Why.Types is
    function Present (N : Why_Node_Id) return Boolean is (N /= Why_Empty);
    --  Returns True if N is not the empty node, False otherwise
 
-   subtype Name_Id_Set is Name_Id_Sets.Set;
+   subtype Symbol_Set is Symbol_Sets.Set;
 
    function Why_Node_Hash (X : Why_Node_Id) return Ada.Containers.Hash_Type is
      (Ada.Containers.Hash_Type (X));

@@ -2,87 +2,60 @@ static_discr.adb:5:30: info: initialization of "Result" proved
 static_discr.adb:8:19: info: postcondition proved (CVC4: 6 VC)
 static_discr.adb:11:54: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:12:57: info: index check proved (CVC4: 2 VC)
-static_discr.adb:13:29: info: initialization of "Result" proved
 static_discr.adb:14:63: info: index check proved (CVC4: 2 VC)
 static_discr.adb:19:45: info: index check proved (CVC4: 2 VC)
 static_discr.adb:24:43: info: range check proved (CVC4: 1 VC)
-static_discr.adb:30:13: info: initialization of "Result" proved
-static_discr.adb:30:33: info: initialization of "Current.Length" proved
-static_discr.adb:32:13: info: initialization of "Current.Length" proved
 static_discr.adb:32:13: info: loop invariant initialization proved (CVC4: 4 VC)
 static_discr.adb:32:13: info: loop invariant preservation proved (CVC4: 4 VC)
-static_discr.adb:33:42: info: initialization of "Current.Content.Content" proved
 static_discr.adb:34:51: info: overflow check proved (CVC4: 2 VC)
 static_discr.adb:35:46: info: index check proved (CVC4: 4 VC)
 static_discr.adb:36:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:37:10: info: precondition proved (CVC4: 2 VC)
-static_discr.adb:37:23: info: initialization of "Current.Content.Content" proved
-static_discr.adb:37:23: info: initialization of "Current.Length" proved
 static_discr.adb:38:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:39:25: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:39:45: info: initialization of "Current.Content.Content" proved
-static_discr.adb:41:14: info: initialization of "Result" proved
 static_discr.adb:45:38: info: range check proved (CVC4: 1 VC)
 static_discr.adb:45:46: info: range check proved (CVC4: 1 VC)
 static_discr.adb:48:30: info: initialization of "Result" proved
 static_discr.adb:51:19: info: postcondition proved (CVC4: 6 VC)
 static_discr.adb:54:54: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:55:57: info: index check proved (CVC4: 2 VC)
-static_discr.adb:56:29: info: initialization of "Result" proved
 static_discr.adb:57:63: info: index check proved (CVC4: 2 VC)
 static_discr.adb:62:45: info: index check proved (CVC4: 2 VC)
 static_discr.adb:67:43: info: range check proved (CVC4: 1 VC)
-static_discr.adb:70:31: info: discriminant check proved (CVC4: 2 VC)
+static_discr.adb:70:31: info: discriminant check proved (CVC4: 1 VC)
 static_discr.adb:70:33: info: range check proved (CVC4: 1 VC)
 static_discr.adb:70:41: info: range check proved (CVC4: 1 VC)
-static_discr.adb:70:48: info: discriminant check proved (CVC4: 2 VC)
+static_discr.adb:70:48: info: discriminant check proved (CVC4: 1 VC)
 static_discr.adb:70:50: info: range check proved (CVC4: 1 VC)
 static_discr.adb:70:58: info: range check proved (CVC4: 1 VC)
-static_discr.adb:70:65: info: length check proved (CVC4: 4 VC)
+static_discr.adb:70:65: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 static_discr.adb:70:70: info: range check proved (CVC4: 1 VC)
-static_discr.adb:73:13: info: initialization of "Result" proved
-static_discr.adb:73:33: info: initialization of "Current.Length" proved
-static_discr.adb:75:13: info: initialization of "Current.Length" proved
 static_discr.adb:75:13: info: loop invariant initialization proved (CVC4: 4 VC)
 static_discr.adb:75:13: info: loop invariant preservation proved (CVC4: 4 VC)
-static_discr.adb:76:26: info: initialization of "Current.Content.Content" proved
 static_discr.adb:77:51: info: overflow check proved (CVC4: 2 VC)
 static_discr.adb:78:30: info: index check proved (CVC4: 4 VC)
 static_discr.adb:79:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:80:10: info: precondition proved (CVC4: 2 VC)
-static_discr.adb:80:23: info: initialization of "Current.Content.Content" proved
-static_discr.adb:80:23: info: initialization of "Current.Length" proved
 static_discr.adb:81:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:82:25: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:82:29: info: initialization of "Current.Content.Content" proved
-static_discr.adb:84:14: info: initialization of "Result" proved
 static_discr.adb:89:30: info: initialization of "Result" proved
 static_discr.adb:92:19: info: postcondition proved (CVC4: 6 VC)
 static_discr.adb:95:54: info: overflow check proved (CVC4: 1 VC)
 static_discr.adb:96:57: info: index check proved (CVC4: 2 VC)
-static_discr.adb:97:29: info: initialization of "Result" proved
 static_discr.adb:98:63: info: index check proved (CVC4: 2 VC)
 static_discr.adb:103:20: info: range check proved (CVC4: 1 VC)
 static_discr.adb:103:45: info: index check proved (CVC4: 2 VC)
 static_discr.adb:108:43: info: range check proved (CVC4: 1 VC)
-static_discr.adb:114:13: info: initialization of "Result" proved
-static_discr.adb:114:33: info: initialization of "Current.Length" proved
-static_discr.adb:116:13: info: initialization of "Current.Length" proved
 static_discr.adb:116:13: info: loop invariant initialization proved (CVC4: 4 VC)
 static_discr.adb:116:13: info: loop invariant preservation proved (CVC4: 4 VC)
-static_discr.adb:117:42: info: initialization of "Current.Content.Content" proved
 static_discr.adb:118:51: info: overflow check proved (CVC4: 2 VC)
 static_discr.adb:119:46: info: index check proved (CVC4: 4 VC)
 static_discr.adb:120:25: info: assertion proved (CVC4: 1 VC)
 static_discr.adb:121:10: info: precondition proved (CVC4: 2 VC)
-static_discr.adb:121:23: info: initialization of "Current.Content.Content" proved
-static_discr.adb:121:23: info: initialization of "Current.Length" proved
 static_discr.adb:122:25: info: assertion proved (CVC4: 1 VC)
-static_discr.adb:123:25: info: assertion proved (CVC4: 1 VC)
+static_discr.adb:123:25: info: assertion proved (Z3: 1 VC)
 static_discr.adb:123:26: info: range check proved (CVC4: 1 VC)
-static_discr.adb:123:45: info: initialization of "Current.Content.Content" proved
 static_discr.adb:123:52: info: range check proved (CVC4: 1 VC)
-static_discr.adb:125:14: info: initialization of "Result" proved
 static_discr.ads:7:07: info: range check proved (CVC4: 2 VC)
 static_discr.ads:11:27: info: range check proved (CVC4: 1 VC)
 static_discr.ads:11:35: info: range check proved (CVC4: 1 VC)
@@ -91,9 +64,9 @@ static_discr.ads:15:39: info: range check proved (CVC4: 1 VC)
 static_discr.ads:19:14: info: postcondition proved (CVC4: 3 VC)
 static_discr.ads:21:70: info: index check proved (CVC4: 2 VC)
 static_discr.ads:22:56: info: index check proved (CVC4: 2 VC)
-static_discr.ads:26:14: info: postcondition proved (CVC4: 3 VC)
+static_discr.ads:26:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC)
 static_discr.ads:28:70: info: index check proved (CVC4: 2 VC)
 static_discr.ads:29:52: info: index check proved (CVC4: 2 VC)
-static_discr.ads:33:14: info: postcondition proved (CVC4: 3 VC)
+static_discr.ads:33:14: info: postcondition proved (CVC4: 2 VC; Z3: 1 VC)
 static_discr.ads:35:48: info: index check proved (CVC4: 2 VC)
 static_discr.ads:36:42: info: index check proved (CVC4: 2 VC)

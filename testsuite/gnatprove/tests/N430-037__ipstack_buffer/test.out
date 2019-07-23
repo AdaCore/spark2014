@@ -1,5 +1,6 @@
-buf-no_data.adb:11:42: medium: overflow check might fail (e.g. when Buf_List = Integer'Last) [possible explanation: subprogram at line 9 should mention Common.Buf_List in a precondition]
-buf-no_data.adb:12:30: medium: overflow check might fail (e.g. when Free_List = Integer'Last) [possible explanation: subprogram at line 9 should mention No_Data.Free_List in a precondition]
+buf-no_data.adb:11:42: medium: overflow check might fail (e.g. when Buf_List = Integer'Last) [possible explanation: subprogram at buf-no_data.ads:9 should mention Common.Buf_List in a precondition]
+buf-no_data.adb:12:30: medium: overflow check might fail (e.g. when Free_List = Integer'Last) [possible explanation: subprogram at buf-no_data.ads:9 should mention No_Data.Free_List in a precondition]
 buf-no_data.ads:5:22: warning: no procedure exists that can initialize abstract state "No_Data.State" constituent of "Buf.State"
+buf-no_data.ads:10:06: info: data dependencies proved
 buf.ads:3:21: warning: no procedure exists that can initialize abstract state "Buf.State"
 buf.ads:9:14: warning: subprogram "P" has no effect

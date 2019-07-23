@@ -1,50 +1,42 @@
+vc4.adb:7:07: info: initialization of "T1" proved
+vc4.adb:7:11: info: initialization of "T2" proved
+vc4.adb:7:15: info: initialization of "T3" proved
+vc4.adb:7:19: info: initialization of "T4" proved
 vc4.adb:13:22: info: assertion proved (CVC4: 1 VC)
-vc4.adb:13:22: info: initialization of "T1" proved
-vc4.adb:13:27: info: initialization of "T2" proved
 vc4.adb:17:22: info: assertion proved (CVC4: 1 VC)
-vc4.adb:17:22: info: initialization of "T3" proved
-vc4.adb:17:27: info: initialization of "T4" proved
-vc4.adb:19:13: info: initialization of "T1" proved
-vc4.adb:19:18: info: initialization of "T2" proved
-vc4.adb:19:27: info: initialization of "T3" proved
-vc4.adb:19:32: info: initialization of "T4" proved
-vc4.adb:30:22: info: initialization of "T1" proved
-vc4.adb:30:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = -1 and T2 = 0)
-vc4.adb:30:27: info: initialization of "T2" proved
-vc4.adb:34:22: info: initialization of "T3" proved
-vc4.adb:34:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = -1 and T4 = 0)
-vc4.adb:34:27: info: initialization of "T4" proved
-vc4.adb:36:13: info: initialization of "T1" proved
-vc4.adb:36:18: info: initialization of "T2" proved
-vc4.adb:36:27: info: initialization of "T3" proved
-vc4.adb:36:32: info: initialization of "T4" proved
-vc4.adb:47:22: info: initialization of "T1" proved
-vc4.adb:47:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = -1 and T2 = 0)
-vc4.adb:47:27: info: initialization of "T2" proved
-vc4.adb:51:22: info: initialization of "T3" proved
-vc4.adb:51:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = -1 and T4 = 0)
-vc4.adb:51:27: info: initialization of "T4" proved
-vc4.adb:53:13: info: initialization of "T1" proved
-vc4.adb:53:18: info: initialization of "T2" proved
-vc4.adb:53:27: info: initialization of "T3" proved
-vc4.adb:53:32: info: initialization of "T4" proved
-vc4.adb:65:22: info: initialization of "T1" proved
-vc4.adb:65:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = -1 and T2 = 0)
-vc4.adb:65:27: info: initialization of "T2" proved
-vc4.adb:69:22: info: initialization of "T3" proved
-vc4.adb:69:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = -1 and T4 = 0)
-vc4.adb:69:27: info: initialization of "T4" proved
-vc4.adb:71:13: info: initialization of "T1" proved
-vc4.adb:71:18: info: initialization of "T2" proved
-vc4.adb:71:27: info: initialization of "T3" proved
-vc4.adb:71:32: info: initialization of "T4" proved
-vc4.adb:80:22: info: initialization of "T1" proved
-vc4.adb:80:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = -1 and T2 = 0)
-vc4.adb:80:27: info: initialization of "T2" proved
-vc4.adb:82:13: info: initialization of "T1" proved
-vc4.adb:82:18: info: initialization of "T2" proved
+vc4.adb:24:07: info: initialization of "T1" proved
+vc4.adb:24:11: info: initialization of "T2" proved
+vc4.adb:24:15: info: initialization of "T3" proved
+vc4.adb:24:19: info: initialization of "T4" proved
+vc4.adb:30:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = 0 and T2 = 1)
+vc4.adb:34:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:41:07: info: initialization of "T1" proved
+vc4.adb:41:11: info: initialization of "T2" proved
+vc4.adb:41:15: info: initialization of "T3" proved
+vc4.adb:41:19: info: initialization of "T4" proved
+vc4.adb:47:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = 0 and T2 = 1)
+vc4.adb:51:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:58:07: info: initialization of "T1" proved
+vc4.adb:58:11: info: initialization of "T2" proved
+vc4.adb:58:15: info: initialization of "T3" proved
+vc4.adb:58:19: info: initialization of "T4" proved
+vc4.adb:65:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = 0 and T2 = 1)
+vc4.adb:69:22: medium: assertion might fail, cannot prove T3 = T4 (e.g. when T3 = 0 and T4 = 1)
+vc4.adb:76:07: info: initialization of "T1" proved
+vc4.adb:76:11: info: initialization of "T2" proved
+vc4.adb:80:22: medium: assertion might fail, cannot prove T1 = T2 (e.g. when T1 = 0 and T2 = 1)
 vc4.ads:31:29: info: initialization of "R" proved
+vc4.ads:32:11: info: data dependencies proved
+vc4.ads:33:11: info: flow dependencies proved
 vc4.ads:35:29: info: initialization of "R" proved
+vc4.ads:36:11: info: data dependencies proved
+vc4.ads:37:11: info: flow dependencies proved
 vc4.ads:40:29: info: initialization of "R" proved
+vc4.ads:41:11: info: data dependencies proved
+vc4.ads:42:11: info: flow dependencies proved
 vc4.ads:45:29: info: initialization of "R" proved
+vc4.ads:46:11: info: data dependencies proved
+vc4.ads:47:11: info: flow dependencies proved
 vc4.ads:50:18: info: initialization of "R" proved
+vc4.ads:51:11: info: data dependencies proved
+vc4.ads:52:11: info: flow dependencies proved

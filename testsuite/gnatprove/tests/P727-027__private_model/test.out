@@ -1,2 +1,2 @@
 private_type.ads:8:45: info: implicit function contract not available for proof ("F" might not return)
-private_type.ads:8:45: medium: precondition might fail [possible explanation: subprogram at line 8 should mention R in a precondition]
+private_type.ads:8:45: medium: precondition might fail, cannot prove Is_Valid (R) [possible explanation: subprogram at line 8 should mention R in a precondition]

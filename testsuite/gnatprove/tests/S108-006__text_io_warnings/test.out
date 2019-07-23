@@ -1,0 +1,91 @@
+a-tiinio.ads:56:40: info: precondition proved (CVC4: 1 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:74:40: info: precondition proved (CVC4: 1 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:76:08: info: precondition proved (CVC4: 2 VC), in instantiation at text_io_warnings.adb:9
+a-tiinio.ads:77:12: info: precondition proved (CVC4: 2 VC), in instantiation at text_io_warnings.adb:9
+text_io_warnings.adb:5:10: info: precondition of main program proved (CVC4: 2 VC)
+text_io_warnings.adb:7:04: info: initialization of "Source" proved
+text_io_warnings.adb:10:04: info: initialization of "Int_Get" proved
+text_io_warnings.adb:14:04: info: initialization of "Target" proved
+text_io_warnings.adb:15:04: info: initialization of "Nat" proved
+text_io_warnings.adb:16:04: info: initialization of "Ch" proved
+text_io_warnings.adb:17:04: info: initialization of "Bool" proved
+text_io_warnings.adb:18:04: info: initialization of "Str" proved
+text_io_warnings.adb:19:04: info: initialization of "A_Line" proved
+text_io_warnings.adb:21:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:22:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
+text_io_warnings.adb:24:07: info: precondition proved (CVC4: 4 VC)
+text_io_warnings.adb:25:18: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:26:30: info: loop invariant initialization proved (CVC4: 2 VC)
+text_io_warnings.adb:26:30: info: loop invariant preservation proved (CVC4: 2 VC)
+text_io_warnings.adb:26:38: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:26:49: info: overflow check proved (CVC4: 2 VC)
+text_io_warnings.adb:28:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:29:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
+text_io_warnings.adb:30:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:31:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
+text_io_warnings.adb:32:04: medium: precondition might fail, cannot prove Line_Length (File) = 0 or else To <= Line_Length (File) [possible explanation: call at line 31 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:34:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:34:28: info: range check proved (CVC4: 1 VC)
+text_io_warnings.adb:36:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:37:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:40:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:41:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
+text_io_warnings.adb:42:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:43:04: info: precondition proved (CVC4: 2 VC; Trivial: 1 VC)
+text_io_warnings.adb:44:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:44:19: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:45:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:45:22: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:46:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:46:22: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:47:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:49:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:52:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:53:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:53:19: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:55:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:57:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:58:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:58:19: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:60:19: info: assertion proved (CVC4: 1 VC)
+text_io_warnings.adb:62:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:65:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:68:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:68:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:71:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:74:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:77:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:77:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:80:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:80:37: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:83:04: medium: precondition might fail, cannot prove Line_Length (File) = 0 or else To <= Line_Length (File)
+text_io_warnings.adb:84:04: medium: precondition might fail, cannot prove Line_Length = 0 or To <= (Line_Length) [possible explanation: call at line 83 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:86:04: medium: precondition might fail, cannot prove Page_Length (File) = 0 or else To <= Page_Length (File)
+text_io_warnings.adb:87:04: medium: precondition might fail, cannot prove Page_Length = 0 or To <= (Page_Length) [possible explanation: call at line 86 should mention Ada.Text_Io.Current_Err and Ada.Text_Io.Current_In and Ada.Text_Io.Current_Out and Ada.Text_Io.File_System and Ada.Text_Io.Standard_Err and Ada.Text_Io.Standard_In and Ada.Text_Io.Standard_Out in a postcondition]
+text_io_warnings.adb:89:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:89:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:91:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:91:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:93:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:93:35: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:96:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:97:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:99:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:100:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:104:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:106:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:110:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:112:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:113:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:116:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:118:07: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:125:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:126:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:130:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:131:04: info: precondition proved (CVC4: 2 VC)
+text_io_warnings.adb:131:22: info: range check proved (CVC4: 4 VC)
+text_io_warnings.adb:133:14: info: range check proved (CVC4: 4 VC)
+text_io_warnings.adb:135:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:135:12: warning: unused assignment to "Source"
+text_io_warnings.adb:136:04: info: precondition proved (CVC4: 1 VC)
+text_io_warnings.adb:136:11: warning: unused assignment to "Target"

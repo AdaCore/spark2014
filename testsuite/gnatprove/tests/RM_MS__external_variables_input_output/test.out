@@ -1,10 +1,12 @@
+copy_14.adb:8:08: info: data dependencies proved
 copy_14.adb:9:44: info: initialization of "Output_Port_14.Output_State" proved
-copy_14.adb:20:22: info: initialization of "The_Stack" proved
-copy_14.adb:20:33: info: initialization of "Value" proved
-copy_14.adb:21:15: info: initialization of "Value" proved
-copy_14.adb:22:17: info: initialization of "Done" proved
-copy_14.adb:25:21: info: initialization of "The_Stack" proved
-copy_14.adb:26:36: info: initialization of "Value" proved
-copy_14.adb:27:36: info: initialization of "The_Stack" proved
+copy_14.adb:10:08: info: flow dependencies proved
+copy_14.adb:12:04: info: initialization of "The_Stack" proved
+copy_14.adb:13:04: info: initialization of "Value" proved
+copy_14.adb:14:04: info: initialization of "Done" proved
 input_port_14.ads:5:29: info: initialization of "Input_Value" proved
+input_port_14.ads:6:11: info: data dependencies proved
+input_port_14.ads:7:11: info: flow dependencies proved
 output_port_14.adb:13:41: info: initialization of "Output_S" constituent of "Output_State" proved
+output_port_14.ads:6:11: info: data dependencies proved
+output_port_14.ads:7:11: info: flow dependencies proved

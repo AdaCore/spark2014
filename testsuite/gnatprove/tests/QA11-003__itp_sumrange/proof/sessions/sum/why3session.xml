@@ -1,90 +1,123 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="4">
+<why3session shape_version="5">
 <prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="120" steplimit="8450000" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="120" steplimit="365000" memlimit="0"/>
-<file name="../../../gnatprove/sum.mlw">
-<theory name="Sum__package_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="sum.mlw"/>
+<theory name="Sum__package_def">
+ <goal name="WP_parameter def" expl="VC for def">
  <transf name="split_goal_wp_conj" proved="true" >
  </transf>
  </goal>
 </theory>
-<theory name="Sum__sum__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+<theory name="Sum__sum__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="13"/></proof>
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="93"/></proof>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="215"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="precondition" proved="true">
+  <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="127"/></proof>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="413"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="117"/></proof>
+  <goal name="VC def.6" expl="postcondition">
+  </goal>
+  <goal name="VC def.7" expl="postcondition" proved="true">
+  <proof prover="1"><result status="valid" steps="409"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Sum__simple_sum__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
+  <goal name="VC def.0" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.1" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
+  <goal name="VC def.4" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition" proved="true">
+  <goal name="VC def.5" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="precondition" proved="true">
+  <goal name="VC def.6" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="loop invariant init" proved="true">
+  <goal name="VC def.7" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="19"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="postcondition">
+  <proof prover="1" obsolete="true"><result status="valid" steps="94"/></proof>
+  </goal>
+  <goal name="VC def.9" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.5" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="30"/></proof>
+  <goal name="VC def.10" expl="loop invariant init" proved="true">
+  <proof prover="1"><result status="valid" steps="111"/></proof>
   </goal>
-  <goal name="WP_parameter def.6" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="75"/></proof>
-  </goal>
-  <goal name="WP_parameter def.7" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.8" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="91"/></proof>
-  </goal>
-  <goal name="WP_parameter def.9" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="14"/></proof>
-  </goal>
-  <goal name="WP_parameter def.10" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="5"/></proof>
-  </goal>
-  <goal name="WP_parameter def.11" expl="loop invariant preservation" proved="true">
+  <goal name="VC def.11" expl="precondition" proved="true">
   <proof prover="0" obsolete="true"><result status="unknown" steps="8450188"/></proof>
-  <proof prover="1"><result status="valid" steps="77"/></proof>
+  <proof prover="1"><result status="valid" steps="161"/></proof>
   </goal>
-  <goal name="WP_parameter def.12" expl="loop invariant preservation">
-  <proof prover="0"><result status="unknown" steps="13062"/></proof>
+  <goal name="VC def.12" expl="precondition" proved="true">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="17106"/></proof>
+  <proof prover="1"><result status="valid" steps="25"/></proof>
+  </goal>
+  <goal name="VC def.13" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="161"/></proof>
+  </goal>
+  <goal name="VC def.14" expl="precondition" proved="true">
+  <proof prover="0" obsolete="true"><result status="unknown" steps="13563"/></proof>
+  <proof prover="1"><result status="valid" steps="19"/></proof>
+  </goal>
+  <goal name="VC def.15" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="19"/></proof>
+  </goal>
+  <goal name="VC def.16" expl="postcondition">
+  </goal>
+  <goal name="VC def.17" expl="postcondition">
+  </goal>
+  <goal name="VC def.18" expl="loop invariant preservation" proved="true">
+  <proof prover="1"><result status="valid" steps="156"/></proof>
+  </goal>
+  <goal name="VC def.19" expl="loop invariant preservation">
+  <proof prover="0"><result status="unknown" steps="15069"/></proof>
   <proof prover="1"><result status="unknown" steps="365013"/></proof>
   </goal>
-  <goal name="WP_parameter def.13" expl="precondition" proved="true">
+  <goal name="VC def.20" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.14" expl="postcondition">
-  <proof prover="0"><result status="unknown" steps="15653"/></proof>
-  <proof prover="1"><result status="unknown" steps="365017"/></proof>
+  <goal name="VC def.21" expl="postcondition">
+  </goal>
+  <goal name="VC def.22" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="13778"/></proof>
+  <proof prover="1"><result status="unknown" steps="365013"/></proof>
   </goal>
  </transf>
  </goal>

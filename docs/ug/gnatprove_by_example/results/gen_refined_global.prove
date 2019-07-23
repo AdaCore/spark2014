@@ -1,3 +1,4 @@
-gen_refined_global.ads:5:14: info: initialization of "V" constituent of "State" proved
-gen_refined_global.ads:8:14: info: initialization of "V" constituent of "State" proved
-gen_refined_global.ads:11:14: info: initialization of "V" constituent of "State" proved
+gen_refined_global.ads:6:06: info: data dependencies proved
+gen_refined_global.ads:9:06: info: data dependencies proved
+gen_refined_global.ads:12:06: info: data dependencies proved
+gen_refined_global.ads:13:06: info: flow dependencies proved

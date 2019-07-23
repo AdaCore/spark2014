@@ -1,4 +1,5 @@
-ineffective_constant.adb:8:04: info: initialization of "G" constituent of "State" proved
-ineffective_constant.adb:12:29: medium: "G" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
-ineffective_constant.adb:15:22: medium: assertion might fail, cannot prove C.X + G = 0 [possible explanation: subprogram at line 11 should mention G in a precondition]
+ineffective_constant.adb:12:29: medium: "G" constituent of "State" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
+ineffective_constant.adb:15:22: medium: assertion might fail, cannot prove C.X + G = 0 [possible explanation: subprogram at ineffective_constant.ads:5 should mention G in a precondition]
 ineffective_constant.adb:15:26: info: overflow check proved (CVC4: 1 VC)
+ineffective_constant.ads:3:08: info: flow dependencies proved
+ineffective_constant.ads:6:11: info: data dependencies proved

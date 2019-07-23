@@ -1,1 +1,1 @@
-procedure_on_protected.ads:9:20: info: initialization of "X.F" proved
+procedure_on_protected.ads:9:20: info: initialization of "X" proved

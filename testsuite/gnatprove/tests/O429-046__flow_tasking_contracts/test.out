@@ -1,13 +1,15 @@
 alarm.adb:23:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 alarm.adb:23:09: info: nontermination of task proved (CVC4: 1 VC)
+alarm.ads:8:10: info: data dependencies proved
+alarm.ads:11:10: info: data dependencies proved
 main.adb:5:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 sensor.ads:5:20: info: initialization of "T" proved
+sensor.ads:6:09: info: data dependencies proved
+sensor.ads:7:09: info: flow dependencies proved
+watchdog.adb:4:07: info: initialization of "T" proved
 watchdog.adb:6:07: high: "Alarm.Blinkenlights" is not an input in the Global contract of subprogram "Watchdog_Task" at watchdog.ads:6
 watchdog.adb:6:07: high: "Alarm.Blinkenlights" is not written
 watchdog.adb:6:07: high: either make "Alarm.Blinkenlights" an input in the Global contract or write to it before use
-watchdog.adb:9:13: info: initialization of "T" proved
-watchdog.adb:10:13: info: initialization of "Alarm.Blinkenlights" proved
-watchdog.adb:12:13: info: initialization of "Alarm.Blinkenlights" proved
 watchdog.ads:6:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 watchdog.ads:6:09: info: nontermination of task proved (CVC4: 1 VC)
-watchdog.ads:8:35: info: initialization of "Alarm.Blinkenlights" proved
+watchdog.ads:7:09: info: data dependencies proved

@@ -1,168 +1,151 @@
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
-very_longs.adb:51:52: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:35:08: info: flow dependencies proved
+very_longs.adb:51:52: info: initialization of "Result" proved
 very_longs.adb:51:76: info: initialization of "Carry" proved
-very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
-very_longs.adb:61:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:61:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:53:08: info: flow dependencies proved
+very_longs.adb:55:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 63 should mention Result in a loop invariant]
+very_longs.adb:57:07: info: initialization of "L_Digit" proved
+very_longs.adb:58:07: info: initialization of "R_Digit" proved
+very_longs.adb:59:07: info: initialization of "Sum" proved
+very_longs.adb:61:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:61:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:63:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:64:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:65:48: info: index check proved (CVC4: 2 VC)
-very_longs.adb:66:21: info: initialization of "L_Digit" proved
-very_longs.adb:66:31: info: initialization of "R_Digit" proved
-very_longs.adb:66:41: info: initialization of "Carry" proved
-very_longs.adb:67:33: info: initialization of "Sum" proved
 very_longs.adb:68:29: medium: array index check might fail
-very_longs.adb:68:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:68:50: info: initialization of "Sum" proved
-very_longs.adb:74:58: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:74:58: info: initialization of "Result" proved
 very_longs.adb:74:82: info: initialization of "Borrow" proved
-very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length
-very_longs.adb:84:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:84:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:76:08: info: flow dependencies proved
+very_longs.adb:78:16: medium: postcondition might fail, cannot prove Result.Octet_Length = L.Octet_Length [possible explanation: loop at line 86 should mention Result in a loop invariant]
+very_longs.adb:80:07: info: initialization of "L_Digit" proved
+very_longs.adb:81:07: info: initialization of "R_Digit" proved
+very_longs.adb:82:07: info: initialization of "Difference" proved
+very_longs.adb:84:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:84:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:86:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:87:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:88:51: info: index check proved (CVC4: 2 VC)
-very_longs.adb:89:25: info: initialization of "L_Digit" proved
-very_longs.adb:89:35: info: initialization of "R_Digit" proved
-very_longs.adb:89:46: info: initialization of "Borrow" proved
-very_longs.adb:90:14: info: initialization of "Difference" proved
 very_longs.adb:95:29: medium: array index check might fail
-very_longs.adb:95:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:95:50: info: initialization of "Difference" proved
+very_longs.adb:109:07: info: initialization of "Result" proved
 very_longs.adb:109:26: info: range check proved (CVC4: 1 VC)
-very_longs.adb:112:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:112:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:110:07: info: initialization of "Temp" proved
+very_longs.adb:112:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:112:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:114:45: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:115:29: info: index check proved (CVC4: 2 VC)
-very_longs.adb:115:36: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:115:45: info: initialization of "Temp" proved
 very_longs.adb:115:50: info: division check proved (CVC4: 1 VC)
 very_longs.adb:115:50: info: range check proved (CVC4: 1 VC)
-very_longs.adb:116:18: info: initialization of "Temp" proved
 very_longs.adb:116:23: info: division check proved (CVC4: 1 VC)
-very_longs.adb:118:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:131:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:131:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:124:07: info: initialization of "Index" proved
+very_longs.adb:125:07: info: initialization of "String_Index" proved
+very_longs.adb:126:07: info: initialization of "H_Digit" proved
+very_longs.adb:127:07: info: initialization of "L_Digit" proved
+very_longs.adb:128:07: info: initialization of "H_Okay" proved
+very_longs.adb:129:07: info: initialization of "L_Okay" proved
+very_longs.adb:131:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:131:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:134:41: info: range check proved (CVC4: 1 VC)
 very_longs.adb:135:29: info: range check proved (CVC4: 1 VC)
-very_longs.adb:137:32: info: initialization of "String_Index" proved
 very_longs.adb:137:32: info: loop invariant preservation proved (CVC4: 1 VC)
 very_longs.adb:137:32: medium: loop invariant might fail in first iteration, cannot prove String_Index = Positive(2 * (Result.Long_Digits'Last - Index) + 1)
 very_longs.adb:137:58: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:137:85: info: overflow check proved (CVC4: 2 VC)
-very_longs.adb:137:87: info: initialization of "Index" proved
 very_longs.adb:137:94: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:137:94: info: range check proved (CVC4: 2 VC)
-very_longs.adb:139:31: info: initialization of "String_Index" proved
 very_longs.adb:139:31: medium: array index check might fail
-very_longs.adb:140:31: info: initialization of "String_Index" proved
 very_longs.adb:140:44: info: index check proved (CVC4: 2 VC)
 very_longs.adb:140:44: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:141:18: info: initialization of "H_Okay" proved
-very_longs.adb:141:29: info: initialization of "L_Okay" proved
 very_longs.adb:145:29: info: index check proved (CVC4: 2 VC)
-very_longs.adb:145:36: info: initialization of "Index" proved
-very_longs.adb:145:36: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:145:44: info: initialization of "H_Digit" proved
-very_longs.adb:145:54: info: initialization of "L_Digit" proved
-very_longs.adb:146:20: info: initialization of "Index" proved
-very_longs.adb:147:26: info: initialization of "Index" proved
 very_longs.adb:147:32: info: range check proved (CVC4: 1 VC)
-very_longs.adb:148:26: info: initialization of "String_Index" proved
 very_longs.adb:148:39: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:160:44: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:161:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:161:46: info: index check proved (CVC4: 2 VC)
 very_longs.adb:165:27: info: index check proved (CVC4: 2 VC)
 very_longs.adb:165:46: info: index check proved (CVC4: 2 VC)
-very_longs.adb:171:14: info: initialization of "Result" proved
 very_longs.adb:177:17: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:183:21: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:189:21: info: precondition proved (CVC4: 1 VC)
+very_longs.adb:198:07: info: initialization of "Result" proved
 very_longs.adb:198:28: info: range check proved (CVC4: 1 VC)
-very_longs.adb:204:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:204:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:199:07: info: initialization of "L_Digit" proved
+very_longs.adb:200:07: info: initialization of "R_Digit" proved
+very_longs.adb:201:07: info: initialization of "Sum" proved
+very_longs.adb:202:07: info: initialization of "Carry" proved
+very_longs.adb:204:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:204:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:206:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:207:48: info: index check proved (CVC4: 2 VC)
 very_longs.adb:208:48: info: index check proved (CVC4: 2 VC)
-very_longs.adb:209:21: info: initialization of "L_Digit" proved
-very_longs.adb:209:31: info: initialization of "R_Digit" proved
-very_longs.adb:209:41: info: initialization of "Carry" proved
-very_longs.adb:210:33: info: initialization of "Sum" proved
 very_longs.adb:211:29: info: index check proved (CVC4: 2 VC)
-very_longs.adb:211:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:211:50: info: initialization of "Sum" proved
-very_longs.adb:213:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:218:07: info: initialization of "Result" proved
 very_longs.adb:218:31: info: range check proved (CVC4: 1 VC)
-very_longs.adb:224:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:224:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:219:07: info: initialization of "L_Digit" proved
+very_longs.adb:220:07: info: initialization of "R_Digit" proved
+very_longs.adb:221:07: info: initialization of "Difference" proved
+very_longs.adb:222:07: info: initialization of "Borrow" proved
+very_longs.adb:224:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:224:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:226:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:227:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:228:51: info: index check proved (CVC4: 2 VC)
-very_longs.adb:229:25: info: initialization of "L_Digit" proved
-very_longs.adb:229:35: info: initialization of "R_Digit" proved
-very_longs.adb:229:46: info: initialization of "Borrow" proved
-very_longs.adb:230:14: info: initialization of "Difference" proved
 very_longs.adb:235:29: info: index check proved (CVC4: 2 VC)
-very_longs.adb:235:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:235:50: info: initialization of "Difference" proved
-very_longs.adb:237:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:245:07: info: initialization of "Result" proved
 very_longs.adb:245:27: info: range check proved (CVC4: 1 VC)
-very_longs.adb:253:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:253:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:246:07: info: initialization of "L_Digit" proved
+very_longs.adb:247:07: info: initialization of "R_Digit" proved
+very_longs.adb:248:07: info: initialization of "T_Digit" proved
+very_longs.adb:249:07: info: initialization of "Temp" proved
+very_longs.adb:250:07: info: initialization of "Carry" proved
+very_longs.adb:253:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:253:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:256:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:258:39: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:259:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:260:51: info: index check proved (CVC4: 2 VC)
 very_longs.adb:261:18: medium: overflow check might fail
-very_longs.adb:262:40: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:262:61: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:262:65: info: index check proved (CVC4: 2 VC)
-very_longs.adb:263:28: info: initialization of "L_Digit" proved
-very_longs.adb:263:38: info: initialization of "R_Digit" proved
-very_longs.adb:263:49: info: initialization of "T_Digit" proved
-very_longs.adb:263:59: info: initialization of "Carry" proved
 very_longs.adb:264:37: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:264:41: info: index check proved (CVC4: 2 VC)
-very_longs.adb:264:46: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:264:64: info: initialization of "Temp" proved
-very_longs.adb:265:39: info: initialization of "Temp" proved
-very_longs.adb:269:14: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:274:07: info: initialization of "Result" proved
 very_longs.adb:274:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:274:42: info: range check proved (CVC4: 1 VC)
-very_longs.adb:274:42: medium: overflow check might fail [possible explanation: subprogram at line 273 should mention L and R in a precondition]
-very_longs.adb:282:26: info: length check proved (CVC4: 4 VC)
-very_longs.adb:282:29: info: length check proved (CVC4: 4 VC)
+very_longs.adb:274:42: medium: overflow check might fail [possible explanation: subprogram at very_longs.ads:59 should mention L and R in a precondition]
+very_longs.adb:275:07: info: initialization of "L_Digit" proved
+very_longs.adb:276:07: info: initialization of "R_Digit" proved
+very_longs.adb:277:07: info: initialization of "T_Digit" proved
+very_longs.adb:278:07: info: initialization of "Temp" proved
+very_longs.adb:279:07: info: initialization of "Carry" proved
+very_longs.adb:282:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:282:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:285:36: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:287:39: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:288:52: info: index check proved (CVC4: 2 VC)
 very_longs.adb:289:52: info: index check proved (CVC4: 2 VC)
-very_longs.adb:290:38: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:290:59: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:290:63: info: index check proved (CVC4: 2 VC)
-very_longs.adb:291:26: info: initialization of "L_Digit" proved
-very_longs.adb:291:36: info: initialization of "R_Digit" proved
-very_longs.adb:291:47: info: initialization of "T_Digit" proved
-very_longs.adb:291:57: info: initialization of "Carry" proved
 very_longs.adb:292:34: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:292:38: info: index check proved (CVC4: 2 VC)
-very_longs.adb:292:43: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:292:61: info: initialization of "Temp" proved
-very_longs.adb:293:37: info: initialization of "Temp" proved
 very_longs.adb:295:44: info: index check proved (CVC4: 2 VC)
 very_longs.adb:295:44: info: overflow check proved (CVC4: 1 VC)
-very_longs.adb:295:49: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:295:67: info: initialization of "Carry" proved
-very_longs.adb:297:14: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:307:15: info: range check proved (CVC4: 2 VC)
 very_longs.adb:310:15: info: range check proved (CVC4: 2 VC)
 very_longs.adb:310:93: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:310:115: info: overflow check proved (CVC4: 1 VC)
+very_longs.adb:316:07: info: initialization of "N" proved
+very_longs.adb:317:07: info: initialization of "M" proved
+very_longs.adb:318:07: info: initialization of "Shift_Distance" proved
+very_longs.adb:319:07: info: initialization of "U" proved
 very_longs.adb:319:36: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:319:58: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:319:58: info: range check proved (CVC4: 1 VC)
+very_longs.adb:320:07: info: initialization of "V" proved
 very_longs.adb:320:42: info: range check proved (CVC4: 1 VC)
+very_longs.adb:321:07: info: initialization of "J" proved
+very_longs.adb:322:07: info: initialization of "Q_Hat" proved
+very_longs.adb:323:07: info: initialization of "Current_Borrow" proved
 very_longs.adb:329:19: info: postcondition proved (CVC4: 2 VC)
 very_longs.adb:329:45: medium: array index check might fail
 very_longs.adb:330:47: medium: overflow check might fail
@@ -170,111 +153,94 @@ very_longs.adb:330:100: info: index check proved (CVC4: 2 VC)
 very_longs.adb:335:35: info: index check proved (CVC4: 4 VC)
 very_longs.adb:339:35: info: loop invariant initialization proved (CVC4: 1 VC)
 very_longs.adb:339:35: info: loop invariant preservation proved (CVC4: 1 VC)
-very_longs.adb:339:54: info: initialization of "Digit_Index" proved
 very_longs.adb:339:54: medium: array index check might fail
 very_longs.adb:339:92: medium: overflow check might fail
 very_longs.adb:339:145: info: index check proved (CVC4: 4 VC)
-very_longs.adb:340:35: info: loop invariant initialization proved (CVC4: 2 VC)
-very_longs.adb:340:35: info: loop invariant preservation proved (CVC4: 2 VC)
-very_longs.adb:340:73: info: initialization of "Digit_Index" proved
+very_longs.adb:340:35: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+very_longs.adb:340:35: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 very_longs.adb:340:85: info: overflow check proved (CVC4: 2 VC)
 very_longs.adb:340:116: info: index check proved (CVC4: 4 VC)
-very_longs.adb:342:17: info: initialization of "Digit_Index" proved
 very_longs.adb:353:30: info: unrolling loop
-very_longs.adb:358:17: info: initialization of "Distance" proved
-very_longs.adb:362:56: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:362:56: info: initialization of "Result" proved
+very_longs.adb:364:11: info: flow dependencies proved
 very_longs.adb:365:60: medium: overflow check might fail
-very_longs.adb:371:29: info: length check proved (CVC4: 4 VC)
-very_longs.adb:371:32: info: length check proved (CVC4: 4 VC)
+very_longs.adb:368:10: info: initialization of "New_Overflow" proved
+very_longs.adb:369:10: info: initialization of "Overflow_Mask" proved
+very_longs.adb:371:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:371:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:373:44: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:374:60: info: index check proved (CVC4: 2 VC)
-very_longs.adb:374:67: info: initialization of "Overflow_Mask" proved
 very_longs.adb:375:32: info: index check proved (CVC4: 2 VC)
-very_longs.adb:375:35: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:375:68: info: index check proved (CVC4: 2 VC)
 very_longs.adb:376:32: info: index check proved (CVC4: 2 VC)
-very_longs.adb:376:38: info: initialization of "Result.Long_Digits" proved
 very_longs.adb:376:57: info: index check proved (CVC4: 2 VC)
-very_longs.adb:376:63: info: initialization of "Old_Overflow" proved
-very_longs.adb:377:29: info: initialization of "New_Overflow" proved
 very_longs.adb:379:47: info: index check proved (CVC4: 2 VC)
-very_longs.adb:379:54: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:379:57: info: initialization of "Old_Overflow" proved
+very_longs.adb:385:11: info: flow dependencies proved
+very_longs.adb:388:10: info: initialization of "New_Overflow" proved
+very_longs.adb:389:10: info: initialization of "Overflow_Mask" proved
 very_longs.adb:392:44: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:393:60: info: index check proved (CVC4: 2 VC)
-very_longs.adb:393:67: info: initialization of "Overflow_Mask" proved
 very_longs.adb:394:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:394:68: info: index check proved (CVC4: 2 VC)
 very_longs.adb:395:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:395:57: info: index check proved (CVC4: 2 VC)
-very_longs.adb:395:63: info: initialization of "Old_Overflow" proved
-very_longs.adb:396:29: info: initialization of "New_Overflow" proved
+very_longs.adb:403:11: info: flow dependencies proved
+very_longs.adb:406:10: info: initialization of "New_Overflow" proved
+very_longs.adb:407:10: info: initialization of "Overflow_Mask" proved
 very_longs.adb:410:52: info: cannot unroll loop (too many loop iterations)
 very_longs.adb:411:48: info: index check proved (CVC4: 2 VC)
-very_longs.adb:411:55: info: initialization of "Overflow_Mask" proved
 very_longs.adb:412:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:412:69: info: index check proved (CVC4: 2 VC)
 very_longs.adb:413:32: info: index check proved (CVC4: 2 VC)
 very_longs.adb:413:57: info: index check proved (CVC4: 2 VC)
-very_longs.adb:413:74: info: initialization of "Old_Overflow" proved
-very_longs.adb:414:29: info: initialization of "New_Overflow" proved
+very_longs.adb:420:11: info: data dependencies proved
 very_longs.adb:420:55: info: initialization of "Q_Hat" proved
+very_longs.adb:421:11: info: flow dependencies proved
+very_longs.adb:423:10: info: initialization of "Temporary_Digit" proved
+very_longs.adb:424:10: info: initialization of "R_Hat" proved
 very_longs.adb:426:64: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:426:68: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:426:106: medium: overflow check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
 very_longs.adb:426:111: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:427:19: info: initialization of "Temporary_Digit" proved
 very_longs.adb:427:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
 very_longs.adb:427:66: medium: array index check might fail [possible explanation: subprogram at line 418 should mention N in a precondition]
-very_longs.adb:428:19: info: initialization of "Temporary_Digit" proved
 very_longs.adb:428:35: medium: divide by zero might fail [possible explanation: subprogram at line 418 should mention N and V in a precondition]
 very_longs.adb:428:68: info: index check proved (CVC4: 2 VC)
-very_longs.adb:434:13: info: initialization of "Q_Hat" proved
 very_longs.adb:434:65: medium: array index check might fail [possible explanation: subprogram at line 418 should mention N in a precondition]
-very_longs.adb:434:79: info: initialization of "R_Hat" proved
 very_longs.adb:434:117: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:434:122: medium: array index check might fail [possible explanation: subprogram at line 418 should mention J and N in a precondition]
-very_longs.adb:435:22: info: initialization of "Q_Hat" proved
-very_longs.adb:436:22: info: initialization of "R_Hat" proved
 very_longs.adb:436:59: info: index check proved (CVC4: 2 VC)
-very_longs.adb:438:13: info: initialization of "R_Hat" proved
-very_longs.adb:440:16: info: initialization of "Q_Hat" proved
 very_longs.adb:440:68: info: index check proved (CVC4: 2 VC)
-very_longs.adb:440:82: info: initialization of "R_Hat" proved
 very_longs.adb:440:120: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:440:125: info: index check proved (CVC4: 2 VC)
-very_longs.adb:441:25: info: initialization of "Q_Hat" proved
+very_longs.adb:449:11: info: data dependencies proved
 very_longs.adb:449:59: info: initialization of "Current_Borrow" proved
+very_longs.adb:450:11: info: flow dependencies proved
+very_longs.adb:452:10: info: initialization of "Carry" proved
+very_longs.adb:453:10: info: initialization of "Product" proved
+very_longs.adb:454:10: info: initialization of "Temporary_Digit" proved
+very_longs.adb:455:10: info: initialization of "Future_Borrow" proved
 very_longs.adb:459:14: info: range check proved (CVC4: 2 VC)
 very_longs.adb:459:61: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:460:59: info: index check proved (CVC4: 2 VC)
-very_longs.adb:460:77: info: initialization of "Carry" proved
-very_longs.adb:461:34: info: initialization of "Product" proved
-very_longs.adb:463:32: info: initialization of "Product" proved
 very_longs.adb:464:45: medium: overflow check might fail [possible explanation: subprogram at line 447 should mention J in a precondition]
 very_longs.adb:464:61: medium: array index check might fail [possible explanation: subprogram at line 447 should mention J in a precondition]
-very_longs.adb:464:70: info: initialization of "Temporary_Digit" proved
-very_longs.adb:464:88: info: initialization of "Current_Borrow" proved
 very_longs.adb:469:29: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:469:45: info: index check proved (CVC4: 2 VC)
 very_longs.adb:470:52: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:470:68: info: index check proved (CVC4: 2 VC)
-very_longs.adb:470:76: info: initialization of "Temporary_Digit" proved
-very_longs.adb:470:95: info: initialization of "Current_Borrow" proved
 very_longs.adb:470:111: info: range check proved (CVC4: 2 VC)
-very_longs.adb:471:31: info: initialization of "Future_Borrow" proved
 very_longs.adb:475:42: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:475:46: info: index check proved (CVC4: 2 VC)
-very_longs.adb:475:55: info: initialization of "Carry" proved
-very_longs.adb:475:63: info: initialization of "Current_Borrow" proved
 very_longs.adb:480:26: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:480:30: info: index check proved (CVC4: 2 VC)
 very_longs.adb:480:75: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:480:79: info: index check proved (CVC4: 2 VC)
-very_longs.adb:480:87: info: initialization of "Carry" proved
-very_longs.adb:480:96: info: initialization of "Current_Borrow" proved
 very_longs.adb:480:112: info: range check proved (CVC4: 2 VC)
-very_longs.adb:481:28: info: initialization of "Future_Borrow" proved
+very_longs.adb:486:11: info: data dependencies proved
+very_longs.adb:487:11: info: flow dependencies proved
+very_longs.adb:489:10: info: initialization of "Carry" proved
+very_longs.adb:490:10: info: initialization of "Sum" proved
 very_longs.adb:492:31: medium: array index check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
 very_longs.adb:492:43: medium: range check might fail [possible explanation: subprogram at line 484 should mention Q_Hat in a precondition]
 very_longs.adb:496:34: info: index check proved (CVC4: 2 VC)
@@ -284,83 +250,46 @@ very_longs.adb:498:64: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:499:52: medium: overflow check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
 very_longs.adb:499:68: medium: array index check might fail [possible explanation: subprogram at line 484 should mention J in a precondition]
 very_longs.adb:499:103: info: index check proved (CVC4: 2 VC)
-very_longs.adb:499:121: info: initialization of "Carry" proved
 very_longs.adb:500:32: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:500:48: info: index check proved (CVC4: 2 VC)
-very_longs.adb:500:71: info: initialization of "Sum" proved
-very_longs.adb:501:37: info: initialization of "Sum" proved
 very_longs.adb:503:29: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:503:33: info: index check proved (CVC4: 2 VC)
 very_longs.adb:503:57: info: overflow check proved (CVC4: 1 VC)
 very_longs.adb:503:61: info: index check proved (CVC4: 2 VC)
-very_longs.adb:503:83: info: initialization of "Carry" proved
-very_longs.adb:508:29: info: length check proved (CVC4: 4 VC)
-very_longs.adb:508:32: info: length check proved (CVC4: 4 VC)
-very_longs.adb:509:29: info: length check proved (CVC4: 4 VC)
-very_longs.adb:509:32: info: length check proved (CVC4: 4 VC)
+very_longs.adb:508:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:508:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:509:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+very_longs.adb:509:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 very_longs.adb:512:12: info: precondition proved (CVC4: 1 VC)
 very_longs.adb:512:29: medium: overflow check might fail
 very_longs.adb:512:29: medium: range check might fail
 very_longs.adb:513:15: medium: range check might fail
-very_longs.adb:513:17: info: initialization of "N" proved
 very_longs.adb:516:25: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:516:64: info: initialization of "N" proved
 very_longs.adb:516:66: info: index check proved (CVC4: 2 VC)
 very_longs.adb:517:07: info: precondition proved (CVC4: 1 VC)
-very_longs.adb:517:36: info: initialization of "Shift_Distance" proved
 very_longs.adb:518:12: info: discriminant check proved (CVC4: 1 VC)
-very_longs.adb:519:18: info: initialization of "V.Long_Digits" proved
-very_longs.adb:519:21: info: initialization of "Shift_Distance" proved
-very_longs.adb:522:12: info: initialization of "M" proved
-very_longs.adb:526:10: info: initialization of "J" proved
-very_longs.adb:526:10: info: initialization of "N" proved
-very_longs.adb:526:10: info: initialization of "U.Long_Digits" proved
-very_longs.adb:526:10: info: initialization of "V.Long_Digits" proved
-very_longs.adb:529:10: info: initialization of "J" proved
-very_longs.adb:529:10: info: initialization of "N" proved
-very_longs.adb:529:10: info: initialization of "Q_Hat" proved
-very_longs.adb:529:10: info: initialization of "U.Long_Digits" proved
-very_longs.adb:529:10: info: initialization of "V.Long_Digits" proved
-very_longs.adb:532:10: info: initialization of "Current_Borrow" proved
-very_longs.adb:532:10: info: initialization of "J" proved
-very_longs.adb:532:10: info: initialization of "N" proved
-very_longs.adb:532:10: info: initialization of "Q_Hat" proved
-very_longs.adb:532:10: info: initialization of "Quotient.Long_Digits" proved
-very_longs.adb:532:10: info: initialization of "U.Long_Digits" proved
-very_longs.adb:532:10: info: initialization of "V.Long_Digits" proved
-very_longs.adb:535:20: info: initialization of "J" proved
-very_longs.adb:536:15: info: initialization of "J" proved
 very_longs.adb:536:17: info: range check proved (CVC4: 1 VC)
 very_longs.adb:540:11: info: range check proved (CVC4: 2 VC)
-very_longs.adb:540:56: info: initialization of "N" proved
 very_longs.adb:540:58: info: cannot unroll loop (dynamic loop bounds)
 very_longs.adb:541:32: info: index check proved (CVC4: 2 VC)
-very_longs.adb:541:47: info: initialization of "Remainder.Long_Digits" proved
-very_longs.adb:541:50: info: initialization of "U.Long_Digits" proved
 very_longs.adb:541:64: info: index check proved (CVC4: 2 VC)
-very_longs.adb:543:19: info: initialization of "Remainder.Long_Digits" proved
-very_longs.adb:543:30: info: initialization of "Shift_Distance" proved
+very_longs.adb:552:07: info: initialization of "Digit_Number" proved
+very_longs.adb:553:07: info: initialization of "Bit_Position" proved
+very_longs.adb:554:07: info: initialization of "Mask" proved
+very_longs.adb:555:07: info: initialization of "Digit" proved
+very_longs.adb:556:07: info: initialization of "Result" proved
 very_longs.adb:558:55: info: division check proved (CVC4: 1 VC)
 very_longs.adb:559:34: info: division check proved (CVC4: 1 VC)
-very_longs.adb:560:45: info: initialization of "Bit_Position" proved
-very_longs.adb:561:42: info: initialization of "Digit_Number" proved
 very_longs.adb:561:42: medium: array index check might fail
-very_longs.adb:563:11: info: initialization of "Digit" proved
-very_longs.adb:563:21: info: initialization of "Mask" proved
-very_longs.adb:568:14: info: initialization of "Result" proved
+very_longs.adb:573:07: info: initialization of "Digit_Number" proved
+very_longs.adb:574:07: info: initialization of "Bit_Position" proved
+very_longs.adb:575:07: info: initialization of "Digit" proved
 very_longs.adb:577:55: info: division check proved (CVC4: 1 VC)
 very_longs.adb:578:34: info: division check proved (CVC4: 1 VC)
-very_longs.adb:579:42: info: initialization of "Digit_Number" proved
 very_longs.adb:579:42: medium: array index check might fail
-very_longs.adb:582:19: info: initialization of "Digit" proved
-very_longs.adb:582:50: info: initialization of "Bit_Position" proved
-very_longs.adb:584:19: info: initialization of "Digit" proved
-very_longs.adb:584:55: info: initialization of "Bit_Position" proved
 very_longs.adb:586:26: info: index check proved (CVC4: 2 VC)
-very_longs.adb:586:40: info: initialization of "Digit_Number" proved
-very_longs.adb:586:43: info: initialization of "Digit" proved
 very_longs.ads:13:16: info: postcondition proved (CVC4: 1 VC)
-very_longs.ads:15:55: info: initialization of "Result.Long_Digits" proved
+very_longs.ads:15:55: info: initialization of "Result" proved
 very_longs.ads:15:79: info: initialization of "Valid" proved
 very_longs.ads:18:21: info: range check proved (CVC4: 1 VC)
 very_longs.ads:18:32: medium: overflow check might fail
@@ -369,8 +298,9 @@ very_longs.ads:50:16: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:56:16: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:61:16: info: postcondition proved (CVC4: 1 VC)
 very_longs.ads:61:57: info: overflow check proved (CVC4: 1 VC)
-very_longs.ads:64:70: info: initialization of "Quotient.Long_Digits" proved
-very_longs.ads:64:96: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:64:70: info: initialization of "Quotient" proved
+very_longs.ads:64:96: info: initialization of "Remainder" proved
 very_longs.ads:70:45: medium: overflow check might fail
+very_longs.ads:76:08: info: flow dependencies proved
 very_longs.ads:87:10: info: range check proved (CVC4: 2 VC)
 very_longs.ads:91:67: info: index check proved (CVC4: 2 VC)

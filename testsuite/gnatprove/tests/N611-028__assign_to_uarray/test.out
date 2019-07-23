@@ -1,15 +1,13 @@
-dyn_arrays.adb:5:10: info: length check proved (CVC4: 4 VC)
-dyn_arrays.adb:10:10: info: length check proved (CVC4: 4 VC)
+dyn_arrays.adb:5:10: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+dyn_arrays.adb:10:10: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dyn_arrays.ads:6:42: info: initialization of "To" proved
 dyn_arrays.ads:7:51: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:8:14: info: postcondition proved (CVC4: 1 VC)
-dyn_arrays.ads:8:28: info: initialization of "To" proved
 dyn_arrays.ads:9:21: info: index check proved (CVC4: 2 VC)
 dyn_arrays.ads:9:34: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:9:45: info: index check proved (CVC4: 2 VC)
 dyn_arrays.ads:9:45: info: overflow check proved (CVC4: 1 VC)
 dyn_arrays.ads:11:46: info: initialization of "To" proved
 dyn_arrays.ads:12:51: info: overflow check proved (CVC4: 1 VC)
-dyn_arrays.ads:14:40: info: initialization of "To" proved
-dyn_arrays.ads:14:40: medium: postcondition might fail, cannot prove To (I) = From (I) (e.g. when From = (1 => 0, others => 1) and I = 2 and To = (2 => 0, others => 0) and To'First = 2 and To'Last = 101)
+dyn_arrays.ads:14:40: medium: postcondition might fail, cannot prove To (I) = From (I) (e.g. when From = (1 => 1, 2 => 0, others => 0) and I = 2 and To = (2 => 1, others => 0))
 dyn_arrays.ads:14:44: info: index check proved (CVC4: 2 VC)

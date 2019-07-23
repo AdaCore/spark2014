@@ -3,9 +3,9 @@ with_default.adb:5:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:13:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:14:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:16:15: info: range check proved (CVC4: 2 VC)
+with_default.adb:18:07: info: initialization of "Ok_Def" proved
 with_default.adb:19:38: info: range check proved (CVC4: 1 VC)
 with_default.adb:23:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:23:22: info: initialization of "Ok_Def" proved
 with_default.adb:27:69: medium: range check might fail
 with_default.adb:28:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:37:15: info: range check proved (CVC4: 2 VC)
@@ -16,20 +16,20 @@ with_default.adb:49:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:54:41: info: range check proved (CVC4: 1 VC)
 with_default.adb:58:41: info: range check proved (CVC4: 1 VC)
 with_default.adb:62:51: info: range check proved (CVC4: 1 VC)
+with_default.adb:64:07: info: initialization of "All_0" proved
+with_default.adb:65:07: info: initialization of "All_1" proved
+with_default.adb:66:07: info: initialization of "All_2" proved
 with_default.adb:69:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:69:22: info: initialization of "All_0" proved
 with_default.adb:70:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:70:22: info: initialization of "All_1" proved
 with_default.adb:71:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:71:22: info: initialization of "All_2" proved
 with_default.adb:75:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:76:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:80:36: medium: range check might fail
-with_default.adb:89:69: medium: range check might fail
+with_default.adb:89:69: medium: range check might fail (e.g. when Bad = (B => False, F2 => ?))
 with_default.adb:90:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:102:29: info: range check proved (CVC4: 1 VC)
 with_default.adb:108:69: info: range check proved (CVC4: 1 VC)
-with_default.adb:108:69: medium: range check might fail
+with_default.adb:108:69: medium: range check might fail (e.g. when Bad'Constrained = False)
 with_default.adb:109:15: info: range check proved (CVC4: 2 VC)
 with_default.adb:127:69: info: range check proved (CVC4: 1 VC)
 with_default.adb:128:15: info: range check proved (CVC4: 2 VC)
@@ -39,28 +39,27 @@ with_default.adb:169:43: info: range check proved (CVC4: 1 VC)
 with_default.adb:180:10: info: range check proved (CVC4: 2 VC)
 with_default.adb:184:40: info: range check proved (CVC4: 1 VC)
 with_default.adb:187:57: info: range check proved (CVC4: 1 VC)
+with_default.adb:188:07: info: initialization of "Simple" proved
+with_default.adb:189:07: info: initialization of "W_Disc" proved
 with_default.adb:189:32: info: range check proved (CVC4: 1 VC)
+with_default.adb:190:07: info: initialization of "W_D_Di" proved
+with_default.adb:191:07: info: initialization of "W_O_Di" proved
+with_default.adb:193:07: info: initialization of "Wrap" proved
 with_default.adb:195:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:195:22: info: initialization of "Simple.F1" proved
 with_default.adb:196:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:196:22: info: initialization of "Simple.F2" proved
 with_default.adb:197:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:197:22: info: initialization of "W_Disc.F1" proved
 with_default.adb:197:28: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:198:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:198:22: info: initialization of "W_D_Di.F1" proved
 with_default.adb:198:28: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:199:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:200:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:200:22: info: initialization of "W_O_Di.F3" proved
 with_default.adb:200:28: info: discriminant check proved (CVC4: 1 VC)
 with_default.adb:201:22: info: assertion proved (CVC4: 1 VC)
 with_default.adb:202:22: info: assertion proved (CVC4: 1 VC)
-with_default.adb:202:22: info: initialization of "Wrap.Content.F1" proved
 with_default.adb:202:26: info: range check proved (CVC4: 1 VC)
 with_default.adb:202:34: info: discriminant check proved (CVC4: 1 VC)
-with_default.adb:206:39: medium: range check might fail (e.g. when C = 0) [possible explanation: subprogram at line 205 should mention C in a precondition]
-with_default.adb:219:39: medium: range check might fail (e.g. when C = 0) [possible explanation: subprogram at line 218 should mention C in a precondition]
+with_default.adb:206:39: medium: range check might fail [possible explanation: subprogram at with_default.ads:22 should mention C in a precondition]
+with_default.adb:219:39: medium: range check might fail [possible explanation: subprogram at with_default.ads:24 should mention C in a precondition]
 with_default.adb:233:40: info: range check proved (CVC4: 1 VC)
 with_default.ads:3:14: warning: subprogram "Bad_Scalar" has no effect
 with_default.ads:5:14: warning: subprogram "OK_Scalar" has no effect

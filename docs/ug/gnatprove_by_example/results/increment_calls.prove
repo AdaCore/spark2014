@@ -1,10 +1,5 @@
-increment_calls.adb:11:15: info: initialization of "X" proved
-increment_calls.adb:12:15: info: initialization of "X" proved
+increment_calls.adb:8:04: info: initialization of "X" proved
 increment_calls.adb:15:04: info: precondition proved
-increment_calls.adb:15:23: info: initialization of "X" proved
-increment_calls.adb:16:04: medium: precondition might fail (e.g. when X = Integer'Last)
-increment_calls.adb:16:23: info: initialization of "X" proved
+increment_calls.adb:16:04: medium: precondition might fail, cannot prove X < Integer'last (e.g. when X = Integer'Last) [possible explanation: call at line 15 should mention X (for argument X) in a postcondition]
 increment_calls.adb:19:04: info: precondition proved
-increment_calls.adb:19:20: info: initialization of "X" proved
 increment_calls.adb:20:04: info: precondition proved
-increment_calls.adb:20:20: info: initialization of "X" proved

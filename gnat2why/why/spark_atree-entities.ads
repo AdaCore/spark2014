@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -24,10 +24,10 @@
 ------------------------------------------------------------------------------
 
 with Aspects;
-with Einfo;                  use Einfo;
+with Einfo;      use Einfo;
 with Exp_Util;
+with Sem_Aux;
 with SPARK_Util;
-with SPARK_Util.Subprograms;
 
 package SPARK_Atree.Entities is
 
@@ -46,6 +46,7 @@ package SPARK_Atree.Entities is
    subtype Entry_Kind       is Einfo.Entry_Kind;
    subtype Fixed_Point_Kind is Einfo.Fixed_Point_Kind;
    subtype Float_Kind       is Einfo.Float_Kind;
+   subtype Formal_Kind      is Einfo.Formal_Kind;
    subtype Integer_Kind     is Einfo.Integer_Kind;
    subtype Named_Kind       is Einfo.Named_Kind;
    subtype Object_Kind      is Einfo.Object_Kind;
@@ -182,6 +183,9 @@ package SPARK_Atree.Entities is
 
    function Is_Private_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Private_Type;
+
+   function Is_Protected_Operation (E : Entity_Id) return Boolean renames
+     Sem_Aux.Is_Protected_Operation;
 
    function Is_Protected_Type (E : Entity_Id) return Boolean renames
      Einfo.Is_Protected_Type;
@@ -350,6 +354,17 @@ package SPARK_Atree.Entities is
    --  For Enumeration Types --
    ----------------------------
 
+   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean
+   with
+     Pre  => Is_Enumeration_Type (Typ);
+
+   function First_Literal (Typ : Entity_Id) return Entity_Id
+   with
+     Pre  => Is_Enumeration_Type (Typ);
+
+   function Next_Literal (E : Entity_Id) return Entity_Id renames
+     Einfo.Next_Literal;
+
    function Get_Enum_Lit_From_Pos (Typ : Entity_Id; P : Uint) return Entity_Id
    with
      Pre  => Is_Enumeration_Type (Typ),
@@ -460,6 +475,26 @@ package SPARK_Atree.Entities is
    function String_Literal_Low_Bound (Typ : Entity_Id) return Node_Id with
      Pre => Ekind (Typ) = E_String_Literal_Subtype;
 
+   -----------------------
+   --  For Access Types --
+   -----------------------
+
+   function Designates_Incomplete_Type (E : Entity_Id) return Boolean with
+     Pre => Is_Access_Type (E);
+   --  Returns True if E is an access type which designates an incomplete type
+   --  or a partial view of a type.
+
+   function Directly_Designated_Type (E : Entity_Id) return Node_Id with
+     Pre => Is_Access_Type (E);
+   --  If E designates an incomplete type, return its full view, else return
+   --  the designated type.
+
+   function Can_Never_Be_Null (E : Entity_Id) return Boolean renames
+     Einfo.Can_Never_Be_Null;
+
+   function Is_Access_Constant (E : Entity_Id) return Boolean renames
+     Einfo.Is_Access_Constant;
+
    ------------------
    --  For Objects --
    ------------------
@@ -501,7 +536,7 @@ package SPARK_Atree.Entities is
    function Enclosing_Type (Obj : Entity_Id) return Node_Id with
      Pre  => Ekind (Obj) in
        E_Discriminant | E_Component | E_Constant | E_In_Parameter
-     or else SPARK_Util.Subprograms.Is_Protected_Operation (Obj),
+     or else Sem_Aux.Is_Protected_Operation (Obj),
      Post => Is_Type (Enclosing_Type'Result)
        and then Ekind (Enclosing_Type'Result) in
        Record_Kind | Private_Kind | Concurrent_Kind;
@@ -509,6 +544,9 @@ package SPARK_Atree.Entities is
    --  protected operation.
 
    function Enumeration_Pos (Obj : Entity_Id) return Uint with
+     Pre => Ekind (Obj) = E_Enumeration_Literal;
+
+   function Enumeration_Rep (Obj : Entity_Id) return Uint with
      Pre => Ekind (Obj) = E_Enumeration_Literal;
 
    function Full_View (Obj : Entity_Id) return Entity_Id with
@@ -603,19 +641,6 @@ package SPARK_Atree.Entities is
      Pre => Ekind (Pack) = E_Package;
    --  @param E a package entity
    --  @return the list of visible declarations of the package
-
-   -----------------------
-   --  For Access Types --
-   -----------------------
-
-   function Directly_Designated_Type (N : Node_Id) return Node_Id renames
-     Einfo.Directly_Designated_Type;
-
-   function Can_Never_Be_Null (N : Node_Id) return Boolean renames
-     Einfo.Can_Never_Be_Null;
-
-   function Is_Access_Constant (N : Node_Id) return Boolean renames
-     Einfo.Is_Access_Constant;
 
    -------------------------
    --  For other entities --

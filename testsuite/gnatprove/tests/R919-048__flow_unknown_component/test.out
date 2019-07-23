@@ -1,2 +1,3 @@
-p.adb:8:12: high: "X" must be listed in the Refined_Global aspect of "Main" (SPARK RM 6.1.4(13))
-p.adb:8:12: high: as a result "X" must be listed in the Global of "Main" (SPARK RM 6.1.4(13))
+p.adb:8:12: high: "X" must be listed in the Refined_Global aspect of "Main" (SPARK RM 6.1.4(14))
+p.adb:8:12: high: as a result "X" must be listed in the Global of "Main" (SPARK RM 6.1.4(14))
+p.ads:2:24: info: data dependencies proved

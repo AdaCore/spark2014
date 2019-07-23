@@ -1,6 +1,7 @@
-variants.adb:6:15: medium: discriminant check might fail (e.g. when Y = (C => A, D => ?)) [possible explanation: subprogram at line 4 should mention Y in a precondition]
+variants.adb:6:15: medium: discriminant check might fail (e.g. when Y = (C => ?, D => 0) and Y'Constrained = True) [possible explanation: subprogram at variants.ads:16 should mention Y in a precondition]
 variants.adb:7:15: info: discriminant check proved (CVC4: 1 VC)
 variants.ads:13:20: info: range check proved (CVC4: 1 VC)
 variants.ads:14:20: info: range check proved (CVC4: 1 VC)
 variants.ads:16:27: warning: unused initial value of "Y"
-variants.ads:16:42: info: initialization of "Z.E" proved
+variants.ads:16:42: info: initialization of "Z" proved
+variants.ads:17:06: info: flow dependencies proved

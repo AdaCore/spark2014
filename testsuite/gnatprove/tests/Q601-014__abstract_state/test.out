@@ -8,13 +8,11 @@ achiever.ads:31:27: warning: unused variable "Before"
 achiever.ads:32:27: warning: unused variable "After"
 achiever.ads:35:06: info: complete contract cases proved (CVC4: 1 VC)
 achiever.ads:35:06: info: disjoint contract cases proved (CVC4: 1 VC)
-achiever.ads:36:49: medium: contract case might fail (e.g. when State_Item = (Sc_State => (Prime => False, Shadow => False)))
-achiever.ads:44:45: info: contract case proved (CVC4: 2 VC)
+achiever.ads:36:49: medium: contract case might fail
+achiever.ads:44:45: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 achiever.ads:47:08: info: postcondition proved (CVC4: 1 VC)
-achiever.ads:52:15: info: initialization of "State_Item" proved
 fault_manager.ads:3:14: warning: subprogram "Log_Direct_Failure" has no effect
-main.adb:3:11: medium: "My_Internal_State" might not be initialized after elaboration of main program "Main"
-main.adb:3:11: medium: "achiever.state_item" might not be initialized after elaboration of main program "Main"
-sc_status_type.adb:35:14: info: initialization of "Result" proved
-sc_status_type.ads:48:22: info: initialization of "This.Sc_State.Prime" proved
-sc_status_type.ads:48:22: info: initialization of "This.Sc_State.Shadow" proved
+main.adb:11:12: medium: "My_Internal_State" might not be initialized after elaboration of main program "Main"
+main.adb:11:12: medium: "achiever.state_item" might not be initialized after elaboration of main program "Main"
+sc_status_type.adb:18:07: info: initialization of "Result" proved
+sc_status_type.ads:48:22: info: initialization of "This" proved

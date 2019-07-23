@@ -1,0 +1,6 @@
+p.adb:1:14: warning: "X" is not modified, could be IN
+p.adb:1:14: warning: unused variable "X"
+p.adb:17:07: medium: precondition might fail, cannot prove G [possible explanation: loop at line 16 should mention F and G in a loop invariant]
+p.adb:18:12: medium: precondition might fail, cannot prove G [possible explanation: loop at line 16 should mention G in a loop invariant]
+p.adb:19:12: medium: precondition might fail, cannot prove G [possible explanation: loop at line 16 should mention F and G in a loop invariant]
+p.adb:20:12: medium: precondition might fail, cannot prove G [possible explanation: loop at line 16 should mention G in a loop invariant]

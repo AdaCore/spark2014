@@ -1,3 +1,1 @@
-init_arr_zero.adb:3:26: info: initialization of "A" proved
-init_arr_zero.adb:5:36: info: initialization of "A" proved
-init_arr_zero.adb:10:59: info: initialization of "A" proved
+no output

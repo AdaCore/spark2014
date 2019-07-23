@@ -1,0 +1,2 @@
+main.adb:6:03: info: data dependencies proved
+state.ads:6:03: info: flow dependencies proved

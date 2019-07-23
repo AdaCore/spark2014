@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                    Copyright (C) 2016-2018, AdaCore                      --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -26,11 +26,11 @@
 with Ada.Text_IO;
 with Ada.Unchecked_Deallocation;
 with Common_Containers;
+with Flow_Refinement;        use Flow_Refinement;
 with Flow_Utility;           use Flow_Utility;
 with Nlists;                 use Nlists;
 with Gnat2Why.Tables;        use Gnat2Why.Tables;
 with Snames;                 use Snames;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Why;                    use Why;
 with Why.Atree.Builders;     use Why.Atree.Builders;
@@ -1233,10 +1233,12 @@ package body Gnat2Why.Expr.Loops.Inv is
          Write_Ids : Flow_Types.Flow_Id_Sets.Set;
 
       begin
-         Flow_Utility.Get_Proof_Globals (Subprogram => Subp,
-                                         Classwide  => True,
-                                         Reads      => Read_Ids,
-                                         Writes     => Write_Ids);
+         Flow_Utility.Get_Proof_Globals (Subprogram      => Subp,
+                                         Reads           => Read_Ids,
+                                         Writes          => Write_Ids,
+                                         Erase_Constants => True,
+                                         Scop            =>
+                                           Get_Flow_Scope (Call));
 
          for F of Write_Ids loop
             pragma Assert (F.Kind in Direct_Mapping | Magic_String);
@@ -1454,7 +1456,6 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Pragma
             | N_Raise_xxx_Error
             | N_Raise_Statement
-            | N_Subprogram_Instantiation
             | N_Package_Body
             | N_Package_Declaration
             | N_Subprogram_Body
@@ -1512,7 +1513,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                      declare
                         D : constant Node_Id := Element (Prev);
                      begin
-                        exit when Nkind (D) not in N_Declaration;
+                        exit when Nkind (D) not in
+                          N_Declaration | N_Ignored_In_SPARK;
 
                         if Nkind (D) = N_Object_Declaration
                           and then Ekind (Defining_Identifier (D)) = E_Constant

@@ -1,5 +1,1 @@
-case_stmt.adb:10:14: warning: subprogram "Print_Float" has no effect
-case_stmt.adb:12:18: warning: assuming "Put_Line" has no effect on global items
-case_stmt.adb:12:18: warning: no Global contract available for "Put_Line"
-case_stmt.adb:18:09: info: initialization of "C" proved
-case_stmt.adb:29:04: info: initialization of "Res" proved
+case_stmt.adb:16:04: info: initialization of "Res" proved

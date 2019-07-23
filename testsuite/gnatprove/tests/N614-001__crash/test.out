@@ -1,40 +1,19 @@
-main.adb:6:14: warning: subprogram "Print_Set" has no effect
-main.adb:8:14: warning: subprogram "Print_Part" has no effect
-main.adb:17:07: warning: assuming "Put" has no effect on global items
-main.adb:17:07: warning: no Global contract available for "Put"
-main.adb:19:10: warning: assuming "Put" has no effect on global items
-main.adb:19:10: warning: no Global contract available for "Put"
 main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:42
 main.adb:19:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:44
-main.adb:19:15: info: initialization of "A" proved, in call inlined at main.adb:42
-main.adb:19:15: info: initialization of "A" proved, in call inlined at main.adb:44
-main.adb:21:07: warning: assuming "Put_Line" has no effect on global items
-main.adb:21:07: warning: no Global contract available for "Put_Line"
-main.adb:27:07: warning: assuming "Put" has no effect on global items
-main.adb:27:07: warning: no Global contract available for "Put"
-main.adb:28:18: info: initialization of "NP" proved, in call inlined at main.adb:45
-main.adb:28:18: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
-main.adb:29:10: warning: assuming "Put" has no effect on global items
-main.adb:29:10: warning: no Global contract available for "Put"
+main.adb:28:18: info: range check proved (CVC4: 8 VC), in call inlined at main.adb:45
 main.adb:29:15: info: index check proved (CVC4: 2 VC), in call inlined at main.adb:45
-main.adb:29:15: info: initialization of "NP" proved, in call inlined at main.adb:45
 main.adb:29:15: info: range check proved (CVC4: 4 VC), in call inlined at main.adb:45
-main.adb:31:07: warning: assuming "Put_Line" has no effect on global items
-main.adb:31:07: warning: no Global contract available for "Put_Line"
+main.adb:39:04: info: initialization of "NP" proved
+main.adb:40:04: info: initialization of "Count" proved
 main.adb:42:04: info: cannot unroll loop (too many loop iterations)
 main.adb:42:04: info: in inlined body at line 18
-main.adb:43:04: info: precondition proved (CVC4: 3 VC)
-main.adb:43:12: info: initialization of "A" proved
-main.adb:43:15: info: initialization of "Part" proved
-main.adb:43:21: info: initialization of "X" proved
+main.adb:43:04: info: precondition proved (CVC4: 2 VC; Z3: 1 VC)
 main.adb:44:04: info: cannot unroll loop (too many loop iterations)
 main.adb:44:04: info: in inlined body at line 18
 main.adb:45:04: info: cannot unroll loop (too many loop iterations)
 main.adb:45:04: info: in inlined body at line 28
-main.adb:45:04: info: range check proved (CVC4: 4 VC)
-main.adb:45:16: info: initialization of "NP" proved
-main.adb:45:25: info: initialization of "Count" proved
-part.adb:8:06: info: postcondition proved (CVC4: 3 VC)
+main.adb:45:04: info: range check proved (CVC4: 3 VC; Z3: 1 VC)
+part.adb:8:06: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 part.adb:8:10: info: index check proved (CVC4: 2 VC)
 part.adb:8:22: info: index check proved (CVC4: 2 VC)
 part.adb:8:37: info: index check proved (CVC4: 2 VC)
@@ -45,17 +24,6 @@ part.adb:22:27: info: index check proved (CVC4: 2 VC)
 part.adb:24:10: info: index check proved (CVC4: 2 VC)
 part.adb:24:19: info: index check proved (CVC4: 2 VC)
 part.adb:25:10: info: index check proved (CVC4: 2 VC)
-part.adb:25:16: info: initialization of "Tmp" proved
-part.adb:36:13: info: initialization of "First" proved
-part.adb:36:22: info: initialization of "Last" proved
-part.adb:37:24: info: initialization of "First" proved
-part.adb:38:22: info: initialization of "First" proved
-part.adb:40:22: info: initialization of "First" proved
-part.adb:40:29: info: initialization of "Last" proved
-part.adb:41:21: info: initialization of "Last" proved
-part.adb:47:10: info: initialization of "First" proved
-part.adb:47:34: info: initialization of "Last" proved
-part.adb:51:33: info: initialization of "First" proved
 part.ads:6:41: info: index check proved (CVC4: 2 VC)
 part.ads:9:42: info: index check proved (CVC4: 2 VC)
 part.ads:15:47: info: index check proved (CVC4: 2 VC)

@@ -1,12 +1,9 @@
+essai05.adb:1:11: warning: SPARK elaboration checks require static elaboration model
+essai05.adb:1:11: warning: dynamic elaboration model is in effect
 essai05.adb:9:04: info: no contextual analysis of "Conv" (unconstrained return type)
-essai05.adb:13:07: medium: range check might fail (e.g. when R'First = 0 and R'Last = 0 and V = (others => 0) and V'First = 0 and V'Last = 0)
+essai05.adb:13:07: medium: range check might fail
 essai05.adb:13:07: warning: initialization of "R" has no effect
-essai05.adb:13:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:13:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:15:24: info: cannot unroll loop (too many loop iterations)
-essai05.adb:16:16: info: initialization of "R" proved
-essai05.adb:18:14: info: initialization of "R" proved
 essai05.adb:21:04: warning: "A" is not modified, could be declared constant
 essai05.adb:22:04: warning: variable "B" is not referenced
-essai05.adb:22:19: warning: SPARK elaboration checks require static elaboration model
-essai05.adb:22:19: warning: dynamic elaboration model is in effect
-essai05.adb:22:25: info: initialization of "A" proved

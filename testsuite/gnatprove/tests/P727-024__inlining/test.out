@@ -1,5 +1,5 @@
 p.adb:5:14: warning: subprogram "Nothing" has no effect
+p.adb:10:35: info: data dependencies proved
 p.adb:15:04: info: range check proved (CVC4: 2 VC)
-p.adb:15:25: info: length check proved (CVC4: 4 VC)
-p.adb:17:13: info: initialization of "A" proved
+p.adb:15:25: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.adb:17:13: medium: length check might fail (e.g. when A'First = -1 and A'Last = 10)

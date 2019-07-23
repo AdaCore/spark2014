@@ -380,7 +380,7 @@ is
       pragma Assume (Y >= 0.0);
       pragma Assume (X <= Y);
       Res := X + (Y - X);
-      pragma Assert (Res >= X);  --  @ASSERT:PASS
+      pragma Assert (Res >= X);
       pragma Assert (Res <= Y);  --  @ASSERT:FAIL
    end Sub_Then_Add1;
 
@@ -390,7 +390,7 @@ is
       pragma Assume (Y >= 0.0);
       pragma Assume (X >= Y);
       Res := X + (Y - X);
-      pragma Assert (Res <= X);  --  @ASSERT:PASS
+      pragma Assert (Res <= X);
       pragma Assert (Res >= Y);  --  @ASSERT:FAIL
    end Sub_Then_Add2;
 

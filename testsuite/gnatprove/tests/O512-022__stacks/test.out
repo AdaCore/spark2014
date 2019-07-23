@@ -1,50 +1,24 @@
-main.adb:8:04: warning: assuming "Put_Line" has no effect on global items
-main.adb:8:04: warning: no Global contract available for "Put_Line"
-main.adb:9:04: warning: assuming "Get" has no effect on global items
-main.adb:9:04: warning: no Global contract available for "Get"
-main.adb:9:09: medium: range check might fail (e.g. when Max = 0)
-main.adb:10:04: warning: assuming "Skip_Line" has no effect on global items
-main.adb:10:04: warning: no Global contract available for "Skip_Line"
-main.adb:13:38: info: initialization of "Max" proved
-main.adb:14:18: info: range check proved (CVC4: 1 VC)
-main.adb:18:10: warning: assuming "Put_Line" has no effect on global items
-main.adb:18:10: warning: no Global contract available for "Put_Line"
-main.adb:21:38: warning: assuming "Get_Line" has no effect on global items
-main.adb:21:38: warning: no Global contract available for "Get_Line"
-main.adb:26:40: medium: range check might fail (e.g. when Cmd = (others => 'NUL') and Cmd'First = 2 and Cmd'Last = 4)
-main.adb:27:16: medium: private part of "S" might not be initialized
-main.adb:27:17: medium: precondition might fail (e.g. when S = (Max => 1, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
-main.adb:28:16: warning: assuming "Put_Line" has no effect on global items
-main.adb:28:16: warning: no Global contract available for "Put_Line"
-main.adb:29:16: info: initialization of private part of "S" proved
-main.adb:30:16: warning: assuming "New_Line" has no effect on global items
-main.adb:30:16: warning: no Global contract available for "New_Line"
-main.adb:32:44: medium: range check might fail (e.g. when Cmd = (others => 'NUL') and Cmd'First = 2 and Cmd'Last = 7)
-main.adb:33:16: warning: assuming "Get" has no effect on global items
-main.adb:33:16: warning: no Global contract available for "Get"
-main.adb:33:21: info: range check proved (CVC4: 4 VC)
-main.adb:34:16: medium: private part of "S" might not be initialized
-main.adb:34:17: medium: precondition might fail (e.g. when S = (Max => 1, Top => 1, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
-main.adb:34:33: info: initialization of "V" proved
-main.adb:35:16: warning: assuming "Put_Line" has no effect on global items
-main.adb:35:16: warning: no Global contract available for "Put_Line"
-main.adb:36:16: info: initialization of private part of "S" proved
-main.adb:37:16: warning: assuming "New_Line" has no effect on global items
-main.adb:37:16: warning: no Global contract available for "New_Line"
-stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 5 should mention S in a precondition]
-stacks.adb:12:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 5 should mention S in a precondition]
+main.adb:7:04: info: initialization of "Max" proved
+main.adb:10:09: medium: range check might fail
+main.adb:15:18: info: range check proved (CVC4: 1 VC)
+main.adb:22:13: info: initialization of "Cmd" proved
+main.adb:23:13: info: initialization of "Last" proved
+main.adb:24:13: info: initialization of "V" proved
+main.adb:28:34: info: range check proved (CVC4: 4 VC)
+main.adb:29:16: high: private part of "S" is not initialized
+main.adb:29:17: medium: precondition might fail, cannot prove not S.Is_Empty (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
+main.adb:34:38: info: range check proved (CVC4: 4 VC)
+main.adb:35:21: info: range check proved (CVC4: 4 VC)
+main.adb:35:41: warning: unused assignment to "Pos"
+main.adb:36:16: high: private part of "S" is not initialized
+main.adb:36:17: medium: precondition might fail, cannot prove not S.Is_Full (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
+stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
+stacks.adb:12:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CVC4: 1 VC)
-stacks.adb:26:07: warning: assuming "Put" has no effect on global items
-stacks.adb:26:07: warning: no Global contract available for "Put"
 stacks.adb:27:35: info: cannot unroll loop (too many loop iterations)
-stacks.adb:28:10: warning: assuming "Put" has no effect on global items
-stacks.adb:28:10: warning: no Global contract available for "Put"
 stacks.adb:28:38: medium: array index check might fail (e.g. when J = 2 and S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
-stacks.adb:30:07: warning: assuming "Put" has no effect on global items
-stacks.adb:30:07: warning: no Global contract available for "Put"
 stacks.ads:28:20: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:28:40: medium: overflow check might fail (e.g. when S = (Max => 1, Top => Natural'Last, Data => (others => 0)))
+stacks.ads:28:40: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.ads:48:20: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:69:14: warning: subprogram "Print" has no effect
 stacks.ads:75:07: info: range check proved (CVC4: 2 VC)
-stacks.ads:84:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 84 should mention S in a precondition]
+stacks.ads:84:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)

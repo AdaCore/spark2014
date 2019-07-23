@@ -134,7 +134,8 @@ as such.
 See the |GNAT Pro| Reference Manual for more details.
 
 Additionally, |GNATprove| can issue warnings as part of proof, on preconditions
-or postconditions that are always false, dead code after loops and unreachable
+or postconditions or pragma ``Assume`` that are always false,
+dead code after loops and unreachable
 branches in assertions and contracts. These warnings are not enabled by
 default, as they require calling a prover for each potential warning, which
 incurs a small cost (1 sec for each property thus checked). They can be enabled
@@ -259,6 +260,24 @@ contract. This allows to place a justification for a check message issued by
 this placement of a justification is ineffective on subprograms analyzed
 only in the context of their calls (see details in
 :ref:`Contextual Analysis of Subprograms Without Contracts`).
+
+An aspect on a package or subprogram declaration/body can be used instead of a
+pragma at the beginning of the corresponding declaration list inside the
+declaration/body:
+
+.. code-block:: ada
+
+   package Pack with
+     Annotate => (GNATprove, False_Positive,
+                  "divide by zero", "reviewed by John Smith")
+   is
+      ...
+
+   procedure Proc with
+     Annotate => (GNATprove, False_Positive,
+                  "divide by zero", "reviewed by John Smith")
+   is
+      ...
 
 As a point of caution, the following placements of pragma Annotate will apply
 the pragma to a possibly large range of source lines:

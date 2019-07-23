@@ -1,3 +1,3 @@
+gen_global.adb:23:06: info: data dependencies proved
 gen_global.adb:23:28: info: initialization of "V" proved
-gen_global.ads:4:14: info: initialization of "V" proved
-gen_global.ads:8:14: info: initialization of "V" proved
+gen_global.adb:24:06: info: flow dependencies proved

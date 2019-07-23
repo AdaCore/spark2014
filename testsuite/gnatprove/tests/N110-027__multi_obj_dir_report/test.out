@@ -1,50 +1,42 @@
+ber.adb:120:09: info: data dependencies proved
 ber.adb:120:46: info: initialization of "Tag_Class" proved
+ber.adb:121:09: info: flow dependencies proved
+ber.adb:136:09: info: data dependencies proved
 ber.adb:136:46: info: initialization of "Structured_Flag" proved
+ber.adb:137:09: info: flow dependencies proved
+ber.adb:150:09: info: data dependencies proved
 ber.adb:150:46: info: initialization of "Tag" proved
-ber.adb:157:13: info: initialization of "Tag_Value" proved
-ber.adb:160:45: info: initialization of "Tag_Value" proved
-ber.adb:168:07: info: initialization of "Status" proved
-ber.adb:195:43: info: initialization of "Result" proved
-ber.adb:199:24: info: initialization of "Result" proved
-ber.adb:201:17: info: initialization of "Result" proved
-ber.adb:229:36: info: initialization of "Length_Of_Length" proved
-ber.adb:237:31: info: initialization of "Length_Of_Length" proved
-ber.adb:243:31: info: initialization of "Length_Of_Length" proved
-ber.adb:244:49: info: initialization of "Length_Of_Length" proved
+ber.adb:151:09: info: flow dependencies proved
+ber.adb:153:10: info: initialization of "Tag_Value" proved
+ber.adb:180:07: info: initialization of "Length_Of_Length" proved
+ber.adb:184:09: info: data dependencies proved
+ber.adb:258:07: info: initialization of "Tag_Class" proved
+ber.adb:259:07: info: initialization of "Structured_Flag" proved
+ber.adb:260:07: info: initialization of "Tag" proved
+ber.adb:261:07: info: initialization of "Identifier_Status" proved
+ber.adb:271:09: info: data dependencies proved
 ber.adb:271:50: info: initialization of "Stop" proved
 ber.adb:271:56: info: initialization of "Value" proved
 ber.adb:271:63: info: initialization of "Status" proved
-ber.adb:285:30: info: initialization of "Result" proved
-ber.adb:287:22: info: initialization of "Result" proved
-ber.adb:291:30: info: initialization of "Result" proved
-ber.adb:294:16: info: initialization of "Result" proved
-ber.adb:297:27: info: initialization of "Result" proved
+ber.adb:272:09: info: flow dependencies proved
+ber.adb:308:09: info: data dependencies proved
 ber.adb:308:50: info: initialization of "Stop" proved
 ber.adb:308:56: info: initialization of "Value" proved
 ber.adb:308:63: info: initialization of "Status" proved
-ber.adb:317:13: info: initialization of "Length_Status" proved
-ber.adb:319:23: info: initialization of "Length_Stop" proved
-ber.adb:322:16: info: initialization of "Length_Stop" proved
-ber.adb:322:30: info: initialization of "Length" proved
-ber.adb:329:23: info: initialization of "Length_Stop" proved
-ber.adb:329:37: info: initialization of "Length" proved
-ber.adb:334:23: info: initialization of "Length_Stop" proved
-ber.adb:334:37: info: initialization of "Length" proved
-ber.adb:339:23: info: initialization of "Length_Stop" proved
-ber.adb:339:37: info: initialization of "Length" proved
-ber.adb:344:38: info: initialization of "Length" proved
-ber.adb:344:46: info: initialization of "Length_Stop" proved
-ber.adb:350:10: info: initialization of "Identifier_Status" proved
-ber.adb:351:10: info: initialization of "Tag_Class" proved
-ber.adb:352:10: info: initialization of "Structured_Flag" proved
-ber.adb:353:10: info: initialization of "Tag" proved
+ber.adb:309:09: info: flow dependencies proved
+ber.adb:312:10: info: initialization of "Length_Stop" proved
+ber.adb:313:10: info: initialization of "Length" proved
+ber.adb:314:10: info: initialization of "Length_Status" proved
 ber.ads:76:07: info: initialization of "Tag_Class" proved
 ber.ads:77:07: info: initialization of "Structured_Flag" proved
 ber.ads:78:07: info: initialization of "Tag" proved
 ber.ads:79:07: info: initialization of "Status" proved
+ber.ads:81:06: info: flow dependencies proved
 ber.ads:101:07: info: initialization of "Stop" proved
 ber.ads:102:07: info: initialization of "Length" proved
 ber.ads:103:07: info: initialization of "Status" proved
+ber.ads:105:06: info: flow dependencies proved
 ber.ads:126:07: info: initialization of "Stop" proved
 ber.ads:127:07: info: initialization of "Value" proved
 ber.ads:128:07: info: initialization of "Status" proved
+ber.ads:130:06: info: flow dependencies proved

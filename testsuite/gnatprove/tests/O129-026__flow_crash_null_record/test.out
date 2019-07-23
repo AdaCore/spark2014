@@ -1,1 +1,3 @@
+main.adb:31:06: info: data dependencies proved
+main.adb:32:06: info: flow dependencies proved
 main.adb:39:21: info: range check proved (CVC4: 1 VC)

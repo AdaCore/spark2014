@@ -1,9 +1,9 @@
-a.adb:7:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at line 3 should mention A in a precondition]
-a.adb:8:22: medium: assertion might fail, cannot prove A + B = 2 (e.g. when A = 0 and B = 0) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
-a.adb:8:24: medium: overflow check might fail (e.g. when A = Integer'First+1 and B = -2) [possible explanation: subprogram at line 3 should mention A and B in a precondition]
-a.adb:15:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at line 11 should mention A in a precondition]
-a.adb:16:22: medium: assertion might fail, cannot prove A + B = 2 (e.g. when A = 0 and B = 0) [possible explanation: subprogram at line 11 should mention A and B in a precondition]
-a.adb:16:24: medium: overflow check might fail (e.g. when A = Integer'First+1 and B = -2) [possible explanation: subprogram at line 11 should mention A and B in a precondition]
+a.adb:7:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at a.ads:3 should mention A in a precondition]
+a.adb:8:22: medium: assertion might fail, cannot prove A + B = 2 (e.g. when A = 0 and B = 0) [possible explanation: subprogram at a.ads:3 should mention A and B in a precondition]
+a.adb:8:24: medium: overflow check might fail (e.g. when A = Integer'First+1 and B = -2) [possible explanation: subprogram at a.ads:3 should mention A and B in a precondition]
+a.adb:15:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at a.ads:6 should mention A in a precondition]
+a.adb:16:22: medium: assertion might fail, cannot prove A + B = 2 (e.g. when A = 0 and B = 0) [possible explanation: subprogram at a.ads:6 should mention A and B in a precondition]
+a.adb:16:24: medium: overflow check might fail (e.g. when A = Integer'First+1 and B = -2) [possible explanation: subprogram at a.ads:6 should mention A and B in a precondition]
 counterexample expected for check at a.adb:8
   trace at a.adb:7 --> A = 0
   trace at a.adb:8 --> A = 0 and B = 0

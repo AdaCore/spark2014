@@ -1,4 +1,4 @@
 p.adb:1:31: info: initialization of "Result" proved
-p.adb:3:19: info: initialization of "Result" proved
+p.adb:2:08: info: flow dependencies proved
 p.adb:3:19: info: postcondition proved (CVC4: 1 VC)
 p.adb:10:14: info: range check proved (CVC4: 1 VC)

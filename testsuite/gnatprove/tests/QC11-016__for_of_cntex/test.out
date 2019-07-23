@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at lists.ads:4
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at lists.ads:4
@@ -25,52 +26,33 @@ a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at seq.ads:4
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at lists.ads:4
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at seq.ads:4
-linear_search.adb:13:44: medium: postcondition might fail, cannot prove E /= N (e.g. when Arr = (9 => 1, others => 0) and E = Arr (10) and N = 0 and Search'Result = 0) [possible explanation: subprogram at line 11 should mention N in a precondition]
+linear_search.adb:13:44: medium: postcondition might fail, cannot prove E /= N (e.g. when Arr = (9 => 1, others => 0) and E = Arr (10) and N = 0 and Search'Result = 0)
 linear_search.adb:15:35: info: index check proved (CVC4: 2 VC)
-linear_search.adb:19:14: info: initialization of "I" proved
 linear_search.adb:20:34: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:20:34: info: loop invariant preservation proved (CVC4: 1 VC)
-linear_search.adb:20:62: info: initialization of "I" proved
 linear_search.adb:21:42: info: index check proved (CVC4: 4 VC)
-linear_search.adb:22:19: info: initialization of "I" proved
-linear_search.adb:23:21: info: initialization of "I" proved
-linear_search.adb:25:16: info: initialization of "I" proved
 linear_search.adb:25:18: info: range check proved (CVC4: 1 VC)
-linear_search.adb:36:18: info: precondition proved (CVC4: 1 VC)
 linear_search.adb:36:18: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:36:38: medium: postcondition might fail, cannot prove E /= N (e.g. when E = Get (Arr, 10) and N = 1 and Search'Result = 0) [possible explanation: precondition of subprogram at line 33 should mention N]
+linear_search.adb:36:18: info: precondition proved (Trivial: 1 VC)
+linear_search.adb:36:38: medium: postcondition might fail, cannot prove E /= N (e.g. when E = Get (Arr, 10) and N = -1 and Search'Result = 0)
 linear_search.adb:38:18: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:42:14: info: initialization of "I" proved
 linear_search.adb:43:34: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:43:34: info: loop invariant preservation proved (CVC4: 1 VC)
-linear_search.adb:43:62: info: initialization of "I" proved
 linear_search.adb:44:37: info: precondition proved (CVC4: 4 VC)
 linear_search.adb:45:14: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:45:24: info: initialization of "I" proved
-linear_search.adb:46:21: info: initialization of "I" proved
-linear_search.adb:48:16: info: initialization of "I" proved
 linear_search.adb:48:18: info: range check proved (CVC4: 1 VC)
-linear_search.adb:59:18: info: precondition proved (CVC4: 1 VC)
 linear_search.adb:59:18: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:59:38: medium: postcondition might fail, cannot prove E /= N (e.g. when E = Get (Model (Arr), 10) and N = 1 and Search'Result = (Node => 0)) [possible explanation: precondition of subprogram at line 56 should mention N]
+linear_search.adb:59:18: info: precondition proved (Trivial: 1 VC)
+linear_search.adb:59:38: medium: postcondition might fail, cannot prove E /= N
 linear_search.adb:61:18: info: precondition proved (CVC4: 1 VC)
-linear_search.adb:66:13: info: initialization of "I" proved
 linear_search.adb:67:33: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:67:33: info: loop invariant preservation proved (CVC4: 1 VC)
-linear_search.adb:67:51: info: initialization of "C.Node" proved
 linear_search.adb:68:33: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:68:33: info: loop invariant preservation proved (CVC4: 1 VC)
 linear_search.adb:68:47: info: precondition proved (CVC4: 2 VC)
-linear_search.adb:68:83: info: initialization of "C.Node" proved
-linear_search.adb:68:88: info: initialization of "I" proved
 linear_search.adb:69:33: info: loop invariant initialization proved (CVC4: 1 VC)
 linear_search.adb:69:33: info: loop invariant preservation proved (CVC4: 1 VC)
-linear_search.adb:69:51: info: initialization of "I" proved
 linear_search.adb:70:50: info: precondition proved (CVC4: 4 VC)
 linear_search.adb:71:13: info: precondition proved (CVC4: 1 VC)
-linear_search.adb:71:27: info: initialization of "C.Node" proved
-linear_search.adb:72:20: info: initialization of "C.Node" proved
-linear_search.adb:74:15: info: initialization of "I" proved
 linear_search.adb:74:17: info: overflow check proved (CVC4: 1 VC)
 linear_search.adb:75:10: info: precondition proved (CVC4: 1 VC)
-linear_search.adb:75:21: info: initialization of "C.Node" proved

@@ -1,2 +1,8 @@
-only_abstract_dependencies.adb:9:14: medium: overflow check might fail (e.g. when V = Integer'First and X = -1) [possible explanation: subprogram at line 7 should mention X and V in a precondition]
+only_abstract_dependencies.adb:9:14: medium: overflow check might fail (e.g. when V = Integer'First and X = -1) [possible explanation: subprogram at only_abstract_dependencies.ads:5 should mention X and V in a precondition]
 only_abstract_dependencies.ads:3:21: warning: no procedure exists that can initialize abstract state "Only_Abstract_Dependencies.Value"
+only_abstract_dependencies.ads:6:06: info: flow dependencies proved
+only_abstract_dependencies.ads:9:06: info: flow dependencies proved
+only_abstract_dependencies.ads:12:06: info: data dependencies proved
+only_abstract_dependencies.ads:13:06: info: flow dependencies proved
+only_abstract_dependencies.ads:16:06: info: data dependencies proved
+only_abstract_dependencies.ads:17:06: info: flow dependencies proved

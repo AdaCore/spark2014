@@ -4,8 +4,10 @@ test.adb:8:23: info: initialization of "B" proved
 test.adb:9:23: warning: "C" is not modified, could be IN
 test.adb:9:23: warning: unused variable "C"
 test.adb:18:23: info: initialization of "B" proved
+test.adb:19:09: info: data dependencies proved
 test.adb:19:19: low: unused global "State"
 test.adb:30:23: info: initialization of "B" proved
+test.adb:31:09: info: data dependencies proved
 test.adb:31:30: low: unused global "State"
 test.adb:31:30: warning: "State" is not modified, could be INPUT
 test.adb:41:04: warning: analyzing unreferenced procedure "Test_04"

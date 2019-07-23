@@ -78,18 +78,12 @@ Generated contracts for state_a_out
 Generated contracts for nested
    Initializes =>
       Nested.State_A
-nested.adb:31:20: info: initialization of "Helper_1.H_1" proved
-nested.adb:39:20: info: initialization of "Tmp" constituent of "H_2" proved
-nested.adb:56:22: info: initialization of "Helper_2.H_2" proved
+nested.adb:15:28: info: initialization of "Helper_1.H_1" proved
+nested.adb:16:10: info: flow dependencies proved
+nested.adb:37:47: info: initialization of "Helper_2.H_2" proved
 nested.adb:61:47: warning: no procedure exists that can initialize abstract state "Helper_3.H_3"
-nested.adb:64:20: info: initialization of "H_3_B" constituent of "H_3" proved
 nested.adb:65:25: info: initialization of "X" proved
 nested.adb:65:28: info: initialization of "Y" proved
 nested.adb:100:15: high: "Helper_3.H_3" is not initialized
-nested.adb:101:15: info: initialization of "Helper_3.H_3" proved
-nested.adb:106:07: info: initialization of "B_2" constituent of "State_B" proved
-nested.adb:107:14: info: initialization of "A_2" constituent of "State_A" proved
 nested.ads:3:23: warning: no procedure exists that can initialize abstract state "Nested.State_B"
 nested.ads:6:26: info: initialization of "X" proved
-nested.ads:10:14: info: initialization of "A_1" constituent of "State_A" proved
-nested.ads:10:14: info: initialization of "A_2" constituent of "State_A" proved

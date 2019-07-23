@@ -4,26 +4,26 @@ string_utilities.adb:10:12: info: range check proved (CVC4: 2 VC)
 string_utilities.adb:17:24: info: index check proved (CVC4: 2 VC)
 string_utilities.adb:17:28: info: index check proved (CVC4: 2 VC)
 string_utilities.adb:18:15: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:25:31: medium: array index check might fail (e.g. when Lengths'First (1) = 2 and X1 = 1) [possible explanation: subprogram at line 20 should mention X1 in a precondition]
-string_utilities.adb:25:35: medium: array index check might fail (e.g. when Lengths'First (2) = 2 and X2 = 1) [possible explanation: subprogram at line 20 should mention X2 in a precondition]
+string_utilities.adb:25:31: medium: array index check might fail (e.g. when Lengths'First (1) = 1 and X1 = 0) [possible explanation: subprogram at line 20 should mention X1 in a precondition]
+string_utilities.adb:25:35: medium: array index check might fail (e.g. when Lengths'First (2) = 1 and X2 = 0) [possible explanation: subprogram at line 20 should mention X2 in a precondition]
 string_utilities.adb:27:22: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:29:17: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:32:26: info: cannot unroll loop (too many loop iterations)
 string_utilities.adb:33:29: info: cannot unroll loop (too many loop iterations)
-string_utilities.adb:38:39: medium: overflow check might fail [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
-string_utilities.adb:38:39: medium: range check might fail [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
-string_utilities.adb:38:41: medium: "Lengths" might not be initialized
+string_utilities.adb:38:39: medium: overflow check might fail (e.g. when X1 = 2 and X2 = 2) [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
+string_utilities.adb:38:39: medium: range check might fail (e.g. when X1 = 2147483647 and X2 = 2147483647) [possible explanation: loop at line 33 should mention Lengths in a loop invariant]
+string_utilities.adb:38:41: high: "Lengths" is not initialized
 string_utilities.adb:38:56: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:38:64: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:38:64: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:40:47: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:40:68: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:40:73: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:41:53: medium: "Lengths" might not be initialized
+string_utilities.adb:41:53: high: "Lengths" is not initialized
 string_utilities.adb:41:72: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:41:72: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:47:10: medium: "Lengths" might not be initialized
-string_utilities.adb:47:33: medium: range check might fail (e.g. when Longest_Common_Subsequence'Result = (others => 'NUL') and Longest_Common_Subsequence'Result'First = 1 and Longest_Common_Subsequence'Result'Last = 1 and Result = (others => 'NUL') and Rx = 0 and S2 = (others => 'NUL') and S2'First = 0 and S2'Last = -1 and X1 = 0 and X2 = 0)
+string_utilities.adb:47:33: medium: range check might fail (e.g. when S2 = (others => 'NUL') and S2'First = 0 and S2'Last = -1)
 string_utilities.adb:52:48: medium: "Lengths" might not be initialized
 string_utilities.adb:52:71: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:53:10: info: range check proved (CVC4: 2 VC)
@@ -31,40 +31,27 @@ string_utilities.adb:54:10: info: range check proved (CVC4: 2 VC)
 string_utilities.adb:54:59: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:55:39: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:56:39: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:59:20: info: initialization of "X1" proved
-string_utilities.adb:59:30: info: initialization of "X2" proved
-string_utilities.adb:60:28: info: initialization of "Rx" proved
-string_utilities.adb:60:35: info: initialization of "X1" proved
-string_utilities.adb:61:19: info: initialization of "Rx" proved
-string_utilities.adb:62:26: info: initialization of "Result" proved
 string_utilities.adb:62:26: medium: "Result" might not be initialized
-string_utilities.adb:64:22: info: initialization of "Rx" proved
 string_utilities.adb:64:25: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:65:22: info: initialization of "X1" proved
 string_utilities.adb:65:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 0) [possible explanation: loop at line 58 should mention X1 in a loop invariant]
-string_utilities.adb:66:22: info: initialization of "X2" proved
+string_utilities.adb:65:25: medium: range check might fail (e.g. when X1 = 2147483645) [possible explanation: loop at line 58 should mention X1 in a loop invariant]
 string_utilities.adb:66:25: info: overflow check proved (CVC4: 1 VC)
-string_utilities.adb:66:25: medium: range check might fail [possible explanation: loop at line 58 should mention X2 in a loop invariant]
+string_utilities.adb:66:25: medium: range check might fail (e.g. when X2 = 2147483646) [possible explanation: loop at line 58 should mention X2 in a loop invariant]
 string_utilities.adb:67:19: medium: "Lengths" might not be initialized
-string_utilities.adb:67:35: info: initialization of "X2" proved
 string_utilities.adb:67:38: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:67:38: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:67:60: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:67:65: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:68:16: info: initialization of "X1" proved
-string_utilities.adb:68:22: info: initialization of "X1" proved
 string_utilities.adb:68:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:68:25: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:70:22: info: initialization of "X2" proved
 string_utilities.adb:70:25: info: overflow check proved (CVC4: 1 VC)
 string_utilities.adb:70:25: medium: range check might fail [possible explanation: loop at line 58 should mention X2 in a loop invariant]
-string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 2 and S'Last = 1)
+string_utilities.ads:3:55: medium: array index check might fail (e.g. when S = (others => 'NUL') and S'First = 0 and S'Last = -1)
 string_utilities.ads:4:48: info: range check proved (CVC4: 4 VC)
-string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 1)
+string_utilities.ads:4:59: medium: overflow check might fail (e.g. when S = (others => 'NUL') and S'First = 2147483647 and S'Last = 0)
 string_utilities.ads:10:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:11:11: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:17:15: medium: overflow check might fail [possible explanation: subprogram at line 13 should mention S1 and S2 in a precondition]
+string_utilities.ads:17:15: medium: overflow check might fail (e.g. when S1 = (others => 'NUL') and S1'First = 2147483647 and S1'Last = 2147483647 and S2 = (others => 'NUL') and S2'First = 2147483647 and S2'Last = 2147483647) [possible explanation: subprogram at line 13 should mention S1 and S2 in a precondition]
 string_utilities.ads:17:17: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:17:17: info: implicit function contract not available for proof ("Slow_LCS_Length" is recursive)
 string_utilities.ads:19:15: info: range check proved (CVC4: 1 VC)
@@ -73,7 +60,7 @@ string_utilities.ads:19:21: info: implicit function contract not available for p
 string_utilities.ads:20:21: info: expression function body not available for proof ("Slow_LCS_Length" might not return)
 string_utilities.ads:20:21: info: implicit function contract not available for proof ("Slow_LCS_Length" is recursive)
 string_utilities.ads:24:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
-string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'Result = (1 => 'NUL', 3 => 'NUL', others => 'SOH') and Longest_Common_Subsequence'Result'First = 1 and Longest_Common_Subsequence'Result'Last = 1 and S1 = (1 => 'NUL', 3 => 'NUL', others => 'SOH') and S1'First = 1 and S1'Last = 2)
+string_utilities.ads:24:06: medium: postcondition might fail, cannot prove Is_Subsequence (Longest_Common_Subsequence'Result, S1) (e.g. when Longest_Common_Subsequence'Result = (others => 'NUL') and Longest_Common_Subsequence'Result'First = 1 and Longest_Common_Subsequence'Result'Last = 0 and S1 = (others => 'NUL') and S1'First = 0 and S1'Last = -1)
 string_utilities.ads:25:06: info: expression function body not available for proof ("Is_Subsequence" might not return)
 string_utilities.ads:26:39: info: range check proved (CVC4: 1 VC)
 string_utilities.ads:26:49: info: expression function body not available for proof ("Slow_LCS_Length" might not return)

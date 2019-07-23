@@ -1,70 +1,52 @@
 conts-lists.ads:285:29: warning: unused variable "Self", in instantiation at conts-lists-indefinite_unbounded_spark.ads:16, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
+conts-lists.ads:384:15: info: data dependencies proved, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:438:18: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-conts-lists.ads:452:14: medium: precondition might fail, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 450 should mention Position and Self in a precondition]
-conts-lists.ads:458:14: medium: precondition might fail, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 456 should mention Position and Self in a precondition]
+conts-lists.ads:440:15: info: data dependencies proved, in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
+conts-lists.ads:452:14: medium: precondition might fail, cannot prove Has_Element (Self, Position), in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 450 should mention Position and Self in a precondition]
+conts-lists.ads:458:14: medium: precondition might fail, cannot prove Has_Element (Self, Position), in instantiation at conts-lists-indefinite_unbounded_spark.ads:19, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 456 should mention Position and Self in a precondition]
 conts-lists.ads:507:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:511:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:515:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:522:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:526:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
+functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
+functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
 use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
 use_lists.adb:6:13: side effects of function "Has_Element" are not modeled in SPARK
-use_lists.adb:6:30: info: initialization of "Cu" proved
 use_lists.adb:8:13: medium: loop invariant might fail after first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:13: medium: loop invariant might fail in first iteration, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L1), Cu) = Length (L2)
 use_lists.adb:8:35: side effects of function "Get_Cursor_Model" are not modeled in SPARK
-use_lists.adb:8:58: info: initialization of "Cu" proved
 use_lists.adb:8:64: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:8:72: info: initialization of "L2" proved
-use_lists.adb:8:72: info: initialization of private part of "L2" proved
 use_lists.adb:10:13: info: loop invariant initialization proved (CVC4: 1 VC)
 use_lists.adb:10:40: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:10:48: info: initialization of "L2" proved
-use_lists.adb:10:48: info: initialization of private part of "L2" proved
-use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N)) (e.g. when N = 0)
+use_lists.adb:11:18: medium: loop invariant might fail after first iteration, cannot prove Is_Incr (Get (Get_Element_Model (L1), N), Get (Get_Element_Model (L2), N))
 use_lists.adb:11:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:12:32: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:13:13: info: precondition proved (CVC4: 1 VC)
 use_lists.adb:13:13: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:13:26: info: initialization of "Cu" proved
-use_lists.adb:14:13: medium: precondition might fail
-use_lists.adb:14:21: info: initialization of "L2" proved
-use_lists.adb:14:21: info: initialization of private part of "L2" proved
-use_lists.adb:14:25: medium: precondition might fail
+use_lists.adb:14:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
+use_lists.adb:14:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:14:25: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:14:38: info: initialization of "Cu" proved
 use_lists.adb:14:42: medium: overflow check might fail
-use_lists.adb:16:13: medium: precondition might fail
-use_lists.adb:16:21: info: initialization of "L2" proved
-use_lists.adb:16:21: info: initialization of private part of "L2" proved
-use_lists.adb:16:25: medium: precondition might fail
+use_lists.adb:16:13: medium: precondition might fail, cannot prove Length (L) <= Capacity (L) - 1
+use_lists.adb:16:25: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:16:25: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:16:38: info: initialization of "Cu" proved
 use_lists.adb:18:16: medium: assertion might fail, cannot prove Get (Get_Element_Model (L2), Length (L2) - 1) = Element (L1, Cu)
 use_lists.adb:18:21: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:18:45: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:18:53: info: initialization of "L2" proved
-use_lists.adb:18:53: info: initialization of private part of "L2" proved
 use_lists.adb:18:57: info: range check proved (CVC4: 1 VC)
-use_lists.adb:19:18: medium: precondition might fail
+use_lists.adb:19:18: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:19:18: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:19:31: info: initialization of "Cu" proved
 use_lists.adb:21:25: medium: assertion might fail, cannot prove Is_Incr (Element (L1, Cu), Get (Get_Element_Model (L2), Length (L2) - 1))
-use_lists.adb:21:34: medium: precondition might fail
+use_lists.adb:21:34: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.adb:21:34: side effects of function "Element" are not modeled in SPARK
-use_lists.adb:21:47: info: initialization of "Cu" proved
 use_lists.adb:22:30: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.adb:22:54: info: function contract not available for proof ("Length" might not return)
-use_lists.adb:22:62: info: initialization of "L2" proved
-use_lists.adb:22:62: info: initialization of private part of "L2" proved
 use_lists.adb:22:66: info: range check proved (CVC4: 1 VC)
-use_lists.adb:23:10: medium: precondition might fail
-use_lists.adb:23:20: info: initialization of "Cu" proved
+use_lists.adb:23:10: medium: precondition might fail, cannot prove Cursor_Sequence.Find (Get_Cursor_Model (L), C) >= 0
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
 use_lists.ads:5:04: info: function contract not available for proof ("Find" might not return)
@@ -255,6 +237,8 @@ use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:37
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
+use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:51
+use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:64
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:80
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:81
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:83
@@ -263,15 +247,13 @@ use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:85
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
+use_lists.ads:5:04: side effects of function "Get_Cursor_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.ads:5:04: side effects of function "Get_Element_Model" are not modeled in SPARK
 use_lists.ads:14:65: info: overflow check proved (CVC4: 1 VC)
-use_lists.ads:16:32: info: initialization of "L2" proved
-use_lists.ads:16:32: info: initialization of private part of "L2" proved
 use_lists.ads:17:14: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:17:14: medium: postcondition might fail, cannot prove Length (L2) = Length (L1)
-use_lists.ads:17:22: info: initialization of "L2" proved
-use_lists.ads:17:22: info: initialization of private part of "L2" proved
 use_lists.ads:17:28: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:18:43: info: function contract not available for proof ("Length" might not return)
 use_lists.ads:19:32: side effects of function "Get_Element_Model" are not modeled in SPARK

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---               Copyright (C) 2014-2018, Altran UK Limited                 --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -139,12 +139,11 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre => Ekind (AS) = E_Abstract_State;
    --  Returns True iff a refinement has been specified for abstract state AS
 
-   function Refinement_Exists (AS : Entity_Name) return Boolean
-   with Pre => GG_Is_Abstract_State (AS);
-   --  Returns True iff a refinement has been specified for abstract state AS
-
-   function GG_Expand_Abstract_State (AS : Entity_Name) return Name_Sets.Set;
-   --  Returns the constituents of AS if it is an abstract state, AS otherwise
+   function Expand_Abstract_State (F : Flow_Id) return Flow_Id_Sets.Set
+   with Post => (for all E of Expand_Abstract_State'Result =>
+                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
+   --  If F represents abstract state, return the set of all its components.
+   --  Otherwise return F.
 
    function GG_Get_Initializes (E : Entity_Id) return Dependency_Maps.Map
    with Pre => GG_Has_Been_Generated and then
@@ -154,7 +153,7 @@ package Flow_Generated_Globals.Phase_2 is
 
    function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set
    with Pre  => GG_Has_Been_Generated and then
-                Ekind (E) in E_Package and then
+                Ekind (E) = E_Package and then
                 Is_In_Analyzed_Files (E),
         Post => (for all Var of GG_Get_Local_Variables'Result =>
                     Ekind (Var) in E_Abstract_State | E_Constant | E_Variable
@@ -366,5 +365,9 @@ package Flow_Generated_Globals.Phase_2 is
    --  @param Obj an entity name that refers to a library-level object with
    --    protected components
    --  @return priorities of protected object components
+
+   function GG_Has_Globals (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
+   --  Return True iff the Global contract of E was recorded in phase 1
 
 end Flow_Generated_Globals.Phase_2;

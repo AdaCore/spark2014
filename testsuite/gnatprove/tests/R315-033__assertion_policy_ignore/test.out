@@ -10,6 +10,8 @@ test.adb:18:25: info: index check proved (CVC4: 4 VC)
 test.adb:18:49: info: index check proved (CVC4: 4 VC)
 test.adb:19:25: info: index check proved (CVC4: 4 VC)
 test.adb:19:47: info: index check proved (CVC4: 4 VC)
+test.ads:14:07: info: data dependencies proved
+test.ads:15:07: info: flow dependencies proved
 test.ads:22:09: info: postcondition proved (CVC4: 2 VC)
 test.ads:22:19: info: range check proved (CVC4: 2 VC)
 test.ads:24:21: info: index check proved (CVC4: 2 VC)

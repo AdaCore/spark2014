@@ -1,8 +1,8 @@
 saturation.adb:11:06: info: complete contract cases proved (CVC4: 1 VC)
 saturation.adb:11:06: info: disjoint contract cases proved (CVC4: 1 VC)
-saturation.adb:12:38: medium: contract case might fail (e.g. when Val = (Value => 65535, Upper_Bound => 65535))
-saturation.adb:14:38: medium: contract case might fail (e.g. when Val = (Value => 62491, Upper_Bound => 2564))
+saturation.adb:12:38: medium: contract case might fail (e.g. when Val = (Value => 32768, Upper_Bound => 32768))
+saturation.adb:14:38: medium: contract case might fail (e.g. when Val = (Value => 32768, Upper_Bound => 32767))
 counterexample expected for check at saturation.adb:12
-  trace at saturation.adb:10 --> Val = (Value => 0, Upper_Bound => 65535)
-  trace at saturation.adb:12 --> Val = (Value => 65535, Upper_Bound => 65535)
-  trace at saturation.adb:19 --> Val = (Value => 65535, Upper_Bound => 65535)
+  trace at saturation.adb:10 --> Val = (Value => 32767, Upper_Bound => 32768)
+  trace at saturation.adb:12 --> Val = (Value => 32768, Upper_Bound => 32768)
+  trace at saturation.adb:19 --> Val = (Value => 32768, Upper_Bound => 32768)

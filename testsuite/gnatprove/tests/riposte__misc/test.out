@@ -1,1 +1,3 @@
+misc.adb:5:11: info: flow dependencies proved
+misc.adb:9:39: info: data dependencies proved
 misc.adb:15:25: medium: range check might fail

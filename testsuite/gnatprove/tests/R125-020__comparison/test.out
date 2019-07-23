@@ -1,5 +1,5 @@
-longest_common_prefix.adb:9:15: medium: overflow check might fail (e.g. when L = 2147482648 and X = 1000)
-longest_common_prefix.adb:9:17: info: initialization of "L" proved
+longest_common_prefix.adb:5:07: info: initialization of "L" proved
+longest_common_prefix.adb:9:15: medium: overflow check might fail
 longest_common_prefix.adb:10:20: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.adb:11:23: info: index check proved (CVC4: 4 VC)
 longest_common_prefix.adb:11:23: info: overflow check proved (CVC4: 2 VC)
@@ -9,27 +9,22 @@ longest_common_prefix.adb:14:13: info: loop invariant initialization proved (CVC
 longest_common_prefix.adb:14:13: info: loop invariant preservation proved (Z3: 1 VC)
 longest_common_prefix.adb:14:13: info: range check proved (CVC4: 8 VC)
 longest_common_prefix.adb:14:23: info: overflow check proved (CVC4: 2 VC)
-longest_common_prefix.adb:14:25: info: initialization of "L" proved
 longest_common_prefix.adb:14:30: info: range check proved (CVC4: 8 VC)
 longest_common_prefix.adb:14:40: info: overflow check proved (CVC4: 2 VC)
-longest_common_prefix.adb:14:42: info: initialization of "L" proved
 longest_common_prefix.adb:17:10: info: loop variant proved (CVC4: 1 VC)
-longest_common_prefix.adb:17:44: info: initialization of "L" proved
-longest_common_prefix.adb:18:15: info: initialization of "L" proved
 longest_common_prefix.adb:18:17: info: overflow check proved (CVC4: 1 VC)
-longest_common_prefix.adb:21:14: info: initialization of "L" proved
-longest_common_prefix.ads:6:04: info: initialization of "A" proved
+longest_common_prefix.ads:3:03: info: flow dependencies proved
 longest_common_prefix.ads:11:06: info: disjoint contract cases proved (CVC4: 1 VC)
 longest_common_prefix.ads:11:28: info: index check proved (CVC4: 2 VC)
 longest_common_prefix.ads:11:37: info: index check proved (CVC4: 2 VC)
-longest_common_prefix.ads:11:40: info: contract case proved (CVC4: 2 VC)
-longest_common_prefix.ads:12:31: medium: contract case might fail (e.g. when LCP'Result = 0 and X = 0 and Y = 0)
-longest_common_prefix.ads:13:32: info: contract case proved (CVC4: 2 VC)
-longest_common_prefix.ads:15:14: info: postcondition proved (Z3: 1 VC; altergo: 1 VC)
-longest_common_prefix.ads:15:15: medium: range check might fail (e.g. when X = 0)
+longest_common_prefix.ads:11:40: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+longest_common_prefix.ads:12:31: medium: contract case might fail
+longest_common_prefix.ads:13:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+longest_common_prefix.ads:15:14: info: postcondition proved (CVC4: 2 VC)
+longest_common_prefix.ads:15:15: medium: range check might fail
 longest_common_prefix.ads:15:25: info: overflow check proved (CVC4: 1 VC)
-longest_common_prefix.ads:15:45: medium: range check might fail (e.g. when Y = 1000)
-longest_common_prefix.ads:15:55: medium: overflow check might fail (e.g. when LCP'Result = 0 and Y = 0)
+longest_common_prefix.ads:15:45: medium: range check might fail
+longest_common_prefix.ads:15:55: medium: overflow check might fail
 longest_common_prefix.ads:17:29: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.ads:18:37: info: overflow check proved (CVC4: 2 VC)
 longest_common_prefix.ads:19:31: info: index check proved (CVC4: 2 VC)
@@ -39,9 +34,9 @@ longest_common_prefix.ads:19:53: info: overflow check proved (CVC4: 1 VC)
 main.adb:16:19: info: assertion proved (CVC4: 1 VC)
 main.adb:16:40: info: range check proved (CVC4: 4 VC)
 main.adb:16:75: info: range check proved (CVC4: 4 VC)
-main.adb:18:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 6) = 5 (e.g. when A = (11 => 0, 16 => 0, 21 => 0, 26 => 0, 31 => 0, 36 => 0, 41 => 0, 46 => 0, 51 => 0, 56 => 0, 61 => 0, 66 => 0, 71 => 0, 76 => 0, others => 1))
+main.adb:18:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 6) = 5
 main.adb:18:40: info: precondition proved (CVC4: 4 VC)
 main.adb:20:19: info: assertion proved (CVC4: 1 VC)
 main.adb:20:40: info: precondition proved (CVC4: 4 VC)
-main.adb:22:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 1001) = 0 (e.g. when A = (others => 1))
-main.adb:22:40: medium: precondition might fail
+main.adb:22:19: medium: assertion might fail, cannot prove Longest_Common_Prefix.LCP (1, 1001) = 0
+main.adb:22:40: medium: precondition might fail, cannot prove Y in A'range

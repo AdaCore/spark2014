@@ -1,18 +1,21 @@
 module Perm__index
- use import "_gnatprove_standard".Main
- use        "_gnatprove_standard".Integer
- use import "int".Int
+ use "_gnatprove_standard".Main
+ use "_gnatprove_standard".Integer as Integer
+ use "int".Int
 
  type index
 
- function first :int = 1
+ val constant first :int
+ ensures { result = 1 }
 
- function last :int = 100
+ val constant last :int
+ ensures { result = 100 }
 
  predicate in_range (x : int)  = 1 <= x <= 100
 
  (* Copy of the model of modules for static discrete types *)
  clone export "ada__model".Static_Discrete with
+ axiom .,
  type t = index,
  function first = first,
  function last = last,
@@ -25,27 +28,28 @@ module Perm__index
 end
 
 module Perm__index__rep
- use import Perm__index
- use import "_gnatprove_standard".Main
+ use Perm__index
+ use "_gnatprove_standard".Main
 
  clone export "ada__model".Rep_Proj_Int with
+   axiom .,
    type t = index,
    predicate in_range = in_range
 
  meta "model_projection" function to_rep
 
- meta "inline : no" function to_rep
+ meta "inline:no" function to_rep
 end
 
 module Perm__nat_array
- use import "_gnatprove_standard".Main
- use        Standard__natural
- use        Standard__integer
- use        Standard__integer__rep
- use        Perm__index
- use        "_gnatprove_standard".Integer
- use import "int".Int
- use        Array__Int__Standard__natural
+ use "_gnatprove_standard".Main
+ use Standard__natural as Standard__natural
+ use Standard__integer as Standard__integer
+ use Standard__integer__rep as Standard__integer__rep
+ use Perm__index as Perm__index
+ use "_gnatprove_standard".Integer as Integer
+ use "int".Int
+ use  Array__Int__Standard__natural as Array__Int__Standard__natural 
 
  type component_type =
   Standard__natural.natural
@@ -56,6 +60,7 @@ module Perm__nat_array
 
  (* Copy of the model of modules for unconstrained array types *)
  clone export "ada__model".Unconstr_Array with
+ axiom .,
  type map = Array__Int__Standard__natural.map,
  function array_bool_eq = Array__Int__Standard__natural.bool_eq,
  type index_base_type = Standard__integer.integer,
@@ -74,11 +79,11 @@ module Perm__nat_array
 end
 
 module Perm__is_perm
-  use import "_gnatprove_standard".Main
-  use import int.Int
-  use import Standard__natural
-  use import Perm__nat_array
-  use import Array__Int__Standard__natural
+  use "_gnatprove_standard".Main
+  use int.Int
+  use Standard__natural
+  use Perm__nat_array
+  use Array__Int__Standard__natural
 
   (* Number of occurrences of v in a *)
   function occ (v: natural) (a: nat_array) : int
@@ -98,8 +103,10 @@ module Perm__is_perm
             (v <> e -> occ e b = (occ e a) - 1) /\
             (v = e  -> occ e b = occ e a))
 
- function is_perm__logic "inline" (a b : nat_array) : bool =
+ function is_perm__logic [@inline] (a b : nat_array) : bool =
     forall v: natural. occ v a = occ v b
+ val is_perm__logic (a b : nat_array) : bool
+  ensures { result = (forall v: natural. occ v a = occ v b) }
 
  val is_perm (a : nat_array) (b : nat_array) : bool
   ensures { result = is_perm__logic a b }

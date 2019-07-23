@@ -1,54 +1,107 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="4">
+<why3session shape_version="6">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
-<file name="../../../gnatprove/doorapi.mlw">
-<theory name="Doorapi__package_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
- </transf>
- </goal>
-</theory>
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="doorapi.mlw"/>
 <theory name="Doorapi__getdoorstate__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Doorapi__getdoorstateraw__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="assertion" proved="true">
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="565"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="565"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <proof prover="2"><result status="valid" steps="638"/></proof>
+  </goal>
+  <goal name="VC def.7" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.8" expl="assertion" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.9" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="WP_parameter def.1" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="5"/></proof>
+  <goal name="VC def.10" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="837"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="79112"/></proof>
-  <proof prover="2"><result status="unknown" steps="617"/></proof>
-  <proof prover="3"><result status="unknown" steps="617"/></proof>
+  <goal name="VC def.11" expl="assertion" proved="true">
+  <proof prover="2"><result status="valid" steps="668"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="assertion">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="2"><result status="unknown" steps="626"/></proof>
+  <goal name="VC def.12" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="WP_parameter def.4" expl="precondition">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="171311"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="92912"/></proof>
+  <goal name="VC def.13" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="WP_parameter def.5" expl="precondition">
-  <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="233601"/></proof>
-  <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="unknown" steps="103425"/></proof>
+  <goal name="VC def.14" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.15" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.16" expl="precondition">
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="unknown" steps="2932484"/></proof>
+  <proof prover="2"><result status="unknown" steps="4840"/></proof>
+  <proof prover="3"><result status="unknown" steps="4079"/></proof>
+  </goal>
+  <goal name="VC def.17" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.18" expl="precondition">
+  <proof prover="0"><result status="timeout"/></proof>
+  <proof prover="1"><result status="unknown" steps="4855274"/></proof>
+  <proof prover="2"><result status="unknown" steps="6670"/></proof>
+  <proof prover="3"><result status="unknown" steps="5721"/></proof>
+  </goal>
+  <goal name="VC def.19" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>

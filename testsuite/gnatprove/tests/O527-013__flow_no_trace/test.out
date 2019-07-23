@@ -1,12 +1,5 @@
-linear_search.adb:12:13: info: initialization of "Pos" proved
-linear_search.adb:13:15: info: initialization of "Pos" proved
-linear_search.adb:14:29: info: initialization of "Pos" proved
-linear_search.adb:16:20: info: initialization of "Res.At_Index" proved
-linear_search.adb:16:20: info: initialization of "Res.Found" proved
-linear_search.adb:19:17: info: initialization of "Pos" proved
 linear_search.adb:19:21: info: range check proved (CVC4: 1 VC)
 linear_search.adb:23:14: high: "Res.At_Index" is not initialized
-linear_search.adb:23:14: info: initialization of "Res.Found" proved
 Trace files' contents:
 linear_search.adb:9
 linear_search.adb:12

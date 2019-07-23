@@ -1,0 +1,6 @@
+info.ads:8:04: "Info.Valid" is referenced in expression function but missing from the Global
+test.ads:5:19: info: initialization of "N" proved
+test.ads:7:06: info: data dependencies proved
+test.ads:8:25: low: unused global "Info.Valid"
+test.ads:9:25: low: unused global "Info.State"
+gnatprove: error during flow analysis and proof

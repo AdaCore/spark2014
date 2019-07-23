@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2016-2018, AdaCore                  --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,10 +23,10 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
+with SPARK_Annotate;             use SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
 
@@ -138,7 +138,7 @@ package body SPARK_Util.Types is
             --  it is in SPARK and we reach it, or it is not in SPARK and we
             --  return at this point.
 
-            elsif Ekind (Typ) in Private_Kind
+            elsif Is_Private_Type (Typ)
               and then Present (Underlying_Full_View (Typ))
             then
                if Entity_In_SPARK (Underlying_Full_View (Typ)) then
@@ -291,28 +291,6 @@ package body SPARK_Util.Types is
 
       return Count;
    end Count_Non_Inherited_Discriminants;
-
-   ---------------------------
-   -- Find_Predicate_Aspect --
-   ---------------------------
-
-   function Find_Predicate_Aspect (Typ : Entity_Id) return Node_Id is
-      N : Node_Id;
-
-   begin
-      N := Find_Aspect (Typ, Aspect_Predicate);
-      if Present (N) then
-         return N;
-      end if;
-
-      N := Find_Aspect (Typ, Aspect_Dynamic_Predicate);
-      if Present (N) then
-         return N;
-      end if;
-
-      N := Find_Aspect (Typ, Aspect_Static_Predicate);
-      return N;
-   end Find_Predicate_Aspect;
 
    ------------------------------------
    -- Get_Full_Type_Without_Checking --
@@ -477,6 +455,52 @@ package body SPARK_Util.Types is
       elsif Is_Itype (E) then Predicated_Parent (E)
       else Partial_View (E));
 
+   -----------------------
+   -- Has_Init_By_Proof --
+   -----------------------
+
+   function Has_Init_By_Proof (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Retysp (E);
+   begin
+      case Type_Kind'(Ekind (Ty)) is
+         when Scalar_Kind =>
+            return Scalar_Has_Init_By_Proof (Ty);
+         when Array_Kind =>
+            return Has_Init_By_Proof (Component_Type (Ty));
+         when Record_Kind =>
+
+            --  A record type either has all its components with Init_By_Proof
+            --  or none. Only check the first component that is visible in
+            --  SPARK.
+
+            declare
+               Comp : Entity_Id :=
+                 First_Component (Root_Retysp (Ty));
+            begin
+               while Present (Comp) loop
+                  exit when Component_Is_Visible_In_SPARK (Comp);
+                  Next_Component (Comp);
+               end loop;
+
+               return Present (Comp) and then Has_Init_By_Proof (Etype (Comp));
+            end;
+         when E_Private_Type
+            | E_Private_Subtype
+            | E_Limited_Private_Type
+            | E_Limited_Private_Subtype
+            | Concurrent_Kind
+            | Access_Kind
+          =>
+            return False;
+
+         when Incomplete_Kind
+            | E_Exception_Type
+            | E_Subprogram_Type
+         =>
+            raise Program_Error;
+      end case;
+   end Has_Init_By_Proof;
+
    -----------------------------
    -- Has_Invariants_In_SPARK --
    -----------------------------
@@ -513,7 +537,7 @@ package body SPARK_Util.Types is
 
       --  Return True if Ty is a private type
 
-      return Ekind (Ty) in Private_Kind;
+      return Is_Private_Type (Ty);
    end Has_Private_Fields;
 
    ----------------------------
@@ -603,7 +627,8 @@ package body SPARK_Util.Types is
         (Ekind (E) = E_Enumeration_Subtype
          and then Etype (E) = Standard_Boolean
          and then Scalar_Range (E) = Scalar_Range (Standard_Boolean)
-         and then not Has_Predicates (E)));
+         and then not Has_Predicates (E)
+         and then not Scalar_Has_Init_By_Proof (E)));
 
    --------------------------
    -- Is_Static_Array_Type --
@@ -780,11 +805,11 @@ package body SPARK_Util.Types is
       return False;
    end Requires_Interrupt_Priority;
 
-   ----------------------
-   -- Root_Record_Type --
-   ----------------------
+   -----------------
+   -- Root_Retysp --
+   -----------------
 
-   function Root_Record_Type (E : Entity_Id) return Entity_Id is
+   function Root_Retysp (E : Entity_Id) return Entity_Id is
       Result   : Entity_Id := Empty;
       Ancestor : Entity_Id :=
         (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
@@ -809,7 +834,7 @@ package body SPARK_Util.Types is
       end loop;
 
       return Retysp (Result);
-   end Root_Record_Type;
+   end Root_Retysp;
 
    -------------------------
    -- Static_Array_Length --

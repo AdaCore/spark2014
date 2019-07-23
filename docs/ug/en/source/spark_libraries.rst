@@ -135,15 +135,16 @@ containers, which are part of the |GNAT Pro| standard library:
 * ``Ada.Containers.Formal_Hashed_Maps``
 * ``Ada.Containers.Formal_Ordered_Maps``
 
-Lists, sets and maps are always bounded. Vectors can be bounded or unbounded
-depending on the value of the formal parameter ``Bounded`` when instantiating
-the generic unit. Bounded containers do not use dynamic allocation. Unbounded
-vectors use dynamic allocation to expand their internal block of memory.
-
 Lists, sets and maps can only be used with definite objects (objects for which
 the compiler can compute the size in memory, hence not ``String`` nor
 ``T'Class``). Vectors come in two flavors for definite objects
 (``Formal_Vectors``) and indefinite objects (``Formal_Indefinite_Vectors``).
+
+Lists, sets, maps, and definite vectors are always bounded. Indefinite vectors
+can be bounded or unbounded
+depending on the value of the formal parameter ``Bounded`` when instantiating
+the generic unit. Bounded containers do not use dynamic allocation. Unbounded
+vectors use dynamic allocation to expand their internal block of memory.
 
 Modified API of Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^

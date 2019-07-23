@@ -1,5 +1,9 @@
-better_error_locations.adb:4:27: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention A.State and B.State in a precondition]
+a.ads:3:08: info: flow dependencies proved
+b.ads:3:08: info: flow dependencies proved
+better_error_locations.adb:4:27: medium: overflow check might fail [possible explanation: subprogram at better_error_locations.ads:4 should mention A.State and B.State in a precondition]
 better_error_locations.ads:4:17: info: initialization of "X" proved
+better_error_locations.ads:5:11: info: data dependencies proved
 better_error_locations.ads:5:42: low: unused global "C.State"
 better_error_locations.ads:6:11: medium: missing dependency "null => C.State"
 better_error_locations.ads:6:47: medium: incorrect dependency "X => C.State"
+c.ads:3:08: info: flow dependencies proved

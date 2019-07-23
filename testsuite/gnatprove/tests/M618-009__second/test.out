@@ -1,5 +1,4 @@
 pkg_a.adb:5:61: info: overflow check proved (CVC4: 1 VC)
 pkg_a.adb:9:06: warning: unused assignment
-pkg_a.adb:9:09: medium: precondition might fail
-pkg_a.ads:6:04: info: initialization of "X" proved
+pkg_a.adb:9:09: medium: precondition might fail, cannot prove X in -100 .. 100
 pkg_a.ads:7:04: low: initialization of "Y" must be mentioned in the Initializes contract of "Pkg_A" (SPARK RM 7.1.5(9))

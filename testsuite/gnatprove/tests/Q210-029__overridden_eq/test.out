@@ -1,5 +1,1 @@
-new_eq.adb:11:19: info: initialization of "X.F" proved
-new_eq.adb:11:19: info: initialization of "X.G" proved
 new_eq.adb:11:19: medium: assertion might fail, cannot prove X /= Y (e.g. when X = (F => 1, G => 2) and Y = (F => 1, G => 3))
-new_eq.adb:11:24: info: initialization of "Y.F" proved
-new_eq.adb:11:24: info: initialization of "Y.G" proved

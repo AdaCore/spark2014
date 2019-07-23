@@ -11,35 +11,22 @@ loop_related_illegal.adb:88:16: attribute "Loop_Entry" must appear within approp
 loop_related_illegal.adb:113:36: prefix of attribute "Loop_Entry" cannot reference local entities
 loop_related_illegal.adb:133:37: prefix of attribute "Loop_Entry" that applies to outer loop must denote an entity
 loop_related_illegal.adb:155:10: pragma "Loop_Invariant" must appear next to pragma at line 153
-loop_related_illegal_2.adb:15:33: info: initialization of "X" proved
+loop_related_illegal_2.adb:11:07: info: initialization of "Y" proved
 loop_related_illegal_2.adb:15:33: info: loop invariant initialization proved (CVC4: 2 VC)
 loop_related_illegal_2.adb:15:33: info: loop invariant preservation proved (CVC4: 2 VC)
-loop_related_illegal_2.adb:16:15: info: initialization of "X" proved
 loop_related_illegal_2.adb:16:17: info: overflow check proved (CVC4: 1 VC)
-loop_related_illegal_2.adb:17:20: info: initialization of "X" proved
-loop_related_illegal_2.adb:19:22: info: initialization of "Y" proved
 loop_related_illegal_2.adb:19:22: medium: assertion might fail, cannot prove Y = 10 (e.g. when Y = 0) [possible explanation: loop invariant at line 15 should mention Y]
-loop_related_illegal_2.adb:30:33: info: initialization of "X" proved
 loop_related_illegal_2.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_related_illegal_2.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_related_illegal_2.adb:30:51: info: overflow check proved (CVC4: 2 VC)
-loop_related_illegal_2.adb:31:10: medium: loop variant might fail (e.g. when X = 0)
-loop_related_illegal_2.adb:31:44: info: initialization of "X" proved
-loop_related_illegal_2.adb:33:15: info: initialization of "X" proved
+loop_related_illegal_2.adb:31:10: medium: loop variant might fail
 loop_related_illegal_2.adb:33:17: info: overflow check proved (CVC4: 1 VC)
-loop_related_illegal_2.adb:34:20: info: initialization of "X" proved
 loop_related_illegal_2.ads:4:14: warning: subprogram "Loop_Invariant_Acts_As_Cut_Point" has no effect
 loop_related_illegal_2.ads:5:14: warning: subprogram "Expression_Remains_The_Same" has no effect
 loop_related_illegal_3.adb:4:04: warning: analyzing unreferenced procedure "Unevaluated"
 loop_related_illegal_3.adb:4:27: info: initialization of "Par" proved
-loop_related_illegal_3.adb:16:20: info: initialization of "Y" proved
-loop_related_illegal_3.adb:16:25: info: initialization of "X" proved
-loop_related_illegal_3.adb:17:33: info: initialization of "Y" proved
 loop_related_illegal_3.adb:17:33: medium: loop invariant might fail after first iteration, cannot prove Y > X'loop_entry (e.g. when X = 11 and Y = 11)
 loop_related_illegal_3.adb:17:33: medium: loop invariant might fail in first iteration, cannot prove Y > X'loop_entry (e.g. when X = 100 and Y = 100)
 loop_related_illegal_3.adb:17:37: high: "X" is not initialized
-loop_related_illegal_3.adb:19:15: info: initialization of "Y" proved
 loop_related_illegal_3.adb:19:17: info: overflow check proved (CVC4: 1 VC)
-loop_related_illegal_3.adb:21:14: info: initialization of "X" proved
 loop_related_illegal_3.adb:21:16: info: overflow check proved (CVC4: 1 VC)
-loop_related_illegal_3.adb:21:18: info: initialization of "Y" proved

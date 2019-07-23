@@ -2,3 +2,5 @@ account8.adb:7:31: medium: overflow check might fail
 account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.ads:15:14: info: nontermination of task proved (CVC4: 1 VC)
 account8.ads:15:14: medium: ceiling priority protocol might not be respected
+account8.ads:17:06: info: data dependencies proved
+account8.ads:18:06: info: flow dependencies proved

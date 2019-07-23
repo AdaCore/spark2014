@@ -1,255 +1,470 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="4">
+<why3session shape_version="6">
 <prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<file name="../../../gnatprove/spark_io.mlw">
-<theory name="Spark_io__package_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
- </transf>
- </goal>
-</theory>
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="spark_io.mlw"/>
 <theory name="Spark_io__file_type__default_checks" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__create__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__open__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__close__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__delete__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__reset__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__valid_file__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__mode__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__name__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__form__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__is_open__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__new_line__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__skip_line__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__new_page__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__end_of_line__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__end_of_file__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__set_in_file_col__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="30"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.2" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="36"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__set_out_file_col__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="unreachable point">
-  <proof prover="0"><result status="unknown" steps="29"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="37"/></proof>
+  <goal name="VC def.1" expl="check">
+  <proof prover="0"><result status="unknown" steps="35"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.5" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="43"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__in_file_col__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="30"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.2" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="36"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__out_file_col__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="unreachable point">
-  <proof prover="0"><result status="unknown" steps="29"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="37"/></proof>
+  <goal name="VC def.1" expl="check">
+  <proof prover="0"><result status="unknown" steps="35"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.5" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="43"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__in_file_line__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="30"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.2" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="36"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__out_file_line__subprogram_def">
- <goal name="WP_parameter def" expl="VC for def">
+ <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="WP_parameter def.0" expl="unreachable point">
-  <proof prover="0"><result status="unknown" steps="29"/></proof>
+  <goal name="VC def.0" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="WP_parameter def.1" expl="assertion">
-  <proof prover="0"><result status="unknown" steps="37"/></proof>
+  <goal name="VC def.1" expl="check">
+  <proof prover="0"><result status="unknown" steps="35"/></proof>
+  </goal>
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.5" expl="assertion">
+  <proof prover="0"><result status="unknown" steps="43"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_char__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_char__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_line__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_line__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_integer__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_integer__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_int_from_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_int_to_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_float__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_float__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__get_float_from_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>
 <theory name="Spark_io__put_float_to_string__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
  </transf>
  </goal>
 </theory>

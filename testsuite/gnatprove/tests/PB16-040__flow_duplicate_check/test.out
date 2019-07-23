@@ -1,9 +1,7 @@
 p.adb:12:16: info: range check proved (CVC4: 1 VC)
 p.adb:13:33: info: range check proved (CVC4: 1 VC)
 p.adb:14:16: info: range check proved (CVC4: 4 VC)
-p.adb:14:29: info: initialization of "Target.Length" proved
-p.adb:14:44: info: length check proved (CVC4: 4 VC)
-p.adb:14:44: medium: "Target.Value" might not be initialized
-p.adb:14:47: info: length check proved (CVC4: 4 VC)
-p.ads:13:20: info: initialization of "Target.Length" proved
+p.adb:14:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+p.adb:14:47: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:13:20: medium: "Target.Value" might not be initialized in "Copy"
+p.ads:14:09: info: data dependencies proved

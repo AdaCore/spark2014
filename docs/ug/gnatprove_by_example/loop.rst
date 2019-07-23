@@ -46,7 +46,8 @@ to prove either the absence of overflow or the postcondition of
 
 As described in :ref:`How to Write Loop Invariants`, this is because variable
 ``X`` is modified in the loop, hence |GNATprove| knows nothing about it unless
-it is stated in a loop invariant. If we add such a loop invariant that
+it is stated in a loop invariant. If we add such a loop invariant, as suggested
+by the possible explanation in the message issued by |GNATprove|, that
 describes precisely the value of ``X`` in each iteration of the loop:
 
 .. literalinclude:: examples/increment_loop_inv.adb

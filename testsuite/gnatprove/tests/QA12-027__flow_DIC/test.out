@@ -1,3 +1,4 @@
+main.ads:5:08: info: flow dependencies proved
 main.ads:7:04: high: "A" is not initialized in "Main"
 main.ads:8:04: high: "B" is not initialized in "Main"
 main.ads:9:04: info: initialization of "C" proved

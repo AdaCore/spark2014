@@ -1,4 +1,2 @@
 p.adb:6:13: warning: subprogram "Q" has no effect
-p.adb:7:17: info: initialization of "T" proved, in call inlined at p.adb:14
-p.adb:7:17: medium: range check might fail, in call inlined at p.adb:14 (e.g. when Y'First = 0 and Y'Last = 0)
-p.adb:14:03: info: initialization of "T" proved
+p.adb:7:17: medium: range check might fail, in call inlined at p.adb:14

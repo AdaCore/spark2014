@@ -1,1 +1,1 @@
-p.adb:8:21: medium: range check might fail (e.g. when A = -129) [possible explanation: subprogram at line 3 should mention A in a precondition]
+p.adb:8:21: medium: range check might fail (e.g. when A = -129) [possible explanation: subprogram at p.ads:3 should mention A in a precondition]

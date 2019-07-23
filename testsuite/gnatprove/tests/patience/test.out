@@ -1,11 +1,12 @@
-patience.adb:12:13: info: initialization of "I" proved
-patience.adb:13:33: info: initialization of "I" proved
+patience.adb:7:07: info: initialization of "Idx" proved
+patience.adb:7:12: info: initialization of "Pred" proved
+patience.adb:7:18: info: initialization of "I" proved
+patience.adb:8:07: info: initialization of "StackISize" proved
+patience.adb:8:19: info: initialization of "TopStackI" proved
 patience.adb:13:33: info: loop invariant initialization proved (CVC4: 2 VC)
 patience.adb:13:33: info: loop invariant preservation proved (CVC4: 2 VC)
 patience.adb:16:13: info: loop invariant initialization proved (CVC4: 6 VC)
 patience.adb:16:13: info: loop invariant preservation proved (CVC4: 6 VC)
-patience.adb:20:13: info: initialization of "Pred" proved
-patience.adb:22:31: info: initialization of "I" proved
 patience.adb:22:32: info: index check proved (CVC4: 4 VC)
 patience.adb:22:32: info: overflow check proved (CVC4: 2 VC)
 patience.adb:22:50: info: index check proved (CVC4: 4 VC)
@@ -15,18 +16,12 @@ patience.adb:24:28: info: index check proved (CVC4: 4 VC)
 patience.adb:27:26: info: index check proved (CVC4: 4 VC)
 patience.adb:27:35: info: overflow check proved (CVC4: 2 VC)
 patience.adb:29:39: info: index check proved (CVC4: 2 VC)
-patience.adb:29:39: info: initialization of "I" proved
 patience.adb:30:34: info: index check proved (CVC4: 2 VC)
-patience.adb:30:34: info: initialization of "I" proved
-patience.adb:30:37: info: initialization of "StackISize" proved
 patience.adb:30:48: info: index check proved (CVC4: 1 VC; altergo: 1 VC)
 patience.adb:31:36: info: index check proved (CVC4: 2 VC)
-patience.adb:31:36: info: initialization of "TopStackI" proved
 patience.adb:32:27: info: assertion proved (CVC4: 2 VC)
-patience.adb:32:32: info: initialization of "TopStackI" proved
 patience.adb:35:15: info: assertion proved (CVC4: 7 VC)
 patience.adb:35:31: info: index check proved (CVC4: 2 VC)
-patience.adb:35:31: info: initialization of "TopStackI" proved
 patience.adb:36:28: info: index check proved (CVC4: 2 VC)
 patience.adb:37:34: info: index check proved (CVC4: 2 VC)
 patience.adb:38:30: info: index check proved (CVC4: 2 VC)
@@ -37,54 +32,29 @@ patience.adb:39:38: info: index check proved (CVC4: 2 VC)
 patience.adb:39:52: info: index check proved (CVC4: 2 VC)
 patience.adb:39:63: info: index check proved (CVC4: 2 VC)
 patience.adb:40:28: info: index check proved (CVC4: 2 VC)
-patience.adb:40:41: info: initialization of "I" proved
 patience.adb:40:64: info: index check proved (CVC4: 2 VC)
-patience.adb:40:77: info: initialization of "StackISize" proved
-patience.adb:42:20: info: initialization of "TopStackI" proved
-patience.adb:43:17: info: initialization of "I" proved
 patience.adb:43:19: info: overflow check proved (CVC4: 1 VC)
 patience.adb:46:16: info: index check proved (CVC4: 2 VC)
-patience.adb:46:21: info: initialization of "Idx" proved
-patience.adb:47:20: info: initialization of "Idx" proved
 patience.adb:47:24: info: overflow check proved (CVC4: 1 VC)
 patience.adb:47:24: info: range check proved (CVC4: 1 VC)
 patience.adb:48:15: info: index check proved (CVC4: 2 VC)
-patience.adb:48:20: info: initialization of "Idx" proved
-patience.adb:48:23: info: initialization of "Pred" proved
 patience.adb:48:23: info: range check proved (CVC4: 1 VC)
-patience.adb:49:10: info: initialization of "I" proved
 patience.adb:53:40: info: range check proved (CVC4: 1 VC)
 patience.adb:54:26: info: index check proved (CVC4: 2 VC)
-patience.adb:54:29: info: initialization of "I" proved
 patience.adb:55:22: info: index check proved (CVC4: 2 VC)
-patience.adb:55:28: info: initialization of "I" proved
-patience.adb:55:31: info: initialization of "Idx" proved
 patience.adb:55:31: info: range check proved (CVC4: 1 VC)
 patience.adb:56:24: info: index check proved (CVC4: 2 VC)
-patience.adb:56:29: info: initialization of "Idx" proved
-patience.adb:56:32: info: initialization of "I" proved
 patience.adb:56:32: info: range check proved (CVC4: 1 VC)
 patience.adb:57:25: info: index check proved (CVC4: 2 VC)
-patience.adb:57:30: info: initialization of "Idx" proved
 patience.adb:62:40: info: index check proved (CVC4: 2 VC)
-patience.adb:62:40: info: initialization of "I" proved
 patience.adb:63:26: info: index check proved (CVC4: 2 VC)
-patience.adb:63:29: info: initialization of "I" proved
-patience.adb:63:32: info: initialization of "StackISize" proved
 patience.adb:63:43: info: range check proved (CVC4: 1 VC)
 patience.adb:64:22: info: index check proved (CVC4: 2 VC)
 patience.adb:64:25: info: index check proved (CVC4: 2 VC)
-patience.adb:64:37: info: initialization of "I" proved
-patience.adb:64:37: info: initialization of "StackISize" proved
-patience.adb:64:40: info: initialization of "Idx" proved
 patience.adb:64:40: info: range check proved (CVC4: 1 VC)
 patience.adb:65:24: info: index check proved (CVC4: 2 VC)
-patience.adb:65:29: info: initialization of "Idx" proved
-patience.adb:65:32: info: initialization of "I" proved
 patience.adb:65:32: info: range check proved (CVC4: 1 VC)
 patience.adb:66:25: info: index check proved (CVC4: 2 VC)
-patience.adb:66:30: info: initialization of "Idx" proved
-patience.adb:66:33: info: initialization of "StackISize" proved
 patience.adb:71:08: info: assertion proved (CVC4: 4 VC)
 patience.adb:80:13: medium: assertion might fail, cannot prove S.StackSizes(I) >= 1
 patience.adb:80:26: info: index check proved (CVC4: 2 VC)
@@ -113,7 +83,6 @@ patience.adb:103:45: info: index check proved (CVC4: 2 VC)
 patience.adb:107:45: info: index check proved (CVC4: 2 VC)
 patience.adb:108:31: info: overflow check proved (CVC4: 1 VC)
 patience.adb:108:50: info: index check proved (CVC4: 2 VC)
-patience.adb:109:19: medium: assertion might fail, cannot prove S.Stacks(I)(J) < S.Stacks(I)(K)
 patience.adb:109:28: info: index check proved (CVC4: 2 VC)
 patience.adb:109:31: info: index check proved (CVC4: 2 VC)
 patience.adb:109:45: info: index check proved (CVC4: 2 VC)
@@ -121,6 +90,7 @@ patience.adb:109:48: info: index check proved (CVC4: 2 VC)
 patience.adb:113:45: info: index check proved (CVC4: 2 VC)
 patience.adb:114:31: info: overflow check proved (CVC4: 1 VC)
 patience.adb:114:50: info: index check proved (CVC4: 2 VC)
+patience.adb:115:19: medium: assertion might fail, cannot prove S.Values(S.Stacks(I)(J)) >= S.Values(S.Stacks(I)(K))
 patience.adb:115:29: info: index check proved (CVC4: 2 VC)
 patience.adb:115:37: info: index check proved (CVC4: 2 VC)
 patience.adb:115:40: info: index check proved (CVC4: 2 VC)
@@ -138,37 +108,12 @@ patience.adb:130:31: info: index check proved (CVC4: 2 VC)
 patience.adb:132:32: info: index check proved (CVC4: 2 VC)
 patience.adb:132:39: info: index check proved (CVC4: 2 VC)
 patience.adb:132:56: info: index check proved (CVC4: 2 VC)
-patience.adb:146:33: info: initialization of "S.NumElts" proved
 patience.adb:146:33: info: loop invariant initialization proved (CVC4: 1 VC)
 patience.adb:146:33: info: loop invariant preservation proved (CVC4: 1 VC)
 patience.adb:146:47: info: overflow check proved (CVC4: 2 VC)
 patience.adb:147:33: info: loop invariant initialization proved (CVC4: 1 VC)
 patience.adb:147:33: info: loop invariant preservation proved (CVC4: 1 VC)
-patience.adb:147:37: info: initialization of "S.NumElts" proved
-patience.adb:147:37: info: initialization of "S.NumStacks" proved
-patience.adb:147:37: info: initialization of "S.PosHeight" proved
-patience.adb:147:37: info: initialization of "S.PosStack" proved
-patience.adb:147:37: info: initialization of "S.Preds" proved
-patience.adb:147:37: info: initialization of "S.StackSizes" proved
-patience.adb:147:37: info: initialization of "S.Stacks" proved
-patience.adb:147:37: info: initialization of "S.Values" proved
 patience.adb:148:10: info: precondition proved (CVC4: 2 VC)
-patience.adb:148:28: info: initialization of "S.NumElts" proved
-patience.adb:148:28: info: initialization of "S.NumStacks" proved
-patience.adb:148:28: info: initialization of "S.PosHeight" proved
-patience.adb:148:28: info: initialization of "S.PosStack" proved
-patience.adb:148:28: info: initialization of "S.Preds" proved
-patience.adb:148:28: info: initialization of "S.StackSizes" proved
-patience.adb:148:28: info: initialization of "S.Stacks" proved
-patience.adb:148:28: info: initialization of "S.Values" proved
-patience.adb:150:14: info: initialization of "S.NumElts" proved
-patience.adb:150:14: info: initialization of "S.NumStacks" proved
-patience.adb:150:14: info: initialization of "S.PosHeight" proved
-patience.adb:150:14: info: initialization of "S.PosStack" proved
-patience.adb:150:14: info: initialization of "S.Preds" proved
-patience.adb:150:14: info: initialization of "S.StackSizes" proved
-patience.adb:150:14: info: initialization of "S.Stacks" proved
-patience.adb:150:14: info: initialization of "S.Values" proved
 patience.ads:63:26: info: index check proved (CVC4: 2 VC)
 patience.ads:66:26: info: index check proved (CVC4: 2 VC)
 patience.ads:69:45: info: index check proved (CVC4: 2 VC)
@@ -221,64 +166,31 @@ patience.ads:115:56: info: index check proved (CVC4: 2 VC)
 patience.ads:125:14: info: postcondition proved (CVC4: 3 VC)
 patience.ads:125:43: info: index check proved (CVC4: 2 VC)
 patience.ads:130:14: info: postcondition proved (CVC4: 1 VC)
-test_patience.adb:7:14: warning: subprogram "PrintCardStack" has no effect
-test_patience.adb:9:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:9:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:10:07: warning: assuming "Put" has no effect on global items
-test_patience.adb:10:07: warning: no Global contract available for "Put"
 test_patience.adb:10:31: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:51
 test_patience.adb:10:56: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:51
-test_patience.adb:12:10: warning: assuming "Put" has no effect on global items
-test_patience.adb:12:10: warning: no Global contract available for "Put"
 test_patience.adb:12:18: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:51
-test_patience.adb:12:31: info: initialization of "Input" proved, in call inlined at test_patience.adb:51
 test_patience.adb:12:33: info: index check proved (CVC4: 2 VC), in call inlined at test_patience.adb:51
-test_patience.adb:14:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:14:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:15:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:15:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:18:14: warning: subprogram "PrintState" has no effect
-test_patience.adb:20:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:20:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:21:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:21:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:21:36: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
-test_patience.adb:22:07: warning: assuming "Put" has no effect on global items
-test_patience.adb:22:07: warning: no Global contract available for "Put"
-test_patience.adb:24:10: warning: assuming "Put" has no effect on global items
-test_patience.adb:24:10: warning: no Global contract available for "Put"
 test_patience.adb:24:18: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
-test_patience.adb:26:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:26:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:27:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:27:07: warning: no Global contract available for "Put_Line"
 test_patience.adb:27:38: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
-test_patience.adb:33:13: warning: assuming "Put" has no effect on global items
-test_patience.adb:33:13: warning: no Global contract available for "Put"
+test_patience.adb:30:13: warning: initialization of "Size" has no effect
+test_patience.adb:30:13: warning: initialization of "Size" has no effect, in call inlined at test_patience.adb:53
+test_patience.adb:31:13: info: initialization of "Idx" proved
+test_patience.adb:31:13: info: initialization of "Idx" proved, in call inlined at test_patience.adb:53
 test_patience.adb:33:26: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:33:47: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:33:62: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:33:97: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:35:35: info: index check proved (CVC4: 2 VC), in call inlined at test_patience.adb:53
-test_patience.adb:36:16: warning: assuming "Put" has no effect on global items
-test_patience.adb:36:16: warning: no Global contract available for "Put"
 test_patience.adb:36:24: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
-test_patience.adb:36:42: info: initialization of "Idx" proved
-test_patience.adb:36:42: info: initialization of "Idx" proved, in call inlined at test_patience.adb:53
 test_patience.adb:36:47: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:36:55: info: range check proved (CVC4: 1 VC), in call inlined at test_patience.adb:53
 test_patience.adb:36:77: info: index check proved (CVC4: 2 VC), in call inlined at test_patience.adb:53
-test_patience.adb:38:13: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:38:13: warning: no Global contract available for "Put_Line"
-test_patience.adb:41:07: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:41:07: warning: no Global contract available for "Put_Line"
-test_patience.adb:50:04: warning: assuming "Put_Line" has no effect on global items
-test_patience.adb:50:04: warning: no Global contract available for "Put_Line"
+test_patience.adb:47:04: info: initialization of "S" proved
 test_patience.adb:51:04: info: analyzing call to "PrintCardStack" in context
 test_patience.adb:51:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:51:04: info: in inlined body at line 11
 test_patience.adb:52:09: info: precondition proved (CVC4: 1 VC)
-test_patience.adb:52:18: info: initialization of "Input" proved
 test_patience.adb:53:04: info: analyzing call to "PrintState" in context
 test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
@@ -286,11 +198,3 @@ test_patience.adb:53:04: info: cannot unroll loop (too many loop iterations)
 test_patience.adb:53:04: info: in inlined body at line 23
 test_patience.adb:53:04: info: in inlined body at line 28
 test_patience.adb:53:04: info: in inlined body at line 34
-test_patience.adb:53:04: info: initialization of "S.NumElts" proved
-test_patience.adb:53:04: info: initialization of "S.NumStacks" proved
-test_patience.adb:53:04: info: initialization of "S.PosHeight" proved
-test_patience.adb:53:04: info: initialization of "S.PosStack" proved
-test_patience.adb:53:04: info: initialization of "S.Preds" proved
-test_patience.adb:53:04: info: initialization of "S.StackSizes" proved
-test_patience.adb:53:04: info: initialization of "S.Stacks" proved
-test_patience.adb:53:04: info: initialization of "S.Values" proved

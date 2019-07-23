@@ -1,13 +1,6 @@
-controller.adb:28:40: medium: range check might fail (e.g. when Piece_count = Piece_count_type'Last) [possible explanation: subprogram at line 19 should mention Piece_count in a precondition]
-tetris.adb:41:16: info: initialization of "Xnew" proved
-tetris.adb:42:23: info: initialization of "Xnew" proved
+controller.adb:28:40: medium: range check might fail (e.g. when Piece_count = Piece_count_type'Last) [possible explanation: subprogram at controller.ads:6 should mention Piece_count in a precondition]
 tetris.adb:42:28: info: range check proved (CVC4: 1 VC)
-tetris.adb:45:16: info: initialization of "Xnew" proved
-tetris.adb:46:23: info: initialization of "Xnew" proved
 tetris.adb:46:28: info: range check proved (CVC4: 1 VC)
-tetris.adb:48:32: info: initialization of "Ynew" proved
 tetris.adb:48:36: info: range check proved (CVC4: 1 VC)
-tetris.adb:52:22: info: initialization of "Xnew" proved
-tetris.adb:53:22: info: initialization of "Ynew" proved
 tetris.ads:53:31: warning: "P" is not modified, could be IN
 tetris.ads:53:31: warning: unused variable "P"

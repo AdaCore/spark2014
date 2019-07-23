@@ -1,1 +1,2 @@
-main.adb:3:11: medium: "Data" might not be initialized after elaboration of main program "Main"
+c.ads:8:09: info: data dependencies proved
+main.adb:6:04: medium: "Data" might not be initialized after elaboration of main program "Main"

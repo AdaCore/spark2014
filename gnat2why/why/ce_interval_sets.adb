@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -44,12 +44,9 @@ package body Ce_Interval_Sets is
          else
             --  Case where X overlap with something (equivalent in the sense of
             --  Sets) we now try to insert the merge of these two values.
-            declare
-               Elt : Interval renames L (Position);
-            begin
-               X := Merge_Interval (Elt, X);
-               L.Delete (Position);
-            end;
+            X := Merge_Interval (L (Position), X);
+
+            L.Delete (Position);
 
          end if;
       end loop;

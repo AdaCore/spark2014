@@ -1,16 +1,14 @@
 initialization_warnings.adb:6:23: info: unrolling loop
-initialization_warnings.adb:7:21: medium: "An_Arr" might not be initialized
 initialization_warnings.adb:13:23: info: unrolling loop
-initialization_warnings.adb:17:12: info: initialization of "An_Arr" proved
 initialization_warnings.adb:17:12: medium: "An_Arr" might not be initialized
 initialization_warnings.adb:22:23: info: unrolling loop
-initialization_warnings.adb:23:16: medium: "A" might not be initialized
 initialization_warnings.adb:29:23: info: unrolling loop
-initialization_warnings.adb:33:12: info: initialization of "A" proved
 initialization_warnings.adb:33:12: medium: "A" might not be initialized
-initialization_warnings.ads:9:29: info: initialization of "An_Arr" proved
-initialization_warnings.ads:11:31: info: initialization of "An_Arr" proved
+initialization_warnings.ads:9:29: medium: "An_Arr" might not be initialized in "Init_Arr_Warn"
+initialization_warnings.ads:11:31: medium: "An_Arr" might not be initialized in "Init_Arr_Warn_2"
 initialization_warnings.ads:11:53: info: initialization of "X" proved
-initialization_warnings.ads:14:32: info: initialization of "A" proved
-initialization_warnings.ads:17:33: info: initialization of "A" proved
+initialization_warnings.ads:14:11: info: data dependencies proved
+initialization_warnings.ads:14:32: medium: "A" might not be initialized
+initialization_warnings.ads:17:11: info: data dependencies proved
+initialization_warnings.ads:17:33: medium: "A" might not be initialized
 initialization_warnings.ads:17:36: info: initialization of "V" proved

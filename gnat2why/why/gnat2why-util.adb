@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2012-2018, AdaCore                  --
+--                     Copyright (C) 2012-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,8 +27,10 @@ with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
 with Flow_Types;
 with Flow_Utility;
+with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
 with Gnat2Why_Args;
 with Gnat2Why.Expr;              use Gnat2Why.Expr;
+with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
 with SPARK_Annotate;
@@ -42,6 +44,7 @@ with Why.Conversions;            use Why.Conversions;
 with Why.Gen.Expr;               use Why.Gen.Expr;
 with Why.Gen.Names;              use Why.Gen.Names;
 with Why.Inter;                  use Why.Inter;
+with Why.Keywords;               use Why.Keywords;
 with Why.Types;                  use Why.Types;
 
 package body Gnat2Why.Util is
@@ -319,10 +322,10 @@ package body Gnat2Why.Util is
 
    function Get_Counterexample_Labels
      (E              : Entity_Id;
-      Append_To_Name : String := "") return Name_Id_Sets.Set
+      Append_To_Name : String := "") return Symbol_Sets.Set
    is
-      Labels : Name_Id_Sets.Set;
-      Model_Trace : constant Name_Id_Sets.Set := Get_Model_Trace_Label
+      Labels : Symbol_Sets.Set;
+      Model_Trace : constant Symbol_Sets.Set := Get_Model_Trace_Label
         (E, False, Append_To_Name);
 
       E_Type : constant Entity_Id := Retysp (Etype (E));
@@ -332,7 +335,7 @@ package body Gnat2Why.Util is
 
    begin
       if not Entity_Comes_From_Source (E) then
-         Labels := Name_Id_Sets.Empty_Set;
+         Labels := Symbol_Sets.Empty_Set;
 
       --  Generate counterexample labels for a function result. As function
       --  results are translated as refs, we must generate a "model_projected"
@@ -434,6 +437,58 @@ package body Gnat2Why.Util is
               else raise Program_Error);
    end BitVector_Type_Size;
 
+   -------------------------
+   -- Build_Printing_Plan --
+   -------------------------
+
+   function Build_Printing_Plan return Why_Node_Lists.List is
+      Seen : Symbol_Set;
+      Plan : Why_Node_Lists.List;
+
+      External_Axioms_Found : exception;
+
+      procedure Recurse (Th : W_Theory_Declaration_Id);
+
+      -------------
+      -- Recurse --
+      -------------
+
+      procedure Recurse (Th : W_Theory_Declaration_Id)
+      is
+         N : constant Symbol := Get_Name (Th);
+      begin
+         if Seen.Contains (N) then
+            return;
+         end if;
+         Seen.Insert (N);
+         for Incl of Get_List (+Get_Includes (Th)) loop
+            declare
+               M : constant W_Module_Id :=
+                 Get_Module (W_Include_Declaration_Id (Incl));
+            begin
+               if Is_External_Axiom_Module (M) then
+                  raise External_Axioms_Found;
+               end if;
+               if Get_File (M) = No_Symbol then
+                  Recurse (Find_Decl (Get_Name (M)));
+               end if;
+            end;
+         end loop;
+         Plan.Append (+Th);
+      end Recurse;
+
+   --  Start of processing for Build_Printing_Plan
+
+   begin
+      for Th of Why_Sections (WF_Main).Theories loop
+         Recurse (+Th);
+      end loop;
+      return Plan;
+   exception
+      when External_Axioms_Found =>
+         return Why_Node_Lists.Empty_List;
+   end Build_Printing_Plan;
+
    ------------------------------
    -- Check_DIC_At_Declaration --
    ------------------------------
@@ -460,8 +515,18 @@ package body Gnat2Why.Util is
       Nodes  : Node_Lists.List;
       Domain : EW_Domain) return W_Expr_Id
    is
-      Cur_Spec : W_Expr_Id;
+      Cur_Spec     : W_Expr_Id;
+      Local_Params : Transformation_Params := Params;
    begin
+
+      --  For specs we usually want the markers that identify subparts of
+      --  formulas, so we set this here. We do not set it to GM_All, as this
+      --  could cause side effects related to the location of checks. This
+      --  boolean is a no-op for Domains other than EW_Pred.
+
+      if Local_Params.Gen_Marker = GM_None then
+         Local_Params.Gen_Marker := GM_Node_Only;
+      end if;
       if Nodes.Is_Empty then
          return New_Literal (Value => EW_True, Domain => Domain);
       end if;
@@ -471,7 +536,7 @@ package body Gnat2Why.Util is
       for Node of Nodes loop
          declare
             Why_Expr : constant W_Expr_Id :=
-              Transform_Expr (Node, EW_Bool_Type, Domain, Params);
+              Transform_Expr (Node, EW_Bool_Type, Domain, Local_Params);
          begin
             if Cur_Spec /= Why_Empty then
                Cur_Spec :=
@@ -727,10 +792,10 @@ package body Gnat2Why.Util is
    function Get_Model_Trace_Label
      (E               : Entity_Id;
       Is_Record_Field : Boolean := False;
-      Append          : String := "") return Name_Id_Sets.Set
+      Append          : String := "") return Symbol_Sets.Set
    is
-      S : Name_Id_Sets.Set :=
-       (Name_Id_Sets.To_Set
+      S : Symbol_Sets.Set :=
+       (Symbol_Sets.To_Set
           (NID
              (Model_Trace_Label &
               (if E = Empty
@@ -749,14 +814,8 @@ package body Gnat2Why.Util is
       return S;
    end Get_Model_Trace_Label;
 
-   function Get_Model_Trace_Label (Name : String) return Name_Id_Sets.Set is
-      S : constant Name_Id_Sets.Set :=
-       (Name_Id_Sets.To_Set
-          (NID
-             (Model_Trace_Label & Name)));
-   begin
-      return S;
-   end Get_Model_Trace_Label;
+   function Get_Model_Trace_Label (Name : String) return Symbol_Sets.Set is
+     (Symbol_Sets.To_Set (NID (Model_Trace_Label & Name)));
 
    ------------------------------
    -- Get_Static_Call_Contract --
@@ -790,16 +849,10 @@ package body Gnat2Why.Util is
    -----------------------
 
    procedure Init_Why_Sections is
-      Body_Prefix : constant String := Unit_Name;
    begin
-      Why_File_Name := new String'(Body_Prefix & Why_File_Suffix);
-      for Kind in W_Section_Id'First ..
-                  W_Section_Id'Pred (W_Section_Id'Last)
-      loop
+      for Kind in W_Section_Id loop
          Make_Empty_Why_Section (Kind => Kind, Section => Why_Sections (Kind));
       end loop;
-      Make_Empty_Why_Section
-        (Kind => WF_Main, Section => Why_Sections (WF_Main));
    end Init_Why_Sections;
 
    -------------------
@@ -869,11 +922,10 @@ package body Gnat2Why.Util is
                Write_Ids : Flow_Id_Sets.Set;
 
             begin
-               Flow_Utility.Get_Proof_Globals (Subprogram     => Scope,
-                                               Classwide      => True,
-                                               Reads          => Read_Ids,
-                                               Writes         => Write_Ids,
-                                               Keep_Constants => True);
+               Flow_Utility.Get_Proof_Globals (Subprogram      => Scope,
+                                               Reads           => Read_Ids,
+                                               Writes          => Write_Ids,
+                                               Erase_Constants => False);
 
                return Read_Ids.Contains (Direct_Mapping_Id (Obj));
             end;
@@ -914,12 +966,8 @@ package body Gnat2Why.Util is
       --  the named notation of aggregates are not considered as references
       --  to mutable variables (e.g. in Expression_Depends_On_Variables).
 
-      elsif Ekind (E) in E_Enumeration_Literal |
-                         E_Component           |
-                         E_Discriminant        |
-                         Named_Kind            |
-                         Subprogram_Kind       |
-                         Entry_Kind
+      elsif Ekind (E) in E_Component
+                       | E_Discriminant
       then
          return False;
 
@@ -960,11 +1008,7 @@ package body Gnat2Why.Util is
 
       elsif Is_Constant_Object (E) then
          declare
-            E_Typ : constant Entity_Id := Etype (E);
-
-            --  ??? Once private access types are allowed, use Retysp (E_Typ)
-            --  instead of E_Typ.
-
+            E_Typ : constant Entity_Id := Retysp (Etype (E));
          begin
             if Ekind (E) = E_In_Parameter then
                if Is_Access_Type (E_Typ)
@@ -1058,6 +1102,13 @@ package body Gnat2Why.Util is
        and then Present (Get_Initial_DIC_Procedure (Ty))
        and then not Check_DIC_At_Declaration (Ty));
 
+   -----------------------------
+   -- Needs_Init_Wrapper_Type --
+   -----------------------------
+
+   function Needs_Init_Wrapper_Type (E : Entity_Id) return Boolean is
+     (SPARK_Annotate.Scalar_Has_Init_By_Proof (E));
+
    --------------------------------
    -- Nth_Index_Rep_Type_No_Bool --
    --------------------------------
@@ -1107,6 +1158,10 @@ package body Gnat2Why.Util is
       --  Generation of dynamic invariants is slightly different when called
       --  recursively on component types of arrays or records. Top_Level should
       --  be False in recursive calls.
+
+      Incompl_Access_Seen : Entity_Sets.Set;
+      --  Set of all the access to incomplete type seen so far. Used to avoid
+      --  looping on recursive data structures.
 
       -----------------------------------------------
       -- Has_Potentially_Inherited_Type_Invariants --
@@ -1231,6 +1286,20 @@ package body Gnat2Why.Util is
                end if;
             end loop;
          elsif Is_Access_Type (Ty_Ext) then
+
+            --  Access types designating incomplete types can lead to recursive
+            --  data structures. If the type has already been encountered, we
+            --  know that it does not need a dynamic invariant or it would
+            --  have been seen.
+
+            if Designates_Incomplete_Type (Ty_Ext) then
+               if Incompl_Access_Seen.Contains (Ty_Ext) then
+                  return False;
+               else
+                  Incompl_Access_Seen.Insert (Ty_Ext);
+               end if;
+            end if;
+
             return Type_Needs_Dynamic_Invariant
               (Directly_Designated_Type (Ty_Ext), False);
          end if;
@@ -1363,76 +1432,11 @@ package body Gnat2Why.Util is
    end Why_Type_Is_Float;
 
 begin
-   Why3_Keywords.Include ("as");
-   Why3_Keywords.Include ("abstract");
-   Why3_Keywords.Include ("absurd");
-   Why3_Keywords.Include ("any");
-   Why3_Keywords.Include ("assert");
-   Why3_Keywords.Include ("assume");
-   Why3_Keywords.Include ("axiom");
-   Why3_Keywords.Include ("begin");
-   Why3_Keywords.Include ("bool");
-   Why3_Keywords.Include ("by");
-   Why3_Keywords.Include ("check");
-   Why3_Keywords.Include ("clone");
-   Why3_Keywords.Include ("coinductive");
-   Why3_Keywords.Include ("constant");
-   Why3_Keywords.Include ("do");
-   Why3_Keywords.Include ("done");
-   Why3_Keywords.Include ("downto");
-   Why3_Keywords.Include ("else");
-   Why3_Keywords.Include ("end");
-   Why3_Keywords.Include ("epsilon");
-   Why3_Keywords.Include ("exception");
-   Why3_Keywords.Include ("exists");
-   Why3_Keywords.Include ("export");
-   Why3_Keywords.Include ("false");
-   Why3_Keywords.Include ("for");
-   Why3_Keywords.Include ("forall");
-   Why3_Keywords.Include ("fun");
-   Why3_Keywords.Include ("function");
-   Why3_Keywords.Include ("ghost");
-   Why3_Keywords.Include ("goal");
-   Why3_Keywords.Include ("if");
-   Why3_Keywords.Include ("import");
-   Why3_Keywords.Include ("in");
-   Why3_Keywords.Include ("inductive");
-   Why3_Keywords.Include ("int");
-   Why3_Keywords.Include ("invariant");
-   Why3_Keywords.Include ("lemma");
-   Why3_Keywords.Include ("let");
-   Why3_Keywords.Include ("loop");
-   Why3_Keywords.Include ("match");
-   Why3_Keywords.Include ("meta");
-   Why3_Keywords.Include ("model");
-   Why3_Keywords.Include ("module");
-   Why3_Keywords.Include ("mutable");
-   Why3_Keywords.Include ("namespace");
-   Why3_Keywords.Include ("not");
-   Why3_Keywords.Include ("old");
-   Why3_Keywords.Include ("predicate");
-   Why3_Keywords.Include ("private");
-   Why3_Keywords.Include ("prop");
-   Why3_Keywords.Include ("private");
-   Why3_Keywords.Include ("raise");
-   Why3_Keywords.Include ("raises");
-   Why3_Keywords.Include ("reads");
-   Why3_Keywords.Include ("rec");
-   Why3_Keywords.Include ("real");
-   Why3_Keywords.Include ("result");
-   Why3_Keywords.Include ("returns");
-   Why3_Keywords.Include ("so");
-   Why3_Keywords.Include ("then");
-   Why3_Keywords.Include ("theory");
-   Why3_Keywords.Include ("to");
-   Why3_Keywords.Include ("try");
-   Why3_Keywords.Include ("true");
-   Why3_Keywords.Include ("type");
-   Why3_Keywords.Include ("unit");
-   Why3_Keywords.Include ("use");
-   Why3_Keywords.Include ("val");
-   Why3_Keywords.Include ("variant");
-   Why3_Keywords.Include ("while");
-   Why3_Keywords.Include ("with");
-   Why3_Keywords.Include ("writes");
+   Update_Keywords (Why3_Keywords);
+   --  These are not keywords but should not be produced by gnat2why
+   Why3_Keywords.Insert ("bool");
+   Why3_Keywords.Insert ("int");
+   Why3_Keywords.Insert ("real");
+   Why3_Keywords.Insert ("unit");
+   Why3_Keywords.Insert ("result");
 end Gnat2Why.Util;

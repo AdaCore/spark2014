@@ -1,20 +1,8 @@
-foo.adb:8:23: info: initialization of "Log" proved
-foo.adb:8:23: info: initialization of extension of "Log" proved
 foo.adb:12:07: high: extension of "Log" is not initialized
-foo.adb:12:07: info: initialization of "Log" proved
-foo.adb:12:10: medium: precondition might fail
-foo.adb:15:23: info: initialization of "Log.Tmp" proved
-foo.adb:15:23: info: initialization of extension of "Log" proved
+foo.adb:12:10: medium: precondition might fail, cannot prove Log_Size < 10000
 foo.adb:19:07: high: extension of "Log" is not initialized
-foo.adb:19:07: info: initialization of "Log.Tmp" proved
-foo.adb:19:10: medium: precondition might fail
+foo.adb:19:10: medium: precondition might fail, cannot prove Log_Size < 10000
 foo.adb:22:23: info: initialization of "Log" proved
-foo.adb:22:23: info: initialization of extension of "Log" proved
-foo.adb:26:07: info: initialization of "Log" proved
-foo.adb:26:07: info: initialization of extension of "Log" proved
 foo.adb:26:10: info: precondition proved (CVC4: 1 VC)
-foo.adb:29:23: info: initialization of "Log.Tmp" proved
-foo.adb:29:23: info: initialization of extension of "Log" proved
-foo.adb:33:07: info: initialization of "Log.Tmp" proved
-foo.adb:33:07: info: initialization of extension of "Log" proved
+foo.adb:29:23: info: initialization of "Log" proved
 foo.adb:33:10: info: precondition proved (CVC4: 1 VC)

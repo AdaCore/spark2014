@@ -1,6 +1,4 @@
-increment_local.adb:6:12: info: initialization of "X" proved, in call inlined at increment_local.adb:13
-increment_local.adb:6:12: info: initialization of "X" proved, in call inlined at increment_local.adb:14
 increment_local.adb:6:14: info: overflow check proved, in call inlined at increment_local.adb:13
 increment_local.adb:6:14: info: overflow check proved, in call inlined at increment_local.adb:14
+increment_local.adb:9:04: info: initialization of "X" proved
 increment_local.adb:15:19: info: assertion proved
-increment_local.adb:15:19: info: initialization of "X" proved

@@ -1,19 +1,21 @@
-test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:15
-test.adb:12:15: info: initialization of "Temp" proved, in instantiation at test.adb:16
+test.adb:8:07: info: initialization of "Temp" proved, in instantiation at test.adb:15
+test.adb:8:07: info: initialization of "Temp" proved, in instantiation at test.adb:16
 test.adb:18:04: warning: analyzing unreferenced procedure "Call_Both"
 test.adb:35:16: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
-test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [possible explanation: precondition of subprogram at line 31 should mention A and B]
+test.adb:35:28: medium: overflow check might fail, in instantiation at test.adb:42 [possible explanation: precondition of subprogram at test.ads:21 should mention A and B]
 test.adb:35:35: medium: overflow check might fail, in instantiation at test.adb:42
 test.adb:35:45: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:42
 test.adb:35:45: info: overflow check proved (CVC4: 1 VC), in instantiation at test.adb:42
 test.adb:42:04: info: cannot unroll loop (too many loop iterations)
 test.adb:42:04: info: in instantiation at line 34
+test.adb:48:11: info: flow dependencies proved
 test.adb:54:18: info: precondition proved (CVC4: 3 VC)
 test.adb:54:24: info: range check proved (CVC4: 1 VC)
 test.adb:54:27: info: range check proved (CVC4: 1 VC)
 test.adb:54:30: info: range check proved (CVC4: 1 VC)
 test.adb:55:34: info: division check proved (CVC4: 1 VC)
 test.adb:55:38: info: cannot unroll loop (too many loop iterations)
+test.adb:57:13: info: initialization of "Temp" proved
 test.adb:59:25: medium: array index check might fail
 test.adb:60:16: info: index check proved (CVC4: 2 VC)
 test.adb:60:32: info: overflow check proved (CVC4: 1 VC)
@@ -22,7 +24,6 @@ test.adb:60:36: info: overflow check proved (CVC4: 1 VC)
 test.adb:61:23: info: overflow check proved (CVC4: 1 VC)
 test.adb:61:27: info: index check proved (CVC4: 2 VC)
 test.adb:61:27: info: overflow check proved (CVC4: 1 VC)
-test.adb:61:41: info: initialization of "Temp" proved
 test.adb:75:17: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
 test.adb:75:37: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
 test.adb:77:17: info: discriminant check proved (CVC4: 1 VC), in instantiation at test.adb:91
@@ -32,7 +33,8 @@ test.adb:79:33: info: discriminant check proved (CVC4: 1 VC), in instantiation a
 test.adb:98:29: info: range check proved (CVC4: 1 VC)
 test.adb:98:35: info: discriminant check proved (CVC4: 1 VC)
 test.adb:111:44: info: initialization of "Has_Apple" proved
-test.adb:116:07: medium: precondition might fail
+test.adb:112:11: info: data dependencies proved
+test.adb:116:07: medium: precondition might fail, cannot prove Rec1.D = Rec2.D [possible explanation: subprogram at line 111 should mention Apple_Basket and Mixed_Basket in a precondition]
 test.adb:120:28: info: discriminant check proved (CVC4: 1 VC)
 test.adb:124:29: info: discriminant check proved (CVC4: 1 VC)
 test.adb:124:57: info: discriminant check proved (CVC4: 1 VC)
@@ -42,12 +44,17 @@ test.adb:161:34: info: index check proved (CVC4: 2 VC), in instantiation at test
 test.adb:163:34: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:194
 test.adb:179:04: info: cannot unroll loop (too many loop iterations)
 test.adb:179:04: info: in instantiation at line 145
+test.adb:188:11: info: flow dependencies proved
 test.adb:194:07: info: cannot unroll loop (too many loop iterations)
 test.adb:194:07: info: in instantiation at line 159
-test.adb:200:07: medium: precondition might fail
+test.adb:200:07: medium: precondition might fail, cannot prove Inventory'First < Inventory'last
 test.adb:200:25: info: range check proved (CVC4: 1 VC)
 test.adb:201:07: info: precondition proved (CVC4: 2 VC)
 test.adb:201:22: info: range check proved (CVC4: 1 VC)
 test.adb:201:37: info: range check proved (CVC4: 1 VC)
-test.ads:65:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:179
+test.ads:23:14: info: flow dependencies proved, in instantiation at test.adb:42
+test.ads:49:14: info: flow dependencies proved, in instantiation at test.adb:91
+test.ads:62:14: info: flow dependencies proved, in instantiation at test.adb:179
+test.ads:65:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:179 [possible explanation: loop at test.adb:145 should mention Inventory in a loop invariant]
 test.ads:65:53: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:179
+test.ads:77:17: info: flow dependencies proved, in instantiation at test.adb:194

@@ -1,16 +1,17 @@
 aggs.ads:23:21: info: initialization of "X" proved
-aggs.ads:25:22: info: initialization of "X" proved
+aggs.ads:24:11: info: flow dependencies proved
 aggs.ads:25:22: medium: postcondition might fail, cannot prove X (2) = 5 (e.g. when X = (2 => 1, others => 6))
 aggs.ads:27:21: info: initialization of "X" proved
-aggs.ads:29:22: info: initialization of "X" proved
+aggs.ads:28:11: info: flow dependencies proved
 aggs.ads:29:22: medium: postcondition might fail, cannot prove X (2) = 20 (e.g. when X = (others => 11))
 aggs.ads:31:21: info: initialization of "X" proved
+aggs.ads:32:11: info: flow dependencies proved
 aggs.ads:34:21: info: initialization of "X" proved
-aggs.ads:36:22: info: initialization of "X" proved
+aggs.ads:35:11: info: flow dependencies proved
 aggs.ads:36:22: info: postcondition proved (CVC4: 1 VC)
 aggs.ads:40:28: info: range check proved (CVC4: 1 VC)
 dynval.adb:1:11: warning: subprogram "Dynval" has no effect
 dynval.adb:4:12: info: range check proved (CVC4: 2 VC)
-dynval.adb:5:61: medium: range check might fail
-dynval.adb:8:06: info: length check proved (CVC4: 4 VC)
+dynval.adb:5:61: medium: range check might fail (e.g. when X'First = 0 and X'Last = 0)
+dynval.adb:8:06: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dynval.adb:8:10: info: index check proved (CVC4: 2 VC)

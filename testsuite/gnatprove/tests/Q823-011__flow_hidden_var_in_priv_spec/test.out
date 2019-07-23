@@ -1,11 +1,11 @@
+communication.ads:4:03: info: flow dependencies proved
 communication.ads:8:04: indicator Part_Of is required in this context: constant with variable input "Max" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
 extra.adb:8:07: medium: "B" needs to be a constituent of some state abstraction
 extra.ads:1:54: warning: no procedure exists that can initialize abstract state "Extra.S"
 p-priv_child.ads:2:04: indicator Part_Of is required in this context: constant with variable input "C" is declared in the visible part of the private child "Priv_Child" (SPARK RM 7.2.6(3))
 p-priv_child.ads:4:14: warning: subprogram "Foo" has no effect
+p.ads:2:26: warning: no procedure exists that can initialize abstract state "P.State"
 p.ads:7:04: indicator Part_Of is required in this context: constant with variable input "A" is declared in the private part of package "P" (SPARK RM 7.2.6(2))
-p.ads:7:28: info: initialization of "V" proved
-p.ads:8:28: info: initialization of "V" proved
 parent-privchild.ads:4:04: medium: "Privchild.X" constituent of "Parent.State" needs to be listed in the refinement of "Parent.State"
 parent-privchild.ads:5:04: indicator Part_Of is required in this context: constant with variable input "Y" is declared in the visible part of the private child "Privchild" (SPARK RM 7.2.6(3))
 parent.ads:1:39: warning: no procedure exists that can initialize abstract state "Parent.State"
@@ -13,5 +13,4 @@ parent.ads:3:14: warning: subprogram "Foo" has no effect
 q.ads:1:34: warning: no procedure exists that can initialize abstract state "Q.State"
 q.ads:4:14: warning: subprogram "Dummy" has no effect
 q.ads:7:04: indicator Part_Of is required in this context: constant with variable input "B" is declared in the private part of package "Q" (SPARK RM 7.2.6(2))
-q.ads:7:28: info: initialization of "G" proved
 gnatprove: error during flow analysis and proof

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2011-2018, AdaCore                   --
+--                     Copyright (C) 2011-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -48,16 +48,12 @@ package body Why.Images is
 
    function Img (Node : Node_Id) return String;
 
-   ---------
-   -- Img --
-   ---------
-
-   function Img (Name : Name_Id) return String is
+   function Img (Name : Symbol) return String is
    begin
-      if Name = No_Name then
+      if Name = No_Symbol then
          return "[no name]";
       else
-         return Get_Name_String (Name);
+         return Get (Name).all;
       end if;
    end Img;
 
@@ -85,6 +81,7 @@ package body Why.Images is
          when EW_Builtin  => return "builtin";
          when EW_Abstract => return "[abstract node]";
          when EW_Split    => return "[split node]";
+         when EW_Wrapper  => return "[wrapper node]";
       end case;
    end Img;
 
@@ -92,7 +89,7 @@ package body Why.Images is
    -- P --
    -------
 
-   procedure P (O : Output_Id; Name : Name_Id; As_String : Boolean := False) is
+   procedure P (O : Output_Id; Name : Symbol; As_String : Boolean := False) is
    begin
       P (O, Img (Name), As_String);
    end P;
@@ -106,10 +103,10 @@ package body Why.Images is
               Get_Physical_Line_Number (Value);
 
             Sloc_Tag : constant String :=
-              "#""" & File & """" &
+              "[#""" & File & """" &
               Physical_Line_Number'Image (Line) & " " &
               "0" & " " &  --  dummy column1 0
-              "0" & "#";   --  dummy column2 0
+              "0" & "]";   --  dummy column2 0
          begin
             P (O, Sloc_Tag);
          end;
@@ -454,7 +451,7 @@ package body Why.Images is
    begin
       case Value is
          when EW_Import        =>
-            P (O, "import");
+            P (O, "      "); --  import is now the default
 
          when EW_Export        =>
             P (O, "export");
@@ -525,12 +522,23 @@ package body Why.Images is
 
    procedure P
      (O         : Output_Id;
-      Value     : Name_Id_Set;
-      As_String : Boolean := False) is
+      Value     : Symbol_Set;
+      As_Labels : Boolean := False) is
    begin
       for Name of Value loop
-         P (O, Name, As_String);
-         P (O, " ");
+         if Img (Name) = "<no name>" and then As_Labels then
+            --  Do not print
+            null;
+         else
+            if As_Labels then
+               P (O, "[@");
+            end if;
+            P (O, Name);
+            if As_Labels then
+               P (O, "]");
+            end if;
+            P (O, " ");
+         end if;
       end loop;
    end P;
 

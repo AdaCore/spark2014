@@ -1,6 +1,5 @@
-t.adb:2:14: high: constant after elaboration "V" must not be an output of subprogram "Set_V" (SPARK RM 6.1.4(20))
-t.adb:2:14: info: initialization of "V" proved
-t.adb:7:14: high: constant after elaboration "V" must not be an output of subprogram "Edit_V" (SPARK RM 6.1.4(20))
-t.adb:9:12: info: initialization of "V" proved, in call inlined at t.adb:19
+t.adb:2:14: high: constant after elaboration "V" must not be an output of subprogram "Set_V" (SPARK RM 6.1.4(21))
+t.adb:7:14: high: constant after elaboration "V" must not be an output of subprogram "Edit_V" (SPARK RM 6.1.4(21))
 t.adb:9:14: info: overflow check proved (CVC4: 1 VC), in call inlined at t.adb:19
+t.ads:2:04: info: initialization of "V" proved
 t.ads:5:14: warning: subprogram "Do_Nothing" has no effect

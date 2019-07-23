@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -1314,9 +1314,7 @@ package body Graphs is
    is
       C : constant VIS.Cursor := G.Vertices (V).In_Neighbours.First;
    begin
-      return (if Has_Element (C)
-              then Element (C)
-              else Null_Vertex);
+      return Element (C);
    end Parent;
 
    -----------------

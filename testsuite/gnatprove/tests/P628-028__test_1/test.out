@@ -2,19 +2,17 @@ hello.ads:36:14: warning: subprogram "Hello_Spg_1" has no effect
 hello.ads:37:14: warning: subprogram "Hello_Spg_2" has no effect
 node_a.adb:21:20: info: range check proved (CVC4: 2 VC)
 polyorb_hi-epoch.adb:32:06: warning: unit "System" is not referenced
+polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:72:21: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:74:19: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:78:28: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:92:13: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:108:22: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
-polyorb_hi-periodic_task.adb:110:31: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-epoch.ads:44:11: info: data dependencies proved
+polyorb_hi-epoch.ads:48:11: info: data dependencies proved
+polyorb_hi-output.ads:45:08: info: flow dependencies proved
+polyorb_hi-periodic_task.adb:51:07: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:51:07: info: initialization of "Next_Start" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:53:07: info: initialization of "Error" proved, in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:22
+polyorb_hi-periodic_task.adb:54:07: info: initialization of "T0" proved, in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:49:04: warning: formal object "Task_Deadline" is not referenced
 polyorb_hi-periodic_task.ads:55:04: warning: formal object "Task_Stack_Size" is not referenced
 polyorb_hi-periodic_task.ads:61:19: warning: subprogram "Activate_Entrypoint" has no effect, in instantiation at polyorb_hi_generated-activity.ads:22
@@ -25,5 +23,6 @@ polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected
 polyorb_hi-periodic_task.ads:71:09: info: ceiling priority protocol is respected (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:22
 polyorb_hi-periodic_task.ads:71:09: info: nontermination of task proved (CVC4: 1 VC), in instantiation at polyorb_hi_generated-activity.ads:37
+polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
 polyorb_hi_generated-subprograms.ads:12:13: warning: subprogram "RMAAadl_Hello_Spg_1" has no effect
 polyorb_hi_generated-subprograms.ads:14:13: warning: subprogram "RMAAadl_Hello_Spg_2" has no effect

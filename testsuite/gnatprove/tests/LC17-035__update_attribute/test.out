@@ -1,25 +1,5 @@
-arrays.adb:6:14: info: initialization of "Arr" proved
-arrays.adb:7:14: info: initialization of "Arr" proved
-arrays.adb:8:14: info: initialization of "Arr" proved
 arrays.adb:8:26: info: overflow check proved (CVC4: 1 VC)
-arrays.adb:9:14: info: initialization of "Arr" proved
-arrays.adb:32:14: info: initialization of "Arr" proved
-arrays.adb:33:14: info: initialization of "Arr" proved
-arrays.adb:34:14: info: initialization of "Arr" proved
-arrays.adb:35:14: info: initialization of "Arr" proved
-arrays.adb:36:14: info: initialization of "Arr" proved
-arrays.adb:47:14: info: initialization of "Arr" proved
-arrays.adb:48:14: info: initialization of "Arr" proved
-arrays.adb:54:14: info: initialization of "Arr" proved
-arrays.adb:55:14: info: initialization of "Arr" proved
-arrays.adb:56:14: info: initialization of "Arr" proved
-arrays.adb:57:14: info: initialization of "Arr" proved
-arrays.adb:63:12: info: initialization of "A" proved
-arrays.adb:69:12: info: initialization of "A" proved
-arrays.adb:77:15: info: initialization of "Tmp" proved
-arrays.adb:83:14: info: initialization of "Arr" proved
-arrays.adb:84:14: info: initialization of "Arr" proved
-arrays.adb:85:14: info: initialization of "Arr" proved
+arrays.adb:73:07: info: initialization of "Tmp" proved
 arrays.adb:90:10: info: index check proved (CVC4: 2 VC)
 arrays.ads:14:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:16:51: info: overflow check proved (CVC4: 1 VC)
@@ -31,18 +11,16 @@ arrays.ads:45:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:49:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:53:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:56:29: info: initialization of "A" proved
-arrays.ads:57:19: info: initialization of "A" proved
 arrays.ads:57:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:60:30: info: initialization of "A" proved
-arrays.ads:61:19: info: initialization of "A" proved
 arrays.ads:61:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:65:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:69:19: info: postcondition proved (CVC4: 1 VC)
-arrays.ads:75:19: info: postcondition proved (altergo: 1 VC)
+arrays.ads:75:19: info: postcondition proved (CVC4: 1 VC)
 arrays.ads:75:37: info: range check proved (CVC4: 1 VC)
-records.adb:21:27: medium: range check might fail (e.g. when New_Data = -1 and R = (S1 => 0, S2 => 0, S3 => 1, S4 => 0)) [possible explanation: subprogram at line 18 should mention New_Data in a precondition]
-records.adb:33:20: medium: overflow check might fail (e.g. when R = (S1 => Integer'Last, S2 => 0, S3 => 0, S4 => Integer'Last)) [possible explanation: subprogram at line 31 should mention R in a precondition]
-records.adb:34:20: medium: range check might fail (e.g. when R = (S1 => 0, S2 => 0, S3 => 1, S4 => 0)) [possible explanation: subprogram at line 31 should mention R in a precondition]
+records.adb:21:27: medium: range check might fail (e.g. when New_Data = -1) [possible explanation: subprogram at records.ads:20 should mention New_Data in a precondition]
+records.adb:33:20: medium: overflow check might fail (e.g. when R = (S1 => Integer'Last, S2 => 0, S3 => 0, S4 => Integer'Last)) [possible explanation: subprogram at records.ads:28 should mention R in a precondition]
+records.adb:34:20: medium: range check might fail (e.g. when R = (S1 => 1, S2 => 0, S3 => 1, S4 => 0)) [possible explanation: subprogram at records.ads:28 should mention R in a precondition]
 records.adb:39:20: info: overflow check proved (CVC4: 1 VC)
 records.adb:40:20: info: range check proved (CVC4: 1 VC)
 records.ads:13:19: info: postcondition proved (CVC4: 1 VC)

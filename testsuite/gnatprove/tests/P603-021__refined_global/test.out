@@ -1,7 +1,10 @@
 parent-priv-priv.adb:4:50: low: unused global "Priv.State2" constituent of "Parent.State1"
+parent-priv-priv.ads:4:21: info: data dependencies proved
 parent-priv-priv2.adb:4:50: low: unused global "X" constituent of "State2"
+parent-priv-priv2.ads:4:21: info: data dependencies proved
 parent-priv.adb:4:39: low: unused global "X" constituent of "State2"
 parent-priv.ads:1:24: refinement of Priv.State2 constituent of Parent.State1 shall mention Priv.State3 constituent of Priv.State2 (SPARK RM 7.2.6(6))
 parent-priv.ads:1:24: refinement of Priv.State2 constituent of Parent.State1 shall mention Priv2.State4 constituent of Priv.State2 (SPARK RM 7.2.6(6))
+parent-priv.ads:4:21: info: data dependencies proved
 parent.ads:2:21: warning: no procedure exists that can initialize abstract state "Parent.State1"
 gnatprove: error during flow analysis and proof

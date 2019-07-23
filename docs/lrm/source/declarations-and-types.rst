@@ -347,6 +347,8 @@ Interface Types
 
 No extensions or restrictions.
 
+.. _access-types:
+
 Access Types
 ------------
 
@@ -441,11 +443,9 @@ type is access-to-constant or access-to-variable].
 Privacy is ignored in determining whether a type is an owning or
 observing type. A generic formal private type is not an owning type
 [redundant: , although the corresponding actual parameter in an instance
-of the generic might be an owning type]. A consequence of this rule
-is that the actual parameter for a generic formal private type cannot be
-of access type.
+of the generic might be an owning type].
 A tagged type shall not be an owning type.
-A type which is not a by-reference type shall not be an owning type.
+A composite type which is not a by-reference type shall not be an owning type.
 [Redundant: The requirement than an owning type must be a by-reference
 type is imposed in part in order to avoid problematic scenarios involving
 a parameter of an owning type passed by value in the case where the
@@ -491,20 +491,14 @@ The *root object* of a name that denotes an object is defined as follows:
 - if the name denotes an object renaming, the root object is the
   root object of the renamed name;
 
-- if the name is a function_call, the root object is the result object
-  of the call;
+- if the name is a function_call, and the function called is not a traversal
+  function, the root object is the result object of the call;
 
 - if the name is a qualified_expression or a type conversion, the root
   object is the root object of the operand of the name;
 
 - otherwise, the name statically denotes an object and the root
   object is the statically denoted object.
-
-An object O1 is said to be a *reachable element* of an object O2 if
-
-- O1 is a part of O2; or
-- O1 is a reachable element of the object designated by
-  (the value of) an access-valued part of O2.
 
 Two names are said to be *potential aliases* when:
 
@@ -542,6 +536,11 @@ Two names N1 and N2 are said to *potentially overlap* if
 - N1 is a call on a traversal function and the actual traversed
   parameter of the call potentially overlaps N2 (or vice versa).
 
+[Note that for a given name N which denotes an object of an access
+type, the names N and N.all potentially overlap. Access value dereferencing
+is treated, for purposes of this definition, like record component selection
+or array indexing.]
+
 The prefix and the name that are potential aliases are called the
 *potentially aliased parts* of the potentially overlapping names.
 
@@ -565,12 +564,11 @@ named object is a variable). If it denotes an access object then
 a dereference of the name provides a constant view [redundant: , even if
 the object is of an access-to-variable type].
 
-In the Moved or Borrowed states, the name is unusable for either reading or
-writing. [Redundant: In the Borrowed state, ownership of the object
-(and the associated permission to read from and possibly write to that
-object) has been temporarily transfered to a borrower, so it will
-sometimes be possible to refer to the object in question via the
-borrower.]
+In the Moved state, the name is unusable for reading
+(although the name itself can be assigned to).
+
+In the Borrowed state, the name is unusable for writing, observing and
+borrowing (see below).
 
 A name that denotes a managed object has an initial ownership state
 of Unrestricted unless otherwise specified.
@@ -587,8 +585,8 @@ and identify a corresponding *observer*:
 - An assignment operation that is used to initialize an access object,
   where this target object (the observer) is a stand-alone variable of an
   anonymous access-to-constant type, or a constant (including a formal
-  parameter or generic formal object of mode **in**) of a (named or anonymous)
-  access-to-constant type.
+  parameter of a procedure or generic formal object of mode **in**) of an
+  anonymous access-to-constant type.
 
   The source expression of the assignment shall be either a name denoting a
   part of a stand-alone object or of a parameter, or a call on a traversal
@@ -602,9 +600,9 @@ and identify a corresponding *observer*:
   type. The name being observed denotes the source of the assignment. The
   initialized object is the observer.
 
-- A call where an actual parameter is a name denoting a managed object, and the
-  corresponding formal parameter is of mode **in** and composite or
-  aliased. The name being observed denotes the actual parameter.  The formal
+- A procedure call where an actual parameter is a name denoting a managed
+  object, and the corresponding formal parameter is of mode **in** and composite
+  or aliased. The name being observed denotes the actual parameter.  The formal
   parameter is the observer.
 
 Such an operation is called an *observing operation*.
@@ -616,15 +614,15 @@ object is in the Observed state it provides a constant view
 [redundant: , even if the name denotes a variable].
 
 At the point where a name that denotes a managed object is observed,
-every name that potentially overlaps that name is observed.
+every name of a reachable element of the object is observed.
 
 The following operations *borrow* a name that denotes a managed object
 and identify a corresponding *borrower*:
 
 - An assignment operation that is used to initialize an access object, where
   this target object (the borrower) is a stand-alone variable of an anonymous
-  access-to-variable type, or a constant (including a formal parameter or
-  generic formal object of mode **in**) of a (named or anonymous)
+  access-to-variable type, or a constant (including a formal parameter of a
+  procedure or generic formal object of mode **in**) of a (named or anonymous)
   access-to-variable type.
 
   The source expression of the assignment shall be either a name denoting a
@@ -647,8 +645,7 @@ Such an operation is called a *borrowing operation*.
 
 In the region of program text beween the point where a name denoting a
 managed object is borrowed and the end of the scope of the borrower, the
-ownership state of the name is Borrowed except for within nested scopes
-wherein the introduction of an observer changes the state to Observed.
+ownership state of the name is Borrowed.
 
 An indirect borrower of a name is defined to be a borrower either of
 a borrower of the name or of an indirect borrower of the name.
@@ -665,7 +662,7 @@ of the original name similarly enters the Observed state and provides
 only a constant view.
 
 At the point where a name that denotes a managed object is borrowed,
-every name that potentially overlaps that name is borrowed.
+every name of a reachable element of the object is borrowed.
 
 The following operations are said to be *move* operations:
 
@@ -718,9 +715,10 @@ a class-wide type might be an owning type).]
 
 ..  _tu-access_types-01:
 
-1. At the  point of a move  operation the state  of the source object  (if any)
-   shall be  Unrestricted.  After  a move  operation, the  state of  the source
-   object (if any) becomes Moved.
+1. At the point of a move operation the state of the source object (if any) and
+   all of its reachable elements shall be Unrestricted. After a move operation,
+   the state of any access parts of the source object (if there is one) becomes
+   Moved.
 
 .. _tu-access_types-02:
 
@@ -747,8 +745,15 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-04:
 
-4. A declaration of a stand-alone variable of an anonymous access type shall
-   have an explicit initial value.
+4. A declaration of a stand-alone object of an anonymous access type shall have
+   an explicit initial value and shall occur immediately within a subprogram
+   body, an entry body, or a block statement.
+
+   [Redundant: Because such declarations cannot occur immediately within a
+   package declaration or body, the associated borrowing/observing operation is
+   limited by the scope of the subprogram, entry or block statement. Thus, it
+   is not necessary to add rules restricting the visibility of such
+   declarations.]
 
 .. _tu-access_types-05:
 
@@ -770,16 +775,7 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-07:
 
-7. If the root of the name of a managed object denotes an object whose scope
-   includes any portion of the visible part of a package, then a declaration
-   that observes or borrows the managed object shall not occur within the
-   private part or body of the package, nor within a private descendant of the
-   package, unless the accessibility level of the declaration is statically
-   deeper than that of the package.
-
-.. _tu-access_types-08:
-
-8. For an assignment statement where the target is a stand-alone object of an
+7. For an assignment statement where the target is a stand-alone object of an
    anonymous access-to-object type:
 
    - If the type of the target is an anonymous access-to-variable type (an
@@ -793,34 +789,44 @@ a class-wide type might be an owning type).]
      not in the Moved state and is not declared at a statically deeper
      accessibility level than that of the target object.
 
+.. _tu-access_types-08:
+
+8. At the point of a dereference of an object, the object shall not be in the
+   Moved or Borrowed state.
+
 .. _tu-access_types-09:
 
 9. At the point of a read of an object, or of passing an object as an actual
    parameter of mode **in** or **in out**, or of a call where the object is a
-   global input of the callee, the object shall not be in the Moved or Borrowed
-   state.
+   global input of the callee, neither the object nor any of its reachable
+   elements shall be in the Moved or Borrowed state.
 
    At the point of a return statement, or at any other point where a call
-   completes normally (e.g., the end of a procedure body), no outputs of the
-   callee being returned from shall be in the Moved state.
+   completes normally (e.g., the end of a procedure body), no inputs or outputs
+   of the callee being returned from shall be in the Moved state.  In the case
+   of an input of the callee which is not also an output, this rule may be
+   enforced at the point of the move operation (because there is no way for the
+   moved input to transition out of the Moved state), even in the case of a
+   subprogram which never returns.
 
-   In the case where the input or output in question is a state abstraction,
-   these rules also apply to any constituents (direct or indirect) of that
-   state abstraction.
+   Similarly, at the end of the elaboration of both the declaration and of the
+   body of a package, no reachable element of an object denoted by the name of
+   an initialization_item of the package's Initializes aspect or by an input
+   occuring in the input_list of such an initialization_item shall be in the
+   Moved state.
+
+   The source of a move operation shall not be a part of a library-level
+   constant without variable inputs.
 
 .. _tu-access_types-10:
 
-10. If the state of a name that denotes a managed object is Observed, then the
-    name shall neither be moved nor borrowed and shall not be used as the
-    target of an assignment.
+10. If the state of a name that denotes a managed object is Observed, the name
+    shall not be moved, borrowed, or assigned.
 
 .. _tu-access_types-11:
 
 11. If the state of a name that denotes a managed object is Borrowed, the name
-    shall not be moved, borrowed, or assigned, and shall not be used as a
-    primary, as a prefix, or as an actual parameter except as part of being
-    observed; furthermore, any existing borrowers (direct or indirect) of the
-    name become observers, providing only a constant view.
+    shall not be moved, borrowed, observed, or assigned.
 
 .. _tu-access_types-12:
 
@@ -840,21 +846,19 @@ a class-wide type might be an owning type).]
 
 .. _tu-access_types-14:
 
-14. An owning object and its subcomponents are said to be *erased* at any point
-    where
+14. When an owning access object other than a borrower, an observer,
+    or an object in the Moved state is finalized, or when such an object
+    is passed as a part of an actual parameter of mode **out**, its value
+    shall be null.
 
-    - the object is the target of an assignment operation; or
-    - the object is part of an actual parameter of mode **out** in a call; or
-    - the scope in which the object is declared is exited and the object is
-      neither a borrower nor an observer.
+    [Redundant: This rule disallows storage leaks. Without this rule,
+    it would be possible to "lose" the last reference to an allocated
+    object.]
 
-    If the state of an access subcomponent of an owning object [redundant: ,
-    which is the object itself for an owning access object,] is Unrestricted at
-    the point where it is erased, it should be null.
-
-    [Redundant: This rule is needed to prevent storage leaks. We do not want an
-    object either to be overwritten or to cease to exist while it is the owner
-    of some allocated object.]
+    [Redundant: This rule applies to any finalization associated with a
+    call to an instance of Ada.Unchecked_Deallocation. For details, see
+    the Ada RM 13.11.2 rule "Free(X), ... first performs finalization of
+    the object designated by X".]
 
 .. _etu-access_types:
 

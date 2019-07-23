@@ -5,8 +5,10 @@ procedure Split_Pointers with SPARK_Mode is
    Y : int_ptr := null;
    Z : int_ptr;
    W : int_ptr := new Integer'(10);
-   C : access constant Integer := new Integer'(10);
-   D : constant access constant Integer := new Integer'(10);
+   CC : int_ptr := new Integer'(10);
+   C : access constant Integer := CC;
+   DD : int_ptr := new Integer'(10);
+   D : constant access constant Integer := DD;
 
    procedure Test_In (X : int_ptr; Y : access Integer; Z : access constant Integer) with
      Pre => True

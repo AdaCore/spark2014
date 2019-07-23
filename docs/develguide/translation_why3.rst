@@ -429,34 +429,34 @@ functions and coerce and range axioms. For example, let us consider the
 following type:
 
 .. code-block:: ada
-		
+
    type My_Fixed is delta 3.0 / 1000.0 range 0.0 .. 3.0;
 
 Here are the axioms and declarations generated in Why for it. Like for
 integer types, we only give here the relevant declarations and
 to_rep and of_rep functions are separated in a different module:
-   
+
 .. code-block:: whyml
 
- type my_fixed 
- 
- function num_small 
+ type my_fixed
+
+ function num_small
    : Main.__fixed =
   1
- 
- function den_small 
+
+ function den_small
    : Main.__fixed =
   512
- 
- function first 
+
+ function first
    : Main.__fixed =
   0
- 
- function last 
+
+ function last
    : Main.__fixed =
   1536
- 
- predicate in_range 
+
+ predicate in_range
    (x : Main.__fixed)  =
   ( (first <= x) /\ (x <= last) )
 
@@ -482,11 +482,11 @@ small. As an example, here is the module introduced for fixed point types of
 small 1 / 512 like My_Fixed above:
 
 .. code-block:: whyml
-		
+
  module Fixed_Point__1_512
 
    function num_small : int = 1
- 
+
    function den_small : int = 512
 
    (* multiplication between a fixed-point value and an integer *)
@@ -534,7 +534,7 @@ small 1 / 512 like My_Fixed above:
   ...
 
   end
-  
+
 Note that, in the Why generated code, the type system is not used to ensure that
 we always use the correct operation for fixed point types.
 
@@ -942,7 +942,7 @@ operator on each element of the arrays are given through axioms. As an example,
 consider the array type ``Bool_Array`` defined as follows:
 
 .. code-block:: ada
-		
+
    type Bool_Array is array (Positive range <>) of Boolean;
 
 Here is the axiom generated for the operator xor on ``Bool_Array``:
@@ -972,13 +972,13 @@ types. The defining axioms for logical operations on such type therefore need
 to introduce conversions. For example, for the following type:
 
 .. code-block:: ada
-		
+
    subtype Only_True is Boolean range True .. True;
 
 we generate:
 
 .. code-block:: whyml
-		
+
    module Array__Int__P__only_true__Bool_Op
     use bool.Bool
     use "_gnatprove_standard".Boolean
@@ -1775,6 +1775,163 @@ simply a clone of the existing cloned type:
 Additionally, if the cloned type has a different name from the new
 type, a renaming is introduced for the record type.
 
+Access Types
+^^^^^^^^^^^^
+Representative Modules
+""""""""""""""""""""""
+Access types with the same designated type share a single representative type,
+so that it is possible to convert between them. This is necessary even though
+we cannot convert between different pool specific access types. Indeed, we still
+need all (named) access types to be convertible to anonymous access types. This
+representative type is declared inside a representative module. It is introduced
+for the first access to a given type translated, then it is reused for the
+following access types with the same designated type.
+
+This representative type has three fields. One for the value, one for the
+address (represented as a mathematical integer), and a boolean flag to register
+whether the access object is null. As an example, consider an access type to
+natural numbers:
+
+.. code-block:: ada
+
+  type Ptr is access Natural;
+
+Here is the representative type introduced for it:
+
+.. code-block:: whyml
+
+   type __rep =
+     { p__ptr__is_null_pointer : bool;
+       p__ptr__pointer_address : int;
+       p__ptr__pointer_value   : natural }
+
+Since the address of an access object cannot be retrieved in SPARK, the value
+of the address field is never accessed directly in the program. It is only used
+so that two access objects pointing to different memory cells which happen to
+contain the same object are not considered equal.
+
+Along with the representative type, the presentative module contains other
+declarations which are shared between access types. Among them, the null
+pointer, a protected access function which checks whether a pointer is null
+before returning its value, and the primitive equality over access objects. Here
+are these declarations for the ``Ptr`` type defined above:
+
+.. code-block:: whyml
+
+   function __null_pointer : __rep
+
+   axiom __null_pointer__def_axiom :
+      __null_pointer.rec__p__ptr__is_null_pointer = True
+
+   val rec__p__ptr__pointer_value_
+     (a : __rep) : Standard__natural.natural
+    requires { not a.rec__p__ptr__is_null_pointer }
+    ensures  { result = a.rec__p__ptr__pointer_value }
+
+   function bool_eq  (a : __rep) (b : __rep) : bool =
+      a.rec__p__ptr__is_null_pointer = b.rec__p__ptr__is_null_pointer
+   /\ (not a.rec__p__ptr__is_null_pointer ->
+          a.rec__p__ptr__pointer_address = b.rec__p__ptr__pointer_address
+       /\ a.rec__p__ptr__pointer_value = b.rec__p__ptr__pointer_value)
+
+Remark that primitive equality does not only require that two non-null access
+objects have the same address to be equal but also that they have the same
+value.
+This is compatible with the execution model, since two non-null access objects
+which share the same address will necessarily have the same value. However, this
+invariant does not hold for proof, where we can see the value of the same access
+object at different program points. Thus, we need to insert additional
+information about values into equality so that we know that, when two access
+objects are equal, they designate the same value.
+
+Allocators
+""""""""""
+Following the SPARK RM, allocators are considered to have an effect on the
+global memory area, and therefore should only be used in non-interfering
+contexts. Like for volatile functions, we only introduce program
+functions for allocators, and not logic functions.
+
+These functions read and
+modify a global reference to a mathematical integer named
+``__next_pointer_address``, also declared in the representative module of the
+access type. This integer is used as the address of the allocated value.
+The idea was to have an invariant stating that the value of these references
+is always increasing so that we could prove that a newly allocated pointer is
+different from an existing one, but this is not implemented.
+
+Here are the program functions introduced for initialized and uninitialized
+allocators for ``Ptr``:
+
+.. code-block:: whyml
+
+ val __next_pointer_address  : int__ref
+ val __new_uninitialized_allocator (_ : unit) : __rep
+  requires { true }
+  ensures  { not result.rec__p__ptr__is_null_pointer
+		&& result.rec__p__ptr__pointer_address = __next_pointer_address.int__content }
+  writes   { __next_pointer_address }
+
+ val __new_initialized_allocator (__init_val : int) : __rep
+  requires { true }
+  ensures  { not result.rec__p__ptr__is_null_pointer
+		&& result.rec__p__ptr__pointer_address = __next_pointer_address.int__content
+                && result.rec__p__ptr__pointer_value = of_rep __init_val }
+  writes { __next_pointer_address }
+
+Both program functions have as a postcondition that the result of the allocation
+is not null, and that its address is the next address. Additionally, the
+postcondition of the initialized allocator assumes the value of the allocated
+data. Note that we do not assume that the value of the uninitialized allocator
+is default initialized in its postcondition. It is because uninitialized
+allocators can be used with any subtype compatible with the designated subtype.
+To handle them precisely, we assume default initialization of each uninitialized
+allocated value specifically depending on the subtype used in the allocator.
+
+Subtype Constraints
+"""""""""""""""""""
+Subtypes of access types to unconstrained composite objects can be supplied with
+a composite constraint which applies to the designated values. When generating
+the representative module for such an access subtype, we need to introduce
+conversion functions to and from the base access type, as well as a range check
+function to check membership to the subtype.
+
+For example, consider an access type to unconstrained arrays of natural numbers,
+and a subtype of this access type only storing arrays ranging from 1 to 5:
+
+.. code-block:: ada
+
+   type Arr_Ptr is access Nat_Array;
+   subtype S is Arr_Ptr (1 .. 5);
+
+Here are the conversion functions and range check predicate generated for ``S``:
+
+.. code-block:: whyml
+
+ function to_base (a : __rep) : p__arr_ptr.arr_ptr =
+  { p__arr_ptr.rec__p__arr_ptr__pointer_value = of_array a.rec__p__arr_ptr__pointer_value 1 5;
+    p__arr_ptr.rec__p__arr_ptr__pointer_address = a.rec__p__arr_ptr__pointer_address;
+    p__arr_ptr.rec__p__ptr__is_null_pointer = a.rec__p__arr_ptr__is_null_pointer }
+
+ function of_base (r : p__arr_ptr.arr_ptr) : __rep =
+  { rec__p__arr_ptr__pointer_value = to_array r.p__arr_ptr.rec__p__arr_ptr__pointer_value;
+    rec__p__arr_ptr__pointer_address = r.p__arr_ptr.rec__p__ptr__pointer_address;
+    rec__p__arr_ptr__is_null_pointer = r.p__arr_ptr.rec__p__ptr__is_null_pointer }
+
+ predicate in_range (first : int) (last : int) (r : p__arr_ptr.arr_ptr)  =
+  not r.p__arr_ptr.rec__p__ptr__is_null_pointer ->
+   first r.p__arr_ptr.rec__p__ptr__pointer_value = first
+   /\ last r.p__arr_ptr.rec__p__ptr__pointer_value = last
+
+We can see that the range predicate for arrays takes the array bounds as
+parameters. This is because the bounds may contain references to constants which
+are translated as variables in Why (this is similar to what is done for
+discriminants in range predicates for records).
+
+The range predicate is used both for checking that a value is in the expected
+type, when translating conversions, qualifications, and allocators, and to
+translate explicit membership test in the user code.
+
+
 Type Completion
 ^^^^^^^^^^^^^^^
 
@@ -1831,7 +1988,7 @@ translated as variables in Why. As a result, the predicate of type
 index at the current iteration:
 
 .. code-block:: whyml
- 
+
  predicate dynamic_predicate (x : int) (L_1__i : int) = 1 <= x <= L_1__i
 
 Default initialization
@@ -1850,7 +2007,7 @@ still generated as variables of this type can be left uninitialized, but it does
 not give any information on the value of its parameter:
 
 .. code-block:: whyml
- 
+
  predicate default_initial_assumption (x : int) (skip_top_level : bool) =
   true
 
@@ -2083,9 +2240,162 @@ value of the generic primitive equality function ``user_eq`` introduced for
 ``T`` (see the section about Record Equality for usage of ``user_eq``):
 
 .. code-block:: whyml
-		
+
  axiom user_eq__def_axiom :
   (forall a b : t_rec__. P__t_rec.user_eq a b = P__Oeq.oeq a b)
+
+Wrapper types for initialization by proof
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Initialization by proof is currently in a prototype stage. The idea is to relax
+additional initialization rules imposed by SPARK on some types and to verify
+initialization as precisely as possible using proof instead of flow analysis.
+This prototype was implemented to answer a user need for procedures only
+initializing parts of an object, or only initializing objects conditionally.
+Here is a motivating example:
+
+.. code-block:: ada
+
+  procedure Init_By_Proof with SPARK_Mode is
+   subtype My_Int is Integer;
+   pragma Annotate (GNATprove, Init_By_Proof, My_Int);
+
+   type Int_Array is array (Positive range <>) of My_Int;
+   --  Array of potentially uninitialized integers
+
+   type Int_Array_Init is array (Positive range <>) of Integer;
+   --  Array of integers with normal treatment
+
+   procedure Init_By_4 (A : out Int_Array; Error : out Boolean) with
+     Pre  => A'Length = 4,
+     Post => (if not Error then A'Valid_Scalars)
+   is
+   begin
+      A := (1 .. 4 => 10);
+      Error := False;
+   end Init_By_4;
+
+   procedure Read (Buf   : out Int_Array;
+                   Size  : Natural;
+                   Error : out Boolean)
+   with Pre  => Buf'Length >= Size,
+        Post => (if not Error then
+                 Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars)
+   is
+      Offset    : Natural := Size mod 4;
+      Nb_Chunks : Natural := Size / 4;
+   begin
+      if Offset /= 0 then
+         Error := True;
+         return;
+      end if;
+
+      for Loop_Var in 0 .. Nb_Chunks - 1 loop
+         pragma Loop_Invariant
+           (Buf (Buf'First .. Buf'First + (Loop_Var * 4) - 1)'Valid_Scalars);
+         Init_By_4 (Buf (Buf'First + Loop_Var * 4 .. Buf'First + Loop_Var * 4 + 3), Error);
+         exit when Error;
+      end loop;
+
+   end Read;
+
+   procedure Process (Buf  : in out Int_Array;
+                      Size : Natural)
+   with Pre  => Buf'Length >= Size and then
+                Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars,
+        Post => Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars
+   is
+   begin
+      for I in Buf'First .. Buf'First + (Size - 1) loop
+         pragma Loop_Invariant
+           (Buf (Buf'First .. Buf'First + (Size - 1))'Valid_Scalars);
+         Buf (I) := Buf (I) / 2 + 5;
+      end loop;
+   end Process;
+
+   procedure Process (Buf  : in out Int_Array_Init;
+                      Size : Natural)
+     with Pre => Buf'Length >= Size
+   is
+   begin
+      for I in Buf'First .. Buf'First + (Size - 1) loop
+         Buf (I) := Buf (I) / 2 + 5;
+      end loop;
+   end Process;
+
+   Buf   : Int_Array (1 .. 150);
+   Error : Boolean;
+   X     : Integer;
+  begin
+   Read (Buf, 100, Error);
+   if not Error then
+      X := Buf (10);
+      Process (Buf, 100);
+      declare
+         B : Int_Array_Init := Int_Array_Init (Buf (1 .. 100));
+      begin
+         Process (B, 50);
+      end;
+      X := Buf (20);
+      X := Buf (110); -- medium: "Buf" might not be initialized
+   end if;
+  end Init_By_Proof;
+
+In this example, initilization is only assumed if an ``Error`` boolean is
+false.  Additionally, ``Read`` always initializes the array partially (up to
+``Size``) and initializes the array components four by four, which is currently
+out of reach of the very simple heuristic used by flow analysis to recognize
+loops which fully initialize an array.
+
+For now, we recognize objects for which we want to handle initialization by
+proof by supplying a ``pragma Annotate (GNATprove, Init_By_Proof, Ty)`` on their
+type ``Ty``. This pragma can only be supplied on scalar types. We then consider
+all composite types containing a type with ``Init_By_Proof`` as
+``Init_By_Proof`` too, and we enforce in marking that such composite types only
+contain components of a type with ``Init_By_Proof``. We use the existing
+attribute ``Valid_Scalars`` to express that an object is completely initialized.
+
+In our example, initialization of objects of type ``Init_Array`` is handled by
+proof whereas objects of type ``Init_Array_Init`` are handled by flow analysis.
+We see on the two versions of ``Process`` that having initialization handled
+by proof requires supplying more annotations as it relaxes assumptions on
+subprogram boundaries.
+
+Here are the basic ideas of how this prototype works:
+
+* We introduce wrapper types for types which need their own initialize flag, see
+  ``Needs_Wrapper_Type`` and ``Translate_Type``. Currently, we only do it for
+  scalar types, but later we will also need it for types with predicates. So the
+  machinery for handling types with ``Init_By_Proof`` is not reduced to scalar
+  types (for example, we consider that all kinds of binders can have an
+  initialization field in ``Insert_Ref_Context``). These types are used for
+  components of composite types.
+
+* We introduce a new field in ``Item_Type`` named Init. It optionally contains
+  an identifier for the init flag for a variable (currently it is only used for
+  scalar variables, that is, for regular binders). The flag is only present when
+  necessary, ie when the object may not be initialized (for out parameters and
+  variables initialized by default, see ``Mk_Item_Of_Entity``).
+
+* Variables with such a field are seen as having a wrapper type in split form.
+  This does not change the actual Why3 type but enforces the need of an
+  initialization check at use (see ``Transform_Identifier``).
+
+* Top-level initialization checks are introduced when converting from a wrapper
+  type to any other type (see ``Insert_Scalar_Conversion``). They can be
+  explicitly disabled (to do checks on fetch on out parameters in particular)
+  using a new parameter ``Do_Init``.
+
+* Additional initialization checks are manually inserted when translating
+  operators on composite types which imply a read of its components (equality,
+  logical operations...).
+
+* As initialization checks are introduced at every conversion, to avoid
+  introducing such a check, ``Transform_Expr`` must be called with a
+  wrapper type as an ``Expected_Type``. The version of ``Transform_Expr`` which
+  computes the expected type as an additional parameter ``No_Init`` which will
+  use a wrapper type when possible (for components and variables). It is used
+  for out parameters and attributes which do not read the value (in particular
+  ``Valid_Scalars``).
 
 Objects
 -------
@@ -2141,7 +2451,7 @@ declaration returning an object of a reference type. If we remove the
 .. code-block:: whyml
 
  module P__b
-  val b : bool__ref 
+  val b : bool__ref
  end
 
 No axiom is generated for the value of a variable. The value will be provided
@@ -2217,7 +2527,7 @@ types, as functions returning the corresponding abstract type:
 The type of ``A1`` is statically constrained. It will be translated as a Why3
 map, the bounds being declared directly inside the module for the Ada type of
 ``A1``:
-   
+
 .. code-block:: whyml
 
  function a1 : Array__Int__Standard__natural.map
@@ -2225,7 +2535,7 @@ map, the bounds being declared directly inside the module for the Ada type of
 The type of ``A2`` is unconstrained. It will be translated using the abstract
 type introduced for ``Nat_Array`` from which both the bounds and the
 underlying map can be queried:
-   
+
 .. code-block:: whyml
 
  function a2 : P__nat_array.nat_array
@@ -2239,7 +2549,7 @@ Let us now consider mutable arrays:
 
 Since the bounds of statically constrained array types are translated
 separately, we simply need a global reference for the content of ``A1``:
-   
+
 .. code-block:: whyml
 
  val a1 : Array__Int__Standard__natural.map__ref
@@ -2248,13 +2558,13 @@ For unconstrained or dynamically constrained array types, mutable objects are
 split into different parts, the bounds, which are constant, and the mutable
 content. For one-dimensional arrays, this results in the declaration of three
 Why3 objects:
-   
+
 .. code-block:: whyml
 
- val a2 : Array__Int__Standard__natural.map__ref 
- 
+ val a2 : Array__Int__Standard__natural.map__ref
+
  function a2__first : Standard__integer.integer
- 
+
  function a2__last : Standard__integer.integer
 
 A draw back of this approach is that array variables need to be
@@ -2303,8 +2613,8 @@ the regular components and a constant for the tag attribute:
 
 .. code-block:: whyml
 
- val t2__split_fields : P__tagged_rec.__split_fields__ref 
- 
+ val t2__split_fields : P__tagged_rec.__split_fields__ref
+
  function t2__attr__tag : int
 
 Let us now consider a record type with mutable discriminants:
@@ -2327,10 +2637,10 @@ parts are mutable. However, its constrained attribute is not:
 
 .. code-block:: whyml
 
- val o1__split_fields : P__option.__split_fields__ref 
- 
- val o1__split_discrs : P__option.__split_discrs__ref 
- 
+ val o1__split_fields : P__option.__split_fields__ref
+
+ val o1__split_discrs : P__option.__split_discrs__ref
+
  function o1__attr__constrained : bool
 
 If the discriminant of ``Option`` is fixed in its Ada type, the discriminant
@@ -2342,10 +2652,10 @@ part will be declared as a constant:
 
 .. code-block:: whyml
 
- val o2__split_field : P__To2S.__split_fields__ref 
- 
+ val o2__split_field : P__To2S.__split_fields__ref
+
  function o2__split_discrs : P__option.__split_discrs
- 
+
  function o2__attr__constrained : bool
 
 Effect-Only Objects
@@ -2375,7 +2685,7 @@ A global reference is introduced in Why for the abstract state of
  module Withed_unit__state
    use import "_gnatprove_standard".Main
 
-   val state  : __private__ref 
+   val state  : __private__ref
  end
 
  val p (__void_param : unit) : unit
@@ -2407,7 +2717,7 @@ predefined ``__private`` type:
  module P__nested__v
    use import "_gnatprove_standard".Main
 
-   val v  : __private__ref 
+   val v  : __private__ref
  end
 
  val p (__void_param : unit) : unit
@@ -3133,10 +3443,10 @@ Conversions
 ^^^^^^^^^^^
 
 ***********************
-GNAT2why Implementation
+gnat2why Implementation
 ***********************
 
-This section should describe the design of GNAT2why, so that
+This section should describe the design of ``gnat2why``, so that
 developers can enter into the code base more easily.
 
 Design
@@ -3159,6 +3469,36 @@ Completion of Entities
 
 Generation of Checks
 --------------------
+
+Warnings by Proof
+^^^^^^^^^^^^^^^^^
+
+When the switch ``--proof-warnings`` is used, GNATprove attempts to issue
+warnings about various suspicious conditions in the code, like unreachable
+branches, using the capability of provers. To that end, it generates VCs of
+special kinds denoted as ``VC_Warning_Kind``, so that proof of these VCs
+triggers a warning, and absence of proof is ignored. To control the cost of
+this feature, proof is attempted with only one prover (the first prover passed
+currently), and with a very short timeout (1 sec currently). The control of
+these conditions is done in :file:`gnat_config.ml`, see the use of
+``opt_warn_prover`` and ``opt_warn_timeout``.
+
+At the location where a warning could be issued, ``gnat2why`` generates an
+assertion of the suitable kind, checking for the bad condition against which we
+want to defend. For example, it's checking ``False`` for the warning on
+unreachable branches. The assertion is isolated in an ignore block.
+
+In fact, the case of unreachable branches and code is treated specially, as
+it's necessary to generate a call to ``absurd`` instead of an assertion of
+``False``, for the VCgen to correctly handle this case. It turns out that
+putting this call inside an ignore block is also not enough for its effects to
+be ignored, so we additionally isolate it in an if-expression (see
+``Warn_On_Dead_Branch`` in :file:`gnat2why-expr.adb`).
+
+The decision to ignore unproved VCs that correspond to warnings is done in
+``Emit_Proof_Result`` in :file:`gnat2why-error_messages.adb`. Otherwise, the
+proper classification of this message as a warning is done in
+``Error_Msg_Proof`` in :file:`gnat2why-flow_error_messages.adb`.
 
 Handling of Imports (Close_Theory)
 ----------------------------------
@@ -3265,3 +3605,22 @@ AST. Counterexample label
 
 identifying subparts of formulas to be reported to user (“cannot prove ‘bla’”)
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+When a complex assertion cannot be proved, likely some parts of it actually
+*have* been proved, and it is worthwhile to show the user (one of) the unproved
+part(s). This is done as follows:
+
+- gnat2why adds special markers to the subparts of the translation of an
+  assertion, this is done in ``gnat2why-expr.Transform_Expr`` if the
+  Transformation_Params enable this functionality. These markers contain the
+  location of the subpart (using a regular ``GP_Sloc`` attribute) and the
+  Node_Id of the corresponding node of the GNAT tree (using a ``GP_Pretty_Ada``
+  attribute).
+- gnatwhy3 attempts proof of these parts individually. It stops at the first
+  unproved part, and returns the node of the ``GP_Pretty_Ada`` attribute as an
+  ``extra_info`` (name of the JSON field) of the VC.
+- gnat2why uses the ``extra_info`` to produce a message part of the form
+  "cannot prove <subpart>".  Usually, we also want to update the sloc of the
+  message to point to the subpart. This latter part is not done for types of
+  checks where the part to be proved is in some other location of the code:
+  precondition checks and Liskov-related checks.

@@ -1,8 +1,5 @@
 generate_initializes2.ads:4:09: high: Other2.State must be initialized at elaboration
-generate_initializes2.ads:9:14: info: initialization of "Hidden" constituent of "State" proved
-generate_initializes2.ads:9:14: info: initialization of "Priv" constituent of "State" proved
 main.adb:3:17: info: initialization of "X" proved
 main.adb:5:11: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
 main.adb:5:32: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and Visible_Var in a precondition]
-other.ads:6:04: info: initialization of "Visible_Var" proved, in instantiation at generate_initializes.ads:7
 other2.ads:2:26: warning: no procedure exists that can initialize abstract state "Other2.State"

@@ -1,6 +1,12 @@
+p.ads:17:06: info: data dependencies proved
 p.ads:18:16: info: postcondition proved (CVC4: 8 VC)
+p.ads:36:06: info: data dependencies proved
 p.ads:37:16: info: postcondition proved (CVC4: 5 VC)
+p.ads:53:06: info: data dependencies proved
 p.ads:54:16: info: postcondition proved (CVC4: 4 VC)
+p.ads:68:06: info: data dependencies proved
 p.ads:69:16: info: postcondition proved (CVC4: 5 VC)
+p.ads:83:06: info: data dependencies proved
 p.ads:84:16: info: postcondition proved (CVC4: 4 VC)
+p.ads:103:06: info: data dependencies proved
 p.ads:104:16: info: postcondition proved (CVC4: 8 VC)

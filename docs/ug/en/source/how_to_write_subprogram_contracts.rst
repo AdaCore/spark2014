@@ -422,13 +422,13 @@ preconditions:
   check, as ``Update`` expects a non-negative value for its parameter.
 * Precondition ``X < Y`` on procedure ``Seen_Two`` ensures defensive
   programming, as the logic of the procedure is only correctly updating global
-  variables ``Max`` and ``Snd`` to the two maximal values seen if parameters
+  variables ``Max1`` and ``Max2`` to the two maximal values seen if parameters
   ``X`` and ``Y`` are given in strictly increasing order.
-* Precondition ``X > Snd`` on procedure ``Update`` ensures support of
+* Precondition ``X > Max2`` on procedure ``Update`` ensures support of
   maintenance, as this internal procedure relies on this condition on its
   parameter to operate properly.
 * Precondition ``Invariant`` on procedure ``Update`` ensures invariant
-  checking, as the property that ``Snd`` is less than ``Max`` expressed in
+  checking, as the property that ``Max2`` is less than ``Max1`` expressed in
   ``Invariant`` should be always respected.
 
 .. literalinclude:: /gnatprove_by_example/examples/integrity.ads
@@ -460,7 +460,7 @@ ensure that ``Invariant`` holds when calling ``Update`` inside ``Seen_Two``.
 
 To prove completely the integrity of unit ``Integrity``, it is sufficient to
 add ``Invariant`` as a precondition and postcondition on every subprogram which
-modifies the value of global variables ``Max`` and ``Snd``:
+modifies the value of global variables ``Max1`` and ``Max2``:
 
 .. literalinclude:: /gnatprove_by_example/examples/integrity_proved.ads
    :language: ada
@@ -503,12 +503,12 @@ previously, with additional functional contracts:
   ``Contract_Cases`` aspect) is a complete functional description of the
   behavior of the subprogram. There are three cases which correspond to
   different possible behaviors depending on the values of parameter ``X`` and
-  global variables ``Max`` and ``Snd``. The benefit of expressing the
+  global variables ``Max1`` and ``Max2``. The benefit of expressing the
   postcondition as contract cases is both the gain in readability (no need to
   use ``'Old`` for the guards, as in the postcondition of ``Update``) and the
   automatic verification that the cases are disjoint and complete.
 
-Note that global variables ``Max`` and ``Snd`` are referred to through public
+Note that global variables ``Max1`` and ``Max2`` are referred to through public
 accessor functions ``Max_Value_Seen`` and ``Second_Max_Value_Seen``. These
 accessor functions can be declared after the contracts in which they appear, as
 contracts are semantically analyzed only at the end of package declaration.
@@ -530,10 +530,10 @@ complete):
    :language: none
 
 The counterexample displayed for the postcondition not proved corresponds to a
-case where ``Max = Snd = 2`` on entry to procedure ``Seen_Two``. By
+case where ``Max1 = Max2 = 2`` on entry to procedure ``Seen_Two``. By
 highlighting the path for the counterexample in GPS (see :ref:`Running
 GNATprove from GPS`), the values of parameters for this counterexample are also
-displayed, here ``X = 0`` and ``Y = 1``. With these values, ``Max`` and ``Snd``
+displayed, here ``X = 0`` and ``Y = 1``. With these values, ``Max1`` and ``Max2``
 would still be equal to 2 on exit, thus violating the part of the postcondition
 stating that ``Max_Value_Seen /= Second_Max_Value_Seen``.
 
@@ -545,7 +545,7 @@ property is not proved::
 
   functional.ads:31:14: medium: postcondition might fail, cannot prove Max_Value_Seen /= (Second_Max_Value_Seen)
 
-The missing piece of information here is that ``Max`` and ``Snd`` are never
+The missing piece of information here is that ``Max1`` and ``Max2`` are never
 equal, except when they are both zero (the initial value). This can be added to
 function ``Invariant`` as follows:
 
@@ -762,6 +762,17 @@ should terminate:
 If every subprogram in a package is terminating, the package itself can be
 annotated with the terminating annotation. If the annotation is located on a
 generic package, then it should be valid for every instance of the package.
+
+An aspect can be used instead of a pragma for both packages and subprograms:
+
+.. code-block:: ada
+
+   package Pack with
+      Annotate => (GNATprove, Terminating)
+   is
+      procedure Proc with
+        Annotate => (GNATprove, Terminating);
+   ...
 
 If a subprogram in |SPARK| is explicitly annotated as terminating, flow analysis
 will attempt to make sure that all the paths through the subprogram effectively

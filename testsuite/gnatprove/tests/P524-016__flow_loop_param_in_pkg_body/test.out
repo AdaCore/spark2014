@@ -1,3 +1,4 @@
 main.adb:6:22: info: assertion proved (CVC4: 1 VC)
-main.ads:11:07: info: initialization of "V.V" proved
+main.ads:6:07: info: flow dependencies proved
+main.ads:11:07: info: initialization of "V" proved
 main.ads:12:17: warning: subprogram "Dummy" has no effect

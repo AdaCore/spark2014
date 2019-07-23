@@ -1,7 +1,5 @@
 pkg_a.adb:5:61: info: overflow check proved (CVC4: 1 VC)
-pkg_a.adb:10:09: medium: precondition might fail
+pkg_a.adb:10:09: medium: precondition might fail, cannot prove X in -100 .. 100
+pkg_a.ads:2:08: info: flow dependencies proved
 pkg_a.ads:3:08: info: initial condition proved (CVC4: 1 VC)
-pkg_a.ads:3:29: info: initialization of "X" proved
-pkg_a.ads:3:33: info: initialization of "Y" proved
-pkg_a.ads:8:04: info: initialization of "X" proved
 pkg_a.ads:9:04: info: initialization of "Y" proved

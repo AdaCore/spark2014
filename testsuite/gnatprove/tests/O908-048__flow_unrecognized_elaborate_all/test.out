@@ -1,3 +1,2 @@
-data_package.adb:9:17: info: initialization of "Data.Field_1" proved
-data_package.adb:10:17: info: initialization of "Data.Field_2" proved
-data_package.adb:11:17: info: initialization of "Data.Field_3" proved
+data_package.adb:6:07: info: initialization of "Data" proved
+external_interface.ads:2:49: info: flow dependencies proved

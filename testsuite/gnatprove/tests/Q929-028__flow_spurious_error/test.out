@@ -1,5 +1,3 @@
 p.ads:11:07: low: initialization of "Max" must be mentioned in the Initializes contract of "Inst" (SPARK RM 7.1.5(9))
-p.ads:18:33: info: initialization of "Max" proved
 p.ads:20:26: info: range check proved (CVC4: 1 VC)
 p.ads:22:30: info: discriminant check proved (CVC4: 1 VC)
-p.ads:22:38: info: initialization of "Max" proved

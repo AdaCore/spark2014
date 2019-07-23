@@ -20,7 +20,7 @@ package body Perm.Lemma_Subprograms with SPARK_Mode is
    end Occ_Eq;
 
 
-   procedure Occ_Set (A : Nat_Array; I : Index; V, E : Natural; R : Nat_Array) 
+   procedure Occ_Set (A : Nat_Array; I : Index; V, E : Natural; R : Nat_Array)
    is
       B : Nat_Array:= Remove_Last (A);
    begin

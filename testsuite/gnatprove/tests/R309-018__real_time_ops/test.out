@@ -1,2 +1,1 @@
-foo.adb:5:19: info: initialization of "X" proved
 foo.adb:5:19: medium: assertion might fail, cannot prove X <= Ada.Real_Time.time_last

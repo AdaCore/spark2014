@@ -1,26 +1,19 @@
-linear_search.adb:12:13: info: initialization of "Pos" proved
+linear_search.adb:10:07: info: initialization of "Res" proved
 linear_search.adb:13:15: info: index check proved (CVC4: 4 VC)
-linear_search.adb:13:15: info: initialization of "Pos" proved
-linear_search.adb:14:17: info: discriminant check proved (CVC4: 2 VC)
-linear_search.adb:15:33: info: initialization of "Pos" proved
+linear_search.adb:14:17: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 linear_search.adb:15:33: info: range check proved (CVC4: 1 VC)
-linear_search.adb:16:20: info: initialization of "Res.At_Index" proved
-linear_search.adb:20:13: info: initialization of "Pos" proved
 linear_search.adb:20:13: info: loop invariant initialization proved (CVC4: 3 VC)
 linear_search.adb:20:13: info: loop invariant preservation proved (CVC4: 3 VC)
 linear_search.adb:22:56: info: range check proved (CVC4: 2 VC)
 linear_search.adb:23:10: info: loop variant proved (CVC4: 1 VC)
-linear_search.adb:23:44: info: initialization of "Pos" proved
-linear_search.adb:25:17: info: initialization of "Pos" proved
 linear_search.adb:25:21: info: overflow check proved (CVC4: 1 VC)
-linear_search.adb:28:11: info: discriminant check proved (CVC4: 2 VC)
-linear_search.adb:29:14: info: initialization of "Res.At_Index" proved
+linear_search.adb:28:11: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 linear_search.ads:31:37: info: index check proved (CVC4: 2 VC)
-linear_search.ads:38:14: info: postcondition proved (CVC4: 2 VC)
+linear_search.ads:38:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 linear_search.ads:39:33: info: discriminant check proved (CVC4: 1 VC)
 linear_search.ads:40:06: info: complete contract cases proved (CVC4: 1 VC)
 linear_search.ads:40:06: info: disjoint contract cases proved (CVC4: 1 VC)
-linear_search.ads:41:20: info: contract case proved (CVC4: 2 VC)
+linear_search.ads:41:20: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 linear_search.ads:42:24: info: discriminant check proved (CVC4: 1 VC)
-linear_search.ads:43:67: info: contract case proved (CVC4: 2 VC)
-linear_search.ads:45:49: info: contract case proved (CVC4: 2 VC)
+linear_search.ads:43:67: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+linear_search.ads:45:49: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)

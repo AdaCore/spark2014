@@ -1,2 +1,5 @@
 foo.adb:2:16: info: initialization of "C" proved
-foo.adb:13:09: medium: precondition might fail [possible explanation: subprogram at line 1 should mention A and B in a precondition]
+foo.adb:4:04: info: data dependencies proved
+foo.adb:5:04: info: flow dependencies proved
+foo.adb:9:07: info: data dependencies proved
+foo.adb:13:09: medium: precondition might fail, cannot prove B > 0 [possible explanation: subprogram at line 1 should mention B in a precondition]

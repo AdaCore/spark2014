@@ -1,0 +1,6 @@
+project Bad_Global is
+
+  package Prove is
+    for Switches use ("--bad-switch");
+  end Prove;
+end Bad_Global;

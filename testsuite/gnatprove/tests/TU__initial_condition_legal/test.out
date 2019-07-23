@@ -1,5 +1,3 @@
-initial_condition_legal.adb:4:04: info: initialization of "Flag" constituent of "State" proved
+initial_condition_legal.ads:18:08: info: flow dependencies proved
 initial_condition_legal.ads:19:08: info: initial condition proved (CVC4: 2 VC)
-initial_condition_legal.ads:19:29: info: initialization of "Var" proved
-initial_condition_legal.ads:19:41: info: initialization of "Flag" constituent of "State" proved
-initial_condition_legal.ads:21:04: info: initialization of "Var" proved
+initial_condition_legal.ads:24:11: info: data dependencies proved

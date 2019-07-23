@@ -1,5 +1,5 @@
 modular.adb:7:23: info: postcondition proved (Z3: 1 VC)
-modular.adb:7:61: medium: overflow check might fail (e.g. when A = -2147483393 and B = -256) [possible explanation: subprogram at line 5 should mention A and B in a precondition]
+modular.adb:7:61: medium: overflow check might fail (e.g. when A = -1 and B = Integer'First) [possible explanation: subprogram at line 5 should mention A and B in a precondition]
 modular.adb:7:66: info: division check proved (CVC4: 1 VC)
 modular.adb:7:66: info: range check proved (CVC4: 1 VC)
 modular.adb:10:32: info: division check proved (CVC4: 1 VC)

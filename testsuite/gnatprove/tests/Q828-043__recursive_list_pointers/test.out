@@ -1,0 +1,47 @@
+update_lists.adb:3:22: warning: unused initial value of "Target"
+update_lists.adb:10:04: info: initialization of "Rover" proved
+update_lists.adb:12:04: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:14:15: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:18:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:18:34: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:21:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:21:25: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:21:37: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:25:13: info: initialization of "Next_Rover" proved
+update_lists.adb:27:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:27:38: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:30:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:30:26: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:31:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:34:13: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:34:28: warning: unused assignment to "Next_Rover"
+update_lists.adb:37:10: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:38:10: info: precondition proved (Trivial: 1 VC)
+update_lists.adb:38:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible explanation: call at line 37 should mention Target (for argument Prev) in a postcondition]
+update_lists_inlined.adb:4:04: info: initialization of "Rover" proved
+update_lists_inlined.adb:9:15: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:13:28: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:14:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:17:17: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:17:31: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:18:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:22:13: info: initialization of "Next_Rover" proved
+update_lists_inlined.adb:24:32: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:25:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:28:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:29:20: warning: unused assignment
+update_lists_inlined.adb:31:19: warning: unused assignment
+update_lists_inlined.adb:35:24: warning: unused assignment
+update_lists_inlined.adb:39:16: warning: unused assignment
+update_lists_inlined.adb:40:23: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_inlined.adb:41:14: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_recursive.adb:6:15: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_recursive.adb:11:34: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_recursive.adb:13:24: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_recursive.adb:20:38: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:8:45: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:10:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:18:18: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:31:45: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists_restore.adb:34:15: info: pointer dereference check proved (CVC4: 1 VC)

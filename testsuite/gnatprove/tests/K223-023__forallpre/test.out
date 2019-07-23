@@ -1,2 +1,2 @@
-forall.ads:5:45: medium: divide by zero might fail (e.g. when X = (others => 0))
-forall.ads:6:20: medium: postcondition might fail, cannot prove Get_One'Result > 1 (e.g. when Get_One'Result = 0)
+forall.ads:5:45: medium: divide by zero might fail
+forall.ads:6:20: medium: postcondition might fail, cannot prove Get_One'Result > 1

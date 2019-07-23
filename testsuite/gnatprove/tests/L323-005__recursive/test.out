@@ -1,6 +1,6 @@
 p.adb:6:23: info: expression function body not available for proof ("Bad" might not return)
 p.adb:6:23: medium: assertion might fail, cannot prove (Bad)
-p.ads:3:15: medium: postcondition might fail, cannot prove Id'Result = (if N = 0 then 0 else (Id (N - 1)) + 1) (e.g. when Id'Result = 1 and N = 1)
+p.ads:3:15: medium: postcondition might fail, cannot prove Id'Result = (if N = 0 then 0 else (Id (N - 1)) + 1)
 p.ads:3:49: info: expression function body not available for proof ("Id" might not return)
 p.ads:3:49: info: function contract not available for proof ("Id" is recursive)
 p.ads:3:53: info: range check proved (CVC4: 1 VC)

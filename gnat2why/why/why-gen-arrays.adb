@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,7 @@ with Common_Containers;     use Common_Containers;
 with GNAT.Source_Info;
 with Gnat2Why.Types;        use Gnat2Why.Types;
 with GNATCOLL.Utils;        use GNATCOLL.Utils;
+with Namet;                 use Namet;
 with Sinput;                use Sinput;
 with SPARK_Atree;           use SPARK_Atree;
 with SPARK_Util;            use SPARK_Util;
@@ -39,9 +40,11 @@ with Why.Atree.Tables;      use Why.Atree.Tables;
 with Why.Conversions;       use Why.Conversions;
 with Why.Gen.Binders;       use Why.Gen.Binders;
 with Why.Gen.Decl;          use Why.Gen.Decl;
+with Why.Gen.Init;          use Why.Gen.Init;
 with Why.Gen.Names;         use Why.Gen.Names;
 with Why.Gen.Preds;         use Why.Gen.Preds;
 with Why.Gen.Terms;         use Why.Gen.Terms;
+with Why.Images;            use Why.Images;
 with Why.Inter;             use Why.Inter;
 with Why.Types;             use Why.Types;
 
@@ -101,21 +104,20 @@ package body Why.Gen.Arrays is
    --         length attribute.
    --  @return the translated array attribute into Why3
 
-   function Get_Comparison_Theory_Name (Name : Name_Id) return Name_Id is
-     (NID (Get_Name_String (Name) & To_String (WNE_Array_Comparison_Suffix)));
+   function Get_Comparison_Theory_Name (Name : Symbol) return Symbol is
+     (NID (Img (Name) & To_String (WNE_Array_Comparison_Suffix)));
    --  @param Name name of an array representative theory
    --  @return The name of the theory for the comparison operators on these
    --          arrays.
 
-   function Get_Concat_Theory_Name (Name : Name_Id) return Name_Id is
-     (NID (Get_Name_String (Name)
-           & To_String (WNE_Array_Concatenation_Suffix)));
+   function Get_Concat_Theory_Name (Name : Symbol) return Symbol is
+     (NID (Img (Name) & To_String (WNE_Array_Concatenation_Suffix)));
    --  @param Name name of an array representative theory
    --  @return The name of the theory for the concatenation operators on these
    --          arrays.
 
-   function Get_Logical_Op_Theory_Name (Name : Name_Id) return Name_Id is
-     (NID (Get_Name_String (Name) & To_String (WNE_Array_Logical_Op_Suffix)));
+   function Get_Logical_Op_Theory_Name (Name : Symbol) return Symbol is
+     (NID (Img (Name) & To_String (WNE_Array_Logical_Op_Suffix)));
    --  @param Name name of an array representative theory
    --  @return The name of the theory for the logical operators on these
    --          arrays.
@@ -230,7 +232,8 @@ package body Why.Gen.Arrays is
            New_Call
              (Domain => Domain,
               Name   => E_Symb (Ty, WNE_To_Array),
-              Args   => (1 => Expr));
+              Args   => (1 => Expr),
+              Typ    => EW_Split (Ty));
       end if;
       Arg_Ind := Arg_Ind + 1;
    end Add_Map_Arg;
@@ -261,13 +264,14 @@ package body Why.Gen.Arrays is
       Ty      : Entity_Id;
       Attr    : Attribute_Id;
       Dim     : Positive;
-      Arg_Ind : in out Positive)
+      Arg_Ind : in out Positive;
+      Params  : Transformation_Params := Body_Params)
    is
    begin
       Args (Arg_Ind) :=
         Insert_Conversion_To_Rep_No_Bool
           (Domain,
-           Get_Array_Attr (Domain, Ty, Attr, Dim));
+           Get_Array_Attr (Domain, Ty, Attr, Dim, Params));
       Arg_Ind := Arg_Ind + 1;
    end Add_Attr_Arg;
 
@@ -568,14 +572,13 @@ package body Why.Gen.Arrays is
       use Name_Id_Name_Id_Conversion_Name_Map;
 
       File       : constant W_Section_Id := WF_Pure;
-      From_Name  : constant Name_Id := Get_Array_Theory_Name (From);
-      To_Name    : constant Name_Id := Get_Array_Theory_Name (To);
+      From_Name  : constant Symbol := Get_Array_Theory_Name (From);
+      To_Name    : constant Symbol := Get_Array_Theory_Name (To);
       From_Symb  : constant M_Array_Type := M_Arrays.Element (From_Name);
       To_Symb    : constant M_Array_Type := M_Arrays.Element (To_Name);
       Module     : constant W_Module_Id :=
-        New_Module (File => No_Name,
-                    Name => NID (Get_Name_String (From_Name) & "__to__"
-                      & Get_Name_String (To_Name)));
+        New_Module (File => No_Symbol,
+                    Name => Img (From_Name) & "__to__" & Img (To_Name));
       Convert_Id : constant W_Identifier_Id :=
         New_Identifier (Name      => "convert",
                         Module    => Module,
@@ -642,12 +645,12 @@ package body Why.Gen.Arrays is
       Emit
         (File,
          Why.Gen.Binders.New_Function_Decl
-           (Domain      => EW_Term,
+           (Domain      => EW_Pterm,
             Name        => To_Local (Convert_Id),
             Binders     => (1 => A_Binder),
             Location    => No_Location,
             Return_Type => To_Symb.Ty,
-            Labels      => Name_Id_Sets.Empty_Set));
+            Labels      => Symbol_Sets.Empty_Set));
 
       --  Generate an axiom for the conversion function:
       --  axiom convert__def:
@@ -693,16 +696,24 @@ package body Why.Gen.Arrays is
          declare
             From_Comp : constant Entity_Id := Retysp (Component_Type (From));
             To_Comp   : constant Entity_Id := Retysp (Component_Type (To));
-            A_Comp    : W_Expr_Id := New_Call
-              (Domain  => EW_Term,
-               Name    => From_Symb.Get,
-               Binders => A_Binder & Indexes,
-               Typ     => EW_Abstract (From_Comp));
-            B_Comp    : W_Expr_Id := New_Call
-              (Domain  => EW_Term,
-               Name    => To_Symb.Get,
-               Binders => B_Binder & Indexes,
-               Typ     => EW_Abstract (To_Comp));
+            A_Comp    : W_Expr_Id := New_Init_Wrapper_Value_Access
+              (Ada_Node => Empty,
+               E        => From_Comp,
+               Name     => New_Call
+                 (Domain  => EW_Term,
+                  Name    => From_Symb.Get,
+                  Binders => A_Binder & Indexes,
+                  Typ     => EW_Init_Wrapper (From_Comp, EW_Abstract)),
+               Domain   => EW_Term);
+            B_Comp    : W_Expr_Id := New_Init_Wrapper_Value_Access
+              (Ada_Node => Empty,
+               E        => To_Comp,
+               Name     => New_Call
+                 (Domain  => EW_Term,
+                  Name    => To_Symb.Get,
+                  Binders => B_Binder & Indexes,
+                  Typ     => EW_Init_Wrapper (To_Comp, EW_Abstract)),
+               Domain   => EW_Term);
 
          begin
             --  If components are arrays, go to split form
@@ -830,14 +841,15 @@ package body Why.Gen.Arrays is
 
       Emit (File,
             New_Type_Decl (Name  => To_Name (WNE_Array_Component_Type),
-                           Alias => EW_Abstract (Component_Type (Typ))));
+                           Alias => EW_Init_Wrapper
+                             (Component_Type (Typ), EW_Abstract)));
 
       Emit (File,
             New_Clone_Declaration
               (Theory_Kind   => EW_Theory,
                Clone_Kind    => EW_Export,
                Origin        => Array_Modules (Dim),
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Substitutions => Subst));
 
       Declare_Equality_Function (Typ, File, Symbols);
@@ -854,9 +866,9 @@ package body Why.Gen.Arrays is
       E             : Entity_Id;
       Register_Only : Boolean := False)
    is
-      Name    : constant Name_Id := Get_Array_Theory_Name (E);
-      Module  : constant W_Module_Id := New_Module (File => No_Name,
-                                                    Name => Name);
+      Name    : constant Symbol := Get_Array_Theory_Name (E);
+      Module  : constant W_Module_Id := New_Module (File => No_Symbol,
+                                                    Name => Img (Name));
       Symbols : constant M_Array_Type := Init_Array_Module (Module);
 
    begin
@@ -882,8 +894,9 @@ package body Why.Gen.Arrays is
       if Number_Dimensions (Retysp (Etype (E))) = 1 then
          declare
             Array_1_Module : constant W_Module_Id :=
-              New_Module (File => No_Name,
-                          Name => Get_Concat_Theory_Name (Name));
+              New_Module (File => No_Symbol,
+                          Name =>
+                            Img (Get_Concat_Theory_Name (Name)));
          begin
             if not Register_Only then
                Declare_Concatenation_Symbols
@@ -901,8 +914,8 @@ package body Why.Gen.Arrays is
          if Has_Boolean_Type (Component_Type (Retysp (Etype (E)))) then
             declare
                Bool_Op_Module : constant W_Module_Id :=
-                 New_Module (File => No_Name,
-                             Name => Get_Logical_Op_Theory_Name (Name));
+                 New_Module (File => No_Symbol,
+                             Name => Img (Get_Logical_Op_Theory_Name (Name)));
             begin
                if not Register_Only then
                   Declare_Logical_Operation_Symbols
@@ -921,8 +934,8 @@ package body Why.Gen.Arrays is
          if Has_Discrete_Type (Component_Type (Retysp (Etype (E)))) then
             declare
                Comp_Module : constant W_Module_Id :=
-                 New_Module (File => No_Name,
-                             Name => Get_Comparison_Theory_Name (Name));
+                 New_Module (File => No_Symbol,
+                             Name => Img (Get_Comparison_Theory_Name (Name)));
             begin
                if not Register_Only then
                   Declare_Comparison_Symbols
@@ -1009,18 +1022,18 @@ package body Why.Gen.Arrays is
 
       Emit (Section,
             Why.Gen.Binders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (To_String_Id),
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Binders     => To_String_Binders,
                Return_Type => Str_Typ));
       Emit (Section,
             Why.Gen.Binders.New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (Of_String_Id),
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set,
+               Labels      => Symbol_Sets.Empty_Set,
                Binders     =>
                  (1 =>
                       Binder_Type'(
@@ -1114,6 +1127,10 @@ package body Why.Gen.Arrays is
       Component_Typ : constant Entity_Id := Component_Type (E);
       Base          : constant W_Type_Id :=
         Base_Why_Type_No_Bool (Component_Typ);
+      To_Rep_Name   : W_Identifier_Id :=
+        Conversion_Name
+          (From => EW_Abstract (Component_Typ),
+           To   => Base);
 
    begin
       Open_Theory
@@ -1127,6 +1144,42 @@ package body Why.Gen.Arrays is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  If components have wrappers, we cannot use To_Rep symbol as is.
+      --  Generate a new To_Rep symbol for this case.
+
+      if Needs_Init_Wrapper_Type (Component_Typ) then
+         declare
+            A_Ident  : constant W_Identifier_Id :=
+              New_Identifier (Name => "a",
+                              Typ  => EW_Init_Wrapper
+                                (Component_Typ, EW_Abstract));
+            A_Binder : constant Binder_Array :=
+              (1 => (B_Name => A_Ident,
+                     others => <>));
+         begin
+            Emit (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (To_Rep_Name),
+                     Binders     => A_Binder,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Location    => No_Location,
+                     Return_Type => Base,
+                     Def         => New_Call
+                       (Domain  => EW_Term,
+                        Name    => To_Rep_Name,
+                        Args    =>
+                          (1 => New_Init_Wrapper_Value_Access
+                               (Ada_Node => Empty,
+                                E        => Component_Typ,
+                                Name     => +A_Ident,
+                                Domain   => EW_Term)),
+                        Typ     => Base)));
+
+            To_Rep_Name := To_Local (To_Rep_Name);
+         end;
+      end if;
+
       declare
          Sbst          : constant W_Clone_Substitution_Array :=
            (1 =>
@@ -1137,16 +1190,12 @@ package body Why.Gen.Arrays is
             2 =>
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("to_rep")),
-                 Image     =>
-                   Get_Name
-                     (Conversion_Name
-                        (From => EW_Abstract (Component_Typ),
-                         To   => Base))),
+                 Orig_Name => New_Name (Symb => NID ("to_rep")),
+                 Image     => Get_Name (To_Rep_Name)),
             3 =>
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Name (Symbol => NID ("map")),
+                 Orig_Name => New_Name (Symb => NID ("map")),
                  Image     => Get_Name (Symbols.Ty)))
           &
            Prepare_Indexes_Substitutions
@@ -1155,12 +1204,12 @@ package body Why.Gen.Arrays is
            (1 =>
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("get")),
+                 Orig_Name => New_Name (Symb => NID ("get")),
                  Image     => Get_Name (Symbols.Get)),
             2 =>
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("bool_eq")),
+                 Orig_Name => New_Name (Symb => NID ("bool_eq")),
                  Image     => Get_Name (Symbols.Bool_Eq)));
 
       begin
@@ -1179,7 +1228,7 @@ package body Why.Gen.Arrays is
                         elsif Base = EW_BitVector_64_Type then
                            Array_BV64_Rep_Comparison_Ax
                         else raise Program_Error),
-                     As_Name       => No_Name,
+                     As_Name       => No_Symbol,
                      Substitutions => Sbst));
          else
             Emit (File,
@@ -1187,7 +1236,7 @@ package body Why.Gen.Arrays is
                     (Theory_Kind   => EW_Module,
                      Clone_Kind    => EW_Export,
                      Origin        => Array_Int_Rep_Comparison_Ax,
-                     As_Name       => No_Name,
+                     As_Name       => No_Symbol,
                      Substitutions => Sbst));
          end if;
       end;
@@ -1232,7 +1281,7 @@ package body Why.Gen.Arrays is
             2 =>
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Name (Symbol => NID ("map")),
+                 Orig_Name => New_Name (Symb => NID ("map")),
                  Image     => Get_Name (Symbols.Ty)))
          &
            Prepare_Indexes_Substitutions
@@ -1241,7 +1290,7 @@ package body Why.Gen.Arrays is
            (1 =>
               New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID ("get")),
+                 Orig_Name => New_Name (Symb => NID ("get")),
                  Image     => Get_Name (Symbols.Get)));
       begin
 
@@ -1252,7 +1301,7 @@ package body Why.Gen.Arrays is
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
                   Origin        => Array_Concat_Axioms,
-                  As_Name       => No_Name,
+                  As_Name       => No_Symbol,
                   Substitutions => Sbst));
 
          Close_Theory (File, Kind => Definition_Theory);
@@ -1453,12 +1502,12 @@ package body Why.Gen.Arrays is
          Emit
            (Section,
             New_Function_Decl
-              (Domain      => EW_Term,
+              (Domain      => EW_Pterm,
                Name        => To_Local (Symbols.Bool_Eq),
                Binders     => Args,
                Return_Type => +EW_Bool_Type,
                Location    => No_Location,
-               Labels      => Name_Id_Sets.Empty_Set));
+               Labels      => Symbol_Sets.Empty_Set));
 
       --  Emit:
       --  function bool_eq (a : map) (a__first : t1) ... (b : map) ... : bool =
@@ -1477,19 +1526,28 @@ package body Why.Gen.Arrays is
 
          declare
             C_Type   : constant Entity_Id := Retysp (Component_Type (E));
-            W_Ty     : constant W_Type_Id := EW_Abstract (C_Type);
+            W_Ty     : constant W_Type_Id := EW_Init_Wrapper
+              (C_Type, EW_Abstract);
             Get_Name : constant W_Identifier_Id := To_Local (Symbols.Get);
             Eq_Name  : constant W_Identifier_Id := To_Local (Symbols.Bool_Eq);
             Def      : W_Pred_Id :=
               +New_Ada_Equality
-                 (Typ              => C_Type,
-                  Domain           => EW_Pred,
-                  Left             =>
-                    New_Call
+              (Typ    => C_Type,
+               Domain => EW_Pred,
+               Left   =>
+                 New_Init_Wrapper_Value_Access
+                   (Ada_Node => Empty,
+                    E        => C_Type,
+                    Name     => New_Call
                       (Empty, EW_Term, Get_Name, A_Indexes, W_Ty),
-                  Right            =>
-                    New_Call
-                      (Empty, EW_Term, Get_Name, B_Indexes, W_Ty));
+                    Domain   => EW_Term),
+               Right  =>
+                 New_Init_Wrapper_Value_Access
+                   (Ada_Node => Empty,
+                    E        => C_Type,
+                    Name     => New_Call
+                      (Empty, EW_Term, Get_Name, B_Indexes, W_Ty),
+                    Domain   => EW_Term));
          begin
 
             Def := New_Conditional
@@ -1509,12 +1567,12 @@ package body Why.Gen.Arrays is
             Emit
               (Section,
                New_Function_Decl
-                 (Domain      => EW_Term,
+                 (Domain      => EW_Pterm,
                   Name        => Eq_Name,
                   Binders     => Args,
                   Return_Type => +EW_Bool_Type,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Def         => +Def));
 
             --  This axiom is provable from the definition of bool_eq. We
@@ -1554,6 +1612,7 @@ package body Why.Gen.Arrays is
       Module  : W_Module_Id;
       Symbols : M_Array_Type)
    is
+      Arr_Symbs     : M_Array_Type := Symbols;
       Component_Typ : constant Entity_Id := Component_Type (E);
 
    begin
@@ -1568,6 +1627,48 @@ package body Why.Gen.Arrays is
            else "")
          & ", created in " & GNAT.Source_Info.Enclosing_Entity);
 
+      --  If components have wrappers, we cannot use Get symbol as is.
+      --  Generate a new Get symbol for this case.
+
+      if Needs_Init_Wrapper_Type (Component_Typ) then
+         declare
+            A_Ident : constant W_Identifier_Id :=
+              New_Identifier (Name => "a",
+                              Typ  => Arr_Symbs.Ty);
+            I_Ident : constant W_Identifier_Id :=
+              New_Identifier
+                (Name => "i",
+                 Typ  => Base_Why_Type_No_Bool (Etype (First_Index (E))));
+            Binders : constant Binder_Array :=
+              (1 => (B_Name => A_Ident,
+                     others => <>),
+               2 => (B_Name => I_Ident,
+                     others => <>));
+         begin
+            Emit (File,
+                  New_Function_Decl
+                    (Domain      => EW_Term,
+                     Name        => To_Local (Arr_Symbs.Get),
+                     Binders     => Binders,
+                     Labels      => Symbol_Sets.Empty_Set,
+                     Location    => No_Location,
+                     Return_Type => EW_Abstract (Component_Typ),
+                     Def         => New_Init_Wrapper_Value_Access
+                       (Ada_Node    => Empty,
+                        E           => Component_Typ,
+                        Name        => New_Call
+                          (Domain  => EW_Term,
+                           Name    => Arr_Symbs.Get,
+                           Args    => (1 => +A_Ident, 2 => +I_Ident),
+                           Typ     => EW_Init_Wrapper
+                             (Component_Typ, EW_Abstract)),
+                        Domain      => EW_Term)));
+
+            Arr_Symbs.Get := To_Local (Arr_Symbs.Get);
+            Arr_Symbs.Comp_Ty := EW_Abstract (Component_Typ);
+         end;
+      end if;
+
       if Is_Standard_Boolean_Type (Component_Typ) then
 
          --  For Boolean, use the module Standard_Array_Logical_Op_Axioms
@@ -1577,10 +1678,10 @@ package body Why.Gen.Arrays is
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
                   Origin        => Standard_Array_Logical_Ax,
-                  As_Name       => No_Name,
+                  As_Name       => No_Symbol,
                   Substitutions =>
                     Prepare_Standard_Array_Logical_Substitutions
-                      (File, E, Symbols)));
+                      (File, E, Arr_Symbs)));
       else
 
          --  We clone a specific module Subtype_Array_Logical_Op_Axioms
@@ -1591,10 +1692,10 @@ package body Why.Gen.Arrays is
                  (Theory_Kind   => EW_Module,
                   Clone_Kind    => EW_Export,
                   Origin        => Subtype_Array_Logical_Ax,
-                  As_Name       => No_Name,
+                  As_Name       => No_Symbol,
                   Substitutions =>
                     Prepare_Subtype_Array_Logical_Substitutions
-                      (File, E, Symbols)));
+                      (File, E, Arr_Symbs)));
       end if;
 
       Close_Theory (File, Kind => Definition_Theory);
@@ -1638,14 +1739,14 @@ package body Why.Gen.Arrays is
       begin
             Emit (Section,
                   Why.Atree.Builders.New_Function_Decl
-                    (Domain      => EW_Term,
+                    (Domain      => EW_Pterm,
                      Name        => New_Identifier (Attr_Name),
                      Binders     => (1 .. 0 => <>),
-                     Labels      => Name_Id_Sets.Empty_Set,
+                     Labels      => Symbol_Sets.Empty_Set,
                      Location    => No_Location,
                      Return_Type => Typ,
                      Def         => New_Discrete_Constant
-                       (Value =>  Value,
+                       (Value => Value,
                         Typ   => Typ)));
          Subst (Cursor) :=
            New_Clone_Substitution
@@ -1666,16 +1767,16 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => New_Name (Symbol => NID ("map")),
-           Image     => New_Name (Symbol => NID ("map"),
+           Orig_Name => New_Name (Symb => NID ("map")),
+           Image     => New_Name (Symb   => NID ("map"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Function,
-           Orig_Name => New_Name (Symbol => NID ("array_bool_eq")),
-           Image     => New_Name (Symbol => NID ("bool_eq"),
+           Orig_Name => New_Name (Symb => NID ("array_bool_eq")),
+           Image     => New_Name (Symb   => NID ("bool_eq"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
@@ -1697,9 +1798,8 @@ package body Why.Gen.Arrays is
             Subst (Cursor) :=
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
-                 Orig_Name => New_Name
-                   (Symbol => NID
-                      (Append_Num ("index_rep_type", 1))),
+                 Orig_Name =>
+                   New_Name (Symb => NID (Append_Num ("index_rep_type", 1))),
                  Image     => Get_Name (R_Ty));
             Cursor := Cursor + 1;
          end;
@@ -1723,9 +1823,10 @@ package body Why.Gen.Arrays is
                   Subst (Cursor) :=
                     New_Clone_Substitution
                       (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symbol => NID
-                            (Append_Num ("index_rep_type", Count))),
+                       Orig_Name =>
+                         New_Name
+                           (Symb => NID
+                              (Append_Num ("index_rep_type", Count))),
                        Image     => Get_Name (R_Ty));
                   Cursor := Cursor + 1;
 
@@ -1740,7 +1841,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Origin        => Clone,
                Substitutions => Subst));
    end Declare_Constrained;
@@ -1774,16 +1875,16 @@ package body Why.Gen.Arrays is
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Type_Subst,
-           Orig_Name => New_Name (Symbol => NID ("map")),
-           Image     => New_Name (Symbol => NID ("map"),
+           Orig_Name => New_Name (Symb => NID ("map")),
+           Image     => New_Name (Symb   => NID ("map"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
       Subst (Cursor) :=
         New_Clone_Substitution
           (Kind      => EW_Function,
-           Orig_Name => New_Name (Symbol => NID ("array_bool_eq")),
-           Image     => New_Name (Symbol => NID ("bool_eq"),
+           Orig_Name => New_Name (Symb => NID ("array_bool_eq")),
+           Image     => New_Name (Symb   => NID ("bool_eq"),
                                   Module => Array_Theory));
       Cursor := Cursor + 1;
 
@@ -1798,7 +1899,7 @@ package body Why.Gen.Arrays is
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
                  Orig_Name => New_Name
-                   (Symbol => NID (Append_Num ("index_base_type", Dim_Count))),
+                   (Symb => NID (Append_Num ("index_base_type", Dim_Count))),
                  Image     => Ident_Of_Ada_Type (B_Ty));
             Cursor := Cursor + 1;
 
@@ -1806,7 +1907,7 @@ package body Why.Gen.Arrays is
               New_Clone_Substitution
                 (Kind      => EW_Type_Subst,
                  Orig_Name => New_Name
-                   (Symbol => NID (Append_Num ("index_rep_type", Dim_Count))),
+                   (Symb => NID (Append_Num ("index_rep_type", Dim_Count))),
                  Image     => Get_Name (R_Ty));
             Cursor := Cursor + 1;
 
@@ -1814,7 +1915,7 @@ package body Why.Gen.Arrays is
               New_Clone_Substitution
                 (Kind      => EW_Function,
                  Orig_Name => New_Name
-                   (Symbol => NID (Append_Num ("to_rep", Dim_Count))),
+                   (Symb => NID (Append_Num ("to_rep", Dim_Count))),
                  Image     =>
                    Get_Name (Conversion_Name (From => +B_Type,
                                              To => R_Ty)));
@@ -1830,20 +1931,20 @@ package body Why.Gen.Arrays is
                begin
                   Emit (Section,
                         Why.Gen.Binders.New_Function_Decl
-                          (Domain  => EW_Term,
-                           Name    => Id_Id,
-                           Binders =>
+                          (Domain      => EW_Term,
+                           Name        => Id_Id,
+                           Binders     =>
                              (1 => (B_Name => X_Id, others => <>)),
-                           Labels  => Name_Id_Sets.Empty_Set,
+                           Labels      => Symbol_Sets.Empty_Set,
                            Location    => No_Location,
-                           Def     => +X_Id,
+                           Def         => +X_Id,
                            Return_Type => R_Ty));
 
                   Subst (Cursor) :=
                     New_Clone_Substitution
                       (Kind      => EW_Function,
                        Orig_Name => New_Name
-                         (Symbol => NID
+                         (Symb => NID
                             (Append_Num ("rep_to_int", Dim_Count))),
                        Image     => Get_Name (Id_Id));
                end;
@@ -1852,7 +1953,7 @@ package body Why.Gen.Arrays is
                  New_Clone_Substitution
                    (Kind      => EW_Function,
                     Orig_Name => New_Name
-                      (Symbol => NID (Append_Num ("rep_to_int", Dim_Count))),
+                      (Symb => NID (Append_Num ("rep_to_int", Dim_Count))),
                     Image     =>
                       Get_Name (Conversion_Name (From => R_Ty,
                                                 To => EW_Int_Type)));
@@ -1884,7 +1985,7 @@ package body Why.Gen.Arrays is
               New_Clone_Substitution
                 (Kind      => EW_Predicate,
                  Orig_Name => New_Name
-                   (Symbol => NID (Append_Num ("index_rep_le", Dim_Count))),
+                   (Symb => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Ind_Ty) then
                          MF_BVs (R_Ty).Ule
@@ -1900,7 +2001,7 @@ package body Why.Gen.Arrays is
             New_Clone_Declaration
               (Theory_Kind   => EW_Module,
                Clone_Kind    => EW_Export,
-               As_Name       => No_Name,
+               As_Name       => No_Symbol,
                Origin        => Clone,
                Substitutions => Subst));
       --  Declare the abstract type of the unconstrained array and mark
@@ -2086,7 +2187,7 @@ package body Why.Gen.Arrays is
    -- Get_Array_Theory_Name --
    ---------------------------
 
-   function Get_Array_Theory_Name (E : Entity_Id) return Name_Id is
+   function Get_Array_Theory_Name (E : Entity_Id) return Symbol is
       Name      : Unbounded_String :=
         To_Unbounded_String (To_String (WNE_Array_Prefix));
       Ty        : constant Entity_Id := Retysp (E);
@@ -2133,7 +2234,8 @@ package body Why.Gen.Arrays is
       pragma Assert (Get_Kind (+E) in W_Deref
                                     | W_Identifier
                                     | W_Statement_Sequence
-                                    | W_Tagged);
+                                    | W_Tagged
+                                    | W_Label);
 
       case Get_Kind (+E) is
          when W_Identifier | W_Statement_Sequence =>
@@ -2153,6 +2255,13 @@ package body Why.Gen.Arrays is
                return Get_Entity_Of_Variable (Expr);
             end;
 
+         when W_Label =>
+            declare
+               Expr : constant W_Expr_Id := Get_Def (W_Label_Id (E));
+            begin
+               return Get_Entity_Of_Variable (Expr);
+            end;
+
          when others =>
             raise Program_Error;
       end case;
@@ -2163,18 +2272,18 @@ package body Why.Gen.Arrays is
    ----------------------
 
    function New_Array_Access
-     (Ada_Node  : Node_Id;
-      Ar        : W_Expr_Id;
-      Index     : W_Expr_Array;
-      Domain    : EW_Domain) return W_Expr_Id
+     (Ada_Node : Node_Id;
+      Ar       : W_Expr_Id;
+      Index    : W_Expr_Array;
+      Domain   : EW_Domain) return W_Expr_Id
    is
       Why_Ty    : constant W_Type_Id := Get_Type (Ar);
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+Why_Ty);
       Name      : constant W_Identifier_Id :=
         Get_Array_Theory (Ty_Entity).Get;
-      Elts     : W_Expr_Id;
-      Ret_Ty   : constant W_Type_Id :=
-        EW_Abstract (Component_Type (Ty_Entity));
+      Elts      : W_Expr_Id;
+      Comp_Ty   : constant Entity_Id :=
+        Retysp (Component_Type (Ty_Entity));
 
    begin
       if Is_Static_Array_Type (Ty_Entity) or else
@@ -2185,13 +2294,12 @@ package body Why.Gen.Arrays is
          Elts := Array_Convert_To_Base (Domain, Ar);
       end if;
 
-      return
-        New_Call
+      return New_Call
         (Ada_Node => Ada_Node,
          Name     => Name,
          Domain   => Domain,
          Args     => (1 => Elts) & Index,
-         Typ      => Ret_Ty);
+         Typ      => EW_Init_Wrapper (Comp_Ty, EW_Abstract));
    end New_Array_Access;
 
    --------------------------
@@ -2240,6 +2348,11 @@ package body Why.Gen.Arrays is
       Ty_Entity : constant Entity_Id := Get_Ada_Node (+W_Ty);
       Name      : constant W_Identifier_Id :=
         Get_Array_Theory (Ty_Entity).Set;
+      Val       : constant W_Expr_Id :=
+        Reconstruct_Init_Wrapper
+          (Ada_Node => Ada_Node,
+           Ty       => Retysp (Component_Type (Ty_Entity)),
+           Value    => Value);
    begin
       if Is_Static_Array_Type (Ty_Entity)
         or else Get_Type_Kind (W_Ty) = EW_Split
@@ -2249,7 +2362,7 @@ package body Why.Gen.Arrays is
              (Ada_Node => Ada_Node,
               Domain   => Domain,
               Name     => Name,
-              Args     => (1 => +Ar) & Index & (1 => +Value),
+              Args     => (1 => +Ar) & Index & (1 => +Val),
               Typ      => W_Ty);
       else
          declare
@@ -2258,7 +2371,7 @@ package body Why.Gen.Arrays is
                  (Domain => Domain,
                   Name   => E_Symb (Ty_Entity, WNE_To_Array),
                   Args   => (1 => +Ar)))
-              & Index & (1 => +Value);
+              & Index & (1 => +Val);
             Array_Upd : constant W_Expr_Id :=
               New_Call
                 (Ada_Node => Ada_Node,
@@ -2286,9 +2399,10 @@ package body Why.Gen.Arrays is
    -------------------------
 
    function New_Bounds_Equality
-     (Left_Arr  : W_Expr_Id;
-      Right_Arr : W_Expr_Id;
-      Dim       : Positive) return W_Pred_Id
+     (Left_Arr     : W_Expr_Id;
+      Right_Bounds : W_Expr_Array;
+      Dim          : Positive;
+      Domain       : EW_Domain := EW_Pred) return W_Expr_Id
    is
       Result : W_Expr_Id := +True_Pred;
    begin
@@ -2306,11 +2420,8 @@ package body Why.Gen.Arrays is
                                               Expr   => Left_Arr,
                                               Attr   => Attribute_First,
                                               Dim    => I),
-                    Right  => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
-                    Domain => EW_Pred),
+                    Right  => Right_Bounds (2 * I - 1),
+                    Domain => Domain),
 
                  --  <left_arr>.last__I = <right_arr>.last__I
 
@@ -2320,15 +2431,52 @@ package body Why.Gen.Arrays is
                                               Expr   => Left_Arr,
                                               Attr   => Attribute_Last,
                                               Dim    => I),
-                    Right  => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Right_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
-                    Domain => EW_Pred)),
-              Domain    => EW_Pred);
+                    Right  => Right_Bounds (2 * I),
+                    Domain => Domain)),
+              Domain    => Domain);
       end loop;
 
       return +Result;
+   end New_Bounds_Equality;
+
+   function New_Bounds_Equality
+     (Left_Arr  : W_Expr_Id;
+      Right_Arr : W_Expr_Id;
+      Dim       : Positive) return W_Pred_Id
+   is
+      Right_Bounds : W_Expr_Array (1 .. 2 * Dim);
+      Count        : Positive := 1;
+   begin
+      for I in 1 .. Dim loop
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Arr, Attribute_First, I, Count);
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Arr, Attribute_Last,  I, Count);
+      end loop;
+
+      return +New_Bounds_Equality (Left_Arr, Right_Bounds, Dim);
+   end New_Bounds_Equality;
+
+   function New_Bounds_Equality
+     (Left_Arr : W_Expr_Id;
+      Right_Ty : Entity_Id;
+      Domain   : EW_Domain := EW_Pred;
+      Params   : Transformation_Params := Body_Params) return W_Expr_Id
+   is
+      Dim          : constant Positive :=
+        Positive (Number_Dimensions (Right_Ty));
+      Right_Bounds : W_Expr_Array (1 .. 2 * Dim);
+      Count        : Positive := 1;
+   begin
+      for I in 1 .. Dim loop
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Ty,
+            Attribute_First, I, Count, Params);
+         Add_Attr_Arg
+           (EW_Term, Right_Bounds, Right_Ty, Attribute_Last, I, Count, Params);
+      end loop;
+
+      return New_Bounds_Equality (Left_Arr, Right_Bounds, Dim, Domain);
    end New_Bounds_Equality;
 
    ---------------------
@@ -2697,7 +2845,7 @@ package body Why.Gen.Arrays is
                  (Domain      => EW_Term,
                   Name        => One_Id,
                   Location    => No_Location,
-                  Labels      => Name_Id_Sets.Empty_Set,
+                  Labels      => Symbol_Sets.Empty_Set,
                   Binders     => (1 .. 0 => <>),
                   Def         =>
                     (if Is_Modular_Integer_Type (Typ) then
@@ -2713,11 +2861,11 @@ package body Why.Gen.Arrays is
 
       return (1 => New_Clone_Substitution
               (Kind      => EW_Type_Subst,
-               Orig_Name => New_Name (Symbol => NID (Prefix & ".t")),
+               Orig_Name => New_Name (Symb => NID (Prefix & ".t")),
                Image     => Get_Name (WTyp)),
               2 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".le")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".le")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ule
@@ -2725,7 +2873,7 @@ package body Why.Gen.Arrays is
                       Int_Infix_Le)),
               3 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".lt")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".lt")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ult
@@ -2733,7 +2881,7 @@ package body Why.Gen.Arrays is
                       Int_Infix_Lt)),
               4 => New_Clone_Substitution
                 (Kind      => EW_Predicate,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".gt")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".gt")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Ugt
@@ -2741,7 +2889,7 @@ package body Why.Gen.Arrays is
                       Int_Infix_Gt)),
               5 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".add")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".add")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Add
@@ -2749,7 +2897,7 @@ package body Why.Gen.Arrays is
                       Int_Infix_Add)),
               6 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".sub")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".sub")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).Sub
@@ -2757,7 +2905,7 @@ package body Why.Gen.Arrays is
                       Int_Infix_Subtr)),
               7 => New_Clone_Substitution
                 (Kind      => EW_Function,
-                 Orig_Name => New_Name (Symbol => NID (Prefix & ".one")),
+                 Orig_Name => New_Name (Symb => NID (Prefix & ".one")),
                  Image     => Get_Name
                    (if Is_Modular_Integer_Type (Typ) then
                       MF_BVs (WTyp).One
@@ -2778,12 +2926,12 @@ package body Why.Gen.Arrays is
      ((1 =>
           New_Clone_Substitution
          (Kind      => EW_Type_Subst,
-          Orig_Name => New_Name (Symbol => NID ("map")),
+          Orig_Name => New_Name (Symb => NID ("map")),
           Image     => Get_Name (Symbols.Ty)),
        2 =>
           New_Clone_Substitution
          (Kind      => EW_Function,
-          Orig_Name => New_Name (Symbol => NID ("get")),
+          Orig_Name => New_Name (Symb => NID ("get")),
           Image     => Get_Name (Symbols.Get)))
       & Prepare_Indexes_Substitutions
         (Section, Etype (First_Index (Und_Ent)), "Index",
@@ -2808,7 +2956,7 @@ package body Why.Gen.Arrays is
          2 =>
            New_Clone_Substitution
              (Kind      => EW_Function,
-              Orig_Name => New_Name (Symbol => NID ("to_int")),
+              Orig_Name => New_Name (Symb => NID ("to_int")),
               Image     =>
                 Get_Name (Conversion_Name
                             (From =>
@@ -2817,7 +2965,7 @@ package body Why.Gen.Arrays is
          3 =>
            New_Clone_Substitution
              (Kind      => EW_Function,
-              Orig_Name => New_Name (Symbol => NID ("of_int")),
+              Orig_Name => New_Name (Symb => NID ("of_int")),
               Image     =>
                 Get_Name (Conversion_Name
                             (From => +EW_Int_Type,

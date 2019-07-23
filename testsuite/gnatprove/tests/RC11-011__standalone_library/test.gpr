@@ -1,0 +1,8 @@
+library project Test is
+
+   for Library_Dir use "lib";
+   for Library_ALI_Dir use "lib_ali";
+   for Library_Name use "mylib";
+   for Library_Interface use ("incr");
+
+end Test;

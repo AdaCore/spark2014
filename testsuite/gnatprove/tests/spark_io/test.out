@@ -1,24 +1,28 @@
+copy.adb:33:08: info: data dependencies proved
+copy.adb:36:03: info: flow dependencies proved
 copy.adb:42:14: info: implicit function contract not available for proof ("Status" might not return)
-copy.adb:42:14: medium: precondition of main program might fail
+copy.adb:42:14: medium: precondition of main program might fail, cannot prove Status (Standard_Error) = success
+copy.adb:47:04: info: initialization of "Count" proved
+copy.adb:48:04: info: initialization of "Count_Limit_Reached" proved
+copy.adb:50:04: info: initialization of "Response" proved
+copy.adb:51:04: info: initialization of "Yes_No" proved
+copy.adb:54:04: info: initialization of "Last" proved
+copy.adb:55:04: info: initialization of "Last_Of_Yes_No" proved
+copy.adb:56:04: info: initialization of "C" proved
 copy.adb:62:30: info: implicit function contract not available for proof ("Status" might not return)
 copy.adb:62:30: info: loop invariant initialization proved (CVC4: 3 VC)
 copy.adb:62:30: info: loop invariant preservation proved (CVC4: 3 VC)
 copy.adb:66:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:68:10: info: precondition proved (CVC4: 2 VC)
-copy.adb:77:09: info: initialization of "Last" proved
-copy.adb:81:45: info: initialization of "Last" proved
 copy.adb:84:13: info: precondition proved (CVC4: 1 VC)
-copy.adb:86:31: info: initialization of "Response" proved
 copy.adb:86:31: info: range check proved (CVC4: 4 VC)
 copy.adb:92:22: info: precondition proved (CVC4: 1 VC)
 copy.adb:92:51: info: range check proved (CVC4: 1 VC)
-copy.adb:92:53: info: initialization of "Response" proved
 copy.adb:92:53: info: range check proved (CVC4: 4 VC)
 copy.adb:93:32: info: range check proved (CVC4: 1 VC)
 copy.adb:95:22: info: precondition proved (CVC4: 2 VC)
 copy.adb:101:22: info: precondition proved (CVC4: 1 VC)
 copy.adb:101:51: info: range check proved (CVC4: 1 VC)
-copy.adb:101:53: info: initialization of "Response" proved
 copy.adb:101:53: info: range check proved (CVC4: 4 VC)
 copy.adb:102:32: info: range check proved (CVC4: 1 VC)
 copy.adb:104:22: info: precondition proved (CVC4: 2 VC)
@@ -31,24 +35,18 @@ copy.adb:133:30: info: loop invariant initialization proved (CVC4: 6 VC)
 copy.adb:133:30: info: loop invariant preservation proved (CVC4: 6 VC)
 copy.adb:140:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:142:10: info: precondition proved (CVC4: 2 VC)
-copy.adb:151:09: info: initialization of "Last" proved
-copy.adb:154:45: info: initialization of "Last" proved
 copy.adb:157:13: info: precondition proved (CVC4: 1 VC)
-copy.adb:159:33: info: initialization of "Response" proved
 copy.adb:159:33: info: range check proved (CVC4: 4 VC)
 copy.adb:165:22: info: precondition proved (CVC4: 1 VC)
 copy.adb:166:32: info: range check proved (CVC4: 1 VC)
-copy.adb:166:34: info: initialization of "Response" proved
 copy.adb:166:34: info: range check proved (CVC4: 4 VC)
 copy.adb:168:22: info: precondition proved (CVC4: 2 VC)
 copy.adb:174:22: info: precondition proved (CVC4: 1 VC)
 copy.adb:175:32: info: range check proved (CVC4: 1 VC)
-copy.adb:175:34: info: initialization of "Response" proved
 copy.adb:175:34: info: range check proved (CVC4: 4 VC)
 copy.adb:177:22: info: precondition proved (CVC4: 2 VC)
 copy.adb:182:22: info: precondition proved (CVC4: 1 VC)
 copy.adb:182:44: info: range check proved (CVC4: 1 VC)
-copy.adb:182:46: info: initialization of "Response" proved
 copy.adb:182:46: info: range check proved (CVC4: 4 VC)
 copy.adb:183:32: info: range check proved (CVC4: 1 VC)
 copy.adb:186:22: info: precondition proved (CVC4: 1 VC)
@@ -56,23 +54,16 @@ copy.adb:188:22: info: precondition proved (CVC4: 2 VC)
 copy.adb:194:45: info: loop invariant initialization proved (CVC4: 3 VC)
 copy.adb:194:45: info: loop invariant preservation proved (CVC4: 3 VC)
 copy.adb:195:45: info: implicit function contract not available for proof ("Status" might not return)
-copy.adb:202:25: info: initialization of "Last_Of_Yes_No" proved
 copy.adb:202:55: info: overflow check proved (CVC4: 1 VC)
 copy.adb:202:55: info: range check proved (CVC4: 1 VC)
 copy.adb:206:30: info: range check proved (CVC4: 4 VC)
-copy.adb:207:31: info: initialization of "Yes_No" proved
 copy.adb:207:31: info: range check proved (CVC4: 4 VC)
-copy.adb:207:55: info: initialization of "Last_Of_Yes_No" proved
 copy.adb:210:34: info: range check proved (CVC4: 4 VC)
-copy.adb:211:31: info: initialization of "Yes_No" proved
 copy.adb:211:31: info: range check proved (CVC4: 4 VC)
-copy.adb:211:55: info: initialization of "Last_Of_Yes_No" proved
 copy.adb:213:31: info: precondition proved (CVC4: 1 VC)
-copy.adb:215:49: info: initialization of "Response" proved
 copy.adb:215:49: info: range check proved (CVC4: 4 VC)
 copy.adb:220:34: info: precondition proved (CVC4: 1 VC)
 copy.adb:221:43: info: range check proved (CVC4: 1 VC)
-copy.adb:221:45: info: initialization of "Response" proved
 copy.adb:221:45: info: range check proved (CVC4: 4 VC)
 copy.adb:224:34: info: precondition proved (CVC4: 2 VC)
 copy.adb:232:31: info: precondition proved (CVC4: 1 VC)
@@ -89,11 +80,7 @@ copy.adb:270:30: info: loop invariant initialization proved (CVC4: 8 VC)
 copy.adb:270:30: info: loop invariant preservation proved (CVC4: 8 VC)
 copy.adb:278:07: info: precondition proved (CVC4: 2 VC)
 copy.adb:281:13: info: precondition proved (CVC4: 2 VC)
-copy.adb:281:31: info: initialization of "C.Item" proved
 copy.adb:281:32: info: discriminant check proved (CVC4: 1 VC)
-copy.adb:282:20: info: initialization of "Count_Limit_Reached" proved
-copy.adb:283:19: info: initialization of "Count" proved
-copy.adb:284:28: info: initialization of "Count" proved
 copy.adb:284:34: info: overflow check proved (CVC4: 1 VC)
 copy.adb:291:16: info: precondition proved (CVC4: 1 VC)
 copy.adb:292:73: low: range check might fail
@@ -107,9 +94,7 @@ copy.adb:306:23: info: precondition proved (CVC4: 1 VC)
 copy.adb:309:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:311:13: info: precondition proved (CVC4: 2 VC)
 copy.adb:312:13: info: precondition proved (CVC4: 2 VC)
-copy.adb:318:11: info: initialization of "Count_Limit_Reached" proved
 copy.adb:320:10: info: precondition proved (CVC4: 1 VC)
-copy.adb:320:15: info: initialization of "Count" proved
 copy.adb:323:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:327:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:331:10: info: precondition proved (CVC4: 1 VC)
@@ -117,23 +102,25 @@ copy.adb:335:10: info: precondition proved (CVC4: 1 VC)
 copy.adb:340:07: info: precondition proved (CVC4: 1 VC)
 copy.adb:343:07: info: precondition proved (CVC4: 2 VC)
 copy.adb:347:07: info: precondition proved (CVC4: 2 VC)
+echo.adb:31:08: info: data dependencies proved
 echo.adb:32:18: info: precondition of main program proved (CVC4: 1 VC)
+echo.adb:34:04: info: initialization of "C" proved
 echo.adb:36:14: info: function contract not available for proof ("End_Of_File" might not return)
 echo.adb:37:30: info: loop invariant initialization proved (CVC4: 1 VC)
 echo.adb:37:30: info: loop invariant preservation proved (CVC4: 1 VC)
 echo.adb:38:07: info: precondition proved (CVC4: 1 VC)
 echo.adb:41:13: info: precondition proved (CVC4: 1 VC)
-echo.adb:41:18: info: initialization of "C.Item" proved
 echo.adb:41:19: info: discriminant check proved (CVC4: 1 VC)
 echo.adb:44:16: info: precondition proved (CVC4: 2 VC)
 echo.adb:51:13: info: precondition proved (CVC4: 2 VC)
+echo_1.adb:31:08: info: data dependencies proved
 echo_1.adb:32:18: info: precondition of main program proved (CVC4: 3 VC)
+echo_1.adb:36:04: info: initialization of "C" proved
 echo_1.adb:38:14: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:39:30: info: loop invariant initialization proved (CVC4: 3 VC)
 echo_1.adb:39:30: info: loop invariant preservation proved (CVC4: 3 VC)
 echo_1.adb:42:07: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:45:13: info: precondition proved (CVC4: 2 VC)
-echo_1.adb:45:35: info: initialization of "C.Item" proved
 echo_1.adb:45:36: info: discriminant check proved (CVC4: 1 VC)
 echo_1.adb:48:16: info: precondition proved (CVC4: 2 VC)
 echo_1.adb:55:13: info: precondition proved (CVC4: 2 VC)
@@ -225,6 +212,7 @@ float_io.ads:27:01: info: in instantiation at spark-text_io-float_io.ads:89
 float_io.ads:27:01: info: in instantiation at spark-text_io-float_io.ads:90
 float_io.ads:27:01: info: in instantiation at spark-text_io-float_io.ads:91
 float_io.ads:27:01: info: in instantiation at spark-text_io-float_io.ads:92
+hello_world.adb:30:03: info: data dependencies proved
 hello_world.adb:31:13: info: implicit function contract not available for proof ("Status" might not return)
 hello_world.adb:31:13: info: precondition of main program proved (CVC4: 2 VC)
 hello_world.adb:35:04: info: precondition proved (CVC4: 1 VC)
@@ -333,16 +321,16 @@ spark-text_io-unbounded_io.ads:49:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:55:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:57:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:58:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:58:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:59:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:60:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:60:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:61:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io-unbounded_io.ads:62:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:62:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:63:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io-unbounded_io.ads:64:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:64:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:70:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:72:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:72:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -359,16 +347,16 @@ spark-text_io-unbounded_io.ads:75:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:81:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io-unbounded_io.ads:83:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:84:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:84:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:85:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:86:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:86:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:87:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io-unbounded_io.ads:88:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:88:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:89:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io-unbounded_io.ads:90:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail
+spark-text_io-unbounded_io.ads:90:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io-unbounded_io.ads:97:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:97:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:97:33: info: precondition proved (CVC4: 1 VC)
@@ -377,26 +365,28 @@ spark-text_io-unbounded_io.ads:98:33: info: implicit function contract not avail
 spark-text_io-unbounded_io.ads:98:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io-unbounded_io.ads:105:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io-unbounded_io.ads:105:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail
+spark-text_io-unbounded_io.ads:105:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io-unbounded_io.ads:106:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:106:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail
+spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail, cannot prove Is_Open (File)
+spark-text_io.ads:28:08: info: flow dependencies proved
 spark-text_io.ads:29:08: medium: initial condition might fail
-spark-text_io.ads:29:42: info: initialization of "Standard_Input" proved
-spark-text_io.ads:30:42: info: initialization of "Standard_Output" proved
-spark-text_io.ads:31:42: info: initialization of "Standard_Error" proved
 spark-text_io.ads:32:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:33:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:34:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
 spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error" proved
+spark-text_io.ads:106:09: info: data dependencies proved
+spark-text_io.ads:112:11: info: data dependencies proved
 spark-text_io.ads:134:31: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:134:31: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:135:11: info: data dependencies proved
 spark-text_io.ads:139:12: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:139:12: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:139:43: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:139:43: info: precondition proved (CVC4: 1 VC)
+spark-text_io.ads:140:11: info: data dependencies proved
 spark-text_io.ads:151:20: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:152:23: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:153:23: info: implicit function contract not available for proof ("Name" might not return)
@@ -446,16 +436,16 @@ spark-text_io.ads:233:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:239:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:240:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:241:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:241:24: medium: precondition might fail
+spark-text_io.ads:241:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:242:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:243:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:243:24: medium: precondition might fail
+spark-text_io.ads:243:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:244:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:245:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:245:24: medium: precondition might fail
+spark-text_io.ads:245:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:246:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:247:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:247:24: medium: precondition might fail
+spark-text_io.ads:247:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:255:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:255:52: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:257:20: info: implicit function contract not available for proof ("Mode" might not return)
@@ -475,13 +465,13 @@ spark-text_io.ads:266:25: info: implicit function contract not available for pro
 spark-text_io.ads:268:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:269:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:269:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:269:46: medium: precondition might fail
+spark-text_io.ads:269:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:270:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:270:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:270:46: medium: precondition might fail
+spark-text_io.ads:270:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:271:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:272:21: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:272:21: medium: precondition might fail
+spark-text_io.ads:272:21: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:279:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:279:52: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:280:38: info: implicit function contract not available for proof ("Mode" might not return)
@@ -501,13 +491,13 @@ spark-text_io.ads:289:24: info: implicit function contract not available for pro
 spark-text_io.ads:291:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:292:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:292:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:292:46: medium: precondition might fail
+spark-text_io.ads:292:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:293:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:293:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:293:46: medium: precondition might fail
+spark-text_io.ads:293:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:294:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:295:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:295:24: medium: precondition might fail
+spark-text_io.ads:295:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:318:38: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:318:52: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:318:52: info: precondition proved (CVC4: 1 VC)
@@ -526,16 +516,16 @@ spark-text_io.ads:322:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:328:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:329:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:330:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:330:24: medium: precondition might fail
+spark-text_io.ads:330:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:331:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:332:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:332:24: medium: precondition might fail
+spark-text_io.ads:332:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:333:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:334:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:334:24: medium: precondition might fail
+spark-text_io.ads:334:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:335:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:336:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:336:24: medium: precondition might fail
+spark-text_io.ads:336:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:342:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:344:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:344:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -568,16 +558,16 @@ spark-text_io.ads:371:40: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:377:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:378:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:379:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:379:24: medium: precondition might fail
+spark-text_io.ads:379:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:380:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:381:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:381:24: medium: precondition might fail
+spark-text_io.ads:381:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:382:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:383:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:383:24: medium: precondition might fail
+spark-text_io.ads:383:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:384:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:385:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:385:24: medium: precondition might fail
+spark-text_io.ads:385:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:390:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:392:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:392:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -600,19 +590,19 @@ spark-text_io.ads:424:54: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:425:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:427:39: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:427:53: info: implicit function contract not available for proof ("Mode" might not return)
-spark-text_io.ads:427:53: medium: precondition might fail
+spark-text_io.ads:427:53: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:429:20: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:429:34: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:429:34: medium: precondition might fail
+spark-text_io.ads:429:34: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:430:20: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:430:34: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:430:34: medium: precondition might fail
+spark-text_io.ads:430:34: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:431:20: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:431:41: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:431:41: medium: precondition might fail
+spark-text_io.ads:431:41: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:432:20: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:432:41: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:432:41: medium: precondition might fail
+spark-text_io.ads:432:41: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:438:25: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:438:25: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:439:31: info: implicit function contract not available for proof ("Line_Length" might not return)
@@ -680,10 +670,10 @@ spark-text_io.ads:517:25: info: function contract not available for proof ("End_
 spark-text_io.ads:519:31: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:521:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:521:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:521:45: medium: precondition might fail
+spark-text_io.ads:521:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:522:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:522:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:522:45: medium: precondition might fail
+spark-text_io.ads:522:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:526:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:530:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:533:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -705,16 +695,16 @@ spark-text_io.ads:542:21: info: implicit function contract not available for pro
 spark-text_io.ads:544:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:545:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:546:23: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:546:23: medium: precondition might fail
+spark-text_io.ads:546:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:547:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:548:23: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:548:23: medium: precondition might fail
+spark-text_io.ads:548:23: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:549:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:550:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:550:24: medium: precondition might fail
+spark-text_io.ads:550:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:551:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:552:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:552:24: medium: precondition might fail
+spark-text_io.ads:552:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:561:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:561:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:561:33: info: precondition proved (CVC4: 1 VC)
@@ -723,10 +713,10 @@ spark-text_io.ads:562:33: info: implicit function contract not available for pro
 spark-text_io.ads:562:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:569:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:569:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:569:45: medium: precondition might fail
+spark-text_io.ads:569:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:570:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:570:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:570:45: medium: precondition might fail
+spark-text_io.ads:570:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:576:51: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:578:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:578:33: info: implicit function contract not available for proof ("Name" might not return)
@@ -765,10 +755,10 @@ spark-text_io.ads:622:23: info: implicit function contract not available for pro
 spark-text_io.ads:626:21: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:628:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:628:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:628:45: medium: precondition might fail
+spark-text_io.ads:628:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:629:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:629:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:629:45: medium: precondition might fail
+spark-text_io.ads:629:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:631:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:636:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:639:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -790,16 +780,16 @@ spark-text_io.ads:648:21: info: implicit function contract not available for pro
 spark-text_io.ads:650:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:651:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:651:46: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:651:46: medium: precondition might fail
+spark-text_io.ads:651:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:652:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:652:46: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:652:46: medium: precondition might fail
+spark-text_io.ads:652:46: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:653:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:654:23: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:654:23: medium: precondition might fail
+spark-text_io.ads:654:23: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:655:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:656:23: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:656:23: medium: precondition might fail
+spark-text_io.ads:656:23: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:670:19: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:670:33: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:670:33: info: precondition proved (CVC4: 1 VC)
@@ -809,10 +799,10 @@ spark-text_io.ads:671:33: info: precondition proved (CVC4: 1 VC)
 spark-text_io.ads:674:23: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:682:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:682:45: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:682:45: medium: precondition might fail
+spark-text_io.ads:682:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:683:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:683:45: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:683:45: medium: precondition might fail
+spark-text_io.ads:683:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:685:25: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:692:47: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:695:19: info: implicit function contract not available for proof ("Mode" might not return)
@@ -834,16 +824,17 @@ spark-text_io.ads:705:21: info: implicit function contract not available for pro
 spark-text_io.ads:707:21: info: implicit function contract not available for proof ("Mode" might not return)
 spark-text_io.ads:708:21: info: implicit function contract not available for proof ("Name" might not return)
 spark-text_io.ads:709:24: info: implicit function contract not available for proof ("Name" might not return)
-spark-text_io.ads:709:24: medium: precondition might fail
+spark-text_io.ads:709:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:710:21: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io.ads:711:24: info: implicit function contract not available for proof ("Form" might not return)
-spark-text_io.ads:711:24: medium: precondition might fail
+spark-text_io.ads:711:24: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:712:21: info: implicit function contract not available for proof ("Line_Length" might not return)
 spark-text_io.ads:713:24: info: implicit function contract not available for proof ("Line_Length" might not return)
-spark-text_io.ads:713:24: medium: precondition might fail
+spark-text_io.ads:713:24: medium: precondition might fail, cannot prove Is_Writable (File)
 spark-text_io.ads:714:21: info: implicit function contract not available for proof ("Page_Length" might not return)
 spark-text_io.ads:715:24: info: implicit function contract not available for proof ("Page_Length" might not return)
-spark-text_io.ads:715:24: medium: precondition might fail
+spark-text_io.ads:715:24: medium: precondition might fail, cannot prove Is_Writable (File)
+use_enum_io.adb:31:08: info: data dependencies proved
 use_enum_io.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_enum_io.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_enum_io.adb:37:30: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -854,8 +845,10 @@ use_enum_io.adb:44:07: info: precondition proved (CVC4: 1 VC)
 use_enum_io.adb:47:10: info: precondition proved (CVC4: 2 VC)
 use_enum_io.adb:51:14: info: precondition proved (CVC4: 1 VC)
 use_enum_io.adb:54:10: info: precondition proved (CVC4: 2 VC)
+use_float_io.adb:31:08: info: data dependencies proved
 use_float_io.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_float_io.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
+use_float_io.adb:35:04: info: initialization of "F" proved
 use_float_io.adb:38:19: info: range check proved (Interval)
 use_float_io.adb:38:22: info: float overflow check proved (Interval)
 use_float_io.adb:39:30: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -865,8 +858,8 @@ use_float_io.adb:42:10: info: precondition proved (CVC4: 2 VC)
 use_float_io.adb:46:07: info: precondition proved (CVC4: 1 VC)
 use_float_io.adb:49:10: info: precondition proved (CVC4: 2 VC)
 use_float_io.adb:53:07: info: precondition proved (CVC4: 1 VC)
-use_float_io.adb:53:20: info: initialization of "F" proved
 use_float_io.adb:56:10: info: precondition proved (CVC4: 2 VC)
+use_int_io.adb:31:08: info: data dependencies proved
 use_int_io.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_int_io.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_int_io.adb:37:30: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -877,6 +870,7 @@ use_int_io.adb:42:13: info: precondition proved (CVC4: 1 VC)
 use_int_io.adb:46:16: info: precondition proved (CVC4: 2 VC)
 use_int_io.adb:50:13: info: precondition proved (CVC4: 2 VC)
 use_int_io.adb:54:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_1.adb:31:08: info: data dependencies proved
 use_int_io_1.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_int_io_1.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_int_io_1.adb:37:30: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -887,6 +881,7 @@ use_int_io_1.adb:42:10: info: precondition proved (CVC4: 2 VC)
 use_int_io_1.adb:47:10: info: precondition proved (CVC4: 1 VC)
 use_int_io_1.adb:49:10: info: precondition proved (CVC4: 2 VC)
 use_int_io_1.adb:56:10: info: precondition proved (CVC4: 2 VC)
+use_int_io_2.adb:31:08: info: data dependencies proved
 use_int_io_2.adb:32:18: info: precondition of main program proved (CVC4: 2 VC)
 use_int_io_2.adb:33:18: info: implicit function contract not available for proof ("Status" might not return)
 use_int_io_2.adb:37:30: info: loop invariant initialization proved (CVC4: 2 VC)

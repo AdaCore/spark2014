@@ -1,175 +1,156 @@
 tests.adb:19:28: info: initialization of "B" proved
+tests.adb:20:09: info: data dependencies proved
 tests.adb:22:28: info: initialization of "B" proved
+tests.adb:23:09: info: data dependencies proved
 tests.adb:25:28: info: initialization of "B" proved
+tests.adb:26:09: info: data dependencies proved
+tests.adb:31:09: info: data dependencies proved
+tests.adb:34:09: info: data dependencies proved
+tests.adb:37:09: info: data dependencies proved
 tests.adb:100:23: info: initialization of "N" proved
+tests.adb:101:09: info: data dependencies proved
 tests.adb:102:21: medium: missing dependency "N => Obj"
 tests.adb:112:25: info: initialization of "N" proved
+tests.adb:113:09: info: data dependencies proved
 tests.adb:114:21: medium: missing dependency "N => Obj"
 tests.adb:122:23: info: initialization of "N" proved
+tests.adb:123:09: info: data dependencies proved
+tests.adb:124:09: info: flow dependencies proved
 tests.adb:131:23: info: initialization of "N" proved
+tests.adb:132:09: info: data dependencies proved
+tests.adb:133:09: info: flow dependencies proved
 tests.adb:140:23: info: initialization of "N" proved
+tests.adb:141:09: info: data dependencies proved
+tests.adb:142:09: info: flow dependencies proved
 tests.adb:151:23: info: initialization of "N" proved
+tests.adb:152:09: info: data dependencies proved
 tests.adb:153:21: medium: missing dependency "N => C"
 tests.adb:154:29: medium: incorrect dependency "null => C"
-tests.adb:161:12: info: initialization of "Tmp.X" proved
-tests.adb:161:12: info: initialization of "Tmp.Y" proved
 tests.adb:166:23: info: initialization of "N" proved
+tests.adb:167:09: info: data dependencies proved
 tests.adb:168:21: medium: missing dependency "N => C"
 tests.adb:169:29: medium: incorrect dependency "null => C"
 tests.adb:180:23: info: initialization of "N" proved
+tests.adb:181:09: info: data dependencies proved
 tests.adb:182:21: medium: missing dependency "N => A"
 tests.adb:182:21: medium: missing dependency "N => B"
 tests.adb:183:30: medium: incorrect dependency "null => A"
 tests.adb:183:33: medium: incorrect dependency "null => B"
-tests.adb:191:12: info: initialization of "Obj.Round" proved
-tests.adb:191:12: info: initialization of "Obj.X" proved
-tests.adb:191:12: info: initialization of "Obj.Y" proved
 tests.adb:196:23: info: initialization of "N" proved
+tests.adb:197:09: info: data dependencies proved
+tests.adb:198:09: info: flow dependencies proved
 tests.adb:202:07: warning: initialization of "Obj" has no effect
-tests.adb:209:12: info: initialization of "Obj.Round" proved
-tests.adb:209:12: info: initialization of "Obj.X" proved
-tests.adb:209:12: info: initialization of "Obj.Y" proved
 tests.adb:215:23: info: initialization of "N" proved
+tests.adb:216:09: info: data dependencies proved
 tests.adb:217:21: medium: missing dependency "N => C"
 tests.adb:218:29: medium: incorrect dependency "null => C"
-tests.adb:225:36: info: initialization of "Tmp.B.X" proved
-tests.adb:225:36: info: initialization of "Tmp.B.Y" proved
-tests.adb:227:12: info: initialization of "Tmp2.X" proved
-tests.adb:227:12: info: initialization of "Tmp2.Y" proved
 tests.adb:233:23: info: initialization of "N" proved
-tests.adb:241:12: info: initialization of "Tmp.X" proved
-tests.adb:241:12: info: initialization of "Tmp.Y" proved
+tests.adb:234:09: info: data dependencies proved
+tests.adb:235:09: info: flow dependencies proved
 tests.adb:245:23: info: initialization of "N" proved
-tests.adb:251:12: info: initialization of "Tmp.X" proved
-tests.adb:251:12: info: initialization of "Tmp.Y" proved
+tests.adb:246:09: info: data dependencies proved
+tests.adb:247:09: info: flow dependencies proved
 tests.adb:256:23: info: initialization of "Y" proved
-tests.adb:267:24: info: initialization of "Tmp1.F" proved
-tests.adb:269:12: info: initialization of "Tmp2.F" proved
+tests.adb:257:09: info: data dependencies proved
+tests.adb:258:09: info: flow dependencies proved
 tests.adb:276:23: info: initialization of "X" proved
 tests.adb:277:23: info: initialization of "Y" proved
 tests.adb:278:23: info: initialization of "Z" proved
+tests.adb:279:09: info: data dependencies proved
 tests.adb:280:21: medium: missing dependency "X => C"
 tests.adb:281:21: medium: missing dependency "Y => A"
 tests.adb:281:21: medium: missing dependency "Y => B"
 tests.adb:282:21: medium: missing dependency "Z => A"
-tests.adb:291:35: info: initialization of "Obj.X" proved
-tests.adb:291:35: info: initialization of "Obj.Y" proved
-tests.adb:292:25: info: initialization of "Obj.Round" proved
-tests.adb:292:25: info: initialization of "Obj.X" proved
-tests.adb:292:25: info: initialization of "Obj.Y" proved
-tests.adb:293:35: info: initialization of "Tmp.B.X" proved
-tests.adb:293:35: info: initialization of "Tmp.B.Y" proved
-tests.adb:295:25: info: initialization of "Tmp2.X" proved
-tests.adb:295:25: info: initialization of "Tmp2.Y" proved
-tests.adb:296:25: info: initialization of "Tmp.B.Round" proved
-tests.adb:297:25: info: initialization of "Tmp.A.Y" proved
+tests.adb:284:07: info: initialization of "Obj" proved
+tests.adb:285:07: info: initialization of "Tmp" proved
+tests.adb:286:07: info: initialization of "Tmp2" proved
 tests.adb:301:23: info: initialization of "X" proved
-tests.adb:315:13: info: discriminant check proved (CVC4: 2 VC)
-tests.adb:315:13: info: initialization of "A" proved
-tests.adb:316:16: info: initialization of "A" proved
+tests.adb:302:09: info: data dependencies proved
+tests.adb:315:13: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 tests.adb:320:23: info: initialization of "X" proved
+tests.adb:321:09: info: data dependencies proved
 tests.adb:331:48: info: range check proved (CVC4: 1 VC)
 tests.adb:334:20: info: range check proved (CVC4: 1 VC)
 tests.adb:336:16: high: "H1.Content.Field" is not initialized
 tests.adb:336:19: info: range check proved (CVC4: 1 VC)
 tests.adb:340:23: info: initialization of "R" proved
+tests.adb:341:09: info: data dependencies proved
 tests.adb:352:14: info: range check proved (CVC4: 1 VC)
 tests.adb:352:24: info: discriminant check proved (CVC4: 1 VC)
-tests.adb:355:09: info: discriminant check proved (CVC4: 2 VC)
-tests.adb:356:15: info: initialization of "B.X" proved
+tests.adb:353:07: info: initialization of "B" proved
+tests.adb:355:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 tests.adb:360:23: info: initialization of "N" proved
 tests.adb:361:23: info: initialization of "M" proved
-tests.adb:375:25: info: initialization of "Tmp.X" proved
-tests.adb:375:25: info: initialization of "Tmp.Y" proved
-tests.adb:375:25: info: initialization of private part of "Tmp" proved
-tests.adb:376:12: info: initialization of "Tmp2.W.X" proved
-tests.adb:376:12: info: initialization of "Tmp2.W.Y" proved
-tests.adb:376:12: info: initialization of private part of "Tmp2.W" proved
-tests.adb:377:22: info: initialization of "Tmp2.W.X" proved
-tests.adb:377:22: info: initialization of "Tmp2.W.Y" proved
+tests.adb:362:09: info: data dependencies proved
+tests.adb:363:09: info: flow dependencies proved
+tests.adb:370:07: info: initialization of "Tmp" proved
+tests.adb:371:07: info: initialization of "Tmp2" proved
 tests.adb:381:23: info: initialization of "N" proved
-tests.adb:387:12: info: initialization of "Tmp.X" proved
-tests.adb:387:12: info: initialization of "Tmp.Y" proved
+tests.adb:384:07: info: initialization of "Tmp" proved
 tests.adb:393:23: info: initialization of "B" proved
+tests.adb:394:09: info: data dependencies proved
+tests.adb:395:09: info: flow dependencies proved
 tests.adb:398:37: info: range check proved (CVC4: 1 VC)
+tests.adb:399:07: info: initialization of "X" proved
 tests.adb:401:15: info: discriminant check proved (CVC4: 1 VC)
-tests.adb:402:18: info: initialization of private part of "X" proved
 tests.adb:408:23: info: initialization of "N" proved
 tests.adb:409:23: info: initialization of "M" proved
 tests.adb:410:23: info: initialization of "O" proved
+tests.adb:411:09: info: data dependencies proved
 tests.adb:413:21: medium: missing dependency "M => B"
 tests.adb:414:21: medium: missing dependency "O => A"
-tests.adb:419:45: info: initialization of "X.Round" proved
-tests.adb:419:45: info: initialization of "X.X" proved
-tests.adb:419:45: info: initialization of "X.Y" proved
-tests.adb:420:43: info: initialization of "Y.X" proved
-tests.adb:420:43: info: initialization of "Y.Y" proved
 tests.adb:420:43: info: tag check proved (CVC4: 1 VC)
-tests.adb:422:12: info: initialization of "Y.X" proved
-tests.adb:422:12: info: initialization of "Y.Y" proved
-tests.adb:422:12: info: initialization of extension of "Y" proved
-tests.adb:423:12: info: initialization of "Z.X" proved
 tests.adb:423:13: medium: range check might fail
-tests.adb:424:12: info: initialization of "Z.Round" proved
 tests.adb:428:23: info: initialization of "N" proved
+tests.adb:429:09: info: data dependencies proved
+tests.adb:430:09: info: flow dependencies proved
 tests.adb:439:23: info: initialization of "N" proved
+tests.adb:440:09: info: data dependencies proved
+tests.adb:441:09: info: flow dependencies proved
+tests.adb:452:09: info: data dependencies proved
+tests.adb:465:09: info: data dependencies proved
 tests.adb:470:21: medium: tag check might fail
 tests.adb:478:23: info: initialization of "M" proved
 tests.adb:479:23: info: initialization of "N" proved
-tests.adb:486:12: info: initialization of "X.X" proved
-tests.adb:486:12: info: initialization of "X.Y" proved
+tests.adb:480:09: info: data dependencies proved
 tests.adb:491:23: info: initialization of "O1" proved
 tests.adb:492:23: info: initialization of "O2" proved
 tests.adb:493:23: info: initialization of "O3" proved
 tests.adb:494:23: info: initialization of "O4" proved
 tests.adb:495:23: info: initialization of "O5" proved
+tests.adb:496:09: info: data dependencies proved
 tests.adb:497:21: medium: missing dependency "O1 => A"
 tests.adb:509:07: warning: initialization of "Y" has no effect
-tests.adb:516:13: info: initialization of "X.X" proved
-tests.adb:516:13: info: initialization of "X.Y" proved
-tests.adb:520:13: info: initialization of "Y.X" proved
-tests.adb:520:13: info: initialization of "Y.Y" proved
-tests.adb:523:13: info: initialization of "Z.X" proved
-tests.adb:523:13: info: initialization of "Z.Y" proved
-tests.adb:523:13: info: initialization of extension of "Z" proved
-tests.adb:527:13: info: initialization of "ZZ.X" proved
-tests.adb:527:13: info: initialization of "ZZ.Y" proved
-tests.adb:527:13: info: initialization of extension of "ZZ" proved
 tests.adb:534:23: info: initialization of "O1" proved
 tests.adb:535:23: info: initialization of "O2" proved
 tests.adb:536:23: info: initialization of "O3" proved
+tests.adb:537:09: info: data dependencies proved
+tests.adb:538:09: info: flow dependencies proved
 tests.adb:554:23: info: initialization of "O1" proved
 tests.adb:555:23: info: initialization of "O2" proved
 tests.adb:556:23: info: initialization of "O3" proved
-tests.adb:594:23: info: initialization of "E.X" proved
-tests.adb:594:23: info: initialization of "E.Y" proved
-tests.adb:594:23: info: initialization of extension of "E" proved
-tests.adb:595:23: info: initialization of "F.X" proved
-tests.adb:595:23: info: initialization of "F.Y" proved
-tests.adb:595:23: info: initialization of extension of "F" proved
-tests.adb:596:23: info: initialization of "G.X" proved
-tests.adb:596:23: info: initialization of "G.Y" proved
-tests.adb:596:23: info: initialization of extension of "G" proved
-tests.adb:597:23: info: initialization of "H.X" proved
-tests.adb:597:23: info: initialization of "H.Y" proved
-tests.adb:597:23: info: initialization of extension of "H" proved
+tests.adb:557:09: info: data dependencies proved
+tests.adb:558:09: info: flow dependencies proved
+tests.adb:577:09: info: data dependencies proved
+tests.adb:594:23: info: initialization of "E" proved
+tests.adb:595:23: info: initialization of "F" proved
+tests.adb:596:23: info: initialization of "G" proved
+tests.adb:597:23: info: initialization of "H" proved
+tests.adb:598:09: info: data dependencies proved
 tests.adb:606:26: medium: tag check might fail
 tests.adb:607:26: medium: tag check might fail
 tests.adb:608:26: medium: tag check might fail
 tests.adb:609:26: medium: tag check might fail
-tests.adb:613:23: info: initialization of "W2.X" proved
-tests.adb:613:23: info: initialization of "W2.Y" proved
-tests.adb:613:23: info: initialization of extension of "W2" proved
+tests.adb:613:23: info: initialization of "W2" proved
 tests.adb:614:23: info: initialization of "O1" proved
+tests.adb:615:09: info: data dependencies proved
+tests.adb:619:12: info: data dependencies proved
 tests.adb:620:33: info: initialization of "O1" proved
-tests.adb:624:16: info: initialization of "Tmp.X" proved
-tests.adb:624:16: info: initialization of "Tmp.Y" proved
-tests.adb:624:16: info: initialization of extension of "Tmp" proved
-tests.adb:629:33: info: initialization of "W2.X" proved
-tests.adb:629:33: info: initialization of "W2.Y" proved
-tests.adb:629:33: info: initialization of extension of "W2" proved
+tests.adb:628:12: info: data dependencies proved
+tests.adb:629:33: info: initialization of "W2" proved
 tests.adb:632:30: medium: tag check might fail
+untangle.adb:35:09: info: data dependencies proved
+untangle.adb:40:09: info: data dependencies proved
 untangle.adb:43:08: medium: discriminant check might fail [possible explanation: subprogram at line 38 should mention X in a precondition]
-untangle.adb:43:14: info: precondition proved (CVC4: 1 VC)
 untangle.adb:43:14: medium: array index check might fail [possible explanation: subprogram at line 38 should mention G and N in a precondition]
-untangle.adb:43:14: medium: precondition might fail [possible explanation: subprogram at line 38 should mention G and N in a precondition]
+untangle.adb:43:14: medium: precondition might fail, cannot prove G [possible explanation: subprogram at line 38 should mention G in a precondition]

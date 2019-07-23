@@ -2,11 +2,11 @@
 (* Module for checking contracts and absence of run-time errors in subprogram "main" defined at main.adb:4, created in Gnat2Why.Subprograms.Generate_VCs_For_Subprogram *)
 module Main__subprogram_def
 
- use import "int".Int
+ use "int".Int
 
- let def #"main.adb" 4 0 0# "GP_Subp:main.adb:4" "W:diverges:N"
+ let def [#"main.adb" 4 0 0] [@GP_Subp:main.adb:4] [@W:diverges:N]
    (__void_param : unit)
    =
-   assert { #"main.adb" 15 0 0# "model_vc" "keep_on_simp" "GP_Reason:VC_RANGE_CHECK" "GP_Shape:call_get__typeconv" "GP_Sloc:main.adb:15:32" "GP_Id:1" (0 = 0)};
-   assert { #"main.adb" 15 0 0# "model_vc" "keep_on_simp" "GP_Reason:VC_RANGE_CHECK" "GP_Shape:call_get__typeconv" "GP_Sloc:main.adb:15:32" "GP_Id:0" (0 = 3)};
+   assert { [#"main.adb" 15 0 0] [@vc:annotation] [@keep_on_simp] [@GP_Reason:VC_RANGE_CHECK] [@GP_Shape:call_get__typeconv] [@GP_Sloc:main.adb:15:32] [@GP_Id:1] (0 = 0)};
+   assert { [#"main.adb" 15 0 0] [@vc:annotation] [@keep_on_simp] [@GP_Reason:VC_RANGE_CHECK] [@GP_Shape:call_get__typeconv] [@GP_Sloc:main.adb:15:32] [@GP_Id:0] (0 = 3)};
 end

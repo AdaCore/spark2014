@@ -1,3 +1,6 @@
 from test_support import *
 
-prove_all()
+# This test is a smoke one for usage of code of non-local procedure inside
+# others. There is no way to have any meaningful counterexamples: any
+# counterexamples present is noise and should be treated like it.
+prove_all(counterexample=False)

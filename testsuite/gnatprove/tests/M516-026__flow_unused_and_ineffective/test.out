@@ -1,6 +1,11 @@
 test.adb:7:23: info: initialization of "Y" proved
+test.adb:8:09: info: data dependencies proved
+test.adb:9:09: info: flow dependencies proved
 test.adb:16:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:17:23: info: initialization of "Y" proved
 test.adb:23:23: info: initialization of "Y" proved
+test.adb:24:09: info: data dependencies proved
 test.adb:24:20: low: unused global "Z"
+test.adb:25:09: info: flow dependencies proved
 test.adb:32:23: info: initialization of "Y" proved
+test.adb:33:09: info: data dependencies proved

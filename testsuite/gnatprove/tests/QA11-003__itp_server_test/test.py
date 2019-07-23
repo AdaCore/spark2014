@@ -2,6 +2,22 @@ from test_support import *
 import time
 import json
 
+"""TO UPDATE: When this test needs updating, the problem is most likely that
+the number in CST_NODE, CST_SPLIT and CST_GOAL are no longer relevant. To
+change them, you need to modify itp_lib.py in GPS spark plugin and change the
+debug variable to True (this make node number appear in manual proof). Then,
+launch this test prove_all and then click edit manual proof. You just need to
+report the ID number of the node above the split transformation in CST_NODE,
+the node for split on CST_SPLIT and the node that is unproved (last one of the
+tree) on CST_GOAL.
+Note that you need to update the *.in file too with the CST_GOAL everywhere.
+"""
+
+
+""" This tests is a commandline test for the itp server. It launches a server as
+a background process, and then pass it request in JSON. The output to be checked
+are notifications written in JSON"""
+
 DEAD = "Dead"
 INITIALIZED = "Initialized"
 NEXT_UNPROVEN = "Next_Unproven_Node_Id"
@@ -19,18 +35,20 @@ MESS_NOTIF = "mess_notif"
 RLIMIT = "\nrlimit: Real time limit (8 s) exceeded\n"
 TASK_MONITOR = "Task_Monitor"
 
-""" This tests is a commandline test for the itp server. It launches a server as
-a background process, and then pass it request in JSON. The output to be checked
-are notifications written in JSON"""
+# Node above the split transformation
+CST_NODE = 10
+# Node corresponding to the split transformation
+CST_SPLIT = 11
+# Goal on which we apply z3 etc
+CST_GOAL = 18
 
 # This launches the itp_server
 def launch_server(limit_line, input_file):
 
     installdir = spark_install_path()
     bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
-    Env().add_path(bindir)
 
-    cmd = ["gnat_server", "--limit-line", limit_line, "test.mlw"]
+    cmd = [os.path.join (bindir, "gnat_server"), "--limit-line", limit_line, "test.mlw"]
     # Create a pipe to give request to the process one by one.
     read, write = os.pipe()
     # process writes output to file, so we can avoid deadlocking
@@ -54,8 +72,8 @@ def launch_server(limit_line, input_file):
     task_monitor = 0
     next_unproven = 0
     node_change = 0
-    children_96 = 0
-    children_97 = 0
+    children_CST_NODE = 0
+    children_CST_SPLIT = 0
     children = 0
     for i in l:
         try:
@@ -66,10 +84,10 @@ def launch_server(limit_line, input_file):
                 node_change = node_change + 1
             elif notif_type == NEW_NODE:
                 children = children + 1
-                if j[PARENT_ID] == 97:
-                    children_96 = children_96 + 1
-                elif j[PARENT_ID] == 98:
-                    children_97 = children_97 + 1
+                if j[PARENT_ID] == CST_SPLIT:
+                    children_CST_NODE = children_CST_NODE + 1
+                elif j[PARENT_ID] == CST_GOAL:
+                    children_CST_SPLIT = children_CST_SPLIT + 1
             elif notif_type == NEXT_UNPROVEN:
                 # TODO this is ok but we print nothing
                 next_unproven = next_unproven + 1
@@ -96,10 +114,10 @@ def launch_server(limit_line, input_file):
             elif i != "\n" and i != " ":
                 nb_unparsed = nb_unparsed + 1
                 print ("UNPARSED NOTIFICATION " + i)
-    if children_96 == 1:
-        print ("Children 96 OK")
-    if children_97 == 3:
-        print ("Children 97 OK")
+    if children_CST_NODE == 1:
+        print ("Children CST_NODE OK")
+    if children_CST_SPLIT == 3:
+        print ("Children CST_SPLIT OK")
     if children == 5:
         print ("Children OK")
     print ("Unparsed JSON = " + str(nb_unparsed))

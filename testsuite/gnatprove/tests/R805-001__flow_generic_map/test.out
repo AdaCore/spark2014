@@ -1,1 +1,2 @@
-p.ads:3:28: info: initialization of "V" proved
+p.ads:8:45: info: data dependencies proved, in instantiation at p.ads:12
+p.ads:14:47: info: data dependencies proved

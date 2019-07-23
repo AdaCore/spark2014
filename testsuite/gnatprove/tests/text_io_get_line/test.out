@@ -9,6 +9,8 @@ helpers.ads:54:43: info: overflow check proved (CVC4: 1 VC)
 helpers.ads:54:47: info: overflow check proved (CVC4: 1 VC)
 helpers.ads:54:57: info: index check proved (CVC4: 2 VC)
 helpers.ads:60:50: info: precondition proved (CVC4: 1 VC)
+textio-get_line.adb:22:04: info: initialization of "ch" proved
+textio-get_line.adb:23:04: info: initialization of "N" proved
 textio-get_line.adb:25:39: info: initialization of "Rest" proved
 textio-get_line.adb:34:56: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:34:73: info: index check proved (CVC4: 2 VC)
@@ -31,164 +33,112 @@ textio-get_line.adb:66:48: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:66:115: info: range check proved (CVC4: 1 VC)
 textio-get_line.adb:67:55: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:67:72: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:68:12: info: initialization of "Rest" proved
+textio-get_line.adb:79:07: info: initialization of "Buf" proved
+textio-get_line.adb:80:07: info: initialization of "P" proved
+textio-get_line.adb:81:07: info: initialization of "Success" proved
 textio-get_line.adb:96:07: info: precondition proved (CVC4: 1 VC)
-textio-get_line.adb:96:15: info: initialization of "Buf" proved
 textio-get_line.adb:98:22: info: assertion proved (CVC4: 1 VC)
-textio-get_line.adb:98:22: info: initialization of "Buf" proved
 textio-get_line.adb:98:27: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:100:13: info: initialization of "Buf" proved
-textio-get_line.adb:102:14: info: initialization of "Success" proved
 textio-get_line.adb:114:13: info: raise statement proved unreachable (CVC4: 1 VC)
 textio-get_line.adb:118:12: info: precondition proved (CVC4: 1 VC)
-textio-get_line.adb:118:20: info: initialization of "Buf" proved
-textio-get_line.adb:125:10: info: initialization of "P" proved
-textio-get_line.adb:126:10: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:126:10: info: precondition proved (CVC4: 8 VC; Trivial: 1 VC)
 textio-get_line.adb:126:44: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:127:24: info: initialization of "Buf" proved
 textio-get_line.adb:128:27: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:139:37: info: initialization of "P" proved
 textio-get_line.adb:139:39: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:145:28: info: assertion proved (CVC4: 2 VC)
+textio-get_line.adb:145:28: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 textio-get_line.adb:145:106: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:146:31: info: initialization of "K" proved
 textio-get_line.adb:146:35: info: precondition proved (CVC4: 1 VC)
 textio-get_line.adb:146:114: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:148:16: info: initialization of "K" proved
 textio-get_line.adb:148:18: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:148:34: info: initialization of "Buf" proved
 textio-get_line.adb:148:41: info: index check proved (CVC4: 2 VC)
 textio-get_line.adb:148:41: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:152:31: info: initialization of "Buf" proved
 textio-get_line.adb:152:31: medium: assertion might fail, cannot prove Buf (K) = ASCII.nul
-textio-get_line.adb:152:36: info: initialization of "K" proved
 textio-get_line.adb:152:36: medium: array index check might fail
-textio-get_line.adb:153:21: info: initialization of "K" proved
 textio-get_line.adb:153:23: medium: range check might fail
-textio-get_line.adb:156:13: info: precondition proved (CVC4: 9 VC)
+textio-get_line.adb:156:13: info: precondition proved (CVC4: 8 VC; Trivial: 1 VC)
 textio-get_line.adb:156:47: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:157:27: info: initialization of "Buf" proved
-textio-get_line.adb:157:49: info: initialization of "K" proved
 textio-get_line.adb:158:26: info: overflow check proved (CVC4: 1 VC)
-textio-get_line.adb:158:28: info: initialization of "K" proved
-textio-get_line.adb:173:09: info: length check proved (CVC4: 4 VC)
+textio-get_line.adb:167:04: info: initialization of "Rest" proved
+textio-get_line.adb:173:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio-get_line.adb:174:23: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:174:23: medium: range check might fail
 textio-get_line.adb:184:19: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:184:32: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:186:10: info: initialization of "N" proved
-textio-get_line.adb:187:30: info: initialization of "Last" proved
 textio-get_line.adb:187:30: info: loop invariant initialization proved (CVC4: 2 VC)
 textio-get_line.adb:187:30: info: loop invariant preservation proved (CVC4: 2 VC)
-textio-get_line.adb:188:37: info: initialization of "N" proved
 textio-get_line.adb:189:30: info: loop invariant initialization proved (CVC4: 1 VC)
 textio-get_line.adb:189:30: info: loop invariant preservation proved (CVC4: 1 VC)
-textio-get_line.adb:189:45: info: initialization of "Item" proved
-textio-get_line.adb:189:59: info: initialization of "Last" proved
 textio-get_line.adb:190:38: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:190:72: info: index check proved (CVC4: 4 VC)
 textio-get_line.adb:191:30: info: loop invariant initialization proved (CVC4: 1 VC)
 textio-get_line.adb:191:30: info: loop invariant preservation proved (CVC4: 1 VC)
-textio-get_line.adb:191:71: info: initialization of "Last" proved
-textio-get_line.adb:195:07: info: initialization of "Item" proved
-textio-get_line.adb:195:07: info: initialization of "Last" proved
-textio-get_line.adb:195:07: info: precondition proved (CVC4: 7 VC)
-textio-get_line.adb:197:10: info: initialization of "Rest" proved
-textio-get_line.adb:200:15: info: initialization of "N" proved
+textio-get_line.adb:195:07: info: precondition proved (CVC4: 7 VC; Trivial: 2 VC)
 textio-get_line.adb:200:30: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:205:07: info: initialization of "N" proved
-textio-get_line.adb:208:07: info: initialization of "Item" proved
-textio-get_line.adb:208:07: info: initialization of "Last" proved
-textio-get_line.adb:208:07: info: precondition proved (CVC4: 7 VC)
-textio-get_line.adb:208:18: info: initialization of "N" proved
+textio-get_line.adb:208:07: info: precondition proved (CVC4: 7 VC; Trivial: 2 VC)
 textio-get_line.adb:208:18: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:209:12: info: initialization of "Rest" proved
 textio-get_line.adb:209:12: info: range check proved (CVC4: 1 VC)
-textio-get_line.adb:214:07: info: initialization of "N" proved
 textio-get_line.adb:215:22: info: assertion proved (CVC4: 1 VC)
-textio-get_line.adb:215:22: info: initialization of "Last" proved
-textio-get_line.adb:215:29: info: initialization of "N" proved
-textio-get_line.adb:221:10: info: initialization of "ch" proved
-textio-get_line.adb:222:14: info: initialization of "Last" proved
 textio-get_line.adb:223:13: info: raise statement proved unreachable (altergo: 1 VC)
-textio-get_line.adb:233:18: info: initialization of "Last" proved
 textio-get_line.adb:233:23: info: overflow check proved (CVC4: 1 VC)
 textio-get_line.adb:234:16: info: index check proved (CVC4: 2 VC)
-textio-get_line.adb:234:22: info: initialization of "Item" proved
-textio-get_line.adb:234:22: info: initialization of "Last" proved
-textio-get_line.adb:234:40: info: initialization of "ch" proved
 textio-get_line.adb:234:40: info: range check proved (CVC4: 1 VC)
 textio.adb:10:38: info: initialization of "Ch" proved
-textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(17))
+textio.adb:11:06: info: data dependencies proved
+textio.adb:11:40: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 textio.adb:12:14: info: postcondition proved (CVC4: 6 VC)
-textio.adb:20:17: info: initialization of "Ch" proved
-textio.adb:34:10: info: initialization of "Ch" proved
 textio.adb:52:06: info: complete contract cases proved (CVC4: 1 VC)
 textio.adb:52:06: info: disjoint contract cases proved (CVC4: 1 VC)
 textio.adb:76:20: info: range check proved (CVC4: 1 VC)
 textio.adb:106:20: info: range check proved (CVC4: 1 VC)
 textio.adb:138:07: info: precondition proved (CVC4: 1 VC)
-textio.adb:145:39: info: initialization of "Result" proved
+textio.adb:145:39: medium: "Result" might not be initialized in "Get_Rest"
 textio.adb:145:60: info: initialization of "Num" proved
+textio.adb:146:09: info: data dependencies proved
 textio.adb:152:23: info: index check proved (CVC4: 2 VC)
 textio.adb:152:54: info: index check proved (CVC4: 2 VC)
-textio.adb:154:35: info: initialization of "Num" proved
-textio.adb:155:17: info: initialization of "Result" proved
 textio.adb:155:17: medium: "Result" might not be initialized
 textio.adb:155:17: medium: postcondition might fail, cannot prove Result (Idx) = The_File (Idx - 1 + Cur_Position_At_Start)
 textio.adb:155:25: info: index check proved (CVC4: 2 VC)
+textio.adb:174:10: info: initialization of "Buffer" proved
 textio.adb:174:10: info: range check proved (CVC4: 2 VC)
 textio.adb:174:51: info: range check proved (CVC4: 1 VC)
+textio.adb:175:10: info: initialization of "Last" proved
 textio.adb:178:10: info: precondition proved (CVC4: 1 VC)
 textio.adb:181:38: low: range check might fail [possible explanation: call at line 178 should mention Item (for argument Buffer) in a postcondition]
-textio.adb:181:40: info: initialization of "Buffer" proved
 textio.adb:181:40: info: range check proved (CVC4: 4 VC)
-textio.adb:181:53: info: initialization of "Last" proved
 textio.adb:183:28: medium: assertion might fail, cannot prove R'First = S'first
 textio.adb:184:28: medium: assertion might fail, cannot prove R'Last = S'Last + Last [possible explanation: call at line 178 should mention Last (for argument Last) in a postcondition]
-textio.adb:184:46: info: initialization of "Last" proved
 textio.adb:186:27: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:37: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: overflow check proved (CVC4: 1 VC)
 textio.adb:186:41: info: range check proved (CVC4: 1 VC)
-textio.adb:186:43: info: initialization of "Last" proved
-textio.adb:188:16: info: initialization of "Last" proved
 textio.adb:189:16: info: range check proved (CVC4: 4 VC)
-textio.adb:189:29: info: initialization of "Num" proved
-textio.adb:189:34: info: length check proved (CVC4: 4 VC)
-textio.adb:189:37: info: length check proved (CVC4: 4 VC)
+textio.adb:189:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+textio.adb:189:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 textio.adb:192:31: info: assertion proved (CVC4: 1 VC)
-textio.adb:192:31: info: initialization of "Last" proved
 textio.adb:199:19: info: range check proved (CVC4: 4 VC)
-textio.adb:199:32: info: initialization of "Num" proved
-textio.adb:199:37: info: length check proved (CVC4: 4 VC)
-textio.adb:199:40: info: length check proved (CVC4: 4 VC)
-textio.adb:202:19: info: precondition proved (CVC4: 5 VC; altergo: 1 VC)
+textio.adb:199:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+textio.adb:199:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+textio.adb:202:19: medium: precondition might fail, cannot prove S (Idx) = The_File (Idx - S'First + Cur_Position_At_Start) [possible explanation: call at line 178 should mention Cur_Position and File (for argument File) in a postcondition]
 textio.adb:211:07: info: precondition proved (CVC4: 5 VC)
 textio.ads:6:21: warning: no procedure exists that can initialize abstract state "TextIO.Current_Input_File"
 textio.ads:12:07: warning: "File" is not modified, could be IN
 textio.ads:13:07: info: initialization of "Item" proved
 textio.ads:14:07: info: initialization of "Last" proved
-textio.ads:26:32: info: contract case proved (CVC4: 2 VC)
-textio.ads:27:11: info: initialization of "Last" proved
+textio.ads:16:06: info: data dependencies proved
+textio.ads:26:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 textio.ads:32:16: medium: contract case might fail
-textio.ads:33:12: info: initialization of "Last" proved
-textio.ads:33:19: info: initialization of "Item" proved
 textio.ads:35:20: info: index check proved (CVC4: 2 VC)
 textio.ads:35:54: info: index check proved (CVC4: 2 VC)
 textio.ads:42:07: info: initialization of "Item" proved
 textio.ads:43:07: info: initialization of "Last" proved
-textio.ads:55:32: info: contract case proved (CVC4: 2 VC)
-textio.ads:56:11: info: initialization of "Last" proved
-textio.ads:61:16: info: contract case proved (CVC4: 5 VC)
-textio.ads:62:12: info: initialization of "Last" proved
-textio.ads:62:19: info: initialization of "Item" proved
+textio.ads:45:06: info: data dependencies proved
+textio.ads:55:32: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+textio.ads:61:16: info: contract case proved (CVC4: 4 VC; Trivial: 1 VC)
 textio.ads:64:20: info: index check proved (CVC4: 2 VC)
 textio.ads:64:54: info: index check proved (CVC4: 2 VC)
 textio.ads:76:58: info: initialization of "Result" proved
 textio.ads:76:79: info: initialization of "Num" proved
 textio.ads:92:14: info: postcondition proved (CVC4: 3 VC)
-textio.ads:92:35: info: initialization of "Num" proved
-textio.ads:93:17: info: initialization of "Result" proved
 textio.ads:93:25: info: index check proved (CVC4: 2 VC)

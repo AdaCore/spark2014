@@ -1,89 +1,32 @@
+record_equality.adb:3:07: info: initialization of "R_Pu1" proved
 record_equality.adb:3:21: info: range check proved (CVC4: 1 VC)
+record_equality.adb:4:07: info: initialization of "R_Pu2" proved
+record_equality.adb:5:07: info: initialization of "C_Pu1" proved
 record_equality.adb:5:22: info: range check proved (CVC4: 1 VC)
-record_equality.adb:7:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:7:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:8:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:8:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:9:40: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:9:40: info: initialization of "G_Pu1.F2" proved
+record_equality.adb:6:07: info: initialization of "C_Pu2" proved
 record_equality.adb:10:31: info: range check proved (CVC4: 1 VC)
 record_equality.adb:10:37: info: discriminant check proved (CVC4: 1 VC)
-record_equality.adb:10:44: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:10:44: info: initialization of "G_Pu2.F2" proved
 record_equality.adb:12:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:12:22: info: initialization of "R_Pu1.F1" proved
-record_equality.adb:12:30: info: initialization of "R_Pu2.F1" proved
 record_equality.adb:13:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:13:28: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:13:43: info: initialization of "C_Pu2.F1" proved
 record_equality.adb:14:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:14:29: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:14:29: info: initialization of "G_Pu1.F2" proved
-record_equality.adb:14:45: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:14:45: info: initialization of "G_Pu2.F2" proved
 record_equality.adb:15:22: info: assertion proved (CVC4: 1 VC)
 record_equality.adb:16:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:16:22: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:16:22: info: initialization of "G_Pu1.F2" proved
-record_equality.adb:16:22: info: initialization of "G_Pu1.F3" proved
-record_equality.adb:16:31: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:16:31: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:16:31: info: initialization of "G_Pu2.F3" proved
 record_equality.adb:17:22: info: assertion proved (CVC4: 1 VC)
-record_equality.adb:17:22: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:17:22: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:17:30: info: initialization of "C_Pu2.F1" proved
-record_equality.adb:17:30: info: initialization of "C_Pu2.F2" proved
-record_equality.adb:18:22: medium: assertion might fail, cannot prove Root'Class (R_Pu1) /= Root'Class (C_Pu1) (e.g. when C_Pu1 = (C => 0, F1 => 0, F2 => 0) and R_Pu1 = (C => 0, F1 => 0))
-record_equality.adb:18:34: info: initialization of "R_Pu1.F1" proved
-record_equality.adb:18:56: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:18:56: info: initialization of "C_Pu1.F2" proved
+record_equality.adb:18:22: medium: assertion might fail, cannot prove Root'Class (R_Pu1) /= Root'Class (C_Pu1) (e.g. when C_Pu1 = (C => ?, F1 => 0, F2 => 0) and R_Pu1 = (C => ?, F1 => 0))
+record_equality.adb:21:07: info: initialization of "C_Pu1" proved
 record_equality.adb:21:22: info: range check proved (CVC4: 1 VC)
-record_equality.adb:22:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:22:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:23:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:23:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:25:22: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:25:22: info: initialization of "G_Pu1.F2" proved
-record_equality.adb:25:22: info: initialization of "G_Pu1.F3" proved
-record_equality.adb:25:22: medium: assertion might fail, cannot prove G_Pu1 = G_Pu2 (e.g. when G_Pu1 = (C => 0, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => 0, F1 => 0, F2 => 0, F3 => 1))
-record_equality.adb:25:30: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:25:30: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:25:30: info: initialization of "G_Pu2.F3" proved
+record_equality.adb:25:22: medium: assertion might fail, cannot prove G_Pu1 = G_Pu2 (e.g. when G_Pu1 = (C => ?, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => ?, F1 => 0, F2 => 0, F3 => 1))
+record_equality.adb:28:07: info: initialization of "R_Pu1" proved
 record_equality.adb:28:21: info: range check proved (CVC4: 1 VC)
+record_equality.adb:29:07: info: initialization of "C_Pu1" proved
 record_equality.adb:29:22: info: range check proved (CVC4: 1 VC)
-record_equality.adb:31:22: medium: assertion might fail, cannot prove Root'Class (R_Pu1) = Root'Class (C_Pu1) (e.g. when C_Pu1 = (C => 0, F1 => 0, F2 => 0) and R_Pu1 = (C => 0, F1 => 0))
-record_equality.adb:31:34: info: initialization of "R_Pu1.F1" proved
-record_equality.adb:31:55: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:31:55: info: initialization of "C_Pu1.F2" proved
+record_equality.adb:31:22: medium: assertion might fail, cannot prove Root'Class (R_Pu1) = Root'Class (C_Pu1)
+record_equality.adb:34:07: info: initialization of "C_Pu1" proved
 record_equality.adb:34:22: info: range check proved (CVC4: 1 VC)
-record_equality.adb:35:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:35:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:36:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:36:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:38:22: medium: assertion might fail, cannot prove Root'Class (G_Pu1) = Root'Class (G_Pu2) (e.g. when G_Pu1 = (C => 0, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => 0, F1 => 0, F2 => 0, F3 => 1))
-record_equality.adb:38:34: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:38:34: info: initialization of "G_Pu1.F2" proved
-record_equality.adb:38:34: info: initialization of "G_Pu1.F3" proved
-record_equality.adb:38:55: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:38:55: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:38:55: info: initialization of "G_Pu2.F3" proved
+record_equality.adb:38:22: medium: assertion might fail, cannot prove Root'Class (G_Pu1) = Root'Class (G_Pu2) (e.g. when G_Pu1 = (C => ?, F1 => 0, F2 => 0, F3 => 0) and G_Pu2 = (C => ?, F1 => 0, F2 => 0, F3 => 1))
+record_equality.adb:41:07: info: initialization of "C_Pu1" proved
 record_equality.adb:41:22: info: range check proved (CVC4: 1 VC)
-record_equality.adb:42:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:42:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:43:30: info: initialization of "C_Pu1.F1" proved
-record_equality.adb:43:30: info: initialization of "C_Pu1.F2" proved
-record_equality.adb:44:41: info: initialization of "G_Pu1.F1" proved
-record_equality.adb:44:41: info: initialization of "G_Pu1.F2" proved
-record_equality.adb:44:41: info: initialization of "G_Pu1.F3" proved
-record_equality.adb:45:41: info: initialization of "G_Pu2.F1" proved
-record_equality.adb:45:41: info: initialization of "G_Pu2.F2" proved
-record_equality.adb:45:41: info: initialization of "G_Pu2.F3" proved
-record_equality.adb:47:22: info: initialization of "R_G1.F1" proved
-record_equality.adb:47:22: info: initialization of extension of "R_G1" proved
-record_equality.adb:47:22: medium: assertion might fail, cannot prove R_G1 = R_G2 (e.g. when R_G1 = (C => 0, F1 => 0) and R_G2 = (C => 0, F1 => 0))
-record_equality.adb:47:29: info: initialization of "R_G2.F1" proved
-record_equality.adb:47:29: info: initialization of extension of "R_G2" proved
+record_equality.adb:47:22: medium: assertion might fail, cannot prove R_G1 = R_G2 (e.g. when R_G1 = (C => ?, F1 => 0) and R_G2 = (C => ?, F1 => 0))
 record_equality.ads:12:33: info: range check proved (CVC4: 1 VC)
 record_equality.ads:13:35: info: range check proved (CVC4: 1 VC)
 record_equality.ads:15:14: warning: subprogram "Test_Eq_Ok" has no effect

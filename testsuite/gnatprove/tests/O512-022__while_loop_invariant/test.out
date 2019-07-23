@@ -1,16 +1,8 @@
-s.adb:13:12: info: initialization of "Index" proved
 s.adb:14:09: info: loop variant proved (CVC4: 1 VC)
-s.adb:14:43: info: initialization of "Index" proved
-s.adb:15:32: info: initialization of "Found" proved
 s.adb:15:32: info: loop invariant initialization proved (CVC4: 2 VC)
 s.adb:15:32: info: loop invariant preservation proved (CVC4: 2 VC)
-s.adb:16:18: info: initialization of "Index" proved
-s.adb:21:12: info: initialization of "Index" proved
-s.adb:25:18: info: initialization of "Index" proved
 s.adb:25:24: info: range check proved (CVC4: 1 VC)
 s.ads:10:07: info: initialization of "Found" proved
 s.ads:11:07: info: initialization of "Index" proved
 s.ads:12:26: info: postcondition proved (CVC4: 1 VC)
-s.ads:12:30: info: initialization of "Found" proved
-s.ads:12:50: info: initialization of "Index" proved
 s.ads:19:26: info: postcondition proved (CVC4: 2 VC)

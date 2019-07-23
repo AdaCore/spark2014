@@ -1,18 +1,11 @@
 inc.adb:27:20: info: initialization of "V" proved
 inc.adb:28:20: info: initialization of "Valid" proved
-inc.adb:30:21: info: postcondition proved (CVC4: 2 VC)
-inc.adb:30:25: info: initialization of "Valid" proved
-inc.adb:30:36: info: initialization of "V" proved
-inc.adb:37:10: info: initialization of "Tmp" proved
-inc.adb:39:15: info: initialization of "Tmp" proved
+inc.adb:29:11: info: data dependencies proved
+inc.adb:30:21: info: postcondition proved (Trivial: 2 VC)
+inc.adb:32:07: info: initialization of "Tmp" proved
 inc.adb:51:19: info: non-aliasing of formal parameters "V" and "Valid" proved
-inc.adb:52:10: info: initialization of "Result.Valid" proved
 inc.adb:53:22: info: non-aliasing of formal parameters "V" and "Valid" proved
-inc.ads:27:25: info: initialization of "Result.First" proved
-inc.ads:27:25: info: initialization of "Result.Second" proved
-inc.ads:27:25: info: initialization of "Result.Valid" proved
-inc.ads:29:21: info: postcondition proved (CVC4: 3 VC)
+inc.ads:27:25: info: initialization of "Result" proved
+inc.ads:28:11: info: data dependencies proved
+inc.ads:29:21: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 inc.ads:29:48: info: precondition proved (CVC4: 1 VC)
-inc.ads:29:63: info: initialization of "Result.First" proved
-inc.ads:29:63: info: initialization of "Result.Second" proved
-inc.ads:29:63: info: initialization of "Result.Valid" proved

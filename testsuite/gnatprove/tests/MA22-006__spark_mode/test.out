@@ -1,7 +1,7 @@
 p.adb:7:21: info: range check proved (CVC4: 2 VC)
 p.adb:17:21: info: range check proved (CVC4: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
-
+p.ads:5:10: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
@@ -9,7 +9,7 @@ Summary of SPARK analysis
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
+Flow Dependencies 1 1 . . . . .
 Initialization 1 1 . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 2 . . . 2 . .
@@ -17,10 +17,11 @@ Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 3 1 (33%) . . 2 (67%) . .
+Total 4 2 (50%) . . 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
@@ -28,7 +29,6 @@ absence of run-time errors of P fully established
  P.Op at p.ads:4 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (2 checks)
 absence of run-time errors of P.Op fully established
 
-
 Summary of SPARK analysis
 =========================
 
@@ -36,7 +36,7 @@ Summary of SPARK analysis
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
+Flow Dependencies 1 1 . . . . .
 Initialization 1 1 . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 2 . . . 2 . .
@@ -44,10 +44,11 @@ Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 3 1 (33%) . . 2 (67%) . .
+Total 4 2 (50%) . . 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
@@ -56,7 +57,6 @@ absence of run-time errors of P fully established
 effects on parameters and Global variables of P.Op fully established
 absence of run-time errors of P.Op fully established
 
-
 Summary of SPARK analysis
 =========================
 
@@ -64,7 +64,7 @@ Summary of SPARK analysis
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
+Flow Dependencies 1 1 . . . . .
 Initialization 1 1 . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 2 . . . 2 . .
@@ -72,10 +72,11 @@ Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 3 1 (33%) . . 2 (67%) . .
+Total 4 2 (50%) . . 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
@@ -87,8 +88,7 @@ absence of run-time errors of P.Op fully established
 p.adb:7:21: info: range check proved (CVC4: 2 VC)
 p.adb:17:21: info: range check proved (CVC4: 2 VC)
 p.ads:4:37: info: initialization of "Z" proved
-
-
+p.ads:5:10: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
@@ -96,7 +96,7 @@ Summary of SPARK analysis
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 -
 Data Dependencies . . . . . . .
-Flow Dependencies . . . . . . .
+Flow Dependencies 1 1 . . . . .
 Initialization 1 1 . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 2 . . . 2 . .
@@ -104,10 +104,11 @@ Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
 -
-Total 3 1 (33%) . . 2 (67%) . .
+Total 4 2 (50%) . . 2 (50%) . .
 
 
 max steps used for successful proof: 1
+
 Analyzed 1 unit
 in unit p, 2 subprograms and packages out of 2 analyzed
  P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)

@@ -1,34 +1,29 @@
+polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
 polyorb_hi-epoch.ads:44:11: global Output "Epoch.Elaborated_Variables" of "System_Startup_Time" not written
+polyorb_hi-epoch.ads:48:11: info: data dependencies proved
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:73:07: info: range check proved (CVC4: 2 VC)
-polyorb_hi-messages.adb:73:44: info: length check proved (CVC4: 4 VC)
+polyorb_hi-messages.adb:73:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:76:12: info: precondition proved (CVC4: 2 VC)
-polyorb_hi-messages.adb:78:36: info: initialization of "R" proved
 polyorb_hi-messages.adb:78:39: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:78:52: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:79:10: info: index check proved (CVC4: 2 VC)
-polyorb_hi-messages.adb:79:27: info: initialization of "R" proved
 polyorb_hi-messages.adb:80:10: info: index check proved (CVC4: 2 VC)
-polyorb_hi-messages.adb:80:27: info: initialization of "R" proved
 polyorb_hi-messages.adb:81:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:81:44: info: precondition proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:81:62: info: initialization of "R" proved
-polyorb_hi-messages.adb:81:62: info: length check proved (CVC4: 4 VC)
-polyorb_hi-messages.adb:81:65: info: length check proved (CVC4: 4 VC)
-polyorb_hi-messages.adb:83:14: info: initialization of "R" proved
+polyorb_hi-messages.adb:81:62: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+polyorb_hi-messages.adb:81:65: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:92:51: medium: array index check might fail
 polyorb_hi-messages.adb:105:32: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:105:42: medium: range check might fail
 polyorb_hi-messages.adb:105:51: info: precondition proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:107:12: info: length check proved (CVC4: 4 VC)
+polyorb_hi-messages.adb:107:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:113:29: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:116:29: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:116:41: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:119:07: info: range check proved (CVC4: 4 VC)
-polyorb_hi-messages.adb:119:27: info: initialization of "Last" proved
-polyorb_hi-messages.adb:120:09: info: initialization of "Item" proved
-polyorb_hi-messages.adb:120:09: info: length check proved (CVC4: 4 VC)
-polyorb_hi-messages.adb:120:18: info: length check proved (CVC4: 4 VC)
+polyorb_hi-messages.adb:120:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+polyorb_hi-messages.adb:120:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:120:18: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:120:57: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:122:23: info: overflow check proved (CVC4: 1 VC)
@@ -38,17 +33,15 @@ polyorb_hi-messages.adb:155:14: medium: range check might fail
 polyorb_hi-messages.adb:156:16: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.adb:156:57: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:156:63: info: range check proved (CVC4: 1 VC)
-polyorb_hi-messages.adb:156:72: info: length check proved (CVC4: 4 VC)
-polyorb_hi-messages.adb:156:75: info: length check proved (CVC4: 4 VC)
+polyorb_hi-messages.adb:156:72: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+polyorb_hi-messages.adb:156:75: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-messages.adb:157:37: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:157:37: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:157:43: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:179:55: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:77:07: info: initialization of "Item" proved
 polyorb_hi-messages.ads:78:07: info: initialization of "Last" proved
-polyorb_hi-messages.ads:91:26: info: initialization of "M.Content" proved
-polyorb_hi-messages.ads:91:26: info: initialization of "M.First" proved
-polyorb_hi-messages.ads:91:26: info: initialization of "M.Last" proved
+polyorb_hi-messages.ads:91:26: info: initialization of "M" proved
 polyorb_hi-messages.ads:98:40: info: precondition proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:99:17: medium: postcondition might fail, cannot prove Payload'Result'Length = Length (M)
 polyorb_hi-messages.ads:99:32: info: range check proved (CVC4: 1 VC)
@@ -59,62 +52,51 @@ polyorb_hi-messages.ads:136:63: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.ads:144:13: info: range check proved (CVC4: 4 VC)
 polyorb_hi-messages.ads:147:16: info: precondition proved (CVC4: 2 VC)
 polyorb_hi-output.adb:61:39: info: range check proved (CVC4: 2 VC)
-polyorb_hi-output.adb:110:07: high: "Epoch.Elaborated_Variables" must be a global output of "Build_Timestamp" (SPARK RM 6.1.4(16))
+polyorb_hi-output.adb:110:07: high: "Epoch.Elaborated_Variables" must be a global output of "Build_Timestamp" (SPARK RM 6.1.4(17))
 polyorb_hi-output.adb:181:29: info: cannot unroll loop (too many loop iterations)
-polyorb_hi-output.adb:182:13: info: initialization of "Index" proved
 polyorb_hi-output.adb:183:13: info: range check proved (CVC4: 4 VC)
-polyorb_hi-output.adb:183:21: info: initialization of "Index" proved
-polyorb_hi-output.adb:183:30: info: initialization of "Index" proved
-polyorb_hi-output.adb:183:41: info: initialization of "Output" proved
-polyorb_hi-output.adb:183:41: info: length check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:183:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:184:15: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:184:42: info: division check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:185:15: info: length check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:185:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:185:15: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:185:42: info: division check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:186:22: info: initialization of "Index" proved
 polyorb_hi-output.adb:186:28: info: range check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:188:29: info: initialization of "Output" proved
-polyorb_hi-output.adb:194:24: info: initialization of "Output" proved
 polyorb_hi-output.adb:202:07: info: range check proved (CVC4: 2 VC)
 polyorb_hi-output.adb:202:26: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:34: info: overflow check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:38: info: range check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:202:50: info: length check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:202:50: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:204:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:204:23: info: range check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:204:32: info: initialization of "S" proved
-polyorb_hi-output.adb:204:32: info: length check proved (CVC4: 4 VC)
-polyorb_hi-output.adb:204:35: info: length check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:204:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+polyorb_hi-output.adb:204:35: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:204:35: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:205:07: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.adb:205:12: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:205:20: info: overflow check proved (CVC4: 1 VC)
-polyorb_hi-output.adb:205:35: info: initialization of "S" proved
-polyorb_hi-output.adb:205:35: info: length check proved (CVC4: 4 VC)
-polyorb_hi-output.adb:205:38: info: length check proved (CVC4: 4 VC)
+polyorb_hi-output.adb:205:35: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+polyorb_hi-output.adb:205:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-output.adb:205:38: info: range check proved (CVC4: 4 VC)
-polyorb_hi-output.adb:207:14: info: initialization of "S" proved
-polyorb_hi-utils.adb:42:33: info: initialization of "R" proved
+polyorb_hi-output.ads:45:08: info: flow dependencies proved
+polyorb_hi-output.ads:76:11: info: data dependencies proved
+polyorb_hi-output.ads:82:11: info: data dependencies proved
+polyorb_hi-output.ads:88:11: info: data dependencies proved
+polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
 polyorb_hi-utils.adb:46:25: info: range check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-utils.adb:47:16: info: index check proved (CVC4: 2 VC)
-polyorb_hi-utils.adb:47:19: info: initialization of "R" proved
 polyorb_hi-utils.adb:47:33: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:47:33: info: overflow check proved (CVC4: 1 VC)
-polyorb_hi-utils.adb:55:33: info: initialization of "R" proved
 polyorb_hi-utils.adb:56:34: info: range check proved (CVC4: 1 VC)
-polyorb_hi-utils.adb:59:34: info: initialization of "R" proved
-polyorb_hi-utils.adb:59:37: info: length check proved (CVC4: 4 VC)
+polyorb_hi-utils.adb:59:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 polyorb_hi-utils.adb:59:37: info: range check proved (CVC4: 4 VC)
 polyorb_hi-utils.adb:59:59: info: overflow check proved (CVC4: 1 VC)
-polyorb_hi-utils.adb:60:33: info: initialization of "R" proved
 polyorb_hi-utils.adb:89:20: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:89:32: info: division check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:124:32: info: cannot unroll loop (too many loop iterations)
 polyorb_hi-utils.adb:125:16: info: index check proved (CVC4: 2 VC)
 polyorb_hi-utils.adb:126:23: info: overflow check proved (CVC4: 1 VC)
-polyorb_hi-utils.adb:131:14: info: initialization of "Last" proved
 polyorb_hi-utils.ads:89:19: info: postcondition proved (CVC4: 1 VC)
 polyorb_hi-utils.ads:138:09: info: range check proved (CVC4: 4 VC)
 polyorb_hi_generated-activity.adb:98:03: "Producer_Destinations" is not allowed in SPARK (due to attribute "Address" outside an attribute definition clause)
@@ -147,21 +129,19 @@ polyorb_hi_generated-activity.ads:102:03: warning: in instantiation at polyorb_h
 polyorb_hi_generated-activity.ads:102:03: warning: pragma "Storage_Size" ignored (not yet supported)
 polyorb_hi_generated-activity.ads:192:03: warning: in instantiation at polyorb_hi-periodic_task.ads:74
 polyorb_hi_generated-activity.ads:192:03: warning: pragma "Storage_Size" ignored (not yet supported)
+polyorb_hi_generated-transport.adb:36:05: info: initialization of "Value" proved
+polyorb_hi_generated-transport.adb:37:05: info: initialization of "Port" proved
 polyorb_hi_generated-transport.adb:41:07: high: "Msg" is not initialized
-polyorb_hi_generated-transport.adb:47:07: info: initialization of "Msg" proved
-polyorb_hi_generated-transport.adb:50:09: info: initialization of "Value" proved
 polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)
-polyorb_hi_generated-transport.adb:55:09: info: initialization of "Port" proved
-polyorb_hi_generated-transport.adb:58:09: info: initialization of "Msg" proved
 polyorb_hi_generated-transport.adb:58:09: warning: unused assignment to "Msg"
 polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Producer_Consumer_Producer_Send" (body not seen yet)
 polyorb_hi_generated-transport.adb:87:14: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:100:03: info: no contextual analysis of "Producer_Consumer_Producer_Send" (multiple returns)
 polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are not modeled in SPARK
-polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
-polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(13))
+polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
+polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
-pr_a.adb:20:11: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
+pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"
 gnatprove: error during flow analysis and proof

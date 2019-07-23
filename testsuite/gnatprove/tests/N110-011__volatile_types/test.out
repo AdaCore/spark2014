@@ -1,2 +1,4 @@
-port.adb:8:12: info: initialization of "Tmp.F1" proved
+port.adb:5:07: info: initialization of "Tmp" proved
 port.ads:18:20: info: initialization of "X" proved
+port.ads:19:11: info: data dependencies proved
+port.ads:20:06: info: flow dependencies proved

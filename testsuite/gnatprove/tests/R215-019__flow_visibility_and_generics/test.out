@@ -1,6 +1,7 @@
-gen.adb:4:04: info: initialization of "Constituent" constituent of "State" proved, in instantiation at p.adb:5
-gen.adb:18:22: info: initialization of "A" proved, in instantiation at p.adb:5
 gen.ads:3:29: info: initialization of "Instance.State" constituent of "P.Hash" proved, in instantiation at p.adb:5
+gen.ads:4:08: info: flow dependencies proved, in instantiation at p.adb:5
 gen.ads:5:08: medium: initial condition might fail, in instantiation at p.adb:5
-gen.ads:5:29: info: initialization of "Constituent" constituent of "State" proved, in instantiation at p.adb:5
+gen.ads:9:11: info: data dependencies proved, in instantiation at p.adb:5
+gen.ads:12:11: info: data dependencies proved, in instantiation at p.adb:5
 gen.ads:13:21: medium: postcondition might fail, cannot prove (Foo_Ghost), in instantiation at p.adb:5
+p.ads:3:08: info: flow dependencies proved

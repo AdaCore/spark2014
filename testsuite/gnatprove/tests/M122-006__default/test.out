@@ -1,4 +1,4 @@
 p.adb:8:09: info: range check proved (CVC4: 1 VC)
 p.adb:8:16: info: discriminant check proved (CVC4: 1 VC)
-p.adb:17:05: info: discriminant check proved (CVC4: 2 VC)
-p.adb:18:09: medium: discriminant check might fail (e.g. when Y = (X => 2) and Y'Constrained = True)
+p.adb:17:05: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+p.adb:18:09: medium: discriminant check might fail

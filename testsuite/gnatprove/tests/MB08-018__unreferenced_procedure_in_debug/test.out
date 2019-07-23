@@ -1,3 +1,4 @@
 p.adb:20:14: info: overflow check proved (CVC4: 1 VC)
+p.ads:5:11: info: flow dependencies proved
 p.ads:7:22: info: postcondition proved (CVC4: 1 VC)
 p.ads:7:32: info: overflow check proved (CVC4: 1 VC)

@@ -1,8 +1,4 @@
-loop_decr.adb:4:10: info: initialization of "C" proved
 loop_decr.adb:5:20: info: division check proved (CVC4: 2 VC)
-loop_decr.adb:5:24: info: initialization of "C" proved
-loop_decr.adb:6:30: info: initialization of "C" proved
 loop_decr.adb:6:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_decr.adb:6:30: info: loop invariant preservation proved (CVC4: 1 VC)
-loop_decr.adb:7:12: info: initialization of "C" proved
 loop_decr.adb:7:14: info: range check proved (CVC4: 1 VC)

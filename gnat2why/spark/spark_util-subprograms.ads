@@ -6,7 +6,7 @@
 --                                                                          --
 --                                  S p e c                                 --
 --                                                                          --
---                        Copyright (C) 2016-2018, AdaCore                  --
+--                     Copyright (C) 2016-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -93,7 +93,8 @@ package SPARK_Util.Subprograms is
 
                    when E_Function  |
                         E_Procedure |
-                        Entry_Kind  =>
+                        Entry_Kind  |
+                        E_Package   =>
                       Within_Protected_Type (E),
 
                    when others =>
@@ -353,10 +354,6 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is a predefined potentially blocking subprogram
 
-   function Is_Protected_Operation (E : Entity_Id) return Boolean;
-   --  Returns True iff E is a protected operation, i.e. a protected subprogram
-   --  or a protected entry.
-
    function Is_Requested_Subprogram_Or_Task (E : Entity_Id) return Boolean;
    --  @param E any entity
    --  @return True iff E is a subprogram/task whose analysis was specifically
@@ -396,12 +393,23 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E should not be translated into Why3
 
+   function Subp_Body_Location (E : Entity_Id) return String
+   with Pre => Ekind (E) in Subprogram_Kind |
+                            E_Package       |
+                            Type_Kind       |
+                            Entry_Kind;
+   --  @param E subprogram, package, type or entry
+   --  @return a String of the form GP_Subp:foo.adb:12 pointing to the file and
+   --    line where the body for this entity is declared, or "" if there is
+   --    no body. This allows to identify the entity by its source position and
+   --    is used e.g. for the --limit-subp switch of GNATprove.
+
    function Subp_Location (E : Entity_Id) return String
    with Pre => Ekind (E) in Subprogram_Kind |
                             E_Package       |
                             Type_Kind       |
                             Entry_Kind;
-   --  @param E subprogram, package, task or entry
+   --  @param E subprogram, package, type or entry
    --  @return a String of the form GP_Subp:foo.ads:12 pointing to the file and
    --    line where this entity is declared. This allows to identify the entity
    --    by its source position and is used e.g. for the --limit-subp switch of

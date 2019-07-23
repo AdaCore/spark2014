@@ -1,19 +1,13 @@
 test.adb:9:16: info: postcondition proved (CVC4: 1 VC)
 test.adb:17:17: medium: postcondition might fail, cannot prove Test_2'Result = 'a' (e.g. when Test_2'Result = 'NUL')
-test.adb:20:17: medium: array index check might fail (e.g. when A = (others => 'NUL') and A'First = 2 and A'Last = 0 and Test_2'Result = 'NUL')
-test.adb:29:17: medium: postcondition might fail, cannot prove Test_3'Result = 2 (e.g. when Test_3'Result = 0)
+test.adb:20:17: medium: array index check might fail (e.g. when A = (others => 'NUL') and A'First = 2 and A'Last = 0)
+test.adb:29:17: medium: postcondition might fail, cannot prove Test_3'Result = 2
 test.adb:36:17: medium: postcondition might fail, cannot prove Test_4'Result = 5 (e.g. when Test_4'Result = 0)
-test.adb:40:12: info: initialization of "B" proved
 test.adb:40:14: medium: overflow check might fail (e.g. when B = Integer'Last)
-test.adb:41:14: info: initialization of "B" proved
 test.adb:47:17: medium: postcondition might fail, cannot prove Test_5'Result = 5 (e.g. when Test_5'Result = 1)
-test.adb:51:12: info: initialization of "B" proved
-test.adb:52:14: info: initialization of "B" proved
-test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1 (e.g. when Test_6'Result = 2.1230469E+0)
-test.adb:60:12: info: initialization of "B" proved
+test.adb:56:17: medium: postcondition might fail, cannot prove Test_6'Result = 0.1 (e.g. when Test_6'Result = 1.1000041E+0)
 test.adb:60:14: info: float overflow check proved (CVC4: 1 VC)
-test.adb:61:14: info: initialization of "B" proved
-test.adb:69:17: medium: postcondition might fail, cannot prove Test_7'Result = 1 (e.g. when Test_7'Result = 0)
+test.adb:69:17: medium: postcondition might fail, cannot prove Test_7'Result = 1
 test.adb:81:16: medium: postcondition might fail, cannot prove (X ** 3 - X) mod 3 = 0 (e.g. when X = 2)
 test.adb:81:19: info: overflow check proved (CVC4: 1 VC)
 test.adb:81:24: info: overflow check proved (CVC4: 1 VC)

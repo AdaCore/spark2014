@@ -6,12 +6,8 @@ aida-strings-generic_immutable_unbounded_string_shared_ptr.ads:19:65: info: rang
 extension.ads:9:04: info: implicit function contract not available for proof ("Length" might not return)
 extension.ads:9:04: info: in instantiation at aida-strings-generic_immutable_unbounded_string_shared_ptr-mutable.ads:10
 main.adb:14:04: info: initialization of "N" proved
-main.adb:14:04: info: initialization of private part of "N" proved
 main.adb:16:30: high: "Tag_V" is not initialized
-main.adb:19:15: info: initialization of "Tag_V" proved
-main.adb:26:21: info: initialization of "Tag_V" proved
 main.adb:27:30: info: precondition proved (CVC4: 1 VC)
-main.adb:27:47: info: initialization of "Tag_V" proved
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)
 vk.ads:10:10: info: implicit function contract not available for proof ("Length" might not return)

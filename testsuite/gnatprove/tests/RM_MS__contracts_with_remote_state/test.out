@@ -6,7 +6,10 @@ processing.ads:13:22: call to a volatile function in interfering context is not 
 processing.ads:13:22: call to a volatile function in interfering context is not allowed in SPARK
 processing.ads:13:22: violation of aspect SPARK_Mode at line 4
 processing.ads:13:22: violation of aspect SPARK_Mode at line 4
-raw_data.adb:12:04: info: initialization of "Last_Read" constituent of "State" proved
 raw_data.adb:30:40: info: initialization of "Last_Read" constituent of "State" proved
-raw_data.adb:36:14: info: initialization of "Last_Read" constituent of "State" proved
+raw_data.ads:4:08: info: flow dependencies proved
+raw_data.ads:8:11: info: data dependencies proved
+raw_data.ads:12:11: info: data dependencies proved
+raw_data.ads:15:11: info: data dependencies proved
+raw_data.ads:16:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

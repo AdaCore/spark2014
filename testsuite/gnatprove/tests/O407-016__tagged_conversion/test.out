@@ -15,12 +15,12 @@ tagged_conv.adb:64:14: warning: subprogram "Bad4" has no effect
 tagged_conv.adb:67:28: medium: tag check might fail
 tagged_conv.adb:72:14: warning: subprogram "Bad5" has no effect
 tagged_conv.adb:75:29: medium: tag check might fail
-tagged_conv.adb:80:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:81:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:82:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:83:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:84:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:85:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:86:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:87:04: info: precondition proved (CVC4: 1 VC)
-tagged_conv.adb:88:04: info: precondition proved (CVC4: 1 VC)
+tagged_conv.adb:80:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:81:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:82:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:83:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:84:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:85:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:86:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:87:04: info: precondition proved (Trivial: 1 VC)
+tagged_conv.adb:88:04: info: precondition proved (Trivial: 1 VC)

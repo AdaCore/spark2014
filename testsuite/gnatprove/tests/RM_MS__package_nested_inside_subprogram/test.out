@@ -1,3 +1,4 @@
-switch.adb:56:26: info: initialization of "A" proved
-switch.adb:57:26: info: initialization of "B" proved
-switch.adb:58:26: info: initialization of "C" proved
+switch.adb:19:07: info: initialization of "A" proved
+switch.adb:19:10: info: initialization of "B" proved
+switch.adb:19:13: info: initialization of "C" proved
+switch.ads:9:11: info: data dependencies proved

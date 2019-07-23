@@ -1,6 +1,7 @@
-counterex.adb:3:11: medium: postcondition might fail, cannot prove V =  V + 10 (e.g. when V = 300) [possible explanation: subprogram at line 1 should mention V in a precondition]
-counterex.adb:4:13: medium: overflow check might fail (e.g. when V = 2147483638) [possible explanation: subprogram at line 1 should mention V in a precondition]
-counterex.adb:13:17: medium: overflow check might fail (e.g. when V = 2147483638)
+counterex.adb:3:11: medium: postcondition might fail, cannot prove V =  V + 10 (e.g. when V = 300)
+counterex.adb:4:13: medium: overflow check might fail (e.g. when V = 2147483638)
+counterex.adb:13:17: medium: overflow check might fail (e.g. when V = 2147483638) [possible explanation: subprogram at line 1 should mention V in a precondition]
 counterexample expected for check at counterex.adb:3
+  trace at counterex.adb:1 --> V = 1
   trace at counterex.adb:3 --> V = 300
   trace at counterex.adb:9 --> V = 300

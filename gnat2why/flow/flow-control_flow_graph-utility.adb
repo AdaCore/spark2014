@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,7 +32,7 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects
      (A      : in out V_Attributes;
-      Global : Flow_Id    := Null_Flow_Id);
+      Global : Flow_Id := Null_Flow_Id);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
    --  effective will be noted in the volatiles_read and volatiles_written
@@ -570,15 +570,14 @@ package body Flow.Control_Flow_Graph.Utility is
             --    * formal "in" and "in out" parameters
             --    * function results
             --    * exported modes (modes "in", "out" and "in out")
-            A.Is_Export := Ekind (Entire_Var) in E_In_Out_Parameter |
-                                                 E_Out_Parameter    |
-                                                 E_Function
-              or else A.Mode in Exported_Global_Modes;
-
-            if Is_Bound (F_Ent) then
-               --  Array bounds are not exported.
-               A.Is_Export := False;
-            end if;
+            --  Array bounds are not exported.
+            A.Is_Export :=
+              (Ekind (Entire_Var) in E_In_Out_Parameter
+                                   | E_Out_Parameter
+                                   | E_Function
+                 or else
+               A.Mode in Exported_Global_Modes)
+              and then not Is_Bound (F_Ent);
 
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;
 

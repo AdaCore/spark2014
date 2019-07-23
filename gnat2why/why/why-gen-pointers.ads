@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,6 +25,7 @@
 
 with Gnat2Why.Util;        use Gnat2Why.Util;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
 with Why.Gen.Binders;      use Why.Gen.Binders;
 with Why.Ids;              use Why.Ids;
@@ -33,16 +34,18 @@ with Why.Sinfo;            use Why.Sinfo;
 package Why.Gen.Pointers is
    --  This package encapsulates the encoding of access types into Why.
 
-   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id);
+   procedure Declare_Rep_Pointer_Compl_If_Needed
+     (P : W_Section_Id; E : Entity_Id)
+   with
+     Pre => Is_Access_Type (E) and then Designates_Incomplete_Type (E);
+   --  Declare a new module for completion of access types designating
+   --  incomplete types.
+
+   procedure Declare_Ada_Pointer (P : W_Section_Id; E : Entity_Id) with
+     Pre => Is_Access_Type (E);
    --  Emit all necessary Why3 declarations to support Ada pointers.
    --  @param P the Why section to insert the declaration
    --  @param E the type entity to translate
-
-   procedure Declare_Allocation_Function (E : Entity_Id; File : W_Section_Id);
-   --  Generate program functions called when allocating deep objects.
-   --  The allocation function called depends on the type of the
-   --  allocated object (elementary/composite) and whether it is initilized
-   --  or not.
 
    procedure Create_Rep_Pointer_Theory_If_Needed
      (P : W_Section_Id;
@@ -97,10 +100,13 @@ package Why.Gen.Pointers is
    --  @param Name name of the pointer to access
    --  @param Local whether we want the local or the global access
 
-   function Root_Pointer_Type (E : Entity_Id) return Entity_Id
-     with Pre => Is_Access_Type (E);
+   function Repr_Pointer_Type (E : Entity_Id) return Entity_Id
+     with Pre => Has_Access_Type (E);
    --  Return the first pointer type defined with the same designated type.
-   --  This handles also subtypes.
+
+   function Root_Pointer_Type (E : Entity_Id) return Entity_Id
+     with Pre => Has_Access_Type (E);
+   --  Return the representative of the root of E
 
    function Pointer_From_Split_Form
      (I           : Item_Type;
@@ -112,10 +118,30 @@ package Why.Gen.Pointers is
    function Pointer_From_Split_Form
      (Ada_Node : Node_Id := Empty;
       A        : W_Expr_Array;
-      Ty       : Entity_Id)
+      Ty       : Entity_Id;
+      Local    : Boolean := False)
       return W_Expr_Id;
    --  Reconstructs a complete pointer of type Ty from an array of expressions
    --  representing a split form. A should contain first the value, then the
    --  address, and is_null.
+
+   function Prepare_Args_For_Access_Subtype_Check
+     (Check_Ty : Entity_Id;
+      Expr     : W_Expr_Id)
+      return W_Expr_Array;
+   --  Given a pointer type, compute the argument array that can be used
+   --  together with its subtype check predicate of program function. The
+   --  last argument is actually the given expression itself.
+
+   function Insert_Pointer_Subtype_Check
+     (Ada_Node : Node_Id;
+      Check_Ty : Entity_Id;
+      Expr     : W_Prog_Id)
+      return W_Prog_Id;
+   --  Insert a check that an expression is in the range of a pointer subtype
+   --  @param Ada_Node used to locate the check
+   --  @param Check_Ty pointer type
+   --  @param Expr why expression. Expr should be of type
+   --     EW_Abstract (Root_Pointer_Type (Check_Ty))
 
 end Why.Gen.Pointers;

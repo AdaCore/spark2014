@@ -1,0 +1,25 @@
+===== expecting message for unrecognized switch =====
+gnatprove: unrecognized option '--bad-switch'
+try "gnatprove --help" for more information.
+warning: attribute "Switches" of package "Prove" of your project file is deprecated
+warning: use "Proof_Switches ("Ada")" instead
+===== expecting message for unrecognized switch =====
+gnatprove: unrecognized option '--bad-switch'
+try "gnatprove --help" for more information.
+===== expecting message for not allowed switch =====
+gnatprove: unrecognized option '-Pnonexisting.gpr'
+try "gnatprove --help" for more information.
+===== expecting message for not allowed switch =====
+gnatprove: unrecognized option '-Pnonexisting.gpr'
+try "gnatprove --help" for more information.
+warning: attribute "Switches" of package "Prove" of your project file is deprecated
+warning: use "Proof_Switches ("Ada")" instead
+===== expecting message for unrecognized switch =====
+gnatprove: unrecognized option '--bad-switch'
+try "gnatprove --help" for more information.
+===== expecting message for not allowed switch =====
+gnatprove: unrecognized option '--target=ppc12'
+try "gnatprove --help" for more information.
+===== expecting message for unknown file =====
+Try "gnatprove --help" for more information.
+file not_existing.adb of attribute Proof_Switches is not part of the project

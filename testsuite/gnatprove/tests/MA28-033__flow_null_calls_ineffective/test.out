@@ -1,47 +1,70 @@
 p.adb:7:19: info: initialization of "D" proved
+p.adb:8:11: info: data dependencies proved
+p.adb:9:11: info: flow dependencies proved
 p.adb:12:14: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention A and B in a precondition]
 p.adb:12:32: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention A and B and C in a precondition]
 p.adb:19:19: info: initialization of "D" proved
+p.adb:20:11: info: data dependencies proved
+p.adb:21:11: info: flow dependencies proved
 p.adb:24:14: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and B in a precondition]
 p.adb:24:32: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and B and C in a precondition]
 p.adb:34:19: info: initialization of "D" proved
+p.adb:35:11: info: data dependencies proved
+p.adb:36:11: info: flow dependencies proved
 p.adb:39:14: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention A and B in a precondition]
 p.adb:39:32: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention A and B and C in a precondition]
 p.adb:49:19: info: initialization of "D" proved
+p.adb:50:11: info: data dependencies proved
+p.adb:51:11: info: flow dependencies proved
 p.adb:54:14: medium: overflow check might fail [possible explanation: subprogram at line 46 should mention A and B in a precondition]
 p.adb:54:32: medium: overflow check might fail [possible explanation: subprogram at line 46 should mention A and B and C in a precondition]
 p.adb:63:19: info: initialization of "D" proved
+p.adb:64:11: info: data dependencies proved
+p.adb:65:11: info: flow dependencies proved
 p.adb:68:14: medium: overflow check might fail [possible explanation: subprogram at line 60 should mention A and B in a precondition]
 p.adb:68:32: medium: overflow check might fail [possible explanation: subprogram at line 60 should mention A and B and C in a precondition]
 p.adb:78:19: info: initialization of "D" proved
+p.adb:79:11: info: data dependencies proved
 p.adb:79:40: info: initialization of "TestPoint" proved
+p.adb:80:11: info: flow dependencies proved
 p.adb:84:14: medium: overflow check might fail [possible explanation: subprogram at line 75 should mention A and B in a precondition]
 p.adb:84:32: medium: overflow check might fail [possible explanation: subprogram at line 75 should mention A and B and C in a precondition]
 p.adb:95:19: info: initialization of "D" proved
+p.adb:96:11: info: data dependencies proved
+p.adb:97:11: info: flow dependencies proved
 p.adb:100:14: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention A and B in a precondition]
 p.adb:100:32: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention A and B and C in a precondition]
 p.adb:105:24: medium: overflow check might fail [possible explanation: subprogram at line 92 should mention A in a precondition]
 p.adb:111:19: info: initialization of "D" proved
+p.adb:112:11: info: data dependencies proved
 p.adb:112:40: info: initialization of "TestPoint" proved
+p.adb:113:11: info: flow dependencies proved
 p.adb:117:14: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A and B in a precondition]
 p.adb:117:32: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A and B and C in a precondition]
 p.adb:123:14: warning: unused assignment to "TestPoint"
 p.adb:124:29: medium: overflow check might fail [possible explanation: subprogram at line 108 should mention A in a precondition]
 p.adb:130:19: info: initialization of "D" proved
+p.adb:131:11: info: data dependencies proved
+p.adb:132:11: info: flow dependencies proved
+p.adb:134:07: info: initialization of "Tmp" proved
 p.adb:136:14: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A and B in a precondition]
 p.adb:136:32: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A and B and C in a precondition]
 p.adb:139:16: medium: overflow check might fail [possible explanation: subprogram at line 127 should mention A in a precondition]
-p.adb:142:23: info: initialization of "Tmp" proved
 p.adb:148:20: info: initialization of "D" proved
+p.adb:149:11: info: data dependencies proved
+p.adb:150:11: info: flow dependencies proved
 p.adb:153:14: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A and B in a precondition]
 p.adb:153:32: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A and B and C in a precondition]
 p.adb:158:28: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A in a precondition]
 p.adb:161:28: medium: overflow check might fail [possible explanation: subprogram at line 145 should mention A in a precondition]
 p.adb:167:20: info: initialization of "X" proved
+p.adb:168:11: info: data dependencies proved
+p.adb:169:11: info: flow dependencies proved
 p.adb:179:20: info: initialization of "X" proved
-review_test.adb:5:04: info: initialization of "X" constituent of "State" proved
-review_test.adb:5:07: info: initialization of "Y" constituent of "State" proved
-review_test.adb:23:15: info: initialization of "A" proved
+p.adb:180:11: info: data dependencies proved
+p.adb:181:06: info: flow dependencies proved
 review_test.adb:23:17: medium: overflow check might fail
-review_test.ads:8:04: info: initialization of "Var" proved
+review_test.ads:6:08: info: flow dependencies proved
 review_test.ads:10:30: info: initialization of "A" proved
+review_test.ads:11:11: info: data dependencies proved
+review_test.ads:12:11: info: flow dependencies proved

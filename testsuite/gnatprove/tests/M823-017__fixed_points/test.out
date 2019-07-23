@@ -1,66 +1,54 @@
+binary_fixed.adb:5:07: info: initialization of "Z" proved
 binary_fixed.adb:7:12: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:7:12: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:8:22: info: assertion proved (altergo: 3 VC)
-binary_fixed.adb:8:78: info: initialization of "Z" proved
 binary_fixed.adb:10:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:10:22: info: initialization of "Z" proved
+binary_fixed.adb:15:07: info: initialization of "Z" proved
 binary_fixed.adb:17:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:17:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:18:22: info: assertion proved (altergo: 3 VC)
-binary_fixed.adb:18:74: info: initialization of "Z" proved
 binary_fixed.adb:19:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:19:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:20:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:20:22: info: initialization of "Z" proved
 binary_fixed.adb:22:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:22:22: info: initialization of "Z" proved
+binary_fixed.adb:28:07: info: initialization of "Z" proved
 binary_fixed.adb:30:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:30:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:31:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:31:22: info: initialization of "Z" proved
 binary_fixed.adb:32:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:32:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:33:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:33:22: info: initialization of "Z" proved
 binary_fixed.adb:35:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:35:22: info: initialization of "Z" proved
+binary_fixed.adb:41:07: info: initialization of "Z" proved
 binary_fixed.adb:43:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:43:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:44:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:44:22: info: initialization of "Z" proved
 binary_fixed.adb:44:28: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:45:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:45:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:46:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:46:22: info: initialization of "Z" proved
 binary_fixed.adb:46:28: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:47:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:47:14: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:47:16: info: initialization of "Two" proved
 binary_fixed.adb:48:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:48:22: info: initialization of "Z" proved
 binary_fixed.adb:48:28: info: overflow check proved (altergo: 1 VC)
-binary_fixed.adb:49:12: info: initialization of "Two" proved
 binary_fixed.adb:49:16: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:49:16: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:50:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:50:22: info: initialization of "Z" proved
 binary_fixed.adb:50:28: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:53:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:53:14: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:54:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:54:22: info: initialization of "Z" proved
 binary_fixed.adb:54:28: info: overflow check proved (altergo: 1 VC)
+binary_fixed.adb:61:07: info: initialization of "Z" proved
 binary_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:64:17: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:64:17: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:65:25: info: initialization of "Z" proved
 binary_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:67:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:67:14: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:68:22: info: assertion proved (altergo: 1 VC)
-binary_fixed.adb:68:22: info: initialization of "Z" proved
+binary_fixed.adb:68:22: info: assertion proved (CVC4: 1 VC)
 binary_fixed.adb:68:32: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:69:14: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:69:14: info: overflow check proved (altergo: 1 VC)
@@ -69,18 +57,18 @@ binary_fixed.adb:70:22: info: assertion proved (altergo: 2 VC)
 binary_fixed.adb:70:29: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:70:33: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:70:48: info: overflow check proved (altergo: 1 VC)
-binary_fixed.adb:70:50: info: initialization of "Z" proved
 binary_fixed.adb:70:52: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:71:14: info: division check proved (altergo: 1 VC)
 binary_fixed.adb:71:14: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:71:14: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:71:16: info: initialization of "Two" proved
 binary_fixed.adb:72:22: info: assertion proved (altergo: 2 VC)
 binary_fixed.adb:72:29: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:72:33: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:72:48: info: overflow check proved (altergo: 1 VC)
-binary_fixed.adb:72:50: info: initialization of "Z" proved
 binary_fixed.adb:72:52: info: overflow check proved (altergo: 1 VC)
+binary_fixed.adb:78:07: info: initialization of "Y1" proved
+binary_fixed.adb:79:07: info: initialization of "Y2" proved
+binary_fixed.adb:81:07: info: initialization of "Y3" proved
 binary_fixed.adb:85:22: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:88:16: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:88:25: info: range check proved (altergo: 1 VC)
@@ -90,11 +78,8 @@ binary_fixed.adb:89:27: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:90:22: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:90:26: info: overflow check proved (altergo: 1 VC)
 binary_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:92:17: info: initialization of "Y1" proved
 binary_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:93:17: info: initialization of "Y2" proved
 binary_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
-binary_fixed.adb:94:17: info: initialization of "Y3" proved
 binary_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 binary_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 binary_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
@@ -113,69 +98,57 @@ binary_fixed.ads:14:14: warning: subprogram "Test_Multiply" has no effect
 binary_fixed.ads:17:14: warning: subprogram "Test_Divide" has no effect
 binary_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 binary_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
+decimal_fixed.adb:5:07: info: initialization of "Z" proved
 decimal_fixed.adb:7:12: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:7:12: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:8:22: info: assertion proved (altergo: 3 VC)
-decimal_fixed.adb:8:78: info: initialization of "Z" proved
 decimal_fixed.adb:10:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:10:22: info: initialization of "Z" proved
+decimal_fixed.adb:15:07: info: initialization of "Z" proved
 decimal_fixed.adb:17:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:17:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:18:22: info: assertion proved (altergo: 3 VC)
-decimal_fixed.adb:18:74: info: initialization of "Z" proved
 decimal_fixed.adb:19:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:19:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:20:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:20:22: info: initialization of "Z" proved
 decimal_fixed.adb:22:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:22:22: info: initialization of "Z" proved
+decimal_fixed.adb:28:07: info: initialization of "Z" proved
 decimal_fixed.adb:30:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:30:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:31:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:31:22: info: initialization of "Z" proved
 decimal_fixed.adb:32:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:32:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:33:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:33:22: info: initialization of "Z" proved
 decimal_fixed.adb:35:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:35:22: info: initialization of "Z" proved
+decimal_fixed.adb:41:07: info: initialization of "Z" proved
 decimal_fixed.adb:43:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:43:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:44:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:44:22: info: initialization of "Z" proved
 decimal_fixed.adb:44:28: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:45:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:45:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:46:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:46:22: info: initialization of "Z" proved
 decimal_fixed.adb:46:28: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:47:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:47:14: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:47:16: info: initialization of "Two" proved
 decimal_fixed.adb:48:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:48:22: info: initialization of "Z" proved
 decimal_fixed.adb:48:28: info: overflow check proved (altergo: 1 VC)
-decimal_fixed.adb:49:12: info: initialization of "Two" proved
 decimal_fixed.adb:49:16: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:49:16: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:50:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:50:22: info: initialization of "Z" proved
 decimal_fixed.adb:50:28: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:53:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:53:14: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:54:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:54:22: info: initialization of "Z" proved
 decimal_fixed.adb:54:28: info: overflow check proved (altergo: 1 VC)
+decimal_fixed.adb:61:07: info: initialization of "Z" proved
 decimal_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:64:17: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:64:17: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:65:25: info: initialization of "Z" proved
 decimal_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:67:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:67:14: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:68:22: info: assertion proved (altergo: 1 VC)
-decimal_fixed.adb:68:22: info: initialization of "Z" proved
+decimal_fixed.adb:68:22: info: assertion proved (CVC4: 1 VC)
 decimal_fixed.adb:68:32: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:69:14: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:69:14: info: overflow check proved (altergo: 1 VC)
@@ -184,18 +157,18 @@ decimal_fixed.adb:70:22: info: assertion proved (altergo: 2 VC)
 decimal_fixed.adb:70:29: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:70:33: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:70:48: info: overflow check proved (altergo: 1 VC)
-decimal_fixed.adb:70:50: info: initialization of "Z" proved
 decimal_fixed.adb:70:52: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:71:14: info: division check proved (altergo: 1 VC)
 decimal_fixed.adb:71:14: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:71:14: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:71:16: info: initialization of "Two" proved
 decimal_fixed.adb:72:22: info: assertion proved (altergo: 2 VC)
 decimal_fixed.adb:72:29: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:72:33: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:72:48: info: overflow check proved (altergo: 1 VC)
-decimal_fixed.adb:72:50: info: initialization of "Z" proved
 decimal_fixed.adb:72:52: info: overflow check proved (altergo: 1 VC)
+decimal_fixed.adb:78:07: info: initialization of "Y1" proved
+decimal_fixed.adb:79:07: info: initialization of "Y2" proved
+decimal_fixed.adb:81:07: info: initialization of "Y3" proved
 decimal_fixed.adb:85:22: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:88:16: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:88:25: info: range check proved (altergo: 1 VC)
@@ -205,11 +178,8 @@ decimal_fixed.adb:89:27: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:90:22: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:90:26: info: overflow check proved (altergo: 1 VC)
 decimal_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:92:17: info: initialization of "Y1" proved
 decimal_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:93:17: info: initialization of "Y2" proved
 decimal_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
-decimal_fixed.adb:94:17: info: initialization of "Y3" proved
 decimal_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 decimal_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 decimal_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
@@ -228,69 +198,57 @@ decimal_fixed.ads:14:14: warning: subprogram "Test_Multiply" has no effect
 decimal_fixed.ads:17:14: warning: subprogram "Test_Divide" has no effect
 decimal_fixed.ads:20:14: warning: subprogram "Test_Type_Conversion" has no effect
 decimal_fixed.ads:23:14: warning: subprogram "Test_Compare" has no effect
+ordinary_fixed.adb:5:07: info: initialization of "Z" proved
 ordinary_fixed.adb:7:12: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:7:12: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:8:22: info: assertion proved (altergo: 3 VC)
-ordinary_fixed.adb:8:78: info: initialization of "Z" proved
 ordinary_fixed.adb:10:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:10:22: info: initialization of "Z" proved
+ordinary_fixed.adb:15:07: info: initialization of "Z" proved
 ordinary_fixed.adb:17:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:17:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:18:22: info: assertion proved (altergo: 3 VC)
-ordinary_fixed.adb:18:74: info: initialization of "Z" proved
 ordinary_fixed.adb:19:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:19:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:20:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:20:22: info: initialization of "Z" proved
 ordinary_fixed.adb:22:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:22:22: info: initialization of "Z" proved
+ordinary_fixed.adb:28:07: info: initialization of "Z" proved
 ordinary_fixed.adb:30:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:30:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:31:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:31:22: info: initialization of "Z" proved
 ordinary_fixed.adb:32:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:32:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:33:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:33:22: info: initialization of "Z" proved
 ordinary_fixed.adb:35:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:35:22: info: initialization of "Z" proved
+ordinary_fixed.adb:41:07: info: initialization of "Z" proved
 ordinary_fixed.adb:43:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:43:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:44:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:44:22: info: initialization of "Z" proved
 ordinary_fixed.adb:44:28: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:45:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:45:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:46:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:46:22: info: initialization of "Z" proved
 ordinary_fixed.adb:46:28: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:47:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:47:14: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:47:16: info: initialization of "Two" proved
 ordinary_fixed.adb:48:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:48:22: info: initialization of "Z" proved
 ordinary_fixed.adb:48:28: info: overflow check proved (altergo: 1 VC)
-ordinary_fixed.adb:49:12: info: initialization of "Two" proved
 ordinary_fixed.adb:49:16: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:49:16: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:50:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:50:22: info: initialization of "Z" proved
 ordinary_fixed.adb:50:28: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:53:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:53:14: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:54:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:54:22: info: initialization of "Z" proved
 ordinary_fixed.adb:54:28: info: overflow check proved (altergo: 1 VC)
+ordinary_fixed.adb:61:07: info: initialization of "Z" proved
 ordinary_fixed.adb:64:17: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:64:17: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:64:17: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:65:25: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:65:25: info: initialization of "Z" proved
 ordinary_fixed.adb:67:14: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:67:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:67:14: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:68:22: info: assertion proved (altergo: 1 VC)
-ordinary_fixed.adb:68:22: info: initialization of "Z" proved
+ordinary_fixed.adb:68:22: info: assertion proved (CVC4: 1 VC)
 ordinary_fixed.adb:68:32: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:69:14: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:69:14: info: overflow check proved (altergo: 1 VC)
@@ -299,18 +257,18 @@ ordinary_fixed.adb:70:22: info: assertion proved (altergo: 2 VC)
 ordinary_fixed.adb:70:29: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:70:33: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:70:48: info: overflow check proved (altergo: 1 VC)
-ordinary_fixed.adb:70:50: info: initialization of "Z" proved
 ordinary_fixed.adb:70:52: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:71:14: info: division check proved (altergo: 1 VC)
 ordinary_fixed.adb:71:14: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:71:14: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:71:16: info: initialization of "Two" proved
 ordinary_fixed.adb:72:22: info: assertion proved (altergo: 2 VC)
 ordinary_fixed.adb:72:29: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:72:33: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:72:48: info: overflow check proved (altergo: 1 VC)
-ordinary_fixed.adb:72:50: info: initialization of "Z" proved
 ordinary_fixed.adb:72:52: info: overflow check proved (altergo: 1 VC)
+ordinary_fixed.adb:78:07: info: initialization of "Y1" proved
+ordinary_fixed.adb:79:07: info: initialization of "Y2" proved
+ordinary_fixed.adb:81:07: info: initialization of "Y3" proved
 ordinary_fixed.adb:85:22: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:88:16: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:88:25: info: range check proved (altergo: 1 VC)
@@ -320,11 +278,8 @@ ordinary_fixed.adb:89:27: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:90:22: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:90:26: info: overflow check proved (altergo: 1 VC)
 ordinary_fixed.adb:90:26: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:92:17: info: initialization of "Y1" proved
 ordinary_fixed.adb:92:17: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:93:17: info: initialization of "Y2" proved
 ordinary_fixed.adb:93:17: info: range check proved (altergo: 1 VC)
-ordinary_fixed.adb:94:17: info: initialization of "Y3" proved
 ordinary_fixed.adb:94:17: info: range check proved (altergo: 1 VC)
 ordinary_fixed.adb:101:25: info: assertion proved (altergo: 1 VC)
 ordinary_fixed.adb:102:25: info: assertion proved (altergo: 1 VC)
@@ -349,13 +304,14 @@ dynamic_fixed.adb:6:40: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:7:19: info: range check proved (CVC4: 10 VC)
 dynamic_fixed.adb:9:25: medium: assertion might fail, cannot prove Integer (T'Last) = I (e.g. when I = 1)
 dynamic_fixed.adb:10:25: info: assertion proved
-unsupported.adb:18:13: operation between incompatible fixed-point types is not yet supported
 unsupported.adb:19:13: operation between incompatible fixed-point types is not yet supported
-unsupported.adb:20:15: expression of type root_real is not allowed in SPARK
-unsupported.adb:20:15: value is dependent on the compiler and target
-unsupported.adb:20:15: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:21:10: expression of type root_real is not allowed in SPARK
-unsupported.adb:21:10: value is dependent on the compiler and target
-unsupported.adb:21:10: violation of pragma SPARK_Mode at test.adc:1
-unsupported.adb:23:10: conversion between incompatible fixed-point types is not yet supported
+unsupported.adb:20:13: operation between incompatible fixed-point types is not yet supported
+unsupported.adb:21:15: expression of type root_real is not allowed in SPARK
+unsupported.adb:21:15: value is dependent on the compiler and target
+unsupported.adb:21:15: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:22:10: expression of type root_real is not allowed in SPARK
+unsupported.adb:22:10: value is dependent on the compiler and target
+unsupported.adb:22:10: violation of pragma SPARK_Mode at test.adc:1
+unsupported.adb:24:10: conversion between incompatible fixed-point types is not yet supported
+unsupported.adb:25:22: operation between incompatible fixed-point types is not yet supported
 gnatprove: error during flow analysis and proof

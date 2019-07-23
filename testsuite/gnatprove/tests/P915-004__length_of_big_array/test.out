@@ -1,31 +1,17 @@
 fail.adb:5:14: info: postcondition proved (CVC4: 2 VC)
 fail.adb:7:07: info: range check proved (CVC4: 2 VC)
-fail.adb:7:28: info: length check proved (CVC4: 4 VC)
-fail.adb:9:14: info: initialization of "R" proved
-fail.adb:14:14: warning: subprogram "P1" has no effect
-fail.adb:17:11: medium: range check might fail (e.g. when C = (others => False) and C'First = 0 and C'Last = 18446744073709551615)
-fail.adb:18:21: warning: assuming "Put_Line" has no effect on global items
-fail.adb:18:21: warning: no Global contract available for "Put_Line"
+fail.adb:7:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+fail.adb:17:11: medium: range check might fail
 fail.adb:19:14: info: range check proved (CVC4: 1 VC)
-fail.adb:20:21: warning: assuming "Put_Line" has no effect on global items
-fail.adb:20:21: warning: no Global contract available for "Put_Line"
-fail.adb:24:14: warning: subprogram "P2" has no effect
 fail.adb:27:21: info: index check proved (CVC4: 2 VC)
 fail.adb:27:35: info: index check proved (CVC4: 2 VC)
-fail.adb:28:21: warning: assuming "Put_Line" has no effect on global items
-fail.adb:28:21: warning: no Global contract available for "Put_Line"
-fail.adb:32:14: warning: subprogram "P3" has no effect
-fail.adb:35:11: medium: range check might fail (e.g. when C = (others => False) and C'First = 0 and C'Last = 18446744073709551615)
-fail.adb:36:21: warning: assuming "Put_Line" has no effect on global items
-fail.adb:36:21: warning: no Global contract available for "Put_Line"
+fail.adb:35:11: medium: range check might fail
 fail.adb:37:14: info: range check proved (CVC4: 1 VC)
-fail.adb:38:21: warning: assuming "Put_Line" has no effect on global items
-fail.adb:38:21: warning: no Global contract available for "Put_Line"
 fail.adb:42:14: warning: subprogram "P4" has no effect
 fail.adb:45:22: info: assertion proved (CVC4: 1 VC)
-fail.adb:45:23: medium: range check might fail (e.g. when C = (others => False) and C'First = 0 and C'Last = 18446744073709551615)
+fail.adb:45:23: medium: range check might fail
 fail.adb:48:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:49:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:50:04: info: precondition proved (CVC4: 2 VC)
 fail.adb:51:04: info: precondition proved (CVC4: 2 VC)
-mod_array.ads:6:52: medium: range check might fail (e.g. when X = (others => False) and X'First = 0 and X'Last = 0)
+mod_array.ads:6:52: medium: range check might fail

@@ -1,38 +1,40 @@
-complex_arrays.adb:26:22: medium: postcondition might fail, cannot prove A(I)(J) = V (e.g. when A = (others => (others => 1)) and I = 0 and J = 0 and V = 0) [possible explanation: subprogram at line 22 should mention A and I and J and V in a precondition]
-complex_arrays.adb:35:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (0 => (0 => 0, others => -1), 1 => (0 => -1, others => 0), others => (others => -1)) and I = 0 and J = 1) [possible explanation: subprogram at line 32 should mention A and I and J in a precondition]
-complex_arrays.adb:46:22: medium: postcondition might fail, cannot prove A(I)(J) = 17 (e.g. when A = (others => (others => 0)) and I = 0 and J = 0) [possible explanation: subprogram at line 42 should mention A and I and J in a precondition]
-complex_arrays.adb:55:22: medium: postcondition might fail, cannot prove A(I) = A(23) (e.g. when A = (17 => (0 => 0, others => -1), 23 => (0 => -1, others => 0), others => (others => -1)) and I = 17) [possible explanation: subprogram at line 52 should mention A and I in a precondition]
-complex_arrays.adb:65:22: medium: postcondition might fail, cannot prove A(I)(J) = A(J)(I) (e.g. when A = (2 => (others => 0), others => (others => -1)) and I = 0 and J = 2) [possible explanation: subprogram at line 62 should mention A and I and J in a precondition]
-complex_arrays.adb:75:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (0 => (others => 0), 1 => (others => 0), others => (others => -1)) and I = 1 and J = 2) [possible explanation: subprogram at line 72 should mention A and I and J in a precondition]
-complex_arrays.adb:87:22: medium: postcondition might fail, cannot prove A(I)(J) /= 23 (e.g. when A = (1 => (others => 42), others => (others => 23)) and I = 0 and J = 1) [possible explanation: precondition of subprogram at line 83 should mention A]
-complex_arrays.adb:99:22: medium: postcondition might fail, cannot prove A(I) /= A(23) (e.g. when A = (others => (others => 0)) and I = 1) [possible explanation: precondition of subprogram at line 95 should mention A]
-complex_arrays.adb:112:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => (0 => 0, others => 0), others => (others => 0)) and A'Old = (1 => (0 => 0, others => 0), others => (others => 0))) [possible explanation: precondition of subprogram at line 108 should mention A]
-complex_arrays.adb:118:18: info: initialization of "Tmp" proved
-complex_arrays.adb:126:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (others => (others => 0)) and A'Old = (others => (others => 0))) [possible explanation: precondition of subprogram at line 122 should mention A]
-complex_arrays.adb:132:15: info: initialization of "Tmp" proved
-complex_arrays.adb:142:19: info: postcondition proved (CVC4: 2 VC)
+complex_arrays.adb:25:11: info: flow dependencies proved
+complex_arrays.adb:26:22: medium: postcondition might fail, cannot prove A(I)(J) = V (e.g. when A = (others => (others => 1)) and I = 0 and J = 0 and V = 0)
+complex_arrays.adb:34:11: info: flow dependencies proved
+complex_arrays.adb:35:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (0 => (0 => -1, others => 0), 1 => (0 => 0, others => -1), others => (others => -1)) and I = 0 and J = 1)
+complex_arrays.adb:45:11: info: flow dependencies proved
+complex_arrays.adb:46:22: medium: postcondition might fail, cannot prove A(I)(J) = 17
+complex_arrays.adb:54:11: info: flow dependencies proved
+complex_arrays.adb:55:22: medium: postcondition might fail, cannot prove A(I) = A(23) (e.g. when A = (23 => (others => 0), others => (others => -1)) and I = 17)
+complex_arrays.adb:64:11: info: flow dependencies proved
+complex_arrays.adb:65:22: medium: postcondition might fail, cannot prove A(I)(J) = A(J)(I) (e.g. when A = (0 => (1 => 1, 2 => 1, others => 0), 2 => (0 => 0, others => 1), others => (others => 0)) and I = 0 and J = 2)
+complex_arrays.adb:74:11: info: flow dependencies proved
+complex_arrays.adb:75:22: medium: postcondition might fail, cannot prove A(I) = A(J) (e.g. when A = (2 => (others => 0), others => (others => -1)) and I = 1 and J = 2)
+complex_arrays.adb:85:11: info: flow dependencies proved
+complex_arrays.adb:87:22: medium: postcondition might fail, cannot prove A(I)(J) /= 23 (e.g. when A = (1 => (others => 42), others => (others => 23)) and I = 0 and J = 1)
+complex_arrays.adb:97:11: info: flow dependencies proved
+complex_arrays.adb:99:22: medium: postcondition might fail, cannot prove A(I) /= A(23) (e.g. when A = (42 => (others => 0), others => (others => 0)) and I = 43)
+complex_arrays.adb:110:11: info: flow dependencies proved
+complex_arrays.adb:112:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => (1 => 0, others => 0), others => (others => 0)) and A'Old = (0 => (1 => 0, others => 0), others => (others => 0)))
+complex_arrays.adb:114:07: info: initialization of "Tmp" proved
+complex_arrays.adb:124:11: info: flow dependencies proved
+complex_arrays.adb:126:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => (others => 0), others => (others => 0)) and A'Old = (0 => (others => 0), others => (others => 0)))
+complex_arrays.adb:128:07: info: initialization of "Tmp" proved
+complex_arrays.adb:142:19: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+complex_arrays.adb:148:07: info: initialization of "Tmp" proved
 complex_arrays.adb:152:11: info: range check proved (CVC4: 2 VC)
-complex_arrays.adb:153:17: info: initialization of "Tmp" proved
-complex_arrays.adb:155:13: info: loop invariant initialization proved (CVC4: 2 VC)
-complex_arrays.adb:155:13: info: loop invariant preservation proved (CVC4: 2 VC)
+complex_arrays.adb:155:13: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 1 VC)
+complex_arrays.adb:155:13: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 1 VC)
 complex_arrays.adb:155:22: info: range check proved (CVC4: 4 VC)
-complex_arrays.adb:156:32: info: initialization of "Tmp" proved
 complex_arrays.adb:156:37: info: index check proved (CVC4: 4 VC)
 complex_arrays.adb:160:11: info: range check proved (CVC4: 2 VC)
-complex_arrays.adb:161:17: info: initialization of "Tmp" proved
-complex_arrays.adb:163:13: info: loop invariant initialization proved (CVC4: 2 VC)
-complex_arrays.adb:163:13: info: loop invariant preservation proved (CVC4: 2 VC)
+complex_arrays.adb:163:13: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 2 VC)
+complex_arrays.adb:163:13: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 2 VC)
 complex_arrays.adb:163:21: info: range check proved (CVC4: 4 VC)
-complex_arrays.adb:164:31: info: initialization of "Tmp" proved
 complex_arrays.adb:164:36: info: index check proved (CVC4: 4 VC)
 complex_arrays.adb:165:36: info: index check proved (CVC4: 4 VC)
-complex_arrays.adb:168:14: info: initialization of "Tmp" proved
 complex_arrays.adb:172:19: info: postcondition proved (CVC4: 1 VC)
-complex_arrays.adb:180:13: info: initialization of "Step" proved
-complex_arrays.adb:181:18: info: initialization of "C" proved
+complex_arrays.adb:174:07: info: initialization of "Step" proved
 complex_arrays.adb:181:20: info: range check proved (CVC4: 2 VC)
-complex_arrays.adb:185:13: info: loop invariant initialization proved (CVC4: 4 VC)
-complex_arrays.adb:185:13: info: loop invariant preservation proved (CVC4: 4 VC)
-complex_arrays.adb:186:32: info: initialization of "Step" proved
-complex_arrays.adb:188:33: info: initialization of "C" proved
-complex_arrays.adb:193:14: info: initialization of "C" proved
+complex_arrays.adb:185:13: info: loop invariant initialization proved (CVC4: 4 VC; Trivial: 4 VC)
+complex_arrays.adb:185:13: info: loop invariant preservation proved (CVC4: 4 VC; Trivial: 4 VC)

@@ -1,31 +1,43 @@
+info_flow_tests.adb:6:09: info: data dependencies proved
+info_flow_tests.adb:7:09: info: flow dependencies proved
 info_flow_tests.adb:12:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:13:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:15:23: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:16:23: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:20:23: warning: unused initial value of "A"
 info_flow_tests.adb:21:23: warning: unused initial value of "B"
+info_flow_tests.adb:22:11: info: data dependencies proved
 info_flow_tests.adb:23:06: medium: missing dependency "null => A"
 info_flow_tests.adb:23:06: medium: missing dependency "null => B"
 info_flow_tests.adb:23:23: medium: incorrect dependency "A => B"
 info_flow_tests.adb:24:23: medium: incorrect dependency "B => A"
 info_flow_tests.adb:28:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:29:12: info: range check proved (CVC4: 2 VC)
-info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:32:14: info: data dependencies proved
+info_flow_tests.adb:35:24: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 info_flow_tests.adb:35:26: medium: range check might fail
-info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:36:24: high: constant with variable input "C1" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 info_flow_tests.adb:36:26: medium: range check might fail
+info_flow_tests.adb:44:09: info: data dependencies proved
+info_flow_tests.adb:45:09: info: flow dependencies proved
 info_flow_tests.adb:50:12: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:51:12: info: range check proved (CVC4: 2 VC)
+info_flow_tests.adb:54:12: info: data dependencies proved
 info_flow_tests.adb:55:34: info: initialization of "A" proved
 info_flow_tests.adb:55:37: info: initialization of "B" proved
+info_flow_tests.adb:56:12: info: flow dependencies proved
 info_flow_tests.adb:60:26: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:61:26: info: range check proved (CVC4: 1 VC)
+info_flow_tests.adb:69:11: info: data dependencies proved
 info_flow_tests.adb:72:54: medium: overflow check might fail [possible explanation: subprogram at line 72 should mention A and X in a precondition]
+info_flow_tests.adb:74:14: info: data dependencies proved
+info_flow_tests.adb:76:14: info: flow dependencies proved
 info_flow_tests.adb:79:22: info: postcondition proved (CVC4: 1 VC)
 info_flow_tests.adb:84:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:86:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:87:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:89:25: info: initialization of "X" proved
+info_flow_tests.adb:90:14: info: data dependencies proved
 info_flow_tests.adb:90:25: medium: constant without variable input "C1" cannot appear in Globals
 info_flow_tests.adb:90:29: medium: constant without variable input "C2" cannot appear in Globals
 info_flow_tests.adb:90:37: medium: constant without variable input "C4" cannot appear in Globals
@@ -36,12 +48,16 @@ info_flow_tests.adb:93:28: medium: overflow check might fail
 info_flow_tests.adb:93:33: medium: overflow check might fail
 info_flow_tests.adb:93:38: medium: overflow check might fail
 info_flow_tests.adb:93:43: medium: overflow check might fail
+info_flow_tests.adb:100:09: info: data dependencies proved
 info_flow_tests.adb:103:54: medium: overflow check might fail [possible explanation: subprogram at line 103 should mention A and X in a precondition]
+info_flow_tests.adb:105:14: info: data dependencies proved
+info_flow_tests.adb:107:14: info: flow dependencies proved
 info_flow_tests.adb:110:22: info: postcondition proved (CVC4: 1 VC)
 info_flow_tests.adb:115:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:117:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:118:32: info: precondition proved (CVC4: 1 VC)
 info_flow_tests.adb:120:25: info: initialization of "X" proved
+info_flow_tests.adb:121:12: info: data dependencies proved
 info_flow_tests.adb:124:18: info: overflow check proved (CVC4: 1 VC)
 info_flow_tests.adb:124:23: medium: overflow check might fail
 info_flow_tests.adb:124:28: medium: overflow check might fail
@@ -50,23 +66,32 @@ info_flow_tests.adb:124:38: medium: overflow check might fail
 info_flow_tests.adb:124:43: medium: overflow check might fail
 info_flow_tests.adb:132:23: info: initialization of "C" proved
 info_flow_tests.adb:137:25: info: initialization of "X" proved
+info_flow_tests.adb:138:12: info: data dependencies proved
 info_flow_tests.adb:140:18: medium: range check might fail
 info_flow_tests.adb:141:19: medium: range check might fail
-info_flow_tests.adb:143:15: info: initialization of "V" proved
 info_flow_tests.adb:153:23: info: initialization of "C" proved
+info_flow_tests.adb:159:12: info: data dependencies proved
 info_flow_tests.adb:161:18: medium: range check might fail
-info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(13))
+info_flow_tests.adb:164:19: high: constant with variable input "C2" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 info_flow_tests.adb:164:21: info: cannot unroll loop (too many loop iterations)
 info_flow_tests.adb:175:23: info: initialization of "C" proved
+info_flow_tests.adb:176:09: info: data dependencies proved
+info_flow_tests.adb:177:09: info: flow dependencies proved
 info_flow_tests.adb:179:15: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:186:23: info: initialization of "C" proved
+info_flow_tests.adb:187:09: info: data dependencies proved
+info_flow_tests.adb:188:09: info: flow dependencies proved
 info_flow_tests.adb:190:15: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:202:23: info: initialization of "C" proved
+info_flow_tests.adb:203:09: info: data dependencies proved
+info_flow_tests.adb:204:09: info: flow dependencies proved
 info_flow_tests.adb:206:15: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:214:23: info: initialization of "C" proved
 info_flow_tests.adb:215:23: info: initialization of "D" proved
 info_flow_tests.adb:216:23: info: initialization of "E" proved
 info_flow_tests.adb:217:23: info: initialization of "F" proved
+info_flow_tests.adb:218:09: info: data dependencies proved
+info_flow_tests.adb:219:09: info: flow dependencies proved
 info_flow_tests.adb:223:15: info: range check proved (CVC4: 2 VC)
 info_flow_tests.adb:225:15: medium: range check might fail
 info_flow_tests.adb:226:12: info: range check proved (CVC4: 2 VC)
@@ -74,6 +99,7 @@ info_flow_tests.adb:228:23: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:229:23: info: range check proved (CVC4: 1 VC)
 info_flow_tests.adb:235:23: warning: unused initial value of "B"
 info_flow_tests.adb:236:23: info: initialization of "C" proved
+info_flow_tests.adb:241:12: info: flow dependencies proved
 info_flow_tests.adb:249:12: medium: constant without variable input "C3" cannot appear in Refined_State (SPARK RM 7.2.2(16))
 info_flow_tests.adb:257:28: medium: constant without variable input "C5" cannot appear in Initializes
 info_flow_tests.adb:257:34: medium: constant without variable input "C1" cannot appear in Initializes

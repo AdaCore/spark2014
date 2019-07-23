@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
---                       Copyright (C) 2014-2018, Altran UK Limited         --
+--                     Copyright (C) 2010-2019, AdaCore                     --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -78,13 +78,15 @@ with SPARK_Util.Subprograms;          use SPARK_Util.Subprograms;
 with SPARK_Util.Types;                use SPARK_Util.Types;
 with SPARK_Xrefs;
 with Stand;                           use Stand;
+with String_Utils;                    use String_Utils;
 with Switch;                          use Switch;
 with VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
 with Why.Atree.Sprint;                use Why.Atree.Sprint;
-with Why.Atree.Tables;
+with Why.Atree.Tables;                use Why.Atree.Tables;
 with Why.Gen.Binders;                 use Why.Gen.Binders;
+with Why.Gen.Names;
 with Why.Inter;                       use Why.Inter;
 with Why.Types;                       use Why.Types;
 
@@ -98,9 +100,8 @@ package body Gnat2Why.Driver is
    -- Local Subprograms --
    -----------------------
 
-   procedure Compute_Global_Effects;
+   procedure Prescan_ALI_Files;
    --  Pre-scan ALI files, so they can be easily iterated
-   --  ??? the current name comes from historic design
 
    procedure Complete_Declaration (E : Entity_Id);
    --  Generate completion for every subprogram or type entity in List_Entities
@@ -133,7 +134,7 @@ package body Gnat2Why.Driver is
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
-   procedure Print_Why_File;
+   procedure Print_Why_File (Filename : String);
    --  Print the input Why3 file on disk
 
    procedure Touch_Main_File (Prefix : String);
@@ -141,7 +142,7 @@ package body Gnat2Why.Driver is
    --  signalled that everything went fine. This is done by creating the main
    --  output file of gnat2why, the main Why file.
 
-   procedure Run_Gnatwhy3;
+   procedure Run_Gnatwhy3 (Filename : String);
    --  After generating the Why file, run the proof tool
 
    procedure Create_JSON_File (Proof_Done : Boolean);
@@ -157,11 +158,10 @@ package body Gnat2Why.Driver is
    Timing : Time_Token;
    --  Timing of various gnat2why phases
 
-   Translated_Object_Entities : Node_Sets.Set;
-   Translated_Object_Names    : Name_Sets.Set;
-   --  Object entities that have been actually translated to Why; needed to
-   --  avoid repeated declarations in Why for objects appearing in the Global
-   --  contracts (where such repetitions are fine).
+   Translated_Object_Names : Name_Sets.Set;
+   --  Objects not in SPARK but still translated to Why; we get them from the
+   --  Global contracts (where repetitions are fine) and keep track of them to
+   --  translate each of them exactly once.
 
    --------------------------
    -- Complete_Declaration --
@@ -236,11 +236,11 @@ package body Gnat2Why.Driver is
       Ada.Text_IO.Close (FD);
    end Create_JSON_File;
 
-   ----------------------------
-   -- Compute_Global_Effects --
-   ----------------------------
+   -----------------------
+   -- Prescan_ALI_Files --
+   -----------------------
 
-   procedure Compute_Global_Effects is
+   procedure Prescan_ALI_Files is
       Main_Lib_File : File_Name_Type;
       Text          : Text_Buffer_Ptr;
       Main_Lib_Id   : ALI_Id;
@@ -272,7 +272,7 @@ package body Gnat2Why.Driver is
       Free (Text);
 
       Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
-   end Compute_Global_Effects;
+   end Prescan_ALI_Files;
 
    ---------------------
    -- Do_Generate_VCs --
@@ -353,17 +353,52 @@ package body Gnat2Why.Driver is
    -----------------
 
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
-      E          : constant Entity_Id :=
+      E         : constant Entity_Id :=
         Unique_Defining_Entity (Unit (GNAT_Root));
-      Base_Name  : constant String :=
+      Base_Name : constant String :=
         File_Name_Without_Suffix
           (Get_Name_String (Unit_File_Name (Main_Unit)));
+
+      generic
+         with procedure Action (N : Node_Id);
+      procedure Process_All_Units;
+      --  Call Action on all compilation units analyzed by the frontend. Units
+      --  might be processed in an arbitrary order; in particular, it is not
+      --  guaranteed that declarations are processed before uses.
+      --
+      --  Note: originally, we used Sem.Walk_Library_Items, but in complicated
+      --  chains of generics and inlined calls it was both failing to find a
+      --  suitable ordering of units and missing some units that were needed.
 
       generic
          with procedure Action (N : Node_Id);
       procedure Process_Current_Unit;
       --  Call Action on the spec of the current compilation unit and its body
       --  (if present).
+
+      -----------------------
+      -- Process_All_Units --
+      -----------------------
+
+      procedure Process_All_Units is
+      begin
+         --  Standard package is implicitly analysed
+         Action (Standard_Package_Node);
+
+         --  Iterate over all other units known to the frontend
+         for U in Main_Unit .. Last_Unit loop
+
+            --  Ignore non-compilation units (e.g. .adc configuration files)
+            --  and units that were not analysed (e.g. system.ads when it is
+            --  implicitly pulled by Ensure_System_Dependency).
+
+            if Present (Cunit (U))
+              and then Analyzed (Unit (Cunit (U)))
+            then
+               Action (Unit (Cunit (U)));
+            end if;
+         end loop;
+      end Process_All_Units;
 
       --------------------------
       -- Process_Current_Unit --
@@ -388,18 +423,13 @@ package body Gnat2Why.Driver is
       procedure Build_Flow_Tree is new Process_Current_Unit
         (Action => Flow_Generated_Globals.Traversal.Build_Tree);
 
-      --  Note that this use of Sem.Walk_Library_Items to see units in an order
-      --  which avoids forward references has caused problems in the past with
-      --  the combination of generics and inlining, as well as child units
-      --  referenced in parent units. To be checked.
-
-      procedure Rewrite_All_Compilation_Units is new Sem.Walk_Library_Items
+      procedure Rewrite_All_Compilation_Units is new Process_All_Units
         (Action => Rewrite_Compilation_Unit);
 
-      procedure Register_All_Entities is new Sem.Walk_Library_Items
+      procedure Register_All_Entities is new Process_All_Units
         (Action => Register_Compilation_Unit);
 
-      procedure Register_All_Flow_Scopes is new Sem.Walk_Library_Items
+      procedure Register_All_Flow_Scopes is new Process_All_Units
         (Action => Register_Flow_Scopes);
 
       --  This Boolean indicates whether proof have been attempted anywhere in
@@ -417,12 +447,22 @@ package body Gnat2Why.Driver is
          --  at some point to provide proof of generics, then the special
          --  SPARK expansion in the frontend should be applied to generic
          --  units as well. We still need to create the Why files to
-         --  indicate that everything went OK. We also print a warning that
-         --  nothing has been done, if the user has specifically requested
-         --  analysis of this file.
+         --  indicate that everything went OK.
 
          if not Gnat2Why_Args.Global_Gen_Mode then
             Touch_Main_File (Base_Name);
+
+            --  Issue warning if analyzing specific units with -u switch, but
+            --  the main entity in the compilation unit is generic.
+
+            if Gnat2Why_Args.Limit_Units then
+               Error_Msg_N
+                 ("?generic compilation unit is not analyzed",
+                  GNAT_Root);
+               Error_Msg_N
+                 ("\?only instantiations of the generic will be analyzed",
+                  GNAT_Root);
+            end if;
          end if;
 
          return;
@@ -460,7 +500,10 @@ package body Gnat2Why.Driver is
       --  Finalize has to be called before we call Compilation_Errors.
       Finalize (Last_Call => False);
 
-      if Compilation_Errors or else Gnat2Why_Args.Check_Mode then
+      if Compilation_Errors
+        or else SPARK_Definition.Ownership_Errors
+        or else Gnat2Why_Args.Check_Mode
+      then
          return;
       end if;
 
@@ -509,23 +552,17 @@ package body Gnat2Why.Driver is
             end if;
          end;
 
-         --  ??? we don't really need frontend globals in phase 2, but
-         --  Compute_Global_Effects populates a table with ALI files and that
-         --  table is used in GG_Read (which needs to be called even if
-         --  --no-global-generation switch is used to get non-global effects,
-         --  like potentially blocking and termination statuses).
-         --
-         --  This functionality should be moved out of Compute_Global_Effects
-         --
-         --  Also, we use frontend globals for
-         --  SPARK_Frame_Conditions.Is_Protected_Operation
-         --
-         --  Also this functionality should be moved (to generated globals)
-         Compute_Global_Effects;
-         Timing_Phase_Completed (Timing, "globals (basic)");
-
          --  Register mappings from entity names to entity ids
          Register_All_Entities;
+
+         --  Populate a table with ALI files which is used in GG_Read
+         --  (which needs to be called even if --no-global-generation switch
+         --  is used to get non-global effects, like potentially blocking and
+         --  termination statuses).
+         --
+         --  This functionality should be moved out of Compute_Global_Effects
+         Prescan_ALI_Files;
+         Timing_Phase_Completed (Timing, "globals (basic)");
 
          --  Read the generated globals from the ALI files
          GG_Read (GNAT_Root);
@@ -546,6 +583,7 @@ package body Gnat2Why.Driver is
             Load_Codepeer_Results;
             Timing_Phase_Completed (Timing, "codepeer results");
 
+            Why.Gen.Names.Initialize;
             Why.Atree.Modules.Initialize;
             Init_Why_Sections;
             Timing_Phase_Completed (Timing, "init_why_sections");
@@ -557,20 +595,30 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed (Timing, "translation of compilation unit");
 
             if Has_Registered_VCs then
-               Print_Why_File;
+               declare
+                  Filename : constant String := Unit_Name & Why_File_Suffix;
+               begin
+                  Print_Why_File (Filename);
 
-               --  After printing the .mlw file the memory consumed by the Why3
-               --  AST is no longer needed; give it back to OS, so that provers
-               --  can use it. When not printing the .mlw file just do nothing;
-               --  there is almost nothing left to do and there is no point to
-               --  waste time on manually releasing memory.
-               Why.Atree.Tables.Free;
+                  --  After printing the .mlw file the memory consumed by the
+                  --  Why3 AST is no longer needed; give it back to OS, so that
+                  --  provers can use it. When not printing the .mlw file just
+                  --  do nothing; there is almost nothing left to do and there
+                  --  is no point to waste time on manually releasing memory.
 
-               Run_Gnatwhy3;
+                  Why.Atree.Tables.Free;
+
+                  Run_Gnatwhy3 (Filename);
+               end;
             end if;
+
+            --  If the analysis is requested for a specific piece of code, we
+            --  do not warn about useless pragma Annotate, because it's likely
+            --  to be a false positive.
 
             if Gnat2Why_Args.Limit_Line = Null_Unbounded_String
               and then Gnat2Why_Args.Limit_Region = Null_Unbounded_String
+              and then Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
             then
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
@@ -643,15 +691,18 @@ package body Gnat2Why.Driver is
       Last  : constant Natural := Switch_Last (Switch);
 
    begin
-      --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib and -pipe switches,
-      --  even though they will have no effect. This permits compatibility with
-      --  existing scripts.
+      --  For now we allow the -g/-O/-f/-m/-W/-w, -nostdlib, -pipe and
+      --  -save-temps/-save-temps=.. switches, even though they will have no
+      --  effect. This permits compatibility with existing scripts.
 
       return
         Is_Switch (Switch)
           and then (Switch (First) in 'f' | 'g' | 'm' | 'O' | 'W' | 'w'
                     or else Switch (First .. Last) = "nostdlib"
-                    or else Switch (First .. Last) = "pipe");
+                    or else Switch (First .. Last) = "pipe"
+                    or else
+                      (Switch'Length >= 10
+                       and then Switch (First .. First + 9) = "save-temps"));
    end Is_Back_End_Switch;
 
    ------------------------------
@@ -687,12 +738,24 @@ package body Gnat2Why.Driver is
    -- Print_Why_File --
    --------------------
 
-   procedure Print_Why_File is
+   procedure Print_Why_File (Filename : String) is
    begin
-      Open_Current_File (Why_File_Name.all);
-      for WF in W_Section_Id loop
-         Print_Section (Why_Sections (WF), Current_File);
-      end loop;
+      Open_Current_File (Filename);
+      declare
+         Modules : constant Why_Node_Lists.List := Build_Printing_Plan;
+      begin
+         if Modules.Is_Empty then
+
+            --  Fall back to previous printing
+
+            for WF in W_Section_Id loop
+               Print_Section (Why_Sections (WF), Current_File);
+            end loop;
+
+         else
+            Print_Modules_List (Modules, Current_File);
+         end if;
+      end;
       Close_Current_File;
    end Print_Why_File;
 
@@ -700,13 +763,14 @@ package body Gnat2Why.Driver is
    -- Run_Gnatwhy3 --
    ------------------
 
-   procedure Run_Gnatwhy3 is
+   procedure Run_Gnatwhy3 (Filename : String) is
       use Ada.Directories;
-      Status  : aliased Integer;
-      Fn      : constant String :=
-        Compose (Current_Directory, Why_File_Name.all);
-      Old_Dir : constant String := Current_Directory;
-      Command : constant String := Gnat2Why_Args.Why3_Args.First_Element;
+      Status    : aliased Integer;
+      Fn        : constant String :=
+        Compose (Current_Directory, Filename);
+      Old_Dir   : constant String := Current_Directory;
+      Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
+      Command   : constant String := Why3_Args.First_Element;
    begin
 
       --  modifying the command line and printing it for debug purposes. We
@@ -714,25 +778,28 @@ package body Gnat2Why.Driver is
       --  this corresponds to the actual command line run, and finally remove
       --  the first argument, which is the executable name.
 
-      Gnat2Why_Args.Why3_Args.Append (Fn);
+      Why3_Args.Append (Fn);
 
       if Gnat2Why_Args.Debug_Mode then
-         for Elt of Gnat2Why_Args.Why3_Args loop
+         for Elt of Why3_Args loop
             Ada.Text_IO.Put (Elt);
             Ada.Text_IO.Put (" ");
          end loop;
          Ada.Text_IO.New_Line;
       end if;
 
-      Gnat2Why_Args.Why3_Args.Delete_First (1);
+      Why3_Args.Delete_First (1);
 
       Set_Directory (To_String (Gnat2Why_Args.Why3_Dir));
+
+      --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
+      --  messages.
 
       Parse_Why3_Results
         (GNAT.Expect.Get_Command_Output
            (Command,
-            Call.Argument_List_Of_String_List (Gnat2Why_Args.Why3_Args),
-            Err_To_Out => False,
+            Call.Argument_List_Of_String_List (Why3_Args),
+            Err_To_Out => True,
             Input      => "",
             Status     => Status'Access),
          Timing);
@@ -777,6 +844,10 @@ package body Gnat2Why.Driver is
       is
       begin
          for E of Entities_To_Translate loop
+
+            --  Set error node so that bugbox information will be correct
+
+            Current_Error_Node := E;
             Process (E);
          end loop;
       end For_All_Entities;
@@ -871,7 +942,6 @@ package body Gnat2Why.Driver is
 
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.
-      Translated_Object_Entities.Clear;
       Translated_Object_Names.Clear;
    end Translate_CUnit;
 
@@ -932,12 +1002,6 @@ package body Gnat2Why.Driver is
                Translate_Type (File, E);
             end if;
 
-            --  Concurrent types may appear as globals in subprograms nested in
-            --  them.
-            if Ekind (E) in E_Protected_Type | E_Task_Type then
-               Translated_Object_Entities.Insert (E);
-            end if;
-
          when Object_Kind =>
 
             --  Ignore discriminals, i.e. objects that occur for discriminants
@@ -946,11 +1010,6 @@ package body Gnat2Why.Driver is
             if Is_Discriminal (E) then
                return;
             end if;
-
-            --  Fill the set of translated object entities and do not generate
-            --  a dummy declaration for those.
-
-            Translated_Object_Entities.Insert (E);
 
             --  Variables that are part of a protected object are not
             --  translated separately.
@@ -978,15 +1037,15 @@ package body Gnat2Why.Driver is
                   Generate_Empty_Axiom_Theory (File, E);
                end if;
 
-            --  We translate private variables of access type in the partial
+            --  We translate private constants of access type in the partial
             --  declaration. This should avoid translating them twice (in the
-            --  partial and full view). The fowllowing case represents these
-            --  types because they are considered as mutable while they are
+            --  partial and full view). The following case represents these
+            --  objects because they are considered as mutable while they are
             --  constants and may have a partial and full view. We chose the
             --  partial view bacause the full view may not be in SPARK.
 
             elsif Is_Full_View (E) then
-               null;
+               pragma Assert (Ekind (E) = E_Constant);
 
             else
                Translate_Variable (File, E);
@@ -1048,29 +1107,16 @@ package body Gnat2Why.Driver is
             Writes : Flow_Types.Flow_Id_Sets.Set;
          begin
             --  Collect global variables potentially read and written
-            Flow_Utility.Get_Proof_Globals (Subprogram => E,
-                                            Classwide  => True,
-                                            Reads      => Reads,
-                                            Writes     => Writes);
+            Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                            Reads           => Reads,
+                                            Writes          => Writes,
+                                            Erase_Constants => True);
 
             Reads.Union (Writes);
 
             for G of Reads loop
-               if G.Kind = Direct_Mapping then
-                     declare
-                        Obj : constant Entity_Id := Get_Direct_Mapping_Id (G);
-
-                     begin
-                        Translated_Object_Entities.Insert
-                          (New_Item => Obj,
-                           Position => Unused_Node,
-                           Inserted => Inserted);
-
-                        if Inserted then
-                           Translate_External_Object (Obj);
-                        end if;
-                     end;
-               else pragma Assert (Is_Opaque_For_Proof (G));
+               if G.Kind = Magic_String then
+                  pragma Assert (Is_Opaque_For_Proof (G));
 
                   Translated_Object_Names.Insert
                     (New_Item => G.Name,

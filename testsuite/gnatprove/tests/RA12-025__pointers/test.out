@@ -1,0 +1,5 @@
+pointers.adb:13:14: insufficient permission for "R"
+pointers.adb:13:14: object was declared as not writeable at pointers.ads:16
+pointers.adb:13:19: insufficient permission for "R"
+pointers.adb:13:19: object was declared as not writeable at pointers.ads:16
+gnatprove: error during flow analysis and proof

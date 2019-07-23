@@ -1,11 +1,11 @@
-refined_post_legal.adb:9:29: info: initialization of "Par2" proved
 refined_post_legal.adb:9:29: info: refined post proved (CVC4: 1 VC)
 refined_post_legal.adb:9:40: info: overflow check proved (CVC4: 1 VC)
-refined_post_legal.adb:12:19: medium: overflow check might fail (e.g. when Par = 1 and Par2 = 0 and X = Natural'Last) [possible explanation: subprogram at line 6 should mention Par and X in a precondition]
+refined_post_legal.adb:12:19: medium: overflow check might fail (e.g. when Par = Integer'Last and X = 1) [possible explanation: subprogram at refined_post_legal.ads:5 should mention Par and X in a precondition]
 refined_post_legal.adb:17:29: info: refined post proved (CVC4: 1 VC)
 refined_post_legal.adb:17:47: info: overflow check proved (CVC4: 1 VC)
-refined_post_legal.adb:20:18: medium: overflow check might fail (e.g. when Func'Result = 0 and Par = 1 and X = Natural'Last) [possible explanation: subprogram at line 15 should mention Par and X in a precondition]
+refined_post_legal.adb:20:18: medium: overflow check might fail (e.g. when Par = Integer'Last and X = 1) [possible explanation: subprogram at refined_post_legal.ads:10 should mention Par and X in a precondition]
 refined_post_legal.ads:6:20: info: initialization of "Par2" proved
-refined_post_legal.ads:8:21: info: initialization of "Par2" proved
+refined_post_legal.ads:7:11: info: data dependencies proved
 refined_post_legal.ads:8:21: info: postcondition proved (CVC4: 1 VC)
+refined_post_legal.ads:11:11: info: data dependencies proved
 refined_post_legal.ads:12:21: info: postcondition proved (CVC4: 1 VC)

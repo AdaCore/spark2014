@@ -1,7 +1,10 @@
 stack_14.adb:11:04: info: initialization of "S" constituent of "S_State" proved
 stack_14.adb:12:04: info: initialization of "Pointer" constituent of "Pointer_State" proved
-stack_14.adb:18:26: medium: range check might fail (e.g. when Pointer = Pointer_Range'Last) [possible explanation: subprogram at line 14 should mention Pointer in a precondition]
+stack_14.adb:18:26: medium: range check might fail (e.g. when Pointer = Pointer_Range'Last) [possible explanation: subprogram at stack_14.ads:6 should mention Pointer in a precondition]
 stack_14.adb:19:10: info: index check proved (CVC4: 2 VC)
-stack_14.adb:27:15: medium: array index check might fail (e.g. when Pointer = 0 and X = 0) [possible explanation: subprogram at line 22 should mention Pointer in a precondition]
+stack_14.adb:27:15: medium: array index check might fail [possible explanation: subprogram at stack_14.ads:9 should mention Pointer in a precondition]
 stack_14.adb:28:26: info: range check proved (CVC4: 1 VC)
+stack_14.ads:4:08: info: flow dependencies proved
+stack_14.ads:7:11: info: data dependencies proved
 stack_14.ads:9:19: info: initialization of "X" proved
+stack_14.ads:10:11: info: data dependencies proved

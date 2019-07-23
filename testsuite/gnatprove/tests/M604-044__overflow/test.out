@@ -1,8 +1,8 @@
 misovattr.adb:6:22: info: assertion proved (CVC4: 1 VC)
-misovattr.adb:6:35: medium: range check might fail (e.g. when A = C) [possible explanation: subprogram at line 3 should mention A in a precondition]
+misovattr.adb:6:35: medium: range check might fail (e.g. when A = C) [possible explanation: subprogram at misovattr.ads:7 should mention A in a precondition]
 misovattr.adb:7:22: info: assertion proved (CVC4: 1 VC)
-misovattr.adb:7:35: medium: range check might fail (e.g. when A = C) [possible explanation: subprogram at line 3 should mention A in a precondition]
+misovattr.adb:7:35: medium: range check might fail (e.g. when A = C) [possible explanation: subprogram at misovattr.ads:7 should mention A in a precondition]
 misovattr.adb:8:22: info: assertion proved (CVC4: 1 VC)
-misovattr.adb:8:35: medium: range check might fail (e.g. when A = A) [possible explanation: subprogram at line 3 should mention A in a precondition]
+misovattr.adb:8:35: medium: range check might fail [possible explanation: subprogram at misovattr.ads:7 should mention A in a precondition]
 misovattr.adb:9:22: info: assertion proved (CVC4: 1 VC)
-misovattr.adb:9:35: medium: range check might fail (e.g. when A = A) [possible explanation: subprogram at line 3 should mention A in a precondition]
+misovattr.adb:9:35: medium: range check might fail [possible explanation: subprogram at misovattr.ads:7 should mention A in a precondition]

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -43,10 +43,9 @@ with Assumptions;                         use Assumptions;
 with Assumptions.Search;                  use Assumptions.Search;
 with Assumption_Types;                    use Assumption_Types;
 with Call;                                use Call;
-with Configuration;
 with GNAT.Calendar.Time_IO;
 with GNAT.Directory_Operations.Iteration;
-with GNAT.OS_Lib;                         use GNAT.OS_Lib;
+with GNAT.OS_Lib;
 with GNATCOLL.JSON;                       use GNATCOLL.JSON;
 with GNATCOLL.Utils;                      use GNATCOLL.Utils;
 with Platform;                            use Platform;
@@ -119,13 +118,38 @@ procedure SPARK_Report is
    --  @param S the table line
    --  @return a string to be presented to the user
 
+   function Build_Switches_String (A : JSON_Array) return String;
+   --  @param a JSON array of strings
+   --  @return a string that concatenates all strings in the array, with spaces
+   --    as separators.
+
    procedure Process_Stats (C : Summary_Entries; Stats : JSON_Value);
    --  process the stats record for the VC and update the proof information
    --  @param C the category of the VC
    --  @param Stats the stats record
 
-   procedure Show_Header (Handle : Ada.Text_IO.File_Type);
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value);
    --  Print header at start of generated file "gnatprove.out"
+
+   ---------------------------
+   -- Build_Switches_String --
+   ---------------------------
+
+   function Build_Switches_String (A : JSON_Array) return String is
+      use Ada.Strings.Unbounded;
+      Buffer : Unbounded_String;
+      First  : Boolean := True;
+   begin
+      for I in Positive range 1 .. Length (A) loop
+         if not First then
+            Append (Buffer, " ");
+         else
+            First := False;
+         end if;
+         Append (Buffer, String'(Get (Get (A, I))));
+      end loop;
+      return To_String (Buffer);
+   end Build_Switches_String;
 
    -------------------------
    -- Compute_Assumptions --
@@ -472,7 +496,6 @@ procedure SPARK_Report is
                   Increment (Summary (Category).Justified);
                end if;
             elsif Severe = "info" then
-               --  Ignore flow info messages for now.
                if Category /= No_Entry then
                   Increment (Summary (Category).Flow);
                end if;
@@ -578,6 +601,15 @@ procedure SPARK_Report is
          pragma Unreferenced (Index);
          pragma Unreferenced (Quit);
          Handle_SPARK_File (Item);
+      exception
+         when others =>
+            Ada.Text_IO.Put_Line
+               (Ada.Text_IO.Standard_Error,
+                "spark_report: error when processing file " & Item &
+                ", skipping");
+            Ada.Text_IO.Put_Line
+               (Ada.Text_IO.Standard_Error,
+                "spark_report: try cleaning proofs to remove this error");
       end Local_Handle_SPARK_File;
 
       procedure Iterate_SPARK is new
@@ -603,8 +635,7 @@ procedure SPARK_Report is
    -----------------------
 
    procedure Handle_SPARK_File (Fn : String) is
-      Dict      : constant JSON_Value :=
-        Read (Read_File_Into_String (Fn), Fn);
+      Dict      : constant JSON_Value := Read_File_Into_JSON (Fn);
       Basename  : constant String := Ada.Directories.Base_Name (Fn);
       Unit      : constant Unit_Type := Mk_Unit (Basename);
       Has_Flow  : constant Boolean := Has_Field (Dict, "flow");
@@ -675,7 +706,9 @@ procedure SPARK_Report is
 
       use Ada.Command_Line;
 
-      Source_Dirs : access String := null;
+      type String_Ptr is access String;
+      Source_Dirs : String_Ptr := null;
+
    begin
       for Index in 1 .. Argument_Count loop
          declare
@@ -864,27 +897,24 @@ procedure SPARK_Report is
    -- Show_Header --
    -----------------
 
-   procedure Show_Header (Handle : Ada.Text_IO.File_Type) is
+   procedure Show_Header (Handle : Ada.Text_IO.File_Type; Info : JSON_Value) is
       use Ada, Ada.Text_IO;
-
-      function Get_Env_Variable (Name : String) return String;
-      --  Return the value of environment variable Name
 
       function OS_String return String;
       --  Return a nice string for the OS GNATprove was compiled for
 
-      ----------------------
-      -- Get_Env_Variable --
-      ----------------------
+      procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value);
+      --  Print one entry of the Proof_Switches attribute
 
-      function Get_Env_Variable (Name : String) return String is
-         --  Return the value of the "Name" environment variable.
-         Result : GNAT.OS_Lib.String_Access := GNAT.OS_Lib.Getenv (Name);
-         Str    : constant String := Result.all;
+      ------------------------
+      -- Print_Switch_Entry --
+      ------------------------
+
+      procedure Print_Switch_Entry (Name : UTF8_String; Value : JSON_Value) is
       begin
-         GNAT.OS_Lib.Free (Result);
-         return Str;
-      end Get_Env_Variable;
+         Put_Line ("   " & Name & ": " &
+                     Build_Switches_String (Get (Value)));
+      end Print_Switch_Entry;
 
       ---------------
       -- OS_String --
@@ -916,19 +946,19 @@ procedure SPARK_Report is
          "host               : " & OS_String &
            Integer'Image (Pointer_Size * 8) & " bits");
 
-      declare
-         Cmd : constant String :=
-           Get_Env_Variable ("GNATPROVE_CMD_LINE");
-         GNATprove_Switches : constant String :=
-           Get_Env_Variable ("GNATPROVE_SWITCHES");
-      begin
-         if Cmd /= "" then
-            Put_Line
-              (Handle, "command line       : " & Cmd);
-            Put_Line
-              (Handle, "gnatprove switches : " & GNATprove_Switches);
-         end if;
-      end;
+      if Has_Field (Info, "cmdline") then
+         Put_Line (Handle, "command line       : " &
+                   Build_Switches_String (Get (Info, "cmdline")));
+      end if;
+      if Has_Field (Info, "switches") then
+         Put_Line (Handle, "Switches attribute: " &
+                   Build_Switches_String (Get (Info, "switches")));
+      end if;
+      if Has_Field (Info, "proof_switches") then
+         Put_Line (Handle, " Proof_Switches attribute:");
+         Map_JSON_Object (Get (Info, "proof_switches"),
+                          Print_Switch_Entry'Access);
+      end if;
    end Show_Header;
 
    ------------------------
@@ -957,6 +987,7 @@ procedure SPARK_Report is
             | VC_Ceiling_Priority_Protocol
             | VC_Task_Termination
             | VC_Raise
+            | VC_Initialization_Check
          =>
             return Runtime_Checks;
 
@@ -1034,32 +1065,44 @@ procedure SPARK_Report is
       end case;
    end To_String;
 
-   procedure Iterate_Source_Dirs is new For_Line_In_File (Handle_Source_Dir);
-
    Source_Directories_File : constant String := Parse_Command_Line;
 
    use Ada.Text_IO;
 
    Handle : File_Type;
 
+   Info   : constant JSON_Value :=
+     Read_File_Into_JSON (Source_Directories_File);
+
 --  Start of processing for SPARK_Report
 
 begin
-   Iterate_Source_Dirs (Source_Directories_File);
+
+   if Has_Field (Info, "obj_dirs") then
+      declare
+         Ar : constant JSON_Array := Get (Info, "obj_dirs");
+      begin
+         for Var_Index in Positive range 1 .. Length (Ar) loop
+            Handle_Source_Dir (Get (Get (Ar, Var_Index)));
+         end loop;
+      end;
+   end if;
+
    if No_Analysis_Done then
       Reset_All_Results;
    end if;
 
    Create (Handle,
            Out_File,
-           Configuration.SPARK_Report_File
-             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File)));
+           Ada.Directories.Compose
+             (GNAT.Directory_Operations.Dir_Name (Source_Directories_File),
+              "gnatprove.out"));
    if Assumptions then
       Compute_Assumptions;
    end if;
 
    if Output_Header then
-      Show_Header (Handle);
+      Show_Header (Handle, Info);
       Ada.Text_IO.New_Line (Handle);
       Ada.Text_IO.New_Line (Handle);
    end if;

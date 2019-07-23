@@ -2,78 +2,50 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:12
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at formal_cont.ads:26
-call_proc_no_body.adb:4:07: medium: precondition might fail
+call_proc_no_body.adb:4:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (4, 4)
 call_proc_no_body.adb:9:07: info: precondition proved (CVC4: 1 VC)
 call_proc_no_body.ads:4:14: info: subprogram "Returning" will terminate
 call_proc_no_body.ads:4:14: warning: subprogram "Returning" has no effect
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" might not terminate
-container.adb:8:39: info: initialization of "Arr" proved
 container.adb:19:67: info: overflow check proved (CVC4: 1 VC)
 container.adb:23:14: info: index check proved (CVC4: 2 VC)
 container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
-container.adb:33:18: info: initialization of "Int" proved, in call inlined at container.adb:45
+container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
 container.adb:33:20: medium: range check might fail, in call inlined at container.adb:45 [possible explanation: loop at line 32 should mention Int in a loop invariant]
 container.adb:34:13: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
-container.adb:34:47: info: initialization of "Int" proved, in call inlined at container.adb:45
-container.adb:35:23: info: initialization of "Int" proved, in call inlined at container.adb:45
-container.adb:45:07: info: initialization of "Cont.A" proved
-container.adb:51:10: info: initialization of "X" proved
-container.adb:53:10: info: initialization of "X" proved
-container.adb:54:15: info: initialization of "X" proved
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
-container.adb:59:10: info: initialization of "I" proved
 container.adb:59:17: warning: unreachable code (CVC4: 1 VC)
-container.adb:60:30: info: initialization of "R" proved
 container.adb:60:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:60:39: info: overflow check proved (CVC4: 2 VC)
 container.adb:60:44: info: overflow check proved (CVC4: 2 VC)
-container.adb:60:46: info: initialization of "I" proved
 container.adb:61:07: info: loop variant proved (CVC4: 1 VC)
-container.adb:61:41: info: initialization of "I" proved
-container.adb:62:41: info: initialization of "R" proved
-container.adb:63:12: info: initialization of "R" proved
 container.adb:63:14: info: range check proved (CVC4: 1 VC)
-container.adb:63:16: info: initialization of "I" proved
-container.adb:64:12: info: initialization of "I" proved
 container.adb:64:14: info: range check proved (CVC4: 1 VC)
 container.adb:68:04: warning: unreachable code (CVC4: 1 VC)
-container.adb:69:12: info: initialization of "X" proved
 container.adb:69:14: info: range check proved (CVC4: 1 VC)
-container.adb:70:17: info: initialization of "X" proved
 container.adb:74:04: warning: unreachable code (CVC4: 1 VC)
-container.adb:75:12: info: initialization of "X" proved
 container.adb:75:14: info: range check proved (CVC4: 2 VC)
 container.adb:76:07: info: loop variant proved (CVC4: 1 VC)
-container.adb:76:41: info: initialization of "X" proved
-container.adb:77:17: info: initialization of "X" proved
 container.adb:81:08: info: precondition proved (CVC4: 1 VC)
-container.adb:81:13: info: initialization of "My_Container.A" proved
+container.adb:81:08: info: precondition proved (Trivial: 1 VC)
 container.adb:81:26: warning: unreachable code (CVC4: 1 VC)
 container.adb:86:08: info: precondition proved (CVC4: 1 VC)
-container.adb:86:13: info: initialization of "My_Container.A" proved
-container.adb:89:15: info: initialization of "X" proved
+container.adb:86:08: info: precondition proved (Trivial: 1 VC)
 container.adb:89:17: info: range check proved (CVC4: 2 VC)
 container.adb:90:10: info: loop variant proved (CVC4: 1 VC)
-container.adb:90:44: info: initialization of "X" proved
-container.adb:91:20: info: initialization of "X" proved
 container.adb:93:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (CVC4: 1 VC)
-container.adb:97:13: info: initialization of "My_Container.A" proved
-container.adb:99:12: info: initialization of "R" proved
+container.adb:97:08: info: precondition proved (Trivial: 1 VC)
 container.adb:99:14: info: range check proved (CVC4: 2 VC)
-container.adb:100:30: info: initialization of "B" proved
 container.adb:100:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:100:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:101:07: info: loop variant proved (CVC4: 1 VC)
-container.adb:101:41: info: initialization of "R" proved
-container.adb:104:15: info: initialization of "X" proved
 container.adb:104:17: info: range check proved (CVC4: 2 VC)
 container.adb:105:10: info: loop variant proved (CVC4: 1 VC)
 container.adb:106:10: info: loop variant proved (CVC4: 1 VC)
-container.adb:106:44: info: initialization of "X" proved
 container.ads:16:13: info: subprogram "First" will terminate
 container.ads:16:20: warning: unused variable "C"
 container.ads:18:13: info: subprogram "Has_Element" will terminate
@@ -81,6 +53,7 @@ container.ads:18:26: warning: unused variable "C"
 container.ads:20:13: info: subprogram "Next" will terminate
 container.ads:23:13: info: subprogram "Element" will terminate
 container.ads:27:14: warning: subprogram "Test4" might not terminate
+container.ads:33:04: info: initialization of "B" proved
 file_io.ads:50:33: info: implicit function contract not available for proof ("Size" might not return)
 file_io.ads:55:17: info: function contract not available for proof ("Index" might not return)
 file_io.ads:61:17: info: implicit function contract not available for proof ("Size" might not return)
@@ -91,12 +64,9 @@ file_io.ads:63:42: info: function contract not available for proof ("Index" migh
 file_io.ads:63:54: info: function contract not available for proof ("Index" might not return)
 file_io.ads:64:42: info: function contract not available for proof ("Index" might not return)
 file_io.ads:64:54: info: function contract not available for proof ("Index" might not return)
-formal_cont.adb:11:14: info: initialization of "Result" proved
 formal_cont.adb:11:14: warning: unreachable code (CVC4: 1 VC)
 formal_cont.adb:15:07: info: initialization of "L" proved
-formal_cont.adb:17:31: info: initialization of "L" proved
 formal_cont.adb:26:07: info: initialization of "L" proved
-formal_cont.adb:28:31: info: initialization of "L" proved
 formal_cont.ads:9:13: warning: subprogram "My_Equal_01" might not terminate
 formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
 formal_cont.ads:12:04: info: function contract not available for proof ("<=" might not return)
@@ -192,7 +162,7 @@ functions.adb:14:14: warning: subprogram "G" might not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
 functions.adb:22:10: medium: call to nonreturning subprogram might be executed
 functions.ads:3:13: warning: subprogram "Non_Ter_Func" might not terminate
-functions.ads:4:19: info: postcondition proved (CVC4: 2 VC)
+functions.ads:4:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: warning: subprogram "Expr_Func" might not terminate
 functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" might not return)
 functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
@@ -200,7 +170,7 @@ functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram "Nested_Proc" might not terminate
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
 imported.adb:5:07: warning: no Global contract available for "P_01"
-imported.adb:10:07: medium: precondition might fail
+imported.adb:10:07: medium: precondition might fail, cannot prove Nonreturning_Precondition (3, 3)
 imported.adb:10:07: warning: assuming "P_02" has no effect on global items
 imported.adb:10:07: warning: no Global contract available for "P_02"
 imported.ads:9:14: info: subprogram "Q_01" will terminate
@@ -221,29 +191,20 @@ nested_blocks.adb:10:37: warning: statement has no effect
 nested_loops.adb:3:04: warning: analyzing unreferenced procedure "Proc"
 nested_loops.adb:3:14: info: subprogram "Proc" will terminate
 nested_loops.adb:3:14: warning: subprogram "Proc" has no effect
-nested_loops.adb:7:13: info: initialization of "J" proved
-nested_loops.adb:8:15: info: initialization of "J" proved
+nested_loops.adb:5:07: info: initialization of "X" proved
 nested_loops.adb:8:17: info: overflow check proved (CVC4: 2 VC)
 nested_loops.adb:9:10: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:9:44: info: initialization of "J" proved
 nested_loops.adb:11:13: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:13:19: info: initialization of "X" proved
 nested_loops.adb:14:16: medium: loop variant might fail
-nested_loops.adb:14:50: info: initialization of "X" proved
 nested_loops.adb:22:04: warning: analyzing unreferenced procedure "Proc2"
 nested_loops.adb:22:14: warning: subprogram "Proc2" has no effect
 nested_loops.adb:22:14: warning: subprogram "Proc2" might not terminate
-nested_loops.adb:25:13: info: initialization of "J" proved
-nested_loops.adb:26:15: info: initialization of "J" proved
 nested_loops.adb:26:17: info: overflow check proved (CVC4: 2 VC)
 nested_loops.adb:27:10: info: loop variant proved (CVC4: 1 VC)
-nested_loops.adb:27:44: info: initialization of "J" proved
 nested_loops.adb:29:13: info: loop variant proved (CVC4: 1 VC)
 nested_loops.adb:38:04: warning: analyzing unreferenced procedure "Proc3"
 nested_loops.adb:38:14: warning: subprogram "Proc3" has no effect
 nested_loops.adb:38:14: warning: subprogram "Proc3" might not terminate
-nested_loops.adb:41:13: info: initialization of "J" proved
-nested_loops.adb:42:15: info: initialization of "J" proved
 nested_loops.adb:42:17: info: overflow check proved (CVC4: 1 VC)
 nested_loops.adb:43:26: info: unrolling loop
 nested_packages.adb:7:20: info: subprogram "Null_Pck" will terminate
@@ -274,8 +235,7 @@ p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:39:14: warning: subprogram "Proc7" might not terminate
 p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:41:14: warning: subprogram "Proc6" might not terminate
-p.adb:61:14: info: initialization of "B" proved
-preconditions.adb:9:14: info: initialization of "Result" proved
+p.adb:55:04: info: initialization of "B" proved
 preconditions.adb:9:14: warning: unreachable code (CVC4: 1 VC)
 preconditions.ads:2:14: info: subprogram "Returning_Precondition" will terminate
 preconditions.ads:6:13: warning: subprogram "Nonreturning_Precondition" might not terminate
@@ -299,6 +259,7 @@ r.adb:53:07: warning: no Global contract available for "OS_Exit"
 r.adb:58:04: medium: call to nonreturning subprogram might be executed
 r.adb:58:04: warning: assuming "OS_Exit" has no effect on global items
 r.adb:58:04: warning: no Global contract available for "OS_Exit"
+r.adb:59:04: info: call to nonreturning procedure never executed (CVC4: 1 VC)
 r.adb:59:04: warning: this statement is never reached
 r.ads:6:14: warning: subprogram "Proc2" might not terminate
 r.ads:7:13: warning: subprogram "Proc3" might not terminate

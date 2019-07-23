@@ -1,3 +1,4 @@
+p.ads:4:14: info: flow dependencies proved
 user.adb:3:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
-user.adb:9:19: info: initialization of "Tmp" proved
+user.adb:4:04: info: initialization of "Tmp" proved
 user.adb:9:19: medium: assertion might fail, cannot prove Tmp = 10

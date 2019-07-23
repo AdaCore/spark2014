@@ -23,205 +23,96 @@ memcpy.adb:30:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:88:26: warning: unused assignment
 memcpy.adb:89:27: warning: unused assignment
 memcpy.adb:90:30: warning: unused assignment
-memcpy.adb:110:16: medium: precondition might fail
+memcpy.adb:110:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:110:16: warning: unused assignment to "RAX"
-memcpy.adb:131:16: medium: precondition might fail
+memcpy.adb:131:16: medium: precondition might fail, cannot prove X86.InSafeRegion64(i,X86.RSP+8) [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:131:16: warning: unused assignment to "RAX"
 memcpy.adb:151:21: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:151:32: info: initialization of "SaveStackPtr" proved
 memcpy.adb:152:21: medium: assertion might fail, cannot prove X86.Memory(SaveStackPtr) = SaveMem(SaveStackPtr)
-memcpy.adb:152:33: info: initialization of "SaveStackPtr" proved
-memcpy.adb:152:49: info: initialization of "SaveMem" proved
-memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at line 15 should mention RBP]
-memcpy.adb:160:31: info: initialization of "saved_rbp" proved
-memcpy.adb:162:35: info: initialization of "saved_rdi" proved
-memcpy.adb:162:46: info: initialization of "saved_rdx" proved
-memcpy.adb:162:85: info: initialization of "SaveStackPtr" proved
+memcpy.adb:160:21: medium: assertion might fail, cannot prove X86.RBP = saved_rbp [possible explanation: precondition of subprogram at memcpy.ads:24 should mention RBP]
 memcpy.adb:164:12: medium: assertion might fail, cannot prove X86.Memory(i) = SaveMem(i)
-memcpy.adb:164:29: info: initialization of "SaveMem" proved
 memcpy.adb:171:39: info: range check proved (CVC4: 1 VC)
 memcpy.adb:172:39: info: range check proved (CVC4: 1 VC)
 memcpy.adb:173:39: info: range check proved (CVC4: 1 VC)
 memcpy.adb:175:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:176:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:189:24: info: initialization of "RAX" proved
 memcpy.adb:189:28: info: division check proved (CVC4: 2 VC)
-memcpy.adb:198:32: info: initialization of "RAX" proved
-memcpy.adb:198:41: info: initialization of "tmp_register" proved
-memcpy.adb:199:32: info: initialization of "RAX" proved
-memcpy.adb:199:41: info: initialization of "tmp_register" proved
-memcpy.adb:200:32: info: initialization of "RAX" proved
-memcpy.adb:200:41: info: initialization of "tmp_register" proved
-memcpy.adb:201:35: info: initialization of "SignFlag" proved
-memcpy.adb:201:56: info: initialization of "tmp_register" proved
-memcpy.adb:201:106: info: initialization of "RAX" proved
-memcpy.adb:204:24: info: initialization of "CarryFlag" proved
-memcpy.adb:204:41: info: initialization of "ZeroFlag" proved
 memcpy.adb:207:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:207:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:207:60: info: initialization of "saved_rbp_16" proved
-memcpy.adb:207:73: info: initialization of "saved_rbp_72" proved
-memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:211:60: info: initialization of "saved_rbp_16" proved
-memcpy.adb:211:74: info: initialization of "saved_rbp_72" proved
-memcpy.adb:216:32: info: initialization of "saved_rbp_16" proved
+memcpy.adb:210:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:210:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:216:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:216:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
-memcpy.adb:217:32: info: initialization of "saved_rbp_72" proved
 memcpy.adb:217:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:217:32: medium: loop invariant might fail after first iteration, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
-memcpy.adb:219:32: info: initialization of "tmp_register" proved
 memcpy.adb:219:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:219:32: medium: loop invariant might fail after first iteration, cannot prove tmp_register < saved_rbp_72/8
-memcpy.adb:219:47: info: initialization of "saved_rbp_72" proved
+memcpy.adb:219:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:219:59: info: division check proved (CVC4: 2 VC)
 memcpy.adb:222:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:222:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
-memcpy.adb:222:57: info: initialization of "saved_rbp" proved
 memcpy.adb:223:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:223:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
-memcpy.adb:223:59: info: initialization of "saved_ra" proved
-memcpy.adb:229:21: info: initialization of "tmp_register" proved
-memcpy.adb:234:24: info: initialization of "RAX" proved
 memcpy.adb:242:23: warning: unused assignment
-memcpy.adb:242:44: info: initialization of "RAX" proved
 memcpy.adb:243:23: warning: unused assignment
-memcpy.adb:243:44: info: initialization of "RAX" proved
-memcpy.adb:244:38: info: initialization of "RAX" proved
-memcpy.adb:249:21: info: initialization of "tmp_register" proved
-memcpy.adb:254:24: info: initialization of "RAX" proved
 memcpy.adb:262:23: warning: unused assignment
-memcpy.adb:262:32: info: initialization of "RAX" proved
 memcpy.adb:263:23: warning: unused assignment
-memcpy.adb:263:32: info: initialization of "RAX" proved
-memcpy.adb:264:26: info: initialization of "RAX" proved
-memcpy.adb:268:41: info: initialization of "RAX" proved
 memcpy.adb:271:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:271:52: info: initialization of "saved_rbp_16" proved
-memcpy.adb:271:65: info: initialization of "saved_rbp_72" proved
-memcpy.adb:274:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:275:60: info: initialization of "saved_rbp_16" proved
-memcpy.adb:275:74: info: initialization of "saved_rbp_72" proved
+memcpy.adb:274:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:280:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:280:24: info: initialization of "saved_rbp_16" proved
 memcpy.adb:281:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:281:24: info: initialization of "saved_rbp_72" proved
 memcpy.adb:283:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:283:24: info: initialization of "tmp_register" proved
-memcpy.adb:283:39: info: initialization of "saved_rbp_72" proved
 memcpy.adb:283:51: info: division check proved (CVC4: 1 VC)
 memcpy.adb:285:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:285:47: info: initialization of "saved_rbp_16" proved
-memcpy.adb:285:61: info: initialization of "saved_rbp_72" proved
 memcpy.adb:286:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+1, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:286:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:286:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:287:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+2, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:287:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:287:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:288:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+3, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:288:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:288:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:289:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+4, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:289:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:289:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:290:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+5, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:290:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:290:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:291:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+6, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:291:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:291:63: info: initialization of "saved_rbp_72" proved
 memcpy.adb:292:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX+7, saved_rbp_16, saved_rbp_72) [possible explanation: loop invariant at line 207 should mention RDX]
-memcpy.adb:292:49: info: initialization of "saved_rbp_16" proved
-memcpy.adb:292:63: info: initialization of "saved_rbp_72" proved
-memcpy.adb:297:42: info: initialization of "RAX" proved
-memcpy.adb:304:26: info: initialization of "tmp_register" proved
-memcpy.adb:307:38: info: initialization of "tmp_register" proved
-memcpy.adb:310:57: info: initialization of "saved_rbp_16" proved
-memcpy.adb:310:71: info: initialization of "saved_rbp_72" proved
-memcpy.adb:312:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
-memcpy.adb:312:53: info: initialization of "saved_mem" proved
-memcpy.adb:314:21: info: initialization of "saved_rbp_16" proved
+memcpy.adb:309:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:314:21: medium: assertion might fail, cannot prove saved_rbp_16 = X86.ReadMem64(X86.RBP - 16)
-memcpy.adb:315:21: info: initialization of "saved_rbp_72" proved
 memcpy.adb:315:21: medium: assertion might fail, cannot prove saved_rbp_72 = X86.ReadMem64(X86.RBP - 72)
 memcpy.adb:317:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP-8) >= X86.ReadMem64(X86.RBP - 72)/8
 memcpy.adb:317:76: info: division check proved (CVC4: 1 VC)
 memcpy.adb:319:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
-memcpy.adb:319:46: info: initialization of "saved_rbp" proved
 memcpy.adb:320:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
-memcpy.adb:320:48: info: initialization of "saved_ra" proved
 memcpy.adb:326:35: info: range check proved (CVC4: 1 VC)
 memcpy.adb:327:35: info: range check proved (CVC4: 1 VC)
 memcpy.adb:328:39: info: range check proved (CVC4: 1 VC)
 memcpy.adb:330:36: info: range check proved (CVC4: 1 VC)
 memcpy.adb:331:35: info: range check proved (CVC4: 1 VC)
-memcpy.adb:341:22: info: initialization of "tmp_register" proved
-memcpy.adb:347:35: info: initialization of "SignFlag" proved
-memcpy.adb:350:28: info: initialization of "CarryFlag" proved
 memcpy.adb:353:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:353:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:353:56: info: initialization of "saved_32" proved
-memcpy.adb:353:65: info: initialization of "saved_72" proved
-memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 1 VC)
-memcpy.adb:357:60: info: initialization of "saved_32" proved
-memcpy.adb:357:70: info: initialization of "saved_72" proved
-memcpy.adb:362:32: info: initialization of "saved_32" proved
+memcpy.adb:356:32: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+memcpy.adb:356:32: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:362:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:362:32: medium: loop invariant might fail after first iteration, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
-memcpy.adb:363:32: info: initialization of "saved_72" proved
 memcpy.adb:363:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:363:32: medium: loop invariant might fail after first iteration, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
-memcpy.adb:365:32: info: initialization of "tmp_register" proved
 memcpy.adb:365:32: info: loop invariant initialization proved (CVC4: 1 VC)
-memcpy.adb:365:32: medium: loop invariant might fail after first iteration, cannot prove tmp_register < saved_72
-memcpy.adb:365:47: info: initialization of "saved_72" proved
+memcpy.adb:365:32: info: loop invariant preservation proved (CVC4: 1 VC)
 memcpy.adb:369:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:369:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
-memcpy.adb:369:57: info: initialization of "saved_rbp" proved
 memcpy.adb:371:32: info: loop invariant initialization proved (CVC4: 1 VC)
 memcpy.adb:371:32: medium: loop invariant might fail after first iteration, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
-memcpy.adb:371:59: info: initialization of "saved_ra" proved
-memcpy.adb:381:22: info: initialization of "tmp_register" proved
 memcpy.adb:385:23: warning: unused assignment
 memcpy.adb:386:23: warning: unused assignment
-memcpy.adb:397:21: info: initialization of "tmp_register" proved
 memcpy.adb:401:23: warning: unused assignment
 memcpy.adb:402:23: warning: unused assignment
 memcpy.adb:411:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:411:48: info: initialization of "saved_32" proved
-memcpy.adb:411:57: info: initialization of "saved_72" proved
-memcpy.adb:414:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:415:52: info: initialization of "saved_32" proved
-memcpy.adb:415:62: info: initialization of "saved_72" proved
+memcpy.adb:414:24: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:420:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:420:24: info: initialization of "saved_32" proved
 memcpy.adb:421:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:421:24: info: initialization of "saved_72" proved
 memcpy.adb:423:24: info: assertion proved (CVC4: 1 VC)
-memcpy.adb:423:24: info: initialization of "tmp_register" proved
-memcpy.adb:423:39: info: initialization of "saved_72" proved
 memcpy.adb:426:24: medium: assertion might fail, cannot prove X86.InRange64(X86.RDX, saved_32, saved_72) [possible explanation: loop invariant at line 353 should mention RDX]
-memcpy.adb:426:47: info: initialization of "saved_32" proved
-memcpy.adb:426:57: info: initialization of "saved_72" proved
-memcpy.adb:438:26: info: initialization of "tmp_register" proved
-memcpy.adb:441:38: info: initialization of "tmp_register" proved
-memcpy.adb:445:57: info: initialization of "saved_32" proved
-memcpy.adb:445:67: info: initialization of "saved_72" proved
-memcpy.adb:447:36: medium: assertion might fail, cannot prove X86.Memory(i) = saved_mem(i)
-memcpy.adb:447:53: info: initialization of "saved_mem" proved
-memcpy.adb:449:21: info: initialization of "saved_32" proved
+memcpy.adb:444:21: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:449:21: medium: assertion might fail, cannot prove saved_32 = X86.ReadMem64(X86.RBP - 32)
-memcpy.adb:450:21: info: initialization of "saved_72" proved
 memcpy.adb:450:21: medium: assertion might fail, cannot prove saved_72 = X86.ReadMem64(X86.RBP - 72)
-memcpy.adb:452:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP-8) >= X86.ReadMem64(X86.RBP - 72)/8
+memcpy.adb:452:21: info: assertion proved (CVC4: 1 VC)
 memcpy.adb:452:76: info: division check proved (CVC4: 1 VC)
 memcpy.adb:454:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RBP) = saved_rbp
-memcpy.adb:454:46: info: initialization of "saved_rbp" proved
 memcpy.adb:455:21: medium: assertion might fail, cannot prove X86.ReadMem64(X86.RSP+8) = saved_ra
-memcpy.adb:455:48: info: initialization of "saved_ra" proved
 memcpy.adb:463:10: warning: initialization of "saved_ra" has no effect
 memcpy.adb:463:38: info: range check proved (CVC4: 1 VC)
 memcpy.adb:464:10: warning: initialization of "SaveStackPtr" has no effect
@@ -255,15 +146,18 @@ memcpy.adb:535:13: warning: statement has no effect
 memcpy.adb:535:13: warning: unused assignment to "RAX"
 memcpy.adb:543:18: warning: unused assignment
 memcpy.adb:546:18: warning: unused assignment
-memcpy.adb:574:10: info: precondition proved (CVC4: 1 VC)
+memcpy.adb:574:10: info: precondition proved (CVC4: 1 VC; Trivial: 1 VC)
 memcpy.adb:574:10: warning: unused assignment to "RAX"
 memcpy.adb:574:10: warning: unused assignment to "RSI"
 memcpy.adb:574:10: warning: unused assignment to "RSP"
 memcpy.adb:590:18: warning: unused assignment
 memcpy.adb:591:10: warning: statement has no effect
 memcpy.adb:591:10: warning: unused assignment to "RSP"
+memcpy.ads:17:06: info: data dependencies proved
 memcpy.ads:18:14: info: postcondition proved (CVC4: 1 VC)
+memcpy.ads:21:06: info: data dependencies proved
 memcpy.ads:22:14: info: postcondition proved (CVC4: 1 VC)
+memcpy.ads:25:06: info: data dependencies proved
 memcpy.ads:25:28: low: unused global "Dummy_Var"
 memcpy.ads:25:28: warning: "Dummy_Var" is not modified, could be INPUT
 memcpy.ads:25:54: low: unused global "Exit_Called"
@@ -296,7 +190,8 @@ memcpy.ads:30:61: warning: "R15" is not modified, could be INPUT
 memcpy.ads:31:31: low: unused global "StackAddressSize"
 memcpy.ads:31:53: low: unused global "FS"
 memcpy.ads:31:61: low: unused global "GS"
-memcpy.ads:35:14: info: postcondition proved (CVC4: 11 VC)
+memcpy.ads:35:14: info: postcondition proved (CVC4: 11 VC; Trivial: 1 VC)
+memcpy.ads:52:06: info: data dependencies proved
 memcpy.ads:53:31: info: initialization of "RAX" proved
 memcpy.ads:53:40: info: initialization of "CarryFlag" proved
 memcpy.ads:53:55: info: initialization of "SignFlag" proved
@@ -304,12 +199,14 @@ memcpy.ads:53:69: info: initialization of "OverflowFlag" proved
 memcpy.ads:53:87: info: initialization of "ZeroFlag" proved
 memcpy.ads:66:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-16) = X86.Memory'Old(X86.RBP'Old-16)
 memcpy.ads:86:92: info: division check proved (CVC4: 1 VC)
+memcpy.ads:111:06: info: data dependencies proved
 memcpy.ads:112:31: info: initialization of "ZeroFlag" proved
 memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
-memcpy.ads:125:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32) = X86.Memory'Old(X86.RBP'Old-32)
+memcpy.ads:129:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32+4) = X86.Memory'Old(X86.RBP'Old-32+4)
+memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"
 memcpy.ads:171:44: warning: unused initial value of "RCX"

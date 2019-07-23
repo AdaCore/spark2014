@@ -1,67 +1,29 @@
-test.adb:36:23: info: initialization of "X.A" proved
-test.adb:36:23: info: initialization of "X.B" proved
-test.adb:36:23: info: initialization of "X.D" proved
-test.adb:36:23: info: initialization of "X.F" proved
-test.adb:36:23: info: initialization of "X.G" proved
-test.adb:42:12: info: initialization of "Tmp.A" proved
-test.adb:42:12: info: initialization of "Tmp.B" proved
-test.adb:42:12: info: initialization of "Tmp.D" proved
-test.adb:42:12: info: initialization of "Tmp.F" proved
-test.adb:42:12: info: initialization of "Tmp.G" proved
-test.adb:45:25: info: initialization of "X.A.A" proved
-test.adb:45:25: info: initialization of "X.A.B" proved
-test.adb:45:25: info: initialization of "X.A.D" proved
-test.adb:45:25: info: initialization of "X.A.F" proved
-test.adb:45:25: info: initialization of "X.A.G" proved
-test.adb:45:25: info: initialization of "X.B.A" proved
-test.adb:45:25: info: initialization of "X.B.B" proved
-test.adb:45:25: info: initialization of "X.B.D" proved
-test.adb:45:25: info: initialization of "X.B.F" proved
-test.adb:45:25: info: initialization of "X.B.G" proved
-test.adb:52:12: info: initialization of "Tmp.A.A" proved
-test.adb:52:12: info: initialization of "Tmp.A.B" proved
-test.adb:52:12: info: initialization of "Tmp.A.D" proved
-test.adb:52:12: info: initialization of "Tmp.A.F" proved
-test.adb:52:12: info: initialization of "Tmp.A.G" proved
-test.adb:52:12: info: initialization of "Tmp.B.A" proved
-test.adb:52:12: info: initialization of "Tmp.B.B" proved
-test.adb:52:12: info: initialization of "Tmp.B.D" proved
-test.adb:52:12: info: initialization of "Tmp.B.F" proved
-test.adb:52:12: info: initialization of "Tmp.B.G" proved
-test.adb:55:23: info: initialization of "X.A" proved
-test.adb:55:23: info: initialization of "X.B" proved
-test.adb:55:23: info: initialization of "X.D" proved
-test.adb:55:23: info: initialization of "X.F" proved
-test.adb:55:23: info: initialization of "X.G" proved
-test.adb:61:25: info: initialization of "Tmp.D" proved
-test.adb:62:12: info: initialization of "Tmp.A" proved
-test.adb:62:12: info: initialization of "Tmp.B" proved
-test.adb:62:12: info: initialization of "Tmp.D" proved
-test.adb:62:12: info: initialization of "Tmp.F" proved
-test.adb:62:12: info: initialization of "Tmp.G" proved
+test.adb:36:23: info: initialization of "X" proved
+test.adb:37:09: info: data dependencies proved
+test.adb:38:09: info: flow dependencies proved
+test.adb:40:07: info: initialization of "Tmp" proved
+test.adb:45:25: info: initialization of "X" proved
+test.adb:46:09: info: data dependencies proved
+test.adb:47:09: info: flow dependencies proved
+test.adb:49:07: info: initialization of "Tmp" proved
+test.adb:55:23: info: initialization of "X" proved
+test.adb:56:09: info: data dependencies proved
+test.adb:57:09: info: flow dependencies proved
+test.adb:59:07: info: initialization of "Tmp" proved
 test.adb:65:23: info: initialization of "X" proved
-test.adb:71:12: info: initialization of "Tmp" proved
-test.adb:75:30: info: initialization of "G.A.A" proved
-test.adb:75:30: info: initialization of "G.A.B" proved
-test.adb:75:30: info: initialization of "G.A.D" proved
-test.adb:75:30: info: initialization of "G.A.F" proved
-test.adb:75:30: info: initialization of "G.A.G" proved
-test.adb:75:30: info: initialization of "G.B.A" proved
-test.adb:75:30: info: initialization of "G.B.B" proved
-test.adb:75:30: info: initialization of "G.B.D" proved
-test.adb:75:30: info: initialization of "G.B.F" proved
-test.adb:75:30: info: initialization of "G.B.G" proved
-test.adb:80:12: info: initialization of "Tmp.A.A" proved
-test.adb:80:12: info: initialization of "Tmp.A.B" proved
-test.adb:80:12: info: initialization of "Tmp.A.D" proved
-test.adb:80:12: info: initialization of "Tmp.A.F" proved
-test.adb:80:12: info: initialization of "Tmp.A.G" proved
-test.adb:80:12: info: initialization of "Tmp.B.A" proved
-test.adb:80:12: info: initialization of "Tmp.B.B" proved
-test.adb:80:12: info: initialization of "Tmp.B.D" proved
-test.adb:80:12: info: initialization of "Tmp.B.F" proved
-test.adb:80:12: info: initialization of "Tmp.B.G" proved
+test.adb:66:09: info: data dependencies proved
+test.adb:67:09: info: flow dependencies proved
+test.adb:69:07: info: initialization of "Tmp" proved
+test.adb:75:09: info: data dependencies proved
+test.adb:75:30: info: initialization of "G" proved
+test.adb:76:09: info: flow dependencies proved
+test.adb:78:07: info: initialization of "Tmp" proved
+test.adb:84:09: info: data dependencies proved
+test.adb:85:09: info: flow dependencies proved
+test.adb:93:09: info: data dependencies proved
+test.adb:94:06: info: flow dependencies proved
 test.adb:100:25: default initialization cannot depend on variable input "Tmp" (SPARK RM 4.4(2))
 test.adb:103:23: info: initialization of "X" proved
-test.adb:108:15: info: initialization of "Wibble.X" proved
+test.adb:104:14: info: data dependencies proved
+test.adb:106:10: info: initialization of "Wibble" proved
 gnatprove: error during flow analysis and proof

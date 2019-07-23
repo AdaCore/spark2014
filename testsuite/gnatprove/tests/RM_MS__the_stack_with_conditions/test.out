@@ -6,6 +6,12 @@ the_stack_with_conditions_14.adb:50:10: info: index check proved (CVC4: 2 VC)
 the_stack_with_conditions_14.adb:58:15: info: index check proved (CVC4: 2 VC)
 the_stack_with_conditions_14.adb:59:26: info: range check proved (CVC4: 1 VC)
 the_stack_with_conditions_14.adb:67:10: info: index check proved (CVC4: 2 VC)
+the_stack_with_conditions_14.ads:22:08: info: flow dependencies proved
 the_stack_with_conditions_14.ads:23:08: info: initial condition proved (CVC4: 1 VC)
-the_stack_with_conditions_14.ads:23:29: info: initialization of "Pointer" constituent of "State" proved
+the_stack_with_conditions_14.ads:26:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:29:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:32:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:38:11: info: data dependencies proved
 the_stack_with_conditions_14.ads:41:18: info: initialization of "X" proved
+the_stack_with_conditions_14.ads:42:11: info: data dependencies proved
+the_stack_with_conditions_14.ads:46:11: info: data dependencies proved

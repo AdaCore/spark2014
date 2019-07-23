@@ -3,7 +3,7 @@ Require Import Fourier.
 (* Import lemmas dealing with floats, in particulpar Z2R and
    associated lemmas which will help us quickly prove rersults on
    bigfloats that are integers *)
-Require Import Flocq.Core.Fcore.
+Require Import Flocq.Core.Core.
 
 (* We define a and b, the denominator and numerator of l4, as the
    conversion of two big integers, and prove that they are positive.
@@ -12,15 +12,15 @@ Require Import Flocq.Core.Fcore.
    Note that we go through Z to prove the inequality which is *much*
    faster, and even more for 64-bit values, than proving it with
    reals. *)
-set (a:=Z2R 100000000000000000000000000000000000000000000000000000000000000000000000000000000000000).
-assert (0 < a) as a_pos by (now apply (Z2R_lt 0)).
+set (a:=IZR 1000000000000000000000000000000000000000000000000000000000000000).
+assert (0 < a) as a_pos by (now apply (IZR_lt 0)).
 
-set (b:=Z2R 10842021724855044340074528008699417114257812500000000000000000000000).
-assert (0 < b) as b_pos by (now apply (Z2R_lt 0)).
+set (b:=IZR 108420217248550443400745280086994171142578125).
+assert (0 < b) as b_pos by (now apply (IZR_lt 0)).
 
 (* We provide the Z value of l2 as well as the max of floats, again to
    be able to share the proof between 32/64 bits. *)
-assert (t'real fliteral2 = Z2R 9223372036854775808) as l2_Z2R by
+assert (t'real fliteral2 = IZR 9223372036854775808) as l2_IZR by
   (destruct fliteral_axiom2 as [fliteral2_finite l_real2]; rewrite l_real2; auto).
-assert (33554430 * 10141204801825835211973625643008 = Z2R 340282346638528859811704183484516925440)
-  as maxfloat_Z2R by (ring_simplify; auto).
+assert (33554430 * 10141204801825835211973625643008 = IZR 340282346638528859811704183484516925440)
+  as maxfloat_IZR by (ring_simplify; auto).

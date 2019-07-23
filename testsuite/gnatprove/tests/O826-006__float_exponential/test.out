@@ -1,7 +1,8 @@
 float_expon.adb:6:28: warning: unused initial value of "Y"
-float_expon.adb:10:15: medium: float overflow check might fail [possible explanation: subprogram at line 6 should mention X in a precondition]
-float_expon.adb:10:17: info: division check proved (CVC4: 2 VC)
-float_expon.adb:10:17: medium: float overflow check might fail [possible explanation: subprogram at line 6 should mention X in a precondition]
+float_expon.adb:7:06: info: data dependencies proved
+float_expon.adb:10:15: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [possible explanation: subprogram at line 6 should mention X in a precondition]
+float_expon.adb:10:17: info: division check proved (CVC4: 1 VC; Trivial: 1 VC)
+float_expon.adb:10:17: medium: float overflow check might fail (e.g. when X = 1.5000000E+0) [possible explanation: subprogram at line 6 should mention X in a precondition]
 float_expon.adb:10:21: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:10:26: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:10:28: info: float overflow check proved (CVC4: 1 VC)
@@ -11,6 +12,7 @@ float_expon.adb:10:36: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:10:41: info: float overflow check proved (Interval)
 float_expon.adb:10:43: info: float overflow check proved (CVC4: 1 VC)
 float_expon.adb:13:28: warning: unused initial value of "Y"
+float_expon.adb:14:06: info: data dependencies proved
 float_expon.adb:17:14: info: float overflow check proved (Interval)
 float_expon.adb:17:16: info: float overflow check proved (Interval)
 float_expon.adb:17:18: info: float overflow check proved (Interval)
@@ -24,5 +26,3 @@ float_expon.adb:17:37: info: float overflow check proved (Interval)
 float_expon.adb:17:40: info: float overflow check proved (Interval)
 float_expon.adb:17:46: info: float overflow check proved (Interval)
 float_expon.adb:17:49: info: float overflow check proved (Interval)
-float_expon.adb:22:16: info: initialization of "V" proved
-float_expon.adb:23:16: info: initialization of "V" proved

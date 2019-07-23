@@ -1,1 +1,3 @@
+bar.ads:2:20: info: flow dependencies proved
+foo.ads:2:20: info: flow dependencies proved
 foo.ads:10:04: high: "X" is not initialized in "Foo"

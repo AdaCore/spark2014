@@ -1,2 +1,1 @@
-tti.adb:7:20: info: initialization of "X" proved
 tti.ads:5:10: info: nontermination of task proved (CVC4: 1 VC)

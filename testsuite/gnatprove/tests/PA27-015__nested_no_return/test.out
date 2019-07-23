@@ -1,4 +1,4 @@
 nest_in_proc.adb:9:22: info: assertion proved (CVC4: 1 VC)
 nest_in_proc.adb:10:07: warning: assuming "OS_Exit" has no effect on global items
 nest_in_proc.adb:10:07: warning: no Global contract available for "OS_Exit"
-nest_in_proc.adb:14:04: medium: precondition might fail
+nest_in_proc.adb:14:04: medium: precondition might fail, cannot prove X

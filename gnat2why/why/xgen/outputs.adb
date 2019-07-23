@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2015, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -45,7 +45,7 @@ package body Outputs is
       end if;
    end Put;
 
-   procedure I  (O : in out Output_Record);
+   procedure I (O : in out Output_Record);
    --  If a new line has just been created, print as many spaces
    --  as the indentation level requires.
 
@@ -113,7 +113,7 @@ package body Outputs is
    -- P --
    -------
 
-   procedure P  (O : in out Output_Record; S : Wide_String) is
+   procedure P (O : in out Output_Record; S : Wide_String) is
    begin
       I (O);
       Put (O.File, S);

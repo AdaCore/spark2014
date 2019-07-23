@@ -1,5 +1,6 @@
 project Test is
    package Prove is
-      for Switches use ("--output-header");
+      for Proof_Switches ("Ada") use ("--output-header");
+      for Switches use ("--prover=cvc4");
    end Prove;
 end Test;

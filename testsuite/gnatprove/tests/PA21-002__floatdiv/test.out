@@ -3,6 +3,7 @@ basic_contracts.adb:10:51: medium: range check might fail
 basic_contracts.adb:11:43: medium: range check might fail
 basic_contracts.adb:13:13: info: division check proved (CodePeer)
 basic_contracts.adb:13:13: info: float overflow check proved (CodePeer)
+basic_contracts.adb:19:07: info: initialization of "Res" proved
 basic_contracts.adb:21:22: info: assertion proved (CodePeer)
 basic_contracts.adb:21:28: info: range check proved (Interval)
 basic_contracts.adb:22:22: info: assertion proved (CodePeer)
@@ -12,11 +13,9 @@ basic_contracts.adb:23:32: info: division check proved (CodePeer)
 basic_contracts.adb:23:32: info: float overflow check proved (CodePeer)
 basic_contracts.adb:23:41: info: range check proved (Interval)
 basic_contracts.adb:24:22: info: assertion proved (CodePeer)
-basic_contracts.adb:24:22: info: initialization of "Res" proved
-basic_contracts.adb:25:14: info: initialization of "Res" proved
+basic_contracts.adb:31:07: info: initialization of "Res" proved
 basic_contracts.adb:35:24: info: division check proved (CodePeer)
 basic_contracts.adb:35:24: info: float overflow check proved (CodePeer)
-basic_contracts.adb:37:14: info: initialization of "Res" proved
 basic_contracts.ads:8:10: info: postcondition proved (CVC4: 1 VC)
 basic_contracts.ads:8:35: info: overflow check proved (CVC4: 1 VC)
 basic_contracts.ads:15:10: info: postcondition proved (CVC4: 1 VC)

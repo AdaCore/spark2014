@@ -12,10 +12,10 @@ package body u5 is
       L : Positive := Positive'First;
       M : Positive := Positive'First;
    begin
-      
+
       X := Positive'First;
       Y := Positive'First;
-      
+
       for I in 1..50 loop
          for J in 1..50 loop
             for K in 1..50 loop

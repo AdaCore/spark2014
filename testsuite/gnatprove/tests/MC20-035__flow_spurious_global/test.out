@@ -1,7 +1,1 @@
 c34014g.adb:49:26: medium: range check might fail
-c34014g.adb:64:16: info: initialization of "X" proved
-c34014g.adb:67:16: info: initialization of "Z" proved
-c34014g.adb:73:19: info: initialization of "X" proved
-c34014g.adb:77:19: info: initialization of "Z" proved
-c34014g.adb:90:14: info: initialization of "Y" proved
-c34014g.adb:94:14: info: initialization of "Z" proved

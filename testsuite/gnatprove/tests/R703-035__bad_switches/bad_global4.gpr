@@ -1,0 +1,6 @@
+project Bad_Global4 is
+
+  package Prove is
+    for Switches use ("-Pnonexisting.gpr");
+  end Prove;
+end Bad_Global4;

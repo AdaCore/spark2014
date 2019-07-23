@@ -1,5 +1,8 @@
-init.ads:1:11: info: initialization of "Parent.State" proved
-main.adb:4:11: medium: "parent.state" might not be initialized after elaboration of main program "Main"
-main.adb:10:19: medium: assertion might fail, cannot prove Proxy (False) = 0 [possible explanation: subprogram at line 4 should mention Parent.State in a precondition]
+main.adb:10:19: medium: "parent.state" might not be initialized after elaboration of main program "Main"
+main.adb:10:19: medium: assertion might fail, cannot prove Proxy (False) = 0 [possible explanation: subprogram at line 4 should mention Parent.Privchild.X in a precondition]
 parent-privchild.adb:6:53: info: initialization of "X" constituent of "Child_State" proved
+parent-privchild.ads:4:38: info: data dependencies proved
+parent-privchild.ads:6:38: info: data dependencies proved
 parent.adb:6:56: info: initialization of "Privchild.Child_State" constituent of "Parent.State" proved
+parent.ads:2:38: info: data dependencies proved
+parent.ads:4:38: info: data dependencies proved

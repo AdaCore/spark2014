@@ -6,24 +6,24 @@ double_list.adb:23:40: info: initialization of "Memory" constituent of "Internal
 double_list.adb:23:48: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:23:55: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:23:66: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:25:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
 double_list.adb:25:26: info: refined post proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.adb:63:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
-double_list.adb:64:54: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
-double_list.adb:65:41: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
+double_list.adb:51:07: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:11
 double_list.adb:68:25: info: range check proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
 double_list.ads:7:23: info: initialization of "Integer_List.Internal_List" constituent of "List_Handler.List" proved, in instantiation at list_handler.adb:11
+double_list.ads:8:05: info: flow dependencies proved, in instantiation at list_handler.adb:11
 double_list.ads:9:05: info: initial condition proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
-double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
-double_list.ads:18:16: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:11
+double_list.ads:16:08: info: data dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:17:08: info: flow dependencies proved, in instantiation at list_handler.adb:11
 double_list.ads:18:16: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:11
 double_list.ads:22:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:11
+double_list.ads:24:08: info: data dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:25:08: info: flow dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:29:08: info: data dependencies proved, in instantiation at list_handler.adb:11
+double_list.ads:33:08: info: data dependencies proved, in instantiation at list_handler.adb:11
 list_handler.adb:11:04: info: cannot unroll loop (too many loop iterations)
 list_handler.adb:11:04: info: in instantiation at double_list.adb:35
-list_handler.adb:24:13: info: initialization of "Current" proved
-list_handler.adb:25:56: info: initialization of "Current" proved
-list_handler.adb:26:20: info: initialization of "Status" proved
-list_handler.adb:26:54: info: initialization of "Current" proved
-list_handler.adb:27:21: info: initialization of "Current" proved
+list_handler.adb:22:07: info: initialization of "Status" proved
 list_handler.adb:27:29: info: overflow check proved (CVC4: 1 VC)
+list_handler.ads:6:07: info: flow dependencies proved
+list_handler.ads:11:10: info: data dependencies proved
+list_handler.ads:12:10: info: flow dependencies proved

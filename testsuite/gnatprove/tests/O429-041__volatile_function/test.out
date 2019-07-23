@@ -1,3 +1,1 @@
-main.adb:6:19: info: initialization of "X" proved
-main.adb:6:19: medium: assertion might fail, cannot prove X = Y (e.g. when X = -1 and Y = 0)
-main.adb:6:23: info: initialization of "Y" proved
+main.adb:6:19: medium: assertion might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1)

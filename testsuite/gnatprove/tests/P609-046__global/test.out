@@ -1,1 +1,2 @@
+globs.ads:5:37: info: data dependencies proved
 globs.ads:6:27: medium: "Globs.State" must be a global In_Out of "Pub_Out"

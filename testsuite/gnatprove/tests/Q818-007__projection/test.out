@@ -1,2 +1,2 @@
-sc_status_type.adb:5:22: medium: assertion might fail, cannot prove This.Sc_State.Prime = This.Sc_State.Shadow (e.g. when This = (Sc_State => (Prime => (X_1 => True, X_12 => False), Shadow => (X_1 => False, X_12 => False)))) [possible explanation: subprogram at line 3 should mention This in a precondition]
+sc_status_type.adb:5:22: medium: assertion might fail, cannot prove This.Sc_State.Prime = This.Sc_State.Shadow (e.g. when This = (Sc_State => (Prime => (X_1 => False, X_12 => False), Shadow => (X_1 => False, X_12 => True)))) [possible explanation: subprogram at sc_status_type.ads:21 should mention This in a precondition]
 sc_status_type.ads:21:14: warning: subprogram "Check" has no effect

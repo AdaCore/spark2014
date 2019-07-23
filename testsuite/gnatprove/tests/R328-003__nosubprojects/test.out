@@ -1,2 +1,3 @@
-c.adb:4:34: high: "a.state" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(13))
-c.adb:7:22: medium: assertion might fail, cannot prove Old = A(A.get) (e.g. when Old = 0) [possible explanation: call at line 6 should mention A.State in a postcondition]
+c.adb:4:34: high: "a.state" must be listed in the Global aspect of "P" (SPARK RM 6.1.4(14))
+c.adb:7:22: medium: assertion might fail, cannot prove Old = A(A.get) [possible explanation: call at line 6 should mention A.State in a postcondition]
+c.ads:5:12: info: data dependencies proved

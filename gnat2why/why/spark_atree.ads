@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -56,25 +56,6 @@ package SPARK_Atree is
    subtype N_Short_Circuit            is Sinfo.N_Short_Circuit;
    subtype N_Subexpr                  is Sinfo.N_Subexpr;
    subtype N_Subprogram_Call          is Sinfo.N_Subprogram_Call;
-   subtype N_Subprogram_Instantiation is Sinfo.N_Subprogram_Instantiation;
-
-   subtype N_Ignored_In_SPARK is Node_Kind with
-     Predicate => N_Ignored_In_SPARK in N_Call_Marker
-                                      | N_Implicit_Label_Declaration
-                                      | N_Null_Statement
-                                      | N_Freeze_Entity
-                                      | N_Variable_Reference_Marker
-                                      | N_Label
-
-         --  Renamings are replaced by the renamed object in the frontend, but
-         --  the renaming objects are not removed from the tree. We can safely
-         --  ignore them.
-
-                                      | N_Object_Renaming_Declaration
-                                      | N_Number_Declaration
-                                      | N_Use_Package_Clause
-                                      | N_Use_Type_Clause
-                                      | N_Validate_Unchecked_Conversion;
 
    N_Aggregate                      : Node_Kind renames Sinfo.N_Aggregate;
    N_And_Then                       : Node_Kind renames Sinfo.N_And_Then;
@@ -285,7 +266,7 @@ package SPARK_Atree is
    --  Return the subtype indication associated to the component type of an
    --  array type declaration.
 
-   function Condition  (N : Node_Id) return Node_Id with
+   function Condition (N : Node_Id) return Node_Id with
      Pre => Nkind (N) in N_Elsif_Part
                        | N_Exit_Statement
                        | N_If_Statement
@@ -483,7 +464,7 @@ package SPARK_Atree is
                        | N_Loop_Statement
                        | N_Record_Representation_Clause;
 
-   function Inherited_Discriminant  (N : Node_Id) return Boolean with
+   function Inherited_Discriminant (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Component_Association;
 
    function Intval (N : Node_Id) return Uint with
@@ -509,6 +490,11 @@ package SPARK_Atree is
 
    function Is_Locally_Defined_In_Loop (N : Node_Id) return Boolean;
    --  Returns True if node N is defined locally to a loop
+
+   function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean;
+   --  Return true if N is a function call and its original node is an equality
+   --  operation. This is used to handle specifically dispatching calls to
+   --  primitive equality.
 
    function Is_Tag_Indeterminate (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
@@ -594,7 +580,7 @@ package SPARK_Atree is
    function Reason (N : Node_Id) return Uint with
      Pre => Nkind (N) in N_Raise_xxx_Error;
 
-   function Return_Object_Declarations  (N : Node_Id) return List_Id with
+   function Return_Object_Declarations (N : Node_Id) return List_Id with
      Pre => Nkind (N) = N_Extended_Return_Statement;
 
    function Return_Statement_Entity (N : Node_Id) return Entity_Id with

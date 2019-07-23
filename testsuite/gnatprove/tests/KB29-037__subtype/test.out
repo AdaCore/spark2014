@@ -1,19 +1,14 @@
 main.adb:4:22: info: predicate check proved (CVC4: 1 VC)
-main.adb:6:04: info: initialization of "Z" proved
 main.adb:6:13: info: predicate check proved (CVC4: 1 VC)
-main.adb:7:04: info: initialization of "TV" proved
-main.adb:7:14: medium: predicate check might fail (e.g. when Global = 1 and TV = 0)
+main.adb:7:14: medium: predicate check might fail (e.g. when Global = 1)
 main.adb:13:06: warning: unused assignment
 main.adb:13:12: info: predicate check proved (CVC4: 1 VC)
-main.adb:19:14: info: initialization of "TV" proved
 main.adb:19:14: warning: unused assignment to "TV"
-p.adb:10:08: info: predicate check proved (CVC4: 2 VC), in call inlined at p.adb:17
-p.adb:10:25: info: initialization of "Var.Access_Count" proved, in call inlined at p.adb:17
+p.adb:10:08: info: predicate check proved (CVC4: 1 VC), in call inlined at p.adb:17
 p.adb:10:40: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:17
-p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.g. when Var = (Access_Count => 1, Locked => ?))
-p.adb:14:04: info: predicate check proved on default value (CVC4: 2 VC)
+p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.g. when Var = (Access_Count => 1, Locked => False))
+p.adb:14:04: info: initialization of "Var" proved
+p.adb:14:04: info: predicate check proved on default value (CVC4: 1 VC)
 p.adb:17:04: info: analyzing call to "Bad" in context
-sub.adb:43:17: info: initialization of "Global" proved
 sub.ads:11:12: predicate cannot depend on variable input "Global" (SPARK RM 4.4(2))
-sub.ads:24:14: info: initialization of "Global" proved
 gnatprove: error during flow analysis and proof

@@ -2,6 +2,5 @@ loc.adb:4:07: warning: initialization of "X" has no effect
 loc.adb:4:24: info: division check proved (CVC4: 1 VC)
 loc.adb:5:07: warning: initialization of "Y" has no effect
 loc.adb:5:24: info: division check proved (CVC4: 1 VC)
-loc.adb:5:26: info: initialization of "X" proved
-loc.adb:9:14: info: initialization of "K" proved
+loc.adb:6:07: info: initialization of "K" proved
 loc.ads:4:20: info: postcondition proved (CVC4: 1 VC)

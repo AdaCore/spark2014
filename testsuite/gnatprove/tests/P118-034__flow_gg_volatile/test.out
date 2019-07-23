@@ -23,7 +23,6 @@ Generated contracts for a
    Initializes =>
       A.Ext_State
       A.State
-a.ads:8:14: info: initialization of "Actuator" constituent of "Ext_State" proved
 Generated contracts for p_read_state
    Global =>
       Input =>
@@ -50,8 +49,8 @@ Generated contracts for read_state
          B.State
    Refined_Global =>
       Input =>
-         Flag_1
          Priv.State
+         Flag_1
 Generated contracts for read_atomic_state
    Global =>
       In_Out =>
@@ -62,8 +61,6 @@ Generated contracts for read_atomic_state
       In_Out =>
          Priv.Atomic_State
 Generated contracts for b
-b.adb:15:12: info: initialization of "X" proved
-b.adb:23:12: info: initialization of "X" proved
 b.ads:2:23: warning: no procedure exists that can initialize abstract state "B.State"
 b.ads:6:26: info: initialization of "X" proved
 b.ads:7:33: info: initialization of "X" proved

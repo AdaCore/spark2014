@@ -1,8 +1,2 @@
+c41321a.adb:2:08: info: data dependencies proved
 c41321a.adb:7:11: low: initialization of "DERIVED_FALSE" must be mentioned in the Initializes contract of "P" (SPARK RM 7.1.5(9))
-c41321a.adb:8:11: info: initialization of "DERIVED_TRUE" proved
-c41321a.adb:15:18: info: initialization of "DBOOL_TRUE" proved
-c41321a.adb:15:31: info: initialization of "DERIVED_TRUE" proved
-c41321a.adb:19:18: info: initialization of "DBOOL_TRUE" proved
-c41321a.adb:19:31: info: initialization of "DERIVED_TRUE" proved
-c41321a.adb:23:17: info: initialization of "DBOOL_TRUE" proved
-c41321a.adb:23:30: info: initialization of "DERIVED_TRUE" proved

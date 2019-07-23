@@ -1,4 +1,4 @@
-package Linear_Search 
+package Linear_Search
   with SPARK_Mode
 is
    type Opt_Index is new Natural;

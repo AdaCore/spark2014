@@ -1,12 +1,12 @@
 count.adb:12:26: info: overflow check proved (CVC4: 1 VC)
 count.ads:5:28: info: initialization of "counter" proved
-count.ads:8:20: info: initialization of "counter" proved
+count.ads:7:08: info: data dependencies proved
 count.ads:8:20: info: postcondition proved (CVC4: 1 VC)
+count.ads:12:08: info: data dependencies proved
+count.ads:13:08: info: flow dependencies proved
 count.ads:15:20: info: postcondition proved (CVC4: 1 VC)
 count.ads:15:42: info: overflow check proved (CVC4: 1 VC)
-demo.adb:10:09: info: initialization of "Demo_Counter" proved
 demo.adb:13:06: info: precondition proved (CVC4: 2 VC)
-demo.adb:13:13: info: initialization of "Demo_Counter" proved
 last_chance_handler.adb:41:16: goto statement is not allowed in SPARK
 last_chance_handler.adb:41:16: violation of pragma SPARK_Mode at line 28
 gnatprove: error during flow analysis and proof

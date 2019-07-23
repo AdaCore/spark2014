@@ -1,38 +1,34 @@
 t3q3.adb:4:34: info: initialization of "K" proved
+t3q3.adb:5:08: info: flow dependencies proved
 t3q3.adb:6:29: info: overflow check proved (CVC4: 1 VC)
-t3q3.adb:7:11: info: initialization of "K" proved
 t3q3.adb:7:11: info: postcondition proved (CVC4: 1 VC)
 t3q3.adb:7:17: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:12:12: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:16:34: info: initialization of "K" proved
+t3q3.adb:17:08: info: flow dependencies proved
 t3q3.adb:18:13: medium: overflow check might fail (e.g. when I = 2 and J = 2)
-t3q3.adb:19:11: info: initialization of "K" proved
 t3q3.adb:19:11: info: postcondition proved (CVC4: 1 VC)
 t3q3.adb:19:17: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:23:12: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:23:12: info: range check proved (CVC4: 1 VC)
 t3q3.adb:27:34: info: initialization of "K" proved
 t3q3.adb:27:37: info: initialization of "L" proved
-t3q3.adb:30:11: info: initialization of "K" proved
+t3q3.adb:28:08: info: flow dependencies proved
 t3q3.adb:30:11: info: postcondition proved (CVC4: 2 VC)
 t3q3.adb:30:17: info: division check proved (CVC4: 1 VC)
-t3q3.adb:30:25: info: initialization of "L" proved
 t3q3.adb:30:31: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:30:35: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:34:11: info: division check proved (CVC4: 1 VC)
 t3q3.adb:34:11: info: range check proved (CVC4: 1 VC)
 t3q3.adb:35:12: info: overflow check proved (CVC4: 1 VC)
 t3q3.adb:35:12: info: range check proved (CVC4: 1 VC)
-t3q3.adb:35:14: info: initialization of "K" proved
 t3q3.adb:35:16: info: overflow check proved (CVC4: 1 VC)
+t3q3.adb:41:05: info: initialization of "P" proved
+t3q3.adb:41:08: info: initialization of "Q" proved
+t3q3.adb:41:11: info: initialization of "R" proved
 t3q3.adb:43:05: info: precondition proved (CVC4: 1 VC)
 t3q3.adb:44:05: info: precondition proved (CVC4: 1 VC)
-t3q3.adb:44:07: info: initialization of "Q" proved
 t3q3.adb:45:05: info: precondition proved (CVC4: 1 VC)
-t3q3.adb:45:07: info: initialization of "P" proved
-t3q3.adb:45:10: info: initialization of "R" proved
-t3q3.adb:46:05: medium: precondition might fail
-t3q3.adb:46:07: info: initialization of "P" proved
-t3q3.adb:46:10: info: initialization of "Q" proved
+t3q3.adb:46:05: medium: precondition might fail, cannot prove J /= 0 (e.g. when Q = 0)
 t3q3.adb:46:16: warning: unused assignment to "R"
-t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old (e.g. when Y = 0 and Y'Old = 2)
+t3q3.ads:6:30: medium: postcondition might fail, cannot prove Y = Y'old (e.g. when Y = 3 and Y'Old = 2)

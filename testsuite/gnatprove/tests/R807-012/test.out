@@ -1,111 +1,73 @@
 area_math.adb:11:14: info: predicate check proved (CVC4: 1 VC)
+area_math.adb:216:07: info: initialization of "Result" proved
 area_math.adb:216:33: info: overflow check proved (CVC4: 1 VC)
 area_math.adb:216:33: info: range check proved (CVC4: 1 VC)
+area_math.adb:218:07: info: initialization of "Skip" proved
 area_math.adb:220:13: info: predicate check proved (CVC4: 1 VC)
 area_math.adb:221:13: info: predicate check proved (CVC4: 1 VC)
-area_math.adb:221:19: info: length check proved (CVC4: 4 VC)
-area_math.adb:221:22: info: length check proved (CVC4: 4 VC)
+area_math.adb:221:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+area_math.adb:221:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 area_math.adb:222:13: info: predicate check proved (CVC4: 1 VC)
-area_math.adb:222:17: info: length check proved (CVC4: 4 VC)
-area_math.adb:222:20: info: length check proved (CVC4: 4 VC)
+area_math.adb:222:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+area_math.adb:222:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 area_math.adb:228:47: info: index check proved (CVC4: 4 VC)
 area_math.adb:228:47: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:234:27: info: index check proved (CVC4: 4 VC)
 area_math.adb:238:43: info: index check proved (CVC4: 4 VC)
 area_math.adb:244:31: info: index check proved (CVC4: 4 VC)
 area_math.adb:244:31: info: overflow check proved (CVC4: 2 VC)
-area_math.adb:247:17: info: initialization of "Skip" proved
 area_math.adb:248:28: info: assertion proved (CVC4: 2 VC)
-area_math.adb:248:28: info: initialization of "Prev" proved
-area_math.adb:248:36: info: initialization of "Next" proved
-area_math.adb:249:28: info: assertion proved (CVC4: 4 VC)
-area_math.adb:249:52: info: initialization of "Prev" proved
-area_math.adb:249:59: info: initialization of "Result.To" proved
-area_math.adb:249:70: info: initialization of "Result.Size" proved
+area_math.adb:249:28: info: assertion proved (CVC4: 2 VC; Trivial: 2 VC)
 area_math.adb:249:76: info: index check proved (CVC4: 4 VC)
 area_math.adb:252:19: info: predicate check proved (CVC4: 2 VC)
-area_math.adb:252:28: info: initialization of "Result.Size" proved
 area_math.adb:252:40: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:253:19: info: predicate check proved (CVC4: 2 VC)
 area_math.adb:253:32: info: index check proved (CVC4: 4 VC)
-area_math.adb:253:39: info: initialization of "Result.From" proved
-area_math.adb:253:39: info: initialization of "Result.Size" proved
-area_math.adb:253:42: info: initialization of "Prev" proved
 area_math.adb:254:19: info: predicate check proved (CVC4: 2 VC)
 area_math.adb:254:30: info: index check proved (CVC4: 4 VC)
-area_math.adb:254:37: info: initialization of "Result.Size" proved
-area_math.adb:254:37: info: initialization of "Result.To" proved
-area_math.adb:254:40: info: initialization of "Next" proved
-area_math.adb:256:28: info: assertion proved (CVC4: 2 VC)
-area_math.adb:256:41: info: initialization of "Prev" proved
-area_math.adb:256:49: info: initialization of "Next" proved
-area_math.adb:256:61: info: initialization of "Result.From" proved
-area_math.adb:256:61: info: initialization of "Result.Size" proved
-area_math.adb:256:61: info: initialization of "Result.To" proved
+area_math.adb:256:57: medium: assertion might fail, cannot prove B < Result
 area_math.adb:259:28: info: assertion proved (CVC4: 2 VC)
-area_math.adb:259:28: info: initialization of "Result.From" proved
-area_math.adb:259:41: info: initialization of "Result.Size" proved
 area_math.adb:259:47: info: index check proved (CVC4: 4 VC)
 area_math.adb:259:119: info: index check proved (CVC4: 4 VC)
 area_math.adb:259:134: info: index check proved (CVC4: 4 VC)
 area_math.adb:260:28: info: assertion proved (CVC4: 2 VC)
-area_math.adb:260:28: info: initialization of "Result.To" proved
-area_math.adb:260:39: info: initialization of "Result.Size" proved
 area_math.adb:260:45: info: index check proved (CVC4: 4 VC)
 area_math.adb:260:97: info: index check proved (CVC4: 4 VC)
 area_math.adb:260:116: info: index check proved (CVC4: 4 VC)
 area_math.adb:260:116: info: overflow check proved (CVC4: 2 VC)
-area_math.adb:263:33: info: initialization of "Result.Size" proved
 area_math.adb:263:33: info: loop invariant initialization proved (CVC4: 1 VC)
 area_math.adb:263:33: info: loop invariant preservation proved (CVC4: 1 VC)
 area_math.adb:263:50: info: overflow check proved (CVC4: 2 VC)
-area_math.adb:264:33: info: loop invariant initialization proved (CVC4: 2 VC)
-area_math.adb:264:33: info: loop invariant preservation proved (CVC4: 2 VC)
-area_math.adb:264:40: info: initialization of "Skip" proved
-area_math.adb:264:50: info: initialization of "Result.Size" proved
-area_math.adb:265:33: info: loop invariant initialization proved (CVC4: 2 VC)
-area_math.adb:265:33: info: loop invariant preservation proved (CVC4: 2 VC)
-area_math.adb:265:40: info: initialization of "Skip" proved
-area_math.adb:265:50: info: initialization of "Result.From" proved
-area_math.adb:265:63: info: initialization of "Result.Size" proved
+area_math.adb:264:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+area_math.adb:264:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
+area_math.adb:265:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+area_math.adb:265:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 area_math.adb:265:69: info: index check proved (CVC4: 4 VC)
 area_math.adb:265:141: info: index check proved (CVC4: 4 VC)
 area_math.adb:265:156: info: index check proved (CVC4: 4 VC)
-area_math.adb:266:33: info: loop invariant initialization proved (CVC4: 2 VC)
-area_math.adb:266:33: info: loop invariant preservation proved (CVC4: 2 VC)
-area_math.adb:266:40: info: initialization of "Skip" proved
-area_math.adb:266:50: info: initialization of "Result.To" proved
-area_math.adb:266:61: info: initialization of "Result.Size" proved
+area_math.adb:266:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+area_math.adb:266:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 area_math.adb:266:67: info: index check proved (CVC4: 4 VC)
 area_math.adb:266:140: info: index check proved (CVC4: 4 VC)
 area_math.adb:266:159: info: index check proved (CVC4: 4 VC)
 area_math.adb:266:159: info: overflow check proved (CVC4: 2 VC)
-area_math.adb:268:13: info: loop invariant initialization proved (CVC4: 2 VC)
-area_math.adb:268:13: info: loop invariant preservation proved (CVC4: 2 VC)
-area_math.adb:268:16: info: initialization of "Skip" proved
+area_math.adb:268:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+area_math.adb:268:13: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 area_math.adb:269:62: info: index check proved (CVC4: 4 VC)
 area_math.adb:269:62: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:270:67: info: index check proved (CVC4: 4 VC)
 area_math.adb:274:33: info: loop invariant initialization proved (CVC4: 1 VC)
 area_math.adb:274:33: info: loop invariant preservation proved (CVC4: 1 VC)
-area_math.adb:278:39: info: initialization of "Result.To" proved
-area_math.adb:278:50: info: initialization of "Result.Size" proved
 area_math.adb:278:56: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:75: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:75: info: overflow check proved (CVC4: 2 VC)
-area_math.adb:278:88: medium: loop invariant might fail after first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and E.From'First = 0 and E.From'Last = 0 and E.To'First = 0 and E.To'Last = 0 and I = 0 and Result = (Max => ?, Size => 0, From => (others => 0), To => (others => 0)) and Result.From'First = 0 and Result.From'Last = 0 and Result.To'First = 0 and Result.To'Last = 0)
-area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and E.From'First = 0 and E.From'Last = 0 and E.To'First = 0 and E.To'Last = 0 and I = 0 and Result = (Max => ?, Size => 0, From => (others => 0), To => (others => 0)) and Result.From'First = 0 and Result.From'Last = 0 and Result.To'First = 0 and Result.To'Last = 0)
+area_math.adb:278:88: medium: loop invariant might fail after first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 2, Size => 2, From => (1 => 0, 2 => 0, others => 3058696191), To => (1 => 4294967295, 2 => 4294967295, others => 0)) and E.From'First = 1 and E.From'Last = 2 and E.To'First = 1 and E.To'Last = 2 and I = 1 and Result = (Max => ?, Size => 1, From => (1 => 0, 2 => 4294967295, others => 0), To => (1 => 4294967295, 2 => 4294967295, others => 0)) and Result.From'First = 1 and Result.From'Last = 3 and Result.To'First = 1 and Result.To'Last = 3)
+area_math.adb:278:88: medium: loop invariant might fail in first iteration, cannot prove Result.To (Result.Size) < E.To (I + 1) + 1 (e.g. when E = (Max => 1, Size => 1, From => (others => 4294967295), To => (others => 4294967295)) and E.From'First = 1 and E.From'Last = 1 and E.To'First = 1 and E.To'Last = 1 and I = 0 and Result = (Max => ?, Size => 1, From => (1 => 0, others => 4294967294), To => (1 => 4294967294, others => 4294967295)) and Result.From'First = 0 and Result.From'Last = 1 and Result.To'First = 0 and Result.To'Last = 1)
 area_math.adb:278:105: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:122: info: index check proved (CVC4: 4 VC)
 area_math.adb:278:122: info: overflow check proved (CVC4: 2 VC)
 area_math.adb:285:33: info: loop invariant initialization proved (CVC4: 1 VC)
-area_math.adb:285:33: medium: loop invariant might fail after first iteration, cannot prove Is_Consistent (Result) (e.g. when Result = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and Result.From'First = 0 and Result.From'Last = 0 and Result.To'First = 0 and Result.To'Last = 0)
-area_math.adb:285:48: info: initialization of "Result.From" proved
-area_math.adb:285:48: info: initialization of "Result.Size" proved
-area_math.adb:285:48: info: initialization of "Result.To" proved
-area_math.adb:289:14: info: initialization of "Result.From" proved
-area_math.adb:289:14: info: initialization of "Result.Size" proved
-area_math.adb:289:14: info: initialization of "Result.To" proved
+area_math.adb:285:33: medium: loop invariant might fail after first iteration, cannot prove Is_Consistent (Result) (e.g. when Result = (Max => ?, Size => 1, From => (1 => 0, 2 => 1, others => 1), To => (1 => 0, 2 => 1, others => 1)) and Result.From'First = 1 and Result.From'Last = 3 and Result.To'First = 1 and Result.To'Last = 3)
 area_math.ads:15:07: info: range check proved (CVC4: 2 VC)
 area_math.ads:16:07: info: range check proved (CVC4: 2 VC)
 area_math.ads:22:46: info: index check proved (CVC4: 2 VC)
@@ -116,13 +78,10 @@ area_math.ads:22:85: info: overflow check proved (CVC4: 1 VC)
 area_math.ads:22:98: info: index check proved (CVC4: 2 VC)
 area_math.ads:24:46: info: index check proved (CVC4: 2 VC)
 area_math.ads:24:58: info: index check proved (CVC4: 2 VC)
-area_math.ads:26:04: info: initialization of "Empty.From" proved
-area_math.ads:26:04: info: initialization of "Empty.Size" proved
-area_math.ads:26:04: info: initialization of "Empty.To" proved
 area_math.ads:26:24: info: predicate check proved (CVC4: 1 VC)
 area_math.ads:33:50: info: index check proved (CVC4: 2 VC)
 area_math.ads:33:62: info: index check proved (CVC4: 2 VC)
 area_math.ads:48:22: info: overflow check proved (CVC4: 1 VC)
-area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E) (e.g. when B = 0 and E = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and E.From'First = 0 and E.From'Last = 0 and E.To'First = 0 and E.To'Last = 0 and Onot'Result = (Max => 0, Size => 0, From => (others => 0), To => (others => 0)) and Onot'Result.From'First = 0 and Onot'Result.From'Last = 0 and Onot'Result.To'First = 0 and Onot'Result.To'Last = 0)
+area_math.ads:52:38: medium: postcondition might fail, cannot prove (B < "not"'Result) = (not B < E) (e.g. when B = 0 and E = (Max => 2, Size => 2, From => (1 => 1, others => 0), To => (1 => 0, others => 4294967295)) and E.From'First = 1 and E.From'Last = 2 and E.To'First = 1 and E.To'Last = 2)
 area_math.ads:53:36: info: overflow check proved (CVC4: 1 VC)
 area_math.ads:54:35: info: overflow check proved (CVC4: 1 VC)

@@ -1,10 +1,10 @@
-aip-ip.adb:9:04: info: initialization of "Default_Router" constituent of "FIB" proved
-aip-ip.adb:10:04: info: initialization of "IP_Serial" constituent of "State" proved
 aip-ip.adb:13:36: low: unused global "Default_Router" constituent of "FIB"
 aip-ip.adb:13:55: low: unused global "UDP.State"
 aip-ip.adb:14:36: low: unused global "IP_Serial" constituent of "State"
 aip-ip.adb:14:36: warning: "IP_Serial" constituent of "State" is not modified, could be INPUT
 aip-ip.adb:14:50: low: unused global "TCP.State"
 aip-ip.adb:14:50: warning: "TCP.State" is not modified, could be INPUT
+aip-ip.ads:7:03: info: flow dependencies proved
 aip-ip.ads:9:24: warning: unused variable "Netif"
 aip-ip.ads:9:41: warning: unused variable "Buf"
+aip-ip.ads:10:06: info: data dependencies proved

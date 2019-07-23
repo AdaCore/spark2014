@@ -20,7 +20,7 @@ const.adb:34:22: info: assertion proved (CVC4: 1 VC)
 const.adb:35:22: info: assertion proved (CVC4: 1 VC)
 const.adb:36:22: info: assertion proved (CVC4: 1 VC)
 const.adb:37:22: info: assertion proved (CVC4: 1 VC)
-const.adb:41:22: medium: assertion might fail, cannot prove O = 1 (e.g. when O = 0) [possible explanation: subprogram at line 3 should mention O in a precondition]
+const.adb:41:22: medium: assertion might fail, cannot prove O = 1 (e.g. when O = 0) [possible explanation: subprogram at const.ads:39 should mention O in a precondition]
 const.adb:42:22: medium: assertion might fail, cannot prove P = 1 (e.g. when P = 0)
 const.ads:24:30: info: overflow check proved (CVC4: 1 VC)
 const.ads:24:35: info: overflow check proved (CVC4: 1 VC)
@@ -28,5 +28,4 @@ const.ads:28:30: info: overflow check proved (CVC4: 1 VC)
 const.ads:28:35: info: overflow check proved (CVC4: 1 VC)
 const.ads:32:30: info: overflow check proved (CVC4: 1 VC)
 const.ads:32:39: info: overflow check proved (CVC4: 1 VC)
-const.ads:37:32: info: initialization of "O" proved
 const.ads:39:14: warning: subprogram "Test" has no effect

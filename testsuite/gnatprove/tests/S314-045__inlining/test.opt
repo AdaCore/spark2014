@@ -1,0 +1,3 @@
+!large SKIP too slow for normal runs
+NT SKIP very slow on windows
+inverse-prover SKIP ordering diffs

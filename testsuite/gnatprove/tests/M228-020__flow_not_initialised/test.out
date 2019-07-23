@@ -1,11 +1,11 @@
 test.adb:3:04: warning: analyzing unreferenced procedure "Test_01"
 test.adb:4:23: info: initialization of "B" proved
-test.adb:10:15: info: initialization of "L" proved
+test.adb:6:07: info: initialization of "L" proved
 test.adb:17:04: warning: analyzing unreferenced procedure "Test_02"
 test.adb:18:23: medium: "B" might not be initialized in "Test_02"
-test.adb:24:15: info: initialization of "L" proved
+test.adb:20:07: info: initialization of "L" proved
 test.adb:29:04: warning: analyzing unreferenced procedure "Test_03"
 test.adb:30:23: medium: "B" might not be initialized in "Test_03"
 test.adb:31:23: high: "C" is not initialized in "Test_03"
 test.adb:31:23: warning: unused variable "C"
-test.adb:37:15: info: initialization of "L" proved
+test.adb:33:07: info: initialization of "L" proved

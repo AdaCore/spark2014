@@ -1,78 +1,63 @@
-c3900050.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and Display_Count_For in a precondition]
+c3900050.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at c3900050.ads:74 should mention A and Display_Count_For in a precondition]
+c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
+c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
+c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
+c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900053.adb:108:38: high: "Alarm" is not initialized
-c3900053.adb:109:19: medium: precondition might fail
+c3900053.adb:109:19: medium: precondition might fail, cannot prove false
 c3900053.adb:112:18: high: "Alarm" is not initialized
-c3900053.adb:114:31: info: initialization of "Alarm" proved
-c3900053.adb:115:19: medium: precondition might fail
-c3900053.adb:127:13: medium: precondition might fail
+c3900053.adb:115:19: medium: precondition might fail, cannot prove false
+c3900053.adb:127:13: medium: precondition might fail, cannot prove false
 c3900053.adb:137:38: high: "Low_Alarm" is not initialized
-c3900053.adb:138:19: medium: precondition might fail
+c3900053.adb:138:19: medium: precondition might fail, cannot prove false
 c3900053.adb:141:18: high: "Low_Alarm" is not initialized
-c3900053.adb:143:31: info: initialization of "Low_Alarm" proved
-c3900053.adb:144:19: medium: precondition might fail
-c3900053.adb:156:13: medium: precondition might fail
+c3900053.adb:144:19: medium: precondition might fail, cannot prove false
+c3900053.adb:156:13: medium: precondition might fail, cannot prove false
 c3900053.adb:166:38: high: "Medium_Alarm" is not initialized
-c3900053.adb:167:19: medium: precondition might fail
+c3900053.adb:167:19: medium: precondition might fail, cannot prove false
 c3900053.adb:170:18: high: "Medium_Alarm" is not initialized
-c3900053.adb:172:31: info: initialization of "Medium_Alarm" proved
-c3900053.adb:173:19: medium: precondition might fail
-c3900053.adb:185:13: medium: precondition might fail
-c3900060.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A and Display_Count_For in a precondition]
+c3900053.adb:173:19: medium: precondition might fail, cannot prove false
+c3900053.adb:185:13: medium: precondition might fail, cannot prove false
+c3900060.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
+c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
+c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
+c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
+c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
 c3900063.adb:113:38: high: private part of "Medium_Alarm" is not initialized
-c3900063.adb:113:38: info: initialization of "Medium_Alarm.Action_Officer" proved
-c3900063.adb:114:19: medium: precondition might fail
+c3900063.adb:114:19: medium: precondition might fail, cannot prove false
 c3900063.adb:117:18: high: private part of "Medium_Alarm" is not initialized
-c3900063.adb:117:18: info: initialization of "Medium_Alarm.Action_Officer" proved
-c3900063.adb:119:31: info: initialization of "Medium_Alarm.Action_Officer" proved
-c3900063.adb:119:31: info: initialization of private part of "Medium_Alarm" proved
-c3900063.adb:120:19: medium: precondition might fail
-c3900063.adb:132:13: medium: precondition might fail
+c3900063.adb:120:19: medium: precondition might fail, cannot prove false
+c3900063.adb:132:13: medium: precondition might fail, cannot prove false
+c392004.adb:9:03: info: initialization of "My_Car" proved
+c392004.adb:10:03: info: initialization of "Your_Car" proved
 c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:26
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:29
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:33
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:36
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:40
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:43
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:47
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:50
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:54
-c392004.adb:15:13: medium: precondition might fail, in call inlined at c392004.adb:57
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:26
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:29
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:33
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:36
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:40
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:43
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:47
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:50
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:54
+c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:57
 c392004.adb:26:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:26:18: info: initialization of "My_Car.Convertible" proved
 c392004.adb:29:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:29:14: info: initialization of "Your_Car.Convertible" proved
 c392004.adb:33:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:33:14: info: initialization of "My_Car.Convertible" proved
 c392004.adb:36:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:36:18: info: initialization of "My_Car.Convertible" proved
 c392004.adb:40:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:40:18: info: initialization of "My_Car.Convertible" proved
-c392004.adb:42:10: info: initialization of "My_Car.Convertible" proved
-c392004.adb:42:10: info: initialization of private part of "My_Car" proved
 c392004.adb:43:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:43:18: info: initialization of "My_Car.Convertible" proved
 c392004.adb:47:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:47:18: info: initialization of "Your_Car.Convertible" proved
-c392004.adb:49:10: info: initialization of "Your_Car.Convertible" proved
-c392004.adb:49:10: info: initialization of private part of "Your_Car" proved
 c392004.adb:50:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:50:18: info: initialization of "Your_Car.Convertible" proved
 c392004.adb:54:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:54:14: info: initialization of "My_Car.Convertible" proved
-c392004.adb:56:10: info: initialization of "My_Car.Convertible" proved
-c392004.adb:56:10: info: initialization of private part of "My_Car" proved
 c392004.adb:57:03: info: analyzing call to "TC_Assert" in context
-c392004.adb:57:14: info: initialization of "My_Car.Convertible" proved
-c392004_1.adb:8:16: medium: precondition might fail
-c392004_1.ads:56:22: info: initialization of "The_Vehicle.Engine_On" proved
+c392004_1.adb:8:16: medium: precondition might fail, cannot prove false
+c392004_1.ads:56:22: info: initialization of "The_Vehicle" proved
 c392004_1.ads:57:22: warning: unused initial value of "The_Vehicle"
-c392004_2.adb:11:28: medium: precondition might fail
-c392004_2.adb:21:28: medium: precondition might fail
-c392004_2.ads:14:21: info: initialization of "The_Car.Convertible" proved
-c392004_2.ads:14:21: info: initialization of private part of "The_Car" proved
-c392004_2.ads:18:21: info: initialization of "The_Limo.Convertible" proved
-c392004_2.ads:18:21: info: initialization of private part of "The_Limo" proved
+c392004_2.adb:11:28: medium: precondition might fail, cannot prove false
+c392004_2.adb:21:28: medium: precondition might fail, cannot prove false
+c392004_2.ads:14:21: info: initialization of "The_Car" proved
+c392004_2.ads:18:21: info: initialization of "The_Limo" proved
 c392008.adb:57:04: info: no contextual analysis of "New_Account" (possible check on input parameters)
 c392008.adb:57:17: high: "B_Acct.Current_Balance" is not initialized
 c392008.adb:58:17: high: "C_Acct.Current_Balance" is not initialized
@@ -80,67 +65,40 @@ c392008.adb:58:17: high: "C_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Current_Balance" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Overdraft_Fee" is not initialized
 c392008.adb:59:17: high: "IC_Acct.Rate" is not initialized
-c392008.adb:61:08: info: initialization of "B_Acct.Current_Balance" proved
-c392008.adb:62:08: info: initialization of "C_Acct.Current_Balance" proved
-c392008.adb:63:08: info: initialization of "IC_Acct.Current_Balance" proved
-c392008.adb:65:13: medium: precondition might fail
+c392008.adb:65:13: medium: precondition might fail, cannot prove false
 c392008.adb:69:04: info: no contextual analysis of "Annual_Interest" (possible check on input parameters)
-c392008.adb:69:21: info: initialization of "B_Acct.Current_Balance" proved
-c392008.adb:70:21: info: initialization of "C_Acct.Current_Balance" proved
-c392008.adb:70:21: info: initialization of "C_Acct.Overdraft_Fee" proved
-c392008.adb:71:21: info: initialization of "IC_Acct.Current_Balance" proved
-c392008.adb:71:21: info: initialization of "IC_Acct.Overdraft_Fee" proved
-c392008.adb:71:21: info: initialization of "IC_Acct.Rate" proved
-c392008.adb:74:08: info: initialization of "B_Acct.Current_Balance" proved
-c392008.adb:75:08: info: initialization of "C_Acct.Current_Balance" proved
-c392008.adb:76:08: info: initialization of "IC_Acct.Current_Balance" proved
-c392008.adb:78:13: medium: precondition might fail
+c392008.adb:78:13: medium: precondition might fail, cannot prove false
 c392008.adb:82:04: info: no contextual analysis of "Apply_Service_Charge" (possible check on input parameters)
-c392008.adb:82:34: info: initialization of "B_Acct.Current_Balance" proved
-c392008.adb:83:34: info: initialization of "C_Acct.Current_Balance" proved
-c392008.adb:83:34: info: initialization of "C_Acct.Overdraft_Fee" proved
-c392008.adb:84:34: info: initialization of "IC_Acct.Current_Balance" proved
-c392008.adb:84:34: info: initialization of "IC_Acct.Overdraft_Fee" proved
-c392008.adb:84:34: info: initialization of "IC_Acct.Rate" proved
-c392008.adb:88:08: info: initialization of "B_Acct.Current_Balance" proved
-c392008.adb:89:08: info: initialization of "C_Acct.Current_Balance" proved
-c392008.adb:90:08: info: initialization of "IC_Acct.Current_Balance" proved
-c392008.adb:92:13: medium: precondition might fail
-c392008_0.adb:11:46: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention A and X in a precondition]
-c392008_0.adb:11:46: medium: range check might fail [possible explanation: subprogram at line 8 should mention A and X in a precondition]
-c392008_0.adb:17:46: medium: overflow check might fail [possible explanation: subprogram at line 14 should mention A and X in a precondition]
-c392008_0.adb:17:46: medium: range check might fail [possible explanation: subprogram at line 14 should mention A and X in a precondition]
-c392008_0.adb:27:46: medium: range check might fail [possible explanation: subprogram at line 25 should mention A in a precondition]
+c392008.adb:92:13: medium: precondition might fail, cannot prove false
+c392008_0.adb:11:46: medium: overflow check might fail [possible explanation: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
+c392008_0.adb:11:46: medium: range check might fail [possible explanation: subprogram at c392008_0.ads:152 should mention A and X in a precondition]
+c392008_0.adb:17:46: medium: overflow check might fail [possible explanation: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
+c392008_0.adb:17:46: medium: range check might fail [possible explanation: subprogram at c392008_0.ads:154 should mention A and X in a precondition]
+c392008_0.adb:27:46: medium: range check might fail [possible explanation: subprogram at c392008_0.ads:157 should mention A in a precondition]
 c392008_0.adb:33:46: info: overflow check proved (CVC4: 1 VC)
 c392008_0.adb:33:46: info: range check proved (CVC4: 1 VC)
-c392008_0.adb:33:48: info: initialization of "Interest_On_Account" proved
-c392008_0.adb:39:28: info: initialization of "Initial_Deposit" proved
 c392008_0.ads:159:30: warning: unused initial value of "A"
-c392008_1.adb:12:28: info: initialization of "Initial_Deposit" proved
-c392008_1.adb:13:28: info: initialization of "Check_Guarantee" proved
 c392008_1.ads:19:20: warning: unused initial value of "A"
-c392008_2.adb:12:57: info: initialization of "Interest_On_Account" proved
-c392008_2.adb:19:28: info: initialization of "Initial_Deposit" proved
 c392008_2.ads:26:14: "Current_Rate" is an Input of overriding subprogram, but it is not an Input of overridden subprogram "Open" at c392008_1.ads:19 (SPARK RM 6.1.6)
 cc1311a.adb:101:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:387
 cc1311a.adb:137:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:396
-cc1311a.adb:196:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414
+cc1311a.adb:190:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:414
 cc1311a.adb:199:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:414
-cc1311a.adb:232:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:423
+cc1311a.adb:226:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:423
 cc1311a.adb:235:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:423
-cc1311a.adb:266:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
+cc1311a.adb:261:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:432
 cc1311a.adb:279:17: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:441
 cc1311a.adb:290:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
 cc1311a.adb:291:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:442
 cc1311a.adb:302:14: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
 cc1311a.adb:303:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:443
+cc1311a.adb:315:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
 cc1311a.adb:317:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:445
-cc1311a.adb:318:18: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:445
+cc1311a.adb:328:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
 cc1311a.adb:330:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
-cc1311a.adb:331:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:446
 cc1311a.adb:332:23: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:446
+cc1311a.adb:343:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
 cc1311a.adb:345:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
-cc1311a.adb:346:14: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
 cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
 cc1311a.adb:380:25: info: initialization of "OUTPUT" proved
@@ -172,8 +130,15 @@ cc1311a.adb:446:06: info: in instantiation at line 330
 cc1311a.adb:447:06: info: analyzing call to "P2" in context
 cc1311a.adb:447:06: info: in instantiation at line 345
 cc1311a.adb:447:16: warning: subprogram "NPROC2" has no effect
-cc1311a.adb:452:17: medium: precondition might fail
-cc1311a.adb:457:17: medium: precondition might fail
-cc1311a.adb:467:17: medium: precondition might fail
-cc1311a.adb:474:17: medium: precondition might fail
+cc1311a.adb:452:17: medium: precondition might fail, cannot prove false
+cc1311a.adb:457:17: medium: precondition might fail, cannot prove false
+cc1311a.adb:467:17: medium: precondition might fail, cannot prove false
+cc1311a.adb:474:17: medium: precondition might fail, cannot prove false
+report.ads:115:18: info: data dependencies proved
+report.ads:121:18: info: data dependencies proved
+report.ads:127:18: info: data dependencies proved
+report.ads:132:18: info: data dependencies proved
+report.ads:137:18: info: data dependencies proved
+report.ads:142:18: info: data dependencies proved
+report.ads:148:22: info: data dependencies proved
 gnatprove: error during flow analysis and proof

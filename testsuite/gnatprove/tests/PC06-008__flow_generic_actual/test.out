@@ -1,3 +1,4 @@
-foo.adb:11:22: info: initialization of "X" proved, in instantiation at foo.adb:14
+foo.adb:1:20: info: data dependencies proved
+foo.adb:9:07: info: flow dependencies proved, in instantiation at foo.adb:14
 foo.adb:14:29: actual for formal object with mode in cannot depend on variable input "X" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

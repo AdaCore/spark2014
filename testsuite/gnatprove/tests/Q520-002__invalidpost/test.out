@@ -1,33 +1,16 @@
-mailstop.adb:7:18: warning: assuming "Put_Line" has no effect on global items
-mailstop.adb:7:18: warning: no Global contract available for "Put_Line"
-mailstop.adb:9:18: warning: assuming "Put_Line" has no effect on global items
-mailstop.adb:9:18: warning: no Global contract available for "Put_Line"
-names.adb:30:35: info: initialization of "Label_Length" proved
+names.adb:19:07: info: initialization of "State" proved
+names.adb:20:07: info: initialization of "Label_Length" proved
+names.adb:21:07: info: initialization of "Ch" proved
 names.adb:30:35: info: loop invariant initialization proved (CVC4: 1 VC)
 names.adb:30:35: info: loop invariant preservation proved (CVC4: 1 VC)
 names.adb:30:53: info: overflow check proved (CVC4: 2 VC)
 names.adb:30:67: info: overflow check proved (CVC4: 2 VC)
-names.adb:35:16: info: initialization of "Ch" proved
-names.adb:41:36: info: initialization of "Ch" proved
-names.adb:45:38: info: initialization of "Label_Length" proved
 names.adb:45:51: info: range check proved (CVC4: 1 VC)
-names.adb:49:22: info: initialization of "Ch" proved
-names.adb:50:25: info: initialization of "Label_Length" proved
-names.adb:55:25: info: initialization of "Ch" proved
-names.adb:57:38: info: initialization of "Label_Length" proved
 names.adb:57:51: info: range check proved (CVC4: 1 VC)
-names.adb:58:40: info: initialization of "Ch" proved
-names.adb:61:38: info: initialization of "Label_Length" proved
 names.adb:61:51: info: range check proved (CVC4: 1 VC)
-names.adb:65:22: info: initialization of "Ch" proved
-names.adb:66:38: info: initialization of "Label_Length" proved
 names.adb:66:51: info: range check proved (CVC4: 1 VC)
-names.adb:67:40: info: initialization of "Ch" proved
-names.adb:70:22: info: initialization of "State" proved
-names.adb:71:38: info: initialization of "Label_Length" proved
 names.adb:71:51: info: range check proved (CVC4: 1 VC)
-names.adb:78:15: info: initialization of "State" proved
-names.ads:16:14: medium: postcondition might fail, cannot prove Is_Letter(Name(I)) or Is_Digit(Name(I)) or Name(I) = '-' (e.g. when I = 1 and Is_Domain_Name'Result = True and Name = (64 => ',', others => 'NUL') and Name'First = 1 and Name'Last = 64)
+names.ads:16:14: medium: postcondition might fail, cannot prove Is_Letter(Name(I)) or Is_Digit(Name(I)) or Name(I) = '-' (e.g. when I = 1 and Name = (2 => 'SOH', others => 'NUL') and Name'First = 1 and Name'Last = 2)
 names.ads:16:29: info: index check proved (CVC4: 2 VC)
 names.ads:16:50: info: index check proved (CVC4: 2 VC)
 names.ads:16:62: info: index check proved (CVC4: 2 VC)

@@ -1,8 +1,6 @@
 test_dynamic_property.adb:2:14: warning: subprogram "P" has no effect
 test_dynamic_property.adb:3:15: info: range check proved (CVC4: 2 VC)
-test_dynamic_property.adb:5:07: info: initialization of "S" proved
 test_dynamic_property.adb:5:35: info: predicate check proved (CVC4: 1 VC)
 test_dynamic_property.adb:5:35: info: range check proved (CVC4: 1 VC)
-test_dynamic_property.adb:6:07: info: initialization of "T" proved
 test_dynamic_property.adb:6:37: info: range check proved (CVC4: 1 VC)
-test_dynamic_property.adb:6:37: medium: predicate check might fail
+test_dynamic_property.adb:6:37: medium: predicate check might fail (e.g. when C = 1)

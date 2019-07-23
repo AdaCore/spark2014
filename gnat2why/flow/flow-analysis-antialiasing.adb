@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -107,25 +107,36 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean;
       --  Return true iff A <= B
 
+      --------
+      -- LT --
+      --------
+
       function LT (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) = LT;
-      end LT;
+        (Compile_Time_Compare (A, B, True) = LT);
+
+      --------
+      -- GE --
+      --------
 
       function GE (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) in GE | GT | EQ;
-      end GE;
+        (Compile_Time_Compare (A, B, True) in GE | GT | EQ);
+
+      -----------
+      -- Empty --
+      -----------
 
       function Empty (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) = GT;
-      end Empty;
+        (Compile_Time_Compare (A, B, True) = GT);
+
+      ----------
+      -- Full --
+      ----------
 
       function Full (A, B : Node_Id) return Boolean is
-      begin
-         return Compile_Time_Compare (A, B, True) in LT | LE | EQ;
-      end Full;
+        (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
+
+   --  Start of processing for Check_Range
+
    begin
       if Empty (AL, AH)
         or else Empty (BL, BH)
@@ -297,6 +308,13 @@ package body Flow.Analysis.Antialiasing is
          end loop;
       end Find_Root;
 
+      --------------------------
+      -- Is_Root_Synchronized --
+      --------------------------
+
+      function Is_Root_Synchronized (N : Node_Id) return Boolean is
+        (Is_Synchronized (Get_Root_Entity (N)));
+
       -----------------------------
       -- Up_Ignoring_Conversions --
       -----------------------------
@@ -383,6 +401,10 @@ package body Flow.Analysis.Antialiasing is
          if Trace_Antialiasing then
             Write_Line ("   -> root of B is not interesting");
          end if;
+         return Impossible;
+      end if;
+
+      if Is_Root_Synchronized (Ptr_A) or else Is_Root_Synchronized (Ptr_B) then
          return Impossible;
       end if;
 
@@ -818,7 +840,7 @@ package body Flow.Analysis.Antialiasing is
          return Results;
       end Visible_Globals;
 
-      --  Local variables:
+      --  Local variables
 
       Globals : Global_Flow_Ids;
 

@@ -1,2 +1,2 @@
-ex.adb:6:17: medium: overflow check might fail (e.g. when I = Integer'Last) [possible explanation: subprogram at line 4 should mention I in a precondition]
-ex.adb:11:14: medium: overflow check might fail (e.g. when X = Integer'First) [possible explanation: subprogram at line 9 should mention X in a precondition]
+ex.adb:6:17: medium: overflow check might fail (e.g. when I = Integer'Last) [possible explanation: subprogram at ex.ads:3 should mention I in a precondition]
+ex.adb:11:14: medium: overflow check might fail (e.g. when X = -1) [possible explanation: subprogram at ex.ads:5 should mention X in a precondition]

@@ -1,0 +1,3 @@
+p.adb:4:25: info: initial condition proved (CVC4: 1 VC)
+p.adb:8:28: medium: initial condition might fail
+p.adb:16:28: medium: initial condition might fail

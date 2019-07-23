@@ -1,171 +1,85 @@
 pi_compute.adb:11:19: info: postcondition proved (CVC4: 1 VC)
+pi_compute.adb:23:07: info: initialization of "Res" proved
 pi_compute.adb:25:16: info: overflow check proved (CodePeer)
 pi_compute.adb:25:16: info: range check proved (CodePeer)
-pi_compute.adb:25:19: info: initialization of "T1" proved
 pi_compute.adb:25:22: info: overflow check proved (CodePeer)
-pi_compute.adb:25:24: info: initialization of "T2" proved
 pi_compute.adb:25:27: info: overflow check proved (CodePeer)
-pi_compute.adb:25:29: info: initialization of "T3" proved
 pi_compute.adb:25:32: info: overflow check proved (CodePeer)
-pi_compute.adb:25:34: info: initialization of "T4" proved
 pi_compute.adb:25:37: info: overflow check proved (CodePeer)
-pi_compute.adb:25:39: info: initialization of "T5" proved
 pi_compute.adb:25:42: info: overflow check proved (CodePeer)
-pi_compute.adb:25:44: info: initialization of "T6" proved
 pi_compute.adb:25:47: info: overflow check proved (CodePeer)
-pi_compute.adb:25:49: info: initialization of "T7" proved
 pi_compute.adb:25:52: info: overflow check proved (CodePeer)
-pi_compute.adb:25:54: info: initialization of "T8" proved
 pi_compute.adb:25:57: info: overflow check proved (CodePeer)
-pi_compute.adb:25:59: info: initialization of "T9" proved
 pi_compute.adb:25:62: info: overflow check proved (CodePeer)
-pi_compute.adb:25:64: info: initialization of "T10" proved
 pi_compute.adb:26:22: info: assertion proved (CodePeer)
-pi_compute.adb:26:22: info: initialization of "Res" proved
-pi_compute.adb:27:14: info: initialization of "Res" proved
 pi_compute.adb:31:19: info: postcondition proved (CVC4: 1 VC)
+pi_compute.adb:43:07: info: initialization of "Res" proved
 pi_compute.adb:45:18: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:21: info: initialization of "T1" proved
 pi_compute.adb:45:24: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:26: info: initialization of "T2" proved
 pi_compute.adb:45:29: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:31: info: initialization of "T3" proved
 pi_compute.adb:45:34: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:36: info: initialization of "T4" proved
 pi_compute.adb:45:39: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:41: info: initialization of "T5" proved
 pi_compute.adb:45:44: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:46: info: initialization of "T6" proved
 pi_compute.adb:45:49: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:51: info: initialization of "T7" proved
 pi_compute.adb:45:54: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:56: info: initialization of "T8" proved
 pi_compute.adb:45:59: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:61: info: initialization of "T9" proved
 pi_compute.adb:45:64: info: float overflow check proved (CodePeer)
-pi_compute.adb:45:66: info: initialization of "T10" proved
 pi_compute.adb:46:22: info: assertion proved (CodePeer)
-pi_compute.adb:46:22: info: initialization of "Res" proved
-pi_compute.adb:47:14: info: initialization of "Res" proved
 pi_compute.adb:51:19: info: postcondition proved (CVC4: 1 VC)
-pi_compute.adb:64:22: info: initialization of "T1" proved
-pi_compute.adb:65:22: info: initialization of "A1" proved
 pi_compute.adb:65:25: info: overflow check proved (CodePeer)
 pi_compute.adb:65:25: info: range check proved (CodePeer)
-pi_compute.adb:65:27: info: initialization of "T2" proved
-pi_compute.adb:66:22: info: initialization of "A2" proved
 pi_compute.adb:66:25: info: overflow check proved (CodePeer)
 pi_compute.adb:66:25: info: range check proved (CodePeer)
-pi_compute.adb:66:27: info: initialization of "T3" proved
-pi_compute.adb:67:22: info: initialization of "A3" proved
 pi_compute.adb:67:25: info: overflow check proved (CodePeer)
 pi_compute.adb:67:25: info: range check proved (CodePeer)
-pi_compute.adb:67:27: info: initialization of "T4" proved
-pi_compute.adb:68:22: info: initialization of "A4" proved
 pi_compute.adb:68:25: info: overflow check proved (CodePeer)
 pi_compute.adb:68:25: info: range check proved (CodePeer)
-pi_compute.adb:68:27: info: initialization of "T5" proved
-pi_compute.adb:69:22: info: initialization of "A5" proved
 pi_compute.adb:69:25: info: overflow check proved (CodePeer)
 pi_compute.adb:69:25: info: range check proved (CodePeer)
-pi_compute.adb:69:27: info: initialization of "T6" proved
-pi_compute.adb:70:22: info: initialization of "A6" proved
 pi_compute.adb:70:25: info: overflow check proved (CodePeer)
 pi_compute.adb:70:25: info: range check proved (CodePeer)
-pi_compute.adb:70:27: info: initialization of "T7" proved
-pi_compute.adb:71:22: info: initialization of "A7" proved
 pi_compute.adb:71:25: info: overflow check proved (CodePeer)
 pi_compute.adb:71:25: info: range check proved (CodePeer)
-pi_compute.adb:71:27: info: initialization of "T8" proved
-pi_compute.adb:72:22: info: initialization of "A8" proved
 pi_compute.adb:72:25: info: overflow check proved (CodePeer)
 pi_compute.adb:72:25: info: range check proved (CodePeer)
-pi_compute.adb:72:27: info: initialization of "T9" proved
-pi_compute.adb:73:22: info: initialization of "A9" proved
 pi_compute.adb:73:25: info: overflow check proved (CodePeer)
 pi_compute.adb:73:25: info: range check proved (CodePeer)
-pi_compute.adb:73:27: info: initialization of "T10" proved
 pi_compute.adb:75:24: info: overflow check proved (CodePeer)
 pi_compute.adb:75:24: info: range check proved (CodePeer)
-pi_compute.adb:75:27: info: initialization of "A10" proved
 pi_compute.adb:75:31: info: overflow check proved (CodePeer)
-pi_compute.adb:75:33: info: initialization of "A8" proved
 pi_compute.adb:75:36: info: overflow check proved (CodePeer)
-pi_compute.adb:75:38: info: initialization of "A9" proved
 pi_compute.adb:75:41: info: overflow check proved (CodePeer)
-pi_compute.adb:76:22: info: initialization of "A10" proved
 pi_compute.adb:76:26: info: overflow check proved (CodePeer)
 pi_compute.adb:76:30: info: overflow check proved (CodePeer)
-pi_compute.adb:76:32: info: initialization of "A9" proved
 pi_compute.adb:76:35: info: overflow check proved (CodePeer)
 pi_compute.adb:76:35: info: range check proved (CodePeer)
-pi_compute.adb:76:37: info: initialization of "A8" proved
-pi_compute.adb:79:14: info: initialization of "Num" proved
+pi_compute.adb:77:07: info: initialization of "Res" proved
 pi_compute.adb:79:18: info: division check proved (CodePeer)
 pi_compute.adb:79:18: info: overflow check proved (CodePeer)
 pi_compute.adb:79:18: info: range check proved (CodePeer)
-pi_compute.adb:79:20: info: initialization of "Den" proved
 pi_compute.adb:80:22: info: assertion proved (CodePeer)
-pi_compute.adb:80:22: info: initialization of "Res" proved
-pi_compute.adb:81:14: info: initialization of "Res" proved
 pi_compute.adb:85:19: info: postcondition proved (CVC4: 1 VC)
-pi_compute.adb:98:22: info: initialization of "T1" proved
-pi_compute.adb:99:22: info: initialization of "A1" proved
 pi_compute.adb:99:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:99:27: info: initialization of "T2" proved
-pi_compute.adb:100:22: info: initialization of "A2" proved
 pi_compute.adb:100:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:100:27: info: initialization of "T3" proved
-pi_compute.adb:101:22: info: initialization of "A3" proved
 pi_compute.adb:101:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:101:27: info: initialization of "T4" proved
-pi_compute.adb:102:22: info: initialization of "A4" proved
 pi_compute.adb:102:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:102:27: info: initialization of "T5" proved
-pi_compute.adb:103:22: info: initialization of "A5" proved
 pi_compute.adb:103:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:103:27: info: initialization of "T6" proved
-pi_compute.adb:104:22: info: initialization of "A6" proved
 pi_compute.adb:104:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:104:27: info: initialization of "T7" proved
-pi_compute.adb:105:22: info: initialization of "A7" proved
 pi_compute.adb:105:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:105:27: info: initialization of "T8" proved
-pi_compute.adb:106:22: info: initialization of "A8" proved
 pi_compute.adb:106:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:106:27: info: initialization of "T9" proved
-pi_compute.adb:107:22: info: initialization of "A9" proved
 pi_compute.adb:107:25: info: float overflow check proved (CodePeer)
-pi_compute.adb:107:27: info: initialization of "T10" proved
 pi_compute.adb:109:26: info: float overflow check proved (CodePeer)
-pi_compute.adb:109:29: info: initialization of "A10" proved
 pi_compute.adb:109:33: info: float overflow check proved (CodePeer)
-pi_compute.adb:109:35: info: initialization of "A8" proved
 pi_compute.adb:109:38: info: float overflow check proved (CodePeer)
-pi_compute.adb:109:40: info: initialization of "A9" proved
 pi_compute.adb:109:43: info: float overflow check proved (CodePeer)
-pi_compute.adb:110:22: info: initialization of "A10" proved
 pi_compute.adb:110:26: info: float overflow check proved (CodePeer)
 pi_compute.adb:110:32: info: float overflow check proved (CodePeer)
-pi_compute.adb:110:34: info: initialization of "A9" proved
 pi_compute.adb:110:37: info: float overflow check proved (CodePeer)
-pi_compute.adb:110:39: info: initialization of "A8" proved
-pi_compute.adb:113:14: info: initialization of "Num" proved
+pi_compute.adb:111:07: info: initialization of "Res" proved
 pi_compute.adb:113:18: info: division check proved (CodePeer)
 pi_compute.adb:113:18: info: float overflow check proved (CodePeer)
-pi_compute.adb:113:20: info: initialization of "Den" proved
 pi_compute.adb:114:22: info: assertion proved (CodePeer)
-pi_compute.adb:114:22: info: initialization of "Res" proved
-pi_compute.adb:115:14: info: initialization of "Res" proved
-pi_compute.adb:119:04: warning: assuming "Put_Line" has no effect on global items
-pi_compute.adb:119:04: warning: no Global contract available for "Put_Line"
 pi_compute.adb:119:46: info: range check proved (CVC4: 1 VC)
-pi_compute.adb:120:04: warning: assuming "Put_Line" has no effect on global items
-pi_compute.adb:120:04: warning: no Global contract available for "Put_Line"
 pi_compute.adb:120:47: info: range check proved (CVC4: 1 VC)
-pi_compute.adb:121:04: warning: assuming "Put_Line" has no effect on global items
-pi_compute.adb:121:04: warning: no Global contract available for "Put_Line"
 pi_compute.adb:121:45: info: range check proved (CVC4: 1 VC)
-pi_compute.adb:122:04: warning: assuming "Put_Line" has no effect on global items
-pi_compute.adb:122:04: warning: no Global contract available for "Put_Line"
 pi_compute.adb:122:45: info: range check proved (CVC4: 1 VC)

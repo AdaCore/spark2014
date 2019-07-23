@@ -1,4 +1,5 @@
-p.adb:28:14: medium: overflow check might fail [possible explanation: subprogram at line 26 should mention X in a precondition]
-p.adb:33:14: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention X in a precondition]
+p.adb:4:12: info: data dependencies proved
+p.adb:28:14: medium: overflow check might fail [possible explanation: subprogram at p.ads:14 should mention X in a precondition]
+p.adb:33:14: medium: overflow check might fail [possible explanation: subprogram at p.ads:15 should mention X in a precondition]
 p.ads:3:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p.ads:3:09: info: nontermination of task proved (CVC4: 1 VC)

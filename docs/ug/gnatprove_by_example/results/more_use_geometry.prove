@@ -1,4 +1,4 @@
 more_use_geometry.adb:8:06: info: precondition proved
 more_use_geometry.adb:11:09: info: precondition proved
 more_use_geometry.adb:15:06: info: precondition proved
-more_use_geometry.adb:17:06: medium: precondition might fail (e.g. when S4 = (Pos_X => 0.0, Pos_Y => 0.0))
+more_use_geometry.adb:17:06: medium: precondition might fail, cannot prove Valid (S) [possible explanation: precondition of subprogram at line 3 should mention S4]

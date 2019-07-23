@@ -9,8 +9,10 @@ module Rep_Proj_Base
   meta "model_projection" function to_rep
 
   val of_rep (x : rep_type) : t
-    requires { true }
     ensures  { to_rep (result) = x }
+
+  val to_rep (x : t) : rep_type
+    ensures  { to_rep (x) = result }
 
   predicate in_range (x : rep_type)
 
@@ -27,17 +29,19 @@ module Discrete_Base
     contains the whole discrete theory, except the projections
     to_rep/of_rep and associated axioms. *)
 
-  use import "_gnatprove_standard".Main
-  use        "_gnatprove_standard".Integer
+  use "_gnatprove_standard".Main
 
   type rep_type
 
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if x = y then True else False
 
+  val bool_eq (x : rep_type) (y : rep_type) : bool
+  ensures { if x = y then result else not result }
+
   type t
 
-  function attr__ATTRIBUTE_IMAGE rep_type : __image
+  val function attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
@@ -47,9 +51,9 @@ module Discrete_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function user_eq (x : t) (y : t) : bool
+  val function user_eq (x : t) (y : t) : bool
 
-  function dummy : t
+  val constant dummy : t
 end
 
 module Static_Discrete_Base
@@ -80,11 +84,11 @@ module Static_Discrete_Base
     requires { in_range n }
     ensures { result = n /\ in_range n}
 
-  predicate dynamic_property "inline" (f l x : rep_type) = in_range x
+  predicate dynamic_property [@inline] (f l x : rep_type) = in_range x
 end
 
 module Static_Discrete
-  use import int.Int
+  use        int.Int
 
   clone export Static_Discrete_Base with
     type rep_type = int
@@ -92,7 +96,7 @@ end
 
 module Rep_Proj_Int
   (* Specification of to_rep when rep_type = int; add coercion axiom. *)
-  use import int.Int
+  use        int.Int
 
   clone export Rep_Proj_Base with
     type rep_type = int
@@ -103,7 +107,7 @@ module Rep_Proj_Int
 end
 
 module Static_Modular_Base
-  use import int.Int
+  use        int.Int
 
   clone export Static_Discrete_Base
 
@@ -117,7 +121,7 @@ module Static_Modular_Base
     requires { in_range_int n }
     ensures { result = n /\ in_range_int n }
 
-  predicate dynamic_property_int "inline" (f l x : int) = in_range_int x
+  predicate dynamic_property_int [@inline] (f l x : int) = in_range_int x
 end
 
 module Rep_Proj_ltBVGen
@@ -168,10 +172,10 @@ end
 (* ---- Modular with modulus lower or equal to 64 ---- *)
 
 module Static_Modular_lt64
-  use _gnatprove_standard.BV64
+  use _gnatprove_standard.BV64 as BV64
   type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV64.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -181,10 +185,10 @@ module Static_Modular_lt64
 end
 
 module Rep_Proj_ltBV64
-  use import _gnatprove_standard.BV64
+  use _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -195,10 +199,10 @@ module Rep_Proj_ltBV64
 end
 
 module Static_Modular_64
-  use _gnatprove_standard.BV64
+  use _gnatprove_standard.BV64 as BV64
   type rep_type = BV64.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV64.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -206,10 +210,10 @@ module Static_Modular_64
 end
 
 module Rep_Proj_BV64
-  use import _gnatprove_standard.BV64
+  use _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -219,10 +223,10 @@ end
 (* ---- Modular with modulus lower or equal to 32 ---- *)
 
 module Static_Modular_lt32
-  use _gnatprove_standard.BV32
+  use _gnatprove_standard.BV32 as BV32
   type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV32.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -232,10 +236,10 @@ module Static_Modular_lt32
 end
 
 module Rep_Proj_ltBV32
-  use import _gnatprove_standard.BV32
+  use  _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -246,10 +250,10 @@ module Rep_Proj_ltBV32
 end
 
 module Static_Modular_32
-  use _gnatprove_standard.BV32
+  use _gnatprove_standard.BV32 as BV32
   type rep_type = BV32.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV32.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -257,10 +261,10 @@ module Static_Modular_32
 end
 
 module Rep_Proj_BV32
-  use import _gnatprove_standard.BV32
+  use _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -270,10 +274,10 @@ end
 (* ---- Modular with modulus lower or equal to 16 ---- *)
 
 module Static_Modular_lt16
-  use _gnatprove_standard.BV16
+  use _gnatprove_standard.BV16 as BV16
   type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV16.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -283,10 +287,10 @@ module Static_Modular_lt16
 end
 
 module Rep_Proj_ltBV16
-  use import _gnatprove_standard.BV16
+  use _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -297,10 +301,10 @@ module Rep_Proj_ltBV16
 end
 
 module Static_Modular_16
-  use _gnatprove_standard.BV16
+  use _gnatprove_standard.BV16 as BV16
   type rep_type = BV16.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV16.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -308,10 +312,10 @@ module Static_Modular_16
 end
 
 module Rep_Proj_BV16
-  use import _gnatprove_standard.BV16
+  use _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -321,10 +325,10 @@ end
 (* ---- Modular with modulus lower or equal to 8 ---- *)
 
 module Static_Modular_lt8
-  use _gnatprove_standard.BV8
+  use _gnatprove_standard.BV8 as BV8
   type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV8.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -334,10 +338,10 @@ module Static_Modular_lt8
 end
 
 module Rep_Proj_ltBV8
-  use import _gnatprove_standard.BV8
+  use _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -348,10 +352,10 @@ module Rep_Proj_ltBV8
 end
 
 module Static_Modular_8
-  use _gnatprove_standard.BV8
+  use _gnatprove_standard.BV8 as BV8
   type rep_type = BV8.t
 
-  function rep_to_int "inline" (x : rep_type) : int = BV8.t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -359,10 +363,10 @@ module Static_Modular_8
 end
 
 module Rep_Proj_BV8
-  use import _gnatprove_standard.BV8
+  use _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int "inline" (x : rep_type) : int = t'int x
+  function rep_to_int [@inline] (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -381,8 +385,13 @@ module Dynamic_Discrete
 
   meta "model_projection" function base_to_rep
 
-  function to_rep "inline" (x : t) : rep_type = base_to_rep x
-  function of_rep "inline" (x : rep_type) : t = base_of_rep x
+  function to_rep [@inline] (x : t) : rep_type = base_to_rep x
+  function of_rep [@inline] (x : rep_type) : t = base_of_rep x
+
+  val to_rep (x : t) : rep_type
+  ensures { result = base_to_rep x }
+  val of_rep (x : rep_type) : t
+  ensures { result = base_of_rep x }
 
   clone export Discrete_Base
       with type t = t,
@@ -404,7 +413,7 @@ module Dynamic_Discrete
 end
 
 module Dynamic_Modular
-  use import int.Int
+  use int.Int
 
   clone export Dynamic_Discrete
 
@@ -418,8 +427,8 @@ module Dynamic_Modular
 end
 
 module Fixed_Point_Shared
-  use import int.Int
-  use import "_gnatprove_standard".Int_Division
+  use int.Int
+  use "_gnatprove_standard".Int_Division
 
   (* Helper predicate to define the result of operations on fixed-points.
      It is used with non-negative values for [num] and positive values for [den].
@@ -439,24 +448,6 @@ module Fixed_Point_Shared
        the closest integers. *)
     else
       exact <= res <= exact + 1
-
-  (* A similar helper predicate for division of fixed-point values with integer
-     result, which rounds to nearest, ties away from zero (RM G.2.3).
-  *)
-
-  predicate pos_div_relation_rna (res : int) (num : int) (den : int) =
-    let exact = div num den in
-    (* case 1: special case for zero *)
-    if num = 0 then
-      res = 0
-    (* case 2: RM G.2.3(17) if the result is exact, that's it *)
-    else if num = exact * den then
-      res = exact
-    (* case 3: RM G.2.3(18) otherwise round to nearest, away from zero *)
-    else if num - (exact * den) < ((exact + 1) * den) - num then
-      res = exact
-    else
-      res = exact + 1
 
 end
 
@@ -487,12 +478,12 @@ module Fixed_Point_Rep
     to reflect the constraints of Ada RM G.2.3.
   *)
 
-  use import int.Int
-  use import real.RealInfix
-  use import real.FromInt
-  use import "_gnatprove_standard".Main
-  use import "_gnatprove_standard".Int_Division
-  use import Fixed_Point_Shared
+  use int.Int
+  use real.RealInfix
+  use real.FromInt
+  use "_gnatprove_standard".Main
+  use "_gnatprove_standard".Int_Division
+  use Fixed_Point_Shared
 
   (* Numerator and denominator of the fractional "small" value of the
      corresponding fixed-point type. These are guaranteed to be positive
@@ -508,6 +499,8 @@ module Fixed_Point_Rep
   (* multiplication between a fixed-point value and an integer *)
 
   function fxp_mult_int (x : __fixed) (y : int) : __fixed = x * y
+  val fxp_mult_int (x : __fixed) (y : int) : __fixed
+  ensures { result = fxp_mult_int x y }
 
   (* division between a fixed-point value and an integer
      case 1:
@@ -551,29 +544,6 @@ module Fixed_Point_Rep
       else (* y = 0 *)
         true
 
-  (* division of fixed-point values with integer result *)
-
-  function fxp_div_result_int (x : __fixed) (y : __fixed) : int
-
-  val fxp_div_result_int_ (x : __fixed) (y : __fixed) : int
-     requires { y <> 0 }
-     ensures { result = fxp_div_result_int x y }
-
-  axiom fxp_div_result_int_def :
-    forall x : __fixed. forall y : __fixed [fxp_div_result_int x y].
-      if x = 0 then
-        fxp_div_result_int x y = 0
-      else if x > 0 /\ y > 0 then
-        pos_div_relation_rna (fxp_div_result_int x y) x y
-      else if x < 0 /\ y < 0 then
-        pos_div_relation_rna (fxp_div_result_int x y) (-x) (-y)
-      else if x < 0 /\ y > 0 then
-        pos_div_relation_rna (- (fxp_div_result_int x y)) (-x) y
-      else if x > 0 /\ y < 0 then
-        pos_div_relation_rna (- (fxp_div_result_int x y)) x (-y)
-      else (* y = 0 *)
-        true
-
   (* conversion functions to/from int. 3 cases for the conversion to int:
      case 1:
          If the argument is zero, then the result is zero.
@@ -591,7 +561,7 @@ module Fixed_Point_Rep
               x = -5, exact = -1, math = -1.25, result in { -2, -1 }
   *)
 
-  function to_int (x : __fixed) : int
+  val function to_int (x : __fixed) : int
 
   axiom to_int_def :
     forall x : __fixed [to_int x].
@@ -602,7 +572,7 @@ module Fixed_Point_Rep
       else (* x < 0 *)
         pos_div_relation (- (to_int x)) (-x * num_small) (den_small)
 
-  function of_int (x : int) : __fixed
+  val function of_int (x : int) : __fixed
 
   axiom of_int_def :
     forall x : __fixed [of_int x].
@@ -619,14 +589,14 @@ module Fixed_Point_Base
   (* The module that is used as basis of all fixed-point types. It does not
      contain operations on fixed point types which are stored in representative
      modules *)
-  use import int.Int
-  use import "_gnatprove_standard".Main
+  use int.Int
+  use "_gnatprove_standard".Main
 
   type t
 
-  function dummy : t
+  val constant dummy : t
 
-  function attr__ATTRIBUTE_IMAGE __fixed : __image
+  val constant attr__ATTRIBUTE_IMAGE __fixed : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
@@ -636,7 +606,7 @@ module Fixed_Point_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function user_eq (x : t) (y : t) : bool
+  val function user_eq (x : t) (y : t) : bool
 end
 
 module Fixed_Point_Mult_Div
@@ -655,9 +625,9 @@ module Fixed_Point_Mult_Div
      will reject any use of an unsupported operation.
   *)
 
-  use import int.Int
-  use import "_gnatprove_standard".Main
-  use import Fixed_Point_Shared
+  use int.Int
+  use "_gnatprove_standard".Main
+  use Fixed_Point_Shared
 
   (* Numerator and denominator of the fractional "small" value of the
      corresponding fixed-point types. These are guaranteed to be positive
@@ -703,7 +673,7 @@ module Fixed_Point_Mult_Div
               x = -5, y =  3, exact = -3, math = -3.75, result in { -4, -3 }
   *)
 
-  function fxp_mult (x : __fixed) (y : __fixed) : __fixed
+  val function fxp_mult (x : __fixed) (y : __fixed) : __fixed
 
   axiom fxp_mult_def :
     forall x : __fixed. forall y : __fixed [fxp_mult x y].
@@ -777,8 +747,8 @@ module Static_Fixed_Point
      with constants for the bounds, even though this might correspond to
      dynamic types in Ada. *)
 
-  use import "_gnatprove_standard".Main
-  use import int.Int
+  use "_gnatprove_standard".Main
+  use int.Int
 
   clone export Fixed_Point_Base
 
@@ -800,13 +770,13 @@ module Static_Fixed_Point
     requires { in_range n }
     ensures { result = n }
 
-  predicate dynamic_property "inline" (f l x : __fixed) = in_range x
+  predicate dynamic_property [@inline] (f l x : __fixed) = in_range x
 end
 
 module Rep_Proj_Fixed
   (* Specification of to_rep when rep_type = __fixed; add coercion axiom. *)
-  use import "_gnatprove_standard".Main
-  use import int.Int
+  use "_gnatprove_standard".Main
+  use int.Int
 
   clone export Rep_Proj_Base with
     type rep_type = __fixed
@@ -822,8 +792,8 @@ module Dynamic_Fixed_Point
      references for the bounds, which correspond to some cases of dynamic
      types in Ada. *)
 
-  use import "_gnatprove_standard".Main
-  use import int.Int
+  use "_gnatprove_standard".Main
+  use int.Int
 
   type t
 
@@ -832,8 +802,8 @@ module Dynamic_Fixed_Point
 
   meta "model_projection" function base_to_rep
 
-  function to_fixed "inline" (x : t) : __fixed = base_to_rep x
-  function of_fixed "inline" (x : __fixed) : t = base_of_rep x
+  function to_fixed [@inline] (x : t) : __fixed = base_to_rep x
+  function of_fixed [@inline] (x : __fixed) : t = base_of_rep x
 
   clone export Fixed_Point_Base
       with type t = t
@@ -856,7 +826,7 @@ end
 module Floating_Point_Base
   (* The module that is used as basis for all floating-point types. *)
 
-  use import "_gnatprove_standard".Main
+  use "_gnatprove_standard".Main
 
   type rep_type                 (* either float32 or float64 *)
 
@@ -865,12 +835,14 @@ module Floating_Point_Base
 
   function bool_eq (x : rep_type) (y : rep_type) : bool =
     if eq x y then True else False
+  val bool_eq (x : rep_type) (y : rep_type) : bool
+    ensures { result = bool_eq x y }
 
   type t
 
-  function user_eq (x : t) (y : t) : bool
+  val function user_eq (x : t) (y : t) : bool
 
-  function attr__ATTRIBUTE_IMAGE rep_type : __image
+  val constant attr__ATTRIBUTE_IMAGE rep_type : __image
 
   predicate attr__ATTRIBUTE_VALUE__pre_check (x : __image)
 
@@ -880,7 +852,7 @@ module Floating_Point_Base
     requires { attr__ATTRIBUTE_VALUE__pre_check x }
     ensures { true }
 
-  function dummy : t
+  val constant dummy : t
 end
 
 module Static_Floating_Point
@@ -906,11 +878,11 @@ module Static_Floating_Point
     requires { in_range n }
     ensures { result = n /\ is_finite n }
 
-  predicate dynamic_property "inline" (f l x : rep_type) = in_range x
+  predicate dynamic_property [@inline] (f l x : rep_type) = in_range x
 end
 
 module Static_Float32
-  use import ieee_float.Float32
+  use ieee_float.Float32
 
   clone export Static_Floating_Point with
     type rep_type = t,
@@ -920,7 +892,7 @@ end
 
 module Rep_Proj_Float32
   (* Specification of to_rep when rep_type = float32; add coercion axiom *)
-  use import ieee_float.Float32
+  use ieee_float.Float32
 
   clone export Rep_Proj_Base with
     type rep_type = t
@@ -931,7 +903,7 @@ module Rep_Proj_Float32
 end
 
 module Static_Float64
-  use import ieee_float.Float64
+  use ieee_float.Float64
 
   clone export Static_Floating_Point with
     type rep_type = t,
@@ -941,7 +913,7 @@ end
 
 module Rep_Proj_Float64
   (* Specification of to_rep when rep_type = float64; add coercion axiom *)
-  use import ieee_float.Float64
+  use ieee_float.Float64
 
   clone export Rep_Proj_Base with
     type rep_type = t
@@ -962,11 +934,10 @@ module Dynamic_Floating_Point
   meta "model_projection" function base_to_rep
 
   val base_of_rep (x : rep_type) : t
-    requires { true }
     ensures  { base_to_rep (result) = x }
 
-  function to_rep "inline" (x : t) : rep_type = base_to_rep x
-  function of_rep "inline" (x : rep_type) : t = base_of_rep x
+  function to_rep [@inline] (x : t) : rep_type = base_to_rep x
+  function of_rep [@inline] (x : rep_type) : t = base_of_rep x
 
   predicate dynamic_property (first last n : rep_type)
 
@@ -1009,12 +980,12 @@ module Index_Type
   type t
 
   (* first and last of an index *)
-  function first t : base
+  val function first t : base
 
-  function last t : base
+  val function last t : base
 
   (* constructing and deconstructing the index *)
-  function mk rep rep : t
+  val function mk rep rep : t
 
   axiom mk_def :
     forall f l : rep [mk f l].
@@ -1031,7 +1002,7 @@ module Index_Type
 end
 
 module Array_Comparison_Axiom
-  use import int.Int
+  use int.Int
 
   (* These declarations have to be filled in by gnat2why for each
   discrete 1 dimension array type *)
@@ -1050,8 +1021,8 @@ module Array_Comparison_Axiom
   function to_rep component_type : rep_type
   meta "model_projection" function to_rep
 
-  function compare map Index.t Index.t map Index.t Index.t : int
-  meta "encoding : lskept" function compare
+  val function compare map Index.t Index.t map Index.t Index.t : int
+  meta "encoding:lskept" function compare
 
   axiom compare_def_eq :
     forall a b : map.
@@ -1080,7 +1051,7 @@ module Array_Comparison_Axiom
 end
 
 module Array_Int_Rep_Comparison_Axiom
-  use import int.Int
+  use int.Int
 
   clone export Array_Comparison_Axiom with
   type rep_type = int,
@@ -1089,7 +1060,7 @@ module Array_Int_Rep_Comparison_Axiom
 end
 
 module Array_BV8_Rep_Comparison_Axiom
-  use import bv.BV8
+  use bv.BV8
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -1098,7 +1069,7 @@ module Array_BV8_Rep_Comparison_Axiom
 end
 
 module Array_BV16_Rep_Comparison_Axiom
-  use import bv.BV16
+  use bv.BV16
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -1107,7 +1078,7 @@ module Array_BV16_Rep_Comparison_Axiom
 end
 
 module Array_BV32_Rep_Comparison_Axiom
-  use import bv.BV32
+  use bv.BV32
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -1116,7 +1087,7 @@ module Array_BV32_Rep_Comparison_Axiom
 end
 
 module Array_BV64_Rep_Comparison_Axiom
-  use import bv.BV64
+  use bv.BV64
 
   clone export Array_Comparison_Axiom with
   type rep_type = t,
@@ -1148,7 +1119,7 @@ module Array_Generic_Op_Axiom
 end
 
 module Array_Logical_Op_Generic_Axioms
-  use bool.Bool
+  use bool.Bool as Bool
 
   (* These declarations have to be filled in by gnat2why for each
        boolean 1 dimension array type *)
@@ -1163,13 +1134,13 @@ module Array_Logical_Op_Generic_Axioms
    function get map Index.t : component_type
 
    function xorb map Index.t Index.t map Index.t Index.t : map
-   meta "encoding : lskept" function xorb
+   meta "encoding:lskept" function xorb
    function andb map Index.t Index.t map Index.t Index.t : map
-   meta "encoding : lskept" function andb
+   meta "encoding:lskept" function andb
    function orb  map Index.t Index.t map Index.t Index.t : map
-   meta "encoding : lskept" function orb
+   meta "encoding:lskept" function orb
    function notb map Index.t Index.t : map
-   meta "encoding : lskept" function notb
+   meta "encoding:lskept" function notb
 
    clone Array_Generic_Op_Axiom as Or_Axiom with
      type component_type = component_type,
@@ -1226,12 +1197,24 @@ module Array_Logical_Op_Generic_Axioms
       (Index.le a_first i /\ Index.le i a_last) ->
       get (notb a a_first a_last) i =
              of_bool (Bool.notb (to_bool (get a i)))
+
+   val xorb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
+   ensures { result = xorb a af al b bf bl }
+   
+   val andb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
+   ensures { result = andb a af al b bf bl }
+   
+   val orb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
+   ensures { result = orb a af al b bf bl }
+   
+   val notb (a : map) (af : Index.t) (al : Index.t) : map
+   ensures { result = notb a af al }
 end
 
 module Standard_Array_Logical_Op_Axioms
-  use import bool.Bool
+  use bool.Bool
 
-  function bool_id "inline" (b : bool) : bool = b
+  function bool_id [@inline] (b : bool) : bool = b
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = bool,
@@ -1240,15 +1223,15 @@ module Standard_Array_Logical_Op_Axioms
 end
 
 module Subtype_Array_Logical_Op_Axioms
-  use import int.Int
-  use "_gnatprove_standard".Boolean
+  use int.Int
+  use "_gnatprove_standard".Boolean as Boolean
 
    type component_type
    function to_int component_type : int
    function of_int int : component_type
 
-  function to_bool "inline" (x : component_type) : bool = Boolean.of_int (to_int (x))
-  function of_bool "inline" (x : bool) : component_type = of_int (Boolean.to_int (x))
+  function to_bool [@inline] (x : component_type) : bool = Boolean.of_int (to_int (x))
+  function of_bool [@inline] (x : bool) : component_type = of_int (Boolean.to_int (x))
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = component_type,
@@ -1267,7 +1250,7 @@ module Unconstr_Array
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int "inline" index_rep_type : int
+  function rep_to_int [@inline] index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1287,31 +1270,39 @@ module Unconstr_Array
 
   (* An unconstrained array comes with its bounds *)
   type __t =
-    { elts "model_trace:" : map; rt : I1.t }
+    { elts [@model_trace:] : map; rt : I1.t }
 
-  function to_array (a : __t) : map = a.elts
+  let function to_array (a : __t) : map = a.elts
 
-  function of_array (a : map) (f l : index_rep_type) : __t =
+  let function of_array (a : map) (f l : index_rep_type) : __t =
     { elts = a; rt = I1.mk f l }
 
-  use import int.Int
+  use int.Int
 
-  function first "model_trace:'First" (a : __t) : index_rep_type = to_rep (I1.first a.rt)
-  function last "model_trace:'Last" (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function first [@model_trace:'First] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  val first (a : __t) : index_rep_type
+  ensures { result = first a }
+  
+  function last [@model_trace:'Last] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  val last (a : __t) : index_rep_type
+  ensures { result = last a }
+  
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
+  val length (a : __t) : int
+  ensures { result = length a }
 
   predicate dynamic_property (range_first range_last f1 l1 : index_rep_type) =
     I1.dynamic_property range_first range_last f1 l1
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1330,9 +1321,12 @@ module Unconstr_Array
       x.elts (to_rep (I1.first x.rt)) (to_rep (I1.last x.rt))
       y.elts (to_rep (I1.first y.rt)) (to_rep (I1.last y.rt))
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
 
-  function dummy : __t
+  val function user_eq (x : __t) (y : __t) : bool
+
+  val constant dummy : __t
 end
 
 module Unconstr_Array_2
@@ -1344,7 +1338,7 @@ module Unconstr_Array_2
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int "inline" index_rep_type : int
+  function rep_to_int [@inline] index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1356,7 +1350,7 @@ module Unconstr_Array_2
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 "inline" index_rep_type_2 : int
+  function rep_to_int_2 [@inline] index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1383,45 +1377,61 @@ module Unconstr_Array_2
     predicate index_dynamic_property = index_dynamic_property_2
 
   type __t =
-    { elts "model_trace:" : map;
+    { elts [@model_trace:] : map;
       rt : I1.t;
       rt_2 : I2.t
     }
 
-  function to_array (a : __t) : map =
+  let function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : map)
+  let function of_array (a : map)
     (f l : index_rep_type) (f2 l2 : index_rep_type_2) : __t =
     { elts = a;
       rt = I1.mk f l;
       rt_2 = I2.mk f2 l2 }
 
-  use import int.Int
+  use int.Int
 
-  function first "model_trace:'First(1)" (a : __t) : index_rep_type = to_rep (I1.first a.rt)
-  function last "model_trace:'Last(1)" (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  val first (a : __t) : index_rep_type
+  ensures { result = first a }
+  
+  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  val last (a : __t) : index_rep_type
+  ensures { result = last a }
+  
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
+  val length (a : __t) : int
+  ensures { result = length a }
 
-  function first_2 "model_trace:'First(2)"  (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
-  function last_2 "model_trace:'Last(2)" (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function first_2 [@model_trace:'First(2)]  (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  val first_2 (a : __t) : index_rep_type_2
+  ensures { result = first_2 a }
+  
+  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  val last_2 (a : __t) : index_rep_type_2
+  ensures { result = last_2 a }
+  
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
+  val length_2 (a : __t) : int
+  ensures { result = length_2 a }
 
   predicate dynamic_property (range_first1 range_last1 f1 l1 : index_rep_type)
                              (range_first2 range_last2 f2 l2 : index_rep_type_2) =
     I1.dynamic_property range_first1 range_last1 f1 l1 /\ I2.dynamic_property range_first2 range_last2 f2 l2
 
-  function value__size : int
+  val function value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1442,9 +1452,12 @@ module Unconstr_Array_2
       y.elts (to_rep (I1.first y.rt)) (to_rep (I1.last y.rt))
              (to_rep_2 (I2.first y.rt_2)) (to_rep_2 (I2.last y.rt_2))
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
 
-  function dummy : __t
+  val function user_eq (x : __t) (y : __t) : bool
+
+  val constant dummy : __t
 end
 
 module Unconstr_Array_3
@@ -1456,7 +1469,7 @@ module Unconstr_Array_3
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int "inline" index_rep_type : int
+  function rep_to_int [@inline] index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1468,7 +1481,7 @@ module Unconstr_Array_3
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 "inline" index_rep_type_2 : int
+  function rep_to_int_2 [@inline] index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1480,7 +1493,7 @@ module Unconstr_Array_3
   type index_rep_type_3
 
   function to_rep_3 index_base_type_3 : index_rep_type_3
-  function rep_to_int_3 "inline" index_rep_type_3 : int
+  function rep_to_int_3 [@inline] index_rep_type_3 : int
 
   meta "model_projection" function to_rep_3
 
@@ -1515,16 +1528,16 @@ module Unconstr_Array_3
     predicate index_dynamic_property = index_dynamic_property_3
 
   type __t =
-    { elts "model_trace:" : map;
+    { elts [@model_trace:] : map;
       rt   : I1.t;
       rt_2 : I2.t;
       rt_3 : I3.t
     }
 
-  function to_array (a : __t) : map =
+  let function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : map)
+  let function of_array (a : map)
     (f l : index_rep_type) (f2 l2 : index_rep_type_2) (f3 l3 : index_rep_type_3) : __t =
     { elts = a;
       rt = I1.mk f l;
@@ -1532,25 +1545,49 @@ module Unconstr_Array_3
       rt_3 = I3.mk f3 l3
     }
 
-  use import int.Int
+  use int.Int
 
-  function first "model_trace:'First(1)"  (a : __t) : index_rep_type = to_rep (I1.first a.rt)
-  function last "model_trace:'Last(1)" (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function first [@model_trace:'First(1)]  (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  val first (a : __t) : index_rep_type
+  ensures { result = first a }
+  
+  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  val last (a : __t) : index_rep_type
+  ensures { result = last a }
+  
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
+  val length (a : __t) : int
+  ensures { result = length a }
 
-  function first_2 "model_trace:'First(2)" (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
-  function last_2 "model_trace:'Last(2)" (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  val first_2 (a : __t) : index_rep_type_2
+  ensures { result = first_2 a }
+  
+  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  val last_2 (a : __t) : index_rep_type_2
+  ensures { result = last_2 a }
+  
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
+  val length_2 (a : __t) : int
+  ensures { result = length_2 a }
 
-  function first_3 "model_trace:'First(3)" (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
-  function last_3 "model_trace:'Last(3)" (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
+  val first_3 (a : __t) : index_rep_type_3
+  ensures { result = first_3 a }
+  
+  function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  val last_3 (a : __t) : index_rep_type_3
+  ensures { result = last_3 a }
+  
   function length_3 (a : __t) : int =
     if index_rep_le_3 (first_3 a) (last_3 a) then
       rep_to_int_3 (last_3 a) - rep_to_int_3 (first_3 a) + 1 else 0
+  val length_3 (a : __t) : int
+  ensures { result = length_3 a }
 
   predicate dynamic_property (range_first1 range_last1 f1 l1 : index_rep_type)
                              (range_first2 range_last2 f2 l2 : index_rep_type_2)
@@ -1559,13 +1596,13 @@ module Unconstr_Array_3
     I2.dynamic_property range_first2 range_last2 f2 l2 /\
     I3.dynamic_property range_first3 range_last3 f3 l3
 
-  function value__size : int
+  val constant value__size : int
+  
+  val constant object__size : int
 
-  function object__size : int
+  val constant component__size : int
 
-  function component__size : int
-
-  function alignment : int
+  val constant alignment : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1588,9 +1625,12 @@ module Unconstr_Array_3
              (to_rep_2 (I2.first y.rt_2)) (to_rep_2 (I2.last y.rt_2))
              (to_rep_3 (I3.first y.rt_3)) (to_rep_3 (I3.last y.rt_3))
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
 
-  function dummy : __t
+  val function user_eq (x : __t) (y : __t) : bool
+
+  val constant dummy : __t
 end
 
 module Unconstr_Array_4
@@ -1602,7 +1642,7 @@ module Unconstr_Array_4
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int "inline" index_rep_type : int
+  function rep_to_int [@inline] index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1614,7 +1654,7 @@ module Unconstr_Array_4
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 "inline" index_rep_type_2 : int
+  function rep_to_int_2 [@inline] index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1626,7 +1666,7 @@ module Unconstr_Array_4
   type index_rep_type_3
 
   function to_rep_3 index_base_type_3 : index_rep_type_3
-  function rep_to_int_3 "inline" index_rep_type_3 : int
+  function rep_to_int_3 [@inline] index_rep_type_3 : int
 
   meta "model_projection" function to_rep_3
 
@@ -1638,7 +1678,7 @@ module Unconstr_Array_4
   type index_rep_type_4
 
   function to_rep_4 index_base_type_4 : index_rep_type_4
-  function rep_to_int_4 "inline" index_rep_type_4 : int
+  function rep_to_int_4 [@inline] index_rep_type_4 : int
 
   meta "model_projection" function to_rep_4
 
@@ -1681,17 +1721,17 @@ module Unconstr_Array_4
     predicate index_dynamic_property = index_dynamic_property_4
 
   type __t =
-    { elts "model_trace:" : map;
+    { elts [@model_trace:] : map;
       rt   : I1.t;
       rt_2 : I2.t;
       rt_3 : I3.t;
       rt_4 : I4.t
     }
 
-  function to_array (a : __t) : map =
+  let function to_array (a : __t) : map =
     a.elts
 
-  function of_array (a : map)
+  let function of_array (a : map)
     (f l : index_rep_type)
     (f2 l2 : index_rep_type_2)
     (f3 l3 : index_rep_type_3)
@@ -1703,31 +1743,63 @@ module Unconstr_Array_4
       rt_4 = I4.mk f4 l4
     }
 
-  use import int.Int
+  use int.Int
 
-  function first "model_trace:'First(1)" (a : __t) : index_rep_type = to_rep (I1.first a.rt)
-  function last "model_trace:'Last(1)" (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  val first (a : __t) : index_rep_type
+  ensures { result = first a }
+  
+  function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  val last (a : __t) : index_rep_type
+  ensures { result = last a }
+  
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
+  val length (a : __t) : int
+  ensures { result = length a }
 
-  function first_2 "model_trace:'First(2)" (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
-  function last_2 "model_trace:'Last(2)" (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
+  val first_2 (a : __t) : index_rep_type_2
+  ensures { result = first_2 a }
+  
+  function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
+  val last_2 (a : __t) : index_rep_type_2
+  ensures { result = last_2 a }
+  
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
+  val length_2 (a : __t) : int
+  ensures { result = length_2 a }
 
-  function first_3 "model_trace:'First(3)" (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
-  function last_3 "model_trace:'Last(3)" (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
+  val first_3 (a : __t) : index_rep_type_3
+  ensures { result = first_3 a }
+  
+  function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
+  val last_3 (a : __t) : index_rep_type_3
+  ensures { result = last_3 a }
+  
   function length_3 (a : __t) : int =
     if index_rep_le_3 (first_3 a) (last_3 a) then
       rep_to_int_3 (last_3 a) - rep_to_int_3 (first_3 a) + 1 else 0
+  val length_3 (a : __t) : int
+  ensures { result = length_3 a }
 
-  function first_4 "model_trace:'First(4)" (a : __t) : index_rep_type_4 = to_rep_4 (I4.first a.rt_4)
-  function last_4 "model_trace:'Last(4)" (a : __t) : index_rep_type_4 = to_rep_4 (I4.last a.rt_4)
+  function first_4 [@model_trace:'First(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.first a.rt_4)
+  val first_4 (a : __t) : index_rep_type_4
+  ensures { result = first_4 a }
+  
+  function last_4 [@model_trace:'Last(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.last a.rt_4)
+  val last_4 (a : __t) : index_rep_type_4
+  ensures { result = last_4 a }
+  
   function length_4 (a : __t) : int =
     if index_rep_le_4 (first_4 a) (last_4 a) then
       rep_to_int_4 (last_4 a) - rep_to_int_4 (first_4 a) + 1 else 0
+  val length_4 (a : __t) : int
+  ensures { result = length_4 a }
 
   predicate dynamic_property (range_first1 range_last1 f1 l1 : index_rep_type)
                              (range_first2 range_last2 f2 l2 : index_rep_type_2)
@@ -1738,13 +1810,13 @@ module Unconstr_Array_4
     I3.dynamic_property range_first3 range_last3 f3 l3 /\
     I4.dynamic_property range_first4 range_last4 f4 l4
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1769,9 +1841,12 @@ module Unconstr_Array_4
              (to_rep_3 (I3.first y.rt_3)) (to_rep_3 (I3.last y.rt_3))
              (to_rep_4 (I4.first y.rt_4)) (to_rep_4 (I4.last y.rt_4))
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
 
-  function dummy : __t
+  val function user_eq (x : __t) (y : __t) : bool
+
+  val constant dummy : __t
 end
 
 module Constr_Array
@@ -1785,17 +1860,17 @@ module Constr_Array
 
   type __t = map
 
-  function dummy : __t
+  val constant dummy : __t
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
-  use import int.Int
+  use int.Int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1813,7 +1888,10 @@ module Constr_Array
     array_bool_eq x first last
                   y first last
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
+
+  val function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_2
@@ -1831,17 +1909,17 @@ module Constr_Array_2
 
   type __t = map
 
-  function dummy : __t
+  val constant dummy : __t
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
-  use import int.Int
+  use int.Int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1859,7 +1937,10 @@ module Constr_Array_2
     array_bool_eq x first last first_2 last_2
                   y first last first_2 last_2
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
+
+  val function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_3
@@ -1881,17 +1962,17 @@ module Constr_Array_3
 
   type __t = map
 
-  function dummy : __t
+  val constant dummy : __t
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
-  use import int.Int
+  use int.Int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1909,7 +1990,10 @@ module Constr_Array_3
     array_bool_eq x first last first_2 last_2 first_3 last_3
                   y first last first_2 last_2 first_3 last_3
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
+
+  val function user_eq (x : __t) (y : __t) : bool
 end
 
 module Constr_Array_4
@@ -1935,17 +2019,17 @@ module Constr_Array_4
 
   type __t = map
 
-  function dummy : __t
+  val constant dummy : __t
 
-  function value__size : int
+  val constant value__size : int
 
-  function object__size : int
+  val constant object__size : int
 
-  function component__size : int
+  val constant component__size : int
 
-  function alignment : int
+  val constant alignment : int
 
-  use import int.Int
+  use int.Int
 
   axiom value__size_axiom :
     value__size >= 0
@@ -1963,5 +2047,22 @@ module Constr_Array_4
     array_bool_eq x first last first_2 last_2 first_3 last_3 first_4 last_4
                   y first last first_2 last_2 first_3 last_3 first_4 last_4
 
-  function user_eq (x : __t) (y : __t) : bool
+  val bool_eq (x : __t) (y : __t) : bool
+  ensures { result =  bool_eq x y }
+
+  val function user_eq (x : __t) (y : __t) : bool
+end
+
+module Access_to_incomplete_type
+  type abstr_ty
+  type comp_ty
+
+  val function __open (x : abstr_ty) : comp_ty
+  val function __close (x : comp_ty) : abstr_ty
+
+  axiom close_open:
+    forall x : abstr_ty [__open x]. __close (__open x) = x
+
+  axiom open_close:
+    forall x : comp_ty [__close x]. __open (__close x) = x
 end

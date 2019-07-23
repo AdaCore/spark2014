@@ -1,5 +1,4 @@
-p.adb:5:04: info: initialization of "A" constituent of "State1" proved
-p.adb:5:07: info: initialization of "B" constituent of "State1" proved
+p-child.ads:3:08: info: flow dependencies proved
 p.ads:1:43: low: initialization of "P.State2" through "Child.C" constituent of "P.State2" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 p.ads:1:43: warning: no procedure exists that can initialize abstract state "P.State2"
 p.ads:4:14: warning: subprogram "Foo" has no effect

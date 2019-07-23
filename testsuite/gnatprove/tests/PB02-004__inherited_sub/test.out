@@ -7,9 +7,9 @@ main.adb:20:14: high: "Z.Plop.Y" is not initialized
 main.adb:27:24: info: range check proved (CVC4: 1 VC)
 main.adb:27:27: info: range check proved (CVC4: 1 VC)
 main.adb:29:14: high: "Z.Content" is not initialized
-main.adb:32:23: info: precondition proved (CVC4: 1 VC)
-main.adb:33:26: info: precondition proved (CVC4: 1 VC)
-main.adb:34:23: info: precondition proved (CVC4: 1 VC)
+main.adb:32:23: info: precondition proved (Trivial: 1 VC)
+main.adb:33:26: info: precondition proved (Trivial: 1 VC)
+main.adb:34:23: info: precondition proved (Trivial: 1 VC)
 rec.ads:17:22: medium: range check might fail
 rec.ads:23:28: medium: range check might fail
 rec.ads:31:07: medium: range check might fail

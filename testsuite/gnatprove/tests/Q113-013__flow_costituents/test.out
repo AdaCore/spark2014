@@ -1,12 +1,13 @@
+p.adb:4:11: info: flow dependencies proved
 p.adb:6:07: high: "Nested1.X" constituent of "P.State" is not initialized in "Nested1"
-p.adb:6:07: high: "Nested1.X" constituent of "P.State" is not initialized in "P"
 p.adb:6:07: high: initialization of "P.State" is specified at line 4
-p.adb:6:07: high: initialization of "P.State" is specified at p.ads:3
+p.adb:6:07: info: initialization of "Nested1.X" constituent of "P.State" proved
+p.adb:9:14: info: flow dependencies proved
 p.adb:11:10: high: "Nested_Nested1.X" constituent of "P.State" is not initialized in "Nested_Nested1"
-p.adb:11:10: high: "Nested_Nested1.X" constituent of "P.State" is not initialized in "P"
 p.adb:11:10: high: initialization of "P.State" is specified at line 9
-p.adb:11:10: high: initialization of "P.State" is specified at p.ads:3
+p.adb:11:10: info: initialization of "Nested_Nested1.X" constituent of "P.State" proved
+p.adb:16:11: info: flow dependencies proved
 p.adb:18:07: high: "Nested2.X" constituent of "P.State" is not initialized in "Nested2"
-p.adb:18:07: high: "Nested2.X" constituent of "P.State" is not initialized in "P"
 p.adb:18:07: high: initialization of "P.State" is specified at line 16
-p.adb:18:07: high: initialization of "P.State" is specified at p.ads:3
+p.adb:18:07: info: initialization of "Nested2.X" constituent of "P.State" proved
+p.ads:3:08: info: flow dependencies proved

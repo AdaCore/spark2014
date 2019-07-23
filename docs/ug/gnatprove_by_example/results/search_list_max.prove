@@ -1,32 +1,18 @@
-search_list_max.adb:4:40: info: initialization of "Pos.Node" proved
+search_list_max.adb:4:40: info: initialization of "Pos" proved
 search_list_max.adb:4:58: info: initialization of "Max" proved
 search_list_max.adb:7:11: info: postcondition proved
 search_list_max.adb:7:12: info: precondition proved
-search_list_max.adb:7:35: info: initialization of "Max" proved
 search_list_max.adb:8:12: info: precondition proved
-search_list_max.adb:9:27: info: initialization of "Pos.Node" proved
 search_list_max.adb:10:11: info: precondition proved
-search_list_max.adb:15:11: info: initialization of "Cu.Node" proved
-search_list_max.adb:17:26: info: initialization of "Cu.Node" proved
 search_list_max.adb:18:30: info: loop invariant initialization proved
 search_list_max.adb:18:30: info: loop invariant preservation proved
 search_list_max.adb:18:49: info: precondition proved
-search_list_max.adb:18:70: info: initialization of "Cu.Node" proved
 search_list_max.adb:19:32: info: precondition proved
-search_list_max.adb:19:58: info: initialization of "Max" proved
 search_list_max.adb:20:30: info: loop invariant initialization proved
 search_list_max.adb:20:30: info: loop invariant preservation proved
-search_list_max.adb:20:46: info: initialization of "Pos.Node" proved
-search_list_max.adb:21:30: info: initialization of "Max" proved
 search_list_max.adb:21:30: info: loop invariant initialization proved
 search_list_max.adb:21:30: info: loop invariant preservation proved
 search_list_max.adb:21:46: info: precondition proved
-search_list_max.adb:21:58: info: initialization of "Pos.Node" proved
 search_list_max.adb:23:10: info: precondition proved
-search_list_max.adb:23:22: info: initialization of "Cu.Node" proved
-search_list_max.adb:23:28: info: initialization of "Max" proved
 search_list_max.adb:24:17: info: precondition proved
-search_list_max.adb:24:29: info: initialization of "Cu.Node" proved
-search_list_max.adb:25:17: info: initialization of "Cu.Node" proved
 search_list_max.adb:27:07: info: precondition proved
-search_list_max.adb:27:16: info: initialization of "Cu.Node" proved

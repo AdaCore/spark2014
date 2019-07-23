@@ -8,7 +8,7 @@ package Id_Manager
 is
    package Keys is new Ada.Containers.Formal_Ordered_Sets (Unique_Id_Type);
    use Keys;
-   
+
    procedure Display (Id_Key : Keys.Set);
-   
+
 end Id_Manager;

@@ -1,13 +1,3 @@
-array_arith.adb:12:12: medium: "X" might not be initialized
-array_arith.adb:13:12: info: initialization of "X" proved
-array_arith.adb:14:12: info: initialization of "X" proved
-array_arith.adb:15:12: info: initialization of "X" proved
-array_arith.adb:16:12: info: initialization of "X" proved
-array_arith.adb:17:12: info: initialization of "X" proved
-array_arith.adb:18:12: info: initialization of "X" proved
-array_arith.adb:19:12: info: initialization of "X" proved
-array_arith.adb:20:12: info: initialization of "X" proved
-array_arith.adb:21:13: info: initialization of "X" proved
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:32
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:33
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:34
@@ -28,130 +18,58 @@ array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:39
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:40
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:32
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:33
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:34
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:35
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:36
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:37
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:38
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:39
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:40
-array_arith.adb:29:21: info: initialization of "One" proved, in call inlined at array_arith.adb:41
-array_arith.adb:32:12: medium: "X" might not be initialized
-array_arith.adb:33:12: info: initialization of "X" proved
-array_arith.adb:34:12: info: initialization of "X" proved
-array_arith.adb:35:12: info: initialization of "X" proved
-array_arith.adb:36:12: info: initialization of "X" proved
-array_arith.adb:37:12: info: initialization of "X" proved
-array_arith.adb:38:12: info: initialization of "X" proved
-array_arith.adb:39:12: info: initialization of "X" proved
-array_arith.adb:40:12: info: initialization of "X" proved
-array_arith.adb:41:13: info: initialization of "X" proved
-array_arith.adb:50:15: medium: "X" might not be initialized, in call inlined at array_arith.adb:66
-array_arith.adb:50:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:51:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:51:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:52:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:52:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:53:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:53:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:54:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:54:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:55:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:55:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:56:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:56:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:57:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:57:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:58:15: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:58:18: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:59:16: info: initialization of "X" proved, in call inlined at array_arith.adb:66
-array_arith.adb:59:19: info: initialization of "One" proved, in call inlined at array_arith.adb:66
-array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
-array_arith.adb:63:19: medium: range check might fail [possible explanation: subprogram at line 61 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:63:19: medium: range check might fail (e.g. when One = -1 and Y = 0) [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:70:29: info: initialization of "Y" proved
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:77
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:78
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:79
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:80
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:81
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:82
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:83
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:84
-array_arith.adb:73:12: info: initialization of "X" proved, in call inlined at array_arith.adb:85
-array_arith.adb:73:12: medium: "X" might not be initialized, in call inlined at array_arith.adb:76
-array_arith.ads:8:20: info: initialization of "X" proved
+array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
 array_arith.ads:9:14: info: postcondition proved (CVC4: 1 VC)
-array_arith.ads:9:35: info: initialization of "X" proved
-array_arith.ads:11:21: info: initialization of "X" proved
+array_arith.ads:9:35: medium: "X" might not be initialized
+array_arith.ads:11:21: medium: "X" might not be initialized in "Init2"
 array_arith.ads:12:14: info: postcondition proved (CVC4: 1 VC)
-array_arith.ads:12:35: info: initialization of "X" proved
-array_arith.ads:14:21: info: initialization of "X" proved
-array_arith.ads:15:35: info: initialization of "X" proved
-array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 9 and X = (others => 0))
-array_arith.ads:17:20: info: initialization of "X" proved
+array_arith.ads:12:35: medium: "X" might not be initialized
+array_arith.ads:14:21: medium: "X" might not be initialized in "Init3"
+array_arith.ads:15:35: medium: "X" might not be initialized
+array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Natural(J) + 1 (e.g. when J = 3 and X = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, 7 => 0, 8 => 0, 9 => 0, 10 => 0, others => 0))
+array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
-array_arith.ads:18:35: info: initialization of "X" proved
+array_arith.ads:18:35: medium: "X" might not be initialized
 ident.adb:9:42: info: initialization of "Y" proved
-ident.adb:46:25: info: initialization of "X" proved
-ident.adb:50:22: info: initialization of "Res" proved
-ident.adb:50:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
-ident.adb:50:28: info: initialization of "X" proved
-ident.adb:51:26: info: initialization of "X" proved
-ident.adb:52:22: info: initialization of "Res" proved
-ident.adb:52:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 0 and X = 10)
-ident.adb:52:28: info: initialization of "X" proved
-ident.adb:53:23: info: initialization of "X" proved
+ident.adb:43:07: info: initialization of "Y" proved
+ident.adb:44:07: info: initialization of "Res" proved
+ident.adb:50:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 11 and X = 10)
+ident.adb:52:22: medium: assertion might fail, cannot prove Res = X (e.g. when Res = 11 and X = 10)
 ident.adb:54:22: info: assertion proved (CVC4: 1 VC)
-ident.adb:54:22: info: initialization of "Res" proved
-ident.adb:54:28: info: initialization of "X" proved
-ident.adb:56:20: info: initialization of "X" proved
-ident.adb:57:22: info: initialization of "Y" proved
-ident.adb:57:22: medium: assertion might fail, cannot prove Y = 9 [possible explanation: call at line 56 should mention Y (for argument Y) in a postcondition]
-ident.adb:58:21: info: initialization of "X" proved
-ident.adb:59:22: info: initialization of "Y" proved
-ident.adb:59:22: medium: assertion might fail, cannot prove Y = 9 [possible explanation: call at line 58 should mention Y (for argument Y) in a postcondition]
-ident.adb:60:07: info: initialization of "X" proved
+ident.adb:57:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 56 should mention Y (for argument Y) in a postcondition]
+ident.adb:59:22: medium: assertion might fail, cannot prove Y = 9 (e.g. when Y = 0) [possible explanation: call at line 58 should mention Y (for argument Y) in a postcondition]
 ident.adb:61:22: info: assertion proved (CVC4: 1 VC)
-ident.adb:61:22: info: initialization of "Y" proved
 ident.ads:5:44: info: initialization of "Y" proved
 ident.ads:6:14: warning: subprogram "Test" has no effect
 ident.ads:9:45: info: initialization of "Y" proved
-incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 4 should mention X in a precondition]
-incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 6 should mention X in a precondition]
+incr_expr_fun.adb:4:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at incr_expr_fun.ads:11 should mention X in a precondition]
+incr_expr_fun.adb:6:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at incr_expr_fun.ads:22 should mention X in a precondition]
 incr_expr_fun.adb:8:58: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 8 should mention X in a precondition]
-incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 11 should mention X in a precondition]
+incr_expr_fun.adb:11:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 10 should mention X in a precondition]
 incr_expr_fun.adb:16:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:16:32: info: initialization of "X" proved
 incr_expr_fun.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:17:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:17:36: info: initialization of "X" proved
 incr_expr_fun.adb:17:43: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:18:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:18:37: info: initialization of "X" proved
 incr_expr_fun.adb:18:44: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:19:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:19:37: info: initialization of "X" proved
 incr_expr_fun.adb:19:44: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:20:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:20:33: info: initialization of "X" proved
 incr_expr_fun.adb:20:40: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:21:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:21:38: info: initialization of "X" proved
 incr_expr_fun.adb:21:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:22:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:22:38: info: initialization of "X" proved
 incr_expr_fun.adb:22:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:23:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:23:33: info: initialization of "X" proved
 incr_expr_fun.adb:23:40: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.adb:24:22: info: assertion proved (CVC4: 1 VC)
-incr_expr_fun.adb:24:38: info: initialization of "X" proved
 incr_expr_fun.adb:24:45: info: overflow check proved (CVC4: 1 VC)
 incr_expr_fun.ads:4:57: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 4 should mention X in a precondition]
-incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 7 should mention X in a precondition]
+incr_expr_fun.ads:7:61: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 6 should mention X in a precondition]
 incr_expr_fun.ads:13:14: warning: subprogram "Test" has no effect
-incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 15 should mention X in a precondition]
+incr_expr_fun.ads:15:62: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 9 should mention X in a precondition]
 incr_expr_fun.ads:17:58: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 17 should mention X in a precondition]
-incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 20 should mention X in a precondition]
+incr_expr_fun.ads:20:63: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 19 should mention X in a precondition]

@@ -1,3 +1,3 @@
-vol.adb:14:07: medium: array index check might fail (e.g. when idx = 0) [possible explanation: subprogram at line 10 should mention idx in a precondition]
-vol.adb:21:14: medium: array index check might fail (e.g. when idx = 0) [possible explanation: subprogram at line 17 should mention idx in a precondition]
+vol.adb:14:07: medium: array index check might fail [possible explanation: subprogram at vol.ads:4 should mention idx in a precondition]
+vol.adb:21:14: medium: array index check might fail [possible explanation: subprogram at vol.ads:7 should mention idx in a precondition]
 vol.ads:8:20: info: initialization of "val" proved

@@ -1,6 +1,8 @@
-generic_instantiation.ads:7:14: info: initialization of "GPI.State" constituent of "Generic_Instantiation.State" proved
-generic_instantiation_2.ads:10:14: info: initialization of "GPI.State" constituent of "Generic_Instantiation_2.State" proved
+generic_instantiation.ads:9:07: info: data dependencies proved
+generic_instantiation_2.ads:12:07: info: data dependencies proved
 generic_package.ads:9:20: info: initialization of "Value" proved, in instantiation at generic_instantiation.adb:10
 generic_package.ads:9:20: info: initialization of "Value" proved, in instantiation at generic_instantiation_2.ads:16
-generic_package.ads:13:14: info: initialization of "Element" constituent of "State" proved, in instantiation at generic_instantiation.adb:10
-generic_package.ads:13:14: info: initialization of "Element" constituent of "State" proved, in instantiation at generic_instantiation_2.ads:16
+generic_package.ads:11:07: info: data dependencies proved, in instantiation at generic_instantiation.adb:10
+generic_package.ads:11:07: info: data dependencies proved, in instantiation at generic_instantiation_2.ads:16
+generic_package.ads:15:07: info: data dependencies proved, in instantiation at generic_instantiation.adb:10
+generic_package.ads:15:07: info: data dependencies proved, in instantiation at generic_instantiation_2.ads:16

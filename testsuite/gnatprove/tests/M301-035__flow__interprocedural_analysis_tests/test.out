@@ -1,27 +1,36 @@
+across_compilation_units-child.ads:26:12: info: data dependencies proved
 across_compilation_units-child.ads:27:24: medium: missing dependency "X => Y"
 across_compilation_units-child.ads:27:24: medium: missing self-dependency "X => X"
 across_compilation_units-child.ads:29:24: medium: missing self-dependency "Y => Y"
 across_compilation_units-child.ads:30:24: medium: missing dependency "Z => X"
 across_compilation_units-child.ads:30:24: medium: missing self-dependency "Z => Z"
+across_compilation_units-child.ads:41:12: info: data dependencies proved
+across_compilation_units-child.ads:42:12: info: flow dependencies proved
 across_compilation_units.adb:4:23: info: division check proved (CVC4: 1 VC)
 across_compilation_units.adb:4:27: info: cannot unroll loop (too many loop iterations)
 across_compilation_units.adb:5:16: info: division check proved (CVC4: 1 VC)
-across_compilation_units.adb:17:12: info: initialization of "Temp" proved
-across_compilation_units.adb:25:12: info: initialization of "Temp" proved
+across_compilation_units.adb:13:07: info: initialization of "Temp" proved
+across_compilation_units.adb:21:07: info: initialization of "Temp" proved
+across_compilation_units.ads:7:12: info: flow dependencies proved
 caller_of_across_compilation_units.adb:19:32: info: cannot unroll loop (too many loop iterations)
 caller_of_across_compilation_units.adb:20:16: info: division check proved (CVC4: 1 VC)
 caller_of_across_compilation_units.adb:20:39: info: division check proved (CVC4: 1 VC)
 single_compilation_unit.adb:18:19: info: initialization of "Maximum" proved
+single_compilation_unit.adb:19:12: info: data dependencies proved
+single_compilation_unit.adb:20:12: info: flow dependencies proved
+single_compilation_unit.adb:28:12: info: data dependencies proved
+single_compilation_unit.adb:29:12: info: flow dependencies proved
+single_compilation_unit.adb:32:12: info: data dependencies proved
+single_compilation_unit.adb:33:12: info: flow dependencies proved
 single_compilation_unit.adb:39:04: warning: analyzing unreferenced function "Double_Max"
+single_compilation_unit.adb:40:07: info: initialization of "Temp" proved
 single_compilation_unit.adb:43:16: medium: overflow check might fail [possible explanation: call at line 42 should mention Maximum (for argument Temp) in a postcondition]
-single_compilation_unit.adb:43:18: info: initialization of "Temp" proved
 single_compilation_unit.adb:50:39: info: initialization of "Fact" proved
 single_compilation_unit.adb:53:25: info: range check proved (CVC4: 1 VC)
-single_compilation_unit.adb:54:18: info: initialization of "Fact" proved
 single_compilation_unit.adb:54:23: info: range check proved (CVC4: 1 VC)
 single_compilation_unit.adb:54:23: medium: overflow check might fail [possible explanation: call at line 53 should mention Fact (for argument Fact) in a postcondition]
 single_compilation_unit.adb:69:30: info: overflow check proved (CVC4: 1 VC)
 single_compilation_unit.adb:69:35: medium: overflow check might fail [possible explanation: subprogram at line 64 should mention N in a precondition]
 single_compilation_unit.adb:69:50: info: overflow check proved (CVC4: 1 VC)
-single_compilation_unit.adb:94:17: medium: overflow check might fail [possible explanation: subprogram at line 90 should mention X in a precondition]
-single_compilation_unit.adb:108:17: medium: overflow check might fail [possible explanation: subprogram at line 104 should mention Y in a precondition]
+single_compilation_unit.adb:94:17: medium: overflow check might fail [possible explanation: subprogram at line 27 should mention X in a precondition]
+single_compilation_unit.adb:108:17: medium: overflow check might fail [possible explanation: subprogram at line 31 should mention Y in a precondition]

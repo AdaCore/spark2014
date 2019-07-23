@@ -1,4 +1,5 @@
 test.adb:26:04: info: cannot unroll loop (too many loop iterations)
 test.adb:26:04: info: in instantiation at line 13
-test.ads:15:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:26
+test.ads:12:14: info: flow dependencies proved, in instantiation at test.adb:26
+test.ads:15:28: medium: postcondition might fail, cannot prove not Is_Empty (Inventory (I)), in instantiation at test.adb:26 [possible explanation: loop at test.adb:13 should mention Inventory in a loop invariant]
 test.ads:15:53: info: index check proved (CVC4: 2 VC), in instantiation at test.adb:26

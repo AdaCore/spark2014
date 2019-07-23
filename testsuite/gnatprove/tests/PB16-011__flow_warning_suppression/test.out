@@ -1,4 +1,4 @@
 bar.adb:6:19: warning: "Wibble" is not modified, could be IN
+bar.adb:7:09: info: data dependencies proved
 bar.adb:10:07: warning: initialization of "Wobble" has no effect
-bar.adb:12:14: info: initialization of "Wobble" proved
 bar.adb:12:14: warning: unused assignment to "Wobble"

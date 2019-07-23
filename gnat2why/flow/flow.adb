@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -48,8 +48,8 @@ with Gnat2Why.Assumptions;             use Gnat2Why.Assumptions;
 with Gnat2Why_Args;
 with Lib;                              use Lib;
 with Namet;                            use Namet;
-with Osint;                            use Osint;
 with Opt;                              use Opt;
+with Osint;                            use Osint;
 with Output;                           use Output;
 with Sem_Ch7;                          use Sem_Ch7;
 with Sem_Util;                         use Sem_Util;
@@ -59,6 +59,7 @@ with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Util;                       use SPARK_Util;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with Sprint;                           use Sprint;
+with VC_Kinds;                         use VC_Kinds;
 with Why;
 
 use type Ada.Containers.Count_Type;
@@ -366,9 +367,6 @@ package body Flow is
       pragma Assert (Nkind (N) = N_Loop_Statement);
 
       N := Iteration_Scheme (N);
-      if No (N) then
-         return Empty;
-      end if;
       pragma Assert (Nkind (N) = N_Iteration_Scheme);
 
       N := Loop_Parameter_Specification (N);
@@ -1108,7 +1106,9 @@ package body Flow is
       FA.CDG                                  := Create;
       FA.TDG                                  := Create;
       FA.PDG                                  := Create;
-      FA.No_Errors_Or_Warnings                := True;
+      FA.Errors_Or_Warnings                   := False;
+      FA.Data_Dependency_Errors               := False;
+      FA.Flow_Dependency_Errors               := False;
       FA.Has_Potentially_Nonterminating_Loops := False;
       FA.Has_Only_Nonblocking_Statements      := True;
       FA.Has_Only_Exceptional_Paths           := False;
@@ -1123,8 +1123,12 @@ package body Flow is
               E_Task_Type |
               E_Function  |
               E_Procedure =>
-            FA.B_Scope := Get_Flow_Scope (Get_Body_Entity (E));
-            FA.S_Scope := Get_Flow_Scope (E);
+            --  For subprograms without explicit specs Get_Flow_Scope always
+            --  return the Body_Part; however, Visible_Part for the spec scope
+            --  is still fine and enables some sanity-checking assertions.
+
+            FA.B_Scope := (Ent => E, Part => Body_Part);
+            FA.S_Scope := (Ent => E, Part => Visible_Part);
 
             Append (FA.Base_Filename, "subprogram_");
 
@@ -1222,8 +1226,8 @@ package body Flow is
       Debug_GG_Source;
 
       --  Print generated globals or initializes if --flow-show-gg is set
-      if Gnat2Why_Args.Flow_Show_GG
-        and then not Generating_Globals
+      if not Generating_Globals
+        and then Gnat2Why_Args.Flow_Show_GG
         and then FA.Is_Generative
       then
          Debug_Print_Generated_Contracts (FA);
@@ -1432,7 +1436,7 @@ package body Flow is
                   --  If no errors or warnings were found during flow
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
-                  if FA.No_Errors_Or_Warnings then
+                  if not FA.Errors_Or_Warnings then
                      Register_Claim (Claim'(E    => FA.Analyzed_Entity,
                                             Kind => Claim_Effects));
                   end if;
@@ -1523,6 +1527,48 @@ package body Flow is
             end if;
 
          end if;
+
+         --  If no data/flow dependency errors has been detected, then emit an
+         --  message with severity "info" and a fake "wrong" tag corresponding
+         --  to the proved dependency; in summary table those messages will
+         --  appear as "proved" by flow.
+
+         case FA.Kind is
+            when Kind_Subprogram | Kind_Task =>
+               if Present (FA.Global_N)
+                 and then not FA.Data_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "data dependencies proved",
+                     N        => FA.Global_N,
+                     Tag      => Global_Wrong,
+                     Severity => Info_Kind);
+               end if;
+
+               if Present (FA.Depends_N)
+                 and then not FA.Flow_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "flow dependencies proved",
+                     N        => FA.Depends_N,
+                     Tag      => Depends_Wrong,
+                     Severity => Info_Kind);
+               end if;
+
+            when Kind_Package | Kind_Package_Body =>
+               if Present (FA.Initializes_N)
+                 and then not FA.Flow_Dependency_Errors
+               then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "flow dependencies proved",
+                     N        => FA.Initializes_N,
+                     Tag      => Depends_Wrong,
+                     Severity => Info_Kind);
+               end if;
+         end case;
       end loop;
 
       --  Finally check concurrent accesses. This check is done for the whole

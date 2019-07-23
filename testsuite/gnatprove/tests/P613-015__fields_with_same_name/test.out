@@ -1,3 +1,3 @@
-private_records.adb:7:22: medium: assertion might fail, cannot prove Root (C).F = 1 (e.g. when C = (F => 0 <hidden, defined at private_records.ads:7>, F => ?))
-private_records.adb:7:28: info: initialization of "C.F" proved
+private_records.adb:5:07: info: initialization of "C" proved
+private_records.adb:7:22: medium: assertion might fail, cannot prove Root (C).F = 1 (e.g. when C = (F => 0 <hidden, defined at private_records.ads:7>, F => 1))
 private_records.ads:4:14: warning: subprogram "P" has no effect

@@ -1,0 +1,2 @@
+bitwise_swap.adb:4:11: medium: postcondition might fail, cannot prove X = Y'old (e.g. when X = 0 and Y'Old = 1)
+bitwise_swap.adb:4:11: medium: postcondition might fail, cannot prove X = Y'old (e.g. when X = 0 and Y'Old = 1)

@@ -1,0 +1,50 @@
+depends_exercise.adb:11:38: medium: range check might fail (e.g. when Stack_Pointer = Pointer_Range'Last) [possible explanation: subprogram at depends_exercise.ads:13 should mention Stack_Pointer in a precondition]
+depends_exercise.adb:12:14: info: index check proved (CVC4: 2 VC)
+depends_exercise.adb:23:11: info: range check proved (CVC4: 2 VC)
+depends_exercise.adb:23:37: info: cannot unroll loop (too many loop iterations)
+depends_exercise.ads:10:11: info: data dependencies proved
+depends_exercise.ads:10:34: info: initialization of "Stack" proved
+depends_exercise.ads:10:41: info: initialization of "Stack_Pointer" proved
+depends_exercise.ads:11:11: info: flow dependencies proved
+depends_exercise.ads:14:11: info: data dependencies proved
+depends_exercise.ads:15:11: info: flow dependencies proved
+depends_exercise.ads:19:11: info: data dependencies proved
+depends_exercise.ads:20:11: info: flow dependencies proved
+depends_exercise.ads:23:11: info: flow dependencies proved
+Summary of SPARK analysis
+=========================
+
+-------------------------------------------------------------------------------------------------------
+SPARK Analysis results        Total       Flow   Interval   CodePeer     Provers   Justified   Unproved
+-------------------------------------------------------------------------------------------------------
+Data Dependencies                 3          3          .          .           .           .          .
+Flow Dependencies                 4          4          .          .           .           .          .
+Initialization                    2          2          .          .           .           .          .
+Non-Aliasing                      .          .          .          .           .           .          .
+Run-time Checks                   3          .          .          .    2 (CVC4)           .          1
+Assertions                        .          .          .          .           .           .          .
+Functional Contracts              .          .          .          .           .           .          .
+LSP Verification                  .          .          .          .           .           .          .
+-------------------------------------------------------------------------------------------------------
+Total                            12    9 (75%)          .          .     2 (17%)           .     1 (8%)
+
+
+max steps used for successful proof: 1
+
+Analyzed 1 unit
+in unit depends_exercise, 5 subprograms and packages out of 5 analyzed
+  Depends_Exercise at depends_exercise.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+absence of run-time errors of Depends_Exercise fully established
+  Depends_Exercise.Initialize at depends_exercise.ads:9 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+absence of run-time errors of Depends_Exercise.Initialize fully established
+  Depends_Exercise.Is_Full at depends_exercise.ads:18 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+effects on parameters and Global variables of Depends_Exercise.Is_Full fully established
+absence of run-time errors of Depends_Exercise.Is_Full fully established
+  Depends_Exercise.Push at depends_exercise.ads:13 flow analyzed (0 errors, 0 checks and 0 warnings) and not proved, 1 checks out of 2 proved
+effects on parameters and Global variables of Depends_Exercise.Push fully established
+  Depends_Exercise.Wait_X_Return_True at depends_exercise.ads:22 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (1 checks)
+   suppressed messages:
+    depends_exercise.adb:23:37:
+effects on parameters and Global variables of Depends_Exercise.Wait_X_Return_True fully established
+absence of run-time errors of Depends_Exercise.Wait_X_Return_True fully established
+

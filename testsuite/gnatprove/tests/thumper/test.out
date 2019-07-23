@@ -4,16 +4,10 @@ client_spark_boundary.ads:17:14: high: all paths in "Fetch_Timestamp" raise exce
 client_spark_boundary.ads:17:14: warning: subprogram "Fetch_Timestamp" has no effect
 client_spark_boundary.ads:21:13: high: all paths in "Check_Timestamp" raise exceptions or do not terminate normally
 client_timestamp_maker.adb:34:17: warning: procedure "Make_Request" is not referenced
-client_timestamp_maker.adb:42:13: info: initialization of "Address_Status" proved
-client_timestamp_maker.adb:43:24: warning: assuming "Put_Line" has no effect on global items
-client_timestamp_maker.adb:43:24: warning: no Global contract available for "Put_Line"
-client_timestamp_maker.adb:46:61: info: initialization of "Request_Message.Data" proved
-client_timestamp_maker.adb:48:16: info: initialization of "Request_Message.Data" proved
-client_timestamp_maker.adb:48:16: info: initialization of "Request_Message.Size" proved
-client_timestamp_maker.adb:48:60: info: initialization of "Local_Host" proved
-client_timestamp_maker.adb:49:16: info: initialization of "Network_Status" proved
-client_timestamp_maker.adb:50:27: warning: assuming "Put_Line" has no effect on global items
-client_timestamp_maker.adb:50:27: warning: no Global contract available for "Put_Line"
+client_timestamp_maker.adb:35:10: info: initialization of "Local_Host" proved
+client_timestamp_maker.adb:36:10: info: initialization of "Request_Message" proved
+client_timestamp_maker.adb:37:10: info: initialization of "Network_Status" proved
+client_timestamp_maker.adb:38:10: info: initialization of "Address_Status" proved
 client_timestamp_maker.adb:60:07: medium: exception might be raised
 client_timestamp_maker.adb:68:07: medium: exception might be raised
 client_timestamp_maker.ads:17:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
@@ -22,33 +16,35 @@ data_storage.adb:48:32: warning: formal parameter "Serial_Number" is not referen
 data_storage.adb:52:10: warning: variable "Result" is read but never assigned
 data_storage.adb:59:32: warning: formal parameter "Start" is not referenced
 data_storage.adb:59:46: warning: formal parameter "Stop" is not referenced
+hermes-der-decode.adb:59:11: info: data dependencies proved
 hermes-der-decode.adb:59:48: info: initialization of "Tag_Class" proved
+hermes-der-decode.adb:60:11: info: flow dependencies proved
+hermes-der-decode.adb:75:11: info: data dependencies proved
 hermes-der-decode.adb:75:48: info: initialization of "Structured_Flag" proved
+hermes-der-decode.adb:76:11: info: flow dependencies proved
+hermes-der-decode.adb:89:11: info: data dependencies proved
 hermes-der-decode.adb:89:48: info: initialization of "Tag" proved
+hermes-der-decode.adb:90:11: info: flow dependencies proved
+hermes-der-decode.adb:92:10: info: initialization of "Tag_Value" proved
 hermes-der-decode.adb:95:30: info: range check proved (CVC4: 1 VC)
-hermes-der-decode.adb:96:13: info: initialization of "Tag_Value" proved
-hermes-der-decode.adb:99:45: info: initialization of "Tag_Value" proved
-hermes-der-decode.adb:107:07: info: initialization of "Status" proved
+hermes-der-decode.adb:119:07: info: initialization of "Length_Of_Length" proved
+hermes-der-decode.adb:124:11: info: data dependencies proved
 hermes-der-decode.adb:126:29: medium: overflow check might fail
 hermes-der-decode.adb:127:51: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:131:14: info: range check proved (CVC4: 2 VC)
-hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 2 VC)
-hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 2 VC)
-hermes-der-decode.adb:133:41: info: initialization of "Result" proved
+hermes-der-decode.adb:133:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+hermes-der-decode.adb:133:16: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 hermes-der-decode.adb:133:53: info: overflow check proved (CVC4: 2 VC)
-hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 3 VC)
-hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 3 VC)
-hermes-der-decode.adb:135:56: info: initialization of "Result" proved
+hermes-der-decode.adb:135:16: info: loop invariant initialization proved (CVC4: 2 VC; Trivial: 3 VC)
+hermes-der-decode.adb:135:16: info: loop invariant preservation proved (CVC4: 2 VC; Trivial: 3 VC)
 hermes-der-decode.adb:135:99: medium: overflow check might fail
 hermes-der-decode.adb:135:103: medium: overflow check might fail
 hermes-der-decode.adb:135:108: info: range check proved (CVC4: 2 VC)
-hermes-der-decode.adb:137:24: info: initialization of "Result" proved
 hermes-der-decode.adb:137:31: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:137:38: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:137:38: info: range check proved (CVC4: 1 VC)
 hermes-der-decode.adb:137:65: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:137:65: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:139:17: info: initialization of "Result" proved
 hermes-der-decode.adb:144:18: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:150:22: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:152:36: info: index check proved (CVC4: 2 VC)
@@ -60,202 +56,152 @@ hermes-der-decode.adb:164:32: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:165:60: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:165:67: info: range check proved (CVC4: 1 VC)
 hermes-der-decode.adb:168:34: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:168:36: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:169:30: info: range check proved (CVC4: 1 VC)
 hermes-der-decode.adb:179:80: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:179:80: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:180:29: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:180:31: info: initialization of "Length_Of_Length" proved
 hermes-der-decode.adb:186:29: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:186:31: info: initialization of "Length_Of_Length" proved
-hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 4 VC)
+hermes-der-decode.adb:187:23: info: precondition proved (CVC4: 4 VC; Trivial: 1 VC)
 hermes-der-decode.adb:187:44: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:187:49: info: initialization of "Length_Of_Length" proved
+hermes-der-decode.adb:201:07: info: initialization of "Tag_Class" proved
+hermes-der-decode.adb:202:07: info: initialization of "Structured_Flag" proved
+hermes-der-decode.adb:203:07: info: initialization of "Tag" proved
+hermes-der-decode.adb:204:07: info: initialization of "Identifier_Status" proved
+hermes-der-decode.adb:214:11: info: data dependencies proved
 hermes-der-decode.adb:214:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:214:58: info: initialization of "Value" proved
 hermes-der-decode.adb:214:65: info: initialization of "Status" proved
+hermes-der-decode.adb:215:11: info: flow dependencies proved
 hermes-der-decode.adb:221:32: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:224:33: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:224:33: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:226:36: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:226:36: info: overflow check proved (CVC4: 1 VC)
+hermes-der-decode.adb:240:11: info: data dependencies proved
 hermes-der-decode.adb:240:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:240:58: info: initialization of "Value" proved
 hermes-der-decode.adb:240:65: info: initialization of "Status" proved
+hermes-der-decode.adb:241:11: info: flow dependencies proved
+hermes-der-decode.adb:244:10: info: initialization of "Length_Stop" proved
+hermes-der-decode.adb:245:10: info: initialization of "Length" proved
+hermes-der-decode.adb:246:10: info: initialization of "Length_Status" proved
 hermes-der-decode.adb:248:10: info: precondition proved (CVC4: 2 VC)
 hermes-der-decode.adb:248:52: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:249:13: info: initialization of "Length_Status" proved
-hermes-der-decode.adb:251:23: info: initialization of "Length_Stop" proved
-hermes-der-decode.adb:254:16: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:254:43: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:254:45: info: initialization of "Length" proved
 hermes-der-decode.adb:256:30: info: range check proved (CVC4: 1 VC)
-hermes-der-decode.adb:261:23: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:261:35: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:261:37: info: initialization of "Length" proved
 hermes-der-decode.adb:266:13: info: precondition proved (CVC4: 3 VC)
-hermes-der-decode.adb:266:38: info: initialization of "Length" proved
-hermes-der-decode.adb:266:46: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:272:18: info: index check proved (CVC4: 2 VC)
-hermes-der-decode.adb:273:10: info: initialization of "Identifier_Status" proved
-hermes-der-decode.adb:274:10: info: initialization of "Tag_Class" proved
-hermes-der-decode.adb:275:10: info: initialization of "Structured_Flag" proved
-hermes-der-decode.adb:276:10: info: initialization of "Tag" proved
 hermes-der-decode.adb:282:34: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:287:13: info: precondition proved (CVC4: 2 VC)
+hermes-der-decode.adb:300:07: info: initialization of "Tag_Class" proved
+hermes-der-decode.adb:301:07: info: initialization of "Structured_Flag" proved
+hermes-der-decode.adb:302:07: info: initialization of "Tag" proved
+hermes-der-decode.adb:303:07: info: initialization of "Identifier_Status" proved
+hermes-der-decode.adb:314:11: info: data dependencies proved
 hermes-der-decode.adb:314:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:314:58: info: initialization of "Value" proved
 hermes-der-decode.adb:314:65: info: initialization of "Status" proved
+hermes-der-decode.adb:315:11: info: flow dependencies proved
 hermes-der-decode.adb:322:32: medium: overflow check might fail
 hermes-der-decode.adb:326:34: medium: array index check might fail
 hermes-der-decode.adb:326:34: medium: overflow check might fail
 hermes-der-decode.adb:327:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:327:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:328:29: medium: overflow check might fail [possible explanation: loop at line 327 should mention Result in a loop invariant]
-hermes-der-decode.adb:328:30: info: initialization of "Result" proved
 hermes-der-decode.adb:328:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:328:67: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:328:67: medium: array index check might fail
-hermes-der-decode.adb:330:22: info: initialization of "Result" proved
 hermes-der-decode.adb:333:17: info: range check proved (CVC4: 2 VC)
 hermes-der-decode.adb:333:48: info: cannot unroll loop (too many loop iterations)
 hermes-der-decode.adb:334:29: medium: overflow check might fail [possible explanation: loop at line 333 should mention Result in a loop invariant]
-hermes-der-decode.adb:334:30: info: initialization of "Result" proved
 hermes-der-decode.adb:334:37: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:334:67: medium: array index check might fail
-hermes-der-decode.adb:338:16: info: initialization of "Result" proved
 hermes-der-decode.adb:341:25: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:341:27: info: initialization of "Result" proved
 hermes-der-decode.adb:341:34: info: overflow check proved (CVC4: 1 VC)
+hermes-der-decode.adb:352:11: info: data dependencies proved
 hermes-der-decode.adb:352:52: info: initialization of "Stop" proved
 hermes-der-decode.adb:352:58: info: initialization of "Value" proved
 hermes-der-decode.adb:352:65: info: initialization of "Status" proved
+hermes-der-decode.adb:353:11: info: flow dependencies proved
+hermes-der-decode.adb:356:10: info: initialization of "Length_Stop" proved
+hermes-der-decode.adb:357:10: info: initialization of "Length" proved
+hermes-der-decode.adb:358:10: info: initialization of "Length_Status" proved
 hermes-der-decode.adb:360:10: info: precondition proved (CVC4: 2 VC)
 hermes-der-decode.adb:360:52: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:361:13: info: initialization of "Length_Status" proved
-hermes-der-decode.adb:363:23: info: initialization of "Length_Stop" proved
-hermes-der-decode.adb:366:16: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:366:43: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:366:45: info: initialization of "Length" proved
 hermes-der-decode.adb:368:30: info: range check proved (CVC4: 1 VC)
-hermes-der-decode.adb:373:23: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:373:35: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:373:37: info: initialization of "Length" proved
 hermes-der-decode.adb:376:58: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:376:58: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:376:97: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:376:97: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:380:23: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:380:35: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:380:37: info: initialization of "Length" proved
 hermes-der-decode.adb:383:58: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:383:58: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:383:97: info: index check proved (CVC4: 2 VC)
 hermes-der-decode.adb:383:97: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:387:23: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:387:35: info: overflow check proved (CVC4: 1 VC)
-hermes-der-decode.adb:387:37: info: initialization of "Length" proved
 hermes-der-decode.adb:392:13: info: precondition proved (CVC4: 3 VC)
-hermes-der-decode.adb:392:38: info: initialization of "Length" proved
-hermes-der-decode.adb:392:46: info: initialization of "Length_Stop" proved
 hermes-der-decode.adb:398:18: info: index check proved (CVC4: 2 VC)
-hermes-der-decode.adb:399:10: info: initialization of "Identifier_Status" proved
-hermes-der-decode.adb:400:10: info: initialization of "Tag_Class" proved
-hermes-der-decode.adb:401:10: info: initialization of "Structured_Flag" proved
-hermes-der-decode.adb:402:10: info: initialization of "Tag" proved
 hermes-der-decode.adb:408:34: info: overflow check proved (CVC4: 1 VC)
 hermes-der-decode.adb:413:13: info: precondition proved (CVC4: 2 VC)
 hermes-der-decode.ads:19:07: info: initialization of "Tag_Class" proved
 hermes-der-decode.ads:20:07: info: initialization of "Structured_Flag" proved
 hermes-der-decode.ads:21:07: info: initialization of "Tag" proved
 hermes-der-decode.ads:22:07: info: initialization of "Status" proved
+hermes-der-decode.ads:24:08: info: flow dependencies proved
 hermes-der-decode.ads:47:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:48:07: info: initialization of "Length" proved
 hermes-der-decode.ads:49:07: info: initialization of "Status" proved
-hermes-der-decode.ads:53:16: info: initialization of "Stop" proved
+hermes-der-decode.ads:51:08: info: flow dependencies proved
 hermes-der-decode.ads:53:16: info: postcondition proved (CVC4: 2 VC)
 hermes-der-decode.ads:71:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:72:07: info: initialization of "Value" proved
 hermes-der-decode.ads:73:07: info: initialization of "Status" proved
-hermes-der-decode.ads:77:16: info: initialization of "Stop" proved
+hermes-der-decode.ads:75:08: info: flow dependencies proved
 hermes-der-decode.ads:77:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
 hermes-der-decode.ads:98:07: info: initialization of "Stop" proved
 hermes-der-decode.ads:99:07: info: initialization of "Value" proved
 hermes-der-decode.ads:100:07: info: initialization of "Status" proved
-hermes-der-decode.ads:104:16: info: initialization of "Stop" proved
+hermes-der-decode.ads:102:08: info: flow dependencies proved
 hermes-der-decode.ads:104:16: medium: postcondition might fail, cannot prove Stop in Start .. Message'last
-hermes-der-encode.adb:82:34: info: initialization of "Result" proved
-hermes-der-encode.adb:82:50: info: initialization of "Value" proved
+hermes-der-encode.adb:77:07: info: initialization of "Value" proved
 hermes-der-encode.adb:82:50: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:83:20: info: initialization of "Result" proved
-hermes-der-encode.adb:83:20: info: range check proved (CVC4: 2 VC)
-hermes-der-encode.adb:87:34: info: initialization of "Result" proved
-hermes-der-encode.adb:88:38: info: initialization of "Result" proved
-hermes-der-encode.adb:88:54: info: initialization of "Value" proved
+hermes-der-encode.adb:83:20: info: range check proved (CVC4: 4 VC)
 hermes-der-encode.adb:88:54: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:89:20: info: initialization of "Result" proved
 hermes-der-encode.adb:89:20: info: range check proved (CVC4: 4 VC)
-hermes-der-encode.adb:93:34: info: initialization of "Result" proved
-hermes-der-encode.adb:94:38: info: initialization of "Result" proved
-hermes-der-encode.adb:94:54: info: initialization of "Value" proved
 hermes-der-encode.adb:94:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:94:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:94:80: info: initialization of "Value" proved
 hermes-der-encode.adb:94:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:95:38: info: initialization of "Result" proved
-hermes-der-encode.adb:95:54: info: initialization of "Value" proved
 hermes-der-encode.adb:95:54: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:96:20: info: initialization of "Result" proved
 hermes-der-encode.adb:96:20: info: range check proved (CVC4: 4 VC)
-hermes-der-encode.adb:100:34: info: initialization of "Result" proved
-hermes-der-encode.adb:101:38: info: initialization of "Result" proved
-hermes-der-encode.adb:101:54: info: initialization of "Value" proved
 hermes-der-encode.adb:101:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:101:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:101:80: info: initialization of "Value" proved
 hermes-der-encode.adb:101:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:102:38: info: initialization of "Result" proved
-hermes-der-encode.adb:102:54: info: initialization of "Value" proved
 hermes-der-encode.adb:102:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:102:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:102:80: info: initialization of "Value" proved
 hermes-der-encode.adb:102:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:103:38: info: initialization of "Result" proved
-hermes-der-encode.adb:103:54: info: initialization of "Value" proved
 hermes-der-encode.adb:103:54: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:104:20: info: initialization of "Result" proved
 hermes-der-encode.adb:104:20: info: range check proved (CVC4: 4 VC)
-hermes-der-encode.adb:108:34: info: initialization of "Result" proved
-hermes-der-encode.adb:109:38: info: initialization of "Result" proved
-hermes-der-encode.adb:109:54: info: initialization of "Value" proved
 hermes-der-encode.adb:109:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:109:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:109:80: info: initialization of "Value" proved
 hermes-der-encode.adb:109:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:110:38: info: initialization of "Result" proved
-hermes-der-encode.adb:110:54: info: initialization of "Value" proved
 hermes-der-encode.adb:110:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:110:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:110:80: info: initialization of "Value" proved
 hermes-der-encode.adb:110:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:111:38: info: initialization of "Result" proved
-hermes-der-encode.adb:111:54: info: initialization of "Value" proved
 hermes-der-encode.adb:111:60: info: division check proved (CVC4: 1 VC)
 hermes-der-encode.adb:111:60: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:111:80: info: initialization of "Value" proved
 hermes-der-encode.adb:111:86: info: division check proved (CVC4: 1 VC)
-hermes-der-encode.adb:112:38: info: initialization of "Result" proved
-hermes-der-encode.adb:112:54: info: initialization of "Value" proved
 hermes-der-encode.adb:112:54: info: range check proved (CVC4: 1 VC)
-hermes-der-encode.adb:113:20: info: initialization of "Result" proved
 hermes-der-encode.adb:113:20: info: range check proved (CVC4: 4 VC)
 hermes-der-encode.adb:124:45: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:124:60: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:133:07: medium: exception might be raised
 hermes-der-encode.adb:142:47: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:142:71: medium: range check might fail
-hermes-der-encode.adb:142:80: medium: range check might fail [possible explanation: subprogram at line 138 should mention Value in a precondition]
+hermes-der-encode.adb:142:80: medium: range check might fail [possible explanation: subprogram at hermes-der-encode.ads:34 should mention Value in a precondition]
 hermes-der-encode.adb:149:39: info: range check proved (CVC4: 1 VC)
 hermes-der-encode.adb:155:07: medium: exception might be raised
 hermes-der-encode.ads:24:19: info: postcondition proved (CVC4: 1 VC)
@@ -277,17 +223,14 @@ hermes-oid.adb:47:87: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:48:42: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:48:48: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:48:67: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:48:73: info: initialization of "Result.Other_Components" proved
 hermes-oid.adb:48:86: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:50:54: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:50:62: info: range check proved (CVC4: 1 VC)
-hermes-oid.adb:67:14: info: length check proved (CVC4: 4 VC)
+hermes-oid.adb:67:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 hermes-oid.adb:70:56: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:71:23: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:71:31: info: initialization of "Result" proved
 hermes-oid.adb:72:30: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:72:30: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:72:35: info: initialization of "Result" proved
 hermes-oid.adb:73:14: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:75:16: info: loop invariant initialization proved (CVC4: 3 VC)
 hermes-oid.adb:75:16: info: loop invariant preservation proved (CVC4: 3 VC)
@@ -295,181 +238,108 @@ hermes-oid.adb:76:62: info: range check proved (CVC4: 2 VC)
 hermes-oid.adb:79:34: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:79:39: info: index check proved (CVC4: 2 VC)
 hermes-oid.adb:79:39: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:79:50: info: initialization of "Result" proved
-hermes-oid.adb:103:14: info: length check proved (CVC4: 4 VC)
+hermes-oid.adb:95:07: info: initialization of "Result_Index" proved
+hermes-oid.adb:96:07: info: initialization of "Start_Index" proved
+hermes-oid.adb:97:07: info: initialization of "Left_Index" proved
+hermes-oid.adb:98:07: info: initialization of "Right_Index" proved
+hermes-oid.adb:99:07: info: initialization of "Current_Component" proved
+hermes-oid.adb:100:07: info: initialization of "Out_Of_Space" proved
+hermes-oid.adb:101:07: info: initialization of "Temp" proved
+hermes-oid.adb:103:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 hermes-oid.adb:107:32: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:109:17: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:109:31: info: initialization of "Result" proved
-hermes-oid.adb:109:31: info: initialization of "Result_Index" proved
 hermes-oid.adb:110:45: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:110:51: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:110:51: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:111:14: info: range check proved (CVC4: 2 VC)
-hermes-oid.adb:112:35: info: initialization of "Result_Index" proved
 hermes-oid.adb:112:35: info: loop invariant initialization proved (CVC4: 2 VC)
 hermes-oid.adb:112:35: info: loop invariant preservation proved (CVC4: 2 VC)
-hermes-oid.adb:118:29: info: initialization of "Result_Index" proved
-hermes-oid.adb:121:38: info: initialization of "Result_Index" proved
 hermes-oid.adb:121:38: info: loop invariant initialization proved (CVC4: 2 VC)
 hermes-oid.adb:121:38: info: loop invariant preservation proved (CVC4: 2 VC)
-hermes-oid.adb:122:19: info: initialization of "Result_Index" proved
-hermes-oid.adb:126:35: info: initialization of "Result_Index" proved
 hermes-oid.adb:126:48: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:127:26: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:127:40: info: initialization of "Result" proved
-hermes-oid.adb:127:40: info: initialization of "Result_Index" proved
-hermes-oid.adb:127:49: info: initialization of "Current_Component" proved
 hermes-oid.adb:127:67: info: division check proved (CVC4: 1 VC)
 hermes-oid.adb:127:67: info: range check proved (CVC4: 1 VC)
-hermes-oid.adb:128:40: info: initialization of "Current_Component" proved
 hermes-oid.adb:128:58: info: division check proved (CVC4: 1 VC)
-hermes-oid.adb:129:29: info: initialization of "Current_Component" proved
-hermes-oid.adb:134:20: info: initialization of "Out_Of_Space" proved
-hermes-oid.adb:143:31: info: initialization of "Result_Index" proved
 hermes-oid.adb:143:44: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:143:46: info: initialization of "Start_Index" proved
 hermes-oid.adb:143:58: medium: overflow check might fail
 hermes-oid.adb:143:58: medium: range check might fail
 hermes-oid.adb:150:41: info: overflow check proved (CVC4: 1 VC)
 hermes-oid.adb:150:41: info: range check proved (CVC4: 1 VC)
-hermes-oid.adb:151:28: info: initialization of "Result_Index" proved
-hermes-oid.adb:152:19: info: initialization of "Left_Index" proved
-hermes-oid.adb:152:32: info: initialization of "Right_Index" proved
-hermes-oid.adb:153:38: info: initialization of "Left_Index" proved
 hermes-oid.adb:153:38: info: loop invariant initialization proved (CVC4: 4 VC)
 hermes-oid.adb:153:38: info: loop invariant preservation proved (CVC4: 4 VC)
-hermes-oid.adb:153:69: info: initialization of "Right_Index" proved
-hermes-oid.adb:155:39: info: initialization of "Result" proved
 hermes-oid.adb:155:46: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:155:46: info: initialization of "Left_Index" proved
 hermes-oid.adb:156:23: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:156:36: info: initialization of "Left_Index" proved
-hermes-oid.adb:156:39: info: initialization of "Result" proved
 hermes-oid.adb:156:46: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:156:46: info: initialization of "Right_Index" proved
 hermes-oid.adb:157:23: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:157:36: info: initialization of "Result" proved
-hermes-oid.adb:157:36: info: initialization of "Right_Index" proved
-hermes-oid.adb:157:39: info: initialization of "Temp" proved
-hermes-oid.adb:159:31: info: initialization of "Left_Index" proved
 hermes-oid.adb:159:42: info: overflow check proved (CVC4: 1 VC)
-hermes-oid.adb:160:31: info: initialization of "Right_Index" proved
 hermes-oid.adb:160:43: info: range check proved (CVC4: 1 VC)
 hermes-oid.adb:164:17: info: range check proved (CVC4: 2 VC)
-hermes-oid.adb:164:40: info: initialization of "Start_Index" proved
-hermes-oid.adb:164:55: info: initialization of "Result_Index" proved
 hermes-oid.adb:164:72: info: cannot unroll loop (too many loop iterations)
 hermes-oid.adb:165:23: info: index check proved (CVC4: 2 VC)
-hermes-oid.adb:165:33: info: initialization of "Result" proved
 hermes-oid.adb:165:40: info: index check proved (CVC4: 2 VC)
-hermes-oid.ads:26:39: info: initialization of "Result.Other_Component_Count" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Other_Components" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Root_Component" proved
-hermes-oid.ads:26:39: info: initialization of "Result.Second_Level_Component" proved
+hermes-oid.ads:26:39: info: initialization of "Result" proved
 hermes-oid.ads:26:71: info: initialization of "Status" proved
+hermes-oid.ads:27:11: info: flow dependencies proved
 hermes-oid.ads:40:07: info: initialization of "Result" proved
 hermes-oid.ads:41:07: info: initialization of "Number_Of_Components" proved
+hermes-oid.ads:43:08: info: flow dependencies proved
 hermes-oid.ads:53:42: info: initialization of "Result" proved
 hermes-oid.ads:53:68: info: initialization of "Octet_Count" proved
-messages.adb:18:29: info: initialization of "High_Level.Data" proved
-messages.adb:21:13: info: initialization of "High_Level.Size" proved
+hermes-oid.ads:55:08: info: flow dependencies proved
+logger.ads:15:06: info: flow dependencies proved
 messages.adb:21:13: info: loop invariant initialization proved (CVC4: 3 VC)
 messages.adb:21:13: info: loop invariant preservation proved (CVC4: 3 VC)
-messages.adb:21:31: info: initialization of "High_Level.Size" proved
-messages.adb:25:26: info: initialization of "High_Level.Data" proved
-messages.adb:27:14: info: initialization of "High_Level.Data" proved
-messages.adb:27:14: info: initialization of "High_Level.Size" proved
-messages.adb:35:28: info: initialization of "Low_Level.Data" proved
-messages.adb:38:13: info: initialization of "Low_Level.Size" proved
 messages.adb:38:13: info: loop invariant initialization proved (CVC4: 3 VC)
 messages.adb:38:13: info: loop invariant preservation proved (CVC4: 3 VC)
-messages.adb:38:30: info: initialization of "Low_Level.Size" proved
-messages.adb:42:26: info: initialization of "Low_Level.Data" proved
-messages.adb:44:14: info: initialization of "Low_Level.Data" proved
-messages.adb:44:14: info: initialization of "Low_Level.Size" proved
 messages.ads:40:19: info: postcondition proved (CVC4: 3 VC)
 messages.ads:47:19: info: postcondition proved (CVC4: 3 VC)
+network-addresses.adb:30:07: info: initialization of "Result_Index" proved
+network-addresses.adb:31:07: info: initialization of "Value" proved
+network-addresses.adb:32:07: info: initialization of "Seen_Value" proved
+network-addresses.adb:33:07: info: initialization of "Error_Found" proved
 network-addresses.adb:42:11: info: range check proved (CVC4: 2 VC)
 network-addresses.adb:42:55: info: cannot unroll loop (too many loop iterations)
-network-addresses.adb:43:31: info: initialization of "Seen_Value" proved
-network-addresses.adb:45:34: info: initialization of "Result" proved
-network-addresses.adb:45:34: info: initialization of "Result_Index" proved
-network-addresses.adb:45:37: info: initialization of "Value" proved
-network-addresses.adb:46:16: info: initialization of "Result_Index" proved
-network-addresses.adb:49:32: info: initialization of "Result_Index" proved
 network-addresses.adb:49:45: info: range check proved (CVC4: 1 VC)
-network-addresses.adb:55:16: info: initialization of "Value" proved
 network-addresses.adb:55:50: info: index check proved (CVC4: 2 VC)
 network-addresses.adb:55:60: info: division check proved (CVC4: 1 VC)
-network-addresses.adb:58:30: info: initialization of "Value" proved
 network-addresses.adb:58:57: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:65:20: info: initialization of "Error_Found" proved
-network-addresses.adb:69:10: info: initialization of "Error_Found" proved
-network-addresses.adb:69:25: info: initialization of "Result_Index" proved
-network-addresses.adb:69:59: info: initialization of "Seen_Value" proved
-network-addresses.adb:72:31: info: initialization of "Result" proved
-network-addresses.adb:72:31: info: initialization of "Result_Index" proved
-network-addresses.adb:72:34: info: initialization of "Value" proved
-network-addresses.adb:98:32: info: initialization of "Count" proved
+network-addresses.adb:85:07: info: initialization of "Index" proved
+network-addresses.adb:86:07: info: initialization of "Count" proved
+network-addresses.adb:87:07: info: initialization of "Skip" proved
+network-addresses.adb:88:07: info: initialization of "Value" proved
+network-addresses.adb:89:07: info: initialization of "Digit_2" proved
+network-addresses.adb:90:07: info: initialization of "Digit_1" proved
+network-addresses.adb:91:07: info: initialization of "Digit_0" proved
 network-addresses.adb:98:32: info: loop invariant initialization proved (CVC4: 2 VC)
 network-addresses.adb:98:32: info: loop invariant preservation proved (CVC4: 2 VC)
 network-addresses.adb:98:42: info: overflow check proved (CVC4: 2 VC)
 network-addresses.adb:98:63: info: overflow check proved (CVC4: 2 VC)
 network-addresses.adb:101:30: info: overflow check proved (CVC4: 1 VC)
 network-addresses.adb:101:30: info: range check proved (CVC4: 1 VC)
-network-addresses.adb:101:32: info: initialization of "Count" proved
-network-addresses.adb:105:40: info: initialization of "Value" proved
 network-addresses.adb:105:46: info: division check proved (CVC4: 1 VC)
-network-addresses.adb:106:21: info: initialization of "Value" proved
 network-addresses.adb:106:27: info: division check proved (CVC4: 1 VC)
-network-addresses.adb:107:40: info: initialization of "Value" proved
 network-addresses.adb:107:46: info: division check proved (CVC4: 1 VC)
 network-addresses.adb:107:46: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:108:21: info: initialization of "Value" proved
 network-addresses.adb:108:27: info: division check proved (CVC4: 1 VC)
 network-addresses.adb:109:40: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:109:40: info: initialization of "Value" proved
-network-addresses.adb:112:13: info: initialization of "Digit_2" proved
-network-addresses.adb:113:29: info: initialization of "Index" proved
-network-addresses.adb:113:29: info: initialization of "Text" proved
-network-addresses.adb:113:32: info: initialization of "Digit_2" proved
 network-addresses.adb:114:24: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:114:29: info: initialization of "Index" proved
-network-addresses.adb:114:29: info: initialization of "Text" proved
-network-addresses.adb:114:32: info: initialization of "Digit_1" proved
 network-addresses.adb:115:24: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:115:29: info: initialization of "Index" proved
-network-addresses.adb:115:29: info: initialization of "Text" proved
-network-addresses.adb:115:32: info: initialization of "Digit_0" proved
-network-addresses.adb:118:29: info: initialization of "Index" proved
-network-addresses.adb:118:29: info: initialization of "Text" proved
-network-addresses.adb:118:32: info: initialization of "Digit_1" proved
 network-addresses.adb:119:24: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:119:29: info: initialization of "Index" proved
-network-addresses.adb:119:29: info: initialization of "Text" proved
-network-addresses.adb:119:32: info: initialization of "Digit_0" proved
-network-addresses.adb:123:29: info: initialization of "Index" proved
-network-addresses.adb:123:29: info: initialization of "Text" proved
-network-addresses.adb:123:32: info: initialization of "Digit_0" proved
 network-addresses.adb:129:24: info: index check proved (CVC4: 2 VC)
-network-addresses.adb:129:32: info: initialization of "Index" proved
-network-addresses.adb:129:32: info: initialization of "Skip" proved
-network-addresses.adb:129:32: info: initialization of "Text" proved
-network-addresses.adb:130:21: info: initialization of "Skip" proved
 network-addresses.adb:130:26: info: range check proved (CVC4: 1 VC)
 network-addresses.adb:133:24: info: assertion proved (CVC4: 2 VC)
-network-addresses.adb:133:80: info: initialization of "Skip" proved
-network-addresses.adb:136:19: info: initialization of "Count" proved
 network-addresses.adb:136:25: info: overflow check proved (CVC4: 1 VC)
-network-addresses.adb:136:27: info: initialization of "Skip" proved
-network-addresses.adb:139:26: info: initialization of "Count" proved
 network-addresses.adb:139:26: info: range check proved (CVC4: 1 VC)
-network-addresses.adb:148:14: info: initialization of "Result.Address" proved
-network-addresses.adb:148:14: info: initialization of "Result.Port" proved
+network-addresses.adb:144:07: info: initialization of "Result" proved
 network-addresses.ads:25:48: info: initialization of "Result" proved
 network-addresses.ads:25:67: info: initialization of "Status" proved
+network-addresses.ads:27:08: info: data dependencies proved
+network-addresses.ads:28:08: info: flow dependencies proved
 network-addresses.ads:39:07: info: initialization of "Text" proved
 network-addresses.ads:40:07: info: initialization of "Character_Count" proved
+network-addresses.ads:42:08: info: data dependencies proved
+network-addresses.ads:43:08: info: flow dependencies proved
 network-socket-writer.ads:17:06: warning: no procedure exists that can initialize abstract state "Writer.Output_Message_Stream"
 postgresql.adb:19:22: warning: literal "CONNECTION_BAD" is not referenced
 postgresql.adb:23:07: warning: literal "CONNECTION_STARTED" is not referenced
@@ -488,24 +358,25 @@ postgresql.adb:40:07: warning: literal "PGRES_FATAL_ERROR" is not referenced
 postgresql.adb:41:07: warning: literal "PGRES_COPY_BOTH" is not referenced
 postgresql.adb:42:07: warning: literal "PGRES_SINGLE_TUPLE" is not referenced
 serial_generator.adb:21:04: info: initialization of "Current" constituent of "State" proved
-serial_generator.adb:48:28: info: initialization of "Year" proved
+serial_generator.adb:36:07: info: initialization of "Year" proved
+serial_generator.adb:37:07: info: initialization of "Month" proved
+serial_generator.adb:38:07: info: initialization of "Day" proved
+serial_generator.adb:39:07: info: initialization of "Seconds" proved
 serial_generator.adb:48:33: info: range check proved (CVC4: 1 VC)
-serial_generator.adb:49:30: info: initialization of "Month" proved
-serial_generator.adb:50:32: info: initialization of "Day" proved
-serial_generator.adb:51:28: info: initialization of "Seconds" proved
 serial_generator.adb:51:28: info: range check proved (CVC4: 1 VC)
+serial_generator.ads:19:06: info: flow dependencies proved
 serial_generator.ads:27:19: info: initialization of "Number" proved
-server_spark_boundary.adb:36:13: info: initialization of "Read_Status" proved
-server_spark_boundary.adb:39:54: info: initialization of "Network_Request.Data" proved
-server_spark_boundary.adb:39:54: info: initialization of "Network_Request.Size" proved
-server_spark_boundary.adb:40:53: info: initialization of "Request_Message.Data" proved
-server_spark_boundary.adb:40:53: info: initialization of "Request_Message.Size" proved
-server_spark_boundary.adb:41:53: info: initialization of "Response_Message.Data" proved
-server_spark_boundary.adb:41:53: info: initialization of "Response_Message.Size" proved
-server_spark_boundary.adb:43:36: info: initialization of "Network_Response.Data" proved
-server_spark_boundary.adb:43:36: info: initialization of "Network_Response.Size" proved
-server_spark_boundary.adb:43:60: info: initialization of "Client_Address" proved
-server_spark_boundary.adb:44:16: info: initialization of "Write_Status" proved
+serial_generator.ads:29:09: info: data dependencies proved
+serial_generator.ads:30:09: info: flow dependencies proved
+server_spark_boundary.adb:22:07: info: initialization of "Client_Address" proved
+server_spark_boundary.adb:24:07: info: initialization of "Network_Request" proved
+server_spark_boundary.adb:25:07: info: initialization of "Request_Message" proved
+server_spark_boundary.adb:26:07: info: initialization of "Read_Status" proved
+server_spark_boundary.adb:28:07: info: initialization of "Response_Message" proved
+server_spark_boundary.adb:29:07: info: initialization of "Network_Response" proved
+server_spark_boundary.adb:30:07: info: initialization of "Write_Status" proved
+server_spark_boundary.ads:24:08: info: data dependencies proved
+server_spark_boundary.ads:27:08: info: flow dependencies proved
 server_timestamp_maker.adb:20:34: warning: literal "Failure" is not referenced
 server_timestamp_maker.adb:35:07: warning: unused variable "Request_Message"
 server_timestamp_maker.adb:36:07: warning: unused variable "Index"
@@ -516,30 +387,28 @@ server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint"
 server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
 server_timestamp_maker.adb:47:07: warning: initialization of "Result" has no effect
+server_timestamp_maker.adb:48:07: info: initialization of "Length_Stop" proved
+server_timestamp_maker.adb:49:07: info: initialization of "Length" proved
+server_timestamp_maker.adb:50:07: info: initialization of "Version_Stop" proved
+server_timestamp_maker.adb:51:07: info: initialization of "Version" proved
 server_timestamp_maker.adb:52:07: warning: unused variable "Imprint_Stop"
 server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint"
+server_timestamp_maker.adb:54:07: info: initialization of "Decode_Status" proved
 server_timestamp_maker.adb:69:27: info: precondition proved (CVC4: 2 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:71:13: info: initialization of "Decode_Status" proved
-server_timestamp_maker.adb:74:16: info: initialization of "Length_Stop" proved
 server_timestamp_maker.adb:74:28: medium: overflow check might fail, in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:74:30: info: initialization of "Length" proved
-server_timestamp_maker.adb:79:30: medium: precondition might fail, in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:80:38: info: initialization of "Length_Stop" proved
+server_timestamp_maker.adb:79:30: medium: precondition might fail, cannot prove Start in Message'range, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"
-server_timestamp_maker.adb:81:16: info: initialization of "Decode_Status" proved
-server_timestamp_maker.adb:84:19: info: initialization of "Version" proved
 server_timestamp_maker.adb:89:16: info: analyzing call to "Get_Message_Imprint" in context
-server_timestamp_maker.adb:91:38: info: initialization of "Version_Stop" proved
 server_timestamp_maker.adb:91:51: medium: range check might fail, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:96:19: high: "Imprint_Status" is not initialized
 server_timestamp_maker.adb:100:19: medium: exception might be raised, in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:106:14: info: initialization of "Result" proved
 server_timestamp_maker.adb:115:14: info: analyzing call to "Valid_Request" in context
 server_timestamp_maker.adb:116:10: medium: exception might be raised
 server_timestamp_maker.adb:119:10: info: raise statement proved unreachable (CVC4: 1 VC)
 server_timestamp_maker.ads:18:14: high: all paths in "Create_Timestamp" raise exceptions or do not terminate normally
+server_timestamp_maker.ads:21:08: info: data dependencies proved
 server_timestamp_maker.ads:22:46: warning: "Serial_Generator.State" is not modified, could be INPUT
 server_timestamp_maker.ads:23:08: medium: missing dependency "null => Cryptographic_Services.Key"
 server_timestamp_maker.ads:23:08: medium: missing dependency "null => Request_Message"
@@ -550,6 +419,7 @@ timestamp_messages-client.adb:21:07: medium: exception might be raised
 timestamp_messages-client.adb:28:07: medium: exception might be raised
 timestamp_messages-client.adb:40:07: medium: exception might be raised
 timestamp_messages-client.ads:19:14: high: all paths in "Get_Timestamp_Value" raise exceptions or do not terminate normally
+timestamp_messages-client.ads:26:08: info: data dependencies proved
 timestamp_messages-client.ads:27:08: medium: missing dependency "null => Message"
 timestamp_messages-client.ads:27:08: medium: missing dependency "null => Start"
 timestamp_messages-client.ads:27:47: medium: incorrect dependency "Stamp => Message"
@@ -560,6 +430,7 @@ timestamp_messages-client.ads:27:56: medium: incorrect dependency "Status => Sta
 timestamp_messages-client.ads:27:56: medium: incorrect dependency "Stop => Start"
 timestamp_messages-client.ads:33:13: high: all paths in "Put_Request_Value" raise exceptions or do not terminate normally
 timestamp_messages-client.ads:38:14: high: all paths in "Get_Response_Value" raise exceptions or do not terminate normally
+timestamp_messages-client.ads:45:08: info: data dependencies proved
 timestamp_messages-client.ads:46:08: medium: missing dependency "null => Message"
 timestamp_messages-client.ads:46:08: medium: missing dependency "null => Start"
 timestamp_messages-client.ads:46:46: medium: incorrect dependency "Resp => Message"
@@ -568,14 +439,14 @@ timestamp_messages-client.ads:46:46: medium: incorrect dependency "Stop => Messa
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Resp => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Status => Start"
 timestamp_messages-client.ads:46:55: medium: incorrect dependency "Stop => Start"
-timestamp_messages-server.adb:22:45: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:22:45: medium: range check might fail [possible explanation: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:28:46: info: range check proved (CVC4: 1 VC)
 timestamp_messages-server.adb:28:80: medium: range check might fail
 timestamp_messages-server.adb:28:89: medium: range check might fail
-timestamp_messages-server.adb:32:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
-timestamp_messages-server.adb:33:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
-timestamp_messages-server.adb:34:42: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
-timestamp_messages-server.adb:35:40: medium: range check might fail [possible explanation: subprogram at line 20 should mention Stamp in a precondition]
+timestamp_messages-server.adb:32:42: medium: range check might fail [possible explanation: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
+timestamp_messages-server.adb:33:42: medium: range check might fail [possible explanation: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
+timestamp_messages-server.adb:34:42: medium: range check might fail [possible explanation: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
+timestamp_messages-server.adb:35:40: medium: range check might fail [possible explanation: subprogram at timestamp_messages-server.ads:19 should mention Stamp in a precondition]
 timestamp_messages-server.adb:42:46: info: range check proved (CVC4: 1 VC)
 timestamp_messages-server.adb:42:73: medium: range check might fail
 timestamp_messages-server.adb:42:82: medium: range check might fail

@@ -1,9 +1,21 @@
+vs.adb:6:07: info: initialization of "Tmp" proved
 vs.adb:8:14: info: range check proved (CVC4: 4 VC)
-vs.adb:9:12: info: initialization of "Tmp" proved
+vs.adb:14:07: info: initialization of "Tmp" proved
 vs.adb:16:14: info: range check proved (CVC4: 4 VC)
-vs.adb:17:12: info: initialization of "Tmp" proved
+vs.adb:22:07: info: initialization of "Tmp" proved
 vs.adb:24:16: info: range check proved (CVC4: 4 VC)
-vs.adb:25:12: info: initialization of "Tmp" proved
 vs.ads:30:18: info: initialization of "A" proved
+vs.ads:31:11: info: data dependencies proved
+vs.ads:32:11: info: flow dependencies proved
 vs.ads:35:18: info: initialization of "A" proved
+vs.ads:36:11: info: data dependencies proved
+vs.ads:37:11: info: flow dependencies proved
 vs.ads:40:18: info: initialization of "A" proved
+vs.ads:41:11: info: data dependencies proved
+vs.ads:42:11: info: flow dependencies proved
+vs.ads:46:11: info: data dependencies proved
+vs.ads:47:11: info: flow dependencies proved
+vs.ads:51:11: info: data dependencies proved
+vs.ads:52:11: info: flow dependencies proved
+vs.ads:56:11: info: data dependencies proved
+vs.ads:57:11: info: flow dependencies proved

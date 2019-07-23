@@ -6,7 +6,7 @@
 --                                                                          --
 --                                S p e c                                   --
 --                                                                          --
---               Copyright (C) 2016-2018, Altran UK Limited                 --
+--                Copyright (C) 2016-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,7 +29,7 @@ package Flow_Generated_Globals.ALI_Serialization is
    type ALI_Entry_Kind is (EK_End_Marker,
                            EK_State_Map,
                            EK_Remote_States,
-                           EK_Predef_Init_Vars,
+                           EK_Predef_Init_Entities,
                            EK_Ghost_Entities,
                            EK_CAE_Entities,
                            EK_Volatiles,

@@ -1,11 +1,9 @@
-repro.adb:6:04: info: initialization of "A" constituent of "State" proved
-repro.adb:6:07: info: initialization of "B" constituent of "State" proved
 repro.adb:11:42: info: overflow check proved (CVC4: 1 VC)
 repro.adb:19:17: info: overflow check proved (CVC4: 1 VC)
 repro.adb:20:17: info: overflow check proved (CVC4: 1 VC)
+repro.ads:4:03: info: flow dependencies proved
 repro.ads:5:03: info: initial condition proved (CVC4: 1 VC)
-repro.ads:5:24: info: initialization of "A" constituent of "State" proved
-repro.ads:5:24: info: initialization of "B" constituent of "State" proved
 repro.ads:14:14: info: postcondition proved (CVC4: 1 VC)
+repro_main.adb:5:03: info: data dependencies proved
 repro_main.adb:6:13: info: precondition of main program proved (CVC4: 1 VC)
 repro_main.adb:9:09: info: precondition proved (CVC4: 1 VC)

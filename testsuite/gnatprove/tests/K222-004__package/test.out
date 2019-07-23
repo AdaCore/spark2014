@@ -1,9 +1,4 @@
-pack.adb:7:07: access to "Boolean" is not allowed in SPARK (due to access type)
-pack.adb:7:07: violation of aspect SPARK_Mode at line 2
-pack.adb:9:12: access to "Boolean" is not allowed in SPARK (due to access type)
+pack.adb:7:07: local borrower of an access object is not yet supported
+pack.adb:9:12: uninitialized allocator without default initialization is not allowed in SPARK
 pack.adb:9:12: violation of aspect SPARK_Mode at line 2
-pack.adb:10:07: explicit dereference is not allowed in SPARK
-pack.adb:10:07: violation of aspect SPARK_Mode at line 2
-pack.adb:11:14: explicit dereference is not allowed in SPARK
-pack.adb:11:14: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

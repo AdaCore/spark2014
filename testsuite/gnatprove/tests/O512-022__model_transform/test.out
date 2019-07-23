@@ -1,27 +1,13 @@
 model.adb:62:13: info: loop invariant initialization proved (CVC4: 1 VC)
-model.adb:62:13: info: loop invariant preservation proved (CVC4: 1 VC)
+model.adb:62:13: info: loop invariant preservation proved (Z3: 1 VC)
 model.adb:63:36: info: index check proved (CVC4: 4 VC)
-model.adb:64:20: info: initialization of "AV" proved
 model.adb:64:41: info: range check proved (CVC4: 2 VC)
-model.adb:66:35: info: initialization of "AV" proved
 model.adb:72:13: info: loop invariant initialization proved (CVC4: 2 VC)
-model.adb:72:13: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
+model.adb:72:13: info: loop invariant preservation proved (Z3: 2 VC)
 model.adb:73:62: info: index check proved (CVC4: 4 VC)
-model.adb:74:20: info: initialization of "AV" proved
-model.adb:74:28: info: initialization of "CFV" proved
 model.adb:74:56: info: range check proved (CVC4: 2 VC)
 model.adb:76:60: info: index check proved (CVC4: 4 VC)
 model.adb:77:54: info: range check proved (CVC4: 2 VC)
-model.adb:79:20: info: initialization of "CFV" proved
-model.adb:81:18: info: initialization of "CFV" proved
-model.adb:85:25: info: initialization of "Act.Owned_Action_Data" proved
-model.adb:85:25: info: initialization of "Act.Owned_Flow_Data" proved
-model.adb:85:30: info: initialization of "AV" proved
-model.adb:86:23: info: initialization of "Act.Owned_Action_Data" proved
-model.adb:86:23: info: initialization of "Act.Owned_Flow_Data" proved
-model.adb:86:28: info: initialization of "CFV" proved
-model.adb:87:14: info: initialization of "Act.Owned_Action_Data" proved
-model.adb:87:14: info: initialization of "Act.Owned_Flow_Data" proved
 model.ads:37:14: info: postcondition proved (CVC4: 1 VC)
 model.ads:41:14: info: postcondition proved (CVC4: 1 VC)
 model.ads:64:14: info: postcondition proved (CVC4: 1 VC)

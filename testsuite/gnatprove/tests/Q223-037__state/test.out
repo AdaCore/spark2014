@@ -1,9 +1,9 @@
+main.adb:10:08: info: data dependencies proved
 main.adb:10:30: info: initialization of "P.P_Abs_State" proved
-main.adb:16:10: info: initialization of "P.P_Abs_State" proved
+main.adb:12:04: info: initialization of "X" proved
 main.adb:16:10: info: precondition proved (CVC4: 1 VC)
-main.adb:18:17: info: initialization of "X" proved
 p.adb:7:35: info: initialization of "P_State" constituent of "P_Abs_State" proved
 p.adb:16:16: info: division check proved (CVC4: 1 VC)
 p.adb:16:16: info: overflow check proved (CVC4: 1 VC)
-p.ads:13:17: info: initialization of "P_State" constituent of "P_Abs_State" proved
+p.ads:12:09: info: data dependencies proved
 p.ads:13:17: info: postcondition proved (CVC4: 1 VC)

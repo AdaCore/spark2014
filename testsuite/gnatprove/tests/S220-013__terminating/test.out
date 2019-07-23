@@ -1,0 +1,2 @@
+repro.ads:7:14: info: subprogram "Foo" will terminate, terminating annotation has been proved
+repro.ads:7:14: warning: subprogram "Foo" has no effect

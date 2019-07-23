@@ -5,7 +5,9 @@ package Subtype_Check with SPARK_Mode is
 
    subtype My_Natural is Integer range Zero .. 100;
 
-   type R (D : My_Natural) is null record;
+   type R (D : My_Natural) is record
+      F : Integer := 10;
+   end record;
 
    type R_Acc is access R;
 

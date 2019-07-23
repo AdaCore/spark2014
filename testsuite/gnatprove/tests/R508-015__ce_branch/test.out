@@ -1,22 +1,20 @@
 test.adb:5:19: medium: postcondition might fail, cannot prove Test_If'Result = 522 (e.g. when Test_If'Result = 5)
-test.adb:16:14: info: initialization of "B" proved
+test.adb:7:07: info: initialization of "B" proved
 test.adb:20:19: medium: postcondition might fail, cannot prove Test_Case'Result = 522 (e.g. when Test_Case'Result = 5)
-test.adb:34:14: info: initialization of "B" proved
+test.adb:22:07: info: initialization of "B" proved
 test.adb:39:19: medium: postcondition might fail, cannot prove Test_If_2'Result = 1 (e.g. when Test_If_2'Result = -1)
 test.adb:44:18: info: overflow check proved (CVC4: 1 VC)
-test.adb:46:16: info: initialization of "B" proved
 test.adb:46:18: info: overflow check proved (CVC4: 1 VC)
-test.adb:47:14: info: initialization of "B" proved
 counterexample expected for check at test.adb:5
   trace at test.adb:4 --> A = 4
   trace at test.adb:5 --> Test_If'Result = 5
   trace at test.adb:10 --> B = 5
-  trace at test.adb:16 --> Test_If'Result = 5
+  trace at test.adb:16 --> B = 5 and Test_If'Result = 5
 counterexample expected for check at test.adb:20
   trace at test.adb:19 --> A = 3
   trace at test.adb:20 --> Test_Case'Result = 5
   trace at test.adb:26 --> B = 5
-  trace at test.adb:34 --> Test_Case'Result = 5
+  trace at test.adb:34 --> B = 5 and Test_Case'Result = 5
 counterexample expected for check at test.adb:39
   trace at test.adb:38 --> A = 0
   trace at test.adb:39 --> Test_If_2'Result = -1

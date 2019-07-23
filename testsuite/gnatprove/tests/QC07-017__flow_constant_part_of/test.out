@@ -1,1 +1,2 @@
+p.ads:1:53: info: flow dependencies proved
 p.ads:4:04: medium: constant without variable input "X" cannot have a Part_Of indicator (SPARK RM 7.2.2(16))

@@ -1,114 +1,42 @@
 hw-gfx-dp_aux_ch.adb:31:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:53:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:66:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:83:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:84:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:85:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:97:25: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:97:51: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:101:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:101:47: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:127:31: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:133:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:133:35: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:134:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:135:25: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:136:20: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:137:33: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:137:37: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:158:37: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:165:31: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:113:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:114:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:115:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:148:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:180:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:192:37: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:199:34: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:200:48: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:204:25: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:204:51: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:215:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:215:47: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:182:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:184:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:223:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:224:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:225:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:237:34: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:238:48: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:242:25: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:242:51: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:246:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:246:47: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:227:07: info: initialization of "Request" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:253:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:278:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:289:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.adb:315:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:335:13: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:335:31: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:335:51: info: initialization of "Tries" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:340:47: info: initialization of "Chunk" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:340:63: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:345:13: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:345:30: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:346:35: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:346:65: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:347:19: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:347:29: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:347:38: info: initialization of "Chunk" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:347:52: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:347:67: info: initialization of "Chunk" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:348:23: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:348:32: info: initialization of "Chunk" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:351:22: info: initialization of "Tries" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:353:33: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:356:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:368:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:368:35: info: initialization of "Tries" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:369:17: info: initialization of "Xfered" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:386:39: info: initialization of "Index_Payload" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:388:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_aux_ch.adb:389:46: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:323:07: info: initialization of "Response" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:324:07: info: initialization of "Response_Length" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
+hw-gfx-dp_aux_ch.adb:381:07: info: initialization of "Index_Payload" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.ads:36:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.ads:37:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.ads:44:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.ads:52:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
 hw-gfx-dp_aux_ch.ads:53:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_aux_ch.ads:19
-hw-gfx-dp_info.adb:42:22: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:45:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:45:30: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:47:10: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:48:36: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:57:19: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:63:15: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:71:52: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:72:52: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:73:52: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:74:51: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:31:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:32:07: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.adb:92:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:116:44: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:119:12: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:138:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:156:21: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:214:22: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:215:23: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:216:26: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:217:39: info: initialization of "RN2" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:217:45: info: initialization of "RN" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:219:20: info: initialization of "RN" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:266:19: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:266:22: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:267:17: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:268:17: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:275:19: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:275:22: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:276:17: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:277:17: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:301:22: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:304:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:304:30: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:305:35: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:318:21: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:320:14: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:333:21: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:337:14: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:350:59: info: initialization of "VS" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:354:14: info: initialization of "VS" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:367:54: info: initialization of "Emph" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.adb:371:14: info: initialization of "Emph" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:94:07: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:113:07: info: initialization of "Count" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:192:07: info: initialization of "M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:193:07: info: initialization of "N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:200:10: info: flow dependencies proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:210:13: info: initialization of "RN" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:292:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.adb:293:07: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:82:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:87:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:92:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
@@ -116,1052 +44,207 @@ hw-gfx-dp_info.ads:109:07: info: initialization of "Data_M" proved, in instantia
 hw-gfx-dp_info.ads:110:07: info: initialization of "Data_N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:111:07: info: initialization of "Link_M" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:112:07: info: initialization of "Link_N" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.ads:118:07: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.ads:118:07: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_info.ads:118:07: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
+hw-gfx-dp_info.ads:118:07: info: initialization of "Status" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
 hw-gfx-dp_info.ads:119:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-dp_info.ads:19
-hw-gfx-dp_training.adb:45:19: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:45:19: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:49:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:49:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:50:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:50:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:51:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:51:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:52:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:52:48: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:55:19: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:55:19: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:58:14: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:58:14: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:36:07: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:36:07: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:75:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:75:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:90:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:90:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:97:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:97:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:99:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:99:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:101:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:101:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:102:19: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:102:19: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:103:19: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:103:19: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:109:25: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:109:25: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:111:21: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:111:21: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:80:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:80:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:119:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:119:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:138:20: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:138:20: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:143:22: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:143:22: info: initialization of "Length" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:144:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:144:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:128:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:128:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:153:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:153:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:161:43: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:161:43: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:167:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:167:22: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:155:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:155:07: info: initialization of "Data" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:179:07: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:179:07: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.adb:180:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.adb:180:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:244:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:244:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:244:56: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:245:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:245:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:245:56: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:246:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:246:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:249:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:249:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:249:26: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:249:26: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:251:39: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:262:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:262:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:262:26: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:262:26: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Adjust_Requests" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Interlane_Align_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:264:41: info: initialization of "Status.Lanes" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:306:17: info: initialization of "Result" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:306:17: info: initialization of "Result" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:317:17: info: initialization of "Result" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:317:17: info: initialization of "Result" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:326:38: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:326:38: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:326:38: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:326:38: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:334:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:334:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:338:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:338:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:341:36: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:341:36: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:345:31: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:345:31: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:345:31: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:345:31: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:347:32: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:347:32: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:347:32: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:347:32: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:347:43: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:347:43: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:348:23: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:348:23: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:348:38: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:348:38: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:350:16: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:350:16: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:350:42: info: initialization of "Last_Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:350:42: info: initialization of "Last_Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:351:26: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:351:26: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:352:27: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:352:27: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:354:26: info: initialization of "Last_Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:354:26: info: initialization of "Last_Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:358:44: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:358:44: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:358:44: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:358:44: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:359:53: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:359:53: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:359:53: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:359:53: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:360:27: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:360:27: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:364:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:364:18: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:364:30: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:364:30: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:366:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:366:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:371:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:371:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:376:32: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:376:32: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:376:32: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:376:32: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:376:43: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:376:43: info: initialization of "CR_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:377:23: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:377:23: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:377:38: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:377:38: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:379:44: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:379:44: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:379:44: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:379:44: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:380:53: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:380:53: info: initialization of "Train_Set.Pre_Emph" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:380:53: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:380:53: info: initialization of "Train_Set.Voltage_Swing" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:381:27: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:381:27: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:385:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:385:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:386:13: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:386:13: info: initialization of "EQ_Done" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-dp_training.adb:396:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
-hw-gfx-dp_training.adb:396:10: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:185:07: info: initialization of "Status" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:185:07: info: initialization of "Status" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:286:07: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:286:07: info: initialization of "Retries" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:296:07: info: initialization of "Train_Set" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:296:07: info: initialization of "Train_Set" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
+hw-gfx-dp_training.adb:296:18: info: initialization of "Last_Train_Set" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
+hw-gfx-dp_training.adb:296:18: info: initialization of "Last_Train_Set" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
 hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-connectors-edp.adb:238
 hw-gfx-dp_training.ads:56:07: info: initialization of "Success" proved, in instantiation at hw-gfx-gma-pch-dp.adb:167
-hw-gfx-edid.adb:37:17: info: initialization of "Sum" proved
-hw-gfx-edid.adb:41:14: info: initialization of "Sum" proved
-hw-gfx-edid.adb:49:33: info: initialization of "Score" proved
-hw-gfx-edid.adb:51:22: info: initialization of "Score" proved
-hw-gfx-edid.adb:54:14: info: initialization of "Score" proved
-hw-gfx-edid.adb:163:28: info: initialization of "Mode.H_Visible" proved
-hw-gfx-edid.adb:163:48: info: initialization of "Mode.H_Sync_Begin" proved
-hw-gfx-edid.adb:164:28: info: initialization of "Mode.H_Sync_Begin" proved
-hw-gfx-edid.adb:164:48: info: initialization of "Mode.H_Sync_End" proved
-hw-gfx-edid.adb:165:28: info: initialization of "Mode.H_Visible" proved
-hw-gfx-edid.adb:165:48: info: initialization of "Mode.H_Total" proved
-hw-gfx-edid.adb:166:28: info: initialization of "Mode.V_Visible" proved
-hw-gfx-edid.adb:166:48: info: initialization of "Mode.V_Sync_Begin" proved
-hw-gfx-edid.adb:167:28: info: initialization of "Mode.V_Sync_Begin" proved
-hw-gfx-edid.adb:167:48: info: initialization of "Mode.V_Sync_End" proved
-hw-gfx-edid.adb:168:28: info: initialization of "Mode.V_Visible" proved
-hw-gfx-edid.adb:168:48: info: initialization of "Mode.V_Total" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.BPC" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.Dotclock" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.H_Sync_Active_High" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.H_Sync_Begin" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.H_Sync_End" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.H_Total" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.H_Visible" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.V_Sync_Active_High" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.V_Sync_Begin" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.V_Sync_End" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.V_Total" proved
-hw-gfx-edid.adb:170:14: info: initialization of "Mode.V_Visible" proved
+hw-gfx-edid.adb:113:07: info: initialization of "Mode" proved
 hw-gfx-edid.ads:25:57: info: initialization of "Success" proved
-hw-gfx-edid.ads:27:19: info: initialization of "Success" proved
-hw-gfx-framebuffer_filler.adb:37:33: info: initialization of "Line_Start" proved
-hw-gfx-framebuffer_filler.adb:39:36: info: initialization of "Line_Start" proved
-hw-gfx-framebuffer_filler.adb:40:33: info: initialization of "Line_Start" proved
-hw-gfx-framebuffer_filler.adb:42:24: info: initialization of "Line_Start" proved
-hw-gfx-gma-config.ads:141:04: info: initialization of "Config.Valid_Port_GPU" constituent of "GMA.Config_State" proved
-hw-gfx-gma-config.ads:258:05: info: initialization of "Config.Raw_Clock" constituent of "GMA.Config_State" proved
+hw-gfx-gma-config.ads:17:04: info: flow dependencies proved
 hw-gfx-gma-config_helpers.adb:89:07: info: initialization of "Success" proved
-hw-gfx-gma-config_helpers.adb:102:13: info: initialization of "Enabled" proved
+hw-gfx-gma-config_helpers.adb:95:10: info: initialization of "Enabled" proved
 hw-gfx-gma-config_helpers.adb:114:47: info: non-aliasing of formal parameters "Link" and "Mode" proved
-hw-gfx-gma-config_helpers.adb:139:10: info: initialization of "Success" proved
-hw-gfx-gma-config_helpers.adb:149:13: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma-config_helpers.adb:150:62: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma-config_helpers.adb:153:13: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma-config_helpers.adb:156:33: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.adb:158:53: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.adb:160:19: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma-config_helpers.adb:171:13: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma-config_helpers.adb:172:33: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg.Port" proved
+hw-gfx-gma-config_helpers.ads:30:07: info: initialization of "Port_Cfg" proved
 hw-gfx-gma-config_helpers.ads:34:07: info: initialization of "Success" proved
-hw-gfx-gma-connector_info.adb:53:13: info: initialization of "Success" proved
 hw-gfx-gma-connector_info.adb:55:36: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.adb:74:33: info: non-aliasing of formal parameters "Link" and "Mode" proved
 hw-gfx-gma-connector_info.ads:21:07: info: initialization of "Success" proved
 hw-gfx-gma-connector_info.ads:29:07: info: initialization of "Success" proved
-hw-gfx-gma-connectors-edp.adb:176:25: info: initialization of "VSwing_Emph" proved
-hw-gfx-gma-connectors-edp.adb:194:24: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:199:27: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:201:27: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:207:24: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:210:24: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:215:22: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:219:43: info: initialization of "DP_CTL_Set" proved
-hw-gfx-gma-connectors-edp.adb:258:10: info: initialization of "Success" proved
-hw-gfx-gma-connectors-edp.adb:295:10: info: initialization of "Enabled" proved
+hw-gfx-gma-connectors-edp.adb:151:07: info: initialization of "VSwing_Emph" proved
+hw-gfx-gma-connectors-edp.adb:185:07: info: initialization of "DP_CTL_Set" proved
+hw-gfx-gma-connectors-edp.adb:270:07: info: initialization of "Enabled" proved
 hw-gfx-gma-connectors-edp.ads:22:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:73:07: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:102:23: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:105:20: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:117:10: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:135:07: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:157:13: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:166:20: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:177:10: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.adb:210:07: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:227:10: info: initialization of "Success" proved
-hw-gfx-gma-connectors-fdi.adb:237:10: info: initialization of "Success" proved
 hw-gfx-gma-connectors-fdi.ads:38:07: info: initialization of "Success" proved
-hw-gfx-gma-connectors.adb:82:16: info: initialization of "Success" proved
-hw-gfx-gma-connectors.adb:99:10: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:29:07: info: initialization of "Success" proved
 hw-gfx-gma-connectors.ads:35:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:56:07: info: initialization of "Raw_EDID" proved
 hw-gfx-gma-display_probing.adb:58:07: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:60:19: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:60:44: info: initialization of "Raw_EDID" proved
-hw-gfx-gma-display_probing.adb:72:44: info: initialization of "Temp_Configs" proved
-hw-gfx-gma-display_probing.adb:73:56: info: initialization of "Temp_Configs" proved
-hw-gfx-gma-display_probing.adb:88:31: info: initialization of "Raw_EDID_Length" proved
-hw-gfx-gma-display_probing.adb:98:28: info: initialization of "Raw_EDID_Length" proved
-hw-gfx-gma-display_probing.adb:102:24: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:105:25: info: initialization of "Raw_EDID" proved
-hw-gfx-gma-display_probing.adb:106:20: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.adb:113:07: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:120:10: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:127:10: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:129:14: info: initialization of "Raw_EDID" proved
-hw-gfx-gma-display_probing.adb:133:48: info: initialization of "Raw_EDID" proved
-hw-gfx-gma-display_probing.adb:147:19: info: initialization of "Have_Sibling_EDID" proved
-hw-gfx-gma-display_probing.adb:189:23: info: initialization of "Port_Idx" proved
-hw-gfx-gma-display_probing.adb:190:37: info: initialization of "Configs" proved
-hw-gfx-gma-display_probing.adb:190:53: info: initialization of "Port_Idx" proved
-hw-gfx-gma-display_probing.adb:194:28: info: initialization of "Configs" proved
-hw-gfx-gma-display_probing.adb:194:51: info: initialization of "Port_Idx" proved
-hw-gfx-gma-display_probing.adb:199:23: info: initialization of "Port_Idx" proved
-hw-gfx-gma-display_probing.adb:200:47: info: initialization of "Port_Idx" proved
-hw-gfx-gma-display_probing.adb:202:23: info: initialization of "Success" proved
-hw-gfx-gma-display_probing.adb:212:10: info: initialization of "Probe_Internal" proved
-hw-gfx-gma-display_probing.adb:212:50: info: initialization of "Configs" proved
+hw-gfx-gma-display_probing.adb:144:16: info: initialization of "Have_Sibling_EDID" proved
+hw-gfx-gma-display_probing.adb:168:07: info: initialization of "Success" proved
 hw-gfx-gma-display_probing.ads:24:07: info: initialization of "Configs" proved
 hw-gfx-gma-dp_aux_request.adb:161:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.adb:162:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.adb:163:07: info: initialization of "Success" proved
-hw-gfx-gma-dp_aux_request.adb:197:61: info: initialization of "Count" proved
-hw-gfx-gma-dp_aux_request.adb:198:25: info: initialization of "Value" proved
-hw-gfx-gma-dp_aux_request.adb:201:61: info: initialization of "Value" proved
-hw-gfx-gma-dp_aux_request.adb:222:29: info: initialization of "Count" proved
-hw-gfx-gma-dp_aux_request.adb:224:39: info: initialization of "Value" proved
-hw-gfx-gma-dp_aux_request.adb:261:10: info: initialization of "Busy" proved
-hw-gfx-gma-dp_aux_request.adb:290:22: info: initialization of "Status" proved
-hw-gfx-gma-dp_aux_request.adb:294:13: info: initialization of "Success" proved
-hw-gfx-gma-dp_aux_request.adb:295:24: info: initialization of "Status" proved
-hw-gfx-gma-dp_aux_request.adb:297:25: info: initialization of "Status" proved
-hw-gfx-gma-dp_aux_request.adb:299:28: info: initialization of "Status" proved
-hw-gfx-gma-dp_aux_request.adb:302:44: info: initialization of "Status" proved
-hw-gfx-gma-dp_aux_request.adb:306:13: info: initialization of "Success" proved
-hw-gfx-gma-dp_aux_request.adb:310:31: info: initialization of "Response" proved
-hw-gfx-gma-dp_aux_request.adb:311:31: info: initialization of "Response_Length" proved
-hw-gfx-gma-dp_aux_request.adb:344:20: info: initialization of "Success" proved
+hw-gfx-gma-dp_aux_request.adb:165:07: info: data dependencies proved
+hw-gfx-gma-dp_aux_request.adb:167:07: info: flow dependencies proved
+hw-gfx-gma-dp_aux_request.adb:186:10: info: initialization of "Value" proved
+hw-gfx-gma-dp_aux_request.adb:187:10: info: initialization of "Count" proved
+hw-gfx-gma-dp_aux_request.adb:211:10: info: initialization of "Value" proved
+hw-gfx-gma-dp_aux_request.adb:212:10: info: initialization of "Count" proved
+hw-gfx-gma-dp_aux_request.adb:242:07: info: initialization of "Busy" proved
+hw-gfx-gma-dp_aux_request.adb:243:07: info: initialization of "Status" proved
 hw-gfx-gma-dp_aux_request.ads:23:07: info: initialization of "Response" proved
 hw-gfx-gma-dp_aux_request.ads:24:07: info: initialization of "Response_Length" proved
 hw-gfx-gma-dp_aux_request.ads:25:07: info: initialization of "Success" proved
 hw-gfx-gma-i2c.adb:124:27: info: initialization of "Result" proved
-hw-gfx-gma-i2c.adb:129:18: info: initialization of "GMBUS2" proved
+hw-gfx-gma-i2c.adb:126:07: info: initialization of "GMBUS2" proved
 hw-gfx-gma-i2c.adb:135:27: info: initialization of "Success" proved
 hw-gfx-gma-i2c.adb:146:43: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:160:14: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:164:10: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:213:10: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:223:16: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:223:33: info: initialization of "Transfered" proved
-hw-gfx-gma-i2c.adb:230:26: info: initialization of "GMBUS2" proved
-hw-gfx-gma-i2c.adb:232:16: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:233:64: info: initialization of "Transfered" proved
-hw-gfx-gma-i2c.adb:236:25: info: initialization of "Transfered" proved
-hw-gfx-gma-i2c.adb:236:39: info: initialization of "Current" proved
-hw-gfx-gma-i2c.adb:237:28: info: initialization of "Data" proved
-hw-gfx-gma-i2c.adb:237:37: info: initialization of "GMBUS3" proved
-hw-gfx-gma-i2c.adb:238:42: info: initialization of "GMBUS3" proved
-hw-gfx-gma-i2c.adb:240:30: info: initialization of "Current" proved
-hw-gfx-gma-i2c.adb:243:13: info: initialization of "Success" proved
-hw-gfx-gma-i2c.adb:255:17: info: initialization of "Transfered" proved
+hw-gfx-gma-i2c.adb:202:07: info: initialization of "GMBUS2" proved
+hw-gfx-gma-i2c.adb:203:07: info: initialization of "GMBUS3" proved
+hw-gfx-gma-i2c.adb:205:07: info: initialization of "Current" proved
 hw-gfx-gma-i2c.ads:23:07: info: initialization of "Data" proved
 hw-gfx-gma-i2c.ads:24:07: info: initialization of "Success" proved
 hw-gfx-gma-panel.adb:160:21: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:40: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
 hw-gfx-gma-panel.adb:160:56: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:165:28: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:198:37: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:199:26: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:200:40: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:201:13: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:204:39: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:205:26: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:206:43: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:207:13: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:210:14: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:211:43: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:212:16: info: initialization of "Power_Delay" proved
-hw-gfx-gma-panel.adb:215:27: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:215:38: info: initialization of "Override_Delays" proved
-hw-gfx-gma-panel.adb:218:10: info: initialization of "Override_Delays" proved
-hw-gfx-gma-panel.adb:235:28: info: initialization of "Port_Select" proved
-hw-gfx-gma-panel.adb:236:53: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:244:31: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:252:31: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.adb:288:14: info: initialization of "Was_On" proved
-hw-gfx-gma-panel.adb:293:14: info: initialization of "Was_On" proved
-hw-gfx-gma-panel.adb:325:10: info: initialization of "Was_On" proved
-hw-gfx-gma-panel.adb:332:10: info: initialization of "Was_On" proved
-hw-gfx-gma-panel.adb:375:23: info: initialization of "Reg" proved
-hw-gfx-gma-panel.ads:29:14: info: initialization of "Delays_US" constituent of "Panel_State" proved
-hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Cycle_Timer" constituent of "Panel_State" proved
-hw-gfx-gma-panel.ads:29:14: info: initialization of "Power_Up_Timer" constituent of "Panel_State" proved
+hw-gfx-gma-panel.adb:186:07: info: initialization of "Power_Delay" proved
+hw-gfx-gma-panel.adb:186:20: info: initialization of "Port_Select" proved
+hw-gfx-gma-panel.adb:283:07: info: initialization of "Was_On" proved
+hw-gfx-gma-panel.adb:316:07: info: initialization of "Was_On" proved
+hw-gfx-gma-panel.adb:369:07: info: initialization of "Reg" proved
+hw-gfx-gma-panel.ads:25:07: info: data dependencies proved
+hw-gfx-gma-panel.ads:31:07: info: data dependencies proved
+hw-gfx-gma-panel.ads:35:07: info: flow dependencies proved
 hw-gfx-gma-panel.ads:59:33: info: initialization of "Level" proved
 hw-gfx-gma-pch-dp.ads:20:07: info: initialization of "Success" proved
-hw-gfx-gma-pch-fdi.adb:188:17: info: initialization of "Success" proved
-hw-gfx-gma-pch-fdi.adb:196:16: info: initialization of "Success" proved
-hw-gfx-gma-pch-fdi.adb:202:23: info: initialization of "Success" proved
-hw-gfx-gma-pch-fdi.adb:220:16: info: initialization of "Success" proved
 hw-gfx-gma-pch-fdi.ads:23:07: info: initialization of "Success" proved
-hw-gfx-gma-pch-sideband.adb:112:30: info: initialization of "Value" proved
-hw-gfx-gma-pch-sideband.adb:123:30: info: initialization of "Value" proved
-hw-gfx-gma-pch-sideband.adb:135:31: info: initialization of "Value" proved
+hw-gfx-gma-pch-sideband.adb:109:07: info: initialization of "Value" proved
+hw-gfx-gma-pch-sideband.adb:120:07: info: initialization of "Value" proved
+hw-gfx-gma-pch-sideband.adb:132:07: info: initialization of "Value" proved
 hw-gfx-gma-pch-sideband.ads:27:07: info: initialization of "Value" proved
-hw-gfx-gma-pch-transcoder.adb:205:36: info: initialization of "Data_M" proved
-hw-gfx-gma-pch-transcoder.adb:208:36: info: initialization of "Data_N" proved
-hw-gfx-gma-pch-transcoder.adb:211:36: info: initialization of "Link_M" proved
-hw-gfx-gma-pch-transcoder.adb:214:36: info: initialization of "Link_N" proved
-hw-gfx-gma-pch-vga.adb:51:22: info: initialization of "Polarity" proved
-hw-gfx-gma-pch-vga.adb:54:22: info: initialization of "Polarity" proved
-hw-gfx-gma-pch-vga.adb:62:25: info: initialization of "Polarity" proved
-hw-gfx-gma-pch-vga.adb:80:25: info: initialization of "Sync_Disable" proved
-hw-gfx-gma-pch-vga.adb:153:52: info: initialization of "Div_Sel" proved
-hw-gfx-gma-pch-vga.adb:154:52: info: initialization of "Phase_Inc" proved
-hw-gfx-gma-pch-vga.adb:155:49: info: initialization of "Phase_Dir" proved
-hw-gfx-gma-pch-vga.adb:162:53: info: initialization of "Aux_Div" proved
-hw-gfx-gma-pipe_setup.adb:242:55: info: initialization of "Offset" proved
-hw-gfx-gma-pipe_setup.adb:244:55: info: initialization of "Stride" proved
-hw-gfx-gma-pipe_setup.adb:250:20: info: initialization of "PRI" proved
-hw-gfx-gma-pipe_setup.adb:257:28: info: initialization of "PRI" proved
-hw-gfx-gma-pipe_setup.adb:334:37: info: initialization of "Reg8" proved
-hw-gfx-gma-pipe_setup.adb:378:10: info: initialization of "X" proved
-hw-gfx-gma-pipe_setup.adb:378:25: info: initialization of "Y" proved
-hw-gfx-gma-pipe_setup.adb:387:33: info: initialization of "Y" proved
-hw-gfx-gma-pipe_setup.adb:387:50: info: initialization of "X" proved
+hw-gfx-gma-pch-transcoder.adb:192:13: info: initialization of "Data_M" proved
+hw-gfx-gma-pch-transcoder.adb:192:21: info: initialization of "Link_M" proved
+hw-gfx-gma-pch-transcoder.adb:193:13: info: initialization of "Data_N" proved
+hw-gfx-gma-pch-transcoder.adb:193:21: info: initialization of "Link_N" proved
+hw-gfx-gma-pch-vga.adb:123:07: info: initialization of "Aux_Div" proved
+hw-gfx-gma-pch-vga.adb:124:07: info: initialization of "Div_Sel" proved
+hw-gfx-gma-pch-vga.adb:125:07: info: initialization of "Phase_Inc" proved
+hw-gfx-gma-pch-vga.adb:126:07: info: initialization of "Phase_Dir" proved
+hw-gfx-gma-pipe_setup.adb:205:07: info: data dependencies proved
+hw-gfx-gma-pipe_setup.adb:206:07: info: flow dependencies proved
+hw-gfx-gma-pipe_setup.adb:222:13: info: initialization of "Stride" proved
+hw-gfx-gma-pipe_setup.adb:222:21: info: initialization of "Offset" proved
+hw-gfx-gma-pipe_setup.adb:286:07: info: data dependencies proved
+hw-gfx-gma-pipe_setup.adb:287:07: info: flow dependencies proved
+hw-gfx-gma-pipe_setup.adb:304:07: info: initialization of "Reg8" proved
 hw-gfx-gma-pipe_setup.adb:403:07: info: initialization of "Width" proved
 hw-gfx-gma-pipe_setup.adb:404:07: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:413:10: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:413:33: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:481:50: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:482:38: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:485:42: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:485:65: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:520:10: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:521:19: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:524:30: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:525:30: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:528:27: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:538:42: info: initialization of "X" proved
-hw-gfx-gma-pipe_setup.adb:538:61: info: initialization of "Y" proved
-hw-gfx-gma-pipe_setup.adb:541:42: info: initialization of "Width" proved
-hw-gfx-gma-pipe_setup.adb:541:65: info: initialization of "Height" proved
-hw-gfx-gma-pipe_setup.adb:572:14: info: initialization of "In_Use" proved
+hw-gfx-gma-pipe_setup.adb:463:07: info: initialization of "Width" proved
+hw-gfx-gma-pipe_setup.adb:464:07: info: initialization of "Height" proved
+hw-gfx-gma-pipe_setup.adb:506:07: info: initialization of "Width" proved
+hw-gfx-gma-pipe_setup.adb:507:07: info: initialization of "Height" proved
+hw-gfx-gma-pipe_setup.adb:508:07: info: initialization of "X" proved
+hw-gfx-gma-pipe_setup.adb:508:10: info: initialization of "Y" proved
+hw-gfx-gma-pipe_setup.adb:565:07: info: initialization of "In_Use" proved
 hw-gfx-gma-pipe_setup.adb:582:38: info: initialization of "Pipe" proved
-hw-gfx-gma-pipe_setup.adb:590:19: info: initialization of "Used_For_Secondary" proved
-hw-gfx-gma-pipe_setup.adb:610:13: info: initialization of "Pipe_Using_PF" proved
-hw-gfx-gma-pipe_setup.adb:652:13: info: initialization of "PF_Enabled" proved
-hw-gfx-gma-pipe_setup.adb:656:27: info: initialization of "PF_Enabled" proved
-hw-gfx-gma-pipe_setup.adb:656:41: info: initialization of "Pipe_Using_PF" proved
-hw-gfx-gma-pipe_setup.adb:739:34: info: initialization of "Reg8" proved
+hw-gfx-gma-pipe_setup.adb:584:07: info: initialization of "Used_For_Secondary" proved
+hw-gfx-gma-pipe_setup.adb:596:07: info: initialization of "Pipe_Using_PF" proved
+hw-gfx-gma-pipe_setup.adb:645:07: info: initialization of "PF_Enabled" proved
+hw-gfx-gma-pipe_setup.adb:735:07: info: initialization of "Reg8" proved
 hw-gfx-gma-pipe_setup.ads:60:32: info: initialization of "Available" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.Dotclock" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.M" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.M1" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.M2" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.N" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.P" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.P1" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.P2" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.Reference_Clock" proved
-hw-gfx-gma-plls.adb:183:08: info: initialization of "Result.VCO" proved
+hw-gfx-gma-plls.adb:183:08: info: initialization of "Result" proved
 hw-gfx-gma-plls.adb:184:08: info: initialization of "Valid" proved
-hw-gfx-gma-plls.adb:199:46: info: initialization of "M" proved
-hw-gfx-gma-plls.adb:200:19: info: initialization of "VCO" proved
-hw-gfx-gma-plls.adb:200:25: info: initialization of "P" proved
-hw-gfx-gma-plls.adb:223:38: info: initialization of "P" proved
-hw-gfx-gma-plls.adb:228:38: info: initialization of "M" proved
-hw-gfx-gma-plls.adb:229:38: info: initialization of "VCO" proved
-hw-gfx-gma-plls.adb:230:39: info: initialization of "Dotclock" proved
-hw-gfx-gma-plls.adb:233:10: info: initialization of "Valid" proved
-hw-gfx-gma-plls.adb:242:33: info: initialization of "M" proved
-hw-gfx-gma-plls.adb:243:33: info: initialization of "P" proved
-hw-gfx-gma-plls.adb:244:33: info: initialization of "VCO" proved
-hw-gfx-gma-plls.adb:245:46: info: initialization of "Dotclock" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.Dotclock" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.M" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.M1" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.M2" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.N" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.P" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.P1" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.P2" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.Reference_Clock" proved
-hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock.VCO" proved
+hw-gfx-gma-plls.adb:186:07: info: data dependencies proved
+hw-gfx-gma-plls.adb:190:07: info: initialization of "M" proved
+hw-gfx-gma-plls.adb:191:07: info: initialization of "P" proved
+hw-gfx-gma-plls.adb:192:07: info: initialization of "VCO" proved
+hw-gfx-gma-plls.adb:193:07: info: initialization of "Dotclock" proved
+hw-gfx-gma-plls.adb:256:08: info: initialization of "Best_Clock" proved
 hw-gfx-gma-plls.adb:257:08: info: initialization of "Valid" proved
-hw-gfx-gma-plls.adb:303:42: info: initialization of "P2" proved
-hw-gfx-gma-plls.adb:309:22: info: initialization of "Registers_Valid" proved
-hw-gfx-gma-plls.adb:311:25: info: initialization of "Current_Clock.Dotclock" proved
-hw-gfx-gma-plls.adb:313:42: info: initialization of "Current_Clock.Dotclock" proved
-hw-gfx-gma-plls.adb:315:60: info: initialization of "Current_Clock.Dotclock" proved
-hw-gfx-gma-plls.adb:318:25: info: initialization of "Current_Delta" proved
-hw-gfx-gma-plls.adb:318:41: info: initialization of "Best_Delta" proved
-hw-gfx-gma-plls.adb:320:39: info: initialization of "Current_Delta" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.Dotclock" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.M" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.M1" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.M2" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.N" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.P" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.P1" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.P2" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.Reference_Clock" proved
-hw-gfx-gma-plls.adb:321:39: info: initialization of "Current_Clock.VCO" proved
-hw-gfx-gma-plls.adb:369:35: info: initialization of "FP" proved
-hw-gfx-gma-plls.adb:370:35: info: initialization of "FP" proved
-hw-gfx-gma-plls.adb:384:23: info: initialization of "Encoded_P2" proved
-hw-gfx-gma-plls.adb:385:35: info: initialization of "Encoded_P1" proved
+hw-gfx-gma-plls.adb:259:07: info: data dependencies proved
+hw-gfx-gma-plls.adb:272:07: info: initialization of "P2" proved
+hw-gfx-gma-plls.adb:274:07: info: initialization of "Current_Delta" proved
+hw-gfx-gma-plls.adb:275:07: info: initialization of "Current_Clock" proved
+hw-gfx-gma-plls.adb:276:07: info: initialization of "Registers_Valid" proved
+hw-gfx-gma-plls.adb:356:07: info: data dependencies proved
+hw-gfx-gma-plls.adb:360:07: info: initialization of "FP" proved
+hw-gfx-gma-plls.adb:360:11: info: initialization of "Encoded_P1" proved
+hw-gfx-gma-plls.adb:360:23: info: initialization of "Encoded_P2" proved
 hw-gfx-gma-plls.adb:392:07: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:406:10: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:445:10: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.Dotclock" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.M" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.M1" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.M2" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.N" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.P" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.P1" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.P2" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.Reference_Clock" proved
-hw-gfx-gma-plls.adb:446:47: info: initialization of "Clk.VCO" proved
+hw-gfx-gma-plls.adb:399:07: info: initialization of "Clk" proved
 hw-gfx-gma-plls.adb:479:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.adb:480:07: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:498:13: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:500:43: info: initialization of "PLL" proved
-hw-gfx-gma-plls.adb:509:17: info: initialization of "PLL" proved
-hw-gfx-gma-plls.adb:510:16: info: initialization of "Success" proved
-hw-gfx-gma-plls.adb:511:27: info: initialization of "PLL" proved
-hw-gfx-gma-plls.ads:25:14: info: initialization of "PLLs" constituent of "State" proved
+hw-gfx-gma-plls.ads:27:07: info: data dependencies proved
 hw-gfx-gma-plls.ads:31:07: info: initialization of "PLL" proved
 hw-gfx-gma-plls.ads:32:07: info: initialization of "Success" proved
-hw-gfx-gma-port_detect.adb:88:39: info: initialization of "Internal_Detected" proved
-hw-gfx-gma-port_detect.adb:96:60: info: initialization of "HDMI_Detected" proved
-hw-gfx-gma-port_detect.adb:102:55: info: initialization of "DP_Detected" proved
-hw-gfx-gma-port_detect.adb:104:13: info: initialization of "HDMI_Detected" proved
-hw-gfx-gma-port_detect.adb:104:30: info: initialization of "DP_Detected" proved
-hw-gfx-gma-port_detect.adb:132:23: info: initialization of "Ctl32" proved
-hw-gfx-gma-port_detect.adb:134:14: info: initialization of "Ctl32" proved
+hw-gfx-gma-port_detect.adb:58:07: info: initialization of "Internal_Detected" proved
+hw-gfx-gma-port_detect.adb:59:07: info: initialization of "HDMI_Detected" proved
+hw-gfx-gma-port_detect.adb:60:07: info: initialization of "DP_Detected" proved
+hw-gfx-gma-port_detect.adb:122:07: info: initialization of "Ctl32" proved
 hw-gfx-gma-port_detect.ads:21:07: info: initialization of "Detected" proved
-hw-gfx-gma-power_and_clocks_ironlake.ads:17:14: info: initialization of "Config.Raw_Clock" constituent of "GMA.Config_State" proved
-hw-gfx-gma-registers.adb:106:14: info: initialization of "Reg32" proved
-hw-gfx-gma-registers.adb:133:14: info: initialization of "Fence_Lower" proved
-hw-gfx-gma-registers.adb:134:14: info: initialization of "Fence_Upper" proved
-hw-gfx-gma-registers.adb:246:18: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:276:39: info: initialization of "Timeout" proved
-hw-gfx-gma-registers.adb:278:14: info: initialization of "Current" proved
-hw-gfx-gma-registers.adb:283:20: info: initialization of "Timed_Out" proved
-hw-gfx-gma-registers.adb:330:16: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:331:24: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:349:16: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:350:24: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:367:17: info: initialization of "Value" proved
-hw-gfx-gma-registers.adb:368:24: info: initialization of "Value" proved
+hw-gfx-gma-registers.adb:92:07: info: initialization of "Reg32" proved
+hw-gfx-gma-registers.adb:128:07: info: initialization of "Fence_Upper" proved
+hw-gfx-gma-registers.adb:128:20: info: initialization of "Fence_Lower" proved
+hw-gfx-gma-registers.adb:240:07: info: initialization of "Value" proved
+hw-gfx-gma-registers.adb:261:07: info: initialization of "Current" proved
+hw-gfx-gma-registers.adb:262:07: info: initialization of "Timeout" proved
+hw-gfx-gma-registers.adb:263:07: info: initialization of "Timed_Out" proved
+hw-gfx-gma-registers.adb:322:07: info: initialization of "Value" proved
+hw-gfx-gma-registers.adb:341:07: info: initialization of "Value" proved
+hw-gfx-gma-registers.adb:361:07: info: initialization of "Value" proved
+hw-gfx-gma-registers.ads:24:04: info: flow dependencies proved
+hw-gfx-gma-registers.ads:1635:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1636:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1644:08: info: initialization of "Value" proved
+hw-gfx-gma-registers.ads:1647:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1648:07: info: flow dependencies proved
+hw-gfx-gma-registers.ads:1658:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1659:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1666:08: info: initialization of "Result" proved
 hw-gfx-gma-registers.ads:1710:07: info: initialization of "Success" proved
+hw-gfx-gma-registers.ads:1720:07: info: data dependencies proved
+hw-gfx-gma-registers.ads:1721:07: info: flow dependencies proved
 hw-gfx-gma-registers.ads:1728:07: global Output "Registers.Address_State" constituent of "GMA.State" of "Set_Register_Base" not written
-hw-gfx-gma-transcoder.adb:172:30: info: initialization of "Data_M" proved
-hw-gfx-gma-transcoder.adb:175:30: info: initialization of "Data_N" proved
-hw-gfx-gma-transcoder.adb:179:30: info: initialization of "Link_M" proved
-hw-gfx-gma-transcoder.adb:182:30: info: initialization of "Link_N" proved
-hw-gfx-gma-transcoder.adb:274:10: info: initialization of "Enabled" proved
-hw-gfx-gma-transcoder.adb:280:53: info: initialization of "Enabled" proved
-hw-gfx-gma-transcoder.adb:299:26: info: initialization of "DDI_Func_Ctl" proved
-hw-gfx-gma-transcoder.adb:302:14: info: initialization of "DDI_Func_Ctl" proved
-hw-gfx-gma.adb:80:04: info: initialization of "Initialized" constituent of "Init_State" proved
+hw-gfx-gma-registers.ads:1729:07: info: flow dependencies proved
+hw-gfx-gma-transcoder.adb:153:07: info: data dependencies proved
+hw-gfx-gma-transcoder.adb:154:07: info: flow dependencies proved
+hw-gfx-gma-transcoder.adb:156:07: info: initialization of "Data_M" proved
+hw-gfx-gma-transcoder.adb:156:15: info: initialization of "Link_M" proved
+hw-gfx-gma-transcoder.adb:157:07: info: initialization of "Data_N" proved
+hw-gfx-gma-transcoder.adb:157:15: info: initialization of "Link_N" proved
+hw-gfx-gma-transcoder.adb:270:07: info: initialization of "Enabled" proved
+hw-gfx-gma-transcoder.adb:295:07: info: initialization of "DDI_Func_Ctl" proved
 hw-gfx-gma.adb:99:07: info: initialization of "Success" proved
-hw-gfx-gma.adb:113:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:116:35: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:116:56: info: initialization of "Scaler_Available" proved
-hw-gfx-gma.adb:119:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:120:49: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:125:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:128:13: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:128:29: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:131:25: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:135:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:146:34: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:150:19: info: initialization of "Success" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:153:37: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:159:34: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:163:26: info: initialization of "Success" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:165:43: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:169:26: info: initialization of "Success" proved
-hw-gfx-gma.adb:171:23: info: initialization of "Success" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:177:44: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:180:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:198:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:204:30: info: initialization of "Port_Cfg.Port" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Bandwidth" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Enhanced_Framing" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Lane_Count" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Opportunistic_Training" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.DP.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Display" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Bandwidth" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Enhanced_Framing" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Lane_Count" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Opportunistic_Training" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Aux_RD_Interval" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Enhanced_Framing" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Lane_Count" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Max_Link_Rate" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.No_Aux_Handshake" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.Rev" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.FDI.Receiver_Caps.TPS3_Supported" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Is_FDI" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.BPC" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.Dotclock" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.H_Sync_Active_High" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.H_Sync_Begin" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.H_Sync_End" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.H_Total" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.H_Visible" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.V_Sync_Active_High" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.V_Sync_Begin" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.V_Sync_End" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.V_Total" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Mode.V_Visible" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.PCH_Port" proved
-hw-gfx-gma.adb:206:31: info: initialization of "Port_Cfg.Port" proved
+hw-gfx-gma.adb:103:07: info: initialization of "Port_Cfg" proved
+hw-gfx-gma.adb:104:07: info: initialization of "Scaler_Available" proved
+hw-gfx-gma.adb:193:07: info: initialization of "Port_Cfg" proved
+hw-gfx-gma.adb:194:07: info: initialization of "Success" proved
 hw-gfx-gma.adb:214:56: info: initialization of "Detected" proved
-hw-gfx-gma.adb:269:59: info: initialization of "Unplug_Detected" proved
-hw-gfx-gma.adb:272:19: info: initialization of "Old_Configs" proved
-hw-gfx-gma.adb:272:19: info: initialization of "Power_Changed" proved
-hw-gfx-gma.adb:291:57: info: initialization of "Success" proved
-hw-gfx-gma.adb:296:19: info: initialization of "Success" proved
-hw-gfx-gma.adb:297:19: info: initialization of "Old_Configs" proved
-hw-gfx-gma.adb:297:19: info: initialization of "Power_Changed" proved
-hw-gfx-gma.adb:301:19: info: initialization of "Success" proved
-hw-gfx-gma.adb:312:28: info: initialization of "Scaler_Available" proved
-hw-gfx-gma.adb:324:10: info: initialization of "Power_Changed" proved
-hw-gfx-gma.adb:325:39: info: initialization of "Old_Configs" proved
+hw-gfx-gma.adb:227:07: info: initialization of "Old_Configs" proved
+hw-gfx-gma.adb:262:13: info: initialization of "Unplug_Detected" proved
+hw-gfx-gma.adb:281:13: info: initialization of "Success" proved
+hw-gfx-gma.adb:282:13: info: initialization of "Scaler_Available" proved
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not an input in the Global contract of subprogram "Initialize" at hw-gfx-gma.ads:95
 hw-gfx-gma.adb:382:16: high: "Dev.Address_State" constituent of "GMA.State" is not initialized
 hw-gfx-gma.adb:382:16: high: either make "Dev.Address_State" constituent of "GMA.State" an input in the Global contract or initialize it before use
@@ -1175,54 +258,27 @@ hw-gfx-gma.adb:386:13: info: initialization of "HPD_Delay" constituent of "State
 hw-gfx-gma.adb:386:24: info: initialization of "Wait_For_HPD" constituent of "State" proved
 hw-gfx-gma.adb:387:13: info: initialization of "Linear_FB_Base" constituent of "State" proved
 hw-gfx-gma.adb:387:29: info: initialization of "Initialized" constituent of "Init_State" proved
+hw-gfx-gma.adb:391:07: info: initialization of "PCI_MMIO_Base" proved
+hw-gfx-gma.adb:391:22: info: initialization of "PCI_GTT_Base" proved
 hw-gfx-gma.adb:395:33: info: initialization of "Success" proved
-hw-gfx-gma.adb:417:37: info: initialization of "Audio_VID_DID" proved
+hw-gfx-gma.adb:397:10: info: initialization of "Audio_VID_DID" proved
 hw-gfx-gma.adb:422:37: info: initialization of "Success" proved
-hw-gfx-gma.adb:430:21: info: initialization of "Vendor" proved
-hw-gfx-gma.adb:430:66: info: initialization of "Device" proved
-hw-gfx-gma.adb:451:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:454:13: info: initialization of "PCI_MMIO_Base" proved
-hw-gfx-gma.adb:454:36: info: initialization of "PCI_GTT_Base" proved
-hw-gfx-gma.adb:455:42: info: initialization of "PCI_MMIO_Base" proved
-hw-gfx-gma.adb:455:57: info: initialization of "PCI_GTT_Base" proved
-hw-gfx-gma.adb:463:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:472:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:477:14: info: initialization of "Success" proved
-hw-gfx-gma.adb:492:20: info: initialization of "Panel.Panel_State" constituent of "GMA.State" proved
-hw-gfx-gma.adb:596:31: info: initialization of "Phys_Addr" proved
-hw-gfx-gma.adb:598:23: info: initialization of "Phys_Addr" proved
-hw-gfx-gma.adb:611:29: info: initialization of "Phys_Addr" proved
-hw-gfx-gma.adb:614:37: info: initialization of "Phys_Addr" proved
-hw-gfx-gma.adb:618:32: info: initialization of "Phys_Addr" proved
+hw-gfx-gma.adb:425:10: info: initialization of "Vendor" proved
+hw-gfx-gma.adb:425:18: info: initialization of "Device" proved
 hw-gfx-gma.adb:667:07: info: initialization of "GTT_Size" proved
 hw-gfx-gma.adb:668:07: info: initialization of "Stolen_Size" proved
-hw-gfx-gma.adb:681:43: info: initialization of "GGC" proved
-hw-gfx-gma.adb:682:46: info: initialization of "GGC" proved
-hw-gfx-gma.adb:684:43: info: initialization of "GGC" proved
-hw-gfx-gma.adb:685:46: info: initialization of "GGC" proved
-hw-gfx-gma.adb:687:43: info: initialization of "GGC" proved
-hw-gfx-gma.adb:688:46: info: initialization of "GGC" proved
-hw-gfx-gma.adb:690:43: info: initialization of "GGC" proved
-hw-gfx-gma.adb:691:46: info: initialization of "GGC" proved
+hw-gfx-gma.adb:676:07: info: initialization of "GGC" proved
 hw-gfx-gma.adb:696:50: info: initialization of "Valid" proved
-hw-gfx-gma.adb:699:19: info: initialization of "Valid" proved
-hw-gfx-gma.adb:706:10: info: initialization of "Valid" proved
-hw-gfx-gma.adb:710:33: info: initialization of "GTT_Size" proved
-hw-gfx-gma.adb:711:42: info: initialization of "Stolen_Size" proved
-hw-gfx-gma.adb:712:33: info: initialization of "Aperture_Size" proved
-hw-gfx-gma.adb:730:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:732:23: info: initialization of "Phys_Base" proved
-hw-gfx-gma.adb:733:21: info: initialization of "Phys_Base" proved
-hw-gfx-gma.adb:737:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:750:13: info: initialization of "Success" proved
-hw-gfx-gma.adb:751:36: info: initialization of "Phys_Base" proved
-hw-gfx-gma.adb:755:10: info: initialization of "Success" proved
-hw-gfx-gma.adb:761:16: info: initialization of "Linear_FB" proved
-hw-gfx-gma.adb:762:41: info: initialization of "Linear_FB" proved
-hw-gfx-gma.adb:784:13: info: initialization of "Valid" proved
+hw-gfx-gma.adb:701:07: info: initialization of "GTT_Size" proved
+hw-gfx-gma.adb:701:17: info: initialization of "Aperture_Size" proved
+hw-gfx-gma.adb:702:07: info: initialization of "Stolen_Size" proved
+hw-gfx-gma.adb:726:07: info: initialization of "Phys_Base" proved
+hw-gfx-gma.adb:758:13: info: initialization of "Linear_FB" proved
+hw-gfx-gma.adb:772:07: info: initialization of "Valid" proved
+hw-gfx-gma.ads:27:04: info: flow dependencies proved
 hw-gfx-gma.ads:98:07: info: initialization of "Success" proved
-hw-gfx-gma.ads:104:15: info: initialization of "Success" proved
-hw-gfx-gma.ads:104:25: info: initialization of "Initialized" constituent of "Init_State" proved
+hw-gfx-gma.ads:100:07: info: data dependencies proved
+hw-gfx-gma.ads:107:07: info: data dependencies proved
 hw-gfx-gma.ads:140:07: info: initialization of "Success" proved
 hw-gfx-gma.ads:144:29: info: initialization of "Linear_FB" proved
 hw-mmio_range.ads:26:07: info: initialization of "GTT.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:54
@@ -1230,6 +286,12 @@ hw-mmio_range.ads:26:07: info: initialization of "MM16.Base_Address" constituent
 hw-mmio_range.ads:26:07: info: initialization of "MM32.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "MM8.Base_Address" constituent of "MM.Address_State" proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:26:07: info: initialization of "Regs.Base_Address" constituent of "Registers.Address_State" proved, in instantiation at hw-gfx-gma-registers.adb:41
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-framebuffer_filler.adb:25
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-gma-registers.adb:41
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-gfx-gma-registers.adb:54
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-mmio_range.ads:27:04: info: flow dependencies proved, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-framebuffer_filler.adb:25
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-registers.adb:41
 hw-mmio_range.ads:30:20: info: initialization of "Value" proved, in instantiation at hw-gfx-gma-registers.adb:54
@@ -1242,22 +304,12 @@ hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, i
 hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:36, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:38, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-mmio_range.ads:34:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-mmconf.adb:40, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:53:11: info: initialization of "Header_Type" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:55:14: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:59:38: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:61:30: info: initialization of "Addr" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:61:58: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:64:35: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:68:10: info: initialization of "Addr" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:70:13: info: initialization of "Addr" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:72:21: info: initialization of "Addr" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:90:29: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:93:11: info: initialization of "Backup" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:96:23: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:97:13: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:98:32: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:100:39: info: initialization of "Backup" proved, in instantiation at hw-gfx-gma.adb:68
-hw-pci-dev.adb:103:29: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.adb:48:07: info: initialization of "Header_Type" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.adb:49:07: info: initialization of "Reg32" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.adb:84:07: info: initialization of "Cmd" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.adb:85:07: info: initialization of "Base" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.adb:85:13: info: initialization of "Backup" proved, in instantiation at hw-gfx-gma.adb:68
+hw-pci-dev.ads:20:04: info: flow dependencies proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:23:21: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:24:22: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:27:22: info: initialization of "Value" proved, in instantiation at hw-gfx-gma.adb:68
@@ -1265,8 +317,10 @@ hw-pci-dev.ads:42:07: info: initialization of "Addr" proved, in instantiation at
 hw-pci-dev.ads:49:29: info: initialization of "Length" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-dev.ads:53:26: info: initialization of "Success" proved, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:24:23: info: initialization of "MM.Address_State" constituent of "Dev.Address_State" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-pci-mmconf.ads:25:04: info: flow dependencies proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:28:21: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:29:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:32:22: info: initialization of "Value" proved, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
 hw-pci-mmconf.ads:44:14: warning: subprogram "Set_Base_Address" has no effect, in instantiation at hw-pci-dev.adb:28, in instantiation at hw-gfx-gma.adb:68
+hw-time-timer.ads:21:07: info: flow dependencies proved
 gnatprove: error during analysis of data and information flow

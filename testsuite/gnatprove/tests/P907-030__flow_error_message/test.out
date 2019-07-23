@@ -1,9 +1,12 @@
+dp.ads:7:11: info: data dependencies proved
+dp.ads:10:11: info: data dependencies proved
 p.ads:6:23: info: initialization of "Y" proved
+p.ads:7:11: info: data dependencies proved
+p_run.adb:9:07: info: initialization of "Y" proved
 p_run.adb:11:25: high: "Dp.T" is not an input in the Global contract of subprogram "Run" at p_run.ads:7
 p_run.adb:11:25: high: "Dp.T" is not initialized
 p_run.adb:11:25: high: either make "Dp.T" an input in the Global contract or initialize it before use
 p_run.adb:13:09: high: "Dp.T" is not an input in the Global contract of subprogram "Run" at p_run.ads:7
 p_run.adb:13:09: high: "Dp.T" is not initialized
 p_run.adb:13:09: high: either make "Dp.T" an input in the Global contract or initialize it before use
-p_run.adb:13:22: info: initialization of "Y" proved
-p_run.ads:8:34: info: initialization of "Dp.T" proved
+p_run.ads:8:11: info: data dependencies proved

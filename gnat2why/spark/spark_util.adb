@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2011-2018, AdaCore                  --
+--                     Copyright (C) 2011-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,25 +23,30 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Latin_1;             use Ada.Characters.Latin_1;
-with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
-with Csets;                              use Csets;
-with Errout;                             use Errout;
-with Flow_Utility;                       use Flow_Utility;
+with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
+with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Csets;                  use Csets;
+with Errout;                 use Errout;
+with Flow_Utility;           use Flow_Utility;
 with Gnat2Why_Args;
 with Lib.Xref;
+with Opt;
+with Osint;
 with Output;
-with Pprint;                             use Pprint;
-with Sem_Ch12;                           use Sem_Ch12;
-with Sem_Eval;                           use Sem_Eval;
-with Sem_Prag;                           use Sem_Prag;
-with Sem_Type;                           use Sem_Type;
-with SPARK_Definition;                   use SPARK_Definition;
-with SPARK_Frame_Conditions;             use SPARK_Frame_Conditions;
-with SPARK_Util.Subprograms;             use SPARK_Util.Subprograms;
-with SPARK_Util.Types;                   use SPARK_Util.Types;
-with Stand;                              use Stand;
-with Stringt;                            use Stringt;
+with Pprint;                 use Pprint;
+with Sem_Ch12;               use Sem_Ch12;
+with Sem_Eval;               use Sem_Eval;
+with Sem_Prag;               use Sem_Prag;
+with Sem_Type;               use Sem_Type;
+with SPARK_Definition;       use SPARK_Definition;
+with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with Stand;                  use Stand;
+with Stringt;                use Stringt;
+with Flow_Dependency_Maps;   use Flow_Dependency_Maps;
+with Flow_Types;             use Flow_Types;
+with Flow_Refinement;        use Flow_Refinement;
 
 package body SPARK_Util is
 
@@ -144,6 +149,23 @@ package body SPARK_Util is
               then Element (Primitive)
               else Empty);
    end Dispatching_Contract;
+
+   ---------------------------
+   -- Append_Multiple_Index --
+   ---------------------------
+
+   function Append_Multiple_Index (S : String) return String is
+   begin
+      if Opt.Multiple_Unit_Index = 0 then
+         return S;
+      end if;
+      declare
+         Int_Str : constant String := Int'Image (Opt.Multiple_Unit_Index);
+      begin
+         return S & Osint.Multi_Unit_Index_Character &
+           Int_Str (Int_Str'First + 1 .. Int_Str'Last);
+      end;
+   end Append_Multiple_Index;
 
    ------------
    -- Append --
@@ -619,10 +641,10 @@ package body SPARK_Util is
             return Entity_In_SPARK (Full_View (Ty));
          end if;
 
-      --  Components of a concurrent type are visible except if the type full
+      --  Components of a protected type are visible except if the type full
       --  view is not in SPARK.
 
-      elsif Is_Concurrent_Type (Ty) then
+      elsif Is_Protected_Type (Ty) then
 
          return not Full_View_Not_In_SPARK (Ty);
 
@@ -748,7 +770,7 @@ package body SPARK_Util is
                           | E_Procedure
          then
             return S;
-         elsif Ekind (S) in E_Package then
+         elsif Ekind (S) = E_Package then
             S := Scope (S);
          else
             return Empty;
@@ -789,29 +811,27 @@ package body SPARK_Util is
 
    function Enclosing_Unit (E : Entity_Id) return Entity_Id is
       S : Entity_Id := Scope (E);
-      --  Start with unique entity to avoid bodies
 
    begin
-      while Present (S) loop
+      loop
          if Ekind (S) in Entry_Kind
                        | E_Function
                        | E_Procedure
                        | E_Package
                        | E_Protected_Type
                        | E_Task_Type
-                       | Generic_Unit_Kind
          then
             --  We have found the enclosing unit, return it
 
             return S;
          else
+            pragma Assert (not Is_Generic_Unit (S));
+
             --  Go to the enclosing scope
 
             S := Scope (S);
          end if;
       end loop;
-
-      return Empty;
    end Enclosing_Unit;
 
    -------------------------------
@@ -1226,15 +1246,7 @@ package body SPARK_Util is
                                    return Boolean
    is
    begin
-      --  Tasks are considered to have Async_Readers and Async_Writers
-      if Ekind (Etype (E)) in Task_Kind then
-         return P in Pragma_Async_Readers | Pragma_Async_Writers;
-      end if;
-
-      --  ??? how about arrays and records with protected or task components?
-
-      --  Q: Why restrict the property of volatility for IN and OUT
-      --  parameters???
+      --  Q: Why restrict the property of volatility for IN and OUT parameters?
       --
       --  A: See SRM 7.1.3. In short when passing a volatile through a
       --  parameter we present a 'worst case but sane' view of the volatile,
@@ -1764,36 +1776,44 @@ package body SPARK_Util is
      (Nkind (N) = N_Function_Call
         and then Is_Predicate_Function (Entity (Name (N))));
 
-   ----------------------------------------
-   -- Is_Predefined_Initialized_Variable --
-   ----------------------------------------
+   --------------------------------------
+   -- Is_Predefined_Initialized_Entity --
+   --------------------------------------
 
-   function Is_Predefined_Initialized_Variable (E : Entity_Id) return Boolean
-   is
+   function Is_Predefined_Initialized_Entity (E : Entity_Id) return Boolean is
    begin
-      if Ekind (E) = E_Variable
-        and then In_Predefined_Unit (E)
-      then
-         --  In general E might not be in SPARK (e.g. if it came from the front
-         --  end globals), so we prefer not to risk a precise check and crash
-         --  by an accident. Instead, we do a simple and robust check that is
-         --  known to be potentially incomplete (e.g. it will not recognize
-         --  variables with default initialization).
-         declare
-            Full_Type : constant Entity_Id :=
-              (if Is_Private_Type (Etype (E))
-               then Full_View (Etype (E))
-               else Etype (E));
-
-         begin
-            return (Is_Scalar_Type (Full_Type)
-                    or else Is_Access_Type (Full_Type))
-              and then Present (Expression (Parent (E)));
-         end;
+      --  In general E might not be in SPARK (e.g. if it came from the front
+      --  end globals), so we prefer not to risk a precise check and crash
+      --  by an accident. Instead, we do a simple and robust check that is
+      --  known to be potentially incomplete (e.g. it will not recognize
+      --  variables with default initialization).
+      if In_Predefined_Unit (E) then
+         case Ekind (E) is
+            when E_Variable =>
+               declare
+                  Full_Type : constant Entity_Id :=
+                    (if Is_Private_Type (Etype (E))
+                     then Full_View (Etype (E))
+                     else Etype (E));
+               begin
+                  return (Is_Scalar_Type (Full_Type)
+                          or else Is_Access_Type (Full_Type))
+                    and then Present (Expression (Parent (E)));
+               end;
+            when E_Abstract_State =>
+               declare
+                  Initializes : constant Dependency_Maps.Map :=
+                    Parse_Initializes (Scope (E), Get_Flow_Scope (Scope (E)));
+               begin
+                  return Initializes.Contains (Direct_Mapping_Id (E));
+               end;
+            when others =>
+               return False;
+         end case;
       else
          return False;
       end if;
-   end Is_Predefined_Initialized_Variable;
+   end Is_Predefined_Initialized_Entity;
 
    -------------------------------------
    -- Is_Protected_Component_Or_Discr --
@@ -1805,7 +1825,7 @@ package body SPARK_Util is
       --  protected types, e.g. in pragma Priority) or as E_Discriminant
       --  (everywhere else).
       return Ekind (E) in E_Component | E_Discriminant | E_In_Parameter
-        and then Ekind (Scope (E)) in E_Protected_Type;
+        and then Ekind (Scope (E)) = E_Protected_Type;
    end Is_Protected_Component_Or_Discr;
 
    ------------------------------
@@ -1963,7 +1983,7 @@ package body SPARK_Util is
 
    function Root_Record_Component (E : Entity_Id) return Entity_Id is
       Rec_Type : constant Entity_Id := Retysp (Scope (E));
-      Root     : constant Entity_Id := Root_Record_Type (Rec_Type);
+      Root     : constant Entity_Id := Root_Retysp (Rec_Type);
 
    begin
       --  If E is the component of a root type, return it

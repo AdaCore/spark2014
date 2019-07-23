@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -54,6 +54,8 @@ package String_Utils is
 
    procedure Lower_Case_First (S : in out String);
    --  Modify S in place to capitalize the first character
+
+   function Lower_Case_First (S : String) return String;
 
    function Standard_Ada_Case (S : String) return String;
    --  Return a string with standard Ada case, where each word separated by an

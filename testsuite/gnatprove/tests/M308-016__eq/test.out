@@ -1,7 +1,5 @@
 q.adb:7:16: info: discriminant check proved (CVC4: 1 VC)
 q.adb:9:16: info: discriminant check proved (CVC4: 1 VC)
-q.adb:11:14: info: initialization of "Res.A" proved
-q.adb:11:14: info: initialization of "Res.C" proved
-q.adb:16:09: medium: discriminant check might fail (e.g. when X = (B => True, A => 0, C => False))
-q.adb:17:09: medium: discriminant check might fail (e.g. when Y = (B => True, A => 0, C => False))
-q.ads:23:14: medium: postcondition might fail, cannot prove X = Y (e.g. when X = (B => ?, A => 0, C => False) and X'Old = (B => True, others => ?) and Y = (B => ?, A => -1, C => False) and Y'Old = (B => True, others => ?))
+q.adb:16:09: medium: discriminant check might fail
+q.adb:17:09: medium: discriminant check might fail (e.g. when Y = (B => ?, A => 0, C => True))
+q.ads:23:14: medium: postcondition might fail, cannot prove X = Y (e.g. when X = (B => ?, A => -1, C => False) and Y = (B => ?, A => -1, C => True))

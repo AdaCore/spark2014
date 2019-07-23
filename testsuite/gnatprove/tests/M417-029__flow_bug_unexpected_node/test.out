@@ -1,31 +1,18 @@
-clock.adb:8:40: info: initialization of "Current_Time.Hours" constituent of "State" proved
-clock.adb:8:40: info: initialization of "Current_Time.Minutes" constituent of "State" proved
-clock.adb:8:40: info: initialization of "Current_Time.Seconds" constituent of "State" proved
+clock.adb:8:40: info: initialization of "Current_Time" constituent of "State" proved
 clock.adb:18:27: info: precondition proved (CVC4: 1 VC)
-clock.ads:13:16: info: initialization of "Current_Time.Hours" constituent of "State" proved
-clock.ads:13:16: info: initialization of "Current_Time.Minutes" constituent of "State" proved
-clock.ads:13:16: info: initialization of "Current_Time.Seconds" constituent of "State" proved
+clock.ads:8:06: info: data dependencies proved
+clock.ads:12:06: info: data dependencies proved
 clock.ads:13:16: info: postcondition proved (CVC4: 1 VC)
+clock.ads:17:06: info: data dependencies proved
 clock.ads:19:16: info: postcondition proved (CVC4: 1 VC)
 clock.ads:19:39: info: precondition proved (CVC4: 1 VC)
-time.adb:7:28: info: initialization of "Result.Seconds" proved
 time.adb:7:43: info: range check proved (CVC4: 1 VC)
-time.adb:8:17: info: initialization of "Result.Hours" proved
-time.adb:8:17: info: initialization of "Result.Minutes" proved
-time.adb:8:17: info: initialization of "Result.Seconds" proved
-time.adb:14:31: info: initialization of "Result.Minutes" proved
 time.adb:14:46: info: range check proved (CVC4: 1 VC)
-time.adb:15:20: info: initialization of "Result.Hours" proved
-time.adb:15:20: info: initialization of "Result.Minutes" proved
-time.adb:15:20: info: initialization of "Result.Seconds" proved
-time.adb:19:29: info: initialization of "Result.Hours" proved
 time.adb:19:42: info: overflow check proved (CVC4: 1 VC)
-time.adb:20:20: info: initialization of "Result.Hours" proved
-time.adb:20:20: info: initialization of "Result.Minutes" proved
-time.adb:20:20: info: initialization of "Result.Seconds" proved
+time.ads:23:05: info: data dependencies proved
 time.ads:25:05: info: complete contract cases proved (CVC4: 1 VC)
 time.ads:25:05: info: disjoint contract cases proved (CVC4: 1 VC)
-time.ads:27:08: info: contract case proved (CVC4: 4 VC)
-time.ads:34:08: info: contract case proved (CVC4: 4 VC)
-time.ads:41:08: info: contract case proved (CVC4: 4 VC)
+time.ads:27:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
+time.ads:34:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
+time.ads:41:08: info: contract case proved (CVC4: 3 VC; Trivial: 1 VC)
 time.ads:44:54: info: overflow check proved (CVC4: 1 VC)

@@ -2,5 +2,5 @@ global_contracts-accessors.ads:9:06: "Global_Contracts.S1" is referenced in Pre 
 global_contracts-accessors.ads:9:06: "Global_Contracts.S1" is referenced in Pre but missing from the Global
 global_contracts.ads:3:22: warning: no procedure exists that can initialize abstract state "Global_Contracts.S1"
 global_contracts.ads:3:26: warning: no procedure exists that can initialize abstract state "Global_Contracts.S2"
-main.adb:3:11: medium: "Global_Contracts.S2" might not be initialized after elaboration of main program "Main"
+main.adb:6:35: medium: "Global_Contracts.S2" might not be initialized after elaboration of main program "Main"
 gnatprove: error during flow analysis and proof

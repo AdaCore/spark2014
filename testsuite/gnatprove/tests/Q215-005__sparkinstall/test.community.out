@@ -1,0 +1,32 @@
+main bin/ dir
+gnatprove
+libexec/spark/bin/ dir
+alt-ergo
+cvc4
+gcc
+gnat2why
+gnat_server
+gnatbind
+gnatls
+gnatwhy3
+gprbuild
+gprclean
+gprconfig
+gprls
+gprname
+gprslave
+spark_memcached_wrapper
+spark_report
+target.atp
+why3config
+why3cpulimit
+why3realize
+why3server
+why3session
+z3
+libexec/spark/share dir
+gcc-8.3.1
+gpr
+gprconfig
+info
+man

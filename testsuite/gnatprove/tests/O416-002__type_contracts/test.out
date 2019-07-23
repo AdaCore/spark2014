@@ -1,13 +1,13 @@
 communications.adb:5:38: medium: predicate check might fail
-communications.adb:7:16: info: length check proved (CVC4: 4 VC)
-communications.adb:7:19: info: length check proved (CVC4: 4 VC)
+communications.adb:7:16: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+communications.adb:7:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+communications.adb:11:07: info: initialization of "Coms" proved
 communications.adb:11:30: info: range check proved (CVC4: 1 VC)
-communications.adb:11:30: medium: range check might fail
-communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'SOH'), Received => (others => 'SOH'))) and A'First = -2147483647 and A'Last = 0)
-communications.adb:13:17: info: length check proved (CVC4: 4 VC)
-communications.adb:13:20: info: length check proved (CVC4: 4 VC)
-communications.adb:14:14: info: initialization of "Coms.Msgs" proved
-communications.ads:10:13: medium: invariant check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = 0 and Coms = (Num => ?, Msgs => (others => (Sent => (others => 'NUL'), Received => (others => 'NUL')))) and Coms.Msgs'First = 0 and Coms.Msgs'Last = 0 and Create'Result = (Num => 0, Msgs => (others => (Sent => (others => 'NUL'), Received => (others => 'NUL')))) and Create'Result.Msgs'First = 0 and Create'Result.Msgs'Last = 0)
+communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = -1)
+communications.adb:11:30: medium: range check might fail (e.g. when A = (others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 0 and A'Last = 2147483647)
+communications.adb:13:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+communications.adb:13:20: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+communications.ads:10:13: medium: invariant check might fail (e.g. when A = (1 => (Sent => (others => 'NUL'), Received => (others => 'NUL')), 2 => (Sent => (others => 'NUL'), Received => (others => 'NUL')), others => (Sent => (others => 'NUL'), Received => (others => 'NUL'))) and A'First = 3 and A'Last = 4 and Create'Result = (Num => 2, Msgs => (1 => (Sent => (others => 'NUL'), Received => (others => 'NUL')), 2 => (Sent => (others => 'NUL'), Received => (others => 'NUL')), others => (Sent => (others => 'NUL'), Received => (others => 'NUL')))) and Create'Result.Msgs'First = 3 and Create'Result.Msgs'Last = 4)
 communications.ads:12:14: info: invariant check proved (CVC4: 1 VC)
 communications.ads:12:31: warning: unused initial value of "Com"
 communications.ads:16:09: medium: invariant check might fail on default value
@@ -16,12 +16,8 @@ communications.ads:21:30: info: index check proved (CVC4: 2 VC)
 communications.ads:21:69: info: index check proved (CVC4: 2 VC)
 communications.ads:21:69: info: overflow check proved (CVC4: 1 VC)
 days.adb:9:25: info: range check proved (CVC4: 1 VC)
-days.adb:16:13: info: initialization of "Tmp" proved
-days.adb:17:13: info: initialization of "Tmp" proved
-days.adb:18:16: info: initialization of "Tmp" proved
-days.adb:20:12: info: initialization of "Tmp" proved
 days.adb:20:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:5:07: medium: predicate check might fail
 main.adb:6:07: medium: predicate check might fail
 main.adb:7:26: info: range check proved (CVC4: 1 VC)
-messages.adb:6:12: medium: predicate check might fail (e.g. when M = (Sent => (9 => 'NUL', others => 'SOH'), Received => (9 => 'SOH', others => 'NUL'))) [possible explanation: subprogram at line 4 should mention M in a precondition]
+messages.adb:6:12: medium: predicate check might fail (e.g. when M = (Sent => (10 => 'SOH', others => 'NUL'), Received => (10 => 'NUL', others => 'SOH'))) [possible explanation: subprogram at messages.ads:12 should mention M in a precondition]

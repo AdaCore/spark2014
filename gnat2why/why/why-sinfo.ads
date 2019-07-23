@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -813,6 +813,9 @@ package Why.Sinfo is
 
       EW_Split,
 
+      --  This is a special marker for wrapper types for initialization
+
+      EW_Wrapper,
       EW_Abstract);
 
    type EW_Literal is

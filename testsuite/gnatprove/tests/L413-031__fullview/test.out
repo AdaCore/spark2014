@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at int_list.ads:10
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at int_list.ads:10
@@ -20,7 +21,6 @@ a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at int_list.ads:10
 a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at int_list.ads:10
 int_list.adb:4:07: info: precondition proved (CVC4: 1 VC)
-int_list.adb:10:29: info: initialization of "C.Node" proved
 int_list.adb:12:13: info: loop invariant initialization proved (CVC4: 1 VC)
 int_list.adb:12:13: info: loop invariant preservation proved (CVC4: 1 VC)
 int_list.adb:13:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -28,33 +28,28 @@ int_list.adb:13:33: info: loop invariant preservation proved (CVC4: 1 VC)
 int_list.adb:15:13: info: loop invariant initialization proved (CVC4: 1 VC)
 int_list.adb:15:13: info: loop invariant preservation proved (CVC4: 1 VC)
 int_list.adb:15:32: info: precondition proved (CVC4: 2 VC)
-int_list.adb:15:53: info: initialization of "C.Node" proved
 int_list.adb:16:15: info: precondition proved (CVC4: 4 VC)
 int_list.adb:16:40: info: precondition proved (CVC4: 4 VC)
 int_list.adb:18:13: info: loop invariant initialization proved (CVC4: 1 VC)
 int_list.adb:18:13: info: loop invariant preservation proved (CVC4: 1 VC)
 int_list.adb:18:27: info: precondition proved (CVC4: 2 VC)
-int_list.adb:18:48: info: initialization of "C.Node" proved
 int_list.adb:19:15: info: precondition proved (CVC4: 4 VC)
 int_list.adb:19:35: info: range check proved (CVC4: 2 VC)
 int_list.adb:19:40: info: precondition proved (CVC4: 4 VC)
 int_list.adb:19:71: info: range check proved (CVC4: 2 VC)
 int_list.adb:20:10: info: precondition proved (CVC4: 1 VC)
-int_list.adb:20:30: info: initialization of "C.Node" proved
 int_list.adb:20:33: info: precondition proved (CVC4: 1 VC)
-int_list.adb:20:45: info: initialization of "C.Node" proved
 int_list.adb:20:48: info: range check proved (CVC4: 1 VC)
 int_list.adb:21:10: info: precondition proved (CVC4: 1 VC)
-int_list.adb:21:19: info: initialization of "C.Node" proved
 int_list.ads:17:08: info: postcondition proved (CVC4: 3 VC)
 int_list.ads:17:08: info: precondition proved (CVC4: 1 VC)
 int_list.ads:19:38: info: overflow check proved (CVC4: 1 VC)
-int_list.ads:21:09: info: precondition proved (CVC4: 1 VC)
+int_list.ads:21:09: info: precondition proved (Trivial: 1 VC)
 int_list.ads:21:31: info: precondition proved (CVC4: 1 VC)
 int_list.ads:21:48: info: precondition proved (CVC4: 1 VC)
-int_list.ads:24:15: info: precondition proved (CVC4: 1 VC)
+int_list.ads:24:15: info: precondition proved (Trivial: 1 VC)
 int_list.ads:24:33: info: precondition proved (CVC4: 1 VC)
 int_list.ads:26:08: info: postcondition proved (CVC4: 3 VC)
-int_list.ads:27:07: info: precondition proved (CVC4: 1 VC)
+int_list.ads:27:07: info: precondition proved (Trivial: 1 VC)
 int_list.ads:28:11: info: precondition proved (CVC4: 1 VC)
 int_list.ads:28:28: info: precondition proved (CVC4: 1 VC)

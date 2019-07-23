@@ -1,11 +1,12 @@
 no_return_illegal.adb:11:07: medium: exception might be raised
 no_return_illegal.adb:17:10: medium: call to nonreturning subprogram might be executed
-no_return_illegal.adb:18:12: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(16))
+no_return_illegal.adb:18:12: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(17))
+no_return_illegal.adb:18:17: info: overflow check proved (CVC4: 1 VC)
 no_return_illegal.adb:25:10: medium: call to nonreturning subprogram might be executed
 no_return_illegal.adb:27:17: info: overflow check proved (CVC4: 1 VC)
 no_return_illegal.adb:34:10: medium: call to nonreturning subprogram might be executed
-no_return_illegal.adb:36:17: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 31 should mention X in a precondition]
-no_return_illegal.adb:42:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at line 40 should mention X in a precondition]
+no_return_illegal.adb:36:17: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at no_return_illegal.ads:10 should mention X in a precondition]
+no_return_illegal.adb:42:14: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at no_return_illegal.ads:12 should mention X in a precondition]
 no_return_illegal.adb:43:07: medium: call to nonreturning subprogram might be executed
 no_return_illegal.ads:12:14: high: all paths in "P5" raise exceptions or do not terminate normally
 no_return_illegal.ads:12:14: warning: "X" is not modified, could be INPUT

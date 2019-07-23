@@ -1,6 +1,6 @@
 with List_Allocator; use List_Allocator;
 
-procedure Test_Allocator with SPARK_Mode is
+procedure Test_Allocator is
    Res1, Res2, Res3, Res4 : Resource;
 begin
    Alloc (Res1);

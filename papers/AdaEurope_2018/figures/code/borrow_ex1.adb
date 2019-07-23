@@ -20,5 +20,5 @@ Y : Int_Ptr := new Integer'(17);
 Swap_Contents(X, Y);
 	(...)
 end borrow_ex1;
-	
+
 

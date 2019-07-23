@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2014-2018, Altran UK Limited                 --
---               Copyright (C) 2014-2018, AdaCore                           --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
+--                     Copyright (C) 2014-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -22,8 +22,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols; use GNATCOLL.Symbols;
-with Sem_Util;         use Sem_Util;
+with Sem_Util; use Sem_Util;
 
 package body Common_Containers is
 

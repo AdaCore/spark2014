@@ -3,23 +3,15 @@ update_examples.ads:30:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:38:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:54:19: info: postcondition proved (CVC4: 1 VC)
 update_examples.ads:69:08: info: postcondition proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:7:10: info: initialization of "I" proved
-loop_var_loop_invar.adb:8:30: info: initialization of "R" proved
 loop_var_loop_invar.adb:8:30: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:8:30: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_var_loop_invar.adb:8:39: info: overflow check proved (CVC4: 2 VC)
 loop_var_loop_invar.adb:8:44: info: overflow check proved (CVC4: 2 VC)
-loop_var_loop_invar.adb:8:46: info: initialization of "I" proved
 loop_var_loop_invar.adb:9:07: info: loop variant proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:9:41: info: initialization of "I" proved
-loop_var_loop_invar.adb:10:41: info: initialization of "R" proved
-loop_var_loop_invar.adb:11:12: info: initialization of "R" proved
 loop_var_loop_invar.adb:11:14: info: range check proved (CVC4: 1 VC)
-loop_var_loop_invar.adb:11:16: info: initialization of "I" proved
-loop_var_loop_invar.adb:12:12: info: initialization of "I" proved
 loop_var_loop_invar.adb:12:14: info: range check proved (CVC4: 1 VC)
 reverse_ord.adb:7:19: info: postcondition proved (CVC4: 2 VC)
-reverse_ord.adb:15:36: info: initialization of "Temp" proved
+reverse_ord.adb:10:07: info: initialization of "Temp" proved
 reverse_ord.adb:18:13: info: loop invariant initialization proved (CVC4: 3 VC)
 reverse_ord.adb:18:13: info: loop invariant preservation proved (CVC4: 3 VC)
 reverse_ord.adb:19:19: info: index check proved (CVC4: 4 VC)
@@ -30,41 +22,40 @@ reverse_ord.adb:24:21: info: index check proved (CVC4: 4 VC)
 reverse_ord.adb:24:40: info: index check proved (CVC4: 4 VC)
 up_timer.adb:14:36: info: overflow check proved (CVC4: 1 VC)
 f.adb:3:16: info: postcondition proved (CVC4: 2 VC)
+f.adb:7:04: info: initialization of "Valid" proved
 f.adb:10:16: info: range check proved (CVC4: 4 VC)
 f.adb:10:38: info: overflow check proved (CVC4: 1 VC)
-f.adb:11:10: info: initialization of "Valid" proved
 f.adb:11:36: info: index check proved (CVC4: 2 VC)
 f.adb:11:36: info: overflow check proved (CVC4: 1 VC)
 f.adb:13:26: info: range check proved (CVC4: 1 VC)
 f.adb:13:37: info: index check proved (CVC4: 2 VC)
 f.adb:13:37: info: overflow check proved (CVC4: 1 VC)
-f.adb:21:27: info: assertion proved (CVC4: 2 VC)
-f.adb:21:30: info: initialization of "Valid" proved
+f.adb:21:27: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 f.adb:21:41: medium: "Control_Char" might not be initialized
-f.adb:33:07: info: initialization of "Valid" proved
 f.adb:34:12: medium: "Control_Char" might not be initialized
 param_1_illegal.adb:5:28: medium: "X" might not be initialized in "Param_1_Illegal"
 param_1_illegal.adb:9:10: info: index check proved (CVC4: 2 VC)
-param_1_illegal.adb:9:13: medium: "X" might not be initialized
 param_1_legal.adb:7:10: info: index check proved (CVC4: 2 VC)
 anti_aliasing.adb:62:16: writable actual for "X" overlaps with actual for "Y"
 gnatprove: error during generation of Global contracts
-refined_global_examples.adb:6:04: info: initialization of "A" constituent of "S1" proved
-refined_global_examples.adb:7:04: info: initialization of "B" constituent of "S1" proved
 refined_global_examples.adb:14:40: info: initialization of "B" constituent of "S1" proved
 refined_global_examples.adb:23:40: info: initialization of "A" constituent of "S1" proved
 refined_global_examples.adb:41:41: info: initialization of "A" constituent of "S1" proved
 refined_global_examples.adb:41:44: info: initialization of "B" constituent of "S1" proved
-refined_global_examples.adb:48:12: info: initialization of "A" constituent of "S1" proved
 refined_global_examples.adb:54:40: info: initialization of "Z" constituent of "S2" proved
 refined_global_examples.adb:72:41: info: initialization of "X" constituent of "S2" proved
 refined_global_examples.adb:72:44: info: initialization of "Y" constituent of "S2" proved
 refined_global_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Global_Examples.S2"
-refined_global_examples.ads:6:04: info: initialization of "V1" proved
+refined_global_examples.ads:4:08: info: flow dependencies proved
+refined_global_examples.ads:9:11: info: data dependencies proved
+refined_global_examples.ads:12:11: info: data dependencies proved
 refined_global_examples.ads:14:20: info: initialization of "Result" proved
+refined_global_examples.ads:15:11: info: data dependencies proved
+refined_global_examples.ads:18:11: info: data dependencies proved
+refined_global_examples.ads:21:11: info: data dependencies proved
+refined_global_examples.ads:25:11: info: data dependencies proved
 refined_global_examples.ads:25:32: info: initialization of "V1" proved
-refined_depends_examples.adb:6:04: info: initialization of "A" constituent of "S1" proved
-refined_depends_examples.adb:7:04: info: initialization of "B" constituent of "S1" proved
+refined_global_examples.ads:28:11: info: data dependencies proved
 refined_depends_examples.adb:14:41: info: initialization of "B" constituent of "S1" proved
 refined_depends_examples.adb:27:41: info: initialization of "A" constituent of "S1" proved
 refined_depends_examples.adb:48:42: info: initialization of "A" constituent of "S1" proved
@@ -73,20 +64,32 @@ refined_depends_examples.adb:61:41: info: initialization of "Z" constituent of "
 refined_depends_examples.adb:80:42: info: initialization of "X" constituent of "S2" proved
 refined_depends_examples.adb:80:45: info: initialization of "Y" constituent of "S2" proved
 refined_depends_examples.ads:3:31: warning: no procedure exists that can initialize abstract state "Refined_Depends_Examples.S2"
-refined_depends_examples.ads:6:04: info: initialization of "V1" proved
+refined_depends_examples.ads:4:08: info: flow dependencies proved
+refined_depends_examples.ads:9:11: info: data dependencies proved
+refined_depends_examples.ads:10:11: info: flow dependencies proved
+refined_depends_examples.ads:13:11: info: data dependencies proved
+refined_depends_examples.ads:14:11: info: flow dependencies proved
 refined_depends_examples.ads:16:20: info: initialization of "Result" proved
+refined_depends_examples.ads:17:11: info: data dependencies proved
+refined_depends_examples.ads:18:11: info: flow dependencies proved
+refined_depends_examples.ads:21:11: info: data dependencies proved
+refined_depends_examples.ads:22:11: info: flow dependencies proved
+refined_depends_examples.ads:25:11: info: data dependencies proved
+refined_depends_examples.ads:27:11: info: flow dependencies proved
+refined_depends_examples.ads:30:11: info: data dependencies proved
 refined_depends_examples.ads:30:33: info: initialization of "V1" proved
+refined_depends_examples.ads:31:11: info: flow dependencies proved
+refined_depends_examples.ads:34:11: info: data dependencies proved
+refined_depends_examples.ads:36:11: info: flow dependencies proved
 stacks_1.adb:16:27: info: refined post proved (CVC4: 2 VC)
 stacks_1.adb:17:44: info: range check proved (CVC4: 1 VC)
 stacks_1.adb:23:30: info: range check proved (CVC4: 1 VC)
 stacks_1.adb:24:18: info: index check proved (CVC4: 2 VC)
-stacks_1.adb:28:27: medium: refined postcondition might fail (e.g. when S = (Pointer => 0, Vector => ?) and S'Old = (Pointer => 0, Vector => ?)) [possible explanation: subprogram at line 27 should mention S in a precondition]
+stacks_1.adb:28:27: medium: refined postcondition might fail, cannot prove S.Pointer = S.Pointer'Old - 1
 stacks_1.adb:34:33: info: range check proved (CVC4: 1 VC)
 stacks_1.adb:38:64: info: index check proved (CVC4: 2 VC)
 stacks_1.ads:14:19: info: postcondition proved (CVC4: 1 VC)
 stacks_1.ads:17:19: info: postcondition proved (CVC4: 1 VC)
-stacks_2.adb:7:04: info: initialization of "A_Pointer" constituent of "The_Stack" proved
-stacks_2.adb:8:04: info: initialization of "A_Vector" constituent of "The_Stack" proved
 stacks_2.adb:15:29: info: refined post proved (CVC4: 2 VC)
 stacks_2.adb:25:29: info: refined post proved (CVC4: 2 VC)
 stacks_2.adb:34:29: info: refined post proved (CVC4: 2 VC)
@@ -94,46 +97,74 @@ stacks_2.adb:35:61: info: range check proved (CVC4: 1 VC)
 stacks_2.adb:40:30: info: range check proved (CVC4: 1 VC)
 stacks_2.adb:41:17: info: index check proved (CVC4: 2 VC)
 stacks_2.adb:46:29: info: refined post proved (CVC4: 1 VC)
-stacks_2.adb:51:30: medium: range check might fail (e.g. when A_Pointer = 0) [possible explanation: subprogram at line 44 should mention A_Pointer in a precondition]
+stacks_2.adb:51:30: medium: range check might fail [possible explanation: subprogram at stacks_2.ads:19 should mention A_Pointer in a precondition]
 stacks_2.adb:54:46: info: index check proved (CVC4: 2 VC)
+stacks_2.ads:4:08: info: flow dependencies proved
+stacks_2.ads:7:11: info: data dependencies proved
+stacks_2.ads:11:11: info: data dependencies proved
+stacks_2.ads:15:11: info: data dependencies proved
 stacks_2.ads:17:21: info: postcondition proved (CVC4: 1 VC)
+stacks_2.ads:20:11: info: data dependencies proved
 stacks_2.ads:21:16: info: postcondition proved (CVC4: 1 VC)
-externals.adb:25:04: info: initialization of "Saved_Value" constituent of "Complex_Device" proved
+stacks_2.ads:24:11: info: data dependencies proved
 externals.adb:27:04: high: "Out_Reg" constituent of "Complex_Device" is not written in "Externals"
 externals.adb:27:04: high: initialization of "Externals.Complex_Device" is specified at externals.ads:8
-externals.adb:49:25: info: initialization of "Press" proved
-externals.adb:49:31: medium: overflow check might fail [possible explanation: call at line 48 should mention Press (for argument Press) in a postcondition]
-externals.adb:49:33: info: initialization of "Temp" proved
+externals.adb:43:07: info: initialization of "Temp" proved
+externals.adb:44:07: info: initialization of "Press" proved
+externals.adb:49:31: medium: overflow check might fail (e.g. when Press = -341 and Temp = -1740262) [possible explanation: call at line 48 should mention Press (for argument Press) in a postcondition]
 externals.adb:49:38: medium: overflow check might fail (e.g. when Temp = -1740263) [possible explanation: call at line 47 should mention Temp (for argument Temp) in a postcondition]
 externals.adb:53:54: info: initialization of "Main_Display.State" constituent of "Externals.Displays" proved
 externals.adb:54:59: info: initialization of "Secondary_Display.State" constituent of "Externals.Displays" proved
 externals.adb:74:41: medium: "Out_Reg" constituent of "Complex_Device" might not be written
+externals.adb:85:07: info: initialization of "Status" proved
 externals.adb:89:20: warning: unused assignment
 externals.adb:92:13: warning: statement has no effect
-externals.adb:92:23: info: initialization of "Status" proved
+externals.ads:8:08: info: flow dependencies proved
 externals.ads:10:20: info: initialization of "Combined_Value" proved
-hal.adb:76:20: info: initialization of "Current_Status" proved
-hal.adb:78:13: info: initialization of "Next_Byte" proved
+externals.ads:11:11: info: data dependencies proved
+externals.ads:15:11: info: flow dependencies proved
+externals.ads:18:11: info: data dependencies proved
+externals.ads:22:11: info: flow dependencies proved
+externals.ads:26:11: info: data dependencies proved
+externals.ads:35:11: info: data dependencies proved
+externals.ads:36:11: info: flow dependencies proved
+hal.adb:70:07: info: initialization of "Current_Status" proved
+hal.adb:71:07: info: initialization of "Next_Byte" proved
 hal.adb:94:41: info: initialization of "Write_FIFO" constituent of "Serial_Out" proved
 hal.adb:102:41: info: initialization of "Control" constituent of "FIFO_Control" proved
 hal.adb:111:41: info: initialization of "Control" constituent of "FIFO_Control" proved
-hal.adb:127:10: info: initialization of "Watch_Dog_OK" proved
+hal.adb:124:07: info: initialization of "Watch_Dog_OK" proved
 hal.ads:27:24: info: initialization of "A_Byte" proved
+hal.ads:28:11: info: data dependencies proved
+hal.ads:29:11: info: flow dependencies proved
 hal.ads:35:44: info: initialization of "Found" proved
+hal.ads:36:11: info: data dependencies proved
+hal.ads:38:11: info: flow dependencies proved
 hal.ads:44:31: info: initialization of "A_Byte" proved
+hal.ads:45:11: info: data dependencies proved
+hal.ads:46:11: info: flow dependencies proved
+hal.ads:51:11: info: data dependencies proved
+hal.ads:52:11: info: flow dependencies proved
+hal.ads:57:11: info: data dependencies proved
+hal.ads:58:11: info: flow dependencies proved
+hal.ads:63:11: info: data dependencies proved
+hal.ads:64:11: info: flow dependencies proved
 hal.ads:69:30: info: initialization of "Result" proved
-inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [possible explanation: subprogram at line 6 should mention I in a precondition]
-intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [possible explanation: subprogram at line 3 should mention I in a precondition]
+hal.ads:70:11: info: data dependencies proved
+hal.ads:71:11: info: flow dependencies proved
+inter_unit_elaboration_examples.adb:8:14: medium: overflow check might fail (e.g. when I = -1073741825) [possible explanation: subprogram at inter_unit_elaboration_examples.ads:10 should mention I in a precondition]
+intra_unit_elaboration_order_examples.adb:3:50: medium: overflow check might fail (e.g. when I = Integer'Last) [possible explanation: subprogram at intra_unit_elaboration_order_examples.ads:26 should mention I in a precondition]
 intra_unit_elaboration_order_examples.adb:20:17: info: overflow check proved (CVC4: 1 VC)
-intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail (e.g. when A = -1 and Y = Integer'First) [possible explanation: subprogram at line 33 should mention A and Y in a precondition]
-intra_unit_elaboration_order_examples.adb:42:07: info: initialization of "X" proved
-intra_unit_elaboration_order_examples.ads:12:04: info: initialization of "X" proved
+intra_unit_elaboration_order_examples.adb:35:14: medium: overflow check might fail (e.g. when A = Integer'First and Y = -1) [possible explanation: subprogram at intra_unit_elaboration_order_examples.ads:23 should mention A and Y in a precondition]
+intra_unit_elaboration_order_examples.ads:4:08: info: flow dependencies proved
 intra_unit_elaboration_order_examples.ads:17:04: info: initialization of "Y" proved
 intra_unit_elaboration_order_examples.ads:20:19: info: postcondition proved (CVC4: 1 VC)
+intra_unit_elaboration_order_examples.ads:24:11: info: data dependencies proved
 intra_unit_elaboration_order_examples.ads:27:50: medium: overflow check might fail (e.g. when J = -1073741826) [possible explanation: subprogram at line 27 should mention J in a precondition]
+initialization_and_elaboration.ads:6:08: info: flow dependencies proved
 initialization_and_elaboration.ads:8:08: medium: initial condition might fail
-initialization_and_elaboration.ads:8:29: info: initialization of "V" proved
-initialization_and_elaboration.ads:10:04: info: initialization of "V" proved
+initialization_and_elaboration.ads:13:11: info: data dependencies proved
+initialization_and_elaboration.ads:16:11: info: data dependencies proved
 f.adb:5
 f.adb:9
 f.adb:18

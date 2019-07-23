@@ -1,21 +1,21 @@
-call_actuals.adb:8:14: medium: overflow check might fail (e.g. when G = Integer'Last and Y = 0) [possible explanation: subprogram at line 5 should mention G in a precondition]
-call_actuals.adb:13:12: medium: range check might fail (e.g. when G = -1 and X = 0) [possible explanation: subprogram at line 11 should mention G in a precondition]
+call_actuals.adb:8:14: info: overflow check proved (CodePeer)
+call_actuals.adb:13:12: info: range check proved (CodePeer)
+call_actuals.adb:14:14: info: overflow check proved (CodePeer)
 call_actuals.adb:14:14: info: range check proved (CodePeer)
-call_actuals.adb:14:14: medium: overflow check might fail (e.g. when G = Integer'Last and Y = 0) [possible explanation: subprogram at line 11 should mention G in a precondition]
-call_actuals.adb:19:14: medium: range check might fail (e.g. when G = -21 and X = 0) [possible explanation: subprogram at line 17 should mention G in a precondition]
+call_actuals.adb:19:14: info: range check proved (CodePeer)
 call_actuals.adb:20:14: info: range check proved (CodePeer)
-call_actuals.adb:20:17: medium: range check might fail (e.g. when Y = 0) [possible explanation: subprogram at line 17 should mention G in a precondition]
-call_actuals.adb:25:15: medium: range check might fail (e.g. when G = -1 and X = 0) [possible explanation: subprogram at line 23 should mention G in a precondition]
+call_actuals.adb:20:17: info: range check proved (CodePeer)
+call_actuals.adb:25:15: info: range check proved (CodePeer)
 call_actuals.adb:26:15: info: range check proved (CodePeer)
-call_actuals.adb:26:18: medium: range check might fail (e.g. when Y = 0) [possible explanation: subprogram at line 23 should mention G in a precondition]
-call_actuals.adb:31:12: medium: range check might fail (e.g. when X = 0) [possible explanation: subprogram at line 29 should mention G in a precondition]
-call_actuals.adb:31:14: medium: range check might fail (e.g. when G = -21 and X = 0) [possible explanation: subprogram at line 29 should mention G in a precondition]
+call_actuals.adb:26:18: info: range check proved (CodePeer)
+call_actuals.adb:31:12: info: range check proved (CodePeer)
+call_actuals.adb:31:14: info: range check proved (CodePeer)
 call_actuals.adb:32:14: info: range check proved (CodePeer)
-call_actuals.adb:32:17: medium: range check might fail (e.g. when Y = 0) [possible explanation: subprogram at line 29 should mention G in a precondition]
+call_actuals.adb:32:17: info: range check proved (CodePeer)
 call_actuals.adb:38:11: info: range check proved (CVC4: 1 VC)
-call_actuals.adb:38:11: medium: range check might fail (e.g. when A1 = -1 and A2 = 0)
+call_actuals.adb:38:11: medium: range check might fail (e.g. when A1 = -1)
 call_actuals.adb:38:15: info: range check proved (CVC4: 1 VC)
-call_actuals.adb:38:15: medium: range check might fail (e.g. when A1 = 0 and A2 = -1)
+call_actuals.adb:38:15: medium: range check might fail (e.g. when A2 = -1)
 call_actuals.adb:41:11: info: range check proved (CVC4: 1 VC)
 call_actuals.adb:41:18: info: range check proved (CVC4: 1 VC)
 call_actuals.ads:7:18: warning: unused initial value of "X"

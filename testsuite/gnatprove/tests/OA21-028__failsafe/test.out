@@ -1,15 +1,10 @@
-counter.adb:7:16: info: initialization of "Res" proved
 counter.adb:7:51: info: index check proved (CVC4: 4 VC)
 counter.adb:8:13: info: loop variant proved (CVC4: 1 VC)
-counter.adb:8:47: info: initialization of "Res" proved
 counter.adb:9:36: info: loop invariant initialization proved (CVC4: 1 VC)
 counter.adb:9:36: info: loop invariant preservation proved (CVC4: 1 VC)
-counter.adb:9:58: info: initialization of "Res" proved
 counter.adb:9:82: info: index check proved (CVC4: 4 VC)
-counter.adb:10:20: info: initialization of "Res" proved
 counter.adb:10:24: info: range check proved (CVC4: 1 VC)
-counter.adb:12:17: info: initialization of "Res" proved
-counter.adb:19:16: info: loop invariant initialization proved (CVC4: 3 VC)
+counter.adb:19:16: info: loop invariant initialization proved (CVC4: 4 VC)
 counter.adb:19:16: info: loop invariant preservation proved (CVC4: 4 VC)
 counter.adb:19:25: info: range check proved (CVC4: 4 VC)
 counter.adb:20:29: info: index check proved (CVC4: 4 VC)
@@ -18,9 +13,9 @@ counter.adb:22:27: info: range check proved (CVC4: 4 VC)
 counter.adb:23:31: info: index check proved (CVC4: 4 VC)
 counter.adb:23:55: info: index check proved (CVC4: 4 VC)
 counter.adb:38:25: info: range check proved (CVC4: 1 VC)
-counter.adb:45:25: info: assertion proved (CVC4: 2 VC)
+counter.adb:45:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 counter.adb:46:76: info: index check proved (CVC4: 2 VC)
-counter.adb:47:25: info: assertion proved (CVC4: 2 VC)
+counter.adb:47:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 counter.adb:48:60: info: index check proved (CVC4: 2 VC)
 counter.adb:50:28: medium: assertion might fail, cannot prove Model.Current_Chain_Length = Count
 counter.ads:21:10: info: postcondition proved (CVC4: 3 VC)
@@ -28,42 +23,36 @@ counter.ads:24:25: info: index check proved (CVC4: 2 VC)
 counter.ads:27:38: info: index check proved (CVC4: 2 VC)
 counter.ads:31:11: info: postcondition proved (CVC4: 4 VC)
 counter.ads:40:14: info: postcondition proved (CVC4: 1 VC)
-failsafe.adb:4:04: info: initialization of "Counter" constituent of "Failsafe_State" proved
-failsafe.adb:12:23: info: initialization of "Res" proved
+counter.ads:41:06: info: data dependencies proved
 failsafe.adb:12:27: info: range check proved (CVC4: 2 VC)
 failsafe.adb:16:28: info: assertion proved (CVC4: 4 VC)
-failsafe.adb:16:28: info: initialization of "Res" proved
 failsafe.adb:18:16: info: loop invariant initialization proved (CVC4: 3 VC)
 failsafe.adb:18:16: info: loop invariant preservation proved (CVC4: 3 VC)
 failsafe.adb:18:50: info: range check proved (CVC4: 2 VC)
 failsafe.adb:19:61: info: range check proved (CVC4: 4 VC)
-failsafe.adb:24:57: info: initialization of "Res" proved
 failsafe.adb:24:61: info: range check proved (CVC4: 4 VC)
-failsafe.adb:26:36: info: initialization of "Res" proved
 failsafe.adb:26:36: info: loop invariant initialization proved (CVC4: 1 VC)
 failsafe.adb:26:36: info: loop invariant preservation proved (CVC4: 1 VC)
-failsafe.adb:28:17: info: initialization of "Res" proved
 failsafe.adb:38:22: info: assertion proved (CVC4: 1 VC)
-failsafe.adb:39:22: info: assertion proved (CVC4: 2 VC)
-failsafe.adb:41:22: info: assertion proved (CVC4: 2 VC)
+failsafe.adb:39:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.adb:41:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 failsafe.adb:49:31: info: range check proved (CVC4: 1 VC)
-failsafe.adb:50:25: info: assertion proved (CVC4: 2 VC)
+failsafe.adb:50:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 failsafe.adb:51:30: warning: unreachable branch (CVC4: 1 VC)
-failsafe.adb:52:25: info: assertion proved (CVC4: 2 VC)
-failsafe.adb:54:25: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
-failsafe.adb:58:25: info: assertion proved (CVC4: 2 VC)
-failsafe.adb:62:25: info: assertion proved (CVC4: 5 VC)
+failsafe.adb:52:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.adb:54:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.adb:58:25: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.adb:62:25: info: assertion proved (CVC4: 4 VC; Trivial: 1 VC)
 failsafe.adb:65:69: info: range check proved (CVC4: 2 VC)
 failsafe.adb:67:66: info: range check proved (CVC4: 1 VC)
 failsafe.adb:68:78: info: range check proved (CVC4: 2 VC)
 failsafe.adb:73:78: info: range check proved (CVC4: 2 VC)
 failsafe.adb:76:25: medium: assertion might fail, cannot prove Counter = (Time_Below_Threshold)
-failsafe.ads:19:07: info: initialization of "Battery_Level_At" proved
-failsafe.ads:20:07: info: initialization of "Current_Time" proved
+failsafe.ads:5:03: info: flow dependencies proved
 failsafe.ads:23:09: info: disjoint contract cases proved (CVC4: 1 VC)
-failsafe.ads:25:64: info: contract case proved (CVC4: 2 VC)
-failsafe.ads:29:80: info: contract case proved (CVC4: 2 VC)
-failsafe.ads:34:19: info: contract case proved (CVC4: 6 VC)
+failsafe.ads:25:64: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.ads:29:80: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+failsafe.ads:34:19: info: contract case proved (CVC4: 5 VC; Trivial: 1 VC)
 failsafe.ads:37:76: info: range check proved (CVC4: 2 VC)
 failsafe.ads:39:73: info: range check proved (CVC4: 1 VC)
 failsafe.ads:40:85: info: range check proved (CVC4: 2 VC)
@@ -71,8 +60,8 @@ failsafe.ads:45:85: info: range check proved (CVC4: 2 VC)
 failsafe.ads:56:14: info: postcondition proved (CVC4: 3 VC)
 failsafe.ads:62:14: info: postcondition proved (CVC4: 3 VC)
 test_failsafe.adb:6:21: info: cannot unroll loop (too many loop iterations)
-test_failsafe.adb:7:07: medium: precondition might fail
-test_failsafe.adb:9:19: medium: assertion might fail, cannot prove not (Is_Raised) [possible explanation: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Failsafe_State in a loop invariant]
+test_failsafe.adb:7:07: medium: precondition might fail, cannot prove (Is_Valid) [possible explanation: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Counter in a loop invariant]
+test_failsafe.adb:9:19: medium: assertion might fail, cannot prove not (Is_Raised) [possible explanation: loop at line 6 should mention Battery_Level_At and Current_Time and Failsafe.Counter in a loop invariant]
 test_failsafe.adb:9:23: info: precondition proved (CVC4: 1 VC)
 test_failsafe.adb:10:04: info: precondition proved (CVC4: 1 VC)
 test_failsafe.adb:11:19: info: precondition proved (CVC4: 1 VC)

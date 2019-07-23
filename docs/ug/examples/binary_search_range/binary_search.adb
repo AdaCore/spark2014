@@ -22,7 +22,7 @@ is
 
       while Left <= Right loop
          pragma Loop_Invariant (Left in A'Range and Right in A'Range);
-         
+
          Med := Left + (Right - Left) / 2;
 
          if A (Med) < I then

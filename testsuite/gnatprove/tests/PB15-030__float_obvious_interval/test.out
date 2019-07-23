@@ -1,1 +1,2 @@
 foo.adb:7:23: info: initialization of "B" proved
+foo.adb:8:09: info: data dependencies proved

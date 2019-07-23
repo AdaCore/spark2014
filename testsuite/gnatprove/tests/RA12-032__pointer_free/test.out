@@ -1,0 +1,4 @@
+lists.adb:18:13: insufficient permission for "Next"
+lists.adb:18:13: object was moved at line 17
+lists.adb:21:04: warning: analyzing unreferenced procedure "Remove_Head_Correct"
+gnatprove: error during flow analysis and proof

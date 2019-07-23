@@ -1,4 +1,5 @@
-p.adb:6:23: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Param in a precondition]
-p.adb:11:23: medium: overflow check might fail [possible explanation: subprogram at line 9 should mention Param in a precondition]
+p.adb:6:23: medium: overflow check might fail [possible explanation: subprogram at p.ads:4 should mention Param in a precondition]
+p.adb:11:23: medium: overflow check might fail [possible explanation: subprogram at p.ads:7 should mention Param in a precondition]
 p.ads:5:24: medium: missing dependency "Sum1'Result => PT"
 p.ads:5:56: medium: incorrect dependency "null => PT"
+p.ads:8:12: info: flow dependencies proved

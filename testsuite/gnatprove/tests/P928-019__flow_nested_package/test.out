@@ -1,12 +1,9 @@
+foo.adb:6:07: info: flow dependencies proved
 foo.adb:8:07: info: initial condition proved (CVC4: 1 VC)
-foo.adb:8:29: info: initialization of "V" proved
-foo.adb:10:07: info: initialization of "V" proved
 foo.adb:10:07: warning: initialization of "V" has no effect
-foo.adb:11:07: info: initialization of "W" proved
 foo.adb:11:07: warning: initialization of "W" has no effect
-foo.adb:14:36: info: initialization of "V" proved
 foo.ads:2:16: info: initialization of "Y" proved
+foo.ads:3:06: info: data dependencies proved
 foo.ads:4:18: medium: missing dependency "Y => Secret"
 foo.ads:5:26: medium: incorrect dependency "null => Secret"
-foo.ads:6:17: info: initialization of "Y" proved
 foo.ads:6:17: medium: postcondition might fail, cannot prove Y = Secret

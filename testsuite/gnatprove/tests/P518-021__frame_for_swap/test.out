@@ -1,65 +1,40 @@
+test_swap_lines.adb:5:07: info: initialization of "Tmp" proved
+test_swap_lines.adb:5:07: info: initialization of "Tmp" proved, in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:8:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:8:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:9:35: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:9:42: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:9:47: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:9:65: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:10:44: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:10:49: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
 test_swap_lines.adb:10:67: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:11:17: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:12:23: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:13:20: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:51
-test_swap_lines.adb:13:23: info: initialization of "Tmp" proved
-test_swap_lines.adb:13:23: info: initialization of "Tmp" proved, in call inlined at test_swap_lines.adb:51
+test_swap_lines.adb:18:07: info: initialization of "Tmp" proved
+test_swap_lines.adb:18:07: info: initialization of "Tmp" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:21:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:21:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:22:35: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:22:42: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:22:47: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:22:65: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:23:44: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:23:49: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:23:67: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:24:33: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:60
+test_swap_lines.adb:24:33: info: loop invariant initialization proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:24:33: info: loop invariant preservation proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:25:35: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:25:42: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:25:47: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:25:65: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:26:44: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:26:49: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:26:67: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:27:17: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:28:27: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:29:24: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:60
-test_swap_lines.adb:29:27: info: initialization of "Tmp" proved
-test_swap_lines.adb:29:27: info: initialization of "Tmp" proved, in call inlined at test_swap_lines.adb:60
 test_swap_lines.adb:36:33: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:36:33: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:37:35: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:38: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:41: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:37:46: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:60: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:63: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:37:66: info: overflow check proved (CVC4: 2 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:38:33: info: loop invariant initialization proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:38:33: info: loop invariant preservation proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:41:46: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:67
+test_swap_lines.adb:38:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at test_swap_lines.adb:67
+test_swap_lines.adb:38:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:49: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:52: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:41:57: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:71: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:41:74: info: index check proved (CVC4: 4 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:42:22: info: initialization of "M" proved, in call inlined at test_swap_lines.adb:67
 test_swap_lines.adb:42:31: info: overflow check proved (CVC4: 1 VC), in call inlined at test_swap_lines.adb:67
-test_swap_lines.adb:51:04: info: initialization of "M" proved
+test_swap_lines.adb:46:04: info: initialization of "M" proved
 test_swap_lines.adb:52:19: info: assertion proved (CVC4: 3 VC)
-test_swap_lines.adb:56:30: info: initialization of "M" proved
-test_swap_lines.adb:60:04: info: initialization of "M" proved
 test_swap_lines.adb:61:19: info: assertion proved (CVC4: 3 VC)
-test_swap_lines.adb:65:30: info: initialization of "M" proved
-test_swap_lines.adb:67:04: info: initialization of "M" proved
 test_swap_lines.adb:68:19: info: assertion proved (CVC4: 2 VC)
-test_swap_lines.adb:71:30: info: initialization of "M" proved

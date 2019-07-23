@@ -6,5 +6,6 @@ user_lemma.adb:16:07: medium: precondition might fail
 user_lemma.adb:17:22: info: assertion proved (CVC4: 1 VC)
 user_lemma.ads:4:15: info: range check proved (CVC4: 2 VC)
 user_lemma.ads:4:51: info: division check proved (CVC4: 1 VC)
+user_lemma.ads:9:06: info: data dependencies proved
 user_lemma.ads:11:14: info: postcondition proved (CVC4: 1 VC)
 user_lemma.ads:13:14: warning: subprogram "Test" has no effect

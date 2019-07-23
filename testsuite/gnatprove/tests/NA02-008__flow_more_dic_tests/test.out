@@ -1,16 +1,6 @@
-extensions.adb:4:24: info: initialization of "R" proved
-extensions.adb:6:14: info: initialization of "P.Y" proved
-extensions.adb:6:14: info: initialization of "P.Z" proved
-extensions.adb:6:14: info: initialization of private part of "P" proved
-extensions.adb:11:23: info: initialization of "R" proved
-extensions.adb:13:14: info: initialization of "P.Y" proved
-extensions.adb:13:14: info: initialization of private part of "P" proved
-extensions.adb:18:23: info: initialization of "R" proved
-extensions.adb:20:14: info: initialization of "P.Y" proved
-extensions.adb:20:14: info: initialization of "P.Z" proved
-extensions.adb:20:14: info: initialization of private part of "P" proved
+extensions.adb:3:07: info: initialization of "R" proved
+extensions.adb:10:07: info: initialization of "R" proved
 extensions.ads:8:04: medium: type "Pub_Ext" is not fully initialized
 extensions.ads:19:04: medium: type "Priv_Ext" is not fully initialized
 extensions.ads:23:04: medium: type "Illegal" is not fully initialized
-tagged_dic.adb:5:14: info: initialization of "R.X" proved
-tagged_dic.adb:11:14: info: initialization of "R.X" proved
+tagged_dic.adb:3:07: info: initialization of "R" proved

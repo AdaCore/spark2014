@@ -1,0 +1,8 @@
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:3
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:4
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:5
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:6
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:7
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:8
+gen.ads:6:19: medium: assertion might fail, cannot prove H < 0, in instantiation at inst.adb:9
+inst.ads:11:14: warning: subprogram "P1" has no effect

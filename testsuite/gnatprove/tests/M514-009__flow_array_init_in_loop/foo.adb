@@ -64,10 +64,10 @@ is
    is
    begin
       for I in Index_T loop
-         if A (I) > 5 then
-            A (I) := 0; -- @INITIALIZED:CHECK
+         if A (I) > 5 then  -- @INITIALIZED:CHECK
+            A (I) := 0;
          else
-            A (I) := 1; -- @INITIALIZED:CHECK
+            A (I) := 1;
          end if;
       end loop;
    end Test_06_E;
@@ -108,7 +108,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I) := 0; -- @INITIALIZED:CHECK
+         A (I) := 0;
          if I > 5 then
             return;
          end if;
@@ -143,7 +143,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I, I) := Integer (I); -- @INITIALIZED:CHECK
+         A (I, I) := Integer (I);
       end loop;
    end Test_12_E;
 
@@ -151,7 +151,7 @@ is
    is
    begin
       for I in Index_T loop
-         A (I, 1) := Integer (I); -- @INITIALIZED:CHECK
+         A (I, 1) := Integer (I);
       end loop;
    end Test_13_E;
 
@@ -179,7 +179,7 @@ is
    is
    begin
       for I in Index_T range 2 .. Index_T'Last loop
-         A (I) := 0; -- @INITIALIZED:CHECK
+         A (I) := 0;
       end loop;
    end Test_15_E;
 
@@ -205,7 +205,7 @@ is
    begin
       for J in Index_T loop
          for I in Index_T loop
-            A (I, J) := Integer (I) + Integer (J); -- @INITIALIZED:CHECK
+            A (I, J) := Integer (I) + Integer (J);
             exit when I = 5;
          end loop;
       end loop;

@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfdlli.ads:1362:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1377:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1392:20: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
-a-cfdlli.ads:1414:14: info: precondition proved (Z3: 2 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1414:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
+a-cfdlli.ads:1420:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1469:14: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1476:23: info: precondition proved (Z3: 1 VC), in instantiation at my_lists.ads:4
 a-cfdlli.ads:1575:54: info: overflow check proved (Z3: 1 VC), in instantiation at my_lists.ads:6
@@ -46,7 +47,12 @@ a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1290:13: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:33
+a-cfhase.ads:1290:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
+a-cfinve.ads:601:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:729:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:732:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:765:14: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
+a-cfinve.ads:769:35: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
 a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:6
 a-cforma.ads:752:17: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_maps.ads:20
@@ -111,26 +117,21 @@ a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:18
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:6
-a-cforse.ads:1697:13: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
+a-cforse.ads:1697:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cforse.ads:1718:46: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
 a-cforse.ads:1736:40: info: precondition proved (Z3: 1 VC), in instantiation at my_ordered_sets.ads:26
-a-cofove.ads:310:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:352:73: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:385:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:420:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:466:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:490:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:531:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:596:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:596:57: info: range check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:596:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cofove.ads:724:23: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:724:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cofove.ads:727:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cofove.ads:760:14: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
-a-cofove.ads:760:14: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cofove.ads:764:35: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
-a-cofove.ads:858:56: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:7
+a-cofove.ads:288:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:330:73: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:363:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:398:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:444:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:468:51: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:509:59: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:574:28: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:574:57: info: range check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:702:23: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:738:14: info: precondition proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:4
+a-cofove.ads:836:56: info: overflow check proved (Z3: 1 VC), in instantiation at my_bounded_vectors.ads:7
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:24
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at my_sets.ads:8
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at my_ordered_sets.ads:18
@@ -144,1658 +145,772 @@ a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:4
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:25
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:4
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:25
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:4
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:25
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:4
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:25
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at my_lists.ads:4
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:25
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at my_maps.ads:8
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:24
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at my_sets.ads:8
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at my_vectors.ads:5
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:20
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at my_ordered_maps.ads:6
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:18
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at my_ordered_sets.ads:6
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_bounded_vectors.ads:4
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at my_vectors.ads:5
-my_bounded_vectors.adb:9:07: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:9:07: info: initialization of private part of "L" proved
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:81, in instantiation at my_bounded_vectors.ads:4
+my_bounded_vectors.adb:9:07: info: initialization of "L" proved
+my_bounded_vectors.adb:9:10: info: initialization of "K" proved
 my_bounded_vectors.adb:9:22: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:12:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:12:32: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:13:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:13:15: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:14:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:14:15: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:15:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:15:20: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:16:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:16:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:17:20: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:18:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:18:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:19:20: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:21:14: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:23:16: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:24:16: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:25:21: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:26:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:26:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:27:21: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:28:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:28:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:29:21: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:31:14: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:34:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:34:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:34:18: info: initialization of "C" proved
 my_bounded_vectors.adb:34:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:35:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:35:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:35:18: info: initialization of "C" proved
 my_bounded_vectors.adb:35:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:37:36: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:38:24: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:38:27: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:40:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:40:22: info: initialization of "C" proved
 my_bounded_vectors.adb:41:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:41:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:41:18: info: initialization of "C" proved
 my_bounded_vectors.adb:41:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:42:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:42:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:42:18: info: initialization of "C" proved
 my_bounded_vectors.adb:42:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:45:10: info: initialization of private part of "I" proved
-my_bounded_vectors.adb:45:24: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:45:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:47:10: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:47:16: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:47:19: info: initialization of private part of "I" proved
+my_bounded_vectors.adb:45:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
+my_bounded_vectors.adb:47:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:50:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:50:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:50:18: info: initialization of "C" proved
 my_bounded_vectors.adb:50:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:51:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:51:18: info: initialization of "C" proved
 my_bounded_vectors.adb:51:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:52:22: info: initialization of "C" proved
 my_bounded_vectors.adb:52:24: info: overflow check proved (Z3: 1 VC)
-my_bounded_vectors.adb:52:42: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:53:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:53:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:53:18: info: initialization of "C" proved
 my_bounded_vectors.adb:53:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:54:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:54:22: info: initialization of "C" proved
 my_bounded_vectors.adb:54:24: info: overflow check proved (Z3: 1 VC)
-my_bounded_vectors.adb:54:43: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:55:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:55:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:55:18: info: initialization of "C" proved
 my_bounded_vectors.adb:55:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:57:14: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:60:21: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:61:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:61:15: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:61:18: info: initialization of "C" proved
 my_bounded_vectors.adb:61:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:61:21: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:62:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:62:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:62:18: info: initialization of "C" proved
 my_bounded_vectors.adb:62:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:62:21: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:63:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:63:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:63:18: info: initialization of "C" proved
 my_bounded_vectors.adb:63:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:63:21: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:65:24: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:65:27: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:67:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:67:22: info: initialization of "C" proved
-my_bounded_vectors.adb:68:20: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:69:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:69:15: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:69:18: info: initialization of "C" proved
 my_bounded_vectors.adb:69:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:69:21: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:71:14: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:74:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:74:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:74:18: info: initialization of "C" proved
 my_bounded_vectors.adb:74:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:75:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:75:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:75:18: info: initialization of "C" proved
 my_bounded_vectors.adb:75:18: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:77:24: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:77:27: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:79:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:79:22: info: initialization of "C" proved
 my_bounded_vectors.adb:80:07: info: precondition proved (Z3: 3 VC)
-my_bounded_vectors.adb:80:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:80:18: info: initialization of "C" proved
 my_bounded_vectors.adb:80:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:81:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:81:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:81:18: info: initialization of "C" proved
 my_bounded_vectors.adb:81:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:82:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:82:15: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:82:18: info: initialization of "C" proved
 my_bounded_vectors.adb:82:18: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:84:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:84:24: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:84:27: info: initialization of "C" proved
 my_bounded_vectors.adb:84:27: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:85:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:85:24: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:85:27: info: initialization of "C" proved
 my_bounded_vectors.adb:85:29: info: overflow check proved (Z3: 1 VC)
 my_bounded_vectors.adb:85:29: info: range check proved (Z3: 1 VC)
 my_bounded_vectors.adb:87:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:87:34: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:87:43: info: initialization of "C" proved
 my_bounded_vectors.adb:88:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:88:42: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:88:51: info: initialization of "C" proved
 my_bounded_vectors.adb:88:53: info: overflow check proved (Z3: 1 VC)
 my_bounded_vectors.adb:89:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:89:34: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:90:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:90:42: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:92:25: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:93:07: info: precondition proved (Z3: 4 VC)
-my_bounded_vectors.adb:93:13: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:93:19: info: range check proved (Z3: 1 VC)
-my_bounded_vectors.adb:93:31: info: initialization of private part of "L" proved
 my_bounded_vectors.adb:95:30: info: assertion proved (Z3: 2 VC)
-my_bounded_vectors.adb:95:38: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:96:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:96:15: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:96:18: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:98:13: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:99:20: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:100:21: info: initialization of private part of "K" proved
+my_bounded_vectors.adb:96:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:101:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:101:14: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:101:17: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:103:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:103:30: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:105:13: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:106:07: info: precondition proved (Z3: 2 VC)
-my_bounded_vectors.adb:106:15: info: initialization of private part of "K" proved
-my_bounded_vectors.adb:106:18: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:107:20: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:108:21: info: initialization of private part of "K" proved
+my_bounded_vectors.adb:106:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_bounded_vectors.adb:109:07: info: precondition proved (Z3: 1 VC)
-my_bounded_vectors.adb:109:14: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:109:17: info: initialization of private part of "K" proved
 my_bounded_vectors.adb:110:22: info: assertion proved (Z3: 1 VC)
-my_bounded_vectors.adb:110:33: info: initialization of private part of "L" proved
-my_bounded_vectors.adb:112:14: info: initialization of private part of "L" proved
 my_bounded_vectors.ads:9:14: warning: subprogram "Test_Bounded_Vectors" has no effect
-my_lists.adb:7:07: info: initialization of private part of "K" proved
-my_lists.adb:7:07: info: initialization of private part of "L" proved
+my_lists.adb:7:07: info: initialization of "L" proved
+my_lists.adb:7:10: info: initialization of "K" proved
 my_lists.adb:7:20: info: range check proved (Z3: 1 VC)
+my_lists.adb:8:07: info: initialization of "C" proved
+my_lists.adb:8:10: info: initialization of "D" proved
 my_lists.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:10:32: info: initialization of private part of "L" proved
-my_lists.adb:11:19: info: initialization of private part of "L" proved
-my_lists.adb:12:18: info: initialization of private part of "L" proved
 my_lists.adb:13:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:13:18: info: initialization of private part of "L" proved
-my_lists.adb:13:21: info: initialization of "C.Node" proved
 my_lists.adb:14:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:14:22: info: initialization of private part of "L" proved
-my_lists.adb:14:25: info: initialization of "C.Node" proved
 my_lists.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:16:15: info: initialization of private part of "L" proved
 my_lists.adb:17:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:17:15: info: initialization of private part of "L" proved
 my_lists.adb:18:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:18:20: info: initialization of private part of "L" proved
 my_lists.adb:19:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:19:30: info: initialization of private part of "L" proved
-my_lists.adb:20:20: info: initialization of private part of "L" proved
 my_lists.adb:21:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:21:30: info: initialization of private part of "L" proved
-my_lists.adb:22:20: info: initialization of private part of "L" proved
 my_lists.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:24:16: info: initialization of private part of "L" proved
 my_lists.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:25:16: info: initialization of private part of "L" proved
 my_lists.adb:26:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:26:21: info: initialization of private part of "L" proved
 my_lists.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:27:30: info: initialization of private part of "L" proved
-my_lists.adb:28:21: info: initialization of private part of "L" proved
 my_lists.adb:29:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:29:30: info: initialization of private part of "L" proved
-my_lists.adb:30:21: info: initialization of private part of "L" proved
 my_lists.adb:32:07: medium: assertion might fail
-my_lists.adb:33:30: info: assertion proved (Z3: 2 VC)
-my_lists.adb:33:30: info: initialization of "C.Node" proved
-my_lists.adb:33:57: info: initialization of private part of "L" proved
 my_lists.adb:34:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:34:15: info: initialization of private part of "L" proved
-my_lists.adb:34:18: info: initialization of "C.Node" proved
 my_lists.adb:35:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:35:15: info: initialization of private part of "L" proved
-my_lists.adb:35:18: info: initialization of "C.Node" proved
 my_lists.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:37:36: info: initialization of private part of "L" proved
-my_lists.adb:38:19: info: initialization of private part of "L" proved
 my_lists.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:39:17: info: initialization of private part of "L" proved
-my_lists.adb:39:20: info: initialization of "C.Node" proved
-my_lists.adb:40:18: info: initialization of private part of "L" proved
 my_lists.adb:41:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:41:13: info: initialization of private part of "L" proved
-my_lists.adb:41:16: info: initialization of "C.Node" proved
-my_lists.adb:42:18: info: initialization of private part of "L" proved
 my_lists.adb:43:22: info: assertion proved (Z3: 2 VC)
-my_lists.adb:43:22: info: initialization of "C.Node" proved
-my_lists.adb:43:54: info: initialization of private part of "L" proved
 my_lists.adb:44:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:44:17: info: initialization of private part of "L" proved
-my_lists.adb:44:20: info: initialization of "C.Node" proved
 my_lists.adb:45:22: info: assertion proved (Z3: 2 VC)
-my_lists.adb:45:22: info: initialization of "C.Node" proved
-my_lists.adb:45:53: info: initialization of private part of "L" proved
 my_lists.adb:46:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:46:13: info: initialization of private part of "L" proved
-my_lists.adb:46:16: info: initialization of "C.Node" proved
 my_lists.adb:47:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:47:22: info: initialization of private part of "L" proved
-my_lists.adb:47:25: info: initialization of "C.Node" proved
 my_lists.adb:49:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:49:22: info: initialization of "C.Node" proved
 my_lists.adb:50:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:50:15: info: initialization of private part of "L" proved
-my_lists.adb:50:18: info: initialization of "C.Node" proved
 my_lists.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:51:15: info: initialization of private part of "L" proved
-my_lists.adb:51:18: info: initialization of "C.Node" proved
 my_lists.adb:53:12: info: discriminant check proved (Z3: 1 VC)
 my_lists.adb:53:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:53:18: info: initialization of private part of "L" proved
 my_lists.adb:55:12: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:55:18: info: initialization of private part of "L" proved
-my_lists.adb:55:21: info: initialization of "D.Node" proved
 my_lists.adb:56:07: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:56:15: info: initialization of private part of "L" proved
-my_lists.adb:56:18: info: initialization of "D.Node" proved
 my_lists.adb:57:12: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:57:22: info: initialization of private part of "L" proved
-my_lists.adb:57:25: info: initialization of "C.Node" proved
 my_lists.adb:58:07: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:58:15: info: initialization of private part of "L" proved
-my_lists.adb:58:18: info: initialization of "D.Node" proved
 my_lists.adb:59:12: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:59:18: info: initialization of private part of "L" proved
-my_lists.adb:59:21: info: initialization of "C.Node" proved
 my_lists.adb:61:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 < Length (L)
-my_lists.adb:61:26: medium: precondition might fail
-my_lists.adb:61:58: info: initialization of private part of "L" proved
-my_lists.adb:61:62: info: initialization of "D.Node" proved
+my_lists.adb:61:26: medium: precondition might fail, cannot prove Has_Key (Container, Key)
 my_lists.adb:61:65: medium: overflow check might fail
-my_lists.adb:62:07: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:62:15: info: initialization of private part of "L" proved
-my_lists.adb:62:18: info: initialization of "D.Node" proved
-my_lists.adb:63:12: medium: precondition might fail [possible explanation: call at line 46 should mention Position (for argument C) in a postcondition]
-my_lists.adb:63:18: info: initialization of private part of "L" proved
-my_lists.adb:63:21: info: initialization of "C.Node" proved
+my_lists.adb:62:07: medium: precondition might fail, cannot prove Has_Element (Container, Position)
+my_lists.adb:63:12: medium: precondition might fail, cannot prove Has_Element (Container, Position) or else Position = No_Element [possible explanation: call at line 46 should mention Position (for argument C) in a postcondition]
 my_lists.adb:65:10: medium: assertion might fail, cannot prove M.Formal_Model.P.Get (M.Formal_Model.Positions (L), D) + 3 >= Length (L)
-my_lists.adb:65:26: medium: precondition might fail
-my_lists.adb:65:58: info: initialization of private part of "L" proved
-my_lists.adb:65:62: info: initialization of "D.Node" proved
+my_lists.adb:65:26: medium: precondition might fail, cannot prove Has_Key (Container, Key)
 my_lists.adb:65:65: medium: overflow check might fail
-my_lists.adb:66:07: medium: precondition might fail
-my_lists.adb:66:15: info: initialization of private part of "L" proved
-my_lists.adb:66:18: info: initialization of "D.Node" proved
-my_lists.adb:68:14: info: initialization of private part of "L" proved
+my_lists.adb:66:07: medium: precondition might fail, cannot prove Has_Element (Container, Position)
 my_lists.adb:71:07: medium: assertion might fail
-my_lists.adb:72:30: info: assertion proved (Z3: 3 VC)
-my_lists.adb:72:30: info: initialization of "C.Node" proved
-my_lists.adb:72:57: info: initialization of private part of "L" proved
-my_lists.adb:72:76: info: initialization of private part of "K" proved
 my_lists.adb:73:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:73:15: info: initialization of private part of "L" proved
-my_lists.adb:73:18: info: initialization of "C.Node" proved
 my_lists.adb:74:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:74:15: info: initialization of private part of "L" proved
-my_lists.adb:74:18: info: initialization of "C.Node" proved
 my_lists.adb:76:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:76:31: info: initialization of private part of "L" proved
 my_lists.adb:78:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:78:22: info: initialization of "C.Node" proved
 my_lists.adb:79:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:79:15: info: initialization of private part of "L" proved
-my_lists.adb:79:18: info: initialization of "C.Node" proved
 my_lists.adb:80:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-my_lists.adb:80:15: info: initialization of private part of "L" proved
-my_lists.adb:80:18: info: initialization of "C.Node" proved
 my_lists.adb:81:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
-my_lists.adb:81:15: info: initialization of private part of "L" proved
-my_lists.adb:81:18: info: initialization of "C.Node" proved
 my_lists.adb:83:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:83:30: info: initialization of private part of "L" proved
 my_lists.adb:86:07: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:86:24: info: initialization of private part of "L" proved
-my_lists.adb:86:27: info: initialization of "C.Node" proved
 my_lists.adb:87:07: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:87:24: info: initialization of private part of "L" proved
 my_lists.adb:87:27: info: precondition proved (CVC4: 1 VC)
-my_lists.adb:87:33: info: initialization of private part of "L" proved
-my_lists.adb:87:36: info: initialization of "C.Node" proved
 my_lists.adb:89:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:89:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:89:28: info: initialization of private part of "L" proved
-my_lists.adb:89:37: info: initialization of "C.Node" proved
 my_lists.adb:90:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:90:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:90:36: info: initialization of private part of "L" proved
 my_lists.adb:90:45: info: precondition proved (Z3: 1 VC)
-my_lists.adb:90:54: info: initialization of "C.Node" proved
 my_lists.adb:91:22: info: assertion proved (CVC4: 1 VC)
 my_lists.adb:91:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:91:28: info: initialization of private part of "L" proved
 my_lists.adb:92:22: info: assertion proved (Z3: 1 VC)
 my_lists.adb:92:22: info: precondition proved (Z3: 1 VC)
-my_lists.adb:92:36: info: initialization of private part of "L" proved
-my_lists.adb:94:25: info: initialization of private part of "L" proved
 my_lists.adb:95:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:95:13: info: initialization of private part of "L" proved
-my_lists.adb:95:23: info: initialization of private part of "L" proved
-my_lists.adb:95:33: info: initialization of private part of "L" proved
 my_lists.adb:96:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:96:19: info: initialization of private part of "L" proved
-my_lists.adb:96:29: info: initialization of private part of "L" proved
-my_lists.adb:96:39: info: initialization of private part of "L" proved
 my_lists.adb:98:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:98:30: info: initialization of private part of "L" proved
-my_lists.adb:99:20: info: initialization of private part of "L" proved
-my_lists.adb:100:21: info: initialization of private part of "K" proved
 my_lists.adb:101:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:101:15: info: initialization of private part of "L" proved
-my_lists.adb:101:30: info: initialization of private part of "K" proved
 my_lists.adb:103:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:103:30: info: initialization of private part of "L" proved
 my_lists.adb:105:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:105:15: info: initialization of private part of "K" proved
-my_lists.adb:105:18: info: initialization of private part of "L" proved
-my_lists.adb:107:20: info: initialization of private part of "L" proved
-my_lists.adb:108:20: info: initialization of private part of "L" proved
-my_lists.adb:109:21: info: initialization of private part of "L" proved
-my_lists.adb:110:21: info: initialization of private part of "K" proved
 my_lists.adb:111:12: info: precondition proved (Z3: 1 VC)
-my_lists.adb:111:31: info: initialization of private part of "L" proved
 my_lists.adb:112:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:112:22: info: initialization of "C.Node" proved
 my_lists.adb:113:07: info: precondition proved (Z3: 2 VC)
-my_lists.adb:113:15: info: initialization of private part of "L" proved
-my_lists.adb:113:18: info: initialization of "C.Node" proved
-my_lists.adb:113:21: info: initialization of private part of "K" proved
 my_lists.adb:115:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:115:30: info: initialization of private part of "L" proved
 my_lists.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:117:15: info: initialization of private part of "K" proved
-my_lists.adb:117:18: info: initialization of private part of "L" proved
 my_lists.adb:118:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:118:20: info: initialization of private part of "K" proved
-my_lists.adb:119:19: info: initialization of private part of "L" proved
 my_lists.adb:120:07: info: precondition proved (Z3: 3 VC)
-my_lists.adb:120:15: info: initialization of private part of "K" proved
-my_lists.adb:120:30: info: initialization of private part of "L" proved
-my_lists.adb:120:33: info: initialization of "C.Node" proved
 my_lists.adb:121:07: info: precondition proved (Z3: 3 VC)
-my_lists.adb:121:15: info: initialization of private part of "L" proved
-my_lists.adb:121:25: info: initialization of private part of "L" proved
-my_lists.adb:121:29: info: initialization of private part of "K" proved
-my_lists.adb:121:32: info: initialization of "C.Node" proved
 my_lists.adb:123:07: medium: assertion might fail
-my_lists.adb:124:30: info: assertion proved (Z3: 1 VC)
-my_lists.adb:124:38: info: initialization of private part of "L" proved
-my_lists.adb:126:37: info: initialization of private part of "L" proved
 my_lists.adb:127:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:127:15: info: initialization of private part of "K" proved
-my_lists.adb:127:18: info: initialization of private part of "L" proved
-my_lists.adb:129:13: info: initialization of private part of "L" proved
-my_lists.adb:130:20: info: initialization of private part of "L" proved
-my_lists.adb:131:21: info: initialization of private part of "K" proved
 my_lists.adb:132:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:132:14: info: initialization of private part of "L" proved
-my_lists.adb:132:17: info: initialization of private part of "K" proved
 my_lists.adb:134:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:134:30: info: initialization of private part of "L" proved
-my_lists.adb:136:13: info: initialization of private part of "L" proved
 my_lists.adb:137:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:137:15: info: initialization of private part of "K" proved
-my_lists.adb:137:18: info: initialization of private part of "L" proved
-my_lists.adb:138:20: info: initialization of private part of "L" proved
-my_lists.adb:139:21: info: initialization of private part of "K" proved
 my_lists.adb:140:07: info: precondition proved (Z3: 1 VC)
-my_lists.adb:140:14: info: initialization of private part of "L" proved
-my_lists.adb:140:17: info: initialization of private part of "K" proved
 my_lists.adb:141:22: info: assertion proved (Z3: 1 VC)
-my_lists.adb:141:33: info: initialization of private part of "L" proved
 my_lists.adb:142:07: medium: assertion might fail
 my_lists.ads:8:14: warning: subprogram "Test_List" has no effect
 my_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
-my_maps.adb:6:07: info: initialization of private part of "K" proved
-my_maps.adb:6:07: info: initialization of private part of "L" proved
+my_maps.adb:6:07: info: initialization of "L" proved
+my_maps.adb:6:10: info: initialization of "K" proved
 my_maps.adb:6:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:6:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:7:07: info: initialization of "C" proved
+my_maps.adb:8:07: info: initialization of "B" proved
 my_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:10:32: info: initialization of private part of "L" proved
-my_maps.adb:11:19: info: initialization of private part of "L" proved
 my_maps.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:12:18: info: initialization of private part of "L" proved
-my_maps.adb:12:21: info: initialization of "C.Node" proved
 my_maps.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:14:15: info: initialization of private part of "L" proved
 my_maps.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:15:15: info: initialization of private part of "L" proved
 my_maps.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:16:15: info: initialization of private part of "L" proved
 my_maps.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:17:26: info: initialization of "B" proved
 my_maps.adb:18:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:18:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:18:31: info: initialization of private part of "L" proved
-my_maps.adb:18:34: info: initialization of "C.Node" proved
 my_maps.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:20:24: info: initialization of private part of "L" proved
-my_maps.adb:20:27: info: initialization of "C.Node" proved
 my_maps.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:21:16: info: initialization of private part of "L" proved
-my_maps.adb:22:44: info: initialization of private part of "L" proved
 my_maps.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:24:15: info: initialization of private part of "K" proved
-my_maps.adb:24:18: info: initialization of private part of "L" proved
 my_maps.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:25:13: info: initialization of private part of "L" proved
-my_maps.adb:25:16: info: initialization of private part of "K" proved
 my_maps.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:27:32: info: initialization of private part of "L" proved
 my_maps.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:28:16: info: initialization of private part of "L" proved
 my_maps.adb:29:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:29:36: info: initialization of private part of "L" proved
 my_maps.adb:30:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:30:16: info: initialization of private part of "L" proved
 my_maps.adb:32:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:32:15: info: initialization of private part of "L" proved
-my_maps.adb:33:18: info: initialization of private part of "L" proved
 my_maps.adb:34:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:34:15: info: initialization of private part of "L" proved
-my_maps.adb:34:18: info: initialization of "C.Node" proved
 my_maps.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:35:36: info: initialization of private part of "L" proved
-my_maps.adb:36:18: info: initialization of private part of "L" proved
-my_maps.adb:37:16: info: initialization of private part of "L" proved
 my_maps.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:38:32: info: initialization of private part of "L" proved
-my_maps.adb:39:16: info: initialization of private part of "L" proved
 my_maps.adb:40:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:40:30: info: initialization of private part of "L" proved
 my_maps.adb:41:07: medium: assertion might fail
 my_maps.adb:44:14: warning: subprogram "Test_Map_Rec" has no effect
-my_maps.adb:46:07: info: initialization of private part of "K" proved
-my_maps.adb:46:07: info: initialization of private part of "L" proved
+my_maps.adb:46:07: info: initialization of "L" proved
+my_maps.adb:46:10: info: initialization of "K" proved
 my_maps.adb:46:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:46:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:47:07: info: initialization of "C" proved
+my_maps.adb:48:07: info: initialization of "B" proved
 my_maps.adb:50:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:50:32: info: initialization of private part of "L" proved
-my_maps.adb:51:19: info: initialization of private part of "L" proved
 my_maps.adb:52:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:52:18: info: initialization of private part of "L" proved
-my_maps.adb:52:21: info: initialization of "C.Node" proved
 my_maps.adb:54:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:54:15: info: initialization of private part of "L" proved
 my_maps.adb:55:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:55:15: info: initialization of private part of "L" proved
 my_maps.adb:56:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:56:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:56:31: info: initialization of private part of "L" proved
 my_maps.adb:57:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:57:15: info: initialization of private part of "L" proved
 my_maps.adb:58:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:58:36: info: initialization of private part of "L" proved
 my_maps.adb:59:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:59:26: info: initialization of "B" proved
 my_maps.adb:60:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:60:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:60:31: info: initialization of private part of "L" proved
-my_maps.adb:60:34: info: initialization of "C.Node" proved
 my_maps.adb:62:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:62:24: info: initialization of private part of "L" proved
-my_maps.adb:62:27: info: initialization of "C.Node" proved
 my_maps.adb:63:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:63:16: info: initialization of private part of "L" proved
-my_maps.adb:64:44: info: initialization of private part of "L" proved
 my_maps.adb:66:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:66:15: info: initialization of private part of "K" proved
-my_maps.adb:66:18: info: initialization of private part of "L" proved
 my_maps.adb:67:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:67:13: info: initialization of private part of "L" proved
-my_maps.adb:67:16: info: initialization of private part of "K" proved
 my_maps.adb:69:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:69:32: info: initialization of private part of "L" proved
 my_maps.adb:70:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:70:16: info: initialization of private part of "L" proved
 my_maps.adb:71:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:71:36: info: initialization of private part of "L" proved
 my_maps.adb:72:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:72:16: info: initialization of private part of "L" proved
 my_maps.adb:74:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:74:15: info: initialization of private part of "L" proved
-my_maps.adb:75:18: info: initialization of private part of "L" proved
 my_maps.adb:76:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:76:15: info: initialization of private part of "L" proved
-my_maps.adb:76:18: info: initialization of "C.Node" proved
 my_maps.adb:77:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:77:36: info: initialization of private part of "L" proved
-my_maps.adb:78:18: info: initialization of private part of "L" proved
-my_maps.adb:79:16: info: initialization of private part of "L" proved
 my_maps.adb:80:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:80:32: info: initialization of private part of "L" proved
-my_maps.adb:81:16: info: initialization of private part of "L" proved
 my_maps.adb:82:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:82:30: info: initialization of private part of "L" proved
 my_maps.adb:83:07: medium: assertion might fail
 my_maps.adb:86:14: warning: subprogram "Test_Map_Rec_2" has no effect
-my_maps.adb:88:07: info: initialization of private part of "K" proved
-my_maps.adb:88:07: info: initialization of private part of "L" proved
+my_maps.adb:88:07: info: initialization of "L" proved
+my_maps.adb:88:10: info: initialization of "K" proved
 my_maps.adb:88:19: info: range check proved (Z3: 1 VC)
 my_maps.adb:88:23: info: range check proved (Z3: 1 VC)
+my_maps.adb:89:07: info: initialization of "C" proved
+my_maps.adb:90:07: info: initialization of "B" proved
 my_maps.adb:92:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:92:32: info: initialization of private part of "L" proved
-my_maps.adb:93:19: info: initialization of private part of "L" proved
 my_maps.adb:94:12: info: precondition proved (Z3: 1 VC)
-my_maps.adb:94:18: info: initialization of private part of "L" proved
-my_maps.adb:94:21: info: initialization of "C.Node" proved
 my_maps.adb:96:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:96:15: info: initialization of private part of "L" proved
 my_maps.adb:97:07: info: precondition proved (Z3: 2 VC)
-my_maps.adb:97:15: info: initialization of private part of "L" proved
 my_maps.adb:98:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:98:15: info: initialization of private part of "L" proved
 my_maps.adb:99:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:99:36: info: initialization of private part of "L" proved
 my_maps.adb:100:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:100:26: info: initialization of "B" proved
 my_maps.adb:101:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:101:22: info: precondition proved (Z3: 1 VC)
-my_maps.adb:101:31: info: initialization of private part of "L" proved
-my_maps.adb:101:34: info: initialization of "C.Node" proved
 my_maps.adb:103:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:103:24: info: initialization of private part of "L" proved
-my_maps.adb:103:27: info: initialization of "C.Node" proved
 my_maps.adb:104:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:104:16: info: initialization of private part of "L" proved
-my_maps.adb:105:44: info: initialization of private part of "L" proved
 my_maps.adb:107:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:107:15: info: initialization of private part of "K" proved
-my_maps.adb:107:18: info: initialization of private part of "L" proved
 my_maps.adb:108:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:108:13: info: initialization of private part of "L" proved
-my_maps.adb:108:16: info: initialization of private part of "K" proved
 my_maps.adb:110:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:110:32: info: initialization of private part of "L" proved
 my_maps.adb:111:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:111:16: info: initialization of private part of "L" proved
 my_maps.adb:112:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:112:36: info: initialization of private part of "L" proved
 my_maps.adb:113:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:113:16: info: initialization of private part of "L" proved
 my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:115:15: info: initialization of private part of "L" proved
-my_maps.adb:116:18: info: initialization of private part of "L" proved
 my_maps.adb:117:07: info: precondition proved (CVC4: 1 VC)
-my_maps.adb:117:15: info: initialization of private part of "L" proved
-my_maps.adb:117:18: info: initialization of "C.Node" proved
 my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:118:36: info: initialization of private part of "L" proved
-my_maps.adb:119:18: info: initialization of private part of "L" proved
-my_maps.adb:120:16: info: initialization of private part of "L" proved
 my_maps.adb:121:22: info: assertion proved (CVC4: 1 VC)
-my_maps.adb:121:32: info: initialization of private part of "L" proved
-my_maps.adb:122:16: info: initialization of private part of "L" proved
 my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
-my_maps.adb:123:30: info: initialization of private part of "L" proved
 my_maps.adb:124:07: medium: assertion might fail
-my_maps.adb:129:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
-my_maps.adb:131:07: info: precondition proved (Z3: 1 VC)
+my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)
+my_maps.adb:130:07: info: precondition proved (Trivial: 1 VC)
+my_maps.adb:131:07: info: precondition proved (Trivial: 1 VC)
 my_maps.ads:20:17: info: postcondition proved (Z3: 2 VC)
 my_maps.ads:31:14: warning: subprogram "Test_Map" has no effect
 my_ordered_maps.adb:4:14: warning: subprogram "Test_Map_Pos" has no effect
-my_ordered_maps.adb:6:07: info: initialization of private part of "K" proved
-my_ordered_maps.adb:6:07: info: initialization of private part of "L" proved
+my_ordered_maps.adb:6:07: info: initialization of "L" proved
+my_ordered_maps.adb:6:10: info: initialization of "K" proved
 my_ordered_maps.adb:6:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:7:07: info: initialization of "C" proved
+my_ordered_maps.adb:8:07: info: initialization of "B" proved
 my_ordered_maps.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:10:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:11:19: info: initialization of private part of "L" proved
 my_ordered_maps.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:12:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:12:21: info: initialization of "C.Node" proved
 my_ordered_maps.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:14:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:15:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:16:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:17:26: info: initialization of "B" proved
 my_ordered_maps.adb:18:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:18:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:18:31: info: initialization of private part of "L" proved
-my_ordered_maps.adb:18:34: info: initialization of "C.Node" proved
 my_ordered_maps.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:20:24: info: initialization of private part of "L" proved
-my_ordered_maps.adb:20:27: info: initialization of "C.Node" proved
 my_ordered_maps.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:21:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:22:44: info: initialization of private part of "L" proved
 my_ordered_maps.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:24:15: info: initialization of private part of "K" proved
-my_ordered_maps.adb:24:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:25:13: info: initialization of private part of "L" proved
-my_ordered_maps.adb:25:16: info: initialization of private part of "K" proved
 my_ordered_maps.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:27:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:28:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:29:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:29:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:31:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:31:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:31:77: info: initialization of private part of "L" proved
 my_ordered_maps.adb:32:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:32:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:32:77: info: initialization of private part of "L" proved
 my_ordered_maps.adb:33:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:33:29: info: initialization of private part of "L" proved
 my_ordered_maps.adb:34:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:34:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:34:79: info: initialization of private part of "L" proved
 my_ordered_maps.adb:35:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:35:36: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:35:79: info: initialization of private part of "L" proved
 my_ordered_maps.adb:36:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:36:31: info: initialization of private part of "L" proved
 my_ordered_maps.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:38:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:39:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:40:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:41:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:41:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:43:21: info: initialization of private part of "L" proved
-my_ordered_maps.adb:45:20: info: initialization of private part of "L" proved
 my_ordered_maps.adb:46:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:46:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:47:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:48:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:48:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:48:18: info: initialization of "C.Node" proved
 my_ordered_maps.adb:49:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:49:36: info: initialization of private part of "L" proved
-my_ordered_maps.adb:50:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:51:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:52:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:53:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:54:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:54:30: info: initialization of private part of "L" proved
-my_ordered_maps.adb:55:21: info: initialization of private part of "L" proved
-my_ordered_maps.adb:56:20: info: initialization of private part of "L" proved
 my_ordered_maps.adb:57:07: medium: assertion might fail
 my_ordered_maps.adb:60:14: warning: subprogram "Test_Map_Rec" has no effect
-my_ordered_maps.adb:62:07: info: initialization of private part of "K" proved
-my_ordered_maps.adb:62:07: info: initialization of private part of "L" proved
+my_ordered_maps.adb:62:07: info: initialization of "L" proved
+my_ordered_maps.adb:62:10: info: initialization of "K" proved
 my_ordered_maps.adb:62:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:63:07: info: initialization of "C" proved
+my_ordered_maps.adb:64:07: info: initialization of "B" proved
 my_ordered_maps.adb:66:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:66:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:67:19: info: initialization of private part of "L" proved
 my_ordered_maps.adb:68:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:68:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:68:21: info: initialization of "C.Node" proved
 my_ordered_maps.adb:70:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:70:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:71:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:71:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:72:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:72:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:73:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:73:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:74:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:74:26: info: initialization of "B" proved
 my_ordered_maps.adb:75:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:75:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:75:31: info: initialization of private part of "L" proved
-my_ordered_maps.adb:75:34: info: initialization of "C.Node" proved
 my_ordered_maps.adb:77:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:77:24: info: initialization of private part of "L" proved
-my_ordered_maps.adb:77:27: info: initialization of "C.Node" proved
 my_ordered_maps.adb:78:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:78:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:79:44: info: initialization of private part of "L" proved
 my_ordered_maps.adb:81:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:81:15: info: initialization of private part of "K" proved
-my_ordered_maps.adb:81:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:82:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:82:13: info: initialization of private part of "L" proved
-my_ordered_maps.adb:82:16: info: initialization of private part of "K" proved
 my_ordered_maps.adb:84:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:84:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:85:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:85:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:86:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:86:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:87:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:87:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:89:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:89:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:90:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:91:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:91:22: info: initialization of "C.Node" proved
 my_ordered_maps.adb:92:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:92:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:92:18: info: initialization of "C.Node" proved
 my_ordered_maps.adb:93:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:93:36: info: initialization of private part of "L" proved
-my_ordered_maps.adb:94:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:95:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:96:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:96:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:97:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:98:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:98:30: info: initialization of private part of "L" proved
 my_ordered_maps.adb:99:07: medium: assertion might fail
 my_ordered_maps.adb:102:14: warning: subprogram "Test_Map_Rec_2" has no effect
-my_ordered_maps.adb:104:07: info: initialization of private part of "K" proved
-my_ordered_maps.adb:104:07: info: initialization of private part of "L" proved
+my_ordered_maps.adb:104:07: info: initialization of "L" proved
+my_ordered_maps.adb:104:10: info: initialization of "K" proved
 my_ordered_maps.adb:104:19: info: range check proved (Z3: 1 VC)
+my_ordered_maps.adb:105:07: info: initialization of "C" proved
+my_ordered_maps.adb:106:07: info: initialization of "B" proved
 my_ordered_maps.adb:108:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:108:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:109:19: info: initialization of private part of "L" proved
 my_ordered_maps.adb:110:12: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:110:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:110:21: info: initialization of "C.Node" proved
 my_ordered_maps.adb:112:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:112:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:113:07: info: precondition proved (Z3: 2 VC)
-my_ordered_maps.adb:113:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:114:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:114:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:114:31: info: initialization of private part of "L" proved
 my_ordered_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:115:15: info: initialization of private part of "L" proved
 my_ordered_maps.adb:116:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:116:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:117:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:117:26: info: initialization of "B" proved
 my_ordered_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_ordered_maps.adb:118:22: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:118:31: info: initialization of private part of "L" proved
-my_ordered_maps.adb:118:34: info: initialization of "C.Node" proved
 my_ordered_maps.adb:120:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:120:24: info: initialization of private part of "L" proved
-my_ordered_maps.adb:120:27: info: initialization of "C.Node" proved
 my_ordered_maps.adb:121:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:121:16: info: initialization of private part of "L" proved
-my_ordered_maps.adb:122:44: info: initialization of private part of "L" proved
 my_ordered_maps.adb:124:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:124:15: info: initialization of private part of "K" proved
-my_ordered_maps.adb:124:18: info: initialization of private part of "L" proved
 my_ordered_maps.adb:125:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:125:13: info: initialization of private part of "L" proved
-my_ordered_maps.adb:125:16: info: initialization of private part of "K" proved
 my_ordered_maps.adb:127:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:127:32: info: initialization of private part of "L" proved
 my_ordered_maps.adb:128:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:128:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:129:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:129:36: info: initialization of private part of "L" proved
 my_ordered_maps.adb:130:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:130:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:132:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:132:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:133:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:134:22: info: initialization of "C.Node" proved
 my_ordered_maps.adb:134:22: medium: assertion might fail, cannot prove C /= No_Element
 my_ordered_maps.adb:135:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:135:15: info: initialization of private part of "L" proved
-my_ordered_maps.adb:135:18: info: initialization of "C.Node" proved
 my_ordered_maps.adb:136:22: info: assertion proved (Z3: 1 VC)
-my_ordered_maps.adb:136:36: info: initialization of private part of "L" proved
-my_ordered_maps.adb:137:18: info: initialization of private part of "L" proved
-my_ordered_maps.adb:138:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:139:22: info: assertion proved (CVC4: 1 VC)
-my_ordered_maps.adb:139:32: info: initialization of private part of "L" proved
-my_ordered_maps.adb:140:16: info: initialization of private part of "L" proved
 my_ordered_maps.adb:141:22: medium: assertion might fail, cannot prove Length (L) = 0
-my_ordered_maps.adb:141:30: info: initialization of private part of "L" proved
 my_ordered_maps.adb:142:07: medium: assertion might fail
-my_ordered_maps.adb:147:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:148:07: info: precondition proved (Z3: 1 VC)
-my_ordered_maps.adb:149:07: info: precondition proved (Z3: 1 VC)
+my_ordered_maps.adb:147:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_maps.adb:148:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_maps.adb:149:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_maps.ads:17:12: info: postcondition proved (Z3: 2 VC)
 my_ordered_maps.ads:25:14: warning: subprogram "Test_Ordered_Map" has no effect
 my_ordered_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
-my_ordered_sets.adb:6:07: info: initialization of private part of "K" proved
-my_ordered_sets.adb:6:07: info: initialization of private part of "L" proved
+my_ordered_sets.adb:6:07: info: initialization of "L" proved
+my_ordered_sets.adb:6:10: info: initialization of "K" proved
 my_ordered_sets.adb:6:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:7:07: info: initialization of "C" proved
+my_ordered_sets.adb:8:07: info: initialization of "B" proved
 my_ordered_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:10:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:11:19: info: initialization of private part of "L" proved
 my_ordered_sets.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:12:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:12:21: info: initialization of "C.Node" proved
 my_ordered_sets.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:14:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:15:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:16:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:17:26: info: initialization of "B" proved
 my_ordered_sets.adb:19:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:19:24: info: initialization of private part of "L" proved
-my_ordered_sets.adb:19:27: info: initialization of "C.Node" proved
 my_ordered_sets.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:20:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:21:44: info: initialization of private part of "L" proved
 my_ordered_sets.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:23:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:23:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:24:13: info: initialization of private part of "L" proved
-my_ordered_sets.adb:24:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:25:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:25:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:27:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:28:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:29:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:29:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:31:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:31:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:31:77: info: initialization of private part of "L" proved
 my_ordered_sets.adb:32:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:32:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:32:77: info: initialization of private part of "L" proved
 my_ordered_sets.adb:33:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:33:29: info: initialization of private part of "L" proved
 my_ordered_sets.adb:34:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:34:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:34:79: info: initialization of private part of "L" proved
 my_ordered_sets.adb:35:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:35:36: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:35:79: info: initialization of private part of "L" proved
 my_ordered_sets.adb:36:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:36:31: info: initialization of private part of "L" proved
 my_ordered_sets.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:38:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:39:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:39:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:40:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:41:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:41:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:43:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:43:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:45:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:45:37: info: initialization of private part of "K" proved
-my_ordered_sets.adb:45:40: info: initialization of private part of "L" proved
 my_ordered_sets.adb:46:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:46:31: info: initialization of private part of "K" proved
-my_ordered_sets.adb:46:34: info: initialization of private part of "L" proved
 my_ordered_sets.adb:47:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:47:43: info: initialization of private part of "K" proved
-my_ordered_sets.adb:47:46: info: initialization of private part of "L" proved
 my_ordered_sets.adb:48:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:48:27: info: initialization of private part of "K" proved
-my_ordered_sets.adb:48:31: info: initialization of private part of "L" proved
-my_ordered_sets.adb:50:10: info: initialization of private part of "M" proved
-my_ordered_sets.adb:50:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:50:27: info: initialization of private part of "L" proved
-my_ordered_sets.adb:52:47: info: initialization of private part of "K" proved
 my_ordered_sets.adb:53:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:53:18: info: initialization of private part of "M" proved
-my_ordered_sets.adb:53:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:54:25: medium: assertion might fail, cannot prove (M and L) = (K and L)
-my_ordered_sets.adb:54:26: info: initialization of private part of "M" proved
-my_ordered_sets.adb:54:38: info: initialization of private part of "K" proved
-my_ordered_sets.adb:54:44: info: initialization of private part of "L" proved
-my_ordered_sets.adb:55:24: info: initialization of private part of "M" proved
-my_ordered_sets.adb:55:27: info: initialization of private part of "L" proved
-my_ordered_sets.adb:58:10: info: initialization of private part of "M" proved
-my_ordered_sets.adb:58:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:58:23: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:58:26: info: initialization of private part of "L" proved
 my_ordered_sets.adb:60:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:60:18: info: initialization of private part of "M" proved
-my_ordered_sets.adb:60:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:61:25: medium: assertion might fail, cannot prove (M or L) = (K or L)
-my_ordered_sets.adb:61:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:61:28: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:61:37: info: initialization of private part of "K" proved
 my_ordered_sets.adb:61:39: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:61:42: info: initialization of private part of "L" proved
-my_ordered_sets.adb:62:25: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:62:42: info: initialization of private part of "M" proved
-my_ordered_sets.adb:62:51: info: initialization of private part of "K" proved
-my_ordered_sets.adb:62:57: info: initialization of private part of "L" proved
+my_ordered_sets.adb:62:25: medium: assertion might fail, cannot prove Equivalent_Sets (M and L, K and L)
 my_ordered_sets.adb:63:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:63:17: info: initialization of private part of "M" proved
-my_ordered_sets.adb:63:20: info: initialization of private part of "L" proved
-my_ordered_sets.adb:66:10: info: initialization of private part of "M" proved
-my_ordered_sets.adb:66:21: info: initialization of private part of "K" proved
-my_ordered_sets.adb:66:25: info: initialization of private part of "L" proved
-my_ordered_sets.adb:68:47: info: initialization of private part of "K" proved
 my_ordered_sets.adb:69:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:69:18: info: initialization of private part of "M" proved
-my_ordered_sets.adb:69:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:70:25: medium: assertion might fail, cannot prove (M - L) = (K - L)
-my_ordered_sets.adb:70:26: info: initialization of private part of "M" proved
-my_ordered_sets.adb:70:36: info: initialization of private part of "K" proved
-my_ordered_sets.adb:70:40: info: initialization of private part of "L" proved
-my_ordered_sets.adb:71:22: info: initialization of private part of "M" proved
-my_ordered_sets.adb:71:25: info: initialization of private part of "L" proved
-my_ordered_sets.adb:74:10: info: initialization of private part of "M" proved
-my_ordered_sets.adb:74:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:74:23: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:74:27: info: initialization of private part of "L" proved
 my_ordered_sets.adb:76:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:76:18: info: initialization of private part of "M" proved
-my_ordered_sets.adb:76:21: info: initialization of private part of "K" proved
 my_ordered_sets.adb:77:25: medium: assertion might fail, cannot prove (M xor L) = (K xor L)
-my_ordered_sets.adb:77:26: info: initialization of private part of "M" proved
 my_ordered_sets.adb:77:28: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:77:38: info: initialization of private part of "K" proved
 my_ordered_sets.adb:77:40: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:77:44: info: initialization of private part of "L" proved
 my_ordered_sets.adb:78:10: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:78:32: info: initialization of private part of "M" proved
-my_ordered_sets.adb:78:35: info: initialization of private part of "L" proved
-my_ordered_sets.adb:81:21: info: initialization of private part of "L" proved
-my_ordered_sets.adb:82:20: info: initialization of private part of "L" proved
-my_ordered_sets.adb:84:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:07: medium: precondition might fail
-my_ordered_sets.adb:85:15: info: initialization of private part of "L" proved
-my_ordered_sets.adb:85:18: info: initialization of "C.Node" proved
+my_ordered_sets.adb:85:07: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: call at line 82 should mention Container (for argument L) in a postcondition]
 my_ordered_sets.adb:86:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:86:36: info: initialization of private part of "L" proved
-my_ordered_sets.adb:87:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:88:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:89:22: medium: assertion might fail, cannot prove Contains (L, 4)
-my_ordered_sets.adb:89:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:90:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:91:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:91:30: info: initialization of private part of "L" proved
 my_ordered_sets.adb:92:07: medium: assertion might fail
 my_ordered_sets.adb:95:14: warning: subprogram "Test_Set_Rec" has no effect
-my_ordered_sets.adb:98:07: info: initialization of private part of "K" proved
-my_ordered_sets.adb:98:07: info: initialization of private part of "L" proved
+my_ordered_sets.adb:98:07: info: initialization of "L" proved
+my_ordered_sets.adb:98:10: info: initialization of "K" proved
 my_ordered_sets.adb:98:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:99:07: info: initialization of "C" proved
+my_ordered_sets.adb:100:07: info: initialization of "B" proved
 my_ordered_sets.adb:102:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:102:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:103:19: info: initialization of private part of "L" proved
 my_ordered_sets.adb:104:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:104:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:104:21: info: initialization of "C.Node" proved
 my_ordered_sets.adb:106:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:106:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:107:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:107:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:108:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:108:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:109:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:109:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:110:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:110:26: info: initialization of "B" proved
 my_ordered_sets.adb:112:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:112:24: info: initialization of private part of "L" proved
-my_ordered_sets.adb:112:27: info: initialization of "C.Node" proved
 my_ordered_sets.adb:113:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:113:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:114:46: info: initialization of private part of "L" proved
 my_ordered_sets.adb:116:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:116:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:116:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:117:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:117:13: info: initialization of private part of "L" proved
-my_ordered_sets.adb:117:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:118:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:119:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:120:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:121:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:123:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:123:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:123:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:125:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:125:15: info: initialization of private part of "L" proved
-my_ordered_sets.adb:126:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:127:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:127:15: info: initialization of private part of "L" proved
-my_ordered_sets.adb:127:18: info: initialization of "C.Node" proved
 my_ordered_sets.adb:128:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:128:36: info: initialization of private part of "L" proved
-my_ordered_sets.adb:129:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:130:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:131:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:131:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:132:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:133:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:133:30: info: initialization of private part of "L" proved
 my_ordered_sets.adb:135:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:135:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:136:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:136:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:137:18: info: initialization of private part of "K" proved
 my_ordered_sets.adb:138:22: medium: assertion might fail, cannot prove Contains (K, 2)
-my_ordered_sets.adb:138:32: info: initialization of private part of "K" proved
 my_ordered_sets.adb:139:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:139:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:139:18: info: initialization of "C.Node" proved
 my_ordered_sets.adb:140:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:140:36: info: initialization of private part of "K" proved
-my_ordered_sets.adb:141:18: info: initialization of private part of "K" proved
-my_ordered_sets.adb:142:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:143:32: info: initialization of private part of "K" proved
-my_ordered_sets.adb:144:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:145:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:145:30: info: initialization of private part of "K" proved
 my_ordered_sets.adb:146:07: medium: assertion might fail
 my_ordered_sets.adb:149:14: warning: subprogram "Test_Set_Rec_2" has no effect
-my_ordered_sets.adb:151:07: info: initialization of private part of "K" proved
-my_ordered_sets.adb:151:07: info: initialization of private part of "L" proved
+my_ordered_sets.adb:151:07: info: initialization of "L" proved
+my_ordered_sets.adb:151:10: info: initialization of "K" proved
 my_ordered_sets.adb:151:19: info: range check proved (Z3: 1 VC)
+my_ordered_sets.adb:152:07: info: initialization of "C" proved
+my_ordered_sets.adb:153:07: info: initialization of "B" proved
 my_ordered_sets.adb:155:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:155:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:156:19: info: initialization of private part of "L" proved
 my_ordered_sets.adb:157:12: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:157:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:157:21: info: initialization of "C.Node" proved
 my_ordered_sets.adb:159:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:159:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:160:07: info: precondition proved (Z3: 2 VC)
-my_ordered_sets.adb:160:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:161:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:161:15: info: initialization of private part of "L" proved
 my_ordered_sets.adb:162:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:162:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:163:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:163:26: info: initialization of "B" proved
 my_ordered_sets.adb:165:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:165:24: info: initialization of private part of "L" proved
-my_ordered_sets.adb:165:27: info: initialization of "C.Node" proved
 my_ordered_sets.adb:166:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:166:16: info: initialization of private part of "L" proved
-my_ordered_sets.adb:167:44: info: initialization of private part of "L" proved
 my_ordered_sets.adb:169:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:169:15: info: initialization of private part of "K" proved
-my_ordered_sets.adb:169:18: info: initialization of private part of "L" proved
 my_ordered_sets.adb:170:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:170:13: info: initialization of private part of "L" proved
-my_ordered_sets.adb:170:16: info: initialization of private part of "K" proved
 my_ordered_sets.adb:172:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:172:32: info: initialization of private part of "L" proved
 my_ordered_sets.adb:173:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:173:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:174:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:174:36: info: initialization of private part of "L" proved
 my_ordered_sets.adb:175:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:175:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:177:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:177:15: info: initialization of private part of "L" proved
-my_ordered_sets.adb:178:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:179:07: medium: precondition might fail
-my_ordered_sets.adb:179:15: info: initialization of private part of "L" proved
-my_ordered_sets.adb:179:18: info: initialization of "C.Node" proved
+my_ordered_sets.adb:179:07: medium: precondition might fail, cannot prove Has_Element (Container, Position)
 my_ordered_sets.adb:180:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:180:36: info: initialization of private part of "L" proved
-my_ordered_sets.adb:181:18: info: initialization of private part of "L" proved
-my_ordered_sets.adb:182:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:183:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
-my_ordered_sets.adb:183:32: info: initialization of private part of "L" proved
-my_ordered_sets.adb:184:16: info: initialization of private part of "L" proved
 my_ordered_sets.adb:185:22: info: assertion proved (Z3: 1 VC)
-my_ordered_sets.adb:185:30: info: initialization of private part of "L" proved
 my_ordered_sets.adb:186:07: medium: assertion might fail
-my_ordered_sets.adb:191:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:192:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:193:07: info: precondition proved (Z3: 1 VC)
+my_ordered_sets.adb:191:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_sets.adb:192:07: info: precondition proved (Trivial: 1 VC)
+my_ordered_sets.adb:193:07: info: precondition proved (Trivial: 1 VC)
 my_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
 my_ordered_sets.ads:22:53: medium: range check might fail [possible explanation: subprogram at line 22 should mention X in a precondition]
 my_ordered_sets.ads:23:17: info: postcondition proved (Z3: 1 VC)
 my_ordered_sets.ads:31:14: warning: subprogram "Test_Ordered_Set" has no effect
 my_sets.adb:4:14: warning: subprogram "Test_Set_Pos" has no effect
-my_sets.adb:6:07: info: initialization of private part of "K" proved
-my_sets.adb:6:07: info: initialization of private part of "L" proved
+my_sets.adb:6:07: info: initialization of "L" proved
+my_sets.adb:6:10: info: initialization of "K" proved
 my_sets.adb:6:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:6:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:7:07: info: initialization of "C" proved
+my_sets.adb:8:07: info: initialization of "B" proved
 my_sets.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:10:32: info: initialization of private part of "L" proved
-my_sets.adb:11:19: info: initialization of private part of "L" proved
 my_sets.adb:12:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:12:18: info: initialization of private part of "L" proved
-my_sets.adb:12:21: info: initialization of "C.Node" proved
 my_sets.adb:14:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:14:15: info: initialization of private part of "L" proved
 my_sets.adb:15:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:15:15: info: initialization of private part of "L" proved
 my_sets.adb:16:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:16:15: info: initialization of private part of "L" proved
 my_sets.adb:17:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:17:26: info: initialization of "B" proved
 my_sets.adb:19:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:19:24: info: initialization of private part of "L" proved
-my_sets.adb:19:27: info: initialization of "C.Node" proved
 my_sets.adb:20:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:20:16: info: initialization of private part of "L" proved
-my_sets.adb:21:44: info: initialization of private part of "L" proved
 my_sets.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:23:15: info: initialization of private part of "K" proved
-my_sets.adb:23:18: info: initialization of private part of "L" proved
 my_sets.adb:24:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:24:13: info: initialization of private part of "L" proved
-my_sets.adb:24:16: info: initialization of private part of "K" proved
 my_sets.adb:25:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:25:15: info: initialization of private part of "K" proved
-my_sets.adb:25:18: info: initialization of private part of "L" proved
 my_sets.adb:27:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:27:32: info: initialization of private part of "L" proved
 my_sets.adb:28:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:28:16: info: initialization of private part of "L" proved
 my_sets.adb:29:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:29:36: info: initialization of private part of "L" proved
 my_sets.adb:30:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:30:16: info: initialization of private part of "L" proved
 my_sets.adb:32:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:32:15: info: initialization of private part of "L" proved
 my_sets.adb:34:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:34:37: info: initialization of private part of "K" proved
-my_sets.adb:34:40: info: initialization of private part of "L" proved
 my_sets.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:35:31: info: initialization of private part of "K" proved
-my_sets.adb:35:34: info: initialization of private part of "L" proved
 my_sets.adb:36:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:36:43: info: initialization of private part of "K" proved
-my_sets.adb:36:46: info: initialization of private part of "L" proved
 my_sets.adb:37:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:37:27: info: initialization of private part of "K" proved
-my_sets.adb:37:31: info: initialization of private part of "L" proved
-my_sets.adb:39:10: info: initialization of private part of "M" proved
-my_sets.adb:39:21: info: initialization of private part of "K" proved
-my_sets.adb:39:27: info: initialization of private part of "L" proved
-my_sets.adb:42:47: info: initialization of private part of "K" proved
 my_sets.adb:43:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:43:18: info: initialization of private part of "M" proved
-my_sets.adb:43:21: info: initialization of private part of "K" proved
-my_sets.adb:44:25: info: assertion proved (CVC4: 1 VC)
-my_sets.adb:44:26: info: initialization of private part of "M" proved
-my_sets.adb:44:38: info: initialization of private part of "K" proved
-my_sets.adb:44:44: info: initialization of private part of "L" proved
-my_sets.adb:45:24: info: initialization of private part of "M" proved
-my_sets.adb:45:27: info: initialization of private part of "L" proved
-my_sets.adb:48:10: info: initialization of private part of "M" proved
-my_sets.adb:48:21: info: initialization of private part of "K" proved
+my_sets.adb:44:25: info: assertion proved (Z3: 1 VC)
 my_sets.adb:48:23: info: precondition proved (Z3: 1 VC)
-my_sets.adb:48:26: info: initialization of private part of "L" proved
 my_sets.adb:50:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:50:18: info: initialization of private part of "M" proved
-my_sets.adb:50:21: info: initialization of private part of "K" proved
 my_sets.adb:51:25: medium: assertion might fail, cannot prove (M or L) = (K or L)
-my_sets.adb:51:26: info: initialization of private part of "M" proved
 my_sets.adb:51:28: info: precondition proved (Z3: 1 VC)
-my_sets.adb:51:37: info: initialization of private part of "K" proved
 my_sets.adb:51:39: info: precondition proved (Z3: 1 VC)
-my_sets.adb:51:42: info: initialization of private part of "L" proved
 my_sets.adb:52:25: info: assertion proved (Z3: 1 VC)
-my_sets.adb:52:42: info: initialization of private part of "M" proved
-my_sets.adb:52:51: info: initialization of private part of "K" proved
-my_sets.adb:52:57: info: initialization of private part of "L" proved
 my_sets.adb:53:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:53:17: info: initialization of private part of "M" proved
-my_sets.adb:53:20: info: initialization of private part of "L" proved
-my_sets.adb:56:10: info: initialization of private part of "M" proved
-my_sets.adb:56:21: info: initialization of private part of "K" proved
-my_sets.adb:56:25: info: initialization of private part of "L" proved
-my_sets.adb:58:47: info: initialization of private part of "K" proved
 my_sets.adb:59:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:59:18: info: initialization of private part of "M" proved
-my_sets.adb:59:21: info: initialization of private part of "K" proved
 my_sets.adb:60:25: info: assertion proved (CVC4: 1 VC)
-my_sets.adb:60:26: info: initialization of private part of "M" proved
-my_sets.adb:60:36: info: initialization of private part of "K" proved
-my_sets.adb:60:40: info: initialization of private part of "L" proved
-my_sets.adb:61:22: info: initialization of private part of "M" proved
-my_sets.adb:61:25: info: initialization of private part of "L" proved
-my_sets.adb:64:10: info: initialization of private part of "M" proved
-my_sets.adb:64:21: info: initialization of private part of "K" proved
 my_sets.adb:64:23: info: precondition proved (Z3: 1 VC)
-my_sets.adb:64:27: info: initialization of private part of "L" proved
 my_sets.adb:66:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:66:18: info: initialization of private part of "M" proved
-my_sets.adb:66:21: info: initialization of private part of "K" proved
 my_sets.adb:67:25: medium: assertion might fail, cannot prove (M xor L) = (K xor L)
-my_sets.adb:67:26: info: initialization of private part of "M" proved
 my_sets.adb:67:28: info: precondition proved (Z3: 1 VC)
-my_sets.adb:67:38: info: initialization of private part of "K" proved
 my_sets.adb:67:40: info: precondition proved (Z3: 1 VC)
-my_sets.adb:67:44: info: initialization of private part of "L" proved
 my_sets.adb:68:10: info: precondition proved (Z3: 1 VC)
-my_sets.adb:68:32: info: initialization of private part of "M" proved
-my_sets.adb:68:35: info: initialization of private part of "L" proved
-my_sets.adb:71:18: info: initialization of private part of "L" proved
 my_sets.adb:72:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:72:15: info: initialization of private part of "L" proved
-my_sets.adb:72:18: info: initialization of "C.Node" proved
 my_sets.adb:73:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:73:36: info: initialization of private part of "L" proved
-my_sets.adb:74:18: info: initialization of private part of "L" proved
-my_sets.adb:75:16: info: initialization of private part of "L" proved
 my_sets.adb:76:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:76:32: info: initialization of private part of "L" proved
-my_sets.adb:77:16: info: initialization of private part of "L" proved
 my_sets.adb:78:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:78:30: info: initialization of private part of "L" proved
 my_sets.adb:79:07: medium: assertion might fail
 my_sets.adb:82:14: warning: subprogram "Test_Set_Rec" has no effect
-my_sets.adb:85:07: info: initialization of private part of "K" proved
-my_sets.adb:85:07: info: initialization of private part of "L" proved
+my_sets.adb:85:07: info: initialization of "L" proved
+my_sets.adb:85:10: info: initialization of "K" proved
 my_sets.adb:85:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:85:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:86:07: info: initialization of "C" proved
+my_sets.adb:87:07: info: initialization of "B" proved
 my_sets.adb:89:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:89:32: info: initialization of private part of "L" proved
-my_sets.adb:90:19: info: initialization of private part of "L" proved
 my_sets.adb:91:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:91:18: info: initialization of private part of "L" proved
-my_sets.adb:91:21: info: initialization of "C.Node" proved
 my_sets.adb:93:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:93:15: info: initialization of private part of "L" proved
 my_sets.adb:94:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:94:15: info: initialization of private part of "L" proved
 my_sets.adb:95:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:95:15: info: initialization of private part of "L" proved
 my_sets.adb:96:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:96:36: info: initialization of private part of "L" proved
 my_sets.adb:97:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:97:26: info: initialization of "B" proved
 my_sets.adb:99:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:99:24: info: initialization of private part of "L" proved
-my_sets.adb:99:27: info: initialization of "C.Node" proved
 my_sets.adb:100:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:100:16: info: initialization of private part of "L" proved
-my_sets.adb:101:46: info: initialization of private part of "L" proved
 my_sets.adb:103:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:103:15: info: initialization of private part of "K" proved
-my_sets.adb:103:18: info: initialization of private part of "L" proved
 my_sets.adb:104:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:104:13: info: initialization of private part of "L" proved
-my_sets.adb:104:16: info: initialization of private part of "K" proved
 my_sets.adb:106:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:106:32: info: initialization of private part of "L" proved
 my_sets.adb:107:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:107:16: info: initialization of private part of "L" proved
 my_sets.adb:108:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:108:36: info: initialization of private part of "L" proved
 my_sets.adb:109:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:109:16: info: initialization of private part of "L" proved
 my_sets.adb:111:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:111:15: info: initialization of private part of "K" proved
-my_sets.adb:111:18: info: initialization of private part of "L" proved
 my_sets.adb:113:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:113:15: info: initialization of private part of "L" proved
-my_sets.adb:114:18: info: initialization of private part of "L" proved
 my_sets.adb:115:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:115:15: info: initialization of private part of "L" proved
-my_sets.adb:115:18: info: initialization of "C.Node" proved
 my_sets.adb:116:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:116:36: info: initialization of private part of "L" proved
-my_sets.adb:117:18: info: initialization of private part of "L" proved
-my_sets.adb:118:16: info: initialization of private part of "L" proved
 my_sets.adb:119:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:119:32: info: initialization of private part of "L" proved
-my_sets.adb:120:16: info: initialization of private part of "L" proved
 my_sets.adb:121:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:121:30: info: initialization of private part of "L" proved
 my_sets.adb:123:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:123:16: info: initialization of private part of "K" proved
 my_sets.adb:124:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:124:15: info: initialization of private part of "K" proved
-my_sets.adb:125:18: info: initialization of private part of "K" proved
 my_sets.adb:126:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:126:32: info: initialization of private part of "K" proved
 my_sets.adb:127:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:127:15: info: initialization of private part of "K" proved
-my_sets.adb:127:18: info: initialization of "C.Node" proved
 my_sets.adb:128:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:128:36: info: initialization of private part of "K" proved
-my_sets.adb:129:18: info: initialization of private part of "K" proved
-my_sets.adb:130:16: info: initialization of private part of "K" proved
 my_sets.adb:131:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:131:32: info: initialization of private part of "K" proved
-my_sets.adb:132:16: info: initialization of private part of "K" proved
 my_sets.adb:133:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:133:30: info: initialization of private part of "K" proved
 my_sets.adb:134:07: medium: assertion might fail
 my_sets.adb:137:14: warning: subprogram "Test_Set_Rec_2" has no effect
-my_sets.adb:139:07: info: initialization of private part of "K" proved
-my_sets.adb:139:07: info: initialization of private part of "L" proved
+my_sets.adb:139:07: info: initialization of "L" proved
+my_sets.adb:139:10: info: initialization of "K" proved
 my_sets.adb:139:19: info: range check proved (Z3: 1 VC)
 my_sets.adb:139:23: info: range check proved (Z3: 1 VC)
+my_sets.adb:140:07: info: initialization of "C" proved
+my_sets.adb:141:07: info: initialization of "B" proved
 my_sets.adb:143:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:143:32: info: initialization of private part of "L" proved
-my_sets.adb:144:19: info: initialization of private part of "L" proved
 my_sets.adb:145:12: info: precondition proved (Z3: 1 VC)
-my_sets.adb:145:18: info: initialization of private part of "L" proved
-my_sets.adb:145:21: info: initialization of "C.Node" proved
 my_sets.adb:147:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:147:15: info: initialization of private part of "L" proved
 my_sets.adb:148:07: info: precondition proved (Z3: 2 VC)
-my_sets.adb:148:15: info: initialization of private part of "L" proved
 my_sets.adb:149:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:149:15: info: initialization of private part of "L" proved
 my_sets.adb:150:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:150:36: info: initialization of private part of "L" proved
 my_sets.adb:151:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:151:26: info: initialization of "B" proved
 my_sets.adb:153:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:153:24: info: initialization of private part of "L" proved
-my_sets.adb:153:27: info: initialization of "C.Node" proved
 my_sets.adb:154:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:154:16: info: initialization of private part of "L" proved
-my_sets.adb:155:44: info: initialization of private part of "L" proved
 my_sets.adb:157:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:157:15: info: initialization of private part of "K" proved
-my_sets.adb:157:18: info: initialization of private part of "L" proved
 my_sets.adb:158:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:158:13: info: initialization of private part of "L" proved
-my_sets.adb:158:16: info: initialization of private part of "K" proved
 my_sets.adb:160:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:160:32: info: initialization of private part of "L" proved
 my_sets.adb:161:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:161:16: info: initialization of private part of "L" proved
 my_sets.adb:162:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:162:36: info: initialization of private part of "L" proved
 my_sets.adb:163:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:163:16: info: initialization of private part of "L" proved
 my_sets.adb:165:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:165:15: info: initialization of private part of "L" proved
-my_sets.adb:166:18: info: initialization of private part of "L" proved
 my_sets.adb:167:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:167:15: info: initialization of private part of "L" proved
-my_sets.adb:167:18: info: initialization of "C.Node" proved
 my_sets.adb:168:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:168:36: info: initialization of private part of "L" proved
-my_sets.adb:169:18: info: initialization of private part of "L" proved
-my_sets.adb:170:16: info: initialization of private part of "L" proved
-my_sets.adb:171:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:171:32: info: initialization of private part of "L" proved
-my_sets.adb:172:16: info: initialization of private part of "L" proved
+my_sets.adb:171:22: medium: assertion might fail, cannot prove Contains (L, (F => 1, G => 8))
 my_sets.adb:173:22: info: assertion proved (Z3: 1 VC)
-my_sets.adb:173:30: info: initialization of private part of "L" proved
 my_sets.adb:174:07: medium: assertion might fail
-my_sets.adb:179:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:180:07: info: precondition proved (Z3: 1 VC)
-my_sets.adb:181:07: info: precondition proved (Z3: 1 VC)
+my_sets.adb:179:07: info: precondition proved (Trivial: 1 VC)
+my_sets.adb:180:07: info: precondition proved (Trivial: 1 VC)
+my_sets.adb:181:07: info: precondition proved (Trivial: 1 VC)
 my_sets.ads:19:17: info: postcondition proved (Z3: 2 VC)
 my_sets.ads:30:17: info: postcondition proved (Z3: 1 VC)
 my_sets.ads:39:14: warning: subprogram "Test_Set" has no effect
-my_vectors.adb:7:07: info: initialization of private part of "K" proved
-my_vectors.adb:7:07: info: initialization of private part of "L" proved
+my_vectors.adb:7:07: info: initialization of "L" proved
+my_vectors.adb:7:10: info: initialization of "K" proved
 my_vectors.adb:7:22: info: range check proved (Z3: 1 VC)
 my_vectors.adb:10:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:10:32: info: initialization of private part of "L" proved
 my_vectors.adb:11:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:11:15: info: initialization of private part of "L" proved
 my_vectors.adb:12:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:12:15: info: initialization of private part of "L" proved
 my_vectors.adb:13:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:13:20: info: initialization of private part of "L" proved
 my_vectors.adb:14:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:14:30: info: initialization of private part of "L" proved
-my_vectors.adb:15:20: info: initialization of private part of "L" proved
 my_vectors.adb:16:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:16:30: info: initialization of private part of "L" proved
-my_vectors.adb:17:20: info: initialization of private part of "L" proved
-my_vectors.adb:19:14: info: initialization of private part of "L" proved
 my_vectors.adb:21:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:21:16: info: initialization of private part of "L" proved
 my_vectors.adb:22:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:22:16: info: initialization of private part of "L" proved
 my_vectors.adb:23:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:23:21: info: initialization of private part of "L" proved
 my_vectors.adb:24:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:24:30: info: initialization of private part of "L" proved
-my_vectors.adb:25:21: info: initialization of private part of "L" proved
 my_vectors.adb:26:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:26:30: info: initialization of private part of "L" proved
-my_vectors.adb:27:21: info: initialization of private part of "L" proved
-my_vectors.adb:29:14: info: initialization of private part of "L" proved
 my_vectors.adb:32:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:32:15: info: initialization of private part of "L" proved
-my_vectors.adb:32:18: info: initialization of "C" proved
 my_vectors.adb:32:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:33:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:33:15: info: initialization of private part of "L" proved
-my_vectors.adb:33:18: info: initialization of "C" proved
 my_vectors.adb:33:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:35:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:35:36: info: initialization of private part of "L" proved
-my_vectors.adb:36:24: info: initialization of private part of "L" proved
 my_vectors.adb:36:27: info: range check proved (Z3: 1 VC)
 my_vectors.adb:38:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:38:22: info: initialization of "C" proved
 my_vectors.adb:39:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:39:15: info: initialization of private part of "L" proved
-my_vectors.adb:39:18: info: initialization of "C" proved
 my_vectors.adb:39:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:40:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:40:15: info: initialization of private part of "L" proved
-my_vectors.adb:40:18: info: initialization of "C" proved
 my_vectors.adb:40:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:43:10: info: initialization of private part of "I" proved
-my_vectors.adb:43:24: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:43:30: info: initialization of private part of "L" proved
-my_vectors.adb:45:10: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:45:16: info: initialization of private part of "K" proved
-my_vectors.adb:45:19: info: initialization of private part of "I" proved
+my_vectors.adb:43:24: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
+my_vectors.adb:45:10: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:48:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:48:15: info: initialization of private part of "L" proved
-my_vectors.adb:48:18: info: initialization of "C" proved
 my_vectors.adb:48:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:49:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:49:15: info: initialization of private part of "L" proved
-my_vectors.adb:49:18: info: initialization of "C" proved
 my_vectors.adb:49:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:50:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:50:22: info: initialization of "C" proved
 my_vectors.adb:50:24: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:50:42: info: initialization of private part of "L" proved
 my_vectors.adb:51:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:51:15: info: initialization of private part of "L" proved
-my_vectors.adb:51:18: info: initialization of "C" proved
 my_vectors.adb:51:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:52:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:52:22: info: initialization of "C" proved
 my_vectors.adb:52:24: info: overflow check proved (Z3: 1 VC)
-my_vectors.adb:52:43: info: initialization of private part of "L" proved
 my_vectors.adb:53:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:53:15: info: initialization of private part of "L" proved
-my_vectors.adb:53:18: info: initialization of "C" proved
 my_vectors.adb:53:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:55:14: info: initialization of private part of "L" proved
-my_vectors.adb:58:21: info: initialization of private part of "K" proved
 my_vectors.adb:59:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:59:15: info: initialization of private part of "K" proved
-my_vectors.adb:59:18: info: initialization of "C" proved
 my_vectors.adb:59:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:59:21: info: initialization of private part of "L" proved
 my_vectors.adb:60:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:60:15: info: initialization of private part of "L" proved
-my_vectors.adb:60:18: info: initialization of "C" proved
 my_vectors.adb:60:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:60:21: info: initialization of private part of "K" proved
 my_vectors.adb:61:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:61:15: info: initialization of private part of "L" proved
-my_vectors.adb:61:18: info: initialization of "C" proved
 my_vectors.adb:61:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:61:21: info: initialization of private part of "K" proved
-my_vectors.adb:63:24: info: initialization of private part of "K" proved
 my_vectors.adb:63:27: info: range check proved (Z3: 1 VC)
 my_vectors.adb:65:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:65:22: info: initialization of "C" proved
-my_vectors.adb:66:20: info: initialization of private part of "L" proved
 my_vectors.adb:67:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:67:15: info: initialization of private part of "K" proved
-my_vectors.adb:67:18: info: initialization of "C" proved
 my_vectors.adb:67:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:67:21: info: initialization of private part of "L" proved
-my_vectors.adb:69:14: info: initialization of private part of "L" proved
 my_vectors.adb:72:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:72:15: info: initialization of private part of "L" proved
-my_vectors.adb:72:18: info: initialization of "C" proved
 my_vectors.adb:72:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:73:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:73:15: info: initialization of private part of "L" proved
-my_vectors.adb:73:18: info: initialization of "C" proved
 my_vectors.adb:73:18: info: range check proved (Z3: 1 VC)
-my_vectors.adb:75:24: info: initialization of private part of "L" proved
 my_vectors.adb:75:27: info: range check proved (Z3: 1 VC)
 my_vectors.adb:77:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:77:22: info: initialization of "C" proved
 my_vectors.adb:78:07: info: precondition proved (Z3: 3 VC)
-my_vectors.adb:78:15: info: initialization of private part of "L" proved
-my_vectors.adb:78:18: info: initialization of "C" proved
 my_vectors.adb:78:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:79:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:79:15: info: initialization of private part of "L" proved
-my_vectors.adb:79:18: info: initialization of "C" proved
 my_vectors.adb:79:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:80:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:80:15: info: initialization of private part of "L" proved
-my_vectors.adb:80:18: info: initialization of "C" proved
 my_vectors.adb:80:18: info: range check proved (Z3: 1 VC)
 my_vectors.adb:82:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:82:24: info: initialization of private part of "L" proved
-my_vectors.adb:82:27: info: initialization of "C" proved
 my_vectors.adb:82:27: info: range check proved (Z3: 1 VC)
 my_vectors.adb:83:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:83:24: info: initialization of private part of "L" proved
-my_vectors.adb:83:27: info: initialization of "C" proved
 my_vectors.adb:83:29: info: overflow check proved (Z3: 1 VC)
 my_vectors.adb:83:29: info: range check proved (Z3: 1 VC)
 my_vectors.adb:85:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:85:34: info: initialization of private part of "L" proved
-my_vectors.adb:85:43: info: initialization of "C" proved
 my_vectors.adb:86:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:86:42: info: initialization of private part of "L" proved
-my_vectors.adb:86:51: info: initialization of "C" proved
 my_vectors.adb:86:53: info: overflow check proved (Z3: 1 VC)
 my_vectors.adb:87:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:87:34: info: initialization of private part of "L" proved
 my_vectors.adb:88:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:88:42: info: initialization of private part of "L" proved
-my_vectors.adb:90:25: info: initialization of private part of "L" proved
 my_vectors.adb:91:07: info: precondition proved (Z3: 4 VC)
-my_vectors.adb:91:13: info: initialization of private part of "L" proved
 my_vectors.adb:91:19: info: range check proved (Z3: 1 VC)
-my_vectors.adb:91:31: info: initialization of private part of "L" proved
 my_vectors.adb:93:30: info: assertion proved (Z3: 2 VC)
-my_vectors.adb:93:38: info: initialization of private part of "L" proved
-my_vectors.adb:94:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:94:15: info: initialization of private part of "K" proved
-my_vectors.adb:94:18: info: initialization of private part of "L" proved
-my_vectors.adb:96:13: info: initialization of private part of "L" proved
-my_vectors.adb:97:20: info: initialization of private part of "L" proved
-my_vectors.adb:98:21: info: initialization of private part of "K" proved
+my_vectors.adb:94:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:99:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:99:14: info: initialization of private part of "L" proved
-my_vectors.adb:99:17: info: initialization of private part of "K" proved
 my_vectors.adb:101:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:101:30: info: initialization of private part of "L" proved
-my_vectors.adb:103:13: info: initialization of private part of "L" proved
-my_vectors.adb:104:07: info: precondition proved (Z3: 2 VC)
-my_vectors.adb:104:15: info: initialization of private part of "K" proved
-my_vectors.adb:104:18: info: initialization of private part of "L" proved
-my_vectors.adb:105:20: info: initialization of private part of "L" proved
-my_vectors.adb:106:21: info: initialization of private part of "K" proved
+my_vectors.adb:104:07: info: precondition proved (Trivial: 1 VC; Z3: 1 VC)
 my_vectors.adb:107:07: info: precondition proved (Z3: 1 VC)
-my_vectors.adb:107:14: info: initialization of private part of "L" proved
-my_vectors.adb:107:17: info: initialization of private part of "K" proved
 my_vectors.adb:108:22: info: assertion proved (Z3: 1 VC)
-my_vectors.adb:108:33: info: initialization of private part of "L" proved
-my_vectors.adb:110:14: info: initialization of private part of "L" proved
 my_vectors.adb:111:07: medium: assertion might fail
 my_vectors.ads:10:14: warning: subprogram "Test_Vectors" has no effect

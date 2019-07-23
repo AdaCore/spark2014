@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,28 +25,30 @@
 
 --  This is the Why target-dependent version of the Back_End package
 
+with Ada.Directories;
 with Adabkend;
+with Debug; use Debug;
 with Elists;
 with Errout;
 with Gnat2Why.Driver;
 with Gnat2Why_Args;
+with Gnat2Why_Opts;
 with Namet;
 with Opt;
+with Osint;
 with SPARK_Definition;
-with Stringt;
 with System;
-with Types; use Types;
 
 package body Back_End is
 
    package GNAT2Why_BE is new Adabkend
      (Product_Name       => "GNAT2WHY",
-      Copyright_Years    => "2010-2018",
+      Copyright_Years    => "2010-2019",
       Driver             => Gnat2Why.Driver.GNAT_To_Why,
       Is_Back_End_Switch => Gnat2Why.Driver.Is_Back_End_Switch);
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
       return Opt.Warning_Mode_Type;
    --  Transform warning mode type of gnat2why_args to the warning mode type of
    --  the front-end.
@@ -68,7 +70,6 @@ package body Back_End is
       --  tables that we need to change.
 
       Namet.Unlock;
-      Stringt.Unlock;
       Elists.Unlock;
 
       --  gnat2why is run in two main modes:
@@ -109,7 +110,6 @@ package body Back_End is
       --  Make sure to lock any unlocked tables again before returning
 
       Namet.Lock;
-      Stringt.Lock;
       Elists.Lock;
    end Call_Back_End;
 
@@ -157,9 +157,14 @@ package body Back_End is
 
       --  Read extra options for gnat2why
 
-      Gnat2Why_Args.Init
-        (if Opt.SPARK_Switches_File_Name = null then ""
-         else Opt.SPARK_Switches_File_Name.all);
+      declare
+         Args_File   : String renames
+           Opt.SPARK_Switches_File_Name.all;
+         Source_File : constant String :=
+           Ada.Directories.Simple_Name (Osint.Get_First_Main_File_Name);
+      begin
+         Gnat2Why_Args.Load (Args_File, Source_File);
+      end;
 
       --  gnat2why is run in two main modes:
       --    Global_Gen_Mode = True for generating ALI files with effects.
@@ -184,6 +189,9 @@ package body Back_End is
 
          Opt.Disable_ALI_File := True;
       end if;
+
+      Debug_Flag_M := Gnat2Why_Args.No_Inlining;
+      Debug_Flag_Underscore_F := Gnat2Why_Args.Info_Messages;
    end Scan_Compiler_Arguments;
 
    -------------------------------
@@ -191,15 +199,15 @@ package body Back_End is
    -------------------------------
 
    function To_Front_End_Warning_Mode
-     (M : Gnat2Why_Args.SPARK_Warning_Mode_Type)
+     (M : Gnat2Why_Opts.SPARK_Warning_Mode_Type)
       return Opt.Warning_Mode_Type
    is
    begin
       return
         (case M is
-            when Gnat2Why_Args.SW_Suppress       => Opt.Suppress,
-            when Gnat2Why_Args.SW_Normal         => Opt.Normal,
-            when Gnat2Why_Args.SW_Treat_As_Error => Opt.Treat_As_Error);
+            when Gnat2Why_Opts.SW_Suppress       => Opt.Suppress,
+            when Gnat2Why_Opts.SW_Normal         => Opt.Normal,
+            when Gnat2Why_Opts.SW_Treat_As_Error => Opt.Treat_As_Error);
    end To_Front_End_Warning_Mode;
 
 end Back_End;

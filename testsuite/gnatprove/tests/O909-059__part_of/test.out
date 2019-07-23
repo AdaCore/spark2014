@@ -1,3 +1,4 @@
+communication.ads:5:04: info: flow dependencies proved
 communication.ads:8:14: warning: subprogram "P" has no effect
 communication.ads:11:04: indicator Part_Of is required in this context: constant with variable input "Max1" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))
 communication.ads:12:04: indicator Part_Of is required in this context: constant with variable input "Max2" is declared in the private part of package "Communication" (SPARK RM 7.2.6(2))

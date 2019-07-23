@@ -1,2 +1,1 @@
-derived.adb:7:14: info: initialization of "R.B" proved
-derived.adb:7:14: info: initialization of private part of "R" proved
+derived.adb:3:07: info: initialization of "R" proved

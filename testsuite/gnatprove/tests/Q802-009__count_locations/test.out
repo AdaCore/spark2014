@@ -1,32 +1,22 @@
 count_locations.adb:15:33: info: loop invariant initialization proved (CVC4: 1 VC)
 count_locations.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
-count_locations.adb:15:65: info: initialization of "St_Count" proved
-count_locations.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC)
-count_locations.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC)
+count_locations.adb:16:33: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC)
+count_locations.adb:16:33: info: loop invariant preservation proved (CVC4: 1 VC; Trivial: 1 VC)
 count_locations.adb:16:84: info: index check proved (CVC4: 4 VC)
 count_locations.adb:16:96: info: index check proved (CVC4: 4 VC)
-count_locations.adb:16:102: info: initialization of "Lowest_Max" proved
 count_locations.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
 count_locations.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
 count_locations.adb:17:86: info: index check proved (CVC4: 4 VC)
-count_locations.adb:17:94: info: initialization of "Lowest_Max" proved
 count_locations.adb:19:82: info: index check proved (CVC4: 4 VC)
 count_locations.adb:19:93: info: index check proved (CVC4: 4 VC)
-count_locations.adb:20:33: info: initialization of "St_Count" proved
 count_locations.adb:20:33: info: loop invariant initialization proved (CVC4: 1 VC)
 count_locations.adb:20:33: info: loop invariant preservation proved (CVC4: 1 VC)
-count_locations.adb:23:25: info: initialization of "St_Count" proved
 count_locations.adb:23:34: info: range check proved (CVC4: 1 VC)
-count_locations.adb:25:26: info: initialization of "Lowest_Max" proved
 count_locations.adb:31:22: info: assertion proved (CVC4: 1 VC)
-count_locations.adb:31:22: info: initialization of "St_Count" proved
-count_locations.adb:32:22: info: assertion proved (CVC4: 1 VC)
-count_locations.adb:32:75: info: initialization of "Lowest_Max" proved
-count_locations.adb:34:14: info: initialization of "St_Count" proved
-count_locations.adb:34:26: info: initialization of "Lowest_Max" proved
+count_locations.adb:32:22: info: assertion proved (CVC4: 1 VC; Trivial: 1 VC)
 count_locations.ads:12:13: medium: subprogram "Partial_Count_Selected_Locations" might not terminate, terminating annotation could be incorrect
 count_locations.ads:13:37: info: overflow check proved (CVC4: 1 VC)
 count_locations.ads:13:37: info: range check proved (CVC4: 1 VC)
 count_locations.ads:13:115: info: range check proved (CVC4: 1 VC)
 count_locations.ads:15:17: info: postcondition proved (CVC4: 1 VC)
-count_locations.ads:26:06: info: postcondition proved (CVC4: 2 VC)
+count_locations.ads:26:06: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)

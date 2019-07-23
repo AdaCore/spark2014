@@ -1,96 +1,69 @@
 concat.adb:3:14: warning: subprogram "One" has no effect
 concat.adb:4:16: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:34
-concat.adb:4:28: info: length check proved (CVC4: 4 VC), in call inlined at concat.adb:34
+concat.adb:4:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat.adb:34
 concat.adb:4:28: info: range check proved (CVC4: 1 VC), in call inlined at concat.adb:34
 concat.adb:4:30: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:34
 concat.adb:6:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:34
-concat.adb:6:22: info: initialization of "D" proved
-concat.adb:6:22: info: initialization of "D" proved, in call inlined at concat.adb:34
 concat.adb:7:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:34
-concat.adb:7:22: info: initialization of "D" proved
-concat.adb:7:22: info: initialization of "D" proved, in call inlined at concat.adb:34
 concat.adb:10:14: warning: subprogram "Two" has no effect
 concat.adb:11:17: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:35
-concat.adb:11:29: info: length check proved (CVC4: 4 VC), in call inlined at concat.adb:35
+concat.adb:11:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat.adb:35
 concat.adb:11:29: info: range check proved (CVC4: 1 VC), in call inlined at concat.adb:35
 concat.adb:11:31: info: range check proved (CVC4: 4 VC), in call inlined at concat.adb:35
 concat.adb:13:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:35
-concat.adb:13:22: info: initialization of "D" proved
-concat.adb:13:22: info: initialization of "D" proved, in call inlined at concat.adb:35
 concat.adb:14:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat.adb:35
-concat.adb:14:22: info: initialization of "D" proved
-concat.adb:14:22: info: initialization of "D" proved, in call inlined at concat.adb:35
 concat.adb:17:14: warning: subprogram "Three" has no effect
-concat.adb:20:14: medium: overflow check might fail
-concat.adb:20:24: medium: overflow check might fail (e.g. when B = (0 => Integer'First, others => 0) and B'First = -2147483648 and B'Last = 0)
+concat.adb:20:14: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = 1 and A'Last = 1 and B = (others => 0) and B'First = 0 and B'Last = 2147483647)
+concat.adb:20:24: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = 2147483647)
 concat.adb:23:19: info: range check proved (CVC4: 1 VC)
 concat.adb:25:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:26:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:22: info: assertion proved (CVC4: 1 VC)
 concat.adb:27:38: info: overflow check proved (CVC4: 1 VC)
 concat.adb:27:42: info: overflow check proved (CVC4: 1 VC)
-concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => -2) and B'First = -2147483648 and B'Last = 0)
-concat.adb:36:07: info: precondition proved (CVC4: 2 VC)
+concat.adb:27:52: medium: overflow check might fail (e.g. when B = (others => -1) and B'First = -1 and B'Last = 2147483647)
+concat.adb:36:07: info: precondition proved (CVC4: 3 VC)
 concat.ads:10:14: warning: subprogram "P" has no effect
 concat_left.adb:4:14: warning: subprogram "One" has no effect
 concat_left.adb:9:19: info: range check proved (CVC4: 1 VC)
 concat_left.adb:11:22: info: assertion proved (CVC4: 1 VC)
 concat_left.adb:12:22: info: assertion proved (CVC4: 1 VC)
-concat_left.adb:12:22: info: initialization of "Z" proved
 concat_left.adb:12:26: info: index check proved (CVC4: 2 VC)
 concat_left.adb:13:22: info: assertion proved (CVC4: 1 VC)
 concat_left.adb:16:14: warning: subprogram "Two" has no effect
-concat_left.adb:17:18: info: length check proved (CVC4: 4 VC), in call inlined at concat_left.adb:36
+concat_left.adb:17:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:17:18: info: range check proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
 concat_left.adb:17:20: info: range check proved (CVC4: 4 VC), in call inlined at concat_left.adb:36
 concat_left.adb:19:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
-concat_left.adb:19:22: info: initialization of "Z" proved
-concat_left.adb:19:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:36
 concat_left.adb:20:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:36
-concat_left.adb:20:22: info: initialization of "Z" proved
-concat_left.adb:20:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:36
 concat_left.adb:23:14: warning: subprogram "Three" has no effect
-concat_left.adb:24:19: info: length check proved (CVC4: 4 VC), in call inlined at concat_left.adb:37
+concat_left.adb:24:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_left.adb:37
 concat_left.adb:24:19: info: range check proved (CVC4: 1 VC), in call inlined at concat_left.adb:37
 concat_left.adb:24:21: info: range check proved (CVC4: 4 VC), in call inlined at concat_left.adb:37
 concat_left.adb:26:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:37
-concat_left.adb:26:22: info: initialization of "Z" proved
-concat_left.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
 concat_left.adb:27:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_left.adb:37
-concat_left.adb:27:22: info: initialization of "Z" proved
-concat_left.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_left.adb:37
 concat_left.adb:35:07: info: precondition proved (CVC4: 1 VC)
 concat_left.ads:2:14: warning: subprogram "P" has no effect
 concat_right.adb:4:14: warning: subprogram "One" has no effect
 concat_right.adb:8:19: info: range check proved (CVC4: 1 VC)
 concat_right.adb:10:22: info: assertion proved (CVC4: 1 VC)
 concat_right.adb:11:22: info: assertion proved (CVC4: 1 VC)
-concat_right.adb:11:22: info: initialization of "Z" proved
 concat_right.adb:11:26: info: index check proved (CVC4: 2 VC)
 concat_right.adb:11:40: info: index check proved (CVC4: 2 VC)
 concat_right.adb:12:22: info: assertion proved (CVC4: 1 VC)
-concat_right.adb:12:22: info: initialization of "Z" proved
 concat_right.adb:12:26: info: index check proved (CVC4: 2 VC)
 concat_right.adb:13:22: info: assertion proved (CVC4: 1 VC)
 concat_right.adb:16:14: warning: subprogram "Two" has no effect
 concat_right.adb:17:16: info: range check proved (CVC4: 4 VC), in call inlined at concat_right.adb:36
-concat_right.adb:17:27: info: length check proved (CVC4: 4 VC), in call inlined at concat_right.adb:36
+concat_right.adb:17:27: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:17:27: info: range check proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
 concat_right.adb:19:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
-concat_right.adb:19:22: info: initialization of "Z" proved
-concat_right.adb:19:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:36
 concat_right.adb:20:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:36
-concat_right.adb:20:22: info: initialization of "Z" proved
-concat_right.adb:20:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:36
 concat_right.adb:23:14: warning: subprogram "Three" has no effect
 concat_right.adb:24:17: info: range check proved (CVC4: 4 VC), in call inlined at concat_right.adb:37
-concat_right.adb:24:28: info: length check proved (CVC4: 4 VC), in call inlined at concat_right.adb:37
+concat_right.adb:24:28: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at concat_right.adb:37
 concat_right.adb:24:28: info: range check proved (CVC4: 1 VC), in call inlined at concat_right.adb:37
 concat_right.adb:26:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:37
-concat_right.adb:26:22: info: initialization of "Z" proved
-concat_right.adb:26:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
 concat_right.adb:27:22: info: assertion proved (CVC4: 1 VC), in call inlined at concat_right.adb:37
-concat_right.adb:27:22: info: initialization of "Z" proved
-concat_right.adb:27:22: info: initialization of "Z" proved, in call inlined at concat_right.adb:37
 concat_right.adb:35:07: info: precondition proved (CVC4: 2 VC)
 concat_right.ads:2:14: warning: subprogram "P" has no effect

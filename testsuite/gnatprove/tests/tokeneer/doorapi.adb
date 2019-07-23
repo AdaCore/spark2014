@@ -34,9 +34,9 @@ package body DoorAPI is
                                        Position => 1,
                                        New_Item => "door.getState()"),
          Length => 15);
-      pragma Annotate (GNATprove, False_Positive,
-                       "length check might fail",
-                       "Call to Overwrite will return here a string of the expected length");
+
+
+
       DoorState : DoorStateT := Error;
       IsOp,
       IsClosed,

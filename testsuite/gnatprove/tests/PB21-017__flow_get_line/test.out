@@ -1,9 +1,7 @@
-p.adb:6:10: high: call to potentially blocking predefined subprogram "Get_Line" in protected operation "Dummy1"
-p.adb:6:44: warning: assuming "Get_Line" has no effect on global items
-p.adb:6:44: warning: no Global contract available for "Get_Line"
-p.adb:12:10: high: call to potentially blocking subprogram "Nested" in protected operation "Dummy2"
-p.adb:13:13: info: initialization of "L" proved
-p.adb:13:13: warning: initialization of "L" has no effect
-p.adb:19:50: warning: assuming "Get_Line" has no effect on global items
-p.adb:19:50: warning: no Global contract available for "Get_Line"
-p.adb:21:22: info: range check proved (CVC4: 1 VC)
+p.adb:6:33: "Get_Line" is not allowed in SPARK
+p.adb:6:33: violation of pragma SPARK_Mode at test.adc:1
+p.adb:19:39: "Get_Line" is not allowed in SPARK
+p.adb:19:39: violation of pragma SPARK_Mode at test.adc:1
+p.adb:21:21: "S" is not allowed in SPARK
+p.adb:21:21: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

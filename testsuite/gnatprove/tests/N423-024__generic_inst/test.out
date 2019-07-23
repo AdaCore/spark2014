@@ -1,5 +1,7 @@
 context.adb:1:11: warning: subprogram "Context" has no effect
-context.adb:10:22: medium: assertion might fail, cannot prove V > 0, in instantiation at context.adb:13 (e.g. when V = 0)
+context.adb:6:23: info: data dependencies proved, in instantiation at context.adb:13
+context.adb:10:22: medium: assertion might fail, cannot prove V > 0, in instantiation at context.adb:13
+context.adb:15:25: info: data dependencies proved
 context_b.adb:1:11: warning: subprogram "Context_B" has no effect
 context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instantiation at context_b.adb:24
 context_b.adb:18:25: info: assertion proved (CVC4: 1 VC), in instantiation at context_b.adb:24

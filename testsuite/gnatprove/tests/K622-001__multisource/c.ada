@@ -1,22 +1,23 @@
 package A is pragma SPARK_Mode (On);
-   procedure Foo;
+   procedure Foo (X : in out Integer);
 end A;
 
 with B;
 package body A is pragma SPARK_Mode (On);
-   procedure Foo is
+   procedure Foo (X : in out Integer) is
    begin
-      B.Bar;
+      B.Bar (X);
+      X := X + 1;
    end Foo;
 end A;
 
 package B is pragma SPARK_Mode (On);
-   procedure Bar;
+   procedure Bar (X : in out Integer);
 end B;
 
 package body B is pragma SPARK_Mode (On);
-   procedure Bar is
+   procedure Bar (X : in out Integer) is
    begin
-      null;
+      X := X + 1;
    end Bar;
 end B;

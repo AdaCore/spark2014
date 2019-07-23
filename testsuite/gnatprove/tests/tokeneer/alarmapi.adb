@@ -39,9 +39,9 @@ is
                                        Position => 1,
                                        New_Item => "alarm.activate()"),
          Length => 16);
-      pragma Annotate (GNATprove, False_Positive,
-                       "length check might fail",
-                       "Call to Overwrite will return here a string of the expected length");
+
+
+
       CommsIsOK : Boolean;
    begin
       TcpIp.SendAndReceive (IsAdmin  => True,
@@ -66,9 +66,9 @@ is
                                        Position => 1,
                                        New_Item => "alarm.deactivate()"),
          Length => 18);
-      pragma Annotate (GNATprove, False_Positive,
-                       "length check might fail",
-                       "Call to Overwrite will return here a string of the expected length");
+
+
+
       CommsIsOK : Boolean;
    begin
       TcpIp.SendAndReceive (IsAdmin  => True,

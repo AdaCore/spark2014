@@ -1,0 +1,4 @@
+mypre.adb:4:09: info: data dependencies proved
+mypre.adb:14:14: warning: subprogram "Pre_Check" has no effect
+mypre.adb:22:04: info: precondition proved (Trivial: 1 VC)
+mypre.adb:23:04: medium: precondition might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 22 should mention X (for argument B) in a postcondition]

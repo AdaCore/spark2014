@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -316,7 +316,7 @@ package Xtree_Tables is
    function Maybe_Null (FI : Field_Info) return Boolean;
    --  True if this field may be null or empty
 
-   function Is_Why_Id  (FI : Field_Info) return Boolean;
+   function Is_Why_Id (FI : Field_Info) return Boolean;
    --  True if the type of this field is a subtype of Why_Node_Id
    --  or a subtype of Why_Node_List.
 

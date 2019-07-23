@@ -1,85 +1,128 @@
-bad_refinement.adb:5:04: info: initialization of "X" constituent of "State" proved
-bad_refinement.adb:5:07: info: initialization of "Y" constituent of "State2" proved
-bad_refinement.adb:5:10: info: initialization of "Z" constituent of "State2" proved
-bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(13))
+bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(14))
+bad_refinement.ads:3:08: info: flow dependencies proved
 bad_refinement.ads:6:11: low: global Input "Bad_Refinement.State" of "Liar" not read
 bad_refinement.ads:6:11: medium: "Bad_Refinement.State2" must be a global Input of "Liar"
 bad_refinement.ads:9:11: medium: "Bad_Refinement.State" must be a global Input of "Liar2"
 bad_refinement.ads:12:11: high: "Bad_Refinement.State" must be a global In_Out of "Liar3"
 bad_refinement.ads:12:11: low: global Input "Bad_Refinement.State" of "Liar3" not read
+bad_refinement.ads:15:11: info: flow dependencies proved
 bad_refinement.ads:15:11: low: global Input "Bad_Refinement.State" of "Liar4" not read
 bad_refinement.ads:15:11: medium: "Bad_Refinement.State2" must be a global Input of "Liar4"
+bad_refinement.ads:18:11: info: flow dependencies proved
 bad_refinement.ads:18:11: medium: "Bad_Refinement.State2" must be a global In_Out of "Liar5"
 bad_refinement.ads:21:21: info: initialization of "I" proved
 bad_refinement.ads:21:24: info: initialization of "J" proved
+bad_refinement.ads:22:11: info: data dependencies proved
 bad_refinement.ads:23:33: medium: incorrect dependency "I => Bad_Refinement.State"
 bad_refinement.ads:25:21: info: initialization of "I" proved
 bad_refinement.ads:25:24: info: initialization of "J" proved
 bad_refinement.ads:26:33: medium: incorrect dependency "I => Bad_Refinement.State"
+bad_refinement.ads:29:11: info: data dependencies proved
+bad_refinement.ads:31:11: info: flow dependencies proved
 bad_refinement.ads:34:11: global Output "Bad_Refinement.State2" of "Liar9" not written
 bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output of "Liar9"
-lots_of_tests.adb:6:04: info: initialization of "A" constituent of "State" proved
-lots_of_tests.adb:6:07: info: initialization of "B" constituent of "State" proved
-lots_of_tests.adb:6:10: info: initialization of "C" constituent of "State2" proved
-lots_of_tests.adb:6:13: info: initialization of "D" constituent of "State2" proved
-lots_of_tests.adb:10:15: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention A and G1 in a precondition]
-lots_of_tests.adb:10:19: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention A and C and G1 in a precondition]
-lots_of_tests.adb:25:14: medium: overflow check might fail [possible explanation: subprogram at line 23 should mention X and Y in a precondition]
-lots_of_tests.adb:26:15: medium: overflow check might fail [possible explanation: subprogram at line 23 should mention A and G1 in a precondition]
-lots_of_tests.adb:40:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(13))
-lots_of_tests.adb:45:15: medium: overflow check might fail [possible explanation: subprogram at line 43 should mention C and X in a precondition]
+bad_refinement.ads:34:11: info: flow dependencies proved
+lots_of_tests.adb:10:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:7 should mention A and G1 in a precondition]
+lots_of_tests.adb:10:19: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:7 should mention A and C and G1 in a precondition]
+lots_of_tests.adb:25:14: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:15 should mention X and Y in a precondition]
+lots_of_tests.adb:26:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:15 should mention A and G1 in a precondition]
+lots_of_tests.adb:40:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:45:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:25 should mention C and X in a precondition]
 lots_of_tests.adb:51:40: info: initialization of "G2" proved
 lots_of_tests.adb:70:41: info: initialization of "G2" proved
-lots_of_tests.adb:83:07: high: "A" constituent of "State" must be listed in the Refined_Depends aspect of "Internal_User_Of_G_D_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.adb:83:07: high: "A" constituent of "State" must be listed in the Refined_Depends aspect of "Internal_User_Of_G_D_BAD" (SPARK RM 6.1.4(14))
 lots_of_tests.adb:88:41: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.adb:88:44: info: initialization of "D" constituent of "State2" proved
 lots_of_tests.adb:103:49: low: unused global "B" constituent of "State"
 lots_of_tests.adb:104:42: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.adb:104:45: info: initialization of "D" constituent of "State2" proved
 lots_of_tests.adb:113:42: info: initialization of "G1" proved
-lots_of_tests.adb:116:22: medium: assertion might fail, cannot prove A > 5 [possible explanation: subprogram at line 110 should mention A in a precondition]
-lots_of_tests.adb:132:07: high: "C" constituent of "State2" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(13))
+lots_of_tests.adb:116:22: medium: assertion might fail, cannot prove A > 5 [possible explanation: subprogram at lots_of_tests.ads:64 should mention A in a precondition]
+lots_of_tests.adb:132:07: high: "C" constituent of "State2" must be listed in the Refined_Depends aspect of "Internal_User_Of_RG_D_BAD" (SPARK RM 6.1.4(14))
 lots_of_tests.adb:147:40: info: initialization of "G1" proved
 lots_of_tests.adb:154:44: warning: "C" constituent of "State2" is not modified, could be INPUT
 lots_of_tests.adb:155:40: info: initialization of "G1" proved
-lots_of_tests.adb:166:14: medium: overflow check might fail [possible explanation: subprogram at line 161 should mention A and C in a precondition]
+lots_of_tests.adb:166:14: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:96 should mention A and C in a precondition]
 lots_of_tests.adb:173:40: info: initialization of "B" constituent of "State" proved
 lots_of_tests.adb:183:07: high: "A" constituent of "State" is not an input in the Global contract of subprogram "Internal_User_Of_G_RD_BAD" at lots_of_tests.ads:105
 lots_of_tests.adb:183:07: high: "A" constituent of "State" is not initialized
 lots_of_tests.adb:183:07: high: either make "A" constituent of "State" an input in the Global contract or initialize it before use
-lots_of_tests.adb:192:15: medium: overflow check might fail [possible explanation: subprogram at line 186 should mention A and G1 in a precondition]
-lots_of_tests.adb:207:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(13))
-lots_of_tests.ads:5:04: info: initialization of "G1" proved
-lots_of_tests.ads:5:08: info: initialization of "G2" proved
+lots_of_tests.adb:192:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:108 should mention A and G1 in a precondition]
+lots_of_tests.adb:207:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_RG_RD_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.ads:3:08: info: flow dependencies proved
 lots_of_tests.ads:7:28: info: initialization of "X" proved
 lots_of_tests.ads:9:48: info: initialization of "X" proved
+lots_of_tests.ads:10:11: info: flow dependencies proved
+lots_of_tests.ads:13:11: info: flow dependencies proved
 lots_of_tests.ads:13:11: low: global Input "G2" of "Internal_User_Of_No_Contracts_BAD" not read
 lots_of_tests.ads:13:11: medium: "G1" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State2" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
-lots_of_tests.ads:25:14: info: initialization of "G2" proved
+lots_of_tests.ads:16:11: info: data dependencies proved
+lots_of_tests.ads:20:11: info: data dependencies proved
+lots_of_tests.ads:23:11: info: data dependencies proved
 lots_of_tests.ads:25:32: info: initialization of "Y" proved
+lots_of_tests.ads:26:11: info: flow dependencies proved
 lots_of_tests.ads:29:52: info: initialization of "Y" proved
+lots_of_tests.ads:30:11: info: data dependencies proved
 lots_of_tests.ads:34:11: low: global Input "G1" of "Internal_User_Of_Dep_BAD" not read
 lots_of_tests.ads:34:11: medium: "Lots_Of_Tests.State2" must be a global Input of "Internal_User_Of_Dep_BAD"
 lots_of_tests.ads:37:19: info: initialization of "X" proved
-lots_of_tests.ads:39:33: info: initialization of "G2" proved
+lots_of_tests.ads:38:11: info: data dependencies proved
+lots_of_tests.ads:40:11: info: flow dependencies proved
 lots_of_tests.ads:43:39: info: initialization of "X" proved
+lots_of_tests.ads:44:11: info: data dependencies proved
+lots_of_tests.ads:46:11: info: flow dependencies proved
+lots_of_tests.ads:50:11: info: flow dependencies proved
+lots_of_tests.ads:54:11: info: data dependencies proved
 lots_of_tests.ads:57:14: info: initialization of "C" constituent of "State2" proved
 lots_of_tests.ads:57:14: info: initialization of "D" constituent of "State2" proved
+lots_of_tests.ads:58:11: info: flow dependencies proved
+lots_of_tests.ads:61:11: info: data dependencies proved
+lots_of_tests.ads:65:11: info: data dependencies proved
+lots_of_tests.ads:68:11: info: flow dependencies proved
+lots_of_tests.ads:71:11: info: data dependencies proved
 lots_of_tests.ads:73:35: info: initialization of "G1" proved
+lots_of_tests.ads:74:11: info: flow dependencies proved
+lots_of_tests.ads:77:11: info: data dependencies proved
+lots_of_tests.ads:80:11: info: flow dependencies proved
 lots_of_tests.ads:82:14: info: initialization of "G1" proved
+lots_of_tests.ads:83:11: info: flow dependencies proved
+lots_of_tests.ads:87:11: info: data dependencies proved
+lots_of_tests.ads:92:11: info: data dependencies proved
 lots_of_tests.ads:96:14: info: initialization of "B" constituent of "State" proved
-lots_of_tests.ads:105:14: info: initialization of "A" constituent of "State" proved
+lots_of_tests.ads:97:11: info: data dependencies proved
+lots_of_tests.ads:99:11: info: flow dependencies proved
+lots_of_tests.ads:102:11: info: data dependencies proved
 lots_of_tests.ads:105:14: info: initialization of "B" constituent of "State" proved
-refinement_needed.adb:14:17: medium: overflow check might fail [possible explanation: subprogram at line 12 should mention V1 and V2 in a precondition]
+lots_of_tests.ads:106:11: info: flow dependencies proved
+lots_of_tests.ads:109:11: info: data dependencies proved
+lots_of_tests.ads:110:11: info: flow dependencies proved
+lots_of_tests.ads:115:11: info: data dependencies proved
+lots_of_tests.ads:118:11: info: data dependencies proved
+other.ads:3:08: info: flow dependencies proved
+refinement_needed.adb:14:17: medium: overflow check might fail [possible explanation: subprogram at refinement_needed.ads:12 should mention V1 and V2 in a precondition]
+refinement_needed.ads:10:11: info: data dependencies proved
+refinement_needed.ads:13:11: info: flow dependencies proved
+refinement_needed.ads:16:11: info: data dependencies proved
 user.ads:4:36: info: initialization of "X" proved
+user.ads:5:11: info: data dependencies proved
 user.ads:7:14: info: initialization of "Lots_Of_Tests.State3" proved
+user.ads:8:11: info: flow dependencies proved
 user.ads:10:40: info: initialization of "Y" proved
+user.ads:11:11: info: data dependencies proved
 user.ads:12:32: info: initialization of "G2" proved
 user.ads:14:14: info: initialization of "G2" proved
 user.ads:14:27: info: initialization of "X" proved
+user.ads:15:11: info: flow dependencies proved
 user.ads:18:14: info: initialization of "Lots_Of_Tests.State2" proved
+user.ads:19:11: info: flow dependencies proved
+user.ads:22:11: info: data dependencies proved
 user.ads:24:35: info: initialization of "G1" proved
+user.ads:25:11: info: flow dependencies proved
+user.ads:28:11: info: data dependencies proved
 user.ads:30:32: info: initialization of "G1" proved
+user.ads:33:11: info: flow dependencies proved
+user.ads:36:11: info: data dependencies proved
+user.ads:37:11: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

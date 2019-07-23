@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -68,6 +68,7 @@ package VC_Kinds is
       VC_Discriminant_Check,
       VC_Tag_Check,
       VC_Ceiling_Interrupt,
+      VC_Initialization_Check,
       VC_Interrupt_Reserved,
       VC_Invariant_Check,
       VC_Invariant_Check_On_Default_Value,  --  the invariant check on
@@ -116,6 +117,7 @@ package VC_Kinds is
 
       VC_Inconsistent_Pre,
       VC_Inconsistent_Post,
+      VC_Inconsistent_Assume,
       VC_Unreachable_Branch,
       VC_Dead_Code);
 
@@ -233,6 +235,24 @@ package VC_Kinds is
      Flow_Tag_Kind'Succ (Empty_Tag) .. Flow_Tag_Kind'Last;
    --  Non-empty tags
 
+   subtype Data_Dependency_Tag is Flow_Tag_Kind with
+     Static_Predicate => Data_Dependency_Tag in
+         Global_Missing
+       | Global_Wrong
+       | Export_Depends_On_Proof_In
+       | Illegal_Update
+       | Not_Constant_After_Elaboration;
+   --  Tags reported as data dependency errors
+
+   subtype Flow_Dependency_Tag is Flow_Tag_Kind with
+     Static_Predicate => Flow_Dependency_Tag in
+         Depends_Null
+       | Depends_Missing
+       | Depends_Missing_Clause
+       | Depends_Wrong
+       | Initializes_Wrong;
+   --  Tags reported as flow dependency errors
+
    function CWE_ID (Kind : VC_Kind) return String;
    function CWE_ID (Kind : Valid_Flow_Tag_Kind) return String;
    --  Return the CWE number for a given kind as a string; return the empty
@@ -286,16 +306,15 @@ package VC_Kinds is
    GP_Sloc_Marker           : constant String := "GP_Sloc:";
    GP_Subp_Marker           : constant String := "GP_Subp:";
    GP_Already_Proved_Marker : constant String := "GP_Already_Proved";
-   Keep_On_Simp_Marker      : constant String := "keep_on_simp";
 
    --  A few labels are used in Why3 to identify variables and terms whose
    --  value is interesting in counter-examples.
 
    Model_Trace_Label   : constant String := "model_trace:";
    Model_Proj_Label    : constant String := "model_projected";
-   Model_VC_Label      : constant String := "model_vc";
+   VC_Annotation_Label : constant String := "vc:annotation";
    Model_VC_Post_Label : constant String := "model_vc_post";
-   Branch_Id_Label     : constant String := "branch_id:";
+   Branch_Id_Label     : constant String := "branch_id=";
 
    Model_Proj_Meta : constant String := "model_projection";
    --  A meta that is used in Why3 to mark a function as projection.
@@ -341,6 +360,7 @@ package VC_Kinds is
       Cnt_Unparsed,
       Cnt_Array,
       Cnt_Record,
+      Cnt_Projection,
       Cnt_Invalid);
    --  Counterexamples are typed.
    --  Matching on this types in the code should make debugging easier.
@@ -385,18 +405,20 @@ package VC_Kinds is
 
    type Cntexmp_Value (T : Cntexmp_Type := Cnt_Invalid) is record
       case T is
-         when Cnt_Integer   => I  : Unbounded_String;
-         when Cnt_Decimal   => D  : Unbounded_String;
-         when Cnt_Float     => F  : Float_Value_Ptr;
-         when Cnt_Boolean   => Bo : Boolean;
-         when Cnt_Bitvector => B  : Unbounded_String;
-         when Cnt_Unparsed  => U  : Unbounded_String;
-         when Cnt_Record    =>
-            Fi                    : Cntexmp_Value_Array.Map;
-         when Cnt_Array     =>
-            Array_Indices         : Cntexmp_Value_Array.Map;
-            Array_Others          : Cntexmp_Value_Ptr;
-         when Cnt_Invalid   => S  : Unbounded_String;
+         when Cnt_Integer    => I  : Unbounded_String;
+         when Cnt_Decimal    => D  : Unbounded_String;
+         when Cnt_Float      => F  : Float_Value_Ptr;
+         when Cnt_Boolean    => Bo : Boolean;
+         when Cnt_Bitvector  => B  : Unbounded_String;
+         when Cnt_Unparsed   => U  : Unbounded_String;
+         when Cnt_Record     =>
+            Fi : Cntexmp_Value_Array.Map;
+         when Cnt_Projection => Er : Unbounded_String;
+            --  Cnt_projection is an error case anywhere after vc_kinds
+         when Cnt_Array      =>
+            Array_Indices : Cntexmp_Value_Array.Map;
+            Array_Others  : Cntexmp_Value_Ptr;
+         when Cnt_Invalid    => S  : Unbounded_String;
       end case;
    end record;
    --  Counterexample values
@@ -410,12 +432,19 @@ package VC_Kinds is
        (Element_Type => Unbounded_String,
         "="          => "=");
 
+   type CNT_Unbounded_String is record
+      Nul : Boolean;
+      Str : Unbounded_String;
+   end record;
+   --  Pair of a string for a counterexample value, and boolean Nul to denote
+   --  that the string is actually for a "nul" value.
+
    type Cntexample_Elt is record
       Kind    : CEE_Kind;
       Name    : Unbounded_String;
       Labels  : S_String_List.List;
       Value   : Cntexmp_Value_Ptr;
-      Val_Str : Unbounded_String;
+      Val_Str : CNT_Unbounded_String;
    end record;
 
    package Cntexample_Elt_Maps is new

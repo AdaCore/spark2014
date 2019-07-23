@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,26 +23,38 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Common_Containers;                  use Common_Containers;
-with Gnat2Why.Util;                      use Gnat2Why.Util;
-with Namet;                              use Namet;
-with Nlists;                             use Nlists;
-with SPARK_Util;                         use SPARK_Util;
-with Why.Atree.Builders;                 use Why.Atree.Builders;
-with Why.Atree.Modules;                  use Why.Atree.Modules;
-with Why.Gen.Arrays;                     use Why.Gen.Arrays;
-with Why.Gen.Binders;                    use Why.Gen.Binders;
-with Why.Gen.Names;                      use Why.Gen.Names;
-with Why.Ids;                            use Why.Ids;
-with Why.Inter;                          use Why.Inter;
-with Why.Sinfo;                          use Why.Sinfo;
-with Why.Types;                          use Why.Types;
+with Common_Containers;   use Common_Containers;
+with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
+with Gnat2Why.Util;       use Gnat2Why.Util;
+with Nlists;              use Nlists;
+with SPARK_Util;          use SPARK_Util;
+with Why.Atree.Accessors; use Why.Atree.Accessors;
+with Why.Atree.Builders;  use Why.Atree.Builders;
+with Why.Atree.Modules;   use Why.Atree.Modules;
+with Why.Gen.Arrays;      use Why.Gen.Arrays;
+with Why.Gen.Binders;     use Why.Gen.Binders;
+with Why.Gen.Names;       use Why.Gen.Names;
+with Why.Images;          use Why.Images;
+with Why.Inter;           use Why.Inter;
+with Why.Sinfo;           use Why.Sinfo;
+with Why.Types;           use Why.Types;
 
 package body Gnat2Why.External_Axioms is
+
+   EA_Symbols : Symbol_Sets.Set;
 
    procedure Register_External_Entities (Package_Entity : Entity_Id);
    --  This function is called on a package with external axioms.
    --  It registers all entities in the global symbol table.
+
+   ------------------------------
+   -- Is_External_Axiom_Module --
+   ------------------------------
+
+   function Is_External_Axiom_Module (Module : W_Module_Id) return Boolean is
+   begin
+      return EA_Symbols.Contains (Get_Name (Module));
+   end Is_External_Axiom_Module;
 
    -------------------------------
    -- Process_External_Entities --
@@ -74,33 +86,27 @@ package body Gnat2Why.External_Axioms is
             --  the declaration won't come from source but its original node
             --  will.
 
-            if Comes_From_Source (Original_Node (N))
-              and then Nkind (N) in
-                  N_Full_Type_Declaration
-                | N_Private_Extension_Declaration
-                | N_Private_Type_Declaration
-                | N_Subtype_Declaration
-                | N_Object_Declaration
-            then
-               Process (Defining_Identifier (N));
-
-            elsif Comes_From_Source (Original_Node (N))
-              and then Nkind (N) in
-                  N_Subprogram_Declaration
-                | N_Subprogram_Instantiation
-            then
-               Process (Unique_Defining_Entity (N));
-            end if;
-
-            --  Call Process_Decls recursively on Package_Declaration and
-            --  Package_Instantiation.
-
             if Comes_From_Source (Original_Node (N)) then
                case Nkind (N) is
+                  when N_Full_Type_Declaration
+                     | N_Private_Extension_Declaration
+                     | N_Private_Type_Declaration
+                     | N_Subtype_Declaration
+                     | N_Object_Declaration
+                  =>
+                     Process (Defining_Identifier (N));
+
+                  when N_Subprogram_Declaration =>
+                     Process (Unique_Defining_Entity (N));
+
+                  --  Call Process_Decls recursively on Package_Declaration and
+                  --  Package_Instantiation.
+
                   when N_Package_Declaration =>
                      Process_Decls
-                       (Decls  => Visible_Declarations_Of_Package
+                       (Decls => Visible_Declarations_Of_Package
                           (Unique_Defining_Entity (N)));
+
                   when others =>
                      null;
                end case;
@@ -116,7 +122,7 @@ package body Gnat2Why.External_Axioms is
       --  Process declarations
 
       Process_Decls
-        (Decls  => Visible_Declarations_Of_Package (Package_Entity));
+        (Decls => Visible_Declarations_Of_Package (Package_Entity));
    end Process_External_Entities;
 
    --------------------------------
@@ -165,6 +171,7 @@ package body Gnat2Why.External_Axioms is
                     (Symbol_Table, E,
                      Item_Type'(Func,
                        Local     => False,
+                       Init      => <>,
                        For_Logic => Get_Subp_Symbol (E, Logic_Name),
                        For_Prog  => Get_Subp_Symbol (E, Name)));
                end;
@@ -190,15 +197,27 @@ package body Gnat2Why.External_Axioms is
             declare
                File             : constant W_Section_Id := Dispatch_Entity (E);
                Element_Is_Local : constant Boolean :=
-                Containing_Package_With_Ext_Axioms (Component_Type (E)) =
-                  Package_Entity;
+                 Containing_Package_With_Ext_Axioms (Component_Type (E)) =
+                   Package_Entity;
+               S                : constant Symbol := Get_Array_Theory_Name (E);
+               M                : constant W_Module_Id :=
+                 New_Module (File => No_Symbol, Name => Img (S));
             begin
                Create_Rep_Array_Theory_If_Needed
                  (File          => File,
                   E             => E,
                   Register_Only => Element_Is_Local);
+               EA_Symbols.Insert (Get_Name (M));
             end;
          end if;
+
+         --  Register the module belonging to the entity E as being declared in
+         --  a package with External Axioms.
+
+         EA_Symbols.Insert (Get_Name (E_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Rep_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Compl_Module (E)));
+         EA_Symbols.Insert (Get_Name (E_Init_Module (E)));
       end Register_Entity;
 
    --  Start of processing for Register_External_Entities

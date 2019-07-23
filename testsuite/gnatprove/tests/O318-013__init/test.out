@@ -1,3 +1,3 @@
-inits.adb:5:04: info: initialization of "X" constituent of "S" proved
 inits.adb:6:04: high: "Y" constituent of "S" is not initialized in "Inits"
 inits.adb:6:04: high: initialization of "Inits.S" is specified at inits.ads:4
+inits.ads:4:03: info: flow dependencies proved

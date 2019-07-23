@@ -1,0 +1,4 @@
+loggers.ads:15:16: plain precondition on dispatching subprogram is not allowed in SPARK (SPARK RM 6.1.1(2))
+loggers.ads:15:16: use classwide precondition Pre'Class instead of Pre
+loggers.ads:15:16: violation of aspect SPARK_Mode at line 4
+gnatprove: error during flow analysis and proof

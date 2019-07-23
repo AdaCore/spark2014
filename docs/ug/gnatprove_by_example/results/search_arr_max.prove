@@ -1,18 +1,11 @@
 search_arr_max.adb:3:38: info: initialization of "Pos" proved
 search_arr_max.adb:3:57: info: initialization of "Max" proved
 search_arr_max.adb:5:11: info: postcondition proved
-search_arr_max.adb:5:44: info: initialization of "Max" proved
-search_arr_max.adb:7:13: info: initialization of "Pos" proved
-search_arr_max.adb:14:17: info: initialization of "Max" proved
 search_arr_max.adb:18:30: info: loop invariant initialization proved
 search_arr_max.adb:18:30: info: loop invariant preservation proved
 search_arr_max.adb:18:61: info: index check proved
-search_arr_max.adb:18:67: info: initialization of "Max" proved
 search_arr_max.adb:19:30: info: loop invariant initialization proved
 search_arr_max.adb:19:30: info: loop invariant preservation proved
 search_arr_max.adb:19:62: info: index check proved
-search_arr_max.adb:19:67: info: initialization of "Max" proved
 search_arr_max.adb:20:30: info: loop invariant initialization proved
 search_arr_max.adb:20:30: info: loop invariant preservation proved
-search_arr_max.adb:20:32: info: initialization of "Pos" proved
-search_arr_max.adb:20:39: info: initialization of "Max" proved

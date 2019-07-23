@@ -1,7 +1,5 @@
-main.adb:4:04: info: initialization of "X" proved
-main.adb:6:12: info: initialization of "X" proved
-typeinv.adb:6:14: medium: invariant check might fail (e.g. when New_T'Result = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
-typeinv.adb:6:17: medium: range check might fail (e.g. when New_T'Result = 0 and X = -1) [possible explanation: subprogram at line 3 should mention X in a precondition]
+typeinv.adb:6:14: medium: invariant check might fail [possible explanation: subprogram at typeinv.ads:4 should mention X in a precondition]
+typeinv.adb:6:17: medium: range check might fail (e.g. when X = -1) [possible explanation: subprogram at typeinv.ads:4 should mention X in a precondition]
 typeinv.adb:12:14: info: division check proved (CVC4: 1 VC)
 typeinv.ads:4:13: info: invariant check proved (CVC4: 1 VC)
 typeinv.ads:6:14: medium: invariant check might fail (e.g. when X = 1)

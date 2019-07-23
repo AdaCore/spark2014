@@ -1,10 +1,11 @@
 parent-privchild.adb:3:04: medium: "Child_Body_Var" needs to be a constituent of some state abstraction
 parent-privchild.adb:4:04: medium: constant with variable input "Child_Body_Const" needs to be a constituent of some state abstraction
-parent-privchild.adb:7:07: info: initialization of "Nested_In_Child_Var" proved
 parent-privchild.adb:7:07: medium: "Nested_In_Child_Var" needs to be a constituent of some state abstraction
 parent-privchild.adb:8:07: medium: constant with variable input "Nested_In_Child_Const" needs to be a constituent of some state abstraction
-parent-privchild.adb:11:10: info: initialization of "Nested_Nested_In_Child_Var" proved
 parent-privchild.adb:11:10: medium: "Nested_Nested_In_Child_Var" needs to be a constituent of some state abstraction
 parent-privchild.adb:12:10: medium: constant with variable input "Nested_Nested_In_Child_Const" needs to be a constituent of some state abstraction
+parent-privchild.ads:4:23: info: data dependencies proved
 parent-privchild.ads:6:04: medium: "Child_Private_Var" needs to be a constituent of some state abstraction
 parent-privchild.ads:7:04: medium: constant with variable input "Child_Private_Const" needs to be a constituent of some state abstraction
+parent.ads:3:33: info: flow dependencies proved
+parent.ads:8:23: info: data dependencies proved

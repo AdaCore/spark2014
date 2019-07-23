@@ -1,13 +1,9 @@
-essai05.adb:14:07: medium: range check might fail (e.g. when R'First = 0 and R'Last = 0 and V = (others => 0) and V'First = 0 and V'Last = 0)
+essai05.adb:10:11: info: data dependencies proved
+essai05.adb:14:07: medium: range check might fail
 essai05.adb:14:07: warning: initialization of "R" has no effect
-essai05.adb:14:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:14:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:16:24: info: cannot unroll loop (too many loop iterations)
-essai05.adb:17:16: info: initialization of "R" proved
-essai05.adb:19:14: info: initialization of "R" proved
-essai05.adb:23:07: medium: range check might fail (e.g. when R'First = 0 and R'Last = 0 and V = (others => 0) and V'First = 0 and V'Last = 0)
+essai05.adb:23:07: medium: range check might fail
 essai05.adb:23:07: warning: initialization of "R" has no effect
-essai05.adb:23:32: info: length check proved (CVC4: 4 VC)
+essai05.adb:23:32: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 essai05.adb:25:24: info: cannot unroll loop (too many loop iterations)
-essai05.adb:26:16: info: initialization of "R" proved
-essai05.adb:28:14: info: initialization of "R" proved
-essai05.adb:32:25: info: initialization of "A" proved

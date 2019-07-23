@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                    Copyright (C) 2014-2018, Altran UK Limited            --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -53,7 +53,7 @@ package body Flow_Classwide is
    --------------------------------------
 
    function Has_Controlling_Formal_Or_Result (E : Entity_Id) return Boolean is
-      Ptr : Node_Id;
+      Formal : Entity_Id;
    begin
       if not Is_Primitive (E) then
          return False;
@@ -63,12 +63,12 @@ package body Flow_Classwide is
          return True;
       end if;
 
-      Ptr := First_Formal (E);
-      while Present (Ptr) loop
-         if Is_Controlling_Formal (Ptr) then
+      Formal := First_Formal (E);
+      while Present (Formal) loop
+         if Is_Controlling_Formal (Formal) then
             return True;
          end if;
-         Next_Formal (Ptr);
+         Next_Formal (Formal);
       end loop;
 
       return False;
@@ -347,9 +347,9 @@ package body Flow_Classwide is
         Direct_Mapping_Id (Overridden_Operation (E));
 
       Anc_Dep    : constant Dependency_Maps.Map :=
-        Get_Or_Make_Depends (Overridden_Operation (E), True);
+        Get_Or_Make_Depends (Overridden_Operation (E), Classwide => True);
       My_Dep     : constant Dependency_Maps.Map :=
-        Get_Or_Make_Depends (E, True);
+        Get_Or_Make_Depends (E, Classwide => True);
 
       Suppressed : Boolean;
 
@@ -404,11 +404,9 @@ package body Flow_Classwide is
                                 then Anc_To_My (F)
                                 else F));
                end loop;
-            else
-               Tmp := Flow_Id_Sets.Empty_Set;
             end if;
 
-            for F of To_Ordered_Flow_Id_Set (Tmp) loop
+            for F of Tmp loop
                Error_Msg_Flow
                  (E          => E,
                   Msg        =>

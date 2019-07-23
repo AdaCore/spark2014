@@ -2,5 +2,6 @@ p.ads:6:14: info: nontermination of task proved (CVC4: 1 VC)
 p.ads:8:24: medium: range check might fail
 p.ads:11:18: medium: divide by zero might fail
 p.ads:11:18: medium: range check might fail
-p.ads:11:20: info: precondition proved (CVC4: 1 VC)
-zero.ads:3:15: info: precondition of main program proved (CVC4: 1 VC)
+p.ads:11:20: info: precondition proved (Trivial: 1 VC)
+zero.ads:2:08: info: data dependencies proved
+zero.ads:3:15: info: precondition of main program proved (Trivial: 1 VC)

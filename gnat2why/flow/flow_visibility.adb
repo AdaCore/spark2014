@@ -6,7 +6,7 @@
 --                                                                          --
 --                                B o d y                                   --
 --                                                                          --
---                   Copyright (C) 2018, Altran UK Limited                  --
+--                Copyright (C) 2018-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,7 +27,6 @@ with Ada.Text_IO;
 with Common_Containers;          use Common_Containers;
 with Einfo;                      use Einfo;
 with Flow_Refinement;            use Flow_Refinement;
-with Gnat2Why_Args;
 with Graphs;
 with Nlists;                     use Nlists;
 with Rtsfind;                    use Rtsfind;
@@ -79,15 +78,9 @@ package body Flow_Visibility is
    Hierarchy_Info : Hierarchy_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
 
-   Raw_Scope_Graph : Scope_Graphs.Graph;
-
    ----------------------------------------------------------------------------
    --  Subprogram declarations
    ----------------------------------------------------------------------------
-
-   procedure Close_Visibility_Graph;
-   --  Apply transitive closure to the visibility graph; optionally, print and
-   --  keep the original for debugging.
 
    function Sanitize (S : Flow_Scope) return Flow_Scope is
      (if Present (S) then S else Standard_Scope);
@@ -119,28 +112,6 @@ package body Flow_Visibility is
    ----------------------------------------------------------------------------
    --  Subprogram bodies
    ----------------------------------------------------------------------------
-
-   ----------------------------
-   -- Close_Visibility_Graph --
-   ----------------------------
-
-   procedure Close_Visibility_Graph is
-   begin
-      --  Print graph before adding transitive edges
-      if Gnat2Why_Args.Flow_Advanced_Debug then
-
-         --  Only print the graph in phase 1
-         if Gnat2Why_Args.Global_Gen_Mode then
-            Print (Scope_Graph);
-         end if;
-
-         --  Retain the original graph for the Print_Path routine
-
-         Raw_Scope_Graph := Scope_Graph;
-      end if;
-
-      Scope_Graph.Close;
-   end Close_Visibility_Graph;
 
    -------------------------
    -- Connect_Flow_Scopes --
@@ -259,6 +230,18 @@ package body Flow_Visibility is
                                     else Visible_Part)))));
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
+
+               --  Visibility of the template's private part only matters if
+               --  the template itself is a child unit, but it is safe to
+               --  connect it in any case (and detecting which generic is a
+               --  child unit would require extra info in phase 2).
+
+               if Info.Is_Package then
+                  Connect
+                    (Priv_V,
+                     Scope_Graph.Get_Vertex ((Ent  => Info.Template,
+                                              Part => Private_Part)));
+               end if;
 
                Connect
                  (Body_V,
@@ -383,7 +366,24 @@ package body Flow_Visibility is
       --  Release memory to the provers
       --  ??? Hierarchy_Info.Clear;
 
-      Close_Visibility_Graph;
+      --  At this point we could compute a transitive closure, but that can
+      --  take huge amount of memory. This is because typically the visibility
+      --  graph has many vertices and all of them are connected to all the
+      --  enclosing scopes (up to Standard); however, the visibility paths
+      --  are short and can be quickly discovered.
+
+      --  In phase 1 we print the graph (if requested), but keep the hirarchy
+      --  info for writing it to the ALI file; in phase 2 we clear the info,
+      --  as it is no longer needed (while the graph is still needed for failed
+      --  check explanations).
+
+      if Gnat2Why_Args.Global_Gen_Mode then
+         if Gnat2Why_Args.Flow_Advanced_Debug then
+            Print (Scope_Graph);
+         end if;
+      else
+         Hierarchy_Info.Clear;
+      end if;
 
       --  Sanity check: all vertices should be now connected to Standard
 
@@ -398,7 +398,8 @@ package body Flow_Visibility is
       begin
          pragma Assert
            (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
-               (if V /= Standard then Scope_Graph.Edge_Exists (V, Standard)));
+               (if V /= Standard
+                then Scope_Graph.Non_Trivial_Path_Exists (V, Standard)));
       end;
 
    end Connect_Flow_Scopes;
@@ -458,8 +459,9 @@ package body Flow_Visibility is
       --  visibility between the same scopes.
 
       return Looking_From = Looking_At
-        or else Scope_Graph.Edge_Exists (Sanitize (Looking_From),
-                                         Sanitize (Looking_At));
+        or else Scope_Graph.Non_Trivial_Path_Exists
+          (Scope_Graph.Get_Vertex (Sanitize (Looking_From)),
+           Scope_Graph.Get_Vertex (Sanitize (Looking_At)));
    end Is_Visible;
 
    ---------------
@@ -538,7 +540,6 @@ package body Flow_Visibility is
                    and then
                  Private_Present (Atree.Parent (N));
                Parent     := Scope (E);
-               pragma Assert (Hierarchy_Info.Contains (Parent));
             end if;
          elsif Get_Flow_Scope (N) = Null_Flow_Scope then
             Is_Private := False;
@@ -781,10 +782,10 @@ package body Flow_Visibility is
    procedure Print_Path (From, To : Flow_Scope) is
 
       Source : constant Scope_Graphs.Vertex_Id :=
-        Raw_Scope_Graph.Get_Vertex (Sanitize (From));
+        Scope_Graph.Get_Vertex (Sanitize (From));
 
       Target : constant Scope_Graphs.Vertex_Id :=
-        Raw_Scope_Graph.Get_Vertex (Sanitize (To));
+        Scope_Graph.Get_Vertex (Sanitize (To));
 
       procedure Is_Target
         (V           : Scope_Graphs.Vertex_Id;
@@ -813,7 +814,7 @@ package body Flow_Visibility is
       ------------------
 
       procedure Print_Vertex (V : Scope_Graphs.Vertex_Id) is
-         S : constant Flow_Scope := Raw_Scope_Graph.Get_Key (V);
+         S : constant Flow_Scope := Scope_Graph.Get_Key (V);
       begin
          --  Print_Flow_Scope (S);
          --  ??? the above code produces no output in gdb; use Ada.Text_IO
@@ -835,7 +836,7 @@ package body Flow_Visibility is
 
    begin
       Scope_Graphs.Shortest_Path
-        (G             => Raw_Scope_Graph,
+        (G             => Scope_Graph,
          Start         => Source,
          Allow_Trivial => True,
          Search        => Is_Target'Access,
@@ -1236,6 +1237,10 @@ package body Flow_Visibility is
       for C in Hierarchy_Info.Iterate loop
          Process (Hierarchy_Info_Maps.Key (C), Hierarchy_Info (C));
       end loop;
+
+      --  Release data that is no longer needed
+
+      Hierarchy_Info.Clear;
    end Iterate_Flow_Scopes;
 
 end Flow_Visibility;

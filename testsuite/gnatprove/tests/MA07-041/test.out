@@ -1,9 +1,12 @@
 sm_using_case_expression.adb:14:40: info: initialization of "State" constituent of "Abs_State" proved
 sm_using_case_expression.adb:23:40: info: initialization of "State" constituent of "Abs_State" proved
-sm_using_case_expression.adb:42:10: medium: assertion might fail (e.g. when Final_State = Start)
+sm_using_case_expression.adb:42:10: medium: assertion might fail
 sm_using_case_expression.adb:54:18: medium: assertion might fail, cannot prove My_SM(State2, Trigger) /= Invalid_State or (for some Idx in Invalid_Transition_Array_T'Range => Invalid_Transition_Array(Idx).Initial_State = State2 and Invalid_Transition_Array(Idx).Trigger = Trigger) (e.g. when State2 = Start and Trigger = Invalid_Trigger)
-sm_using_case_expression.ads:17:17: info: initialization of "State" constituent of "Abs_State" proved
+sm_using_case_expression.ads:13:09: info: data dependencies proved
+sm_using_case_expression.ads:16:09: info: data dependencies proved
 sm_using_case_expression.ads:17:17: info: postcondition proved (CVC4: 1 VC)
+sm_using_case_expression.ads:57:11: info: data dependencies proved
 sm_using_case_expression.ads:58:21: info: postcondition proved (CVC4: 1 VC)
-sm_using_case_expression.ads:58:22: info: initialization of "State" constituent of "Abs_State" proved
+sm_using_case_expression.ads:95:11: info: data dependencies proved
 sm_using_case_expression.ads:96:21: info: postcondition proved (CVC4: 1 VC)
+sm_using_case_expression.ads:101:11: info: data dependencies proved

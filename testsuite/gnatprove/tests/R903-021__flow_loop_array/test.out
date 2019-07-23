@@ -1,27 +1,19 @@
 dynamic_1d.adb:1:11: warning: subprogram "Dynamic_1D" has no effect
 dynamic_1d.adb:4:21: info: initialization of "S" proved
-dynamic_1d.adb:7:16: info: initialization of "S" proved
-dynamic_1d.adb:7:16: info: initialization of "X" proved, in call inlined at dynamic_1d.adb:14
-dynamic_1d.adb:11:26: info: length check proved (CVC4: 4 VC)
+dynamic_1d.adb:11:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 dynamic_1d.adb:14:04: info: cannot unroll loop (too many loop iterations)
 dynamic_1d.adb:14:04: info: in inlined body at line 6
 dynamic_2d.adb:1:11: warning: subprogram "Dynamic_2D" has no effect
 dynamic_2d.adb:4:21: medium: "S" might not be initialized in "Flush"
-dynamic_2d.adb:8:26: info: initialization of "X" proved, in call inlined at dynamic_2d.adb:16
-dynamic_2d.adb:8:26: medium: "S" might not be initialized
 dynamic_2d.adb:13:26: medium: length check might fail
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: cannot unroll loop (too many loop iterations)
 dynamic_2d.adb:16:04: info: in inlined body at line 6
 dynamic_2d.adb:16:04: info: in inlined body at line 7
 static_1d.adb:4:21: info: initialization of "S" proved
-static_1d.adb:7:16: info: initialization of "S" proved
-static_1d.adb:7:16: info: initialization of "X" proved, in call inlined at static_1d.adb:14
 static_1d.adb:14:04: info: in inlined body at line 6
 static_1d.adb:14:04: info: unrolling loop
 static_2d.adb:4:21: info: initialization of "S" proved
-static_2d.adb:8:26: info: initialization of "S" proved
-static_2d.adb:8:26: info: initialization of "X" proved, in call inlined at static_2d.adb:16
 static_2d.adb:16:04: info: in inlined body at line 6
 static_2d.adb:16:04: info: in inlined body at line 7
 static_2d.adb:16:04: info: unrolling loop

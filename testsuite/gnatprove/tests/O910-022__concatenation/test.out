@@ -1,0 +1,8 @@
+badconcat.adb:8:31: warning: unused variable "Value"
+badconcat.adb:17:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:17:27: medium: range check might fail
+badconcat.adb:18:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:18:27: medium: range check might fail
+badconcat.adb:19:06: info: precondition proved (Trivial: 1 VC)
+badconcat.adb:19:27: medium: range check might fail
+badconcat.adb:20:06: info: precondition proved (Trivial: 1 VC)

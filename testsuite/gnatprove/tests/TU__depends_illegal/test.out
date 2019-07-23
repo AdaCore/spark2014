@@ -38,18 +38,22 @@ depends_illegal_2.adb:42:22: cannot mention state "A" in global refinement
 depends_illegal_2.adb:42:22: use its constituents instead
 depends_illegal_2.adb:43:36: cannot mention state "A" in dependence relation
 depends_illegal_2.adb:43:36: use its constituents instead
+depends_illegal_3.adb:13:11: info: data dependencies proved
 depends_illegal_3.adb:13:33: warning: unused initial value of "X"
 depends_illegal_3.adb:15:11: medium: missing dependency "null => X"
 depends_illegal_3.adb:15:24: medium: incorrect dependency "X => X"
 depends_illegal_3.adb:15:38: medium: incorrect dependency "Par1 => Par2"
-depends_illegal_3.adb:18:20: medium: overflow check might fail (e.g. when Par2 = Integer'First and X = 0 and Y = -1) [possible explanation: subprogram at line 7 should mention Par2 and Y in a precondition]
+depends_illegal_3.adb:18:20: medium: overflow check might fail (e.g. when Par2 = -1 and Y = Integer'First) [possible explanation: subprogram at line 7 should mention Par2 and Y in a precondition]
 depends_illegal_3.adb:19:20: medium: overflow check might fail (e.g. when Par1 = Integer'First and Y = 1) [possible explanation: subprogram at line 7 should mention Par1 and Y in a precondition]
 depends_illegal_3.adb:23:18: info: initialization of "Par1" proved
 depends_illegal_3.adb:23:24: high: "Par2" is not initialized in "P2"
+depends_illegal_3.adb:29:11: info: data dependencies proved
 depends_illegal_3.adb:29:33: info: initialization of "X" proved
+depends_illegal_3.adb:30:11: info: flow dependencies proved
 depends_illegal_3.adb:33:15: high: "Par2" is not initialized
 depends_illegal_3.adb:34:15: high: "Par2" is not initialized
 depends_illegal_3.adb:38:35: warning: "Par2" is not modified, could be IN
+depends_illegal_3.adb:42:11: info: data dependencies proved
 depends_illegal_3.adb:42:33: low: unused global "X"
 depends_illegal_3.adb:43:33: low: unused global "Y"
 depends_illegal_3.adb:43:33: warning: "Y" is not modified, could be INPUT
@@ -57,8 +61,10 @@ depends_illegal_3.adb:44:24: medium: missing self-dependency "Par2 => Par2"
 depends_illegal_3.adb:44:30: medium: missing self-dependency "Y => Y"
 depends_illegal_3.adb:45:43: medium: incorrect dependency "null => Par2"
 depends_illegal_3.adb:45:52: medium: incorrect dependency "null => Y"
-depends_illegal_3.adb:60:07: high: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(13))
+depends_illegal_3.adb:57:11: info: flow dependencies proved
+depends_illegal_3.adb:60:07: high: "X" must be listed in the Depends aspect of "P4" (SPARK RM 6.1.4(14))
 depends_illegal_3.adb:65:18: info: initialization of "P2" proved
+depends_illegal_3.adb:72:11: info: data dependencies proved
 depends_illegal_3.adb:73:33: info: initialization of "G_Var2" proved
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var1"
 depends_illegal_3.adb:75:23: medium: missing dependency "P2 => G_Var3"
@@ -79,11 +85,13 @@ depends_illegal_4.adb:8:18: info: initialization of "Par2" proved
 depends_illegal_4.adb:15:23: medium: missing dependency "Par2 => Y"
 depends_illegal_4.adb:16:41: medium: incorrect dependency "Par3 => Y"
 depends_illegal_4.adb:17:23: medium: missing self-dependency "Y => Y"
-depends_illegal_4.adb:20:20: medium: overflow check might fail (e.g. when Par1 = 1 and Par2 = 0 and X = Natural'Last) [possible explanation: subprogram at line 7 should mention Par1 and X in a precondition]
-depends_illegal_4.adb:20:24: medium: overflow check might fail (e.g. when Par2 = 0) [possible explanation: subprogram at line 7 should mention Par1 and X and Y in a precondition]
+depends_illegal_4.adb:20:20: medium: overflow check might fail (e.g. when Par1 = 1 and X = Natural'Last) [possible explanation: subprogram at line 7 should mention Par1 and X in a precondition]
+depends_illegal_4.adb:20:24: medium: overflow check might fail (e.g. when Par1 = 1 and X = 0 and Y = Natural'Last) [possible explanation: subprogram at line 7 should mention Par1 and X and Y in a precondition]
 depends_illegal_4.adb:21:20: medium: overflow check might fail (e.g. when Par3 = Natural'Last and X = 1) [possible explanation: subprogram at line 7 should mention Par3 and X in a precondition]
-depends_illegal_4.adb:32:07: high: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(13))
-depends_illegal_4.adb:43:17: medium: overflow check might fail (e.g. when Par1 = 1 and X = Natural'Last) [possible explanation: subprogram at line 36 should mention Par1 and X in a precondition]
-depends_illegal_4.adb:43:24: medium: overflow check might fail (e.g. when Par1 = 0) [possible explanation: subprogram at line 36 should mention Par1 and Par2 and X in a precondition]
-depends_illegal_4.adb:44:15: high: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(13))
+depends_illegal_4.adb:28:11: info: flow dependencies proved
+depends_illegal_4.adb:32:07: high: "X" must be listed in the Depends aspect of "P2" (SPARK RM 6.1.4(14))
+depends_illegal_4.adb:39:11: info: flow dependencies proved
+depends_illegal_4.adb:43:17: medium: overflow check might fail (e.g. when Par1 = Natural'Last and X = 1) [possible explanation: subprogram at line 36 should mention Par1 and X in a precondition]
+depends_illegal_4.adb:43:24: medium: overflow check might fail (e.g. when Par1 = 0 and Par2 = Natural'Last and X = 1) [possible explanation: subprogram at line 36 should mention Par1 and Par2 and X in a precondition]
+depends_illegal_4.adb:44:15: high: "Y" must be listed in the Depends aspect of "P3" (SPARK RM 6.1.4(14))
 depends_illegal_4.adb:44:17: medium: overflow check might fail (e.g. when Par2 = 0 and Y = -2147483649) [possible explanation: subprogram at line 36 should mention Par2 in a precondition]

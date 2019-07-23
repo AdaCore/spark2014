@@ -2,7 +2,7 @@ intros (val1_type,(val2_type,(denom_type,pre))).
 Open Scope Z_scope.
 
 (* rewrite hypotheses *)
-unfold in_range1 in denom_type.
+unfold dynamic_invariant1, in_range1 in denom_type.
 
 (* apply arithmetic theorem *)
 apply Z.quot_le_mono; auto with zarith.

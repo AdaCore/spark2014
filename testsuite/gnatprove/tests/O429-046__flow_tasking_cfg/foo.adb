@@ -57,7 +57,4 @@ package body Foo is
       delay until Now + Seconds (5);
    end Test_Delay_01;
 
-
-
-
 end Foo;

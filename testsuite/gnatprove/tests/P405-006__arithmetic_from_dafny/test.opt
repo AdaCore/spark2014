@@ -1,1 +1,2 @@
 Darwin SKIP differences on float counterexamples from CVC4 on that platform
+community SKIP requires lemmas

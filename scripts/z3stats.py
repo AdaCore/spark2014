@@ -10,14 +10,16 @@ import re
 import socket
 import subprocess
 import time
+from tqdm import tqdm
 
 args = None
-descr = """Run provers on files and return results in JSON format. Currently
-only z3 supported (hence the name)"""
+descr = """Run provers on files and return status,
+time and steps in machine-parsable format (JSON or CSV)."""
 
 
 class Prover:
     status_reg = re.compile("unsat|sat|unknown|timeout")
+    pattern = "*.smt2"
 
     @staticmethod
     def regex_get(regex, text, group=None):
@@ -50,6 +52,41 @@ class Z3(Prover):
             return\
                 {"filename": fn,
                  "status": Prover.regex_get(Prover.status_reg, output),
+                 "steps": int(Prover.regex_get(self.limit_reg, output, 1)),
+                 "time": float(Prover.regex_get(self.time_reg, output, 1))}
+        except ValueError:
+            return {"filename": fn, "status": "error", "output": output}
+
+
+class Altergo(Prover):
+
+    limit_reg = re.compile("\((\d*) steps\)")
+    time_reg = re.compile("\((\d*.\d*)\)")
+    status_reg = re.compile("Valid|Timeout|I don't know")
+    pattern = "*.why"
+
+    def command(self):
+        result = ["alt-ergo", "-max-split", "5"]
+        if args.timeout:
+            result.append("-timelimit")
+            result.append(str(args.timeout))
+        return result
+
+    def parse_output(self, output, fn):
+        """ run on single file and extract statistics"""
+        try:
+            ae_status = Prover.regex_get(self.status_reg, output)
+            if ae_status == "Valid":
+                status = "unsat"
+            elif ae_status == "Timeout":
+                status = "timeout"
+            elif ae_status == "I don't know":
+                status = "unkown"
+            else:
+                raise ValueError
+            return\
+                {"filename": fn,
+                 "status": status,
                  "steps": int(Prover.regex_get(self.limit_reg, output, 1)),
                  "time": float(Prover.regex_get(self.time_reg, output, 1))}
         except ValueError:
@@ -105,17 +142,24 @@ def parse_arguments():
     parser.add_argument('--prover', dest='prover', action='store',
                         default="z3",
                         help='prover to be used [z3]')
+    parser.add_argument('--format', dest='format', action='store',
+                        default="json",
+                        help='output format [json]')
     args = parser.parse_args()
-    if args.prover != "z3" and args.prover != "cvc4":
+    if args.prover != "z3" and args.prover != "cvc4" and\
+       args.prover != "altergo":
         print "prover " + args.prover + " not supported, exiting."
+        exit(1)
+    if args.format != "json" and args.format != "csv":
+        print "output format " + args.format + " not supported, exiting."
         exit(1)
 
 
-def compute_file_list():
+def compute_file_list(prover):
     result = []
     for fn in args.files:
         if os.path.isdir(fn):
-            result += glob.glob(os.path.join(fn, "*.smt2"))
+            result += glob.glob(os.path.join(fn, prover.pattern))
         else:
             result.append(fn)
     if args.limit and args.limit < len(result):
@@ -137,6 +181,7 @@ def start_server(fname):
     sock.connect(fname)
     return sock
 
+
 id_num = 1
 
 
@@ -151,14 +196,14 @@ def send_request(fd, cmd):
 
 def read_request(fd):
     s = fd.recv(4096)
-    l = s.splitlines()
+    lines = s.splitlines()
     results = []
-    for s in l:
+    for s in lines:
         s = s.strip('\n')
         if s.startswith("F"):
-            l = s.split(';')
-            my_id = l[1]
-            fn = l[-1]
+            fields = s.split(';')
+            my_id = fields[1]
+            fn = fields[-1]
             results.append((int(my_id), fn))
     return results
 
@@ -177,34 +222,47 @@ def get_all_results(prover, fnlist, max_running_processes=1):
     for fn in fnlist:
         my_id = send_request(fd, prover.command() + [fn])
         file_map[my_id] = fn
-    while len(file_map) > 0:
-        if args.verbose:
-            print "remaining VCs: ", len(file_map)
-        l = read_request(fd)
-        for my_id, out in l:
-            with open(out, "r") as f:
-                output = f.read()
-            os.remove(out)
-            cur_file = file_map[my_id]
-            del file_map[my_id]
-            results.append(prover.parse_output(output, cur_file))
+    with tqdm(total=len(file_map)) as pbar:
+        while len(file_map) > 0:
+            requests = read_request(fd)
+            pbar.update(len(requests))
+            for my_id, out in requests:
+                with open(out, "r") as f:
+                    output = f.read()
+                os.remove(out)
+                cur_file = file_map[my_id]
+                del file_map[my_id]
+                results.append(prover.parse_output(output, cur_file))
 
     return results
 
 
 def main():
     parse_arguments()
-    file_list = compute_file_list()
     if args.prover == "z3":
         prover = Z3()
-    else:
+    elif args.prover == "cvc4":
         prover = CVC4()
+    elif args.prover == "altergo":
+        prover = Altergo()
+    else:
+        raise ValueError
 
+    file_list = compute_file_list(prover)
     results = get_all_results(prover=prover,
                               fnlist=file_list,
                               max_running_processes=args.parallel)
 
-    s = json.dumps({"results": results}, indent=2)
+    if args.format == "json":
+        s = json.dumps({"results": results}, indent=2)
+    elif args.format == "csv":
+        s = "Filename, Status, Time, Steps\n"
+        for elt in results:
+            if elt["status"] == "error":
+                s += elt["filename"] + ", " + elt["status"] + ", 0 , 0\n"
+            else:
+                s += elt["filename"] + ", " + elt["status"] + ", " +\
+                     str(elt["time"]) + ", " + str(elt["steps"]) + "\n"
     if args.output:
         with open(args.output, "w+") as f:
             f.write(s)

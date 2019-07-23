@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2014, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -59,7 +59,7 @@ package Xkind_Tables is
    --  this is an experiment to check if we would possible/easy to
    --  use derived types and (generated) conversions instead of subtypes.
    --  If it is indeed easy to use, then it would allow us to check at
-   --  at compile time an accidental use of a wrong node kind. If so,
+   --  compile time an accidental use of a wrong node kind. If so,
    --  Derived would replace Regular at some point. And some more cleanup
    --  may follow.
 

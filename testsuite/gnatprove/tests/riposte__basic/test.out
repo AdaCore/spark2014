@@ -1,22 +1,20 @@
 basic.adb:6:19: info: postcondition proved (CVC4: 1 VC)
-basic.adb:9:16: medium: range check might fail (e.g. when A = Unsigned_Byte'Last and Add_UB'Result = 0 and B = 1) [possible explanation: subprogram at line 5 should mention A and B in a precondition]
+basic.adb:9:16: medium: range check might fail (e.g. when A = 1 and B = Unsigned_Byte'Last) [possible explanation: subprogram at line 5 should mention A and B in a precondition]
 basic.adb:13:19: info: postcondition proved (CVC4: 1 VC)
 basic.adb:13:36: info: overflow check proved (CVC4: 1 VC)
-basic.adb:16:16: medium: overflow check might fail (e.g. when A = Integer'First and Add_I'Result = 0 and B = -1) [possible explanation: subprogram at line 12 should mention A and B in a precondition]
+basic.adb:16:16: medium: overflow check might fail (e.g. when A = -1 and B = Integer'First) [possible explanation: subprogram at line 12 should mention A and B in a precondition]
 basic.adb:20:19: info: postcondition proved (CVC4: 3 VC)
-basic.adb:31:30: info: assertion proved (CVC4: 2 VC)
-basic.adb:31:46: info: initialization of "R" proved
-basic.adb:33:14: info: initialization of "R" proved
+basic.adb:24:07: info: initialization of "R" proved
+basic.adb:31:30: info: assertion proved (CVC4: 2 VC; Trivial: 2 VC)
 basic.adb:39:25: info: initialization of "X" proved
 basic.adb:39:28: info: initialization of "Y" proved
-basic.adb:41:17: info: initialization of "X" proved
 basic.adb:41:17: info: postcondition proved (CVC4: 2 VC)
-basic.adb:41:27: info: initialization of "Y" proved
 basic.adb:44:16: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:16: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:22: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:28: info: overflow check proved (CVC4: 1 VC)
 basic.adb:45:34: info: overflow check proved (CVC4: 1 VC)
+basic.adb:51:11: info: flow dependencies proved
 basic.adb:53:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:53:32: info: overflow check proved (CVC4: 1 VC)
 basic.adb:57:14: info: overflow check proved (CVC4: 1 VC)
@@ -24,6 +22,7 @@ basic.adb:58:30: info: assertion proved (CVC4: 2 VC)
 basic.adb:58:41: info: overflow check proved (CVC4: 1 VC)
 basic.adb:58:60: info: overflow check proved (CVC4: 1 VC)
 basic.adb:59:14: info: overflow check proved (CVC4: 1 VC)
+basic.adb:63:11: info: flow dependencies proved
 basic.adb:65:22: medium: postcondition might fail, cannot prove X = X'Old + 5 (e.g. when X = 7 and X'Old = 1)
 basic.adb:65:32: info: overflow check proved (CVC4: 1 VC)
 basic.adb:69:14: info: overflow check proved (CVC4: 1 VC)
@@ -32,27 +31,28 @@ basic.adb:70:41: info: overflow check proved (CVC4: 1 VC)
 basic.adb:70:60: info: overflow check proved (CVC4: 1 VC)
 basic.adb:71:14: info: overflow check proved (CVC4: 1 VC)
 basic.adb:75:19: info: postcondition proved (CVC4: 1 VC)
-basic.adb:84:14: info: initialization of "R" proved
-basic.adb:88:19: medium: postcondition might fail, cannot prove Int_Min_B'Result = Integer'min (e.g. when A = -1 and B = -2 and Int_Min_B'Result = -1) [possible explanation: subprogram at line 87 should mention A and B in a precondition]
-basic.adb:97:14: info: initialization of "R" proved
+basic.adb:77:07: info: initialization of "R" proved
+basic.adb:88:19: medium: postcondition might fail, cannot prove Int_Min_B'Result = Integer'min (e.g. when A = 0 and B = 1 and Int_Min_B'Result = 1)
+basic.adb:90:07: info: initialization of "R" proved
 basic.adb:101:19: info: postcondition proved (CVC4: 1 VC)
-basic.adb:110:14: info: initialization of "R" proved
+basic.adb:103:07: info: initialization of "R" proved
+basic.adb:114:11: info: flow dependencies proved
 basic.adb:117:22: info: postcondition proved (CVC4: 1 VC)
 basic.adb:120:22: info: assertion proved
 basic.adb:121:22: info: assertion proved (CVC4: 1 VC)
 counterexample expected for check at basic.adb:9
-  trace at basic.adb:5 --> A = Unsigned_Byte'Last and B = 1
-  trace at basic.adb:9 --> A = Unsigned_Byte'Last and Add_UB'Result = 0 and B = 1
+  trace at basic.adb:5 --> A = 1 and B = Unsigned_Byte'Last
+  trace at basic.adb:9 --> A = 1 and B = Unsigned_Byte'Last
 counterexample expected for check at basic.adb:16
-  trace at basic.adb:12 --> A = Integer'First and B = -1
-  trace at basic.adb:16 --> A = Integer'First and Add_I'Result = 0 and B = -1
+  trace at basic.adb:12 --> A = -1 and B = Integer'First
+  trace at basic.adb:16 --> A = -1 and B = Integer'First
 counterexample expected for check at basic.adb:65
+  trace at basic.adb:62 --> X = 1
   trace at basic.adb:65 --> X = 7 and X'Old = 1
   trace at basic.adb:67 --> X_Old = 1
-  trace at basic.adb:69 --> X = 4
   trace at basic.adb:71 --> X = 7
 counterexample expected for check at basic.adb:88
-  trace at basic.adb:87 --> A = -1 and B = -2
-  trace at basic.adb:88 --> A = -1 and B = -2 and Int_Min_B'Result = -1
-  trace at basic.adb:93 --> R = -1
-  trace at basic.adb:97 --> Int_Min_B'Result = -1
+  trace at basic.adb:87 --> A = 0 and B = 1
+  trace at basic.adb:88 --> A = 0 and B = 1 and Int_Min_B'Result = 1
+  trace at basic.adb:95 --> R = 1
+  trace at basic.adb:97 --> Int_Min_B'Result = 1 and R = 1

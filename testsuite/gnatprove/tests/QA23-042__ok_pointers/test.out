@@ -1,0 +1,37 @@
+n02.adb:19:25: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:21:06: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:28:26: info: range check proved (CVC4: 1 VC)
+n02.adb:28:44: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:28:50: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:29:14: info: range check proved (CVC4: 1 VC)
+n02.adb:29:30: info: range check proved (CVC4: 1 VC)
+n02.adb:29:48: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:29:54: info: pointer dereference check proved (CVC4: 1 VC)
+n02.adb:30:14: info: range check proved (CVC4: 1 VC)
+n02.adb:30:28: info: range check proved (CVC4: 1 VC)
+n02.adb:30:46: info: pointer dereference check proved (CVC4: 1 VC)
+spark01.adb:10:17: info: postcondition proved (CVC4: 1 VC)
+spark04.adb:8:16: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at spark04.ads:11 should mention X in a precondition]
+spark04.adb:8:26: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark04.ads:11 should mention Y in a precondition]
+spark04.adb:16:25: info: range check proved (CVC4: 1 VC)
+spark04.adb:17:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:17:29: info: range check proved (CVC4: 1 VC)
+spark04.adb:18:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:18:32: info: range check proved (CVC4: 1 VC)
+spark04.adb:18:51: medium: pointer dereference check might fail (e.g. when AX = null) [possible explanation: subprogram at spark04.ads:21 should mention AX in a precondition]
+spark04.adb:19:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:19:32: info: range check proved (CVC4: 1 VC)
+spark04.adb:19:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible explanation: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.adb:21:10: medium: pointer dereference check might fail (e.g. when AY = null) [possible explanation: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.adb:22:10: medium: pointer dereference check might fail (e.g. when AX = null) [possible explanation: subprogram at spark04.ads:21 should mention AX in a precondition]
+spark04.adb:25:25: info: range check proved (CVC4: 1 VC)
+spark04.adb:26:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:26:29: info: range check proved (CVC4: 1 VC)
+spark04.adb:27:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:27:32: info: range check proved (CVC4: 1 VC)
+spark04.adb:27:51: medium: pointer dereference check might fail (e.g. when AX = null) [possible explanation: subprogram at spark04.ads:21 should mention AX in a precondition]
+spark04.adb:28:17: info: range check proved (CVC4: 1 VC)
+spark04.adb:28:32: info: range check proved (CVC4: 1 VC)
+spark04.adb:28:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible explanation: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.ads:22:06: info: data dependencies proved
+spark04.ads:23:28: info: initialization of "P" proved

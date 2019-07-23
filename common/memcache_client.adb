@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                      Copyright (C) 2017-2018, AdaCore                    --
+--                     Copyright (C) 2017-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,7 @@
 
 with Ada.Characters.Latin_1;
 with Ada.Streams;
-with Ada.Strings.Fixed;
+with Ada.Strings.Fixed;     use Ada.Strings.Fixed;
 with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
 
 package body Memcache_Client is
@@ -123,13 +123,26 @@ package body Memcache_Client is
                       Natural'Image (Len) & CRLF &
                     Value & CRLF);
 
-      --  The only possible answer for a set command should normally be a
-      --  "STORED" message.
-
       declare
          Answer : constant String := Read_Stop_When_End_Marker (Conn, CRLF);
+
       begin
-         pragma Assert (Answer = "STORED" & CRLF);
+         --  We expect the key-value pair to be stored
+
+         if Answer = "STORED" & CRLF then
+            null;
+
+         --  Silenlty ignore server-side errors, e.g. when the value object is
+         --  too large. ??? ideally such errors should be propagated to users
+
+         elsif Head (Answer, 13) = "SERVER_ERROR "
+           and then Tail (Answer, 2) = CRLF
+         then
+            null;
+
+         else
+            raise Program_Error;
+         end if;
       end;
    end Set;
 

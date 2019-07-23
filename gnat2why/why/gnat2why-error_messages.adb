@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2014-2018, AdaCore                   --
+--                     Copyright (C) 2014-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -40,6 +40,7 @@ with Comperr;                   use Comperr;
 with Flow_Error_Messages;       use Flow_Error_Messages;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why_Args;             use Gnat2Why_Args;
+with Gnat2Why_Opts;             use Gnat2Why_Opts;
 with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
@@ -255,6 +256,7 @@ package body Gnat2Why.Error_Messages is
                | VC_Invariant_Check_On_Default_Value
                | VC_Warning_Kind
                | VC_Inline_Check
+               | VC_Initialization_Check
             =>
                return (OK => False);
          end case;
@@ -710,6 +712,8 @@ package body Gnat2Why.Error_Messages is
 
          when VC_Warning_Kind              =>
             raise Program_Error;
+         when VC_Initialization_Check      =>
+            return "initialization check might fail";
       end case;
    end Not_Proved_Message;
 
@@ -783,10 +787,15 @@ package body Gnat2Why.Error_Messages is
          Extra_Msg  : constant String :=
            (if Extra_Text /= "" then ", cannot prove " & Extra_Text else "");
          Node   : constant Node_Id :=
-           (if Present (Rec.Extra_Info) then Rec.Extra_Info else VC.Node);
+           (if Present (Rec.Extra_Info)
+            and then not (Rec.Kind in VC_Precondition | VC_LSP_Kind)
+            then Rec.Extra_Info else VC.Node);
          --  Extra_info contains the locations of the first failing part of the
          --  VC (which is required in messages). VC_Sloc contains the location
          --  of the check (required in messages for manual provers).
+         --  We do not use this node if the node may switch the context, this
+         --  can happen for the pre (the node will be in the callee context
+         --  instead of the caller context) and LSP VCs.
          VC_Sloc    : constant Node_Id := VC.Node;
       begin
          Emit_Proof_Result
@@ -833,8 +842,8 @@ package body Gnat2Why.Error_Messages is
       -- Parse_Why3_Prove_Result --
       -----------------------------
 
-      function Parse_Why3_Prove_Result  (V : JSON_Value)
-                                         return Why3_Prove_Result is
+      function Parse_Why3_Prove_Result (V : JSON_Value)
+                                        return Why3_Prove_Result is
       begin
          return Why3_Prove_Result'
            (Id         => VC_Id (Integer'(Get (Get (V, "id")))),
@@ -861,10 +870,25 @@ package body Gnat2Why.Error_Messages is
                else Create_Object));
       end Parse_Why3_Prove_Result;
 
+      Fatal_Error_String : constant String := "Fatal error: out of memory";
+
    --  Start of processing for Parse_Why3_Results
 
    begin
+
+      --  In the case of an Out of memory in the ocaml runtime, the message
+      --  above in Fatal_Error_String is printed. We detect this situation
+      --  here.
+
+      if S'Length >= Fatal_Error_String'Length
+        and then S (S'First .. S'First + Fatal_Error_String'Length - 1) =
+                 Fatal_Error_String
+      then
+         Handle_Error (Fatal_Error_String, Internal => False);
+      end if;
+
       Mark_Subprograms_With_No_VC_As_Proved;
+
       declare
          File : constant JSON_Value := Read (S, "");
          Results : constant JSON_Array := Get (Get (File, "results"));
@@ -1007,10 +1031,14 @@ package body Gnat2Why.Error_Messages is
             return "precondition is always False";
          when VC_Inconsistent_Post         =>
             return "postcondition is always False";
+         when VC_Inconsistent_Assume         =>
+            return "pragma Assume is always False";
          when VC_Unreachable_Branch        =>
             return "unreachable branch";
          when VC_Dead_Code                 =>
             return "unreachable code";
+         when VC_Initialization_Check      =>
+            return "initialization check proved";
       end case;
    end Proved_Message;
 

@@ -205,6 +205,23 @@ automatically using |GNATprove|.
 See the relevant sections for more details on :ref:`Ghost Code` and
 :ref:`Manual Proof Using Ghost Code`.
 
+.. rubric:: ``cartesian_trees``
+
+This program is a solution to the second challenge of VerifyThis 2019. For
+a sequence of distinct numbers ``S``, the Cartesian tree of ``S`` is the only
+binary tree ``T`` such that ``T`` contains a node per element of ``S``, ``T``
+has the heap property, and symmetrical traversal of ``T`` encounters elements
+in the order of ``S``. The challenge is split in two parts, first construct
+all nearest smaller neighbors to the left/right of each element of a sequence
+using a stack, and then construct the Cartesian tree of the sequence using these
+neighbors.
+
+Computation of the nearest smaller neighbors is fairly straightforward in SPARK.
+It still features a relatively involved loop invariant. On the other hand,
+showing that the tree constructed by the algorithm in the second part is the
+Cartesian tree of the input sequence is rather involved. It uses ghost code
+to manually guide automatic solvers (see :ref:`Manual Proof Using Ghost Code`).
+
 .. rubric:: ``database``
 
 This program implements a toy interface to a bank account database, with
@@ -231,6 +248,27 @@ using a wrapper with contracts).
 This program implements a queue of integers using a doubly linked list, with
 full functional contracts on the API of the queue. |GNATprove| proves all
 checks on this program.
+
+.. rubric:: ``ghc_sort``
+
+This program is a partial solution to the first challenge of VerifyThis 2019.
+It features a sorting algorithm, which works by splitting the input sequence into
+monotonic subsequences of maximal length. It then reverses the decreasing
+subsequences and merges them pairwise until the sequence is reconstructed.
+
+Computation of the sequence of cuts is completely verified. On sorting
+algorithm, we only check that it returns a sorted sequence of the correct
+length. We did not attempt to prove that the result of the sort function is
+a permutation of its input. Indeed, this kind of property is complicated both to
+formalize and to verify, and generally requires ghost code
+(see :ref:`Manual Proof Using Ghost Code`).
+
+This example does not feature the use of any interactive proof techniques, as
+proofs attempted were largely in reach of the automated tool.
+We used support for ownership pointers in SPARK to implement lists of
+subsequences as a recursive data-type using pointers.
+It is all proved except for termination of recursive functions used to iterate
+over the lists.
 
 .. rubric:: ``natural``
 

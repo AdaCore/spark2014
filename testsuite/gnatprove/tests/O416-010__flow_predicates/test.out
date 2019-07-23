@@ -1,13 +1,14 @@
-foo.adb:8:31: info: initialization of "G_V" proved
 foo.adb:12:23: info: initialization of "O" proved
-foo.adb:20:07: info: initialization of "X" proved
-foo.adb:22:12: info: initialization of "X" proved
+foo.adb:13:09: info: data dependencies proved
+foo.adb:14:09: info: flow dependencies proved
+foo.adb:28:11: info: data dependencies proved
+foo.adb:29:06: info: flow dependencies proved
 foo.adb:34:12: predicate cannot depend on variable input "B" (SPARK RM 4.4(2))
 foo.adb:43:23: info: initialization of "O" proved
-foo.adb:50:07: info: initialization of "X" proved
-foo.adb:52:12: info: initialization of "X" proved
+foo.adb:44:09: info: data dependencies proved
+foo.adb:45:09: info: flow dependencies proved
 foo.adb:56:23: info: initialization of "O" proved
-foo.adb:66:12: info: initialization of "X" proved
+foo.adb:57:09: info: data dependencies proved
+foo.adb:58:09: info: flow dependencies proved
 foo.adb:71:23: info: initialization of "O" proved
-foo.adb:81:12: info: initialization of "X" proved
 gnatprove: error during flow analysis and proof

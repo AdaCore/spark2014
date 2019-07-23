@@ -1,6 +1,4 @@
-over.adb:16:25: info: initialization of "Z" proved
 over.adb:18:22: info: assertion proved (CVC4: 1 VC)
-over.adb:18:22: info: initialization of "Y" proved
 over.ads:4:20: info: postcondition proved (CVC4: 1 VC)
 over.ads:5:16: warning: unused variable "Z"
 over.ads:7:14: warning: subprogram "G" has no effect

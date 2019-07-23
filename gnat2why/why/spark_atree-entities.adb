@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -27,10 +27,10 @@ with Atree;            use Atree;
 with Nlists;           use Nlists;
 with Opt;              use type Opt.Ada_Version_Type;
 with Sinfo;            use Sinfo;
-with Sem_Aux;
 with Sem_Ch7;          use Sem_Ch7;
 with Sem_Util;
 with Sem_Prag;
+with SPARK_Util.Subprograms;
 with SPARK_Util.Types;
 with Ttypes;
 with Interfaces;
@@ -152,12 +152,34 @@ package body SPARK_Atree.Entities is
    function Default_Aspect_Value (Typ : Entity_Id) return Node_Id is
      (Einfo.Default_Aspect_Value (SPARK_Util.Types.Base_Retysp (Typ)));
 
+   --------------------------------
+   -- Designates_Incomplete_Type --
+   --------------------------------
+
+   function Designates_Incomplete_Type (E : Entity_Id) return Boolean is
+     (Einfo.Is_Incomplete_Type (Einfo.Directly_Designated_Type (E))
+      or else SPARK_Util.Is_Partial_View (Einfo.Directly_Designated_Type (E)));
+
    -------------------
    -- DIC_Procedure --
    -------------------
 
    function DIC_Procedure (Typ : Entity_Id) return Entity_Id renames
      Einfo.DIC_Procedure;
+
+   ------------------------------
+   -- Directly_Designated_Type --
+   ------------------------------
+
+   function Directly_Designated_Type (E : Entity_Id) return Node_Id is
+      Des_Ty : constant Entity_Id := Einfo.Directly_Designated_Type (E);
+   begin
+      if Is_Incomplete_Type (Des_Ty) then
+         return Einfo.Full_View (Des_Ty);
+      else
+         return Des_Ty;
+      end if;
+   end Directly_Designated_Type;
 
    ----------------------
    -- Discriminal_Link --
@@ -201,6 +223,13 @@ package body SPARK_Atree.Entities is
    function Enumeration_Pos (Obj : Entity_Id) return Uint renames
      Einfo.Enumeration_Pos;
 
+   ---------------------
+   -- Enumeration_Rep --
+   ---------------------
+
+   function Enumeration_Rep (Obj : Entity_Id) return Uint renames
+     Einfo.Enumeration_Rep;
+
    ------------------------
    -- First_Discriminant --
    ------------------------
@@ -232,6 +261,13 @@ package body SPARK_Atree.Entities is
 
    function First_Index (Typ : Entity_Id) return Node_Id renames
      Einfo.First_Index;
+
+   -------------------
+   -- First_Literal --
+   -------------------
+
+   function First_Literal (Typ : Entity_Id) return Entity_Id renames
+     Einfo.First_Literal;
 
    -------------------
    -- First_Subtype --
@@ -343,6 +379,13 @@ package body SPARK_Atree.Entities is
          return False;
       end;
    end Has_Discriminants;
+
+   --------------------------------
+   -- Has_Enumeration_Rep_Clause --
+   --------------------------------
+
+   function Has_Enumeration_Rep_Clause (Typ : Entity_Id) return Boolean renames
+     Einfo.Has_Enumeration_Rep_Clause;
 
    ---------------------------
    -- Has_Interrupt_Handler --

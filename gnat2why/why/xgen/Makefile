@@ -1,3 +1,11 @@
+# The Why-tree Ada files are automatically generated. This Makefile is used to
+# build and generate those files. The main file for generation is xtree.adb. In
+# practice, the files that are suffixed by a *-tmpl contain specific keywords
+# of the form _@Stuff@_ that are replaced by xtree.
+# In particular, to modify the dependencies of one of those files, it is
+# necessary to update the -tmpl. To modify a specific node, xtree_sinfo.adb
+# should be modified.
+
 .PHONY: all
 
 GENERATED_FILES= \

@@ -1,6 +1,8 @@
-justifications.adb:6:14: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: subprogram at line 4 should mention X and Y in a precondition]
-justifications.adb:7:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 4 should mention Y in a precondition]
-justifications.adb:12:14: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: subprogram at line 10 should mention X and Y in a precondition]
-justifications.adb:13:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 10 should mention Y in a precondition]
+justifications.adb:6:14: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at justifications.ads:4 should mention X and Y in a precondition]
+justifications.adb:7:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [possible explanation: subprogram at justifications.ads:4 should mention Y in a precondition]
+justifications.adb:12:14: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: subprogram at justifications.ads:9 should mention X and Y in a precondition]
+justifications.adb:13:14: medium: overflow check might fail (e.g. when Y = Integer'Last) [possible explanation: subprogram at justifications.ads:9 should mention Y in a precondition]
 justifications.adb:15:04: warning: no check message justified by this pragma
+justifications.ads:5:06: info: flow dependencies proved
 justifications.ads:6:04: warning: no check message justified by this pragma
+justifications.ads:10:06: info: flow dependencies proved

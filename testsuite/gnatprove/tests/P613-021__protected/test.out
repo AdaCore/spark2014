@@ -1,4 +1,5 @@
 core.adb:19:28: info: range check proved (CVC4: 1 VC)
 core.adb:28:25: info: range check proved (CVC4: 1 VC)
+core.ads:27:14: info: data dependencies proved
 core.ads:30:22: info: postcondition proved (CVC4: 1 VC)
 core.ads:33:25: info: initialization of "N" proved

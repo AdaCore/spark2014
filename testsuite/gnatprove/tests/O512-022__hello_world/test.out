@@ -1,5 +1,5 @@
 after_tax.adb:7:22: info: overflow check proved (CVC4: 1 VC)
 after_tax.adb:7:22: info: range check proved (Z3: 1 VC)
-after_tax.adb:7:36: medium: overflow check might fail (e.g. when After_Tax'Result = 0 and Before_Tax = 21262215 and Rate = 2) [possible explanation: precondition of subprogram at line 3 should mention Before_Tax]
+after_tax.adb:7:36: medium: overflow check might fail (e.g. when Before_Tax = 21262215 and Rate = 2) [possible explanation: precondition of subprogram at after_tax.ads:3 should mention Before_Tax]
 after_tax.adb:7:44: info: division check proved (CVC4: 1 VC)
 after_tax.ads:8:11: info: postcondition proved (CVC4: 1 VC)

@@ -1,4 +1,4 @@
-p1.adb:5:14: info: postcondition proved (CVC4: 6 VC)
+p1.adb:5:14: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC)
 p1.adb:5:16: info: index check proved (CVC4: 2 VC)
 p1.adb:5:23: info: index check proved (CVC4: 2 VC)
 p1.adb:6:16: info: index check proved (CVC4: 2 VC)
@@ -9,33 +9,21 @@ p1.adb:11:33: info: index check proved (CVC4: 2 VC)
 p1.adb:13:09: info: index check proved (CVC4: 2 VC)
 p1.adb:13:17: info: index check proved (CVC4: 2 VC)
 p1.adb:14:09: info: index check proved (CVC4: 2 VC)
+p1.adb:18:07: info: initialization of "I" proved
+p1.adb:19:07: info: initialization of "J" proved
 p1.adb:25:13: info: range check proved (CVC4: 1 VC)
 p1.adb:26:13: info: range check proved (CVC4: 1 VC)
-p1.adb:27:13: info: initialization of "I" proved
-p1.adb:27:18: info: initialization of "J" proved
 p1.adb:28:10: info: loop variant proved (CVC4: 1 VC)
-p1.adb:28:44: info: initialization of "J" proved
-p1.adb:28:48: info: initialization of "I" proved
-p1.adb:30:13: info: initialization of "I" proved
 p1.adb:30:13: info: loop invariant initialization proved (CVC4: 6 VC)
 p1.adb:30:13: info: loop invariant preservation proved (CVC4: 6 VC)
-p1.adb:31:24: info: initialization of "J" proved
 p1.adb:32:62: info: index check proved (CVC4: 4 VC)
 p1.adb:33:57: info: index check proved (CVC4: 4 VC)
 p1.adb:34:19: info: index check proved (CVC4: 2 VC)
-p1.adb:34:19: info: initialization of "I" proved
-p1.adb:35:18: info: initialization of "I" proved
 p1.adb:35:19: medium: range check might fail (e.g. when I = Index'Last)
 p1.adb:36:18: info: index check proved (CVC4: 2 VC)
-p1.adb:37:13: info: initialization of "J" proved
-p1.adb:37:18: info: initialization of "J" proved
 p1.adb:37:19: medium: range check might fail (e.g. when J = 0)
 p1.adb:39:13: info: precondition proved (CVC4: 4 VC)
-p1.adb:39:22: info: initialization of "I" proved
-p1.adb:39:25: info: initialization of "J" proved
-p1.adb:40:18: info: initialization of "I" proved
 p1.adb:40:19: info: range check proved (CVC4: 1 VC)
-p1.adb:41:18: info: initialization of "J" proved
 p1.adb:41:19: info: range check proved (CVC4: 1 VC)
 p1.ads:5:14: medium: postcondition might fail, cannot prove A'Last < A'First or else (for some K in A'Range => (for all J in A'First .. K => not A(J)) and then (for all J in K+1 .. A'Last => A(J))) (e.g. when A = (0 => False, others => True) and A'First = 0 and A'Last = 1)
 p1.ads:7:63: info: index check proved (CVC4: 2 VC)

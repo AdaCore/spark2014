@@ -1,4 +1,3 @@
-sccs.adb:3:14: info: initialization of "B" proved
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: statement has no effect
@@ -20,6 +19,6 @@ sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:1
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
-sccs.adb:21:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: subprogram at line 1 should mention B in a precondition]
+sccs.adb:21:19: medium: assertion might fail, cannot prove B [possible explanation: subprogram at line 1 should mention B in a precondition]
 sccs.adb:23:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 22 should mention B in a postcondition]
 sccs.adb:25:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 24 should mention B in a postcondition]

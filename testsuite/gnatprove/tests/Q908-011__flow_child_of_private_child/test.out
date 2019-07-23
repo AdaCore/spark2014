@@ -1,4 +1,6 @@
-foo-pc-c.adb:5:04: info: initialization of "B" constituent of "State" proved
+foo-pc-c.ads:4:04: info: flow dependencies proved
 foo-pc-c.ads:8:22: info: initialization of "Y" proved
+foo-pc-c.ads:9:09: info: data dependencies proved
 foo.ads:1:09: refinement of Foo.State_B shall mention C.State constituent of Foo.State_B (SPARK RM 7.2.6(6))
+foo.ads:3:04: info: flow dependencies proved
 gnatprove: error during flow analysis and proof

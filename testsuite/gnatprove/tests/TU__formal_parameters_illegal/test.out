@@ -1,8 +1,5 @@
 formal_parameters_illegal.adb:10:04: warning: analyzing unreferenced procedure "Formal_Not_Fully_Initialized"
 formal_parameters_illegal.adb:10:44: high: "Rec.B" is not initialized in "Formal_Not_Fully_Initialized"
-formal_parameters_illegal.adb:10:44: info: initialization of "Rec.A" proved
-formal_parameters_illegal.adb:18:50: info: initialization of "Arr" proved
-formal_parameters_illegal.adb:27:19: info: initialization of "Arr" proved
 formal_parameters_illegal.adb:27:19: info: postcondition proved (CVC4: 1 VC)
 formal_parameters_illegal.adb:27:29: high: "Arr" is not initialized at subprogram entry
 formal_parameters_illegal.adb:30:14: high: "Arr" is not initialized

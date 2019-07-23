@@ -1,4 +1,6 @@
-\documentclass{llncs}
+\documentclass{eceasst}
+
+\input{frontmatter}
 
 \usepackage[utf8]{inputenc}
 \usepackage{graphicx}
@@ -6,20 +8,20 @@
 \usepackage{xspace}
 \usepackage{amsmath}
 \usepackage{hyperref}
-\usepackage[usenames,dvipsnames]{color}
+\usepackage{color}
 \usepackage{listings}
 \usepackage[table]{xcolor}
-\newcommand{\CodeSymbol}[1]{\textcolor{Bittersweet}{#1}}
+\newcommand{\CodeSymbol}[1]{#1}
 %\usepackage{lineno}
 %\pagestyle{plain}
 %\linenumbers
 \lstset{
    language=Ada,
-   keywordstyle=\color{RedViolet}\ttfamily\bf,
+   keywordstyle=\ttfamily\bf,
    showspaces=false,
    basicstyle={\scriptsize \sffamily},
    commentstyle=\color{red}\textit,
-   stringstyle=\color{MidnightBlue}\ttfamily,
+   stringstyle=\ttfamily,
    string=[b]",  % remove ' from string delimiter as it interfers with attributes
    showtabs=false,
    showstringspaces=false,
@@ -78,26 +80,22 @@
 
 \title{Climbing the Software Assurance Ladder - Practical Formal Verification
   for Reliable Software}
+\short{Climbing the Software Assurance Ladder}
 
-\author{\thanks{Work partly supported by the Joint Laboratory
-    ProofInUse (ANR-13-LAB3-0007, \url{https://www.adacore.com/proofinuse})} Claire~Dross\inst{1}
-  \and Guillaume~Foliard\inst{2} \and
-  Théo~Jouanny\inst{3} \and \\ Lionel~Matias\inst{2} \and
-  Stuart~Matthews\inst{4} \and Jean-Marc~Mota\inst{5} \and \\
-  Yannick~Moy\inst{1} \and Pascal~Pignard\inst{3} \and Romain~Soulat\inst{5}}
+\author{Claire~Dross\autref{1}\sponsor{Work partly supported by the Joint Laboratory
+    ProofInUse (ANR-13-LAB3-0007, \url{https://why3.gitlabpages.inria.fr/proofinuse/})} ,
+  Guillaume~Foliard\autref{2},
+  Théo~Jouanny\autref{3}, \\ Lionel~Matias\autref{2},
+  Stuart~Matthews\autref{4}, Jean-Marc~Mota\autref{5}, \\
+  Yannick~Moy\autref{1}, Pascal~Pignard\autref{3}, Romain~Soulat\autref{5}}
 
-\institute{AdaCore, F-75009 Paris \and Thales Air Systems, F-91470 Limours \and
-  Thales Communications \& Security, F-49300 Cholet \and Altran, Bath BA1 1AN,
-  United Kingdom \and Thales Research \& Technologies, F-91767 Palaiseau}
+\institute{\autlabel{1} AdaCore, F-75009 Paris\\ \autlabel{2} Thales Air Systems, F-91470 Limours\\
+  \autlabel{3} Thales Communications \& Security, F-49300 Cholet\\ \autlabel{4}Altran, Bath BA1 1AN,
+  United Kingdom\\ \autlabel{5} Thales Research \& Technologies, F-91767 Palaiseau}
 
-\date{}
+\keywords{Certification, Formal methods, Programming by contract}
 
-\begin{document}
-\sloppy
-\hbadness=9999
-\maketitle
-
-\begin{abstract}
+\abstract{
 There is a strong link between software quality and software reliability. By
 decreasing the probability of imperfection in the software, we can augment its
 reliability guarantees. At one extreme, software with one unknown bug is not
@@ -109,10 +107,18 @@ Thales to fine-tune the gradual insertion of formal verification techniques in
 existing processes.  Experience of both long-term and new users helped us
 define adoption and usage guidelines for SPARK based on five levels of
 increasing assurance that map well with industrial needs in practice.
-\end{abstract}
+}
+
+\date{}
+
+\begin{document}
+\sloppy
+\hbadness=9999
+\maketitle
+
 
 % Keywords
-% Certification, Formal methods, Programming by contract
+%
 
 \section{Introduction}
 
@@ -841,7 +847,7 @@ We would like to thank the anonymous referees for their useful remarks, as well
 as our colleagues at AdaCore, Altran and Thales for their reviews on earlier
 drafts of this article.
 
-\bibliographystyle{plain}
+\bibliographystyle{eceasst}
 \bibliography{fm2018}
 
 \end{document}

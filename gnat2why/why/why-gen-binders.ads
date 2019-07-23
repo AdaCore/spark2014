@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,7 @@
 
 with Common_Containers;      use Common_Containers;
 with Flow_Types;             use Flow_Types;
-with Namet;                  use Namet;
+with GNATCOLL.Symbols;       use GNATCOLL.Symbols;
 with SPARK_Atree;            use SPARK_Atree;
 with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
 with SPARK_Definition;       use SPARK_Definition;
@@ -52,7 +52,7 @@ package Why.Gen.Binders is
       B_Name   : W_Identifier_Id;
       B_Ent    : Any_Entity_Name;
       Mutable  : Boolean := False;
-      Labels   : Name_Id_Sets.Set;
+      Labels   : Symbol_Sets.Set;
    end record;
    --  This record represents a variable binding B_Name. In some cases, extra
    --  information is stored concerning the Ada entity that is represented by
@@ -95,6 +95,9 @@ package Why.Gen.Binders is
       Local : Boolean;
       --  True if the names of constant parts of the binder are local objects
       --  in Why3.
+
+      Init  : Opt_Id;
+      --  Optional init flag for types which have Init_By_Proof
 
       case Kind is
          when Regular | Concurrent_Self =>
@@ -188,7 +191,7 @@ package Why.Gen.Binders is
       Binders     : Binder_Array;
       Return_Type : W_Type_Id := Why_Empty;
       Location    : Source_Ptr;
-      Labels      : Name_Id_Set;
+      Labels      : Symbol_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
@@ -202,7 +205,7 @@ package Why.Gen.Binders is
       Items       : Item_Array;
       Return_Type : W_Type_Id := Why_Empty;
       Location    : Source_Ptr;
-      Labels      : Name_Id_Set;
+      Labels      : Symbol_Set;
       Effects     : W_Effects_Id := New_Effects;
       Def         : W_Expr_Id := Why_Empty;
       Pre         : W_Pred_Id := True_Pred;
@@ -219,7 +222,7 @@ package Why.Gen.Binders is
 
    function New_Guarded_Axiom
      (Ada_Node : Node_Id := Empty;
-      Name     : Name_Id;
+      Name     : Symbol;
       Binders  : Binder_Array;
       Triggers : W_Triggers_OId := Why_Empty;
       Pre      : W_Pred_OId := Why_Empty;
@@ -277,11 +280,12 @@ package Why.Gen.Binders is
       Id      : W_Identifier_Id;
       Mutable : Boolean) return Item_Type
    is
-     ((Regular, Local => True, Main => (Ada_Node => E,
-                                        B_Name   => Id,
-                                        B_Ent    => Null_Entity_Name,
-                                        Mutable  => Mutable,
-                                        Labels   => <>)));
+     ((Regular, Local => True, Init => <>,
+       Main => (Ada_Node => E,
+                B_Name   => Id,
+                B_Ent    => Null_Entity_Name,
+                Mutable  => Mutable,
+                Labels   => <>)));
    --  @param E entity
    --  @param Id identifier
    --  @param Mutable True iff the item is mutable

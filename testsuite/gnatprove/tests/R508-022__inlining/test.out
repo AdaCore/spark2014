@@ -1,16 +1,11 @@
 unroll.adb:4:39: info: initialization of "Res" proved
-unroll.adb:5:19: info: initialization of "Res" proved
 unroll.adb:5:19: info: postcondition proved (CVC4: 1 VC)
 unroll.adb:9:24: info: unrolling loop
-unroll.adb:10:17: info: initialization of "Res" proved
 unroll.adb:10:21: info: overflow check proved (CVC4: 6 VC)
 unroll.adb:14:48: info: initialization of "Res" proved
-unroll.adb:15:19: info: initialization of "Res" proved
 unroll.adb:15:19: info: postcondition proved (CVC4: 1 VC)
 unroll.adb:19:36: info: unrolling loop
-unroll.adb:20:17: info: initialization of "Res" proved
 unroll.adb:20:21: info: overflow check proved (CVC4: 6 VC)
+unroll.adb:25:04: info: initialization of "Value" proved
 unroll.adb:28:19: info: assertion proved (CVC4: 1 VC)
-unroll.adb:28:19: info: initialization of "Value" proved
 unroll.adb:30:19: info: assertion proved (CVC4: 1 VC)
-unroll.adb:30:19: info: initialization of "Value" proved

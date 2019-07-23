@@ -1,9 +1,7 @@
+assign_aggr.adb:14:07: info: initialization of "W" proved[#3]
 assign_aggr.adb:16:09: warning: unused assignment[#0]
 assign_aggr.adb:17:07: warning: statement has no effect[#1]
-assign_aggr.adb:17:16: info: initialization of "W.X" proved[#4]
-assign_aggr.adb:17:16: info: initialization of "W.Y" proved[#5]
-assign_aggr.adb:17:16: info: initialization of "W.Z" proved[#6]
 assign_aggr.adb:17:19: warning: unused assignment to "Err"[#2]
-assign_aggr.ads:7:30: info: initialization of "Err" proved[#7]
-assign_aggr.ads:9:23: info: initialization of "V" proved[#3]
+assign_aggr.ads:7:30: info: initialization of "Err" proved[#5]
+assign_aggr.ads:9:23: info: initialization of "V" proved[#4]
 completed 1 out of 1 (100%)...

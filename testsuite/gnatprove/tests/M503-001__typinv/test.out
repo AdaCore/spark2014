@@ -1,14 +1,13 @@
-aggregates.ads:7:14: info: invariant check proved (CVC4: 1 VC)
+aggregates.ads:7:14: info: invariant check proved (CVC4: 1 VC; Trivial: 1 VC)
 aggregates.ads:7:26: info: initialization of "X" proved
-aggregates.ads:9:14: info: invariant check proved (CVC4: 1 VC)
-aggregates.ads:13:14: info: invariant check proved (CVC4: 2 VC)
-aggregates.ads:13:26: info: initialization of "X.A" proved
-aggregates.ads:13:26: info: initialization of "X.B" proved
-aggregates.ads:15:14: info: invariant check proved (CVC4: 2 VC)
+aggregates.ads:9:14: info: invariant check proved (CVC4: 1 VC; Trivial: 1 VC)
+aggregates.ads:13:14: info: invariant check proved (CVC4: 2 VC; Trivial: 2 VC)
+aggregates.ads:13:26: info: initialization of "X" proved
+aggregates.ads:15:14: info: invariant check proved (CVC4: 2 VC; Trivial: 2 VC)
 aggregates.ads:21:09: info: invariant check proved on default value (CVC4: 1 VC)
 aggregates.ads:22:23: info: range check proved (CVC4: 1 VC)
-aggregates.ads:25:09: info: invariant check proved on default value (CVC4: 1 VC)
-aggregates.ads:27:09: info: invariant check proved on default value (CVC4: 2 VC)
+aggregates.ads:25:09: info: invariant check proved on default value (CVC4: 1 VC; Trivial: 1 VC)
+aggregates.ads:27:09: info: invariant check proved on default value (CVC4: 2 VC; Trivial: 2 VC)
 external.adb:14:17: info: implicit function contract not available for proof ("Get" is recursive)
 external.ads:5:22: info: initialization of "X" proved
 globals.adb:15:15: info: overflow check proved (CVC4: 1 VC)
@@ -16,24 +15,27 @@ globals.adb:29:15: info: overflow check proved (CVC4: 1 VC)
 globals.adb:43:15: info: overflow check proved (CVC4: 1 VC)
 globals.adb:57:15: info: overflow check proved (CVC4: 1 VC)
 globals.ads:1:09: info: invariant check proved (CVC4: 2 VC)
-globals.ads:8:14: info: initialization of "Y" constituent of "State_Y" proved
 globals.ads:8:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:9:11: info: data dependencies proved
 globals.ads:11:14: info: invariant check proved (CVC4: 1 VC)
-globals.ads:17:14: info: initialization of "X" constituent of "State_X" proved
+globals.ads:12:11: info: data dependencies proved
+globals.ads:15:11: info: data dependencies proved
 globals.ads:17:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:19:14: info: invariant check proved (CVC4: 1 VC)
-globals.ads:23:14: info: initialization of "Y" constituent of "State_Y" proved
 globals.ads:23:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:25:14: info: invariant check proved (CVC4: 1 VC)
 globals.ads:31:09: info: invariant check proved on default value (CVC4: 1 VC)
 globals.ads:32:23: info: range check proved (CVC4: 1 VC)
 globals.ads:37:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:38:11: info: data dependencies proved
 globals.ads:38:32: info: initialization of "X" constituent of "State_X" proved
 globals.ads:40:14: info: invariant check proved (CVC4: 1 VC)
+globals.ads:41:11: info: data dependencies proved
+globals.ads:44:11: info: data dependencies proved
 inside_out.adb:3:27: info: initialization of "X" proved
 inside_out.adb:16:07: medium: invariant check might fail, in call inlined at inside_out.adb:58 (e.g. when X = 0)
 inside_out.adb:20:08: info: implicit function contract not available for proof ("Get" is recursive)
-inside_out.adb:20:08: medium: invariant check might fail (e.g. when X = 0) [possible explanation: subprogram at line 19 should mention X and Mode in a precondition]
+inside_out.adb:20:08: medium: invariant check might fail [possible explanation: subprogram at line 7 should mention X and Mode in a precondition]
 inside_out.adb:30:15: info: overflow check proved (CVC4: 1 VC)
 inside_out.adb:45:13: info: analyzing call to "Body_Create" in context
 inside_out.adb:56:13: medium: invariant check might fail (e.g. when X = 0)

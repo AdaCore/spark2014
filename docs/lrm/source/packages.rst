@@ -1,12 +1,21 @@
-﻿Packages
+Packages
 ========
 
 .. centered:: **Verification Rules**
 
 .. _tu-fa-packages-01:
 
-1. In |SPARK| the elaboration of a package shall only update, directly or
-   indirectly, variables declared immediately within the package.
+1. The elaboration of a package shall not update, directly or
+   indirectly, a reachable element of a variable that is not declared
+   immediately within the package. [Roughly speaking, this means that
+   the outputs of the notional spec and body elaboration subprograms
+   shall all be objects declared immediately within the package.]
+
+.. _tu-fa-packages-02:
+
+2. The elaboration of a package declaration or body shall not leave any
+   object in the Moved state unless the object was already in the Moved
+   state at the start of that elaboration.
 
 .. _etu-packages:
 
@@ -587,20 +596,13 @@ shall follow the grammar of ``abstract_state_list`` given below.
    completion", but we want a SPARK program with its SPARK aspects removed
    (or ignored) to remain a legal Ada program.]
 
-.. _tu-abstract_state_aspects-05:
-
-5. A function declaration that overloads a state abstraction has an implicit
-   Global aspect denoting the state abstraction with a ``mode_selector`` of
-   Input. An explicit Global aspect may be specified which replaces the
-   implicit one.
-
 .. _etu-abstract_state_aspects-lr:
 
 .. centered:: **Static Semantics**
 
-.. _tu-cbatu-abstract_state_aspects-06:
+.. _tu-cbatu-abstract_state_aspects-05:
 
-6. Each ``state_name`` occurring in an Abstract_State aspect
+5. Each ``state_name`` occurring in an Abstract_State aspect
    specification for a given package P introduces an implicit
    declaration of a state abstraction entity. This implicit
    declaration occurs at the beginning of the visible part of P. This
@@ -615,39 +617,39 @@ shall follow the grammar of ``abstract_state_list`` given below.
    be provided as part of a Refined_State ``aspect_specification``
    within the body of the package.]
 
+.. _tu-fe-abstract_state_aspects-06:
+
+6. A **null** ``abstract_state_list`` specifies that a package contains no
+   hidden state.
+
 .. _tu-fe-abstract_state_aspects-07:
 
-7. A **null** ``abstract_state_list`` specifies that a package contains no
-   hidden state.
+7. An External state abstraction is one declared with an ``option_list``
+   that includes the External ``option`` (see :ref:`external_state`).
 
 .. _tu-fe-abstract_state_aspects-08:
 
-8. An External state abstraction is one declared with an ``option_list``
-   that includes the External ``option`` (see :ref:`external_state`).
-
-.. _tu-fe-abstract_state_aspects-09:
-
-9. If a state abstraction which is declared with an ``option_list`` that
+8. If a state abstraction which is declared with an ``option_list`` that
    includes a Part_Of ``name_value_option`` whose ``name`` denote a state
    abstraction, this indicates that it is a constituent (see
    :ref:`state_refinement`) of the denoted state abstraction.
    [Alternatively, the name may denote a task or protected unit (see section
    :ref:`tasks-and-synchronization`).]
 
-.. _tu-fe-abstract_state_aspects-10:
+.. _tu-fe-abstract_state_aspects-09:
 
-10. A state abstraction for which the ``simple_option`` Ghost is
-    specified is said to be a ghost state abstraction. A state
-    abstraction for which the ``simple_option`` Synchronous is
-    specified is said to be a synchronized state abstraction.
-    [The option name "Synchronous" is used instead of "Synchronized"
-    to avoid unnecessary complications associated with the use of an
-    Ada reserved word.] Every synchronized state abstraction is
-    also (by definition) an external state abstraction. A synchronized
-    state abstraction for which the ``simple_option`` External is
-    not (explicitly) specified has (by definition) its Async_Readers
-    and Async_Writers aspects specified to be True and its
-    Effective_Writes and Effective_Reads aspects specified to be False.
+9. A state abstraction for which the ``simple_option`` Ghost is
+   specified is said to be a ghost state abstraction. A state
+   abstraction for which the ``simple_option`` Synchronous is
+   specified is said to be a synchronized state abstraction.
+   [The option name "Synchronous" is used instead of "Synchronized"
+   to avoid unnecessary complications associated with the use of an
+   Ada reserved word.] Every synchronized state abstraction is
+   also (by definition) an external state abstraction. A synchronized
+   state abstraction for which the ``simple_option`` External is
+   not (explicitly) specified has (by definition) its Async_Readers
+   and Async_Writers aspects specified to be True and its
+   Effective_Writes and Effective_Reads aspects specified to be False.
 
 .. _etu-abstract_state_aspects-ss:
 
@@ -695,31 +697,6 @@ There are no verification rules associated with the Abstract_State aspect.
    is
       ...
    end X;
-
-.. code-block:: ada
-   :linenos:
-
-   package Mileage
-     with Abstract_State => (Trip,  -- number of miles so far on this trip (can be reset to 0)
-                             Total) -- total mileage of vehicle since last factory-reset
-   is
-      function Trip  return Natural;  -- Has an implicit Global => Trip
-      function Total return Natural;  -- Has an implicit Global => Total
-
-      procedure Zero_Trip
-        with Global  => (Output => Trip),  -- In the Global and Depends aspects
-             Depends => (Trip => null),    -- Trip denotes the state abstraction.
-             Post    => Trip = 0;          -- In the Post condition Trip denotes
-                                           -- the function.
-      procedure Inc
-        with Global  => (In_Out => (Trip, Total)),
-             Depends => ((Trip, Total) =>+ null),
-             Post    => Trip = Trip'Old + 1 and Total = Total'Old + 1;
-
-      -- Trip and Old in the Post conditions denote functions but these
-      -- represent the state abstractions in Global and Depends specifications.
-
-   end Mileage;
 
 .. _initializes_aspect:
 

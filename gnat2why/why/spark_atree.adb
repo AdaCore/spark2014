@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2018, AdaCore                        --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -131,7 +131,7 @@ package body SPARK_Atree is
    -- Condition --
    ---------------
 
-   function Condition  (N : Node_Id) return Node_Id renames
+   function Condition (N : Node_Id) return Node_Id renames
      Sinfo.Condition;
 
    -----------------------
@@ -223,7 +223,19 @@ package body SPARK_Atree is
            Einfo.E_In_Out_Parameter | Einfo.E_Out_Parameter)
       or else
         (Atree.Nkind (Atree.Parent (N)) = N_Range
-         and then Sinfo.Do_Range_Check (Atree.Parent (N))));
+         and then Sinfo.Do_Range_Check (Atree.Parent (N)))
+      or else
+
+      --  Do_Range_Check flag is not set on allocators. Do the check if the
+      --  designated subtype and the provided subtype do not match.
+
+        (Atree.Nkind (Atree.Parent (N)) = N_Allocator
+         and then Einfo.Directly_Designated_Type
+           (if Present (Einfo.Full_View (Etype (Atree.Parent (N))))
+            then Einfo.Full_View (Etype (Atree.Parent (N)))
+            else Etype (Atree.Parent (N)))
+         /= (if Nkind (N) = N_Qualified_Expression then Etype (N)
+             else Entity (N))));
 
    -----------------------
    -- Do_Division_Check --
@@ -549,12 +561,12 @@ package body SPARK_Atree is
                --  needs a range check towards the expected type.
 
                if Nkind (Atree.Parent (Par)) = N_Aggregate
-                 and then Nkind (Atree.Parent (Atree.Parent (Par))) =
-                 N_Attribute_Reference
                  and then
-                   Get_Attribute_Id
-                     (Attribute_Name (Atree.Parent (Atree.Parent (Par)))) =
-                 Attribute_Update
+                   Nkind (Atree.Parent (Atree.Parent (Par))) =
+                     N_Attribute_Reference
+                 and then
+                   Sem_Util.Is_Attribute_Update
+                     (Atree.Parent (Atree.Parent (Par)))
                then
 
                   Pref := Prefix (Atree.Parent (Atree.Parent (Par)));
@@ -570,7 +582,7 @@ package body SPARK_Atree is
                      Prefix_Type := Etype (Pref);
                   end if;
 
-                  if Einfo.Is_Record_Type (Prefix_Type) then
+                  if SPARK_Util.Types.Has_Record_Type (Prefix_Type) then
 
                      Check_Type := Etype (Nlists.First (Choices (Par)));
 
@@ -640,8 +652,7 @@ package body SPARK_Atree is
                pragma Assert
                  (Nkind (Aggr) = N_Aggregate
                   and then Nkind (Atree.Parent (Aggr)) = N_Attribute_Reference
-                  and then Get_Attribute_Id
-                    (Attribute_Name (Atree.Parent (Aggr))) = Attribute_Update);
+                  and then Sem_Util.Is_Attribute_Update (Atree.Parent (Aggr)));
 
                Pref        : constant Node_Id := Prefix (Atree.Parent (Aggr));
                Num_Dim     : constant Pos :=
@@ -731,6 +742,12 @@ package body SPARK_Atree is
          when N_Case_Expression_Alternative =>
             Check_Type := Etype (Atree.Parent (Par));
 
+         when N_Allocator =>
+            Check_Type := Einfo.Directly_Designated_Type
+              (if Present (Einfo.Full_View (Etype (Par)))
+               then Einfo.Full_View (Etype (Par))
+               else Etype (Par));
+
          when others =>
             Ada.Text_IO.Put_Line ("[Get_Range_Check_Info] kind ="
                                   & Node_Kind'Image (Nkind (Par)));
@@ -808,7 +825,7 @@ package body SPARK_Atree is
    -- Inherited_Discriminant --
    ----------------------------
 
-   function Inherited_Discriminant  (N : Node_Id) return Boolean renames
+   function Inherited_Discriminant (N : Node_Id) return Boolean renames
      Sinfo.Inherited_Discriminant;
 
    ------------
@@ -848,11 +865,9 @@ package body SPARK_Atree is
       end if;
 
       if Nkind (Attribute_Node) = N_Attribute_Reference
-        and then Get_Attribute_Id (Attribute_Name (Attribute_Node))
-          = Attribute_Update
+        and then Sem_Util.Is_Attribute_Update (Attribute_Node)
         and then Einfo.Is_Array_Type (Etype (Prefix (Attribute_Node)))
-        and then
-          not (Einfo.Is_Constrained (Etype (Prefix (Attribute_Node))))
+        and then not Einfo.Is_Constrained (Etype (Prefix (Attribute_Node)))
         and then Is_List_Member (Possibly_Choice_Node)
         and then Present (Choices (Atree.Parent (Possibly_Choice_Node)))
         and then List_Containing (Possibly_Choice_Node)
@@ -934,6 +949,14 @@ package body SPARK_Atree is
    function Is_OK_Static_Range (N : Node_Id) return Boolean renames
      Sem_Eval.Is_OK_Static_Range;
 
+   ------------------------
+   -- Is_Rewritten_Op_Eq --
+   ------------------------
+
+   function Is_Rewritten_Op_Eq (N : Node_Id) return Boolean is
+     (Nkind (N) = N_Function_Call
+      and then Nkind (Original_Node (N)) in N_Op_Eq | N_Op_Ne);
+
    --------------------------
    -- Is_Static_Expression --
    --------------------------
@@ -972,9 +995,7 @@ package body SPARK_Atree is
             return not Cstr_Subtype_Indication (Decl);
 
          when N_Full_Type_Declaration =>
-            if Nkind (Type_Definition (Decl)) =
-              N_Derived_Type_Definition
-            then
+            if Nkind (Type_Definition (Decl)) = N_Derived_Type_Definition then
                declare
                   Def : constant Node_Id := Type_Definition (Decl);
                begin
@@ -1098,7 +1119,7 @@ package body SPARK_Atree is
    -- Return_Object_Declarations --
    --------------------------------
 
-   function Return_Object_Declarations  (N : Node_Id) return List_Id renames
+   function Return_Object_Declarations (N : Node_Id) return List_Id renames
      Sinfo.Return_Object_Declarations;
 
    -----------------------------

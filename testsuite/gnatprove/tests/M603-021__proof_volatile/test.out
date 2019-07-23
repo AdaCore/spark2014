@@ -1,5 +1,3 @@
 foo.adb:26:23: info: initialization of "X" proved
 foo.adb:26:26: info: initialization of "Y" proved
-foo.adb:27:19: info: initialization of "X" proved
-foo.adb:27:19: medium: postcondition might fail, cannot prove X = Y (e.g. when X = -1 and Y = 0)
-foo.adb:27:23: info: initialization of "Y" proved
+foo.adb:27:19: medium: postcondition might fail, cannot prove X = Y (e.g. when X = 0 and Y = 1)

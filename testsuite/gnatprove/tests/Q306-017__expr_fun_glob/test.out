@@ -1,6 +1,7 @@
-p.ads:7:34: high: "X" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(13))
+p.ads:7:34: high: "X" must be listed in the Global aspect of "F" (SPARK RM 6.1.4(14))
 p.ads:7:46: "X" is referenced in expression function but missing from the Global
 p.ads:7:46: "X" is referenced in expression function but missing from the Global
+p.ads:7:46: info: data dependencies proved
 p.ads:10:50: "X" is referenced in Post but missing from the Global
 p.ads:10:50: "X" is referenced in Post but missing from the Global
 gnatprove: error during flow analysis and proof

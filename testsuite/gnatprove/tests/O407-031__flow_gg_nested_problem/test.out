@@ -1,3 +1,7 @@
+final.ads:4:47: info: data dependencies proved
+final.ads:5:47: info: data dependencies proved
 nested_problem.adb:12:20: medium: overflow check might fail [possible explanation: precondition of subprogram at line 8 should mention X]
-nested_problem.adb:13:13: info: precondition proved (CVC4: 1 VC)
-nested_problem.adb:21:07: info: precondition proved (CVC4: 1 VC)
+nested_problem.adb:13:13: info: precondition proved (Trivial: 1 VC)
+nested_problem.adb:17:13: info: precondition proved (Trivial: 1 VC)
+nested_problem.adb:21:07: info: precondition proved (Trivial: 1 VC)
+other.ads:5:09: info: data dependencies proved

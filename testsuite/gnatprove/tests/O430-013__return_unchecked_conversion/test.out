@@ -1,1 +1,1 @@
-prover_crash.adb:14:23: medium: range check might fail (e.g. when X = Myint'Last and Y = 1) [possible explanation: subprogram at line 7 should mention X and Y in a precondition]
+prover_crash.adb:14:23: medium: range check might fail (e.g. when X = 1 and Y = Myint'Last) [possible explanation: subprogram at prover_crash.ads:11 should mention X and Y in a precondition]

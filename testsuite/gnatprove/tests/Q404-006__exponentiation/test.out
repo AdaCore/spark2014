@@ -1,33 +1,17 @@
-exponentiate.adb:4:16: medium: postcondition might fail, cannot prove Exponentiate'Result = Val ** Exp [possible explanation: subprogram at line 3 should mention Exp and Val in a precondition]
-exponentiate.adb:16:10: info: initialization of "Cur_Exp" proved
-exponentiate.adb:17:30: info: initialization of "Result" proved
+exponentiate.adb:4:16: medium: postcondition might fail, cannot prove Exponentiate'Result = Val ** Exp
 exponentiate.adb:17:30: info: loop invariant initialization proved (altergo: 1 VC)
 exponentiate.adb:17:30: medium: loop invariant might fail after first iteration, cannot prove Result = Val ** Natural(Unsigned_32(Exp) mod (Pow2 (Iter)))
 exponentiate.adb:17:71: medium: divide by zero might fail
 exponentiate.adb:17:71: medium: range check might fail
-exponentiate.adb:17:82: info: initialization of "Iter" proved
-exponentiate.adb:18:30: info: initialization of "Cur_Val" proved
 exponentiate.adb:18:30: info: loop invariant initialization proved (altergo: 1 VC)
 exponentiate.adb:18:30: medium: loop invariant might fail after first iteration, cannot prove Cur_Val = Val ** Natural(Pow2 (Iter))
 exponentiate.adb:18:55: medium: range check might fail
-exponentiate.adb:18:61: info: initialization of "Iter" proved
-exponentiate.adb:19:30: info: initialization of "Cur_Exp" proved
 exponentiate.adb:19:30: info: loop invariant initialization proved (CVC4: 1 VC)
 exponentiate.adb:19:30: medium: loop invariant might fail after first iteration, cannot prove Cur_Exp = Cur_Exp'Loop_Entry / (Pow2 (Iter))
-exponentiate.adb:19:40: info: initialization of "Cur_Exp" proved
 exponentiate.adb:19:59: medium: divide by zero might fail
-exponentiate.adb:19:68: info: initialization of "Iter" proved
-exponentiate.adb:20:10: info: initialization of "Cur_Exp" proved
 exponentiate.adb:20:18: info: division check proved (CVC4: 1 VC)
-exponentiate.adb:21:20: info: initialization of "Result" proved
-exponentiate.adb:21:29: info: initialization of "Cur_Val" proved
-exponentiate.adb:23:18: info: initialization of "Cur_Exp" proved
 exponentiate.adb:23:26: info: division check proved (CVC4: 1 VC)
-exponentiate.adb:24:18: info: initialization of "Cur_Val" proved
-exponentiate.adb:25:18: info: initialization of "Iter" proved
 exponentiate.adb:25:23: info: range check proved (CVC4: 1 VC)
-exponentiate.adb:28:11: info: initialization of "Result" proved
 test_exponentiate.adb:7:24: info: cannot unroll loop (too many loop iterations)
 test_exponentiate.adb:8:22: info: function contract not available for proof ("Exponentiate" might not return)
 test_exponentiate.adb:8:22: medium: assertion might fail, cannot prove Exponentiate (Val, Exp) = Val ** Exp
-test_exponentiate.adb:8:36: info: initialization of "Val" proved

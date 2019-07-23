@@ -1,26 +1,21 @@
-foo.adb:15:17: info: initialization of "X.F" proved
-foo.adb:15:17: info: initialization of "X.F2" proved
-foo.adb:15:17: info: initialization of "X.F3" proved
-foo.adb:15:17: info: initialization of "X.F4" proved
-foo.adb:15:17: info: initialization of "X.F5" proved
-foo.adb:15:20: info: initialization of "Y.F" proved
-foo.adb:15:20: info: initialization of "Y.F2" proved
-foo.adb:15:20: info: initialization of "Y.F3" proved
-foo.adb:15:20: info: initialization of "Y.F4" proved
-foo.adb:15:20: info: initialization of "Y.F5" proved
+foo.adb:15:17: info: initialization of "X" proved
+foo.adb:15:20: info: initialization of "Y" proved
+foo.adb:16:09: info: data dependencies proved
+foo.adb:17:09: info: flow dependencies proved
+foo.adb:31:07: info: initialization of "R" proved
 foo.adb:33:16: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-foo.adb:34:12: info: initialization of "R.F" proved
+foo.adb:40:07: info: initialization of "R" proved
 foo.adb:42:16: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-foo.adb:43:12: info: initialization of "R.F" proved
+foo.adb:49:07: info: initialization of "R" proved
 foo.adb:51:16: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)
-foo.adb:52:12: info: initialization of "R.F" proved
 foo.ads:5:23: info: initialization of "C" proved
-foo.ads:8:20: info: initialization of "C" proved
+foo.ads:6:09: info: data dependencies proved
+foo.ads:7:09: info: flow dependencies proved
 foo.ads:11:23: info: initialization of "C" proved
+foo.ads:12:09: info: data dependencies proved
 foo.ads:13:21: medium: missing dependency "C => B"
 foo.ads:14:29: medium: incorrect dependency "null => B"
-foo.ads:15:20: info: initialization of "C" proved
 foo.ads:18:23: info: initialization of "C" proved
+foo.ads:19:09: info: data dependencies proved
 foo.ads:20:21: medium: missing dependency "C => A"
 foo.ads:21:29: medium: incorrect dependency "null => A"
-foo.ads:22:20: info: initialization of "C" proved

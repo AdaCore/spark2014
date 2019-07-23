@@ -1,19 +1,9 @@
 p.adb:1:11: warning: subprogram "P" has no effect
 p.adb:7:19: info: assertion proved (CVC4: 1 VC)
-p.adb:7:19: info: initialization of "C" proved
-p.adb:8:19: info: initialization of "C" proved
-p.adb:8:19: medium: assertion might fail, cannot prove C-1.0 < X (e.g. when C = 2.0752587E+19 and X = 2.0752587E+19) [possible explanation: subprogram at line 1 should mention X in a precondition]
+p.adb:8:19: medium: assertion might fail, cannot prove C-1.0 < X (e.g. when C = 4.7314432E+7 and X = 4.7314432E+7) [possible explanation: subprogram at line 1 should mention X in a precondition]
 p.adb:8:20: info: float overflow check proved (CVC4: 1 VC)
 p.adb:9:19: info: assertion proved (CVC4: 1 VC)
-p.adb:9:19: info: initialization of "F" proved
-p.adb:10:19: info: initialization of "F" proved
 p.adb:10:19: medium: assertion might fail, cannot prove F+1.0 > X (e.g. when F = 1.6777216E+7 and X = 1.6777216E+7) [possible explanation: subprogram at line 1 should mention X in a precondition]
 p.adb:10:20: info: float overflow check proved (CVC4: 1 VC)
 p.adb:11:19: info: assertion proved (CVC4: 1 VC)
-p.adb:11:19: info: initialization of "R" proved
-p.adb:11:23: info: initialization of "C" proved
-p.adb:11:37: info: initialization of "F" proved
 p.adb:12:19: info: assertion proved (CVC4: 1 VC)
-p.adb:12:19: info: initialization of "T" proved
-p.adb:12:23: info: initialization of "C" proved
-p.adb:12:37: info: initialization of "F" proved

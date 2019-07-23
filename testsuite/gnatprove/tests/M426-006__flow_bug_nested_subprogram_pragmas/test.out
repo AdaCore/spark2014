@@ -1,21 +1,16 @@
+t3q5.adb:4:07: info: initialization of "Key" proved
 t3q5.adb:10:23: info: postcondition proved (CVC4: 3 VC)
 t3q5.adb:11:82: info: index check proved (CVC4: 2 VC)
+t3q5.adb:17:10: info: initialization of "K" proved
 t3q5.adb:20:33: info: assertion proved (CVC4: 2 VC)
-t3q5.adb:20:33: info: initialization of "K" proved
 t3q5.adb:21:72: info: index check proved (CVC4: 2 VC)
 t3q5.adb:23:17: info: range check proved (CVC4: 2 VC)
-t3q5.adb:24:34: info: initialization of "K" proved
-t3q5.adb:27:38: info: loop invariant initialization proved (CVC4: 6 VC)
-t3q5.adb:27:38: info: loop invariant preservation proved (CVC4: 6 VC)
-t3q5.adb:30:67: info: initialization of "K" proved
+t3q5.adb:27:38: info: loop invariant initialization proved (CVC4: 8 VC)
+t3q5.adb:27:38: info: loop invariant preservation proved (CVC4: 8 VC)
 t3q5.adb:30:78: info: index check proved (CVC4: 4 VC)
-t3q5.adb:34:17: info: initialization of "K" proved
-t3q5.adb:39:23: info: postcondition proved (CVC4: 4 VC)
-t3q5.adb:49:46: info: initialization of "Temp" proved
-t3q5.adb:50:34: info: initialization of "T_Old" proved
+t3q5.adb:39:23: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+t3q5.adb:47:10: info: initialization of "Temp" proved
 t3q5.adb:55:17: info: precondition proved (CVC4: 6 VC)
-t3q5.adb:56:13: info: initialization of "Key" proved
-t3q5.adb:57:39: info: initialization of "Key" proved
 t3q5.adb:59:33: info: loop invariant initialization proved (CVC4: 3 VC)
 t3q5.adb:59:59: medium: loop invariant might fail after first iteration, cannot prove Table (X) <= Table (X + 1)
 t3q5.adb:59:66: info: index check proved (CVC4: 4 VC)

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -961,7 +961,7 @@ package body Gnat2Why.Expr.Loops is
                          New_Assignment
                            (Ada_Node => Stmt,
                             Name     => Loop_Index,
-                            Labels   => Name_Id_Sets.Empty_Set,
+                            Labels   => Symbol_Sets.Empty_Set,
                             Value    => +Insert_Simple_Conversion
                               (Domain         => EW_Term,
                                Expr           => +Call_Elmt,
@@ -1030,9 +1030,13 @@ package body Gnat2Why.Expr.Loops is
                           Reverse_Present (LParam_Spec);
                         Exit_Index : constant W_Expr_Id :=
                           (if Is_Reverse then +Low_Id else +High_Id);
+                        Eq_Symb    : constant W_Identifier_Id :=
+                          (if Why_Type_Is_BitVector (Loop_Index_Type) then
+                                MF_BVs (Loop_Index_Type).Prog_Eq
+                           else Why_Eq);
                         Exit_Cond  : constant W_Expr_Id :=
                           New_Call (Domain => EW_Prog,
-                                    Name   => Why_Eq,
+                                    Name   => Eq_Symb,
                                     Typ    => EW_Bool_Type,
                                     Args   => (+Index_Deref, +Exit_Index));
                      begin
@@ -1066,7 +1070,7 @@ package body Gnat2Why.Expr.Loops is
                         return New_Assignment
                           (Name   => Loop_Index,
                            Value  => +Init_Index,
-                           Labels => Name_Id_Sets.Empty_Set,
+                           Labels => Symbol_Sets.Empty_Set,
                            Typ    => Loop_Index_Type);
                      end;
                   else
@@ -1083,7 +1087,7 @@ package body Gnat2Why.Expr.Loops is
                         return New_Assignment
                           (Name   => Nam_For_Iter,
                            Value  => Init_Iter,
-                           Labels => Name_Id_Sets.Empty_Set,
+                           Labels => Symbol_Sets.Empty_Set,
                            Typ    => Typ_For_Iter);
                      end if;
                   end if;
@@ -1181,7 +1185,7 @@ package body Gnat2Why.Expr.Loops is
                         return New_Assignment
                           (Ada_Node => Stmt,
                            Name     => Loop_Index,
-                           Labels   => Name_Id_Sets.Empty_Set,
+                           Labels   => Symbol_Sets.Empty_Set,
                            Value    => +Update_Expr,
                            Typ      => Loop_Index_Type);
                      end;
@@ -1214,7 +1218,7 @@ package body Gnat2Why.Expr.Loops is
                           New_Assignment
                             (Ada_Node => Stmt,
                              Name     => Nam_For_Iter,
-                             Labels   => Name_Id_Sets.Empty_Set,
+                             Labels   => Symbol_Sets.Empty_Set,
                              Value    => +Insert_Simple_Conversion
                                (Domain         => EW_Term,
                                 Expr           => +Call_Next,
@@ -1244,7 +1248,8 @@ package body Gnat2Why.Expr.Loops is
 
                Index_Inv   : constant W_Pred_Id := Construct_Inv_For_Index;
                Cond_Prog   : constant W_Prog_Id := Construct_Cond;
-               Update_Stmt : constant W_Prog_Id := Construct_Update_Stmt;
+               Update_Stmt : constant W_Prog_Id :=
+                 +Insert_Cnt_Loc_Label (Stmt, +Construct_Update_Stmt);
                Exit_Cond   : constant W_Prog_Id := Construct_Exit_Cond;
                Impl_Inv    : constant W_Pred_Id :=
                  +New_And_Expr (Left   => +Dyn_Types_Inv,
@@ -1464,7 +1469,8 @@ package body Gnat2Why.Expr.Loops is
 
       function Variant_Part_Does_Progress
         (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id;
+         Name    : W_Identifier_Id;
+         Domain  : EW_Domain) return W_Expr_Id;
       --  Given a node Variant corresponding to a decreasing or increasing
       --  part in a loop variant, and a name Name to designate that expression,
       --  returns the Why term that corresponds to progress.
@@ -1500,7 +1506,8 @@ package body Gnat2Why.Expr.Loops is
 
       function Variant_Part_Does_Progress
         (Variant : Node_Id;
-         Name    : W_Identifier_Id) return W_Pred_Id
+         Name    : W_Identifier_Id;
+         Domain  : EW_Domain) return W_Expr_Id
       is
          Expr : constant Node_Id := Expression (Variant);
          WTyp : constant W_Type_Id := Base_Why_Type_No_Bool (Expr);
@@ -1512,14 +1519,16 @@ package body Gnat2Why.Expr.Loops is
             else (if Why_Type_Is_BitVector (WTyp)
               then MF_BVs (WTyp).Ugt
               else Int_Infix_Gt));
+         Sub_Domain : constant EW_Domain :=
+           (if Domain = EW_Pred then EW_Term else Domain);
       begin
          return
-           +New_Comparison
+           New_Comparison
            (Symbol => Cmp,
-            Left   => Variant_Expr (Expr, EW_Term),
+            Left   => Variant_Expr (Expr, Sub_Domain),
             Right  => New_Deref (Right => +Name,
                                  Typ   => WTyp),
-            Domain => EW_Pred);
+            Domain => Domain);
       end Variant_Part_Does_Progress;
 
       ---------------------------------
@@ -1568,7 +1577,9 @@ package body Gnat2Why.Expr.Loops is
               New_Temp_Identifier (Typ => Base_Why_Type_No_Bool (Expr));
 
             Pred_Progress : constant W_Pred_Id :=
-              Variant_Part_Does_Progress (Variant, Name);
+              +Variant_Part_Does_Progress (Variant, Name, EW_Pred);
+            Prog_Progress : constant W_Prog_Id :=
+              +Variant_Part_Does_Progress (Variant, Name, EW_Pterm);
             Pred_Constant : constant W_Pred_Id :=
               Variant_Part_Stays_Constant (Variant, Name);
             Prog : constant W_Prog_Id :=
@@ -1576,7 +1587,7 @@ package body Gnat2Why.Expr.Loops is
             Assign : constant W_Assignment_Id :=
               New_Assignment (Name   => Name,
                               Value  => +Variant_Expr (Expr, EW_Pterm),
-                              Labels => Name_Id_Sets.Empty_Set,
+                              Labels => Symbol_Sets.Empty_Set,
                               Typ    => Base_Why_Type_No_Bool (Expr));
 
          begin
@@ -1591,7 +1602,7 @@ package body Gnat2Why.Expr.Loops is
                  Sequence (Prog,
                    +W_Expr_Id'(New_Conditional (Ada_Node  => Variant,
                                                 Domain    => EW_Prog,
-                                                Condition => +Pred_Progress,
+                                                Condition => +Prog_Progress,
                                                 Then_Part => +Check_Prog))));
 
             Progress_Pred :=
@@ -1670,7 +1681,7 @@ package body Gnat2Why.Expr.Loops is
               New_Assignment
                 (Name   => Loop_Index,
                  Value  => Cur_Cst,
-                 Labels => Name_Id_Sets.Empty_Set,
+                 Labels => Symbol_Sets.Empty_Set,
                  Typ    => Loop_Index_Type);
             Cur_Idx := Cur_Idx + 1;
             Stmt_List (Cur_Idx) := Body_Prog;
@@ -1716,7 +1727,7 @@ package body Gnat2Why.Expr.Loops is
    begin
       return Sequence
         (New_Comment
-           (Comment => NID ("Translation of an Ada loop"
+           (Comment => NID ("Translation of an unrolled Ada loop"
             & (if Sloc (Loop_Id) > 0 then
                  " from " & Build_Location_String (Sloc (Loop_Id))
               else ""))),

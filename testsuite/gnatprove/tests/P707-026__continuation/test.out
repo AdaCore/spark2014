@@ -1,7 +1,6 @@
-pkg.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
+pkg.ads:5:04: info: flow dependencies proved
 pkg2.adb:8:04: high: "Descriptors" constituent of "State" is not initialized in "Pkg2"
-pkg2.ads:7:14: info: initialization of "Descriptors" constituent of "State" proved
-
+pkg2.ads:5:04: info: flow dependencies proved
 Summary of SPARK analysis
 =========================
 
@@ -9,8 +8,8 @@ Summary of SPARK analysis
 SPARK Analysis results        Total       Flow   Interval   CodePeer   Provers   Justified   Unproved
 -----------------------------------------------------------------------------------------------------
 Data Dependencies                 .          .          .          .         .           .          .
-Flow Dependencies                 .          .          .          .         .           .          .
-Initialization                    6          2          .          .         .           3          1
+Flow Dependencies                 2          2          .          .         .           .          .
+Initialization                    4          .          .          .         .           3          1
 Non-Aliasing                      .          .          .          .         .           .          .
 Run-time Checks                   .          .          .          .         .           .          .
 Assertions                        .          .          .          .         .           .          .
@@ -21,6 +20,7 @@ Total                             6    2 (33%)          .          .         .  
 
 
 max steps used for successful proof: 0
+
 Analyzed 2 units
 in unit pkg, 2 subprograms and packages out of 2 analyzed
   Pkg at pkg.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
@@ -28,9 +28,11 @@ in unit pkg, 2 subprograms and packages out of 2 analyzed
     pkg.adb:8:4: Suppressing main message should suppress cont line, too
     pkg.adb:8:4: Suppressing main message should suppress cont line, too
   Pkg.Foo at pkg.ads:7 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+effects on parameters and Global variables of Pkg.Foo fully established
 in unit pkg2, 2 subprograms and packages out of 2 analyzed
   Pkg2 at pkg2.ads:1 flow analyzed (0 errors, 1 checks and 0 warnings) and proved (0 checks)
    suppressed messages:
     pkg2.adb:8:4: Only suppressing continuation line
   Pkg2.Foo at pkg2.ads:7 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+effects on parameters and Global variables of Pkg2.Foo fully established
 

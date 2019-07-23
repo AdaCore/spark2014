@@ -1,0 +1,6 @@
+repro-c.ads:4:03: info: flow dependencies proved
+repro-c.ads:5:03: medium: initial condition might fail
+repro-c.ads:5:24: high: "Repro.State" must be mentioned as an input of the Initializes aspect of "C" (SPARK RM 7.1.5(11))
+repro-c.ads:13:06: info: data dependencies proved
+repro.ads:4:03: info: flow dependencies proved
+repro.ads:12:09: info: data dependencies proved

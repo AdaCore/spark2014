@@ -5,6 +5,7 @@ my_container.adb:18:54: info: overflow check proved (CVC4: 1 VC)
 my_container.adb:23:11: info: index check proved (CVC4: 2 VC)
 my_container.ads:16:14: info: postcondition proved (CVC4: 1 VC)
 my_container.ads:16:15: info: precondition proved (CVC4: 1 VC)
+my_container.ads:16:15: info: precondition proved (Trivial: 1 VC)
 my_container.ads:18:20: warning: unused variable "C"
 my_container.ads:21:26: warning: unused variable "C"
 my_container_contains.adb:14:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -13,7 +14,7 @@ my_container_contains.adb:14:66: info: index check proved (CVC4: 4 VC)
 my_container_contains.adb:20:54: info: overflow check proved (CVC4: 1 VC)
 my_container_contains.adb:25:11: info: index check proved (CVC4: 2 VC)
 my_container_contains.ads:20:14: info: postcondition proved (CVC4: 1 VC)
-my_container_contains.ads:20:15: info: precondition proved (CVC4: 1 VC)
+my_container_contains.ads:20:15: info: precondition proved (Trivial: 1 VC)
 my_container_contains.ads:22:20: warning: unused variable "C"
 my_container_contains.ads:25:26: warning: unused variable "C"
 my_container_contains.ads:28:14: info: postcondition proved (CVC4: 1 VC)
@@ -26,26 +27,22 @@ my_container_model.adb:28:66: info: overflow check proved (CVC4: 1 VC)
 my_container_model.adb:32:11: info: index check proved (CVC4: 2 VC)
 my_container_model.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 my_container_model.ads:26:15: info: precondition proved (CVC4: 1 VC)
+my_container_model.ads:26:15: info: precondition proved (Trivial: 1 VC)
 my_container_model.ads:28:20: warning: unused variable "C"
 my_container_model.ads:31:26: warning: unused variable "C"
 my_container_model.ads:35:22: warning: unused variable "C"
 my_container_model.ads:38:28: warning: unused variable "C"
 test_containers.adb:12:25: high: "C1" is not initialized
-test_containers.adb:13:45: info: initialization of "C1" proved
 test_containers.adb:13:49: high: "P1" is not initialized
 test_containers.adb:14:19: info: assertion proved (CVC4: 1 VC)
 test_containers.adb:14:51: info: precondition proved (CVC4: 1 VC)
-test_containers.adb:14:61: info: initialization of "C1" proved
 test_containers.adb:14:65: high: "P1" is not initialized
 test_containers.adb:15:34: high: "C2" is not initialized
-test_containers.adb:16:46: info: initialization of "C2" proved
 test_containers.adb:16:50: high: "P2" is not initialized
 test_containers.adb:17:19: info: assertion proved (CVC4: 1 VC)
 test_containers.adb:17:48: high: "P2" is not initialized
 test_containers.adb:18:31: high: "C3" is not initialized
-test_containers.adb:20:50: info: initialization of "C3" proved
 test_containers.adb:20:55: high: "P3" is not initialized
 test_containers.adb:21:19: info: assertion proved (CVC4: 1 VC)
 test_containers.adb:22:38: info: precondition proved (CVC4: 1 VC)
-test_containers.adb:23:53: info: initialization of "C3" proved
 test_containers.adb:23:58: high: "P3" is not initialized

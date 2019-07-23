@@ -1,7 +1,6 @@
-stacks_14.adb:17:42: medium: range check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => Pointer_Range'Last)) [possible explanation: subprogram at line 15 should mention S in a precondition]
+stacks_14.adb:17:42: medium: range check might fail (e.g. when S = (Stack_Vector => (others => 0), Stack_Pointer => Pointer_Range'Last)) [possible explanation: subprogram at stacks_14.ads:18 should mention S in a precondition]
 stacks_14.adb:18:23: info: index check proved (CVC4: 2 VC)
-stacks_14.adb:23:28: medium: array index check might fail (e.g. when S = (Stack_Vector => ?, Stack_Pointer => 0) and X = 0) [possible explanation: subprogram at line 21 should mention S in a precondition]
+stacks_14.adb:23:28: medium: array index check might fail [possible explanation: subprogram at stacks_14.ads:19 should mention S in a precondition]
 stacks_14.adb:24:42: info: range check proved (CVC4: 1 VC)
-stacks_14.ads:17:20: info: initialization of "S.Stack_Pointer" proved
-stacks_14.ads:17:20: info: initialization of "S.Stack_Vector" proved
+stacks_14.ads:17:20: info: initialization of "S" proved
 stacks_14.ads:19:36: info: initialization of "X" proved

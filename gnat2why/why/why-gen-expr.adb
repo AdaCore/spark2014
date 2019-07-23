@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,36 +23,38 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Strings;                use Ada.Strings;
-with Ada.Strings.Unbounded;      use Ada.Strings.Unbounded;
+with Ada.Strings;             use Ada.Strings;
+with Ada.Strings.Unbounded;   use Ada.Strings.Unbounded;
 with Ada.Strings.Fixed;
-with Checks;                     use Checks;
-with Common_Containers;          use Common_Containers;
-with Errout;                     use Errout;
+with Checks;                  use Checks;
+with Common_Containers;       use Common_Containers;
+with Errout;                  use Errout;
 with Eval_Fat;
-with Gnat2Why.Error_Messages;    use Gnat2Why.Error_Messages;
-with Gnat2Why.Expr;              use Gnat2Why.Expr;
-with Gnat2Why.Subprograms;       use Gnat2Why.Subprograms;
+with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
+with Gnat2Why.Expr;           use Gnat2Why.Expr;
+with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
-with GNATCOLL.Utils;             use GNATCOLL.Utils;
-with Sinput;                     use Sinput;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
-with SPARK_Util.Types;           use SPARK_Util.Types;
-with Stand;                      use Stand;
-with Urealp;                     use Urealp;
-with Why.Atree.Accessors;        use Why.Atree.Accessors;
-with Why.Atree.Modules;          use Why.Atree.Modules;
-with Why.Atree.Tables;           use Why.Atree.Tables;
-with Why.Conversions;            use Why.Conversions;
-with Why.Gen.Arrays;             use Why.Gen.Arrays;
-with Why.Gen.Binders;            use Why.Gen.Binders;
-with Why.Gen.Names;              use Why.Gen.Names;
-with Why.Gen.Pointers;           use Why.Gen.Pointers;
-with Why.Gen.Preds;              use Why.Gen.Preds;
-with Why.Gen.Progs;              use Why.Gen.Progs;
-with Why.Gen.Records;            use Why.Gen.Records;
-with Why.Gen.Scalars;            use Why.Gen.Scalars;
+with GNATCOLL.Utils;          use GNATCOLL.Utils;
+with Sinput;                  use Sinput;
+with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
+with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
+with SPARK_Util.Types;        use SPARK_Util.Types;
+with Stand;                   use Stand;
+with Urealp;                  use Urealp;
+with Why.Atree.Accessors;     use Why.Atree.Accessors;
+with Why.Atree.Modules;       use Why.Atree.Modules;
+with Why.Atree.Tables;        use Why.Atree.Tables;
+with Why.Conversions;         use Why.Conversions;
+with Why.Gen.Arrays;          use Why.Gen.Arrays;
+with Why.Gen.Binders;         use Why.Gen.Binders;
+with Why.Gen.Names;           use Why.Gen.Names;
+with Why.Gen.Init;            use Why.Gen.Init;
+with Why.Gen.Pointers;        use Why.Gen.Pointers;
+with Why.Gen.Preds;           use Why.Gen.Preds;
+with Why.Gen.Progs;           use Why.Gen.Progs;
+with Why.Gen.Records;         use Why.Gen.Records;
+with Why.Gen.Scalars;         use Why.Gen.Scalars;
+with Why.Images;              use Why.Images;
 
 package body Why.Gen.Expr is
 
@@ -84,7 +86,7 @@ package body Why.Gen.Expr is
    --  not allow retrieving the name of the appropriate conversion function,
    --  only the abstract fixed-point type allows it.
 
-   function New_Located_Label (Input : Source_Ptr) return Name_Id;
+   function New_Located_Label (Input : Source_Ptr) return Symbol;
    --  @param Input a source pointer
    --  @return a Why3 label which identifies this source location in Why3
 
@@ -213,7 +215,7 @@ package body Why.Gen.Expr is
    -- Cur_Subp_Sloc --
    -------------------
 
-   function Cur_Subp_Sloc return Name_Id is
+   function Cur_Subp_Sloc return Symbol is
    begin
       return NID (Subp_Location (Current_Subp));
    end Cur_Subp_Sloc;
@@ -269,7 +271,11 @@ package body Why.Gen.Expr is
             return Get_Typ (W_Call_Id (E));
 
          when W_Binding =>
-            return Get_Typ (W_Binding_Id (E));
+            if Get_Typ (W_Binding_Id (E)) = Why_Empty then
+               return Get_Type (Get_Context (W_Binding_Id (E)));
+            else
+               return Get_Typ (W_Binding_Id (E));
+            end if;
 
          when W_Elsif =>
             return Get_Typ (W_Elsif_Id (E));
@@ -326,7 +332,7 @@ package body Why.Gen.Expr is
             end;
 
          when others =>
-            raise Program_Error;
+            return Why_Empty;
       end case;
 
    end Get_Type;
@@ -342,7 +348,8 @@ package body Why.Gen.Expr is
       To             : W_Type_Id;
       Need_Check     : Boolean := False;
       Force_No_Slide : Boolean := False;
-      Is_Qualif      : Boolean := False)
+      Is_Qualif      : Boolean := False;
+      Do_Init        : Boolean := True)
       return W_Expr_Id
    is
       From      : constant W_Type_Id := Get_Type (Expr);
@@ -514,13 +521,19 @@ package body Why.Gen.Expr is
       Need_Slide : constant Boolean := Needs_Slide (From_Ent, To_Ent);
       Sliding    : constant Boolean :=
         not Force_No_Slide and then Need_Slide and then not Is_Qualif;
-      Arr_Expr   : W_Expr_Id;
+      Arr_Expr   : W_Expr_Id := Expr;
       T          : W_Expr_Id;
       Pred_Check : constant Boolean :=
         Domain = EW_Prog
         and then Need_Check
         and then Has_Predicates (Get_Ada_Node (+To))
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
+      Init_Check : constant Boolean :=
+        Domain = EW_Prog
+        and then Do_Init
+        and then Need_Check
+        and then Has_Init_By_Proof (From_Ent)
+        and then not Has_Init_By_Proof (To_Ent);
 
    --  Beginning of processing for Insert_Array_Conversion
 
@@ -552,9 +565,17 @@ package body Why.Gen.Expr is
          end if;
       end if;
 
+      --  If we are converting to a type which does not have initialization by
+      --  proof, check that the expression is initialized.
+
+      if Init_Check then
+         Arr_Expr := Insert_Initialization_Check
+           (Ada_Node, From_Ent, Arr_Expr, Domain);
+      end if;
+
       Arr_Expr :=
         New_Temp_For_Expr
-          (Expr,
+          (Arr_Expr,
            Need_Temp => Sliding or else not Is_Static_Array_Type (From_Ent));
 
       --  1 - Put array in split form. If reconstruction is needed, also store
@@ -577,6 +598,11 @@ package body Why.Gen.Expr is
          Split_To            : constant W_Type_Id :=
            (if not Need_Reconstruction then To
             else EW_Split (To_Ent));
+         Need_Elt_Conv       : constant Boolean :=
+           Retysp (Component_Type (To_Ent)) /=
+             Retysp (Component_Type (From_Ent));
+         --  We need an element conversion if To and From do not have the
+         --  same elements.
 
       begin
          --  Insert sliding if needed
@@ -600,7 +626,8 @@ package body Why.Gen.Expr is
                  (Domain => Domain,
                   Name   => Get_Array_Theory (From_Ent).Slide,
                   Args   => Args,
-                  Typ    => Split_To);
+                  Typ    => (if Is_Static_Array_Type (From_Ent) then From
+                             else EW_Split (From_Ent)));
             end;
 
             --  If reconstruction is needed, fill the Args array.
@@ -651,9 +678,7 @@ package body Why.Gen.Expr is
          --  2. To_Ent and From_Ent do not have the same component type, apply
          --  the appropriate conversion.
 
-         if Retysp (Component_Type (To_Ent)) /=
-           Retysp (Component_Type (From_Ent))
-         then
+         if Need_Elt_Conv then
             T := Insert_Single_Conversion
               (Ada_Node => Empty,
                Domain   => Domain,
@@ -665,7 +690,7 @@ package body Why.Gen.Expr is
          --  adding a dummy node.
 
          else
-            T := New_Label (Labels => Name_Id_Sets.Empty_Set,
+            T := New_Label (Labels => Symbol_Sets.Empty_Set,
                             Def    => T,
                             Domain => Domain,
                             Typ    => Split_To);
@@ -762,15 +787,16 @@ package body Why.Gen.Expr is
       Domain   : EW_Domain;
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
-      Lvalue   : Boolean := False) return W_Expr_Id
+      Lvalue   : Boolean := False;
+      No_Init  : Boolean := False) return W_Expr_Id
    is
 
       --  When converting between Ada types, detect cases where a check is not
       --  needed.
 
-      From          : constant W_Type_Id := Get_Type (Expr);
-      Check_Needed  : Boolean;
-      T : W_Expr_Id := Expr;
+      From         : constant W_Type_Id := Get_Type (Expr);
+      Check_Needed : Boolean;
+      T            : W_Expr_Id := Expr;
 
    begin
 
@@ -822,14 +848,10 @@ package body Why.Gen.Expr is
                                        Ada_Node   => Ada_Node,
                                        Expr       => T,
                                        To         => To,
-                                       Need_Check => Check_Needed);
+                                       Need_Check => Check_Needed,
+                                       Do_Init    => not No_Init);
 
       elsif Is_Pointer_Conversion (From, To) then
-         --  ??? [R525-018]
-         --     type L_Ptr is access L;
-         --     L1 : L_Ptr := new L(14);
-         --     L2 : L_Ptr := new L(26);
-         --     L1 := L2
 
          T := Insert_Pointer_Conversion (Domain     => Domain,
                                          Ada_Node   => Ada_Node,
@@ -863,7 +885,8 @@ package body Why.Gen.Expr is
                                            Expr     => T,
                                            To       => To,
                                            Do_Check => Do_Check,
-                                           Lvalue   => Lvalue);
+                                           Lvalue   => Lvalue,
+                                           Do_Init  => not No_Init);
          end;
       end if;
 
@@ -887,13 +910,13 @@ package body Why.Gen.Expr is
 
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
-      pragma Assert (Root_Record_Type (L) = Root_Record_Type (R));
+      pragma Assert (Root_Retysp (L) = Root_Retysp (R));
 
       Need_Conv : constant Boolean :=
         Oldest_Parent_With_Same_Fields (L) /=
         Oldest_Parent_With_Same_Fields (R);
 
-      Base : constant W_Type_Id := EW_Abstract (Root_Record_Type (L));
+      Base : constant W_Type_Id := EW_Abstract (Root_Retysp (L));
 
       Need_Discr_Check : constant Boolean :=
         Need_Check and then Count_Discriminants (R) > 0
@@ -982,13 +1005,9 @@ package body Why.Gen.Expr is
       L : constant Node_Id := Get_Ada_Node (+From);
       R : constant Node_Id := Get_Ada_Node (+To);
 
+      Need_Conv : constant Boolean :=
+        Repr_Pointer_Type (L) /= Repr_Pointer_Type (R);
       pragma Assert (Root_Pointer_Type (L) = Root_Pointer_Type (R));
-
-      Des_Typ : constant Node_Id := Directly_Designated_Type (R);
-
-      Need_Discr_Check : constant Boolean :=
-        Need_Check and then Count_Discriminants (Des_Typ) > 0
-        and then Is_Constrained (Des_Typ);
 
       Need_Not_Null_Check : constant Boolean := Can_Never_Be_Null (R);
 
@@ -999,29 +1018,53 @@ package body Why.Gen.Expr is
         Has_Predicates (R)
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
-      Check_Entity : constant Entity_Id := Get_Ada_Node (+To);
-
    begin
-      --  When no check needs to be inserted, do nothing
-      --  ??? should test on From = To before and then Need_Check
+      --  When neither checks nor conversions need to be inserted, return
 
-      if not Need_Check then
+      if not Need_Check and then not Need_Conv then
          return Expr;
       end if;
 
-      if Domain = EW_Prog then
+      --  Conversion goes through the root type
 
-         --  Possibly perform a discriminant check
+      if Need_Conv then
+         declare
+            To_Base : constant W_Identifier_Id :=
+              E_Symb (L, WNE_To_Base);
+            Of_Base : constant W_Identifier_Id :=
+              E_Symb (R, WNE_Of_Base);
+         begin
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => To_Base,
+               Args     => (1 => Result),
+               Typ      => Get_Typ (To_Base));
 
-         if Need_Discr_Check then
-            Result := +Insert_Subtype_Discriminant_Check (Ada_Node,
-                                                          Check_Entity,
-                                                          +Result);
-         end if;
+            --  Insert subtype check on root type if needed
 
+            if Need_Check and then Domain = EW_Prog then
+               Result := +Insert_Pointer_Subtype_Check (Ada_Node,
+                                                        R,
+                                                        +Result);
+            end if;
+
+            Result := New_Call
+              (Ada_Node => Ada_Node,
+               Domain   => Domain,
+               Name     => Of_Base,
+               Args     => (1 => Result),
+               Typ      => To);
+         end;
+      end if;
+
+      --  Predicate checks and null exclusion checks are performed after the
+      --  conversion.
+
+      if Need_Check and then Domain = EW_Prog then
          if Need_Pred_Check then
             Result := +Insert_Predicate_Check (Ada_Node,
-                                               Check_Entity,
+                                               R,
                                                +Result);
          end if;
 
@@ -1199,11 +1242,18 @@ package body Why.Gen.Expr is
                                                2 => W_Last,
                                                3 => W_Int_Tmp),
                                   Reason   => To_VC_Kind (Check_Kind),
-                                  Typ      => Get_Type (W_Expr));
+                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
                                        Tmp     => W_Tmp,
-                                       Context => +Sequence (Result, +W_Tmp));
+                                       Context =>
+                                         New_Binding
+                                           (Domain   => EW_Prog,
+                                            Name     =>
+                                              New_Identifier (Name => "_"),
+                                            Def      => +Result,
+                                            Context  => +W_Tmp,
+                                            Typ      => Get_Type (W_Expr)));
                end;
 
             --  If the bounds are static, the range checking function knows
@@ -1318,11 +1368,18 @@ package body Why.Gen.Expr is
                                   Name     => W_Fun,
                                   Progs    => W_Args,
                                   Reason   => To_VC_Kind (Check_Kind),
-                                  Typ      => Get_Type (W_Expr));
+                                  Typ      => Get_Typ (W_Fun));
                   Result :=
                     +Binding_For_Temp (Domain  => EW_Prog,
                                        Tmp     => W_Tmp,
-                                       Context => +Sequence (Result, +W_Tmp));
+                                       Context =>
+                                         New_Binding
+                                           (Domain   => EW_Prog,
+                                            Name     =>
+                                              New_Identifier (Name => "_"),
+                                            Def      => +Result,
+                                            Context  => +W_Tmp,
+                                            Typ      => Get_Type (W_Expr)));
                end;
 
             --  If the bounds are static, the range checking function knows
@@ -1418,7 +1475,7 @@ package body Why.Gen.Expr is
                Result :=
                  +Binding_For_Temp (Domain  => EW_Prog,
                                     Tmp     => W_Tmp,
-                                    Context => +Sequence (Result, +W_Tmp));
+                                    Context => +Result);
             end;
 
          --  If the bounds are static, the range checking function knows them
@@ -1446,7 +1503,8 @@ package body Why.Gen.Expr is
       Expr     : W_Expr_Id;
       To       : W_Type_Id;
       Do_Check : Boolean := False;
-      Lvalue   : Boolean := False) return W_Expr_Id
+      Lvalue   : Boolean := False;
+      Do_Init  : Boolean := True) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1495,7 +1553,8 @@ package body Why.Gen.Expr is
          To          => To,
          Range_Type  => Range_Type,
          Check_Kind  => Check_Kind,
-         Lvalue      => Lvalue);
+         Lvalue      => Lvalue,
+         Do_Init     => Do_Init);
    end Insert_Scalar_Conversion;
 
    function Insert_Scalar_Conversion
@@ -1506,9 +1565,19 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
+      Do_Init    : Boolean := True;
       Skip_Pred  : Boolean := False) return W_Expr_Id
    is
-      From : constant W_Type_Id := Get_Type (Expr);
+      From    : constant W_Type_Id := Get_Type (Expr);
+      To_Conc : constant W_Type_Id :=
+        (if Is_Init_Wrapper_Type (To) then EW_Abstract (Get_Ada_Node (+To))
+         else To);
+      --  Concrete type for To if To is a wrapper for initialization
+
+      Init_Domain : constant EW_Domain :=
+        (if Domain = EW_Prog and then not Do_Init then EW_Pterm
+         else Domain);
+      --  Domain for initialization checks
 
       --  Do not generate a predicate check for an internal call to a parent
       --  predicate function inside the definition of a predicate function.
@@ -1630,10 +1699,22 @@ package body Why.Gen.Expr is
       --  for a range check of a modular type, int for a range check of a
       --  discrete type).
 
+      --  0. If From is a wrapper type, access the value (this may introduce an
+      --     initialization check).
+
+      if Is_Init_Wrapper_Type (From) then
+         Result := New_Init_Wrapper_Value_Access
+           (Ada_Node => Ada_Node,
+            E        => Get_Ada_Node (+Cur),
+            Name     => Result,
+            Domain   => Init_Domain);
+         Cur := Get_Type (Result);
+      end if;
+
       --  1. If From is an abstract type, convert it to type int, __fixed,
       --     real, or bitvector_?.
 
-      if Get_Type_Kind (From) = EW_Abstract then
+      if Get_Type_Kind (Cur) = EW_Abstract then
          Cur := Base_Why_Type (From);
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
@@ -1778,21 +1859,21 @@ package body Why.Gen.Expr is
 
       --  7. If To is an abstract type, convert from int, __fixed or real to it
 
-      if Get_Type_Kind (To) = EW_Abstract then
+      if Get_Type_Kind (To_Conc) = EW_Abstract then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              From     => Cur,
-                                             To       => To,
+                                             To       => To_Conc,
                                              Expr     => Result);
 
       --  If the type is in split form, no conversion is needed. Change the
       --  Ada_Node to the expected type. We do that by adding a dummy node.
 
-      elsif Get_Type_Kind (To) = EW_Split then
-         Result := New_Label (Labels => Name_Id_Sets.Empty_Set,
+      elsif Get_Type_Kind (To_Conc) = EW_Split then
+         Result := New_Label (Labels => Symbol_Sets.Empty_Set,
                               Def    => Result,
                               Domain => Domain,
-                              Typ    => To);
+                              Typ    => To_Conc);
       end if;
 
       --  8. Perform a predicate check if needed, after the final conversion
@@ -1806,6 +1887,15 @@ package body Why.Gen.Expr is
          Result := +Insert_Predicate_Check (Ada_Node => Ada_Node,
                                             Check_Ty => Get_Ada_Node (+To),
                                             W_Expr   => +Result);
+      end if;
+
+      --  9. Reconstruct the wrapper if necessary
+
+      if Is_Init_Wrapper_Type (To) then
+         Result := Reconstruct_Init_Wrapper
+           (Ada_Node => Ada_Node,
+            Ty       => Get_Ada_Node (+To),
+            Value    => Result);
       end if;
 
       return Result;
@@ -1859,7 +1949,8 @@ package body Why.Gen.Expr is
          return Insert_Scalar_Conversion (Domain   => Domain,
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
-                                          To       => To);
+                                          To       => To,
+                                          Do_Init  => False);
       end if;
    end Insert_Simple_Conversion;
 
@@ -2032,32 +2123,49 @@ package body Why.Gen.Expr is
                         Name     => Eq_Str,
                         Typ      => EW_Bool_Type,
                         Ada_Node => Typ);
-      Is_Pred  : Boolean := False;
       T        : W_Expr_Id;
 
    begin
       if Is_Scalar_Type (Typ) then
          declare
+            BT       : constant W_Type_Id := Base_Why_Type (Why_Type);
             Left_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
                  Expr => Left,
-                 To   => Base_Why_Type (Why_Type));
+                 To   => BT);
             Right_Int : constant W_Expr_Id :=
               Insert_Simple_Conversion
                 (Domain => EW_Term,
                  Expr => Right,
-                 To   => Base_Why_Type (Why_Type));
+                 To   => BT);
 
          begin
             if Use_Predef then
-               T :=
-                 New_Call
-                   (Name   => Why_Eq,
-                    Domain => Domain,
-                    Typ    => EW_Bool_Type,
-                    Args   => (Left_Int, Right_Int));
-               Is_Pred := True;
+               if Why_Type_Is_Float (BT) then
+                  T :=
+                    New_Call
+                      (Name   => MF_Floats (BT).Eq,
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               elsif Why_Type_Is_BitVector (BT) then
+                  T :=
+                    New_Call
+                      (Name   => (if Domain in EW_Prog | EW_Pterm then
+                                    MF_BVs (BT).Prog_Eq
+                                  else Why_Eq),
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               else
+                  T :=
+                    New_Call
+                      (Name   => Why_Eq,
+                       Domain => Domain,
+                       Typ    => EW_Bool_Type,
+                       Args   => (Left_Int, Right_Int));
+               end if;
 
             else
                T :=
@@ -2079,16 +2187,7 @@ package body Why.Gen.Expr is
               Typ   => EW_Bool_Type);
       end if;
 
-      if Is_Pred then
-         return T;
-      else
-         return
-           New_Call
-             (Name   => Why_Eq,
-              Domain => Domain,
-              Typ    => EW_Bool_Type,
-              Args   => (T, Bool_True (EW_Term)));
-      end if;
+      return T;
    end New_Ada_Equality;
 
    ------------------
@@ -2458,7 +2557,7 @@ package body Why.Gen.Expr is
                                         Ada_Node => Ty,
                                         To       =>
                                           EW_Abstract
-                                            (Root_Record_Type (Ty)),
+                                            (Root_Retysp (Ty)),
                                         Expr     => Expr);
          begin
             return New_Call
@@ -2578,7 +2677,7 @@ package body Why.Gen.Expr is
    -- New_Located_Label --
    -----------------------
 
-   function New_Located_Label (Input : Source_Ptr) return Name_Id is
+   function New_Located_Label (Input : Source_Ptr) return Symbol is
       Slc : Source_Ptr := Input;
       Buf : Unbounded_String;
    begin
@@ -2609,7 +2708,7 @@ package body Why.Gen.Expr is
    function New_Located_Label
      (N         : Node_Id;
       Left_Most : Boolean := False)
-      return Name_Id is
+      return Symbol is
    begin
       return New_Located_Label (Compute_VC_Sloc (N, Left_Most));
    end New_Located_Label;
@@ -2618,14 +2717,14 @@ package body Why.Gen.Expr is
    -- New_Shape_Label --
    ---------------------
 
-   function New_Shape_Label (Node : Node_Id) return Name_Id is
+   function New_Shape_Label (Node : Node_Id) return Symbol is
       Buf : constant String := Shape_Of_Node (Node);
 
    begin
       if Buf /= "" then
          return NID (GP_Shape_Marker & Buf);
       else
-         return No_Name;
+         return No_Symbol;
       end if;
    end New_Shape_Label;
 
@@ -2635,12 +2734,16 @@ package body Why.Gen.Expr is
 
    function New_Comment_Label
      (Node   : Node_Id;
-      Loc    : Name_Id;
+      Loc    : Symbol;
       Reason : VC_Kind)
-      return Name_Id
+      return Symbol
    is
+      --  CodePeer does not understand the result of Get_Name_String and issues
+      --  false alarms otherwise.
+      pragma Annotate (CodePeer, Skip_Analysis);
+
       Prefix  : constant String := "comment:";
-      Str_Loc : constant String := Get_Name_String (Loc);
+      Str_Loc : constant String := Img (Loc);
 
       Pointer  : Source_Ptr := Original_Location (Sloc (Node));
       Src_Buff : constant Source_Buffer_Ptr :=
@@ -2687,11 +2790,16 @@ package body Why.Gen.Expr is
 
          Buf := Buf & (if Src_Buff (Pointer) = ASCII.Back_Slash then
                           ASCII.Back_Slash & ASCII.Back_Slash
+
+                       --  Do not print ] in comment as it causes the label to
+                       --  end.
+
+                       elsif Src_Buff (Pointer) = ASCII.R_Bracket then ""
                        else Src_Buff (Pointer) & "");
          Pointer := Pointer + 1;
       end loop;
 
-      Buf := Buf & ASCII.LF;
+      Buf := Buf & " ";
       Buf := Buf & (1 .. Column - 1 => ' ') & "^ "
         & Str_Loc (9 .. Str_Loc'Last) & ':' & VC_Kind'Image (Reason);
       return NID (Prefix & To_String (Buf));
@@ -2705,27 +2813,34 @@ package body Why.Gen.Expr is
                                        Condition : W_Expr_Id)
                                        return W_Expr_Id
    is
-      Node_Label : constant Name_Id_Sets.Set :=
-                        (Name_Id_Sets.To_Set
-                           (NID (Branch_Id_Label &
-                              Ada.Strings.Fixed.Trim
-                                   (Source => Node_Id'Image (If_Node),
-                                    Side   => Left))));
+      Node_Label : constant Symbol_Sets.Set :=
+        Symbol_Sets.To_Set
+          (NID (Branch_Id_Label &
+                Ada.Strings.Fixed.Trim (Source => Node_Id'Image (If_Node),
+                                        Side   => Left)));
 
    begin
       return
         +Sequence
-          (New_Assignment (Ada_Node => If_Node,
-                           Name     =>
-                             +M_Main.Spark_CE_Branch,
-                           Labels   => Node_Label,
-                           Value    => +Condition,
-                           Typ      => EW_Bool_Type),
-           New_Record_Access (Name  =>
+        (+Insert_Cnt_Loc_Label
+           (Ada_Node => If_Node,
+            E        =>
+              New_Assignment (Ada_Node => If_Node,
+                              Name     =>
                                 +M_Main.Spark_CE_Branch,
-                              Field =>
-                                +New_Identifier (Name => "bool__content"),
-                              Typ   => EW_Bool_Type));
+                              Labels   => Node_Label,
+                              Value    => +Condition,
+                              Typ      => EW_Bool_Type)),
+         New_Record_Access (Name  =>
+                                New_Label
+                              (Ada_Node => If_Node,
+                               Domain   => EW_Prog,
+                               Labels   => Node_Label,
+                               Def      => +M_Main.Spark_CE_Branch,
+                               Typ      => Get_Typ (M_Main.Spark_CE_Branch)),
+                            Field =>
+                              +New_Identifier (Name => "bool__content"),
+                            Typ   => EW_Bool_Type));
    end New_Counterexample_Assign;
 
    -----------------
@@ -2862,7 +2977,7 @@ package body Why.Gen.Expr is
    -- New_Sub_VC_Marker --
    -----------------------
 
-   function New_Sub_VC_Marker (N : Node_Id) return Name_Id
+   function New_Sub_VC_Marker (N : Node_Id) return Symbol
    is
       Used_Node : Node_Id := N;
    begin
@@ -3123,7 +3238,7 @@ package body Why.Gen.Expr is
 
    function New_VC_Labels
      (N      : Node_Id;
-      Reason : VC_Kind) return Name_Id_Set
+      Reason : VC_Kind) return Symbol_Set
    is
       --  A GNATprove label in Why3 has the following form
       --
@@ -3141,9 +3256,11 @@ package body Why.Gen.Expr is
 
       Sloc : constant Source_Ptr := Compute_VC_Sloc
         (N, Left_Most => Locate_On_First_Token (Reason));
-      Set : Name_Id_Set := Name_Id_Sets.Empty_Set;
       Id  : constant VC_Id := Register_VC (N, Reason, Current_Subp);
-      Location_Lab : constant Name_Id := New_Located_Label (Sloc);
+      Location_Lab : constant Symbol := New_Located_Label (Sloc);
+
+      Labels : Symbol_Set;
+
    begin
       if CodePeer_Has_Proved (Sloc, Reason) then
          Emit_Proof_Result
@@ -3153,26 +3270,33 @@ package body Why.Gen.Expr is
             True,
             Current_Subp,
             How_Proved => PC_Codepeer);
-         Set.Insert (GP_Already_Proved);
+         Labels.Insert (GP_Already_Proved);
       end if;
-      Set.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
-      Set.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
-      Set.Insert (Location_Lab);
+      Labels.Insert (NID (GP_Reason_Marker & VC_Kind'Image (Reason)));
+      Labels.Insert (NID (GP_Id_Marker & Image (Integer (Id), 1)));
+      Labels.Insert (Location_Lab);
 
       --  Do not generate comment labels in Why3 to facilitate debugging
 
       if not Gnat2Why_Args.Debug_Mode then
-         Set.Insert (New_Comment_Label (N, Location_Lab, Reason));
+         Labels.Insert (New_Comment_Label (N, Location_Lab, Reason));
       end if;
 
-      Set.Insert (New_Shape_Label (Node => N));
-      Set.Insert (Keep_On_Simp);
+      declare
+         Symb : constant Symbol := New_Shape_Label (Node => N);
+      begin
+         if Symb /= No_Symbol then
+            Labels.Insert (Symb);
+         end if;
+      end;
+
       if Reason = VC_Postcondition then
-         Set.Insert (Model_VC_Post);
+         Labels.Insert (Model_VC_Post);
       else
-         Set.Insert (Model_VC);
+         Labels.Insert (VC_Annotation);
       end if;
-      return Set;
+
+      return Labels;
    end New_VC_Labels;
 
    ------------------
@@ -3227,6 +3351,15 @@ package body Why.Gen.Expr is
          end;
       end if;
    end New_Xor_Expr;
+
+   --------------------------
+   -- Pred_Of_Boolean_Term --
+   --------------------------
+
+   function Pred_Of_Boolean_Term (W : W_Term_Id) return W_Pred_Id is
+     (New_Call (Name => Why_Eq,
+                Args => (1 => +W, 2 => +Bool_True (EW_Term)),
+                Typ  => EW_Bool_Type));
 
    ------------
    -- To_Int --

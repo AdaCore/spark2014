@@ -1,356 +1,259 @@
+ar.adb:54:05: info: initialization of "J" proved
+ar.adb:55:05: info: initialization of "F" proved
 ar.adb:61:14: info: range check proved (CVC4: 1 VC)
 ar.adb:66:14: info: range check proved (CVC4: 1 VC)
-ar.adb:68:10: info: initialization of "J" proved
-ar.adb:68:13: info: initialization of "F" proved
+ar.adb:74:05: info: initialization of "J" proved
+ar.adb:75:05: info: initialization of "F" proved
 ar.adb:81:14: info: range check proved (CVC4: 1 VC)
 ar.adb:86:14: info: range check proved (CVC4: 1 VC)
-ar.adb:88:10: info: initialization of "J" proved
-ar.adb:88:13: info: initialization of "F" proved
+ar.adb:94:05: info: initialization of "J" proved
+ar.adb:95:05: info: initialization of "F" proved
+ar.adb:96:05: info: initialization of "T" proved
 ar.adb:100:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:100:32: info: initialization of "T" proved
 ar.adb:104:14: info: range check proved (CVC4: 1 VC)
 ar.adb:109:14: info: range check proved (CVC4: 1 VC)
-ar.adb:111:10: info: initialization of "J" proved
-ar.adb:111:13: info: initialization of "F" proved
+ar.adb:117:05: info: initialization of "J" proved
+ar.adb:118:05: info: initialization of "F" proved
+ar.adb:119:05: info: initialization of "T" proved
 ar.adb:123:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:123:32: info: initialization of "T" proved
 ar.adb:127:14: info: range check proved (CVC4: 1 VC)
 ar.adb:132:14: info: range check proved (CVC4: 1 VC)
-ar.adb:134:10: info: initialization of "J" proved
-ar.adb:134:13: info: initialization of "F" proved
+ar.adb:140:05: info: initialization of "J" proved
+ar.adb:141:05: info: initialization of "F" proved
+ar.adb:142:05: info: initialization of "T" proved
 ar.adb:149:14: info: range check proved (CVC4: 1 VC)
 ar.adb:151:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:151:32: info: initialization of "T" proved
-ar.adb:151:71: info: initialization of "J" proved
 ar.adb:155:14: info: range check proved (CVC4: 1 VC)
-ar.adb:157:10: info: initialization of "J" proved
-ar.adb:157:13: info: initialization of "F" proved
+ar.adb:163:05: info: initialization of "J" proved
+ar.adb:164:05: info: initialization of "F" proved
+ar.adb:165:05: info: initialization of "T" proved
 ar.adb:172:14: info: range check proved (CVC4: 1 VC)
 ar.adb:174:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:174:32: info: initialization of "T" proved
-ar.adb:174:71: info: initialization of "J" proved
 ar.adb:178:14: info: range check proved (CVC4: 1 VC)
-ar.adb:180:10: info: initialization of "J" proved
-ar.adb:180:13: info: initialization of "F" proved
-ar.adb:209:10: info: initialization of "A" proved
-ar.adb:217:10: info: initialization of "A" proved
-ar.adb:225:10: info: initialization of "A" proved
-ar.adb:233:10: info: initialization of "A" proved
-ar.adb:234:13: info: initialization of "A" proved
-ar.adb:235:10: info: initialization of "A" proved
-ar.adb:236:13: info: initialization of "A" proved
-ar.adb:237:13: info: initialization of "A" proved
 ar.adb:237:18: info: range check proved (CVC4: 1 VC)
-ar.adb:238:10: info: initialization of "A" proved
-ar.adb:239:11: info: initialization of "A" proved
-ar.adb:240:10: info: initialization of "A" proved
 ar.adb:241:18: info: range check proved (CVC4: 1 VC)
-ar.adb:241:20: info: initialization of "A" proved
-ar.adb:242:10: info: initialization of "A" proved
-ar.adb:243:13: info: initialization of "A" proved
 ar.adb:243:18: info: range check proved (CVC4: 1 VC)
-ar.adb:244:10: info: initialization of "A" proved
-ar.adb:252:10: info: initialization of "A" proved
-ar.adb:253:13: info: initialization of "A" proved
-ar.adb:254:10: info: initialization of "A" proved
-ar.adb:255:13: info: initialization of "A" proved
-ar.adb:256:13: info: initialization of "A" proved
 ar.adb:256:18: info: range check proved (CVC4: 1 VC)
-ar.adb:257:10: info: initialization of "A" proved
-ar.adb:258:11: info: initialization of "A" proved
-ar.adb:259:10: info: initialization of "A" proved
 ar.adb:260:18: info: range check proved (CVC4: 1 VC)
-ar.adb:260:20: info: initialization of "A" proved
-ar.adb:261:10: info: initialization of "A" proved
-ar.adb:262:13: info: initialization of "A" proved
 ar.adb:262:18: info: range check proved (CVC4: 1 VC)
-ar.adb:263:10: info: initialization of "A" proved
-ar.adb:271:10: info: initialization of "A" proved
-ar.adb:272:13: info: initialization of "A" proved
-ar.adb:273:10: info: initialization of "A" proved
-ar.adb:274:13: info: initialization of "A" proved
-ar.adb:275:13: info: initialization of "A" proved
 ar.adb:275:18: info: range check proved (CVC4: 1 VC)
-ar.adb:276:10: info: initialization of "A" proved
-ar.adb:277:11: info: initialization of "A" proved
-ar.adb:278:10: info: initialization of "A" proved
 ar.adb:279:18: info: range check proved (CVC4: 1 VC)
-ar.adb:279:20: info: initialization of "A" proved
-ar.adb:280:10: info: initialization of "A" proved
-ar.adb:281:13: info: initialization of "A" proved
 ar.adb:281:18: info: range check proved (CVC4: 1 VC)
-ar.adb:282:10: info: initialization of "A" proved
-ar.adb:290:10: info: initialization of "A" proved
-ar.adb:291:13: info: initialization of "A" proved
-ar.adb:292:10: info: initialization of "A" proved
-ar.adb:293:13: info: initialization of "A" proved
-ar.adb:294:13: info: initialization of "A" proved
 ar.adb:294:18: info: range check proved (CVC4: 1 VC)
-ar.adb:295:10: info: initialization of "A" proved
-ar.adb:296:11: info: initialization of "A" proved
-ar.adb:297:10: info: initialization of "A" proved
 ar.adb:298:18: info: range check proved (CVC4: 1 VC)
-ar.adb:298:20: info: initialization of "A" proved
-ar.adb:299:10: info: initialization of "A" proved
-ar.adb:300:13: info: initialization of "A" proved
 ar.adb:300:18: info: range check proved (CVC4: 1 VC)
-ar.adb:301:10: info: initialization of "A" proved
-ar.adb:309:14: info: initialization of "A" proved
-ar.adb:310:13: info: initialization of "A" proved
-ar.adb:311:13: info: initialization of "A" proved
-ar.adb:312:13: info: initialization of "A" proved
-ar.adb:313:10: info: initialization of "A" proved
-ar.adb:314:10: info: initialization of "A" proved
-ar.adb:315:10: info: initialization of "A" proved
-ar.adb:316:10: info: initialization of "A" proved
-ar.adb:317:13: info: initialization of "A" proved
-ar.adb:318:10: info: initialization of "A" proved
-ar.adb:326:14: info: initialization of "A" proved
-ar.adb:327:13: info: initialization of "A" proved
-ar.adb:328:13: info: initialization of "A" proved
-ar.adb:329:13: info: initialization of "A" proved
-ar.adb:330:10: info: initialization of "A" proved
-ar.adb:331:10: info: initialization of "A" proved
-ar.adb:332:10: info: initialization of "A" proved
-ar.adb:333:10: info: initialization of "A" proved
-ar.adb:334:13: info: initialization of "A" proved
-ar.adb:335:10: info: initialization of "A" proved
-ar.adb:343:14: info: initialization of "A" proved
-ar.adb:344:13: info: initialization of "A" proved
-ar.adb:345:13: info: initialization of "A" proved
-ar.adb:346:13: info: initialization of "A" proved
-ar.adb:347:10: info: initialization of "A" proved
-ar.adb:348:10: info: initialization of "A" proved
-ar.adb:349:10: info: initialization of "A" proved
-ar.adb:350:10: info: initialization of "A" proved
-ar.adb:351:13: info: initialization of "A" proved
-ar.adb:352:10: info: initialization of "A" proved
-ar.adb:360:14: info: initialization of "A" proved
-ar.adb:361:13: info: initialization of "A" proved
-ar.adb:362:13: info: initialization of "A" proved
-ar.adb:363:13: info: initialization of "A" proved
-ar.adb:364:10: info: initialization of "A" proved
-ar.adb:365:10: info: initialization of "A" proved
-ar.adb:366:10: info: initialization of "A" proved
-ar.adb:367:10: info: initialization of "A" proved
-ar.adb:368:13: info: initialization of "A" proved
-ar.adb:369:10: info: initialization of "A" proved
+ar.adb:444:05: info: initialization of "J_Next" proved
+ar.adb:445:05: info: initialization of "F" proved
 ar.adb:451:19: info: range check proved (CVC4: 1 VC)
 ar.adb:456:14: info: range check proved (CVC4: 1 VC)
-ar.adb:458:18: info: initialization of "J_Next" proved
-ar.adb:458:21: info: initialization of "F" proved
+ar.adb:464:05: info: initialization of "J_Next" proved
+ar.adb:465:05: info: initialization of "F" proved
 ar.adb:471:19: info: range check proved (CVC4: 1 VC)
 ar.adb:476:14: info: range check proved (CVC4: 1 VC)
-ar.adb:478:18: info: initialization of "J_Next" proved
-ar.adb:478:21: info: initialization of "F" proved
+ar.adb:484:05: info: initialization of "J_Next" proved
+ar.adb:485:05: info: initialization of "F" proved
+ar.adb:486:05: info: initialization of "T" proved
 ar.adb:490:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:490:32: info: initialization of "T" proved
 ar.adb:494:19: info: range check proved (CVC4: 1 VC)
 ar.adb:499:14: info: range check proved (CVC4: 1 VC)
-ar.adb:501:18: info: initialization of "J_Next" proved
-ar.adb:501:21: info: initialization of "F" proved
+ar.adb:507:05: info: initialization of "J_Next" proved
+ar.adb:508:05: info: initialization of "F" proved
+ar.adb:509:05: info: initialization of "T" proved
 ar.adb:513:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:513:32: info: initialization of "T" proved
 ar.adb:517:19: info: range check proved (CVC4: 1 VC)
 ar.adb:522:14: info: range check proved (CVC4: 1 VC)
-ar.adb:524:18: info: initialization of "J_Next" proved
-ar.adb:524:21: info: initialization of "F" proved
+ar.adb:530:05: info: initialization of "J_Next" proved
+ar.adb:531:05: info: initialization of "F" proved
+ar.adb:532:05: info: initialization of "T" proved
 ar.adb:539:19: info: range check proved (CVC4: 1 VC)
 ar.adb:541:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:541:32: info: initialization of "T" proved
-ar.adb:541:90: info: initialization of "J_Next" proved
 ar.adb:545:14: info: range check proved (CVC4: 1 VC)
-ar.adb:547:18: info: initialization of "J_Next" proved
-ar.adb:547:21: info: initialization of "F" proved
+ar.adb:553:05: info: initialization of "J_Next" proved
+ar.adb:554:05: info: initialization of "F" proved
+ar.adb:555:05: info: initialization of "T" proved
 ar.adb:562:19: info: range check proved (CVC4: 1 VC)
 ar.adb:564:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:564:32: info: initialization of "T" proved
-ar.adb:564:90: info: initialization of "J_Next" proved
 ar.adb:568:14: info: range check proved (CVC4: 1 VC)
-ar.adb:570:18: info: initialization of "J_Next" proved
-ar.adb:570:21: info: initialization of "F" proved
-ar.adb:624:13: info: initialization of "A" proved
+ar.adb:744:05: info: initialization of "K_Next" proved
+ar.adb:745:05: info: initialization of "F" proved
 ar.adb:751:19: info: range check proved (CVC4: 1 VC)
 ar.adb:756:14: info: range check proved (CVC4: 1 VC)
-ar.adb:758:21: info: initialization of "K_Next" proved
-ar.adb:758:24: info: initialization of "F" proved
+ar.adb:764:05: info: initialization of "K_Next" proved
+ar.adb:765:05: info: initialization of "F" proved
 ar.adb:771:19: info: range check proved (CVC4: 1 VC)
 ar.adb:776:14: info: range check proved (CVC4: 1 VC)
-ar.adb:778:21: info: initialization of "K_Next" proved
-ar.adb:778:24: info: initialization of "F" proved
+ar.adb:784:05: info: initialization of "K_Next" proved
+ar.adb:785:05: info: initialization of "F" proved
+ar.adb:786:05: info: initialization of "T" proved
 ar.adb:790:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:790:32: info: initialization of "T" proved
 ar.adb:794:19: info: range check proved (CVC4: 1 VC)
 ar.adb:799:14: info: range check proved (CVC4: 1 VC)
-ar.adb:801:21: info: initialization of "K_Next" proved
-ar.adb:801:24: info: initialization of "F" proved
+ar.adb:807:05: info: initialization of "K_Next" proved
+ar.adb:808:05: info: initialization of "F" proved
+ar.adb:809:05: info: initialization of "T" proved
 ar.adb:813:28: info: assertion proved (CVC4: 1 VC)
-ar.adb:813:32: info: initialization of "T" proved
 ar.adb:817:19: info: range check proved (CVC4: 1 VC)
 ar.adb:822:14: info: range check proved (CVC4: 1 VC)
-ar.adb:824:21: info: initialization of "K_Next" proved
-ar.adb:824:24: info: initialization of "F" proved
+ar.adb:830:05: info: initialization of "K_Next" proved
+ar.adb:831:05: info: initialization of "F" proved
+ar.adb:832:05: info: initialization of "T" proved
 ar.adb:839:19: info: range check proved (CVC4: 1 VC)
 ar.adb:841:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:841:32: info: initialization of "T" proved
-ar.adb:841:112: info: initialization of "K_Next" proved
 ar.adb:845:14: info: range check proved (CVC4: 1 VC)
-ar.adb:847:21: info: initialization of "K_Next" proved
-ar.adb:847:24: info: initialization of "F" proved
+ar.adb:853:05: info: initialization of "K_Next" proved
+ar.adb:854:05: info: initialization of "F" proved
+ar.adb:855:05: info: initialization of "T" proved
 ar.adb:862:19: info: range check proved (CVC4: 1 VC)
 ar.adb:864:28: info: assertion proved (CVC4: 3 VC)
-ar.adb:864:32: info: initialization of "T" proved
-ar.adb:864:112: info: initialization of "K_Next" proved
 ar.adb:868:14: info: range check proved (CVC4: 1 VC)
-ar.adb:870:21: info: initialization of "K_Next" proved
-ar.adb:870:24: info: initialization of "F" proved
-ar.adb:982:10: info: initialization of "A" proved
-ar.adb:983:13: info: initialization of "A" proved
-ar.adb:984:16: info: initialization of "A" proved
+ar.adb:1216:05: info: initialization of "Temp" proved
 ar.adb:1218:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1220:13: info: initialization of "Temp" proved
+ar.adb:1226:05: info: initialization of "Temp" proved
 ar.adb:1228:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1230:13: info: initialization of "Temp" proved
+ar.adb:1236:05: info: initialization of "Temp" proved
 ar.adb:1238:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1240:13: info: initialization of "Temp" proved
+ar.adb:1341:05: info: initialization of "Temp" proved
 ar.adb:1343:17: info: range check proved (CVC4: 1 VC)
-ar.adb:1345:16: info: initialization of "Temp" proved
+ar.adb:1351:05: info: initialization of "Temp" proved
 ar.adb:1353:17: info: range check proved (CVC4: 1 VC)
-ar.adb:1355:16: info: initialization of "Temp" proved
+ar.adb:1361:05: info: initialization of "Temp" proved
 ar.adb:1363:17: info: range check proved (CVC4: 1 VC)
-ar.adb:1365:16: info: initialization of "Temp" proved
+ar.adb:1371:05: info: initialization of "Temp" proved
 ar.adb:1373:17: info: range check proved (CVC4: 1 VC)
-ar.adb:1375:16: info: initialization of "Temp" proved
+ar.adb:1527:05: info: initialization of "Temp" proved
 ar.adb:1529:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1531:19: info: initialization of "Temp" proved
+ar.adb:1537:05: info: initialization of "Temp" proved
 ar.adb:1539:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1541:19: info: initialization of "Temp" proved
+ar.adb:1547:05: info: initialization of "Temp" proved
 ar.adb:1549:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1551:19: info: initialization of "Temp" proved
+ar.adb:1557:05: info: initialization of "Temp" proved
 ar.adb:1559:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1561:19: info: initialization of "Temp" proved
+ar.adb:1738:05: info: initialization of "Temp" proved
 ar.adb:1740:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1742:19: info: initialization of "Temp" proved
+ar.adb:1748:05: info: initialization of "Temp" proved
 ar.adb:1750:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1752:19: info: initialization of "Temp" proved
+ar.adb:1758:05: info: initialization of "Temp" proved
 ar.adb:1760:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1762:19: info: initialization of "Temp" proved
+ar.adb:1768:05: info: initialization of "Temp" proved
 ar.adb:1770:14: info: range check proved (CVC4: 1 VC)
-ar.adb:1772:19: info: initialization of "Temp" proved
+ar.adb:1778:05: info: initialization of "Temp" proved
 ar.adb:1781:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1782:13: info: initialization of "Temp" proved
+ar.adb:1788:05: info: initialization of "Temp" proved
 ar.adb:1791:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1792:13: info: initialization of "Temp" proved
+ar.adb:1798:05: info: initialization of "Temp" proved
 ar.adb:1801:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1802:13: info: initialization of "Temp" proved
+ar.adb:1808:05: info: initialization of "Temp" proved
 ar.adb:1811:20: info: range check proved (CVC4: 1 VC)
-ar.adb:1812:13: info: initialization of "Temp" proved
-ar.adb:1897:16: info: initialization of "Temp.F1" proved
-ar.adb:1897:16: info: initialization of "Temp.G1" proved
-ar.adb:1907:16: info: initialization of "Temp.F1" proved
-ar.adb:1907:16: info: initialization of "Temp.G1" proved
-ar.adb:1917:16: info: initialization of "Temp.F1" proved
-ar.adb:1917:16: info: initialization of "Temp.G1" proved
-ar.adb:1927:16: info: initialization of "Temp.F1" proved
-ar.adb:1927:16: info: initialization of "Temp.G1" proved
-ar.adb:1937:13: info: initialization of "Temp.F1" proved
-ar.adb:1937:13: info: initialization of "Temp.G1" proved
-ar.adb:1947:13: info: initialization of "Temp.F1" proved
-ar.adb:1947:13: info: initialization of "Temp.G1" proved
-ar.adb:1957:13: info: initialization of "Temp.F1" proved
-ar.adb:1957:13: info: initialization of "Temp.G1" proved
-ar.adb:1967:13: info: initialization of "Temp.F1" proved
-ar.adb:1967:13: info: initialization of "Temp.G1" proved
-ar.adb:2040:16: info: initialization of "Temp" proved
-ar.adb:2050:16: info: initialization of "Temp" proved
-ar.adb:2060:16: info: initialization of "Temp" proved
-ar.adb:2070:16: info: initialization of "Temp" proved
-ar.adb:2747:10: info: initialization of "A" proved
-ar.adb:2748:13: info: initialization of "A" proved
-ar.adb:2749:16: info: initialization of "A" proved
-ar.adb:2758:10: info: initialization of "A" proved
-ar.adb:2759:13: info: initialization of "A" proved
-ar.adb:2760:16: info: initialization of "A" proved
-ar.adb:2769:10: info: initialization of "A" proved
-ar.adb:2770:13: info: initialization of "A" proved
-ar.adb:2771:16: info: initialization of "A" proved
-ar.adb:2780:10: info: initialization of "A" proved
-ar.adb:2781:13: info: initialization of "A" proved
-ar.adb:2782:16: info: initialization of "A" proved
+ar.adb:1893:05: info: initialization of "Temp" proved
+ar.adb:1903:05: info: initialization of "Temp" proved
+ar.adb:1913:05: info: initialization of "Temp" proved
+ar.adb:1923:05: info: initialization of "Temp" proved
+ar.adb:1933:05: info: initialization of "Temp" proved
+ar.adb:1943:05: info: initialization of "Temp" proved
+ar.adb:1953:05: info: initialization of "Temp" proved
+ar.adb:1963:05: info: initialization of "Temp" proved
+ar.adb:2036:05: info: initialization of "Temp" proved
+ar.adb:2046:05: info: initialization of "Temp" proved
+ar.adb:2056:05: info: initialization of "Temp" proved
+ar.adb:2066:05: info: initialization of "Temp" proved
+ar.ads:136:11: info: flow dependencies proved
 ar.ads:137:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:142:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:141:11: info: flow dependencies proved
+ar.ads:142:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:146:11: info: flow dependencies proved
 ar.ads:147:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:151:11: info: flow dependencies proved
 ar.ads:152:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:158:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:156:11: info: flow dependencies proved
+ar.ads:158:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:162:11: info: flow dependencies proved
 ar.ads:164:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:168:11: info: flow dependencies proved
 ar.ads:169:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:174:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:173:11: info: flow dependencies proved
+ar.ads:174:22: info: postcondition proved (Z3: 1 VC)
 ar.ads:174:99: info: range check proved (CVC4: 1 VC)
 ar.ads:174:106: info: range check proved (CVC4: 1 VC)
 ar.ads:174:170: info: range check proved (CVC4: 1 VC)
 ar.ads:174:287: info: range check proved (CVC4: 1 VC)
+ar.ads:178:11: info: flow dependencies proved
 ar.ads:179:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:183:11: info: flow dependencies proved
 ar.ads:184:22: medium: postcondition might fail, cannot prove (I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'Fir...))))
 ar.ads:184:100: info: range check proved (CVC4: 1 VC)
 ar.ads:184:107: info: range check proved (CVC4: 1 VC)
 ar.ads:184:171: info: range check proved (CVC4: 1 VC)
 ar.ads:184:288: info: range check proved (CVC4: 1 VC)
+ar.ads:188:11: info: flow dependencies proved
 ar.ads:189:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:193:11: info: flow dependencies proved
 ar.ads:194:22: medium: postcondition might fail, cannot prove (I < IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, I+1 => E-1)) or else (E = ET1'First and then A = A'Old'Update (I => E, I+1 => ET1'Last)) )) or else (I = IT1'Last and then ( (E > ET1'First and then A = A'Old'Update (I => E, IT1'Fir...))))
 ar.ads:194:100: info: range check proved (CVC4: 1 VC)
 ar.ads:194:107: info: range check proved (CVC4: 1 VC)
 ar.ads:194:171: info: range check proved (CVC4: 1 VC)
 ar.ads:194:288: info: range check proved (CVC4: 1 VC)
+ar.ads:198:11: info: flow dependencies proved
 ar.ads:199:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:202:14: info: initialization of "A" proved
+ar.ads:203:11: info: flow dependencies proved
 ar.ads:204:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:204:44: info: initialization of "A" proved
 ar.ads:207:14: info: initialization of "A" proved
-ar.ads:209:22: info: initialization of "A" proved
+ar.ads:208:11: info: flow dependencies proved
 ar.ads:209:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:212:14: info: initialization of "A" proved
+ar.ads:213:11: info: flow dependencies proved
 ar.ads:214:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:214:44: info: initialization of "A" proved
 ar.ads:217:14: info: initialization of "A" proved
-ar.ads:219:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:219:59: info: initialization of "A" proved
+ar.ads:218:11: info: flow dependencies proved
+ar.ads:219:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 ar.ads:222:14: info: initialization of "A" proved
-ar.ads:224:22: info: initialization of "A" proved
+ar.ads:223:11: info: flow dependencies proved
 ar.ads:224:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:227:14: info: initialization of "A" proved
+ar.ads:228:11: info: flow dependencies proved
 ar.ads:229:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:229:44: info: initialization of "A" proved
 ar.ads:232:14: info: initialization of "A" proved
+ar.ads:233:11: info: flow dependencies proved
 ar.ads:234:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:234:44: info: initialization of "A" proved
 ar.ads:237:14: info: initialization of "A" proved
-ar.ads:239:22: info: initialization of "A" proved
+ar.ads:238:11: info: flow dependencies proved
 ar.ads:239:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:242:14: info: initialization of "A" proved
-ar.ads:244:22: info: initialization of "A" proved
+ar.ads:243:11: info: flow dependencies proved
 ar.ads:244:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:247:14: info: initialization of "A" proved
+ar.ads:248:11: info: flow dependencies proved
 ar.ads:249:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:249:44: info: initialization of "A" proved
 ar.ads:252:14: info: initialization of "A" proved
+ar.ads:253:11: info: flow dependencies proved
 ar.ads:254:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:254:44: info: initialization of "A" proved
 ar.ads:257:14: info: initialization of "A" proved
-ar.ads:259:22: info: initialization of "A" proved
+ar.ads:258:11: info: flow dependencies proved
 ar.ads:259:22: info: postcondition proved (CVC4: 10 VC)
 ar.ads:262:14: info: initialization of "A" proved
-ar.ads:264:22: info: initialization of "A" proved
+ar.ads:263:11: info: flow dependencies proved
 ar.ads:264:22: info: postcondition proved (CVC4: 10 VC)
+ar.ads:271:11: info: flow dependencies proved
 ar.ads:272:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:277:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:276:11: info: flow dependencies proved
+ar.ads:277:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:281:11: info: flow dependencies proved
 ar.ads:282:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:286:11: info: flow dependencies proved
 ar.ads:287:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:293:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:299:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:304:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:309:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:291:11: info: flow dependencies proved
+ar.ads:293:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:297:11: info: flow dependencies proved
+ar.ads:299:22: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+ar.ads:303:11: info: flow dependencies proved
+ar.ads:304:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:308:11: info: flow dependencies proved
+ar.ads:309:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:313:11: info: flow dependencies proved
 ar.ads:314:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:318:11: info: flow dependencies proved
 ar.ads:319:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:323:11: info: flow dependencies proved
 ar.ads:324:22: info: postcondition proved (Z3: 1 VC)
 ar.ads:324:123: info: range check proved (CVC4: 1 VC)
 ar.ads:324:136: info: index check proved (CVC4: 2 VC)
@@ -358,7 +261,9 @@ ar.ads:324:154: info: range check proved (CVC4: 1 VC)
 ar.ads:324:242: info: range check proved (CVC4: 1 VC)
 ar.ads:324:255: info: index check proved (CVC4: 2 VC)
 ar.ads:324:437: info: range check proved (CVC4: 1 VC)
+ar.ads:328:11: info: flow dependencies proved
 ar.ads:329:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:333:11: info: flow dependencies proved
 ar.ads:334:22: medium: postcondition might fail, cannot prove J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last)...)))
 ar.ads:334:123: info: range check proved (CVC4: 1 VC)
 ar.ads:334:136: info: index check proved (CVC4: 2 VC)
@@ -366,7 +271,9 @@ ar.ads:334:154: info: range check proved (CVC4: 1 VC)
 ar.ads:334:242: info: range check proved (CVC4: 1 VC)
 ar.ads:334:255: info: index check proved (CVC4: 2 VC)
 ar.ads:334:437: info: range check proved (CVC4: 1 VC)
+ar.ads:338:11: info: flow dependencies proved
 ar.ads:339:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:343:11: info: flow dependencies proved
 ar.ads:344:22: medium: postcondition might fail, cannot prove J < IT2'Last and then ( (E > ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => E-1))) or else (E = ET1'First and then A = A'Old'Update (J => A'Old(J)'Update (I => E), J+1 => A'Old(J+1)'Update (I => ET1'Last)...)))
 ar.ads:344:123: info: range check proved (CVC4: 1 VC)
 ar.ads:344:136: info: index check proved (CVC4: 2 VC)
@@ -374,33 +281,55 @@ ar.ads:344:154: info: range check proved (CVC4: 1 VC)
 ar.ads:344:242: info: range check proved (CVC4: 1 VC)
 ar.ads:344:255: info: index check proved (CVC4: 2 VC)
 ar.ads:344:437: info: range check proved (CVC4: 1 VC)
-ar.ads:349:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:355:22: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC)
+ar.ads:348:11: info: flow dependencies proved
+ar.ads:349:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:353:11: info: flow dependencies proved
+ar.ads:355:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:359:11: info: flow dependencies proved
 ar.ads:361:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:364:14: info: initialization of "A" proved
+ar.ads:365:11: info: flow dependencies proved
 ar.ads:366:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:366:65: info: initialization of "A" proved
+ar.ads:370:11: info: flow dependencies proved
 ar.ads:371:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:375:11: info: flow dependencies proved
 ar.ads:376:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:379:14: info: initialization of "A" proved
+ar.ads:380:11: info: flow dependencies proved
 ar.ads:381:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:381:65: info: initialization of "A" proved
+ar.ads:388:11: info: flow dependencies proved
 ar.ads:389:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:394:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:393:11: info: flow dependencies proved
+ar.ads:394:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:398:11: info: flow dependencies proved
 ar.ads:399:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:403:11: info: flow dependencies proved
 ar.ads:404:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:410:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:408:11: info: flow dependencies proved
+ar.ads:410:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:414:11: info: flow dependencies proved
 ar.ads:416:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:420:11: info: flow dependencies proved
 ar.ads:421:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:426:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:425:11: info: flow dependencies proved
+ar.ads:426:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:430:11: info: flow dependencies proved
 ar.ads:431:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:435:11: info: flow dependencies proved
 ar.ads:436:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:441:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:440:11: info: flow dependencies proved
+ar.ads:441:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:445:11: info: flow dependencies proved
 ar.ads:446:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:450:11: info: flow dependencies proved
 ar.ads:451:16: info: postcondition proved (CVC4: 1 VC)
-ar.ads:456:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:455:11: info: flow dependencies proved
+ar.ads:456:22: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC)
+ar.ads:460:11: info: flow dependencies proved
 ar.ads:461:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:465:11: info: flow dependencies proved
 ar.ads:466:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:470:11: info: flow dependencies proved
 ar.ads:471:22: info: postcondition proved (Z3: 1 VC)
 ar.ads:471:151: info: range check proved (CVC4: 1 VC)
 ar.ads:471:164: info: index check proved (CVC4: 2 VC)
@@ -410,7 +339,9 @@ ar.ads:471:326: info: range check proved (CVC4: 1 VC)
 ar.ads:471:339: info: index check proved (CVC4: 2 VC)
 ar.ads:471:363: info: index check proved (CVC4: 2 VC)
 ar.ads:471:608: info: range check proved (CVC4: 1 VC)
+ar.ads:475:11: info: flow dependencies proved
 ar.ads:476:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:480:11: info: flow dependencies proved
 ar.ads:481:22: medium: postcondition might fail, cannot prove K < IT3'Last and then ( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Upd...)))
 ar.ads:481:151: info: range check proved (CVC4: 1 VC)
 ar.ads:481:164: info: index check proved (CVC4: 2 VC)
@@ -420,7 +351,9 @@ ar.ads:481:326: info: range check proved (CVC4: 1 VC)
 ar.ads:481:339: info: index check proved (CVC4: 2 VC)
 ar.ads:481:363: info: index check proved (CVC4: 2 VC)
 ar.ads:481:608: info: range check proved (CVC4: 1 VC)
+ar.ads:485:11: info: flow dependencies proved
 ar.ads:486:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:490:11: info: flow dependencies proved
 ar.ads:491:22: medium: postcondition might fail, cannot prove K < IT3'Last and then( (E > ET1'First and then A = A'Old'Update (K => A'Old(K)'Update (J => A'Old(K)(J)'Update (I => E)), K+1 => A'Old(K+1)'Update (J => A'Old(K+1)(J)'Update (I => E-1)))) or else (E = ET1'First and then A = A'Old'Update (K => A'Old(K)'Upda...)))
 ar.ads:491:150: info: range check proved (CVC4: 1 VC)
 ar.ads:491:163: info: index check proved (CVC4: 2 VC)
@@ -430,311 +363,536 @@ ar.ads:491:325: info: range check proved (CVC4: 1 VC)
 ar.ads:491:338: info: index check proved (CVC4: 2 VC)
 ar.ads:491:362: info: index check proved (CVC4: 2 VC)
 ar.ads:491:607: info: range check proved (CVC4: 1 VC)
-ar.ads:496:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:502:22: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC)
+ar.ads:495:11: info: flow dependencies proved
+ar.ads:496:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:500:11: info: flow dependencies proved
+ar.ads:502:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:506:11: info: flow dependencies proved
 ar.ads:508:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:512:11: info: flow dependencies proved
 ar.ads:513:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:518:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:523:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:517:11: info: flow dependencies proved
+ar.ads:518:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:522:11: info: flow dependencies proved
+ar.ads:523:22: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC)
+ar.ads:527:11: info: flow dependencies proved
 ar.ads:528:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:532:11: info: flow dependencies proved
 ar.ads:533:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:538:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:544:22: info: postcondition proved (CVC4: 6 VC)
-ar.ads:550:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:537:11: info: flow dependencies proved
+ar.ads:538:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:542:11: info: flow dependencies proved
+ar.ads:544:22: info: postcondition proved (CVC4: 6 VC; Trivial: 6 VC)
+ar.ads:548:11: info: flow dependencies proved
+ar.ads:550:22: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+ar.ads:554:11: info: flow dependencies proved
 ar.ads:555:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:558:14: info: initialization of "A" proved
+ar.ads:559:11: info: flow dependencies proved
 ar.ads:560:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:560:86: info: initialization of "A" proved
 ar.ads:563:14: info: initialization of "A" proved
+ar.ads:565:11: info: flow dependencies proved
 ar.ads:566:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:566:86: info: initialization of "A" proved
+ar.ads:573:11: info: flow dependencies proved
 ar.ads:574:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:579:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:578:11: info: flow dependencies proved
+ar.ads:579:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:583:11: info: flow dependencies proved
 ar.ads:584:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:589:11: info: flow dependencies proved
 ar.ads:590:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:597:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:595:11: info: flow dependencies proved
+ar.ads:597:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:602:11: info: flow dependencies proved
 ar.ads:604:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:608:11: info: flow dependencies proved
 ar.ads:609:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:614:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:613:11: info: flow dependencies proved
+ar.ads:614:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:618:11: info: flow dependencies proved
 ar.ads:619:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:624:11: info: flow dependencies proved
 ar.ads:625:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:630:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:636:22: info: postcondition proved (CVC4: 2 VC; altergo: 1 VC)
+ar.ads:629:11: info: flow dependencies proved
+ar.ads:630:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:634:11: info: flow dependencies proved
+ar.ads:636:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:640:11: info: flow dependencies proved
 ar.ads:642:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:646:11: info: flow dependencies proved
 ar.ads:647:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:653:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:659:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:652:11: info: flow dependencies proved
+ar.ads:653:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:658:11: info: flow dependencies proved
+ar.ads:659:22: info: postcondition proved (CVC4: 4 VC; Trivial: 3 VC)
+ar.ads:664:11: info: flow dependencies proved
 ar.ads:665:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:670:11: info: flow dependencies proved
 ar.ads:671:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:676:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:682:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:675:11: info: flow dependencies proved
+ar.ads:676:22: info: postcondition proved (Trivial: 1 VC)
+ar.ads:680:11: info: flow dependencies proved
+ar.ads:682:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:686:11: info: flow dependencies proved
 ar.ads:688:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:692:11: info: flow dependencies proved
 ar.ads:693:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:700:11: info: flow dependencies proved
 ar.ads:701:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:705:11: info: flow dependencies proved
 ar.ads:706:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:710:11: info: flow dependencies proved
 ar.ads:711:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:714:14: info: initialization of "R.F1" proved
-ar.ads:714:14: info: initialization of "R.G1" proved
-ar.ads:716:22: info: initialization of "R.F1" proved
+ar.ads:714:14: info: initialization of "R" proved
+ar.ads:715:11: info: flow dependencies proved
 ar.ads:716:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:716:40: info: initialization of "R.G1" proved
-ar.ads:719:14: info: initialization of "R.F1" proved
-ar.ads:719:14: info: initialization of "R.G1" proved
-ar.ads:721:22: info: initialization of "R.F1" proved
-ar.ads:721:22: info: initialization of "R.G1" proved
+ar.ads:719:14: info: initialization of "R" proved
+ar.ads:720:11: info: flow dependencies proved
 ar.ads:721:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:725:11: info: flow dependencies proved
 ar.ads:727:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:727:51: info: range check proved (CVC4: 1 VC)
 ar.ads:727:67: info: range check proved (CVC4: 1 VC)
+ar.ads:731:11: info: flow dependencies proved
 ar.ads:733:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:737:11: info: flow dependencies proved
 ar.ads:739:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:742:14: info: initialization of "R.F1" proved
-ar.ads:742:14: info: initialization of "R.G1" proved
-ar.ads:744:22: info: initialization of "R.F1" proved
-ar.ads:744:22: info: initialization of "R.G1" proved
+ar.ads:742:14: info: initialization of "R" proved
+ar.ads:743:11: info: flow dependencies proved
 ar.ads:744:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:747:14: info: initialization of "R.F1" proved
-ar.ads:747:14: info: initialization of "R.G1" proved
-ar.ads:749:22: info: initialization of "R.F1" proved
+ar.ads:747:14: info: initialization of "R" proved
+ar.ads:748:11: info: flow dependencies proved
 ar.ads:749:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:749:41: info: initialization of "R.G1" proved
-ar.ads:752:14: info: initialization of "R.F1" proved
-ar.ads:752:14: info: initialization of "R.G1" proved
-ar.ads:754:22: info: initialization of "R.F1" proved
-ar.ads:754:22: info: initialization of "R.G1" proved
+ar.ads:752:14: info: initialization of "R" proved
+ar.ads:753:11: info: flow dependencies proved
 ar.ads:754:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:761:11: info: flow dependencies proved
 ar.ads:762:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:766:11: info: flow dependencies proved
 ar.ads:767:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:771:11: info: flow dependencies proved
 ar.ads:772:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:776:11: info: flow dependencies proved
 ar.ads:777:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:781:11: info: flow dependencies proved
 ar.ads:782:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:786:11: info: flow dependencies proved
 ar.ads:787:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:791:11: info: flow dependencies proved
 ar.ads:792:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:796:11: info: flow dependencies proved
 ar.ads:797:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:801:11: info: flow dependencies proved
 ar.ads:802:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:806:11: info: flow dependencies proved
 ar.ads:808:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:808:77: info: range check proved (CVC4: 1 VC)
 ar.ads:808:96: info: range check proved (CVC4: 1 VC)
+ar.ads:812:11: info: flow dependencies proved
 ar.ads:814:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:818:11: info: flow dependencies proved
 ar.ads:820:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:824:11: info: flow dependencies proved
 ar.ads:826:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:830:11: info: flow dependencies proved
 ar.ads:831:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:835:11: info: flow dependencies proved
 ar.ads:836:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:840:11: info: flow dependencies proved
 ar.ads:841:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:845:11: info: flow dependencies proved
 ar.ads:846:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:850:11: info: flow dependencies proved
 ar.ads:851:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:855:11: info: flow dependencies proved
 ar.ads:856:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:860:11: info: flow dependencies proved
 ar.ads:861:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:865:11: info: flow dependencies proved
 ar.ads:866:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:870:11: info: flow dependencies proved
 ar.ads:871:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:875:11: info: flow dependencies proved
 ar.ads:876:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:883:11: info: flow dependencies proved
 ar.ads:884:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:888:11: info: flow dependencies proved
 ar.ads:889:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:893:11: info: flow dependencies proved
 ar.ads:894:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:898:11: info: flow dependencies proved
 ar.ads:899:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:903:11: info: flow dependencies proved
 ar.ads:904:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:908:11: info: flow dependencies proved
 ar.ads:909:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:913:11: info: flow dependencies proved
 ar.ads:914:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:918:11: info: flow dependencies proved
 ar.ads:919:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:923:11: info: flow dependencies proved
 ar.ads:925:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:925:106: info: range check proved (CVC4: 1 VC)
 ar.ads:925:128: info: range check proved (CVC4: 1 VC)
+ar.ads:929:11: info: flow dependencies proved
 ar.ads:931:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:935:11: info: flow dependencies proved
 ar.ads:937:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:941:11: info: flow dependencies proved
 ar.ads:943:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:947:11: info: flow dependencies proved
 ar.ads:948:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:952:11: info: flow dependencies proved
 ar.ads:953:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:957:11: info: flow dependencies proved
 ar.ads:958:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:962:11: info: flow dependencies proved
 ar.ads:963:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:967:11: info: flow dependencies proved
 ar.ads:968:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:972:11: info: flow dependencies proved
 ar.ads:973:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:977:11: info: flow dependencies proved
 ar.ads:978:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:982:11: info: flow dependencies proved
 ar.ads:983:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:987:11: info: flow dependencies proved
 ar.ads:988:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:992:11: info: flow dependencies proved
 ar.ads:993:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:997:11: info: flow dependencies proved
 ar.ads:998:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1002:11: info: flow dependencies proved
 ar.ads:1003:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1007:11: info: flow dependencies proved
 ar.ads:1008:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1012:11: info: flow dependencies proved
 ar.ads:1013:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1020:11: info: flow dependencies proved
 ar.ads:1021:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1025:11: info: flow dependencies proved
 ar.ads:1026:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1030:11: info: flow dependencies proved
 ar.ads:1031:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1035:11: info: flow dependencies proved
 ar.ads:1036:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1040:11: info: flow dependencies proved
 ar.ads:1041:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1045:11: info: flow dependencies proved
 ar.ads:1046:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1050:11: info: flow dependencies proved
 ar.ads:1051:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1055:11: info: flow dependencies proved
 ar.ads:1056:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1060:11: info: flow dependencies proved
 ar.ads:1062:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1062:100: info: range check proved (CVC4: 1 VC)
+ar.ads:1066:11: info: flow dependencies proved
 ar.ads:1068:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1072:11: info: flow dependencies proved
 ar.ads:1074:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1078:11: info: flow dependencies proved
 ar.ads:1080:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1084:11: info: flow dependencies proved
 ar.ads:1086:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1086:100: info: range check proved (CVC4: 1 VC)
+ar.ads:1090:11: info: flow dependencies proved
 ar.ads:1092:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1096:11: info: flow dependencies proved
 ar.ads:1098:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1102:11: info: flow dependencies proved
 ar.ads:1104:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1108:11: info: flow dependencies proved
 ar.ads:1109:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1113:11: info: flow dependencies proved
 ar.ads:1114:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1118:11: info: flow dependencies proved
 ar.ads:1119:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1123:11: info: flow dependencies proved
 ar.ads:1124:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1131:11: info: flow dependencies proved
 ar.ads:1132:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1136:11: info: flow dependencies proved
 ar.ads:1137:22: info: postcondition proved (CVC4: 8 VC)
+ar.ads:1141:11: info: flow dependencies proved
 ar.ads:1142:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1146:11: info: flow dependencies proved
 ar.ads:1147:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1151:11: info: flow dependencies proved
 ar.ads:1152:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1156:11: info: flow dependencies proved
 ar.ads:1157:22: info: postcondition proved (CVC4: 8 VC)
+ar.ads:1161:11: info: flow dependencies proved
 ar.ads:1162:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1166:11: info: flow dependencies proved
 ar.ads:1167:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1171:11: info: flow dependencies proved
 ar.ads:1172:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1176:11: info: flow dependencies proved
 ar.ads:1177:22: info: postcondition proved (CVC4: 8 VC)
+ar.ads:1181:11: info: flow dependencies proved
 ar.ads:1182:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1186:11: info: flow dependencies proved
 ar.ads:1187:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1195:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1200:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1194:11: info: flow dependencies proved
+ar.ads:1195:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1199:11: info: flow dependencies proved
+ar.ads:1200:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:1204:11: info: flow dependencies proved
 ar.ads:1205:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1209:11: info: flow dependencies proved
 ar.ads:1210:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1216:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1222:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1214:11: info: flow dependencies proved
+ar.ads:1216:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1220:11: info: flow dependencies proved
+ar.ads:1222:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1226:11: info: flow dependencies proved
 ar.ads:1228:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1232:11: info: flow dependencies proved
 ar.ads:1234:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1239:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1244:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1249:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1238:11: info: flow dependencies proved
+ar.ads:1239:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1243:11: info: flow dependencies proved
+ar.ads:1244:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1248:11: info: flow dependencies proved
+ar.ads:1249:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1253:11: info: flow dependencies proved
 ar.ads:1254:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1259:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1264:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1258:11: info: flow dependencies proved
+ar.ads:1259:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1263:11: info: flow dependencies proved
+ar.ads:1264:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1268:11: info: flow dependencies proved
 ar.ads:1269:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1273:11: info: flow dependencies proved
 ar.ads:1274:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1279:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1284:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1278:11: info: flow dependencies proved
+ar.ads:1279:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1283:11: info: flow dependencies proved
+ar.ads:1284:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1288:11: info: flow dependencies proved
 ar.ads:1289:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1293:11: info: flow dependencies proved
 ar.ads:1294:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1302:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1307:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1301:11: info: flow dependencies proved
+ar.ads:1302:22: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
+ar.ads:1306:11: info: flow dependencies proved
+ar.ads:1307:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1311:11: info: flow dependencies proved
 ar.ads:1312:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1316:11: info: flow dependencies proved
 ar.ads:1317:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1322:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1327:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1321:11: info: flow dependencies proved
+ar.ads:1322:22: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
+ar.ads:1326:11: info: flow dependencies proved
+ar.ads:1327:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1331:11: info: flow dependencies proved
 ar.ads:1332:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1336:11: info: flow dependencies proved
 ar.ads:1337:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1345:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1350:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1344:11: info: flow dependencies proved
+ar.ads:1345:22: info: postcondition proved (CVC4: 5 VC; Trivial: 3 VC)
+ar.ads:1349:11: info: flow dependencies proved
+ar.ads:1350:22: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC)
+ar.ads:1354:11: info: flow dependencies proved
 ar.ads:1355:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1359:11: info: flow dependencies proved
 ar.ads:1360:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1366:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1372:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1365:11: info: flow dependencies proved
+ar.ads:1366:22: info: postcondition proved (CVC4: 5 VC; Trivial: 3 VC)
+ar.ads:1371:11: info: flow dependencies proved
+ar.ads:1372:22: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC)
+ar.ads:1377:11: info: flow dependencies proved
 ar.ads:1378:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1383:11: info: flow dependencies proved
 ar.ads:1384:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1392:22: info: postcondition proved (CVC4: 7 VC)
-ar.ads:1397:22: info: postcondition proved (CVC4: 9 VC)
+ar.ads:1391:11: info: flow dependencies proved
+ar.ads:1392:22: info: postcondition proved (CVC4: 7 VC; Trivial: 4 VC)
+ar.ads:1396:11: info: flow dependencies proved
+ar.ads:1397:22: info: postcondition proved (CVC4: 9 VC; Trivial: 1 VC)
+ar.ads:1401:11: info: flow dependencies proved
 ar.ads:1402:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1406:11: info: flow dependencies proved
 ar.ads:1407:22: info: postcondition proved (CVC4: 7 VC)
+ar.ads:1414:11: info: flow dependencies proved
 ar.ads:1415:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1420:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1419:11: info: flow dependencies proved
+ar.ads:1420:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:1424:11: info: flow dependencies proved
 ar.ads:1425:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1429:11: info: flow dependencies proved
 ar.ads:1430:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1434:11: info: flow dependencies proved
 ar.ads:1435:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1440:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1439:11: info: flow dependencies proved
+ar.ads:1440:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:1444:11: info: flow dependencies proved
 ar.ads:1445:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1449:11: info: flow dependencies proved
 ar.ads:1450:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1454:11: info: flow dependencies proved
 ar.ads:1455:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1460:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1459:11: info: flow dependencies proved
+ar.ads:1460:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:1464:11: info: flow dependencies proved
 ar.ads:1465:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1469:11: info: flow dependencies proved
 ar.ads:1470:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1474:11: info: flow dependencies proved
 ar.ads:1475:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1481:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1479:11: info: flow dependencies proved
+ar.ads:1481:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1485:11: info: flow dependencies proved
 ar.ads:1487:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1491:11: info: flow dependencies proved
 ar.ads:1493:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1496:14: info: initialization of "R.S1" proved
-ar.ads:1496:14: info: initialization of "R.T1" proved
+ar.ads:1496:14: info: initialization of "R" proved
+ar.ads:1497:11: info: flow dependencies proved
 ar.ads:1498:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1498:44: info: initialization of "R.S1" proved
-ar.ads:1498:70: info: initialization of "R.T1" proved
-ar.ads:1501:14: info: initialization of "R.S1" proved
-ar.ads:1501:14: info: initialization of "R.T1" proved
+ar.ads:1501:14: info: initialization of "R" proved
+ar.ads:1502:11: info: flow dependencies proved
 ar.ads:1503:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:1503:44: info: initialization of "R.S1" proved
-ar.ads:1503:88: info: initialization of "R.T1" proved
-ar.ads:1506:14: info: initialization of "R.S1" proved
-ar.ads:1506:14: info: initialization of "R.T1" proved
-ar.ads:1508:22: info: initialization of "R.S1" proved
-ar.ads:1508:22: info: initialization of "R.T1" proved
+ar.ads:1506:14: info: initialization of "R" proved
+ar.ads:1507:11: info: flow dependencies proved
 ar.ads:1508:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1515:11: info: flow dependencies proved
 ar.ads:1516:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1521:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1520:11: info: flow dependencies proved
+ar.ads:1521:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1525:11: info: flow dependencies proved
 ar.ads:1526:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1530:11: info: flow dependencies proved
 ar.ads:1531:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1535:11: info: flow dependencies proved
 ar.ads:1536:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1542:22: info: postcondition proved (CVC4: 5 VC)
-ar.ads:1548:22: info: postcondition proved (CVC4: 2 VC)
+ar.ads:1540:11: info: flow dependencies proved
+ar.ads:1542:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1546:11: info: flow dependencies proved
+ar.ads:1548:22: info: postcondition proved (CVC4: 2 VC; Trivial: 2 VC)
+ar.ads:1552:11: info: flow dependencies proved
 ar.ads:1553:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1558:22: info: postcondition proved (CVC4: 7 VC)
+ar.ads:1557:11: info: flow dependencies proved
+ar.ads:1558:22: info: postcondition proved (CVC4: 7 VC; Trivial: 1 VC)
+ar.ads:1562:11: info: flow dependencies proved
 ar.ads:1563:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1563:73: info: range check proved (CVC4: 1 VC)
+ar.ads:1570:11: info: flow dependencies proved
 ar.ads:1571:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:1576:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1575:11: info: flow dependencies proved
+ar.ads:1576:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1580:11: info: flow dependencies proved
 ar.ads:1581:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1585:11: info: flow dependencies proved
 ar.ads:1586:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1591:11: info: flow dependencies proved
 ar.ads:1592:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:1598:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1597:11: info: flow dependencies proved
+ar.ads:1598:22: info: postcondition proved (CVC4: 6 VC; Trivial: 3 VC)
+ar.ads:1603:11: info: flow dependencies proved
 ar.ads:1604:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1609:11: info: flow dependencies proved
 ar.ads:1610:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1617:11: info: flow dependencies proved
 ar.ads:1618:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1623:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1622:11: info: flow dependencies proved
+ar.ads:1623:22: info: postcondition proved (CVC4: 5 VC; Trivial: 2 VC)
+ar.ads:1627:11: info: flow dependencies proved
 ar.ads:1628:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1632:11: info: flow dependencies proved
 ar.ads:1633:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1641:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1646:22: info: postcondition proved (CVC4: 4 VC)
+ar.ads:1640:11: info: flow dependencies proved
+ar.ads:1641:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1645:11: info: flow dependencies proved
+ar.ads:1646:22: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
+ar.ads:1650:11: info: flow dependencies proved
 ar.ads:1651:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1655:11: info: flow dependencies proved
 ar.ads:1656:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1661:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1667:22: info: postcondition proved (CVC4: 8 VC)
+ar.ads:1660:11: info: flow dependencies proved
+ar.ads:1661:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1665:11: info: flow dependencies proved
+ar.ads:1667:22: info: postcondition proved (CVC4: 8 VC; Trivial: 2 VC)
+ar.ads:1671:11: info: flow dependencies proved
 ar.ads:1673:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1677:11: info: flow dependencies proved
 ar.ads:1679:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1683:11: info: flow dependencies proved
 ar.ads:1685:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1689:11: info: flow dependencies proved
 ar.ads:1691:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1694:14: info: initialization of "A" proved
-ar.ads:1697:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1697:44: info: initialization of "A" proved
+ar.ads:1696:11: info: flow dependencies proved
+ar.ads:1697:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 ar.ads:1700:14: info: initialization of "A" proved
-ar.ads:1703:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1703:59: info: initialization of "A" proved
+ar.ads:1702:11: info: flow dependencies proved
+ar.ads:1703:22: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
 ar.ads:1706:14: info: initialization of "A" proved
-ar.ads:1709:22: info: initialization of "A" proved
+ar.ads:1708:11: info: flow dependencies proved
 ar.ads:1709:22: info: postcondition proved (CVC4: 1 VC)
 ar.ads:1712:14: info: initialization of "A" proved
-ar.ads:1715:22: info: initialization of "A" proved
+ar.ads:1714:11: info: flow dependencies proved
 ar.ads:1715:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1723:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1728:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1722:11: info: flow dependencies proved
+ar.ads:1723:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1727:11: info: flow dependencies proved
+ar.ads:1728:22: info: postcondition proved (CVC4: 5 VC; Trivial: 3 VC)
+ar.ads:1732:11: info: flow dependencies proved
 ar.ads:1733:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1737:11: info: flow dependencies proved
 ar.ads:1738:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1743:22: info: postcondition proved (CVC4: 2 VC)
-ar.ads:1748:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1742:11: info: flow dependencies proved
+ar.ads:1743:22: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+ar.ads:1747:11: info: flow dependencies proved
+ar.ads:1748:22: info: postcondition proved (CVC4: 6 VC; Trivial: 3 VC)
+ar.ads:1752:11: info: flow dependencies proved
 ar.ads:1753:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1757:11: info: flow dependencies proved
 ar.ads:1758:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1766:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1771:22: info: postcondition proved (CVC4: 6 VC)
+ar.ads:1765:11: info: flow dependencies proved
+ar.ads:1766:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1770:11: info: flow dependencies proved
+ar.ads:1771:22: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC)
+ar.ads:1775:11: info: flow dependencies proved
 ar.ads:1776:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1780:11: info: flow dependencies proved
 ar.ads:1781:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1786:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1791:22: info: postcondition proved (CVC4: 5 VC)
+ar.ads:1785:11: info: flow dependencies proved
+ar.ads:1786:22: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
+ar.ads:1790:11: info: flow dependencies proved
+ar.ads:1791:22: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
+ar.ads:1795:11: info: flow dependencies proved
 ar.ads:1796:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1800:11: info: flow dependencies proved
 ar.ads:1801:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1809:22: info: postcondition proved (CVC4: 8 VC)
-ar.ads:1814:22: info: postcondition proved (CVC4: 11 VC)
+ar.ads:1808:11: info: flow dependencies proved
+ar.ads:1809:22: info: postcondition proved (CVC4: 8 VC; Trivial: 4 VC)
+ar.ads:1813:11: info: flow dependencies proved
+ar.ads:1814:22: info: postcondition proved (CVC4: 11 VC; Trivial: 1 VC)
+ar.ads:1818:11: info: flow dependencies proved
 ar.ads:1819:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1823:11: info: flow dependencies proved
 ar.ads:1824:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1829:22: info: postcondition proved (CVC4: 8 VC)
-ar.ads:1835:22: info: postcondition proved (CVC4: 20 VC)
+ar.ads:1828:11: info: flow dependencies proved
+ar.ads:1829:22: info: postcondition proved (CVC4: 8 VC; Trivial: 4 VC)
+ar.ads:1833:11: info: flow dependencies proved
+ar.ads:1835:22: info: postcondition proved (CVC4: 20 VC; Trivial: 1 VC)
+ar.ads:1839:11: info: flow dependencies proved
 ar.ads:1841:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1845:11: info: flow dependencies proved
 ar.ads:1847:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1855:22: info: postcondition proved (CVC4: 4 VC)
-ar.ads:1860:22: info: postcondition proved (CVC4: 7 VC)
+ar.ads:1854:11: info: flow dependencies proved
+ar.ads:1855:22: info: postcondition proved (CVC4: 4 VC; Trivial: 2 VC)
+ar.ads:1859:11: info: flow dependencies proved
+ar.ads:1860:22: info: postcondition proved (CVC4: 7 VC; Trivial: 2 VC)
+ar.ads:1864:11: info: flow dependencies proved
 ar.ads:1865:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1869:11: info: flow dependencies proved
 ar.ads:1870:22: info: postcondition proved (CVC4: 1 VC)
-ar.ads:1878:22: info: postcondition proved (CVC4: 3 VC)
-ar.ads:1883:22: info: postcondition proved (CVC4: 3 VC)
+ar.ads:1877:11: info: flow dependencies proved
+ar.ads:1878:22: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
+ar.ads:1882:11: info: flow dependencies proved
+ar.ads:1883:22: info: postcondition proved (CVC4: 3 VC; Trivial: 2 VC)
+ar.ads:1887:11: info: flow dependencies proved
 ar.ads:1888:22: info: postcondition proved (CVC4: 1 VC)
+ar.ads:1892:11: info: flow dependencies proved
 ar.ads:1893:22: info: postcondition proved (CVC4: 1 VC)

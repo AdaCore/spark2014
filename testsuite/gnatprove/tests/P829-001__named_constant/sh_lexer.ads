@@ -6,7 +6,7 @@ package Sh_Lexer is
      (T_NULL,
       T_WORD,         -- word token
       T_EOF,          -- end of file token
-      T_ASSIGNEMENT,  -- variable assignement token
+      T_ASSIGNMENT,   -- variable assignment token
 
       --  Operators
 

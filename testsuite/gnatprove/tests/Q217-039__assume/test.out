@@ -1,13 +1,12 @@
-assume_call.adb:4:15: medium: overflow check might fail (e.g. when X = Integer'Last and f1'Result = 0) [possible explanation: subprogram at line 2 should mention X in a precondition]
+assume_call.adb:4:15: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at assume_call.ads:3 should mention X in a precondition]
 assume_call.adb:7:14: warning: subprogram "Wrong_Pre" has no effect
 assume_call.adb:14:04: warning: analyzing unreferenced procedure "Caller"
 assume_call.adb:14:14: warning: subprogram "Caller" has no effect
 assume_call.adb:17:07: info: precondition proved (CVC4: 1 VC)
-assume_call.adb:17:18: info: initialization of "Z" proved
 assume_call.ads:4:19: info: postcondition proved (CVC4: 1 VC)
 assume_call.ads:4:33: info: overflow check proved (CVC4: 1 VC)
-
 max steps used for successful proof: 1
+
 
 
 
@@ -27,13 +26,13 @@ Assertions . . . . . . .
 Data Dependencies . . . . . . .
 Flow Dependencies . . . . . . .
 Functional Contracts 2 . . . 2 . .
-Initialization 1 1 . . . . .
+Initialization . . . . . . .
 LSP Verification . . . . . . .
 Non-Aliasing . . . . . . .
 Run-time Checks 2 . . . 1 . 1
 SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
 Summary of SPARK analysis
-Total 5 1 (20%) . . 3 (60%) . 1 (20%)
+Total 4 . . . 3 (75%) . 1 (25%)
 absence of run-time errors of Assume_Call fully established
 absence of run-time errors of Assume_Call.Caller depends on
 absence of run-time errors of Assume_Call.Wrong_Pre fully established

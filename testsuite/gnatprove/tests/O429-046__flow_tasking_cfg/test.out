@@ -4,50 +4,36 @@ foo.adb:15:22: info: postcondition proved (CVC4: 1 VC)
 foo.adb:41:18: info: range check proved (CVC4: 1 VC)
 foo.adb:43:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 foo.adb:43:14: info: nontermination of task proved (CVC4: 1 VC)
-foo.adb:50:14: medium: precondition might fail
+foo.adb:50:14: medium: precondition might fail, cannot prove B
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
-p.adb:16:23: info: initialization of "Cont" proved
-p.adb:17:27: info: initialization of "Tmp" proved
 p.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 p2.adb:5:24: warning: statement has no effect
 p2.adb:6:10: warning: initialization of "X" has no effect
-p2.adb:24:10: info: precondition proved (CVC4: 1 VC)
-p2.adb:29:10: info: precondition proved (CVC4: 1 VC)
-p2.adb:41:23: info: precondition proved (CVC4: 1 VC)
+p2.adb:24:10: info: precondition proved (Trivial: 1 VC)
+p2.adb:29:10: info: precondition proved (Trivial: 1 VC)
+p2.adb:41:23: info: precondition proved (Trivial: 1 VC)
 p2.ads:16:25: info: initialization of "X" proved
 p2.ads:24:30: info: initialization of "X" proved
 p2.ads:26:27: info: initialization of "Y" proved
-prot.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 prot.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
-prot.adb:19:35: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention Visible in a precondition]
-prot.adb:19:45: medium: overflow check might fail [possible explanation: subprogram at line 17 should mention X and Visible in a precondition]
+prot.adb:19:35: medium: overflow check might fail [possible explanation: subprogram at prot.ads:10 should mention Visible in a precondition]
+prot.adb:19:45: medium: overflow check might fail [possible explanation: subprogram at prot.ads:10 should mention X and Visible in a precondition]
 prot.adb:25:33: medium: overflow check might fail
 prot.adb:25:37: medium: overflow check might fail
-prot.adb:25:39: info: initialization of "Hidden" constituent of "State" proved
-prot.ads:5:04: info: initialization of "Visible" proved
+prot.ads:3:08: info: flow dependencies proved
 prot.ads:8:22: info: initialization of "X" proved
-prot.ads:12:13: info: initialization of "Hidden" constituent of "State" proved
-q.adb:16:23: info: initialization of "Cont" proved
-q.adb:17:27: info: initialization of "Tmp" proved
 q.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
-support.adb:5:29: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
+support.adb:5:29: medium: overflow check might fail [possible explanation: subprogram at support.ads:4 should mention X in a precondition]
 support.ads:11:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 support.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
-tasks.adb:4:04: info: initialization of "Hidden" constituent of "State" proved
 tasks.adb:5:04: info: initialization of "Hidden2" constituent of "State" proved
 tasks.adb:10:29: medium: overflow check might fail
 tasks.adb:17:27: medium: overflow check might fail
-tasks.ads:5:04: info: initialization of "Visible" proved
 tasks.ads:7:09: low: initialization of "Singleton_Task" must be mentioned in the Initializes contract of "Tasks" (SPARK RM 7.1.5(9))
 tasks.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 tasks.ads:9:14: medium: the task might terminate, which is not allowed in SPARK
-tasks.ads:11:14: info: initialization of "Visible" proved
 tasks.ads:11:14: medium: the task might terminate, which is not allowed in SPARK
 test.adb:6:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test.adb:8:33: info: range check proved (Interval)
 test.adb:8:36: info: division check proved (CVC4: 1 VC)
 test.adb:8:36: info: float overflow check proved (Interval)
-test.adb:11:15: warning: assuming "Put" has no effect on global items
-test.adb:11:15: warning: no Global contract available for "Put"
-test.adb:12:21: warning: assuming "Put" has no effect on global items
-test.adb:12:21: warning: no Global contract available for "Put"

@@ -1,2 +1,6 @@
 crash.adb:25:23: info: initialization of "R" proved
+crash.adb:26:09: info: data dependencies proved
+crash.adb:27:09: info: flow dependencies proved
 crash.adb:36:23: info: initialization of "B" proved
+crash.adb:37:09: info: data dependencies proved
+crash.adb:38:09: info: flow dependencies proved

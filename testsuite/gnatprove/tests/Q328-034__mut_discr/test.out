@@ -1,32 +1,26 @@
 input.adb:30:24: info: initialization of "C" proved
-input.adb:66:33: info: initialization of "Col" proved
 input.adb:66:33: info: loop invariant initialization proved (CVC4: 1 VC)
 input.adb:66:33: info: loop invariant preservation proved (CVC4: 1 VC)
 input.adb:66:41: info: overflow check proved (CVC4: 2 VC)
-input.adb:69:20: info: initialization of "Col" proved
 input.adb:69:24: info: range check proved (CVC4: 1 VC)
-input.adb:71:20: info: initialization of "Col" proved
 input.adb:71:28: info: range check proved (CVC4: 1 VC)
 input.adb:71:35: info: division check proved (CVC4: 1 VC)
-input.adb:75:14: info: initialization of "Col" proved
 input.adb:84:14: info: range check proved (CVC4: 4 VC)
 input.adb:144:18: info: index check proved (CVC4: 2 VC)
 input.adb:145:32: info: range check proved (CVC4: 1 VC)
 input.adb:220:35: info: range check proved (CVC4: 1 VC), in call inlined at input.adb:242, in call inlined at input.adb:254
+input.adb:232:07: info: initialization of "Current_Char" proved
+input.adb:232:07: info: initialization of "Current_Char" proved, in call inlined at input.adb:254
 input.adb:236:15: info: precondition proved (CVC4: 1 VC), in call inlined at input.adb:254
-input.adb:237:20: info: initialization of "Current_Char" proved
-input.adb:237:20: info: initialization of "Current_Char" proved, in call inlined at input.adb:254
+input.adb:251:07: info: initialization of "Start" proved
 input.adb:258:24: info: index check proved (CVC4: 4 VC)
 input.adb:260:35: info: range check proved (CVC4: 1 VC)
 input.adb:266:24: info: range check proved (CVC4: 4 VC)
-input.adb:266:30: info: initialization of "Start" proved
 input.adb:269:27: info: cannot unroll loop (too many loop iterations)
 input.adb:270:16: info: index check proved (CVC4: 2 VC)
-input.adb:270:56: info: initialization of "S" proved
 input.adb:270:59: info: index check proved (CVC4: 2 VC)
-input.adb:273:12: info: length check proved (CVC4: 4 VC)
-input.adb:273:15: info: initialization of "S" proved
-input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V = (others => '!')) [possible explanation: loop at line 269 should mention S in a loop invariant]
+input.adb:273:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+input.adb:273:17: low: range check might fail (e.g. when S'First = 1023 and S'Last = 1024 and V'First = 1 and V'Last = 2147483647) [possible explanation: loop at line 269 should mention S in a loop invariant]
 input.adb:273:22: info: range check proved (CVC4: 2 VC)
 input.adb:273:26: info: range check proved (CVC4: 1 VC)
 input.adb:273:34: info: overflow check proved (CVC4: 1 VC)
@@ -34,150 +28,74 @@ input.adb:273:37: info: range check proved (CVC4: 1 VC)
 input.adb:274:19: info: range check proved (CVC4: 1 VC)
 input.ads:9:25: info: initialization of "V" proved
 input.ads:9:41: info: initialization of "Size" proved
-input.ads:11:14: info: initialization of "Size" proved
 input.ads:11:14: info: postcondition proved (CVC4: 1 VC)
-input.ads:28:14: info: initialization of "First_Char" proved
 instructions.adb:19:28: info: unrolling loop
 instructions.adb:31:07: medium: exception might be raised
 instructions.adb:50:58: info: precondition proved (CVC4: 1 VC)
 instructions.adb:54:13: medium: exception might be raised
-screen_output.adb:25:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:25:07: warning: no Global contract available for "Put"
-screen_output.adb:26:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:26:07: warning: no Global contract available for "Put"
-screen_output.adb:28:10: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:28:10: warning: no Global contract available for "New_Line"
-screen_output.adb:42:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:42:07: warning: no Global contract available for "Put"
-screen_output.adb:43:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:43:07: warning: no Global contract available for "Put"
-screen_output.adb:44:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:44:07: warning: no Global contract available for "New_Line"
-screen_output.adb:53:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:53:07: warning: no Global contract available for "Put"
-screen_output.adb:54:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:54:07: warning: no Global contract available for "Put"
 screen_output.adb:54:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:55:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:55:07: warning: no Global contract available for "Put"
-screen_output.adb:56:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:56:07: warning: no Global contract available for "Put"
-screen_output.adb:57:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:57:07: warning: no Global contract available for "Put"
-screen_output.adb:58:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:58:07: warning: no Global contract available for "New_Line"
-screen_output.adb:69:10: info: initialization of "Pos" proved
-screen_output.adb:73:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:73:07: warning: no Global contract available for "Put"
-screen_output.adb:74:07: warning: assuming "Put_Line" has no effect on global items
-screen_output.adb:74:07: warning: no Global contract available for "Put_Line"
-screen_output.adb:76:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:76:07: warning: no Global contract available for "Put"
-screen_output.adb:77:21: info: initialization of "Pos" proved
 screen_output.adb:77:29: info: cannot unroll loop (too many loop iterations)
-screen_output.adb:78:10: warning: assuming "Put" has no effect on global items
-screen_output.adb:78:10: warning: no Global contract available for "Put"
-screen_output.adb:81:07: warning: assuming "Put_Line" has no effect on global items
-screen_output.adb:81:07: warning: no Global contract available for "Put_Line"
-screen_output.adb:82:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:82:07: warning: no Global contract available for "Put"
-screen_output.adb:83:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:83:07: warning: no Global contract available for "Put"
 screen_output.adb:83:46: info: range check proved (CVC4: 1 VC)
-screen_output.adb:83:53: low: range check might fail (e.g. when S = (1 => ':', others => ' ') and S'First = 1 and S'Last = 2147483645) [possible explanation: subprogram at line 65 should mention S and Input.Line_Num in a precondition]
-screen_output.adb:84:07: warning: assuming "New_Line" has no effect on global items
-screen_output.adb:84:07: warning: no Global contract available for "New_Line"
-screen_output.adb:93:07: warning: assuming "Put" has no effect on global items
-screen_output.adb:93:07: warning: no Global contract available for "Put"
-screen_output.adb:94:07: warning: assuming "Skip_Line" has no effect on global items
-screen_output.adb:94:07: warning: no Global contract available for "Skip_Line"
-screen_output.ads:7:14: warning: subprogram "Msg" has no effect
-screen_output.ads:11:14: warning: subprogram "Debug_Msg" has no effect
-screen_output.ads:15:14: warning: subprogram "Error_Msg" has no effect
-screen_output.ads:18:14: warning: subprogram "Syntax_Error" has no effect
-screen_output.ads:25:14: warning: subprogram "Pause" has no effect
+screen_output.adb:83:53: low: range check might fail (e.g. when S = (2 => ' ', others => ':') and S'First = 1 and S'Last = 2147483644) [possible explanation: subprogram at screen_output.ads:18 should mention S and Input.Line_Num in a precondition]
+sdc.adb:11:04: info: initialization of "File" proved
+sdc.adb:12:04: info: initialization of "T" proved
 sdc.adb:16:07: warning: assuming "Argument_Count" has no effect on global items
 sdc.adb:16:07: warning: no Global contract available for "Argument_Count"
-sdc.adb:17:07: warning: assuming "Open" has no effect on global items
-sdc.adb:17:07: warning: no Global contract available for "Open"
-sdc.adb:17:13: info: initialization of "File" proved
+sdc.adb:17:07: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: info: precondition proved (CVC4: 1 VC)
 sdc.adb:17:28: warning: assuming "Argument" has no effect on global items
 sdc.adb:17:28: warning: no Global contract available for "Argument"
-sdc.adb:19:07: warning: assuming "Set_Input" has no effect on global items
-sdc.adb:19:07: warning: no Global contract available for "Set_Input"
-sdc.adb:19:18: info: initialization of "File" proved
-sdc.adb:24:07: medium: precondition might fail (e.g. when Last = 200)
-sdc.adb:24:16: info: initialization of private part of "T" proved
-sdc.ads:24:11: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
-sdc.ads:24:11: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
+sdc.adb:22:07: medium: "input.line" might not be initialized after elaboration of main program "Sdc"
+sdc.adb:23:07: medium: "stack.tab" might not be initialized after elaboration of main program "Sdc"
+sdc.adb:23:07: medium: precondition might fail, cannot prove not Stack(Stack.full) (e.g. when Last = 200) [possible explanation: call at line 22 should mention V (for argument T) in a postcondition]
 stack.adb:31:10: info: raise statement proved unreachable (CVC4: 1 VC)
-stack.adb:34:46: low: range check might fail [possible explanation: precondition of subprogram at line 28 should mention V]
+stack.adb:34:46: low: range check might fail (e.g. when V = (E => 1)) [possible explanation: precondition of subprogram at stack.ads:18 should mention V]
 stack.adb:36:20: info: range check proved (CVC4: 1 VC)
 stack.adb:37:12: info: index check proved (CVC4: 2 VC)
 stack.adb:47:10: info: raise statement proved unreachable (CVC4: 1 VC)
 stack.adb:50:17: info: index check proved (CVC4: 2 VC)
 stack.adb:51:20: info: range check proved (CVC4: 1 VC)
-stack.adb:53:46: low: range check might fail
-stack.adb:53:66: info: initialization of "V.E" proved
+stack.adb:53:46: low: range check might fail (e.g. when V = (E => 1))
 stack.adb:63:10: info: raise statement proved unreachable (CVC4: 1 VC)
 stack.adb:66:19: info: index check proved (CVC4: 2 VC)
 stack.adb:75:34: info: cannot unroll loop (too many loop iterations)
 stack.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:20:30: info: overflow check proved (CVC4: 1 VC)
-stack.ads:24:19: info: initialization of "V.E" proved
+stack.ads:24:19: info: initialization of "V" proved
 stack.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 stack.ads:26:30: info: overflow check proved (CVC4: 1 VC)
-stack.ads:35:14: info: initialization of "Last" proved
-stack.ads:43:14: warning: subprogram "View" has no effect
+tokens.adb:14:07: info: initialization of "Word_Buffer" proved
+tokens.adb:15:07: info: initialization of "Word_Size" proved
 tokens.adb:21:15: info: precondition proved (CVC4: 1 VC)
-tokens.adb:24:30: info: initialization of "Word_Buffer" proved
 tokens.adb:24:30: info: range check proved (CVC4: 4 VC)
-tokens.adb:24:48: info: initialization of "Word_Size" proved
 tokens.adb:32:31: info: index check proved (CVC4: 22 VC)
-tokens.adb:35:21: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?) and V'Constrained = True)
-tokens.adb:35:64: info: initialization of "Word" proved
-tokens.adb:39:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
-tokens.adb:39:73: info: initialization of "Word" proved
-tokens.adb:44:24: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?) and V'Constrained = True)
-tokens.adb:44:67: info: initialization of "Word" proved
-tokens.adb:47:24: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
-tokens.adb:48:67: info: initialization of "Word" proved
-tokens.adb:54:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?) and V'Constrained = True)
-tokens.adb:55:65: info: initialization of "Word" proved
+tokens.adb:35:21: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?)) [possible explanation: loop at line 17 should mention V in a loop invariant]
+tokens.adb:39:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?)) [possible explanation: loop at line 17 should mention V in a loop invariant]
+tokens.adb:44:24: medium: discriminant check might fail (e.g. when V = (Kind => Op, others => ?)) [possible explanation: loop at line 17 should mention V in a loop invariant]
+tokens.adb:47:24: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?)) [possible explanation: loop at line 17 should mention V in a loop invariant]
+tokens.adb:54:21: medium: discriminant check might fail (e.g. when V = (Kind => Val, others => ?)) [possible explanation: loop at line 17 should mention V in a loop invariant]
 tokens.adb:59:19: medium: exception might be raised
 tokens.adb:74:19: info: precondition proved (CVC4: 1 VC)
 tokens.adb:74:30: info: discriminant check proved (CVC4: 1 VC)
-tokens.adb:77:30: medium: precondition might fail (e.g. when Last = 0)
+tokens.adb:77:30: medium: precondition might fail, cannot prove Size >= 2 (e.g. when Last = 0)
 tokens.adb:77:41: info: discriminant check proved (CVC4: 1 VC)
 tokens.adb:80:36: info: discriminant check proved (CVC4: 1 VC)
-tokens.ads:19:20: info: initialization of "V.Instr" proved
-tokens.ads:19:20: info: initialization of "V.Op" proved
-tokens.ads:19:20: info: initialization of "V.Val.E" proved
+tokens.ads:19:20: info: initialization of "V" proved
 tokens.ads:25:36: warning: unreachable branch (CVC4: 1 VC)
 values-operations.adb:28:10: medium: exception might be raised
+values-operations.adb:37:07: info: initialization of "V2" proved
+values-operations.adb:38:07: info: initialization of "V1" proved
+values-operations.adb:40:07: info: initialization of "Result" proved
 values-operations.adb:43:12: info: precondition proved (CVC4: 1 VC)
 values-operations.adb:44:12: info: precondition proved (CVC4: 1 VC)
-values-operations.adb:47:13: info: initialization of "V1.E" proved
-values-operations.adb:51:13: info: initialization of "V2.E" proved
-values-operations.adb:55:13: info: initialization of "V2.E" proved
-values-operations.adb:63:23: info: initialization of "V1.E" proved
 values-operations.adb:63:28: info: overflow check proved (CVC4: 1 VC)
-values-operations.adb:63:30: info: initialization of "V2.E" proved
-values-operations.adb:66:23: info: initialization of "V1.E" proved
 values-operations.adb:66:28: info: division check proved (CVC4: 1 VC)
-values-operations.adb:66:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => Integer'First) and V2 = (E => -1))
-values-operations.adb:66:30: info: initialization of "V2.E" proved
-values-operations.adb:69:23: info: initialization of "V1.E" proved
-values-operations.adb:69:28: medium: overflow check might fail (e.g. when Result = 0 and V1 = (E => 3) and V2 = (E => -3))
-values-operations.adb:69:30: info: initialization of "V2.E" proved
-values-operations.adb:72:23: info: initialization of "V1.E" proved
+values-operations.adb:66:28: medium: overflow check might fail (e.g. when V1 = (E => Integer'First) and V2 = (E => -1)) [possible explanation: postcondition of call at line 44 should mention V (for argument V1)]
+values-operations.adb:69:28: medium: overflow check might fail (e.g. when V1 = (E => 2) and V2 = (E => -2)) [possible explanation: postcondition of call at line 44 should mention V (for argument V1)]
 values-operations.adb:72:28: info: overflow check proved (CVC4: 1 VC)
-values-operations.adb:72:30: info: initialization of "V2.E" proved
 values-operations.adb:78:12: info: precondition proved (CVC4: 1 VC)
-values-operations.adb:78:31: info: initialization of "Result" proved
 values.adb:14:12: info: precondition proved (CVC4: 1 VC)
+values.adb:22:07: info: initialization of "Int_Val" proved
+values.adb:24:07: info: initialization of "Kind" proved
 values.adb:27:41: warning: unused assignment to "Real_Val"
-values.adb:29:10: info: initialization of "Kind" proved
 values.adb:30:10: medium: exception might be raised
-values.adb:33:26: info: initialization of "Int_Val" proved

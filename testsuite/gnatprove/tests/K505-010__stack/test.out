@@ -1,10 +1,8 @@
-error.ads:7:14: info: initialization of "MyState" proved
-error.ads:9:14: info: initialization of "MyState" proved
-stacks.adb:10:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 3 should mention S in a precondition]
-stacks.adb:11:16: medium: array index check might fail (e.g. when S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 3 should mention S in a precondition]
+stacks.adb:10:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
+stacks.adb:11:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CodePeer)
 stacks.ads:21:20: info: postcondition proved (CVC4: 1 VC)
-stacks.ads:21:40: medium: overflow check might fail (e.g. when S = (Max => 1, Top => Natural'Last, Data => (others => 0)))
+stacks.ads:21:40: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.ads:34:07: info: range check proved (CVC4: 2 VC)
-stacks.ads:34:37: info: length check proved (CVC4: 4 VC)
-stacks.ads:43:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: subprogram at line 43 should mention S in a precondition]
+stacks.ads:34:37: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+stacks.ads:43:58: medium: array index check might fail (e.g. when S = (Max => 1, Top => 2, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)

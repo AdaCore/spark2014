@@ -1,114 +1,79 @@
-actuator.ads:4:14: info: initialization of "Output_Ext" proved
-actuator.ads:7:14: info: initialization of "Output_Ext" proved
 advancebutton-raw.ads:5:20: info: initialization of "Pressed" proved
-advancebutton.adb:35:10: info: initialization of "PressedNow" proved
-advancebutton.adb:35:29: info: initialization of "PressedBefore" proved
-advancebutton.adb:37:24: info: initialization of "TimePressed" proved
-advancebutton.adb:53:21: info: initialization of "StillPressed" proved
-advancebutton.adb:55:10: info: initialization of "StillPressed" proved
-advancebutton.adb:56:13: info: initialization of "TimeNow" proved
+advancebutton.adb:26:07: info: initialization of "PressedBefore" proved
+advancebutton.adb:27:07: info: initialization of "PressedNow" proved
+advancebutton.adb:28:07: info: initialization of "TimePressed" proved
+advancebutton.adb:48:07: info: initialization of "StillPressed" proved
+advancebutton.adb:49:07: info: initialization of "TimeNow" proved
 advancebutton.adb:57:34: info: range check proved (CVC4: 1 VC)
-advancebutton.adb:72:21: info: initialization of "Pressed" proved
-advancebutton.adb:73:21: info: initialization of "Pressed" proved
-advancebutton.ads:25:14: info: initialization of "AdvanceMode" proved
-advancebutton.ads:27:14: info: initialization of "AdvanceMode" proved
+advancebutton.adb:69:07: info: initialization of "Pressed" proved
 advancebutton.ads:29:27: info: initialization of "Result" proved
-advancebutton.ads:32:14: info: initialization of "AdvPressed" proved
 advancebutton.ads:33:26: info: initialization of "Result" proved
-advancebutton.ads:37:14: info: initialization of "AdvPressed" proved
 advancebutton.ads:37:26: info: initialization of "Result" proved
 clock.ads:6:19: info: initialization of "Time" proved
-display.ads:8:14: info: initialization of "Output_Ext" proved
-heatingsystem_dfa.adb:11:11: info: initialization of "display.output_ext" proved
-heatingsystem_dfa.adb:11:11: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:11:11: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
-heatingsystem_dfa.adb:26:14: info: initialization of "display.output_ext" proved
+heatingsystem_dfa.adb:22:04: info: initialization of "OnOffTime" proved
+heatingsystem_dfa.adb:23:04: info: initialization of "ClockOffset" proved
+heatingsystem_dfa.adb:24:04: info: initialization of "HeatingIsOn" proved
+heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved
+heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114
+heatingsystem_dfa.adb:30:07: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:31:07: info: initialization of "Hour" proved
+heatingsystem_dfa.adb:31:07: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114
+heatingsystem_dfa.adb:31:07: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:32:07: info: initialization of "Minute" proved
+heatingsystem_dfa.adb:32:07: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114
+heatingsystem_dfa.adb:32:07: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:35:20: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:36:23: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:36:42: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:38:44: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved
-heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114
-heatingsystem_dfa.adb:39:39: info: initialization of "Hour" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:39:44: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:40:46: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved
-heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114
-heatingsystem_dfa.adb:41:39: info: initialization of "Minute" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:41:46: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved
-heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114
-heatingsystem_dfa.adb:42:22: info: initialization of "TheDisplay" proved, in call inlined at heatingsystem_dfa.adb:114, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved
+heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:49:07: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:50:07: info: initialization of "FastAdvance" proved
+heatingsystem_dfa.adb:50:07: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:50:07: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:50:07: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:50:07: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:51:07: info: initialization of "ChangeToSlowMode" proved
+heatingsystem_dfa.adb:51:07: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:51:07: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:51:07: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:51:07: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved
+heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105
+heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110
+heatingsystem_dfa.adb:52:07: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed"
 heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105
 heatingsystem_dfa.adb:57:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved
-heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:58:16: info: initialization of "SlowAdvance" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:59:25: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:59:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:59:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:59:49: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:59:49: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved
-heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:63:16: info: initialization of "ChangeToFastMode" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed"
 heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:105
 heatingsystem_dfa.adb:68:26: warning: unused assignment to "advancebutton.advpressed", in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved
-heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:69:16: info: initialization of "FastAdvance" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:70:25: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:70:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:70:25: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:70:54: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved
-heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105
-heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:105, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:110
-heatingsystem_dfa.adb:74:16: info: initialization of "ChangeToSlowMode" proved, in call inlined at heatingsystem_dfa.adb:110, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:86:13: info: initialization of "CurrentTime" proved, in call inlined at heatingsystem_dfa.adb:169
-heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:101
-heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:106
-heatingsystem_dfa.adb:86:13: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:86:17: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:86:17: info: initialization of "ClockOffset" proved, in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:101, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:106, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:86:30: info: division check proved (CVC4: 1 VC), in call inlined at heatingsystem_dfa.adb:169
-heatingsystem_dfa.adb:91:14: info: initialization of "display.output_ext" proved
-heatingsystem_dfa.adb:109:22: info: initialization of "OnOffTime" proved, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved
+heatingsystem_dfa.adb:93:07: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
+heatingsystem_dfa.adb:94:07: info: initialization of "Timer" proved
+heatingsystem_dfa.adb:94:07: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:109:32: info: index check proved (CVC4: 2 VC), in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:109:32: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:109:32: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
 heatingsystem_dfa.adb:111:23: info: index check proved (CVC4: 2 VC), in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:111:23: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:111:23: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:111:39: info: initialization of "OnOffTime" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:111:39: info: initialization of "SwitchPosition" proved
-heatingsystem_dfa.adb:111:39: info: initialization of "SwitchPosition" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:111:42: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:111:42: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:114:07: info: initialization of "Timer" proved
-heatingsystem_dfa.adb:114:07: info: initialization of "Timer" proved, in call inlined at heatingsystem_dfa.adb:200
-heatingsystem_dfa.adb:153:13: info: initialization of "MayOperate" proved, in call inlined at heatingsystem_dfa.adb:185
-heatingsystem_dfa.adb:155:16: info: initialization of "AboveTemp" proved, in call inlined at heatingsystem_dfa.adb:185
-heatingsystem_dfa.adb:172:12: info: initialization of "ModeSetting" proved
-heatingsystem_dfa.adb:178:37: info: initialization of "CurrentTime" proved
-heatingsystem_dfa.adb:201:07: info: initialization of "ClockOffset" proved
-heatingsystem_dfa.adb:201:07: info: initialization of "HeatingIsOn" proved
-heatingsystem_dfa.adb:201:07: info: initialization of "OnOffTime" proved
-indicator.ads:3:14: info: initialization of "Output_Ext" proved
-indicator.ads:6:14: info: initialization of "Output_Ext" proved
+heatingsystem_dfa.adb:119:07: info: initialization of "MayOperate" proved
+heatingsystem_dfa.adb:120:07: info: initialization of "AboveTemp" proved
+heatingsystem_dfa.adb:121:07: info: initialization of "CurrentTime" proved
+heatingsystem_dfa.adb:122:07: info: initialization of "ModeSetting" proved
+heatingsystem_dfa.adb:201:07: medium: "actuator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
+heatingsystem_dfa.adb:201:07: medium: "indicator.output_ext" might not be initialized after elaboration of main program "HeatingSystem_DFA"
 modeswitch.ads:5:20: info: initialization of "Value" proved
 programswitch.ads:5:20: info: initialization of "Value" proved
 thermostat.ads:15:25: info: initialization of "Result" proved

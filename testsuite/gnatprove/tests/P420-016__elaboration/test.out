@@ -1,2 +1,2 @@
-main.adb:7:19: medium: assertion might fail, cannot prove Globs.x (e.g. when X = False) [possible explanation: subprogram at line 3 should mention X in a precondition]
+main.adb:7:19: medium: assertion might fail, cannot prove Globs.x [possible explanation: subprogram at line 3 should mention X in a precondition]
 main.adb:8:19: medium: assertion might fail, cannot prove Globs.y (e.g. when Y = False) [possible explanation: subprogram at line 3 should mention Y in a precondition]

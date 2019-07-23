@@ -1,4 +1,1 @@
-use_logging_classwide.adb:3:34: info: initialization of "Log" proved
-use_logging_classwide.adb:3:34: info: initialization of extension of "Log" proved
 use_logging_classwide.adb:8:04: high: extension of "Log" is not initialized
-use_logging_classwide.adb:8:04: info: initialization of "Log" proved

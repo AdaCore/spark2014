@@ -1,3 +1,69 @@
+sensfusion6_pack.adb:44:07: info: initialization of "Recip_Norm" proved
+sensfusion6_pack.adb:44:07: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:45:07: info: initialization of "S0" proved
+sensfusion6_pack.adb:45:07: info: initialization of "S0" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:46:07: info: initialization of "S1" proved
+sensfusion6_pack.adb:46:07: info: initialization of "S1" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:47:07: info: initialization of "S2" proved
+sensfusion6_pack.adb:47:07: info: initialization of "S2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:48:07: info: initialization of "S3" proved
+sensfusion6_pack.adb:48:07: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:49:07: info: initialization of "Q_Dot1" proved
+sensfusion6_pack.adb:49:07: info: initialization of "Q_Dot1" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:50:07: info: initialization of "Q_Dot2" proved
+sensfusion6_pack.adb:50:07: info: initialization of "Q_Dot2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:51:07: info: initialization of "Q_Dot3" proved
+sensfusion6_pack.adb:51:07: info: initialization of "Q_Dot3" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:52:07: info: initialization of "Q_Dot4" proved
+sensfusion6_pack.adb:52:07: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:53:07: info: initialization of "Q0_X2" proved
+sensfusion6_pack.adb:53:07: info: initialization of "Q0_X2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:54:07: info: initialization of "Q1_X2" proved
+sensfusion6_pack.adb:54:07: info: initialization of "Q1_X2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:55:07: info: initialization of "Q2_X2" proved
+sensfusion6_pack.adb:55:07: info: initialization of "Q2_X2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:56:07: info: initialization of "Q3_X2" proved
+sensfusion6_pack.adb:56:07: info: initialization of "Q3_X2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:57:07: info: initialization of "Q0_X4" proved
+sensfusion6_pack.adb:57:07: info: initialization of "Q0_X4" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:58:07: info: initialization of "Q1_X4" proved
+sensfusion6_pack.adb:58:07: info: initialization of "Q1_X4" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:59:07: info: initialization of "Q2_X4" proved
+sensfusion6_pack.adb:59:07: info: initialization of "Q2_X4" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:60:07: info: initialization of "Q1_X8" proved
+sensfusion6_pack.adb:60:07: info: initialization of "Q1_X8" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:61:07: info: initialization of "Q2_X8" proved
+sensfusion6_pack.adb:61:07: info: initialization of "Q2_X8" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:62:07: info: initialization of "Q0_Q0" proved
+sensfusion6_pack.adb:62:07: info: initialization of "Q0_Q0" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:63:07: info: initialization of "Q1_Q1" proved
+sensfusion6_pack.adb:63:07: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:64:07: info: initialization of "Q2_Q2" proved
+sensfusion6_pack.adb:64:07: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:65:07: info: initialization of "Q3_Q3" proved
+sensfusion6_pack.adb:65:07: info: initialization of "Q3_Q3" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:66:07: info: initialization of "Norm_Ax" proved
+sensfusion6_pack.adb:66:07: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:67:07: info: initialization of "Norm_Ay" proved
+sensfusion6_pack.adb:67:07: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:68:07: info: initialization of "Norm_Az" proved
+sensfusion6_pack.adb:68:07: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:69:07: info: initialization of "Q0_Tmp" proved
+sensfusion6_pack.adb:69:07: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:70:07: info: initialization of "Q1_Tmp" proved
+sensfusion6_pack.adb:70:07: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:71:07: info: initialization of "Q2_Tmp" proved
+sensfusion6_pack.adb:71:07: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:72:07: info: initialization of "Q3_Tmp" proved
+sensfusion6_pack.adb:72:07: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:73:07: info: initialization of "Ax_Tmp" proved
+sensfusion6_pack.adb:73:07: info: initialization of "Ax_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:74:07: info: initialization of "Ay_Tmp" proved
+sensfusion6_pack.adb:74:07: info: initialization of "Ay_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:75:07: info: initialization of "Az_Tmp" proved
+sensfusion6_pack.adb:75:07: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:76:07: info: initialization of "Square_Sum" proved
+sensfusion6_pack.adb:76:07: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:28: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:79:33: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
@@ -22,33 +88,19 @@ sensfusion6_pack.adb:82:32: info: float overflow check proved (Interval), in cal
 sensfusion6_pack.adb:82:37: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:42: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:82:47: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:24: info: initialization of "Ax_Tmp" proved
-sensfusion6_pack.adb:91:24: info: initialization of "Ax_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:42: info: initialization of "Ay_Tmp" proved
-sensfusion6_pack.adb:91:42: info: initialization of "Ay_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:49: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:58: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:58: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:91:60: info: initialization of "Az_Tmp" proved
-sensfusion6_pack.adb:91:60: info: initialization of "Az_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:91:67: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:92:24: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:92:34: info: initialization of "Square_Sum" proved
-sensfusion6_pack.adb:92:34: info: initialization of "Square_Sum" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:93:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:93:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:93:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:94:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:94:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:94:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:94:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:95:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:95:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:95:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:98:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:99:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:100:23: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
@@ -62,238 +114,104 @@ sensfusion6_pack.adb:107:22: info: float overflow check proved (Interval), in ca
 sensfusion6_pack.adb:108:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:109:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:110:22: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:16: info: initialization of "Q0_X4" proved
-sensfusion6_pack.adb:113:16: info: initialization of "Q0_X4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:22: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:24: info: initialization of "Q2_Q2" proved
-sensfusion6_pack.adb:113:24: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:30: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:32: info: initialization of "Q2_X2" proved
-sensfusion6_pack.adb:113:32: info: initialization of "Q2_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:38: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:40: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:113:40: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:48: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:56: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:58: info: initialization of "Q1_Q1" proved
-sensfusion6_pack.adb:113:58: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:64: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:66: info: initialization of "Q1_X2" proved
-sensfusion6_pack.adb:113:66: info: initialization of "Q1_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:113:72: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:113:74: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:113:74: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:114:16: info: initialization of "Q1_X4" proved
-sensfusion6_pack.adb:114:16: info: initialization of "Q1_X4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:22: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:114:24: info: initialization of "Q3_Q3" proved
-sensfusion6_pack.adb:114:24: info: initialization of "Q3_Q3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:30: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:114:32: info: initialization of "Q3_X2" proved
-sensfusion6_pack.adb:114:32: info: initialization of "Q3_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:38: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:114:40: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:114:40: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:48: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:54: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:114:56: info: initialization of "Q0_Q0" proved
-sensfusion6_pack.adb:114:56: info: initialization of "Q0_Q0" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:62: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:114:67: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:12: info: initialization of "Q0_X2" proved
-sensfusion6_pack.adb:115:12: info: initialization of "Q0_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:18: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:20: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:115:20: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:36: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:38: info: initialization of "Q1_X8" proved
-sensfusion6_pack.adb:115:38: info: initialization of "Q1_X8" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:44: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:46: info: initialization of "Q1_Q1" proved
-sensfusion6_pack.adb:115:46: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:52: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:60: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:62: info: initialization of "Q2_Q2" proved
-sensfusion6_pack.adb:115:62: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:68: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:115:76: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:115:78: info: initialization of "Norm_Az" proved
-sensfusion6_pack.adb:115:78: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:116:22: info: initialization of "Q0_Q0" proved
-sensfusion6_pack.adb:116:22: info: initialization of "Q0_Q0" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:33: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:116:35: info: initialization of "Q0_X2" proved
-sensfusion6_pack.adb:116:35: info: initialization of "Q0_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:41: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:116:43: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:116:43: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:51: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:116:53: info: initialization of "Q2_X4" proved
-sensfusion6_pack.adb:116:53: info: initialization of "Q2_X4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:59: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:116:61: info: initialization of "Q3_Q3" proved
-sensfusion6_pack.adb:116:61: info: initialization of "Q3_Q3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:116:67: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:12: info: initialization of "Q3_X2" proved
-sensfusion6_pack.adb:117:12: info: initialization of "Q3_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:18: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:20: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:117:20: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:36: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:38: info: initialization of "Q2_X8" proved
-sensfusion6_pack.adb:117:38: info: initialization of "Q2_X8" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:44: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:46: info: initialization of "Q1_Q1" proved
-sensfusion6_pack.adb:117:46: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:52: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:60: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:62: info: initialization of "Q2_Q2" proved
-sensfusion6_pack.adb:117:62: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:68: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:117:76: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:117:78: info: initialization of "Norm_Az" proved
-sensfusion6_pack.adb:117:78: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:22: info: initialization of "Q1_Q1" proved
-sensfusion6_pack.adb:118:22: info: initialization of "Q1_Q1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:28: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:33: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:35: info: initialization of "Q1_X2" proved
-sensfusion6_pack.adb:118:35: info: initialization of "Q1_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:41: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:43: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:118:43: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:51: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:57: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:59: info: initialization of "Q2_Q2" proved
-sensfusion6_pack.adb:118:59: info: initialization of "Q2_Q2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:65: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:70: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:72: info: initialization of "Q2_X2" proved
-sensfusion6_pack.adb:118:72: info: initialization of "Q2_X2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:118:78: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:118:80: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:118:80: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:24: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:121:34: info: initialization of "S0" proved
-sensfusion6_pack.adb:121:34: info: initialization of "S0" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:37: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:42: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:121:44: info: initialization of "S1" proved
-sensfusion6_pack.adb:121:44: info: initialization of "S1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:47: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:52: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:121:54: info: initialization of "S2" proved
-sensfusion6_pack.adb:121:54: info: initialization of "S2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:57: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:62: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:121:64: info: initialization of "S3" proved
-sensfusion6_pack.adb:121:64: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:121:67: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:122:16: info: initialization of "S0" proved
-sensfusion6_pack.adb:122:16: info: initialization of "S0" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:122:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:122:21: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:122:21: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:123:16: info: initialization of "S1" proved
-sensfusion6_pack.adb:123:16: info: initialization of "S1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:123:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:123:21: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:123:21: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:124:16: info: initialization of "S2" proved
-sensfusion6_pack.adb:124:16: info: initialization of "S2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:124:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:124:21: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:124:21: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:125:16: info: initialization of "S3" proved
-sensfusion6_pack.adb:125:16: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:125:19: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:125:21: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:125:21: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:128:20: info: initialization of "Q_Dot1" proved
-sensfusion6_pack.adb:128:20: info: initialization of "Q_Dot1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:128:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:128:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:128:36: info: initialization of "S0" proved
-sensfusion6_pack.adb:128:36: info: initialization of "S0" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:129:20: info: initialization of "Q_Dot2" proved
-sensfusion6_pack.adb:129:20: info: initialization of "Q_Dot2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:129:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:129:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:129:36: info: initialization of "S1" proved
-sensfusion6_pack.adb:129:36: info: initialization of "S1" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:130:20: info: initialization of "Q_Dot3" proved
-sensfusion6_pack.adb:130:20: info: initialization of "Q_Dot3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:130:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:130:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:130:36: info: initialization of "S2" proved
-sensfusion6_pack.adb:130:36: info: initialization of "S2" proved, in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:131:20: info: initialization of "Q_Dot4" proved
-sensfusion6_pack.adb:131:20: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:131:27: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:131:34: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:131:36: info: initialization of "S3" proved
-sensfusion6_pack.adb:131:36: info: initialization of "S3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:135:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:135:22: info: initialization of "Q_Dot1" proved
-sensfusion6_pack.adb:135:22: info: initialization of "Q_Dot1" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:135:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:136:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:136:22: info: initialization of "Q_Dot2" proved
-sensfusion6_pack.adb:136:22: info: initialization of "Q_Dot2" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:136:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:137:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:137:22: info: initialization of "Q_Dot3" proved
-sensfusion6_pack.adb:137:22: info: initialization of "Q_Dot3" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:137:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:138:20: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:138:22: info: initialization of "Q_Dot4" proved
-sensfusion6_pack.adb:138:22: info: initialization of "Q_Dot4" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:138:29: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:141:21: info: precondition proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:142:10: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:142:10: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:26: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:142:28: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:142:28: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:35: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:44: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:142:46: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:142:46: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:53: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:62: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:142:64: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:142:64: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:142:71: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:143:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:144:10: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:144:10: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:144:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:144:19: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:144:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:145:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:146:10: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:146:10: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:146:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:146:19: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:146:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:147:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:148:10: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:148:10: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:148:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:148:19: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:148:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:149:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:150:10: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:150:17: info: float overflow check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:265
-sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:150:19: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
+sensfusion6_pack.adb:161:07: info: initialization of "Recip_Norm" proved
+sensfusion6_pack.adb:161:07: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:162:07: info: initialization of "Norm_Ax" proved
+sensfusion6_pack.adb:162:07: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:163:07: info: initialization of "Norm_Ay" proved
+sensfusion6_pack.adb:163:07: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:164:07: info: initialization of "Norm_Az" proved
+sensfusion6_pack.adb:164:07: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:35: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:40: info: division check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:166:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
@@ -313,218 +231,109 @@ sensfusion6_pack.adb:173:35: info: float overflow check proved (Interval), in ca
 sensfusion6_pack.adb:173:40: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:46: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:173:51: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:189:24: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:174:07: info: initialization of "Half_Ex" proved
+sensfusion6_pack.adb:174:07: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:175:07: info: initialization of "Half_Ey" proved
+sensfusion6_pack.adb:175:07: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:176:07: info: initialization of "Half_Ez" proved
+sensfusion6_pack.adb:176:07: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:177:07: info: initialization of "Q0_Tmp" proved
+sensfusion6_pack.adb:177:07: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:178:07: info: initialization of "Q1_Tmp" proved
+sensfusion6_pack.adb:178:07: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:179:07: info: initialization of "Q2_Tmp" proved
+sensfusion6_pack.adb:179:07: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:180:07: info: initialization of "Q3_Tmp" proved
+sensfusion6_pack.adb:180:07: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:189:24: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:16: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:21: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:26: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:36: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:191:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:191:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:192:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:192:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:193:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:193:36: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:197:22: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:197:22: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:197:32: info: initialization of "Half_Vz" proved
-sensfusion6_pack.adb:197:32: info: initialization of "Half_Vz" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:197:42: info: initialization of "Norm_Az" proved
-sensfusion6_pack.adb:197:42: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:197:52: info: initialization of "Half_Vy" proved
-sensfusion6_pack.adb:197:52: info: initialization of "Half_Vy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:198:22: info: initialization of "Norm_Az" proved
-sensfusion6_pack.adb:198:22: info: initialization of "Norm_Az" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:198:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:198:32: info: initialization of "Half_Vx" proved
-sensfusion6_pack.adb:198:32: info: initialization of "Half_Vx" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:198:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:198:42: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:198:42: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:198:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:198:52: info: initialization of "Half_Vz" proved
-sensfusion6_pack.adb:198:52: info: initialization of "Half_Vz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:199:22: info: initialization of "Norm_Ax" proved
-sensfusion6_pack.adb:199:22: info: initialization of "Norm_Ax" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:199:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:199:32: info: initialization of "Half_Vy" proved
-sensfusion6_pack.adb:199:32: info: initialization of "Half_Vy" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:199:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:199:42: info: initialization of "Norm_Ay" proved
-sensfusion6_pack.adb:199:42: info: initialization of "Norm_Ay" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:199:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:199:52: info: initialization of "Half_Vx" proved
-sensfusion6_pack.adb:199:52: info: initialization of "Half_Vx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:53: info: initialization of "Half_Ex" proved
-sensfusion6_pack.adb:203:53: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:203:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:53: info: initialization of "Half_Ey" proved
-sensfusion6_pack.adb:204:53: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:204:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:53: info: initialization of "Half_Ez" proved
-sensfusion6_pack.adb:205:53: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:205:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:206:23: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:206:23: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:206:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:207:23: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:207:23: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:207:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:208:23: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:208:23: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:208:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:216:20: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:216:20: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:216:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:216:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:216:38: info: initialization of "Half_Ex" proved
-sensfusion6_pack.adb:216:38: info: initialization of "Half_Ex" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:217:20: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:217:20: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:217:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:217:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:217:38: info: initialization of "Half_Ey" proved
-sensfusion6_pack.adb:217:38: info: initialization of "Half_Ey" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:218:20: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:218:20: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:218:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:218:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved
-sensfusion6_pack.adb:218:38: info: initialization of "Half_Ez" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:222:17: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:203:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBx and Two_Ki in a precondition]
+sensfusion6_pack.adb:203:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:203:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:204:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBy and Two_Ki in a precondition]
+sensfusion6_pack.adb:204:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:204:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:205:42: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBz and Two_Ki in a precondition]
+sensfusion6_pack.adb:205:51: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:205:61: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Ki in a precondition]
+sensfusion6_pack.adb:206:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBx in a precondition]
+sensfusion6_pack.adb:207:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBy in a precondition]
+sensfusion6_pack.adb:208:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Integral_FBz in a precondition]
+sensfusion6_pack.adb:216:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:216:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:217:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:217:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:218:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
+sensfusion6_pack.adb:218:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Two_Kp in a precondition]
 sensfusion6_pack.adb:222:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:222:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:223:17: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:223:17: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:223:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:224:17: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:24: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:224:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved
-sensfusion6_pack.adb:226:24: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:226:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q0 and Q3 in a precondition]
 sensfusion6_pack.adb:226:27: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:29: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:226:29: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:36: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:38: info: initialization of "Qc" proved
-sensfusion6_pack.adb:226:38: info: initialization of "Qc" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:226:41: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:43: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:226:43: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:55: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:226:57: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:226:57: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:23: info: initialization of "Qa" proved
-sensfusion6_pack.adb:227:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:226:50: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:226:55: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:227:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q1 and Q3 in a precondition]
 sensfusion6_pack.adb:227:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:28: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:227:28: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:227:35: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:37: info: initialization of "Qc" proved
-sensfusion6_pack.adb:227:37: info: initialization of "Qc" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:227:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:42: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:227:42: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:227:56: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:227:56: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:23: info: initialization of "Qa" proved
-sensfusion6_pack.adb:228:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:227:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:227:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:228:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q2 and Q3 in a precondition]
 sensfusion6_pack.adb:228:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:28: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:228:28: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:228:35: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:37: info: initialization of "Qb" proved
-sensfusion6_pack.adb:228:37: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:228:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:42: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:228:42: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:228:56: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:228:56: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:23: info: initialization of "Qa" proved
-sensfusion6_pack.adb:229:23: info: initialization of "Qa" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:228:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:228:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
+sensfusion6_pack.adb:229:20: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258 [possible explanation: subprogram at sensfusion6_pack.ads:17 should mention Q3 in a precondition]
 sensfusion6_pack.adb:229:26: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:28: info: initialization of "Rad_Gz" proved
-sensfusion6_pack.adb:229:28: info: initialization of "Rad_Gz" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:35: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:37: info: initialization of "Qb" proved
-sensfusion6_pack.adb:229:37: info: initialization of "Qb" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:42: info: initialization of "Rad_Gy" proved
-sensfusion6_pack.adb:229:42: info: initialization of "Rad_Gy" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:51: info: initialization of "Qc" proved
-sensfusion6_pack.adb:229:51: info: initialization of "Qc" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:229:54: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:229:56: info: initialization of "Rad_Gx" proved
-sensfusion6_pack.adb:229:56: info: initialization of "Rad_Gx" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:232:21: medium: precondition might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:232:31: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:232:31: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:232:21: medium: precondition might fail, cannot prove X >= Float'succ, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:38: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:47: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:232:49: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:232:49: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:56: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:232:65: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:233:33: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:233:33: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:233:51: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:58: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved
-sensfusion6_pack.adb:234:23: info: initialization of "Q0_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:234:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:234:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved
-sensfusion6_pack.adb:237:23: info: initialization of "Q1_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:237:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:237:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved
-sensfusion6_pack.adb:240:23: info: initialization of "Q2_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:240:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:240:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved
-sensfusion6_pack.adb:243:23: info: initialization of "Q3_Tmp" proved, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:243:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved
-sensfusion6_pack.adb:243:32: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:258:25: info: analyzing call to "Mahony_Update_Q" in context
+sensfusion6_pack.adb:279:07: info: initialization of "Grav_X" proved
+sensfusion6_pack.adb:280:07: info: initialization of "Grav_Y" proved
+sensfusion6_pack.adb:281:07: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:284:21: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:284:27: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:284:32: info: float overflow check proved (Interval)
@@ -540,7 +349,6 @@ sensfusion6_pack.adb:286:35: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:286:40: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:286:45: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:286:50: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:288:27: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:291:21: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:291:27: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:291:32: info: float overflow check proved (Interval)
@@ -556,17 +364,17 @@ sensfusion6_pack.adb:292:56: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:64: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:292:64: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:292:64: info: range check proved (Interval)
-sensfusion6_pack.adb:294:35: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:294:43: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:294:51: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:294:51: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:294:51: info: range check proved (Interval)
-sensfusion6_pack.adb:295:36: info: initialization of "Grav_Y" proved
-sensfusion6_pack.adb:295:44: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:295:52: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:295:60: info: division check proved (Z3: 1 VC)
 sensfusion6_pack.adb:295:60: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:295:60: info: range check proved (Interval)
+sensfusion6_pack.adb:302:07: info: initialization of "Grav_X" proved
+sensfusion6_pack.adb:303:07: info: initialization of "Grav_Y" proved
+sensfusion6_pack.adb:304:07: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:308:21: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:308:21: info: range check proved (Interval)
 sensfusion6_pack.adb:308:27: info: float overflow check proved (Interval)
@@ -586,26 +394,13 @@ sensfusion6_pack.adb:312:45: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:312:45: info: range check proved (Interval)
 sensfusion6_pack.adb:312:50: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:316:18: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:20: info: initialization of "Grav_X" proved
 sensfusion6_pack.adb:316:27: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:316:32: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:34: info: initialization of "Grav_Y" proved
 sensfusion6_pack.adb:316:41: info: float overflow check proved (Interval)
 sensfusion6_pack.adb:316:46: info: float overflow check proved (Interval)
-sensfusion6_pack.adb:316:48: info: initialization of "Grav_Z" proved
 sensfusion6_pack.adb:316:56: info: float overflow check proved (Interval)
+sensfusion6_pack.ads:8:03: info: flow dependencies proved
 sensfusion6_pack.ads:27:07: info: initialization of "Euler_Roll_Actual" proved
 sensfusion6_pack.ads:28:07: info: initialization of "Euler_Pitch_Actual" proved
 sensfusion6_pack.ads:29:07: info: initialization of "Euler_Yaw_Actual" proved
-sensfusion6_pack.ads:40:04: info: initialization of "Is_Init" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:42:04: info: initialization of "Q0" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:44:04: info: initialization of "Q1" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:46:04: info: initialization of "Q2" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:49:04: info: initialization of "Q3" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:70:04: info: initialization of "Two_Kp" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:72:04: info: initialization of "Two_Ki" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:76:04: info: initialization of "Integral_FBx" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:78:04: info: initialization of "Integral_FBy" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:80:04: info: initialization of "Integral_FBz" constituent of "SensFusion6_State" proved
-sensfusion6_pack.ads:86:04: info: initialization of "Beta" constituent of "SensFusion6_State" proved
 sensfusion6_pack.ads:86:30: info: range check proved (Interval)

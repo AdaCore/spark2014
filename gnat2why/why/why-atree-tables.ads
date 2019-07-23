@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -32,8 +32,7 @@ package Why.Atree.Tables is
    --  a node Id.
 
    function New_Why_Node_Id (Node : Why_Node) return Why_Node_Id with
-     Pre  => (Node.Kind /= W_Unused_At_Start),
-     Post => (Get_Node (New_Why_Node_Id'Result) = Node);
+     Pre  => (Node.Kind /= W_Unused_At_Start);
    pragma Inline (New_Why_Node_Id);
    --  Allocate a new Why node in table, and return its Id
 

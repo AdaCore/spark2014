@@ -1,3 +1,2 @@
 arrays.adb:9:19: info: assertion proved (CVC4: 1 VC)
-arrays.adb:9:19: info: initialization of "Obj" proved
 arrays.adb:9:19: medium: "Obj" might not be initialized

@@ -1,0 +1,9 @@
+project Allocators is
+
+   package Prove is
+      for Switches use ("-j0",
+                        "--level=3",
+                        "--no-axiom-guard");
+   end Prove;
+
+end Allocators;

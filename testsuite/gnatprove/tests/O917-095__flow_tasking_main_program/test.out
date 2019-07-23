@@ -1,14 +1,11 @@
-t.ads:2:14: info: initialization of "X" proved
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 client1.ads:3:04: high: possible data race when accessing variable "t.x"
 client1.ads:3:04: high: with task "client1.t1"
 client1.ads:3:04: high: with task "client2.t2"
-t.ads:2:14: info: initialization of "X" proved
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 client1.ads:3:04: high: possible data race when accessing variable "t.x"
 client1.ads:3:04: high: with task "client1.t1"
 client1.ads:3:04: high: with task "client3.t3"
-t.ads:2:14: info: initialization of "X" proved
 t.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)
 pt.ads:2:09: info: nontermination of task proved (CVC4: 1 VC)

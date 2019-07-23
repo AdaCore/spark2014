@@ -1,6 +1,2 @@
 test_array_eq.adb:14:19: info: assertion proved (CVC4: 1 VC)
-test_array_eq.adb:14:19: info: initialization of "A" proved
-test_array_eq.adb:14:23: info: initialization of "B" proved
-test_array_eq_bad.adb:14:19: info: initialization of "A" proved
-test_array_eq_bad.adb:14:19: medium: assertion might fail, cannot prove A /= B (e.g. when A = (others => (F1 => 1, F2 => 1)) and B = (others => (F1 => 1, F2 => 1)))
-test_array_eq_bad.adb:14:24: info: initialization of "B" proved
+test_array_eq_bad.adb:14:19: medium: assertion might fail, cannot prove A /= B (e.g. when A = (1 => (F1 => 1, F2 => 2), others => (F1 => 3, F2 => 4)) and B = (1 => (F1 => 1, F2 => 1), others => (F1 => 3, F2 => 3)))

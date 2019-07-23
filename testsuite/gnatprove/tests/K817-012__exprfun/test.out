@@ -1,3 +1,3 @@
-exprfun.ads:3:55: medium: divide by zero might fail (e.g. when X = 0 and Y = 0) [possible explanation: subprogram at line 3 should mention X and Y in a precondition]
+exprfun.ads:3:55: medium: divide by zero might fail [possible explanation: subprogram at line 3 should mention X and Y in a precondition]
 exprfun.ads:3:55: medium: overflow check might fail (e.g. when X = -1 and Y = 0) [possible explanation: subprogram at line 3 should mention X and Y in a precondition]
 exprfun.ads:5:14: warning: subprogram "P" has no effect

@@ -21,7 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-private with Ada.Containers.Formal_Vectors;
+private with Ada.Containers.Formal_Indefinite_Vectors;
 
 --  A helper package for dealing with variable-length char arrays.
 
@@ -58,10 +58,11 @@ private
 
    function Eq (A, B : Character) return Boolean is (A = B);
 
-   package Char_Vectors is new Ada.Containers.Formal_Vectors
+   package Char_Vectors is new Ada.Containers.Formal_Indefinite_Vectors
      (Index_Type   => Positive,
       Element_Type => Character,
-      Bounded      => False);
+      Bounded      => False,
+      Max_Size_In_Storage_Elements => Character'Size);
    use Char_Vectors;
 
    type Unbounded_String is new Vector (32);

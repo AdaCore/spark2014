@@ -1,36 +1,45 @@
-intros (arg2_type,pre).
+intros dummy arg2_type pre.
 Open Scope Z_scope.
 Require Import SPARK.
 
 (* rewrite hypotheses *)
-pose (to_uint_bounds arg1) as arg1_type; clearbody arg1_type.
+pose (to_uint_bounds arg1) as arg1_type.
+unfold in_range in arg2_type.
 destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub).
-unfold ule in arg2_lb, arg2_ub, pre.
-rewrite to_uint_udiv in pre.
+auto.
+unfold ule in arg2_lb, arg2_ub.
 rewrite rliteral_axiom2 in arg2_lb.
 rewrite rliteral_axiom1 in arg2_ub.
 assert (0 < t'int arg2) as arg2_pos by auto with zarith.
+unfold ule in pre.
+rewrite to_uint_udiv, rliteral_axiom1 in pre.
 unfold EuclideanDivision.div in pre.
-case Z_le_dec as [hyp|neg_hyp] in pre; [|contradict neg_hyp; apply Z_mod_lt; auto with zarith].
+case Z_le_dec in pre; [|contradict n; apply Z_mod_lt; auto with zarith].
 
 (* rewrite goal *)
 apply to_uint_extensionality.
 rewrite to_uint_udiv.
-unfold EuclideanDivision.div.
-case Z_le_dec; [intros|intros neg_hyp; contradict neg_hyp; apply Z_mod_lt; auto with zarith].
 rewrite to_uint_mul.
-rewrite BV_Gen.mod1_out.
+assert (t'int arg1 * t'int arg2 <= SPARK_MAX_UINT) as no_ovfl_mult.
+assert (0 <= SPARK_MAX_UINT) as uint_last_nat by auto with zarith.
+apply (div_then_mult _ _ _ arg2_pos uint_last_nat pre).
+assert (EuclideanDivision.mod1 (t'int arg1 * t'int arg2) SPARK_MAX_UINT_PLUS1 = t'int arg1 * t'int arg2) as mod_noop_on_mult.
+rewrite BV_Gen.mod1_out by auto with zarith.
+trivial.
+rewrite mod_noop_on_mult.
 
-(* (arg1 * arg2) / arg2 = arg1 *)
-* assert (t'int arg2 <> 0) as arg2_not_zero by auto with zarith.
-  apply (Z.div_mul _ _ arg2_not_zero).
-
-(* no overflow in arg1 * arg2 *)
-* split; [auto with zarith|].
-  replace (SPARK_MAX_UINT_PLUS1) with (Z.succ SPARK_MAX_UINT) by auto with zarith.
-  apply Zle_lt_succ.
-  assert (0 <= SPARK_MAX_UINT) as uint_max_nat by auto with zarith.
-  rewrite rliteral_axiom1 in pre.
-  apply (div_then_mult _ _ _ arg2_pos uint_max_nat pre).
+(* apply theorem *)
+assert (EuclideanDivision.mod1 (t'int arg2 * t'int arg1 + 0) (t'int arg2) = EuclideanDivision.mod1 0 (t'int arg2)) as mod_is_zero.
+apply (EuclideanDivision.Mod_mult _ _ _ arg2_pos).
+replace (t'int arg1 * t'int arg2) with (t'int arg2 * t'int arg1) by auto with zarith.
+replace (t'int arg2 * t'int arg1) with (t'int arg2 * t'int arg1 + 0) by auto with zarith.
+(*rewrite mod_is_zero. rliteral_axiom by auto with zarith.*)
+assert (t'int arg2 <> 0) as arg2_not_zero by auto with zarith.
+generalize (EuclideanDivision.Div_mod (t'int arg2 * t'int arg1 + 0) (t'int arg2)).
+intros.
+rewrite mod_is_zero in H. rewrite EuclideanDivision.Mod_0 in H; intuition.
+ring_simplify in H0. ring_simplify in H0.
+rewrite Zplus_0_r.
+eapply Z.mul_cancel_l; eauto.
 
 Qed.

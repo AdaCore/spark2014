@@ -1,1 +1,2 @@
-user.adb:7:09: high: "pack.b" must be listed in the Global aspect of "User" (SPARK RM 6.1.4(13))
+user.adb:4:03: info: data dependencies proved
+user.adb:7:09: high: "pack.b" must be listed in the Global aspect of "User" (SPARK RM 6.1.4(14))

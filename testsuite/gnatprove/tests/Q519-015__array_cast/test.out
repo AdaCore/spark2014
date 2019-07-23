@@ -1,23 +1,15 @@
 cast_array.adb:9:33: info: loop invariant initialization proved (CVC4: 1 VC)
 cast_array.adb:9:33: info: loop invariant preservation proved (CVC4: 1 VC)
-cast_array.adb:10:35: info: initialization of "result" proved
 cast_array.adb:10:35: medium: "result" might not be initialized
 cast_array.adb:10:42: info: index check proved (CVC4: 4 VC)
 cast_array.adb:10:59: info: index check proved (CVC4: 4 VC)
-cast_array.adb:12:14: info: initialization of "result" proved
+cast_array.adb:12:14: medium: "result" might not be initialized
 cast_array.ads:10:14: info: postcondition proved (CVC4: 1 VC)
 test.adb:15:25: info: range check proved (CVC4: 1 VC)
 test.adb:16:25: info: range check proved (CVC4: 1 VC)
-test.adb:21:22: info: initialization of "X" proved
 test.adb:22:27: info: discriminant check proved (CVC4: 1 VC)
-test.adb:23:22: info: initialization of "W" proved
+test.adb:26:04: info: initialization of "result_array" proved
 test.adb:28:19: info: assertion proved (CVC4: 1 VC)
-test.adb:30:26: info: initialization of "Y" proved
 test.adb:31:19: info: assertion proved (CVC4: 1 VC)
-test.adb:31:43: info: initialization of "Z" proved
-test.adb:32:31: info: initialization of "test_array" proved
 test.adb:33:19: info: assertion proved (CVC4: 1 VC)
-test.adb:33:19: info: initialization of "result_array" proved
-test.adb:34:26: info: initialization of "test_array" proved
 test.adb:35:19: info: assertion proved (CVC4: 1 VC)
-test.adb:35:19: info: initialization of "result_array" proved

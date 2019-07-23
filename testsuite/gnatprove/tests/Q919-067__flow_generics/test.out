@@ -1,12 +1,10 @@
 main_test.adb:10:05: warning: assuming "*" has no effect on global items
+main_test.adb:10:05: warning: assuming "Length" has no effect on global items
 main_test.adb:10:05: warning: assuming "Transpose" has no effect on global items
+main_test.adb:10:05: warning: in instantiation at a-ngrear.adb:542
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
 main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.adb:13
+main_test.adb:10:05: warning: in instantiation at generic_matrix_thing.ads:15
 main_test.adb:10:05: warning: no Global contract available for "*"
+main_test.adb:10:05: warning: no Global contract available for "Length"
 main_test.adb:10:05: warning: no Global contract available for "Transpose"
-main_test.adb:37:62: info: initialization of "Mat_In" proved
-main_test.adb:38:62: info: initialization of "Mat_Map" proved
-main_test.adb:39:20: info: initialization of "Mat_Out" proved
-main_test.adb:41:63: info: initialization of "Mat_In2" proved
-main_test.adb:42:63: info: initialization of "Mat_Map2" proved
-main_test.adb:43:20: info: initialization of "Mat_Out2" proved

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -23,20 +23,24 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Namet;         use Namet;
-with Snames;        use Snames;
-with SPARK_Util;    use SPARK_Util;
-with Types;         use Types;
-with Why.Ids;       use Why.Ids;
-with Why.Sinfo;     use Why.Sinfo;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Snames;           use Snames;
+with SPARK_Util;       use SPARK_Util;
+with Types;            use Types;
+with Why.Ids;          use Why.Ids;
+with Why.Sinfo;        use Why.Sinfo;
 with Why.Types;
 
 package Why.Gen.Names is
    --  This package provides ways to manipulate subprogram names and
    --  to create identifiers from their string representation
 
-   function NID (Name : String) return Valid_Name_Id;
-   --  Return Name_Id for Name
+   procedure Initialize;
+   --  Initialize the state of this package; should be called before using the
+   --  NID function.
+
+   function NID (Name : String) return Symbol;
+   --  Return Symbol for Name
 
    function Conversion_Name
       (From : W_Type_Id;
@@ -66,31 +70,35 @@ package Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Typ      : W_Type_Id := Why.Types.Why_Empty)
+                            Typ      : W_Type_Id := Why.Types.Why_Empty;
+                            Is_Temp  : Boolean := False)
        return W_Identifier_Id;
    --  Create a new term identifier for Name and return the result
 
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why.Types.Why_Empty) return W_Identifier_Id;
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp   : Boolean := False) return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Typ      : W_Type_Id := Why.Types.Why_Empty)
+      Typ      : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp  : Boolean := False)
       return W_Identifier_Id;
 
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why.Types.Why_Empty)
+      Typ       : W_Type_Id := Why.Types.Why_Empty;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id;
@@ -98,11 +106,12 @@ package Why.Gen.Names is
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
-      Symbol    : Name_Id;
-      Namespace : Name_Id := No_Name;
+      Symb      : Symbol;
+      Namespace : Symbol := No_Symbol;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
-      Infix     : Boolean := False)
+      Infix     : Boolean := False;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id;
 
    function New_Temp_Identifier (Base_Name : String := "") return String;
@@ -121,6 +130,14 @@ package Why.Gen.Names is
      (Num : Positive;
       Typ : W_Type_Id) return W_Identifier_Array;
    --  Return an array of new unique identifiers with Num elements
+
+   function New_Module
+     (Ada_Node : Node_Id := Empty;
+      File     : Symbol;
+      Name     : String)
+      return W_Module_Id;
+   --  Build a new module id with the given File and Name elements. The Name
+   --  will be capitalized because that's required by Why3 syntax.
 
    function New_Result_Ident (Typ : W_Type_Id) return W_Identifier_Id;
 
@@ -221,6 +238,9 @@ package Why.Gen.Names is
 
       WNE_Attr_Value,
 
+      --  Used to translate the Enum_Rep attribute
+      WNE_Pos_To_Rep,
+
       --  Suffix of the module giving the axiom defining a logic function
       WNE_Axiom_Suffix,  --  ___axiom
 
@@ -272,7 +292,6 @@ package Why.Gen.Names is
       --  Division operators for a fixed-point type
       WNE_Fixed_Point_Div,
       WNE_Fixed_Point_Div_Int,
-      WNE_Fixed_Point_Div_Result_Int,
       WNE_Fixed_Point_Prefix,          --  Prefix of fixed point modules
       WNE_Fixed_Point_Mult_Div_Prefix, --  Prefix of mult/div modules
 
@@ -346,7 +365,7 @@ package Why.Gen.Names is
 
       WNE_Empty,                   --  dummy value for Why_Name_Enum
 
-      --  Name of the program functions related to the pointer type
+      --  Names related to the pointer type
       WNE_Null_Pointer,           --  "__null_pointer"
       WNE_Null_Exclusion_Val,     --  "__null_exclusion_val"
       WNE_Is_Null_Pointer,        --  "__is_null_pointer"
@@ -354,7 +373,14 @@ package Why.Gen.Names is
       WNE_Pointer_Value,          --  "__pointer_value"
       WNE_Init_Allocator,         --  "__new_initialized_allocator"
       WNE_Uninit_Allocator,       --  "__new_uninitialized_allocator"
-      WNE_Assign_Null_Check       --  "__assign_null_check"
+      WNE_Assign_Null_Check,      --  "__assign_null_check"
+      WNE_Pointer_Value_Abstr,    --  "__pointer_value_abstr"
+      WNE_Pointer_Open,           --  "__open"
+      WNE_Pointer_Close,          --  "__close"
+
+      --  Names related to initialization checks
+      WNE_Init_Value,             --  "rec__value"
+      WNE_Attr_Init               --  "attr__init"
      );
 
    function Attr_To_Why_Name (A : Attribute_Id) return Why_Name_Enum;
@@ -390,6 +416,8 @@ package Why.Gen.Names is
 
    function Is_Null_Append (Base : W_Identifier_Id;
                             Typ  : W_Type_Id) return W_Identifier_Id;
+
+   function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id;
 
    function Havoc_Append (Base : W_Name_Id) return W_Identifier_Id;
 

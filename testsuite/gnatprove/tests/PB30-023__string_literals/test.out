@@ -1,6 +1,3 @@
 test_string_literals.adb:7:19: info: assertion proved (CVC4: 1 VC)
 test_string_literals.adb:8:19: info: assertion proved (CVC4: 1 VC)
-test_string_literals.adb:8:23: info: initialization of "T" proved
 test_string_literals.adb:9:19: info: assertion proved (CVC4: 1 VC)
-test_string_literals.adb:9:19: info: initialization of "S" proved
-test_string_literals.adb:9:27: info: initialization of "T" proved

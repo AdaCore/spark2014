@@ -1,98 +1,62 @@
-a-tienio.ads:28:04: info: initialization of "Default_Width" proved, in instantiation at enum_example.adb:11
-a-tienio.ads:29:04: info: initialization of "Default_Setting" proved, in instantiation at enum_example.adb:11
-a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:8
-a-tiflio.ads:48:04: info: initialization of "Default_Fore" proved, in instantiation at good_types.adb:9
-a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:8
-a-tiflio.ads:49:04: info: initialization of "Default_Aft" proved, in instantiation at good_types.adb:9
-a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:8
-a-tiflio.ads:50:04: info: initialization of "Default_Exp" proved, in instantiation at good_types.adb:9
+a-tienio.ads:32:40: info: precondition proved (CVC4: 1 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:46:40: info: precondition proved (CVC4: 1 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:48:08: info: precondition proved (CVC4: 2 VC), in instantiation at enum_example.adb:11
+a-tienio.ads:49:12: info: precondition proved (CVC4: 2 VC), in instantiation at enum_example.adb:11
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:48:04: warning: initialization of "Default_Fore" has no effect, in instantiation at good_types.adb:9
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:49:04: warning: initialization of "Default_Aft" has no effect, in instantiation at good_types.adb:9
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:8
+a-tiflio.ads:50:04: warning: initialization of "Default_Exp" has no effect, in instantiation at good_types.adb:9
+a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:57:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:76:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:76:40: info: precondition proved (CVC4: 1 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
+a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:8
+a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
+aggregates.adb:10:07: info: initialization of "Approx" proved
+aggregates.adb:10:07: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: division check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:13:19: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
 aggregates.adb:14:20: info: float overflow check proved (CVC4: 2 VC), in call inlined at aggregates.adb:29
-aggregates.adb:14:22: info: initialization of "Approx" proved
-aggregates.adb:14:22: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:14:29: medium: float overflow check might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:24: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
-aggregates.adb:15:27: info: initialization of "Approx" proved
-aggregates.adb:15:27: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:15:34: info: float overflow check proved (CVC4: 1 VC), in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: divide by zero might fail, in call inlined at aggregates.adb:29
 aggregates.adb:15:38: medium: float overflow check might fail, in call inlined at aggregates.adb:29
-aggregates.adb:17:14: info: initialization of "Approx" proved
-aggregates.adb:17:14: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
-aggregates.adb:29:24: info: initialization of "A" proved
 aggregates.adb:29:26: medium: float overflow check might fail
 aggregates.adb:29:28: info: analyzing call to "Sqrt" in context
-aggregates.adb:29:28: info: initialization of "B" proved
-average.adb:10:15: warning: assuming "Put_Line" has no effect on global items
-average.adb:10:15: warning: no Global contract available for "Put_Line"
-average.adb:11:23: warning: assuming "Get" has no effect on global items
-average.adb:11:23: warning: no Global contract available for "Get"
-average.adb:12:23: warning: assuming "Get" has no effect on global items
-average.adb:12:23: warning: no Global contract available for "Get"
-average.adb:13:15: warning: assuming "New_Line" has no effect on global items
-average.adb:13:15: warning: no Global contract available for "New_Line"
-average.adb:15:16: info: initialization of "A" proved
+average.adb:6:04: info: initialization of "A" proved
+average.adb:7:04: info: initialization of "B" proved
+average.adb:8:04: info: initialization of "M" proved
 average.adb:15:18: info: range check proved (Interval)
-average.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
-average.adb:15:20: info: initialization of "B" proved
+average.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average.adb:15:23: info: division check proved (CVC4: 1 VC)
 average.adb:15:23: info: float overflow check proved (Interval)
-average.adb:17:15: warning: assuming "Put" has no effect on global items
-average.adb:17:15: warning: no Global contract available for "Put"
-average.adb:18:21: warning: assuming "Put" has no effect on global items
-average.adb:18:21: warning: no Global contract available for "Put"
-average.adb:18:35: info: initialization of "M" proved
-average.adb:22:15: warning: assuming "New_Line" has no effect on global items
-average.adb:22:15: warning: no Global contract available for "New_Line"
 average_with_use.adb:4:11: warning: file name does not match unit name, should be "average.adb"
-average_with_use.adb:10:04: warning: assuming "Put_Line" has no effect on global items
-average_with_use.adb:10:04: warning: no Global contract available for "Put_Line"
-average_with_use.adb:11:04: warning: assuming "Get" has no effect on global items
-average_with_use.adb:11:04: warning: no Global contract available for "Get"
-average_with_use.adb:12:04: warning: assuming "Get" has no effect on global items
-average_with_use.adb:12:04: warning: no Global contract available for "Get"
-average_with_use.adb:13:04: warning: assuming "New_Line" has no effect on global items
-average_with_use.adb:13:04: warning: no Global contract available for "New_Line"
-average_with_use.adb:15:16: info: initialization of "A" proved
+average_with_use.adb:6:04: info: initialization of "A" proved
+average_with_use.adb:7:04: info: initialization of "B" proved
+average_with_use.adb:8:04: info: initialization of "M" proved
 average_with_use.adb:15:18: info: range check proved (Interval)
-average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: call at line 12 should mention Item (for argument B) in a postcondition]
-average_with_use.adb:15:20: info: initialization of "B" proved
+average_with_use.adb:15:18: medium: overflow check might fail [possible explanation: postcondition of call at line 12 should mention Item (for argument B)]
 average_with_use.adb:15:23: info: division check proved (CVC4: 1 VC)
 average_with_use.adb:15:23: info: float overflow check proved (Interval)
-average_with_use.adb:17:04: warning: assuming "Put" has no effect on global items
-average_with_use.adb:17:04: warning: no Global contract available for "Put"
-average_with_use.adb:18:04: warning: assuming "Put" has no effect on global items
-average_with_use.adb:18:04: warning: no Global contract available for "Put"
-average_with_use.adb:18:09: info: initialization of "M" proved
-average_with_use.adb:19:04: warning: assuming "New_Line" has no effect on global items
-average_with_use.adb:19:04: warning: no Global contract available for "New_Line"
-bad_types.adb:7:21: warning: assuming "Get" has no effect on global items
-bad_types.adb:7:21: warning: no Global contract available for "Get"
-bad_types.adb:8:21: warning: assuming "Get" has no effect on global items
-bad_types.adb:8:21: warning: no Global contract available for "Get"
-bad_types.adb:9:13: info: initialization of "Room_Length" proved
-bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
-bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: call at line 8 should mention Item (for argument Wall_Thickness) in a postcondition]
-bad_types.adb:9:33: info: initialization of "Wall_Thickness" proved
-bad_types.adb:10:21: warning: assuming "Put" has no effect on global items
-bad_types.adb:10:21: warning: no Global contract available for "Put"
-bad_types.adb:10:35: info: initialization of "Total" proved
-bingo_basket.adb:12:15: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
-bingo_basket.adb:12:24: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
-bingo_basket.adb:12:30: info: initialization of "The_Basket" proved, in call inlined at bingo_basket.adb:27
-bingo_basket.adb:12:33: info: initialization of "Temp" proved
-bingo_basket.adb:12:33: info: initialization of "Temp" proved, in call inlined at bingo_basket.adb:27
+bad_types.adb:3:04: info: initialization of "Room_Length" proved
+bad_types.adb:4:04: info: initialization of "Wall_Thickness" proved
+bad_types.adb:5:04: info: initialization of "Total" proved
+bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
+bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
+bingo_basket.adb:10:07: info: initialization of "Temp" proved
+bingo_basket.adb:10:07: info: initialization of "Temp" proved, in call inlined at bingo_basket.adb:27
+bingo_basket.adb:18:07: info: initialization of "Random_Index" proved
 bingo_basket.adb:21:37: info: cannot unroll loop (too many loop iterations)
-bingo_basket.adb:22:30: info: initialization of "The_Basket" proved
 bingo_basket.adb:25:36: info: cannot unroll loop (too many loop iterations)
 bingo_basket.adb:27:10: info: analyzing call to "Swap" in context
-bingo_basket.adb:28:33: info: initialization of "Random_Index" proved
 bingo_basket.adb:36:32: info: index check proved (CVC4: 2 VC)
 bingo_basket.adb:37:30: info: range check proved (CVC4: 1 VC)
-bingo_basket.adb:40:12: info: initialization of "Number" proved
-bingo_basket.ads:6:14: info: initialization of "The_Basket" proved
 bingo_basket.ads:8:18: info: postcondition proved (CVC4: 1 VC)
 bingo_basket.ads:10:20: info: initialization of "Letter" proved
 bingo_basket.ads:11:20: info: initialization of "Number" proved
@@ -113,78 +77,37 @@ bounded_queue.ads:31:18: medium: postcondition might fail, cannot prove not Empt
 bounded_queue.ads:32:50: medium: overflow check might fail, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:33:18: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:36:23: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
-bounded_queue.ads:39:17: info: initialization of "Item" proved, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:39:24: info: precondition proved (CVC4: 1 VC), in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:45:04: medium: type "Queue_Type" is not fully initialized, in instantiation at bounded_queue_example.adb:7
 bounded_queue.ads:50:10: info: range check proved (CVC4: 2 VC), in instantiation at bounded_queue_example.adb:7
+bounded_queue_example.adb:10:04: info: initialization of "My_Queue" proved
 bounded_queue_example.adb:10:50: info: range check proved (CVC4: 1 VC)
-bounded_queue_example.adb:14:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:11:04: info: initialization of "Value" proved
 bounded_queue_example.adb:15:43: info: unrolling loop
-bounded_queue_example.adb:16:07: medium: precondition might fail
-bounded_queue_example.adb:16:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example.adb:16:07: medium: precondition might fail, cannot prove not Full (Queue)
 bounded_queue_example.adb:18:38: info: unrolling loop
-bounded_queue_example.adb:19:07: medium: precondition might fail
-bounded_queue_example.adb:19:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:20:07: warning: assuming "Put" has no effect on global items
-bounded_queue_example.adb:20:07: warning: no Global contract available for "Put"
-bounded_queue_example.adb:20:12: info: initialization of "Value" proved
-bounded_queue_example.adb:21:07: warning: assuming "New_Line" has no effect on global items
-bounded_queue_example.adb:21:07: warning: no Global contract available for "New_Line"
-bounded_queue_example.adb:23:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example.adb:24:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example.adb:24:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example.adb:19:07: medium: precondition might fail, cannot prove not Empty (Queue)
 bounded_queue_example.adb:24:42: info: range check proved (CVC4: 1 VC)
-bounded_queue_example.adb:24:65: info: initialization of private part of "My_Queue" proved
 bounded_queue_example_v1.adb:6:56: info: range check proved (CVC4: 1 VC)
+bounded_queue_example_v1.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Count" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Front" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Items" is not initialized
 bounded_queue_example_v1.adb:10:11: high: "My_Queue.Rear" is not initialized
 bounded_queue_example_v1.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v1.adb:12:07: medium: precondition might fail
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:12:25: info: initialization of "My_Queue.Rear" proved
+bounded_queue_example_v1.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:14:38: info: unrolling loop
-bounded_queue_example_v1.adb:15:07: medium: precondition might fail
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:15:25: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:16:07: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v1.adb:16:32: info: initialization of "Value" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:18:11: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Count" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Front" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Items" proved
-bounded_queue_example_v1.adb:19:19: info: initialization of "My_Queue.Rear" proved
-bounded_queue_example_v1.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v1.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v1.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v1.adb:20:42: info: range check proved (CVC4: 1 VC)
-bounded_queue_example_v1.adb:20:59: info: initialization of "Value" proved
+bounded_queue_example_v2.adb:6:04: info: initialization of "My_Queue" proved
 bounded_queue_example_v2.adb:6:56: info: range check proved (CVC4: 1 VC)
-bounded_queue_example_v2.adb:10:11: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:7:04: info: initialization of "Value" proved
 bounded_queue_example_v2.adb:11:40: info: cannot unroll loop (too many loop iterations)
-bounded_queue_example_v2.adb:12:07: medium: precondition might fail
-bounded_queue_example_v2.adb:12:25: info: initialization of private part of "My_Queue" proved
+bounded_queue_example_v2.adb:12:07: medium: precondition might fail, cannot prove not Full (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:14:38: info: unrolling loop
-bounded_queue_example_v2.adb:15:07: medium: precondition might fail
-bounded_queue_example_v2.adb:15:25: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:16:07: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:16:07: warning: no Global contract available for "Put_Line"
-bounded_queue_example_v2.adb:16:32: info: initialization of "Value" proved
-bounded_queue_example_v2.adb:18:11: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:19:19: info: initialization of private part of "My_Queue" proved
-bounded_queue_example_v2.adb:20:04: warning: assuming "Put_Line" has no effect on global items
-bounded_queue_example_v2.adb:20:04: warning: no Global contract available for "Put_Line"
+bounded_queue_example_v2.adb:15:07: medium: precondition might fail, cannot prove not Empty (Queue) [possible explanation: loop at line 11 should mention My_Queue in a loop invariant]
 bounded_queue_example_v2.adb:20:42: info: range check proved (CVC4: 1 VC)
-bounded_queue_example_v2.adb:20:59: info: initialization of "Value" proved
 bounded_queue_v1.adb:20:32: medium: array index check might fail
 bounded_queue_v1.adb:25:32: medium: array index check might fail
 bounded_queue_v1.adb:38:32: info: division check proved (CVC4: 1 VC)
@@ -203,7 +126,6 @@ bounded_queue_v1.ads:37:18: medium: postcondition might fail, cannot prove not E
 bounded_queue_v1.ads:38:50: medium: overflow check might fail
 bounded_queue_v1.ads:39:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v1.ads:42:23: info: initialization of "Item" proved
-bounded_queue_v1.ads:45:18: info: initialization of "Item" proved
 bounded_queue_v1.ads:45:18: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
 bounded_queue_v1.ads:45:25: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.adb:20:32: medium: array index check might fail
@@ -223,386 +145,271 @@ bounded_queue_v2.ads:31:18: medium: postcondition might fail, cannot prove not E
 bounded_queue_v2.ads:32:50: medium: overflow check might fail
 bounded_queue_v2.ads:33:18: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:36:23: info: initialization of "Item" proved
-bounded_queue_v2.ads:39:17: info: initialization of "Item" proved
 bounded_queue_v2.ads:39:17: medium: postcondition might fail, cannot prove Item = First_Element (Queue'old)
 bounded_queue_v2.ads:39:24: info: precondition proved (CVC4: 1 VC)
 bounded_queue_v2.ads:45:04: medium: type "Queue_Type" is not fully initialized
 bounded_queue_v2.ads:50:10: info: range check proved (CVC4: 2 VC)
+buffers.adb:14:07: info: initialization of "Workspace" proved
+buffers.adb:15:07: info: initialization of "New_Index" proved
 buffers.adb:18:34: info: cannot unroll loop (too many loop iterations)
 buffers.adb:19:56: info: division check proved (CVC4: 1 VC)
-buffers.adb:20:31: info: initialization of "New_Index" proved
-buffers.adb:20:31: info: initialization of "Workspace" proved
-buffers.adb:22:17: info: initialization of "Workspace" proved
+buffers.adb:27:07: info: initialization of "Temp" proved
 buffers.adb:29:63: info: cannot unroll loop (too many loop iterations)
-buffers.adb:32:43: info: initialization of "Temp" proved
-buffers.adb:42:33: info: initialization of "Count" proved
 buffers.adb:42:33: info: loop invariant initialization proved (CVC4: 1 VC)
 buffers.adb:42:33: info: loop invariant preservation proved (CVC4: 1 VC)
-buffers.adb:45:22: info: initialization of "Count" proved
 buffers.adb:45:28: info: range check proved (CVC4: 1 VC)
-buffers.adb:48:14: info: initialization of "Count" proved
-buffers.adb:59:33: info: initialization of "Count" proved
 buffers.adb:59:33: info: loop invariant initialization proved (CVC4: 1 VC)
 buffers.adb:59:33: info: loop invariant preservation proved (CVC4: 1 VC)
-buffers.adb:62:22: info: initialization of "Count" proved
 buffers.adb:62:28: info: range check proved (CVC4: 1 VC)
-buffers.adb:82:32: info: initialization of "Offset" proved
+buffers.adb:74:07: info: initialization of "Workspace" proved
+buffers.adb:75:07: info: initialization of "Offset" proved
 buffers.adb:82:32: info: loop invariant initialization proved (CVC4: 1 VC)
 buffers.adb:82:32: info: loop invariant preservation proved (CVC4: 1 VC)
 buffers.adb:85:39: info: index check proved (CVC4: 2 VC)
-buffers.adb:85:49: info: initialization of "Offset" proved
-buffers.adb:85:49: info: initialization of "Workspace" proved
-buffers.adb:86:23: info: initialization of "Offset" proved
 buffers.adb:86:30: info: range check proved (CVC4: 1 VC)
-buffers.adb:90:16: info: initialization of "Offset" proved
 buffers.adb:93:11: info: range check proved (CVC4: 2 VC)
-buffers.adb:93:40: info: initialization of "Offset" proved
 buffers.adb:93:77: info: cannot unroll loop (too many loop iterations)
 buffers.adb:94:36: info: index check proved (CVC4: 2 VC)
-buffers.adb:94:41: info: initialization of "Workspace" proved
-buffers.adb:96:17: info: initialization of "Workspace" proved
 buffers.adb:105:16: info: range check proved (CVC4: 1 VC)
-buffers.adb:105:26: info: initialization of "Characters_To_Copy" proved
 buffers.adb:106:38: info: range check proved (CVC4: 1 VC)
 buffers.adb:108:11: info: range check proved (CVC4: 2 VC)
-buffers.adb:108:49: info: initialization of "Characters_To_Copy" proved
-buffers.adb:110:13: info: initialization of "Characters_To_Copy" proved
 buffers.adb:110:13: info: loop invariant initialization proved (CVC4: 2 VC)
 buffers.adb:110:13: info: loop invariant preservation proved (CVC4: 2 VC)
 buffers.adb:110:41: info: range check proved (CVC4: 2 VC)
-buffers.adb:111:35: info: initialization of "Characters_To_Copy" proved
-buffers.adb:113:25: info: initialization of "Buffer" proved
 buffers.adb:113:49: info: index check proved (CVC4: 2 VC)
 buffers.adb:113:49: info: overflow check proved (CVC4: 1 VC)
+buffers.adb:123:07: info: initialization of "Characters_To_Copy" proved
 buffers.adb:126:16: info: range check proved (CVC4: 1 VC)
-buffers.adb:126:26: info: initialization of "Characters_To_Copy" proved
 buffers.adb:127:38: info: range check proved (CVC4: 1 VC)
-buffers.adb:129:19: info: initialization of "Characters_To_Copy" proved
 buffers.adb:132:11: info: range check proved (CVC4: 2 VC)
-buffers.adb:132:45: info: initialization of "Characters_To_Copy" proved
 buffers.adb:132:64: info: cannot unroll loop (too many loop iterations)
 buffers.adb:133:23: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:23: info: overflow check proved (CVC4: 1 VC)
 buffers.adb:133:57: info: index check proved (CVC4: 2 VC)
 buffers.adb:133:57: info: overflow check proved (CVC4: 1 VC)
-buffers.adb:146:19: info: length check proved (CVC4: 4 VC)
-buffers.adb:147:34: info: initialization of "Characters_To_Copy" proved
-buffers.adb:150:10: info: initialization of "Characters_To_Copy" proved
+buffers.adb:143:07: info: initialization of "Characters_To_Copy" proved
+buffers.adb:146:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 buffers.adb:150:42: info: range check proved (CVC4: 1 VC)
 buffers.adb:151:43: info: range check proved (CVC4: 1 VC)
 buffers.adb:153:11: info: range check proved (CVC4: 2 VC)
-buffers.adb:153:45: info: initialization of "Characters_To_Copy" proved
 buffers.adb:153:64: info: cannot unroll loop (too many loop iterations)
 buffers.adb:154:40: info: index check proved (CVC4: 2 VC)
 buffers.adb:154:40: info: overflow check proved (CVC4: 1 VC)
-buffers.adb:154:51: info: initialization of "Destination" proved
 buffers.adb:154:67: info: index check proved (CVC4: 2 VC)
 buffers.adb:154:67: info: overflow check proved (CVC4: 1 VC)
 buffers.ads:11:20: info: initialization of "Buffer" proved
+buffers.ads:14:08: info: flow dependencies proved
+buffers.ads:20:08: info: flow dependencies proved
+buffers.ads:25:08: info: flow dependencies proved
 buffers.ads:35:07: info: initialization of "Count" proved
+buffers.ads:36:09: info: flow dependencies proved
 buffers.ads:45:23: info: initialization of "Valid" proved
+buffers.ads:47:09: info: flow dependencies proved
 buffers.ads:53:24: info: initialization of "Buffer" proved
+buffers.ads:55:08: info: flow dependencies proved
+buffers.ads:67:08: info: flow dependencies proved
 buffers.ads:75:25: info: initialization of "Destination" proved
+buffers.ads:79:08: info: flow dependencies proved
 calculate.adb:3:21: info: initialization of "A" proved
+calculate.adb:6:05: info: data dependencies proved
+calculate.adb:7:05: info: flow dependencies proved
 calculate.adb:12:11: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention C in a precondition]
+circle_demo.adb:10:04: info: initialization of "My_Circle" proved
 circle_demo.adb:14:14: info: precondition proved (CVC4: 1 VC)
-circle_demo.adb:14:50: info: initialization of "My_Circle" proved
-circle_demo.adb:15:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:15:18: warning: no Global contract available for "Put_Line"
-circle_demo.adb:17:18: warning: assuming "Put_Line" has no effect on global items
-circle_demo.adb:17:18: warning: no Global contract available for "Put_Line"
-contains.adb:9:37: warning: assuming "Index" has no effect on global items
-contains.adb:9:37: warning: no Global contract available for "Index"
-contains.adb:10:56: info: initialization of "Search_String" proved
+console_io.ads:15:03: info: flow dependencies proved
+contains.adb:7:04: info: initialization of "Result_Index" proved
+contains.adb:9:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains.adb:11:57: medium: range check might fail
-contains.adb:12:11: info: initialization of "Result_Index" proved
-contains2.adb:11:37: warning: assuming "Index" has no effect on global items
-contains2.adb:11:37: warning: no Global contract available for "Index"
-contains2.adb:12:56: info: initialization of "Search_String" proved
+contains2.adb:9:04: info: initialization of "Result_Index" proved
+contains2.adb:11:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains2.adb:13:57: info: range check proved (CVC4: 1 VC)
-contains2.adb:14:11: info: initialization of "Result_Index" proved
 contains3.adb:7:21: info: postcondition proved (CVC4: 2 VC)
 contains3.adb:7:69: info: index check proved (CVC4: 2 VC)
-contains3.adb:14:19: info: assertion proved (CVC4: 3 VC)
-contains3.adb:15:37: warning: assuming "Index" has no effect on global items
-contains3.adb:15:37: warning: no Global contract available for "Index"
-contains3.adb:16:56: info: initialization of "Search_String" proved
+contains3.adb:10:04: info: initialization of "Result_Index" proved
+contains3.adb:14:19: info: assertion proved (CVC4: 2 VC; Trivial: 1 VC)
+contains3.adb:15:37: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 contains3.adb:17:57: info: range check proved (CVC4: 1 VC)
 contains3.adb:22:37: info: index check proved (CVC4: 2 VC)
-contains3.adb:24:10: info: initialization of "Result_Index" proved
 contains3.adb:24:46: info: index check proved (CVC4: 2 VC)
-contains3.adb:25:11: info: initialization of "Result_Index" proved
+control_structures.adb:11:04: info: initialization of "A" proved
+control_structures.adb:11:07: info: initialization of "B" proved
+control_structures.adb:11:10: info: initialization of "C" proved
+control_structures.adb:12:04: info: initialization of "D" proved
+control_structures.adb:12:07: info: initialization of "E" proved
+control_structures.adb:12:10: info: initialization of "F" proved
+control_structures.adb:13:04: info: initialization of "Ch" proved
+control_structures.adb:14:04: info: initialization of "Temperature" proved
+control_structures.adb:15:04: info: initialization of "Valve_Setting" proved
+control_structures.adb:16:04: info: initialization of "Value" proved
+control_structures.adb:17:04: info: initialization of "Sum" proved
+control_structures.adb:19:04: info: initialization of "Approx" proved
+control_structures.adb:19:12: info: initialization of "X" proved
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
 control_structures.adb:31:08: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention Second in a precondition]
 control_structures.adb:31:23: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention First in a precondition]
 control_structures.adb:31:25: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention First in a precondition]
-control_structures.adb:44:07: info: initialization of "A" proved
 control_structures.adb:45:12: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:45:13: info: initialization of "A" proved
-control_structures.adb:49:07: info: initialization of "A" proved
-control_structures.adb:53:07: info: initialization of "A" proved
-control_structures.adb:53:11: info: initialization of "B" proved
-control_structures.adb:55:12: info: initialization of "A" proved
-control_structures.adb:58:12: info: initialization of "B" proved
-control_structures.adb:62:07: info: initialization of "A" proved
-control_structures.adb:62:11: info: initialization of "B" proved
-control_structures.adb:64:10: info: initialization of "A" proved
-control_structures.adb:64:14: info: initialization of "B" proved
-control_structures.adb:71:07: info: initialization of "A" proved
-control_structures.adb:71:11: info: initialization of "B" proved
-control_structures.adb:71:21: info: initialization of "C" proved
-control_structures.adb:73:10: info: initialization of "B" proved
-control_structures.adb:73:14: info: initialization of "A" proved
-control_structures.adb:73:24: info: initialization of "C" proved
-control_structures.adb:75:10: info: initialization of "C" proved
-control_structures.adb:75:14: info: initialization of "A" proved
-control_structures.adb:75:24: info: initialization of "B" proved
-control_structures.adb:80:09: info: initialization of "Ch" proved
-control_structures.adb:95:07: info: initialization of "A" proved
-control_structures.adb:95:11: info: initialization of "B" proved
-control_structures.adb:96:12: info: initialization of "D" proved
 control_structures.adb:96:14: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:98:12: info: initialization of "F" proved
 control_structures.adb:98:14: info: division check proved (CVC4: 1 VC)
-control_structures.adb:101:13: info: initialization of "A" proved
-control_structures.adb:101:17: info: initialization of "B" proved
-control_structures.adb:101:24: info: initialization of "D" proved
 control_structures.adb:101:26: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:101:35: info: initialization of "F" proved
 control_structures.adb:101:37: info: division check proved (CVC4: 1 VC)
-control_structures.adb:103:07: info: initialization of "A" proved
-control_structures.adb:103:11: info: initialization of "B" proved
-control_structures.adb:104:12: info: initialization of "D" proved
 control_structures.adb:104:14: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:105:14: info: initialization of "B" proved
 control_structures.adb:106:14: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:106:16: info: initialization of "A" proved
-control_structures.adb:108:12: info: initialization of "F" proved
 control_structures.adb:108:14: info: division check proved (CVC4: 1 VC)
-control_structures.adb:111:24: info: initialization of "D" proved
 control_structures.adb:111:26: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:111:40: info: initialization of "B" proved
 control_structures.adb:111:49: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:111:51: info: initialization of "A" proved
-control_structures.adb:111:58: info: initialization of "F" proved
 control_structures.adb:111:60: info: division check proved (CVC4: 1 VC)
-control_structures.adb:113:07: info: initialization of "X" proved
 control_structures.adb:114:12: info: precondition proved (CVC4: 1 VC)
-control_structures.adb:114:18: info: initialization of "X" proved
 control_structures.adb:116:12: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:116:23: info: float overflow check proved (CVC4: 1 VC)
-control_structures.adb:116:25: info: initialization of "X" proved
 control_structures.adb:119:09: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:119:44: info: float overflow check proved (CVC4: 1 VC)
-control_structures.adb:119:46: info: initialization of "X" proved
-control_structures.adb:123:11: info: initialization of "C" proved
 control_structures.adb:123:13: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:123:15: info: initialization of "D" proved
-control_structures.adb:123:26: info: initialization of "E" proved
-control_structures.adb:127:11: info: initialization of "C" proved
 control_structures.adb:127:13: info: overflow check proved (CVC4: 1 VC)
-control_structures.adb:127:15: info: initialization of "D" proved
-control_structures.adb:127:26: info: initialization of "E" proved
-control_structures.adb:131:11: info: initialization of "A" proved
-control_structures.adb:131:22: info: initialization of "B" proved
-control_structures.adb:137:19: info: initialization of "Letter" proved
-control_structures.adb:152:26: warning: assuming "Get" has no effect on global items
-control_structures.adb:152:26: warning: no Global contract available for "Get"
-control_structures.adb:153:17: info: initialization of "Value" proved
-control_structures.adb:154:14: info: initialization of "Sum" proved
-control_structures.adb:154:18: medium: overflow check might fail [possible explanation: call at line 152 should mention Item (for argument Value) in a postcondition]
-control_structures.adb:154:20: info: initialization of "Value" proved
-control_structures.adb:158:14: info: initialization of "X" proved
+control_structures.adb:154:18: medium: overflow check might fail [possible explanation: postcondition of call at line 152 should mention Item (for argument Value)]
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
 control_structures.adb:158:16: info: float overflow check proved (Interval)
-control_structures.adb:159:15: info: initialization of "X" proved
 control_structures.adb:159:17: info: float overflow check proved (CVC4: 2 VC)
-control_structures.adb:159:19: info: initialization of "Approx" proved
 control_structures.adb:159:26: medium: float overflow check might fail
 control_structures.adb:160:21: info: float overflow check proved (Interval)
-control_structures.adb:160:24: info: initialization of "Approx" proved
-control_structures.adb:160:31: medium: float overflow check might fail
-control_structures.adb:160:33: info: initialization of "X" proved
+control_structures.adb:160:31: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:160:35: medium: divide by zero might fail
 control_structures.adb:160:35: medium: float overflow check might fail
 control_structures.adb:163:38: info: unrolling loop
-control_structures.adb:164:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:164:26: warning: no Global contract available for "Put"
 control_structures.adb:167:46: info: unrolling loop
-control_structures.adb:168:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:168:26: warning: no Global contract available for "Put"
 control_structures.adb:174:08: info: range check proved (CVC4: 2 VC)
-control_structures.adb:174:31: info: initialization of "A" proved
-control_structures.adb:174:36: info: initialization of "B" proved
 control_structures.adb:174:38: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:175:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:175:26: warning: no Global contract available for "Put"
 control_structures.adb:178:08: info: range check proved (CVC4: 2 VC)
-control_structures.adb:178:39: info: initialization of "A" proved
-control_structures.adb:178:44: info: initialization of "B" proved
 control_structures.adb:178:46: info: cannot unroll loop (too many loop iterations)
-control_structures.adb:179:26: warning: assuming "Put" has no effect on global items
-control_structures.adb:179:26: warning: no Global contract available for "Put"
 control_structures.adb:184:07: info: analyzing call to "Calculate_Valve" in context
-control_structures.adb:184:07: info: initialization of "Temperature" proved
-control_structures.adb:186:18: info: initialization of "Valve_Setting" proved
 datebook.adb:40:40: info: initialization of "Event_Array" constituent of "State" proved
+datebook.adb:63:07: info: initialization of "Found" proved
 datebook.adb:72:40: info: cannot unroll loop (too many loop iterations)
-datebook.adb:80:17: info: initialization of "Found" proved
-datebook.adb:86:54: info: initialization of "Available" proved
-datebook.adb:86:69: info: length check proved (CVC4: 4 VC)
-datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at line 55 should mention Description in a precondition]
+datebook.adb:86:69: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+datebook.adb:86:69: low: range check might fail [possible explanation: subprogram at datebook.ads:33 should mention Description in a precondition]
 datebook.adb:87:21: info: range check proved (CVC4: 2 VC)
 datebook.adb:87:64: info: range check proved (CVC4: 1 VC)
-datebook.adb:88:54: info: initialization of "Available" proved
 datebook.adb:88:68: info: range check proved (CVC4: 1 VC)
-datebook.adb:89:45: info: initialization of "Available" proved
-datebook.adb:90:45: info: initialization of "Available" proved
 datebook.adb:104:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:123:37: info: cannot unroll loop (too many loop iterations)
-datebook.adb:128:16: info: initialization of "Status" proved
-datebook.adb:133:62: info: initialization of "Date" proved
-datebook.adb:156:19: info: length check proved (CVC4: 4 VC)
-datebook.adb:161:26: info: initialization of "Index" proved
+datebook.adb:153:07: info: initialization of "Index" proved
+datebook.adb:156:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 datebook.adb:162:27: info: range check proved (CVC4: 1 VC)
-datebook.adb:162:50: info: initialization of "Index" proved
 datebook.adb:165:20: info: range check proved (CVC4: 2 VC)
-datebook.adb:166:35: info: initialization of "Index" proved
-datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 2 VC)
-datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 2 VC)
-datebook.adb:169:35: info: initialization of "Index" proved
+datebook.adb:169:22: info: loop invariant initialization proved (CVC4: 3 VC)
+datebook.adb:169:22: info: loop invariant preservation proved (CVC4: 3 VC)
 datebook.adb:169:73: info: range check proved (CVC4: 2 VC)
-datebook.adb:170:30: info: initialization of "Index" proved
 datebook.adb:171:43: info: range check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: index check proved (CVC4: 2 VC)
 datebook.adb:173:49: info: overflow check proved (CVC4: 1 VC)
-datebook.adb:173:60: info: initialization of "Description" proved
-datebook.adb:174:33: info: initialization of "Index" proved
-datebook.adb:182:20: info: initialization of "Index" proved
-datebook.adb:183:19: info: initialization of "Index" proved
 datebook.adb:183:25: info: range check proved (CVC4: 1 VC)
 datebook.adb:208:37: info: cannot unroll loop (too many loop iterations)
 datebook.adb:210:12: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
-datebook.adb:228:32: info: initialization of "Count" proved
 datebook.adb:228:32: info: loop invariant initialization proved (CVC4: 1 VC)
 datebook.adb:228:32: info: loop invariant preservation proved (CVC4: 1 VC)
-datebook.adb:231:22: info: initialization of "Count" proved
 datebook.adb:231:28: info: range check proved (CVC4: 1 VC)
-datebook.adb:234:14: info: initialization of "Count" proved
+datebook.ads:27:06: info: data dependencies proved
+datebook.ads:28:06: info: flow dependencies proved
 datebook.ads:36:07: info: initialization of "Status" proved
+datebook.ads:38:06: info: data dependencies proved
+datebook.ads:39:06: info: flow dependencies proved
+datebook.ads:44:06: info: data dependencies proved
+datebook.ads:45:06: info: flow dependencies proved
 datebook.ads:49:38: info: initialization of "Date" proved
 datebook.ads:49:65: info: initialization of "Status" proved
+datebook.ads:51:06: info: data dependencies proved
+datebook.ads:52:06: info: flow dependencies proved
 datebook.ads:60:07: info: initialization of "Description" proved
 datebook.ads:61:07: info: initialization of "Status" proved
+datebook.ads:63:06: info: data dependencies proved
+datebook.ads:64:06: info: flow dependencies proved
 datebook.ads:70:07: info: initialization of "Next_Date" proved
 datebook.ads:71:07: info: initialization of "Status" proved
+datebook.ads:73:06: info: data dependencies proved
+datebook.ads:74:06: info: flow dependencies proved
+datebook.ads:79:06: info: data dependencies proved
+datebooks.adb:31:07: info: initialization of "Find_Result" proved
 datebooks.adb:41:35: info: loop invariant initialization proved (CVC4: 1 VC)
 datebooks.adb:41:35: info: loop invariant preservation proved (CVC4: 1 VC)
-datebooks.adb:50:17: info: initialization of "Find_Result.Found_Slot" proved
-datebooks.adb:54:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:55:17: info: range check proved (CVC4: 2 VC)
-datebooks.adb:56:38: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:56:38: info: loop invariant initialization proved (CVC4: 3 VC)
 datebooks.adb:56:38: info: loop invariant preservation proved (CVC4: 3 VC)
 datebooks.adb:58:40: info: overflow check proved (CVC4: 2 VC)
 datebooks.adb:60:65: info: index check proved (CVC4: 2 VC)
 datebooks.adb:60:65: info: overflow check proved (CVC4: 1 VC)
 datebooks.adb:60:70: info: overflow check proved (CVC4: 1 VC)
-datebooks.adb:60:92: info: initialization of "Find_Result.Fresh_Index" proved
-datebooks.adb:62:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:62:74: info: range check proved (CVC4: 1 VC)
-datebooks.adb:63:60: info: initialization of "Find_Result.Fresh_Index" proved
-datebooks.adb:64:60: info: initialization of "Find_Result.Fresh_Index" proved
 datebooks.adb:73:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:86:33: info: cannot unroll loop (too many loop iterations)
-datebooks.adb:91:16: info: initialization of "Status" proved
-datebooks.adb:96:49: info: initialization of "Date" proved
-datebooks.adb:109:19: info: length check proved (CVC4: 4 VC)
-datebooks.adb:114:18: info: initialization of "I" proved
+datebooks.adb:106:07: info: initialization of "I" proved
+datebooks.adb:109:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 datebooks.adb:115:27: info: range check proved (CVC4: 1 VC)
-datebooks.adb:115:42: info: initialization of "I" proved
 datebooks.adb:118:20: info: range check proved (CVC4: 2 VC)
-datebooks.adb:118:64: info: initialization of "I" proved
-datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 2 VC)
-datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 2 VC)
-datebooks.adb:120:27: info: initialization of "I" proved
+datebooks.adb:120:22: info: loop invariant initialization proved (CVC4: 3 VC)
+datebooks.adb:120:22: info: loop invariant preservation proved (CVC4: 3 VC)
 datebooks.adb:120:61: info: range check proved (CVC4: 2 VC)
-datebooks.adb:121:26: info: initialization of "I" proved
 datebooks.adb:122:41: info: range check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: index check proved (CVC4: 2 VC)
 datebooks.adb:124:49: info: overflow check proved (CVC4: 1 VC)
-datebooks.adb:124:60: info: initialization of "Description" proved
-datebooks.adb:124:68: info: initialization of "I" proved
-datebooks.adb:132:20: info: initialization of "I" proved
-datebooks.adb:133:15: info: initialization of "I" proved
 datebooks.adb:133:17: info: range check proved (CVC4: 1 VC)
 datebooks.adb:151:33: info: cannot unroll loop (too many loop iterations)
 datebooks.adb:152:38: info: no contextual analysis of "Is_After" (in potentially unevaluated context)
-datebooks.adb:165:32: info: initialization of "Count" proved
 datebooks.adb:165:32: info: loop invariant initialization proved (CVC4: 1 VC)
 datebooks.adb:165:32: info: loop invariant preservation proved (CVC4: 1 VC)
-datebooks.adb:168:22: info: initialization of "Count" proved
 datebooks.adb:168:28: info: range check proved (CVC4: 1 VC)
-datebooks.adb:171:14: info: initialization of "Count" proved
 datebooks.ads:25:25: info: initialization of "Book" proved
+datebooks.ads:27:06: info: flow dependencies proved
 datebooks.ads:32:99: info: initialization of "Status" proved
+datebooks.ads:34:06: info: flow dependencies proved
+datebooks.ads:39:06: info: flow dependencies proved
 datebooks.ads:43:58: info: initialization of "Date" proved
 datebooks.ads:43:85: info: initialization of "Status" proved
+datebooks.ads:45:06: info: flow dependencies proved
 datebooks.ads:50:70: info: initialization of "Description" proved
 datebooks.ads:50:96: info: initialization of "Status" proved
+datebooks.ads:52:06: info: flow dependencies proved
 datebooks.ads:57:61: info: initialization of "Next_Date" proved
 datebooks.ads:57:93: info: initialization of "Status" proved
+datebooks.ads:59:06: info: flow dependencies proved
 dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at dates.adb:49
-dates.adb:20:14: info: initialization of "Result" proved
-dates.adb:20:14: info: initialization of "Result" proved, in call inlined at dates.adb:49
-dates.adb:28:08: info: postcondition proved (CVC4: 12 VC)
+dates.adb:28:08: info: postcondition proved (CVC4: 12 VC; Trivial: 12 VC)
+dates.adb:47:07: info: initialization of "Length" proved
 dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
-dates.adb:54:14: info: initialization of "Length" proved
-dates.adb:65:14: info: initialization of "Result" proved
-dates.adb:65:14: info: initialization of "Result" proved, in call inlined at dates.adb:142
+dates.adb:72:06: info: flow dependencies proved
 dates.adb:77:47: info: range check proved (CVC4: 1 VC)
 dates.adb:81:54: info: range check proved (CVC4: 1 VC)
 dates.adb:85:53: info: range check proved (CVC4: 1 VC)
+dates.adb:94:06: info: flow dependencies proved
 dates.adb:99:47: info: range check proved (CVC4: 1 VC)
 dates.adb:102:54: info: range check proved (CVC4: 1 VC)
 dates.adb:105:53: info: range check proved (CVC4: 1 VC)
 dates.adb:142:10: info: analyzing call to "Is_Valid_Date" in context
+dates.adb:219:07: info: initialization of "Steps" proved
 dates.adb:224:14: info: range check proved (CVC4: 2 VC)
-dates.adb:224:47: info: initialization of "Steps" proved
 dates.adb:230:35: info: loop invariant initialization proved (CVC4: 1 VC)
 dates.adb:230:35: info: loop invariant preservation proved (CVC4: 1 VC)
 dates.adb:232:13: info: precondition proved (CVC4: 1 VC)
 dates.adb:236:14: info: range check proved (CVC4: 2 VC)
-dates.adb:236:47: info: initialization of "Steps" proved
 dates.adb:242:35: info: loop invariant initialization proved (CVC4: 1 VC)
 dates.adb:242:35: info: loop invariant preservation proved (CVC4: 1 VC)
 dates.adb:244:13: info: precondition proved (CVC4: 1 VC)
-dates.adb:276:14: info: initialization of "Result" proved
-dates.ads:32:07: info: initialization of "New_Date.Day" proved
-dates.ads:32:07: info: initialization of "New_Date.Month" proved
-dates.ads:32:07: info: initialization of "New_Date.Year" proved
+dates.ads:32:07: info: initialization of "New_Date" proved
 dates.ads:33:07: info: initialization of "Valid" proved
+dates.ads:35:06: info: flow dependencies proved
 dates.ads:62:76: info: initialization of "Valid" proved
-dates.ads:78:14: info: postcondition proved (CVC4: 3 VC)
+dates.ads:64:06: info: flow dependencies proved
+dates.ads:78:14: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 density_altitude-humidity_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-humidity_unit.ads:10:11: info: data dependencies proved
+density_altitude-humidity_unit.ads:11:11: info: flow dependencies proved
 density_altitude-pressure_unit.ads:9:20: info: initialization of "Value" proved
+density_altitude-pressure_unit.ads:10:11: info: data dependencies proved
+density_altitude-pressure_unit.ads:11:11: info: flow dependencies proved
 density_altitude-temperature_unit.ads:9:20: info: initialization of "Value" proved
-display_control.adb:16:18: warning: assuming "Put" has no effect on global items
-display_control.adb:16:18: warning: no Global contract available for "Put"
-display_control.adb:18:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:18:18: warning: no Global contract available for "Flush"
-display_control.adb:23:18: warning: assuming "Put" has no effect on global items
-display_control.adb:23:18: warning: no Global contract available for "Put"
-display_control.adb:24:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:24:18: warning: no Global contract available for "Flush"
-display_control.adb:29:18: warning: assuming "Put" has no effect on global items
-display_control.adb:29:18: warning: no Global contract available for "Put"
-display_control.adb:30:18: warning: assuming "Flush" has no effect on global items
-display_control.adb:30:18: warning: no Global contract available for "Flush"
-display_control.ads:3:14: warning: subprogram "Bold_On" has no effect
-display_control.ads:7:14: warning: subprogram "Blink_On" has no effect
-display_control.ads:11:14: warning: subprogram "Normal" has no effect
+density_altitude-temperature_unit.ads:10:11: info: data dependencies proved
+density_altitude-temperature_unit.ads:11:11: info: flow dependencies proved
+display_manager.ads:10:08: info: data dependencies proved
 display_manager.ads:10:44: info: initialization of "Value" proved
 double_list.adb:17:04: info: initialization of "Memory" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:18:04: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
@@ -612,23 +419,25 @@ double_list.adb:24:41: info: initialization of "Memory" constituent of "Internal
 double_list.adb:24:49: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:24:56: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
 double_list.adb:24:67: info: initialization of "Free" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:36:28: info: initialization of "Free_List" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.adb:62:30: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
-double_list.adb:63:46: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
-double_list.adb:64:33: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
+double_list.adb:50:07: info: initialization of "New_Pointer" proved, in instantiation at list_handler.adb:8
 double_list.adb:67:25: info: range check proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
 double_list.ads:7:26: info: initialization of "Integer_List.Internal_List" constituent of "List_Handler.List" proved, in instantiation at list_handler.adb:8
+double_list.ads:8:05: info: flow dependencies proved, in instantiation at list_handler.adb:8
 double_list.ads:9:05: info: initial condition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
-double_list.ads:9:26: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
-double_list.ads:19:19: info: initialization of "Count" constituent of "Internal_List" proved, in instantiation at list_handler.adb:8
+double_list.ads:17:08: info: data dependencies proved, in instantiation at list_handler.adb:8
+double_list.ads:18:08: info: flow dependencies proved, in instantiation at list_handler.adb:8
 double_list.ads:19:19: info: postcondition proved (CVC4: 1 VC), in instantiation at list_handler.adb:8
 double_list.ads:23:29: info: initialization of "Status" proved, in instantiation at list_handler.adb:8
+double_list.ads:25:08: info: data dependencies proved, in instantiation at list_handler.adb:8
+double_list.ads:26:08: info: flow dependencies proved, in instantiation at list_handler.adb:8
+double_list.ads:31:08: info: data dependencies proved, in instantiation at list_handler.adb:8
+double_list.ads:35:08: info: data dependencies proved, in instantiation at list_handler.adb:8
 elaboration_demo.adb:2:29: warning: unused initial value of "Size"
 elaboration_demo.adb:3:29: high: "Count" is not initialized in "Elaboration_Demo"
 elaboration_demo.adb:3:29: warning: unused variable "Count"
 elaboration_demo.adb:4:04: info: range check proved (CVC4: 2 VC)
 elaboration_demo.adb:4:04: warning: initialization of "Line" has no effect
-elaboration_demo.adb:4:34: info: length check proved (CVC4: 4 VC)
+elaboration_demo.adb:4:34: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 elaboration_demo.adb:5:04: warning: initialization of "Guess" has no effect
 elaboration_demo.adb:5:26: info: float overflow check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:61: info: precondition proved (CVC4: 1 VC)
@@ -636,173 +445,63 @@ elaboration_demo.adb:5:74: info: division check proved (CVC4: 1 VC)
 elaboration_demo.adb:5:74: info: float overflow check proved (Interval)
 enum_example.adb:13:04: info: no contextual analysis of "Next_Day" (multiple returns)
 enum_example.adb:18:32: info: range check proved (CVC4: 1 VC)
-enum_example.adb:26:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:26:04: warning: no Global contract available for "Put_Line"
-enum_example.adb:27:10: warning: assuming "Get" has no effect on global items
-enum_example.adb:27:10: warning: no Global contract available for "Get"
-enum_example.adb:28:26: info: initialization of "Today" proved
-enum_example.adb:29:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:29:04: warning: no Global contract available for "Put"
-enum_example.adb:30:10: info: initialization of "Default_Setting" proved
-enum_example.adb:30:10: info: initialization of "Default_Width" proved
-enum_example.adb:30:10: warning: assuming "Put" has no effect on global items
-enum_example.adb:30:10: warning: no Global contract available for "Put"
-enum_example.adb:30:25: info: initialization of "Tomorrow" proved
-enum_example.adb:33:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:33:04: warning: no Global contract available for "New_Line"
-enum_example.adb:35:07: info: initialization of "Today" proved
-enum_example.adb:35:15: info: initialization of "Tomorrow" proved
-enum_example.adb:36:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:36:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:38:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:38:04: warning: no Global contract available for "New_Line"
-enum_example.adb:40:04: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:40:04: warning: no Global contract available for "Put_Line"
+enum_example.adb:22:04: info: initialization of "Today" proved
+enum_example.adb:23:04: info: initialization of "Tomorrow" proved
+enum_example.adb:24:04: info: initialization of "Count" proved
 enum_example.adb:41:47: info: unrolling loop
-enum_example.adb:42:13: info: initialization of "Default_Setting" proved
-enum_example.adb:42:13: info: initialization of "Default_Width" proved
-enum_example.adb:42:13: warning: assuming "Put" has no effect on global items
-enum_example.adb:42:13: warning: no Global contract available for "Put"
-enum_example.adb:43:07: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:43:07: warning: no Global contract available for "New_Line"
-enum_example.adb:45:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:45:04: warning: no Global contract available for "New_Line"
 enum_example.adb:47:37: info: unrolling loop
-enum_example.adb:48:07: warning: assuming "Put_Line" has no effect on global items
-enum_example.adb:48:07: warning: no Global contract available for "Put_Line"
-enum_example.adb:50:04: warning: assuming "New_Line" has no effect on global items
-enum_example.adb:50:04: warning: no Global contract available for "New_Line"
 enum_example.adb:53:49: info: unrolling loop
-enum_example.adb:54:16: info: initialization of "Count" proved
 enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
-enum_example.adb:56:04: warning: assuming "Put" has no effect on global items
-enum_example.adb:56:04: warning: no Global contract available for "Put"
-enum_example.adb:56:17: info: initialization of "Count" proved
 example.adb:10:07: info: initialization of "Changed" proved
-example.adb:13:10: info: initialization of "Value" proved, in call inlined at example.adb:27
-example.adb:14:21: info: initialization of "Value" proved, in call inlined at example.adb:27
 example.adb:14:27: info: overflow check proved (CVC4: 1 VC), in call inlined at example.adb:27
-example.adb:25:15: warning: assuming "Put_Line" has no effect on global items
-example.adb:25:15: warning: no Global contract available for "Put_Line"
-example.adb:26:23: warning: assuming "Get" has no effect on global items
-example.adb:26:23: warning: no Global contract available for "Get"
+example.adb:21:04: info: initialization of "Value" proved
+example.adb:22:04: info: initialization of "Modified" proved
 example.adb:27:04: info: analyzing call to "Bounded_Increment" in context
-example.adb:30:07: info: initialization of "Modified" proved
-example.adb:31:18: warning: assuming "Put_Line" has no effect on global items
-example.adb:31:18: warning: no Global contract available for "Put_Line"
-example.adb:32:26: warning: assuming "Put" has no effect on global items
-example.adb:32:26: warning: no Global contract available for "Put"
-example.adb:32:41: info: initialization of "Value" proved
 external_test.adb:16:12: warning: unused assignment
 external_test.ads:6:20: info: initialization of "Item" proved
+generic_examples.adb:6:64: info: data dependencies proved
 generic_examples.adb:10:33: info: cannot unroll loop (too many loop iterations)
-generic_examples.adb:12:23: info: initialization of "Result" proved
 generic_examples.adb:12:30: medium: overflow check might fail [possible explanation: loop at line 10 should mention Result in a loop invariant]
-generic_examples.adb:15:14: info: initialization of "Result" proved
-generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
-generic_examples.adb:33:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
 generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:39 [possible explanation: loop at line 31 should mention Result in a loop invariant]
 generic_examples.adb:33:30: medium: overflow check might fail, in instantiation at generic_examples.adb:46 [possible explanation: loop at line 31 should mention Result in a loop invariant]
-generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:39
-generic_examples.adb:36:14: info: initialization of "Result" proved, in instantiation at generic_examples.adb:46
 generic_examples.adb:39:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:39:04: info: in instantiation at line 31
 generic_examples.adb:46:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:46:04: info: in instantiation at line 31
 generic_examples.adb:59:21: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
-generic_examples.adb:70:23: info: initialization of "Result" proved, in instantiation at generic_examples.adb:77
 generic_examples.adb:70:30: medium: overflow check might fail, in instantiation at generic_examples.adb:77 [possible explanation: loop at line 68 should mention Result in a loop invariant]
 generic_examples.adb:77:04: info: cannot unroll loop (too many loop iterations)
 generic_examples.adb:77:04: info: in instantiation at line 68
-generic_examples.adb:91:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:91:23: warning: no Global contract available for "Put"
-generic_examples.adb:91:29: info: initialization of "The_Count" proved
-generic_examples.adb:92:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:92:15: warning: no Global contract available for "New_Line"
+generic_examples.adb:84:04: info: initialization of "The_Count" proved
 generic_examples.adb:95:40: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:97:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:97:23: warning: no Global contract available for "Put"
-generic_examples.adb:97:29: info: initialization of "The_Count" proved
-generic_examples.adb:98:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:98:15: warning: no Global contract available for "New_Line"
-generic_examples.adb:100:43: info: initialization of "My_Percents" proved
 generic_examples.adb:100:43: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:102:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:102:23: warning: no Global contract available for "Put"
-generic_examples.adb:102:29: info: initialization of "The_Count" proved
-generic_examples.adb:103:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:103:15: warning: no Global contract available for "New_Line"
-generic_examples.adb:106:31: info: initialization of "My_Percents" proved
 generic_examples.adb:106:31: info: range check proved (CVC4: 1 VC)
-generic_examples.adb:109:23: warning: assuming "Put" has no effect on global items
-generic_examples.adb:109:23: warning: no Global contract available for "Put"
-generic_examples.adb:109:29: info: initialization of "The_Count" proved
-generic_examples.adb:110:15: warning: assuming "New_Line" has no effect on global items
-generic_examples.adb:110:15: warning: no Global contract available for "New_Line"
-generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:16:31: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:16:52: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:21:24: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:21:24: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:21:36: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:21:36: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
+generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
+generic_searchers.adb:9:07: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:21:48: info: division check proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:21:48: info: division check proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:22:34: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:22:34: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:24:23: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:24:23: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:28:20: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:28:32: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:30:37: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:31:33: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:31:46: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:31:72: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:32:40: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
 generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:33:54: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:34:10: info: loop variant proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:34:10: info: loop variant proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:34:44: info: initialization of "Low_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:34:44: info: initialization of "Low_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:34:68: info: initialization of "High_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:34:68: info: initialization of "High_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:36:20: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:36:20: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
-generic_searchers.adb:37:37: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:37:37: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:37:47: info: index check proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:37:47: info: index check proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:40:26: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:40:26: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.adb:40:36: info: range check proved (CVC4: 1 VC), in instantiation at prime_search.adb:15
 generic_searchers.adb:40:36: info: range check proved (CVC4: 1 VC), in instantiation at search_demo.adb:12
-generic_searchers.adb:42:27: info: initialization of "Mid_Index" proved, in instantiation at prime_search.adb:15
-generic_searchers.adb:42:27: info: initialization of "Mid_Index" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:11:29: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
 generic_searchers.ads:11:29: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
 generic_searchers.ads:12:29: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
@@ -811,36 +510,24 @@ generic_searchers.ads:15:74: info: index check proved (CVC4: 2 VC), in instantia
 generic_searchers.ads:15:74: info: index check proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.ads:16:17: info: postcondition proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.ads:16:17: info: postcondition proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
-generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at prime_search.adb:15
-generic_searchers.ads:16:20: info: initialization of "Found" proved, in instantiation at search_demo.adb:12
-generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at prime_search.adb:15
-generic_searchers.ads:17:41: info: initialization of "Result" proved, in instantiation at search_demo.adb:12
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: range check proved (Interval), in call inlined at good_types.adb:22
-good_types.adb:20:11: warning: assuming "Get" has no effect on global items
-good_types.adb:20:11: warning: no Global contract available for "Get"
-good_types.adb:21:11: warning: assuming "Get" has no effect on global items
-good_types.adb:21:11: warning: no Global contract available for "Get"
-good_types.adb:22:13: info: initialization of "Room_Length" proved
+good_types.adb:16:04: info: initialization of "Room_Length" proved
+good_types.adb:17:04: info: initialization of "Wall_Thickness" proved
+good_types.adb:18:04: info: initialization of "Total" proved
 good_types.adb:22:25: info: float overflow check proved (Interval)
-good_types.adb:22:25: medium: range check might fail [possible explanation: call at line 20 should mention Item (for argument Room_Length) in a postcondition]
+good_types.adb:22:25: medium: range check might fail [possible explanation: postcondition of call at line 20 should mention Item (for argument Room_Length)]
 good_types.adb:22:31: info: float overflow check proved (Interval)
 good_types.adb:22:33: info: analyzing call to "To_Feet" in context
-good_types.adb:22:33: info: initialization of "Wall_Thickness" proved
-good_types.adb:23:11: info: initialization of "Default_Aft" proved
-good_types.adb:23:11: info: initialization of "Default_Exp" proved
-good_types.adb:23:11: info: initialization of "Default_Fore" proved
-good_types.adb:23:11: warning: assuming "Put" has no effect on global items
-good_types.adb:23:11: warning: no Global contract available for "Put"
-good_types.adb:23:25: info: initialization of "Total" proved
-hierarchical_state_demo-a_pack.adb:5:04: info: initialization of "Total" constituent of "State" proved
 hierarchical_state_demo-a_pack.adb:12:31: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:13:19: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:13:19: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:13:30: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo-a_pack.adb:15:25: info: overflow check proved (CVC4: 1 VC)
-hierarchical_state_demo.adb:6:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo-a_pack.ads:4:09: info: flow dependencies proved
+hierarchical_state_demo-a_pack.ads:7:12: info: data dependencies proved
+hierarchical_state_demo-a_pack.ads:8:12: info: flow dependencies proved
 hierarchical_state_demo.adb:16:22: info: division check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:18:25: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:18:25: info: range check proved (CVC4: 1 VC)
@@ -850,10 +537,14 @@ hierarchical_state_demo.adb:20:25: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:20:25: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:20:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo.adb:20:43: info: division check proved (CVC4: 1 VC)
+hierarchical_state_demo.ads:4:09: info: flow dependencies proved
 hierarchical_state_demo.ads:7:28: info: initialization of "Success" proved
-hierarchical_state_demo_nested.adb:5:04: info: initialization of "Count" constituent of "Top_State" proved
+hierarchical_state_demo.ads:8:12: info: data dependencies proved
+hierarchical_state_demo.ads:9:12: info: flow dependencies proved
 hierarchical_state_demo_nested.adb:8:30: info: initialization of "A_Pack.State" constituent of "Hierarchical_State_Demo_Nested.Top_State" proved
-hierarchical_state_demo_nested.adb:20:07: info: initialization of "Total" constituent of "State" proved
+hierarchical_state_demo_nested.adb:9:12: info: flow dependencies proved
+hierarchical_state_demo_nested.adb:12:15: info: data dependencies proved
+hierarchical_state_demo_nested.adb:13:15: info: flow dependencies proved
 hierarchical_state_demo_nested.adb:27:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:28:22: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:28:22: info: range check proved (CVC4: 1 VC)
@@ -868,43 +559,47 @@ hierarchical_state_demo_nested.adb:49:25: info: overflow check proved (CVC4: 1 V
 hierarchical_state_demo_nested.adb:49:25: info: range check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:49:34: info: overflow check proved (CVC4: 1 VC)
 hierarchical_state_demo_nested.adb:49:43: info: division check proved (CVC4: 1 VC)
+hierarchical_state_demo_nested.ads:4:09: info: flow dependencies proved
 hierarchical_state_demo_nested.ads:7:28: info: initialization of "Success" proved
+hierarchical_state_demo_nested.ads:8:09: info: data dependencies proved
+hierarchical_state_demo_nested.ads:9:09: info: flow dependencies proved
+indexed_datebook_v2.ads:6:05: info: flow dependencies proved
 initializer_demo.adb:6:07: warning: initialization of "Sum" has no effect
 initializer_demo.adb:9:28: info: unrolling loop
-initializer_demo.adb:10:17: info: initialization of "Sum" proved
-initializer_demo.adb:10:21: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention A in a precondition]
-initializer_demo.adb:12:14: info: initialization of "Sum" proved
+initializer_demo.adb:10:21: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:8 should mention A in a precondition]
+initializer_demo.adb:17:07: info: initialization of "Sum" proved
 initializer_demo.adb:22:28: info: unrolling loop
-initializer_demo.adb:23:17: info: initialization of "Sum" proved
-initializer_demo.adb:23:21: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention A in a precondition]
-initializer_demo.adb:25:23: info: initialization of "Sum" proved
+initializer_demo.adb:23:21: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:14 should mention A in a precondition]
+initializer_demo.adb:30:07: info: initialization of "Offset" proved
 initializer_demo.adb:35:19: info: overflow check proved (CVC4: 1 VC)
-initializer_demo.adb:35:21: info: initialization of "Offset.X" proved
-initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention P in a precondition]
-initializer_demo.adb:35:37: info: initialization of "Offset.Y" proved
+initializer_demo.adb:35:35: medium: overflow check might fail [possible explanation: subprogram at initializer_demo.ads:22 should mention P in a precondition]
 initializer_demo.ads:12:28: info: range check proved (CVC4: 1 VC)
 interval.ads:6:13: info: invariant check proved (CVC4: 1 VC)
 interval.ads:9:09: info: invariant check proved on default value (CVC4: 1 VC)
+interval_tree.ads:5:05: info: flow dependencies proved
 interval_tree.ads:18:19: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree.ads:18:26: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree.ads:28:18: info: implicit function contract not available for proof ("Size" might not return)
+interval_tree_wrapper.ads:6:07: info: flow dependencies proved
 interval_tree_wrapper.ads:20:20: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:20:57: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:20:71: info: implicit function contract not available for proof ("Size" might not return)
 interval_tree_wrapper.ads:30:18: info: implicit function contract not available for proof ("Size" might not return)
 led_display.adb:24:41: info: initialization of "Value" constituent of "LED_State" proved
-lights.adb:15:14: info: initialization of "Result" proved
+led_display.ads:11:09: info: data dependencies proved
+lights.adb:5:07: info: initialization of "Result" proved
 list_handler.adb:8:04: info: cannot unroll loop (too many loop iterations)
 list_handler.adb:8:04: info: in instantiation at double_list.adb:35
-list_handler.adb:21:13: info: initialization of "Current" proved
-list_handler.adb:23:48: info: initialization of "Current" proved
-list_handler.adb:25:20: info: initialization of "Status" proved
-list_handler.adb:25:54: info: initialization of "Current" proved
-list_handler.adb:26:21: info: initialization of "Current" proved
+list_handler.adb:19:07: info: initialization of "Status" proved
 list_handler.adb:26:29: info: overflow check proved (CVC4: 1 VC)
+list_handler.ads:5:07: info: flow dependencies proved
+list_handler.ads:9:10: info: data dependencies proved
+list_handler.ads:10:10: info: flow dependencies proved
 messages.ads:17:28: medium: range check might fail
 network-helpers.ads:5:23: info: initialization of "MSB" proved
 network-helpers.ads:6:23: info: initialization of "LSB" proved
+network-helpers.ads:8:08: info: data dependencies proved
+network-helpers.ads:9:08: info: flow dependencies proved
 network-helpers0.adb:14:27: info: range check proved (CVC4: 2 VC)
 network-helpers0.adb:15:21: info: no contextual analysis of "Shift_Right" (body not seen yet)
 network-helpers0.adb:15:21: info: range check proved (CVC4: 2 VC)
@@ -915,6 +610,12 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+operator_overload.adb:13:07: info: initialization of "Left_Squared" proved
+operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:14:07: info: initialization of "Right_Squared" proved
+operator_overload.adb:14:07: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
+operator_overload.adb:14:07: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
 operator_overload.adb:16:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:16:38: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:16:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
@@ -927,100 +628,63 @@ operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in 
 operator_overload.adb:17:43: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:30
 operator_overload.adb:17:59: info: float overflow check proved (CVC4: 1 VC), in call inlined at operator_overload.adb:37
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:18:14: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:30
-operator_overload.adb:18:30: info: initialization of "Right_Squared" proved, in call inlined at operator_overload.adb:37
+operator_overload.adb:21:04: info: initialization of "P1" proved
+operator_overload.adb:22:04: info: initialization of "P2" proved
 operator_overload.adb:30:10: info: analyzing call to "<=" in context
-operator_overload.adb:30:10: info: initialization of "P1.X_Coord" proved
-operator_overload.adb:30:10: info: initialization of "P1.Y_Coord" proved
-operator_overload.adb:30:10: info: initialization of "P2.X_Coord" proved
-operator_overload.adb:30:10: info: initialization of "P2.Y_Coord" proved
-operator_overload.adb:31:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:31:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:33:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:33:07: warning: no Global contract available for "Put_Line"
 operator_overload.adb:37:07: info: analyzing call to "<=" in context
-operator_overload.adb:37:07: info: initialization of "P1.X_Coord" proved
-operator_overload.adb:37:07: info: initialization of "P1.Y_Coord" proved
-operator_overload.adb:37:07: info: initialization of "P2.X_Coord" proved
-operator_overload.adb:37:07: info: initialization of "P2.Y_Coord" proved
-operator_overload.adb:38:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:38:07: warning: no Global contract available for "Put_Line"
-operator_overload.adb:40:07: warning: assuming "Put_Line" has no effect on global items
-operator_overload.adb:40:07: warning: no Global contract available for "Put_Line"
-overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A and B in a precondition]
+overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at overflow.ads:3 should mention A and B in a precondition]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
-palindrome.adb:9:22: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
-palindrome.adb:9:22: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
+palindrome.adb:5:07: info: initialization of "Left_Index" proved
+palindrome.adb:5:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:6:07: info: initialization of "Right_Index" proved
+palindrome.adb:6:07: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
+palindrome.adb:9:22: info: range check proved (CVC4: 8 VC), in call inlined at palindrome.adb:32
 palindrome.adb:9:26: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
-palindrome.adb:11:20: info: initialization of "Left_Index" proved
-palindrome.adb:11:20: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:11:34: info: initialization of "Right_Index" proved
-palindrome.adb:11:34: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:12:20: info: initialization of "Line" proved, in call inlined at palindrome.adb:32
 palindrome.adb:12:20: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
 palindrome.adb:12:26: medium: array index check might fail, in call inlined at palindrome.adb:32
 palindrome.adb:12:42: info: range check proved (CVC4: 4 VC), in call inlined at palindrome.adb:32
 palindrome.adb:12:48: medium: array index check might fail, in call inlined at palindrome.adb:32
-palindrome.adb:13:25: info: initialization of "Left_Index" proved
-palindrome.adb:13:25: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
 palindrome.adb:13:36: info: overflow check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
-palindrome.adb:14:25: info: initialization of "Right_Index" proved
-palindrome.adb:14:25: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
 palindrome.adb:14:37: info: range check proved (CVC4: 1 VC), in call inlined at palindrome.adb:32
-palindrome.adb:16:14: info: initialization of "Left_Index" proved
-palindrome.adb:16:14: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:16:28: info: initialization of "Right_Index" proved
-palindrome.adb:16:28: info: initialization of "Right_Index" proved, in call inlined at palindrome.adb:32
-palindrome.adb:26:14: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:26:14: warning: no Global contract available for "Put_Line"
-palindrome.adb:29:15: warning: assuming "Get_Line" has no effect on global items
-palindrome.adb:29:15: warning: no Global contract available for "Get_Line"
+palindrome.adb:22:04: info: initialization of "Line" proved
+palindrome.adb:23:04: info: initialization of "Count" proved
 palindrome.adb:32:07: info: analyzing call to "Is_Palindrome" in context
-palindrome.adb:32:07: medium: range check might fail [possible explanation: call at line 29 should mention Item (for argument Line) in a postcondition]
-palindrome.adb:32:22: info: initialization of "Line" proved
-palindrome.adb:32:33: info: initialization of "Count" proved
-palindrome.adb:33:18: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:33:18: warning: no Global contract available for "Put_Line"
-palindrome.adb:35:18: warning: assuming "Put_Line" has no effect on global items
-palindrome.adb:35:18: warning: no Global contract available for "Put_Line"
-parent-public1.adb:11:20: info: initialization of "Temp" proved
-parent.adb:6:22: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Value in a precondition]
+palindrome.adb:32:07: info: range check proved (CVC4: 4 VC)
+parent-public1.adb:7:07: info: initialization of "Temp" proved
+parent.adb:6:22: medium: overflow check might fail [possible explanation: subprogram at parent.ads:3 should mention Value in a precondition]
+populate_tree.adb:7:05: info: data dependencies proved
+populate_tree.adb:8:05: info: flow dependencies proved
 populate_tree.adb:10:24: info: cannot unroll loop (too many loop iterations)
 prime_search.adb:3:50: info: initialization of "Prime_Index" proved
+prime_search.adb:12:04: info: initialization of "Found" proved
+prime_search.adb:13:04: info: initialization of "Position" proved
 prime_search.adb:20:18: info: assertion proved (CVC4: 1 VC)
 prime_search.adb:21:77: info: index check proved (CVC4: 2 VC)
 prime_search.adb:22:04: info: precondition proved (CVC4: 1 VC)
-prime_search.adb:23:07: info: initialization of "Found" proved
-prime_search.adb:24:22: info: initialization of "Position" proved
+raster_graphics.adb:12:11: info: data dependencies proved
 raster_graphics.adb:13:32: info: initialization of "Status" proved
 raster_graphics.adb:15:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:15:39: medium: range check might fail
 raster_graphics.adb:16:39: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:16:39: medium: range check might fail
-raster_graphics.adb:18:13: info: initialization of "Delta_X" proved
 raster_graphics.adb:18:20: info: overflow check proved (CVC4: 1 VC)
 raster_graphics.adb:18:24: info: overflow check proved (CVC4: 1 VC)
-raster_graphics.adb:18:26: info: initialization of "Delta_Y" proved
 raster_graphics.adb:18:33: info: overflow check proved (CVC4: 1 VC)
-raster_graphics.adb:27:10: info: initialization of "Status" proved
-raster_graphics.adb:31:41: medium: overflow check might fail
+raster_graphics.adb:31:41: medium: overflow check might fail [possible explanation: subprogram at raster_graphics.ads:18 should mention Line_Count in a precondition]
+raster_graphics.ads:20:08: info: data dependencies proved
 raster_graphics.ads:21:29: info: initialization of "Status" proved
 region_checks.ads:8:08: info: complete contract cases proved (CVC4: 1 VC)
 region_checks.ads:8:08: info: disjoint contract cases proved (CVC4: 1 VC)
-region_checks.ads:9:17: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:10:17: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:11:17: info: contract case proved (CVC4: 2 VC)
+region_checks.ads:9:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:10:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:11:17: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 region_checks.ads:15:08: info: disjoint contract cases proved (CVC4: 1 VC)
-region_checks.ads:16:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:18:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:20:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:22:58: info: contract case proved (CVC4: 2 VC)
-region_checks.ads:24:18: info: contract case proved (CVC4: 2 VC)
+region_checks.ads:16:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:18:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:20:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:22:58: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+region_checks.ads:24:18: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 scrabble.adb:7:15: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:7:26: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:7:37: info: predicate check proved (CVC4: 1 VC)
@@ -1047,293 +711,209 @@ scrabble.adb:12:37: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:12:48: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:13:15: info: predicate check proved (CVC4: 1 VC)
 scrabble.adb:13:25: info: predicate check proved (CVC4: 1 VC)
-scrabble.adb:19:33: info: initialization of "Total_Score" proved
 scrabble.adb:19:33: info: loop invariant initialization proved (CVC4: 1 VC)
 scrabble.adb:19:33: info: loop invariant preservation proved (CVC4: 1 VC)
 scrabble.adb:19:50: info: overflow check proved (CVC4: 2 VC)
 scrabble.adb:19:65: info: overflow check proved (CVC4: 2 VC)
-scrabble.adb:20:25: info: initialization of "Total_Score" proved
 scrabble.adb:20:37: info: overflow check proved (CVC4: 1 VC)
 scrabble.adb:20:37: info: range check proved (CVC4: 1 VC)
-scrabble.adb:22:14: info: initialization of "Total_Score" proved
+search_demo.adb:18:04: info: initialization of "Found" proved
+search_demo.adb:19:04: info: initialization of "Result_Index" proved
 search_demo.adb:21:04: info: precondition proved (CVC4: 1 VC)
-search_demo.adb:21:17: info: initialization of "Search_Array" proved
-search_demo.adb:22:11: info: initialization of "Found" proved
-search_demo.adb:23:18: warning: assuming "Put_Line" has no effect on global items
-search_demo.adb:23:18: warning: no Global contract available for "Put_Line"
-search_demo.adb:25:18: warning: assuming "Put_Line" has no effect on global items
-search_demo.adb:25:18: warning: no Global contract available for "Put_Line"
 search_demo.adb:25:63: info: range check proved (CVC4: 1 VC)
-search_demo.adb:25:79: info: initialization of "Result_Index" proved
-searchers.adb:18:30: info: initialization of "Low_Index" proved
-searchers.adb:18:50: info: initialization of "High_Index" proved
-searchers.adb:23:24: info: initialization of "Low_Index" proved
-searchers.adb:23:36: info: initialization of "High_Index" proved
+searchers.adb:11:07: info: initialization of "Mid_Index" proved
 searchers.adb:23:48: info: division check proved (CVC4: 2 VC)
-searchers.adb:24:33: info: initialization of "Mid_Index" proved
-searchers.adb:26:23: info: initialization of "Mid_Index" proved
-searchers.adb:30:20: info: initialization of "Low_Index" proved
-searchers.adb:30:32: info: initialization of "High_Index" proved
 searchers.adb:32:32: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers.adb:32:32: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers.adb:32:38: info: initialization of "Low_Index" proved
 searchers.adb:33:32: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers.adb:33:32: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers.adb:33:53: info: initialization of "High_Index" proved
-searchers.adb:35:19: info: initialization of "Mid_Index" proved
-searchers.adb:36:26: info: initialization of "Mid_Index" proved
-searchers.adb:38:27: info: initialization of "Mid_Index" proved
 searchers.ads:9:29: info: initialization of "Found" proved
 searchers.ads:10:29: info: initialization of "Result" proved
 searchers.ads:14:71: info: index check proved (CVC4: 2 VC)
-searchers2.adb:18:30: info: initialization of "Low_Index" proved
-searchers2.adb:18:50: info: initialization of "High_Index" proved
-searchers2.adb:23:24: info: initialization of "Low_Index" proved
-searchers2.adb:23:36: info: initialization of "High_Index" proved
+searchers2.adb:11:07: info: initialization of "Mid_Index" proved
 searchers2.adb:23:48: info: division check proved (CVC4: 2 VC)
-searchers2.adb:24:33: info: initialization of "Mid_Index" proved
-searchers2.adb:26:23: info: initialization of "Mid_Index" proved
-searchers2.adb:30:20: info: initialization of "Low_Index" proved
-searchers2.adb:30:32: info: initialization of "High_Index" proved
 searchers2.adb:33:13: info: loop invariant initialization proved (CVC4: 2 VC)
 searchers2.adb:33:13: info: loop invariant preservation proved (CVC4: 2 VC)
-searchers2.adb:33:34: info: initialization of "Low_Index" proved
-searchers2.adb:33:54: info: initialization of "High_Index" proved
-searchers2.adb:35:19: info: initialization of "Mid_Index" proved
-searchers2.adb:36:26: info: initialization of "Mid_Index" proved
-searchers2.adb:38:27: info: initialization of "Mid_Index" proved
 searchers2.ads:9:29: info: initialization of "Found" proved
 searchers2.ads:10:29: info: initialization of "Result" proved
 searchers2.ads:14:68: info: index check proved (CVC4: 2 VC)
 searchers2.ads:16:10: info: postcondition proved (CVC4: 2 VC)
-searchers2.ads:16:14: info: initialization of "Found" proved
-searchers2.ads:16:46: info: initialization of "Result" proved
-searchers3.adb:16:30: info: initialization of "Low_Index" proved
-searchers3.adb:16:50: info: initialization of "High_Index" proved
-searchers3.adb:21:24: info: initialization of "Low_Index" proved
-searchers3.adb:21:36: info: initialization of "High_Index" proved
+searchers3.adb:9:07: info: initialization of "Mid_Index" proved
 searchers3.adb:21:48: info: division check proved (CVC4: 2 VC)
-searchers3.adb:22:33: info: initialization of "Mid_Index" proved
-searchers3.adb:24:23: info: initialization of "Mid_Index" proved
-searchers3.adb:28:20: info: initialization of "Low_Index" proved
-searchers3.adb:28:32: info: initialization of "High_Index" proved
 searchers3.adb:30:33: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers3.adb:30:33: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers3.adb:30:37: info: initialization of "Found" proved
-searchers3.adb:31:33: info: initialization of "Mid_Index" proved
 searchers3.adb:31:33: info: loop invariant initialization proved (CVC4: 2 VC)
 searchers3.adb:31:33: info: loop invariant preservation proved (CVC4: 2 VC)
-searchers3.adb:31:46: info: initialization of "Low_Index" proved
-searchers3.adb:31:59: info: initialization of "High_Index" proved
 searchers3.adb:32:33: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers3.adb:32:33: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers3.adb:32:39: info: initialization of "Low_Index" proved
 searchers3.adb:33:33: info: loop invariant initialization proved (CVC4: 1 VC)
 searchers3.adb:33:33: info: loop invariant preservation proved (CVC4: 1 VC)
-searchers3.adb:33:54: info: initialization of "High_Index" proved
 searchers3.adb:34:10: info: loop variant proved (CVC4: 1 VC)
-searchers3.adb:34:44: info: initialization of "High_Index" proved
-searchers3.adb:34:57: info: initialization of "Low_Index" proved
-searchers3.adb:36:19: info: initialization of "Mid_Index" proved
-searchers3.adb:37:36: info: initialization of "Mid_Index" proved
 searchers3.adb:37:46: info: index check proved (CVC4: 2 VC)
-searchers3.adb:40:26: info: initialization of "Mid_Index" proved
 searchers3.adb:40:36: info: range check proved (CVC4: 1 VC)
-searchers3.adb:42:27: info: initialization of "Mid_Index" proved
 searchers3.ads:9:29: info: initialization of "Found" proved
 searchers3.ads:10:29: info: initialization of "Result" proved
 searchers3.ads:14:71: info: index check proved (CVC4: 2 VC)
 searchers3.ads:16:12: info: postcondition proved (CVC4: 2 VC)
-searchers3.ads:16:16: info: initialization of "Found" proved
-searchers3.ads:16:47: info: initialization of "Result" proved
 searches.adb:9:23: info: range check proved (CVC4: 1 VC)
 searches.adb:11:26: info: index check proved (CVC4: 4 VC)
-searches.adb:11:26: info: initialization of "Position" proved
-searches.adb:12:22: info: initialization of "Position" proved
 searches.adb:12:31: info: overflow check proved (CVC4: 2 VC)
-searches.adb:14:13: info: initialization of "Position" proved
 searches.adb:14:13: info: loop invariant initialization proved (CVC4: 3 VC)
 searches.adb:14:13: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:15:63: info: index check proved (CVC4: 4 VC)
 searches.adb:24:23: info: range check proved (CVC4: 1 VC)
-searches.adb:26:20: info: initialization of "Position" proved
 searches.adb:26:55: info: index check proved (CVC4: 4 VC)
-searches.adb:27:22: info: initialization of "Position" proved
 searches.adb:27:31: info: overflow check proved (CVC4: 2 VC)
-searches.adb:29:13: info: initialization of "Position" proved
 searches.adb:29:13: info: loop invariant initialization proved (CVC4: 3 VC)
 searches.adb:29:13: info: loop invariant preservation proved (CVC4: 3 VC)
 searches.adb:29:49: info: overflow check proved (CVC4: 2 VC)
 searches.adb:30:63: info: index check proved (CVC4: 4 VC)
-searches.adb:32:16: info: initialization of "Position" proved
-searches.adb:33:14: info: initialization of "Found" proved
 searches.adb:34:26: info: range check proved (CVC4: 1 VC)
 searches.ads:9:26: info: initialization of "Position" proved
+searches.ads:11:10: info: flow dependencies proved
 searches.ads:12:60: info: index check proved (CVC4: 2 VC)
 searches.ads:13:21: info: postcondition proved (CVC4: 4 VC)
-searches.ads:13:22: info: initialization of "Position" proved
 searches.ads:14:28: info: index check proved (CVC4: 2 VC)
 searches.ads:16:32: info: index check proved (CVC4: 2 VC)
 searches.ads:20:26: info: initialization of "Found" proved
 searches.ads:21:26: info: initialization of "Position" proved
+searches.ads:23:10: info: flow dependencies proved
 searches.ads:28:38: info: index check proved (CVC4: 2 VC)
 searches.ads:28:49: info: index check proved (CVC4: 2 VC)
 searches.ads:29:21: info: postcondition proved (CVC4: 3 VC)
-searches.ads:29:22: info: initialization of "Position" proved
-searches.ads:30:24: info: initialization of "Found" proved
 searches.ads:30:45: info: index check proved (CVC4: 2 VC)
 searches.ads:33:57: info: index check proved (CVC4: 2 VC)
-serial_numbers.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention Next_Number in a precondition]
+serial_numbers.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at serial_numbers.ads:3 should mention Next_Number in a precondition]
 serial_numbers.ads:3:24: info: initialization of "Number" proved
-serial_numbers2.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at line 5 should mention Next_Number in a precondition]
+serial_numbers2.adb:8:34: medium: overflow check might fail [possible explanation: subprogram at serial_numbers2.ads:3 should mention Next_Number in a precondition]
 serial_numbers2.ads:3:24: info: initialization of "Number" proved
+serial_port.ads:6:07: info: flow dependencies proved
+shapes.adb:9:07: info: initialization of "Delta_X" proved
+shapes.adb:10:07: info: initialization of "Delta_Y" proved
 shapes.adb:12:34: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:12:34: info: range check proved (CVC4: 1 VC)
 shapes.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:13:34: info: range check proved (CVC4: 1 VC)
-shapes.adb:14:14: info: initialization of "Delta_X" proved
 shapes.adb:14:21: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:14:30: info: overflow check proved (CVC4: 1 VC)
-shapes.adb:14:32: info: initialization of "Delta_Y" proved
 shapes.adb:14:39: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:14:75: info: overflow check proved (CVC4: 1 VC)
 shapes.adb:14:75: info: range check proved (CVC4: 1 VC)
+shapes2.adb:9:07: info: initialization of "Delta_X" proved
+shapes2.adb:10:07: info: initialization of "Delta_Y" proved
 shapes2.adb:12:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:12:34: info: range check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:13:34: info: range check proved (CVC4: 1 VC)
-shapes2.adb:14:14: info: initialization of "Delta_X" proved
 shapes2.adb:14:21: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:14:30: info: overflow check proved (CVC4: 1 VC)
-shapes2.adb:14:32: info: initialization of "Delta_Y" proved
 shapes2.adb:14:39: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:14:75: info: overflow check proved (CVC4: 1 VC)
 shapes2.adb:14:75: info: range check proved (CVC4: 1 VC)
 shapes3.adb:7:08: info: refined post proved (CVC4: 4 VC)
-shapes3.adb:18:10: info: initialization of "R" proved
 shapes3.adb:19:36: info: range check proved (CVC4: 1 VC)
-shapes3.adb:21:10: info: initialization of "R" proved
 shapes3.adb:22:17: info: range check proved (CVC4: 1 VC)
-shapes3.adb:24:10: info: initialization of "R" proved
 shapes3.adb:25:36: info: range check proved (CVC4: 1 VC)
-shapes3.adb:27:10: info: initialization of "R" proved
 shapes3.adb:28:17: info: range check proved (CVC4: 1 VC)
-shapes3.adb:30:21: info: initialization of "R" proved
+shapes3.adb:38:07: info: initialization of "Delta_X" proved
+shapes3.adb:39:07: info: initialization of "Delta_Y" proved
 shapes3.adb:41:34: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:41:34: info: range check proved (CVC4: 1 VC)
 shapes3.adb:42:34: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:42:34: info: range check proved (CVC4: 1 VC)
-shapes3.adb:43:14: info: initialization of "Delta_X" proved
 shapes3.adb:43:21: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:43:30: info: overflow check proved (CVC4: 1 VC)
-shapes3.adb:43:32: info: initialization of "Delta_Y" proved
 shapes3.adb:43:39: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:43:75: info: overflow check proved (CVC4: 1 VC)
 shapes3.adb:43:75: info: range check proved (CVC4: 1 VC)
 shapes3.ads:11:18: info: postcondition proved (CVC4: 1 VC)
-shapes4.adb:10:10: info: initialization of "R" proved
 shapes4.adb:10:72: info: range check proved (CVC4: 1 VC)
-shapes4.adb:11:10: info: initialization of "R" proved
 shapes4.adb:11:53: info: range check proved (CVC4: 1 VC)
-shapes4.adb:12:10: info: initialization of "R" proved
 shapes4.adb:12:72: info: range check proved (CVC4: 1 VC)
-shapes4.adb:13:10: info: initialization of "R" proved
 shapes4.adb:13:53: info: range check proved (CVC4: 1 VC)
-shapes4.adb:14:21: info: initialization of "R" proved
+shapes4.adb:22:07: info: initialization of "Delta_X" proved
+shapes4.adb:23:07: info: initialization of "Delta_Y" proved
 shapes4.adb:25:34: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:25:34: info: range check proved (CVC4: 1 VC)
 shapes4.adb:26:34: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:26:34: info: range check proved (CVC4: 1 VC)
-shapes4.adb:27:14: info: initialization of "Delta_X" proved
 shapes4.adb:27:21: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:27:30: info: overflow check proved (CVC4: 1 VC)
-shapes4.adb:27:32: info: initialization of "Delta_Y" proved
 shapes4.adb:27:39: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:27:75: info: overflow check proved (CVC4: 1 VC)
 shapes4.adb:27:75: info: range check proved (CVC4: 1 VC)
 shapes4.ads:8:13: info: invariant check proved (CVC4: 1 VC)
 shapes4.ads:16:09: info: invariant check proved on default value (CVC4: 1 VC)
 shapes5.adb:8:08: info: refined post proved (CVC4: 4 VC)
-shapes5.adb:19:10: info: initialization of "R" proved
 shapes5.adb:20:36: info: range check proved (CVC4: 1 VC)
-shapes5.adb:22:10: info: initialization of "R" proved
 shapes5.adb:23:17: info: range check proved (CVC4: 1 VC)
-shapes5.adb:25:10: info: initialization of "R" proved
 shapes5.adb:26:36: info: range check proved (CVC4: 1 VC)
-shapes5.adb:28:10: info: initialization of "R" proved
 shapes5.adb:29:17: info: range check proved (CVC4: 1 VC)
-shapes5.adb:31:21: info: initialization of "R" proved
+shapes5.adb:39:07: info: initialization of "Delta_X" proved
+shapes5.adb:40:07: info: initialization of "Delta_Y" proved
 shapes5.adb:42:34: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:42:34: info: range check proved (CVC4: 1 VC)
 shapes5.adb:43:34: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:43:34: info: range check proved (CVC4: 1 VC)
-shapes5.adb:44:14: info: initialization of "Delta_X" proved
 shapes5.adb:44:21: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:44:30: info: overflow check proved (CVC4: 1 VC)
-shapes5.adb:44:32: info: initialization of "Delta_Y" proved
 shapes5.adb:44:39: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:44:75: info: overflow check proved (CVC4: 1 VC)
 shapes5.adb:44:75: info: range check proved (CVC4: 1 VC)
+shapes5.ads:4:08: info: flow dependencies proved
 shapes5.ads:14:18: medium: postcondition might fail, cannot prove In_Bounds (Make_Circle'result)
-shapes5.ads:21:04: info: initialization of "Wild_Man" proved
+shapes5.ads:25:11: info: data dependencies proved
 silly.adb:3:21: info: initialization of "Result" proved
 silly.adb:6:21: medium: overflow check might fail
 silly.adb:6:26: info: division check proved (CVC4: 1 VC)
 silly.adb:12:22: info: division check proved (CVC4: 1 VC)
-simple_math.adb:10:10: info: initialization of "Q" proved
+simple_math.adb:6:07: info: initialization of "Q" proved
+simple_math.adb:7:07: info: initialization of "R" proved
 simple_math.adb:12:19: medium: divide by zero might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
 simple_math.adb:12:19: medium: range check might fail [possible explanation: loop at line 11 should mention Q in a loop invariant]
-simple_math.adb:12:20: info: initialization of "Q" proved
-simple_math.adb:13:23: info: initialization of "Q" proved
-simple_math.adb:13:28: info: initialization of "R" proved
-simple_math.adb:14:19: info: initialization of "Q" proved
-simple_math.adb:14:23: info: initialization of "R" proved
 simple_math.adb:14:25: info: division check proved (CVC4: 1 VC)
-simple_math.adb:17:14: info: initialization of "Q" proved
 simple_math.adb:17:14: info: range check proved (CVC4: 1 VC)
 sorted_arrays2.ads:13:21: info: function contract not available for proof ("Is_Sorted" might not return)
 sorted_arrays2.ads:18:18: info: function contract not available for proof ("Is_Sorted" might not return)
-sorters.adb:21:19: info: postcondition proved (CVC4: 4 VC)
+sorters.adb:17:11: info: flow dependencies proved
+sorters.adb:21:19: info: postcondition proved (CVC4: 4 VC; Trivial: 1 VC)
 sorters.adb:22:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:22:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:28: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:25:58: info: index check proved (CVC4: 2 VC)
 sorters.adb:25:75: info: index check proved (CVC4: 2 VC)
+sorters.adb:29:07: info: initialization of "Temp" proved
 sorters.adb:31:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:32:15: info: index check proved (CVC4: 2 VC)
 sorters.adb:32:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:33:15: info: index check proved (CVC4: 2 VC)
-sorters.adb:33:21: info: initialization of "Temp" proved
 sorters.adb:41:19: info: postcondition proved (CVC4: 3 VC)
 sorters.adb:43:45: info: index check proved (CVC4: 2 VC)
 sorters.adb:43:67: info: index check proved (CVC4: 2 VC)
+sorters.adb:45:07: info: initialization of "Min" proved
 sorters.adb:47:22: info: range check proved (CVC4: 1 VC)
-sorters.adb:50:13: info: initialization of "Min" proved
 sorters.adb:50:13: info: loop invariant initialization proved (CVC4: 3 VC)
 sorters.adb:50:13: info: loop invariant preservation proved (CVC4: 3 VC)
 sorters.adb:51:50: info: overflow check proved (CVC4: 2 VC)
 sorters.adb:52:25: info: index check proved (CVC4: 4 VC)
 sorters.adb:52:43: info: index check proved (CVC4: 4 VC)
 sorters.adb:54:42: info: index check proved (CVC4: 2 VC)
-sorters.adb:54:42: info: initialization of "Min" proved
 sorters.adb:55:20: info: range check proved (CVC4: 1 VC)
-sorters.adb:58:14: info: initialization of "Min" proved
+sorters.adb:63:07: info: initialization of "Values_Last" proved
 sorters.adb:63:07: info: range check proved (CVC4: 2 VC)
+sorters.adb:65:07: info: initialization of "Smallest" proved
 sorters.adb:68:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:69:22: info: length check proved (CVC4: 8 VC)
-sorters.adb:69:25: info: length check proved (CVC4: 6 VC)
+sorters.adb:69:22: info: length check proved (CVC4: 6 VC; Trivial: 2 VC)
+sorters.adb:69:25: info: length check proved (CVC4: 4 VC; Trivial: 4 VC)
 sorters.adb:70:22: info: precondition proved (CVC4: 2 VC)
 sorters.adb:70:40: info: range check proved (CVC4: 8 VC)
-sorters.adb:72:13: info: initialization of "Smallest" proved
 sorters.adb:73:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:74:29: info: range check proved (CVC4: 2 VC)
-sorters.adb:75:29: info: initialization of "Smallest" proved
-sorters.adb:78:61: info: initialization of "Values_Last" proved
 sorters.adb:80:33: info: loop invariant initialization proved (CVC4: 1 VC)
 sorters.adb:80:33: info: loop invariant preservation proved (CVC4: 1 VC)
 sorters.adb:82:13: info: loop invariant initialization proved (CVC4: 1 VC)
-sorters.adb:82:13: info: loop invariant preservation proved (CVC4: 1 VC)
+sorters.adb:83:18: medium: loop invariant might fail after first iteration, cannot prove Values (Current) <= Values (J)
 sorters.adb:83:26: info: index check proved (CVC4: 4 VC)
 sorters.adb:83:46: info: index check proved (CVC4: 4 VC)
 sorters.adb:85:13: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1341,248 +921,196 @@ sorters.adb:86:16: medium: loop invariant might fail after first iteration, cann
 sorters.adb:86:24: info: index check proved (CVC4: 4 VC)
 sorters.adb:86:40: info: index check proved (CVC4: 4 VC)
 sorters.adb:86:40: info: overflow check proved (CVC4: 2 VC)
+sorters.ads:15:11: info: flow dependencies proved
 sorters.ads:18:22: info: postcondition proved (CVC4: 2 VC)
 sorters.ads:18:64: info: overflow check proved (CVC4: 1 VC)
 sorters.ads:19:33: info: index check proved (CVC4: 2 VC)
 sorters.ads:19:49: info: index check proved (CVC4: 2 VC)
 sorters.ads:19:49: info: overflow check proved (CVC4: 1 VC)
+sqrt.adb:2:04: info: initialization of "Approx" proved
 sqrt.adb:4:16: info: division check proved (CVC4: 1 VC)
 sqrt.adb:4:16: info: float overflow check proved (Interval)
 sqrt.adb:5:17: medium: float overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]
-sqrt.adb:5:19: info: initialization of "Approx" proved
 sqrt.adb:5:26: medium: float overflow check might fail
 sqrt.adb:6:21: info: float overflow check proved (Interval)
-sqrt.adb:6:24: info: initialization of "Approx" proved
 sqrt.adb:6:31: medium: float overflow check might fail
 sqrt.adb:6:35: medium: divide by zero might fail
 sqrt.adb:6:35: medium: float overflow check might fail
-sqrt.adb:8:11: info: initialization of "Approx" proved
-stacks-more.adb:4:32: medium: array index check might fail [possible explanation: subprogram at line 2 should mention Stack in a precondition]
-stacks.adb:14:30: medium: overflow check might fail [possible explanation: subprogram at line 11 should mention Stack in a precondition]
-stacks.adb:15:25: medium: array index check might fail [possible explanation: subprogram at line 11 should mention Stack in a precondition]
-stacks.adb:21:33: medium: array index check might fail [possible explanation: subprogram at line 18 should mention Stack in a precondition]
+stacks-more.adb:4:32: medium: array index check might fail [possible explanation: subprogram at stacks-more.ads:2 should mention Stack in a precondition]
+stacks.adb:14:30: medium: overflow check might fail [possible explanation: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:15:25: medium: array index check might fail [possible explanation: subprogram at stacks.ads:8 should mention Stack in a precondition]
+stacks.adb:21:33: medium: array index check might fail [possible explanation: subprogram at stacks.ads:10 should mention Stack in a precondition]
 stacks.adb:22:30: info: range check proved (CVC4: 1 VC)
-stacks.ads:6:21: info: initialization of "Stack.Top" proved
 stacks.ads:6:21: medium: "Stack.Items" is not set in "Clear"
 stacks.ads:10:19: info: initialization of "Item" proved
 stacks.ads:14:04: medium: type "Stack_Type" is not fully initialized
 stacks.ads:17:10: info: range check proved (CVC4: 2 VC)
-string_examples.adb:15:09: info: initialization of "Address" proved
+string_examples.adb:3:03: info: initialization of "Count" proved
+string_examples.adb:8:01: info: initialization of "Name" proved
+string_examples.adb:9:01: info: initialization of "Address" proved
+string_examples.adb:13:09: warning: unused assignment
+string_examples.adb:15:06: warning: unused assignment
 string_examples.adb:15:09: medium: length check might fail
-string_examples.adb:16:09: info: length check proved (CVC4: 4 VC)
-string_examples.adb:17:12: info: initialization of "Name" proved
-string_examples.adb:17:12: info: length check proved (CVC4: 4 VC)
-string_examples.adb:19:09: info: initialization of "Name" proved
-string_examples.adb:20:09: info: initialization of "Address" proved
+string_examples.adb:16:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+string_examples.adb:17:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+string_examples.adb:19:06: warning: unused assignment
 string_examples.adb:20:09: info: range check proved (CVC4: 4 VC)
-string_examples.adb:21:12: info: initialization of "Name" proved
-string_examples.adb:21:17: info: length check proved (CVC4: 4 VC)
+string_examples.adb:21:09: warning: unused assignment
+string_examples.adb:21:17: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:21:17: info: range check proved (CVC4: 1 VC)
-string_examples.adb:22:19: info: initialization of "Address" proved
-string_examples.adb:22:22: info: initialization of "Name" proved
+string_examples.adb:22:19: warning: unused assignment
 string_examples.adb:25:01: info: range check proved (CVC4: 4 VC)
-string_examples.adb:25:12: info: initialization of "Count" proved
-string_examples.adb:25:19: info: initialization of "Name" proved
-string_examples.adb:25:19: info: length check proved (CVC4: 4 VC)
-string_examples.adb:25:22: info: length check proved (CVC4: 4 VC)
-string_examples.adb:26:01: warning: assuming "Put" has no effect on global items
-string_examples.adb:26:01: warning: no Global contract available for "Put"
-string_examples.adb:26:06: info: initialization of "Name" proved
+string_examples.adb:25:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+string_examples.adb:25:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 string_examples.adb:26:06: info: range check proved (CVC4: 4 VC)
-string_examples.adb:26:17: info: initialization of "Count" proved
-strings.adb:19:16: info: initialization of "Current" proved
+strings.adb:11:07: info: initialization of "Current" proved
 strings.adb:20:21: info: index check proved (CVC4: 2 VC)
-strings.adb:20:21: info: initialization of "Current" proved
-strings.adb:22:28: info: initialization of "Current" proved
+strings.adb:33:07: info: initialization of "Equals_Found" proved
+strings.adb:34:07: info: initialization of "Equals_Position" proved
 strings.adb:39:34: info: range check proved (CVC4: 1 VC)
-strings.adb:43:13: info: initialization of "Equals_Found" proved
-strings.adb:44:23: medium: range check might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
-strings.adb:44:43: info: initialization of "Equals_Position" proved
-strings.adb:45:32: medium: precondition might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
-strings.adb:45:40: medium: range check might fail [possible explanation: subprogram at line 29 should mention Text in a precondition]
-strings.adb:45:46: info: initialization of "Equals_Position" proved
+strings.adb:44:23: medium: range check might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
+strings.adb:45:32: medium: precondition might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
+strings.adb:45:40: medium: range check might fail [possible explanation: subprogram at strings.ads:15 should mention Text in a precondition]
 strings.adb:45:62: medium: overflow check might fail [possible explanation: call at line 37 should mention Position (for argument Equals_Position) in a postcondition]
 strings.ads:8:22: info: initialization of "Found" proved
 strings.ads:9:22: info: initialization of "Position" proved
-students.adb:15:21: info: initialization of "Tuition" proved
+strings.ads:11:10: info: data dependencies proved
+strings.ads:12:10: info: flow dependencies proved
+strings.ads:19:09: info: data dependencies proved
+strings.ads:20:09: info: flow dependencies proved
+students.adb:6:07: info: initialization of "Tuition" proved
+students.adb:7:07: info: initialization of "Fees" proved
 students.adb:15:29: info: overflow check proved (CVC4: 1 VC)
 students.adb:15:29: info: range check proved (CVC4: 1 VC)
 students.adb:15:38: info: division check proved (CVC4: 1 VC)
 students.adb:15:38: info: overflow check proved (CVC4: 1 VC)
-students.adb:32:18: info: initialization of "Fees" proved
 students.adb:32:23: info: overflow check proved (CVC4: 1 VC)
 students.adb:32:23: info: range check proved (CVC4: 1 VC)
-students.adb:35:40: info: initialization of "Fees" proved
 students.adb:35:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:35:45: info: range check proved (CVC4: 1 VC)
-students.adb:36:40: info: initialization of "Fees" proved
 students.adb:36:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:36:45: info: range check proved (CVC4: 1 VC)
-students.adb:37:40: info: initialization of "Fees" proved
 students.adb:37:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:37:45: info: range check proved (CVC4: 1 VC)
-students.adb:43:40: info: initialization of "Fees" proved
 students.adb:43:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:43:45: info: range check proved (CVC4: 1 VC)
-students.adb:44:40: info: initialization of "Fees" proved
 students.adb:44:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:44:45: info: range check proved (CVC4: 1 VC)
-students.adb:45:40: info: initialization of "Fees" proved
 students.adb:45:45: info: overflow check proved (CVC4: 1 VC)
 students.adb:45:45: info: range check proved (CVC4: 1 VC)
-students.adb:51:20: info: initialization of "Grants" proved
 students.adb:51:27: info: overflow check proved (CVC4: 1 VC)
 students.adb:51:27: info: range check proved (CVC4: 1 VC)
-students.adb:55:23: info: initialization of "Grants" proved
 students.adb:55:30: info: overflow check proved (CVC4: 1 VC)
 students.adb:55:30: info: range check proved (CVC4: 1 VC)
-students.adb:59:16: info: initialization of "Tuition" proved
 students.adb:59:24: info: overflow check proved (CVC4: 1 VC)
-students.adb:59:26: info: initialization of "Fees" proved
 students.adb:59:32: info: overflow check proved (CVC4: 1 VC)
-students.adb:59:34: info: initialization of "Grants" proved
 students.adb:59:42: info: overflow check proved (CVC4: 1 VC)
 students.adb:59:42: info: range check proved (CVC4: 1 VC)
-students.adb:59:44: info: initialization of "Insurance" proved
-students2.adb:32:21: info: initialization of "Tuition" proved
+students2.adb:23:07: info: initialization of "Tuition" proved
+students2.adb:24:07: info: initialization of "Fees" proved
 students2.adb:32:29: info: overflow check proved (CVC4: 1 VC)
 students2.adb:32:29: info: range check proved (CVC4: 1 VC)
 students2.adb:32:38: info: division check proved (CVC4: 1 VC)
 students2.adb:32:38: info: overflow check proved (CVC4: 1 VC)
-students2.adb:49:18: info: initialization of "Fees" proved
 students2.adb:49:23: info: overflow check proved (CVC4: 1 VC)
 students2.adb:49:23: info: range check proved (CVC4: 1 VC)
-students2.adb:52:39: info: initialization of "Fees" proved
 students2.adb:52:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:52:44: info: range check proved (CVC4: 1 VC)
-students2.adb:53:39: info: initialization of "Fees" proved
 students2.adb:53:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:53:44: info: range check proved (CVC4: 1 VC)
-students2.adb:54:39: info: initialization of "Fees" proved
 students2.adb:54:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:54:44: info: range check proved (CVC4: 1 VC)
-students2.adb:60:39: info: initialization of "Fees" proved
 students2.adb:60:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:60:44: info: range check proved (CVC4: 1 VC)
-students2.adb:61:39: info: initialization of "Fees" proved
 students2.adb:61:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:61:44: info: range check proved (CVC4: 1 VC)
-students2.adb:62:39: info: initialization of "Fees" proved
 students2.adb:62:44: info: overflow check proved (CVC4: 1 VC)
 students2.adb:62:44: info: range check proved (CVC4: 1 VC)
-students2.adb:68:20: info: initialization of "Grants" proved
 students2.adb:68:27: info: overflow check proved (CVC4: 1 VC)
 students2.adb:68:27: info: range check proved (CVC4: 1 VC)
-students2.adb:72:23: info: initialization of "Grants" proved
 students2.adb:72:30: info: overflow check proved (CVC4: 1 VC)
 students2.adb:72:30: info: range check proved (CVC4: 1 VC)
 students2.adb:76:21: info: assertion proved (CVC4: 2 VC)
-students2.adb:76:21: info: initialization of "Tuition" proved
 students2.adb:77:21: info: assertion proved (CVC4: 2 VC)
-students2.adb:77:21: info: initialization of "Insurance" proved
 students2.adb:78:21: info: assertion proved (CVC4: 2 VC)
-students2.adb:78:21: info: initialization of "Fees" proved
 students2.adb:79:21: info: assertion proved (CVC4: 2 VC)
-students2.adb:79:21: info: initialization of "Grants" proved
-students2.adb:81:16: info: initialization of "Tuition" proved
 students2.adb:81:24: info: overflow check proved (CVC4: 1 VC)
-students2.adb:81:26: info: initialization of "Fees" proved
 students2.adb:81:32: info: overflow check proved (CVC4: 1 VC)
-students2.adb:81:34: info: initialization of "Grants" proved
 students2.adb:81:42: info: overflow check proved (CVC4: 1 VC)
 students2.adb:81:42: info: range check proved (CVC4: 1 VC)
-students2.adb:81:44: info: initialization of "Insurance" proved
-students3.adb:15:21: info: initialization of "Tuition" proved
+students3.adb:6:07: info: initialization of "Tuition" proved
+students3.adb:7:07: info: initialization of "Fees" proved
 students3.adb:15:29: info: overflow check proved (CVC4: 1 VC)
 students3.adb:15:29: info: range check proved (CVC4: 1 VC)
 students3.adb:15:39: info: division check proved (CVC4: 1 VC)
 students3.adb:15:39: info: overflow check proved (CVC4: 1 VC)
 students3.adb:18:30: info: assertion proved (CVC4: 2 VC)
-students3.adb:18:30: info: initialization of "Tuition" proved
 students3.adb:25:30: info: assertion proved (CVC4: 4 VC)
-students3.adb:25:31: info: initialization of "Tuition" proved
-students3.adb:26:31: info: initialization of "Insurance" proved
-students3.adb:37:18: info: initialization of "Fees" proved
 students3.adb:37:23: info: overflow check proved (CVC4: 1 VC)
 students3.adb:37:23: info: range check proved (CVC4: 1 VC)
-students3.adb:40:39: info: initialization of "Fees" proved
 students3.adb:40:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:40:44: info: range check proved (CVC4: 1 VC)
-students3.adb:41:39: info: initialization of "Fees" proved
 students3.adb:41:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:41:44: info: range check proved (CVC4: 1 VC)
-students3.adb:42:39: info: initialization of "Fees" proved
 students3.adb:42:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:42:44: info: range check proved (CVC4: 1 VC)
-students3.adb:48:39: info: initialization of "Fees" proved
 students3.adb:48:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:48:44: info: range check proved (CVC4: 1 VC)
-students3.adb:49:39: info: initialization of "Fees" proved
 students3.adb:49:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:49:44: info: range check proved (CVC4: 1 VC)
-students3.adb:50:39: info: initialization of "Fees" proved
 students3.adb:50:44: info: overflow check proved (CVC4: 1 VC)
 students3.adb:50:44: info: range check proved (CVC4: 1 VC)
 students3.adb:54:30: info: assertion proved (CVC4: 6 VC)
-students3.adb:54:31: info: initialization of "Tuition" proved
-students3.adb:55:31: info: initialization of "Insurance" proved
-students3.adb:56:31: info: initialization of "Fees" proved
-students3.adb:60:20: info: initialization of "Grants" proved
 students3.adb:60:27: info: overflow check proved (CVC4: 1 VC)
 students3.adb:60:27: info: range check proved (CVC4: 1 VC)
-students3.adb:64:23: info: initialization of "Grants" proved
 students3.adb:64:30: info: overflow check proved (CVC4: 1 VC)
 students3.adb:64:30: info: range check proved (CVC4: 1 VC)
 students3.adb:68:30: info: assertion proved (CVC4: 8 VC)
-students3.adb:68:31: info: initialization of "Tuition" proved
-students3.adb:69:31: info: initialization of "Insurance" proved
-students3.adb:70:31: info: initialization of "Fees" proved
-students3.adb:71:31: info: initialization of "Grants" proved
-students3.adb:73:16: info: initialization of "Tuition" proved
 students3.adb:73:24: info: overflow check proved (CVC4: 1 VC)
-students3.adb:73:26: info: initialization of "Fees" proved
 students3.adb:73:32: info: overflow check proved (CVC4: 1 VC)
-students3.adb:73:34: info: initialization of "Grants" proved
 students3.adb:73:42: info: overflow check proved (CVC4: 1 VC)
 students3.adb:73:42: info: range check proved (CVC4: 1 VC)
-students3.adb:73:44: info: initialization of "Insurance" proved
 temperature_buffer14.adb:34:25: info: range check proved (CVC4: 1 VC)
 temperature_buffer14.adb:53:22: info: range check proved (CVC4: 1 VC)
 temperature_buffer14.adb:59:38: info: initialization of "Buffer" constituent of "Contents" proved
 temperature_buffer14.adb:59:46: info: initialization of "Count" constituent of "Contents" proved
 temperature_buffer14.adb:59:53: info: initialization of "Next_In" constituent of "Contents" proved
 temperature_buffer14.adb:59:62: info: initialization of "Next_Out" constituent of "Contents" proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Time_Stamp" proved
-temperature_buffer14.ads:30:19: info: initialization of "Item.Value" proved
-terminal.adb:13:14: info: length check proved (CVC4: 4 VC)
-terminal.adb:17:33: info: initialization of "Count" proved
+temperature_buffer14.ads:16:08: info: data dependencies proved
+temperature_buffer14.ads:17:08: info: flow dependencies proved
+temperature_buffer14.ads:22:08: info: data dependencies proved
+temperature_buffer14.ads:23:08: info: flow dependencies proved
+temperature_buffer14.ads:27:11: info: data dependencies proved
+temperature_buffer14.ads:30:19: info: initialization of "Item" proved
+temperature_buffer14.ads:32:08: info: data dependencies proved
+temperature_buffer14.ads:33:08: info: flow dependencies proved
+terminal.adb:10:07: info: initialization of "Value" proved
+terminal.adb:11:07: info: initialization of "Port_Status" proved
+terminal.adb:13:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 terminal.adb:17:33: info: loop invariant initialization proved (CVC4: 1 VC)
 terminal.adb:17:33: info: loop invariant preservation proved (CVC4: 1 VC)
 terminal.adb:17:48: info: range check proved (CVC4: 2 VC)
-terminal.adb:20:13: info: initialization of "Count" proved
 terminal.adb:20:27: info: range check proved (CVC4: 1 VC)
-terminal.adb:28:13: info: initialization of "Port_Status" proved
-terminal.adb:34:35: info: initialization of "Value" proved
 terminal.adb:37:31: info: index check proved (CVC4: 2 VC)
 terminal.adb:37:31: info: overflow check proved (CVC4: 1 VC)
-terminal.adb:37:40: info: initialization of "Buffer" proved
-terminal.adb:37:40: info: initialization of "Count" proved
-terminal.adb:37:58: info: initialization of "Value" proved
-terminal.adb:38:19: info: initialization of "Count" proved
 terminal.adb:38:25: info: overflow check proved (CVC4: 1 VC)
 terminal.ads:7:24: info: initialization of "Buffer" proved
 terminal.ads:8:24: info: initialization of "Count" proved
 terminal.ads:9:24: info: initialization of "Status" proved
-ticktock.adb:6:04: info: initialization of "Clock_Value" constituent of "TickTock_State" proved
-ticktock.adb:14:34: medium: overflow check might fail [possible explanation: subprogram at line 8 should mention Clock_Value in a precondition]
+terminal.ads:11:10: info: data dependencies proved
+terminal.ads:13:10: info: flow dependencies proved
+ticktock.adb:14:34: medium: overflow check might fail [possible explanation: subprogram at ticktock.ads:7 should mention Clock_Value in a precondition]
+ticktock.ads:5:05: info: flow dependencies proved
+ticktock.ads:9:08: info: data dependencies proved
+ticktock.ads:10:08: info: flow dependencies proved
 transitive.adb:16:19: info: postcondition proved (CVC4: 1 VC)
 transitive.adb:20:37: info: division check proved (CVC4: 1 VC)
 transitive.adb:21:14: info: division check proved (CVC4: 1 VC)
+transitive.adb:25:07: info: initialization of "X_Last" proved
 transitive.adb:31:33: info: loop invariant initialization proved (CVC4: 1 VC)
 transitive.adb:31:33: info: loop invariant preservation proved (CVC4: 1 VC)
-transitive.adb:38:56: info: initialization of "X_Last" proved
 transitive.ads:10:19: info: postcondition proved (CVC4: 1 VC)
-unused_parameter.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention A in a precondition]
+unused_parameter.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at unused_parameter.ads:3 should mention A in a precondition]
 unused_parameter.adb:7:20: info: division check proved (CVC4: 1 VC)
 unused_parameter.ads:4:19: warning: unused variable "B"
 unused_parameter.ads:5:19: info: initialization of "C" proved
@@ -1594,155 +1122,97 @@ utility.ads:12:16: info: postcondition proved (CVC4: 1 VC)
 various.adb:7:27: info: unrolling loop
 various.adb:12:07: info: raise statement proved unreachable (CVC4: 1 VC)
 various.adb:20:21: info: assertion proved (CVC4: 1 VC)
-various.adb:20:23: medium: overflow check might fail [possible explanation: subprogram at line 18 should mention X and Y in a precondition]
+various.adb:20:23: medium: overflow check might fail [possible explanation: subprogram at various.ads:12 should mention X and Y in a precondition]
 various.adb:20:26: info: division check proved (CVC4: 1 VC)
 various.adb:21:13: info: division check proved (CVC4: 1 VC)
-very_longs-divide.adb:47:14: info: initialization of "Distance" proved
-very_longs-divide.adb:52:30: info: initialization of "Result.Long_Digits" proved
-very_longs-divide.adb:64:64: info: initialization of "Overflow_Mask" proved
-very_longs-divide.adb:65:32: info: initialization of "Result.Long_Digits" proved
-very_longs-divide.adb:66:35: info: initialization of "Result.Long_Digits" proved
-very_longs-divide.adb:66:60: info: initialization of "Old_Overflow" proved
-very_longs-divide.adb:67:26: info: initialization of "New_Overflow" proved
-very_longs-divide.adb:69:51: info: initialization of "Result.Long_Digits" proved
-very_longs-divide.adb:69:54: info: initialization of "Old_Overflow" proved
-very_longs-divide.adb:83:64: info: initialization of "Overflow_Mask" proved
-very_longs-divide.adb:85:60: info: initialization of "Old_Overflow" proved
-very_longs-divide.adb:86:26: info: initialization of "New_Overflow" proved
-very_longs-divide.adb:101:52: info: initialization of "Overflow_Mask" proved
-very_longs-divide.adb:104:48: info: initialization of "Old_Overflow" proved
-very_longs-divide.adb:105:26: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:26:04: info: initialization of "N" proved
+very_longs-divide.adb:27:04: info: initialization of "M" proved
+very_longs-divide.adb:28:04: info: initialization of "Shift_Distance" proved
+very_longs-divide.adb:29:04: info: initialization of "U" proved
+very_longs-divide.adb:30:04: info: initialization of "V" proved
+very_longs-divide.adb:31:04: info: initialization of "Q_Hat" proved
+very_longs-divide.adb:32:04: info: initialization of "Current_Borrow" proved
+very_longs-divide.adb:52:30: info: initialization of "Result" proved
+very_longs-divide.adb:54:08: info: flow dependencies proved
+very_longs-divide.adb:58:07: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:59:07: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:75:11: info: flow dependencies proved
+very_longs-divide.adb:78:07: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:79:07: info: initialization of "Overflow_Mask" proved
+very_longs-divide.adb:93:11: info: flow dependencies proved
+very_longs-divide.adb:96:07: info: initialization of "New_Overflow" proved
+very_longs-divide.adb:97:07: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:111:08: "Dividend" is referenced in Pre but missing from the Global
+very_longs-divide.adb:111:08: info: data dependencies proved
+very_longs-divide.adb:112:08: info: flow dependencies proved
 very_longs-divide.adb:113:35: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(13))
+very_longs-divide.adb:147:08: info: data dependencies proved
 very_longs-divide.adb:147:53: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:158:74: info: initialization of "Carry" proved
-very_longs-divide.adb:159:31: info: initialization of "Product" proved
-very_longs-divide.adb:161:29: info: initialization of "Product" proved
-very_longs-divide.adb:163:16: info: initialization of "Temporary_Digit" proved
-very_longs-divide.adb:163:34: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:170:73: info: initialization of "Temporary_Digit" proved
-very_longs-divide.adb:170:92: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:171:28: info: initialization of "Future_Borrow" proved
-very_longs-divide.adb:175:48: info: initialization of "Carry" proved
-very_longs-divide.adb:175:56: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:181:54: info: initialization of "Carry" proved
-very_longs-divide.adb:181:63: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:182:25: info: initialization of "Future_Borrow" proved
-very_longs-divide.adb:202:65: info: initialization of "Carry" proved
-very_longs-divide.adb:203:68: info: initialization of "Sum" proved
-very_longs-divide.adb:204:34: info: initialization of "Sum" proved
-very_longs-divide.adb:206:72: info: initialization of "Carry" proved
-very_longs-divide.adb:216:27: info: initialization of "N" proved
-very_longs-divide.adb:219:61: info: initialization of "N" proved
-very_longs-divide.adb:220:33: info: initialization of "Shift_Distance" proved
-very_longs-divide.adb:222:15: info: initialization of "V.Long_Digits" proved
-very_longs-divide.adb:222:18: info: initialization of "Shift_Distance" proved
-very_longs-divide.adb:225:49: info: initialization of "M" proved
-very_longs-divide.adb:227:07: info: initialization of "N" proved
-very_longs-divide.adb:227:07: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:227:07: info: initialization of "V.Long_Digits" proved
-very_longs-divide.adb:230:07: info: initialization of "N" proved
-very_longs-divide.adb:230:07: info: initialization of "Q_Hat" proved
-very_longs-divide.adb:230:07: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:230:07: info: initialization of "V.Long_Digits" proved
-very_longs-divide.adb:233:07: info: initialization of "Current_Borrow" proved
-very_longs-divide.adb:233:07: info: initialization of "N" proved
-very_longs-divide.adb:233:07: info: initialization of "Q_Hat" proved
-very_longs-divide.adb:233:07: info: initialization of "Quotient.Long_Digits" proved
-very_longs-divide.adb:233:07: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:233:07: info: initialization of "V.Long_Digits" proved
-very_longs-divide.adb:239:53: info: initialization of "N" proved
-very_longs-divide.adb:240:44: info: initialization of "Remainder.Long_Digits" proved
-very_longs-divide.adb:240:47: info: initialization of "U.Long_Digits" proved
-very_longs-divide.adb:242:16: info: initialization of "Remainder.Long_Digits" proved
-very_longs-divide.adb:242:27: info: initialization of "Shift_Distance" proved
+very_longs-divide.adb:148:08: info: flow dependencies proved
+very_longs-divide.adb:150:07: info: initialization of "Carry" proved
+very_longs-divide.adb:151:07: info: initialization of "Product" proved
+very_longs-divide.adb:152:07: info: initialization of "Temporary_Digit" proved
+very_longs-divide.adb:153:07: info: initialization of "Future_Borrow" proved
+very_longs-divide.adb:187:08: info: data dependencies proved
+very_longs-divide.adb:188:08: info: flow dependencies proved
+very_longs-divide.adb:191:07: info: initialization of "Carry" proved
+very_longs-divide.adb:192:07: info: initialization of "Sum" proved
 very_longs.adb:33:54: info: initialization of "Digit" proved
 very_longs.adb:33:73: info: initialization of "Valid" proved
-very_longs.adb:50:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:34:11: info: flow dependencies proved
+very_longs.adb:50:28: info: initialization of "Result" proved
 very_longs.adb:50:52: info: initialization of "Carry" proved
-very_longs.adb:64:21: info: initialization of "L_Digit" proved
-very_longs.adb:64:31: info: initialization of "R_Digit" proved
-very_longs.adb:64:41: info: initialization of "Carry" proved
-very_longs.adb:65:33: info: initialization of "Sum" proved
-very_longs.adb:66:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:66:50: info: initialization of "Sum" proved
-very_longs.adb:73:28: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:52:08: info: flow dependencies proved
+very_longs.adb:55:07: info: initialization of "L_Digit" proved
+very_longs.adb:56:07: info: initialization of "R_Digit" proved
+very_longs.adb:57:07: info: initialization of "Sum" proved
+very_longs.adb:73:28: info: initialization of "Result" proved
 very_longs.adb:73:52: info: initialization of "Borrow" proved
-very_longs.adb:87:25: info: initialization of "L_Digit" proved
-very_longs.adb:87:35: info: initialization of "R_Digit" proved
-very_longs.adb:87:46: info: initialization of "Borrow" proved
-very_longs.adb:88:14: info: initialization of "Difference" proved
-very_longs.adb:93:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:93:50: info: initialization of "Difference" proved
-very_longs.adb:116:36: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:116:45: info: initialization of "Temp" proved
-very_longs.adb:117:18: info: initialization of "Temp" proved
-very_longs.adb:119:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:141:28: info: initialization of "String_Index" proved
-very_longs.adb:141:59: info: initialization of "Index" proved
-very_longs.adb:142:32: info: initialization of "String_Index" proved
-very_longs.adb:143:32: info: initialization of "Index" proved
-very_longs.adb:145:31: info: initialization of "String_Index" proved
-very_longs.adb:146:31: info: initialization of "String_Index" proved
-very_longs.adb:147:18: info: initialization of "H_Okay" proved
-very_longs.adb:147:29: info: initialization of "L_Okay" proved
-very_longs.adb:151:24: info: initialization of "Index" proved
-very_longs.adb:152:36: info: initialization of "Index" proved
-very_longs.adb:152:36: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:152:44: info: initialization of "H_Digit" proved
-very_longs.adb:152:54: info: initialization of "L_Digit" proved
-very_longs.adb:153:20: info: initialization of "Index" proved
-very_longs.adb:154:19: info: initialization of "Index" proved
-very_longs.adb:155:26: info: initialization of "String_Index" proved
-very_longs.adb:178:14: info: initialization of "Result" proved
-very_longs.adb:219:37: info: initialization of "Digit_Count" proved
-very_longs.adb:226:11: info: initialization of "Digit_Count" proved
-very_longs.adb:246:21: info: initialization of "L_Digit" proved
-very_longs.adb:246:31: info: initialization of "R_Digit" proved
-very_longs.adb:246:41: info: initialization of "Carry" proved
-very_longs.adb:247:33: info: initialization of "Sum" proved
-very_longs.adb:248:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:248:50: info: initialization of "Sum" proved
-very_longs.adb:250:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:266:25: info: initialization of "L_Digit" proved
-very_longs.adb:266:35: info: initialization of "R_Digit" proved
-very_longs.adb:266:46: info: initialization of "Borrow" proved
-very_longs.adb:267:14: info: initialization of "Difference" proved
-very_longs.adb:272:32: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:272:50: info: initialization of "Difference" proved
-very_longs.adb:274:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:300:40: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:301:28: info: initialization of "L_Digit" proved
-very_longs.adb:301:38: info: initialization of "R_Digit" proved
-very_longs.adb:301:49: info: initialization of "T_Digit" proved
-very_longs.adb:301:59: info: initialization of "Carry" proved
-very_longs.adb:302:46: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:302:64: info: initialization of "Temp" proved
-very_longs.adb:303:39: info: initialization of "Temp" proved
-very_longs.adb:307:14: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:328:38: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:329:26: info: initialization of "L_Digit" proved
-very_longs.adb:329:36: info: initialization of "R_Digit" proved
-very_longs.adb:329:47: info: initialization of "T_Digit" proved
-very_longs.adb:329:57: info: initialization of "Carry" proved
-very_longs.adb:330:43: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:330:61: info: initialization of "Temp" proved
-very_longs.adb:331:37: info: initialization of "Temp" proved
-very_longs.adb:333:43: info: initialization of "Result.Long_Digits" proved
-very_longs.adb:333:61: info: initialization of "Carry" proved
-very_longs.adb:335:14: info: initialization of "Result.Long_Digits" proved
-very_longs.ads:17:36: info: initialization of "Result.Long_Digits" proved
+very_longs.adb:75:08: info: flow dependencies proved
+very_longs.adb:78:07: info: initialization of "L_Digit" proved
+very_longs.adb:79:07: info: initialization of "R_Digit" proved
+very_longs.adb:80:07: info: initialization of "Difference" proved
+very_longs.adb:109:07: info: initialization of "Result" proved
+very_longs.adb:110:07: info: initialization of "Temp" proved
+very_longs.adb:126:07: info: initialization of "Index" proved
+very_longs.adb:127:07: info: initialization of "String_Index" proved
+very_longs.adb:128:07: info: initialization of "H_Digit" proved
+very_longs.adb:129:07: info: initialization of "L_Digit" proved
+very_longs.adb:130:07: info: initialization of "H_Okay" proved
+very_longs.adb:131:07: info: initialization of "L_Okay" proved
+very_longs.adb:235:07: info: initialization of "Result" proved
+very_longs.adb:236:07: info: initialization of "L_Digit" proved
+very_longs.adb:237:07: info: initialization of "R_Digit" proved
+very_longs.adb:238:07: info: initialization of "Sum" proved
+very_longs.adb:239:07: info: initialization of "Carry" proved
+very_longs.adb:255:07: info: initialization of "Result" proved
+very_longs.adb:256:07: info: initialization of "L_Digit" proved
+very_longs.adb:257:07: info: initialization of "R_Digit" proved
+very_longs.adb:258:07: info: initialization of "Difference" proved
+very_longs.adb:259:07: info: initialization of "Borrow" proved
+very_longs.adb:283:07: info: initialization of "Result" proved
+very_longs.adb:284:07: info: initialization of "L_Digit" proved
+very_longs.adb:285:07: info: initialization of "R_Digit" proved
+very_longs.adb:286:07: info: initialization of "T_Digit" proved
+very_longs.adb:287:07: info: initialization of "Temp" proved
+very_longs.adb:288:07: info: initialization of "Carry" proved
+very_longs.adb:312:07: info: initialization of "Result" proved
+very_longs.adb:313:07: info: initialization of "L_Digit" proved
+very_longs.adb:314:07: info: initialization of "R_Digit" proved
+very_longs.adb:315:07: info: initialization of "T_Digit" proved
+very_longs.adb:316:07: info: initialization of "Temp" proved
+very_longs.adb:317:07: info: initialization of "Carry" proved
+very_longs.ads:17:36: info: initialization of "Result" proved
 very_longs.ads:18:36: info: initialization of "Valid" proved
-very_longs.ads:67:22: info: initialization of "Quotient.Long_Digits" proved
-very_longs.ads:68:22: info: initialization of "Remainder.Long_Digits" proved
+very_longs.ads:20:10: info: flow dependencies proved
+very_longs.ads:67:22: info: initialization of "Quotient" proved
+very_longs.ads:68:22: info: initialization of "Remainder" proved
+very_longs.ads:70:10: info: flow dependencies proved
 workspaces.adb:5:07: info: range check proved (CVC4: 2 VC)
-workspaces.adb:5:48: info: length check proved (CVC4: 4 VC)
+workspaces.adb:5:48: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 workspaces.adb:7:26: info: division check proved (CVC4: 1 VC)
 workspaces.adb:7:30: info: cannot unroll loop (too many loop iterations)
 workspaces.adb:8:21: info: index check proved (CVC4: 2 VC)
-workspaces.adb:8:24: info: initialization of "Workspace" proved
-workspaces.adb:9:27: medium: overflow check might fail [possible explanation: subprogram at line 4 should mention Size in a precondition]
+workspaces.adb:9:27: medium: overflow check might fail [possible explanation: subprogram at workspaces.ads:4 should mention Size in a precondition]
 workspaces.adb:9:32: info: index check proved (CVC4: 2 VC)
-workspaces.adb:9:37: info: initialization of "Workspace" proved
-workspaces.adb:11:14: info: initialization of "Workspace" proved
 gnatprove: error during flow analysis and proof

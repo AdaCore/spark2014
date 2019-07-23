@@ -1,120 +1,89 @@
 foo.adb:16:04: warning: analyzing unreferenced procedure "Test_01_Ok"
-foo.adb:16:26: info: initialization of "R.A" proved
-foo.adb:16:26: info: initialization of "R.B" proved
+foo.adb:16:26: info: initialization of "R" proved
 foo.adb:19:24: info: unrolling loop
-foo.adb:20:18: info: initialization of "R.A" proved
 foo.adb:25:04: warning: analyzing unreferenced procedure "Test_02_Ok_Hard"
 foo.adb:25:31: info: initialization of "A" proved
 foo.adb:28:24: info: cannot unroll loop (too many loop iterations)
-foo.adb:29:16: info: initialization of "A" proved
 foo.adb:33:04: warning: analyzing unreferenced procedure "Test_03_E"
-foo.adb:33:25: info: initialization of "A" proved
 foo.adb:36:24: info: unrolling loop
 foo.adb:37:19: high: "A" is not initialized
 foo.adb:41:04: warning: analyzing unreferenced procedure "Test_04_E"
 foo.adb:41:25: medium: "A" might not be initialized in "Test_04_E"
 foo.adb:44:24: info: unrolling loop
-foo.adb:46:19: medium: "A" might not be initialized
 foo.adb:51:04: warning: analyzing unreferenced procedure "Test_05_Ok"
 foo.adb:51:26: info: initialization of "A" proved
 foo.adb:54:24: info: unrolling loop
-foo.adb:56:19: info: initialization of "A" proved
-foo.adb:58:19: info: initialization of "A" proved
 foo.adb:63:04: warning: analyzing unreferenced procedure "Test_06_E"
-foo.adb:63:25: info: initialization of "A" proved
+foo.adb:63:25: medium: "A" might not be initialized in "Test_06_E"
 foo.adb:66:24: info: unrolling loop
 foo.adb:67:13: high: "A" is not initialized
-foo.adb:68:19: medium: "A" might not be initialized
-foo.adb:70:19: medium: "A" might not be initialized
 foo.adb:75:04: warning: analyzing unreferenced procedure "Test_07_E"
-foo.adb:75:25: info: initialization of "A" proved
+foo.adb:75:25: medium: "A" might not be initialized in "Test_07_E"
 foo.adb:80:24: info: unrolling loop
-foo.adb:82:13: info: initialization of "A" proved
 foo.adb:82:13: medium: "A" might not be initialized
 foo.adb:88:04: warning: analyzing unreferenced procedure "Test_07_Ok_Hard"
-foo.adb:88:31: info: initialization of "A" proved
+foo.adb:88:31: medium: "A" might not be initialized in "Test_07_Ok_Hard"
 foo.adb:93:33: info: loop invariant initialization proved (CVC4: 1 VC)
 foo.adb:93:33: info: loop invariant preservation proved (CVC4: 1 VC)
 foo.adb:93:41: info: range check proved (CVC4: 4 VC)
-foo.adb:94:38: info: initialization of "A" proved
 foo.adb:94:38: medium: "A" might not be initialized
 foo.adb:94:41: info: index check proved (CVC4: 4 VC)
 foo.adb:98:04: warning: analyzing unreferenced procedure "Test_08_E"
-foo.adb:98:25: info: initialization of "A" proved
 foo.adb:101:24: info: unrolling loop
-foo.adb:102:16: medium: "A" might not be initialized
-foo.adb:103:19: info: initialization of "A" proved
+foo.adb:103:19: medium: "A" might not be initialized
 foo.adb:103:24: medium: array index check might fail
-foo.adb:107:25: info: initialization of "A" proved
+foo.adb:107:25: medium: "A" might not be initialized in "Test_09_E"
 foo.adb:110:24: info: unrolling loop
-foo.adb:111:16: medium: "A" might not be initialized
 foo.adb:118:04: warning: analyzing unreferenced procedure "Test_10_Ok"
 foo.adb:118:26: info: initialization of "A" proved
 foo.adb:121:24: info: unrolling loop
 foo.adb:122:27: info: unrolling loop
-foo.adb:123:22: info: initialization of "A" proved
 foo.adb:128:04: warning: analyzing unreferenced procedure "Test_11_Ok"
 foo.adb:128:26: info: initialization of "A" proved
 foo.adb:131:24: info: unrolling loop
 foo.adb:132:27: info: unrolling loop
-foo.adb:134:25: info: initialization of "A" proved
-foo.adb:136:25: info: initialization of "A" proved
 foo.adb:142:04: warning: analyzing unreferenced procedure "Test_12_E"
-foo.adb:142:25: info: initialization of "A" proved
+foo.adb:142:25: medium: "A" might not be initialized in "Test_12_E"
 foo.adb:145:24: info: unrolling loop
-foo.adb:146:19: medium: "A" might not be initialized
 foo.adb:150:04: warning: analyzing unreferenced procedure "Test_13_E"
-foo.adb:150:25: info: initialization of "A" proved
+foo.adb:150:25: medium: "A" might not be initialized in "Test_13_E"
 foo.adb:153:24: info: unrolling loop
-foo.adb:154:19: medium: "A" might not be initialized
 foo.adb:158:04: warning: analyzing unreferenced procedure "Test_14_E"
-foo.adb:158:25: info: initialization of "A" proved
+foo.adb:158:25: medium: "A" might not be initialized in "Test_14_E"
 foo.adb:159:25: info: initialization of "B" proved
 foo.adb:162:24: info: unrolling loop
-foo.adb:164:19: info: initialization of "A" proved
 foo.adb:164:19: medium: "A" might not be initialized
 foo.adb:164:24: medium: array index check might fail
 foo.adb:168:04: warning: analyzing unreferenced procedure "Test_15_Ok_Hard"
-foo.adb:168:31: info: initialization of "A" proved
+foo.adb:168:31: medium: "A" might not be initialized in "Test_15_Ok_Hard"
 foo.adb:169:31: info: initialization of "B" proved
 foo.adb:172:24: info: unrolling loop
-foo.adb:174:19: info: initialization of "A" proved
 foo.adb:174:19: medium: "A" might not be initialized
 foo.adb:178:04: warning: analyzing unreferenced procedure "Test_15_E"
-foo.adb:178:25: info: initialization of "A" proved
+foo.adb:178:25: medium: "A" might not be initialized in "Test_15_E"
 foo.adb:181:48: info: unrolling loop
-foo.adb:182:16: medium: "A" might not be initialized
 foo.adb:186:04: warning: analyzing unreferenced procedure "Test_16_E"
 foo.adb:186:25: medium: "A" might not be initialized in "Test_16_E"
 foo.adb:190:11: info: range check proved (CVC4: 2 VC)
 foo.adb:190:49: info: unrolling loop
-foo.adb:191:16: medium: "A" might not be initialized
 foo.adb:195:04: warning: analyzing unreferenced procedure "Test_17_Maybe"
-foo.adb:195:29: info: initialization of "A" proved
+foo.adb:195:29: medium: "A" might not be initialized in "Test_17_Maybe"
 foo.adb:198:24: info: unrolling loop
-foo.adb:199:26: medium: "A" might not be initialized
 foo.adb:203:04: warning: analyzing unreferenced procedure "Test_18_E"
-foo.adb:203:25: info: initialization of "A" proved
+foo.adb:203:25: medium: "A" might not be initialized in "Test_18_E"
 foo.adb:206:24: info: unrolling loop
 foo.adb:207:27: info: unrolling loop
-foo.adb:208:22: medium: "A" might not be initialized
 foo.adb:214:04: warning: analyzing unreferenced procedure "Test_19_Ok"
 foo.adb:214:26: info: initialization of "A" proved
 foo.adb:217:24: info: unrolling loop
 foo.adb:218:27: info: unrolling loop
-foo.adb:220:25: info: initialization of "A" proved
-foo.adb:222:25: info: initialization of "A" proved
 foo.adb:228:04: warning: analyzing unreferenced procedure "Test_20_Ok"
 foo.adb:228:26: info: initialization of "A" proved
 foo.adb:231:32: info: unrolling loop
-foo.adb:232:16: info: initialization of "A" proved
 foo.adb:236:04: warning: analyzing unreferenced procedure "Test_21_Ok"
 foo.adb:236:26: info: initialization of "A" proved
 foo.adb:239:46: info: unrolling loop
-foo.adb:240:16: info: initialization of "A" proved
 foo.adb:244:04: warning: analyzing unreferenced procedure "Test_22_Ok"
 foo.adb:244:26: info: initialization of "A" proved
 foo.adb:247:46: info: unrolling loop
 foo.adb:248:48: info: unrolling loop
-foo.adb:249:19: info: initialization of "A" proved
-foo.adb:251:16: info: initialization of "A" proved

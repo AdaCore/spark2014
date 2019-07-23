@@ -1,1 +1,1 @@
-array_component.ads:4:04: medium: range check might fail (e.g. when D = 0)
+array_component.ads:4:04: medium: range check might fail

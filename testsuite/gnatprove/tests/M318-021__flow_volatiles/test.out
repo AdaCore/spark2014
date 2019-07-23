@@ -3,74 +3,112 @@ caller.adb:3:22: info: initialization of "B" proved
 caller.adb:3:25: info: initialization of "C" proved
 caller.adb:3:28: info: initialization of "D" proved
 caller.adb:3:31: info: initialization of "E" proved
-caller.adb:28:09: info: initialization of "Tmp" proved
+caller.adb:5:08: info: data dependencies proved
+caller.adb:10:08: info: flow dependencies proved
+caller.adb:21:04: info: initialization of "Tmp" proved
 caller.adb:29:09: warning: unused assignment to "Tmp"
-caller.adb:32:09: info: initialization of "Tmp" proved
-caller.adb:35:12: info: initialization of "A" proved
-caller.adb:36:07: info: initialization of "B" proved
-caller.adb:37:15: info: initialization of "B" proved
-caller.adb:41:15: info: initialization of "C" proved
-caller.adb:42:15: info: initialization of "C" proved
-caller.adb:45:12: info: initialization of "D" proved
-caller.adb:49:07: info: initialization of "E" proved
 devtest.adb:8:32: info: initialization of "X" proved
 devtest.adb:8:35: info: initialization of "Y" proved
+devtest.adb:10:09: info: data dependencies proved
+devtest.adb:11:09: info: flow dependencies proved
 devtest.adb:23:35: info: initialization of "X" proved
 devtest.adb:23:38: info: initialization of "Y" proved
+devtest.adb:25:09: info: data dependencies proved
+devtest.adb:26:09: info: flow dependencies proved
 devtest.adb:39:36: info: initialization of "X" proved
-devtest.adb:50:20: info: initialization of "X" proved
+devtest.adb:41:09: info: data dependencies proved
+devtest.adb:42:09: info: flow dependencies proved
 tests_async_readers.adb:29:17: info: initialization of "Z" proved
+tests_async_readers.adb:30:11: info: data dependencies proved
 tests_async_readers.adb:30:33: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:37:14: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:31:11: info: flow dependencies proved
 tests_async_readers.adb:41:25: info: initialization of "Z" proved
 tests_async_readers.adb:41:28: info: initialization of "W" proved
+tests_async_readers.adb:42:11: info: data dependencies proved
 tests_async_readers.adb:42:32: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:50:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:43:22: info: flow dependencies proved
 tests_async_readers.adb:54:17: info: initialization of "Z" proved
 tests_async_readers.adb:54:20: info: initialization of "W" proved
+tests_async_readers.adb:55:11: info: data dependencies proved
+tests_async_readers.adb:56:11: info: flow dependencies proved
 tests_async_readers.adb:75:25: info: initialization of "Z" proved
 tests_async_readers.adb:75:28: info: initialization of "W" proved
 tests_async_readers.adb:75:31: info: initialization of "V" proved
+tests_async_readers.adb:76:11: info: data dependencies proved
 tests_async_readers.adb:76:33: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:84:07: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:85:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:77:11: info: flow dependencies proved
 tests_async_readers.adb:89:31: info: initialization of "Z" proved
 tests_async_readers.adb:89:34: info: initialization of "W" proved
 tests_async_readers.adb:89:37: info: initialization of "V" proved
+tests_async_readers.adb:90:11: info: data dependencies proved
 tests_async_readers.adb:90:34: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:99:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
-tests_async_readers.adb:101:12: info: initialization of "Vol" constituent of "State_With_Async_Readers" proved
+tests_async_readers.adb:91:11: info: flow dependencies proved
 tests_async_readers.adb:104:22: info: initialization of "Z" proved
+tests_async_readers.adb:105:11: info: data dependencies proved
+tests_async_readers.adb:106:11: info: flow dependencies proved
 tests_async_readers.adb:113:25: info: initialization of "X" proved
 tests_async_readers.adb:113:28: info: initialization of "Y" proved
 tests_async_readers.adb:113:31: info: initialization of "Z" proved
+tests_async_readers.adb:114:11: info: data dependencies proved
+tests_async_readers.adb:115:11: info: flow dependencies proved
 tests_async_readers.adb:133:31: info: initialization of "X" proved
 tests_async_readers.adb:133:34: info: initialization of "Y" proved
 tests_async_readers.adb:133:37: info: initialization of "Z" proved
+tests_async_readers.adb:134:11: info: data dependencies proved
+tests_async_readers.adb:135:11: info: flow dependencies proved
 tests_async_readers.ads:2:27: warning: no procedure exists that can initialize abstract state "Tests_Async_Readers.State_With_Async_Readers"
 tests_async_writers.adb:29:17: info: initialization of "X" proved
 tests_async_writers.adb:29:20: info: initialization of "Y" proved
+tests_async_writers.adb:30:11: info: data dependencies proved
+tests_async_writers.adb:31:11: info: flow dependencies proved
 tests_async_writers.adb:53:22: info: initialization of "V_Out" proved
+tests_async_writers.adb:54:12: info: data dependencies proved
+tests_async_writers.adb:55:12: info: flow dependencies proved
 tests_async_writers.adb:62:23: info: initialization of "X" proved
 tests_async_writers.adb:62:26: info: initialization of "Y" proved
+tests_async_writers.adb:63:11: info: data dependencies proved
+tests_async_writers.adb:64:11: info: flow dependencies proved
 tests_async_writers.adb:72:23: info: initialization of "X" proved
 tests_async_writers.adb:72:26: info: initialization of "Y" proved
+tests_async_writers.adb:73:11: info: data dependencies proved
+tests_async_writers.adb:74:11: info: flow dependencies proved
 tests_async_writers.adb:83:23: info: initialization of "X" proved
-tests_async_writers.adb:90:13: info: initialization of "X" proved
+tests_async_writers.adb:84:12: info: data dependencies proved
+tests_async_writers.adb:85:12: info: flow dependencies proved
 tests_async_writers.adb:95:23: info: initialization of "X" proved
-tests_async_writers.adb:102:13: info: initialization of "X" proved
-tests_external_state.adb:12:04: info: initialization of "Vol_AR" constituent of "State_AR" proved
-tests_external_state.adb:16:04: info: initialization of "Vol_AR_EW" constituent of "State_AR_EW" proved
+tests_async_writers.adb:96:12: info: data dependencies proved
+tests_async_writers.adb:97:12: info: flow dependencies proved
 tests_external_state.adb:33:41: info: initialization of "Vol" constituent of "State" proved
 tests_external_state.adb:51:41: info: initialization of "Vol_AR" constituent of "State_AR" proved
 tests_external_state.adb:69:41: info: initialization of "Vol_AR_EW" constituent of "State_AR_EW" proved
 tests_external_state.adb:87:41: info: initialization of "Vol_AW" constituent of "State_AW" proved
 tests_external_state.adb:105:41: info: initialization of "Vol_AW_ER" constituent of "State_AW_ER" proved
+tests_external_state.ads:10:08: info: flow dependencies proved
+tests_external_state.ads:17:11: info: data dependencies proved
+tests_external_state.ads:18:11: info: flow dependencies proved
 tests_external_state.ads:20:19: info: initialization of "X" proved
+tests_external_state.ads:21:11: info: data dependencies proved
+tests_external_state.ads:22:11: info: flow dependencies proved
+tests_external_state.ads:28:11: info: data dependencies proved
+tests_external_state.ads:29:11: info: flow dependencies proved
 tests_external_state.ads:31:22: info: initialization of "X" proved
+tests_external_state.ads:32:11: info: data dependencies proved
+tests_external_state.ads:33:11: info: flow dependencies proved
+tests_external_state.ads:39:11: info: data dependencies proved
+tests_external_state.ads:40:11: info: flow dependencies proved
 tests_external_state.ads:42:25: info: initialization of "X" proved
+tests_external_state.ads:43:11: info: data dependencies proved
+tests_external_state.ads:44:11: info: flow dependencies proved
+tests_external_state.ads:50:11: info: data dependencies proved
+tests_external_state.ads:51:11: info: flow dependencies proved
 tests_external_state.ads:53:22: info: initialization of "X" proved
+tests_external_state.ads:54:11: info: data dependencies proved
+tests_external_state.ads:55:11: info: flow dependencies proved
+tests_external_state.ads:61:11: info: data dependencies proved
+tests_external_state.ads:62:11: info: flow dependencies proved
 tests_external_state.ads:64:25: info: initialization of "X" proved
+tests_external_state.ads:65:11: info: data dependencies proved
+tests_external_state.ads:66:11: info: flow dependencies proved
 types.adb:34:04: warning: analyzing unreferenced procedure "Test_01"
 types.adb:34:14: warning: subprogram "Test_01" has no effect
 types.adb:40:04: warning: analyzing unreferenced procedure "Test_02"
@@ -84,6 +122,5 @@ types.adb:52:23: high: "R.X" is not written in "Test_04"
 types.adb:53:23: info: initialization of "X" proved
 types.adb:56:12: high: "R.X" is not written
 types.adb:59:04: warning: analyzing unreferenced procedure "Test_05"
-types.adb:59:23: info: initialization of "R.X" proved
+types.adb:59:23: info: initialization of "R" proved
 types.adb:60:23: info: initialization of "X" proved
-types.adb:64:12: info: initialization of "R.X" proved

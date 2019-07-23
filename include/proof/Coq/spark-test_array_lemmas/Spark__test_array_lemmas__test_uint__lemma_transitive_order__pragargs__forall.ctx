@@ -2,23 +2,21 @@
 (* Beware! Only edit allowed sections below    *)
 Require Import BuiltIn.
 Require BuiltIn.
-Require bool.Bool.
+Require HighOrd.
 Require int.Int.
+Require bool.Bool.
 Require map.Map.
-
-(* Why3 assumption *)
-Definition unit := unit.
 
 Axiom us_private : Type.
 Parameter us_private_WhyType : WhyType us_private.
 Existing Instance us_private_WhyType.
 
+(* Why3 assumption *)
+Definition us_fixed := Z.
+
 Parameter private__bool_eq: us_private -> us_private -> bool.
 
 Parameter us_null_ext__: us_private.
-
-(* Why3 assumption *)
-Definition us_fixed := Z.
 
 Axiom us_type_of_heap : Type.
 Parameter us_type_of_heap_WhyType : WhyType us_type_of_heap.
@@ -31,10 +29,10 @@ Axiom us_type_of_heap__ref_WhyType : WhyType us_type_of_heap__ref.
 Existing Instance us_type_of_heap__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_type_of_heap__content
-  (v:us_type_of_heap__ref): us_type_of_heap :=
+Definition us_type_of_heap__content (v:us_type_of_heap__ref) :
+    us_type_of_heap :=
   match v with
-  | (mk___type_of_heap__ref x) => x
+  | mk___type_of_heap__ref x => x
   end.
 
 Axiom us_image : Type.
@@ -48,9 +46,9 @@ Axiom int__ref_WhyType : WhyType int__ref.
 Existing Instance int__ref_WhyType.
 
 (* Why3 assumption *)
-Definition int__content (v:int__ref): Z :=
+Definition int__content (v:int__ref) : Z :=
   match v with
-  | (mk_int__ref x) => x
+  | mk_int__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -60,9 +58,21 @@ Axiom bool__ref_WhyType : WhyType bool__ref.
 Existing Instance bool__ref_WhyType.
 
 (* Why3 assumption *)
-Definition bool__content (v:bool__ref): bool :=
+Definition bool__content (v:bool__ref) : bool :=
   match v with
-  | (mk_bool__ref x) => x
+  | mk_bool__ref x => x
+  end.
+
+(* Why3 assumption *)
+Inductive us_fixed__ref :=
+  | mk___fixed__ref : Z -> us_fixed__ref.
+Axiom us_fixed__ref_WhyType : WhyType us_fixed__ref.
+Existing Instance us_fixed__ref_WhyType.
+
+(* Why3 assumption *)
+Definition us_fixed__content (v:us_fixed__ref) : Z :=
+  match v with
+  | mk___fixed__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -72,9 +82,9 @@ Axiom real__ref_WhyType : WhyType real__ref.
 Existing Instance real__ref_WhyType.
 
 (* Why3 assumption *)
-Definition real__content (v:real__ref): R :=
+Definition real__content (v:real__ref) : R :=
   match v with
-  | (mk_real__ref x) => x
+  | mk_real__ref x => x
   end.
 
 (* Why3 assumption *)
@@ -84,26 +94,30 @@ Axiom us_private__ref_WhyType : WhyType us_private__ref.
 Existing Instance us_private__ref_WhyType.
 
 (* Why3 assumption *)
-Definition us_private__content (v:us_private__ref): us_private :=
+Definition us_private__content (v:us_private__ref) : us_private :=
   match v with
-  | (mk___private__ref x) => x
+  | mk___private__ref x => x
   end.
 
 (* Why3 assumption *)
-Definition int__ref___projection (a:int__ref): Z := (int__content a).
+Definition int__ref___projection (a:int__ref) : Z := int__content a.
 
 (* Why3 assumption *)
-Definition bool__ref___projection (a:bool__ref): bool := (bool__content a).
+Definition us_fixed__ref___projection (a:us_fixed__ref) : Z :=
+  us_fixed__content a.
 
 (* Why3 assumption *)
-Definition real__ref___projection (a:real__ref): R := (real__content a).
+Definition bool__ref___projection (a:bool__ref) : bool := bool__content a.
 
 (* Why3 assumption *)
-Definition us_private__ref___projection (a:us_private__ref): us_private :=
-  (us_private__content a).
+Definition real__ref___projection (a:real__ref) : R := real__content a.
 
 (* Why3 assumption *)
-Definition ite {a:Type} {a_WT:WhyType a} (b:bool) (x:a) (y:a): a :=
+Definition us_private__ref___projection (a:us_private__ref) : us_private :=
+  us_private__content a.
+
+(* Why3 assumption *)
+Definition ite {a:Type} {a_WT:WhyType a} (b:bool) (x:a) (y:a) : a :=
   match b with
   | true => x
   | false => y
@@ -111,24 +125,25 @@ Definition ite {a:Type} {a_WT:WhyType a} (b:bool) (x:a) (y:a): a :=
 
 Parameter bool_eq: bool -> bool -> bool.
 
-Axiom bool_eq_def : forall (x:bool) (y:bool),
-                     ((x = y) -> ((bool_eq x y) = true))
-                     /\ ((~ (x = y)) -> ((bool_eq x y) = false)).
+Axiom bool_eq_def :
+  forall (x:bool) (y:bool),
+  ((x = y) -> ((bool_eq x y) = true)) /\
+  (~ (x = y) -> ((bool_eq x y) = false)).
 
 Parameter to_int: bool -> Z.
 
-Axiom to_int_def : forall (b:bool),
-                    ((b = true) -> ((to_int b) = 1%Z))
-                    /\ ((~ (b = true)) -> ((to_int b) = 0%Z)).
+Axiom to_int_def :
+  forall (b:bool),
+  ((b = true) -> ((to_int b) = 1%Z)) /\ (~ (b = true) -> ((to_int b) = 0%Z)).
 
 Parameter of_int: Z -> bool.
 
-Axiom of_int_def : forall (i:Z),
-                    ((i = 0%Z) -> ((of_int i) = false))
-                    /\ ((~ (i = 0%Z)) -> ((of_int i) = true)).
+Axiom of_int_def :
+  forall (i:Z),
+  ((i = 0%Z) -> ((of_int i) = false)) /\ (~ (i = 0%Z) -> ((of_int i) = true)).
 
 (* Why3 assumption *)
-Definition in_range (x:Z): Prop := (x = 0%Z) \/ (x = 1%Z).
+Definition in_range (x:Z) : Prop := (x = 0%Z) \/ (x = 1%Z).
 
 Parameter attr__ATTRIBUTE_IMAGE: bool -> us_image.
 
@@ -140,46 +155,23 @@ Axiom integer : Type.
 Parameter integer_WhyType : WhyType integer.
 Existing Instance integer_WhyType.
 
+Parameter integer'int: integer -> Z.
+
+Axiom integer'axiom :
+  forall (i:integer),
+  ((-2147483648%Z)%Z <= (integer'int i))%Z /\
+  ((integer'int i) <= 2147483647%Z)%Z.
+
 (* Why3 assumption *)
-Definition in_range1 (x:Z): Prop :=
+Definition in_range1 (x:Z) : Prop :=
   ((-2147483648%Z)%Z <= x)%Z /\ (x <= 2147483647%Z)%Z.
 
 Parameter bool_eq1: Z -> Z -> bool.
 
-Parameter bool_ne: Z -> Z -> bool.
-
-Parameter bool_lt: Z -> Z -> bool.
-
-Parameter bool_le: Z -> Z -> bool.
-
-Parameter bool_gt: Z -> Z -> bool.
-
-Parameter bool_ge: Z -> Z -> bool.
-
-Axiom bool_eq_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_eq1 x y) = true) <-> (x = y).
-
-Axiom bool_ne_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_ne x y) = true) <-> ~ (x = y).
-
-Axiom bool_lt_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_lt x y) = true) <-> (x < y)%Z.
-
-Axiom bool_int__le_axiom : forall (x:Z),
-                            forall (y:Z),
-                             ((bool_le x y) = true) <-> (x <= y)%Z.
-
-Axiom bool_gt_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_gt x y) = true) <-> (y < x)%Z.
-
-Axiom bool_ge_axiom : forall (x:Z),
-                       forall (y:Z), ((bool_ge x y) = true) <-> (y <= x)%Z.
-
-Parameter bool_eq2: Z -> Z -> bool.
-
-Axiom bool_eq_def1 : forall (x:Z) (y:Z),
-                      ((x = y) -> ((bool_eq2 x y) = true))
-                      /\ ((~ (x = y)) -> ((bool_eq2 x y) = false)).
+Axiom bool_eq_def1 :
+  forall (x:Z) (y:Z),
+  ((x = y) -> ((bool_eq1 x y) = true)) /\
+  (~ (x = y) -> ((bool_eq1 x y) = false)).
 
 Parameter attr__ATTRIBUTE_IMAGE1: Z -> us_image.
 
@@ -198,163 +190,94 @@ Axiom integer__ref_WhyType : WhyType integer__ref.
 Existing Instance integer__ref_WhyType.
 
 (* Why3 assumption *)
-Definition integer__content (v:integer__ref): integer :=
+Definition integer__content (v:integer__ref) : integer :=
   match v with
-  | (mk_integer__ref x) => x
+  | mk_integer__ref x => x
   end.
 
 (* Why3 assumption *)
-Definition integer__ref___projection (a:integer__ref): integer :=
-  (integer__content a).
+Definition integer__ref_integer__content__projection (a:integer__ref) :
+    integer :=
+  integer__content a.
 
-Parameter to_rep: integer -> Z.
+(* Why3 assumption *)
+Definition to_rep (x:integer) : Z := integer'int x.
 
 Parameter of_rep: Z -> integer.
 
 Axiom inversion_axiom : forall (x:integer), ((of_rep (to_rep x)) = x).
 
-Axiom range_axiom : forall (x:integer), (in_range1 (to_rep x)).
+Axiom range_axiom : forall (x:integer), in_range1 (to_rep x).
 
-Axiom coerce_axiom : forall (x:Z), (in_range1 x) -> ((to_rep (of_rep x)) = x).
+Axiom coerce_axiom :
+  forall (x:Z), (in_range1 x) -> ((to_rep (of_rep x)) = x).
 
 (* Why3 assumption *)
 Definition component_type := integer.
 
 (* Why3 assumption *)
-Definition map := (map.Map.map Z integer).
+Definition map := Z -> integer.
 
 (* Why3 assumption *)
 Inductive map__ref :=
-  | mk_map__ref : (map.Map.map Z integer) -> map__ref.
+  | mk_map__ref : (Z -> integer) -> map__ref.
 Axiom map__ref_WhyType : WhyType map__ref.
 Existing Instance map__ref_WhyType.
 
 (* Why3 assumption *)
-Definition map__content (v:map__ref): (map.Map.map Z integer) :=
+Definition map__content (v:map__ref) : Z -> integer :=
   match v with
-  | (mk_map__ref x) => x
+  | mk_map__ref x => x
   end.
 
-Parameter slide: (map.Map.map Z integer) -> Z -> Z ->
-  (map.Map.map Z integer).
+Parameter slide: (Z -> integer) -> Z -> Z -> Z -> integer.
 
-Axiom slide_eq : forall (a:(map.Map.map Z integer)),
-                  forall (first:Z), ((slide a first first) = a).
+Axiom slide_eq :
+  forall (a:Z -> integer), forall (first:Z), ((slide a first first) = a).
 
-Axiom slide_def : forall (a:(map.Map.map Z integer)),
-                   forall (old_first:Z),
-                    forall (new_first:Z),
-                     forall (i:Z),
-                      ((map.Map.get (slide a old_first new_first) i) = 
-                      (map.Map.get a (i - (new_first - old_first)%Z)%Z)).
+Axiom slide_def :
+  forall (a:Z -> integer), forall (old_first:Z), forall (new_first:Z),
+  forall (i:Z),
+  (((slide a old_first new_first) i) = (a (i - (new_first - old_first)%Z)%Z)).
 
-Parameter concat: (map.Map.map Z integer) -> Z -> Z ->
-  (map.Map.map Z integer) -> Z -> Z -> (map.Map.map Z integer).
+Parameter bool_eq2:
+  (Z -> integer) -> Z -> Z -> (Z -> integer) -> Z -> Z -> bool.
 
-Axiom concat_def : forall (a:(map.Map.map Z integer))
-                          (b:(map.Map.map Z integer)),
-                    forall (a_first:Z) (a_last:Z) (b_first:Z) (b_last:Z),
-                     forall (i:Z),
-                      (((a_first <= i)%Z /\ (i <= a_last)%Z) ->
-                       ((map.Map.get (concat a a_first a_last b b_first
-                                       b_last) i) = (map.Map.get a i)))
-                      /\ ((a_last < i)%Z ->
-                          ((map.Map.get (concat a a_first a_last b b_first
-                                          b_last) i) = (map.Map.get b
-                                                         ((i - a_last)%Z + (b_first - 1%Z)%Z)%Z))).
+Axiom bool_eq_def2 :
+  forall (a:Z -> integer) (a__first:Z) (a__last:Z) (b:Z -> integer)
+    (b__first:Z) (b__last:Z),
+  (((((a__first <= a__last)%Z /\
+      ((b__first <= b__last)%Z /\
+       ((a__last - a__first)%Z = (b__last - b__first)%Z))) \/
+     (~ (a__first <= a__last)%Z /\ (b__last < b__first)%Z)) /\
+    forall (temp___idx_154:Z),
+    (((a__first <= temp___idx_154)%Z /\ (temp___idx_154 <= a__last)%Z) /\
+     ((to_rep (a temp___idx_154)) =
+      (to_rep (b ((b__first - a__first)%Z + temp___idx_154)%Z)))) \/
+    ~ ((a__first <= temp___idx_154)%Z /\ (temp___idx_154 <= a__last)%Z)) ->
+   ((bool_eq2 a a__first a__last b b__first b__last) = true)) /\
+  (~ ((((a__first <= a__last)%Z ->
+        (b__first <= b__last)%Z /\
+        ((a__last - a__first)%Z = (b__last - b__first)%Z)) /\
+       (~ (a__first <= a__last)%Z -> (b__last < b__first)%Z)) /\
+      forall (temp___idx_154:Z),
+      ((a__first <= temp___idx_154)%Z /\ (temp___idx_154 <= a__last)%Z) ->
+      ((to_rep (a temp___idx_154)) =
+       (to_rep (b ((b__first - a__first)%Z + temp___idx_154)%Z)))) ->
+   ((bool_eq2 a a__first a__last b b__first b__last) = false)).
 
-Parameter singleton: integer -> Z -> (map.Map.map Z integer).
-
-Axiom singleton_def : forall (v:integer),
-                       forall (i:Z), ((map.Map.get (singleton v i) i) = v).
-
-Parameter bool_eq3: (map.Map.map Z integer) -> Z -> Z ->
-  (map.Map.map Z integer) -> Z -> Z -> bool.
-
-Axiom bool_eq_def2 : forall (a:(map.Map.map Z integer)) (a__first:Z)
-                            (a__last:Z) (b:(map.Map.map Z integer))
-                            (b__first:Z) (b__last:Z),
-                      (((((a__first <= a__last)%Z
-                          /\ ((b__first <= b__last)%Z
-                              /\ ((a__last - a__first)%Z = (b__last - b__first)%Z)))
-                         \/ ((~ (a__first <= a__last)%Z)
-                             /\ (b__last < b__first)%Z))
-                        /\ forall (temp___idx_132:Z),
-                            (((a__first <= temp___idx_132)%Z
-                              /\ (temp___idx_132 <= a__last)%Z)
-                             /\ ((to_rep (map.Map.get a temp___idx_132)) = 
-                             (to_rep (map.Map.get b
-                                       ((b__first - a__first)%Z + temp___idx_132)%Z))))
-                            \/ ~ ((a__first <= temp___idx_132)%Z
-                                  /\ (temp___idx_132 <= a__last)%Z)) ->
-                       ((bool_eq3 a a__first a__last b b__first b__last) = true))
-                      /\ ((~ ((((a__first <= a__last)%Z ->
-                                ((b__first <= b__last)%Z
-                                 /\ ((a__last - a__first)%Z = (b__last - b__first)%Z)))
-                               /\ ((~ (a__first <= a__last)%Z) ->
-                                   (b__last < b__first)%Z))
-                              /\ forall (temp___idx_132:Z),
-                                  ((a__first <= temp___idx_132)%Z
-                                   /\ (temp___idx_132 <= a__last)%Z) ->
-                                  ((to_rep (map.Map.get a temp___idx_132)) = 
-                                  (to_rep (map.Map.get b
-                                            ((b__first - a__first)%Z + temp___idx_132)%Z))))) ->
-                          ((bool_eq3 a a__first a__last b b__first b__last) = false)).
-
-Axiom bool_eq_rev : forall (a:(map.Map.map Z integer))
-                           (b:(map.Map.map Z integer)),
-                     forall (a__first:Z) (a__last:Z) (b__first:Z) (b__last:Z),
-                      ((bool_eq3 b b__first b__last a a__first a__last) = true) ->
-                      ((((a__first <= a__last)%Z ->
-                         ((b__first <= b__last)%Z
-                          /\ ((a__last - a__first)%Z = (b__last - b__first)%Z)))
-                        /\ ((~ (a__first <= a__last)%Z) ->
-                            (b__last < b__first)%Z))
-                       /\ forall (temp___idx_132:Z),
-                           ((a__first <= temp___idx_132)%Z
-                            /\ (temp___idx_132 <= a__last)%Z) ->
-                           ((to_rep (map.Map.get a temp___idx_132)) = 
-                           (to_rep (map.Map.get b
-                                     ((b__first - a__first)%Z + temp___idx_132)%Z)))).
-
-Parameter compare: (map.Map.map Z integer) -> Z -> Z ->
-  (map.Map.map Z integer) -> Z -> Z -> Z.
-
-Axiom compare_def_eq : forall (a:(map.Map.map Z integer))
-                              (b:(map.Map.map Z integer)),
-                        forall (a_first:Z) (a_last:Z) (b_first:Z) (b_last:Z),
-                         ((compare a a_first a_last b b_first b_last) = 0%Z) <->
-                         ((bool_eq3 a a_first a_last b b_first b_last) = true).
-
-Axiom compare_def_lt : forall (a:(map.Map.map Z integer))
-                              (b:(map.Map.map Z integer)),
-                        forall (a_first:Z) (a_last:Z) (b_first:Z) (b_last:Z),
-                         ((compare a a_first a_last b b_first b_last) < 0%Z)%Z <->
-                         exists i:Z,
-                          exists j:Z,
-                           (i <= a_last)%Z
-                           /\ ((j < b_last)%Z
-                               /\ (((bool_eq3 a a_first i b b_first j) = true)
-                                   /\ ((i = a_last)
-                                       \/ ((i < a_last)%Z
-                                           /\ ((to_rep (map.Map.get a
-                                                         (i + 1%Z)%Z)) < 
-                                           (to_rep (map.Map.get b (j + 1%Z)%Z)))%Z)))).
-
-Axiom compare_def_gt : forall (a:(map.Map.map Z integer))
-                              (b:(map.Map.map Z integer)),
-                        forall (a_first:Z) (a_last:Z) (b_first:Z) (b_last:Z),
-                         (0%Z < (compare a a_first a_last b b_first b_last))%Z <->
-                         exists i:Z,
-                          exists j:Z,
-                           (i <= b_last)%Z
-                           /\ ((j < a_last)%Z
-                               /\ (((bool_eq3 a a_first j b b_first i) = true)
-                                   /\ ((i = b_last)
-                                       \/ ((i < b_last)%Z
-                                           /\ ((to_rep (map.Map.get b
-                                                         (i + 1%Z)%Z)) < 
-                                           (to_rep (map.Map.get a (j + 1%Z)%Z)))%Z)))).
+Axiom bool_eq_rev :
+  forall (a:Z -> integer) (b:Z -> integer),
+  forall (a__first:Z) (a__last:Z) (b__first:Z) (b__last:Z),
+  ((bool_eq2 b b__first b__last a a__first a__last) = true) ->
+  (((a__first <= a__last)%Z ->
+    (b__first <= b__last)%Z /\
+    ((a__last - a__first)%Z = (b__last - b__first)%Z)) /\
+   (~ (a__first <= a__last)%Z -> (b__last < b__first)%Z)) /\
+  forall (temp___idx_154:Z),
+  ((a__first <= temp___idx_154)%Z /\ (temp___idx_154 <= a__last)%Z) ->
+  ((to_rep (a temp___idx_154)) =
+   (to_rep (b ((b__first - a__first)%Z + temp___idx_154)%Z))).
 
 (* Why3 assumption *)
 Definition component_type1 := integer.
@@ -369,91 +292,98 @@ Parameter last: t -> integer.
 
 Parameter mk: Z -> Z -> t.
 
-Axiom mk_def : forall (f:Z) (l:Z),
-                (in_range1 f) ->
-                ((in_range1 l) ->
-                 (((to_rep (first (mk f l))) = f)
-                  /\ ((to_rep (last (mk f l))) = l))).
+Axiom mk_def :
+  forall (f:Z) (l:Z), (in_range1 f) -> (in_range1 l) ->
+  ((to_rep (first (mk f l))) = f) /\ ((to_rep (last (mk f l))) = l).
 
 (* Why3 assumption *)
-Definition dynamic_property (range_first:Z) (range_last:Z) (low:Z)
-  (high:Z): Prop :=
-  (in_range1 low)
-  /\ ((in_range1 high)
-      /\ ((low <= high)%Z -> ((in_range1 low) /\ (in_range1 high)))).
+Definition dynamic_property (range_first:Z) (range_last:Z) (low:Z) (high:Z) :
+    Prop :=
+  (in_range1 low) /\
+  ((in_range1 high) /\
+   ((low <= high)%Z -> (in_range1 low) /\ (in_range1 high))).
 
 (* Why3 assumption *)
 Inductive us_t :=
-  | mk___t : (map.Map.map Z integer) -> t -> us_t.
+  | mk___t : (Z -> integer) -> t -> us_t.
 Axiom us_t_WhyType : WhyType us_t.
 Existing Instance us_t_WhyType.
 
 (* Why3 assumption *)
-Definition rt (v:us_t): t := match v with
-                             | (mk___t x x1) => x1
-                             end.
+Definition rt (v:us_t) : t := match v with
+                              | mk___t x x1 => x1
+                              end.
 
 (* Why3 assumption *)
-Definition elts (v:us_t): (map.Map.map Z integer) :=
-  match v with
-  | (mk___t x x1) => x
-  end.
+Definition elts (v:us_t) : Z -> integer := match v with
+                                           | mk___t x x1 => x
+                                           end.
 
 (* Why3 assumption *)
-Definition to_array (a:us_t): (map.Map.map Z integer) := (elts a).
+Definition to_array (a:us_t) : Z -> integer := elts a.
 
 (* Why3 assumption *)
-Definition of_array (a:(map.Map.map Z integer)) (f:Z) (l:Z): us_t :=
-  (mk___t a (mk f l)).
+Definition of_array (a:Z -> integer) (f:Z) (l:Z) : us_t := mk___t a (mk f l).
 
 (* Why3 assumption *)
-Definition first1 (a:us_t): Z := (to_rep (first (rt a))).
+Definition first1 (a:us_t) : Z := to_rep (first (rt a)).
 
 (* Why3 assumption *)
-Definition last1 (a:us_t): Z := (to_rep (last (rt a))).
+Definition last1 (a:us_t) : Z := to_rep (last (rt a)).
 
 Parameter length: us_t -> Z.
 
-Axiom length_def : forall (a:us_t),
-                    (((first1 a) <= (last1 a))%Z ->
-                     ((length a) = (((last1 a) - (first1 a))%Z + 1%Z)%Z))
-                    /\ ((~ ((first1 a) <= (last1 a))%Z) -> ((length a) = 0%Z)).
+Axiom length_def :
+  forall (a:us_t),
+  (((first1 a) <= (last1 a))%Z ->
+   ((length a) = (((last1 a) - (first1 a))%Z + 1%Z)%Z)) /\
+  (~ ((first1 a) <= (last1 a))%Z -> ((length a) = 0%Z)).
 
 Parameter value__size: Z.
 
-Parameter object__size: (map.Map.map Z integer) -> Z.
+Parameter object__size: Z.
 
-Parameter value__component__size: Z.
+Parameter component__size: Z.
 
-Parameter object__component__size: (map.Map.map Z integer) -> Z.
-
-Parameter value__alignment: Z.
-
-Parameter object__alignment: (map.Map.map Z integer) -> Z.
+Parameter alignment: Z.
 
 Axiom value__size_axiom : (0%Z <= value__size)%Z.
 
-Axiom object__size_axiom : forall (a:(map.Map.map Z integer)),
-                            (0%Z <= (object__size a))%Z.
+Axiom object__size_axiom : (0%Z <= object__size)%Z.
 
-Axiom value__component__size_axiom : (0%Z <= value__component__size)%Z.
+Axiom component__size_axiom : (0%Z <= component__size)%Z.
 
-Axiom object__component__size_axiom : forall (a:(map.Map.map Z integer)),
-                                       (0%Z <= (object__component__size a))%Z.
-
-Axiom value__alignment_axiom : (0%Z <= value__alignment)%Z.
-
-Axiom object__alignment_axiom : forall (a:(map.Map.map Z integer)),
-                                 (0%Z <= (object__alignment a))%Z.
+Axiom alignment_axiom : (0%Z <= alignment)%Z.
 
 (* Why3 assumption *)
-Definition bool_eq4 (x:us_t) (y:us_t): bool :=
-  (bool_eq3 (elts x) (to_rep (first (rt x))) (to_rep (last (rt x))) (elts y)
-    (to_rep (first (rt y))) (to_rep (last (rt y)))).
+Definition bool_eq3 (x:us_t) (y:us_t) : bool :=
+  bool_eq2 (elts x) (to_rep (first (rt x))) (to_rep (last (rt x))) (elts y)
+  (to_rep (first (rt y))) (to_rep (last (rt y))).
 
 Parameter user_eq1: us_t -> us_t -> bool.
 
 Parameter dummy1: us_t.
+
+(* Why3 assumption *)
+Definition arr_int_unconstrained := us_t.
+
+(* Why3 assumption *)
+Inductive arr_int_unconstrained__ref :=
+  | mk_arr_int_unconstrained__ref : us_t -> arr_int_unconstrained__ref.
+Axiom arr_int_unconstrained__ref_WhyType : WhyType arr_int_unconstrained__ref.
+Existing Instance arr_int_unconstrained__ref_WhyType.
+
+(* Why3 assumption *)
+Definition arr_int_unconstrained__content (v:arr_int_unconstrained__ref) :
+    us_t :=
+  match v with
+  | mk_arr_int_unconstrained__ref x => x
+  end.
+
+(* Why3 assumption *)
+Definition arr_int_unconstrained__ref_arr_int_unconstrained__content__projection
+    (a:arr_int_unconstrained__ref) : us_t :=
+  arr_int_unconstrained__content a.
 
 (* Why3 assumption *)
 Definition a := us_t.
@@ -465,50 +395,44 @@ Axiom a__ref_WhyType : WhyType a__ref.
 Existing Instance a__ref_WhyType.
 
 (* Why3 assumption *)
-Definition a__content (v:a__ref): us_t :=
-  match v with
-  | (mk_a__ref x) => x
-  end.
+Definition a__content (v:a__ref) : us_t := match v with
+                                           | mk_a__ref x => x
+                                           end.
 
 (* Why3 assumption *)
-Definition a__ref___projection (a1:a__ref): us_t := (a__content a1).
-
-(* Why3 assumption *)
-Definition dynamic_invariant (temp___expr_187:us_t) (temp___is_init_184:bool)
-  (temp___skip_constant_185:bool) (temp___do_toplevel_186:bool): Prop :=
-  (~ (temp___skip_constant_185 = true)) -> (dynamic_property
-  (-2147483648%Z)%Z 2147483647%Z (first1 temp___expr_187)
-  (last1 temp___expr_187)).
+Definition a__ref_a__content__projection (a1:a__ref) : us_t := a__content a1.
 
 Parameter arr: us_t.
 
 Parameter attr__ATTRIBUTE_ADDRESS: Z.
 
 (* Why3 assumption *)
-Definition dynamic_invariant1 (temp___expr_15:Z) (temp___is_init_12:bool)
-  (temp___skip_constant_13:bool) (temp___do_toplevel_14:bool): Prop :=
-  ((temp___is_init_12 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
-  (in_range1 temp___expr_15).
+Definition dynamic_invariant (temp___expr_217:us_t) (temp___is_init_213:bool)
+    (temp___skip_constant_214:bool) (temp___do_toplevel_215:bool)
+    (temp___do_typ_inv_216:bool) : Prop :=
+  ~ (temp___skip_constant_214 = true) ->
+  dynamic_property (-2147483648%Z)%Z 2147483647%Z (first1 temp___expr_217)
+  (last1 temp___expr_217).
+
+(* Why3 assumption *)
+Definition dynamic_invariant1 (temp___expr_18:Z) (temp___is_init_14:bool)
+    (temp___skip_constant_15:bool) (temp___do_toplevel_16:bool)
+    (temp___do_typ_inv_17:bool) : Prop :=
+  ((temp___is_init_14 = true) \/ ((-2147483648%Z)%Z <= 2147483647%Z)%Z) ->
+  in_range1 temp___expr_18.
 
 (* Why3 goal *)
-Theorem WP_parameter_def : ((dynamic_invariant arr true false true)
-                            /\ forall (i:Z),
-                                (((to_rep (first (rt arr))) <= i)%Z
-                                 /\ (i <= (to_rep (last (rt arr))))%Z) ->
-                                ((~ (i = (to_rep (first (rt arr))))) ->
-                                 ((to_rep (map.Map.get (elts arr) (i - 1%Z)%Z)) < 
-                                 (to_rep (map.Map.get (elts arr) i)))%Z)) ->
-                           (*      Post => (for all I in Arr'Range =>                                                                                   *)
-                           (*               ^ spark-unconstrained_array_lemmas.ads:55:15:instantiated:spark-test_array_lemmas.adb:38:4:VC_POSTCONDITION *)
-                           forall (i:Z),
-                            (((to_rep (first (rt arr))) <= i)%Z
-                             /\ (i <= (to_rep (last (rt arr))))%Z) ->
-                            forall (j:Z),
-                             (((to_rep (first (rt arr))) <= j)%Z
-                              /\ (j <= (to_rep (last (rt arr))))%Z) ->
-                             ((i < j)%Z ->
-                              ((to_rep (map.Map.get (elts arr) i)) < 
-                              (to_rep (map.Map.get (elts arr) j)))%Z).
-intros (h1,h2) i (h3,h4) j (h5,h6) h7.
+Theorem VC_def :
+  (dynamic_invariant arr true false true true) ->
+  (forall (i:Z), (((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z) ->
+   (~ (i = (first1 arr)) /\
+    ((to_rep ((to_array arr) (i - 1%Z)%Z)) < (to_rep ((to_array arr) i)))%Z) \/
+   (i = (first1 arr))) ->
+  (*      Post => (for all I in Arr'Range =>               ^ spark-unconstrained_array_lemmas.ads:57:15:instantiated:spark-test_array_lemmas.adb:43:4:VC_POSTCONDITION *)
+  forall (i:Z), (((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z) ->
+  forall (j:Z), (((first1 arr) <= j)%Z /\ (j <= (last1 arr))%Z) ->
+  (i < j)%Z -> ((to_rep ((to_array arr) i)) < (to_rep ((to_array arr) j)))%Z.
+Proof.
+intros h1 h2 i (h3,h4) j (h5,h6) h7.
 #include "lemma_raising_order_int.prf"
 Qed.

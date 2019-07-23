@@ -6,7 +6,7 @@
 --                                                                          --
 --                                S p e c                                   --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -121,27 +121,29 @@ package Flow_Refinement is
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Ekind (E) = E_Abstract_State;
-   --  Return true iff the constituents of E are visible from S
+   --  Return True iff the constituents of E are visible from S
 
    function State_Refinement_Is_Visible (EN : Entity_Name;
                                          S  : Flow_Scope)
                                          return Boolean;
-   --  Return true iff the constituents of EN are visible from S
+   --  Return True iff the constituents of EN are visible from S
 
    function State_Refinement_Is_Visible (F : Flow_Id;
                                          S : Flow_Scope)
                                          return Boolean
    with Pre => Is_Abstract_State (F);
-   --  Return true iff the constituents of F are visible from S
+   --  Return True iff the constituents of F are visible from S
 
    function Is_Fully_Contained (State   : Entity_Id;
-                                Outputs : Node_Sets.Set)
+                                Outputs : Node_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    with Pre => Ekind (State) = E_Abstract_State;
    --  Returns True iff all the constituents of State are among Outputs
 
    function Is_Fully_Contained (State   : Flow_Id;
-                                Outputs : Flow_Id_Sets.Set)
+                                Outputs : Flow_Id_Sets.Set;
+                                Scop    : Flow_Scope)
                                 return Boolean
    with Pre => Is_Abstract_State (State);
 
@@ -165,15 +167,15 @@ package Flow_Refinement is
 
    procedure Up_Project (Vars           :     Global_Nodes;
                          Projected_Vars : out Global_Nodes;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
 
    procedure Up_Project (Vars           :     Global_Flow_Ids;
                          Projected_Vars : out Global_Flow_Ids;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
 
    procedure Up_Project (Deps           :     Dependency_Maps.Map;
                          Projected_Deps : out Dependency_Maps.Map;
-                         Scope          : Flow_Scope);
+                         Scope          :     Flow_Scope);
    --  Up projects constituents that are mentioned in Refined to their
    --  encapsulating state abstractions visible from Scope; for example:
    --

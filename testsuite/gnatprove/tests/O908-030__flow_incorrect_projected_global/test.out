@@ -1,22 +1,24 @@
 counting.ads:1:41: warning: no procedure exists that can initialize abstract state "Counting.State"
-counting.ads:3:14: info: initialization of "Black_Counter" constituent of "State" proved
-counting.ads:4:14: info: initialization of "Red_Counter" constituent of "State" proved
 pkg_a.adb:12:38: info: initialization of "G1" constituent of "State" proved
+pkg_a.adb:27:09: info: data dependencies proved
+pkg_a.adb:35:09: info: data dependencies proved
+pkg_a.adb:43:09: info: data dependencies proved
+pkg_a.adb:51:09: info: data dependencies proved
 pkg_a.ads:1:38: warning: no procedure exists that can initialize abstract state "Pkg_A.State"
-pkg_a.ads:7:14: info: initialization of "G1" constituent of "State" proved
+pkg_a.ads:5:09: info: data dependencies proved
+pkg_b.ads:6:28: info: data dependencies proved
+pkg_b.ads:8:29: info: data dependencies proved
 pkg_c.adb:10:38: info: initialization of "G1" constituent of "State" proved
+pkg_c.adb:45:09: info: data dependencies proved
 pkg_c.adb:45:30: info: initialization of "G1" constituent of "State" proved
+pkg_c.adb:52:09: info: data dependencies proved
 pkg_c.adb:52:30: info: initialization of "G1" constituent of "State" proved
+pkg_c.adb:59:09: info: data dependencies proved
 pkg_c.adb:59:30: info: initialization of "G1" constituent of "State" proved
+pkg_c.adb:66:09: info: data dependencies proved
 pkg_c.adb:66:30: info: initialization of "G1" constituent of "State" proved
-pkg_c.adb:72:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.adb:78:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.adb:84:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.adb:90:14: info: initialization of "G1" constituent of "State" proved
 pkg_c.ads:1:38: warning: no procedure exists that can initialize abstract state "Pkg_C.State"
-pkg_c.ads:7:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.ads:9:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.ads:11:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.ads:13:14: info: initialization of "G1" constituent of "State" proved
-pkg_c.ads:15:14: info: initialization of "G1" constituent of "State" proved
-use_counting.adb:3:11: medium: "Counting.State" might not be initialized after elaboration of main program "Use_Counting"
+pkg_c.ads:5:09: info: data dependencies proved
+pkg_c.ads:9:28: info: data dependencies proved
+pkg_c.ads:11:29: info: data dependencies proved
+use_counting.adb:5:05: medium: "Counting.State" might not be initialized after elaboration of main program "Use_Counting"

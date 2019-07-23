@@ -1,14 +1,18 @@
 raise_statements.adb:5:17: info: overflow check proved (CVC4: 1 VC)
 raise_statements.adb:24:10: info: assertion proved (CVC4: 1 VC)
 raise_statements.adb:29:10: info: raise statement proved unreachable (CVC4: 1 VC)
-raise_statements.adb:32:23: medium: overflow check might fail [possible explanation: precondition of subprogram at line 18 should mention Par1]
+raise_statements.adb:32:23: medium: overflow check might fail [possible explanation: precondition of subprogram at raise_statements.ads:14 should mention Par1]
 raise_statements.adb:32:30: info: overflow check proved (CVC4: 1 VC)
 raise_statements.adb:58:10: info: assertion proved (CVC4: 1 VC)
 raise_statements.adb:64:19: info: initialization of "O" proved
 raise_statements.adb:65:09: medium: missing dependency "null => A"
 raise_statements.adb:65:26: medium: incorrect dependency "O => A"
 raise_statements.adb:71:10: medium: exception might be raised
-raise_statements.ads:4:04: info: initialization of "G" proved
 raise_statements.ads:5:04: low: initialization of "G2" must be mentioned in the Initializes contract of "Raise_Statements" (SPARK RM 7.1.5(9))
+raise_statements.ads:8:11: info: data dependencies proved
+raise_statements.ads:12:11: info: data dependencies proved
 raise_statements.ads:12:32: info: initialization of "G" proved
+raise_statements.ads:17:11: info: data dependencies proved
+raise_statements.ads:20:11: info: data dependencies proved
+raise_statements.ads:23:11: info: data dependencies proved
 raise_statements.ads:23:32: info: initialization of "G" proved

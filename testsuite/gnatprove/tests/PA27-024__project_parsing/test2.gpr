@@ -1,6 +1,6 @@
 project Test2 is
 
    package Prove is
-      for Switches use ("-XBuild=Prod");
+      for Proof_Switches ("Ada") use ("-XBuild=Prod");
    end Prove;
 end Test2;

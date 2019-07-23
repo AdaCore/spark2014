@@ -1,2 +1,2 @@
-selected_subprograms.adb:10:22: info: initialization of "X" proved
+selected_subprograms.adb:7:07: info: initialization of "X" proved
 selected_subprograms.ads:3:14: warning: subprogram "Critical_Action" has no effect

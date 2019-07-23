@@ -1,9 +1,8 @@
 main.adb:3:28: info: precondition of main program proved (CVC4: 1 VC)
-main.adb:5:19: medium: assertion might fail, cannot prove Pack.I = 5 (e.g. when I = 0)
-main2.adb:3:29: medium: precondition of main program might fail (e.g. when I = 6)
-main2.adb:5:19: medium: assertion might fail, cannot prove Pack.I = 5 (e.g. when I = 0)
-other.adb:7:07: medium: precondition might fail (e.g. when I = 10)
+main.adb:5:19: medium: assertion might fail, cannot prove Pack.I = 5
+main2.adb:3:29: medium: precondition of main program might fail, cannot prove Pack.I < 6 (e.g. when I = 6)
+main2.adb:5:19: medium: assertion might fail, cannot prove Pack.I = 5
+other.adb:7:07: medium: precondition might fail, cannot prove Pack.I < 10 (e.g. when I = 10) [possible explanation: subprogram at other.ads:3 should mention I in a precondition]
 other.adb:13:07: info: precondition proved (CVC4: 1 VC)
 other.ads:3:14: warning: subprogram "P1" has no effect
 pack.ads:1:19: info: initial condition proved (CVC4: 1 VC)
-pack.ads:1:40: info: initialization of "I" proved

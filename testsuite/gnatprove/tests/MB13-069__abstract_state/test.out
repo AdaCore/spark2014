@@ -1,1 +1,2 @@
-pack.adb:11:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at line 8 should mention A in a precondition]
+pack.adb:11:14: medium: overflow check might fail (e.g. when A = Integer'Last) [possible explanation: subprogram at pack.ads:6 should mention A in a precondition]
+pack.ads:7:06: info: data dependencies proved

@@ -1,37 +1,20 @@
-bitsets.adb:10:15: info: initialization of "Res" proved, in instantiation at test_main.adb:5
-bitsets.adb:11:14: info: initialization of "Res" proved, in instantiation at test_main.adb:5
-bitsets.adb:41:15: info: initialization of "Res" proved, in instantiation at test_main.adb:5
-bitsets.adb:42:14: info: initialization of "Res" proved, in instantiation at test_main.adb:5
-bitsets.adb:56:16: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.adb:61:14: info: length check proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-bitsets.ads:19:09: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
+bitsets.adb:56:16: info: length check proved (Trivial: 1 VC), in instantiation at test_main.adb:5
+bitsets.adb:61:14: info: length check proved (Trivial: 1 VC), in instantiation at test_main.adb:5
+bitsets.ads:19:09: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC), in instantiation at test_main.adb:5
 bitsets.ads:24:09: info: postcondition proved (CVC4: 3 VC), in instantiation at test_main.adb:5
 bitsets.ads:30:09: info: postcondition proved (CVC4: 2 VC), in instantiation at test_main.adb:5
 bitsets.ads:34:20: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
 bitsets.ads:42:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
 bitsets.ads:45:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
 bitsets.ads:48:19: info: postcondition proved (CVC4: 1 VC), in instantiation at test_main.adb:5
-test_main.adb:9:17: info: initialization of "S" proved
-test_main.adb:10:17: info: initialization of "S" proved
 test_main.adb:11:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:11:32: info: initialization of "S" proved
 test_main.adb:12:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:12:32: info: initialization of "S" proved
 test_main.adb:13:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:13:36: info: initialization of "S" proved
 test_main.adb:14:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:14:36: info: initialization of "S" proved
 test_main.adb:15:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:15:36: info: initialization of "S" proved
 test_main.adb:16:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:16:36: info: initialization of "S" proved
 test_main.adb:17:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:17:36: info: initialization of "S" proved
 test_main.adb:18:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:18:36: info: initialization of "S" proved
 test_main.adb:19:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:19:36: info: initialization of "S" proved
 test_main.adb:20:19: info: assertion proved (CVC4: 1 VC)
-test_main.adb:20:36: info: initialization of "S" proved
-test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (1 => False, 10 => False, 2 => False, 4 => False, 5 => False, 6 => False, 7 => False, 9 => False, others => True))
-test_main.adb:22:36: info: initialization of "S" proved
+test_main.adb:22:19: medium: assertion might fail, cannot prove not My_Sets.Mem (S, 3) (e.g. when S = (3 => True, 8 => True, others => False))

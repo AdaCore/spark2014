@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (CVC4: 1 VC), in instantiation a
 a-cfdlli.ads:1362:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1377:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1392:20: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
-a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 2 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1414:14: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
+a-cfdlli.ads:1420:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1469:14: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cfdlli.ads:1476:23: info: precondition proved (CVC4: 1 VC), in instantiation at algorithm.ads:40
 a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at algorithm.ads:40
@@ -23,447 +24,290 @@ algorithm.adb:84:07: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:87:44: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:92:65: info: division check proved (CVC4: 1 VC)
 algorithm.adb:92:65: info: float overflow check proved (Interval)
-algorithm.adb:108:44: medium: precondition might fail [possible explanation: subprogram at line 73 should mention forwardLength and width in a precondition]
+algorithm.adb:106:22: info: initialization of "d" proved
+algorithm.adb:108:44: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
 algorithm.adb:108:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:108:64: info: float overflow check proved (Interval)
 algorithm.adb:109:49: medium: divide by zero might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:109:49: medium: float overflow check might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
+algorithm.adb:111:42: info: division check proved (CVC4: 1 VC)
 algorithm.adb:111:42: info: float overflow check proved (Interval)
 algorithm.adb:111:49: medium: divide by zero might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
 algorithm.adb:111:49: medium: float overflow check might fail [possible explanation: loop at line 84 should mention deltaAngle in a loop invariant]
-algorithm.adb:114:43: info: initialization of "d" proved
 algorithm.adb:143:46: info: function contract not available for proof ("Create" might not return)
 algorithm.adb:147:10: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:150:63: info: range check proved (Interval)
 algorithm.adb:150:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:150:72: info: function contract not available for proof ("alDiff" might not return)
 algorithm.adb:154:70: info: float overflow check proved (CVC4: 1 VC)
+algorithm.adb:182:07: info: initialization of "rayR" proved
+algorithm.adb:182:13: info: initialization of "rayL" proved
 algorithm.adb:184:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:195:36: info: initialization of "rayR.first" proved
 algorithm.adb:195:47: medium: float overflow check might fail
 algorithm.adb:195:61: medium: float overflow check might fail
-algorithm.adb:195:64: info: initialization of "rayL.first" proved
 algorithm.adb:195:75: medium: float overflow check might fail
 algorithm.adb:195:89: medium: float overflow check might fail
 algorithm.adb:195:95: medium: float overflow check might fail
 algorithm.adb:195:108: medium: float overflow check might fail
 algorithm.adb:195:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:195:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
-algorithm.adb:195:138: info: initialization of "rayR.second" proved
-algorithm.adb:195:151: info: initialization of "rayL.second" proved
 algorithm.adb:198:13: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:198:37: info: initialization of "rayL.second" proved
 algorithm.adb:202:31: info: assertion proved (CVC4: 2 VC)
 algorithm.adb:207:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:207:33: info: loop invariant preservation proved (CVC4: 2 VC)
-algorithm.adb:209:18: info: initialization of "rayL.first" proved
-algorithm.adb:209:18: info: initialization of "rayL.second" proved
-algorithm.adb:213:38: info: initialization of "rayL.first" proved
 algorithm.adb:213:49: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:213:51: info: initialization of "rayR.first" proved
-algorithm.adb:216:47: info: initialization of "rayL.first" proved
-algorithm.adb:216:79: info: initialization of "rayR.first" proved
 algorithm.adb:217:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:217:40: info: initialization of "rayR.second" proved
-algorithm.adb:217:53: info: initialization of "rayR.first" proved
-algorithm.adb:218:51: info: initialization of "rayR.first" proved
 algorithm.adb:219:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:219:40: info: initialization of "rayL.second" proved
-algorithm.adb:219:53: info: initialization of "rayL.first" proved
-algorithm.adb:231:36: info: initialization of "rayR.first" proved
 algorithm.adb:231:47: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayR]
 algorithm.adb:231:61: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
-algorithm.adb:231:64: info: initialization of "rayL.first" proved
 algorithm.adb:231:75: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL]
 algorithm.adb:231:89: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
 algorithm.adb:231:95: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayR]
 algorithm.adb:231:108: medium: float overflow check might fail [possible explanation: loop invariant at line 207 should mention rayL and rayR]
 algorithm.adb:231:121: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:231:129: info: implicit function contract not available for proof ("ccwDiff" might not return)
-algorithm.adb:231:138: info: initialization of "rayR.second" proved
-algorithm.adb:231:151: info: initialization of "rayL.second" proved
 algorithm.adb:235:13: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:235:37: info: initialization of "rayR.second" proved
 algorithm.adb:246:17: info: postcondition proved (CVC4: 1 VC)
 algorithm.adb:250:17: info: postcondition proved (CVC4: 1 VC)
-algorithm.adb:256:19: info: initialization of "iterL.Node" proved
+algorithm.adb:253:10: info: initialization of "iterR" proved
+algorithm.adb:253:17: info: initialization of "iterL" proved
 algorithm.adb:257:10: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:257:29: info: initialization of "iterL.Node" proved
-algorithm.adb:258:16: info: initialization of "iterL.Node" proved
-algorithm.adb:258:45: info: initialization of "iterR.Node" proved
 algorithm.adb:261:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:261:35: info: loop invariant preservation proved (CVC4: 4 VC)
-algorithm.adb:261:61: info: initialization of "iterR.Node" proved
-algorithm.adb:262:61: info: initialization of "iterL.Node" proved
 algorithm.adb:263:43: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:267:25: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:267:47: info: initialization of "iterR.Node" proved
 algorithm.adb:267:63: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:267:85: info: initialization of "iterL.Node" proved
 algorithm.adb:267:107: medium: float overflow check might fail
 algorithm.adb:268:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:268:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:272:36: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:272:58: info: initialization of "iterR.Node" proved
-algorithm.adb:278:19: info: initialization of "iterR.Node" proved
 algorithm.adb:279:19: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:279:40: info: initialization of "iterR.Node" proved
 algorithm.adb:282:28: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:282:51: info: initialization of "iterR.Node" proved
 algorithm.adb:283:19: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:283:40: info: initialization of "iterR.Node" proved
 algorithm.adb:284:19: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:284:38: info: initialization of "iterL.Node" proved
-algorithm.adb:289:22: info: initialization of "iterL.Node" proved
 algorithm.adb:290:13: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:290:32: info: initialization of "iterL.Node" proved
-algorithm.adb:296:13: info: initialization of "iterR.Node" proved
 algorithm.adb:299:25: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:299:47: info: initialization of "iterR.Node" proved
 algorithm.adb:299:63: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:299:85: info: initialization of "iterL.Node" proved
 algorithm.adb:299:107: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:300:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:300:62: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:304:36: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:304:58: info: initialization of "iterR.Node" proved
 algorithm.adb:309:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:309:37: info: initialization of "iterR.Node" proved
-algorithm.adb:319:20: info: initialization of "riterR.Node" proved
+algorithm.adb:316:10: info: initialization of "riterR" proved
+algorithm.adb:316:18: info: initialization of "riterL" proved
 algorithm.adb:320:10: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:320:33: info: initialization of "riterR.Node" proved
-algorithm.adb:321:16: info: initialization of "riterL.Node" proved
-algorithm.adb:321:46: info: initialization of "riterR.Node" proved
 algorithm.adb:324:35: info: loop invariant initialization proved (CVC4: 4 VC)
 algorithm.adb:324:35: info: loop invariant preservation proved (CVC4: 4 VC)
-algorithm.adb:324:61: info: initialization of "riterR.Node" proved
-algorithm.adb:325:61: info: initialization of "riterL.Node" proved
 algorithm.adb:326:44: info: precondition proved (CVC4: 2 VC)
 algorithm.adb:330:25: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:330:47: info: initialization of "riterR.Node" proved
 algorithm.adb:330:64: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:330:86: info: initialization of "riterL.Node" proved
 algorithm.adb:330:109: medium: float overflow check might fail
 algorithm.adb:331:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:331:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:335:58: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:335:81: info: initialization of "riterL.Node" proved
 algorithm.adb:340:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:340:37: info: initialization of "riterL.Node" proved
-algorithm.adb:344:23: info: initialization of "riterR.Node" proved
 algorithm.adb:345:13: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:345:36: info: initialization of "riterR.Node" proved
-algorithm.adb:348:13: info: initialization of "riterL.Node" proved
 algorithm.adb:351:25: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:351:47: info: initialization of "riterR.Node" proved
 algorithm.adb:351:64: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:351:86: info: initialization of "riterL.Node" proved
 algorithm.adb:351:109: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:352:15: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:352:64: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:36: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:356:58: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:356:81: info: initialization of "riterL.Node" proved
 algorithm.adb:361:27: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:361:49: info: initialization of "riterL.Node" proved
 algorithm.adb:381:15: info: range check proved (CVC4: 2 VC)
-algorithm.adb:381:71: medium: range check might fail [possible explanation: precondition of subprogram at line 374 should mention This]
+algorithm.adb:381:71: medium: range check might fail [possible explanation: precondition of subprogram at algorithm.ads:91 should mention This]
 algorithm.adb:395:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:397:39: info: initialization of "iR.Node" proved
 algorithm.adb:398:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:398:33: info: loop invariant preservation proved (CVC4: 2 VC)
 algorithm.adb:403:73: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:403:92: info: initialization of "iR.Node" proved
 algorithm.adb:408:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:408:38: info: initialization of "iR.Node" proved
 algorithm.adb:409:42: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:409:64: info: initialization of "iR.Node" proved
-algorithm.adb:410:40: info: discriminant check proved (CVC4: 2 VC)
-algorithm.adb:411:54: info: initialization of "iR.Node" proved
+algorithm.adb:410:40: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 algorithm.adb:415:34: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:415:56: info: initialization of "iR.Node" proved
 algorithm.adb:421:16: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:422:42: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:427:38: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:427:74: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:428:39: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:428:61: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:428:81: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:428:100: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:430:46: info: discriminant check proved (CVC4: 2 VC)
-algorithm.adb:431:73: info: initialization of "iR.Node" proved
-algorithm.adb:442:43: info: discriminant check proved (CVC4: 2 VC)
-algorithm.adb:443:70: info: initialization of "iR.Node" proved
+algorithm.adb:430:46: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+algorithm.adb:442:43: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 algorithm.adb:448:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:463:39: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:466:34: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:466:56: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:466:76: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:468:58: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:468:80: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:468:100: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:468:119: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:471:34: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:471:56: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:471:71: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:473:58: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:473:80: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:473:95: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:473:114: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:477:35: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:477:57: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
 algorithm.adb:477:77: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:477:96: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:478:36: medium: precondition might fail [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:478:58: info: initialization of "Best_Valley_IDS.rising.Node" proved
+algorithm.adb:478:36: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:478:73: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:478:92: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:484:38: info: discriminant check proved (CVC4: 2 VC)
-algorithm.adb:484:41: info: initialization of "Candidate_Valley_IDS.other.Node" proved
-algorithm.adb:484:41: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
-algorithm.adb:499:35: info: discriminant check proved (CVC4: 2 VC)
-algorithm.adb:499:38: info: initialization of "Candidate_Valley_IDS.other.Node" proved
-algorithm.adb:499:38: info: initialization of "Candidate_Valley_IDS.rising.Node" proved
+algorithm.adb:484:38: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
+algorithm.adb:499:35: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 algorithm.adb:504:10: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:504:29: info: initialization of "iR.Node" proved
 algorithm.adb:510:30: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:510:52: info: initialization of "Best_Valley_IDS.rising.Node" proved
 algorithm.adb:510:67: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:514:20: medium: precondition might fail [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:514:42: info: initialization of "Best_Valley_IDS.rising.Node" proved
+algorithm.adb:514:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:514:57: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:515:20: medium: precondition might fail [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
-algorithm.adb:515:42: info: initialization of "Best_Valley_IDS.other.Node" proved
+algorithm.adb:515:20: medium: precondition might fail, cannot prove Has_Element (Container, Position) [possible explanation: loop invariant at line 398 should mention Best_Valley_IDS]
 algorithm.adb:515:57: info: discriminant check proved (CVC4: 1 VC)
+algorithm.adb:530:07: info: initialization of "deltaMag" proved
+algorithm.adb:531:07: info: initialization of "deltaAngle" proved
 algorithm.adb:537:33: info: loop invariant initialization proved (CVC4: 1 VC)
 algorithm.adb:537:33: info: loop invariant preservation proved (CVC4: 1 VC)
-algorithm.adb:538:52: medium: float overflow check might fail [possible explanation: precondition of subprogram at line 522 should mention This]
+algorithm.adb:538:52: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:539:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:539:25: info: range check proved (CVC4: 1 VC)
 algorithm.adb:539:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:539:98: info: division check proved (CVC4: 1 VC)
-algorithm.adb:539:98: medium: float overflow check might fail [possible explanation: precondition of subprogram at line 522 should mention This]
-algorithm.adb:542:29: info: initialization of "deltaAreaSum" proved
+algorithm.adb:539:98: medium: float overflow check might fail [possible explanation: precondition of subprogram at algorithm.ads:98 should mention This]
 algorithm.adb:542:42: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:542:42: info: range check proved (Interval)
-algorithm.adb:542:44: info: initialization of "deltaMag" proved
 algorithm.adb:542:53: info: float overflow check proved (Interval)
-algorithm.adb:544:35: info: initialization of "obstacleAvoidDelta" proved
 algorithm.adb:544:54: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:544:56: info: initialization of "deltaMag" proved
 algorithm.adb:544:65: info: float overflow check proved (Interval)
 algorithm.adb:544:76: info: float overflow check proved (Interval)
 algorithm.adb:544:87: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:544:89: info: initialization of "deltaAngle" proved
-algorithm.adb:549:35: info: initialization of "obstacleAvoidDelta" proved
 algorithm.adb:549:54: info: division check proved (CVC4: 1 VC)
 algorithm.adb:549:54: medium: float overflow check might fail [possible explanation: loop invariant at line 537 should mention deltaAreaSum and obstacleAvoidDelta]
-algorithm.adb:549:56: info: initialization of "deltaAreaSum" proved
-algorithm.adb:552:14: info: initialization of "obstacleAvoidDelta" proved
-algorithm.adb:578:27: info: initialization of "robotPose" proved
-algorithm.adb:581:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:586:27: info: initialization of "goal" proved
-algorithm.adb:589:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:596:10: info: initialization of "iNumLPs" proved
-algorithm.adb:601:31: info: assertion proved (CVC4: 1 VC)
+algorithm.adb:558:07: info: initialization of "driveSpeed" proved
+algorithm.adb:559:07: info: initialization of "driveTurnRate" proved
+algorithm.adb:560:07: info: initialization of "relGoal" proved
+algorithm.adb:561:07: info: initialization of "distToGoal" proved
+algorithm.adb:562:07: info: initialization of "distToClosestObstacle" proved
+algorithm.adb:563:07: info: initialization of "safetyDist" proved
+algorithm.adb:566:07: info: initialization of "theta" proved
+algorithm.adb:567:07: info: initialization of "robotPose" proved
+algorithm.adb:568:07: info: initialization of "goal" proved
+algorithm.adb:569:07: info: initialization of "pBestValley" proved
+algorithm.adb:570:07: info: initialization of "iNumLPs" proved
+algorithm.adb:581:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:589:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:601:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:603:37: info: cannot unroll loop (too many loop iterations)
 algorithm.adb:605:67: medium: float overflow check might fail [possible explanation: loop at line 603 should mention This in a loop invariant]
 algorithm.adb:605:101: info: range check proved (Interval)
-algorithm.adb:605:103: info: initialization of "iNumLPs" proved
 algorithm.adb:605:111: info: division check proved (CVC4: 1 VC)
-algorithm.adb:608:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:610:18: info: initialization of "goal" proved
-algorithm.adb:610:25: info: initialization of "robotPose" proved
-algorithm.adb:614:27: info: initialization of "relGoal" proved
-algorithm.adb:617:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:620:21: info: initialization of "relGoal" proved
-algorithm.adb:621:31: info: initialization of "robotPose" proved
-algorithm.adb:621:48: info: initialization of "goal" proved
-algorithm.adb:624:28: info: initialization of "goal" proved
-algorithm.adb:633:30: info: initialization of "robotPose" proved
-algorithm.adb:633:47: info: initialization of "goal" proved
+algorithm.adb:608:31: info: assertion proved (Trivial: 1 VC)
+algorithm.adb:617:31: info: assertion proved (Trivial: 1 VC)
 algorithm.adb:634:69: info: division check proved (CVC4: 1 VC)
 algorithm.adb:634:69: info: float overflow check proved (Interval)
-algorithm.adb:634:90: info: initialization of "robotPose" proved
-algorithm.adb:634:107: info: initialization of "goal" proved
 algorithm.adb:634:114: info: division check proved (CVC4: 1 VC)
 algorithm.adb:634:114: info: float overflow check proved (Interval)
 algorithm.adb:636:70: info: division check proved (CVC4: 1 VC)
 algorithm.adb:636:70: info: float overflow check proved (Interval)
-algorithm.adb:636:90: info: initialization of "robotPose" proved
-algorithm.adb:636:107: info: initialization of "goal" proved
 algorithm.adb:636:114: info: division check proved (CVC4: 1 VC)
 algorithm.adb:636:114: info: float overflow check proved (Interval)
-algorithm.adb:639:40: info: initialization of "driveTurnRate" proved
 algorithm.adb:645:51: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:645:65: info: initialization of "relGoal" proved
-algorithm.adb:645:82: info: initialization of "robotPose" proved
 algorithm.adb:647:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:647:22: info: initialization of "distToGoal" proved
 algorithm.adb:648:22: medium: assertion might fail, cannot prove This.robot.robot_radius < This.robot.max_Range [possible explanation: loop at line 603 should mention This in a loop invariant]
-algorithm.adb:652:27: info: initialization of "distToGoal" proved
 algorithm.adb:655:31: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:655:31: info: initialization of "distToGoal" proved
 algorithm.adb:658:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:658:22: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:661:33: info: initialization of "distToGoal" proved
 algorithm.adb:661:33: info: loop invariant initialization proved (CVC4: 2 VC)
 algorithm.adb:661:33: info: loop invariant preservation proved (CVC4: 2 VC)
-algorithm.adb:661:70: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:671:25: info: assertion proved (CVC4: 1 VC)
 algorithm.adb:673:72: medium: float overflow check might fail
 algorithm.adb:674:43: info: range check proved (CVC4: 1 VC)
-algorithm.adb:674:49: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:679:31: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:679:31: info: initialization of "distToGoal" proved
-algorithm.adb:679:68: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:680:22: medium: assertion might fail, cannot prove This.robot.robot_radius / 10.0 <= This.robot.obstacle_avoid_dist
 algorithm.adb:680:46: info: division check proved (CVC4: 1 VC)
 algorithm.adb:680:46: info: float overflow check proved (Interval)
 algorithm.adb:681:21: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:681:21: info: range check proved (CVC4: 1 VC)
 algorithm.adb:681:32: medium: float overflow check might fail
-algorithm.adb:681:35: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:681:57: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:681:109: info: division check proved (CVC4: 1 VC)
 algorithm.adb:681:109: info: float overflow check proved (Interval)
 algorithm.adb:684:42: info: non-aliasing of formal parameters "gapVec" and "laserscan" proved
 algorithm.adb:704:31: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:704:31: info: initialization of "distToGoal" proved
-algorithm.adb:704:68: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:710:19: info: discriminant check proved (CVC4: 2 VC)
+algorithm.adb:710:19: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 algorithm.adb:710:22: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:710:44: info: initialization of "distToGoal" proved
 algorithm.adb:712:31: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:712:31: info: initialization of "distToGoal" proved
-algorithm.adb:712:68: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:716:25: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:718:56: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:718:89: info: initialization of "distToGoal" proved
-algorithm.adb:726:37: info: initialization of "distToGoal" proved
 algorithm.adb:728:25: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:728:34: info: initialization of "distToGoal" proved
 algorithm.adb:730:44: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:730:53: info: initialization of "distToGoal" proved
 algorithm.adb:737:52: info: division check proved (CVC4: 1 VC)
 algorithm.adb:737:52: info: float overflow check proved (Interval)
-algorithm.adb:738:37: info: initialization of "driveTurnRate" proved
-algorithm.adb:744:58: medium: precondition might fail
+algorithm.adb:744:58: medium: precondition might fail, cannot prove X /= 0.0 or Y /= 0.0
 algorithm.adb:745:88: medium: float overflow check might fail
-algorithm.adb:746:93: info: initialization of "pBestValley.value.risingGap.distance" proved
 algorithm.adb:746:104: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:757:33: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:757:44: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:763:37: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:763:37: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:766:35: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:766:46: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:766:88: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:766:99: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:766:115: info: range check proved (Interval)
 algorithm.adb:766:122: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:768:16: info: initialization of "pBestValley.value.risingGap.iDir" proved
 algorithm.adb:768:27: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:769:42: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:769:53: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:769:79: info: initialization of "pBestValley.value.otherGap.bearing" proved
 algorithm.adb:769:90: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:771:43: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:771:54: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:771:80: info: initialization of "pBestValley.value.otherGap.bearing" proved
 algorithm.adb:771:91: info: discriminant check proved (CVC4: 1 VC)
 algorithm.adb:774:37: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:774:37: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:777:29: info: initialization of "safeRisingGapAngle" proved
-algorithm.adb:777:49: info: initialization of "pBestValley.value.risingGap.bearing" proved
 algorithm.adb:777:60: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:778:30: info: initialization of "midValleyAngle" proved
 algorithm.adb:778:57: info: discriminant check proved (CVC4: 1 VC)
-algorithm.adb:780:35: info: initialization of "safeRisingGapAngle" proved
-algorithm.adb:782:35: info: initialization of "midValleyAngle" proved
 algorithm.adb:795:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:795:31: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:798:29: medium: precondition might fail
-algorithm.adb:798:50: info: initialization of "safetyDist" proved
+algorithm.adb:798:29: medium: precondition might fail, cannot prove safetyDist /= 0.0
 algorithm.adb:806:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:806:31: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:823:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:823:31: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:826:43: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:831:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:831:31: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:838:22: info: initialization of "midValleyAngle" proved
-algorithm.adb:840:22: info: initialization of "safeRisingGapAngle" proved
 algorithm.adb:846:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:846:31: info: initialization of "distToClosestObstacle" proved
-algorithm.adb:850:28: info: initialization of "theta" proved
 algorithm.adb:855:31: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:855:31: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:857:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:857:23: info: initialization of "theta" proved
 algorithm.adb:859:49: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:859:56: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:859:58: info: initialization of "theta" proved
 algorithm.adb:859:64: info: division check proved (CVC4: 1 VC)
 algorithm.adb:859:64: info: float overflow check proved (Interval)
-algorithm.adb:860:24: info: initialization of "driveTurnRate" proved
 algorithm.adb:860:38: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:860:40: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:860:47: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:860:59: info: initialization of "distToGoal" proved
 algorithm.adb:861:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:861:22: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:861:44: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:862:22: medium: assertion might fail, cannot prove This.robot.obstacle_avoid_dist > 0.0
 algorithm.adb:862:76: info: assertion proved (CVC4: 2 VC)
-algorithm.adb:862:77: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:862:99: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:22: medium: assertion might fail, cannot prove (distToClosestObstacle - This.robot.robot_radius) / This.robot.obstacle_avoid_dist > 0.0
-algorithm.adb:863:23: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:863:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:863:72: info: division check proved (CVC4: 1 VC)
 algorithm.adb:863:72: medium: float overflow check might fail
 algorithm.adb:864:22: info: assertion proved (CVC4: 1 VC)
-algorithm.adb:864:23: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:864:45: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:864:72: info: division check proved (CVC4: 1 VC)
 algorithm.adb:864:72: medium: float overflow check might fail
-algorithm.adb:865:24: info: initialization of "driveTurnRate" proved
 algorithm.adb:865:38: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:865:40: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:865:47: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:865:54: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:865:76: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:865:103: info: division check proved (CVC4: 1 VC)
 algorithm.adb:865:103: medium: float overflow check might fail
 algorithm.adb:867:16: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:867:23: info: initialization of "theta" proved
-algorithm.adb:870:21: info: initialization of "driveSpeed" proved
 algorithm.adb:870:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:870:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:870:41: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:870:53: info: initialization of "distToGoal" proved
-algorithm.adb:871:21: info: initialization of "driveSpeed" proved
 algorithm.adb:871:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:871:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:871:41: info: precondition proved (CVC4: 1 VC)
-algorithm.adb:871:48: info: initialization of "distToClosestObstacle" proved
 algorithm.adb:871:70: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:871:97: info: division check proved (CVC4: 1 VC)
 algorithm.adb:871:97: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:872:21: info: initialization of "driveSpeed" proved
 algorithm.adb:872:32: info: float overflow check proved (CVC4: 1 VC)
 algorithm.adb:872:34: info: precondition proved (CVC4: 1 VC)
 algorithm.adb:872:53: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:872:60: info: initialization of "theta" proved
 algorithm.adb:872:68: info: division check proved (CVC4: 1 VC)
 algorithm.adb:872:68: info: float overflow check proved (CVC4: 1 VC)
-algorithm.adb:874:29: info: initialization of "driveSpeed" proved
-algorithm.adb:874:41: info: initialization of "driveTurnRate" proved
-algorithm.adb:878:28: info: initialization of "driveSpeed" proved
-algorithm.adb:880:33: info: initialization of "driveTurnRate" proved
 algorithm.ads:43:38: info: range check proved (CVC4: 1 VC)
 algorithm.ads:89:14: info: postcondition proved (CVC4: 1 VC)
 formal-numerics-elementary_functions.ads:91:22: info: division check proved (CVC4: 1 VC)

@@ -1,0 +1,5 @@
+p.adb:3:41: info: data dependencies proved
+p.adb:3:62: low: unused global "T"
+p.adb:3:62: medium: "T" is not set
+p.adb:6:10: info: precondition proved (Trivial: 1 VC)
+p.ads:2:14: info: nontermination of task proved (CVC4: 1 VC)

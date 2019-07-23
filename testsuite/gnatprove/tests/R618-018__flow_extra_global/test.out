@@ -1,6 +1,8 @@
-p.adb:5:04: info: initialization of "X" constituent of "State1" proved
-p.adb:8:07: info: initialization of "Extr" constituent of "State2e" proved
-p.adb:15:14: medium: overflow check might fail [possible explanation: subprogram at line 12 should mention X in a precondition]
-p.adb:15:21: high: "Extra.State2e" constituent of "P.State2" must be listed in the Refined_Global aspect of "Dummy" (SPARK RM 6.1.4(13))
-p.adb:15:21: high: as a result "Extra.State2e" constituent of "P.State2" must be listed in the Global of "Dummy" (SPARK RM 6.1.4(13))
+p.adb:15:14: medium: overflow check might fail [possible explanation: subprogram at p.ads:9 should mention X in a precondition]
+p.adb:15:21: high: "Extra.State2e" constituent of "P.State2" must be listed in the Refined_Global aspect of "Dummy" (SPARK RM 6.1.4(14))
+p.adb:15:21: high: as a result "Extra.State2e" constituent of "P.State2" must be listed in the Global of "Dummy" (SPARK RM 6.1.4(14))
+p.ads:3:08: info: flow dependencies proved
 p.ads:6:42: info: initialization of "Extra.State2e" constituent of "P.State2" proved
+p.ads:6:75: info: flow dependencies proved
+p.ads:7:40: info: data dependencies proved
+p.ads:9:43: info: data dependencies proved

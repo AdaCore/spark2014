@@ -1,49 +1,38 @@
 aggregates.adb:18:23: info: initialization of "D" proved
 aggregates.adb:18:26: info: initialization of "E" proved
 aggregates.adb:18:29: info: initialization of "F" proved
-aggregates.adb:26:14: info: initialization of "Tmp.X" proved
-aggregates.adb:28:12: info: initialization of "Tmp.X" proved
-aggregates.adb:29:12: info: initialization of "Tmp.Y" proved
-aggregates.adb:30:12: info: initialization of "Tmp.Z" proved
+aggregates.adb:19:11: info: data dependencies proved
+aggregates.adb:20:11: info: flow dependencies proved
 aggregates.adb:36:23: info: initialization of "D" proved
 aggregates.adb:36:26: info: initialization of "E" proved
 aggregates.adb:36:29: info: initialization of "F" proved
-aggregates.adb:46:12: info: initialization of "Tmp.X" proved
-aggregates.adb:47:12: info: initialization of "Tmp.Y" proved
-aggregates.adb:48:12: info: initialization of "Tmp.Z" proved
+aggregates.adb:37:11: info: data dependencies proved
+aggregates.adb:38:11: info: flow dependencies proved
 aggregates.adb:54:23: info: initialization of "D" proved
 aggregates.adb:54:26: info: initialization of "E" proved
 aggregates.adb:54:29: info: initialization of "F" proved
-aggregates.adb:64:12: info: initialization of "Tmp.X" proved
-aggregates.adb:65:12: info: initialization of "Tmp.Y" proved
-aggregates.adb:66:12: info: initialization of "Tmp.Z" proved
+aggregates.adb:55:11: info: data dependencies proved
+aggregates.adb:56:11: info: flow dependencies proved
 aggregates.adb:70:23: info: initialization of "D" proved
 aggregates.adb:70:26: info: initialization of "E" proved
 aggregates.adb:70:29: info: initialization of "F" proved
-aggregates.adb:80:12: info: initialization of "Tmp.X" proved
-aggregates.adb:81:12: info: initialization of "Tmp.Y" proved
-aggregates.adb:95:23: info: initialization of "Output.X" proved
-aggregates.adb:95:23: info: initialization of "Output.Y" proved
-aggregates.adb:95:23: info: initialization of "Output.Z" proved
+aggregates.adb:71:11: info: data dependencies proved
+aggregates.adb:72:11: info: flow dependencies proved
+aggregates.adb:87:11: info: data dependencies proved
+aggregates.adb:88:11: info: flow dependencies proved
+aggregates.adb:95:23: info: initialization of "Output" proved
+aggregates.adb:96:11: info: data dependencies proved
+aggregates.adb:97:11: info: flow dependencies proved
 aggregates.adb:99:07: warning: initialization of "Tmp" has no effect
-aggregates.adb:107:23: info: initialization of "Output.C1.X" proved
-aggregates.adb:107:23: info: initialization of "Output.C1.Y" proved
-aggregates.adb:107:23: info: initialization of "Output.C1.Z" proved
-aggregates.adb:107:23: info: initialization of "Output.C2.X" proved
-aggregates.adb:107:23: info: initialization of "Output.C2.Y" proved
-aggregates.adb:107:23: info: initialization of "Output.C2.Z" proved
-aggregates.adb:122:23: info: initialization of "Output.C1.X" proved
-aggregates.adb:122:23: info: initialization of "Output.C1.Y" proved
-aggregates.adb:122:23: info: initialization of "Output.C1.Z" proved
-aggregates.adb:122:23: info: initialization of "Output.C2.X" proved
-aggregates.adb:122:23: info: initialization of "Output.C2.Y" proved
-aggregates.adb:122:23: info: initialization of "Output.C2.Z" proved
-aggregates.adb:131:23: info: initialization of "Output.X" proved
-aggregates.adb:131:23: info: initialization of "Output.Y" proved
-aggregates.adb:131:23: info: initialization of "Output.Z" proved
-aggregates.adb:141:23: info: initialization of "Output.C1.X" proved
-aggregates.adb:141:23: info: initialization of "Output.C1.Y" proved
-aggregates.adb:141:23: info: initialization of "Output.C1.Z" proved
-aggregates.adb:141:23: info: initialization of "Output.C2.X" proved
-aggregates.adb:141:23: info: initialization of "Output.C2.Y" proved
-aggregates.adb:141:23: info: initialization of "Output.C2.Z" proved
+aggregates.adb:107:23: info: initialization of "Output" proved
+aggregates.adb:108:11: info: data dependencies proved
+aggregates.adb:109:11: info: flow dependencies proved
+aggregates.adb:122:23: info: initialization of "Output" proved
+aggregates.adb:123:11: info: data dependencies proved
+aggregates.adb:124:11: info: flow dependencies proved
+aggregates.adb:131:23: info: initialization of "Output" proved
+aggregates.adb:132:11: info: data dependencies proved
+aggregates.adb:133:11: info: flow dependencies proved
+aggregates.adb:141:23: info: initialization of "Output" proved
+aggregates.adb:142:11: info: data dependencies proved
+aggregates.adb:143:11: info: flow dependencies proved

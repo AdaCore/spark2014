@@ -223,7 +223,7 @@ spark-higher_order-fold.ads:570:51: info: overflow check proved (CVC4: 1 VC), in
 spark-higher_order-fold.ads:570:54: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:571:16: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:571:38: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
-spark-higher_order-fold.ads:575:12: info: postcondition proved (CVC4: 3 VC), in instantiation at test_higher_order.ads:96
+spark-higher_order-fold.ads:575:12: info: postcondition proved (Trivial: 1 VC; altergo: 2 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:581:16: info: subprogram "Result_In_Range" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:585:30: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
 spark-higher_order-fold.ads:585:33: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:96
@@ -252,7 +252,7 @@ spark-higher_order-fold.ads:644:44: info: range check proved (CVC4: 1 VC), in in
 spark-higher_order-fold.ads:645:10: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:645:23: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:645:23: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
-spark-higher_order-fold.ads:648:18: info: postcondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:108
+spark-higher_order-fold.ads:648:18: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:650:16: info: subprogram "Add_One" will terminate, terminating annotation has been proved, in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:651:32: info: overflow check proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
 spark-higher_order-fold.ads:653:17: info: postcondition proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:108
@@ -287,7 +287,6 @@ spark-higher_order.adb:42:22: info: precondition proved (CVC4: 2 VC), in instant
 spark-higher_order.adb:42:22: info: range check proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:43:36: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:43:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at test_higher_order.ads:13
-spark-higher_order.adb:44:38: info: initialization of "R" proved, in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:41: info: index check proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:46: info: precondition proved (CVC4: 2 VC), in instantiation at test_higher_order.ads:13
 spark-higher_order.adb:44:52: info: index check proved (CVC4: 4 VC), in instantiation at test_higher_order.ads:13
@@ -335,12 +334,12 @@ test_higher_order.ads:59:60: info: range check proved (CVC4: 1 VC)
 test_higher_order.ads:59:72: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:59:85: info: overflow check proved (CVC4: 1 VC)
 test_higher_order.ads:59:89: info: overflow check proved (CVC4: 1 VC)
-test_higher_order.ads:61:14: info: postcondition proved (CVC4: 3 VC)
+test_higher_order.ads:61:14: info: postcondition proved (Trivial: 1 VC; Z3: 2 VC)
 test_higher_order.ads:63:30: warning: unused variable "A"
 test_higher_order.ads:63:42: warning: unused variable "X"
-test_higher_order.ads:84:19: info: assertion proved (CVC4: 1 VC)
+test_higher_order.ads:84:19: info: assertion proved (altergo: 1 VC)
 test_higher_order.ads:84:35: info: range check proved (CVC4: 1 VC)
-test_higher_order.ads:94:19: info: assertion proved (CVC4: 1 VC)
+test_higher_order.ads:94:19: info: assertion proved (altergo: 1 VC)
 test_higher_order.ads:94:35: info: range check proved (CVC4: 1 VC)
 test_higher_order.ads:104:19: info: assertion proved (Z3: 1 VC)
 test_higher_order.ads:104:36: info: range check proved (CVC4: 1 VC)

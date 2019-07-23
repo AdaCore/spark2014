@@ -1,11 +1,4 @@
-generic_parent-child_instance.adb:19:36: info: initialization of "Step" proved, in instantiation at this_instance.ads:3
 generic_parent-child_instance.adb:20:29: info: range check proved (CVC4: 1 VC), in instantiation at this_instance.ads:3
-generic_parent-child_instance.adb:20:31: info: initialization of "Step" proved, in instantiation at this_instance.ads:3
-generic_parent-child_instance.adb:23:37: info: initialization of "Step" proved, in instantiation at this_instance.ads:3
 generic_parent-child_instance.adb:24:29: info: range check proved (CVC4: 1 VC), in instantiation at this_instance.ads:3
-generic_parent-child_instance.adb:24:31: info: initialization of "Step" proved, in instantiation at this_instance.ads:3
-generic_parent.adb:17:36: info: initialization of "Step" proved, in instantiation at this_parent.ads:3
 generic_parent.adb:18:29: info: range check proved (CVC4: 1 VC), in instantiation at this_parent.ads:3
-generic_parent.adb:18:31: info: initialization of "Step" proved, in instantiation at this_parent.ads:3
 main_overriding_test.adb:8:31: info: unrolling loop
-main_overriding_test.adb:9:08: info: initialization of "Thing" proved

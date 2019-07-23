@@ -10,7 +10,7 @@ is
   StatusPort : Status_Port_Type;
   pragma Volatile (StatusPort);
   -- address clause would be added here
-  
+
   Register : Integer;
   pragma Volatile (Register);
   -- address clause would be added here
@@ -34,11 +34,11 @@ is
   end ReadAck;
 
   procedure Write (X : in Integer)
-  --# global in out OldX; 
-  --#           out Register; 
+  --# global in out OldX;
+  --#           out Register;
   --#        in     StatusPort;
   --# derives OldX,Register from OldX, X &
-  --#         null          from StatusPort; 
+  --#         null          from StatusPort;
   is
     OK : Boolean;
   begin
@@ -48,7 +48,7 @@ is
       loop
         ReadAck (OK);
         exit when OK;
-      end loop; 
+      end loop;
     end if;
   end Write;
 end Device;

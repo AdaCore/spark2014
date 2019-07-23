@@ -1,17 +1,8 @@
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: flow analysis and proof ...
-enable analysis of a body using SPARK_Mode
-warning: no bodies have been analyzed by GNATprove
-warning: switch -aP specified in the project file will be ignored. It needs to be specified on the command line directly.
-Phase 1 of 2: generation of Global contracts ...
-gnatprove: error during generation of Global contracts
-gprbuild: directory name missing after -aP
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: flow analysis and proof ...
-enable analysis of a body using SPARK_Mode
-warning: no bodies have been analyzed by GNATprove
-warning: switch -XBuild=Prod specified in the project file will be ignored. It needs to be specified on the command line directly.
-Phase 1 of 2: generation of Global contracts ...
-Phase 2 of 2: flow analysis and proof ...
-enable analysis of a body using SPARK_Mode
-warning: no bodies have been analyzed by GNATprove
+gnatprove: unrecognized option '-aP=--codepeer=on'
+try "gnatprove --help" for more information.
+gnatprove: unrecognized option '-aP=--codepeer=on'
+try "gnatprove --help" for more information.
+gnatprove: unrecognized option '-XBuild=Prod'
+try "gnatprove --help" for more information.
+gnatprove: unrecognized option '-XBuild=Prod'
+try "gnatprove --help" for more information.

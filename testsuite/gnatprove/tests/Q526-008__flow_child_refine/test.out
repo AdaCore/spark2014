@@ -1,3 +1,3 @@
-parent-child.ads:4:14: info: initialization of "X" constituent of "Child_State" proved
+parent-child.ads:5:12: info: data dependencies proved
 parent.ads:1:09: refinement of Parent.State shall mention Child.Child_State constituent of Parent.State (SPARK RM 7.2.6(6))
 gnatprove: error during flow analysis and proof

@@ -1,0 +1,1 @@
+final.adb:3:04: warning: variable "X" is never read and never assigned

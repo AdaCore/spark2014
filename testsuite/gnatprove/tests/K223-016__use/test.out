@@ -1,3 +1,3 @@
-used.adb:6:17: medium: overflow check might fail (e.g. when x = Integer'First) [possible explanation: subprogram at line 2 should mention x in a precondition]
-used.adb:10:14: info: initialization of "Res" proved
+used.adb:3:07: info: initialization of "Res" proved
+used.adb:6:17: medium: overflow check might fail (e.g. when x = Integer'First) [possible explanation: subprogram at used.ads:2 should mention x in a precondition]
 user.ads:2:36: info: initialization of "res" proved

@@ -1,22 +1,14 @@
+q.adb:11:07: info: initialization of "X" proved
 q.adb:14:19: info: range check proved (Interval)
 q.adb:14:27: info: division check proved (CVC4: 1 VC)
 q.adb:14:27: info: float overflow check proved (Interval)
-q.adb:16:10: info: initialization of "X" proved
-q.adb:17:15: info: initialization of "X" proved
 q.adb:17:17: info: float overflow check proved (CVC4: 1 VC)
 q.adb:20:22: info: assertion proved (CVC4: 2 VC)
-q.adb:20:22: info: initialization of "X" proved
-q.adb:21:12: info: initialization of "X" proved
 q.adb:21:14: info: division check proved (CVC4: 1 VC)
 q.adb:21:14: info: float overflow check proved (CVC4: 1 VC)
-q.adb:23:10: info: initialization of "X" proved
-q.adb:25:13: info: initialization of "X" proved
-q.adb:28:31: info: initialization of "X" proved
 q.adb:28:31: info: range check proved (CVC4: 1 VC)
 q.ads:11:17: info: initialization of "Value" proved
-test.adb:16:19: info: initialization of "Value" proved
-test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +1.0E-4 [possible explanation: call at line 12 should mention Value (for argument Value) in a postcondition]
-test.adb:22:19: info: initialization of "Value" proved
-test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -1.0E-3 [possible explanation: call at line 18 should mention Value (for argument Value) in a postcondition]
-test.adb:28:19: info: initialization of "Value" proved
-test.adb:28:19: medium: assertion might fail, cannot prove Value >= 3.1999E1 [possible explanation: call at line 24 should mention Value (for argument Value) in a postcondition]
+test.adb:10:04: info: initialization of "Value" proved
+test.adb:16:19: medium: assertion might fail, cannot prove Value in -0.0001 .. +1.0E-4 (e.g. when Value = -1.0000001E+0) [possible explanation: call at line 12 should mention Value (for argument Value) in a postcondition]
+test.adb:22:19: medium: assertion might fail, cannot prove Value in -0.0015 .. -1.0E-3 (e.g. when Value = -1.0000001E+0) [possible explanation: call at line 18 should mention Value (for argument Value) in a postcondition]
+test.adb:28:19: medium: assertion might fail, cannot prove Value >= 3.1999E1 (e.g. when Value = 1.0000001E+0) [possible explanation: call at line 24 should mention Value (for argument Value) in a postcondition]

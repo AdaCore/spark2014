@@ -4,6 +4,8 @@ procedure Init_Arr_Zero (A : out Arr_T) with
   SPARK_Mode,
   Post => (for all J in A'Range => A(J) = 0)
 is
+   pragma Annotate (GNATprove, False_Positive, """A"" might not be initialized",
+                    "Entire array is initialized element-by-element in a loop");
 begin
    for J in A'Range loop
       A(J) := 0;

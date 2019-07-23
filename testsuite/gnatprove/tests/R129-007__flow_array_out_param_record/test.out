@@ -1,9 +1,9 @@
-p.adb:4:11: info: length check proved (CVC4: 4 VC)
-p.adb:4:14: info: length check proved (CVC4: 4 VC)
-p.adb:9:14: info: initialization of "X.A" proved
+p.adb:4:11: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+p.adb:4:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+p.adb:9:14: info: initialization of "X" proved
 p.adb:9:36: medium: missing self-dependency "X => X" (discriminants are preserved)
-p.adb:11:11: info: length check proved (CVC4: 4 VC)
-p.adb:11:14: info: length check proved (CVC4: 4 VC)
+p.adb:11:11: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+p.adb:11:14: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 p.ads:3:07: info: range check proved (CVC4: 2 VC)
-p.ads:6:20: info: initialization of "S.A" proved
+p.ads:6:20: info: initialization of "S" proved
 p.ads:7:18: medium: missing self-dependency "S => S" (discriminants are preserved)

@@ -1,14 +1,14 @@
 (* not used anymore, as Alt-ergo manages to prove Lemma_Modular_Div_Then_Mult_Bounds_Part2 *)
 
-intros arg2_type pre h.
+intros dummy arg2_type dummy2 pre.
 Open Scope Z_scope.
 Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds arg1) as arg1_type.
 pose (to_uint_bounds res) as res_type.
-unfold in_range in arg2_type.
-destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub), res_type as (res_lb, res_ub).
+unfold dynamic_invariant, in_range in arg2_type.
+destruct arg1_type as (arg1_lb, arg1_ub), arg2_type as (arg2_lb, arg2_ub), res_type as (res_lb, res_ub); eauto.
 unfold ule in arg2_lb, arg2_ub.
 rewrite rliteral_axiom2 in arg2_lb.
 rewrite rliteral_axiom1 in arg2_ub.

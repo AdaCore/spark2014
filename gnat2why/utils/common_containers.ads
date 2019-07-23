@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---               Copyright (C) 2014-2018, Altran UK Limited                 --
---               Copyright (C) 2014-2018, AdaCore                           --
+--                Copyright (C) 2014-2019, Altran UK Limited                --
+--                     Copyright (C) 2014-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -31,13 +31,12 @@ with Ada.Containers.Ordered_Sets;
 with Ada.Containers.Vectors;
 with Ada.Strings.Hash;
 
-with Atree;         use Atree;
-with Einfo;         use Einfo;
-with Hashing;       use Hashing;
-with Namet;         use Namet;
-with Types;         use Types;
-
-with Checked_Types; use Checked_Types;
+with Atree;            use Atree;
+with Einfo;            use Einfo;
+with GNATCOLL.Symbols; use GNATCOLL.Symbols;
+with Hashing;          use Hashing;
+with Types;            use Types;
+with Checked_Types;    use Checked_Types;
 
 --  This package contains a few common types (and expression functions) which
 --  are used throughout gnat2why (frame conditions, flow and why generation).
@@ -149,15 +148,15 @@ package Common_Containers is
       Equivalent_Keys => "=",
       "="             => Name_Sets."=");
 
-   function Name_Id_Hash (N : Name_Id) return Ada.Containers.Hash_Type
-   is (Generic_Integer_Hash (Integer (N)));
-
-   package Name_Id_Sets is new Ada.Containers.Ordered_Sets
-     (Element_Type => Name_Id);
-
    package String_Sets is new Ada.Containers.Indefinite_Hashed_Sets
      (Element_Type        => String,
       Hash                => Ada.Strings.Hash,
+      Equivalent_Elements => "=",
+      "="                 => "=");
+
+   package Symbol_Sets is new Ada.Containers.Hashed_Sets
+     (Element_Type        => Symbol,
+      Hash                => GNATCOLL.Symbols.Hash,
       Equivalent_Elements => "=",
       "="                 => "=");
 

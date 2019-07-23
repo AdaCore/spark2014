@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -175,12 +175,15 @@ package body Why.Atree.Sprint is
    -------------------------
 
    procedure Print_Abstract_Expr (Node : W_Abstract_Expr_Id) is
+      Post : constant W_Pred_Id := Get_Post (Node);
    begin
-      P (O, "abstract ensures {");
-      Print_Node (+Get_Post (Node));
-      P (O, "}");
+      P (O, "begin ");
+      P (O, "ensures {");
+      Print_Node (+Post);
+      P (O, "} ");
+      P (O, "let _ = ");
       Print_Node (+Get_Expr (Node));
-      P (O, " end ");
+      P (O, " in () end ");
    end Print_Abstract_Expr;
 
    --------------------
@@ -192,14 +195,27 @@ package body Why.Atree.Sprint is
       Effects : constant W_Effects_Id := Get_Effects (Node);
       Pre     : constant W_Pred_Id := Get_Pre (Node);
       Post    : constant W_Pred_Id := Get_Post (Node);
+      Labels  : constant Symbol_Sets.Set := Get_Labels (Node);
    begin
-      P (O, "(any ");
+      P (O, "(val _f : ");
       Print_Node (+Res_Ty);
       NL (O);
       if Pre /= Why_Empty then
          P (O, "requires {");
+
+         --  Print locations labels for the VC for the precondition if any
+
+         if not Labels.Is_Empty then
+            P (O, "( ");
+         end if;
+         P (O, Labels, As_Labels => True);
+
          Print_Sloc_Tag;
          Print_Node (+Pre);
+
+         if not Labels.Is_Empty then
+            P (O, " )");
+         end if;
          PL (O, "} ");
       end if;
       if Post /= Why_Empty then
@@ -212,7 +228,7 @@ package body Why.Atree.Sprint is
          Print_Node (+Effects);
          NL (O);
       end if;
-      P (O, ")");
+      P (O, "in _f)");
    end Print_Any_Expr;
 
    ------------------
@@ -233,11 +249,12 @@ package body Why.Atree.Sprint is
    ----------------------
 
    procedure Print_Assignment (Node : W_Assignment_Id) is
-      Labels : constant Name_Id_Set := Get_Labels (Node);
+      Labels : constant Symbol_Set := Get_Labels (Node);
    begin
+      P (O, "(");
       if not Labels.Is_Empty then
          P (O, "(");
-         P (O, Labels, As_String => True);
+         P (O, Labels, As_Labels => True);
       end if;
       Print_Node (+Get_Name (Node));
       if not Labels.Is_Empty then
@@ -249,7 +266,7 @@ package body Why.Atree.Sprint is
       P (O, "__content");
       P (O, " <- ( ");
       Print_Node (+Get_Value (Node));
-      P (O, " )");
+      P (O, " ))");
    end Print_Assignment;
 
    -----------------
@@ -291,6 +308,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(let ");
       Print_Node (+Name);
+      --  Trick simplify_intros transformation into believing that this should
+      --  be simplified
+      if Get_Is_Temp (Name) then
+         P (O, " [@mlw:proxy_symbol] [@introduced]");
+      end if;
       P (O, " = ");
       Print_Node (+Def);
       PL (O, " in (");
@@ -320,6 +342,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Print_Node (+Name);
+      --  Trick simplify_intros transformation into believing that this should
+      --  be simplified
+      if Get_Is_Temp (Name) then
+         P (O, " [@mlw:proxy_symbol] [@introduced]");
+      end if;
       P (O, " = { ");
       pragma Assert (Get_Typ (Name) /= Why_Empty);
       Print_Node (+Get_Typ (Name));
@@ -400,7 +427,7 @@ package body Why.Atree.Sprint is
    -----------------------------
 
    procedure Print_Clone_Declaration (Node : W_Clone_Declaration_Id) is
-      As_Name    : constant Name_Id := Get_As_Name (Node);
+      As_Name    : constant Symbol := Get_As_Name (Node);
       Subst_List : constant W_Clone_Substitution_OList :=
         +Get_Substitutions (Node);
    begin
@@ -408,12 +435,17 @@ package body Why.Atree.Sprint is
       P (O, Get_Clone_Kind (Node));
       P (O, " ");
       Print_Module_Id (Get_Origin (Node), With_File => True);
-      if As_Name /= No_Name then
+      if As_Name /= No_Symbol then
          P (O, " as ");
          P (O, As_Name);
       end if;
+
+      --  Keep axioms as axioms, do not attempt to prove them
+
+      P (O, " with axiom .");
+
       if not Is_Empty (+Subst_List) then
-         P (O, " with");
+         P (O, ",");
          NL (O);
          Print_List (+Subst_List, Separator => ", ", Newline => True);
       end if;
@@ -612,8 +644,9 @@ package body Why.Atree.Sprint is
 
          function Get_Proof_Dir return String is
             Index : String_Lists.Cursor;
+            L : constant String_Lists.List := Gnat2Why_Args.Why3_Args;
          begin
-            Index := String_Lists.Find (Container => Gnat2Why_Args.Why3_Args,
+            Index := String_Lists.Find (Container => L,
                                         Item => "--proof-dir");
 
             if String_Lists.Has_Element (Index) then
@@ -634,8 +667,7 @@ package body Why.Atree.Sprint is
          end if;
 
          declare
-            File_Name : constant String :=
-              Get_Name_String (Get_File_Name (Node));
+            File_Name : constant String := Img (Get_File_Name (Node));
 
             From_Command : constant String :=
               Compose (Compose (Compose (Compose (Containing_Directory
@@ -689,7 +721,7 @@ package body Why.Atree.Sprint is
          begin
             File_String_IO.Open (File, Mode => File_String_IO.In_File,
                                  Name => File_Name);
-            File_String_IO.Read  (File, Item => Contents);
+            File_String_IO.Read (File, Item => Contents);
             File_String_IO.Close (File);
             return Contents;
          end;
@@ -713,7 +745,7 @@ package body Why.Atree.Sprint is
                Node : constant W_Custom_Substitution_Id :=
                  W_Custom_Substitution_Id (Element (Position));
             begin
-               Append (Result, Get_Name_String (Get_From (Node)));
+               Append (Result, Img (Get_From (Node)));
             end;
 
             Position := Next (Position);
@@ -743,7 +775,7 @@ package body Why.Atree.Sprint is
                Node : constant W_Custom_Substitution_Id :=
                  W_Custom_Substitution_Id (Element (Position));
             begin
-               Match (Compile (Get_Name_String (Get_From (Node))), Text,
+               Match (Compile (Img (Get_From (Node))), Text,
                       Interm_Matches, Matches (0).First);
 
                if Interm_Matches (0) /= No_Match
@@ -900,7 +932,7 @@ package body Why.Atree.Sprint is
       P (O, "(exists ");
       Print_List (+Variables, Separator => " ");
       P (O, " ");
-      P (O, Get_Labels (Node), As_String => True);
+      P (O, Get_Labels (Node), As_Labels => True);
 
       P (O, " : ");
       Print_Node (+Var_Type);
@@ -949,6 +981,7 @@ package body Why.Atree.Sprint is
    procedure Print_Fixed_Constant (Node : W_Fixed_Constant_Id) is
       Value : constant Uint := Get_Value (Node);
    begin
+      P (O, "( ");
       if Value < Uint_0 then
          P (O, "( ");
          P (O, Value);
@@ -956,6 +989,10 @@ package body Why.Atree.Sprint is
       else
          P (O, Value);
       end if;
+
+      --  Print the type of integer constants to help Why3 with type inference
+
+      P (O, " : int )");
    end Print_Fixed_Constant;
 
    --------------------------
@@ -1027,35 +1064,98 @@ package body Why.Atree.Sprint is
       Return_Type : constant W_Type_Id := Get_Return_Type (Node);
       Binders     : constant W_Binder_OList := Get_Binders (Node);
       Def         : constant W_Expr_Id := Get_Def (Node);
-   begin
-      case Get_Domain (+Node) is
-         when EW_Term
-            | EW_Pterm
-         =>
-            P (O, "function ");
 
-            Print_Node (+Name);
+      procedure Print_Header (Fun_Kind : String);
+      --  Print header of the declaration of Node
 
-            P (O, " ");
+      ------------------
+      -- Print_Header --
+      ------------------
 
-            P (O, Get_Location (Node));
+      procedure Print_Header (Fun_Kind : String) is
+      begin
+         P (O, Fun_Kind & " ");
 
-            P (O, Get_Labels (Node), As_String => True);
+         Print_Node (+Name);
 
-            NL (O);
-            Relative_Indent (O, 1);
+         P (O, " ");
 
-            if not Is_Empty (+Binders) then
-               P (O, " (");
-               Print_List (+Binders, Separator => ") (");
-               P (O, ")");
-            end if;
+         P (O, Get_Location (Node));
+         P (O, Get_Labels (Node), As_Labels => True);
+
+         NL (O);
+         Relative_Indent (O, 1);
+
+         if not Is_Empty (+Binders) then
+            P (O, " (");
+            Print_List (+Binders, Separator => ") (");
+            P (O, ")");
+         end if;
+
+         if Get_Domain (+Node) /= EW_Pred
+           and then Return_Type /= Why_Empty
+         then
             P (O, " : ");
             Print_Node (+Return_Type);
+         end if;
+      end Print_Header;
+
+   begin
+      case Get_Domain (+Node) is
+         when EW_Term  =>
+            Print_Header ("function");
 
             if Def /= Why_Empty then
                PL (O, " =");
                Print_Node (+Def);
+            end if;
+
+            Relative_Indent (O, -1);
+            NL (O);
+
+         when EW_Pterm =>
+
+            --  We need to declare a function which can be used both in the
+            --  logic and in the program domain. We have several cases:
+            --    * If the function has no parameter, declare a val constant
+            --      with its definition (if any) as a post. Do not use let
+            --      constants as the definition is a logic term.
+            --    * If the function has parameters and no definition, generate
+            --      a val function.
+            --    * If the function has parameters and a definition, generate
+            --      both a logic function with a definition, and a val with
+            --      a post stating that it is equal to the logic function. Do
+            --      not generate a let function as the definition is a logic
+            --      term and do not generate a val function with a post as then
+            --      the definition would be inlined at call site.
+
+            if Is_Empty (+Binders) then
+               Print_Header ("val constant");
+               NL (O);
+
+               if Def /= Why_Empty then
+                  P (O, "ensures { result = ");
+                  Print_Sloc_Tag;
+                  Print_Node (+Def);
+                  P (O, " }");
+               end if;
+            elsif Def = Why_Empty then
+               Print_Header ("val function");
+            else
+               Print_Header ("function");
+               PL (O, " =");
+               Print_Node (+Def);
+               Relative_Indent (O, -1);
+               NL (O);
+
+               Print_Header ("val");
+               NL (O);
+               P (O, "ensures { result = ");
+               Print_Node (+Name);
+               P (O, " (");
+               Print_List (+Binders, Separator => ") (");
+               P (O, ")");
+               P (O, " }");
             end if;
 
             Relative_Indent (O, -1);
@@ -1068,33 +1168,17 @@ package body Why.Atree.Sprint is
             Curr_Sloc := Get_Location (Node);
 
             if Def = Why_Empty then
-               P (O, "val ");
+               Print_Header ("val");
             else
-               P (O, "let ");
+               Print_Header ("let");
             end if;
 
-            Print_Node (+Name);
-            P (O, " ");
-            P (O, Get_Location (Node));
-            P (O, Get_Labels (Node), As_String => True);
-            Relative_Indent (O, 1);
             NL (O);
             declare
                Pre     : constant W_Pred_Id := Get_Pre (Node);
                Effects : constant W_Effects_Id := Get_Effects (Node);
                Post    : constant W_Pred_Id := Get_Post (Node);
             begin
-               if not Is_Empty (+Binders) then
-                  P (O, " (");
-                  Print_List (+Binders, Separator => ") (");
-                  P (O, ")");
-               end if;
-
-               if Def = Why_Empty then
-                  P (O, " : ");
-                  Print_Node (+Return_Type);
-               end if;
-               NL (O);
                if Pre /= Why_Empty then
                   P (O, "requires { ");
                   Print_Sloc_Tag;
@@ -1113,7 +1197,7 @@ package body Why.Atree.Sprint is
                   Print_Node (+Effects);
                end if;
                if Def /= Why_Empty then
-                  PL (O, " =");
+                  PL (O, " = [@vc:divergent]");
                   Print_Node (+Def);
                end if;
                Relative_Indent (O, -1);
@@ -1122,34 +1206,38 @@ package body Why.Atree.Sprint is
             Curr_Sloc := No_Location;
 
          when EW_Pred =>
-            P (O, "predicate ");
 
-            Print_Node (+Name);
+            if Def = Why_Empty then
+               Print_Header ("val predicate");
+            else
+               Print_Header ("predicate");
 
-            P (O, " ");
+               if Def /= Why_Empty then
+                  PL (O, " =");
 
-            P (O, Get_Location (Node));
+                  --  Predicate can actually be substituted somewhere without
+                  --  its location. So, locations should also be printed here.
 
-            P (O, Get_Labels (Node), As_String => True);
+                  P (O, Get_Location (Node));
 
-            NL (O);
-            Relative_Indent (O, 1);
+                  Print_Node (+Def);
+               end if;
+               Relative_Indent (O, -1);
+               NL (O);
 
-            if not Is_Empty (+Binders) then
+               pragma Assert (not Is_Empty (+Binders));
+
+               --  Also print a program declaration for the predicate
+
+               Print_Header ("val");
+               P (O, " : bool");
+               NL (O);
+               P (O, "ensures { result <-> ");
+               Print_Node (+Name);
                P (O, " (");
                Print_List (+Binders, Separator => ") (");
-               P (O, ") ");
-            end if;
-
-            if Def /= Why_Empty then
-               PL (O, " =");
-
-               --  Predicate can actually be substituted somewhere without its
-               --  location. So, locations should also be printed here.
-
-               P (O, Get_Location (Node));
-
-               Print_Node (+Def);
+               P (O, ")");
+               P (O, " }");
             end if;
 
             Relative_Indent (O, -1);
@@ -1171,7 +1259,7 @@ package body Why.Atree.Sprint is
 
       P (O, Get_Location (Node));
 
-      P (O, Get_Labels (Node), As_String => True);
+      P (O, Get_Labels (Node), As_Labels => True);
 
       P (O, " : ");
       Print_Node (+Get_Ref_Type (Node));
@@ -1226,11 +1314,21 @@ package body Why.Atree.Sprint is
    -------------------------------
 
    procedure Print_Include_Declaration (Node  : W_Include_Declaration_Id) is
+      Kind : constant EW_Clone_Type := Get_Use_Kind (Node);
    begin
       P (O, "use ");
-      P (O, Get_Use_Kind (Node));
+      P (O, Kind);
       P (O, " ");
       Print_Module_Id (Get_Module (Node), With_File => True);
+
+      --  Import is the default in Why. If we want to keep the namespace, we
+      --  have to reintroduce it.
+
+      if Kind = EW_Clone_Default then
+         P (O, " as ");
+         Print_Module_Id (Get_Module (Node), With_File => False);
+      end if;
+
       NL (O);
    end Print_Include_Declaration;
 
@@ -1254,13 +1352,18 @@ package body Why.Atree.Sprint is
    procedure Print_Integer_Constant (Node : W_Integer_Constant_Id) is
       Value : constant Uint := Get_Value (Node);
    begin
+      P (O, "(");
       if Value < Uint_0 then
          P (O, "( ");
          P (O, Value);
-         P (O, " )");
+         P (O, ")");
       else
          P (O, Value);
       end if;
+
+      --  Print the type of integer constants to help Why3 with type inference
+
+      P (O, " : int)");
    end Print_Integer_Constant;
 
    ----------------------------
@@ -1268,8 +1371,8 @@ package body Why.Atree.Sprint is
    ----------------------------
 
    procedure Print_Meta_Declaration (Node : W_Meta_Declaration_Id) is
-      Name      : constant Name_Id := Get_Name (Node);
-      Parameter : constant Name_Id := Get_Parameter (Node);
+      Name      : constant Symbol := Get_Name (Node);
+      Parameter : constant Symbol := Get_Parameter (Node);
    begin
       P (O, "meta """);
       P (O, Name);
@@ -1309,13 +1412,13 @@ package body Why.Atree.Sprint is
    -----------------
 
    procedure Print_Label (Node : W_Label_Id) is
-      Labels : constant Name_Id_Set := Get_Labels (Node);
+      Labels : constant Symbol_Set := Get_Labels (Node);
    begin
       if not Labels.Is_Empty then
          P (O, "( ");
       end if;
 
-      P (O, Labels, As_String => True);
+      P (O, Labels, As_Labels => True);
       Print_Node (+Get_Def (Node));
       if not Labels.Is_Empty then
          P (O, " )");
@@ -1394,6 +1497,17 @@ package body Why.Atree.Sprint is
       Curr_Sloc := No_Location;
    end Print_Loc_Label;
 
+   ------------------------
+   -- Print_Modules_List --
+   ------------------------
+
+   procedure Print_Modules_List
+     (L : Why_Node_Lists.List; To : Output_Id) is
+   begin
+      O := To;
+      Print_List (L, Separator => "", Newline => True);
+   end Print_Modules_List;
+
    ---------------------
    -- Print_Module_Id --
    ---------------------
@@ -1405,9 +1519,9 @@ package body Why.Atree.Sprint is
    begin
       if With_File then
          declare
-            File : constant Name_Id := Get_File (Node);
+            File : constant Symbol := Get_File (Node);
          begin
-            if File /= No_Name then
+            if File /= No_Symbol then
                P (O, """");
                P (O, File);
                P (O, """.");
@@ -1415,7 +1529,7 @@ package body Why.Atree.Sprint is
          end;
       end if;
 
-      P (O, Capitalize_First (Get_Name_String (Get_Name (Node))));
+      P (O, Get_Name (Node));
    end Print_Module_Id;
 
    ----------------
@@ -1427,23 +1541,23 @@ package body Why.Atree.Sprint is
       if not Get_Infix (Node) then
          declare
             Module    : constant W_Module_Id := Get_Module (Node);
-            Namespace : constant Name_Id := Get_Namespace (Node);
+            Namespace : constant Symbol := Get_Namespace (Node);
          begin
             if Module /= Why_Empty
-              and then Get_Name (Module) /= No_Name
+              and then Get_Name (Module) /= No_Symbol
             then
                Print_Module_Id (Module);
                P (O, ".");
             end if;
 
-            if Namespace /= No_Name then
+            if Namespace /= No_Symbol then
                P (O, Namespace);
                P (O, ".");
             end if;
          end;
       end if;
 
-      P (O, Get_Symbol (Node));
+      P (O, Get_Symb (Node));
    end Print_Name;
 
    -----------------------------
@@ -1452,16 +1566,16 @@ package body Why.Atree.Sprint is
 
    procedure Print_Name_Force_Prefix (Node : W_Name_Id) is
       Module    : constant W_Module_Id := Get_Module (Node);
-      Namespace : constant Name_Id := Get_Namespace (Node);
+      Namespace : constant Symbol := Get_Namespace (Node);
    begin
       if Module /= Why_Empty
-        and then Get_Name (Module) /= No_Name
+        and then Get_Name (Module) /= No_Symbol
       then
          Print_Module_Id (Module);
          P (O, ".");
       end if;
 
-      if Namespace /= No_Name
+      if Namespace /= No_Symbol
       then
          P (O, Namespace);
          P (O, ".");
@@ -1470,10 +1584,10 @@ package body Why.Atree.Sprint is
       if Get_Infix (Node)
       then
          P (O, "(");
-         P (O, Get_Symbol (Node));
+         P (O, Get_Symb (Node));
          P (O, ")");
       else
-         P (O, Get_Symbol (Node));
+         P (O, Get_Symb (Node));
       end if;
    end Print_Name_Force_Prefix;
 
@@ -1483,7 +1597,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Namespace_Declaration (Node : W_Namespace_Declaration_Id) is
    begin
-      P (O, "namespace ");
+      P (O, "scope ");
       P (O, Get_Name (Node));
       NL (O);
       Relative_Indent (O, 1);
@@ -1836,7 +1950,7 @@ package body Why.Atree.Sprint is
       end if;
       Print_Node (+Get_Name (Node));
       P (O, " ");
-      P (O, Get_Labels (Node), As_String => True);
+      P (O, Get_Labels (Node), As_Labels => True);
       P (O, ": ");
       Print_Node (+Get_Arg_Type (Node));
    end Print_Record_Binder;
@@ -1918,9 +2032,9 @@ package body Why.Atree.Sprint is
    ------------------
 
    procedure Print_Tagged (Node : W_Tagged_Id) is
-      Tag : constant Name_Id := Get_Tag (Node);
+      Tag : constant Symbol := Get_Tag (Node);
    begin
-      if Tag = No_Name then
+      if Tag = No_Symbol then
          Print_Node (+Get_Def (Node));
       elsif Tag = Old_Tag then
          P (O, "(old ");
@@ -2097,7 +2211,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Universal_Quantif (Node   : W_Universal_Quantif_Id) is
       Variables       : constant W_Identifier_List := Get_Variables (Node);
-      Labels          : constant Name_Id_Set := Get_Labels (Node);
+      Labels          : constant Symbol_Set := Get_Labels (Node);
       Var_Type        : constant W_Type_Id := Get_Var_Type (Node);
       Triggers        : constant W_Triggers_OId := Get_Triggers (Node);
       Pred            : constant W_Pred_Id := Get_Pred (Node);
@@ -2123,7 +2237,7 @@ package body Why.Atree.Sprint is
         and Comes_From_Source (Get_Ada_Node (+Node))
       then
          P (O, " ");
-         P (O, Labels, As_String => True);
+         P (O, Labels, As_Labels => True);
       end if;
       P (O, " : ");
       Print_Node (+Var_Type);

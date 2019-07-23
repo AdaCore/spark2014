@@ -1,0 +1,5 @@
+repro-b.ads:4:03: info: flow dependencies proved
+repro-b.ads:9:06: info: data dependencies proved
+repro.ads:6:03: info: flow dependencies proved
+repro.ads:14:09: info: data dependencies proved
+repro.ads:17:09: info: data dependencies proved

@@ -12,7 +12,7 @@ package Sorted_Vectors is pragma SPARK_Mode (On);
    subtype Index_Type is Integer range 1 .. 100;
 
    package My_Vectors is new Ada.Containers.Formal_Vectors
-     (Index_Type, Element_Type, True);
+     (Index_Type, Element_Type);
    use My_Vectors; use Formal_Model;
 
    package My_Sort is new Generic_Sorting ("<" => My_Lt);

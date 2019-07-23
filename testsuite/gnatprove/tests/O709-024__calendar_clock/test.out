@@ -1,3 +1,1 @@
-calendar_clock.adb:9:19: info: initialization of "T1" proved
 calendar_clock.adb:9:19: medium: assertion might fail, cannot prove T1 = T2
-calendar_clock.adb:9:24: info: initialization of "T2" proved

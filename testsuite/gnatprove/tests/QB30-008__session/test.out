@@ -1,31 +1,31 @@
 == Number of root goals ==
-  total: 2  proved: 1
+  total: 1  proved: 0
 
 == Number of sub goals ==
-  total: 5  proved: 4
+  total: 7  proved: 6
 
 == Goals not proved ==
-  +-- file ../add.mlw
+  +-- file [../add.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal WP_parameter def
+      +-- goal VC def
         +-- transformation split_goal_wp_conj
-          +-- goal WP_parameter def.0
+          +-- goal VC def.0
   
 == Goals proved by only one prover ==
-  +-- file ../add.mlw
+  +-- file [../add.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal WP_parameter def
+      +-- goal VC def
         +-- transformation split_goal_wp_conj
-          +-- goal WP_parameter def.1: CVC4 1.6-gnatprove
-          +-- goal WP_parameter def.2: CVC4 1.6-gnatprove
-          +-- goal WP_parameter def.3: CVC4 1.6-gnatprove
-          +-- goal WP_parameter def.4: CVC4 1.6-gnatprove
+          +-- goal VC def.1: CVC4 1.6-gnatprove
+          +-- goal VC def.3: CVC4 1.6-gnatprove
+          +-- goal VC def.4: CVC4 1.6-gnatprove
+          +-- goal VC def.6: CVC4 1.6-gnatprove
   
 == Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
-  CVC4 1.6-gnatprove   :   4   0.00   0.00   0.00
+  CVC4 1.6-gnatprove  :   4   0.00   0.00   0.00
   
 add.adb:5:16: info: overflow check proved (CVC4: 1 VC)
-add.ads:3:47: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
+add.ads:3:47: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
 add.ads:3:62: info: overflow check proved (CVC4: 1 VC)
 add.ads:4:29: info: postcondition proved (CVC4: 1 VC)
 add.ads:4:47: info: overflow check proved (CVC4: 1 VC)

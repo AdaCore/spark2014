@@ -4,9 +4,7 @@ anon_type.adb:26:07: warning: initialization of "Ten_Characters" has no effect
 anon_type.adb:29:07: warning: unused variable "My_Array1"
 anon_type.adb:30:07: warning: unused variable "My_Array2"
 anon_type.adb:32:13: warning: unused assignment
-anon_type.adb:33:26: medium: overflow check might fail (e.g. when Var_In = Integer'Last and Var_Out = 0) [possible explanation: subprogram at line 16 should mention Var_In in a precondition]
-anon_type.adb:33:26: medium: range check might fail (e.g. when Var_Out = 0) [possible explanation: subprogram at line 16 should mention Var_In in a precondition]
-anon_type.adb:33:29: info: initialization of "Var_Out" proved
-anon_type.adb:34:14: info: initialization of "Var_Out" proved
+anon_type.adb:33:25: medium: overflow check might fail (e.g. when Var_In = Integer'Last and Var_Out = 0) [possible explanation: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
+anon_type.adb:33:25: medium: range check might fail (e.g. when Var_In = -2 and Var_Out = 0) [possible explanation: subprogram at anon_type.ads:6 should mention Var_In in a precondition]
 anon_type.ads:7:19: info: postcondition proved (CVC4: 1 VC)
 anon_type.ads:7:45: info: overflow check proved (CVC4: 1 VC)

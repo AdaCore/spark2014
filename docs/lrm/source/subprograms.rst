@@ -29,9 +29,11 @@ a slice or the result object of a function call) or a formal parameter of
 a subprogram. In particular, a component of a protected unit is not
 an *entire object*.
 
-One object is *reachable* from a second object if the two are the
-same object or if the first is designated by an access-valued part
-of an object that is reachable from the second object.
+An object O1 is said to be a *reachable element* of an object O2 if
+
+- O1 is a part of O2; or
+- O1 is a reachable element of the object designated by
+  (the value of) an access-valued part of O2.
 
 .. centered:: **Static Semantics**
 
@@ -42,8 +44,8 @@ of an object that is reachable from the second object.
    value at the call of the subprogram.
 
 3. An *output* of a subprogram is a global item or parameter whose final value,
-   or the final value of any object that is reachable from it,
-   may be updated by a successful call to the subprogram.  The result of a
+   or the final value of any of its reachable elements, may be updated by a
+   successful call to the subprogram. The result of a
    function is also an output.  A global item or parameter which is an external
    state with the property Async_Readers => True, and for which intermediate
    values are written during an execution leading to a successful call, is also
@@ -54,7 +56,8 @@ of an object that is reachable from the second object.
    to a call to a subprogram marked ``No_Return``.]
 
 4. An *input* of a subprogram is a global item or parameter whose
-   initial value may be used in determining the exit value of an
+   initial value (or that of any of its reachable elements)
+   may be used in determining the exit value of an
    output of the subprogram.  For a global item or parameter which is
    an external state with Async_Writers => True, each successive value
    read from the external state is also an input of the subprogram
@@ -563,12 +566,21 @@ and Refined_Depends.]
 
 .. _tu-fe-global_aspects-11:
 
-11. The ``global_items`` in a single Global aspect specification shall denote
-    distinct entities.
+11. A user-defined equality operation on a record type shall have a Global
+    aspect of ``null`` (see :ref:`overloading_of_operators`).
+
+    [This avoids the case where such a record type is a component of another
+    composite type, whose predefined equality operation now depends on
+    variables through the primitive equality operation on its component.]
 
 .. _tu-fe-global_aspects-12:
 
-12. If a subprogram is nested within another and if the
+12. The ``global_items`` in a single Global aspect specification shall denote
+    distinct entities.
+
+.. _tu-fe-global_aspects-13:
+
+13. If a subprogram is nested within another and if the
     ``global_specification`` of the outer subprogram has an entity
     denoted by a ``global_item`` with a ``mode_specification`` of
     Input or the entity is a formal parameter with a mode of **in**,
@@ -585,26 +597,26 @@ is used purely for static analysis purposes and is not executed.
 
 .. centered:: **Verification Rules**
 
-.. _tu-fa-global_aspects-13:
+.. _tu-fa-global_aspects-14:
 
-13. For a subprogram that has a ``global_specification``, an object (except a
+14. For a subprogram that has a ``global_specification``, an object (except a
     constant without variable inputs, or a constant that is only referenced
     within assertions) or state abstraction that is declared outside the scope
     of the subprogram, shall only be referenced within its implementation if it
     is a ``global_item`` in the ``global_specification``.
 
-.. _tu-fa-global_aspects-14:
+.. _tu-fa-global_aspects-15:
 
-14. A ``global_item`` shall occur in a Global aspect of a subprogram only if it
+15. A ``global_item`` shall occur in a Global aspect of a subprogram only if it
     denotes an entity that is referenced by the subprogram, and it is neither a
     constant without variable inputs, or a constant that is only referenced
     within assertions. [The rationale for excluding such constants is that they
     do not participate in the data- and information-flows specified in Global
     and Depends aspects.]
 
-.. _tu-cbatu-global_aspects-15:
+.. _tu-cbatu-global_aspects-16:
 
-15. Where the refinement of a state abstraction is not visible (see
+16. Where the refinement of a state abstraction is not visible (see
     :ref:`state_refinement`) and a subprogram references one or more
     of its constituents the constituents may be represented by a
     ``global_item`` that denotes the state abstraction in the
@@ -612,9 +624,9 @@ is used purely for static analysis purposes and is not executed.
     encapsulating a constituent is known from the Part_Of indicator on
     the declaration of the constituent.]
 
-.. _tu-fa-global_aspects-16:
+.. _tu-fa-global_aspects-17:
 
-16. Each entity denoted by a ``global_item`` in a
+17. Each entity denoted by a ``global_item`` in a
     ``global_specification`` of a subprogram that is an input or
     output of the subprogram shall satisfy the following mode
     specification rules [which are checked during analysis of the
@@ -637,7 +649,7 @@ is used purely for static analysis purposes and is not executed.
     * otherwise the ``global_item`` denotes both an input and an output, and
       has a ``mode_selector`` of In_Out.
 
-.. _tu-fa-global_aspects-16.1:
+.. _tu-fa-global_aspects-17.1:
 
    [For purposes of determining whether an output of a subprogram shall have a
    ``mode_selector`` of Output or In_Out, reads of array bounds, discriminants,
@@ -648,16 +660,16 @@ is used purely for static analysis purposes and is not executed.
    to be constrained ("known to be constrained" is defined in Ada RM 3.3), the
    discriminants of the output might or might not be updated by the call.]
 
-.. _tu-fa-global_aspects-17:
+.. _tu-fa-global_aspects-18:
 
-17. An entity that is denoted by a ``global_item`` which is referenced by a
+18. An entity that is denoted by a ``global_item`` which is referenced by a
     subprogram but is neither an input nor an output but is only referenced
     directly, or indirectly in assertion expressions has a ``mode_selector`` of
     Proof_In. [Redundant: Such an entity cannot be constant.]
 
-.. _tu-fa-global_aspects-18:
+.. _tu-fa-global_aspects-19:
 
-18. A ``global_item`` shall not denote a constant object other than a formal
+19. A ``global_item`` shall not denote a constant object other than a formal
     parameter [of an enclosing subprogram] of mode **in**, a generic formal
     object of mode **in**, or a *constant with variable inputs*.
 
@@ -701,14 +713,14 @@ is used purely for static analysis purposes and is not executed.
         -- As seen from outside of Iii, Iii.Ppp's references to Iii.Xxx in its
         -- Global and Depends aspect specifications are ignored.
 
-.. _tu-fa-global_aspects-19:
-
-19. The ``mode_selector`` of a ``global_item`` denoting a *constant with
-    variable inputs* shall be ``Input``.
-
 .. _tu-fa-global_aspects-20:
 
-20. The ``mode_selector`` of a ``global_item`` denoting a variable marked
+20. The ``mode_selector`` of a ``global_item`` denoting a *constant with
+    variable inputs* shall be ``Input``.
+
+.. _tu-fa-global_aspects-21:
+
+21. The ``mode_selector`` of a ``global_item`` denoting a variable marked
     as a *constant after elaboration* shall be ``Input`` or ``Proof_In`` [,
     to ensure that such variables are only updated directly by package
     elaboration code].
@@ -1381,18 +1393,16 @@ calls.
 
 .. centered:: **Static Semantics**
 
-1. Two names that denote reachable elements of the
-   same unsynchronized (see section :ref:`tasks-and-synchronization`)
-   stand-alone object whose Constant_After_Elaboration aspect is False,
-   or which denote parts of the same unsynchronized parameter, are said
-   to *potentially introduce aliasing* if they might denote overlapping
-   regions of memory, either themselves or through one of their
-   reachable elements.
+1. An object is said to be *interfering* if it is unsynchronized (see section
+   :ref:`tasks-and-synchronization`) or it is synchronized only due to being
+   *constant after elaboration* (see section :ref:`object-declarations`).
+
+   Two names that potentially overlap (see section :ref:`access-types`)
+   and which each denotes an interfering object are said to
+   *potentially introduce aliasing via parameter passing*.
    [This definition has the effect of exempting most synchronized objects
    from the anti-aliasing rules given below; aliasing of most synchronized
    objects via parameter passing is allowed.]
-   [The term "reachable element" is used in this definition instead of "part"
-   in order to treat deferencing like component selection.]
 
 2. A formal parameter is said to be *immutable* in the following cases:
 
@@ -1407,7 +1417,7 @@ calls.
 .. _tu-anti_aliasing-03:
 
 3. A procedure call shall not pass two actual parameters which potentially
-   introduce aliasing unless either
+   introduce aliasing via parameter passing unless either
 
    * both of the corresponding formal parameters are immutable; or
 
@@ -1417,11 +1427,12 @@ calls.
 .. _tu-anti_aliasing-04:
 
 4. If an actual parameter in a procedure call and a ``global_item`` referenced
-   by the called procedure potentially introduce aliasing, then
+   by the called procedure potentially introduce aliasing via parameter
+   passing, then
 
    * the corresponding formal parameter shall be immutable; and
 
-   * if the ``global_item``'s mode is Output or In_Out, then the parameter's
+   * if the ``global_item``'s mode is Output or In_Out, then the
      corresponding formal parameter shall be of a by-copy type that is not an
      access type.
 
@@ -1482,9 +1493,9 @@ Overloading of Operators
 
 .. _tu-overloading_of_operators-01:
 
-1. [The declaration and body of a user-defined equality operation on a record
-    type shall not have any variable inputs; see :ref:`expressions` for the
-    statement of this rule.]
+1. [A user-defined equality operation on a record type shall have a Global
+    aspect of ``null``; see :ref:`global-aspects` for the statement of this
+    rule.]
 
 .. _etu-overloading_of_operators-lr:
 

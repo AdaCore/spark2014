@@ -23,7 +23,7 @@ why3realize
 why3server
 why3session
 libexec/spark/share dir
-gcc-7.3.1
+gcc-8.3.1
 gpr
 gprconfig
 info

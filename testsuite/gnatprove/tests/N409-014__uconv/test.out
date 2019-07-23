@@ -1,4 +1,0 @@
-uconv_rec.adb:16:18: info: initialization of "X.X" proved
-uconv_rec.adb:16:18: info: initialization of "X.Y" proved
-uconv_rec.adb:17:15: info: initialization of "X.X" proved
-uconv_rec.adb:17:15: info: initialization of "X.Y" proved

@@ -1,5 +1,4 @@
-pack.adb:21:11: info: initialization of "X" proved
-pack.ads:8:19: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = False)
-pack.ads:11:19: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = True and X'Old = False)
+pack.ads:8:19: medium: postcondition might fail, cannot prove X = X'old [possible explanation: call at pack.adb:10 should mention X (for argument X) in a postcondition]
+pack.ads:11:19: medium: postcondition might fail, cannot prove X = X'old [possible explanation: call at pack.adb:15 should mention X (for argument X) in a postcondition]
 pack.ads:13:14: warning: subprogram "P3" has no effect
-pack.ads:16:19: medium: postcondition might fail, cannot prove X = X'old (e.g. when X = False)
+pack.ads:16:19: medium: postcondition might fail, cannot prove X = X'old

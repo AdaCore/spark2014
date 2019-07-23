@@ -1,177 +1,153 @@
 do_checks.adb:5:14: warning: subprogram "Do_Range_Check" has no effect
 do_checks.adb:6:14: warning: subprogram "Do_Length_Check" has no effect
 do_checks.adb:7:14: warning: subprogram "Do_Discriminant_Check" has no effect
-do_checks.adb:17:24: medium: range check might fail (e.g. when Zero = 0)
+do_checks.adb:17:24: medium: range check might fail
 do_checks.adb:23:24: info: range check proved (CVC4: 2 VC)
-do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = Integer'First)
+do_checks.adb:23:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:31:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:38:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = Integer'First)
+do_checks.adb:38:48: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:47:21: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:53:21: info: range check proved (CVC4: 2 VC)
 do_checks.adb:61:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:67:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = Integer'First)
+do_checks.adb:67:61: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:74:17: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:74:47: info: cannot unroll loop (too many loop iterations)
 do_checks.adb:78:17: info: range check proved (CVC4: 2 VC)
-do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = Integer'First)
+do_checks.adb:78:50: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:78:54: info: cannot unroll loop (too many loop iterations)
 do_checks.adb:86:19: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:94:19: info: range check proved (CVC4: 2 VC)
-do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = Integer'First)
+do_checks.adb:94:51: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:103:16: medium: range check might fail (e.g. when Zero = 0)
 do_checks.adb:109:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First)
-do_checks.adb:119:30: info: initialization of "A" proved
-do_checks.adb:119:30: medium: range check might fail (e.g. when A'First = 1 and B'First = 11 and B'Last = 11 and Zero = 0)
-do_checks.adb:126:30: info: initialization of "A" proved
-do_checks.adb:126:30: info: range check proved (CVC4: 4 VC)
-do_checks.adb:126:60: medium: overflow check might fail (e.g. when B'First = 1 and B'Last = 1 and Zero = Integer'First)
-do_checks.adb:137:25: medium: range check might fail (e.g. when Zero = 0)
-do_checks.adb:150:25: info: range check proved (CVC4: 2 VC)
-do_checks.adb:150:57: medium: overflow check might fail (e.g. when Zero = Integer'First)
-do_checks.adb:162:39: medium: length check might fail
-do_checks.adb:162:40: medium: range check might fail (e.g. when Zero = 0)
-do_checks.adb:168:38: info: length check proved (CVC4: 4 VC)
-do_checks.adb:168:39: info: range check proved (CVC4: 2 VC)
-do_checks.adb:168:67: medium: overflow check might fail (e.g. when Zero = Integer'First)
-do_checks.adb:211:32: warning: "Y" is not modified, could be IN
-do_checks.adb:213:21: info: length check proved (CVC4: 4 VC)
-do_checks.adb:213:26: medium: length check might fail (e.g. when X'First = 0 and X'Last = 0 and Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 211 should mention X and Y]
-do_checks.adb:218:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:218:19: info: initialization of "X" proved
-do_checks.adb:218:22: info: initialization of "Y" proved
-do_checks.adb:222:32: warning: "Y" is not modified, could be IN
-do_checks.adb:224:21: info: length check proved (CVC4: 4 VC)
-do_checks.adb:224:26: medium: length check might fail (e.g. when X'First = 0 and X'Last = 0 and Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 222 should mention X and Y]
-do_checks.adb:229:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:229:19: info: initialization of "X" proved
-do_checks.adb:229:22: info: initialization of "Y" proved
-do_checks.adb:235:37: info: initialization of "Y" proved
-do_checks.adb:237:24: medium: length check might fail (e.g. when X = (others => False) and X'First = 0 and X'Last = 0) [possible explanation: precondition of subprogram at line 235 should mention X]
-do_checks.adb:242:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:242:19: info: initialization of "X" proved
-do_checks.adb:246:37: info: initialization of "Y" proved
-do_checks.adb:250:24: info: length check proved (CVC4: 4 VC)
-do_checks.adb:255:16: info: precondition proved (CVC4: 2 VC)
-do_checks.adb:255:19: info: initialization of "X" proved
-do_checks.adb:261:30: warning: "X" is not modified, could be IN
-do_checks.adb:261:30: warning: unused variable "X"
-do_checks.adb:267:19: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:267:22: medium: length check might fail (e.g. when X'First = 0 and X'Last = 0) [possible explanation: precondition of subprogram at line 265 should mention X]
-do_checks.adb:271:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:271:20: info: initialization of "X" proved
-do_checks.adb:275:30: warning: "X" is not modified, could be IN
-do_checks.adb:275:30: warning: unused variable "X"
-do_checks.adb:283:19: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:283:22: info: length check proved (CVC4: 4 VC)
-do_checks.adb:287:16: info: precondition proved (CVC4: 2 VC)
-do_checks.adb:287:20: info: initialization of "X" proved
-do_checks.adb:301:16: info: range check proved (CVC4: 2 VC)
-do_checks.adb:306:24: info: range check proved (CVC4: 1 VC)
-do_checks.adb:307:25: info: range check proved (CVC4: 1 VC)
-do_checks.adb:313:32: warning: "Y" is not modified, could be IN
-do_checks.adb:315:20: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention X]
-do_checks.adb:315:25: medium: array index check might fail
-do_checks.adb:315:32: medium: discriminant check might fail (e.g. when Y = (J => 0, Arr => (others => False))) [possible explanation: precondition of subprogram at line 313 should mention Y]
-do_checks.adb:315:37: medium: array index check might fail
+do_checks.adb:109:65: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:118:30: medium: range check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:125:30: info: range check proved (CVC4: 4 VC)
+do_checks.adb:125:60: medium: overflow check might fail (e.g. when B'First = 0 and B'Last = 0 and Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:136:25: medium: range check might fail (e.g. when Zero = 0)
+do_checks.adb:149:25: info: range check proved (CVC4: 2 VC)
+do_checks.adb:149:57: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:161:39: medium: length check might fail (e.g. when Zero = 0) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:161:40: medium: range check might fail (e.g. when Zero = 0)
+do_checks.adb:167:38: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:167:39: info: range check proved (CVC4: 2 VC)
+do_checks.adb:167:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
+do_checks.adb:210:32: warning: "Y" is not modified, could be IN
+do_checks.adb:212:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:212:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 210 should mention X and Y]
+do_checks.adb:217:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:221:32: warning: "Y" is not modified, could be IN
+do_checks.adb:223:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:223:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 221 should mention X and Y]
+do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:234:37: info: initialization of "Y" proved
+do_checks.adb:236:24: medium: length check might fail [possible explanation: precondition of subprogram at line 234 should mention X]
+do_checks.adb:241:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:245:37: info: initialization of "Y" proved
+do_checks.adb:249:24: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:254:16: info: precondition proved (CVC4: 2 VC)
+do_checks.adb:260:30: warning: "X" is not modified, could be IN
+do_checks.adb:260:30: warning: unused variable "X"
+do_checks.adb:266:19: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:266:22: medium: length check might fail [possible explanation: precondition of subprogram at line 264 should mention X]
+do_checks.adb:270:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:274:30: warning: "X" is not modified, could be IN
+do_checks.adb:274:30: warning: unused variable "X"
+do_checks.adb:282:19: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:282:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+do_checks.adb:286:16: info: precondition proved (CVC4: 2 VC)
+do_checks.adb:300:16: info: range check proved (CVC4: 2 VC)
+do_checks.adb:305:24: info: range check proved (CVC4: 1 VC)
+do_checks.adb:306:25: info: range check proved (CVC4: 1 VC)
+do_checks.adb:312:32: warning: "Y" is not modified, could be IN
+do_checks.adb:314:20: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 312 should mention X]
+do_checks.adb:314:25: medium: array index check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 2 and X.Arr'Last = 0)
+do_checks.adb:314:32: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 312 should mention Y]
+do_checks.adb:314:37: medium: array index check might fail (e.g. when Y = (J => ?, Arr => (others => False)) and Y.Arr'First = 11 and Y.Arr'Last = 0)
+do_checks.adb:316:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:316:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:317:23: info: range check proved (CVC4: 1 VC)
 do_checks.adb:317:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:318:23: info: range check proved (CVC4: 1 VC)
-do_checks.adb:318:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:320:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:324:32: warning: "Y" is not modified, could be IN
-do_checks.adb:328:20: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:328:25: info: index check proved (CVC4: 2 VC)
-do_checks.adb:328:32: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:328:37: info: index check proved (CVC4: 2 VC)
+do_checks.adb:319:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:323:32: warning: "Y" is not modified, could be IN
+do_checks.adb:327:20: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:327:25: info: index check proved (CVC4: 2 VC)
+do_checks.adb:327:32: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:327:37: info: index check proved (CVC4: 2 VC)
+do_checks.adb:329:26: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:330:26: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:331:26: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:333:16: info: precondition proved (CVC4: 2 VC)
-do_checks.adb:333:19: info: initialization of "X.Arr" proved
-do_checks.adb:333:22: info: initialization of "Y.Arr" proved
-do_checks.adb:344:40: info: initialization of "Y.Arr" proved
-do_checks.adb:346:27: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0) [possible explanation: precondition of subprogram at line 344 should mention X]
-do_checks.adb:348:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:332:16: info: precondition proved (CVC4: 2 VC)
+do_checks.adb:343:40: info: initialization of "Y" proved
+do_checks.adb:345:27: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 343 should mention X]
+do_checks.adb:347:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:347:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:348:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:349:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:351:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:355:40: info: initialization of "Y.Arr" proved
-do_checks.adb:359:27: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:361:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:350:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:354:40: info: initialization of "Y" proved
+do_checks.adb:358:27: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:360:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:360:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:361:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:362:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:364:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:364:19: info: initialization of "X.Arr" proved
-do_checks.adb:370:40: info: initialization of "Y.Arr" proved
-do_checks.adb:372:24: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0) [possible explanation: precondition of subprogram at line 370 should mention X]
-do_checks.adb:374:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:363:16: info: precondition proved (CVC4: 1 VC)
+do_checks.adb:369:40: info: initialization of "Y" proved
+do_checks.adb:371:24: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 369 should mention X]
+do_checks.adb:373:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:373:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:374:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:375:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:377:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:381:29: warning: "X" is not modified, could be IN
-do_checks.adb:381:44: info: initialization of "Y.Arr" proved
-do_checks.adb:385:24: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:387:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:376:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:380:29: warning: "X" is not modified, could be IN
+do_checks.adb:380:44: info: initialization of "Y" proved
+do_checks.adb:384:24: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:386:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:386:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:387:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:388:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:390:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:390:19: info: initialization of "X.Arr" proved
-do_checks.adb:397:29: warning: "X" is not modified, could be IN
-do_checks.adb:397:44: info: initialization of "Y.Arr" proved
-do_checks.adb:402:26: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:404:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:404:22: info: initialization of "X.Arr" proved
-do_checks.adb:404:22: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?))
-do_checks.adb:408:29: warning: "X" is not modified, could be IN
-do_checks.adb:408:44: info: initialization of "Y.Arr" proved
-do_checks.adb:412:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:389:16: info: precondition proved (CVC4: 1 VC)
+do_checks.adb:396:29: warning: "X" is not modified, could be IN
+do_checks.adb:396:44: info: initialization of "Y" proved
+do_checks.adb:401:26: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:403:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:403:22: medium: discriminant check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 0 and X.Arr'Last = 0)
+do_checks.adb:407:29: warning: "X" is not modified, could be IN
+do_checks.adb:407:44: info: initialization of "Y" proved
+do_checks.adb:411:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:411:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:412:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:413:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:415:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:415:22: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:415:22: info: initialization of "X.Arr" proved
-do_checks.adb:421:30: warning: "X" is not modified, could be IN
-do_checks.adb:421:45: info: initialization of "Y.Arr" proved
-do_checks.adb:425:45: info: initialization of "Y.Arr" proved
-do_checks.adb:427:19: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:427:23: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?)) [possible explanation: precondition of subprogram at line 425 should mention X]
-do_checks.adb:430:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:414:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:414:22: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:420:30: warning: "X" is not modified, could be IN
+do_checks.adb:420:45: info: initialization of "Y" proved
+do_checks.adb:424:45: info: initialization of "Y" proved
+do_checks.adb:426:19: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:426:23: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 424 should mention X]
+do_checks.adb:429:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:429:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:430:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:431:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:433:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:437:29: warning: "X" is not modified, could be IN
-do_checks.adb:437:44: info: initialization of "Y.Arr" proved
-do_checks.adb:441:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:432:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:436:29: warning: "X" is not modified, could be IN
+do_checks.adb:436:44: info: initialization of "Y" proved
+do_checks.adb:440:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:440:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:441:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:442:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:444:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:444:19: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:444:19: info: initialization of "X.Arr" proved
-do_checks.adb:450:29: warning: "X" is not modified, could be IN
-do_checks.adb:450:44: warning: "Y" is not modified, could be IN
-do_checks.adb:452:19: warning: statement has no effect
-do_checks.adb:452:26: medium: discriminant check might fail (e.g. when X = (J => 0, Arr => ?)) [possible explanation: precondition of subprogram at line 450 should mention X]
-do_checks.adb:456:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:443:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:443:19: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:449:29: warning: "X" is not modified, could be IN
+do_checks.adb:449:44: warning: "Y" is not modified, could be IN
+do_checks.adb:451:19: warning: statement has no effect
+do_checks.adb:451:26: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 449 should mention X]
+do_checks.adb:455:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:455:29: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:456:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:457:29: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:459:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:459:22: info: initialization of "Y.Arr" proved
-do_checks.adb:463:29: warning: "X" is not modified, could be IN
-do_checks.adb:463:44: warning: "Y" is not modified, could be IN
-do_checks.adb:467:19: warning: statement has no effect
-do_checks.adb:467:26: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:471:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:458:16: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:462:29: warning: "X" is not modified, could be IN
+do_checks.adb:462:44: warning: "Y" is not modified, could be IN
+do_checks.adb:466:19: warning: statement has no effect
+do_checks.adb:466:26: info: discriminant check proved (CVC4: 1 VC)
+do_checks.adb:470:23: info: range check proved (CVC4: 1 VC)
+do_checks.adb:470:30: info: discriminant check proved (CVC4: 1 VC)
 do_checks.adb:471:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:472:30: info: discriminant check proved (CVC4: 1 VC)
-do_checks.adb:474:16: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:474:19: info: initialization of "X.Arr" proved
-do_checks.adb:474:22: info: initialization of "Y.Arr" proved
-do_checks.adb:483:04: info: initialization of "Branch" proved
-do_checks.adb:483:04: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:483:20: info: initialization of "Zero" proved
-do_checks.adb:484:04: info: initialization of "Branch" proved
-do_checks.adb:484:04: info: precondition proved (CVC4: 1 VC)
-do_checks.adb:485:04: info: initialization of "Branch" proved
-do_checks.adb:485:04: info: precondition proved (CVC4: 1 VC)
+do_checks.adb:473:16: info: precondition proved (CVC4: 1 VC)
+do_checks.adb:482:04: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:483:04: info: precondition proved (Trivial: 1 VC)
+do_checks.adb:484:04: info: precondition proved (Trivial: 1 VC)

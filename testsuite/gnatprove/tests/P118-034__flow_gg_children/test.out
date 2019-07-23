@@ -30,11 +30,6 @@ Generated contracts for p8
       Output =>
          G
 Generated contracts for a
-a.ads:4:14: info: initialization of "I" constituent of "State_A" proved
-a.ads:4:14: info: initialization of "G" constituent of "State_A" proved
-a.ads:6:14: info: initialization of "I" constituent of "State_A" proved
-a.ads:8:14: info: initialization of "I" constituent of "State_A" proved
-a.ads:10:14: info: initialization of "G" constituent of "State_A" proved
 Generated contracts for p4
    Global =>
       In_Out =>
@@ -72,15 +67,20 @@ Generated contracts for p7
          A.State_A
 Generated contracts for child
 a~child.adb:15:07: warning: unused assignment to "G" constituent of "State_A"
-a~child.ads:4:14: info: initialization of "G" constituent of "State_A" proved
-a~child.ads:8:14: info: initialization of "J" constituent of "State_B" proved
-a~child.ads:8:14: info: initialization of "H" constituent of "State_B" proved
 Generated contracts for child
 b-child.adb:20:52: info: initialization of "H" constituent of "State_B" proved
 b-child.adb:20:55: info: initialization of "J" constituent of "State_B" proved
+b-child.ads:4:22: info: data dependencies proved
+b-child.ads:6:22: info: data dependencies proved
+b-child.ads:8:22: info: data dependencies proved
+b-child.ads:11:22: info: data dependencies proved
 Generated contracts for b
 b.adb:6:52: info: initialization of "G" constituent of "State_A" proved
 b.adb:6:55: info: initialization of "I" constituent of "State_A" proved
 b.adb:14:51: info: initialization of "I" constituent of "State_A" proved
 b.adb:20:51: info: initialization of "I" constituent of "State_A" proved
 b.adb:26:51: info: initialization of "G" constituent of "State_A" proved
+b.ads:4:22: info: data dependencies proved
+b.ads:6:22: info: data dependencies proved
+b.ads:8:22: info: data dependencies proved
+b.ads:10:22: info: data dependencies proved

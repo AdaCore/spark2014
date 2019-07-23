@@ -1,138 +1,91 @@
 my_test.adb:6:04: warning: "T2" is not modified, could be declared constant
+my_test.adb:8:04: info: initialization of "T3" proved
 my_test.adb:8:16: info: range check proved (CVC4: 1 VC)
 my_test.adb:11:22: info: precondition proved (CVC4: 1 VC)
-my_test.adb:11:27: info: initialization of "T1.V" proved
 my_test.adb:12:22: info: precondition proved (CVC4: 1 VC)
-my_test.adb:12:27: info: initialization of "T1.V" proved
 my_test.adb:13:26: info: precondition proved (CVC4: 1 VC)
-my_test.adb:13:35: info: initialization of "T1.V" proved
-my_test.adb:14:44: info: initialization of "T1.V" proved
-my_test.adb:15:44: info: initialization of "T2.V" proved
 my_test.adb:17:10: info: discriminant check proved (CVC4: 1 VC)
 my_test.adb:17:10: info: precondition proved (CVC4: 1 VC)
-my_test.adb:17:15: info: initialization of "T1.V" proved
-my_test.adb:17:19: info: initialization of "T2.V" proved
 my_test.adb:18:19: info: assertion proved (Z3: 1 VC)
-my_test.adb:18:48: info: initialization of "T3.V" proved
 my_test.adb:18:54: info: index check proved (CVC4: 2 VC)
-my_test.adb:20:10: medium: discriminant check might fail (e.g. when T3 = (Last => 0, V => (others => 0)))
-my_test.adb:20:23: info: initialization of "T1.V" proved
-my_test.adb:21:16: info: initialization of "T1.V" proved
-my_test.adb:22:19: info: initialization of "T1.V" proved
-my_test.adb:22:19: medium: assertion might fail, cannot prove T1 = T3 (e.g. when T1 = (Last => 10, V => (others => 0)) and T1.V'First = 0 and T1.V'Last = 0 and T3 = (Last => 0, V => (others => 0)))
-my_test.adb:22:24: info: initialization of "T3.V" proved
+my_test.adb:20:10: medium: discriminant check might fail (e.g. when T1 = (Last => ?, V => (others => 5)) and T1.V'First = 1 and T1.V'Last = 10)
+my_test.adb:22:19: medium: assertion might fail, cannot prove T1 = T3 (e.g. when T1 = (Last => ?, V => (1 => -1, others => 1)) and T1.V'First = 1 and T1.V'Last = 10 and T3 = (Last => ?, V => (1 => 0, others => 5)))
 simple_unc_arrays.adb:10:07: medium: "C.V" might not be initialized
 simple_unc_arrays.adb:10:26: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:13:16: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_unc_arrays.adb:13:16: info: loop invariant preservation proved (CVC4: 1 VC)
-simple_unc_arrays.adb:13:42: medium: "C.V" might not be initialized
+simple_unc_arrays.adb:13:42: high: "C.V" is not initialized
 simple_unc_arrays.adb:13:47: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:13:57: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:13:60: info: overflow check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:13:67: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:14:18: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:14:29: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:14:32: medium: overflow check might fail (e.g. when C = (Last => ?, V => (others => -1073741825)) and C.V'First = 1 and C.V'Last = 1)
+simple_unc_arrays.adb:14:32: medium: overflow check might fail (e.g. when A = (Last => 1, V => (others => Value'First)) and A.V'First = 1 and A.V'Last = 1 and B = (Last => 1, V => (others => Value'First)) and B.V'First = 1 and B.V'Last = 1 and I = 1)
 simple_unc_arrays.adb:14:39: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:28:13: info: initialization of "Low" proved
-simple_unc_arrays.adb:28:19: info: initialization of "High" proved
 simple_unc_arrays.adb:30:13: info: loop invariant initialization proved (CVC4: 2 VC)
-simple_unc_arrays.adb:30:32: info: initialization of "Low" proved
-simple_unc_arrays.adb:30:44: medium: loop invariant might fail after first iteration, cannot prove A.V (J) = A.V'Loop_Entry (A.Last - J + 1) (e.g. when A = (Last => 0, V => (others => 0)) and A.V'First = 0 and A.V'Last = 0 and J = 0 and Low = 0)
+simple_unc_arrays.adb:30:44: medium: loop invariant might fail after first iteration, cannot prove A.V (J) = A.V'Loop_Entry (A.Last - J + 1) (e.g. when A = (Last => ?, V => (2 => 1, 4 => 0, others => 0)) and A.V'First = -1 and A.V'Last = 2 and J = 1)
 simple_unc_arrays.adb:30:50: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:30:82: info: overflow check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:30:82: medium: array index check might fail
+simple_unc_arrays.adb:30:82: medium: array index check might fail (e.g. when A = (Last => ?, V => (3 => 0, 6 => 0, others => 0)) and A.V'First = 1 and A.V'Last = 2)
 simple_unc_arrays.adb:32:54: info: index check proved (CVC4: 4 VC)
-simple_unc_arrays.adb:32:75: medium: array index check might fail
-simple_unc_arrays.adb:34:10: medium: precondition might fail (e.g. when Low = 3)
-simple_unc_arrays.adb:34:23: info: length check proved (CVC4: 4 VC)
-simple_unc_arrays.adb:34:27: info: initialization of "Low" proved
-simple_unc_arrays.adb:34:32: info: initialization of "High" proved
+simple_unc_arrays.adb:32:75: medium: array index check might fail (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2)
+simple_unc_arrays.adb:34:10: medium: precondition might fail, cannot prove I in A'range (e.g. when Low = 3)
+simple_unc_arrays.adb:34:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:34:32: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:35:18: info: initialization of "Low" proved
 simple_unc_arrays.adb:35:22: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:36:18: info: initialization of "High" proved
 simple_unc_arrays.adb:36:23: info: range check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:45:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:48:33: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_unc_arrays.adb:48:33: info: loop invariant preservation proved (CVC4: 1 VC)
-simple_unc_arrays.adb:48:60: info: initialization of "Res" proved
 simple_unc_arrays.adb:48:72: info: index check proved (CVC4: 4 VC)
-simple_unc_arrays.adb:50:13: info: initialization of "Res" proved
 simple_unc_arrays.adb:50:24: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:51:25: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:55:14: info: initialization of "Res" proved
-simple_unc_arrays.adb:64:06: info: initialization of "Res" proved
 simple_unc_arrays.adb:64:33: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:66:34: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_unc_arrays.adb:66:34: info: loop invariant preservation proved (CVC4: 1 VC)
-simple_unc_arrays.adb:66:61: info: initialization of "Res" proved
 simple_unc_arrays.adb:66:73: info: index check proved (CVC4: 4 VC)
-simple_unc_arrays.adb:68:13: info: initialization of "Res" proved
 simple_unc_arrays.adb:68:24: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:69:25: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:83:28: info: cannot unroll loop (too many loop iterations)
-simple_unc_arrays.adb:84:16: info: initialization of "Sum" proved
-simple_unc_arrays.adb:84:20: medium: overflow check might fail (e.g. when Sum = 0) [possible explanation: loop at line 83 should mention Sum in a loop invariant]
+simple_unc_arrays.adb:84:20: medium: overflow check might fail (e.g. when A = (Last => 1, V => (others => Value'First)) and A.V'First = 1 and A.V'Last = 1 and I = 1 and Sum = -1) [possible explanation: loop at line 83 should mention Sum in a loop invariant]
 simple_unc_arrays.adb:84:27: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:87:14: info: initialization of "Sum" proved
 simple_unc_arrays.adb:87:18: info: division check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:98:33: info: loop invariant initialization proved (CVC4: 1 VC)
 simple_unc_arrays.adb:98:33: info: loop invariant preservation proved (CVC4: 1 VC)
 simple_unc_arrays.adb:98:65: info: index check proved (CVC4: 4 VC)
 simple_unc_arrays.adb:100:18: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:106:14: info: initialization of "Pos" proved
-simple_unc_arrays.adb:117:13: info: initialization of "Bull" proved
 simple_unc_arrays.adb:119:37: info: cannot unroll loop (too many loop iterations)
-simple_unc_arrays.adb:120:16: info: initialization of "Res.V" proved
 simple_unc_arrays.adb:120:25: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:120:25: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.adb:120:39: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:121:16: info: precondition proved (CVC4: 4 VC)
-simple_unc_arrays.adb:121:28: info: initialization of "Res.V" proved
-simple_unc_arrays.adb:121:31: info: length check proved (CVC4: 4 VC)
+simple_unc_arrays.adb:121:31: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:121:39: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:126:14: info: initialization of "Res.V" proved
-simple_unc_arrays.adb:143:35: medium: overflow check might fail (e.g. when First = 1073741823 and Last = 1073741825 and Pivot_Index = 0)
-simple_unc_arrays.adb:143:42: medium: overflow check might fail (e.g. when Pivot_Index = 0)
+simple_unc_arrays.adb:139:10: info: initialization of "Pivot_Index" proved
+simple_unc_arrays.adb:139:23: info: initialization of "Right" proved
+simple_unc_arrays.adb:139:30: info: initialization of "Left" proved
+simple_unc_arrays.adb:140:10: info: initialization of "Pivot_Value" proved
+simple_unc_arrays.adb:143:35: medium: overflow check might fail (e.g. when First = 1073741823 and Last = 1073741825)
+simple_unc_arrays.adb:143:42: medium: overflow check might fail (e.g. when First = 1073741823 and Last = 1073741824)
 simple_unc_arrays.adb:143:47: info: division check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:144:33: info: initialization of "Pivot_Index" proved
-simple_unc_arrays.adb:144:33: medium: array index check might fail (e.g. when Pivot_Index = 1 and Pivot_Value = 0)
-simple_unc_arrays.adb:153:22: info: initialization of "Left" proved
-simple_unc_arrays.adb:153:48: medium: array index check might fail (e.g. when Left = 0) [possible explanation: loop at line 147 should mention Left in a loop invariant]
-simple_unc_arrays.adb:153:56: info: initialization of "Pivot_Value" proved
-simple_unc_arrays.adb:154:27: info: initialization of "Left" proved
+simple_unc_arrays.adb:144:33: medium: array index check might fail (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 1 and A.V'Last = 0 and Pivot_Index = 1)
+simple_unc_arrays.adb:153:48: medium: array index check might fail (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 1 and A.V'Last = 1 and Left = 0) [possible explanation: loop at line 147 should mention Left in a loop invariant]
 simple_unc_arrays.adb:154:32: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:157:22: info: initialization of "Right" proved
-simple_unc_arrays.adb:157:50: medium: array index check might fail (e.g. when Right = 2) [possible explanation: loop at line 147 should mention Right in a loop invariant]
-simple_unc_arrays.adb:157:59: info: initialization of "Pivot_Value" proved
-simple_unc_arrays.adb:158:28: info: initialization of "Right" proved
+simple_unc_arrays.adb:157:50: medium: array index check might fail (e.g. when A = (Last => ?, V => (2 => 0, others => -1)) and A.V'First = 1 and A.V'Last = 2 and Right = 3) [possible explanation: loop at line 147 should mention Right in a loop invariant]
 simple_unc_arrays.adb:158:34: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:161:26: info: initialization of "Left" proved
-simple_unc_arrays.adb:161:34: info: initialization of "Right" proved
 simple_unc_arrays.adb:163:16: info: precondition proved (CVC4: 4 VC)
-simple_unc_arrays.adb:163:29: info: length check proved (CVC4: 4 VC)
-simple_unc_arrays.adb:163:33: info: initialization of "Left" proved
+simple_unc_arrays.adb:163:29: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 simple_unc_arrays.adb:163:33: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:163:39: info: initialization of "Right" proved
 simple_unc_arrays.adb:163:39: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:165:19: info: initialization of "Left" proved
-simple_unc_arrays.adb:165:35: info: initialization of "Right" proved
-simple_unc_arrays.adb:166:27: info: initialization of "Left" proved
 simple_unc_arrays.adb:166:32: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:167:28: info: initialization of "Right" proved
 simple_unc_arrays.adb:167:34: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:171:16: info: initialization of "Right" proved
 simple_unc_arrays.adb:172:16: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.adb:172:28: info: initialization of "Right" proved
 simple_unc_arrays.adb:172:34: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.adb:175:16: info: initialization of "Left" proved
 simple_unc_arrays.adb:176:16: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.adb:176:21: info: initialization of "Left" proved
 simple_unc_arrays.adb:181:06: warning: "Tmp" is not modified, could be declared constant
 simple_unc_arrays.adb:184:07: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.adb:184:15: info: initialization of "Tmp" proved
-simple_unc_arrays.adb:192:14: info: initialization of "Tmp" proved
+simple_unc_arrays.adb:188:07: info: initialization of "Tmp" proved
 simple_unc_arrays.adb:197:07: warning: initialization of "Tmp" has no effect
 simple_unc_arrays.adb:197:25: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:199:19: info: index check proved (CVC4: 2 VC)
@@ -140,36 +93,35 @@ simple_unc_arrays.adb:200:10: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:200:13: warning: useless assignment of object to itself
 simple_unc_arrays.adb:200:19: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.adb:201:10: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.adb:201:16: info: initialization of "Tmp" proved
 simple_unc_arrays.ads:11:07: info: range check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:20:12: info: postcondition proved (CVC4: 2 VC)
 simple_unc_arrays.ads:22:40: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:22:50: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:22:53: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.ads:22:60: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove A.V (J) = A.V'Old (A.Last - J + 1) (e.g. when A = (Last => ?, V => (others => 0)) and A.V'First = 0 and A.V'Last = 0 and A'Old = (Last => 0, V => (others => 0)) and J = 0)
+simple_unc_arrays.ads:30:20: medium: postcondition might fail, cannot prove A.V (J) = A.V'Old (A.Last - J + 1) (e.g. when A = (Last => ?, V => (1 => -1, 2 => 0, 6 => 0, others => 0)) and A.V'First = -2 and A.V'Last = 2 and A'Old = (Last => ?, V => (1 => -1, 2 => 0, 6 => 0, others => 0)) and A.V'First = 1 and A.V'Last = 2 and J = 1)
 simple_unc_arrays.ads:30:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:30:51: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:30:51: info: overflow check proved (CVC4: 1 VC)
-simple_unc_arrays.ads:40:14: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Min'Result = -1)
+simple_unc_arrays.ads:40:14: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Min'Result = 0)
 simple_unc_arrays.ads:40:64: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:42:65: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.ads:52:15: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Max'Result = 1)
+simple_unc_arrays.ads:52:15: medium: postcondition might fail (e.g. when A = (Last => 2, V => (others => 0)) and A.V'First = 1 and A.V'Last = 2 and Max'Result = 0)
 simple_unc_arrays.ads:52:64: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:54:68: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:64:14: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'result (e.g. when A = (Last => 1, V => (others => 0)) and A.V'First = 1 and A.V'Last = 1 and Average'Result = -1)
+simple_unc_arrays.ads:64:14: medium: postcondition might fail, cannot prove Min (A) <= Average'result (e.g. when A = (Last => Natural'Last, V => (others => 1)) and A.V'First = 1 and A.V'Last = 2147483647 and Average'Result = 0)
 simple_unc_arrays.ads:65:15: info: precondition proved (CVC4: 1 VC)
-simple_unc_arrays.ads:74:17: info: postcondition proved (CVC4: 1 VC)
+simple_unc_arrays.ads:74:17: info: postcondition proved (Z3: 1 VC)
 simple_unc_arrays.ads:75:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:76:54: info: range check proved (CVC4: 1 VC)
-simple_unc_arrays.ads:85:16: medium: postcondition might fail, cannot prove Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1) (e.g. when A = (Last => 3, V => (1 => 1, 2 => 0, 3 => 0, others => 0)) and A.V'First = 1 and A.V'Last = 3 and Bubble_Sort'Result = (Last => 3, V => (1 => 1, 2 => 0, 3 => 0, others => 0)) and Bubble_Sort'Result.V'First = 1 and Bubble_Sort'Result.V'Last = 3 and J = 1)
+simple_unc_arrays.ads:85:16: medium: postcondition might fail, cannot prove Bubble_Sort'Result.V (J) <= Bubble_Sort'Result.V (J+1) (e.g. when Bubble_Sort'Result = (Last => 3, V => (2 => 0, 3 => 0, others => 1)) and Bubble_Sort'Result.V'First = 1 and Bubble_Sort'Result.V'Last = 3 and J = 1)
 simple_unc_arrays.ads:85:38: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:85:67: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:85:67: info: overflow check proved (CVC4: 1 VC)
 simple_unc_arrays.ads:88:26: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:88:53: info: index check proved (CVC4: 2 VC)
-simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) (e.g. when A = (Last => ?, V => (1 => 0, others => -1)) and A'Old = (Last => 2, V => ?) and J = 1)
+simple_unc_arrays.ads:96:51: medium: postcondition might fail, cannot prove A.V (J) <= A.V (J+1) (e.g. when A = (Last => ?, V => (2 => 0, others => 1)) and A.V'First = 1 and A.V'Last = 2 and J = 1) [possible explanation: call at simple_unc_arrays.adb:184 should mention A in a postcondition]
 simple_unc_arrays.ads:96:56: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: index check proved (CVC4: 2 VC)
 simple_unc_arrays.ads:96:68: info: overflow check proved (CVC4: 1 VC)

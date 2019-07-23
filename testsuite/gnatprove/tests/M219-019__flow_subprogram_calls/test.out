@@ -1,57 +1,56 @@
-test.adb:8:04: info: initialization of "Global_A" constituent of "State" proved
-test.adb:9:04: info: initialization of "Global_B" constituent of "State" proved
-test.adb:10:04: info: initialization of "Global_C" constituent of "State" proved
 test.adb:16:24: info: initialization of "Sum" proved
 test.adb:19:26: warning: "B" is not modified, could be IN
-test.adb:22:15: info: initialization of "I" proved, in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
-test.adb:22:15: info: initialization of "Sum" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
 test.adb:22:17: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45 [possible explanation: loop at line 44 should mention Sum in a loop invariant]
-test.adb:22:19: info: initialization of "I" proved, in call inlined at test.adb:36, in call inlined at test.adb:45
-test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29
-test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29, in call inlined at test.adb:37
-test.adb:22:19: info: initialization of "Tmp" proved, in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
-test.adb:44:13: info: initialization of "I" proved
+test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
-test.adb:74:12: info: initialization of "Tmp" proved
-test.adb:83:12: info: initialization of "Tmp" proved
+test.adb:70:07: info: initialization of "Tmp" proved
+test.adb:79:07: info: initialization of "Tmp" proved
 test.adb:119:19: info: range check proved (CVC4: 1 VC)
 test.adb:119:19: medium: overflow check might fail [possible explanation: subprogram at line 114 should mention N in a precondition]
 test.adb:119:34: info: range check proved (CVC4: 1 VC)
 test.adb:123:04: warning: analyzing unreferenced procedure "Calling_Function_01"
 test.adb:130:26: medium: range check might fail [possible explanation: subprogram at line 123 should mention N in a precondition]
 test.adb:138:30: info: initialization of "N" proved
+test.adb:143:12: info: data dependencies proved
+test.adb:144:12: info: flow dependencies proved
+test.adb:148:12: info: data dependencies proved
 test.adb:148:33: medium: "Counter" might not be initialized
-test.adb:153:23: medium: overflow check might fail [possible explanation: subprogram at line 150 should mention X in a precondition]
-test.adb:154:29: medium: overflow check might fail [possible explanation: subprogram at line 150 should mention Counter in a precondition]
+test.adb:153:23: medium: overflow check might fail [possible explanation: subprogram at line 142 should mention X in a precondition]
+test.adb:154:29: medium: overflow check might fail [possible explanation: subprogram at line 142 should mention Counter in a precondition]
 test.adb:167:07: high: "Counter" is not initialized
 test.adb:167:07: warning: unused assignment to "Counter"
-test.adb:167:19: info: initialization of "N" proved
 test.adb:168:07: warning: statement has no effect
 test.adb:168:07: warning: unused assignment to "Counter"
-test.adb:168:19: info: initialization of "N" proved
 test.adb:171:30: info: initialization of "N" proved
-test.adb:178:21: info: initialization of "N" proved, in call inlined at test.adb:190
 test.adb:178:23: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:190
 test.adb:179:18: warning: unused assignment, in call inlined at test.adb:190
 test.adb:179:21: high: "Counter" is not initialized, in call inlined at test.adb:190
 test.adb:179:29: medium: overflow check might fail, in call inlined at test.adb:190
-test.adb:182:17: info: initialization of "Counter" proved
 test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
-test.adb:191:07: info: initialization of "N" proved
 test.adb:195:30: info: initialization of "B" proved
-test.adb:211:12: info: initialization of "S" proved
+test.adb:197:07: info: initialization of "S" proved
+test.adb:200:14: info: data dependencies proved
 test.adb:215:14: warning: subprogram "Global_Test_04" has no effect
+test.adb:223:14: info: data dependencies proved
 test.adb:223:35: info: initialization of "S" proved
 test.adb:228:22: info: initialization of "X" proved
-test.adb:233:12: high: "S" must be a global output of "Direct_Update_Bad" (SPARK RM 6.1.4(16))
-test.adb:245:10: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(16))
-test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(16))
+test.adb:233:12: high: "S" must be a global output of "Direct_Update_Bad" (SPARK RM 6.1.4(17))
+test.adb:245:10: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(17))
+test.adb:246:15: high: "S" must be a global output of "Indirect_Update" (SPARK RM 6.1.4(17))
 test.adb:265:38: info: initialization of "Global_B" constituent of "State" proved
 test.adb:275:46: info: initialization of "Local_Y" proved
+test.adb:276:09: info: data dependencies proved
 test.adb:277:30: info: initialization of "Global_B" constituent of "State" proved
+test.adb:278:09: info: flow dependencies proved
+test.ads:3:31: info: flow dependencies proved
+test.ads:9:09: info: flow dependencies proved
+test.ads:14:09: info: flow dependencies proved
 test.ads:19:21: medium: missing self-dependency "X => X"
 test.ads:20:21: medium: missing self-dependency "Y => Y"
 test.ads:24:21: medium: missing self-dependency "X => X"
 test.ads:25:21: medium: missing self-dependency "Y => Y"
+test.ads:29:09: info: flow dependencies proved
 test.ads:34:41: info: initialization of "Y" proved
+test.ads:35:09: info: data dependencies proved
+test.ads:36:09: info: flow dependencies proved

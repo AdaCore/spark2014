@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                        Copyright (C) 2018, AdaCore                       --
+--                     Copyright (C) 2018-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,6 +28,27 @@ with SPARK_Util;      use SPARK_Util;
 
 package body Gnat2Why.CE_Utils is
 
+   -------------------------------------
+   -- Compile_Time_Known_And_Constant --
+   -------------------------------------
+
+   function Compile_Time_Known_And_Constant
+     (E : Entity_Id) return Boolean
+   is
+   begin
+      if Ekind (E) = E_Constant then
+         declare
+            Decl : constant Node_Id := Enclosing_Declaration (E);
+            Expr : constant Node_Id := Expression (Decl);
+         begin
+            return Present (Expr)
+              and then Compile_Time_Known_Value_Or_Aggr (Expr);
+         end;
+      end if;
+
+      return False;
+   end Compile_Time_Known_And_Constant;
+
    -----------------------------
    -- Find_First_Static_Range --
    -----------------------------
@@ -39,7 +60,14 @@ package body Gnat2Why.CE_Utils is
    is
       Fst_Found, Lst_Found : Boolean := False;
       Current              : Node_Id := N;
+
    begin
+      --  Initialize outputs with dummy values that will be rewritten in the
+      --  loop, to facilitate static analysis.
+
+      Fst := Uint_0;
+      Lst := Uint_0;
+
       loop
          declare
             Rng  : constant Node_Id := Get_Range (Current);
@@ -77,6 +105,41 @@ package body Gnat2Why.CE_Utils is
       when Constraint_Error =>
          return Empty;
    end Get_Entity_Id;
+
+   ---------------------------
+   -- Is_Nul_Counterexample --
+   ---------------------------
+
+   function Is_Nul_Counterexample
+     (Cntexmp : Cntexample_File_Maps.Map) return Boolean
+   is
+      use Cntexample_File_Maps;
+      function Is_All_Zeros_Line
+        (Line : Cntexample_Elt_Lists.List) return Boolean
+      is
+        (for all Elt of Line => Elt.Val_Str.Nul);
+
+   begin
+      for File_C in Cntexmp.Iterate loop
+         declare
+            Lines_Map : Cntexample_Line_Maps.Map renames
+              Element (File_C).Other_Lines;
+
+         begin
+            if not Is_All_Zeros_Line (Element (File_C).VC_Line) then
+               return False;
+            end if;
+
+            for Line_C in Lines_Map.Iterate loop
+               if not Is_All_Zeros_Line (Lines_Map (Line_C)) then
+                  return False;
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      return True;
+   end Is_Nul_Counterexample;
 
    ------------------------
    -- Is_Visible_In_Type --

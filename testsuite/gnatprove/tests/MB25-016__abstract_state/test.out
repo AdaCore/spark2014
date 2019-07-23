@@ -1,5 +1,6 @@
 foo.adb:5:04: info: initialization of "A" constituent of "State" proved
 foo.adb:6:04: info: initialization of "B" constituent of "State" proved
+foo.ads:3:04: info: flow dependencies proved
 foo.ads:4:04: info: initial condition proved (CVC4: 1 VC)
-foo.ads:4:25: info: initialization of "C" constituent of "State" proved
+foo.ads:8:36: info: data dependencies proved
 foo.ads:12:04: info: initialization of "C" constituent of "State" proved

@@ -1,13 +1,12 @@
 fxp_div_int_res.adb:4:20: info: division check proved (CVC4: 1 VC)
 fxp_div_int_res.adb:4:20: info: range check proved (CVC4: 1 VC)
-fxp_div_int_res.adb:4:20: medium: overflow check might fail (e.g. when D1 = 2147483649/1000000000 and D2 = -1/1000000000) [possible explanation: precondition of subprogram at line 3 should mention D1]
-fxp_div_int_res.adb:14:19: info: initialization of "D1" proved
+fxp_div_int_res.adb:4:20: medium: overflow check might fail (e.g. when D1 = 12884901891/1000000000 and D2 = -5/1000000000) [possible explanation: precondition of subprogram at line 3 should mention D1]
+fxp_div_int_res.adb:7:04: info: initialization of "D1" proved
+fxp_div_int_res.adb:7:08: info: initialization of "D2" proved
+fxp_div_int_res.adb:9:04: info: initialization of "R" proved
 fxp_div_int_res.adb:14:22: info: division check proved (CVC4: 1 VC)
 fxp_div_int_res.adb:14:22: info: overflow check proved (CVC4: 1 VC)
 fxp_div_int_res.adb:14:22: info: range check proved (CVC4: 1 VC)
 fxp_div_int_res.adb:15:19: info: assertion proved (CVC4: 1 VC)
-fxp_div_int_res.adb:15:19: info: initialization of "R" proved
 fxp_div_int_res.adb:16:19: info: assertion proved (CVC4: 1 VC)
 fxp_div_int_res.adb:16:19: info: precondition proved (CVC4: 1 VC)
-fxp_div_int_res.adb:16:24: info: initialization of "D1" proved
-fxp_div_int_res.adb:16:28: info: initialization of "D2" proved

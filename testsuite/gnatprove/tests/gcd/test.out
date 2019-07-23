@@ -1,10 +1,14 @@
+math_euclid.adb:5:06: info: data dependencies proved
 math_euclid.adb:7:14: medium: postcondition might fail, cannot prove Divides (X, A mod B)
 math_euclid.adb:7:28: info: division check proved (Z3: 1 VC)
 math_euclid.adb:7:28: info: range check proved (Z3: 1 VC)
+math_euclid.adb:15:06: info: data dependencies proved
 math_euclid.adb:17:14: medium: postcondition might fail, cannot prove Divides (X, A)
+math_euclid.adb:25:06: info: data dependencies proved
 math_euclid.adb:26:56: info: division check proved (Z3: 1 VC)
 math_euclid.adb:26:56: info: range check proved (Z3: 1 VC)
 math_euclid.adb:27:14: medium: postcondition might fail, cannot prove Divides (X, A)
+math_euclid.adb:35:06: info: data dependencies proved
 math_euclid.adb:36:14: info: postcondition proved (Z3: 4 VC)
 math_euclid.adb:39:80: info: division check proved (Z3: 1 VC)
 math_euclid.adb:39:80: info: range check proved (Z3: 1 VC)
@@ -18,122 +22,87 @@ math_euclid.adb:53:13: info: loop invariant preservation proved (Z3: 4 VC)
 math_euclid.adb:56:78: info: division check proved (Z3: 2 VC)
 math_euclid.adb:56:78: info: range check proved (Z3: 2 VC)
 math_euclid.adb:62:23: info: range check proved (Z3: 1 VC)
-math_euclid.adb:65:13: info: initialization of "Bn" proved
-math_euclid.adb:66:16: info: initialization of "An" proved
-math_euclid.adb:67:16: info: initialization of "Bn" proved
+math_euclid.adb:63:07: info: initialization of "C" proved
 math_euclid.adb:67:16: info: range check proved (Z3: 2 VC)
-math_euclid.adb:68:16: info: initialization of "C" proved
 math_euclid.adb:68:18: info: division check proved (Z3: 2 VC)
 math_euclid.adb:68:18: info: range check proved (Z3: 2 VC)
-math_euclid.adb:68:22: info: initialization of "Bn" proved
-math_euclid.adb:69:34: info: initialization of "C" proved
-math_euclid.adb:69:37: info: initialization of "An" proved
 math_euclid.adb:71:13: info: loop invariant initialization proved (Z3: 4 VC)
 math_euclid.adb:71:13: info: loop invariant preservation proved (Z3: 4 VC)
-math_euclid.adb:74:28: info: initialization of "An" proved
-math_euclid.adb:74:37: info: initialization of "Bn" proved
 math_euclid.adb:74:64: info: range check proved (Z3: 2 VC)
 math_euclid.adb:77:22: info: assertion proved (Z3: 1 VC)
-math_euclid.adb:77:35: info: initialization of "An" proved
 math_euclid.adb:78:22: info: assertion proved (Z3: 1 VC)
-math_euclid.adb:78:31: info: initialization of "An" proved
 math_euclid.adb:79:22: info: assertion proved (Z3: 1 VC)
-math_euclid.adb:79:31: info: initialization of "An" proved
 math_euclid.adb:81:22: info: assertion proved (CVC4: 1 VC)
-math_euclid.adb:81:35: info: initialization of "An" proved
 math_euclid.adb:82:38: info: range check proved (Z3: 1 VC)
 math_euclid.adb:82:57: info: range check proved (Z3: 1 VC)
-math_euclid.adb:83:14: info: initialization of "An" proved
 math_euclid.ads:3:63: info: division check proved (Z3: 1 VC)
 math_euclid.ads:6:14: info: postcondition proved (Z3: 3 VC)
 math_euclid.ads:9:34: info: range check proved (Z3: 1 VC)
 math_euclid.ads:9:53: info: range check proved (Z3: 1 VC)
 math_simple.adb:4:30: info: range check proved (Z3: 1 VC)
-math_simple.adb:6:13: info: initialization of "C" proved
 math_simple.adb:7:22: info: division check proved (Z3: 2 VC)
-math_simple.adb:7:26: info: initialization of "C" proved
 math_simple.adb:7:38: info: division check proved (Z3: 2 VC)
 math_simple.adb:8:33: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple.adb:8:33: info: loop invariant preservation proved (Z3: 1 VC)
-math_simple.adb:8:46: info: initialization of "C" proved
 math_simple.adb:9:49: info: range check proved (Z3: 2 VC)
 math_simple.adb:9:68: info: range check proved (Z3: 2 VC)
-math_simple.adb:10:15: info: initialization of "C" proved
 math_simple.adb:10:17: info: range check proved (Z3: 1 VC)
-math_simple.adb:13:14: info: initialization of "C" proved
 math_simple.ads:3:63: info: division check proved (Z3: 1 VC)
 math_simple.ads:6:14: info: postcondition proved (Z3: 3 VC)
 math_simple.ads:9:34: info: range check proved (Z3: 1 VC)
 math_simple.ads:9:53: info: range check proved (Z3: 1 VC)
-math_simple_abstract.adb:6:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:5:06: info: data dependencies proved
+math_simple_abstract.adb:6:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:6:28: info: division check proved (Z3: 1 VC)
+math_simple_abstract.adb:14:06: info: data dependencies proved
 math_simple_abstract.adb:15:19: info: division check proved (Z3: 1 VC)
-math_simple_abstract.adb:16:14: info: postcondition proved (altergo: 1 VC)
+math_simple_abstract.adb:16:14: info: postcondition proved (CVC4: 1 VC)
 math_simple_abstract.adb:21:25: info: assertion proved (CVC4: 1 VC; Z3: 1 VC)
 math_simple_abstract.adb:22:33: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple_abstract.adb:22:33: info: loop invariant preservation proved (altergo: 1 VC)
+math_simple_abstract.adb:28:06: info: data dependencies proved
 math_simple_abstract.adb:29:19: info: division check proved (Z3: 1 VC)
 math_simple_abstract.adb:30:14: info: postcondition proved (Z3: 1 VC)
 math_simple_abstract.adb:37:30: info: range check proved (Z3: 1 VC)
-math_simple_abstract.adb:39:13: info: initialization of "C" proved
 math_simple_abstract.adb:40:22: info: division check proved (Z3: 2 VC)
-math_simple_abstract.adb:40:26: info: initialization of "C" proved
 math_simple_abstract.adb:40:38: info: division check proved (Z3: 2 VC)
 math_simple_abstract.adb:41:15: info: division check proved (Z3: 2 VC)
-math_simple_abstract.adb:41:19: info: initialization of "C" proved
 math_simple_abstract.adb:42:13: info: precondition proved (Z3: 2 VC)
-math_simple_abstract.adb:42:36: info: initialization of "C" proved
 math_simple_abstract.adb:44:13: info: precondition proved (Z3: 2 VC)
-math_simple_abstract.adb:44:36: info: initialization of "C" proved
-math_simple_abstract.adb:46:33: info: initialization of "C" proved
 math_simple_abstract.adb:46:33: info: loop invariant initialization proved (Z3: 2 VC)
 math_simple_abstract.adb:46:33: info: loop invariant preservation proved (Z3: 2 VC)
 math_simple_abstract.adb:47:67: info: range check proved (Z3: 2 VC)
 math_simple_abstract.adb:47:86: info: range check proved (Z3: 2 VC)
-math_simple_abstract.adb:48:15: info: initialization of "C" proved
 math_simple_abstract.adb:48:17: info: range check proved (Z3: 1 VC)
 math_simple_abstract.adb:51:07: info: precondition proved (Z3: 1 VC)
-math_simple_abstract.adb:51:26: info: initialization of "C" proved
 math_simple_abstract.adb:52:07: info: precondition proved (Z3: 1 VC)
-math_simple_abstract.adb:52:26: info: initialization of "C" proved
-math_simple_abstract.adb:54:14: info: initialization of "C" proved
 math_simple_abstract.ads:8:14: info: postcondition proved (Z3: 3 VC)
 math_simple_abstract.ads:11:34: info: range check proved (Z3: 1 VC)
 math_simple_abstract.ads:11:53: info: range check proved (Z3: 1 VC)
+math_simple_half.adb:5:06: info: data dependencies proved
 math_simple_half.adb:6:27: info: division check proved (Z3: 1 VC)
 math_simple_half.adb:7:14: info: postcondition proved (Z3: 1 VC)
 math_simple_half.adb:14:30: info: range check proved (Z3: 1 VC)
 math_simple_half.adb:16:12: info: division check proved (Z3: 1 VC)
-math_simple_half.adb:16:16: info: initialization of "C" proved
 math_simple_half.adb:16:28: info: division check proved (Z3: 1 VC)
-math_simple_half.adb:17:17: info: initialization of "C" proved
-math_simple_half.adb:20:15: info: initialization of "C" proved
 math_simple_half.adb:20:17: info: division check proved (Z3: 1 VC)
 math_simple_half.adb:20:17: info: range check proved (Z3: 1 VC)
-math_simple_half.adb:21:19: info: initialization of "C" proved
 math_simple_half.adb:22:13: info: precondition proved (Z3: 4 VC)
 math_simple_half.adb:22:32: info: range check proved (Z3: 2 VC)
 math_simple_half.adb:22:42: info: range check proved (Z3: 2 VC)
 math_simple_half.adb:23:36: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple_half.adb:23:36: info: loop invariant preservation proved (Z3: 1 VC)
-math_simple_half.adb:23:49: info: initialization of "C" proved
 math_simple_half.adb:24:51: info: range check proved (Z3: 2 VC)
 math_simple_half.adb:24:61: info: range check proved (Z3: 2 VC)
-math_simple_half.adb:27:16: info: initialization of "C" proved
 math_simple_half.adb:28:25: info: division check proved (Z3: 2 VC)
-math_simple_half.adb:28:29: info: initialization of "C" proved
 math_simple_half.adb:28:41: info: division check proved (Z3: 2 VC)
-math_simple_half.adb:29:36: info: initialization of "C" proved
 math_simple_half.adb:29:36: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple_half.adb:29:36: info: loop invariant preservation proved (Z3: 1 VC)
 math_simple_half.adb:30:36: info: loop invariant initialization proved (Z3: 1 VC)
 math_simple_half.adb:30:36: info: loop invariant preservation proved (Z3: 1 VC)
-math_simple_half.adb:30:49: info: initialization of "C" proved
 math_simple_half.adb:31:52: info: range check proved (Z3: 2 VC)
 math_simple_half.adb:31:71: info: range check proved (Z3: 2 VC)
-math_simple_half.adb:32:18: info: initialization of "C" proved
 math_simple_half.adb:32:20: info: range check proved (Z3: 1 VC)
-math_simple_half.adb:35:17: info: initialization of "C" proved
 math_simple_half.ads:3:63: info: division check proved (Z3: 1 VC)
 math_simple_half.ads:6:14: info: postcondition proved (Z3: 3 VC)
 math_simple_half.ads:9:34: info: range check proved (Z3: 1 VC)

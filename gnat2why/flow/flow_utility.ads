@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                  Copyright (C) 2013-2018, Altran UK Limited              --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -85,7 +85,7 @@ is
    --  parameter and has no variable input. Such constants are filtered from
    --  the Global/Depends/Initializes contract right when we parse the AST,
    --  because they are ignored both from the inside and from the outside of
-   --  the generic instance; see SPARK RM 6.1.4(18):
+   --  the generic instance; see SPARK RM 6.1.4(19):
    --
    --    "If a global_item denotes a generic formal object of mode in, then the
    --     corresponding global_item in an instance of the generic unit may
@@ -94,8 +94,6 @@ is
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
    with Pre => Is_Initialized and then
-               Nkind (C1) = N_Defining_Identifier and then
-               Nkind (C2) = N_Defining_Identifier and then
                (Ekind (C1) in E_Component | E_Discriminant
                 or else Is_Part_Of_Concurrent_Object (C1))
                 and then
@@ -184,7 +182,10 @@ is
                                       E_Function  |
                                       E_Procedure |
                                       E_Task_Type
-                and then not Is_Derived_Type (Subprogram),
+                and then not Is_Derived_Type (Subprogram)
+                and then (if Ekind (Subprogram) = E_Procedure
+                          then not Is_DIC_Procedure (Subprogram)
+                            and then not Is_Invariant_Procedure (Subprogram)),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
        and then (for all G of Globals.Inputs =>
@@ -214,15 +215,16 @@ is
    --  If Ignore_Depends is True then we do not use the Refined_Depends
    --  contract to trim the Globals.
 
-   procedure Get_Proof_Globals (Subprogram     :     Entity_Id;
-                                Classwide      :     Boolean;
-                                Reads          : out Flow_Id_Sets.Set;
-                                Writes         : out Flow_Id_Sets.Set;
-                                Keep_Constants :     Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type,
+   procedure Get_Proof_Globals (Subprogram      :     Entity_Id;
+                                Reads           : out Flow_Id_Sets.Set;
+                                Writes          : out Flow_Id_Sets.Set;
+                                Erase_Constants :     Boolean;
+                                Scop            :     Flow_Scope :=
+                                  Null_Flow_Scope)
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type,
         Post => (for all G of Reads =>
                    Is_Entire_Variable (G) and then G.Variant = Normal_Use)
        and then (for all G of Writes =>
@@ -234,6 +236,12 @@ is
    --  Globals even if they are constants in Why. For subprograms nested in
    --  protected types, which may have an effect on the components of the
    --  protected type, the protected type itself is returned as a global.
+   --
+   --  If the Scop paramter is present, then visibility of Refined_Global will
+   --  be respected; this is needed when the result will be used together with
+   --  the result of Get_Loop_Writes, which itself respects visibility (by the
+   --  way it is implemented). Otherwise, return Refined_Global iff subprogram
+   --  body is in SPARK and Global if only spec is in SPARK.
 
    function Is_Opaque_For_Proof (F : Flow_Id) return Boolean
    with Pre => F.Kind = Magic_String, Ghost;
@@ -321,11 +329,6 @@ is
    --  expression for which we obtain variables, and Scope_N is the node
    --  controlling visibility.
 
-   function Quantified_Variables (N : Node_Id) return Flow_Id_Sets.Set
-   with Pre => Present (N);
-   --  Return the set of entire variables which are introduced in a quantifier
-   --  under node N.
-
    function Flatten_Variable
      (F     : Flow_Id;
       Scope : Flow_Scope)
@@ -363,15 +366,12 @@ is
                             Type_Kind;
    --  As above, but conveniently taking an Entity_Id instead of a Flow_Id
 
-   function Expand_Abstract_State
-     (F               : Flow_Id;
-      Erase_Constants : Boolean)
-      return Flow_Id_Sets.Set
-   with Post => (for all E of Expand_Abstract_State'Result =>
-                    Is_Entire_Variable (E) and then E.Variant = Normal_Use);
-   --  If F represents abstract state, return the set of all its components.
-   --  Otherwise return F. Additionally, remove formal in parameters from the
-   --  set if Erase_Constants is true.
+   function Expand_Abstract_States
+     (Vars : Flow_Id_Sets.Set)
+      return Flow_Id_Sets.Set;
+   --  Recursively expands abstract states in Vars to their constituents, so
+   --  that all flow-to-proof queries provide consistent view of abstract
+   --  states and their constituent.
 
    subtype Valid_Assignment_Kinds is Node_Kind
      with Static_Predicate =>
@@ -441,6 +441,7 @@ is
    --     - array slice
    --     - record component
    --     - unchecked conversion (for scalars)
+   --     - pointer dereference
    --
    --  Note that the expression(s) in the index or slice can be much more
    --  general and thus will be processed by Get_Variables.
@@ -461,7 +462,6 @@ is
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
-                 and then Nkind (Map_Type) in N_Defining_Identifier
                  and then Is_Type (Map_Type);
    --  Process a record or aggregate N and return a map which can be used to
    --  work out which fields will depend on what inputs.
@@ -537,29 +537,13 @@ is
    --  use Add_Loop and Add_Loop_Write, and enables the use of Get_Loop_Writes.
 
    function Get_Loop_Writes (E : Entity_Id) return Flow_Id_Sets.Set
-   with Pre => Ekind (E) = E_Loop;
+   with Pre => Ekind (E) = E_Loop,
+        Post => (for all F of Get_Loop_Writes'Result =>
+                   Is_Entire_Variable (F) and then F.Variant = Normal_Use);
    --  Returns variables a given loop *may* write to, including variables
    --  declared locally in the loop. Note that if a function returns inside a
    --  loop, the name of the function will be "written to" and will be returned
    --  here.
-
-   function To_Proof_View
-     (Objects : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   with Pre  => (for all Object of Objects =>
-                    Is_Entire_Variable (Object)
-                      and then
-                    Object.Variant = Normal_Use),
-        Post => To_Proof_View'Result.Length = Objects.Length
-                   and then
-                (for all Object of To_Proof_View'Result =>
-                    Object.Kind = Direct_Mapping
-                      or else
-                    Is_Opaque_For_Proof (Object));
-   --  Convert abstract states and entities not in SPARK; for flow they might
-   --  be represented with Entity_Id (which helps to deal with visibility),
-   --  but for proof they are opaque and thus are represented with Magic_String
-   --  (just like hidden globals).
 
    function Get_Type
      (F     : Flow_Id;
@@ -802,11 +786,26 @@ is
    --  might be represented in the contract either directly or via its abstract
    --  state.
 
+   function Find_In (User : Node_Sets.Set; G : Entity_Id) return Entity_Id
+   with Post => (if Present (Find_In'Result)
+                 then User.Contains (Find_In'Result));
+   --  If a global G is represented by User ones, either directly or via an
+   --  abstract state, then return the representative user global; otherwise
+   --  return Empty.
+
+   function Find_In (User : Flow_Id_Sets.Set; G : Flow_Id) return Flow_Id
+   with Post => (if Present (Find_In'Result)
+                 then User.Contains (Find_In'Result));
+   --  Same as above but for Flow_Ids; returns Null_Flow_Id instead of Empty
+
    procedure Map_Generic_In_Formals
      (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
    --  Map generic IN formal parameters, which are visible inside of generic
    --  instances (e.g. might appear in Global and Initializes contracts) into
    --  objects used in their corresponding generic actual parameter expression.
+
+   function Strip_Child_Prefixes (EN : String) return String;
+   --  Strip Child_Prefix from the string representation of an Entity_Name
 
 private
    Init_Done : Boolean := False with Ghost;

@@ -1,27 +1,22 @@
-queen.adb:11:13: info: precondition proved (CVC4: 3 VC)
+queen.adb:11:13: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 queen.adb:11:27: info: range check proved (CVC4: 1 VC)
 queen.adb:15:25: info: assertion proved (CVC4: 1 VC)
 queen.adb:16:25: info: assertion proved (CVC4: 1 VC)
 queen.adb:16:68: info: range check proved (CVC4: 1 VC)
 queen.adb:25:13: info: loop invariant initialization proved (CVC4: 1 VC)
 queen.adb:25:13: info: loop invariant preservation proved (CVC4: 1 VC)
-queen.adb:25:50: info: initialization of "R" proved
 queen.adb:25:53: info: index check proved (CVC4: 4 VC)
 queen.adb:25:60: info: index check proved (CVC4: 4 VC)
-queen.adb:26:16: info: initialization of "R" proved
 queen.adb:30:13: info: loop invariant initialization proved (CVC4: 1 VC)
 queen.adb:30:13: info: loop invariant preservation proved (CVC4: 1 VC)
-queen.adb:30:46: info: initialization of "R" proved
 queen.adb:30:49: info: index check proved (CVC4: 4 VC)
 queen.adb:30:56: info: index check proved (CVC4: 4 VC)
-queen.adb:31:16: info: initialization of "R" proved
-queen.adb:33:14: info: initialization of "R" proved
-queen.adb:42:13: info: loop invariant initialization proved (CVC4: 2 VC)
-queen.adb:42:13: info: loop invariant preservation proved (CVC4: 3 VC)
+queen.adb:42:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC)
+queen.adb:42:13: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC)
 queen.adb:43:46: info: index check proved (CVC4: 4 VC)
 queen.adb:43:65: info: index check proved (CVC4: 4 VC)
-queen.adb:49:13: info: precondition proved (CVC4: 3 VC)
-queen.adb:51:13: info: precondition proved (CVC4: 3 VC)
+queen.adb:49:13: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
+queen.adb:51:13: info: precondition proved (CVC4: 3 VC; Trivial: 1 VC)
 queen.ads:30:18: info: index check proved (CVC4: 2 VC)
 queen.ads:30:27: info: index check proved (CVC4: 2 VC)
 queen.ads:31:27: info: index check proved (CVC4: 2 VC)

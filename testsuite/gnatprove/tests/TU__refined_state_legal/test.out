@@ -1,4 +1,5 @@
-refined_state_legal-priv_child.adb:4:04: info: initialization of "Priv_Var" constituent of "Priv_State" proved
+refined_state_legal-priv_child.ads:4:08: info: flow dependencies proved
+refined_state_legal-priv_child.ads:7:11: info: data dependencies proved
 refined_state_legal.ads:5:27: warning: no procedure exists that can initialize abstract state "Refined_State_Legal.S1"
 refined_state_legal.ads:5:31: warning: no procedure exists that can initialize abstract state "Refined_State_Legal.S2"
 refined_state_legal.ads:7:14: warning: subprogram "Do_Nothing" has no effect

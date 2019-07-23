@@ -1,16 +1,21 @@
 segway.adb:38:41: info: initialization of "Status" constituent of "State" proved
 segway.adb:38:49: info: initialization of "Speed" constituent of "State" proved
-segway.adb:40:30: info: initialization of "Status" constituent of "State" proved
 segway.adb:40:30: info: refined post proved (CVC4: 2 VC)
-segway.adb:40:49: info: initialization of "Speed" constituent of "State" proved
 segway.adb:62:31: info: range check proved (CVC4: 1 VC)
 segway.adb:66:31: info: range check proved (CVC4: 1 VC)
 segway.adb:89:33: info: loop invariant initialization proved (CVC4: 1 VC)
 segway.adb:89:33: info: loop invariant preservation proved (CVC4: 1 VC)
 segway.adb:91:13: info: precondition proved (CVC4: 1 VC)
 segway.adb:93:13: info: precondition proved (CVC4: 1 VC)
-segway.ads:35:22: info: initialization of "Speed" constituent of "State" proved
-segway.ads:35:22: info: initialization of "Status" constituent of "State" proved
+segway.ads:17:11: info: data dependencies proved
+segway.ads:20:11: info: data dependencies proved
+segway.ads:30:11: info: data dependencies proved
+segway.ads:33:11: info: data dependencies proved
+segway.ads:34:11: info: flow dependencies proved
 segway.ads:35:22: info: postcondition proved (CVC4: 2 VC)
+segway.ads:39:11: info: data dependencies proved
+segway.ads:40:11: info: flow dependencies proved
 segway.ads:42:22: info: postcondition proved (CVC4: 1 VC)
+segway.ads:45:11: info: data dependencies proved
+segway.ads:46:11: info: flow dependencies proved
 segway.ads:48:22: info: postcondition proved (CVC4: 2 VC)

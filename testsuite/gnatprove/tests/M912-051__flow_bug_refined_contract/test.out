@@ -1,9 +1,19 @@
 outer.adb:33:46: info: initialization of "Inner.B1" constituent of "Outer.A1" proved
 outer.adb:41:42: info: initialization of "Hidden_State" constituent of "A2" proved
 outer.adb:41:56: info: initialization of "State_In_Body" constituent of "A2" proved
+outer.ads:6:11: info: data dependencies proved
+outer.ads:7:11: info: flow dependencies proved
+outer.ads:10:11: info: data dependencies proved
+outer.ads:11:11: info: flow dependencies proved
+outer.ads:26:13: info: data dependencies proved
+outer.ads:27:13: info: flow dependencies proved
+outer.ads:33:13: info: data dependencies proved
 outer.ads:33:34: info: initialization of "Hidden_State" constituent of "A2" proved
-switch.adb:38:51: info: initialization of "A" proved
-switch.adb:39:51: info: initialization of "B" proved
-switch.adb:39:72: info: initialization of "C" proved
+outer.ads:34:13: info: flow dependencies proved
+switch.adb:33:07: info: initialization of "A" proved
+switch.adb:33:10: info: initialization of "B" proved
+switch.adb:33:13: info: initialization of "C" proved
 switch.ads:2:36: warning: no procedure exists that can initialize abstract state "Switch.State"
 switch.ads:6:25: info: initialization of "Value" proved
+switch.ads:7:09: info: data dependencies proved
+switch.ads:8:09: info: flow dependencies proved

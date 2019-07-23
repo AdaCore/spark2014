@@ -1,11 +1,9 @@
+a.adb:16:07: info: initialization of "H" proved
 a.adb:21:25: info: assertion proved (CVC4: 1 VC)
 a.adb:21:31: info: range check proved (Interval)
 a.adb:22:17: info: division check proved (CVC4: 1 VC)
 a.adb:22:17: info: float overflow check proved (CVC4: 1 VC)
 a.adb:22:26: info: range check proved (Interval)
-a.adb:24:13: info: initialization of "H" proved
 a.adb:27:28: info: assertion proved (CVC4: 1 VC)
-a.adb:27:28: info: initialization of "H" proved
-a.adb:28:30: info: initialization of "H" proved
 a.adb:28:30: info: range check proved (CVC4: 1 VC)
 a.ads:10:07: info: initialization of "Y" proved

@@ -1,7 +1,1 @@
 client.adb:2:19: info: initialization of "H" proved
-client.adb:5:12: info: initialization of "X" proved
-client.adb:6:12: info: initialization of "Y" proved
-client.adb:7:12: info: initialization of "Z" proved
-client.adb:8:09: info: initialization of "X" proved
-client.adb:8:15: info: initialization of "Y" proved
-client.adb:8:21: info: initialization of "Z" proved

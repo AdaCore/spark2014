@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -78,6 +78,13 @@ package body String_Utils is
    procedure Lower_Case_First (S : in out String) is
    begin
       S (S'First) := Ada.Characters.Handling.To_Lower (S (S'First));
+   end Lower_Case_First;
+
+   function Lower_Case_First (S : String) return String is
+      T : String := S;
+   begin
+      Lower_Case_First (T);
+      return T;
    end Lower_Case_First;
 
    -----------------------

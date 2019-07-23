@@ -1,4 +1,4 @@
-intros (pre_val1_le_val2,pre_val2_ub).
+intros val_2dyn factor_dyn dummy (pre_val1_le_val2,pre_val2_ub).
 Open Scope Z_scope.
 Require Import SPARK.
 

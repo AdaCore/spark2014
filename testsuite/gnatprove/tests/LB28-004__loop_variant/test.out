@@ -1,155 +1,90 @@
 p.adb:1:11: warning: subprogram "P" has no effect
-p.adb:9:10: info: initialization of "J" proved
-p.adb:10:12: medium: array index check might fail (e.g. when J = 0 and Tab = (others => 1) and Tab'First = 1)
-p.adb:10:15: medium: "Tab" might not be initialized
-p.adb:10:18: info: initialization of "J" proved
-p.adb:11:12: info: initialization of "J" proved
+p.adb:4:04: info: initialization of "J" proved
+p.adb:4:07: info: initialization of "K" proved
+p.adb:10:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
 p.adb:11:14: medium: overflow check might fail (e.g. when J = Integer'Last)
 p.adb:12:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:12:41: info: initialization of "J" proved
-p.adb:19:10: info: initialization of "J" proved
-p.adb:19:12: medium: overflow check might fail (e.g. when J = 0 and K = -1 and Tab = (others => 0))
-p.adb:19:14: info: initialization of "K" proved
+p.adb:19:12: medium: overflow check might fail (e.g. when J = Integer'First and K = -1)
 p.adb:20:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:20:14: medium: array index check might fail (e.g. when Tab = (others => 0) and Tab'First = 0)
-p.adb:20:19: info: initialization of "J" proved
-p.adb:20:19: info: initialization of "K" proved
-p.adb:20:19: medium: "Tab" might not be initialized
-p.adb:21:10: info: initialization of "J" proved
-p.adb:22:15: info: initialization of "J" proved
+p.adb:20:14: medium: array index check might fail (e.g. when J = 0 and K = 0 and Tab = (1 => 0, others => 1) and Tab'First = 1)
 p.adb:22:17: info: overflow check proved (CVC4: 2 VC)
-p.adb:24:15: info: initialization of "K" proved
 p.adb:24:17: info: overflow check proved (CVC4: 2 VC)
 p.adb:26:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:26:41: info: initialization of "J" proved
-p.adb:27:41: info: initialization of "K" proved
-p.adb:34:10: info: initialization of "J" proved
-p.adb:35:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
-p.adb:35:15: medium: "Tab" might not be initialized
-p.adb:35:18: info: initialization of "J" proved
-p.adb:36:12: info: initialization of "J" proved
+p.adb:35:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:36:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:37:12: info: initialization of "K" proved
 p.adb:37:14: medium: overflow check might fail (e.g. when K = Integer'Last) [possible explanation: loop at line 34 should mention K in a loop invariant]
 p.adb:38:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:38:41: info: initialization of "J" proved
 p.adb:39:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:39:41: info: initialization of "K" proved
-p.adb:45:10: info: initialization of "J" proved
-p.adb:46:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
-p.adb:46:15: medium: "Tab" might not be initialized
-p.adb:46:18: info: initialization of "J" proved
-p.adb:47:12: info: initialization of "J" proved
+p.adb:46:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:47:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:48:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:48:41: info: initialization of "J" proved
 p.adb:49:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:49:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:49:48: info: initialization of "J" proved
 p.adb:49:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:49:57: info: initialization of "Tab" proved
+p.adb:49:57: medium: "Tab" might not be initialized
 p.adb:49:62: info: index check proved (CVC4: 4 VC)
-p.adb:55:10: info: initialization of "J" proved
-p.adb:56:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
-p.adb:56:15: medium: "Tab" might not be initialized
-p.adb:56:18: info: initialization of "J" proved
-p.adb:57:12: info: initialization of "J" proved
+p.adb:56:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:57:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:58:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:58:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:58:48: info: initialization of "J" proved
 p.adb:58:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:58:57: info: initialization of "Tab" proved
+p.adb:58:57: medium: "Tab" might not be initialized
 p.adb:58:62: info: index check proved (CVC4: 4 VC)
 p.adb:59:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:59:41: info: initialization of "J" proved
-p.adb:66:10: info: initialization of "J" proved
-p.adb:67:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => -1) and Tab'First = 0)
-p.adb:67:15: medium: "Tab" might not be initialized
-p.adb:67:18: info: initialization of "J" proved
-p.adb:68:12: info: initialization of "J" proved
+p.adb:67:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:68:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:69:12: info: initialization of "K" proved
 p.adb:69:14: medium: overflow check might fail (e.g. when K = Integer'Last)
-p.adb:70:30: info: initialization of "J" proved
 p.adb:70:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:70:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:70:36: info: overflow check proved (CVC4: 2 VC)
-p.adb:70:38: info: initialization of "K" proved
 p.adb:71:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:71:41: info: initialization of "J" proved
 p.adb:72:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:72:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:72:48: info: initialization of "J" proved
 p.adb:72:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:72:57: info: initialization of "Tab" proved
+p.adb:72:57: medium: "Tab" might not be initialized
 p.adb:72:62: info: index check proved (CVC4: 4 VC)
 p.adb:73:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:73:41: info: initialization of "K" proved
 p.adb:74:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:74:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:74:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:74:52: info: initialization of "K" proved
 p.adb:74:54: info: overflow check proved (CVC4: 2 VC)
-p.adb:74:61: info: initialization of "Tab" proved
+p.adb:74:61: medium: "Tab" might not be initialized
 p.adb:74:66: info: index check proved (CVC4: 4 VC)
-p.adb:79:10: info: initialization of "J" proved
-p.adb:80:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
-p.adb:80:15: medium: "Tab" might not be initialized
-p.adb:80:18: info: initialization of "J" proved
-p.adb:81:12: info: initialization of "J" proved
+p.adb:80:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:81:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:82:12: info: initialization of "K" proved
 p.adb:82:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:83:30: info: initialization of "J" proved
 p.adb:83:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:83:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:83:36: info: overflow check proved (CVC4: 2 VC)
-p.adb:83:38: info: initialization of "K" proved
 p.adb:84:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:84:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:84:48: info: initialization of "J" proved
 p.adb:84:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:84:57: info: initialization of "Tab" proved
+p.adb:84:57: medium: "Tab" might not be initialized
 p.adb:84:62: info: index check proved (CVC4: 4 VC)
 p.adb:85:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:85:41: info: initialization of "J" proved
 p.adb:86:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:86:41: info: initialization of "K" proved
 p.adb:87:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:87:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:87:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:87:52: info: initialization of "K" proved
 p.adb:87:54: info: overflow check proved (CVC4: 2 VC)
-p.adb:87:61: info: initialization of "Tab" proved
+p.adb:87:61: medium: "Tab" might not be initialized
 p.adb:87:66: info: index check proved (CVC4: 4 VC)
-p.adb:92:10: info: initialization of "J" proved
-p.adb:93:12: medium: array index check might fail (e.g. when J = -1 and Tab = (others => 0) and Tab'First = 0)
-p.adb:93:15: medium: "Tab" might not be initialized
-p.adb:93:18: info: initialization of "J" proved
-p.adb:94:12: info: initialization of "J" proved
+p.adb:93:12: medium: array index check might fail (e.g. when J = 99 and Tab = (others => 100) and Tab'First = 100)
 p.adb:94:14: info: overflow check proved (CVC4: 2 VC)
-p.adb:95:12: info: initialization of "K" proved
 p.adb:95:14: info: overflow check proved (CVC4: 2 VC)
 p.adb:96:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:96:41: info: initialization of "J" proved
-p.adb:97:30: info: initialization of "J" proved
 p.adb:97:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:97:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:97:36: info: overflow check proved (CVC4: 2 VC)
-p.adb:97:38: info: initialization of "K" proved
 p.adb:98:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:98:30: info: loop invariant preservation proved (CVC4: 1 VC)
-p.adb:98:48: info: initialization of "J" proved
 p.adb:98:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:98:57: info: initialization of "Tab" proved
+p.adb:98:57: medium: "Tab" might not be initialized
 p.adb:98:62: info: index check proved (CVC4: 4 VC)
 p.adb:99:30: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:99:30: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:99:50: info: overflow check proved (CVC4: 2 VC)
-p.adb:99:52: info: initialization of "K" proved
 p.adb:99:54: info: overflow check proved (CVC4: 2 VC)
-p.adb:99:61: info: initialization of "Tab" proved
+p.adb:99:61: medium: "Tab" might not be initialized
 p.adb:99:66: info: index check proved (CVC4: 4 VC)
 p.adb:100:07: info: loop variant proved (CVC4: 1 VC)
-p.adb:100:41: info: initialization of "K" proved

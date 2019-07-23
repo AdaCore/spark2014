@@ -1,3 +1,5 @@
+arith.adb:3:04: info: initialization of "Tmp1" proved
+arith.adb:3:10: info: initialization of "Tmp2" proved
 arith.adb:7:09: warning: unused assignment
 arith.adb:7:12: warning: possible reassociation due to missing parentheses
 arith.adb:7:14: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
@@ -33,8 +35,6 @@ arith.adb:23:17: warning: possible reassociation due to missing parentheses
 arith.adb:23:19: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X and Y in a precondition]
 arith.adb:23:23: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X and Y and Z in a precondition]
 arith.adb:23:28: info: division check proved (CodePeer)
-arith.adb:26:11: info: initialization of "Tmp2" proved
 arith.adb:26:11: warning: possible reassociation due to missing parentheses
 arith.adb:26:16: medium: overflow check might fail
-arith.adb:26:18: info: initialization of "Tmp1" proved
 arith.adb:26:23: medium: overflow check might fail [possible explanation: subprogram at line 1 should mention X in a precondition]

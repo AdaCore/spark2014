@@ -248,7 +248,7 @@ W: 警告 C: 検査
 
 .. literalinclude:: /gnatprove_by_example/results/counterex.prove
    :language: none
-   :lines: 7
+   :lines: 4
 
 |GNATprove| が生成する反例が，いつもプログラムの適切な実行と対応しているとは限りません．
 

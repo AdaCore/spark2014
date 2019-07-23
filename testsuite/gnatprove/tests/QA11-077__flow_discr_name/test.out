@@ -1,21 +1,14 @@
-main.adb:3:11: info: initialization of "p.x" proved
-main.adb:3:11: info: initialization of "p.y" proved
 main.adb:5:05: warning: statement has no effect
 main.adb:5:05: warning: unused assignment to "p.x"
 main.adb:8:05: warning: statement has no effect
 main.adb:8:05: warning: unused assignment to "p.y"
-main2.adb:3:11: info: initialization of "X" proved
-main2.adb:3:11: info: initialization of "Y" proved
 main2.adb:6:05: warning: statement has no effect
 main2.adb:6:05: warning: unused assignment to "X"
 main2.adb:9:05: warning: statement has no effect
 main2.adb:9:05: warning: unused assignment to "Y"
-p.adb:10:09: info: discriminant check proved (CVC4: 2 VC)
+p.adb:10:09: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:13:11: info: range check proved (CVC4: 1 VC)
 p.adb:17:12: info: discriminant check proved (CVC4: 1 VC)
 p.adb:25:08: warning: statement has no effect
 p.adb:25:08: warning: unused assignment to "Y"
-p.ads:2:14: info: initialization of "X.C" proved
-p.ads:3:14: info: initialization of "Y.C" proved
-p.ads:5:14: info: initialization of "X.C" proved
-p.ads:5:14: info: initialization of "Y.C" proved
+p.ads:7:33: info: data dependencies proved, in instantiation at main2.adb:4

@@ -1,0 +1,16 @@
+project Test is
+
+   type Run_T is ("1", "2");
+   Run := External ("RUN", "1");
+
+   for Object_Dir use "obj";
+
+   package Compiler is
+      for Default_Switches ("Ada") use ("-gnateDRUN=" & Run);
+   end Compiler;
+
+   package Prove is
+      for Proof_Dir use "proof";
+   end Prove;
+
+end Test;

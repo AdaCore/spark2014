@@ -1,6 +1,6 @@
 p.adb:4:15: info: overflow check proved (CodePeer)
-p.adb:9:15: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: precondition of subprogram at line 7 should mention X and Y]
-p.ads:3:27: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
-p.ads:9:27: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
+p.adb:9:15: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: precondition of subprogram at p.ads:5 should mention X and Y]
+p.ads:3:27: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
+p.ads:9:27: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
 p.ads:11:54: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1)
-p.ads:16:54: medium: overflow check might fail (e.g. when X = Integer'First and Y = -1) [possible explanation: precondition of subprogram at line 16 should mention X and Y]
+p.ads:16:54: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First) [possible explanation: precondition of subprogram at line 13 should mention X and Y]

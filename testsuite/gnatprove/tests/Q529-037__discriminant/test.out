@@ -1,23 +1,28 @@
 bounded_stacks.adb:30:12: info: discriminant check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:30:15: info: length check proved (CVC4: 4 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.adb:30:15: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:40:28: info: overflow check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:41:24: info: index check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when Item = 0 and This = (Top => 2, others => ?)) [possible explanation: subprogram at line 48 should mention This in a precondition]
+bounded_stacks.adb:50:32: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when This = (Capacity => ?, Values => (others => 0), Top => 2) and This.Values'First = 1 and This.Values'Last = 1)
 bounded_stacks.adb:51:28: info: range check proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:59:24: info: index check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.adb:71:29: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when K = 2 and Left = (Capacity => 1, Values => (others => 0), Top => 2) and Left.Values'First = 1 and Left.Values'Last = 1)
 bounded_stacks.adb:71:49: medium: array index check might fail, in instantiation at integer_stacks.ads:4 (e.g. when K = 2 and Right = (Capacity => 1, Values => (others => 0), Top => 2) and Right.Values'First = 1 and Right.Values'Last = 1)
 bounded_stacks.ads:6:09: info: default initial condition proved (CVC4: 1 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:17:21: info: initialization of "This.Top" proved, in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:17:21: info: initialization of "This.Values" proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:17:21: info: initialization of "This" proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:18:20: info: postcondition proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:18:27: info: initialization of "This.Top" proved, in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:18:27: info: initialization of "This.Values" proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:20:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:21:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:26:20: info: postcondition proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:27:54: medium: overflow check might fail, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:28:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:29:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:31:41: info: initialization of "Item" proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:33:20: info: postcondition proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:35:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:36:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:40:06: info: data dependencies proved, in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:41:06: info: flow dependencies proved, in instantiation at integer_stacks.ads:4
 bounded_stacks.ads:48:07: info: range check proved (CVC4: 2 VC), in instantiation at integer_stacks.ads:4
-bounded_stacks.ads:48:44: info: length check proved (CVC4: 4 VC), in instantiation at integer_stacks.ads:4
+bounded_stacks.ads:48:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in instantiation at integer_stacks.ads:4
 integer_stacks.ads:4:01: info: cannot unroll loop (too many loop iterations)
 integer_stacks.ads:4:01: info: in instantiation at bounded_stacks.adb:70

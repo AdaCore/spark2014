@@ -1,2 +1,2 @@
 main.adb:5:19: medium: assertion might fail, cannot prove Proxy = 0 [possible explanation: subprogram at line 3 should mention State.V in a precondition]
-state.ads:2:04: info: initialization of "V" proved
+state.ads:1:20: info: flow dependencies proved

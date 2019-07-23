@@ -1,4 +1,4 @@
-with Ada.Containers.Formal_Vectors;
+with Ada.Containers.Formal_Indefinite_Vectors;
 
 generic
    type Index_Type is range <>;
@@ -175,9 +175,10 @@ package Aida.Containers.Formal_Vectors is
 
 private
 
-   package Vector_Type_Owner is new Ada.Containers.Formal_Vectors (Index_Type   => Index_Type,
-                                                                   Element_Type => Element_Type,
-                                                                   Bounded      => Bounded);
+   package Vector_Type_Owner is new Ada.Containers.Formal_Indefinite_Vectors (Index_Type   => Index_Type,
+                                                                              Element_Type => Element_Type,
+                                                                              Bounded      => Bounded,
+                                                                              Max_Size_In_Storage_Elements => Element_Type'Size);
 
    type Vector_Type (Capacity : Capacity_Range) is tagged limited
       record

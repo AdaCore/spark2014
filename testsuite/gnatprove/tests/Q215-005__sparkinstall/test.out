@@ -11,7 +11,6 @@ gcc
 gnat2why
 gnat_server
 gnatbind
-gnathub
 gnatls
 gnatwhy3
 gprbuild
@@ -20,7 +19,6 @@ gprconfig
 gprls
 gprname
 gprslave
-scilrm
 spark_codepeer_wrapper
 spark_memcached_wrapper
 spark_report
@@ -34,12 +32,10 @@ z3
 libexec/spark/share dir
 codepeer
 doc
-gcc-7.3.1
-gnathub
+gcc-8.3.1
 gpr
 gprconfig
 info
 javascript
 lal-checkers
 man
-sonar

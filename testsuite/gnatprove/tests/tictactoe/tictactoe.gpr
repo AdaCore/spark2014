@@ -7,7 +7,7 @@ project Tictactoe is
    end Builder;
 
    package Prove is
-      for Switches use ("--level=2");
+      for Proof_Switches ("Ada") use ("--level=2");
    end Prove;
 
 end Tictactoe;

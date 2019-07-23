@@ -1,1 +1,1 @@
-skein.adb:17:14: medium: overflow check might fail (e.g. when F = Integer'Last) [possible explanation: subprogram at line 15 should mention F in a precondition]
+skein.adb:17:14: medium: overflow check might fail (e.g. when F = Integer'Last) [possible explanation: subprogram at skein.ads:9 should mention F in a precondition]

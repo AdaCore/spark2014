@@ -1,2 +1,2 @@
-funcs.ads:8:19: info: precondition proved (CVC4: 1 VC)
+funcs.ads:8:19: info: precondition proved (Trivial: 1 VC)
 funcs.ads:8:19: medium: postcondition might fail, cannot prove Valid (Root'Class (Id'result))

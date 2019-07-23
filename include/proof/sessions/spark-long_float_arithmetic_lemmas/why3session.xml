@@ -1,123 +1,155 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="4">
+<why3session shape_version="6">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
-<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="0"/>
-<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="0"/>
-<prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="0"/>
-<file name="../../../obj/gnatprove/spark-long_float_arithmetic_lemmas.mlw" proved="true">
-<theory name="Spark__long_float_arithmetic_lemmas__package_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<prover id="2" name="Z3" version="4.5.1-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<prover id="3" name="altergo" version="1.30-gnatprove" timelimit="100" steplimit="0" memlimit="1000"/>
+<file>
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="obj"/>
+<path name="gnatprove"/>
+<path name="spark-long_float_arithmetic_lemmas.mlw"/>
+<theory name="Spark__long_float_arithmetic_lemmas__package_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
+  </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="17946"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_add_is_monotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="19891"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="12694"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="15480"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1066"/></proof>
+  <proof prover="3"><result status="valid" steps="2108"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="14510"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_sub_is_monotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="18874"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="14215"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="16203"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="1" timelimit="5"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
-  <proof prover="3"><result status="valid" steps="1065"/></proof>
+  <proof prover="3"><result status="valid" steps="2109"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10361"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="12898"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="9830"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="12303"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="10409"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="12807"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="9917"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="12241"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="postcondition">
+  </goal>
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_mul_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3402"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="10998"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="3232"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="4784"/></proof>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="10544"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="13337"/></proof>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="4562"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="12799"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" proved="true">
- <goal name="WP_parameter def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="WP_parameter def.0" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="3397"/></proof>
+<theory name="Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="VC def.0" expl="postcondition">
   </goal>
-  <goal name="WP_parameter def.1" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="10892"/></proof>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <proof prover="1"><result status="valid" steps="3227"/></proof>
   </goal>
-  <goal name="WP_parameter def.2" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="4779"/></proof>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="10486"/></proof>
   </goal>
-  <goal name="WP_parameter def.3" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="13443"/></proof>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="4557"/></proof>
   </goal>
-  <goal name="WP_parameter def.4" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../../obj/gnatprove/../../proof/Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="1" timelimit="5"><result status="valid" steps="12857"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="postcondition">
+  </goal>
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <proof prover="0" edited="../../Coq/spark-long_float_arithmetic_lemmas/Spark__long_float_arithmetic_lemmas__lemma_div_is_antimonotonic__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>

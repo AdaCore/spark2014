@@ -2,23 +2,13 @@ main.adb:1:11: warning: subprogram "Main" has no effect
 main.adb:12:14: info: postcondition proved (CVC4: 1 VC)
 main.adb:15:14: info: postcondition proved (CVC4: 1 VC)
 main.adb:18:14: info: postcondition proved (CVC4: 2 VC)
-main.adb:44:34: info: initialization of "Cheat" proved
-main.adb:55:13: info: initialization of "Arr_Obj" proved, in call inlined at main.adb:78
-main.adb:60:21: info: initialization of "Arr_Obj" proved, in call inlined at main.adb:79
 main.adb:60:32: info: overflow check proved (CVC4: 1 VC), in call inlined at main.adb:79
-main.adb:63:14: info: initialization of "Rec_Obj.Comp" proved
 main.adb:71:19: info: assertion proved (CVC4: 1 VC)
-main.adb:71:19: info: initialization of "Arr_Obj" proved
 main.adb:72:19: info: assertion proved (CVC4: 1 VC)
-main.adb:72:19: info: initialization of "Arr_Obj" proved
 main.adb:73:19: info: assertion proved (CVC4: 1 VC)
 main.adb:74:19: info: assertion proved (CVC4: 1 VC)
-main.adb:74:19: info: initialization of "Rec_Obj.Comp" proved
 main.adb:75:19: info: assertion proved (CVC4: 1 VC)
 main.adb:76:19: info: assertion proved (CVC4: 1 VC)
-main.adb:87:25: info: initialization of "Arr_Obj" proved
-main.adb:87:25: medium: assertion might fail, cannot prove Obj_1.Comp = 9012 (e.g. when Arr_Obj = (3 => (Comp => 9013), others => (Comp => 0)))
-main.adb:89:25: info: initialization of "Arr_Obj" proved
-main.adb:89:25: medium: assertion might fail, cannot prove Obj_2.Comp = 9012 (e.g. when Arr_Obj = (3 => (Comp => 9013), others => (Comp => 0)) and The_Index = 3)
-main.adb:91:25: info: initialization of "Rec_Obj.Comp" proved
-main.adb:91:25: medium: assertion might fail, cannot prove Obj_4 = 5678 (e.g. when Rec_Obj = (Comp => 0))
+main.adb:87:25: medium: assertion might fail, cannot prove Obj_1.Comp = 9012
+main.adb:89:25: medium: assertion might fail, cannot prove Obj_2.Comp = 9012
+main.adb:91:25: medium: assertion might fail, cannot prove Obj_4 = 5678

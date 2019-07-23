@@ -9,3 +9,7 @@ assert (Htrans: Relation_Definitions.transitive _ (fun (x y: integer) => (to_rep
 }
 
 eapply (generic_raising_order_minus _ _ Htrans _); eauto; intuition.
+(* Conclude *)
+destruct (h2 i0) as [Hconcl | H3]; eauto.
+- destruct Hconcl; eauto.
+- subst. contradict H. omega.

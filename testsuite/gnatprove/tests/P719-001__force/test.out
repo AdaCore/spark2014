@@ -1,14 +1,10 @@
 arithmetic.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 arithmetic.adb:7:38: info: division check proved (CVC4: 1 VC)
-arithmetic.adb:14:20: info: initialization of "R" proved
-arithmetic.adb:15:33: info: initialization of "R" proved
+arithmetic.adb:9:07: info: initialization of "R" proved
 arithmetic.adb:15:33: info: loop invariant initialization proved (CVC4: 3 VC)
 arithmetic.adb:15:33: info: loop invariant preservation proved (CVC4: 3 VC)
-arithmetic.adb:19:14: info: initialization of "R" proved
-arithmetic.adb:7:19: medium: postcondition might fail, cannot prove Halve_D'Result = N / 2 [possible explanation: subprogram at line 6 should mention N in a precondition]
-arithmetic.adb:7:38: medium: divide by zero might fail [possible explanation: subprogram at line 6 should mention N in a precondition]
-arithmetic.adb:14:20: info: initialization of "R" proved
-arithmetic.adb:15:33: info: initialization of "R" proved
+arithmetic.adb:7:19: medium: postcondition might fail, cannot prove Halve_D'Result = N / 2
+arithmetic.adb:7:38: info: division check proved (altergo: 1 VC)
+arithmetic.adb:9:07: info: initialization of "R" proved
 arithmetic.adb:15:33: medium: loop invariant might fail after first iteration, cannot prove R = I
 arithmetic.adb:15:33: medium: loop invariant might fail in first iteration, cannot prove R = I
-arithmetic.adb:19:14: info: initialization of "R" proved

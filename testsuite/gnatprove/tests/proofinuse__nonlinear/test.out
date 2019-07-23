@@ -2,41 +2,31 @@ nonlinear.adb:10:17: info: overflow check proved (CVC4: 1 VC)
 nonlinear.adb:10:22: info: division check proved (CVC4: 1 VC)
 nonlinear.adb:10:22: info: range check proved (CVC4: 1 VC)
 nonlinear.adb:11:22: info: assertion proved (CVC4: 1 VC)
-nonlinear.adb:11:22: info: initialization of "Res" proved
-nonlinear.adb:18:22: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:19:22: info: initialization of "Res" proved
-nonlinear.adb:19:22: medium: assertion might fail, cannot prove Res <= X (e.g. when Res = 0 and X = 0) [possible explanation: subprogram at line 14 should mention X in a precondition]
-nonlinear.adb:25:16: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:25:16: info: range check proved (CVC4: 1 VC)
-nonlinear.adb:26:22: info: assertion proved (CVC4: 1 VC)
-nonlinear.adb:26:23: info: initialization of "Res" proved
-nonlinear.adb:26:27: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:26:32: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:32:22: info: assertion proved (CVC4: 1 VC)
-nonlinear.adb:32:24: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:32:29: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:32:33: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:32:38: info: range check proved (CVC4: 1 VC)
-nonlinear.adb:32:46: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention X in a precondition]
-nonlinear.adb:32:51: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:38:16: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:38:20: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:39:22: info: initialization of "Res" proved
-nonlinear.adb:39:22: medium: assertion might fail, cannot prove Res in -99 .. -Y (e.g. when Res = 0 and Y = 1) [possible explanation: subprogram at line 35 should mention Y in a precondition]
-nonlinear.adb:39:36: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:44:43: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:45:16: info: overflow check proved (CVC4: 1 VC)
-nonlinear.adb:46:22: info: assertion proved (CVC4: 1 VC)
-nonlinear.adb:46:22: info: initialization of "Res" proved
-nonlinear.adb:52:17: medium: overflow check might fail (e.g. when Res = 0 and X = 2 and Y = 2) [possible explanation: subprogram at line 49 should mention X and Y in a precondition]
-nonlinear.adb:52:22: info: division check proved (CVC4: 1 VC)
-nonlinear.adb:52:22: info: range check proved (CVC4: 1 VC)
-nonlinear.adb:53:22: info: assertion proved (CVC4: 1 VC)
-nonlinear.adb:53:22: info: initialization of "Res" proved
+nonlinear.adb:19:22: info: division check proved (CVC4: 1 VC)
+nonlinear.adb:20:22: medium: assertion might fail, cannot prove Res <= X [possible explanation: subprogram at nonlinear.ads:8 should mention X in a precondition]
+nonlinear.adb:26:16: info: division check proved (CVC4: 1 VC)
+nonlinear.adb:26:16: info: range check proved (CVC4: 1 VC)
+nonlinear.adb:27:22: info: assertion proved (CVC4: 1 VC)
+nonlinear.adb:27:27: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:27:32: info: division check proved (CVC4: 1 VC)
+nonlinear.adb:33:22: info: assertion proved (CVC4: 1 VC)
+nonlinear.adb:33:24: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:33:29: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:33:33: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:33:38: info: range check proved (CVC4: 1 VC)
+nonlinear.adb:33:46: medium: overflow check might fail [possible explanation: subprogram at nonlinear.ads:14 should mention X in a precondition]
+nonlinear.adb:33:51: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:39:16: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:39:20: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:40:22: info: assertion proved (CVC4: 2 VC)
+nonlinear.adb:40:36: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:40:39: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:45:43: info: division check proved (CVC4: 1 VC)
+nonlinear.adb:46:16: info: overflow check proved (CVC4: 1 VC)
+nonlinear.adb:47:22: info: assertion proved (CVC4: 1 VC)
 nonlinear.ads:7:43: info: initialization of "Res" proved
 nonlinear.ads:8:53: info: initialization of "Res" proved
 nonlinear.ads:11:42: info: initialization of "Res" proved
 nonlinear.ads:14:14: warning: subprogram "Power" has no effect
 nonlinear.ads:17:36: info: initialization of "Res" proved
 nonlinear.ads:20:50: info: initialization of "Res" proved
-nonlinear.ads:23:44: info: initialization of "Res" proved

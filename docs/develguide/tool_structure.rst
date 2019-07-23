@@ -19,10 +19,10 @@ The SPARK tool is a tool that consists of several executables:
 * the provers: Process prover input files and return proof results.
 * spark_report: A tool to generate a report file for the analysis results.
 
-.. _Gnatprove:
+.. _gnatprove:
 
 *********
-Gnatprove
+gnatprove
 *********
 
 The gnatprove executable is the main entry point; it is the executable
@@ -36,7 +36,7 @@ gnatprove needs to parse the project file to be able to fully interpret
 switches, because the project file may also contain extra switches to
 be passed to gnatprove. But some command line switches influence the
 way the project is parsed. To break out of this circular dependency,
-the command line is parsed twice:
+the command line is parsed several times:
 
  - Once only the actual command line (as in ``Ada.Command_Line``) is
    parsed for some switches that would terminate immediately such as
@@ -45,6 +45,8 @@ the command line is parsed twice:
  - Then the actual command line is concatenated with the extra switches
    in the project file (if any), and the result is parsed again, now
    looking at all switches.
+ - The previous step is repeated for all file-specific switches specified in
+   the project file.
 
 Inside ``configuration.adb``, there is a package ``CL_Switches`` that
 represents command line switches (via command line or project file),
@@ -60,7 +62,7 @@ Generating Globals
 
 Processing of the SPARK source files happens in two phases:
   - in the first phase, information about global side effects of all
-    relevant files is collected;
+    relevant files is collected; this information is stored in ALI files.
   - in the second phase, the above information is used to translate
     the SPARK code into Why.
 
@@ -69,7 +71,7 @@ but the options are different so that the tool knows in which mode to
 operate.
 
 Using gprbuild
---------------
+==============
 
 In fact, gnatprove doesn't know on which files to run ``gnat2why``
 nor where to find the source files. It is best to delegate this task
@@ -85,7 +87,7 @@ holds back the output of ``gnat2why`` until the tool has finished
 completely. This can create some confusion in a debugging context.
 
 Passing options to gnat2why
----------------------------
+===========================
 
 Because gnat2why is essentially a modified gcc and shares e.g. command
 line parsing, it's not easy to add switches so that gnatprove can pass
@@ -96,6 +98,21 @@ the reading and writing of that file.
 
 The switch ``Global_Gen_Mode`` dictates if gnat2why is in Global
 generation mode (first phase) or in translation mode (second phase).
+
+Copying ALI files
+=================
+
+We call gprbuild twice using different settings. Gprbuild has some mechanisms
+to avoid rerunning the compiler (gnat2why in our case), this includes
+timestamps, the ``--complete-output`` mechanism, and rerunning when switches
+have changes (``-s`` switch). Calling gprbuild twice with the same object
+directory would partly break these mechanisms. Therefore we change the object
+dir between those phases, adding the subdir ``phase1`` to the object dir of
+``phase2``.
+
+So that phase 2 can find the ALI files that have been produced in phase 1, we
+copy them from ``<phase2objdir>/phase1`` to ``<phase2objdir>``, after having
+run phase 1 and before running phase 2.
 
 Running the Why3server
 ======================
@@ -204,3 +221,55 @@ This tool is called when all gnat2why processes are finished. It reads
 all ``.spark`` files (the machine-parsable output of gnat2why) and
 produces a summary file ``gnatprove.out``.
 
+gnatprove calls spark_report with a single argument, a filename. This file
+contains some info for spark_report in JSON syntax, with the following
+structure::
+
+    obj_dirs : list of strings
+    cmdline : list of strings
+    switches : list of strings
+    proof_switches : map of string to list of strings
+
+Explanation for all fields:
+ - obj_dirs: spark_report looks for all ``.spark`` files in each directory in
+   the ``obj_dirs`` list, and processes them to generate the ``gnatprove.out``
+   file.
+ - cmdline: the switches given to gnatprove on the commandline.
+ - switches: the switches of the ``Switches`` attribute in the ``Prove``
+   package of the project file.
+ - proof_switches: the switches for each index of the ``Proof_Switches``
+   attribute in the ``Prove`` package.
+
+***************
+IDE Integration
+***************
+
+GNATprove can be called both from the command-line and from within one of the
+two IDEs developed at AdaCore: GPS or GNATbench (a plugin of Eclipse).
+
+A general principle is that as little logic as possible should be put in the
+IDE support, as:
+ - the support may be IDE-specific which entails duplication,
+ - we may drop some IDE and add support for others in the future,
+ - most features should be usable from the command-line, and
+ - it is easier to test features from the command-line.
+
+As an example, the generation of counterexample is attempted for all unproved
+checks, and when successful a corresponding trace is added in the
+:file:`.spark` file which lists the lines of code and values of variables which
+constitute the counterexample in JSON format. The IDE integration consists
+simply in displaying that information when requested by the user.
+
+The IDE integration consists mostly in the following files inside ``gps``
+repository, under ``share/plug-ins``:
+ - file :file:`spark2014.py` defines the GPS integration
+ - file :file:`spark2014/gnatprove.xml` defines the pop-up panels and Build
+   Targets (shared between GPS and GNATbench)
+ - file :file:`spark2014/gnatprove_menus.xml` defines the menus (shared between
+   GPS and GNATbench)
+ - file :file:`spark2014/itp_lib.py` defines the interactive proof support in
+   GPS
+
+In addition to the above XML files, the GNATbench integration consists in code
+mapping the menus to actions inside Eclipse. The GNATbench integration is more
+basic than the GPS one.

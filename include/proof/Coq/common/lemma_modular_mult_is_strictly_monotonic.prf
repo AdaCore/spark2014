@@ -1,12 +1,12 @@
-intros (factor_type,(pre_val1_lt_val2,pre_val2_ub)).
+intros val1_hyp dummy factor_type (pre_val1_lt_val2, pre_val2_ub).
 Open Scope Z_scope.
 Require Import SPARK.
 
 (* rewrite hypotheses *)
 pose (to_uint_bounds val1) as val1_type; clearbody val1_type.
 pose (to_uint_bounds val2) as val2_type; clearbody val2_type.
-unfold in_range in factor_type.
-destruct val1_type as (val1_lb, val1_ub), val2_type as (val2_lb, val2_ub), factor_type as (factor_lb, factor_ub).
+unfold dynamic_invariant, in_range in factor_type.
+destruct val1_type as (val1_lb, val1_ub), val2_type as (val2_lb, val2_ub), factor_type as (factor_lb, factor_ub); eauto.
 unfold ule in factor_lb, factor_ub, pre_val2_ub.
 unfold ult in pre_val1_lt_val2.
 rewrite rliteral_axiom2 in factor_lb.

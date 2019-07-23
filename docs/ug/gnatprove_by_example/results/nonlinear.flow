@@ -1,4 +1,2 @@
 nonlinear.adb:1:42: info: initialization of "R1" proved
 nonlinear.adb:1:46: info: initialization of "R2" proved
-nonlinear.adb:4:11: info: initialization of "R1" proved
-nonlinear.adb:4:17: info: initialization of "R2" proved

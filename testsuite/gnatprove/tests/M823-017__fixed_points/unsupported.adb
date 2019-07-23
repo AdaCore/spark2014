@@ -14,6 +14,7 @@ procedure Unsupported is
    X4 : T4 := 0.0;
    X5 : T5 := 0.0;
    X6 : T6 := 0.0;
+   X7 : Integer := 0;
 begin
    X6 := X4 * X4;
    X6 := X4 * X5;
@@ -21,4 +22,5 @@ begin
    X6 := 2.0 * X4;
    X6 := T6(X4);
    X6 := T6(X5);
+   X7 := Integer (X6 / X5);
 end Unsupported;

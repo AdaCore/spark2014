@@ -1,3 +1,6 @@
-refinement.adb:4:04: info: initialization of "High_Reading" constituent of "State" proved
 refinement.adb:12:30: info: refined post proved (CVC4: 1 VC)
+refinement.ads:3:08: info: flow dependencies proved
+refinement.ads:8:11: info: data dependencies proved
+refinement.ads:11:11: info: data dependencies proved
+refinement.ads:12:11: info: flow dependencies proved
 refinement.ads:14:22: info: postcondition proved (CVC4: 1 VC)

@@ -1,5 +1,5 @@
 p.adb:9:13: info: precondition proved (CVC4: 1 VC)
-p.adb:16:13: medium: precondition might fail (e.g. when A = 0) [possible explanation: subprogram at line 12 should mention A in a precondition]
+p.adb:16:13: medium: precondition might fail, cannot prove Amount <= 16
 p.ads:10:19: info: postcondition proved (CVC4: 1 VC)
 p.ads:10:29: info: division check proved (CVC4: 1 VC)
 p.ads:13:19: info: postcondition proved (CVC4: 1 VC)

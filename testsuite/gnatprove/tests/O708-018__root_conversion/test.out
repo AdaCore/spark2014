@@ -1,34 +1,19 @@
-fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >= 1.0 (e.g. when MD = 0 and MS = 0)
-fxp_false_check_1a.adb:7:29: info: initialization of "MD" proved
-fxp_false_check_1a.adb:7:53: info: initialization of "MS" proved
-fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) < 0.0 (e.g. when MD = 0 and MS = 0)
-fxp_false_check_1b.adb:7:29: info: initialization of "MD" proved
-fxp_false_check_1b.adb:7:52: info: initialization of "MS" proved
-fxp_false_check_2.adb:8:25: info: initialization of "MD" proved
+fxp_false_check_1a.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) >= 1.0 or Duration (MS) >= 1.0
+fxp_false_check_1b.adb:7:19: medium: assertion might fail, cannot prove Duration (MD) < 0.0 or Duration (MS) < 0.0
+fxp_false_check_2.adb:4:04: info: initialization of "MD" proved
 fxp_false_check_2.adb:8:25: medium: range check might fail (e.g. when MD = 20)
 fxp_false_check_3.adb:6:19: info: assertion proved (CVC4: 1 VC)
 fxp_false_check_3.adb:6:35: medium: range check might fail (e.g. when M = 9223372036854775807/1000000000)
-fxp_false_check_3.adb:6:48: info: initialization of "M" proved
 fxp_true_check_1.adb:7:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_1.adb:7:29: info: initialization of "MD" proved
 fxp_true_check_1.adb:8:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_1.adb:8:29: info: initialization of "MS" proved
 fxp_true_check_1.adb:9:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_1.adb:9:29: info: initialization of "MD" proved
 fxp_true_check_1.adb:10:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_1.adb:10:29: info: initialization of "MS" proved
-fxp_true_check_2.adb:8:25: info: initialization of "MD" proved
+fxp_true_check_2.adb:4:04: info: initialization of "MD" proved
 fxp_true_check_2.adb:8:25: info: range check proved (CVC4: 1 VC)
-fxp_true_check_3a.adb:6:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_3a.adb:6:42: info: initialization of "MD" proved
-fxp_true_check_3b.adb:6:19: info: assertion proved (CVC4: 1 VC)
+fxp_true_check_3a.adb:6:19: info: assertion proved (Trivial: 1 VC)
+fxp_true_check_3b.adb:6:19: info: assertion proved (Trivial: 1 VC)
 fxp_true_check_3b.adb:6:35: info: range check proved (CVC4: 1 VC)
-fxp_true_check_3b.adb:6:45: info: initialization of "MS" proved
 fxp_true_check_4.adb:8:19: info: assertion proved (CVC4: 1 VC)
-fxp_true_check_4.adb:8:29: info: initialization of "MD" proved
 fxp_true_check_4.adb:8:45: info: overflow check proved (CVC4: 1 VC)
-fxp_true_check_4.adb:8:46: info: initialization of "MD2" proved
-integer_false_check.adb:6:19: medium: assertion might fail, cannot prove Integer (MI) < 0 (e.g. when MI = 0)
-integer_false_check.adb:6:28: info: initialization of "MI" proved
+integer_false_check.adb:6:19: medium: assertion might fail, cannot prove Integer (MI) < 0
 integer_true_check.adb:6:19: info: assertion proved (CVC4: 1 VC)
-integer_true_check.adb:6:28: info: initialization of "MI" proved

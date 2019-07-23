@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---               Copyright (C) 2013-2018, Altran UK Limited                 --
+--                Copyright (C) 2013-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -866,7 +866,8 @@ package body Flow.Control_Flow_Graph is
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
-   with Post => Ctx'Old.Folded_Function_Checks = Ctx.Folded_Function_Checks;
+   with Post => CM.Length = CM.Length'Old + 1 and then
+                Ctx'Old.Folded_Function_Checks = Ctx.Folded_Function_Checks;
    --  Process an arbitrary statement (this is basically a big case
    --  block which calls the various Do_XYZ procedures).
 
@@ -874,7 +875,8 @@ package body Flow.Control_Flow_Graph is
      (L   : List_Id;
       FA  : in out Flow_Analysis_Graphs;
       CM  : in out Connection_Maps.Map;
-      Ctx : in out Context);
+      Ctx : in out Context)
+   with Post => CM.Length = CM.Length'Old + 1;
    --  This processes a list of statements and links up each statement
    --  to the its successor. The final connection map for L will map
    --  to the standard entry of the first statement and the standard
@@ -1138,8 +1140,8 @@ package body Flow.Control_Flow_Graph is
          --  The discriminants (for example r.x.d) do not live in the tree,
          --  but we should make the parent tree anyway, so that we get the
          --  important root node (in this example r). This is important for
-         --  discriminated null records which have no other way of
-         --  producing this otherwise.
+         --  discriminated null records which have no other way of producing
+         --  this otherwise.
          declare
             P : constant Flow_Id :=
               Change_Variant (Entire_Variable (F),
@@ -1182,9 +1184,9 @@ package body Flow.Control_Flow_Graph is
                                       FA.CFG.Get_Vertex (F));
 
                            when Final_Value =>
-                              Linkup  (FA,
-                                       FA.CFG.Get_Vertex (F),
-                                       FA.CFG.Get_Vertex (P));
+                              Linkup (FA,
+                                      FA.CFG.Get_Vertex (F),
+                                      FA.CFG.Get_Vertex (P));
 
                            when others =>
                               raise Program_Error;
@@ -1203,7 +1205,7 @@ package body Flow.Control_Flow_Graph is
 
                when Direct_Mapping | Record_Field =>
                   --  Only proceed if we don't have this vertex yet
-                  if FA.CFG.Get_Vertex (F) = Flow_Graphs.Null_Vertex then
+                  if not FA.CFG.Contains (F) then
                      --  Create vertex
                      Add_Vertex
                        (FA,
@@ -1339,22 +1341,18 @@ package body Flow.Control_Flow_Graph is
                              Final_Atr,
                              FA);
 
-         FA.All_Vars.Include (F);
+         FA.All_Vars.Insert (F);
       end Process;
 
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      declare
-         FS : constant Flow_Id_Sets.Set := Flatten_Variable (E, FA.B_Scope);
-      begin
-         for Tmp of FS loop
-            Process (Tmp);
-            if Has_Bounds (Tmp, FA.B_Scope) then
-               Process (Tmp'Update (Facet => The_Bounds));
-            end if;
-         end loop;
-      end;
+      for Comp of Flatten_Variable (E, FA.B_Scope) loop
+         Process (Comp);
+         if Has_Bounds (Comp, FA.B_Scope) then
+            Process (Comp'Update (Facet => The_Bounds));
+         end if;
+      end loop;
 
       if Extensions_Visible (E, FA.B_Scope) then
          Process (Direct_Mapping_Id (E, Facet => Extension_Part));
@@ -1415,18 +1413,16 @@ package body Flow.Control_Flow_Graph is
                              Final_Atr,
                              FA);
 
-         FA.All_Vars.Include (F);
+         FA.All_Vars.Insert (F);
       end Process;
-
-      FS : constant Flow_Id_Sets.Set := Flatten_Variable (F, FA.B_Scope);
 
    --  Start of processing for Create_Initial_And_Final_Vertices
 
    begin
-      for Tmp of FS loop
-         Process (Tmp);
-         if Has_Bounds (Tmp, FA.B_Scope) then
-            Process (Tmp'Update (Facet => The_Bounds));
+      for Comp of Flatten_Variable (F, FA.B_Scope) loop
+         Process (Comp);
+         if Has_Bounds (Comp, FA.B_Scope) then
+            Process (Comp'Update (Facet => The_Bounds));
          end if;
       end loop;
 
@@ -1447,15 +1443,18 @@ package body Flow.Control_Flow_Graph is
    is
       Funcs : Node_Sets.Set;
 
-      V     : Flow_Graphs.Vertex_Id;
-      Verts : Vertex_Lists.List;
+      V : Flow_Graphs.Vertex_Id;
 
       Partial         : Boolean;
       View_Conversion : Boolean;
-      Map_Root        : Flow_Id;
-      To_Cw           : constant Boolean :=
-        Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope)) and then
-          not Is_Class_Wide_Type (Get_Type (Expression (N), FA.B_Scope));
+      LHS_Root        : Flow_Id;
+
+      LHS_Type : constant Entity_Id := Get_Type (Name (N), FA.B_Scope);
+      RHS_Type : constant Entity_Id := Get_Type (Expression (N), FA.B_Scope);
+
+      To_Cw    : constant Boolean :=
+        Is_Class_Wide_Type (LHS_Type) and then
+          not Is_Class_Wide_Type (RHS_Type);
 
    begin
       --  Collect function calls appearing in the assignment statement: both
@@ -1478,44 +1477,45 @@ package body Flow.Control_Flow_Graph is
            (Name (N),
             Partial_Definition => Partial,
             View_Conversion    => View_Conversion,
-            Map_Root           => Map_Root,
+            Map_Root           => LHS_Root,
             Seq                => Unused);
       end;
 
-      --  We have two likely scenarios: some kind of record assignment (in
-      --  which case we try our best to dis-entangle the record fields so
-      --  that information does not bleed all over the place) and the
-      --  default case.
+      --  We have two scenarios: some kind of record assignment (in which case
+      --  we try our best to dis-entangle the record fields so that information
+      --  does not bleed all over the place) and the default case.
 
       if not Partial and then RHS_Split_Useful (N, FA.B_Scope) then
          declare
-            M            : Flow_Id_Maps.Map;
-            All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
+            All_Vertices : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
             Missing      : Flow_Id_Sets.Set;
-         begin
-            M := Untangle_Record_Assignment
-              (Expression (N),
-               Map_Root                     => Map_Root,
-               Map_Type                     => Get_Type (Name (N), FA.B_Scope),
-               Scope                        => FA.B_Scope,
-               Fold_Functions               => True,
-               Use_Computed_Globals         => not FA.Generating_Globals,
-               Expand_Synthesized_Constants => False);
+            Verts        : Vertex_Lists.List;
 
-            Missing := Flatten_Variable (Map_Root, FA.B_Scope);
-            if Is_Class_Wide_Type (Get_Type (Name (N), FA.B_Scope))
-              and then Map_Root.Kind = Direct_Mapping
+            RHS_Map : constant Flow_Id_Maps.Map :=
+              Untangle_Record_Assignment
+                (Expression (N),
+                 Map_Root                     => LHS_Root,
+                 Map_Type                     => LHS_Type,
+                 Scope                        => FA.B_Scope,
+                 Fold_Functions               => True,
+                 Use_Computed_Globals         => not FA.Generating_Globals,
+                 Expand_Synthesized_Constants => False);
+
+         begin
+            Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
+            if Is_Class_Wide_Type (LHS_Type)
+              and then LHS_Root.Kind = Direct_Mapping
             then
-               Missing.Include (Map_Root'Update (Facet => Extension_Part));
+               Missing.Insert (LHS_Root'Update (Facet => Extension_Part));
             end if;
 
             --  Split out the assignment over a number of vertices
-            for C in M.Iterate loop
+            for C in RHS_Map.Iterate loop
                declare
                   Output : Flow_Id          renames Flow_Id_Maps.Key (C);
-                  Inputs : Flow_Id_Sets.Set renames M (C);
-               begin
+                  Inputs : Flow_Id_Sets.Set renames RHS_Map (C);
 
+               begin
                   Missing.Delete (Output);
 
                   Add_Vertex
@@ -1535,7 +1535,7 @@ package body Flow.Control_Flow_Graph is
 
             if not View_Conversion then
                --  There might be some fields missing, but if this is not a
-               --  view conversion (and we have already established its a
+               --  view conversion (and we have already established it is a
                --  full assignment), flow analysis must not claim any other
                --  fields are "uninitialized".
                for F of Missing loop
@@ -1567,12 +1567,41 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
             end if;
+
+            --  Assigning null records does not produce any assignments, so we
+            --  create a null vertex instead.
+
+            if Verts.Is_Empty then
+               pragma Assert (Is_Null_Record_Type (LHS_Type));
+
+               Add_Dummy_Vertex (N, FA, CM);
+
+            --  Otherwise, we link all the vertices we have produced and update
+            --  the connection map.
+
+            else
+               V := Flow_Graphs.Null_Vertex;
+               for W of Verts loop
+                  if V /= Flow_Graphs.Null_Vertex then
+                     Linkup (FA, V, W);
+                  end if;
+                  V := W;
+               end loop;
+
+               CM.Insert (Union_Id (N),
+                          Graph_Connections'
+                            (Standard_Entry => Verts.First_Element,
+                             Standard_Exits => To_Set (Verts.Last_Element)));
+            end if;
          end;
+
       else
          declare
             Vars_Defined : Flow_Id_Sets.Set;
             Vars_Used    : Flow_Id_Sets.Set;
             Vars_Proof   : Flow_Id_Sets.Set;
+
+            Slice_Update : Boolean;
 
          begin
             --  Work out which variables we define
@@ -1583,7 +1612,9 @@ package body Flow.Control_Flow_Graph is
                Vars_Defined         => Vars_Defined,
                Vars_Used            => Vars_Used,
                Vars_Proof           => Vars_Proof,
-               Partial_Definition   => Partial);
+               Partial_Definition   => Slice_Update);
+
+            pragma Assert (Partial = Slice_Update);
 
             --  Work out the variables we use. These are the ones already
             --  used by the LHS + everything on the RHS.
@@ -1616,36 +1647,10 @@ package body Flow.Control_Flow_Graph is
                   Loops      => Ctx.Current_Loops,
                   E_Loc      => N),
                V);
-            Verts.Append (V);
+
+            CM.Insert (Union_Id (N), Trivial_Connection (V));
          end;
       end if;
-
-      --  Finally, we join up all the vertices we have produced and record
-      --  update the connection map. ??? record update
-
-      if Verts.Is_Empty then
-         pragma Assert (Is_Null_Record_Type (Etype (Name (N))));
-         --  Assigning null records does not produce any assignments, so we
-         --  create a null vertex instead.
-         Add_Vertex (FA,
-                     Direct_Mapping_Id (N),
-                     Null_Node_Attributes,
-                     V);
-         Verts.Append (V);
-      end if;
-
-      V := Flow_Graphs.Null_Vertex;
-      for W of Verts loop
-         if V /= Flow_Graphs.Null_Vertex then
-            Linkup (FA, V, W);
-         end if;
-         V := W;
-      end loop;
-
-      CM.Insert (Union_Id (N),
-                 Graph_Connections'
-                   (Standard_Entry => Verts.First_Element,
-                    Standard_Exits => To_Set (Verts.Last_Element)));
    end Do_Assignment_Statement;
 
    -----------------------
@@ -1658,7 +1663,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      V, V_Alter  : Flow_Graphs.Vertex_Id;
+      V_Case      : Flow_Graphs.Vertex_Id;
       Alternative : Node_Id;
       Funcs       : Node_Sets.Set;
    begin
@@ -1681,40 +1686,74 @@ package body Flow.Control_Flow_Graph is
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
-         V);
+         V_Case);
       Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N),
-                 Graph_Connections'(Standard_Entry => V,
+                 Graph_Connections'(Standard_Entry => V_Case,
                                     Standard_Exits => Empty_Set));
 
       Alternative := First (Alternatives (N));
 
       loop
-         --  We introduce a vertex V_Alter for each
-         --  Case_Statement_Alternative and we link that to V.
-         Add_Vertex
-           (FA,
-            Direct_Mapping_Id (Alternative),
-            Make_Aux_Vertex_Attributes
-              (E_Loc     => Alternative,
-               Execution => (if Is_Empty_Others (Alternative)
-                             then Abnormal_Termination
-                             else Normal_Execution)),
-            V_Alter);
-         Linkup (FA, V, V_Alter);
+         declare
+            Stmts   : constant List_Id := Statements (Alternative);
+            V_Alter : Flow_Graphs.Vertex_Id;
 
-         --  We link V_Alter with its statements
-         Process_Statement_List (Statements (Alternative), FA, CM, Ctx);
-         Linkup (FA,
-                 V_Alter,
-                 CM (Union_Id (Statements (Alternative))).Standard_Entry);
-         CM (Union_Id (N)).Standard_Exits.Union
-           (CM (Union_Id (Statements (Alternative))).Standard_Exits);
+         begin
+            --  We introduce a vertex V_Alter for each
+            --  case_statement_alternative and we link that to V_Case.
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Alternative),
+               Make_Aux_Vertex_Attributes
+                 (E_Loc     => Alternative,
+                  Execution => (if Is_Empty_Others (Alternative)
+                                then Abnormal_Termination
+                                else Normal_Execution)),
+               V_Alter);
+            Linkup (FA, V_Case, V_Alter);
 
-         Next (Alternative);
+            --  We link V_Alter with its statements
+            Process_Statement_List (Stmts, FA, CM, Ctx);
+            Linkup (FA,
+                    V_Alter,
+                    CM (Union_Id (Stmts)).Standard_Entry);
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Union_Id (Stmts)).Standard_Exits);
 
-         exit when No (Alternative);
+            CM.Delete (Union_Id (Stmts));
+
+            Next (Alternative);
+
+            exit when No (Alternative);
+         end;
       end loop;
+
+      --  We handle case statements with one alternative differently to case
+      --  statements with more than one alternative.
+      --  If there is just one case_statement_alternative then we introduce a
+      --  control dependency on objects referenced in the selecting_expression.
+      if List_Length (Alternatives (N)) = 1 then
+         declare
+            V_Dummy : Flow_Graphs.Vertex_Id;
+
+         begin
+
+            --  Even though this is not an entry barrier, we use Barrier for
+            --  our execution type to draw a special edge.
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (Expression (N)),
+               Make_Aux_Vertex_Attributes
+                 (E_Loc     => N,
+                  Execution => Barrier),
+               V_Dummy);
+            Linkup (FA, V_Case, V_Dummy);
+
+            CM (Union_Id (N)).Standard_Exits.Insert (V_Dummy);
+
+         end;
+      end if;
    end Do_Case_Statement;
 
    ------------------------
@@ -1795,6 +1834,7 @@ package body Flow.Control_Flow_Graph is
       V     : Flow_Graphs.Vertex_Id;
       L     : Node_Id := N;
       Funcs : Node_Sets.Set;
+      Cond  : constant Node_Id := Condition (N);
    begin
       --  Go up the tree until we find the loop we are exiting from
       if No (Name (N)) then
@@ -1814,7 +1854,7 @@ package body Flow.Control_Flow_Graph is
 
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
-      if No (Condition (N)) then
+      if No (Cond) then
          Add_Vertex (FA,
                      Direct_Mapping_Id (N),
                      Null_Node_Attributes,
@@ -1826,7 +1866,7 @@ package body Flow.Control_Flow_Graph is
 
       else
          Collect_Functions_And_Read_Locked_POs
-           (Condition (N),
+           (Cond,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -1836,7 +1876,7 @@ package body Flow.Control_Flow_Graph is
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
               (Var_Ex_Use => Get_Variables
-                 (Condition (N),
+                 (Cond,
                   Scope                => FA.B_Scope,
                   Fold_Functions       => True,
                   Use_Computed_Globals => not FA.Generating_Globals),
@@ -1844,7 +1884,7 @@ package body Flow.Control_Flow_Graph is
                Loops      => Ctx.Current_Loops,
                E_Loc      => N),
             V);
-         Ctx.Folded_Function_Checks.Append (Condition (N));
+         Ctx.Folded_Function_Checks.Append (Cond);
          CM.Insert (Union_Id (N),
                     Trivial_Connection (V));
       end if;
@@ -1866,6 +1906,7 @@ package body Flow.Control_Flow_Graph is
       Ret_Object_L : constant List_Id := Return_Object_Declarations (N);
       Ret_Entity   : constant Node_Id := Return_Statement_Entity (N);
       Ret_Object   : constant Entity_Id := Get_Return_Object (N);
+      HSS          : constant Node_Id := Handled_Statement_Sequence (N);
 
    begin
       --  We create a null vertex for the extended return statement
@@ -1898,34 +1939,30 @@ package body Flow.Control_Flow_Graph is
             Loops           => Ctx.Current_Loops,
             E_Loc           => Ret_Entity),
          V);
-      CM.Insert (Union_Id (Ret_Entity),
-                 Graph_Connections'(Standard_Entry => V,
-                                    Standard_Exits => Empty_Set));
 
-      if Present (Handled_Statement_Sequence (N)) then
-         declare
-            Statement_Sequence : constant List_Id :=
-              Statements (Handled_Statement_Sequence (N));
-         begin
-            --  We process the sequence of statements
-            Process_Statement_List (Statement_Sequence, FA, CM, Ctx);
-            --  We link the standard exits of Ret_Object_L to the standard
-            --  entry of the sequence of statements.
-            Linkup (FA,
-                    CM (Union_Id (Ret_Object_L)).Standard_Exits,
-                    CM (Union_Id (Statement_Sequence)).Standard_Entry);
+      if Present (HSS) then
+         --  We process the sequence of statements
+         Process_Statement (HSS, FA, CM, Ctx);
 
-            --  We link the standard exits of the sequence of
-            --  statements to the standard entry of the implicit
-            --  return statement.
-            Linkup (FA, CM (Union_Id (Statement_Sequence)).Standard_Exits, V);
-         end;
+         --  We link the standard exits of Ret_Object_L to the standard entry
+         --  of the sequence of statements.
+         Linkup (FA,
+                 CM (Union_Id (Ret_Object_L)).Standard_Exits,
+                 CM (Union_Id (HSS)).Standard_Entry);
+
+         --  We link the standard exits of the sequence of statements to the
+         --  standard entry of the implicit return statement.
+         Linkup (FA, CM (Union_Id (HSS)).Standard_Exits, V);
+
+         CM.Delete (Union_Id (HSS));
       else
          --  No sequence of statements is present. We link the
          --  standard exits of Ret_Object_L to the implicit return
          --  statement.
          Linkup (FA, CM (Union_Id (Ret_Object_L)).Standard_Exits, V);
       end if;
+
+      CM.Delete (Union_Id (Ret_Object_L));
 
       --  We link the implicit return statement to the helper end vertex
       Linkup (FA, V, FA.Helper_End_Vertex);
@@ -1997,6 +2034,8 @@ package body Flow.Control_Flow_Graph is
       CM (Union_Id (N)).Standard_Exits.Union
         (CM (Union_Id (If_Part)).Standard_Exits);
 
+      CM.Delete (Union_Id (If_Part));
+
       --  If we have elsif parts we chain them together in the obvious
       --  way:
       --
@@ -2063,6 +2102,8 @@ package body Flow.Control_Flow_Graph is
                --  Add the exits of Elsif_Body to the exits of N
                CM (Union_Id (N)).Standard_Exits.Union
                  (CM (Union_Id (Elsif_Body)).Standard_Exits);
+
+               CM.Delete (Union_Id (Elsif_Body));
             end;
 
             V_Prev := V;
@@ -2078,6 +2119,8 @@ package body Flow.Control_Flow_Graph is
          Linkup (FA, V, CM (Union_Id (Else_Part)).Standard_Entry);
          CM (Union_Id (N)).Standard_Exits.Union
            (CM (Union_Id (Else_Part)).Standard_Exits);
+
+         CM.Delete (Union_Id (Else_Part));
       else
          CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
@@ -2243,25 +2286,13 @@ package body Flow.Control_Flow_Graph is
          DSD : constant Node_Id := Discrete_Subtype_Definition
            (Loop_Parameter_Specification (Iteration_Scheme (N)));
 
-         R : Node_Id;
       begin
-         case Nkind (DSD) is
-            when N_Subtype_Indication =>
-               case Nkind (Constraint (DSD)) is
-                  when N_Range_Constraint =>
-                     R := Range_Expression (Constraint (DSD));
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-            when N_Identifier | N_Expanded_Name =>
-               R := Get_Range (Entity (DSD));
-            when N_Range =>
-               R := DSD;
-            when others =>
-               Print_Node_Subtree (DSD);
-               raise Why.Unexpected_Node;
-         end case;
-         return R;
+         pragma Assert
+           (Nkind (DSD) in N_Range
+                         | N_Subtype_Indication
+                         | N_Identifier | N_Expanded_Name);
+
+         return Get_Range (DSD);
       end Get_Loop_Range;
 
       -------------
@@ -2348,7 +2379,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Finally we add a mark the faux exit vertex as a
             --  possible exit of this loop.
-            CM (Union_Id (N)).Standard_Exits.Include (Faux_Exit_V);
+            CM (Union_Id (N)).Standard_Exits.Insert (Faux_Exit_V);
          end if;
 
          --  Loop the loop: V -> body -> V
@@ -2388,7 +2419,7 @@ package body Flow.Control_Flow_Graph is
          --  Flow for the while loops goes into the condition and then
          --  out again.
          CM (Union_Id (N)).Standard_Entry := V;
-         CM (Union_Id (N)).Standard_Exits.Include (V);
+         CM (Union_Id (N)).Standard_Exits.Insert (V);
 
          --  Loop the loop: V -> body -> V
          Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -2431,9 +2462,33 @@ package body Flow.Control_Flow_Graph is
             --  Flow goes into and out of the loop. Note that we do
             --  NOT hook up the loop body.
             CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             Fully_Initialized := Flow_Id_Sets.Empty_Set;
+
+         elsif Compile_Time_Compare
+           (Low_Bound (R), High_Bound (R), Assume_Valid => True) = EQ
+         then
+            --  The loop is executed exactly once
+
+            Add_Vertex
+              (FA,
+               Direct_Mapping_Id (N),
+               Make_Basic_Attributes
+                 (Var_Def => Flatten_Variable (LP, FA.B_Scope),
+                  Loops   => Ctx.Current_Loops,
+                  E_Loc   => N),
+               V);
+
+            --  Flow goes into loop declaration and out of the loop statements
+            CM (Union_Id (N)).Standard_Entry := V;
+            CM (Union_Id (N)).Standard_Exits.Union
+              (CM (Union_Id (Statements (N))).Standard_Exits);
+
+            --  Loop declaration is followed by the loop statements: V -> body
+            Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
+
+            Fully_Initialized := Variables_Initialized_By_Loop (N);
 
          elsif Not_Null_Range (Low_Bound (R), High_Bound (R)) then
             --  We need to make sure the loop is executed at least once
@@ -2450,7 +2505,7 @@ package body Flow.Control_Flow_Graph is
             --  Flow goes into the first statement and out the loop vertex
             CM (Union_Id (N)).Standard_Entry :=
               CM (Union_Id (Statements (N))).Standard_Entry;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             --  Loop the loop: V -> body -> V
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -2484,7 +2539,7 @@ package body Flow.Control_Flow_Graph is
 
             --  Flow for the conditional for loop is like a while loop
             CM (Union_Id (N)).Standard_Entry := V;
-            CM (Union_Id (N)).Standard_Exits.Include (V);
+            CM (Union_Id (N)).Standard_Exits.Insert (V);
 
             --  Loop the loop: V -> body -> V
             Linkup (FA, V, CM (Union_Id (Statements (N))).Standard_Entry);
@@ -2656,58 +2711,45 @@ package body Flow.Control_Flow_Graph is
                  List_Length (Expressions (N)) > 1;
                Current_Dim : Pos := 1;
 
-               function Matches_Object_Range
-                 (Param_Range : Node_Id)
-                  return Boolean;
-               --  Returns True iff the range of the loop parameter matches the
-               --  range of the assigned array, e.g.:
+               function Matches_Object_Bound
+                 (Bound : Node_Id;
+                  Attr  : Attribute_Id)
+                  return Boolean
+                 with Pre => Attr in Attribute_First | Attribute_Last;
+               --  Returns True iff the bound of the loop parameter's range
+               --  ('First or 'Last) matches that same bound of the assigned
+               --  array, e.g.:
                --
                --  for J in S'Range loop
                --     S (J) := ...;
                --  end loop;
                --
                --  Note: the 'Range in code like this will be expanded into
-               --  'First and 'Last and this is what we actually detect.
+               --  'First or 'Last (depending on the value of Attr) and this
+               --  is what we actually detect.
 
                --------------------------
-               -- Matches_Object_Range --
+               -- Matches_Object_Bound --
                --------------------------
 
-               function Matches_Object_Range
-                 (Param_Range : Node_Id)
+               function Matches_Object_Bound
+                 (Bound : Node_Id;
+                  Attr  : Attribute_Id)
                   return Boolean
                is
-                  Low  : constant Node_Id := Low_Bound (Param_Range);
-                  High : constant Node_Id := High_Bound (Param_Range);
-
-                  Object : constant Entity_Id :=
-                    (if F.Kind = Direct_Mapping
-                     then Get_Direct_Mapping_Id (F)
-                     else F.Component.Last_Element);
-                  --  The object being assigned
-
-                  pragma Assert
-                    (if F.Kind = Direct_Mapping
-                     then Is_Assignable (Object)
-                     else Ekind (Object) = E_Component);
-
                begin
-                  return Nkind (Low) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (Low)) =
-                             Attribute_First
-                    and then Entity (Prefix (Low)) = Object
-
-                    and then Nkind (High) = N_Attribute_Reference
-                    and then Get_Attribute_Id (Attribute_Name (High)) =
-                             Attribute_Last
-                    and then Entity (Prefix (High)) = Object
-
+                  return Nkind (Bound) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Bound)) = Attr
+                      and then (if Nkind (Prefix (Bound)) in N_Identifier
+                                                           | N_Expanded_Name
+                                then
+                                   Direct_Mapping_Id (Entity (Prefix (Bound)))
+                                else Record_Field_Id (Prefix (Bound))) = F
                     and then
                       (if Multi_Dim
-                       then Intval (First (Expressions (Low))) = Current_Dim
-                              and then
-                            Intval (First (Expressions (High))) = Current_Dim);
-               end Matches_Object_Range;
+                       then
+                          Intval (First (Expressions (Bound))) = Current_Dim);
+               end Matches_Object_Bound;
 
             begin
                while Present (Param_Expr) loop
@@ -2739,12 +2781,14 @@ package body Flow.Control_Flow_Graph is
                         if (Compile_Time_Compare (Low_Bound (Param_Range),
                                                   Low_Bound (Index_Range),
                                                   True) = EQ
-                              and then
-                            Compile_Time_Compare (High_Bound (Param_Range),
-                                                  High_Bound (Index_Range),
-                                                  True) = EQ)
-                          or else
-                            Matches_Object_Range (Param_Range)
+                            or else Matches_Object_Bound
+                              (Low_Bound (Param_Range), Attribute_First))
+                          and then
+                            (Compile_Time_Compare (High_Bound (Param_Range),
+                                                   High_Bound (Index_Range),
+                                                   True) = EQ
+                             or else Matches_Object_Bound
+                               (High_Bound (Param_Range), Attribute_Last))
                         then
                            null;
 
@@ -3119,6 +3163,8 @@ package body Flow.Control_Flow_Graph is
          raise Program_Error;
       end if;
 
+      CM.Delete (Union_Id (Statements (N)));
+
       --  Check whether the non-terminating loop is immediately in the analysed
       --  unit (and not in the package body statements of a nested package,
       --  which will be handled as a subprogram call).
@@ -3218,7 +3264,8 @@ package body Flow.Control_Flow_Graph is
                end;
             end loop;
 
-            Add_Loop_Writes (Loop_Id, To_Proof_View (Loop_Writes));
+            Add_Loop_Writes
+              (Loop_Id, Expand_Abstract_States (Loop_Writes));
          end;
       end if;
 
@@ -3629,7 +3676,7 @@ package body Flow.Control_Flow_Graph is
 
             for F of FS loop
                if Has_Bounds (F, FA.B_Scope) then
-                  Var_Def.Include (F'Update (Facet => The_Bounds));
+                  Var_Def.Insert (F'Update (Facet => The_Bounds));
                end if;
             end loop;
 
@@ -3652,15 +3699,15 @@ package body Flow.Control_Flow_Graph is
                      Expand_Synthesized_Constants => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
-                  Untangled    : Flow_Id_Sets.Set;
+                  Missing      : Flow_Id_Sets.Set := Var_Def;
 
                begin
                   for C in M.Iterate loop
                      declare
                         Output : Flow_Id          renames Flow_Id_Maps.Key (C);
                         Inputs : Flow_Id_Sets.Set renames M (C);
-                     begin
 
+                     begin
                         --  ??? It might be useful to improve E_Loc to point
                         --      at the relevant bit in the aggregate.
 
@@ -3674,7 +3721,10 @@ package body Flow.Control_Flow_Graph is
                               E_Loc      => N,
                               Print_Hint => Pretty_Print_Record_Field),
                            V);
-                        Untangled.Insert (Output);
+                        Missing.Exclude (Output);
+                        --  ??? this should be Delete, but currently we will
+                        --  crash when processing nested packages that declare
+                        --  private types and objects of that types.
 
                         Inits.Append (V);
                         All_Vertices.Insert (V);
@@ -3685,7 +3735,7 @@ package body Flow.Control_Flow_Graph is
                   --  but not by URA we flag as initialized to the empty
                   --  set; since it is not possible in SPARK to partially
                   --  initialize a variable at declaration.
-                  for F of Var_Def.Difference (Untangled) loop
+                  for F of Missing loop
                      Add_Vertex
                        (FA,
                         Make_Basic_Attributes
@@ -3991,6 +4041,9 @@ package body Flow.Control_Flow_Graph is
                   Standard_Exits => CM.Element
                     (Union_Id (Private_Decls)).Standard_Exits));
 
+            CM.Delete (Union_Id (Visible_Decls));
+            CM.Delete (Union_Id (Private_Decls));
+
          --  We have only processed the visible declarations so we just copy
          --  the connections of N from Visible_Decls.
 
@@ -4001,6 +4054,8 @@ package body Flow.Control_Flow_Graph is
                  (Standard_Entry => V,
                   Standard_Exits => CM.Element
                     (Union_Id (Visible_Decls)).Standard_Exits));
+
+            CM.Delete (Union_Id (Visible_Decls));
          end if;
       end;
 
@@ -4121,6 +4176,8 @@ package body Flow.Control_Flow_Graph is
                        (Standard_Entry => CM.Element
                             (Union_Id (Pkg_Body_Declarations)).Standard_Entry,
                         Standard_Exits => Initializes_CM.Standard_Exits));
+
+                  CM.Delete (Union_Id (Pkg_Body_Declarations));
                else
                   --  Since we do not process any declarations all we have to
                   --  do is to connect N to the Initializes_CM.
@@ -4153,7 +4210,7 @@ package body Flow.Control_Flow_Graph is
       --  pragma Inspection_Point is added to a source program, then
       --  breaking on fip will get you to that point in the program.
 
-      function Proc (N : Node_Id) return Traverse_Result;
+      function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result;
       --  Adds N to the appropriate entry references of the current
       --  context, if N is a loop_entry reference.
 
@@ -4212,41 +4269,41 @@ package body Flow.Control_Flow_Graph is
          null;
       end fip;
 
-      ----------
-      -- Proc --
-      ----------
+      ------------------------------
+      -- Add_Loop_Entry_Reference --
+      ------------------------------
 
-      function Proc (N : Node_Id) return Traverse_Result is
+      function Add_Loop_Entry_Reference (N : Node_Id) return Traverse_Result is
          Loop_Name : Node_Id;
       begin
-         case Nkind (N) is
-            when N_Attribute_Reference =>
-               case Get_Attribute_Id (Attribute_Name (N)) is
-                  when Attribute_Loop_Entry =>
-                     pragma Assert (Present (Ctx.Active_Loop));
+         if Nkind (N) = N_Attribute_Reference
+           and then
+             Get_Attribute_Id (Attribute_Name (N)) = Attribute_Loop_Entry
+         then
+            pragma Assert (Present (Ctx.Active_Loop));
 
-                     if Present (Expressions (N)) then
-                        --  This is a named loop entry reference
-                        --  (i.e. X'Loop_Entry (Foo))
-                        pragma Assert (List_Length (Expressions (N)) = 1);
-                        Loop_Name := First (Expressions (N));
-                        pragma Assert (Nkind (Loop_Name) = N_Identifier);
-                        Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+            --  This is a named loop entry reference, e.g. "X'Loop_Entry (Foo)"
 
-                     else
-                        Ctx.Entry_References (Ctx.Active_Loop).Include (N);
-                     end if;
-                  when others =>
-                     null;
-               end case;
+            if Present (Expressions (N)) then
 
-            when others =>
-               null;
-         end case;
+               pragma Assert (List_Length (Expressions (N)) = 1);
+               Loop_Name := First (Expressions (N));
+
+               pragma Assert (Nkind (Loop_Name) = N_Identifier);
+               Ctx.Entry_References (Entity (Loop_Name)).Include (N);
+
+            --  or otherwise a reference to the immediately enclosing loop
+
+            else
+               Ctx.Entry_References (Ctx.Active_Loop).Include (N);
+            end if;
+         end if;
+
          return OK;
-      end Proc;
+      end Add_Loop_Entry_Reference;
 
-      procedure Add_Loop_Entry_References is new Traverse_Proc (Proc);
+      procedure Add_Loop_Entry_References is new
+        Traverse_Proc (Add_Loop_Entry_Reference);
 
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
@@ -4256,43 +4313,30 @@ package body Flow.Control_Flow_Graph is
    begin
       if Pragma_Relevant_To_Flow (N) then
 
-         case Get_Pragma_Id (N) is
+         --  If we are processing a pragma that is relevant to flow analysis,
+         --  and we are not dealing with either pragma unmodified or
+         --  pragma unreferenced then we create a sink vertex to check
+         --  for uninitialized variables.
+         Collect_Functions_And_Read_Locked_POs
+           (N,
+            Functions_Called   => Funcs,
+            Tasking            => FA.Tasking,
+            Generating_Globals => FA.Generating_Globals);
 
-            when Pragma_Unmodified   |
-                 Pragma_Unused       |
-                 Pragma_Unreferenced =>
-
-               --  For pragma unmodified, pragma unused and pragma
-               --  unreferenced we produce a null vertex.
-               Add_Vertex (FA, Null_Node_Attributes, V);
-
-            when others =>
-               --  If we are processing a pragma that is relevant to
-               --  flow analysis, and we are not dealing with either
-               --  pragma unmodified or pragma unreferenced then we
-               --  create a sink vertex to check for uninitialized
-               --  variables.
-               Collect_Functions_And_Read_Locked_POs
-                 (N,
-                  Functions_Called   => Funcs,
-                  Tasking            => FA.Tasking,
-                  Generating_Globals => FA.Generating_Globals);
-
-               Add_Vertex
-                 (FA,
-                  Direct_Mapping_Id (N),
-                  Make_Sink_Vertex_Attributes
-                    (Var_Use      => Get_Variables
-                       (Pragma_Argument_Associations (N),
-                        Scope                => FA.B_Scope,
-                        Fold_Functions       => False,
-                        Use_Computed_Globals => not FA.Generating_Globals),
-                     Sub_Called   => Funcs,
-                     Is_Assertion => True,
-                     E_Loc        => N,
-                     Execution    => Find_Execution_Kind),
-                  V);
-         end case;
+         Add_Vertex
+           (FA,
+            Direct_Mapping_Id (N),
+            Make_Sink_Vertex_Attributes
+              (Var_Use      => Get_Variables
+                   (Pragma_Argument_Associations (N),
+                    Scope                => FA.B_Scope,
+                    Fold_Functions       => False,
+                    Use_Computed_Globals => not FA.Generating_Globals),
+               Sub_Called   => Funcs,
+               Is_Assertion => True,
+               E_Loc        => N,
+               Execution    => Find_Execution_Kind),
+            V);
 
       else
          --  Otherwise we produce a null vertex
@@ -4691,7 +4735,7 @@ package body Flow.Control_Flow_Graph is
             Linkup (FA, V_C, V);
 
             Block.Standard_Entry := V_C;
-            Block.Standard_Exits.Include (V);
+            Block.Standard_Exits.Insert (V);
          end;
       end if;
 
@@ -5228,7 +5272,7 @@ package body Flow.Control_Flow_Graph is
                return Rec (Prefix (N));
 
             when N_Attribute_Reference =>
-               return Get_Attribute_Id (Attribute_Name (N)) = Attribute_Update
+               return Is_Attribute_Update (N)
                  and then Rec (Prefix (N));
 
             when N_Qualified_Expression | N_Type_Conversion =>
@@ -5334,7 +5378,7 @@ package body Flow.Control_Flow_Graph is
          TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
       begin
-         Pathable.Include (V);
+         Pathable.Insert (V);
          if V = FA.End_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
@@ -5353,7 +5397,7 @@ package body Flow.Control_Flow_Graph is
          if V = FA.Start_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
-            Live.Include (V);
+            Live.Insert (V);
             TV := Flow_Graphs.Continue;
          end if;
       end Mark_Live;
@@ -5452,16 +5496,17 @@ package body Flow.Control_Flow_Graph is
    -----------------------------
 
    procedure Prune_Exceptional_Paths (FA : in out Flow_Analysis_Graphs) is
-      Dead : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
    begin
       for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         if FA.Atr (V).Is_Exceptional_Path then
-            Dead.Include (V);
-         end if;
-      end loop;
-      for V of Dead loop
-         FA.CFG.Clear_Vertex (V);
-         FA.Atr (V) := Null_Attributes'Update (Is_Null_Node => True);
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+
+         begin
+            if Atr.Is_Exceptional_Path then
+               FA.CFG.Clear_Vertex (V);
+               Atr := Null_Attributes'Update (Is_Null_Node => True);
+            end if;
+         end;
       end loop;
 
       --  Sometimes a subprogram is entirely exceptional. In this case we
@@ -5476,8 +5521,8 @@ package body Flow.Control_Flow_Graph is
             --  annotated with No_Return.
             Error_Msg_Flow
               (FA       => FA,
-               Msg      => "all paths in & raise exceptions or do " &
-                 "not terminate normally",
+               Msg      => "all paths in & raise exceptions " &
+                           "or do not terminate normally",
                N        => FA.Analyzed_Entity,
                Severity => High_Check_Kind,
                Tag      => Missing_Return,
@@ -5512,7 +5557,7 @@ package body Flow.Control_Flow_Graph is
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
       begin
-         Live.Include (V);
+         Live.Insert (V);
          if V = FA.End_Vertex then
             TV := Flow_Graphs.Skip_Children;
          else
@@ -5529,7 +5574,7 @@ package body Flow.Control_Flow_Graph is
       is
       begin
          if not Live.Contains (V) then
-            Dead.Include (V);
+            Dead.Insert (V);
             TV := Flow_Graphs.Skip_Children;
          elsif V = FA.Start_Vertex then
             TV := Flow_Graphs.Skip_Children;
@@ -5552,13 +5597,13 @@ package body Flow.Control_Flow_Graph is
 
       for Dead_V of Dead loop
          declare
-            Live_Neighbours : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+            Live_Neighbours : Vertex_Lists.List;
          begin
             for V of FA.CFG.Get_Collection (Dead_V,
                                             Flow_Graphs.Out_Neighbours)
             loop
                if Live.Contains (V) then
-                  Live_Neighbours.Include (V);
+                  Live_Neighbours.Append (V);
                end if;
             end loop;
             for Live_V of Live_Neighbours loop
@@ -5606,17 +5651,13 @@ package body Flow.Control_Flow_Graph is
          when Pragma_Loop_Variant =>
             return True;
 
-         when Pragma_Unmodified   |
-              Pragma_Unused       |
-              Pragma_Unreferenced =>
-            return True;
-
          --  Do not issue a warning on invariant pragmas, as one is already
          --  issued on the corresponding type in SPARK.Definition.
 
          when Pragma_Invariant
             | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class =>
+            | Pragma_Type_Invariant_Class
+         =>
             return False;
 
          --  Remaining pragmas fall into two major groups:
@@ -5626,270 +5667,274 @@ package body Flow.Control_Flow_Graph is
          --  Pragmas that do not need any marking, either because:
          --  . they are defined by SPARK 2014, or
          --  . they are already taken into account elsewhere (contracts)
-         --  . they have no effect on flow analysis
+         --  . they have no effect on control flow graphs
 
          --  Group 1a - RM Table 16.1, Ada language-defined pragmas marked
          --  "Yes".
-         --  Note: pragma Assert is transformed into an
-         --  instance of pragma Check by the front-end.
-         when Pragma_Assertion_Policy             |
-              Pragma_Atomic                       |
-              Pragma_Atomic_Components            |
-              Pragma_Convention                   |
-              Pragma_Elaborate                    |
-              Pragma_Elaborate_All                |
-              Pragma_Elaborate_Body               |
-              Pragma_Export                       |
-              Pragma_Import                       |
-              Pragma_Independent                  |
-              Pragma_Independent_Components       |
-              Pragma_Inline                       |
-              Pragma_Linker_Options               |
-              Pragma_List                         |
-              Pragma_No_Return                    |
-              Pragma_Normalize_Scalars            |
-              Pragma_Optimize                     |
-              Pragma_Pack                         |
-              Pragma_Page                         |
-              Pragma_Partition_Elaboration_Policy |
-              Pragma_Preelaborable_Initialization |
-              Pragma_Preelaborate                 |
-              Pragma_Profile                      |
-              Pragma_Pure                         |
-              Pragma_Restrictions                 |
-              Pragma_Reviewable                   |
-              Pragma_Suppress                     |
-              Pragma_Unsuppress                   |
-              Pragma_Volatile                     |
-              Pragma_Volatile_Components          |
-              Pragma_Volatile_Full_Access         |
+         --  Note: pragma Assert is transformed into an instance of pragma
+         --  Check by the front-end.
+         when Pragma_Assertion_Policy
+            | Pragma_Atomic
+            | Pragma_Atomic_Components
+            | Pragma_Convention
+            | Pragma_Elaborate
+            | Pragma_Elaborate_All
+            | Pragma_Elaborate_Body
+            | Pragma_Export
+            | Pragma_Import
+            | Pragma_Independent
+            | Pragma_Independent_Components
+            | Pragma_Inline
+            | Pragma_Linker_Options
+            | Pragma_List
+            | Pragma_No_Return
+            | Pragma_Normalize_Scalars
+            | Pragma_Optimize
+            | Pragma_Pack
+            | Pragma_Page
+            | Pragma_Partition_Elaboration_Policy
+            | Pragma_Preelaborable_Initialization
+            | Pragma_Preelaborate
+            | Pragma_Profile
+            | Pragma_Pure
+            | Pragma_Restrictions
+            | Pragma_Reviewable
+            | Pragma_Suppress
+            | Pragma_Unsuppress
+            | Pragma_Volatile
+            | Pragma_Volatile_Components
+            | Pragma_Volatile_Full_Access
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes", whose effect on flow analysis is taken care of somewhere
          --  else.
-         --  Note: pragmas Assert_And_Cut, Assume, and
-         --  Loop_Invariant are transformed into instances of
-         --  pragma Check by the front-end.
-              Pragma_Abstract_State               |
-              Pragma_Assume_No_Invalid_Values     |
-              Pragma_Async_Readers                |
-              Pragma_Async_Writers                |
-              Pragma_Constant_After_Elaboration   |
-              Pragma_Contract_Cases               |
-              Pragma_Depends                      |
-              Pragma_Default_Initial_Condition    |
-              Pragma_Effective_Reads              |
-              Pragma_Effective_Writes             |
-              Pragma_Ghost                        |  --  ??? TO DO
-              Pragma_Global                       |
-              Pragma_Initializes                  |
-              Pragma_Initial_Condition            |
-              Pragma_Overflow_Mode                |
-              Pragma_Part_Of                      |
-              Pragma_Postcondition                |
-              Pragma_Precondition                 |
-              Pragma_Refined_Depends              |
-              Pragma_Refined_Global               |
-              Pragma_Refined_Post                 |
-              Pragma_Refined_State                |
-              Pragma_SPARK_Mode                   |
-              Pragma_Unevaluated_Use_Of_Old       |
-              Pragma_Volatile_Function            |
+         --  Note: pragmas Assert_And_Cut, Assume, and Loop_Invariant are
+         --  transformed into instances of pragma Check by the front-end.
+            | Pragma_Abstract_State
+            | Pragma_Assume_No_Invalid_Values
+            | Pragma_Async_Readers
+            | Pragma_Async_Writers
+            | Pragma_Constant_After_Elaboration
+            | Pragma_Contract_Cases
+            | Pragma_Depends
+            | Pragma_Default_Initial_Condition
+            | Pragma_Effective_Reads
+            | Pragma_Effective_Writes
+            | Pragma_Ghost                           --  ??? TODO
+            | Pragma_Global
+            | Pragma_Initializes
+            | Pragma_Initial_Condition
+            | Pragma_Overflow_Mode
+            | Pragma_Part_Of
+            | Pragma_Postcondition
+            | Pragma_Precondition
+            | Pragma_Refined_Depends
+            | Pragma_Refined_Global
+            | Pragma_Refined_Post
+            | Pragma_Refined_State
+            | Pragma_SPARK_Mode
+            | Pragma_Unevaluated_Use_Of_Old
+            | Pragma_Volatile_Function
 
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
          --  Note: pragma Debug is removed by the front-end.
-              Pragma_Ada_83                       |
-              Pragma_Ada_95                       |
-              Pragma_Ada_05                       |
-              Pragma_Ada_2005                     |
-              Pragma_Ada_12                       |
-              Pragma_Ada_2012                     |
-              Pragma_Annotate                     |
-              Pragma_Check_Policy                 |
-              Pragma_Ignore_Pragma                |
-              Pragma_Inline_Always                |
-              Pragma_Inspection_Point             |
-              Pragma_Linker_Section               |
-              Pragma_Max_Queue_Length             |
-              Pragma_No_Elaboration_Code_All      |
-              Pragma_No_Heap_Finalization         |
-              Pragma_No_Tagged_Streams            |
-              Pragma_Predicate_Failure            |
-              Pragma_Pure_Function                |
-              Pragma_Restriction_Warnings         |
-              Pragma_Secondary_Stack_Size         |
-              Pragma_Style_Checks                 |
-              Pragma_Test_Case                    |
-              Pragma_Validity_Checks              |
-              Pragma_Warnings                     |
-              Pragma_Weak_External                =>
+            | Pragma_Ada_83
+            | Pragma_Ada_95
+            | Pragma_Ada_05
+            | Pragma_Ada_2005
+            | Pragma_Ada_12
+            | Pragma_Ada_2012
+            | Pragma_Ada_2020
+            | Pragma_Annotate
+            | Pragma_Check_Policy
+            | Pragma_Ignore_Pragma
+            | Pragma_Inline_Always
+            | Pragma_Inspection_Point
+            | Pragma_Linker_Section
+            | Pragma_Max_Queue_Length
+            | Pragma_No_Elaboration_Code_All
+            | Pragma_No_Heap_Finalization
+            | Pragma_No_Tagged_Streams
+            | Pragma_Predicate_Failure
+            | Pragma_Pure_Function
+            | Pragma_Restriction_Warnings
+            | Pragma_Secondary_Stack_Size
+            | Pragma_Style_Checks
+            | Pragma_Unmodified
+            | Pragma_Unreferenced
+            | Pragma_Unused
+            | Pragma_Test_Case
+            | Pragma_Validity_Checks
+            | Pragma_Warnings
+            | Pragma_Weak_External
+         =>
             return False;
 
-         --  Group 1d - pragma that are re-written and/or removed
-         --  by the front-end in GNATprove, so they should
-         --  never be seen here.
-         when Pragma_Assert                       |
-              Pragma_Assert_And_Cut               |
-              Pragma_Assume                       |
-              Pragma_Compile_Time_Error           |
-              Pragma_Compile_Time_Warning         |
-              Pragma_Debug                        |
-              Pragma_Loop_Invariant               =>
+         --  Group 1d - pragma that are re-written and/or removed by the
+         --  front-end in GNATprove, so they should never be seen here.
+         when Pragma_Assert
+            | Pragma_Assert_And_Cut
+            | Pragma_Assume
+            | Pragma_Compile_Time_Error
+            | Pragma_Compile_Time_Warning
+            | Pragma_Debug
+            | Pragma_Loop_Invariant
+         =>
             raise Program_Error;
 
-         --  Group 2 - Remaining pragmas, enumerated here rather than
-         --  a "when others" to force re-consideration when
-         --  SNames.Pragma_Id is extended.
+         --  Group 2 - Remaining pragmas, enumerated here rather than a
+         --  "when others" to force re-consideration when SNames.Pragma_Id
+         --  is extended.
          --
          --  These can all be ignored - we already generated a warning during
-         --  Marking. In future, these pragmas may move to be fully ignored
-         --  or to be processed with more semantic detail as required.
+         --  Marking. In future, these pragmas may move to be fully ignored or
+         --  to be processed with more semantic detail as required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
-         when Pragma_Abort_Defer                 |
-           Pragma_Allow_Integer_Address          |
-           Pragma_Attribute_Definition           |
-           Pragma_C_Pass_By_Copy                 |
-           Pragma_Check_Float_Overflow           |
-           Pragma_Check_Name                     |
-           Pragma_Comment                        |
-           Pragma_Common_Object                  |
-           Pragma_Compiler_Unit                  |
-           Pragma_Compiler_Unit_Warning          |
-           Pragma_Complete_Representation        |
-           Pragma_Complex_Representation         |
-           Pragma_Component_Alignment            |
-           Pragma_Controlled                     |
-           Pragma_Convention_Identifier          |
-           Pragma_CPP_Class                      |
-           Pragma_CPP_Constructor                |
-           Pragma_CPP_Virtual                    |
-           Pragma_CPP_Vtable                     |
-           Pragma_CPU                            |
-           Pragma_Debug_Policy                   |
-           Pragma_Default_Scalar_Storage_Order   |
-           Pragma_Default_Storage_Pool           |
-           Pragma_Detect_Blocking                |
-           Pragma_Disable_Atomic_Synchronization |
-           Pragma_Dispatching_Domain             |
-           Pragma_Elaboration_Checks             |
-           Pragma_Eliminate                      |
-           Pragma_Enable_Atomic_Synchronization  |
-           Pragma_Export_Function                |
-           Pragma_Export_Object                  |
-           Pragma_Export_Procedure               |
-           Pragma_Export_Value                   |
-           Pragma_Export_Valued_Procedure        |
-           Pragma_Extend_System                  |
-           Pragma_Extensions_Allowed             |
-           Pragma_External                       |
-           Pragma_External_Name_Casing           |
-           Pragma_Fast_Math                      |
-           Pragma_Favor_Top_Level                |
-           Pragma_Finalize_Storage_Only          |
-           Pragma_Ident                          |
-           Pragma_Implementation_Defined         |
-           Pragma_Implemented                    |
-           Pragma_Implicit_Packing               |
-           Pragma_Import_Function                |
-           Pragma_Import_Object                  |
-           Pragma_Import_Procedure               |
-           Pragma_Import_Valued_Procedure        |
-           Pragma_Initialize_Scalars             |
-           Pragma_Inline_Generic                 |
-           Pragma_Interface                      |
-           Pragma_Interface_Name                 |
-           Pragma_Interrupt_Handler              |
-           Pragma_Interrupt_State                |
-           Pragma_Keep_Names                     |
-           Pragma_License                        |
-           Pragma_Link_With                      |
-           Pragma_Linker_Alias                   |
-           Pragma_Linker_Constructor             |
-           Pragma_Linker_Destructor              |
-           Pragma_Loop_Optimize                  |
-           Pragma_Machine_Attribute              |
-           Pragma_Main                           |
-           Pragma_Main_Storage                   |
-           Pragma_Memory_Size                    |
-           Pragma_No_Body                        |
-           Pragma_No_Inline                      |
-           Pragma_No_Run_Time                    |
-           Pragma_No_Strict_Aliasing             |
-           Pragma_Obsolescent                    |
-           Pragma_Optimize_Alignment             |
-           Pragma_Ordered                        |
-           Pragma_Overriding_Renamings           |
-           Pragma_Passive                        |
-           Pragma_Persistent_BSS                 |
-           Pragma_Polling                        |
-           Pragma_Post                           |
-           Pragma_Post_Class                     |
-           Pragma_Pre                            |
-           Pragma_Predicate                      |
-           Pragma_Prefix_Exception_Messages      |
-           Pragma_Pre_Class                      |
-           Pragma_Priority_Specific_Dispatching  |
-           Pragma_Profile_Warnings               |
-           Pragma_Propagate_Exceptions           |
-           Pragma_Provide_Shift_Operators        |
-           Pragma_Psect_Object                   |
-           Pragma_Rational                       |
-           Pragma_Ravenscar                      |
-           Pragma_Relative_Deadline              |
-           Pragma_Remote_Access_Type             |
-           Pragma_Rename_Pragma                  |
-           Pragma_Restricted_Run_Time            |
-           Pragma_Share_Generic                  |
-           Pragma_Shared                         |
-           Pragma_Short_Circuit_And_Or           |
-           Pragma_Short_Descriptors              |
-           Pragma_Simple_Storage_Pool_Type       |
-           Pragma_Source_File_Name               |
-           Pragma_Source_File_Name_Project       |
-           Pragma_Source_Reference               |
-           Pragma_Static_Elaboration_Desired     |
-           Pragma_Storage_Unit                   |
-           Pragma_Stream_Convert                 |
-           Pragma_Subtitle                       |
-           Pragma_Suppress_All                   |
-           Pragma_Suppress_Debug_Info            |
-           Pragma_Suppress_Exception_Locations   |
-           Pragma_Suppress_Initialization        |
-           Pragma_System_Name                    |
-           Pragma_Task_Info                      |
-           Pragma_Task_Name                      |
-           Pragma_Task_Storage                   |
-           Pragma_Thread_Local_Storage           |
-           Pragma_Time_Slice                     |
-           Pragma_Title                          |
-           Pragma_Unchecked_Union                |
-           Pragma_Unimplemented_Unit             |
-           Pragma_Universal_Aliasing             |
-           Pragma_Universal_Data                 |
-           Pragma_Unreferenced_Objects           |
-           Pragma_Unreserve_All_Interrupts       |
-           Pragma_Use_VADS_Size                  |
-           Pragma_Warning_As_Error               |
-           Pragma_Wide_Character_Encoding        |
+         when Pragma_Abort_Defer
+            | Pragma_Allow_Integer_Address
+            | Pragma_Attribute_Definition
+            | Pragma_C_Pass_By_Copy
+            | Pragma_Check_Float_Overflow
+            | Pragma_Check_Name
+            | Pragma_Comment
+            | Pragma_Common_Object
+            | Pragma_Compiler_Unit
+            | Pragma_Compiler_Unit_Warning
+            | Pragma_Complete_Representation
+            | Pragma_Complex_Representation
+            | Pragma_Component_Alignment
+            | Pragma_Controlled
+            | Pragma_Convention_Identifier
+            | Pragma_CPP_Class
+            | Pragma_CPP_Constructor
+            | Pragma_CPP_Virtual
+            | Pragma_CPP_Vtable
+            | Pragma_CPU
+            | Pragma_Debug_Policy
+            | Pragma_Default_Scalar_Storage_Order
+            | Pragma_Default_Storage_Pool
+            | Pragma_Detect_Blocking
+            | Pragma_Disable_Atomic_Synchronization
+            | Pragma_Dispatching_Domain
+            | Pragma_Elaboration_Checks
+            | Pragma_Eliminate
+            | Pragma_Enable_Atomic_Synchronization
+            | Pragma_Export_Function
+            | Pragma_Export_Object
+            | Pragma_Export_Procedure
+            | Pragma_Export_Value
+            | Pragma_Export_Valued_Procedure
+            | Pragma_Extend_System
+            | Pragma_Extensions_Allowed
+            | Pragma_External
+            | Pragma_External_Name_Casing
+            | Pragma_Fast_Math
+            | Pragma_Favor_Top_Level
+            | Pragma_Finalize_Storage_Only
+            | Pragma_Ident
+            | Pragma_Implementation_Defined
+            | Pragma_Implemented
+            | Pragma_Implicit_Packing
+            | Pragma_Import_Function
+            | Pragma_Import_Object
+            | Pragma_Import_Procedure
+            | Pragma_Import_Valued_Procedure
+            | Pragma_Initialize_Scalars
+            | Pragma_Inline_Generic
+            | Pragma_Interface
+            | Pragma_Interface_Name
+            | Pragma_Interrupt_Handler
+            | Pragma_Interrupt_State
+            | Pragma_Keep_Names
+            | Pragma_License
+            | Pragma_Link_With
+            | Pragma_Linker_Alias
+            | Pragma_Linker_Constructor
+            | Pragma_Linker_Destructor
+            | Pragma_Loop_Optimize
+            | Pragma_Machine_Attribute
+            | Pragma_Main
+            | Pragma_Main_Storage
+            | Pragma_Memory_Size
+            | Pragma_No_Body
+            | Pragma_No_Inline
+            | Pragma_No_Run_Time
+            | Pragma_No_Strict_Aliasing
+            | Pragma_Obsolescent
+            | Pragma_Optimize_Alignment
+            | Pragma_Ordered
+            | Pragma_Overriding_Renamings
+            | Pragma_Passive
+            | Pragma_Persistent_BSS
+            | Pragma_Polling
+            | Pragma_Post
+            | Pragma_Post_Class
+            | Pragma_Pre
+            | Pragma_Predicate
+            | Pragma_Prefix_Exception_Messages
+            | Pragma_Pre_Class
+            | Pragma_Priority_Specific_Dispatching
+            | Pragma_Profile_Warnings
+            | Pragma_Propagate_Exceptions
+            | Pragma_Provide_Shift_Operators
+            | Pragma_Psect_Object
+            | Pragma_Rational
+            | Pragma_Ravenscar
+            | Pragma_Relative_Deadline
+            | Pragma_Remote_Access_Type
+            | Pragma_Rename_Pragma
+            | Pragma_Restricted_Run_Time
+            | Pragma_Share_Generic
+            | Pragma_Shared
+            | Pragma_Short_Circuit_And_Or
+            | Pragma_Short_Descriptors
+            | Pragma_Simple_Storage_Pool_Type
+            | Pragma_Source_File_Name
+            | Pragma_Source_File_Name_Project
+            | Pragma_Source_Reference
+            | Pragma_Static_Elaboration_Desired
+            | Pragma_Storage_Unit
+            | Pragma_Stream_Convert
+            | Pragma_Subtitle
+            | Pragma_Suppress_All
+            | Pragma_Suppress_Debug_Info
+            | Pragma_Suppress_Exception_Locations
+            | Pragma_Suppress_Initialization
+            | Pragma_System_Name
+            | Pragma_Task_Info
+            | Pragma_Task_Name
+            | Pragma_Task_Storage
+            | Pragma_Thread_Local_Storage
+            | Pragma_Time_Slice
+            | Pragma_Title
+            | Pragma_Unchecked_Union
+            | Pragma_Unimplemented_Unit
+            | Pragma_Universal_Aliasing
+            | Pragma_Universal_Data
+            | Pragma_Unreferenced_Objects
+            | Pragma_Unreserve_All_Interrupts
+            | Pragma_Use_VADS_Size
+            | Pragma_Warning_As_Error
+            | Pragma_Wide_Character_Encoding
 
-           --  Group 2b - Ada RM pragmas
-           Pragma_Discard_Names                  |
-           Pragma_Locking_Policy                 |
-           Pragma_Queuing_Policy                 |
-           Pragma_Task_Dispatching_Policy        |
-           Pragma_All_Calls_Remote               |
-           Pragma_Asynchronous                   |
-           Pragma_Attach_Handler                 |
-           Pragma_Remote_Call_Interface          |
-           Pragma_Remote_Types                   |
-           Pragma_Shared_Passive                 |
-           Pragma_Interrupt_Priority             |
-           Pragma_Lock_Free                      |
-           Pragma_Priority                       |
-           Pragma_Storage_Size                   =>
-
+         --  Group 2b - Ada RM pragmas
+            | Pragma_Discard_Names
+            | Pragma_Locking_Policy
+            | Pragma_Queuing_Policy
+            | Pragma_Task_Dispatching_Policy
+            | Pragma_All_Calls_Remote
+            | Pragma_Asynchronous
+            | Pragma_Attach_Handler
+            | Pragma_Remote_Call_Interface
+            | Pragma_Remote_Types
+            | Pragma_Shared_Passive
+            | Pragma_Interrupt_Priority
+            | Pragma_Lock_Free
+            | Pragma_Priority
+            | Pragma_Storage_Size
+         =>
             return False;
 
          --  ??? ignored for now, see NA03-003
@@ -5968,7 +6013,7 @@ package body Flow.Control_Flow_Graph is
       --  Create the magic start, helper end and end vertices
       --
       --  The start vertex has the entity's location, because it is
-      --  convenient place to put error messages thay apply to the
+      --  convenient place to put error messages that apply to the
       --  whole subprogram/package/body.
       Add_Vertex (FA, Null_Attributes'Update (Error_Location => Body_N),
                   FA.Start_Vertex);
@@ -6079,7 +6124,7 @@ package body Flow.Control_Flow_Graph is
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
 
                   begin
-                     for Input of The_Ins loop
+                     for Input of Down_Project (The_Ins, FA.B_Scope) loop
                         Inputs_Seen.Insert (New_Item => Input,
                                             Position => Unused,
                                             Inserted => Inserted);

@@ -1,18 +1,16 @@
-refined_global_legal.adb:9:04: info: initialization of "Var" constituent of "State2" proved
-refined_global_legal.adb:9:09: info: initialization of "Var2" constituent of "State2" proved
-refined_global_legal.adb:9:15: info: initialization of "Var3" constituent of "State3" proved
-refined_global_legal.adb:9:21: info: initialization of "Var4" constituent of "State3" proved
+refined_global_legal-pr_child.ads:5:08: info: flow dependencies proved
 refined_global_legal.adb:14:41: info: initialization of "Var" constituent of "State2" proved
 refined_global_legal.adb:14:46: info: initialization of "Var2" constituent of "State2" proved
 refined_global_legal.adb:14:52: info: initialization of "Var3" constituent of "State3" proved
-refined_global_legal.adb:19:20: medium: overflow check might fail (e.g. when Var = 0 and Var4 = Integer'Last) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:20:20: medium: overflow check might fail (e.g. when Var2 = 0 and Var4 = Integer'Last-1) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:21:20: medium: overflow check might fail (e.g. when Var3 = 0 and Var4 = Integer'Last-2) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:22:20: medium: overflow check might fail (e.g. when Var4 = Integer'Last-3) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:24:20: medium: overflow check might fail (e.g. when Var = 0 and Var4 = Integer'First+1) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:25:20: medium: overflow check might fail (e.g. when Var2 = 0 and Var4 = Integer'First+2) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:26:20: medium: overflow check might fail (e.g. when Var3 = 0 and Var4 = Integer'First+3) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
-refined_global_legal.adb:27:20: medium: overflow check might fail (e.g. when Var4 = Integer'First+4) [possible explanation: subprogram at line 12 should mention Var4 in a precondition]
+refined_global_legal.adb:19:20: medium: overflow check might fail (e.g. when Var4 = Integer'Last) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:20:20: medium: overflow check might fail (e.g. when Var4 = Integer'Last-1) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:21:20: medium: overflow check might fail (e.g. when Var4 = Integer'Last-2) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:22:20: medium: overflow check might fail (e.g. when Var4 = Integer'Last-3) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:24:20: medium: overflow check might fail (e.g. when Var4 = Integer'First+1) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:25:20: medium: overflow check might fail (e.g. when Var4 = Integer'First+2) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:26:20: medium: overflow check might fail (e.g. when Var4 = Integer'First+3) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
+refined_global_legal.adb:27:20: medium: overflow check might fail (e.g. when Var4 = Integer'First+4) [possible explanation: subprogram at refined_global_legal.ads:6 should mention Var4 in a precondition]
 refined_global_legal.ads:3:27: low: initialization of "Refined_Global_Legal.State" through "Pr_Child.Pr_State" constituent of "Refined_Global_Legal.State" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 refined_global_legal.ads:3:27: low: initialization of "Refined_Global_Legal.State" through "Pr_Child.Pr_State2" constituent of "Refined_Global_Legal.State" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 refined_global_legal.ads:3:27: warning: no procedure exists that can initialize abstract state "Refined_Global_Legal.State"
+refined_global_legal.ads:7:11: info: data dependencies proved

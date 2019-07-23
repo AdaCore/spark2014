@@ -1,10 +1,8 @@
 partial_init.adb:5:22: medium: "V.X" is not set
-partial_init.adb:5:22: medium: assertion might fail, cannot prove V.X = 0 (e.g. when V = (X => -1, Y => ?))
+partial_init.adb:5:22: medium: assertion might fail, cannot prove V.X = 0 (e.g. when V = (X => -1, Y => (others => -1)))
+partial_init.adb:9:07: info: initialization of "V" proved
 partial_init.adb:12:22: info: assertion proved (CVC4: 1 VC)
-partial_init.adb:12:22: info: initialization of "V.X" proved
-partial_init.adb:13:14: info: initialization of "V.X" proved
-partial_init.adb:13:14: info: initialization of "V.Y" proved
+partial_init.ads:2:08: info: flow dependencies proved
 partial_init.ads:12:04: high: "G.Y" is not initialized in "Partial_Init"
-partial_init.ads:12:04: info: initialization of "G.X" proved
 partial_init.ads:14:22: high: "V.Y" is not initialized in "Create"
 partial_init.ads:14:22: medium: "V.X" is not set in "Create"

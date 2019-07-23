@@ -1,0 +1,5 @@
+project Test is
+
+   for Source_Dirs use ("kernel/core/**", "build/openconf");
+
+end Test;

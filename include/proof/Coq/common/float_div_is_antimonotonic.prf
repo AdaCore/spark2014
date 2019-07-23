@@ -62,10 +62,10 @@ assert (no_overflow RNE (t'real val1 / t'real val3)) as no_ov_v1v3.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
     field_simplify (t'real fliteral2 * a * / b * b).
-    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
+    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
     unfold a, b.
-    repeat rewrite <-Z2R_mult.
-    apply Z2R_le.
+    repeat rewrite <-mult_IZR.
+    apply IZR_le.
     ring_simplify; omega.
 
     intro i; rewrite i in b_pos; clear - b_pos; fourier. }
@@ -96,10 +96,10 @@ assert (no_overflow RNE (t'real val2 / t'real val3)) as no_ov_v2v3.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
     field_simplify (t'real fliteral2 * a * / b * b).
-    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_Z2R, maxfloat_Z2R.
+    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
     unfold a, b.
-    repeat rewrite <-Z2R_mult.
-    apply Z2R_le.
+    repeat rewrite <-mult_IZR.
+    apply IZR_le.
     ring_simplify; omega.
 
     intro i; rewrite i in b_pos; clear - b_pos; fourier. }

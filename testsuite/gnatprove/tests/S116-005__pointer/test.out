@@ -1,0 +1,5 @@
+missing_check.adb:5:15: insufficient permission for "X" when returning from "Bad"
+missing_check.adb:5:15: object was moved at line 9
+move_constant.adb:6:15: insufficient permission for "X" when returning from "Bad"
+move_constant.adb:6:15: object was moved at line 10
+gnatprove: error during flow analysis and proof

@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -29,16 +29,20 @@ with Gnat2Why.Util;       use Gnat2Why.Util;
 with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util.Types;    use SPARK_Util.Types;
+with String_Utils;        use String_Utils;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
 with Why.Atree.Builders;  use Why.Atree.Builders;
 with Why.Atree.Modules;   use Why.Atree.Modules;
 with Why.Conversions;     use Why.Conversions;
+with Why.Images;          use Why.Images;
 with Why.Inter;           use Why.Inter;
 with Why.Types;           use Why.Types;
 with Why.Gen.Arrays;      use Why.Gen.Arrays;
 with Why.Gen.Scalars;     use Why.Gen.Scalars;
 
 package body Why.Gen.Names is
+
+   Why3_Symbol_Alloc : Symbol_Table_Access;
 
    function Get_Modular_Converter
      (From, To : W_Type_Id) return W_Identifier_Id;
@@ -52,7 +56,7 @@ package body Why.Gen.Names is
 
    function Append_Num (S         : String;
                         Count     : Positive;
-                        Namespace : Name_Id := No_Name;
+                        Namespace : Symbol := No_Symbol;
                         Module    : W_Module_Id := Why.Types.Why_Empty;
                         Typ       : W_Type_Id := Why.Types.Why_Empty;
                         Ada_Node  : Node_Id := Empty)
@@ -73,8 +77,7 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Name))
-           & To_String (WNE_Pointer_Address),
+          (S        => Img (Get_Symb (Name)) & To_String (WNE_Pointer_Address),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -93,7 +96,7 @@ package body Why.Gen.Names is
    function Append_Num
      (S         : String;
       Count     : Positive;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id := Why.Types.Why_Empty;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Ada_Node  : Node_Id := Empty) return W_Identifier_Id
@@ -136,7 +139,7 @@ package body Why.Gen.Names is
    begin
       return
         Attr_Append
-          (Get_Name_String (Get_Symbol (Name)),
+          (Img (Get_Symb (Name)),
            A,
            Count,
            Typ,
@@ -166,8 +169,7 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Base))
-           & To_String (WNE_Content),
+          (S        => Img (Get_Symb (Base)) & To_String (WNE_Content),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Base),
@@ -186,8 +188,10 @@ package body Why.Gen.Names is
       To_Kind   : constant EW_Type := Get_Type_Kind (To);
    begin
       case From_Kind is
+         when EW_Wrapper => raise Program_Error;
          when EW_Builtin =>
             case To_Kind is
+               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
 
                   --  Only certain conversions are OK
@@ -289,6 +293,7 @@ package body Why.Gen.Names is
             | EW_Split
          =>
             case To_Kind is
+               when EW_Wrapper => raise Program_Error;
                when EW_Builtin =>
                   declare
                      A : constant Node_Id := Get_Ada_Node (+From);
@@ -337,7 +342,7 @@ package body Why.Gen.Names is
                            From_Base : constant Node_Id :=
                              (if Full_View_Not_In_SPARK (From_Node)
                               then Get_First_Ancestor_In_SPARK (From_Node)
-                              else Root_Record_Type (From_Node));
+                              else Root_Retysp (From_Node));
                         begin
                            if From_Base = From_Node then
                               return E_Symb (To_Node, WNE_Of_Base);
@@ -392,8 +397,8 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Name))
-           & To_String (WNE_Rec_Split_Discrs),
+          (S        => Img (Get_Symb (Name)) &
+             To_String (WNE_Rec_Split_Discrs),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -425,7 +430,7 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Name))
+          (S        => Img (Get_Symb (Name))
            & To_String (WNE_Rec_Split_Fields),
            Count    => 1,
            Typ      => Typ,
@@ -528,13 +533,37 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Base))
-           & To_String (WNE_Havoc),
+          (S        => Img (Get_Symb (Base)) & To_String (WNE_Havoc),
            Count    => 1,
            Typ      => Why_Empty,
            Module   => Get_Module (Base),
            Ada_Node => Get_Ada_Node (+Base));
    end Havoc_Append;
+
+   ----------------
+   -- Initialize --
+   ----------------
+
+   procedure Initialize is
+   begin
+      Why3_Symbol_Alloc := Allocate;
+   end Initialize;
+
+   -----------------
+   -- Init_Append --
+   -----------------
+
+   function Init_Append (Base : W_Identifier_Id) return W_Identifier_Id is
+      Name : constant W_Name_Id := Get_Name (Base);
+   begin
+      return
+        Append_Num
+          (S        => Img (Get_Symb (Name)) & To_String (WNE_Attr_Init),
+           Count    => 1,
+           Typ      => EW_Bool_Type,
+           Module   => Get_Module (Name),
+           Ada_Node => Get_Ada_Node (+Name));
+   end Init_Append;
 
    --------------------
    -- Is_Null_Append --
@@ -547,8 +576,7 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Name))
-           & To_String (WNE_Is_Null_Pointer),
+          (S        => Img (Get_Symb (Name)) & To_String (WNE_Is_Null_Pointer),
            Count    => 1,
            Typ      => Typ,
            Module   => Get_Module (Name),
@@ -616,90 +644,116 @@ package body Why.Gen.Names is
 
    function New_Identifier (Ada_Node : Node_Id := Empty;
                             Name     : String;
-                            Typ      : W_Type_Id := Why_Empty)
+                            Typ      : W_Type_Id := Why_Empty;
+                            Is_Temp  : Boolean := False)
                             return W_Identifier_Id is
    begin
-      return New_Identifier (Ada_Node, EW_Term, Name, Typ);
+      return New_Identifier (Ada_Node, EW_Term, Name, Typ, Is_Temp);
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why_Empty) return W_Identifier_Id is
+      Typ       : W_Type_Id := Why_Empty;
+      Is_Temp   : Boolean := False) return W_Identifier_Id is
    begin
       return New_Identifier
-        (Ada_Node, EW_Term, Name, Namespace, Module, Typ);
+        (Ada_Node, EW_Term, Name, Namespace, Module, Typ, Is_Temp);
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
       Name     : String;
-      Typ      : W_Type_Id := Why_Empty)
+      Typ      : W_Type_Id := Why_Empty;
+      Is_Temp  : Boolean := False)
       return W_Identifier_Id is
    begin
       return
         New_Identifier
           (Ada_Node => Ada_Node,
            Domain   => Domain,
-           Symbol   => NID (Name),
-           Typ      => Typ);
+           Symb     => NID (Name),
+           Typ      => Typ,
+           Is_Temp  => Is_Temp);
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
       Name      : String;
-      Namespace : Name_Id := No_Name;
+      Namespace : Symbol := No_Symbol;
       Module    : W_Module_Id;
-      Typ       : W_Type_Id := Why_Empty)
+      Typ       : W_Type_Id := Why_Empty;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id is
    begin
       return
         New_Identifier (Ada_Node  => Ada_Node,
                         Domain    => Domain,
-                        Symbol    => NID (Name),
+                        Symb      => NID (Name),
                         Namespace => Namespace,
                         Module    => Module,
-                        Typ       => Typ);
+                        Typ       => Typ,
+                        Is_Temp   => Is_Temp);
    end New_Identifier;
 
    function New_Identifier (Name : W_Name_Id) return W_Identifier_Id is
    begin
       return New_Identifier (Ada_Node => Get_Ada_Node (+Name),
                              Domain   => EW_Term,
-                             Symbol   => Get_Symbol (Name),
+                             Symb     => Get_Symb (Name),
                              Module   => Get_Module (Name));
    end New_Identifier;
 
    function New_Identifier
      (Ada_Node  : Node_Id := Empty;
       Domain    : EW_Domain;
-      Symbol    : Name_Id;
-      Namespace : Name_Id := No_Name;
+      Symb      : Symbol;
+      Namespace : Symbol := No_Symbol;
       Typ       : W_Type_Id := Why.Types.Why_Empty;
       Module    : W_Module_Id := Why.Types.Why_Empty;
-      Infix     : Boolean := False)
+      Infix     : Boolean := False;
+      Is_Temp   : Boolean := False)
       return W_Identifier_Id is
    begin
       return
         New_Identifier (Ada_Node => Ada_Node,
                         Domain   => Domain,
                         Name     => New_Name (Ada_Node  => Ada_Node,
-                                              Symbol    => Symbol,
+                                              Symb      => Symb,
                                               Namespace => Namespace,
                                               Infix     => Infix,
                                               Module    => Module),
-                        Typ      => Typ);
+                        Typ      => Typ,
+                        Is_Temp  => Is_Temp);
    end New_Identifier;
 
    ---------
    -- NID --
    ---------
 
-   function NID (Name : String) return Valid_Name_Id renames Name_Find;
+   function NID (Name : String) return Symbol is
+   begin
+      return Find (Why3_Symbol_Alloc, Name);
+   end NID;
+
+   ----------------
+   -- New_Module --
+   ----------------
+
+   function New_Module
+     (Ada_Node : Node_Id := Empty;
+      File     : Symbol;
+      Name     : String)
+      return W_Module_Id
+   is
+      S : constant Symbol := NID (Capitalize_First (Name));
+   begin
+      return New_Module (Ada_Node, File, S);
+   end New_Module;
 
    -------------------------
    -- New_Temp_Identifier --
@@ -724,7 +778,8 @@ package body Why.Gen.Names is
    begin
       return New_Identifier (Ada_Node => Ada_Node,
                              Name     => New_Temp_Identifier (Base_Name),
-                             Typ      => Typ);
+                             Typ      => Typ,
+                             Is_Temp  => True);
    end New_Temp_Identifier;
 
    --------------------------
@@ -759,8 +814,7 @@ package body Why.Gen.Names is
       return
         New_Name
           (Ada_Node => Get_Ada_Node (+Base),
-           Symbol   => NID (Get_Name_String (Get_Symbol (Base))
-             & To_String (WNE_Ref)),
+           Symb     => NID (Img (Get_Symb (Base)) & To_String (WNE_Ref)),
            Module   => Get_Module (Base));
    end Ref_Append;
 
@@ -815,6 +869,7 @@ package body Why.Gen.Names is
 
          --  these are used both by E_Symb function and by To_String
 
+         when WNE_Attr_Init          => "__attr__init",
          when WNE_Rec_Split_Discrs   => "__split_discrs",
          when WNE_Rec_Split_Fields   => "__split_fields",
          when WNE_Null_Exclusion_Val => "__null_exclusion_val",
@@ -868,7 +923,6 @@ package body Why.Gen.Names is
             | WNE_Dynamic_Property_BV_Int
             | WNE_Fixed_Point_Div
             | WNE_Fixed_Point_Div_Int
-            | WNE_Fixed_Point_Div_Result_Int
             | WNE_Fixed_Point_Mult
             | WNE_Fixed_Point_Mult_Int
             | WNE_Func_Guard
@@ -876,6 +930,7 @@ package body Why.Gen.Names is
             | WNE_Index_Dynamic_Property_2
             | WNE_Index_Dynamic_Property_3
             | WNE_Index_Dynamic_Property_4
+            | WNE_Init_Value
             | WNE_Int_Proj
             | WNE_Of_Array
             | WNE_Of_Base
@@ -888,6 +943,10 @@ package body Why.Gen.Names is
             | WNE_Of_Rep
             | WNE_Private_Eq
             | WNE_Private_Type
+            | WNE_Pointer_Close
+            | WNE_Pointer_Open
+            | WNE_Pointer_Value_Abstr
+            | WNE_Pos_To_Rep
             | WNE_Refined_Func_Guard
             | WNE_Range_Check_Fun
             | WNE_Range_Check_Fun_BV_Int
@@ -949,7 +1008,7 @@ package body Why.Gen.Names is
       W_Name : constant W_Name_Id := Get_Name (Name);
    begin
       return New_Name (Ada_Node => Get_Ada_Node (+W_Name),
-                       Symbol   => Get_Symbol (W_Name),
+                       Symb     => Get_Symb (W_Name),
                        Module   => Why_Empty);
    end To_Local;
 
@@ -960,7 +1019,7 @@ package body Why.Gen.Names is
       return
         New_Identifier
           (Ada_Node  => Get_Ada_Node (+W_Name),
-           Symbol    => Get_Symbol (W_Name),
+           Symb      => Get_Symb (W_Name),
            Namespace => Get_Namespace (W_Name),
            Domain    => Get_Domain (+Name),
            Module    => Why_Empty,
@@ -970,7 +1029,7 @@ package body Why.Gen.Names is
    function To_Local (Name : W_Name_Id) return W_Name_Id is
    begin
       return New_Name (Ada_Node => Get_Ada_Node (+Name),
-                       Symbol   => Get_Symbol (Name),
+                       Symb     => Get_Symb (Name),
                        Module   => Why_Empty);
    end To_Local;
 
@@ -980,7 +1039,7 @@ package body Why.Gen.Names is
 
    function To_Name (W : Why_Name_Enum) return W_Name_Id is
    begin
-      return New_Name (Symbol => NID (To_String (W)));
+      return New_Name (Symb => NID (To_String (W)));
    end To_Name;
 
    ----------------------
@@ -1047,8 +1106,8 @@ package body Why.Gen.Names is
 
    function To_Program_Space (Name : W_Identifier_Id) return W_Identifier_Id is
       Suffix : constant String := "_";
-      N_Id   : constant Name_Id := Get_Symbol (Get_Name (Name));
-      Img    : constant String := Get_Name_String (N_Id);
+      N_Id   : constant Symbol := Get_Symb (Get_Name (Name));
+      Img    : String renames Get (N_Id).all;
    begin
       return New_Identifier
         (Get_Ada_Node (+Name), EW_Prog, Img & Suffix,
@@ -1066,7 +1125,7 @@ package body Why.Gen.Names is
    begin
       return
         Append_Num
-          (S        => Get_Name_String (Get_Symbol (Name))
+          (S        => Img (Get_Symb (Name))
            & To_String (WNE_Pointer_Value),
            Count    => 1,
            Typ      => Typ,

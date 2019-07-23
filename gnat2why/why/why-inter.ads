@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -25,7 +25,9 @@
 
 with Ada.Containers.Ordered_Sets;
 with Common_Containers;    use Common_Containers;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
 with Gnat2Why.Util;        use Gnat2Why.Util;
+with SPARK_Atree;          use SPARK_Atree;
 with SPARK_Atree.Entities; use SPARK_Atree.Entities;
 with SPARK_Util.Types;     use SPARK_Util.Types;
 with Types;                use Types;
@@ -58,7 +60,8 @@ package Why.Inter is
    --  For a given Why node, compute the required modules, to be included to
    --  make this Why node a valid node.
 
-   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set;
+   function Compute_Ada_Node_Set (W : Why_Node_Id) return Node_Sets.Set
+   with Post => (for all N of Compute_Ada_Node_Set'Result => Present (N));
 
    procedure Close_Theory
      (P              : W_Section_Id;
@@ -69,20 +72,15 @@ package Why.Inter is
    --  defined by the current theory, which is used to complete the graph
    --  of dependencies for this entity.
 
-   procedure Add_Extra_Dependency
-     (Defined_Entity : Entity_Id;
-      New_Dependency : Entity_Id);
-   --  Add an extra dependency New_Dependency for entity Defined_Entity
-
-   procedure Discard_Theory (P : W_Section_Id);
-   --  Remove the current theory from P
-
    procedure Open_Theory
      (P       : W_Section_Id;
       Module  : W_Module_Id;
       Comment : String)
      with Pre => Why_Sections (P).Cur_Theory = Why_Empty;
    --  Open a new theory in the file
+
+   function Find_Decl (S : Symbol) return W_Theory_Declaration_Id;
+   --  Return the Theory Declaration that defines the theory with the name S
 
    procedure Add_Use_For_Entity
      (P               : W_Section_Id;
@@ -114,20 +112,7 @@ package Why.Inter is
    --  @param Module module that we want to use
    --  @param Use_Kind kind of Why3 use clause. It will be overrdidden to
    --     Import for Int_Module and RealInfix modules to allow infix notations.
-   --  @param Th_Type theory type of Module
-
-   procedure Add_Effect_Import (P : W_Section_Id;
-                                N : Entity_Name);
-   --  Add import clause for the entity N to the list of declarations from the
-   --  current theory in P.
-   --  @param P section of the Why file where the import clause will be emitted
-   --  @param N entity that we need to import
-
-   procedure Add_Effect_Import (T : W_Theory_Declaration_Id;
-                                N : Entity_Name);
-   --  Add import clause for the entity N to the list of declarations from T
-   --  @param T the theory where the import clause will be emitted
-   --  @param N entity that we need to import
+   --  @param Th_Type theory type of Modules
 
    function Dispatch_Entity (E : Entity_Id) return W_Section_Id;
    --  Given an Ada Entity, return the appropriate Why file to insert the
@@ -140,7 +125,8 @@ package Why.Inter is
    function Loop_Exception_Name
      (E     : Entity_Id;
       Local : Boolean := False)
-      return W_Name_Id;
+      return W_Name_Id
+   with Pre => Ekind (E) = E_Loop;
    --  Transform a loop entity into a name for a Why exception
 
    --  A given subprogram declaration in SPARK may be translated into multiple
@@ -242,7 +228,7 @@ package Why.Inter is
    function Base_Why_Type (W : W_Type_Id) return W_Type_Id;
    --  Return the base type in Why of the given node. This type will be
    --  used for comparisons, conversions etc. Examples are EW_Real_Type
-   --  for standard__float, and the Root_Record_Type for record types.
+   --  for standard__float, and the Root_Retysp for record types.
 
    function Base_Why_Type_No_Bool (N : Node_Id) return W_Type_Id;
    --  @param N an Ada Node

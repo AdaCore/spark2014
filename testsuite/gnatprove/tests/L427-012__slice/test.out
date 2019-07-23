@@ -1,7 +1,2 @@
-p.adb:3:33: info: initialization of "New_Str" proved
-p.adb:6:10: info: initialization of "New_Str" proved
 p.adb:6:10: info: range check proved (CVC4: 8 VC)
-p.adb:6:19: info: initialization of "Pos" proved
-p.adb:6:32: info: initialization of "New_Sub" proved
-p.adb:7:14: info: initialization of "Pos" proved
 p.adb:7:18: info: overflow check proved (CVC4: 1 VC)

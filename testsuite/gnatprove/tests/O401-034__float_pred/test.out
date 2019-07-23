@@ -1,27 +1,22 @@
-safety_pack.adb:16:14: info: initialization of "Res" proved
-safety_pack.adb:30:14: info: initialization of "Res" proved
-safety_pack.adb:41:17: info: initialization of "Res" proved
 safety_pack.adb:41:21: info: float overflow check proved (CVC4: 1 VC)
-safety_pack.adb:43:17: info: initialization of "Res" proved
 safety_pack.adb:43:21: info: float overflow check proved (CVC4: 1 VC)
-safety_pack.adb:46:14: info: initialization of "Res" proved
+safety_pack.adb:50:07: info: initialization of "Res" proved
 safety_pack.adb:57:26: info: range check proved (CVC4: 1 VC)
-safety_pack.adb:60:14: info: initialization of "Res" proved
+safety_pack.adb:64:07: info: initialization of "Res" proved
 safety_pack.adb:67:17: info: predicate check proved (CVC4: 1 VC)
 safety_pack.adb:69:17: info: predicate check proved (CVC4: 1 VC)
 safety_pack.adb:71:17: info: predicate check proved (CVC4: 1 VC)
 safety_pack.adb:73:17: info: predicate check proved (CVC4: 1 VC)
-safety_pack.adb:76:14: info: initialization of "Res" proved
 safety_pack.ads:15:08: info: complete contract cases proved (CVC4: 1 VC)
 safety_pack.ads:15:08: info: disjoint contract cases proved (CVC4: 1 VC)
-safety_pack.ads:15:62: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:17:62: medium: contract case might fail (e.g. when Dead_Band'Result = 0.0 and Threshold = 0.0 and Value = 0.0)
+safety_pack.ads:15:62: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+safety_pack.ads:17:62: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 safety_pack.ads:18:54: info: float overflow check proved (CVC4: 1 VC)
-safety_pack.ads:19:62: medium: contract case might fail (e.g. when Dead_Band'Result = 0.0 and Threshold = 0.0 and Value = 0.0)
+safety_pack.ads:19:62: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 safety_pack.ads:20:54: info: float overflow check proved (CVC4: 1 VC)
 safety_pack.ads:29:16: info: postcondition proved (CVC4: 3 VC)
 safety_pack.ads:44:17: info: postcondition proved (CVC4: 3 VC)
 safety_pack.ads:59:11: info: complete contract cases proved (CVC4: 1 VC)
 safety_pack.ads:59:11: info: disjoint contract cases proved (CVC4: 1 VC)
-safety_pack.ads:59:38: info: contract case proved (CVC4: 2 VC)
-safety_pack.ads:60:39: info: contract case proved (CVC4: 2 VC)
+safety_pack.ads:59:38: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
+safety_pack.ads:60:39: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)

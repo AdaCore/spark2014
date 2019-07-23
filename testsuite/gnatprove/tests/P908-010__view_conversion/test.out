@@ -1,13 +1,13 @@
 inherited_proc.adb:7:10: high: "X" is not initialized
 types_with_inv.ads:4:27: info: initialization of "X" proved
-types_with_inv.ads:8:14: medium: invariant check might fail (e.g. when X = 0)
+types_with_inv.ads:8:14: medium: invariant check might fail
 types_with_inv.ads:8:20: warning: unused initial value of "X"
-types_with_inv.ads:10:14: medium: invariant check might fail (e.g. when X = 0)
+types_with_inv.ads:10:14: medium: invariant check might fail
 types_with_inv.ads:10:21: warning: unused initial value of "X"
-types_with_inv.ads:16:27: info: initialization of "X.F" proved
-types_with_inv.ads:20:14: medium: invariant check might fail (e.g. when X = (F => 0))
+types_with_inv.ads:16:27: info: initialization of "X" proved
+types_with_inv.ads:20:14: medium: invariant check might fail
 types_with_inv.ads:20:20: warning: unused initial value of "X"
-types_with_inv.ads:22:14: medium: invariant check might fail (e.g. when X = (F => 0))
+types_with_inv.ads:22:14: medium: invariant check might fail
 types_with_inv.ads:22:21: warning: unused initial value of "X"
 types_with_inv.ads:24:09: info: invariant check proved on default value (CVC4: 1 VC)
 types_with_inv.ads:25:24: info: range check proved (CVC4: 1 VC)

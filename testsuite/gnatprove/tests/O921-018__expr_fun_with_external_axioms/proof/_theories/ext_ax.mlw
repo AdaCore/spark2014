@@ -1,10 +1,10 @@
 module Ext_ax__my_eq
- use import "_gnatprove_standard".Main
+ use "_gnatprove_standard".Main
 
- function my_eq__logic #"ext_ax.ads"  3 0 0# 
+ val function my_eq__logic
    (x1 : int) (x2 : int)  :bool
 
- val my_eq #"ext_ax.ads"  3 0 0# 
+ val my_eq
    (x1 : int) (x2 : int)  :bool
   requires { true }
   ensures { (result = (my_eq__logic x1 x2)) }

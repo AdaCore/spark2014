@@ -2,16 +2,16 @@
 test_01.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_01.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_01.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_01.adb:41:15: info: initialization of "T" proved
-test_01.adb:43:22: info: initialization of "T" proved
+test_01.ads:5:04: info: flow dependencies proved
+test_01.ads:10:09: info: data dependencies proved
 
 === test_02.adb ===
 test_02.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
 test_02.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
 test_02.adb:11:14: high: "Database" constituent of "State" cannot be a constituent of "Test_02.State" (which lacks volatile property Effective_Writes)
-test_02.adb:41:15: info: initialization of "T" proved
-test_02.adb:43:22: info: initialization of "T" proved
+test_02.ads:5:04: info: flow dependencies proved
+test_02.ads:10:09: info: data dependencies proved
 
 === test_03.adb ===
 

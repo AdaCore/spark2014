@@ -1,26 +1,28 @@
 repr.adb:6:31: warning: unused variable "Unsorted"
 repr.adb:10:30: warning: "Values" is not modified, could be IN
+repr.adb:12:07: info: data dependencies proved
 repr.adb:16:16: warning: unused assignment
-repr.adb:16:37: medium: range check might fail (e.g. when Values'First = 6 and Values'Last = 5) [possible explanation: subprogram at line 10 should mention Values in a precondition]
-sorters.adb:15:12: info: postcondition proved (CVC4: 3 VC)
+repr.adb:16:37: medium: range check might fail (e.g. when Values'First = 6) [possible explanation: subprogram at line 10 should mention Values in a precondition]
+sorters.adb:9:08: info: flow dependencies proved
+sorters.adb:15:12: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 sorters.adb:15:20: info: index check proved (CVC4: 2 VC)
 sorters.adb:15:37: info: index check proved (CVC4: 2 VC)
 sorters.adb:16:20: info: index check proved (CVC4: 2 VC)
 sorters.adb:16:37: info: index check proved (CVC4: 2 VC)
 sorters.adb:18:51: info: index check proved (CVC4: 2 VC)
 sorters.adb:18:68: info: index check proved (CVC4: 2 VC)
+sorters.adb:20:07: info: initialization of "Temp" proved
 sorters.adb:22:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:15: info: index check proved (CVC4: 2 VC)
 sorters.adb:23:29: info: index check proved (CVC4: 2 VC)
 sorters.adb:24:15: info: index check proved (CVC4: 2 VC)
-sorters.adb:24:21: info: initialization of "Temp" proved
 sorters.adb:35:10: info: postcondition proved (CVC4: 3 VC)
 sorters.adb:37:39: info: index check proved (CVC4: 2 VC)
 sorters.adb:37:61: info: index check proved (CVC4: 2 VC)
+sorters.adb:39:07: info: initialization of "Min" proved
 sorters.adb:41:22: info: range check proved (CVC4: 1 VC)
 sorters.adb:42:11: info: range check proved (CVC4: 2 VC)
 sorters.adb:42:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:44:13: info: initialization of "Min" proved
 sorters.adb:44:13: info: loop invariant initialization proved (CVC4: 3 VC)
 sorters.adb:44:13: info: loop invariant preservation proved (CVC4: 3 VC)
 sorters.adb:45:24: info: range check proved (CVC4: 4 VC)
@@ -29,18 +31,15 @@ sorters.adb:46:30: info: index check proved (CVC4: 4 VC)
 sorters.adb:46:48: info: index check proved (CVC4: 4 VC)
 sorters.adb:48:23: info: index check proved (CVC4: 2 VC)
 sorters.adb:48:42: info: index check proved (CVC4: 2 VC)
-sorters.adb:48:42: info: initialization of "Min" proved
 sorters.adb:49:20: info: range check proved (CVC4: 1 VC)
-sorters.adb:52:14: info: initialization of "Min" proved
+sorters.adb:57:07: info: initialization of "Smallest" proved
 sorters.adb:59:50: info: overflow check proved (CVC4: 1 VC)
-sorters.adb:60:22: medium: precondition might fail
+sorters.adb:60:22: medium: precondition might fail, cannot prove Unsorted'Last < Positive'last (e.g. when Current = 1 and Values = (others => 1) and Values'Last = 2147483647)
 sorters.adb:60:40: info: range check proved (CVC4: 8 VC)
-sorters.adb:61:13: info: initialization of "Smallest" proved
 sorters.adb:62:13: info: precondition proved (CVC4: 10 VC)
 sorters.adb:62:26: info: range check proved (CVC4: 2 VC)
-sorters.adb:63:26: info: initialization of "Smallest" proved
 sorters.adb:67:13: info: loop invariant initialization proved (CVC4: 4 VC)
-sorters.adb:67:13: info: loop invariant preservation proved (CVC4: 3 VC; Z3: 1 VC)
+sorters.adb:67:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 2 VC)
 sorters.adb:69:22: info: range check proved (CVC4: 4 VC)
 sorters.adb:69:66: info: overflow check proved (CVC4: 2 VC)
 sorters.adb:70:24: info: index check proved (CVC4: 4 VC)
@@ -49,6 +48,7 @@ sorters.adb:70:40: info: overflow check proved (CVC4: 2 VC)
 sorters.adb:71:22: info: range check proved (CVC4: 4 VC)
 sorters.adb:72:24: info: index check proved (CVC4: 4 VC)
 sorters.adb:72:44: info: index check proved (CVC4: 4 VC)
+sorters.ads:9:08: info: flow dependencies proved
 sorters.ads:11:19: info: postcondition proved (CVC4: 1 VC)
 sorters.ads:11:61: info: overflow check proved (CVC4: 1 VC)
 sorters.ads:12:28: info: index check proved (CVC4: 2 VC)

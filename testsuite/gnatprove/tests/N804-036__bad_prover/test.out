@@ -1,2 +1,2 @@
 test.adb:4:53: medium: overflow check might fail (e.g. when Z = Integer'Last) [possible explanation: subprogram at line 4 should mention Z in a precondition]
-test.adb:6:15: info: initialization of "X" proved
+plop: exec of 'plop' failed (No such file or directory)

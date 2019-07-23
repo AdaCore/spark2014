@@ -1,37 +1,57 @@
-arrays_in_records.adb:23:22: medium: assertion might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (0 => 0, others => 0))) [possible explanation: subprogram at line 19 should mention A in a precondition]
-arrays_in_records.adb:30:22: medium: assertion might fail, cannot prove A.First_Array(I) = 23 (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (0 => 0, others => 0)) and I = 0) [possible explanation: subprogram at line 26 should mention A and I in a precondition]
-arrays_in_records.adb:37:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (First_Array => (others => 42), others => ?)) [possible explanation: subprogram at line 35 should mention A in a precondition]
-arrays_in_records.adb:46:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 23 (e.g. when A = (First_Array => (others => 42), others => ?) and I = 0) [possible explanation: subprogram at line 43 should mention A and I in a precondition]
-arrays_in_records.adb:57:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (First_Array => (others => 42), others => ?)) [possible explanation: subprogram at line 54 should mention A in a precondition]
+arrays_in_records.adb:20:11: info: flow dependencies proved
+arrays_in_records.adb:23:22: medium: assertion might fail, cannot prove A.First_Array(17) = 23 [possible explanation: subprogram at line 19 should mention A in a precondition]
+arrays_in_records.adb:27:11: info: flow dependencies proved
+arrays_in_records.adb:30:22: medium: assertion might fail, cannot prove A.First_Array(I) = 23 [possible explanation: subprogram at line 26 should mention A and I in a precondition]
+arrays_in_records.adb:36:11: info: flow dependencies proved
+arrays_in_records.adb:37:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (Counter => 0, First_Array => (others => 42), Second_Array => (others => 42)))
+arrays_in_records.adb:45:11: info: flow dependencies proved
+arrays_in_records.adb:46:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 23 (e.g. when A = (Counter => 0, First_Array => (others => 42), Second_Array => (others => 42)) and I = 0)
+arrays_in_records.adb:56:11: info: flow dependencies proved
+arrays_in_records.adb:57:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 23 (e.g. when A = (Counter => 100, First_Array => (17 => 42, others => 23), Second_Array => (17 => 42, others => 23)))
 arrays_in_records.adb:63:22: info: assertion proved (CVC4: 1 VC)
+arrays_in_records.adb:69:11: info: flow dependencies proved
 arrays_in_records.adb:76:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:83:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A = (First_Array => (17 => 23, others => 42), others => ?)) [possible explanation: subprogram at line 81 should mention A in a precondition]
-arrays_in_records.adb:93:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (First_Array => (0 => 23, others => 42), others => ?) and I = 0) [possible explanation: subprogram at line 90 should mention A and I in a precondition]
-arrays_in_records.adb:105:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A = (First_Array => (17 => 23, others => Value'Last), others => ?)) [possible explanation: subprogram at line 102 should mention A in a precondition]
+arrays_in_records.adb:82:11: info: flow dependencies proved
+arrays_in_records.adb:83:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A = (Counter => 0, First_Array => (17 => 23, others => 42), Second_Array => (17 => 23, others => 42)))
+arrays_in_records.adb:92:11: info: flow dependencies proved
+arrays_in_records.adb:93:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (Counter => 0, First_Array => (0 => 23, others => 42), Second_Array => (0 => 23, others => 42)) and I = 0)
+arrays_in_records.adb:104:11: info: flow dependencies proved
+arrays_in_records.adb:105:22: medium: postcondition might fail, cannot prove A.First_Array(17) = 42 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 23 => Value'Last, others => 42), Second_Array => (17 => 23, 23 => Value'Last, others => 42)))
 arrays_in_records.adb:112:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:119:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (First_Array => (0 => 23, others => Value'Last), others => ?) and I = 0) [possible explanation: subprogram at line 115 should mention A and I in a precondition]
+arrays_in_records.adb:118:11: info: flow dependencies proved
+arrays_in_records.adb:119:22: medium: postcondition might fail, cannot prove A.First_Array(I) = 42 (e.g. when A = (Counter => 100, First_Array => (0 => 23, others => Value'Last), Second_Array => (others => Value'Last)) and I = 0)
 arrays_in_records.adb:126:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:133:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (First_Array => (5 => 42, others => 23), others => ?)) [possible explanation: subprogram at line 131 should mention A in a precondition]
-arrays_in_records.adb:144:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (First_Array => (0 => 42, others => 23), others => ?) and I = 1) [possible explanation: precondition of subprogram at line 140 should mention A]
-arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (First_Array => (17 => 23, 5 => 42, others => Value'Last), others => ?)) [possible explanation: subprogram at line 153 should mention A in a precondition]
+arrays_in_records.adb:132:11: info: flow dependencies proved
+arrays_in_records.adb:133:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 0, First_Array => (5 => 42, others => 23), Second_Array => (5 => 42, others => 23)))
+arrays_in_records.adb:142:11: info: flow dependencies proved
+arrays_in_records.adb:144:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 0, First_Array => (0 => 42, others => 23), Second_Array => (0 => 42, others => 23)) and I = 1)
+arrays_in_records.adb:155:11: info: flow dependencies proved
+arrays_in_records.adb:156:22: medium: postcondition might fail, cannot prove A.First_Array(17) /= 23 (e.g. when A = (Counter => 100, First_Array => (17 => 23, 23 => Value'Last, others => 42), Second_Array => (17 => 23, 23 => Value'Last, others => 42)))
 arrays_in_records.adb:163:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (First_Array => (0 => 42, 1 => 23, others => Value'Last), others => ?) and I = 1) [possible explanation: precondition of subprogram at line 166 should mention A]
+arrays_in_records.adb:169:11: info: flow dependencies proved
+arrays_in_records.adb:171:22: medium: postcondition might fail, cannot prove A.First_Array(I) /= 23 (e.g. when A = (Counter => 100, First_Array => (0 => 42, 1 => 23, others => Value'Last), Second_Array => (0 => 42, others => Value'Last)) and I = 1)
 arrays_in_records.adb:178:22: info: assertion proved (CVC4: 1 VC)
-arrays_in_records.adb:185:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 183 should mention A in a precondition]
-arrays_in_records.adb:191:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:198:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0))) [possible explanation: precondition of subprogram at line 194 should mention A]
-arrays_in_records.adb:204:27: info: initialization of "Tmp" proved
-arrays_in_records.adb:212:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 17, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 17, First_Array => (others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 209 should mention A in a precondition]
-arrays_in_records.adb:219:29: info: initialization of "Tmp" proved
-arrays_in_records.adb:220:29: info: initialization of "Tmp" proved
-arrays_in_records.adb:228:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 1, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 1, First_Array => (others => 0), Second_Array => (others => 0))) [possible explanation: precondition of subprogram at line 223 should mention A]
-arrays_in_records.adb:235:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:236:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:243:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (17 => 0, others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (17 => 0, others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 241 should mention A in a precondition]
-arrays_in_records.adb:249:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:255:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (0 => 0, others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 252 should mention A in a precondition]
-arrays_in_records.adb:261:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:267:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (17 => 0, others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (17 => 0, others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 264 should mention A in a precondition]
-arrays_in_records.adb:273:28: info: initialization of "Tmp" proved
-arrays_in_records.adb:280:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (0 => 0, others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (0 => 0, others => 0), Second_Array => (others => 0))) [possible explanation: subprogram at line 276 should mention A in a precondition]
-arrays_in_records.adb:286:28: info: initialization of "Tmp" proved
+arrays_in_records.adb:184:11: info: flow dependencies proved
+arrays_in_records.adb:185:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_in_records.adb:187:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:196:11: info: flow dependencies proved
+arrays_in_records.adb:198:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 0, First_Array => (others => 0), Second_Array => (others => 0)))
+arrays_in_records.adb:200:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:211:11: info: flow dependencies proved
+arrays_in_records.adb:212:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 17, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 17, First_Array => (others => 0), Second_Array => (others => 0)))
+arrays_in_records.adb:214:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:226:11: info: flow dependencies proved
+arrays_in_records.adb:228:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (Counter => 1, First_Array => (others => 0), Second_Array => (others => 0)) and A'Old = (Counter => 1, First_Array => (others => 0), Second_Array => (others => 0)))
+arrays_in_records.adb:230:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:242:11: info: flow dependencies proved
+arrays_in_records.adb:243:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_in_records.adb:245:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:254:11: info: flow dependencies proved
+arrays_in_records.adb:255:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_in_records.adb:257:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:266:11: info: flow dependencies proved
+arrays_in_records.adb:267:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_in_records.adb:269:07: info: initialization of "Tmp" proved
+arrays_in_records.adb:279:11: info: flow dependencies proved
+arrays_in_records.adb:280:22: medium: postcondition might fail, cannot prove A /= A'old
+arrays_in_records.adb:282:07: info: initialization of "Tmp" proved

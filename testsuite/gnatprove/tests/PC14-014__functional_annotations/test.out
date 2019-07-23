@@ -10,7 +10,8 @@ a-cfdlli.ads:1347:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cfdlli.ads:1362:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1377:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1392:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1414:14: info: precondition proved (Z3: 2 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1414:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1420:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1469:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfdlli.ads:1476:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
 a-cfhama.ads:679:39: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
@@ -29,6 +30,38 @@ a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfinve.ads:59:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:60:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:61:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:63:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:69:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:70:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:70:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:72:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:72:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:79:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:315:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:318:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:357:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:390:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:393:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:425:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:471:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:495:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:536:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:601:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:729:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:731:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:732:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:765:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:767:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:768:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:769:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:752:17: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforma.ads:787:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
@@ -61,97 +94,59 @@ a-cforse.ads:1366:20: info: precondition proved (Z3: 1 VC), in instantiation at 
 a-cforse.ads:1381:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1415:47: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:1430:40: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
-a-cofove.ads:54:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:55:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:56:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:58:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:64:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:65:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:65:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:67:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:67:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:68:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:74:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:310:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:313:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:352:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:385:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:388:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:420:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:466:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:490:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:531:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:596:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:724:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:726:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:727:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:760:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:762:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:763:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cofove.ads:764:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:27: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:235:27: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:235:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
 a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cofove.ads:96, in instantiation at use_vectors.ads:23
-use_lists.adb:8:29: info: initialization of "Cu.Node" proved
 use_lists.adb:10:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:10:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:10:32: info: precondition proved (Z3: 2 VC)
-use_lists.adb:10:53: info: initialization of "Cu.Node" proved
 use_lists.adb:11:15: info: precondition proved (Z3: 4 VC)
 use_lists.adb:12:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:12:25: info: initialization of "Cu.Node" proved
-use_lists.adb:13:20: info: initialization of "Cu.Node" proved
 use_lists.adb:15:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:15:19: info: initialization of "Cu.Node" proved
-use_lists.adb:24:30: info: initialization of "Cu.Node" proved
 use_lists.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:27:26: info: precondition proved (Z3: 4 VC)
@@ -159,58 +154,43 @@ use_lists.adb:27:51: info: precondition proved (Z3: 4 VC)
 use_lists.adb:28:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:28:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:28:34: info: precondition proved (Z3: 2 VC)
-use_lists.adb:28:56: info: initialization of "Cu.Node" proved
 use_lists.adb:28:74: info: overflow check proved (Z3: 2 VC)
 use_lists.adb:29:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:29:26: info: initialization of "Cu.Node" proved
 use_lists.adb:30:13: info: precondition proved (Z3: 1 VC)
 use_lists.adb:30:25: info: precondition proved (Z3: 1 VC)
-use_lists.adb:30:38: info: initialization of "Cu.Node" proved
 use_lists.adb:30:42: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:32:13: info: precondition proved (Z3: 1 VC)
 use_lists.adb:32:25: info: precondition proved (Z3: 1 VC)
-use_lists.adb:32:38: info: initialization of "Cu.Node" proved
 use_lists.adb:34:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:34:20: info: initialization of "Cu.Node" proved
-use_lists.adb:41:29: info: initialization of "Cu.Node" proved
 use_lists.adb:42:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:42:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:44:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:44:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:44:32: info: precondition proved (Z3: 2 VC)
-use_lists.adb:44:53: info: initialization of "Cu.Node" proved
 use_lists.adb:45:26: info: precondition proved (Z3: 4 VC)
 use_lists.adb:46:26: info: precondition proved (Z3: 4 VC)
 use_lists.adb:48:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:48:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:48:27: info: precondition proved (Z3: 2 VC)
-use_lists.adb:48:48: info: initialization of "Cu.Node" proved
 use_lists.adb:49:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:49:48: info: range check proved (Z3: 2 VC)
 use_lists.adb:50:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:50:37: info: range check proved (Z3: 2 VC)
 use_lists.adb:51:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:51:25: info: initialization of "Cu.Node" proved
 use_lists.adb:52:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:52:33: info: initialization of "Cu.Node" proved
 use_lists.adb:52:37: info: precondition proved (Z3: 1 VC)
-use_lists.adb:52:49: info: initialization of "Cu.Node" proved
 use_lists.adb:52:53: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:54:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:54:19: info: initialization of "Cu.Node" proved
-use_lists.adb:61:29: info: initialization of "Cu.Node" proved
 use_lists.adb:62:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:62:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:64:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:64:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:64:32: info: precondition proved (Z3: 2 VC)
-use_lists.adb:64:53: info: initialization of "Cu.Node" proved
 use_lists.adb:65:26: info: precondition proved (Z3: 4 VC)
 use_lists.adb:66:26: info: precondition proved (Z3: 4 VC)
 use_lists.adb:68:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:68:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:68:27: info: precondition proved (Z3: 2 VC)
-use_lists.adb:68:48: info: initialization of "Cu.Node" proved
 use_lists.adb:69:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:69:48: info: range check proved (Z3: 2 VC)
 use_lists.adb:70:17: info: precondition proved (Z3: 4 VC)
@@ -218,18 +198,12 @@ use_lists.adb:70:37: info: range check proved (Z3: 2 VC)
 use_lists.adb:71:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:71:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:73:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:73:25: info: initialization of "Cu.Node" proved
 use_lists.adb:74:13: info: precondition proved (Z3: 1 VC)
-use_lists.adb:74:33: info: initialization of "Cu.Node" proved
 use_lists.adb:74:37: info: precondition proved (Z3: 1 VC)
-use_lists.adb:74:49: info: initialization of "Cu.Node" proved
 use_lists.adb:74:53: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:76:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:76:19: info: initialization of "Cu.Node" proved
-use_lists.adb:84:21: info: initialization of "Lgth" proved
 use_lists.adb:85:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:85:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:85:49: info: initialization of "Cu.Node" proved
 use_lists.adb:86:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:86:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:86:68: info: overflow check proved (Z3: 2 VC)
@@ -245,20 +219,14 @@ use_lists.adb:94:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:96:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:96:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:96:14: info: precondition proved (Z3: 2 VC)
-use_lists.adb:96:35: info: initialization of "Cu.Node" proved
 use_lists.adb:97:10: info: precondition proved (Z3: 1 VC)
 use_lists.adb:97:21: info: precondition proved (Z3: 1 VC)
-use_lists.adb:97:33: info: initialization of "Cu.Node" proved
 use_lists.adb:98:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:98:19: info: initialization of "Cu.Node" proved
-use_lists.adb:106:29: info: initialization of "Cu.Node" proved
 use_lists.adb:107:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:107:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:107:68: info: overflow check proved (Z3: 2 VC)
-use_lists.adb:107:70: info: initialization of "N" proved
 use_lists.adb:109:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_lists.adb:109:13: info: loop invariant preservation proved (Z3: 2 VC)
-use_lists.adb:109:31: info: initialization of "N" proved
 use_lists.adb:110:15: info: precondition proved (Z3: 4 VC)
 use_lists.adb:110:37: info: overflow check proved (Z3: 2 VC)
 use_lists.adb:110:37: info: range check proved (Z3: 2 VC)
@@ -270,7 +238,6 @@ use_lists.adb:111:43: info: range check proved (Z3: 2 VC)
 use_lists.adb:112:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:114:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:114:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:114:26: info: initialization of "N" proved
 use_lists.adb:114:28: info: overflow check proved (Z3: 2 VC)
 use_lists.adb:115:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:115:39: info: overflow check proved (Z3: 2 VC)
@@ -280,40 +247,28 @@ use_lists.adb:116:48: info: range check proved (Z3: 2 VC)
 use_lists.adb:117:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:117:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:117:34: info: precondition proved (Z3: 2 VC)
-use_lists.adb:117:55: info: initialization of "Cu.Node" proved
 use_lists.adb:117:63: info: overflow check proved (Z3: 2 VC)
-use_lists.adb:117:65: info: initialization of "N" proved
 use_lists.adb:117:67: info: overflow check proved (Z3: 2 VC)
 use_lists.adb:118:10: info: precondition proved (Z3: 2 VC)
-use_lists.adb:118:21: info: initialization of "Cu.Node" proved
 use_lists.adb:118:25: info: precondition proved (Z3: 1 VC)
-use_lists.adb:118:37: info: initialization of "Cu.Node" proved
 use_lists.adb:119:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:119:19: info: initialization of "Cu.Node" proved
-use_lists.adb:120:15: info: initialization of "N" proved
 use_lists.adb:120:17: info: overflow check proved (Z3: 1 VC)
 use_lists.adb:128:07: info: precondition proved (Z3: 1 VC)
-use_lists.adb:128:16: info: initialization of "N_Last.Node" proved
-use_lists.adb:129:13: info: initialization of "Current.Node" proved
-use_lists.adb:129:24: info: initialization of "N_Last.Node" proved
 use_lists.adb:130:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:130:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:131:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:131:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:133:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:133:33: info: loop invariant preservation proved (Z3: 1 VC)
-use_lists.adb:133:59: info: initialization of "Current.Node" proved
 use_lists.adb:135:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_lists.adb:135:13: info: loop invariant preservation proved (Z3: 2 VC)
 use_lists.adb:135:14: info: precondition proved (Z3: 4 VC)
-use_lists.adb:135:35: info: initialization of "Current.Node" proved
 use_lists.adb:136:16: info: precondition proved (Z3: 2 VC)
 use_lists.adb:136:46: info: precondition proved (Z3: 2 VC)
 use_lists.adb:138:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:138:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:139:16: info: precondition proved (Z3: 2 VC)
 use_lists.adb:139:46: info: precondition proved (Z3: 2 VC)
-use_lists.adb:139:67: info: initialization of "Current.Node" proved
 use_lists.adb:141:17: info: precondition proved (Z3: 4 VC)
 use_lists.adb:141:37: info: range check proved (Z3: 2 VC)
 use_lists.adb:143:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -324,15 +279,12 @@ use_lists.adb:145:15: info: precondition proved (Z3: 4 VC)
 use_lists.adb:147:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:147:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:147:27: info: precondition proved (Z3: 2 VC)
-use_lists.adb:147:48: info: initialization of "Current.Node" proved
 use_lists.adb:148:15: info: precondition proved (Z3: 4 VC)
 use_lists.adb:148:35: info: range check proved (Z3: 2 VC)
 use_lists.adb:149:15: info: precondition proved (Z3: 4 VC)
 use_lists.adb:149:46: info: range check proved (Z3: 2 VC)
 use_lists.adb:150:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:150:30: info: initialization of "Current.Node" proved
 use_lists.adb:151:10: info: precondition proved (Z3: 1 VC)
-use_lists.adb:151:19: info: initialization of "Current.Node" proved
 use_lists.adb:157:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:158:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:159:07: info: precondition proved (Z3: 2 VC)
@@ -401,42 +353,35 @@ use_lists.ads:105:35: info: range check proved (Z3: 1 VC)
 use_lists.ads:106:13: info: precondition proved (Z3: 2 VC)
 use_lists.ads:106:39: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:106:39: info: range check proved (Z3: 1 VC)
-use_lists.ads:108:11: medium: precondition might fail
+use_lists.ads:108:11: medium: precondition might fail, cannot prove Has_Key (Container, Key)
 use_lists.ads:109:09: info: precondition proved (Z3: 1 VC)
 use_lists.ads:109:38: info: overflow check proved (Z3: 1 VC)
+use_lists.ads:119:06: info: data dependencies proved
 use_lists.ads:120:17: info: precondition proved (Z3: 1 VC)
 use_lists.ads:120:17: info: precondition proved (Z3: 2 VC)
 use_lists.ads:121:16: info: postcondition proved (Z3: 1 VC)
 use_lists.ads:121:17: info: precondition proved (Z3: 1 VC)
 use_lists.ads:121:42: info: precondition proved (Z3: 1 VC)
+use_lists.ads:127:06: info: data dependencies proved
 use_lists.ads:128:17: info: precondition proved (Z3: 1 VC)
 use_lists.ads:128:42: info: precondition proved (Z3: 1 VC)
 use_lists.ads:129:16: info: postcondition proved (Z3: 1 VC)
 use_lists.ads:129:17: info: precondition proved (Z3: 1 VC)
 use_lists.ads:129:17: info: precondition proved (Z3: 2 VC)
-use_maps.adb:7:29: info: initialization of "Cu.Node" proved
 use_maps.adb:8:10: info: loop variant proved (Z3: 1 VC)
 use_maps.adb:8:45: info: precondition proved (Z3: 1 VC)
-use_maps.adb:8:66: info: initialization of "Cu.Node" proved
 use_maps.adb:10:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:10:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:10:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:10:53: info: initialization of "Cu.Node" proved
 use_maps.adb:11:29: info: precondition proved (Z3: 4 VC)
 use_maps.adb:12:13: info: precondition proved (Z3: 1 VC)
-use_maps.adb:12:21: info: initialization of "Cu.Node" proved
-use_maps.adb:13:20: info: initialization of "Cu.Node" proved
 use_maps.adb:15:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:15:25: info: initialization of "Cu.Node" proved
-use_maps.adb:24:29: info: initialization of "Cu.Node" proved
 use_maps.adb:25:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:25:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:25:47: info: precondition proved (Z3: 2 VC)
-use_maps.adb:25:68: info: initialization of "Cu.Node" proved
 use_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:27:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:27:53: info: initialization of "Cu.Node" proved
 use_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
 use_maps.adb:28:16: info: precondition proved (Z3: 4 VC)
 use_maps.adb:29:20: info: precondition proved (Z3: 2 VC)
@@ -447,32 +392,24 @@ use_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
 use_maps.adb:32:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:33:38: info: precondition proved (Z3: 2 VC)
-use_maps.adb:33:59: info: initialization of "Cu.Node" proved
 use_maps.adb:34:22: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:25: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:51: info: precondition proved (Z3: 4 VC)
 use_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
-use_maps.adb:37:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:37:27: info: precondition proved (Z3: 2 VC)
-use_maps.adb:37:48: info: initialization of "Cu.Node" proved
+use_maps.adb:38:18: medium: loop invariant might fail after first iteration, cannot prove not Contains (Model (R), K.Get (Keys (S), I))
 use_maps.adb:38:44: info: precondition proved (Z3: 4 VC)
 use_maps.adb:38:60: info: range check proved (Z3: 2 VC)
 use_maps.adb:39:10: info: precondition proved (Z3: 1 VC)
 use_maps.adb:39:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:39:30: info: initialization of "Cu.Node" proved
 use_maps.adb:39:38: info: precondition proved (Z3: 1 VC)
-use_maps.adb:39:50: info: initialization of "Cu.Node" proved
 use_maps.adb:40:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:40:25: info: initialization of "Cu.Node" proved
-use_maps.adb:48:29: info: initialization of "Cu.Node" proved
 use_maps.adb:49:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:49:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:49:47: info: precondition proved (Z3: 2 VC)
-use_maps.adb:49:68: info: initialization of "Cu.Node" proved
 use_maps.adb:51:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_maps.adb:51:13: info: loop invariant preservation proved (Z3: 2 VC)
 use_maps.adb:51:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:51:53: info: initialization of "Cu.Node" proved
 use_maps.adb:52:37: info: precondition proved (Z3: 4 VC)
 use_maps.adb:53:22: info: precondition proved (Z3: 2 VC)
 use_maps.adb:53:35: info: precondition proved (Z3: 4 VC)
@@ -483,16 +420,11 @@ use_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
 use_maps.adb:56:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:57:38: info: precondition proved (Z3: 2 VC)
-use_maps.adb:57:59: info: initialization of "Cu.Node" proved
 use_maps.adb:58:40: info: precondition proved (Z3: 4 VC)
 use_maps.adb:59:10: info: precondition proved (Z3: 1 VC)
 use_maps.adb:59:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:59:30: info: initialization of "Cu.Node" proved
 use_maps.adb:59:38: info: precondition proved (Z3: 1 VC)
-use_maps.adb:59:50: info: initialization of "Cu.Node" proved
 use_maps.adb:60:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:60:25: info: initialization of "Cu.Node" proved
-use_maps.adb:67:29: info: initialization of "Cu.Node" proved
 use_maps.adb:68:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:68:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:69:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -502,7 +434,6 @@ use_maps.adb:70:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:72:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:72:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:72:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:72:53: info: initialization of "Cu.Node" proved
 use_maps.adb:73:15: info: precondition proved (Z3: 2 VC)
 use_maps.adb:73:28: info: precondition proved (Z3: 4 VC)
 use_maps.adb:74:20: info: precondition proved (Z3: 2 VC)
@@ -510,7 +441,6 @@ use_maps.adb:74:52: info: precondition proved (Z3: 4 VC)
 use_maps.adb:76:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:76:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:76:27: info: precondition proved (Z3: 2 VC)
-use_maps.adb:76:48: info: initialization of "Cu.Node" proved
 use_maps.adb:77:15: info: precondition proved (Z3: 2 VC)
 use_maps.adb:77:47: info: precondition proved (Z3: 4 VC)
 use_maps.adb:77:63: info: range check proved (Z3: 2 VC)
@@ -519,12 +449,8 @@ use_maps.adb:78:28: info: precondition proved (Z3: 4 VC)
 use_maps.adb:78:44: info: range check proved (Z3: 2 VC)
 use_maps.adb:79:10: info: precondition proved (Z3: 1 VC)
 use_maps.adb:79:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:79:30: info: initialization of "Cu.Node" proved
 use_maps.adb:79:38: info: precondition proved (Z3: 1 VC)
-use_maps.adb:79:50: info: initialization of "Cu.Node" proved
 use_maps.adb:80:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:80:25: info: initialization of "Cu.Node" proved
-use_maps.adb:87:29: info: initialization of "Cu.Node" proved
 use_maps.adb:88:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:88:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:89:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -534,7 +460,6 @@ use_maps.adb:90:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:92:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:92:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:92:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:92:53: info: initialization of "Cu.Node" proved
 use_maps.adb:93:15: info: precondition proved (Z3: 2 VC)
 use_maps.adb:93:28: info: precondition proved (Z3: 4 VC)
 use_maps.adb:94:20: info: precondition proved (Z3: 2 VC)
@@ -542,7 +467,6 @@ use_maps.adb:94:52: info: precondition proved (Z3: 4 VC)
 use_maps.adb:96:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:96:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:96:27: info: precondition proved (Z3: 2 VC)
-use_maps.adb:96:48: info: initialization of "Cu.Node" proved
 use_maps.adb:97:15: info: precondition proved (Z3: 2 VC)
 use_maps.adb:97:47: info: precondition proved (Z3: 4 VC)
 use_maps.adb:97:63: info: range check proved (Z3: 2 VC)
@@ -551,27 +475,18 @@ use_maps.adb:98:30: info: precondition proved (Z3: 4 VC)
 use_maps.adb:98:46: info: range check proved (Z3: 2 VC)
 use_maps.adb:99:10: info: precondition proved (Z3: 1 VC)
 use_maps.adb:99:22: info: precondition proved (Z3: 1 VC)
-use_maps.adb:99:30: info: initialization of "Cu.Node" proved
 use_maps.adb:99:38: info: precondition proved (Z3: 1 VC)
-use_maps.adb:99:50: info: initialization of "Cu.Node" proved
 use_maps.adb:100:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:100:25: info: initialization of "Cu.Node" proved
-use_maps.adb:107:30: info: initialization of "Cu.Node" proved
 use_maps.adb:109:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:109:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:109:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:109:54: info: initialization of "Cu.Node" proved
 use_maps.adb:110:42: info: precondition proved (Z3: 4 VC)
 use_maps.adb:111:27: info: precondition proved (Z3: 1 VC)
-use_maps.adb:111:36: info: initialization of "Cu.Node" proved
 use_maps.adb:114:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:114:26: info: initialization of "Cu.Node" proved
-use_maps.adb:122:30: info: initialization of "Cu.Node" proved
 use_maps.adb:124:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:124:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:124:50: info: overflow check proved (Z3: 2 VC)
 use_maps.adb:124:53: info: precondition proved (Z3: 2 VC)
-use_maps.adb:124:75: info: initialization of "Cu.Node" proved
 use_maps.adb:126:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:126:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:126:13: info: precondition proved (Z3: 2 VC)
@@ -579,11 +494,8 @@ use_maps.adb:126:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:126:38: info: precondition proved (Z3: 2 VC)
 use_maps.adb:127:10: info: precondition proved (Z3: 1 VC)
 use_maps.adb:127:23: info: precondition proved (Z3: 1 VC)
-use_maps.adb:127:32: info: initialization of "Cu.Node" proved
 use_maps.adb:127:37: info: precondition proved (Z3: 1 VC)
-use_maps.adb:127:50: info: initialization of "Cu.Node" proved
 use_maps.adb:128:16: info: precondition proved (Z3: 1 VC)
-use_maps.adb:128:26: info: initialization of "Cu.Node" proved
 use_maps.adb:134:07: info: precondition proved (Z3: 2 VC)
 use_maps.adb:135:07: info: precondition proved (Z3: 2 VC)
 use_maps.adb:136:07: info: precondition proved (Z3: 2 VC)
@@ -647,68 +559,65 @@ use_maps.ads:82:15: info: precondition proved (Z3: 2 VC)
 use_maps.ads:82:40: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:93:14: info: postcondition proved (Z3: 5 VC)
+use_maps.ads:93:14: info: postcondition proved (Z3: 6 VC)
 use_maps.ads:93:43: info: overflow check proved (Z3: 1 VC)
 use_maps.ads:94:11: info: precondition proved (Z3: 1 VC)
 use_maps.ads:94:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:96:23: info: precondition proved (Z3: 1 VC)
 use_maps.ads:96:40: info: precondition proved (Z3: 1 VC)
 use_maps.ads:98:20: info: precondition proved (Z3: 1 VC)
+use_maps.ads:108:06: info: data dependencies proved
 use_maps.ads:110:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:110:37: info: precondition proved (Z3: 2 VC)
 use_maps.ads:111:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:111:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:111:17: info: precondition proved (Z3: 2 VC)
 use_maps.ads:111:38: info: precondition proved (Z3: 1 VC)
+use_maps.ads:117:06: info: data dependencies proved
 use_maps.ads:118:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:118:46: info: precondition proved (Z3: 1 VC)
 use_maps.ads:119:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:120:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:120:37: info: precondition proved (Z3: 2 VC)
+use_maps.ads:126:06: info: data dependencies proved
 use_maps.ads:128:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:128:37: info: precondition proved (Z3: 2 VC)
 use_maps.ads:129:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:129:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:129:39: info: precondition proved (Z3: 1 VC)
+use_maps.ads:136:06: info: data dependencies proved
 use_maps.ads:137:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:137:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:138:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:139:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:139:37: info: precondition proved (Z3: 2 VC)
+use_maps.ads:145:06: info: data dependencies proved
 use_maps.ads:146:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:146:46: info: precondition proved (Z3: 1 VC)
 use_maps.ads:147:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:147:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:147:39: info: precondition proved (Z3: 1 VC)
+use_maps.ads:153:06: info: data dependencies proved
 use_maps.ads:154:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:154:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:155:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:155:17: info: precondition proved (Z3: 1 VC)
 use_maps.ads:155:17: info: precondition proved (Z3: 2 VC)
 use_maps.ads:155:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:7:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:8:10: info: loop variant proved (Z3: 1 VC)
 use_ordered_maps.adb:8:45: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:8:66: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:10:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:10:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:10:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:10:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:11:29: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:12:13: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:12:21: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:13:20: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:15:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:15:25: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:24:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:25:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:25:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:25:47: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:25:68: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:27:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:27:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:28:16: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:29:20: info: precondition proved (Z3: 2 VC)
@@ -719,32 +628,24 @@ use_ordered_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:32:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:33:38: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:33:59: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:34:22: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:35:25: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:35:51: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:37:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:37:27: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:37:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:38:44: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:38:60: info: range check proved (Z3: 2 VC)
 use_ordered_maps.adb:39:10: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:39:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:39:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:39:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:39:50: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:40:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:40:25: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:48:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:49:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:49:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:49:47: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:49:68: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:51:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_ordered_maps.adb:51:13: info: loop invariant preservation proved (Z3: 2 VC)
 use_ordered_maps.adb:51:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:51:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:52:37: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:53:22: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:53:35: info: precondition proved (Z3: 4 VC)
@@ -755,16 +656,11 @@ use_ordered_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:56:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:57:38: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:57:59: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:58:40: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:59:10: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:59:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:59:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:59:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:59:50: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:60:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:60:25: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:67:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:68:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:68:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:69:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -772,7 +668,6 @@ use_ordered_maps.adb:69:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:71:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:71:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:71:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:71:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:72:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:72:28: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:73:20: info: precondition proved (Z3: 2 VC)
@@ -780,7 +675,6 @@ use_ordered_maps.adb:73:52: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:75:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:75:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:75:27: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:75:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:76:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:76:47: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:76:63: info: range check proved (Z3: 2 VC)
@@ -789,12 +683,8 @@ use_ordered_maps.adb:77:28: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:77:44: info: range check proved (Z3: 2 VC)
 use_ordered_maps.adb:78:10: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:78:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:78:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:78:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:78:50: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:79:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:79:25: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:86:29: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:87:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:87:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:88:33: info: loop invariant initialization proved (Z3: 1 VC)
@@ -802,7 +692,6 @@ use_ordered_maps.adb:88:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:90:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:90:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:90:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:90:53: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:91:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:91:28: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:92:20: info: precondition proved (Z3: 2 VC)
@@ -810,7 +699,6 @@ use_ordered_maps.adb:92:52: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:94:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:94:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:94:27: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:94:48: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:95:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:95:47: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:95:63: info: range check proved (Z3: 2 VC)
@@ -819,27 +707,18 @@ use_ordered_maps.adb:96:30: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:96:46: info: range check proved (Z3: 2 VC)
 use_ordered_maps.adb:97:10: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:97:22: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:97:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:97:38: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:97:50: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:98:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:98:25: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:105:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:107:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:107:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:107:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:107:54: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:108:42: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:109:27: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:109:36: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:112:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:112:26: info: initialization of "Cu.Node" proved
-use_ordered_maps.adb:120:30: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:122:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:122:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:122:50: info: overflow check proved (Z3: 2 VC)
 use_ordered_maps.adb:122:53: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:122:75: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:124:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:124:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:124:13: info: precondition proved (Z3: 2 VC)
@@ -847,11 +726,8 @@ use_ordered_maps.adb:124:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:124:38: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:125:10: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:125:23: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:125:32: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:125:37: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:125:50: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:126:16: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.adb:126:26: info: initialization of "Cu.Node" proved
 use_ordered_maps.adb:132:07: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:133:07: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:134:07: info: precondition proved (Z3: 2 VC)
@@ -913,99 +789,85 @@ use_ordered_maps.ads:80:15: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:80:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:80:40: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:90:34: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 5 VC)
+use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 6 VC)
 use_ordered_maps.ads:91:43: info: overflow check proved (Z3: 1 VC)
 use_ordered_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:94:23: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:94:40: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:96:20: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:106:06: info: data dependencies proved
 use_ordered_maps.ads:108:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:108:37: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:109:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:109:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:109:17: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:109:38: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:115:06: info: data dependencies proved
 use_ordered_maps.ads:116:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:116:46: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:117:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:118:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:118:37: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.ads:124:06: info: data dependencies proved
 use_ordered_maps.ads:126:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:126:37: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:127:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:127:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:127:39: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:134:06: info: data dependencies proved
 use_ordered_maps.ads:135:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:135:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:136:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:137:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:137:37: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.ads:143:06: info: data dependencies proved
 use_ordered_maps.ads:144:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:144:46: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:145:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:145:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:145:39: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:151:06: info: data dependencies proved
 use_ordered_maps.ads:152:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:152:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:153:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:153:17: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:153:17: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:153:38: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:7:29: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:9:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:9:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:9:32: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:9:53: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:10:29: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:11:13: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:11:25: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:12:20: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:14:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:14:25: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:23:29: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:24:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:24:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:24:48: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:24:69: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:26:32: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:26:53: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:27:32: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:29:13: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:30:36: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:30:57: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:31:28: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:32:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:32:25: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:32:37: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:33:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:33:25: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:40:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:42:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:42:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:42:32: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:42:54: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:43:34: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:44:27: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:44:40: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:47:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:47:26: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:55:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:57:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:57:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:57:32: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:57:54: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:58:44: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:59:27: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:59:40: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:62:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:62:26: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:69:07: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:76:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:78:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:78:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:78:50: info: overflow check proved (Z3: 2 VC)
@@ -1019,14 +881,10 @@ use_ordered_sets.adb:85:13: info: loop invariant initialization proved (Z3: 1 VC
 use_ordered_sets.adb:85:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:86:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:86:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:86:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:87:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:87:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:96:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:97:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:97:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:97:34: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:97:56: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:99:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:99:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:99:50: info: overflow check proved (Z3: 2 VC)
@@ -1041,14 +899,10 @@ use_ordered_sets.adb:106:18: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:106:62: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:107:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:107:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:107:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:108:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:108:36: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:117:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:118:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:118:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:118:34: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:118:56: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:118:74: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:120:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:120:13: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1059,14 +913,10 @@ use_ordered_sets.adb:123:13: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:125:38: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:126:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:126:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:126:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:127:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:127:26: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:136:30: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:137:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:137:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:137:34: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:137:56: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:137:74: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:139:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:139:13: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1074,17 +924,12 @@ use_ordered_sets.adb:140:18: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:140:45: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:141:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:141:23: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:141:36: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:142:16: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:142:26: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:151:29: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:152:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:152:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:152:68: info: overflow check proved (Z3: 2 VC)
-use_ordered_sets.adb:152:70: info: initialization of "N" proved
 use_ordered_sets.adb:154:13: info: loop invariant initialization proved (Z3: 2 VC)
 use_ordered_sets.adb:154:13: info: loop invariant preservation proved (Z3: 2 VC)
-use_ordered_sets.adb:154:31: info: initialization of "N" proved
 use_ordered_sets.adb:155:14: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:155:36: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:155:36: info: range check proved (Z3: 2 VC)
@@ -1098,7 +943,6 @@ use_ordered_sets.adb:157:16: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:159:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:159:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:159:28: info: overflow check proved (Z3: 2 VC)
-use_ordered_sets.adb:159:30: info: initialization of "N" proved
 use_ordered_sets.adb:159:32: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:160:18: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:160:38: info: range check proved (Z3: 2 VC)
@@ -1107,7 +951,6 @@ use_ordered_sets.adb:161:49: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:161:49: info: range check proved (Z3: 2 VC)
 use_ordered_sets.adb:163:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:163:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:163:26: info: initialization of "N" proved
 use_ordered_sets.adb:163:28: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:164:18: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:164:40: info: overflow check proved (Z3: 2 VC)
@@ -1117,22 +960,16 @@ use_ordered_sets.adb:165:47: info: range check proved (Z3: 2 VC)
 use_ordered_sets.adb:166:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:166:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:166:34: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.adb:166:55: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:166:63: info: overflow check proved (Z3: 2 VC)
-use_ordered_sets.adb:166:65: info: initialization of "N" proved
 use_ordered_sets.adb:166:67: info: overflow check proved (Z3: 2 VC)
 use_ordered_sets.adb:167:25: info: assertion proved (Z3: 1 VC)
 use_ordered_sets.adb:167:42: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:167:54: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:167:58: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:168:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:168:22: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:168:34: info: initialization of "Cu.Node" proved
 use_ordered_sets.adb:168:38: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:169:16: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:169:25: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.adb:169:34: info: initialization of "Cu.Node" proved
-use_ordered_sets.adb:170:15: info: initialization of "N" proved
 use_ordered_sets.adb:170:17: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.adb:176:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:177:07: info: precondition proved (Z3: 1 VC)
@@ -1169,12 +1006,12 @@ use_ordered_sets.ads:84:07: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:84:07: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:84:27: info: division check proved (Z3: 1 VC)
 use_ordered_sets.ads:85:29: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.ads:87:09: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+use_ordered_sets.ads:87:08: medium: postcondition might fail, cannot prove E.Get (Elements (S), 2 * I - 1) = E.Get (Elements (S)'Old, I)
+use_ordered_sets.ads:87:09: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:87:31: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:35: info: range check proved (Z3: 1 VC)
 use_ordered_sets.ads:87:43: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:88:12: medium: postcondition might fail, cannot prove E.Get (Elements (S), 2 * I) = E.Get (Elements (S)'Old, I) + 1
 use_ordered_sets.ads:88:13: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:88:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:88:35: info: range check proved (Z3: 1 VC)
@@ -1184,83 +1021,69 @@ use_ordered_sets.ads:98:14: info: postcondition proved (Z3: 4 VC)
 use_ordered_sets.ads:98:43: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:101:11: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:101:11: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.ads:111:06: info: data dependencies proved
 use_ordered_sets.ads:113:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:114:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:114:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:120:06: info: data dependencies proved
 use_ordered_sets.ads:121:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:122:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:123:25: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.ads:129:06: info: data dependencies proved
 use_ordered_sets.ads:131:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:132:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:132:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:132:39: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:139:06: info: data dependencies proved
 use_ordered_sets.ads:140:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:140:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:141:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:142:25: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.ads:148:06: info: data dependencies proved
 use_ordered_sets.ads:149:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:150:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:150:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:150:39: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:156:06: info: data dependencies proved
 use_ordered_sets.ads:157:17: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:157:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:158:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:158:17: info: precondition proved (Z3: 1 VC)
-use_sets.adb:7:29: info: initialization of "Cu.Node" proved
 use_sets.adb:9:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:9:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:9:32: info: precondition proved (Z3: 2 VC)
-use_sets.adb:9:53: info: initialization of "Cu.Node" proved
 use_sets.adb:10:29: info: precondition proved (Z3: 4 VC)
 use_sets.adb:11:13: info: precondition proved (Z3: 1 VC)
-use_sets.adb:11:25: info: initialization of "Cu.Node" proved
-use_sets.adb:12:20: info: initialization of "Cu.Node" proved
 use_sets.adb:14:16: info: precondition proved (Z3: 1 VC)
-use_sets.adb:14:25: info: initialization of "Cu.Node" proved
-use_sets.adb:23:29: info: initialization of "Cu.Node" proved
 use_sets.adb:24:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:24:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:24:48: info: precondition proved (Z3: 2 VC)
-use_sets.adb:24:69: info: initialization of "Cu.Node" proved
 use_sets.adb:26:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:26:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:26:32: info: precondition proved (Z3: 2 VC)
-use_sets.adb:26:53: info: initialization of "Cu.Node" proved
 use_sets.adb:27:32: info: precondition proved (Z3: 4 VC)
 use_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:29:13: info: precondition proved (Z3: 2 VC)
 use_sets.adb:29:13: info: precondition proved (Z3: 4 VC)
 use_sets.adb:30:36: info: precondition proved (Z3: 2 VC)
-use_sets.adb:30:57: info: initialization of "Cu.Node" proved
 use_sets.adb:31:28: info: precondition proved (Z3: 4 VC)
 use_sets.adb:32:10: info: precondition proved (Z3: 1 VC)
 use_sets.adb:32:25: info: precondition proved (Z3: 1 VC)
-use_sets.adb:32:37: info: initialization of "Cu.Node" proved
 use_sets.adb:33:16: info: precondition proved (Z3: 1 VC)
-use_sets.adb:33:25: info: initialization of "Cu.Node" proved
-use_sets.adb:40:30: info: initialization of "Cu.Node" proved
 use_sets.adb:42:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:42:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:42:32: info: precondition proved (Z3: 2 VC)
-use_sets.adb:42:54: info: initialization of "Cu.Node" proved
 use_sets.adb:43:34: info: precondition proved (Z3: 4 VC)
 use_sets.adb:44:27: info: precondition proved (Z3: 1 VC)
-use_sets.adb:44:40: info: initialization of "Cu.Node" proved
 use_sets.adb:47:16: info: precondition proved (Z3: 1 VC)
-use_sets.adb:47:26: info: initialization of "Cu.Node" proved
-use_sets.adb:55:30: info: initialization of "Cu.Node" proved
 use_sets.adb:57:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:57:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:57:32: info: precondition proved (Z3: 2 VC)
-use_sets.adb:57:54: info: initialization of "Cu.Node" proved
 use_sets.adb:58:34: info: precondition proved (Z3: 4 VC)
 use_sets.adb:59:27: info: precondition proved (Z3: 1 VC)
-use_sets.adb:59:40: info: initialization of "Cu.Node" proved
 use_sets.adb:62:16: info: precondition proved (Z3: 1 VC)
-use_sets.adb:62:26: info: initialization of "Cu.Node" proved
 use_sets.adb:69:07: info: precondition proved (Z3: 1 VC)
-use_sets.adb:76:30: info: initialization of "Cu.Node" proved
 use_sets.adb:77:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:77:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:79:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -1276,14 +1099,10 @@ use_sets.adb:87:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:87:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:88:10: info: precondition proved (Z3: 1 VC)
 use_sets.adb:88:23: info: precondition proved (Z3: 1 VC)
-use_sets.adb:88:36: info: initialization of "Cu.Node" proved
 use_sets.adb:89:23: info: precondition proved (Z3: 1 VC)
-use_sets.adb:89:36: info: initialization of "Cu.Node" proved
-use_sets.adb:98:30: info: initialization of "Cu.Node" proved
 use_sets.adb:99:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:99:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:99:34: info: precondition proved (Z3: 2 VC)
-use_sets.adb:99:56: info: initialization of "Cu.Node" proved
 use_sets.adb:99:74: info: overflow check proved (Z3: 2 VC)
 use_sets.adb:101:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:101:13: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1295,9 +1114,7 @@ use_sets.adb:104:13: info: precondition proved (Z3: 4 VC)
 use_sets.adb:106:38: info: precondition proved (Z3: 4 VC)
 use_sets.adb:107:10: info: precondition proved (Z3: 1 VC)
 use_sets.adb:107:23: info: precondition proved (Z3: 1 VC)
-use_sets.adb:107:36: info: initialization of "Cu.Node" proved
 use_sets.adb:108:16: info: precondition proved (Z3: 1 VC)
-use_sets.adb:108:26: info: initialization of "Cu.Node" proved
 use_sets.adb:115:07: info: precondition proved (Z3: 1 VC)
 use_sets.adb:116:07: info: precondition proved (Z3: 1 VC)
 use_sets.adb:117:07: info: precondition proved (Z3: 1 VC)
@@ -1332,31 +1149,36 @@ use_sets.ads:72:14: info: postcondition proved (Z3: 4 VC)
 use_sets.ads:72:43: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Z3: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Z3: 2 VC)
+use_sets.ads:85:06: info: data dependencies proved
 use_sets.ads:87:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:88:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:88:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:88:17: info: precondition proved (Z3: 2 VC)
+use_sets.ads:94:06: info: data dependencies proved
 use_sets.ads:95:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:96:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:97:25: info: precondition proved (Z3: 2 VC)
+use_sets.ads:103:06: info: data dependencies proved
 use_sets.ads:105:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:106:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:106:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:106:39: info: precondition proved (Z3: 1 VC)
+use_sets.ads:113:06: info: data dependencies proved
 use_sets.ads:114:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:114:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:115:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:116:25: info: precondition proved (Z3: 2 VC)
+use_sets.ads:122:06: info: data dependencies proved
 use_sets.ads:123:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:124:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:124:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:124:39: info: precondition proved (Z3: 1 VC)
+use_sets.ads:130:06: info: data dependencies proved
 use_sets.ads:131:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:131:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:132:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:132:17: info: precondition proved (Z3: 1 VC)
 use_sets.ads:132:17: info: precondition proved (Z3: 2 VC)
-use_vectors.adb:10:36: info: initialization of "Lst" proved
 use_vectors.adb:11:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_vectors.adb:11:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_vectors.adb:11:59: info: overflow check proved (Z3: 2 VC)
@@ -1375,7 +1197,6 @@ use_vectors.adb:16:41: info: overflow check proved (Z3: 1 VC)
 use_vectors.adb:18:13: info: precondition proved (Z3: 1 VC)
 use_vectors.adb:18:25: info: precondition proved (Z3: 2 VC)
 use_vectors.adb:18:38: info: range check proved (Z3: 1 VC)
-use_vectors.adb:26:36: info: initialization of "Lst" proved
 use_vectors.adb:27:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_vectors.adb:27:33: info: loop invariant preservation proved (Z3: 1 VC)
 use_vectors.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -1398,7 +1219,6 @@ use_vectors.adb:37:33: info: range check proved (Z3: 1 VC)
 use_vectors.adb:37:36: info: precondition proved (Z3: 2 VC)
 use_vectors.adb:37:48: info: range check proved (Z3: 1 VC)
 use_vectors.adb:37:51: info: overflow check proved (Z3: 1 VC)
-use_vectors.adb:45:36: info: initialization of "Lst" proved
 use_vectors.adb:47:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_vectors.adb:47:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_vectors.adb:48:45: info: overflow check proved (Z3: 2 VC)
@@ -1420,7 +1240,6 @@ use_vectors.adb:55:48: info: range check proved (Z3: 2 VC)
 use_vectors.adb:56:10: info: precondition proved (Z3: 1 VC)
 use_vectors.adb:56:21: info: precondition proved (Z3: 2 VC)
 use_vectors.adb:56:33: info: range check proved (Z3: 1 VC)
-use_vectors.adb:63:42: info: initialization of "Lst" proved
 use_vectors.adb:65:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_vectors.adb:65:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_vectors.adb:65:54: info: overflow check proved (Z3: 2 VC)
@@ -1468,59 +1287,59 @@ use_vectors.ads:16:36: info: range check proved (Z3: 1 VC)
 use_vectors.ads:17:12: info: range check proved (Z3: 2 VC)
 use_vectors.ads:18:35: info: range check proved (Z3: 1 VC)
 use_vectors.ads:20:12: info: range check proved (Z3: 2 VC)
-use_vectors.ads:34:75: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:37:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:39:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:39:37: info: range check proved (Z3: 1 VC)
-use_vectors.ads:39:41: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:39:54: info: range check proved (Z3: 1 VC)
-use_vectors.ads:44:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:46:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:46:48: info: range check proved (Z3: 1 VC)
+use_vectors.ads:35:75: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:38:14: info: postcondition proved (Z3: 2 VC)
+use_vectors.ads:40:24: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:40:37: info: range check proved (Z3: 1 VC)
+use_vectors.ads:40:41: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:40:54: info: range check proved (Z3: 1 VC)
+use_vectors.ads:45:14: info: postcondition proved (Z3: 2 VC)
 use_vectors.ads:47:24: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:47:36: info: range check proved (Z3: 1 VC)
-use_vectors.ads:51:27: info: division check proved (Z3: 1 VC)
-use_vectors.ads:52:14: info: postcondition proved (Z3: 3 VC)
-use_vectors.ads:52:29: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:54:08: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:54:20: info: range check proved (Z3: 1 VC)
-use_vectors.ads:54:25: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:54:49: info: range check proved (Z3: 1 VC)
-use_vectors.ads:55:12: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:55:26: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:55:26: info: range check proved (Z3: 1 VC)
+use_vectors.ads:47:48: info: range check proved (Z3: 1 VC)
+use_vectors.ads:48:24: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:48:36: info: range check proved (Z3: 1 VC)
+use_vectors.ads:52:27: info: division check proved (Z3: 1 VC)
+use_vectors.ads:53:14: info: postcondition proved (Z3: 3 VC)
+use_vectors.ads:53:29: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:55:08: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:55:20: info: range check proved (Z3: 1 VC)
+use_vectors.ads:55:25: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:55:49: info: range check proved (Z3: 1 VC)
 use_vectors.ads:56:12: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:56:36: info: range check proved (Z3: 1 VC)
-use_vectors.ads:66:11: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:66:23: info: range check proved (Z3: 1 VC)
-use_vectors.ads:66:32: info: contract case proved (Z3: 2 VC)
-use_vectors.ads:67:47: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:68:16: info: contract case proved (Z3: 5 VC)
-use_vectors.ads:69:18: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:69:37: info: range check proved (Z3: 1 VC)
-use_vectors.ads:70:67: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:71:19: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:71:31: info: range check proved (Z3: 1 VC)
-use_vectors.ads:78:14: info: postcondition proved (Z3: 2 VC)
-use_vectors.ads:80:21: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:80:33: info: range check proved (Z3: 1 VC)
+use_vectors.ads:56:26: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:56:26: info: range check proved (Z3: 1 VC)
+use_vectors.ads:57:12: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:57:36: info: range check proved (Z3: 1 VC)
+use_vectors.ads:67:11: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:67:23: info: range check proved (Z3: 1 VC)
+use_vectors.ads:67:32: info: contract case proved (Z3: 2 VC)
+use_vectors.ads:68:47: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:69:16: info: contract case proved (Z3: 5 VC)
+use_vectors.ads:70:18: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:70:37: info: range check proved (Z3: 1 VC)
+use_vectors.ads:71:67: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:72:19: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:72:31: info: range check proved (Z3: 1 VC)
+use_vectors.ads:79:14: info: postcondition proved (Z3: 2 VC)
 use_vectors.ads:81:21: info: precondition proved (Z3: 2 VC)
 use_vectors.ads:81:33: info: range check proved (Z3: 1 VC)
-use_vectors.ads:81:38: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:81:62: info: range check proved (Z3: 1 VC)
-use_vectors.ads:90:14: info: postcondition proved (Z3: 4 VC)
-use_vectors.ads:90:42: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:91:46: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:92:09: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:92:21: info: range check proved (Z3: 1 VC)
-use_vectors.ads:92:26: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:92:50: info: range check proved (Z3: 1 VC)
-use_vectors.ads:93:31: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:93:46: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:93:58: info: range check proved (Z3: 1 VC)
-use_vectors.ads:94:26: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:95:15: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:95:27: info: range check proved (Z3: 1 VC)
-use_vectors.ads:95:32: info: precondition proved (Z3: 2 VC)
-use_vectors.ads:95:58: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:95:58: info: range check proved (Z3: 1 VC)
+use_vectors.ads:82:21: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:82:33: info: range check proved (Z3: 1 VC)
+use_vectors.ads:82:38: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:82:62: info: range check proved (Z3: 1 VC)
+use_vectors.ads:91:14: info: postcondition proved (Z3: 4 VC)
+use_vectors.ads:91:42: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:92:46: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:93:09: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:93:21: info: range check proved (Z3: 1 VC)
+use_vectors.ads:93:26: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:93:50: info: range check proved (Z3: 1 VC)
+use_vectors.ads:94:31: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:94:46: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:94:58: info: range check proved (Z3: 1 VC)
+use_vectors.ads:95:26: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:96:15: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:96:27: info: range check proved (Z3: 1 VC)
+use_vectors.ads:96:32: info: precondition proved (Z3: 2 VC)
+use_vectors.ads:96:58: info: overflow check proved (Z3: 1 VC)
+use_vectors.ads:96:58: info: range check proved (Z3: 1 VC)

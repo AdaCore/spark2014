@@ -1,0 +1,12 @@
+abstract project Test is
+   --  This file is only to prevent overwriting of test.adc by the test driver
+   for Source_Files use ();
+
+   --  The following file is rejected by the frontend in phase 1 (due to type
+   --  violations); we must exclude it from the analysis, as otherwise we won't
+   --  get into phase 2 for any files (where we want to check if ownership
+   --  rules works as expected).
+
+   Phase_1_Errors := ("n08b.adb");
+
+end Test;

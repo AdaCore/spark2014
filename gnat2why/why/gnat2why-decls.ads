@@ -6,7 +6,7 @@
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                       Copyright (C) 2010-2018, AdaCore                   --
+--                     Copyright (C) 2010-2019, AdaCore                     --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -28,15 +28,21 @@ with Gnat2Why.Util;              use Gnat2Why.Util;
 with SPARK_Atree;                use SPARK_Atree;
 with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
 with SPARK_Definition;           use SPARK_Definition;
+with SPARK_Util;                 use SPARK_Util;
 with Types;                      use Types;
 
 package Gnat2Why.Decls is
 
    procedure Translate_Constant
      (File : W_Section_Id;
-      E    : Entity_Id);
-   --  Generate a function declaration for IN parameters, named numbers and
-   --  constant objects.
+      E    : Entity_Id)
+   with Pre => Ekind (E) in E_Constant
+                          | E_Discriminant
+                          | E_In_Parameter
+                 or else
+               Is_Quantified_Loop_Param (E);
+   --  Generate a function declaration for objects that appear as constant
+   --  in Why.
 
    procedure Translate_Constant_Value
      (File : W_Section_Id;
@@ -47,17 +53,10 @@ package Gnat2Why.Decls is
    --  object.
 
    procedure Translate_External_Object (E : Entity_Name);
-   --  For a "magic string" generate a dummy declaration module which contains
-   --  the type and the variable declaration.
-
-   procedure Translate_External_Object (E : Entity_Id)
-   with Pre => Entity_In_SPARK (E);
-   --  Generate Why declarations for an entity E that is only known to proof
-   --  as a generated Global of some subprogram. The declaration looks same as
-   --  for external objects represented by Entity_Name, just with more precise
-   --  tracability comments, e.g. sloc and preserved casing.
-
-   --  The entity is either a variable which is not in SPARK, or an abstract
+   --  Generate Why declarations for an object E that is only known to proof
+   --  as a generated Global of some subprogram.
+   --
+   --  This object is either a variable which is not in SPARK, or an abstract
    --  state which represents its hidden constituents. It is never a constant,
    --  because those in SPARK are translated elsewhere and those not in SPARK
    --  do not appear in Global for they are considered as without variable
@@ -68,13 +67,14 @@ package Gnat2Why.Decls is
 
    procedure Translate_Loop_Entity
      (File : W_Section_Id;
-      E    : Entity_Id);
+      E    : Entity_Id)
+   with Pre => Ekind (E) = E_Loop;
 
    procedure Translate_Variable
      (File : W_Section_Id;
       E    : Entity_Id)
    with Pre => Entity_In_SPARK (E);
-   --  Generate Why declarations that correspond to an Ada top level object
+   --  Generate Why declarations that correspond to an Ada top-level object
    --  declaration.
 
 end Gnat2Why.Decls;

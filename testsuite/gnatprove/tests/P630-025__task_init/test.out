@@ -1,68 +1,53 @@
-decadriver.adb:72:13: info: initialization of "Error" proved
 decadriver.adb:73:21: medium: range check might fail (e.g. when Frame'First = 0 and Frame'Last = 2147483647)
-decadriver.adb:73:32: info: initialization of "Size" proved
 decadriver.adb:74:16: info: range check proved (CVC4: 4 VC)
 decadriver.adb:74:50: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:74:61: info: initialization of "Size" proved
-decadriver.adb:75:18: info: length check proved (CVC4: 4 VC)
-decadriver.adb:75:45: info: length check proved (CVC4: 4 VC)
+decadriver.adb:75:18: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+decadriver.adb:75:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:75:45: info: range check proved (CVC4: 4 VC)
-decadriver.adb:75:58: info: initialization of "Size" proved
-decadriver.adb:78:22: info: length check proved (CVC4: 4 VC)
+decadriver.adb:78:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 decadriver.adb:78:49: info: range check proved (CVC4: 4 VC)
 decadriver.adb:78:67: info: range check proved (CVC4: 1 VC)
 decadriver.adb:84:34: medium: range check might fail
 decadriver.adb:99:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Enable_Rx"
+decadriver.adb:105:10: info: initialization of "RX_FINFO_Reg" proved
+decadriver.adb:107:10: info: initialization of "Frame_Length" proved
+decadriver.adb:108:10: info: initialization of "Next_Idx" proved
 decadriver.adb:112:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
-decadriver.adb:113:35: info: initialization of "RX_FINFO_Reg.RXFLEN" proved
 decadriver.adb:113:56: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:113:56: info: range check proved (CVC4: 1 VC)
-decadriver.adb:114:35: info: initialization of "RX_FINFO_Reg.RXFLE" proved
 decadriver.adb:114:55: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:116:25: info: assertion proved (CVC4: 1 VC)
-decadriver.adb:116:25: info: initialization of "Frame_Length" proved
-decadriver.adb:118:13: info: initialization of "Frame_Length" proved
 decadriver.adb:123:63: info: range check proved (CVC4: 1 VC)
 decadriver.adb:125:37: info: overflow check proved (CVC4: 1 VC)
 decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Notify_Frame_Received"
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
-decadriver.adb:131:34: info: initialization of "Next_Idx" proved
 decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:131:56: info: initialization of "Frame_Length" proved
 decadriver.adb:133:38: medium: predicate check might fail
-decadriver.adb:133:47: info: initialization of "Next_Idx" proved
-decadriver.adb:133:50: info: initialization of "Frame_Length" proved
 decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
-decadriver.adb:134:47: info: initialization of "Next_Idx" proved
 decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
-decadriver.adb:135:47: info: initialization of "Next_Idx" proved
+decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 1)
-decadriver.adb:156:44: info: initialization of "Next_Idx" proved
+decadriver.adb:156:35: medium: predicate check might fail
 decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
-decadriver.adb:157:44: info: initialization of "Next_Idx" proved
 decadriver.adb:158:35: info: predicate check proved (CVC4: 1 VC)
-decadriver.adb:158:44: info: initialization of "Next_Idx" proved
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
 decadriver.adb:189:23: info: precondition proved (CVC4: 4 VC)
 decadriver.adb:197:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Set_Tx_Frame_Length"
-decadriver.adb:197:23: medium: precondition might fail (e.g. when Length = 1024)
+decadriver.adb:197:23: medium: precondition might fail, cannot prove Length < DW1000.Constants.tx_buffer_length (e.g. when Length = 1024)
 decadriver.adb:206:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Start_Tx"
-decadriver.adb:210:26: info: initialization of "Result" proved
+decadriver.adb:232:10: info: initialization of "Word" proved
+decadriver.adb:234:10: info: initialization of "PMSC_CTRL1_Reg" proved
+decadriver.adb:235:10: info: initialization of "SYS_MASK_Reg" proved
 decadriver.adb:239:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:241:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:242:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:245:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
-decadriver.adb:250:46: info: initialization of "Word" proved
 decadriver.adb:250:51: info: range check proved (CVC4: 2 VC)
-decadriver.adb:251:34: info: initialization of "Word" proved
-decadriver.adb:252:46: info: initialization of "Word" proved
 decadriver.adb:252:51: info: range check proved (CVC4: 2 VC)
 decadriver.adb:259:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
-decadriver.adb:260:34: info: initialization of "Word" proved
 decadriver.adb:260:39: info: range check proved (CVC4: 2 VC)
 decadriver.adb:266:48: info: unrolling loop
 decadriver.adb:267:29: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
@@ -70,66 +55,21 @@ decadriver.adb:267:56: info: range check proved (CVC4: 12 VC)
 decadriver.adb:276:26: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:280:40: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:282:40: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Initialize"
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ARX2INIT" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ARXSLP" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.ATXSLP" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.KHZCLKDIV" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.LDERUNE" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.PKTSEQ" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.PLLSYN" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_1" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_2" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_3" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.Reserved_4" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.SNOZE" proved
-decadriver.adb:282:48: info: initialization of "PMSC_CTRL1_Reg.SNOZR" proved
 decadriver.adb:285:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:286:23: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:289:34: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:292:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Initialize"
 decadriver.adb:299:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Initialize"
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MAAT" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MAFFREJ" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MCPLLLL" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MCPLOCK" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MESYNCR" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MGPIOIRQ" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MHPDWARN" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MLDEDONE" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MLDEERR" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRFPLLLL" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXDFR" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXFCE" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXFCG" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXOVRR" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPHD" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPHE" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPRD" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXPTO" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXRFSL" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXRFTO" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXSFDD" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MRXSFDTO" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MSLP2INIT" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXBERR" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXFRB" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXFRS" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXPHS" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.MTXPRS" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_1" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_2" proved
-decadriver.adb:299:43: info: initialization of "SYS_MASK_Reg.Reserved_3" proved
-decadriver.adb:325:38: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
+decadriver.adb:313:10: info: initialization of "LDE_REPC_Reg" proved
+decadriver.adb:315:10: info: initialization of "SFD_Timeout" proved
 decadriver.adb:325:60: info: division check proved (CVC4: 1 VC)
 decadriver.adb:333:55: info: range check proved (CVC4: 1 VC)
 decadriver.adb:335:34: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:336:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
-decadriver.adb:336:43: info: initialization of "LDE_REPC_Reg.LDE_REPC" proved
 decadriver.adb:338:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:339:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:340:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:347:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
-decadriver.adb:352:35: info: initialization of "SFD_Timeout" proved
 decadriver.adb:355:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:360:13: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure"
 decadriver.adb:364:36: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
@@ -140,113 +80,59 @@ decadriver.adb:407:29: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:408:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:410:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
 decadriver.adb:411:29: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure"
+decadriver.adb:423:10: info: initialization of "SYS_MASK_Reg" proved
 decadriver.adb:427:35: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "Configure_Errors"
 decadriver.adb:433:35: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Configure_Errors"
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAAT" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MAFFREJ" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MCPLLLL" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MCPLOCK" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MESYNCR" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MGPIOIRQ" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MHPDWARN" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MLDEDONE" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MLDEERR" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRFPLLLL" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXDFR" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXFCE" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXFCG" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXOVRR" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPHD" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPHE" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPRD" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXPTO" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXRFSL" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXRFTO" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXSFDD" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MRXSFDTO" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MSLP2INIT" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXBERR" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXFRB" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXFRS" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXPHS" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.MTXPRS" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_1" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_2" proved
-decadriver.adb:433:43: info: initialization of "SYS_MASK_Reg.Reserved_3" proved
+decadriver.adb:466:10: info: initialization of "SYS_STATUS_Reg" proved
 decadriver.adb:507:37: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "DW1000_IRQ"
-decadriver.adb:509:13: info: initialization of "SYS_STATUS_Reg.RXRFTO" proved
 decadriver.adb:511:24: info: precondition proved (CVC4: 1 VC)
-decadriver.adb:516:13: info: initialization of "SYS_STATUS_Reg.RXSFDTO" proved
 decadriver.adb:518:24: info: precondition proved (CVC4: 1 VC)
-decadriver.adb:523:13: info: initialization of "SYS_STATUS_Reg.RXRFSL" proved
 decadriver.adb:525:24: info: precondition proved (CVC4: 1 VC)
-decadriver.adb:530:13: info: initialization of "SYS_STATUS_Reg.RXDFR" proved
-decadriver.adb:532:16: info: initialization of "SYS_STATUS_Reg.RXFCG" proved
 decadriver.adb:533:24: high: call to potentially blocking subprogram "dw1000.bsp.read_transaction" in protected operation "DW1000_IRQ"
-decadriver.adb:536:19: info: initialization of "SYS_STATUS_Reg.RXFCE" proved
 decadriver.adb:538:27: info: precondition proved (CVC4: 1 VC)
-decadriver.adb:546:13: info: initialization of "SYS_STATUS_Reg.TXFRS" proved
 decadriver.adb:553:37: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "DW1000_IRQ"
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.AAT" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.AFFREJ" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.CLKPLL_LL" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.CPLOCK" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.ESYNCR" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.GPIOIRQ" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.HPDWARN" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.HSRBP" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.ICRBP" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.IRQS" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.LDEDONE" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.LDEERR" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RFPLL_LL" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXDFR" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXFCE" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXFCG" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXOVRR" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPHD" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPHE" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPRD" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPREJ" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXPTO" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRFSL" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRFTO" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXRSCS" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXSFDD" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.RXSFDTO" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.Reserved_1" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.Reserved_2" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.SLP2INIT" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXBERR" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXFRB" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXFRS" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPHS" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPRS" proved
-decadriver.adb:553:45: info: initialization of "SYS_STATUS_Clear.TXPUTE" proved
 decadriver.ads:81:19: info: initialization of "Size" proved
 decadriver.ads:82:19: info: initialization of "Error" proved
+decadriver.ads:83:12: info: flow dependencies proved
 decadriver.ads:88:17: info: postcondition proved (CVC4: 3 VC)
-decadriver.ads:88:21: info: initialization of "Error" proved
-decadriver.ads:90:23: info: initialization of "Size" proved
 decadriver.ads:111:22: medium: postcondition might fail, cannot prove Pending_Frames_Count'Result <= 2 (e.g. when Pending_Frames_Count'Result = 3)
 decadriver.ads:115:28: info: initialization of "Result" proved
-decadriver.ads:120:17: info: postcondition proved (CVC4: 2 VC)
-decadriver.ads:120:38: info: initialization of "Result" proved
+decadriver.ads:116:14: info: data dependencies proved
+decadriver.ads:117:09: info: flow dependencies proved
+decadriver.ads:120:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 decadriver.ads:121:07: warning: no check message justified by this pragma
+decadriver.ads:128:14: info: data dependencies proved
+decadriver.ads:129:09: info: flow dependencies proved
 decadriver.ads:131:07: warning: no check message justified by this pragma
+decadriver.ads:144:14: info: flow dependencies proved
 decadriver.ads:150:34: medium: predicate check might fail
+decadriver.ads:180:14: info: data dependencies proved
+decadriver.ads:181:09: info: flow dependencies proved
 decadriver.ads:187:21: info: range check proved (CVC4: 1 VC)
 decadriver.ads:187:29: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:188:07: warning: no check message justified by this pragma
+decadriver.ads:195:14: info: data dependencies proved
+decadriver.ads:196:09: info: flow dependencies proved
 decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:203:07: warning: no check message justified by this pragma
 decadriver.ads:210:27: info: initialization of "Result" proved
+decadriver.ads:211:14: info: data dependencies proved
+decadriver.ads:212:09: info: flow dependencies proved
 decadriver.ads:222:07: warning: no check message justified by this pragma
 decadriver.ads:242:19: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
+decadriver.ads:250:14: info: data dependencies proved
+decadriver.ads:251:09: info: flow dependencies proved
 decadriver.ads:281:07: warning: no check message justified by this pragma
-decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode (e.g. when Config = (Channel => 0, PRF => PRF_16MHz, Tx_Preamble_Length => PLEN_64, Tx_PAC => PAC_8, Tx_Preamble_Code => 0, Rx_Preamble_Code => 0, Use_Nonstandard_SFD => False, Data_Rate => Data_Rate_110k, PHR_Mode => Standard_Frames, SFD_Timeout => 0, Enable_Smart_Power => False))
+decadriver.ads:287:14: info: data dependencies proved
+decadriver.ads:288:09: info: flow dependencies proved
+decadriver.ads:292:17: medium: postcondition might fail, cannot prove PHR_Mode = Config.PHR_Mode
 decadriver.ads:294:07: warning: no check message justified by this pragma
+decadriver.ads:305:14: info: data dependencies proved
+decadriver.ads:306:09: info: flow dependencies proved
 decadriver.ads:318:07: warning: no check message justified by this pragma
+decadriver.ads:327:14: info: flow dependencies proved
 decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 decadriver.ads:332:49: medium: this interrupt might be reserved
+decadriver.ads:333:09: info: data dependencies proved
+decadriver.ads:336:09: info: flow dependencies proved
 decadriver.ads:346:07: warning: no check message justified by this pragma

@@ -1,135 +1,110 @@
-ap_engaged_implies_modes_on.adb:46:26: info: initialization of "Is_AP_Engaged_out1" proved
-ap_engaged_implies_modes_on.adb:50:21: info: initialization of "NOT1_out1" proved
-ap_engaged_implies_modes_on.adb:51:19: info: initialization of "Modes_On_out1" proved
-ap_engaged_implies_modes_on.adb:59:19: info: initialization of "Unit_Delay_out1" proved
-ap_engaged_implies_modes_on.adb:60:19: info: initialization of "NOT5_out1" proved
-ap_engaged_implies_modes_on.adb:64:22: info: initialization of "OR_out1" proved
+ap_engaged_implies_modes_on.adb:26:07: info: initialization of "Unit_Delay_out1" proved
+ap_engaged_implies_modes_on.adb:27:07: info: initialization of "Is_AP_Engaged_out1" proved
+ap_engaged_implies_modes_on.adb:28:07: info: initialization of "Modes_On_out1" proved
+ap_engaged_implies_modes_on.adb:29:07: info: initialization of "NOT1_out1" proved
+ap_engaged_implies_modes_on.adb:30:07: info: initialization of "NOT5_out1" proved
+ap_engaged_implies_modes_on.adb:31:07: info: initialization of "OR_out1" proved
 ap_engaged_implies_modes_on.adb:64:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
-ap_engaged_implies_modes_on.ads:15:14: info: initialization of "Unit_Delay_memory" proved
-ap_engaged_implies_modes_on.ads:17:14: info: initialization of "True_out1" proved
-ap_engaged_implies_modes_on.ads:19:14: info: initialization of "Unit_Delay_memory" proved
-at_least_one_lateral_mode_active.adb:51:22: info: initialization of "ROLL_Active_out1" proved
-at_least_one_lateral_mode_active.adb:52:19: info: initialization of "HDG_Active_out1" proved
-at_least_one_lateral_mode_active.adb:53:22: info: initialization of "NAV_Active_out1" proved
-at_least_one_lateral_mode_active.adb:54:25: info: initialization of "LAPPR_Active_out1" proved
-at_least_one_lateral_mode_active.adb:55:28: info: initialization of "LGA_Active_out1" proved
-at_least_one_lateral_mode_active.adb:59:22: info: initialization of "OR_out1" proved
-at_least_one_lateral_mode_active.adb:59:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
+at_least_one_lateral_mode_active.adb:23:07: info: initialization of "HDG_Active_out1" proved
+at_least_one_lateral_mode_active.adb:24:07: info: initialization of "LAPPR_Active_out1" proved
+at_least_one_lateral_mode_active.adb:25:07: info: initialization of "LGA_Active_out1" proved
+at_least_one_lateral_mode_active.adb:26:07: info: initialization of "NAV_Active_out1" proved
+at_least_one_lateral_mode_active.adb:27:07: info: initialization of "ROLL_Active_out1" proved
+at_least_one_lateral_mode_active.adb:28:07: info: initialization of "OR_out1" proved
+at_least_one_lateral_mode_active.adb:59:22: medium: assertion might fail, cannot prove OR_out1
 at_least_one_lateral_mode_active.ads:15:14: warning: subprogram "comp" has no effect
-at_most_one_lateral_mode_active.adb:66:32: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:67:19: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:68:22: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:69:25: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:73:26: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:77:21: info: initialization of "NOT1_out1" proved
-at_most_one_lateral_mode_active.adb:78:19: info: initialization of "NOR_LGA_out1" proved
-at_most_one_lateral_mode_active.adb:82:34: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:83:19: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:84:22: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:85:25: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:89:28: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:93:23: info: initialization of "NOT1_out1_1" proved
-at_most_one_lateral_mode_active.adb:94:19: info: initialization of "NOR_LAPPR_out1" proved
-at_most_one_lateral_mode_active.adb:98:32: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:99:19: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:100:22: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:101:25: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:105:28: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:109:23: info: initialization of "NOT1_out1_2" proved
-at_most_one_lateral_mode_active.adb:110:19: info: initialization of "NOR_NAV_out1" proved
-at_most_one_lateral_mode_active.adb:114:32: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:115:19: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:116:22: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:117:25: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:121:28: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:125:23: info: initialization of "NOT1_out1_3" proved
-at_most_one_lateral_mode_active.adb:126:19: info: initialization of "NOR_HDG_out1" proved
-at_most_one_lateral_mode_active.adb:130:33: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:131:19: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:132:22: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:133:25: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:137:28: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:141:23: info: initialization of "NOT1_out1_4" proved
-at_most_one_lateral_mode_active.adb:142:19: info: initialization of "NOR_ROLL_out1" proved
-at_most_one_lateral_mode_active.adb:146:23: info: initialization of "NOT5_out1_4" proved
-at_most_one_lateral_mode_active.adb:147:20: info: initialization of "NOT5_out1_3" proved
-at_most_one_lateral_mode_active.adb:148:23: info: initialization of "NOT5_out1_2" proved
-at_most_one_lateral_mode_active.adb:149:26: info: initialization of "NOT5_out1_1" proved
-at_most_one_lateral_mode_active.adb:150:29: info: initialization of "NOT5_out1" proved
-at_most_one_lateral_mode_active.adb:154:22: info: initialization of "AND_out1" proved
+at_most_one_lateral_mode_active.adb:23:07: info: initialization of "HDG_Active_out1" proved
+at_most_one_lateral_mode_active.adb:24:07: info: initialization of "LAPPR_Active_out1" proved
+at_most_one_lateral_mode_active.adb:25:07: info: initialization of "LGA_Active_out1" proved
+at_most_one_lateral_mode_active.adb:26:07: info: initialization of "NAV_Active_out1" proved
+at_most_one_lateral_mode_active.adb:27:07: info: initialization of "ROLL_Active_out1" proved
+at_most_one_lateral_mode_active.adb:28:07: info: initialization of "NOR_LGA_out1" proved
+at_most_one_lateral_mode_active.adb:29:07: info: initialization of "NOT1_out1" proved
+at_most_one_lateral_mode_active.adb:30:07: info: initialization of "NOT5_out1" proved
+at_most_one_lateral_mode_active.adb:31:07: info: initialization of "NOR_LAPPR_out1" proved
+at_most_one_lateral_mode_active.adb:32:07: info: initialization of "NOT1_out1_1" proved
+at_most_one_lateral_mode_active.adb:33:07: info: initialization of "NOT5_out1_1" proved
+at_most_one_lateral_mode_active.adb:34:07: info: initialization of "NOR_NAV_out1" proved
+at_most_one_lateral_mode_active.adb:35:07: info: initialization of "NOT1_out1_2" proved
+at_most_one_lateral_mode_active.adb:36:07: info: initialization of "NOT5_out1_2" proved
+at_most_one_lateral_mode_active.adb:37:07: info: initialization of "NOR_HDG_out1" proved
+at_most_one_lateral_mode_active.adb:38:07: info: initialization of "NOT1_out1_3" proved
+at_most_one_lateral_mode_active.adb:39:07: info: initialization of "NOT5_out1_3" proved
+at_most_one_lateral_mode_active.adb:40:07: info: initialization of "NOR_ROLL_out1" proved
+at_most_one_lateral_mode_active.adb:41:07: info: initialization of "NOT1_out1_4" proved
+at_most_one_lateral_mode_active.adb:42:07: info: initialization of "NOT5_out1_4" proved
+at_most_one_lateral_mode_active.adb:43:07: info: initialization of "AND_out1" proved
 at_most_one_lateral_mode_active.adb:154:22: medium: assertion might fail, cannot prove AND_out1 (e.g. when AND_out1 = False)
 at_most_one_lateral_mode_active.ads:15:14: warning: subprogram "comp" has no effect
-changed.adb:43:20: info: initialization of "Unit_Delay_out1" proved
-changed.adb:47:15: info: initialization of "NEQ_out1" proved
+changed.adb:31:07: info: initialization of "Unit_Delay_out1" proved
+changed.adb:32:07: info: initialization of "NEQ_out1" proved
 changed.ads:21:08: info: initialization of "Out1" proved
-event_processing.adb:242:21: info: initialization of "Is_Pilot_Flying_Side_out1" proved
-event_processing.adb:258:25: info: initialization of "ALT_Switch_out1" proved
-event_processing.adb:262:25: info: initialization of "ALTSEL_Target_Changed_out1" proved
-event_processing.adb:266:25: info: initialization of "AP_Engaged_out1" proved
-event_processing.adb:270:25: info: initialization of "APPR_Switch_out1" proved
-event_processing.adb:274:25: info: initialization of "FD_Switch_out1" proved
-event_processing.adb:278:25: info: initialization of "FLC_Switch_out1" proved
-event_processing.adb:282:25: info: initialization of "GA_Switch_out1" proved
-event_processing.adb:286:25: info: initialization of "HDG_Switch_out1" proved
-event_processing.adb:290:25: info: initialization of "NAV_Switch_out1" proved
-event_processing.adb:298:25: info: initialization of "SYNC_Switch_out1" proved
-event_processing.adb:310:25: info: initialization of "VS_Pitch_Wheel_Rotated_out1" proved
-event_processing.adb:318:25: info: initialization of "VS_Switch_out1" proved
-event_processing.adb:322:43: info: initialization of "Changed_Out1" proved
-event_processing.adb:330:18: info: initialization of "False_out1" proved
-event_processing.adb:330:30: info: initialization of "Rising_Edge_9_Out1" proved
-event_processing.adb:334:18: info: initialization of "Seen_13_Inhibit_Out" proved
-event_processing.adb:334:39: info: initialization of "Rising_Edge_6_Out1" proved
-event_processing.adb:338:18: info: initialization of "Seen_8_Inhibit_Out" proved
-event_processing.adb:338:38: info: initialization of "Rising_Edge_3_Out1" proved
-event_processing.adb:342:18: info: initialization of "Seen_4_Inhibit_Out" proved
-event_processing.adb:342:38: info: initialization of "Rising_Edge_1_Out1" proved
-event_processing.adb:346:18: info: initialization of "Seen_1_Inhibit_Out" proved
-event_processing.adb:346:38: info: initialization of "Rising_Edge_Out1" proved
-event_processing.adb:350:18: info: initialization of "Seen_3_Inhibit_Out" proved
-event_processing.adb:350:38: info: initialization of "Rising_Edge_5_Out1" proved
-event_processing.adb:354:18: info: initialization of "Seen_7_Inhibit_Out" proved
-event_processing.adb:354:38: info: initialization of "Rising_Edge_10_Out1" proved
-event_processing.adb:358:18: info: initialization of "Seen_16_Inhibit_Out" proved
-event_processing.adb:358:39: info: initialization of "Rising_Edge_11_Out1" proved
-event_processing.adb:362:18: info: initialization of "Seen_4_Inhibit_Out" proved
-event_processing.adb:362:38: info: initialization of "Rising_Edge_7_Out1" proved
-event_processing.adb:366:18: info: initialization of "Seen_9_Inhibit_Out" proved
-event_processing.adb:366:38: info: initialization of "Rising_Edge_8_Out1" proved
-event_processing.adb:370:42: info: initialization of "Seen_1_Seen" proved
-event_processing.adb:374:39: info: initialization of "Seen_3_Seen" proved
-event_processing.adb:378:40: info: initialization of "Seen_4_Seen" proved
-event_processing.adb:382:39: info: initialization of "Seen_7_Seen" proved
-event_processing.adb:386:38: info: initialization of "Seen_8_Seen" proved
-event_processing.adb:390:39: info: initialization of "Seen_9_Seen" proved
-event_processing.adb:394:39: info: initialization of "Seen_12_Seen" proved
-event_processing.adb:398:40: info: initialization of "Seen_13_Seen" proved
-event_processing.adb:402:43: info: initialization of "Seen_15_Seen" proved
-event_processing.adb:406:38: info: initialization of "Seen_16_Seen" proved
-event_processing.adb:414:18: info: initialization of "False1_out1" proved
-event_processing.adb:414:31: info: initialization of "Rising_Edge_2_Out1" proved
-event_processing.adb:418:31: info: initialization of "Seen_5_Seen" proved
-event_processing.adb:422:21: info: initialization of "Seen_12_Inhibit_Out" proved
-event_processing.adb:423:19: info: initialization of "Seen_5_Inhibit_Out" proved
-event_processing.adb:424:22: info: initialization of "Seen_15_Inhibit_Out" proved
-event_processing.adb:428:18: info: initialization of "OR3_out1" proved
-event_processing.adb:428:28: info: initialization of "Rising_Edge_4_Out1" proved
-event_processing.adb:432:18: info: initialization of "Seen_6_Inhibit_Out" proved
-event_processing.adb:432:38: info: initialization of "LAPPR_Capture_Cond_Met_out1" proved
-event_processing.adb:436:41: info: initialization of "Seen_10_Seen" proved
-event_processing.adb:440:18: info: initialization of "Seen_10_Inhibit_Out" proved
-event_processing.adb:440:39: info: initialization of "NAV_Capture_Cond_Met_out1" proved
-event_processing.adb:444:39: info: initialization of "Seen_11_Seen" proved
-event_processing.adb:448:18: info: initialization of "Seen_6_Inhibit_Out" proved
-event_processing.adb:448:38: info: initialization of "VAPPR_Capture_Cond_Met_out1" proved
-event_processing.adb:452:41: info: initialization of "Seen_14_Seen" proved
-event_processing.adb:456:18: info: initialization of "Seen_14_Inhibit_Out" proved
-event_processing.adb:456:39: info: initialization of "ALTSEL_Track_Cond_Met_out1" proved
-event_processing.adb:460:40: info: initialization of "Seen_2_Seen" proved
-event_processing.adb:464:18: info: initialization of "Seen_2_Inhibit_Out" proved
-event_processing.adb:464:38: info: initialization of "ALTSEL_Capture_Cond_Met_out1" proved
-event_processing.adb:468:42: info: initialization of "Seen_Seen" proved
-event_processing.adb:472:38: info: initialization of "Seen_6_Seen" proved
+event_processing.adb:126:07: info: initialization of "ALTSEL_Capture_Cond_Met_out1" proved
+event_processing.adb:127:07: info: initialization of "ALTSEL_Target_Changed_out1" proved
+event_processing.adb:128:07: info: initialization of "ALTSEL_Track_Cond_Met_out1" proved
+event_processing.adb:129:07: info: initialization of "ALT_Switch_out1" proved
+event_processing.adb:130:07: info: initialization of "APPR_Switch_out1" proved
+event_processing.adb:131:07: info: initialization of "AP_Engaged_out1" proved
+event_processing.adb:132:07: info: initialization of "FD_Switch_out1" proved
+event_processing.adb:133:07: info: initialization of "FLC_Switch_out1" proved
+event_processing.adb:134:07: info: initialization of "GA_Switch_out1" proved
+event_processing.adb:135:07: info: initialization of "HDG_Switch_out1" proved
+event_processing.adb:136:07: info: initialization of "Is_Pilot_Flying_Side_out1" proved
+event_processing.adb:137:07: info: initialization of "Changed_Out1" proved
+event_processing.adb:138:07: info: initialization of "LAPPR_Capture_Cond_Met_out1" proved
+event_processing.adb:139:07: info: initialization of "NAV_Capture_Cond_Met_out1" proved
+event_processing.adb:140:07: info: initialization of "NAV_Switch_out1" proved
+event_processing.adb:141:07: info: initialization of "Rising_Edge_Out1" proved
+event_processing.adb:142:07: info: initialization of "Rising_Edge_1_Out1" proved
+event_processing.adb:143:07: info: initialization of "Rising_Edge_2_Out1" proved
+event_processing.adb:144:07: info: initialization of "Rising_Edge_3_Out1" proved
+event_processing.adb:145:07: info: initialization of "Rising_Edge_4_Out1" proved
+event_processing.adb:146:07: info: initialization of "Rising_Edge_5_Out1" proved
+event_processing.adb:147:07: info: initialization of "Rising_Edge_6_Out1" proved
+event_processing.adb:148:07: info: initialization of "Rising_Edge_7_Out1" proved
+event_processing.adb:149:07: info: initialization of "Rising_Edge_8_Out1" proved
+event_processing.adb:150:07: info: initialization of "SYNC_Switch_out1" proved
+event_processing.adb:151:07: info: initialization of "Rising_Edge_9_Out1" proved
+event_processing.adb:152:07: info: initialization of "VAPPR_Capture_Cond_Met_out1" proved
+event_processing.adb:153:07: info: initialization of "VS_Pitch_Wheel_Rotated_out1" proved
+event_processing.adb:154:07: info: initialization of "Rising_Edge_11_Out1" proved
+event_processing.adb:155:07: info: initialization of "VS_Switch_out1" proved
+event_processing.adb:156:07: info: initialization of "Rising_Edge_10_Out1" proved
+event_processing.adb:157:07: info: initialization of "False_out1" proved
+event_processing.adb:158:07: info: initialization of "Seen_13_Seen" proved
+event_processing.adb:159:07: info: initialization of "Seen_13_Inhibit_Out" proved
+event_processing.adb:160:07: info: initialization of "Seen_8_Seen" proved
+event_processing.adb:161:07: info: initialization of "Seen_8_Inhibit_Out" proved
+event_processing.adb:162:07: info: initialization of "Seen_4_Seen" proved
+event_processing.adb:163:07: info: initialization of "Seen_4_Inhibit_Out" proved
+event_processing.adb:164:07: info: initialization of "Seen_1_Seen" proved
+event_processing.adb:165:07: info: initialization of "Seen_1_Inhibit_Out" proved
+event_processing.adb:166:07: info: initialization of "Seen_3_Seen" proved
+event_processing.adb:167:07: info: initialization of "Seen_3_Inhibit_Out" proved
+event_processing.adb:168:07: info: initialization of "Seen_7_Seen" proved
+event_processing.adb:169:07: info: initialization of "Seen_7_Inhibit_Out" proved
+event_processing.adb:170:07: info: initialization of "Seen_16_Seen" proved
+event_processing.adb:171:07: info: initialization of "Seen_16_Inhibit_Out" proved
+event_processing.adb:172:07: info: initialization of "Seen_15_Seen" proved
+event_processing.adb:173:07: info: initialization of "Seen_15_Inhibit_Out" proved
+event_processing.adb:174:07: info: initialization of "Seen_9_Seen" proved
+event_processing.adb:175:07: info: initialization of "Seen_9_Inhibit_Out" proved
+event_processing.adb:176:07: info: initialization of "Seen_12_Seen" proved
+event_processing.adb:177:07: info: initialization of "Seen_12_Inhibit_Out" proved
+event_processing.adb:178:07: info: initialization of "False1_out1" proved
+event_processing.adb:179:07: info: initialization of "Seen_5_Seen" proved
+event_processing.adb:180:07: info: initialization of "Seen_5_Inhibit_Out" proved
+event_processing.adb:181:07: info: initialization of "OR3_out1" proved
+event_processing.adb:182:07: info: initialization of "Seen_6_Seen" proved
+event_processing.adb:183:07: info: initialization of "Seen_6_Inhibit_Out" proved
+event_processing.adb:184:07: info: initialization of "Seen_10_Seen" proved
+event_processing.adb:185:07: info: initialization of "Seen_10_Inhibit_Out" proved
+event_processing.adb:186:07: info: initialization of "Seen_11_Seen" proved
+event_processing.adb:189:07: info: initialization of "Seen_14_Seen" proved
+event_processing.adb:190:07: info: initialization of "Seen_14_Inhibit_Out" proved
+event_processing.adb:191:07: info: initialization of "Seen_2_Seen" proved
+event_processing.adb:192:07: info: initialization of "Seen_2_Inhibit_Out" proved
+event_processing.adb:193:07: info: initialization of "Seen_Seen" proved
 event_processing.ads:38:08: info: initialization of "When_Pilot_Fllying_Transfer_Seen" proved
 event_processing.ads:39:08: info: initialization of "When_AP_Engaged_Seen" proved
 event_processing.ads:40:08: info: initialization of "When_SYNC_Switch_Pressed_Seen" proved
@@ -148,14 +123,6 @@ event_processing.ads:52:08: info: initialization of "If_LAPPR_Capture_Cond_Met_S
 event_processing.ads:53:08: info: initialization of "If_ALTSEL_Capture_Cond_Met_Seen" proved
 event_processing.ads:54:08: info: initialization of "If_ALTSEL_Track_Cond_Met_Seen" proved
 event_processing.ads:55:08: info: initialization of "If_VAPPR_Capture_Cond_Met_Seen" proved
-flight_modes.adb:193:14: info: initialization of "C2_LATERAL_HDG_Will_Be_Activated" proved
-flight_modes.adb:193:14: info: initialization of "C2_LATERAL_LAPPR_Will_Be_Activated" proved
-flight_modes.adb:193:14: info: initialization of "C2_LATERAL_LGA_Will_Be_Activated" proved
-flight_modes.adb:193:14: info: initialization of "C2_LATERAL_NAV_Will_Be_Activated" proved
-flight_modes.adb:243:14: info: initialization of "C2_VERTICAL_FLC_Will_Be_Activated" proved
-flight_modes.adb:243:14: info: initialization of "C2_VERTICAL_VAPPR_Will_Be_Activated" proved
-flight_modes.adb:243:14: info: initialization of "C2_VERTICAL_VGA_Will_Be_Activated" proved
-flight_modes.adb:243:14: info: initialization of "C2_VERTICAL_VS_Will_Be_Activated" proved
 flight_modes.adb:535:43: warning: unused assignment
 flight_modes.adb:536:43: warning: unused assignment
 flight_modes.adb:537:45: warning: unused assignment
@@ -173,31 +140,14 @@ flight_modes.adb:1674:07: warning: initialization of "aVarTruthTableCondition_6"
 flight_modes.adb:1675:07: warning: initialization of "aVarTruthTableCondition_7" has no effect
 flight_modes.adb:1676:07: warning: initialization of "aVarTruthTableCondition_8" has no effect
 flight_modes.adb:1677:07: warning: initialization of "r" has no effect
-flight_modes.adb:1688:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1692:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1696:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1700:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:1704:22: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:1708:27: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:1709:35: info: initialization of "aVarTruthTableCondition_7" proved
-flight_modes.adb:1710:38: info: initialization of "aVarTruthTableCondition_8" proved
-flight_modes.adb:1727:14: info: initialization of "r" proved
 flight_modes.adb:1732:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1733:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1734:07: warning: initialization of "r" has no effect
-flight_modes.adb:1739:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1740:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1747:14: info: initialization of "r" proved
 flight_modes.adb:1752:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1753:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1754:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:1755:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:1756:07: warning: initialization of "r" has no effect
-flight_modes.adb:1763:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1767:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1771:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1775:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:1787:14: info: initialization of "r" proved
 flight_modes.adb:1792:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1793:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1794:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -211,95 +161,44 @@ flight_modes.adb:1801:07: warning: initialization of "aVarTruthTableCondition_10
 flight_modes.adb:1802:07: warning: initialization of "aVarTruthTableCondition_11" has no effect
 flight_modes.adb:1803:07: warning: initialization of "aVarTruthTableCondition_12" has no effect
 flight_modes.adb:1804:07: warning: initialization of "r" has no effect
-flight_modes.adb:1819:10: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1823:13: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1827:16: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:1831:19: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:1835:22: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:1839:29: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1840:35: info: initialization of "aVarTruthTableCondition_7" proved
-flight_modes.adb:1841:44: info: initialization of "aVarTruthTableCondition_8" proved
-flight_modes.adb:1842:47: info: initialization of "aVarTruthTableCondition_9" proved
-flight_modes.adb:1843:50: info: initialization of "aVarTruthTableCondition_10" proved
-flight_modes.adb:1848:29: info: initialization of "aVarTruthTableCondition_11" proved
-flight_modes.adb:1849:38: info: initialization of "aVarTruthTableCondition_12" proved
-flight_modes.adb:1868:14: info: initialization of "r" proved
 flight_modes.adb:1873:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1874:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1875:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:1876:07: warning: initialization of "r" has no effect
-flight_modes.adb:1882:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1886:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1890:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1900:14: info: initialization of "r" proved
 flight_modes.adb:1905:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1906:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1907:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:1908:07: warning: initialization of "r" has no effect
-flight_modes.adb:1914:18: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1915:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1916:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1923:14: info: initialization of "r" proved
 flight_modes.adb:1928:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1929:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1930:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:1931:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:1932:07: warning: initialization of "r" has no effect
-flight_modes.adb:1939:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1940:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1945:14: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:1946:23: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:1955:14: info: initialization of "r" proved
 flight_modes.adb:1960:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1961:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:1962:07: warning: initialization of "r" has no effect
-flight_modes.adb:1967:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1971:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:1979:14: info: initialization of "r" proved
 flight_modes.adb:1984:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:1985:07: warning: initialization of "r" has no effect
-flight_modes.adb:1989:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:1995:14: info: initialization of "r" proved
 flight_modes.adb:2000:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2001:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2002:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2003:07: warning: initialization of "r" has no effect
-flight_modes.adb:2009:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2013:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2017:22: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2027:14: info: initialization of "r" proved
 flight_modes.adb:2032:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2032:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2346
 flight_modes.adb:2033:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2033:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2346
 flight_modes.adb:2034:07: warning: initialization of "r" has no effect
 flight_modes.adb:2034:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2346
-flight_modes.adb:2039:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2039:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:2346
-flight_modes.adb:2040:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2040:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:2346
-flight_modes.adb:2047:14: info: initialization of "r" proved
-flight_modes.adb:2047:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:2346
 flight_modes.adb:2052:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2053:07: warning: initialization of "r" has no effect
-flight_modes.adb:2057:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2063:14: info: initialization of "r" proved
 flight_modes.adb:2068:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2069:07: warning: initialization of "r" has no effect
-flight_modes.adb:2073:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2079:14: info: initialization of "r" proved
 flight_modes.adb:2084:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2085:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2086:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2087:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2088:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2089:07: warning: initialization of "r" has no effect
-flight_modes.adb:2097:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2101:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2105:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2109:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2113:28: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2127:14: info: initialization of "r" proved
 flight_modes.adb:2132:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2132:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2133:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -308,34 +207,16 @@ flight_modes.adb:2134:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2134:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2135:07: warning: initialization of "r" has no effect
 flight_modes.adb:2135:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2347
-flight_modes.adb:2141:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2141:12: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:2347
-flight_modes.adb:2142:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2142:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:2347
-flight_modes.adb:2143:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2143:29: info: initialization of "aVarTruthTableCondition_3" proved, in call inlined at flight_modes.adb:2347
-flight_modes.adb:2150:14: info: initialization of "r" proved
-flight_modes.adb:2150:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:2347
 flight_modes.adb:2155:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2156:07: warning: initialization of "r" has no effect
-flight_modes.adb:2160:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2166:14: info: initialization of "r" proved
 flight_modes.adb:2171:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2172:07: warning: initialization of "r" has no effect
-flight_modes.adb:2176:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2182:14: info: initialization of "r" proved
 flight_modes.adb:2187:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2188:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2189:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2190:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2191:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2192:07: warning: initialization of "r" has no effect
-flight_modes.adb:2200:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2204:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2208:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2212:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2216:28: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2230:14: info: initialization of "r" proved
 flight_modes.adb:2235:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2235:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2236:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -344,92 +225,45 @@ flight_modes.adb:2237:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2237:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2238:07: warning: initialization of "r" has no effect
 flight_modes.adb:2238:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2348
-flight_modes.adb:2244:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2244:12: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:2348
-flight_modes.adb:2245:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2245:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:2348
-flight_modes.adb:2246:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2246:29: info: initialization of "aVarTruthTableCondition_3" proved, in call inlined at flight_modes.adb:2348
-flight_modes.adb:2253:14: info: initialization of "r" proved
-flight_modes.adb:2253:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:2348
 flight_modes.adb:2258:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2259:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2260:07: warning: initialization of "r" has no effect
-flight_modes.adb:2265:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2266:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2273:14: info: initialization of "r" proved
 flight_modes.adb:2278:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2279:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2280:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2281:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2282:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2283:07: warning: initialization of "r" has no effect
-flight_modes.adb:2291:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2295:19: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2299:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2303:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2307:28: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2321:14: info: initialization of "r" proved
 flight_modes.adb:2326:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2326:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2327:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect
 flight_modes.adb:2328:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:2349
-flight_modes.adb:2333:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2333:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:2349
-flight_modes.adb:2334:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2334:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:2349
-flight_modes.adb:2341:14: info: initialization of "r" proved
-flight_modes.adb:2341:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:2349
 flight_modes.adb:2354:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2355:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2356:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2357:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2358:07: warning: initialization of "r" has no effect
-flight_modes.adb:2365:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2369:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2373:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2377:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2389:14: info: initialization of "r" proved
 flight_modes.adb:2394:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2395:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2396:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2397:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2398:07: warning: initialization of "r" has no effect
-flight_modes.adb:2405:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2409:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2413:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2417:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2429:14: info: initialization of "r" proved
 flight_modes.adb:2434:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2435:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2436:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2437:07: warning: initialization of "r" has no effect
-flight_modes.adb:2443:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2444:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2445:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2452:14: info: initialization of "r" proved
 flight_modes.adb:2457:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2458:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2459:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2460:07: warning: initialization of "r" has no effect
-flight_modes.adb:2466:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2470:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2474:22: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2484:14: info: initialization of "r" proved
 flight_modes.adb:2489:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2489:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2490:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2490:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2491:07: warning: initialization of "r" has no effect
 flight_modes.adb:2491:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3080
-flight_modes.adb:2496:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2496:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3080
-flight_modes.adb:2497:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2497:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3080
-flight_modes.adb:2504:14: info: initialization of "r" proved
-flight_modes.adb:2504:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3080
 flight_modes.adb:2509:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2510:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2511:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -438,83 +272,40 @@ flight_modes.adb:2513:07: warning: initialization of "aVarTruthTableCondition_5"
 flight_modes.adb:2514:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
 flight_modes.adb:2515:07: warning: initialization of "aVarTruthTableCondition_7" has no effect
 flight_modes.adb:2516:07: warning: initialization of "r" has no effect
-flight_modes.adb:2526:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2527:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2532:17: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2533:29: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2534:32: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2535:35: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:2536:38: info: initialization of "aVarTruthTableCondition_7" proved
-flight_modes.adb:2545:14: info: initialization of "r" proved
 flight_modes.adb:2550:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2551:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2552:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2553:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2554:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2555:07: warning: initialization of "r" has no effect
-flight_modes.adb:2563:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2564:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2569:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2570:23: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2575:16: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2579:25: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2591:14: info: initialization of "r" proved
 flight_modes.adb:2596:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2596:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2597:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2597:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2598:07: warning: initialization of "r" has no effect
 flight_modes.adb:2598:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3081
-flight_modes.adb:2603:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2603:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3081
-flight_modes.adb:2604:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2604:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3081
-flight_modes.adb:2611:14: info: initialization of "r" proved
-flight_modes.adb:2611:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3081
 flight_modes.adb:2616:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2617:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2618:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2619:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2620:07: warning: initialization of "r" has no effect
-flight_modes.adb:2627:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2628:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2633:14: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2634:23: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2643:14: info: initialization of "r" proved
 flight_modes.adb:2648:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2649:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2650:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2651:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2652:07: warning: initialization of "r" has no effect
-flight_modes.adb:2659:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2663:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2667:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2671:25: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2683:14: info: initialization of "r" proved
 flight_modes.adb:2688:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2688:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2689:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2689:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2690:07: warning: initialization of "r" has no effect
 flight_modes.adb:2690:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3082
-flight_modes.adb:2695:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2695:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3082
-flight_modes.adb:2696:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2696:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3082
-flight_modes.adb:2703:14: info: initialization of "r" proved
-flight_modes.adb:2703:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3082
 flight_modes.adb:2708:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2709:07: warning: initialization of "r" has no effect
-flight_modes.adb:2713:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2719:14: info: initialization of "r" proved
 flight_modes.adb:2724:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2725:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2726:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2727:07: warning: initialization of "r" has no effect
-flight_modes.adb:2733:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2734:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2735:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2742:14: info: initialization of "r" proved
 flight_modes.adb:2747:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2748:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2749:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -522,13 +313,6 @@ flight_modes.adb:2750:07: warning: initialization of "aVarTruthTableCondition_4"
 flight_modes.adb:2751:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2752:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
 flight_modes.adb:2753:07: warning: initialization of "r" has no effect
-flight_modes.adb:2762:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2766:19: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2770:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2774:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2778:22: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2782:31: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:2798:14: info: initialization of "r" proved
 flight_modes.adb:2803:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2803:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2804:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -537,20 +321,9 @@ flight_modes.adb:2805:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:2805:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2806:07: warning: initialization of "r" has no effect
 flight_modes.adb:2806:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3084
-flight_modes.adb:2812:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2812:12: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3084
-flight_modes.adb:2813:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2813:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3084
-flight_modes.adb:2814:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2814:29: info: initialization of "aVarTruthTableCondition_3" proved, in call inlined at flight_modes.adb:3084
-flight_modes.adb:2821:14: info: initialization of "r" proved
-flight_modes.adb:2821:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3084
 flight_modes.adb:2826:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2827:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2828:07: warning: initialization of "r" has no effect
-flight_modes.adb:2833:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2834:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2841:14: info: initialization of "r" proved
 flight_modes.adb:2846:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2847:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2848:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -558,61 +331,30 @@ flight_modes.adb:2849:07: warning: initialization of "aVarTruthTableCondition_4"
 flight_modes.adb:2850:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:2851:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
 flight_modes.adb:2852:07: warning: initialization of "r" has no effect
-flight_modes.adb:2861:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2865:19: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2869:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2873:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:2877:22: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:2881:31: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:2897:14: info: initialization of "r" proved
 flight_modes.adb:2902:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2902:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2903:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2903:07: warning: initialization of "aVarTruthTableCondition_2" has no effect, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2904:07: warning: initialization of "r" has no effect
 flight_modes.adb:2904:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3085
-flight_modes.adb:2909:11: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2909:11: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3085
-flight_modes.adb:2910:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2910:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3085
-flight_modes.adb:2917:14: info: initialization of "r" proved
-flight_modes.adb:2917:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3085
 flight_modes.adb:2922:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2923:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2924:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2925:07: warning: initialization of "r" has no effect
-flight_modes.adb:2931:18: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2932:26: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2933:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:2940:14: info: initialization of "r" proved
 flight_modes.adb:2945:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2946:07: warning: initialization of "r" has no effect
-flight_modes.adb:2950:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2956:14: info: initialization of "r" proved
 flight_modes.adb:2961:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2962:07: warning: initialization of "r" has no effect
-flight_modes.adb:2966:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2972:14: info: initialization of "r" proved
 flight_modes.adb:2977:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:2978:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:2979:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:2980:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:2981:07: warning: initialization of "r" has no effect
-flight_modes.adb:2988:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:2992:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:2996:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:3000:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:3012:14: info: initialization of "r" proved
 flight_modes.adb:3017:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3018:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:3019:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
 flight_modes.adb:3020:07: warning: initialization of "aVarTruthTableCondition_4" has no effect
 flight_modes.adb:3021:07: warning: initialization of "r" has no effect
-flight_modes.adb:3028:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:3032:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:3036:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:3040:25: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:3052:14: info: initialization of "r" proved
 flight_modes.adb:3057:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3057:07: warning: initialization of "aVarTruthTableCondition_1" has no effect, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3058:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
@@ -621,14 +363,6 @@ flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3"
 flight_modes.adb:3059:07: warning: initialization of "aVarTruthTableCondition_3" has no effect, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect
 flight_modes.adb:3060:07: warning: initialization of "r" has no effect, in call inlined at flight_modes.adb:3083
-flight_modes.adb:3066:12: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:3066:12: info: initialization of "aVarTruthTableCondition_1" proved, in call inlined at flight_modes.adb:3083
-flight_modes.adb:3067:20: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:3067:20: info: initialization of "aVarTruthTableCondition_2" proved, in call inlined at flight_modes.adb:3083
-flight_modes.adb:3068:29: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:3068:29: info: initialization of "aVarTruthTableCondition_3" proved, in call inlined at flight_modes.adb:3083
-flight_modes.adb:3075:14: info: initialization of "r" proved
-flight_modes.adb:3075:14: info: initialization of "r" proved, in call inlined at flight_modes.adb:3083
 flight_modes.adb:3090:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3091:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:3092:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -636,13 +370,6 @@ flight_modes.adb:3093:07: warning: initialization of "aVarTruthTableCondition_4"
 flight_modes.adb:3094:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:3095:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
 flight_modes.adb:3096:07: warning: initialization of "r" has no effect
-flight_modes.adb:3105:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:3109:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:3113:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:3117:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:3121:22: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:3125:25: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:3141:14: info: initialization of "r" proved
 flight_modes.adb:3146:07: warning: initialization of "aVarTruthTableCondition_1" has no effect
 flight_modes.adb:3147:07: warning: initialization of "aVarTruthTableCondition_2" has no effect
 flight_modes.adb:3148:07: warning: initialization of "aVarTruthTableCondition_3" has no effect
@@ -650,111 +377,6 @@ flight_modes.adb:3149:07: warning: initialization of "aVarTruthTableCondition_4"
 flight_modes.adb:3150:07: warning: initialization of "aVarTruthTableCondition_5" has no effect
 flight_modes.adb:3151:07: warning: initialization of "aVarTruthTableCondition_6" has no effect
 flight_modes.adb:3152:07: warning: initialization of "r" has no effect
-flight_modes.adb:3161:10: info: initialization of "aVarTruthTableCondition_1" proved
-flight_modes.adb:3165:13: info: initialization of "aVarTruthTableCondition_2" proved
-flight_modes.adb:3169:16: info: initialization of "aVarTruthTableCondition_3" proved
-flight_modes.adb:3173:19: info: initialization of "aVarTruthTableCondition_4" proved
-flight_modes.adb:3177:22: info: initialization of "aVarTruthTableCondition_5" proved
-flight_modes.adb:3181:25: info: initialization of "aVarTruthTableCondition_6" proved
-flight_modes.adb:3197:14: info: initialization of "r" proved
-flight_modes.ads:15:14: info: initialization of "C2_ACTIVE_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ACTIVE_INACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ALTSEL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ALTSEL_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_ALTSEL_Track" proved
-flight_modes.ads:15:14: info: initialization of "C2_ALT_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ALT_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_ANNUNCIATIONS_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ANNUNCIATIONS_OFF_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ANNUNCIATIONS_ON_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_Active_Side" proved
-flight_modes.ads:15:14: info: initialization of "C2_FD_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_FD_OFF_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_FD_ON_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_FD_On" proved
-flight_modes.ads:15:14: info: initialization of "C2_FLC_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_FLC_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_HDG_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_HDG_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_INDEPENDENT_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_INDEPENDENT_DEPENDENT_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_INDEPENDENT_INDEPENDENT_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_Independent_Mode" proved
-flight_modes.ads:15:14: info: initialization of "C2_LAPPR_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LAPPR_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_HDG_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_HDG_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_HDG_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_HDG_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LAPPR_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LAPPR_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LAPPR_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LAPPR_SELECTED_ARMED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LAPPR_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LGA_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LGA_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LGA_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_LGA_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_NAV_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_NAV_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_NAV_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_NAV_SELECTED_ARMED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_NAV_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_ROLL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_ROLL_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_ROLL_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LATERAL_ROLL_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LGA_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_LGA_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_Modes_On" proved
-flight_modes.ads:15:14: info: initialization of "C2_NAV_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_NAV_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_PITCH_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_PITCH_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_ROLL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_ROLL_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_VAPPR_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VAPPR_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_SELECTED_ACTIVE_CAPTURE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_SELECTED_ACTIVE_TRACK_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_SELECTED_ARMED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALTSEL_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALT_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALT_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALT_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_ALT_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_FLC_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_FLC_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_FLC_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_FLC_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_PITCH_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_PITCH_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_PITCH_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_PITCH_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VAPPR_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VAPPR_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VAPPR_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VAPPR_SELECTED_ARMED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VAPPR_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VGA_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VGA_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VGA_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VGA_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VS_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VS_CLEARED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VS_SELECTED_ACTIVE_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VERTICAL_VS_SELECTED_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VGA_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VGA_Selected" proved
-flight_modes.ads:15:14: info: initialization of "C2_VS_Active" proved
-flight_modes.ads:15:14: info: initialization of "C2_VS_Selected" proved
 flight_modes.ads:18:08: info: initialization of "Modes_On" proved
 flight_modes.ads:19:08: info: initialization of "FD_On" proved
 flight_modes.ads:20:08: info: initialization of "Independent_Mode" proved
@@ -813,717 +435,210 @@ flight_modes.ads:100:08: info: initialization of "VAPPR_Selected" proved
 flight_modes.ads:101:08: info: initialization of "VAPPR_Active" proved
 flight_modes.ads:102:08: info: initialization of "VGA_Selected" proved
 flight_modes.ads:103:08: info: initialization of "VGA_Active" proved
-flight_modes.ads:106:10: info: initialization of "ROLL_Active" proved
-flight_modes.ads:106:10: medium: postcondition might fail, cannot prove ROLL_Active or HDG_Active or NAV_Active or LAPPR_Active or LGA_Active (e.g. when HDG_Active = False and LAPPR_Active = False and LGA_Active = False and NAV_Active = False and ROLL_Active = False)
-flight_modes.ads:106:25: info: initialization of "HDG_Active" proved
-flight_modes.ads:106:39: info: initialization of "NAV_Active" proved
-flight_modes.ads:106:53: info: initialization of "LAPPR_Active" proved
-flight_modes.ads:107:10: info: initialization of "LGA_Active" proved
-mode_logic_props.adb:48:14: info: initialization of "ap_engaged_implies_modes_on.unit_delay_memory" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_active_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_active_inactive_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_active_side" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_alt_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_alt_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_altsel_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_altsel_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_altsel_track" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_annunciations_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_annunciations_off_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_annunciations_on_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_fd_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_fd_off_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_fd_on" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_fd_on_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_flc_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_flc_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_hdg_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_hdg_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_independent_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_independent_dependent_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_independent_independent_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_independent_mode" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lappr_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lappr_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_hdg_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_hdg_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_hdg_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_hdg_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lappr_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lappr_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_armed_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lga_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lga_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lga_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_lga_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_nav_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_nav_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_nav_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_nav_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_nav_selected_armed_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_roll_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_roll_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_roll_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lateral_roll_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lga_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_lga_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_modes_on" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_nav_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_nav_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_pitch_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_pitch_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_roll_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_roll_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vappr_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vappr_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_alt_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_alt_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_alt_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_alt_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_capture_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_track_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_armed_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_flc_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_flc_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_flc_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_flc_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_pitch_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_pitch_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_pitch_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_pitch_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vappr_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vappr_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_armed_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vga_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vga_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vga_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vga_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vs_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vs_cleared_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vs_selected_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vertical_vs_selected_active_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vga_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vga_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vs_active" proved
-mode_logic_props.adb:48:14: info: initialization of "flight_modes.c2_vs_selected" proved
-mode_logic_props.adb:48:14: info: initialization of "modes_off_at_startup.unit_delay_memory" proved
-mode_logic_props.adb:48:14: info: initialization of "modes_on_iff_fd_on_or_ap_engaged.unit_delay_memory" proved
-mode_logic_props.adb:48:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay1_memory" proved
-mode_logic_props.adb:48:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay_memory" proved
-mode_logic_props.adb:48:14: info: initialization of "offside_fd_on_implies_modes_on.unit_delay_memory" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ALTSEL_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ALTSEL_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ALTSEL_Track" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ALT_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ALT_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_Active_Side" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_FD_On" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_FLC_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_FLC_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_HDG_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_HDG_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_Independent_Mode" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_LAPPR_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_LAPPR_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_LGA_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_LGA_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_Modes_On" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_NAV_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_NAV_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_PITCH_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_PITCH_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ROLL_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_ROLL_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VAPPR_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VAPPR_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VGA_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VGA_Selected" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VS_Active" proved
-mode_logic_props.adb:50:14: info: initialization of "Flight_Modes_VS_Selected" proved
-mode_logic_props.adb:112:28: info: initialization of "Inputs_out1.Pilot_Flying_Side" proved
-mode_logic_props.adb:116:24: info: initialization of "Inputs_out1.Is_AP_Engaged" proved
-mode_logic_props.adb:120:22: info: initialization of "Inputs_out1.APPR_Switch" proved
-mode_logic_props.adb:124:20: info: initialization of "Inputs_out1.GA_Switch" proved
-mode_logic_props.adb:128:20: info: initialization of "Inputs_out1.VS_Switch" proved
-mode_logic_props.adb:132:21: info: initialization of "Inputs_out1.FLC_Switch" proved
-mode_logic_props.adb:136:21: info: initialization of "Inputs_out1.ALT_Switch" proved
-mode_logic_props.adb:140:33: info: initialization of "Inputs_out1.VS_Pitch_Wheel_Rotated" proved
-mode_logic_props.adb:144:32: info: initialization of "Inputs_out1.ALTSEL_Target_Changed" proved
-mode_logic_props.adb:148:31: info: initialization of "Inputs_out1.NAV_Capture_Cond_Met" proved
-mode_logic_props.adb:152:33: info: initialization of "Inputs_out1.LAPPR_Capture_Cond_Met" proved
-mode_logic_props.adb:156:34: info: initialization of "Inputs_out1.ALTSEL_Capture_Cond_Met" proved
-mode_logic_props.adb:160:20: info: initialization of "Inputs_out1.Overspeed" proved
-mode_logic_props.adb:164:32: info: initialization of "Inputs_out1.ALTSEL_Track_Cond_Met" proved
-mode_logic_props.adb:168:33: info: initialization of "Inputs_out1.VAPPR_Capture_Cond_Met" proved
-mode_logic_props.adb:172:38: info: initialization of "Inputs_out1.Selected_Nav_Source_Changed" proved
-mode_logic_props.adb:176:41: info: initialization of "Inputs_out1.Selected_Nav_Frequency_Changed" proved
-mode_logic_props.adb:180:24: info: initialization of "Inputs_out1.Offside_FD_On" proved
-mode_logic_props.adb:184:34: info: initialization of "Inputs_out1.Is_Offside_VAPPR_Active" proved
-mode_logic_props.adb:188:32: info: initialization of "Inputs_out1.Is_Offside_VGA_Active" proved
-mode_logic_props.adb:192:22: info: initialization of "Inputs_out1.SYNC_Switch" proved
-mode_logic_props.adb:196:20: info: initialization of "Inputs_out1.FD_Switch" proved
-mode_logic_props.adb:200:21: info: initialization of "Inputs_out1.HDG_Switch" proved
-mode_logic_props.adb:204:21: info: initialization of "Inputs_out1.NAV_Switch" proved
-mode_logic_props.adb:208:30: info: initialization of "Pilot_Flying_Side" proved
-mode_logic_props.adb:208:49: info: initialization of "Is_AP_Engaged" proved
-mode_logic_props.adb:208:64: info: initialization of "SYNC_Switch" proved
-mode_logic_props.adb:208:77: info: initialization of "FD_Switch" proved
-mode_logic_props.adb:208:88: info: initialization of "HDG_Switch" proved
-mode_logic_props.adb:208:100: info: initialization of "NAV_Switch" proved
-mode_logic_props.adb:208:112: info: initialization of "APPR_Switch" proved
-mode_logic_props.adb:208:125: info: initialization of "GA_Switch" proved
-mode_logic_props.adb:208:136: info: initialization of "VS_Switch" proved
-mode_logic_props.adb:208:147: info: initialization of "FLC_Switch" proved
-mode_logic_props.adb:208:159: info: initialization of "ALT_Switch" proved
-mode_logic_props.adb:208:171: info: initialization of "VS_Pitch_Wheel_Rotated" proved
-mode_logic_props.adb:208:195: info: initialization of "ALTSEL_Target_Changed" proved
-mode_logic_props.adb:208:218: info: initialization of "NAV_Capture_Cond_Met" proved
-mode_logic_props.adb:208:240: info: initialization of "LAPPR_Capture_Cond_Met" proved
-mode_logic_props.adb:208:264: info: initialization of "ALTSEL_Capture_Cond_Met" proved
-mode_logic_props.adb:208:289: info: initialization of "ALTSEL_Track_Cond_Met" proved
-mode_logic_props.adb:208:312: info: initialization of "VAPPR_Capture_Cond_Met" proved
+flight_modes.ads:106:10: medium: postcondition might fail, cannot prove ROLL_Active or HDG_Active or NAV_Active or LAPPR_Active or LGA_Active
+mode_logic_props.adb:62:07: info: initialization of "Inputs_out1" proved
+mode_logic_props.adb:63:07: info: initialization of "Pilot_Flying_Side" proved
+mode_logic_props.adb:64:07: info: initialization of "Is_AP_Engaged" proved
+mode_logic_props.adb:65:07: info: initialization of "APPR_Switch" proved
+mode_logic_props.adb:66:07: info: initialization of "GA_Switch" proved
+mode_logic_props.adb:67:07: info: initialization of "VS_Switch" proved
+mode_logic_props.adb:68:07: info: initialization of "FLC_Switch" proved
+mode_logic_props.adb:69:07: info: initialization of "ALT_Switch" proved
+mode_logic_props.adb:70:07: info: initialization of "VS_Pitch_Wheel_Rotated" proved
+mode_logic_props.adb:71:07: info: initialization of "ALTSEL_Target_Changed" proved
+mode_logic_props.adb:72:07: info: initialization of "NAV_Capture_Cond_Met" proved
+mode_logic_props.adb:73:07: info: initialization of "LAPPR_Capture_Cond_Met" proved
+mode_logic_props.adb:74:07: info: initialization of "ALTSEL_Capture_Cond_Met" proved
+mode_logic_props.adb:75:07: info: initialization of "Overspeed" proved
+mode_logic_props.adb:76:07: info: initialization of "ALTSEL_Track_Cond_Met" proved
+mode_logic_props.adb:77:07: info: initialization of "VAPPR_Capture_Cond_Met" proved
+mode_logic_props.adb:78:07: info: initialization of "Selected_Nav_Source_Changed" proved
+mode_logic_props.adb:79:07: info: initialization of "Selected_Nav_Frequency_Changed" proved
+mode_logic_props.adb:80:07: info: initialization of "Offside_FD_On" proved
+mode_logic_props.adb:81:07: info: initialization of "Is_Offside_VAPPR_Active" proved
+mode_logic_props.adb:82:07: info: initialization of "Is_Offside_VGA_Active" proved
+mode_logic_props.adb:83:07: info: initialization of "SYNC_Switch" proved
+mode_logic_props.adb:84:07: info: initialization of "FD_Switch" proved
+mode_logic_props.adb:85:07: info: initialization of "HDG_Switch" proved
+mode_logic_props.adb:86:07: info: initialization of "NAV_Switch" proved
+mode_logic_props.adb:87:07: info: initialization of "Event_Processing_When_Pilot_Fllying_Transfer_Seen" proved
+mode_logic_props.adb:88:07: info: initialization of "Event_Processing_When_AP_Engaged_Seen" proved
+mode_logic_props.adb:89:07: info: initialization of "Event_Processing_When_SYNC_Switch_Pressed_Seen" proved
+mode_logic_props.adb:90:07: info: initialization of "Event_Processing_When_FD_Switch_Pressed_Seen" proved
+mode_logic_props.adb:91:07: info: initialization of "Event_Processing_When_HDG_Switch_Pressed_Seen" proved
+mode_logic_props.adb:92:07: info: initialization of "Event_Processing_When_NAV_Switch_Pressed_Seen" proved
+mode_logic_props.adb:93:07: info: initialization of "Event_Processing_When_APPR_Switch_Pressed_Seen" proved
+mode_logic_props.adb:94:07: info: initialization of "Event_Processing_When_GA_Switch_Pressed_Seen" proved
+mode_logic_props.adb:95:07: info: initialization of "Event_Processing_When_VS_Switch_Pressed_Seen" proved
+mode_logic_props.adb:96:07: info: initialization of "Event_Processing_When_FLC_Switch_Pressed_Seen" proved
+mode_logic_props.adb:97:07: info: initialization of "Event_Processing_When_ALT_Switch_Pressed_Seen" proved
+mode_logic_props.adb:98:07: info: initialization of "Event_Processing_When_VS_Pitch_Wheel_Rotated_Seen" proved
+mode_logic_props.adb:99:07: info: initialization of "Event_Processing_When_ALTSEL_Target_Changed_Seen" proved
+mode_logic_props.adb:100:07: info: initialization of "Event_Processing_If_NAV_Capture_Cond_Met_Seen" proved
+mode_logic_props.adb:101:07: info: initialization of "Event_Processing_If_LAPPR_Capture_Cond_Met_Seen" proved
+mode_logic_props.adb:102:07: info: initialization of "Event_Processing_If_ALTSEL_Capture_Cond_Met_Seen" proved
+mode_logic_props.adb:103:07: info: initialization of "Event_Processing_If_ALTSEL_Track_Cond_Met_Seen" proved
+mode_logic_props.adb:104:07: info: initialization of "Event_Processing_If_VAPPR_Capture_Cond_Met_Seen" proved
+mode_logic_props.adb:105:07: info: initialization of "Bus_Creator_out1" proved
 mode_logic_props.adb:208:1000: (style) this line is too long
 mode_logic_props.adb:208:1000: (style) this line is too long
-mode_logic_props.adb:212:26: info: initialization of "Pilot_Flying_Side" proved
-mode_logic_props.adb:212:45: info: initialization of "Is_AP_Engaged" proved
-mode_logic_props.adb:212:60: info: initialization of "Overspeed" proved
-mode_logic_props.adb:212:71: info: initialization of "Offside_FD_On" proved
-mode_logic_props.adb:212:86: info: initialization of "Is_Offside_VAPPR_Active" proved
-mode_logic_props.adb:212:111: info: initialization of "Is_Offside_VGA_Active" proved
-mode_logic_props.adb:212:134: info: initialization of "Event_Processing_When_Pilot_Fllying_Transfer_Seen" proved
-mode_logic_props.adb:212:185: info: initialization of "Event_Processing_When_AP_Engaged_Seen" proved
-mode_logic_props.adb:212:224: info: initialization of "Event_Processing_When_SYNC_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:272: info: initialization of "Event_Processing_When_FD_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:318: info: initialization of "Event_Processing_When_HDG_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:365: info: initialization of "Event_Processing_When_NAV_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:412: info: initialization of "Event_Processing_When_APPR_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:460: info: initialization of "Event_Processing_When_GA_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:506: info: initialization of "Event_Processing_When_VS_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:552: info: initialization of "Event_Processing_When_FLC_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:599: info: initialization of "Event_Processing_When_ALT_Switch_Pressed_Seen" proved
-mode_logic_props.adb:212:646: info: initialization of "Event_Processing_When_VS_Pitch_Wheel_Rotated_Seen" proved
-mode_logic_props.adb:212:697: info: initialization of "Event_Processing_When_ALTSEL_Target_Changed_Seen" proved
-mode_logic_props.adb:212:747: info: initialization of "Event_Processing_If_NAV_Capture_Cond_Met_Seen" proved
-mode_logic_props.adb:212:794: info: initialization of "Event_Processing_If_LAPPR_Capture_Cond_Met_Seen" proved
-mode_logic_props.adb:212:843: info: initialization of "Event_Processing_If_ALTSEL_Capture_Cond_Met_Seen" proved
-mode_logic_props.adb:212:893: info: initialization of "Event_Processing_If_ALTSEL_Track_Cond_Met_Seen" proved
-mode_logic_props.adb:212:941: info: initialization of "Event_Processing_If_VAPPR_Capture_Cond_Met_Seen" proved
-mode_logic_props.adb:212:990: info: initialization of "Selected_Nav_Source_Changed" proved
 mode_logic_props.adb:212:1000: (style) this line is too long
 mode_logic_props.adb:212:1000: (style) this line is too long
-mode_logic_props.adb:212:1019: info: initialization of "Selected_Nav_Frequency_Changed" proved
-mode_logic_props.adb:216:36: info: initialization of "Flight_Modes_Modes_On" proved
-mode_logic_props.adb:217:33: info: initialization of "Flight_Modes_FD_On" proved
-mode_logic_props.adb:218:44: info: initialization of "Flight_Modes_Independent_Mode" proved
-mode_logic_props.adb:219:39: info: initialization of "Flight_Modes_Active_Side" proved
-mode_logic_props.adb:220:41: info: initialization of "Flight_Modes_ROLL_Selected" proved
-mode_logic_props.adb:221:39: info: initialization of "Flight_Modes_ROLL_Active" proved
-mode_logic_props.adb:222:40: info: initialization of "Flight_Modes_HDG_Selected" proved
-mode_logic_props.adb:223:38: info: initialization of "Flight_Modes_HDG_Active" proved
-mode_logic_props.adb:224:40: info: initialization of "Flight_Modes_NAV_Selected" proved
-mode_logic_props.adb:225:38: info: initialization of "Flight_Modes_NAV_Active" proved
-mode_logic_props.adb:226:42: info: initialization of "Flight_Modes_LAPPR_Selected" proved
-mode_logic_props.adb:227:40: info: initialization of "Flight_Modes_LAPPR_Active" proved
-mode_logic_props.adb:228:40: info: initialization of "Flight_Modes_LGA_Selected" proved
-mode_logic_props.adb:229:38: info: initialization of "Flight_Modes_LGA_Active" proved
-mode_logic_props.adb:230:42: info: initialization of "Flight_Modes_PITCH_Selected" proved
-mode_logic_props.adb:231:40: info: initialization of "Flight_Modes_PITCH_Active" proved
-mode_logic_props.adb:232:39: info: initialization of "Flight_Modes_VS_Selected" proved
-mode_logic_props.adb:233:37: info: initialization of "Flight_Modes_VS_Active" proved
-mode_logic_props.adb:234:40: info: initialization of "Flight_Modes_FLC_Selected" proved
-mode_logic_props.adb:235:38: info: initialization of "Flight_Modes_FLC_Active" proved
-mode_logic_props.adb:236:40: info: initialization of "Flight_Modes_ALT_Selected" proved
-mode_logic_props.adb:237:38: info: initialization of "Flight_Modes_ALT_Active" proved
-mode_logic_props.adb:238:43: info: initialization of "Flight_Modes_ALTSEL_Selected" proved
-mode_logic_props.adb:239:41: info: initialization of "Flight_Modes_ALTSEL_Active" proved
-mode_logic_props.adb:240:40: info: initialization of "Flight_Modes_ALTSEL_Track" proved
-mode_logic_props.adb:241:42: info: initialization of "Flight_Modes_VAPPR_Selected" proved
-mode_logic_props.adb:242:40: info: initialization of "Flight_Modes_VAPPR_Active" proved
-mode_logic_props.adb:243:40: info: initialization of "Flight_Modes_VGA_Selected" proved
-mode_logic_props.adb:244:38: info: initialization of "Flight_Modes_VGA_Active" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.ALTSEL_Capture_Cond_Met" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.ALTSEL_Target_Changed" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.ALTSEL_Track_Cond_Met" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.ALT_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.APPR_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.FD_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.FLC_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.GA_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.HDG_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Is_AP_Engaged" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Is_Offside_VAPPR_Active" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Is_Offside_VGA_Active" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.LAPPR_Capture_Cond_Met" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.NAV_Capture_Cond_Met" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.NAV_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Offside_FD_On" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Overspeed" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Pilot_Flying_Side" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.SYNC_Switch" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Selected_Nav_Frequency_Changed" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.Selected_Nav_Source_Changed" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.VAPPR_Capture_Cond_Met" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.VS_Pitch_Wheel_Rotated" proved
-mode_logic_props.adb:248:26: info: initialization of "Inputs_out1.VS_Switch" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ALTSEL_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ALTSEL_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ALTSEL_Track" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ALT_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ALT_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.Active_Side" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.FD_On" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.FLC_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.FLC_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.HDG_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.HDG_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.Independent_Mode" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.LAPPR_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.LAPPR_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.LGA_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.LGA_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.Modes_On" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.NAV_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.NAV_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.PITCH_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.PITCH_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ROLL_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.ROLL_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VAPPR_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VAPPR_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VGA_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VGA_Selected" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VS_Active" proved
-mode_logic_props.adb:248:39: info: initialization of "Bus_Creator_out1.VS_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ALTSEL_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ALTSEL_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ALTSEL_Track" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ALT_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ALT_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_Active_Side" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_FD_On" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_FLC_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_FLC_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_HDG_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_HDG_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_Independent_Mode" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_LAPPR_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_LAPPR_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_LGA_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_LGA_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_Modes_On" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_NAV_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_NAV_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_PITCH_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_PITCH_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ROLL_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_ROLL_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VAPPR_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VAPPR_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VGA_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VGA_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VS_Active" proved
-mode_logic_props.ads:17:14: info: initialization of "Flight_Modes_VS_Selected" proved
-mode_logic_props.ads:17:14: info: initialization of "ap_engaged_implies_modes_on.unit_delay_memory" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_active_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_active_inactive_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_annunciations_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_annunciations_off_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_annunciations_on_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_fd_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_fd_off_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_fd_on_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_independent_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_independent_dependent_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_independent_independent_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_hdg_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_hdg_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_hdg_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_hdg_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lappr_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lappr_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lappr_selected_armed_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lga_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lga_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lga_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_lga_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_nav_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_nav_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_nav_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_nav_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_nav_selected_armed_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_roll_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_roll_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_roll_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_lateral_roll_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_alt_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_alt_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_alt_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_alt_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_capture_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_active_track_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_altsel_selected_armed_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_flc_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_flc_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_flc_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_flc_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_pitch_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_pitch_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_pitch_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_pitch_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vappr_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vappr_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vappr_selected_armed_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vga_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vga_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vga_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vga_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vs_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vs_cleared_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vs_selected_active" proved
-mode_logic_props.ads:17:14: info: initialization of "flight_modes.c2_vertical_vs_selected_active_active" proved
-mode_logic_props.ads:17:14: info: initialization of "modes_off_at_startup.unit_delay_memory" proved
-mode_logic_props.ads:17:14: info: initialization of "modes_on_iff_fd_on_or_ap_engaged.unit_delay_memory" proved
-mode_logic_props.ads:17:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay1_memory" proved
-mode_logic_props.ads:17:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay_memory" proved
-mode_logic_props.ads:17:14: info: initialization of "offside_fd_on_implies_modes_on.unit_delay_memory" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ALTSEL_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ALTSEL_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ALTSEL_Track" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ALT_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ALT_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_Active_Side" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_FD_On" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_FLC_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_FLC_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_HDG_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_HDG_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_Independent_Mode" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_LAPPR_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_LAPPR_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_LGA_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_LGA_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_Modes_On" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_NAV_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_NAV_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_PITCH_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_PITCH_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ROLL_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_ROLL_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VAPPR_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VAPPR_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VGA_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VGA_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VS_Active" proved
-mode_logic_props.ads:19:14: info: initialization of "Flight_Modes_VS_Selected" proved
-mode_logic_props.ads:19:14: info: initialization of "nav_active_when_capture_cond_met.nav_selected_out1" proved
-mode_logic_props.ads:19:14: info: initialization of "requirements.modes_on" proved
-mode_logic_props.ads:19:14: info: initialization of "requirements.nav_active" proved
-modes_off_at_startup.adb:40:25: info: initialization of "Modes_On_out1" proved
-modes_off_at_startup.adb:48:19: info: initialization of "Unit_Delay_out1" proved
-modes_off_at_startup.adb:49:19: info: initialization of "NOT_out1" proved
-modes_off_at_startup.adb:53:22: info: initialization of "OR_out1" proved
+modes_off_at_startup.adb:26:07: info: initialization of "Unit_Delay_out1" proved
+modes_off_at_startup.adb:27:07: info: initialization of "Modes_On_out1" proved
+modes_off_at_startup.adb:28:07: info: initialization of "NOT_out1" proved
+modes_off_at_startup.adb:29:07: info: initialization of "OR_out1" proved
 modes_off_at_startup.adb:53:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
-modes_off_at_startup.ads:15:14: info: initialization of "Unit_Delay_memory" proved
-modes_off_at_startup.ads:17:14: info: initialization of "True_out1" proved
-modes_off_at_startup.ads:19:14: info: initialization of "Unit_Delay_memory" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:61:21: info: initialization of "Offside_FD_On_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:62:19: info: initialization of "Is_AP_Engaged_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:63:22: info: initialization of "FD_On_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:67:23: info: initialization of "OR1_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:67:36: info: initialization of "Modes_On_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:75:19: info: initialization of "Unit_Delay_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:76:19: info: initialization of "Equals_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.adb:80:22: info: initialization of "OR_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:31:07: info: initialization of "Unit_Delay_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:32:07: info: initialization of "FD_On_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:33:07: info: initialization of "Is_AP_Engaged_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:34:07: info: initialization of "Modes_On_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:35:07: info: initialization of "Offside_FD_On_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:36:07: info: initialization of "OR1_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:37:07: info: initialization of "Equals_out1" proved
+modes_on_iff_fd_on_or_ap_engaged.adb:38:07: info: initialization of "OR_out1" proved
 modes_on_iff_fd_on_or_ap_engaged.adb:80:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
-modes_on_iff_fd_on_or_ap_engaged.ads:15:14: info: initialization of "Unit_Delay_memory" proved
-modes_on_iff_fd_on_or_ap_engaged.ads:17:14: info: initialization of "True_out1" proved
-modes_on_iff_fd_on_or_ap_engaged.ads:23:14: info: initialization of "Unit_Delay_memory" proved
-nav_active_when_capture_cond_met.adb:93:21: info: initialization of "Pilot_Flying_Side_out1" proved
-nav_active_when_capture_cond_met.adb:105:26: info: initialization of "Changed_Out1" proved
-nav_active_when_capture_cond_met.adb:109:26: info: initialization of "Selected_NAV_Frequency_Changed_out1" proved
-nav_active_when_capture_cond_met.adb:113:26: info: initialization of "Selected_NAV_Source_Changed_out1" proved
-nav_active_when_capture_cond_met.adb:117:25: info: initialization of "Unit_Delay1_out1" proved
-nav_active_when_capture_cond_met.adb:121:25: info: initialization of "Unit_Delay_out1" proved
-nav_active_when_capture_cond_met.adb:122:20: info: initialization of "NOT_out1" proved
-nav_active_when_capture_cond_met.adb:123:23: info: initialization of "NAV_Capture_Cond_Met_out1" proved
-nav_active_when_capture_cond_met.adb:124:26: info: initialization of "NOT2_out1" proved
-nav_active_when_capture_cond_met.adb:125:29: info: initialization of "NOT3_out1" proved
-nav_active_when_capture_cond_met.adb:126:32: info: initialization of "NOT4_out1" proved
-nav_active_when_capture_cond_met.adb:127:35: info: initialization of "Modes_On_out1" proved
-nav_active_when_capture_cond_met.adb:128:38: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met_out1" proved
-nav_active_when_capture_cond_met.adb:132:26: info: initialization of "OR_out1" proved
-nav_active_when_capture_cond_met.adb:136:21: info: initialization of "NOT1_out1" proved
-nav_active_when_capture_cond_met.adb:137:19: info: initialization of "NAV_Active_out1" proved
-nav_active_when_capture_cond_met.adb:141:22: info: initialization of "NOT5_out1" proved
+nav_active_when_capture_cond_met.adb:47:07: info: initialization of "Unit_Delay_out1" proved
+nav_active_when_capture_cond_met.adb:48:07: info: initialization of "Unit_Delay1_out1" proved
+nav_active_when_capture_cond_met.adb:49:07: info: initialization of "Modes_On_out1" proved
+nav_active_when_capture_cond_met.adb:50:07: info: initialization of "NAV_Capture_Cond_Met_out1" proved
+nav_active_when_capture_cond_met.adb:51:07: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met_out1" proved
+nav_active_when_capture_cond_met.adb:52:07: info: initialization of "Pilot_Flying_Side_out1" proved
+nav_active_when_capture_cond_met.adb:53:07: info: initialization of "Changed_Out1" proved
+nav_active_when_capture_cond_met.adb:54:07: info: initialization of "Selected_NAV_Frequency_Changed_out1" proved
+nav_active_when_capture_cond_met.adb:55:07: info: initialization of "Selected_NAV_Source_Changed_out1" proved
+nav_active_when_capture_cond_met.adb:56:07: info: initialization of "NOT4_out1" proved
+nav_active_when_capture_cond_met.adb:57:07: info: initialization of "NOT3_out1" proved
+nav_active_when_capture_cond_met.adb:58:07: info: initialization of "NOT2_out1" proved
+nav_active_when_capture_cond_met.adb:59:07: info: initialization of "NOT_out1" proved
+nav_active_when_capture_cond_met.adb:60:07: info: initialization of "OR_out1" proved
+nav_active_when_capture_cond_met.adb:61:07: info: initialization of "NOT1_out1" proved
+nav_active_when_capture_cond_met.adb:62:07: info: initialization of "NOT5_out1" proved
 nav_active_when_capture_cond_met.adb:141:22: medium: assertion might fail, cannot prove NOT5_out1 (e.g. when NOT5_out1 = False)
-nav_active_when_capture_cond_met.adb:153:28: info: initialization of "NAV_Selected_out1" proved
-nav_active_when_capture_cond_met.ads:17:14: info: initialization of "Unit_Delay1_memory" proved
-nav_active_when_capture_cond_met.ads:17:14: info: initialization of "Unit_Delay_memory" proved
-nav_active_when_capture_cond_met.ads:19:14: info: initialization of "NAV_Active_out1" proved
-nav_active_when_capture_cond_met.ads:28:14: info: initialization of "NAV_Selected_out1" proved
-nav_active_when_capture_cond_met.ads:28:14: info: initialization of "Unit_Delay1_memory" proved
-nav_active_when_capture_cond_met.ads:28:14: info: initialization of "Unit_Delay_memory" proved
-no_higher.adb:36:20: info: initialization of "No_Higher_Above_out1" proved
-no_higher.adb:40:25: info: initialization of "Input_out1" proved
-no_higher.adb:44:20: info: initialization of "No_Higher_Above_out1" proved
-no_higher.adb:45:20: info: initialization of "Not_out1" proved
-no_higher.adb:49:26: info: initialization of "AND_out1" proved
+no_higher.adb:22:07: info: initialization of "Input_out1" proved
+no_higher.adb:23:07: info: initialization of "No_Higher_Above_out1" proved
+no_higher.adb:24:07: info: initialization of "Not_out1" proved
+no_higher.adb:25:07: info: initialization of "AND_out1" proved
 no_higher.ads:18:08: info: initialization of "No_Higher" proved
 no_higher.ads:19:08: info: initialization of "No_Higher_Below" proved
-no_higher_event_1.adb:161:28: info: initialization of "I_out1.SYNC_Switch" proved
-no_higher_event_1.adb:165:29: info: initialization of "I_out1.GA_Switch" proved
-no_higher_event_1.adb:169:30: info: initialization of "I_out1.ALTSEL_Target_Changed" proved
-no_higher_event_1.adb:173:30: info: initialization of "I_out1.Is_AP_Engaged" proved
-no_higher_event_1.adb:177:30: info: initialization of "I_out1.LAPPR_Capture_Cond_Met" proved
-no_higher_event_1.adb:181:30: info: initialization of "I_out1.NAV_Capture_Cond_Met" proved
-no_higher_event_1.adb:185:30: info: initialization of "I_out1.VAPPR_Capture_Cond_Met" proved
-no_higher_event_1.adb:189:30: info: initialization of "I_out1.ALTSEL_Track_Cond_Met" proved
-no_higher_event_1.adb:193:30: info: initialization of "I_out1.ALTSEL_Capture_Cond_Met" proved
-no_higher_event_1.adb:197:29: info: initialization of "I_out1.APPR_Switch" proved
-no_higher_event_1.adb:201:29: info: initialization of "I_out1.HDG_Switch" proved
-no_higher_event_1.adb:205:29: info: initialization of "I_out1.NAV_Switch" proved
-no_higher_event_1.adb:209:29: info: initialization of "I_out1.ALT_Switch" proved
-no_higher_event_1.adb:213:29: info: initialization of "I_out1.FLC_Switch" proved
-no_higher_event_1.adb:217:29: info: initialization of "I_out1.VS_Switch" proved
-no_higher_event_1.adb:221:29: info: initialization of "I_out1.VS_Pitch_Wheel_Rotated" proved
-no_higher_event_1.adb:225:29: info: initialization of "I_out1.FD_Switch" proved
-no_higher_event_1.adb:229:25: info: initialization of "Bus_Selector5_out1" proved
-no_higher_event_1.adb:233:25: info: initialization of "Bus_Selector10_out1" proved
-no_higher_event_1.adb:237:25: info: initialization of "Bus_Selector11_out1" proved
-no_higher_event_1.adb:241:25: info: initialization of "Bus_Selector2_out1" proved
-no_higher_event_1.adb:245:25: info: initialization of "Bus_Selector9_out1" proved
-no_higher_event_1.adb:249:25: info: initialization of "Bus_Selector6_out1" proved
-no_higher_event_1.adb:253:25: info: initialization of "Bus_Selector1_out1" proved
-no_higher_event_1.adb:257:25: info: initialization of "Bus_Selector3_out1" proved
-no_higher_event_1.adb:261:25: info: initialization of "Bus_Selector4_out1" proved
-no_higher_event_1.adb:265:25: info: initialization of "Bus_Selector_out1" proved
-no_higher_event_1.adb:269:25: info: initialization of "Bus_Selector7_out1" proved
-no_higher_event_1.adb:273:25: info: initialization of "Bus_Selector8_out1" proved
-no_higher_event_1.adb:281:23: info: initialization of "False_out1" proved
-no_higher_event_1.adb:281:35: info: initialization of "Rising_Edge_Out1_9" proved
-no_higher_event_1.adb:285:23: info: initialization of "No_Higher_No_Higher_Below" proved
-no_higher_event_1.adb:285:50: info: initialization of "Rising_Edge_Out1_6" proved
-no_higher_event_1.adb:289:23: info: initialization of "No_Higher_No_Higher_Below_1" proved
-no_higher_event_1.adb:289:52: info: initialization of "Rising_Edge_Out1_3" proved
-no_higher_event_1.adb:293:23: info: initialization of "No_Higher_No_Higher_Below_2" proved
-no_higher_event_1.adb:293:52: info: initialization of "Rising_Edge_Out1_1" proved
-no_higher_event_1.adb:297:23: info: initialization of "No_Higher_No_Higher_Below_3" proved
-no_higher_event_1.adb:297:52: info: initialization of "Rising_Edge_Out1" proved
-no_higher_event_1.adb:301:23: info: initialization of "No_Higher_No_Higher_Below_4" proved
-no_higher_event_1.adb:301:52: info: initialization of "Rising_Edge_Out1_5" proved
-no_higher_event_1.adb:305:23: info: initialization of "No_Higher_No_Higher_Below_2" proved
-no_higher_event_1.adb:305:52: info: initialization of "Rising_Edge_Out1_7" proved
-no_higher_event_1.adb:309:23: info: initialization of "No_Higher_No_Higher_Below_6" proved
-no_higher_event_1.adb:309:52: info: initialization of "Rising_Edge_Out1_8" proved
+no_higher_event_1.adb:85:07: info: initialization of "I_out1" proved
+no_higher_event_1.adb:86:07: info: initialization of "Bus_Selector_out1" proved
+no_higher_event_1.adb:87:07: info: initialization of "Bus_Selector1_out1" proved
+no_higher_event_1.adb:88:07: info: initialization of "Bus_Selector10_out1" proved
+no_higher_event_1.adb:89:07: info: initialization of "Bus_Selector11_out1" proved
+no_higher_event_1.adb:90:07: info: initialization of "Bus_Selector12_out1" proved
+no_higher_event_1.adb:91:07: info: initialization of "Bus_Selector13_out1" proved
+no_higher_event_1.adb:92:07: info: initialization of "Bus_Selector14_out1" proved
+no_higher_event_1.adb:93:07: info: initialization of "Bus_Selector15_out1" proved
+no_higher_event_1.adb:94:07: info: initialization of "Bus_Selector16_out1" proved
+no_higher_event_1.adb:95:07: info: initialization of "Bus_Selector2_out1" proved
+no_higher_event_1.adb:96:07: info: initialization of "Bus_Selector3_out1" proved
+no_higher_event_1.adb:97:07: info: initialization of "Bus_Selector4_out1" proved
+no_higher_event_1.adb:98:07: info: initialization of "Bus_Selector5_out1" proved
+no_higher_event_1.adb:99:07: info: initialization of "Bus_Selector6_out1" proved
+no_higher_event_1.adb:100:07: info: initialization of "Bus_Selector7_out1" proved
+no_higher_event_1.adb:101:07: info: initialization of "Bus_Selector8_out1" proved
+no_higher_event_1.adb:102:07: info: initialization of "Bus_Selector9_out1" proved
+no_higher_event_1.adb:103:07: info: initialization of "Rising_Edge_Out1" proved
+no_higher_event_1.adb:104:07: info: initialization of "Rising_Edge_Out1_1" proved
+no_higher_event_1.adb:105:07: info: initialization of "Rising_Edge_Out1_2" proved
+no_higher_event_1.adb:106:07: info: initialization of "Rising_Edge_Out1_3" proved
+no_higher_event_1.adb:107:07: info: initialization of "Rising_Edge_Out1_4" proved
+no_higher_event_1.adb:108:07: info: initialization of "Rising_Edge_Out1_5" proved
+no_higher_event_1.adb:109:07: info: initialization of "Rising_Edge_Out1_6" proved
+no_higher_event_1.adb:110:07: info: initialization of "Rising_Edge_Out1_7" proved
+no_higher_event_1.adb:111:07: info: initialization of "Rising_Edge_Out1_8" proved
+no_higher_event_1.adb:112:07: info: initialization of "Rising_Edge_Out1_9" proved
+no_higher_event_1.adb:113:07: info: initialization of "Rising_Edge_Out1_10" proved
+no_higher_event_1.adb:114:07: info: initialization of "Rising_Edge_Out1_11" proved
+no_higher_event_1.adb:115:07: info: initialization of "False_out1" proved
+no_higher_event_1.adb:116:07: info: initialization of "No_Higher_Event_Than_SYNC_Switch_Pressed" proved
+no_higher_event_1.adb:117:07: info: initialization of "No_Higher_No_Higher_Below" proved
+no_higher_event_1.adb:118:07: info: initialization of "No_Higher_Event_Than_GA_Switch_Pressed" proved
+no_higher_event_1.adb:119:07: info: initialization of "No_Higher_No_Higher_Below_1" proved
+no_higher_event_1.adb:120:07: info: initialization of "No_Higher_Event_Than_APPR_Switch_Pressed" proved
+no_higher_event_1.adb:121:07: info: initialization of "No_Higher_No_Higher_Below_2" proved
+no_higher_event_1.adb:122:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Target_Changed" proved
+no_higher_event_1.adb:123:07: info: initialization of "No_Higher_No_Higher_Below_3" proved
+no_higher_event_1.adb:124:07: info: initialization of "No_Higher_Event_Than_ALT_Switch_Pressed" proved
+no_higher_event_1.adb:125:07: info: initialization of "No_Higher_No_Higher_Below_4" proved
+no_higher_event_1.adb:126:07: info: initialization of "No_Higher_Event_Than_FLC_Switch_Pressed" proved
+no_higher_event_1.adb:127:07: info: initialization of "No_Higher_No_Higher_Below_5" proved
+no_higher_event_1.adb:128:07: info: initialization of "No_Higher_Event_Than_HDG_Switch_Pressed" proved
+no_higher_event_1.adb:129:07: info: initialization of "No_Higher_No_Higher_Below_6" proved
+no_higher_event_1.adb:131:07: info: initialization of "No_Higher_No_Higher_Below_7" proved
+no_higher_event_1.adb:132:07: info: initialization of "No_Higher_Event_Than_VS_Switch_Pressed" proved
+no_higher_event_1.adb:133:07: info: initialization of "No_Higher_No_Higher_Below_8" proved
+no_higher_event_1.adb:135:07: info: initialization of "No_Higher_No_Higher_Below_9" proved
+no_higher_event_1.adb:136:07: info: initialization of "False1_out1" proved
+no_higher_event_1.adb:137:07: info: initialization of "No_Higher_Event_Than_AP_Engaged" proved
+no_higher_event_1.adb:138:07: info: initialization of "No_Higher_No_Higher_Below_10" proved
+no_higher_event_1.adb:139:07: info: initialization of "AND_out1" proved
+no_higher_event_1.adb:140:07: info: initialization of "No_Higher_Event_Than_FD_Switch_Pressed" proved
+no_higher_event_1.adb:141:07: info: initialization of "No_Higher_No_Higher_Below_11" proved
+no_higher_event_1.adb:142:07: info: initialization of "No_Higher_Event_Than_LAPPR_Capture_Cond_Met" proved
+no_higher_event_1.adb:143:07: info: initialization of "No_Higher_No_Higher_Below_12" proved
+no_higher_event_1.adb:144:07: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met" proved
+no_higher_event_1.adb:147:07: info: initialization of "No_Higher_Event_Than_VAPPR_Capture_Cond_Met" proved
+no_higher_event_1.adb:148:07: info: initialization of "No_Higher_No_Higher_Below_14" proved
+no_higher_event_1.adb:149:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Track_Cond_Met" proved
+no_higher_event_1.adb:150:07: info: initialization of "No_Higher_No_Higher_Below_15" proved
+no_higher_event_1.adb:151:07: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
 no_higher_event_1.adb:309:72: warning: unused assignment to "No_Higher_No_Higher"
-no_higher_event_1.adb:313:23: info: initialization of "No_Higher_No_Higher_Below_5" proved
-no_higher_event_1.adb:313:52: info: initialization of "Rising_Edge_Out1_10" proved
-no_higher_event_1.adb:317:23: info: initialization of "No_Higher_No_Higher_Below_8" proved
-no_higher_event_1.adb:317:52: info: initialization of "Rising_Edge_Out1_11" proved
 no_higher_event_1.adb:317:73: warning: unused assignment to "No_Higher_No_Higher_1"
-no_higher_event_1.adb:325:23: info: initialization of "False1_out1" proved
-no_higher_event_1.adb:325:36: info: initialization of "Rising_Edge_Out1_2" proved
-no_higher_event_1.adb:329:21: info: initialization of "No_Higher_No_Higher_Below_7" proved
-no_higher_event_1.adb:330:20: info: initialization of "No_Higher_No_Higher_Below_10" proved
-no_higher_event_1.adb:331:23: info: initialization of "No_Higher_No_Higher_Below_9" proved
-no_higher_event_1.adb:335:23: info: initialization of "AND_out1" proved
-no_higher_event_1.adb:335:33: info: initialization of "Rising_Edge_Out1_4" proved
-no_higher_event_1.adb:339:23: info: initialization of "No_Higher_No_Higher_Below_11" proved
-no_higher_event_1.adb:339:53: info: initialization of "Bus_Selector12_out1" proved
-no_higher_event_1.adb:343:23: info: initialization of "No_Higher_No_Higher_Below_12" proved
-no_higher_event_1.adb:343:53: info: initialization of "Bus_Selector13_out1" proved
-no_higher_event_1.adb:347:23: info: initialization of "No_Higher_No_Higher_Below_11" proved
-no_higher_event_1.adb:347:53: info: initialization of "Bus_Selector14_out1" proved
-no_higher_event_1.adb:351:23: info: initialization of "No_Higher_No_Higher_Below_14" proved
-no_higher_event_1.adb:351:53: info: initialization of "Bus_Selector15_out1" proved
-no_higher_event_1.adb:355:23: info: initialization of "No_Higher_No_Higher_Below_15" proved
-no_higher_event_1.adb:355:53: info: initialization of "Bus_Selector16_out1" proved
-no_higher_event_1.adb:359:28: medium: "Bus_Creator_out1" might not be initialized
-no_higher_event_1.adb:359:31: info: initialization of "No_Higher_Event_Than_SYNC_Switch_Pressed" proved
-no_higher_event_1.adb:360:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:360:31: info: initialization of "No_Higher_Event_Than_GA_Switch_Pressed" proved
-no_higher_event_1.adb:361:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:361:31: info: initialization of "No_Higher_Event_Than_APPR_Switch_Pressed" proved
-no_higher_event_1.adb:362:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:362:31: info: initialization of "No_Higher_Event_Than_HDG_Switch_Pressed" proved
-no_higher_event_1.adb:363:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:363:31: info: initialization of "No_Higher_Event_Than_AP_Engaged" proved
-no_higher_event_1.adb:364:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:364:31: info: initialization of "No_Higher_Event_Than_ALTSEL_Target_Changed" proved
-no_higher_event_1.adb:365:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:365:31: info: initialization of "No_Higher_Event_Than_ALT_Switch_Pressed" proved
-no_higher_event_1.adb:366:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:366:31: info: initialization of "No_Higher_Event_Than_FLC_Switch_Pressed" proved
-no_higher_event_1.adb:367:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:367:31: info: initialization of "No_Higher_Event_Than_VS_Switch_Pressed" proved
-no_higher_event_1.adb:368:28: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:368:31: info: initialization of "No_Higher_Event_Than_FD_Switch_Pressed" proved
-no_higher_event_1.adb:369:29: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:369:32: info: initialization of "No_Higher_Event_Than_LAPPR_Capture_Cond_Met" proved
-no_higher_event_1.adb:370:29: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:370:32: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met" proved
-no_higher_event_1.adb:371:29: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:371:32: info: initialization of "No_Higher_Event_Than_VAPPR_Capture_Cond_Met" proved
-no_higher_event_1.adb:372:29: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:372:32: info: initialization of "No_Higher_Event_Than_ALTSEL_Capture_Cond_Met" proved
-no_higher_event_1.adb:373:29: info: initialization of "Bus_Creator_out1" proved
-no_higher_event_1.adb:373:32: info: initialization of "No_Higher_Event_Than_ALTSEL_Track_Cond_Met" proved
 no_higher_event_1.adb:378:26: info: unrolling loop
-no_higher_event_1.adb:379:18: info: initialization of "O" proved
-no_higher_event_1.adb:379:21: info: initialization of "Bus_Creator_out1" proved
+no_higher_event_1.adb:379:21: medium: "Bus_Creator_out1" might not be initialized
 no_higher_event_1.ads:19:43: info: initialization of "O" proved
-offside_fd_on_implies_modes_on.adb:46:26: info: initialization of "Offside_FD_On_out1" proved
-offside_fd_on_implies_modes_on.adb:50:21: info: initialization of "NOT1_out1" proved
-offside_fd_on_implies_modes_on.adb:51:19: info: initialization of "Modes_On_out1" proved
-offside_fd_on_implies_modes_on.adb:59:19: info: initialization of "Unit_Delay_out1" proved
-offside_fd_on_implies_modes_on.adb:60:19: info: initialization of "NOT5_out1" proved
-offside_fd_on_implies_modes_on.adb:64:22: info: initialization of "OR_out1" proved
+offside_fd_on_implies_modes_on.adb:26:07: info: initialization of "Unit_Delay_out1" proved
+offside_fd_on_implies_modes_on.adb:27:07: info: initialization of "Modes_On_out1" proved
+offside_fd_on_implies_modes_on.adb:28:07: info: initialization of "Offside_FD_On_out1" proved
+offside_fd_on_implies_modes_on.adb:29:07: info: initialization of "NOT1_out1" proved
+offside_fd_on_implies_modes_on.adb:30:07: info: initialization of "NOT5_out1" proved
+offside_fd_on_implies_modes_on.adb:31:07: info: initialization of "OR_out1" proved
 offside_fd_on_implies_modes_on.adb:64:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
-offside_fd_on_implies_modes_on.ads:15:14: info: initialization of "Unit_Delay_memory" proved
-offside_fd_on_implies_modes_on.ads:17:14: info: initialization of "True_out1" proved
-offside_fd_on_implies_modes_on.ads:19:14: info: initialization of "Unit_Delay_memory" proved
-onside_fd_implies_modes_on.adb:31:26: info: initialization of "FD_On_out1" proved
-onside_fd_implies_modes_on.adb:35:21: info: initialization of "NOT1_out1" proved
-onside_fd_implies_modes_on.adb:36:19: info: initialization of "Modes_On_out1" proved
-onside_fd_implies_modes_on.adb:40:22: info: initialization of "NOT5_out1" proved
+onside_fd_implies_modes_on.adb:17:07: info: initialization of "FD_On_out1" proved
+onside_fd_implies_modes_on.adb:18:07: info: initialization of "Modes_On_out1" proved
+onside_fd_implies_modes_on.adb:19:07: info: initialization of "NOT1_out1" proved
+onside_fd_implies_modes_on.adb:20:07: info: initialization of "NOT5_out1" proved
 onside_fd_implies_modes_on.adb:40:22: medium: assertion might fail, cannot prove NOT5_out1 (e.g. when NOT5_out1 = False)
 onside_fd_implies_modes_on.ads:15:14: warning: subprogram "comp" has no effect
-requirements.adb:98:24: info: initialization of "Inputs_out1.Offside_FD_On" proved
-requirements.adb:99:24: info: initialization of "Inputs_out1.Is_AP_Engaged" proved
-requirements.adb:103:28: info: initialization of "Inputs_out1.Pilot_Flying_Side" proved
-requirements.adb:104:38: info: initialization of "Inputs_out1.Selected_Nav_Source_Changed" proved
-requirements.adb:105:41: info: initialization of "Inputs_out1.Selected_Nav_Frequency_Changed" proved
-requirements.adb:106:31: info: initialization of "Inputs_out1.NAV_Capture_Cond_Met" proved
-requirements.adb:110:26: info: initialization of "Inputs_out1.Is_AP_Engaged" proved
-requirements.adb:114:26: info: initialization of "Inputs_out1.Offside_FD_On" proved
-requirements.adb:122:16: info: initialization of "Outputs_out1.FD_On" proved
-requirements.adb:123:21: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:127:23: info: initialization of "Outputs_out1.NAV_Selected" proved
-requirements.adb:128:21: info: initialization of "Outputs_out1.NAV_Active" proved
-requirements.adb:129:19: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:133:18: info: initialization of "Outputs_out1.FD_On" proved
-requirements.adb:134:23: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:138:22: info: initialization of "Outputs_out1.ROLL_Active" proved
-requirements.adb:139:21: info: initialization of "Outputs_out1.HDG_Active" proved
-requirements.adb:140:23: info: initialization of "Outputs_out1.NAV_Active" proved
-requirements.adb:141:23: info: initialization of "Outputs_out1.LAPPR_Active" proved
-requirements.adb:142:21: info: initialization of "Outputs_out1.LGA_Active" proved
-requirements.adb:146:24: info: initialization of "Outputs_out1.ROLL_Active" proved
-requirements.adb:147:23: info: initialization of "Outputs_out1.HDG_Active" proved
-requirements.adb:148:25: info: initialization of "Outputs_out1.NAV_Active" proved
-requirements.adb:149:25: info: initialization of "Outputs_out1.LAPPR_Active" proved
-requirements.adb:150:23: info: initialization of "Outputs_out1.LGA_Active" proved
-requirements.adb:154:21: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:158:21: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:162:21: info: initialization of "Outputs_out1.Modes_On" proved
-requirements.adb:166:41: info: initialization of "Is_AP_Engaged_1" proved
-requirements.adb:166:58: info: initialization of "Modes_On_3" proved
-requirements.adb:170:46: info: initialization of "ROLL_Active_1" proved
-requirements.adb:170:61: info: initialization of "HDG_Active_1" proved
-requirements.adb:170:75: info: initialization of "NAV_Active_1_1" proved
-requirements.adb:170:91: info: initialization of "LAPPR_Active_1" proved
-requirements.adb:170:107: info: initialization of "LGA_Active_1" proved
-requirements.adb:174:45: info: initialization of "ROLL_Active" proved
-requirements.adb:174:58: info: initialization of "HDG_Active" proved
-requirements.adb:174:70: info: initialization of "NAV_Active_1" proved
-requirements.adb:174:84: info: initialization of "LAPPR_Active" proved
-requirements.adb:174:98: info: initialization of "LGA_Active" proved
-requirements.adb:178:34: info: initialization of "Modes_On_2" proved
-requirements.adb:182:46: info: initialization of "Offside_FD_On" proved
-requirements.adb:182:61: info: initialization of "Is_AP_Engaged" proved
-requirements.adb:182:76: info: initialization of "FD_On" proved
-requirements.adb:182:83: info: initialization of "Modes_On_1" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.ALTSEL_Capture_Cond_Met" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.ALTSEL_Target_Changed" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.ALTSEL_Track_Cond_Met" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.ALT_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.APPR_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.FD_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.FLC_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.GA_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.HDG_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Is_AP_Engaged" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Is_Offside_VAPPR_Active" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Is_Offside_VGA_Active" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.LAPPR_Capture_Cond_Met" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.NAV_Capture_Cond_Met" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.NAV_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Offside_FD_On" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Overspeed" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Pilot_Flying_Side" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.SYNC_Switch" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Selected_Nav_Frequency_Changed" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.Selected_Nav_Source_Changed" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.VAPPR_Capture_Cond_Met" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.VS_Pitch_Wheel_Rotated" proved
-requirements.adb:186:31: info: initialization of "Inputs_out1.VS_Switch" proved
-requirements.adb:190:52: info: initialization of "No_Higher_Event_O" proved
-requirements.adb:194:46: info: initialization of "Pilot_Flying_Side" proved
-requirements.adb:194:65: info: initialization of "Selected_Nav_Source_Changed" proved
-requirements.adb:194:94: info: initialization of "Selected_Nav_Frequency_Changed" proved
-requirements.adb:194:126: info: initialization of "NAV_Capture_Cond_Met" proved
-requirements.adb:194:148: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met" proved
-requirements.adb:194:191: info: initialization of "NAV_Active" proved
-requirements.adb:194:203: info: initialization of "Modes_On" proved
-requirements.adb:198:44: info: initialization of "Offside_FD_On_1" proved
-requirements.adb:198:61: info: initialization of "Modes_On_4" proved
-requirements.adb:202:40: info: initialization of "FD_On_1" proved
-requirements.adb:202:49: info: initialization of "Modes_On_1_1" proved
-requirements.ads:17:14: info: initialization of "ap_engaged_implies_modes_on.unit_delay_memory" proved
-requirements.ads:17:14: info: initialization of "modes_off_at_startup.unit_delay_memory" proved
-requirements.ads:17:14: info: initialization of "modes_on_iff_fd_on_or_ap_engaged.unit_delay_memory" proved
-requirements.ads:17:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay1_memory" proved
-requirements.ads:17:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay_memory" proved
-requirements.ads:17:14: info: initialization of "offside_fd_on_implies_modes_on.unit_delay_memory" proved
-requirements.ads:19:14: info: initialization of "Modes_On" proved
-requirements.ads:19:14: info: initialization of "NAV_Active" proved
-requirements.ads:19:14: info: initialization of "NAV_Selected" proved
-requirements.ads:19:14: info: initialization of "ap_engaged_implies_modes_on.true_out1" proved
-requirements.ads:19:14: info: initialization of "modes_off_at_startup.true_out1" proved
-requirements.ads:19:14: info: initialization of "modes_on_iff_fd_on_or_ap_engaged.true_out1" proved
-requirements.ads:19:14: info: initialization of "nav_active_when_capture_cond_met.nav_active_out1" proved
-requirements.ads:19:14: info: initialization of "offside_fd_on_implies_modes_on.true_out1" proved
-requirements.ads:23:14: info: initialization of "ap_engaged_implies_modes_on.unit_delay_memory" proved
-requirements.ads:23:14: info: initialization of "modes_off_at_startup.unit_delay_memory" proved
-requirements.ads:23:14: info: initialization of "modes_on_iff_fd_on_or_ap_engaged.unit_delay_memory" proved
-requirements.ads:23:14: info: initialization of "nav_active_when_capture_cond_met.nav_selected_out1" proved
-requirements.ads:23:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay1_memory" proved
-requirements.ads:23:14: info: initialization of "nav_active_when_capture_cond_met.unit_delay_memory" proved
-requirements.ads:23:14: info: initialization of "offside_fd_on_implies_modes_on.unit_delay_memory" proved
-rising_edge.adb:44:39: info: initialization of "Unit_Delay_out1" proved
-rising_edge.adb:48:34: info: initialization of "Logical_Operator2_out1" proved
-rising_edge.adb:53:15: info: initialization of "Logical_Operator1_out1" proved
+requirements.adb:63:07: info: initialization of "Inputs_out1" proved
+requirements.adb:64:07: info: initialization of "Offside_FD_On" proved
+requirements.adb:65:07: info: initialization of "Is_AP_Engaged" proved
+requirements.adb:66:07: info: initialization of "Pilot_Flying_Side" proved
+requirements.adb:67:07: info: initialization of "Selected_Nav_Source_Changed" proved
+requirements.adb:68:07: info: initialization of "Selected_Nav_Frequency_Changed" proved
+requirements.adb:69:07: info: initialization of "NAV_Capture_Cond_Met" proved
+requirements.adb:70:07: info: initialization of "Is_AP_Engaged_1" proved
+requirements.adb:71:07: info: initialization of "Offside_FD_On_1" proved
+requirements.adb:72:07: info: initialization of "Outputs_out1" proved
+requirements.adb:73:07: info: initialization of "FD_On" proved
+requirements.adb:74:07: info: initialization of "Modes_On_1" proved
+requirements.adb:75:07: info: initialization of "FD_On_1" proved
+requirements.adb:76:07: info: initialization of "Modes_On_1_1" proved
+requirements.adb:77:07: info: initialization of "ROLL_Active" proved
+requirements.adb:78:07: info: initialization of "HDG_Active" proved
+requirements.adb:79:07: info: initialization of "NAV_Active_1" proved
+requirements.adb:80:07: info: initialization of "LAPPR_Active" proved
+requirements.adb:81:07: info: initialization of "LGA_Active" proved
+requirements.adb:82:07: info: initialization of "ROLL_Active_1" proved
+requirements.adb:83:07: info: initialization of "HDG_Active_1" proved
+requirements.adb:84:07: info: initialization of "NAV_Active_1_1" proved
+requirements.adb:85:07: info: initialization of "LAPPR_Active_1" proved
+requirements.adb:86:07: info: initialization of "LGA_Active_1" proved
+requirements.adb:87:07: info: initialization of "Modes_On_2" proved
+requirements.adb:88:07: info: initialization of "Modes_On_3" proved
+requirements.adb:89:07: info: initialization of "Modes_On_4" proved
+requirements.adb:90:07: info: initialization of "No_Higher_Event_O" proved
+requirements.adb:91:07: info: initialization of "No_Higher_Event_Than_NAV_Capture_Cond_Met" proved
+rising_edge.adb:31:07: info: initialization of "Unit_Delay_out1" proved
+rising_edge.adb:32:07: info: initialization of "Logical_Operator2_out1" proved
+rising_edge.adb:33:07: info: initialization of "Logical_Operator1_out1" proved
 rising_edge.ads:21:08: info: initialization of "Out1" proved
-seen.adb:37:25: info: initialization of "Inhibit_In_out1" proved
-seen.adb:41:20: info: initialization of "Not_out1" proved
-seen.adb:42:20: info: initialization of "Input_out1" proved
-seen.adb:46:19: info: initialization of "Inhibit_In_out1" proved
-seen.adb:47:19: info: initialization of "AND_out1" proved
-seen.adb:51:22: info: initialization of "OR_out1" proved
-seen.adb:55:15: info: initialization of "AND_out1" proved
+seen.adb:22:07: info: initialization of "Inhibit_In_out1" proved
+seen.adb:23:07: info: initialization of "Input_out1" proved
+seen.adb:24:07: info: initialization of "Not_out1" proved
+seen.adb:25:07: info: initialization of "AND_out1" proved
+seen.adb:26:07: info: initialization of "OR_out1" proved
 seen.ads:18:08: info: initialization of "Seen" proved
 seen.ads:19:08: info: initialization of "Inhibit_Out" proved

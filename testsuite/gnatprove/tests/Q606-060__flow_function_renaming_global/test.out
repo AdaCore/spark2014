@@ -1,5 +1,8 @@
-pack.adb:5:18: medium: overflow check might fail [possible explanation: subprogram at line 3 should mention X in a precondition]
-pack.adb:8:30: info: initialization of "X" proved
-pack.adb:16:17: high: renaming of a function call "Int_Ren" must be listed in the Global aspect of "Proc1" (SPARK RM 6.1.4(13))
-pack.adb:21:17: high: "X" must be listed in the Global aspect of "Proc2" (SPARK RM 6.1.4(13))
-pack.adb:26:17: high: "X" must be listed in the Global aspect of "Proc3" (SPARK RM 6.1.4(13))
+pack.adb:5:18: medium: overflow check might fail [possible explanation: subprogram at pack.ads:4 should mention X in a precondition]
+pack.adb:10:48: info: data dependencies proved
+pack.adb:11:48: info: data dependencies proved
+pack.adb:12:48: info: data dependencies proved
+pack.adb:16:17: high: renaming of a function call "Int_Ren" must be listed in the Global aspect of "Proc1" (SPARK RM 6.1.4(14))
+pack.adb:21:17: high: "X" must be listed in the Global aspect of "Proc2" (SPARK RM 6.1.4(14))
+pack.adb:26:17: high: "X" must be listed in the Global aspect of "Proc3" (SPARK RM 6.1.4(14))
+pack.ads:4:45: info: data dependencies proved

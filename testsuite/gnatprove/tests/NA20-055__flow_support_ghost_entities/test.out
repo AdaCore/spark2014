@@ -1,13 +1,12 @@
-casper.adb:4:17: medium: overflow check might fail [possible explanation: subprogram at line 2 should mention G1 and G2 in a precondition]
-casper.adb:8:27: medium: overflow check might fail [possible explanation: subprogram at line 7 should mention G2 in a precondition]
+casper.adb:4:17: medium: overflow check might fail [possible explanation: subprogram at casper.ads:9 should mention G1 and G2 in a precondition]
+casper.adb:8:27: medium: overflow check might fail [possible explanation: subprogram at casper.ads:14 should mention G2 in a precondition]
 casper.adb:11:22: info: assertion proved (CVC4: 1 VC)
-casper.adb:11:22: info: initialization of "Tmp" proved
-casper.adb:19:07: info: initialization of "Nested_Hidden_Var" constituent of "Nested_State" proved
-casper.ads:4:04: info: initialization of "G1" proved
-casper.ads:4:08: info: initialization of "G2" proved
-casper.ads:6:04: info: initialization of "Ghost_G1" proved
+casper.ads:2:08: info: flow dependencies proved
 casper.ads:9:26: info: initialization of "Par" proved
-casper.ads:12:34: medium: export "Par" must not depend on Proof_In "G2" (SPARK RM 6.1.4(17))
+casper.ads:12:34: medium: export "Par" must not depend on Proof_In "G2" (SPARK RM 6.1.4(18))
 casper.ads:14:17: info: initialization of "Par" proved
+casper.ads:15:11: info: data dependencies proved
 casper.ads:17:34: info: initialization of "Ghost_G1" proved
-casper.ads:24:07: info: initialization of "Nested_Global" proved
+casper.ads:21:29: info: initialization of "Nested_Ghost_Package.Nested_State" proved
+casper.ads:22:11: info: flow dependencies proved
+casper.ads:27:14: info: data dependencies proved

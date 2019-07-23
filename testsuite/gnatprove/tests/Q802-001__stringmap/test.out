@@ -1,65 +1,18 @@
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access type)
-test.ads:6:04: instantiation error at a-strbou.ads:236
-test.ads:6:04: instantiation error at a-strbou.ads:257
-test.ads:6:04: instantiation error at a-strbou.ads:286
-test.ads:6:04: instantiation error at a-strbou.ads:322
-test.ads:6:04: instantiation error at a-strbou.ads:326
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: "Character_Mapping_Function" is not allowed in SPARK (due to access to subprogram type)
+test.ads:6:04: instantiation error at a-strbou.ads:388
+test.ads:6:04: instantiation error at a-strbou.ads:420
+test.ads:6:04: instantiation error at a-strbou.ads:466
+test.ads:6:04: instantiation error at a-strbou.ads:518
+test.ads:6:04: instantiation error at a-strbou.ads:525
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
 test.ads:6:04: violation of aspect SPARK_Mode at line 5
-test.ads:6:04: warning: in instantiation at a-strbou.ads:482
+test.ads:6:04: warning: in instantiation at a-strbou.ads:849
 test.ads:6:04: warning: pragma "Stream_Convert" ignored (not yet supported)
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: assuming "=" has no effect on global items
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:130
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:212
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:223
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:417
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:760
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cfhama.ads:93
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:165
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:180
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:181
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:197
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:214
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:215
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:81
-test.ads:12:04: warning: in instantiation at a-cofuma.ads:96
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
-test.ads:12:04: warning: no Global contract available for "="
 gnatprove: error during flow analysis and proof
