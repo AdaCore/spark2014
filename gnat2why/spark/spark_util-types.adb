@@ -881,8 +881,12 @@ package body SPARK_Util.Types is
 
    function Unchecked_Full_Type (E : Entity_Id) return Entity_Id is
    begin
-      if Present (Full_View (E)) then
-         return Full_View (E);
+      if Is_Private_Type (E)
+        and then Present (Underlying_Full_View (E))
+      then
+         return Unchecked_Full_Type (Underlying_Full_View (E));
+      elsif Present (Full_View (E)) then
+         return Unchecked_Full_Type (Full_View (E));
       else
          return E;
       end if;

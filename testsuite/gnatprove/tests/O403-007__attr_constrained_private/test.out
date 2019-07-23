@@ -12,4 +12,5 @@ use_private_types.ads:20:14: info: postcondition proved (CVC4: 1 VC)
 use_private_types.ads:23:14: info: postcondition proved (CVC4: 1 VC)
 use_private_types.ads:26:14: info: postcondition proved (CVC4: 1 VC)
 use_private_types.ads:29:14: info: postcondition proved (CVC4: 1 VC)
+use_private_types.ads:31:21: warning: unused variable "S"
 use_private_types.ads:33:21: warning: unused variable "S"

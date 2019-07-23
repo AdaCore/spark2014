@@ -195,7 +195,9 @@ package SPARK_Util.Types is
 
    function Unchecked_Full_Type (E : Entity_Id) return Entity_Id
    with Pre  => Is_Type (E),
-        Post => Is_Type (Unchecked_Full_Type'Result);
+        Post => Is_Type (Unchecked_Full_Type'Result)
+                  and then
+                not Is_Private_Type (Unchecked_Full_Type'Result);
    --  Get the type of the given entity. This function looks through private
    --  types and should be used with extreme care.
 
