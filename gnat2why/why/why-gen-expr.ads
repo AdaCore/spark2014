@@ -23,19 +23,20 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols;   use GNATCOLL.Symbols;
-with Gnat2Why.Util;      use Gnat2Why.Util;
-with Snames;             use Snames;
-with SPARK_Atree;        use SPARK_Atree;
-with SPARK_Util;         use SPARK_Util;
-with Types;              use Types;
-with Uintp;              use Uintp;
-with VC_Kinds;           use VC_Kinds;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Ids;            use Why.Ids;
-with Why.Inter;          use Why.Inter;
-with Why.Sinfo;          use Why.Sinfo;
-with Why.Types;          use Why.Types;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with Gnat2Why.Util;        use Gnat2Why.Util;
+with Snames;               use Snames;
+with SPARK_Atree;          use SPARK_Atree;
+with SPARK_Atree.Entities; use SPARK_Atree.Entities;
+with SPARK_Util;           use SPARK_Util;
+with Types;                use Types;
+with Uintp;                use Uintp;
+with VC_Kinds;             use VC_Kinds;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Ids;              use Why.Ids;
+with Why.Inter;            use Why.Inter;
+with Why.Sinfo;            use Why.Sinfo;
+with Why.Types;            use Why.Types;
 
 package Why.Gen.Expr is
 
@@ -99,7 +100,8 @@ package Why.Gen.Expr is
      (Typ         : Entity_Id;
       Domain      : EW_Domain;
       Left, Right : W_Expr_Id)
-      return W_Expr_Id;
+      return W_Expr_Id
+   with Pre => Is_Type (Typ);
    --  Generate a boolean term which expresses the translation of "Left =
    --  Right" in Ada semantics, where the equality is the one of type Typ.
    --  If the type has a user-provided primitive equality and if its most
@@ -133,7 +135,8 @@ package Why.Gen.Expr is
    --  depending on "Base", which is either EW_Bool_Type or EW_Int_Type.
 
    function Why_Default_Value (Domain : EW_Domain; E : Entity_Id)
-                               return W_Expr_Id;
+                               return W_Expr_Id
+   with Pre => Is_Type (E);
    --  Return the default value for a given type
 
    function New_Simpl_Conditional
@@ -183,10 +186,10 @@ package Why.Gen.Expr is
    --  labels.
 
    function New_VC_Expr
-      (Ada_Node   : Node_Id;
-       Expr       : W_Expr_Id;
-       Reason     : VC_Kind;
-       Domain     : EW_Domain) return W_Expr_Id
+      (Ada_Node : Node_Id;
+       Expr     : W_Expr_Id;
+       Reason   : VC_Kind;
+       Domain   : EW_Domain) return W_Expr_Id
    with Pre => Present (Ada_Node) and then Domain /= EW_Term;
    --  Put VC and location labels on the expression
 
@@ -247,9 +250,10 @@ package Why.Gen.Expr is
      (Domain : EW_Domain;
       Ty     : Entity_Id;
       Expr   : W_Expr_Id;
-      Params : Transformation_Params := Body_Params) return W_Expr_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id
+   with Pre => Is_Type (Ty);
    --  Function to generate a call expressing that Expr is of the dynamic type
-   --  Ty
+   --  Ty.
 
    function To_Int (D : EW_Domain; E : W_Expr_Id) return W_Expr_Id;
    --  Convert argument to int if not already done
@@ -258,21 +262,22 @@ package Why.Gen.Expr is
      (Ada_Node   : Node_Id;
       Ty         : Entity_Id;
       W_Expr     : W_Expr_Id;
-      Check_Kind : Scalar_Check_Kind) return W_Prog_Id;
-   --  Returns the Why program that does range checking on W_Expr, for type Ty.
+      Check_Kind : Scalar_Check_Kind) return W_Prog_Id
+   with Pre => Is_Type (Ty);
+   --  Returns the Why program that does range checking on W_Expr, for type Ty
 
    function Insert_Conversion_To_Rep_No_Bool
      (Domain : EW_Domain;
-      Expr : W_Expr_Id)
+      Expr   : W_Expr_Id)
       return W_Expr_Id;
    --  Convert argument to representation type or ew_int_id if expr is of
    --  type Bool.
 
    function Do_Index_Check
-     (Ada_Node   : Node_Id;
-      Arr_Expr   : W_Expr_Id;
-      W_Expr     : W_Expr_Id;
-      Dim        : Positive) return W_Prog_Id;
+     (Ada_Node : Node_Id;
+      Arr_Expr : W_Expr_Id;
+      W_Expr   : W_Expr_Id;
+      Dim      : Positive) return W_Prog_Id;
    --  Returns the Why program that does index checking on an index W_Expr in
    --  an array Arr_Expr.
 
@@ -375,7 +380,8 @@ package Why.Gen.Expr is
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
       Do_Init    : Boolean := True;
-      Skip_Pred  : Boolean := False) return W_Expr_Id;
+      Skip_Pred  : Boolean := False) return W_Expr_Id
+   with Pre => (if Present (Range_Type) then Is_Type (Range_Type));
    --  Same as the above except that we take directly the kind of check as
    --  input.
    --  @param Skip_Pred True if we should not check the predicate if any
@@ -426,10 +432,11 @@ package Why.Gen.Expr is
                                                  | Attribute_Tag;
 
    function New_Attribute_Expr
-     (Ty        : Entity_Id;
-      Domain    : EW_Domain;
-      Attr      : Supported_Attribute_Id;
-      Params    : Transformation_Params := Body_Params) return W_Expr_Id;
+     (Ty     : Entity_Id;
+      Domain : EW_Domain;
+      Attr   : Supported_Attribute_Id;
+      Params : Transformation_Params := Body_Params) return W_Expr_Id
+   with Pre => Is_Type (Ty);
    --  Compute an expression for a type attribute Ty'Attr.
    --  @param Ty The entity for the Ada type.
    --  @param Domain The domain of the returned expression.

@@ -37,7 +37,6 @@ with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
 with Gnat2Why_Args;
 with GNATCOLL.Utils;          use GNATCOLL.Utils;
 with Sinput;                  use Sinput;
-with SPARK_Atree.Entities;    use SPARK_Atree.Entities;
 with SPARK_Util.Subprograms;  use SPARK_Util.Subprograms;
 with SPARK_Util.Types;        use SPARK_Util.Types;
 with Stand;                   use Stand;
