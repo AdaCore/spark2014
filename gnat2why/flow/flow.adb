@@ -1314,7 +1314,6 @@ package body Flow is
          end case;
 
          if Present (Graph_Start) then
-            --  ???  can graph be build and analyzed one-by-one?
             FA_Graphs.Insert (Key      => Graph_Start,
                               New_Item => Flow_Analyse_Entity
                                             (Graph_Start,
