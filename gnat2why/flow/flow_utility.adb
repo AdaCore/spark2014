@@ -3000,26 +3000,38 @@ package body Flow_Utility is
          declare
             Root_Entity : constant Entity_Id := Entity (Root_Node);
 
-            FS : constant Flow_Id_Sets.Set :=
-              (if Is_Protected_Component (Root_Entity) then
-                 Flatten_Variable
-                   (Add_Component
-                      (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
-                       Root_Entity),
-                    Scope)
-
-               elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
-                 Flatten_Variable
-                   (Add_Component
-                      (Direct_Mapping_Id
-                         (Etype (Encapsulating_State (Root_Entity))),
-                       Root_Entity),
-                    Scope)
-
-               else Flatten_Variable (Root_Entity, Scope));
+            pragma Assert
+              (Ekind (Root_Entity) in E_Constant
+                                    | E_Variable
+                                    | E_Loop_Parameter -- for cursors
+                                    | Formal_Kind
+                 or else
+               (Ekind (Root_Entity) in E_Discriminant | E_Component
+                  and then
+                Is_Concurrent_Type (Sinfo.Scope (Root_Entity))));
 
          begin
-            for F of FS loop
+            if Is_Protected_Component (Root_Entity) then
+               Comp_Id       := 2;
+               Current_Field :=
+                 Add_Component
+                   (Direct_Mapping_Id (Sinfo.Scope (Root_Entity)),
+                    Root_Entity);
+
+            elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
+               Comp_Id       := 2;
+               Current_Field :=
+                 Add_Component
+                   (Direct_Mapping_Id
+                      (Etype (Encapsulating_State (Root_Entity))),
+                    Root_Entity);
+
+            else
+               Comp_Id       := 1;
+               Current_Field := Direct_Mapping_Id (Root_Entity);
+            end if;
+
+            for F of Flatten_Variable (Current_Field, Scope) loop
                M.Insert (F, Flow_Id_Sets.To_Set (F));
             end loop;
 
@@ -3062,9 +3074,6 @@ package body Flow_Utility is
          --  eliminate them. Depends_Vars however is assembled at the end of
          --  the fully trimmed map. (Note N709-009 will also need to deal with
          --  proof variables here.)
-
-         Comp_Id       := 1;
-         Current_Field := Direct_Mapping_Id (Entity (Root_Node));
 
          for N of Seq loop
             if Debug_Trace_Untangle_Fields then
