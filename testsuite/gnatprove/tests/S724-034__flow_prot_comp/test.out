@@ -1,0 +1,17 @@
+p.adb:15:24: warning: unused assignment
+p.adb:24:27: warning: unused assignment
+p.adb:33:24: warning: unused assignment
+p.ads:13:35: info: initialization of "Y" proved
+p.ads:13:57: info: flow dependencies proved
+p.ads:14:22: warning: unused initial value of "X"
+p.ads:14:35: info: initialization of "Y" proved
+p.ads:14:57: medium: missing dependency "null => X"
+p.ads:14:74: medium: incorrect dependency "Y => X"
+p.ads:15:22: warning: unused initial value of "X"
+p.ads:15:35: info: initialization of "Y" proved
+p.ads:15:57: medium: missing dependency "null => X"
+p.ads:15:74: medium: incorrect dependency "Y => X"
+p.ads:16:22: warning: unused initial value of "X"
+p.ads:16:35: info: initialization of "Y" proved
+p.ads:16:57: medium: missing dependency "null => X"
+p.ads:16:74: medium: incorrect dependency "Y => X"
