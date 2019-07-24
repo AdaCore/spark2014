@@ -149,6 +149,12 @@ package body Flow.Analysis.Sanity is
       --  * a Dynamic_Predicate aspect specification
       --  * a Type_Invariant aspect specification
 
+      procedure Check_Constrained_Array_Definition (N : Node_Id)
+      with Pre => Nkind (N) in N_Full_Type_Declaration
+                             | N_Object_Declaration;
+      --  Check if the constrained array definition in N has variable inputs,
+      --  as per SPARK RM 4.4(2);
+
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
          Err_Desc : String;
@@ -373,6 +379,47 @@ package body Flow.Analysis.Sanity is
          end case;
       end Check_Subtype_Constraints;
 
+      ----------------------------------------
+      -- Check_Constrained_Array_Definition --
+      ----------------------------------------
+
+      procedure Check_Constrained_Array_Definition (N : Node_Id) is
+         Typ_Def : constant Node_Id :=
+           (if Nkind (N) = N_Full_Type_Declaration
+            then Type_Definition (N)
+            else Object_Definition (N));
+      begin
+         if Nkind (Typ_Def) = N_Constrained_Array_Definition then
+            declare
+               Sub_Constraint : Node_Id :=
+                 First (Discrete_Subtype_Definitions (Typ_Def));
+
+            begin
+               loop
+                  case Nkind (Sub_Constraint) is
+                     when N_Range =>
+                        Check_Subtype_Constraints (Sub_Constraint);
+
+                     when N_Subtype_Indication =>
+                        Check_Subtype_Constraints
+                          (Constraint (Sub_Constraint));
+
+                     when N_Identifier | N_Expanded_Name =>
+                        pragma Assert
+                          (Is_Type (Entity (Sub_Constraint)));
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+                  Next (Sub_Constraint);
+
+                  exit when No (Sub_Constraint);
+               end loop;
+            end;
+         end if;
+      end Check_Constrained_Array_Definition;
+
       ----------------------------
       -- Check_Type_Declaration --
       ----------------------------
@@ -494,41 +541,9 @@ package body Flow.Analysis.Sanity is
          --  subtype constraints do not depend on variable inputs.
 
          if Nkind (N) = N_Full_Type_Declaration then
-            declare
-               Typ_Def : constant Node_Id := Type_Definition (N);
-
-            begin
-               if Nkind (Typ_Def) = N_Constrained_Array_Definition then
-                  declare
-                     Sub_Constraint : Node_Id :=
-                       First (Discrete_Subtype_Definitions (Typ_Def));
-
-                  begin
-                     loop
-                        case Nkind (Sub_Constraint) is
-                           when N_Range =>
-                              Check_Subtype_Constraints (Sub_Constraint);
-
-                           when N_Subtype_Indication =>
-                              Check_Subtype_Constraints
-                                (Constraint (Sub_Constraint));
-
-                           when N_Identifier | N_Expanded_Name =>
-                              pragma Assert
-                                (Is_Type (Entity (Sub_Constraint)));
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-
-                        Next (Sub_Constraint);
-
-                        exit when No (Sub_Constraint);
-                     end loop;
-                  end;
-               end if;
-            end;
+            Check_Constrained_Array_Definition (N);
          end if;
+
       end Check_Type_Declaration;
 
       ---------------------------
@@ -937,6 +952,12 @@ package body Flow.Analysis.Sanity is
                if Comes_From_Source (N) then
                   Check_Name_Indexes_And_Slices (Name (N));
                end if;
+
+            --  Check that that the constrained array definition of an object
+            --  declaration does not contain variable inputs.
+
+            when N_Object_Declaration =>
+               Check_Constrained_Array_Definition (N);
 
             when others =>
                null;
