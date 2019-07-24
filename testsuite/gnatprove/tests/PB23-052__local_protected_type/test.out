@@ -15,4 +15,5 @@ a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:4
 a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:4
 a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at p.ads:4
+p.adb:5:34: medium: range check might fail [possible explanation: subprogram at p.ads:10 should mention D in a precondition]
 p.ads:10:14: warning: subprogram "Dummy" has no effect

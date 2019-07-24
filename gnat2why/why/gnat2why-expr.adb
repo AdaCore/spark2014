@@ -12749,6 +12749,16 @@ package body Gnat2Why.Expr is
                end if;
             end;
 
+         when N_Protected_Type_Declaration =>
+            declare
+               Ent : constant Entity_Id :=
+                 Retysp (Unique_Defining_Entity (Decl));
+            begin
+               if Entity_In_SPARK (Ent) then
+                  R := Sequence (Check_Itypes_Of_Components (Ent), R);
+               end if;
+            end;
+
          when N_Pragma =>
             R := Transform_Pragma (Decl, Force => False);
 
