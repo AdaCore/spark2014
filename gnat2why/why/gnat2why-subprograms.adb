@@ -2883,7 +2883,7 @@ package body Gnat2Why.Subprograms is
       Prepare_Discr;
 
       --  If protected object attaches an interrupt, the priority must be in
-      --  range of System.Interrupt_Priorioty; see RM C.3.1(11/3).
+      --  range of System.Interrupt_Priority; see RM C.3.1(11/3).
 
       if Requires_Interrupt_Priority (E) then
          declare
