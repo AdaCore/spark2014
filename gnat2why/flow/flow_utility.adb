@@ -2203,7 +2203,7 @@ package body Flow_Utility is
          Fold_Functions          : Boolean;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
-      return Flow_Id_Sets.Set
+         return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Selected_Component
                     or else Is_Attribute_Update (N);
       --  Process a node describing one or more record fields and return a
@@ -2920,13 +2920,16 @@ package body Flow_Utility is
          Fold_Functions          : Boolean;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
-      return Flow_Id_Sets.Set
+         return Flow_Id_Sets.Set
       is
-         function Is_Ignored_Node (N : Node_Id) return Boolean
+         function Is_Ignored_Attribute (N : Node_Id) return Boolean;
+         --  Returns Truee if N denotes an attribute 'Old or 'Loop_Entry,
+         --  which are ignored when detecting references to variables.
+
+         function Is_Ignored_Attribute (N : Node_Id) return Boolean
          is (Nkind (N) = N_Attribute_Reference
-             and then
-             Get_Attribute_Id (Attribute_Name (N)) in
-               Attribute_Old | Attribute_Loop_Entry);
+               and then
+             Attribute_Name (N) in Name_Old | Name_Loop_Entry);
 
          function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
          is (Get_Variables
@@ -2944,11 +2947,10 @@ package body Flow_Utility is
          Component     : Node_Lists.List := Node_Lists.Empty_List;
          Seq           : Node_Lists.List := Node_Lists.Empty_List;
 
-         E             : Entity_Id;
          Comp_Id       : Positive;
          Current_Field : Flow_Id;
 
-         Must_Abort    : Boolean := False;
+         Must_Abort    : Boolean := False with Ghost;
 
          All_Vars      : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
          Depends_Vars  : Flow_Id_Sets.Set          := Flow_Id_Sets.Empty_Set;
@@ -2976,7 +2978,7 @@ package body Flow_Utility is
               and then
               Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node)))
            or else
-             Is_Ignored_Node (Root_Node)
+             Is_Ignored_Attribute (Root_Node)
          loop
             if Nkind (Root_Node) = N_Selected_Component then
                Component.Prepend
@@ -2984,7 +2986,7 @@ package body Flow_Utility is
                     (Entity (Selector_Name (Root_Node))));
             end if;
 
-            if not Is_Ignored_Node (Root_Node) then
+            if not Is_Ignored_Attribute (Root_Node) then
                Seq.Prepend (Root_Node);
             end if;
 
@@ -3025,8 +3027,10 @@ package body Flow_Utility is
          --  If the root node is not an entire record variable, we recurse here
          --  and then simply merge all variables we find here and then abort.
 
-         if Nkind (Root_Node) not in N_Identifier | N_Expanded_Name or else
-           not Is_Record_Type (Get_Full_Type_Without_Checking (Root_Node))
+         if not (Nkind (Root_Node) in N_Identifier | N_Expanded_Name
+                   and then
+                 Is_Record_Type
+                   (Get_Full_Type_Without_Checking (Etype (Root_Node))))
          then
             return Vars : Flow_Id_Sets.Set do
 
@@ -3043,14 +3047,16 @@ package body Flow_Utility is
                      pragma Assert (List_Length (Expressions (N)) = 1);
 
                      declare
-                        Ptr : Node_Id :=
+                        Component_Association : Node_Id :=
                           First (Component_Associations
                                    (First (Expressions (N))));
 
                      begin
-                        while Present (Ptr) loop
-                           Vars.Union (Get_Vars_Wrapper (Ptr));
-                           Next (Ptr);
+                        loop
+                           Vars.Union
+                             (Get_Vars_Wrapper (Component_Association));
+                           Next (Component_Association);
+                           exit when No (Component_Association);
                         end loop;
                      end;
 
@@ -3171,17 +3177,22 @@ package body Flow_Utility is
 
                --  We update the map as requested
                declare
-                  Ptr       : Node_Id := First (Component_Associations
-                                                (First (Expressions (N))));
-                  Field_Ptr : Node_Id;
-                  Tmp       : Flow_Id_Sets.Set;
+                  Component_Association : Node_Id :=
+                    First (Component_Associations (First (Expressions (N))));
+                  Choice                : Node_Id;
+                  --  Iterators for the 'Update (...) expression
+
+                  Expr_Vars : Flow_Id_Sets.Set;
                   FS        : Flow_Id_Sets.Set;
+
+                  E : Entity_Id;
+
                begin
                   Indent;
-                  while Present (Ptr) loop
-                     Field_Ptr := First (Choices (Ptr));
-                     while Present (Field_Ptr) loop
-                        E := Original_Record_Component (Entity (Field_Ptr));
+                  while Present (Component_Association) loop
+                     Choice := First (Choices (Component_Association));
+                     while Present (Choice) loop
+                        E := Original_Record_Component (Entity (Choice));
 
                         if Debug_Trace_Untangle_Fields then
                            Write_Str ("Updating component ");
@@ -3189,19 +3200,22 @@ package body Flow_Utility is
                            Write_Eol;
                         end if;
 
+                        --  Composite update
+
                         if Is_Record_Type (Get_Type (E, Scope)) then
-                           --  Composite update
 
-                           --  We should call Untangle_Record_Aggregate
-                           --  here. For now we us a safe default (all
-                           --  fields depend on everything).
+                           --  We should call Untangle_Record_Aggregate here.
+                           --  For now we us a safe default (all fields depend
+                           --  on everything).
 
-                           case Nkind (Expression (Ptr)) is
+                           case Nkind (Expression (Component_Association)) is
                               --  when N_Aggregate =>
                               --     null;
 
                               when others =>
-                                 Tmp := Get_Vars_Wrapper (Expression (Ptr));
+                                 Expr_Vars :=
+                                   Get_Vars_Wrapper
+                                     (Expression (Component_Association));
 
                                  --  Not sure what to do, so set all sensible
                                  --  fields to the given variables.
@@ -3210,40 +3224,43 @@ package body Flow_Utility is
                                    (Add_Component (Current_Field, E), Scope);
 
                                  for F of FS loop
-                                    M.Replace (F, Tmp);
-                                    All_Vars.Union (Tmp);
+                                    M.Replace (F, Expr_Vars);
+                                    All_Vars.Union (Expr_Vars);
                                  end loop;
                            end case;
+
+                        --  Direct field update of M
+
                         else
+                           Expr_Vars :=
+                             Get_Vars_Wrapper
+                               (Expression (Component_Association));
 
-                           --  Direct field update of M
-
-                           Tmp := Get_Vars_Wrapper (Expression (Ptr));
-                           M.Replace (Add_Component (Current_Field, E), Tmp);
-                           All_Vars.Union (Tmp);
+                           M.Replace
+                             (Add_Component (Current_Field, E), Expr_Vars);
+                           All_Vars.Union (Expr_Vars);
                         end if;
 
-                        Next (Field_Ptr);
+                        Next (Choice);
                      end loop;
-                     Next (Ptr);
+                     Next (Component_Association);
                   end loop;
                   Outdent;
                end;
 
             when N_Selected_Component =>
-
                declare
-                  Comp_E : constant Entity_Id := Entity (Selector_Name (N));
+                  Comp : constant Entity_Id := Entity (Selector_Name (N));
                   Root_Entity : constant Entity_Id := Entity (Root_Node);
 
-                  pragma Assert (Ekind (Comp_E) in E_Component
-                                                 | E_Discriminant);
+                  pragma Assert (Ekind (Comp) in E_Component
+                                               | E_Discriminant);
 
-                  pragma Assert (Ekind (Root_Entity) in Object_Kind);
+                  pragma Assert (Is_Object (Root_Entity));
 
                   Discr_Constraints : constant Flow_Id_Sets.Set :=
-                    (if Ekind (Comp_E) = E_Component
-                     then Discriminant_Constraints (Comp_E)
+                    (if Ekind (Comp) = E_Component
+                     then Discriminant_Constraints (Comp)
                      else
                        (if Ekind (Root_Entity) in E_Constant
                                                 | E_Variable
@@ -3251,10 +3268,12 @@ package body Flow_Utility is
                         then Discriminant_Constraints (Root_Entity)
                         else Flow_Id_Sets.Empty_Set));
 
+                  E : constant Entity_Id := Original_Record_Component (Comp);
+
+                  New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+
                begin
                   --  We trim the result map
-
-                  E := Original_Record_Component (Comp_E);
 
                   if Debug_Trace_Untangle_Fields then
                      Write_Str ("Trimming for: ");
@@ -3262,31 +3281,27 @@ package body Flow_Utility is
                      Write_Eol;
                   end if;
 
-                  declare
-                     New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
+                  for C in M.Iterate loop
+                     declare
+                        K : Flow_Id          renames Flow_Id_Maps.Key (C);
+                        V : Flow_Id_Sets.Set renames M (C);
 
-                  begin
-                     for C in M.Iterate loop
-                        declare
-                           K : Flow_Id          renames Flow_Id_Maps.Key (C);
-                           V : Flow_Id_Sets.Set renames M (C);
+                     begin
+                        if K.Kind = Record_Field
+                          and then Natural (K.Component.Length) >= Comp_Id
+                          and then K.Component (Comp_Id) = E
+                        then
+                           New_Map.Insert (K, Discr_Constraints or V);
+                        end if;
+                     end;
+                  end loop;
 
-                        begin
-                           if K.Kind = Record_Field
-                             and then Natural (K.Component.Length) >= Comp_Id
-                             and then K.Component (Comp_Id) = E
-                           then
-                              New_Map.Insert (K, Discr_Constraints or V);
-                           end if;
-                        end;
-                     end loop;
+                  Flow_Id_Maps.Move (Target => M,
+                                     Source => New_Map);
 
-                     M := New_Map;
-                  end;
+                  Current_Field := Add_Component (Current_Field, E);
+                  Comp_Id       := Comp_Id + 1;
                end;
-
-               Current_Field := Add_Component (Current_Field, E);
-               Comp_Id       := Comp_Id + 1;
 
             when others =>
                raise Why.Unexpected_Node;
