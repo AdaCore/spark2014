@@ -1,0 +1,9 @@
+show_failed_proof_attempt.adb:6:17: info: overflow check proved (CVC4: 1 VC)
+show_failed_proof_attempt.adb:10:17: info: overflow check proved (CVC4: 1 VC)
+show_failed_proof_attempt.ads:6:48: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
+counterexample expected for check at show_failed_proof_attempt.ads:6
+  trace at show_failed_proof_attempt.adb:5 --> X = 0
+  trace at show_failed_proof_attempt.adb:6 --> X = 10
+  trace at show_failed_proof_attempt.ads:3 --> C = 0
+  trace at show_failed_proof_attempt.ads:5 --> X = 0
+  trace at show_failed_proof_attempt.ads:6 --> C = 0 and X = 10
