@@ -2,6 +2,7 @@
 # This makefile assumes that it executed from the backend directory.
 
 GPRBUILD=gprbuild
+PROJECTFILE=gnat2why
 
 # number of processors
 PROCS=0
@@ -62,13 +63,21 @@ setup: setup_precheck
 	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
 
 build: setup force
-	$(GPRBUILD) $(GPRARGS) -Pgnat2why -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
+	$(GPRBUILD) $(GPRARGS) -P$(PROJECTFILE) -v -j$(PROCS) -cargs ${CFLAGS} -largs $(LDFLAGS)
 
 # Compilation and linking settings for coverage and profiling; for details see
 # "Code Coverage and Profiling" in GNAT User's Guide.
 
-coverage: GPRARGS=-XBuild=Coverage
-coverage: build
+coverage-setup: force
+	gnatcov instrument -P gnat2why.gpr --level=stmt --dump-method=atexit project.isi
+	# ??? insert newlines into the gnatcov output; otherwise we would have
+	# too long lines
+	sed -i 's/;[^ ]/\n&/g' obj/gnatcov-instr/gnat1drv.adb
+	mkdir -p obj_coverage
+
+coverage: GPRARGS=-XBuild=Coverage --src-subdirs=gnatcov-instr
+coverage: PROJECTFILE=gnat2why_coverage
+coverage: coverage-setup build
 
 profile: CFLAGS = -pg
 profile: LDFLAGS += -pg

@@ -1,0 +1,6 @@
+with "gnatcov_rts_full";
+project GNAT2Why_Coverage extends "gnat2why.gpr" is
+   for Object_Dir use "obj_coverage";
+   for Exec_Dir use "../install/bin";
+
+end GNAT2Why_Coverage;

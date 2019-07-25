@@ -129,7 +129,11 @@ gnat2why:
 	$(MAKE) -C gnat2why
 
 coverage:
-	$(MAKE) -C gnat2why coverage
+	$(MAKE) -C gnat2why AUTOMATED=1 coverage
+
+coverage-report:
+	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --isi gnat2why/project.isi --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run

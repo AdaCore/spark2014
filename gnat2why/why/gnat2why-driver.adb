@@ -772,6 +772,14 @@ package body Gnat2Why.Driver is
                                         then "_phase1"
                                         else "_phase2") & "_gmon",
               Extension => "out"));
+      Ada.Environment_Variables.Set
+        (Name  => "GNATCOV_TRACE_FILE",
+         Value =>
+           Ada.Directories.Compose
+             (Name      => Unit_Name & (if Gnat2Why_Args.Global_Gen_Mode
+                                        then "_phase1"
+                                        else "_phase2"),
+              Extension => "srctrace"));
 
    end GNAT_To_Why;
 
