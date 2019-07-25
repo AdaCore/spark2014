@@ -2332,16 +2332,17 @@ package body Flow_Utility is
          end if;
 
          --  If this is an external call to protected subprogram then we also
-         --  need to add the enclosing object to the variables we're using.
-         --  This is not needed for internal calls, since the enclosing object
-         --  already is an implicit parameter of the caller.
+         --  need to add the enclosing object to the variables we're using;
+         --  if this is an internal call, then add the protected type itself.
 
-         if Ekind (Scope (Subprogram)) = E_Protected_Type
-           and then Is_External_Call (Callsite)
-         then
-            Merge_Entity
-              (V,
-               Get_Enclosing_Object (Prefix (Name (Callsite))));
+         if Ekind (Scope (Subprogram)) = E_Protected_Type then
+            if Is_External_Call (Callsite) then
+               Merge_Entity
+                 (V,
+                  Get_Enclosing_Object (Prefix (Name (Callsite))));
+            else
+               Merge_Entity (V, Scope (Subprogram));
+            end if;
          end if;
 
          --  If we fold functions we need to obtain the used inputs
