@@ -1534,6 +1534,7 @@ package body Flow is
                               "an entry body & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;
 
@@ -1549,6 +1550,7 @@ package body Flow is
                               "an interrupt handler & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;
 

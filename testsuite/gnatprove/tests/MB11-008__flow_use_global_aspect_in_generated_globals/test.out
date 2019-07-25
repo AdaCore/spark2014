@@ -8,16 +8,11 @@ foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:37,
 foo.adb:11:14: medium: overflow check might fail, in call inlined at foo.adb:64
 foo.adb:16:09: info: data dependencies proved
 foo.adb:17:09: info: flow dependencies proved
-foo.adb:25:09: info: data dependencies proved
 foo.adb:42:09: info: data dependencies proved
 foo.adb:43:09: info: flow dependencies proved
-foo.adb:51:09: info: data dependencies proved
-foo.adb:61:09: info: data dependencies proved
 foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_3_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:88
 foo.adb:71:07: high: "B" must be listed in the Global aspect of "Verify_Gen_4_2" (SPARK RM 6.1.4(14)), in call inlined at foo.adb:97, in call inlined at foo.adb:114
 foo.adb:76:09: info: data dependencies proved
 foo.adb:77:09: info: flow dependencies proved
-foo.adb:85:09: info: data dependencies proved
 foo.adb:102:09: info: data dependencies proved
 foo.adb:103:09: info: flow dependencies proved
-foo.adb:111:09: info: data dependencies proved

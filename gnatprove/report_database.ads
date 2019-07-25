@@ -90,6 +90,8 @@ package Report_Database is
       Assertions,
       Functional_Contracts,
       LSP,
+      Termination,
+      Concurrency,
       Total);
    pragma Ordered (Possible_Entries);
 

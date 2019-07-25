@@ -2,7 +2,6 @@ p.adb:13:14: warning: subprogram "P1" has no effect
 p.adb:21:14: warning: subprogram "P2" has no effect
 p.adb:29:14: warning: subprogram "P3" has no effect
 p.adb:37:14: warning: subprogram "P4" has no effect
-
 Summary of SPARK analysis
 =========================
 
@@ -17,11 +16,14 @@ Run-time Checks                   .         .          .          .         .   
 Assertions                        .         .          .          .         .           .          .
 Functional Contracts              .         .          .          .         .           .          .
 LSP Verification                  .         .          .          .         .           .          .
+Termination                       .         .          .          .         .           .          .
+Concurrency                       .         .          .          .         .           .          .
 ----------------------------------------------------------------------------------------------------
 Total                             .         .          .          .         .           .          .
 
 
 max steps used for successful proof: 0
+
 Analyzed 1 unit
 in unit p, 13 subprograms and packages out of 13 analyzed
   P at p.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)

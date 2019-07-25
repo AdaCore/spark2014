@@ -108,7 +108,6 @@ levels.ads:11:56: medium: overflow check might fail [possible explanation: subpr
 levels.ads:12:11: info: data dependencies proved
 levels.ads:15:11: info: data dependencies proved
 levels.ads:16:21: info: postcondition proved (CVC4: 1 VC)
-levels.ads:19:11: info: data dependencies proved
 levels.ads:20:21: info: postcondition proved (CVC4: 1 VC)
 levels.ads:20:36: medium: overflow check might fail
 levels.ads:22:23: info: initialization of "A" proved

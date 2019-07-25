@@ -5,16 +5,13 @@ p.ads:18:48: info: data dependencies proved
 p.ads:19:48: info: data dependencies proved
 p.ads:22:35: high: "P.State" must be listed in the Global aspect of "F5" (SPARK RM 6.1.4(14))
 p.ads:22:48: "P.State" is referenced in expression function but missing from the Global
-p.ads:22:48: info: data dependencies proved
 p.ads:23:48: info: data dependencies proved
 p.ads:25:46: high: "P.State" must be listed in the Global aspect of "F7" (SPARK RM 6.1.4(14))
 p.ads:25:59: "P.State" is referenced in expression function but missing from the Global
-p.ads:25:59: info: data dependencies proved
 p.ads:26:59: info: data dependencies proved
 p.ads:28:54: info: data dependencies proved
 p.ads:29:54: info: data dependencies proved
 p.ads:31:41: high: "P.State" must be listed in the Global aspect of "FB" (SPARK RM 6.1.4(14))
 p.ads:31:54: "P.State" is referenced in expression function but missing from the Global
-p.ads:31:54: info: data dependencies proved
 p.ads:32:54: info: data dependencies proved
 gnatprove: error during flow analysis and proof

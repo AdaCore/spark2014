@@ -9,7 +9,6 @@ fileio.adb:29:10: medium: exception might be raised
 fileio.adb:34:07: info: initialization of "Result" proved
 fileio.adb:39:13: medium: exception might be raised
 fileio.ads:19:38: info: initialization of "Ch" proved
-fileio.ads:20:06: info: data dependencies proved
 fileio.ads:20:32: medium: "The_File" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'pos
 fileio.ads:22:46: medium: overflow check might fail

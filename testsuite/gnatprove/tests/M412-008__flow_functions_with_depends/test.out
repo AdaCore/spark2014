@@ -54,5 +54,4 @@ function_depends_on_state.ads:7:11: info: data dependencies proved
 function_depends_on_state.ads:8:11: info: flow dependencies proved
 function_depends_on_state.ads:11:11: info: data dependencies proved
 function_depends_on_state.ads:12:11: info: flow dependencies proved
-function_depends_on_state.ads:15:11: info: data dependencies proved
 function_depends_on_state.ads:16:11: info: flow dependencies proved

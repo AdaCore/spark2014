@@ -783,6 +783,7 @@ package body Flow.Analysis is
                                                         Precise => False),
                         F1       => Var,
                         F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag      => Global_Wrong,
                         Severity => High_Check_Kind);
                      Sane := False;
 
@@ -3176,6 +3177,7 @@ package body Flow.Analysis is
                N        => Find_Global (FA.Spec_Entity,
                                         Direct_Mapping_Id (Input)),
                F1       => Direct_Mapping_Id (Input),
+               Tag      => Global_Wrong,
                Severity => Medium_Check_Kind);
          end loop;
       end if;
@@ -4051,6 +4053,7 @@ package body Flow.Analysis is
                                              (FA.Analyzed_Entity),
                                F2       => Output,
                                Severity => Medium_Check_Kind,
+                               Tag      => Ghost_Wrong,
                                SRM_Ref  => "6.9(20)");
             end if;
          end loop;
@@ -4578,6 +4581,7 @@ package body Flow.Analysis is
                     "in protected operation &",
                   N        => Atr.Error_Location,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Potentially_Blocking_In_Protected,
                   Severity => High_Check_Kind);
             else
                for E of Atr.Subprograms_Called loop
@@ -4592,6 +4596,7 @@ package body Flow.Analysis is
                           "in protected operation &",
                         N        => Atr.Error_Location,
                         F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag      => Potentially_Blocking_In_Protected,
                         Severity => High_Check_Kind);
 
                   --  Predefined potentially blocking routines are identified
@@ -4608,6 +4613,7 @@ package body Flow.Analysis is
                            N        => Atr.Error_Location,
                            F1       => Direct_Mapping_Id (E),
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Tag      => Potentially_Blocking_In_Protected,
                            Severity => High_Check_Kind);
                      end if;
 
@@ -4622,6 +4628,7 @@ package body Flow.Analysis is
                         N        => Atr.Error_Location,
                         F1       => Direct_Mapping_Id (E),
                         F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        Tag      => Potentially_Blocking_In_Protected,
                         Severity => High_Check_Kind);
 
                   --  ??? For indirect calls we would prefer to emit a detailed
@@ -4646,6 +4653,7 @@ package body Flow.Analysis is
                            N        => Atr.Error_Location,
                            F1       => Magic_String_Id (Blocking_Callee),
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           Tag      => Potentially_Blocking_In_Protected,
                            Severity => High_Check_Kind);
 
                      --  An external call on a protected subprogram with the
@@ -4674,6 +4682,7 @@ package body Flow.Analysis is
                               F3       =>
                                 Direct_Mapping_Id (FA.Analyzed_Entity),
 
+                              Tag      => Potentially_Blocking_In_Protected,
                               Severity => High_Check_Kind);
                         end if;
                      end if;
@@ -5379,6 +5388,7 @@ package body Flow.Analysis is
             N            => Msg_Node,
             Suppressed   => Dummy,
             Severity     => Severity,
+            Tag          => Concurrent_Access,
             Msg          => Msg_Object,
             F1           => Magic_String_Id (Object),
             SRM_Ref      => SRM_Ref,
@@ -5391,6 +5401,7 @@ package body Flow.Analysis is
                N            => Msg_Node,
                Suppressed   => Dummy,
                Severity     => Severity,
+               Tag          => Concurrent_Access,
                Msg          => Msg_Owner,
                F1           => Magic_String_Id (Task_Obj.Name),
                Continuation => True);
@@ -5617,7 +5628,8 @@ package body Flow.Analysis is
                             Msg      => Msg,
                             Severity => Severity,
                             N        => FA.Spec_Entity,
-                            F1       => Direct_Mapping_Id (FA.Spec_Entity));
+                            F1       => Direct_Mapping_Id (FA.Spec_Entity),
+                            Tag      => Subprogram_Termination);
          end;
       end if;
    end Check_Terminating_Annotation;
@@ -5689,7 +5701,7 @@ package body Flow.Analysis is
                               Msg      => "& cannot be a constituent of & "
                               & "(which lacks volatile property "
                               & To_String (Property) & ")",
-                              Severity => High_Check_Kind,
+                              Severity => Error_Kind,
                               N        => Constituent,
                               F1       => Direct_Mapping_Id (Constituent),
                               F2       => Direct_Mapping_Id (State));

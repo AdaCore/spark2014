@@ -17,7 +17,6 @@ bad_refinement.ads:23:33: medium: incorrect dependency "I => Bad_Refinement.Stat
 bad_refinement.ads:25:21: info: initialization of "I" proved
 bad_refinement.ads:25:24: info: initialization of "J" proved
 bad_refinement.ads:26:33: medium: incorrect dependency "I => Bad_Refinement.State"
-bad_refinement.ads:29:11: info: data dependencies proved
 bad_refinement.ads:31:11: info: flow dependencies proved
 bad_refinement.ads:34:11: global Output "Bad_Refinement.State2" of "Liar9" not written
 bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output of "Liar9"
@@ -60,7 +59,6 @@ lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State" must be a global Input of
 lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State2" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:16:11: info: data dependencies proved
 lots_of_tests.ads:20:11: info: data dependencies proved
-lots_of_tests.ads:23:11: info: data dependencies proved
 lots_of_tests.ads:25:32: info: initialization of "Y" proved
 lots_of_tests.ads:26:11: info: flow dependencies proved
 lots_of_tests.ads:29:52: info: initialization of "Y" proved
@@ -84,7 +82,6 @@ lots_of_tests.ads:68:11: info: flow dependencies proved
 lots_of_tests.ads:71:11: info: data dependencies proved
 lots_of_tests.ads:73:35: info: initialization of "G1" proved
 lots_of_tests.ads:74:11: info: flow dependencies proved
-lots_of_tests.ads:77:11: info: data dependencies proved
 lots_of_tests.ads:80:11: info: flow dependencies proved
 lots_of_tests.ads:82:14: info: initialization of "G1" proved
 lots_of_tests.ads:83:11: info: flow dependencies proved
@@ -99,7 +96,6 @@ lots_of_tests.ads:106:11: info: flow dependencies proved
 lots_of_tests.ads:109:11: info: data dependencies proved
 lots_of_tests.ads:110:11: info: flow dependencies proved
 lots_of_tests.ads:115:11: info: data dependencies proved
-lots_of_tests.ads:118:11: info: data dependencies proved
 other.ads:3:08: info: flow dependencies proved
 refinement_needed.adb:14:17: medium: overflow check might fail [possible explanation: subprogram at refinement_needed.ads:12 should mention V1 and V2 in a precondition]
 refinement_needed.ads:10:11: info: data dependencies proved

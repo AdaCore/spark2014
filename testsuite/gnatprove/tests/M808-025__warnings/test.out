@@ -191,6 +191,8 @@ Run-time Checks . . . . . . .
 Assertions 1 . . . 1 . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 2 1 (50%) . . 1 (50%) . .
 

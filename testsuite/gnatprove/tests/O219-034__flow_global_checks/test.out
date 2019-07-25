@@ -1,4 +1,3 @@
-foo.adb:17:09: info: data dependencies proved
 foo.adb:20:14: medium: overflow check might fail [possible explanation: subprogram at line 16 should mention X in a precondition]
 foo.adb:20:16: high: "Y" must be listed in the Global aspect of "Test_SRM_6_1_4_Rule_12" (SPARK RM 6.1.4(14))
 foo.adb:24:38: info: initialization of "N" proved

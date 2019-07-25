@@ -6,4 +6,3 @@ pack.adb:10:30: medium: "X" constituent of "State" must be a Proof_In as it is o
 pack.ads:3:09: info: flow dependencies proved
 pack.ads:4:09: info: initial condition proved (CVC4: 1 VC)
 pack.ads:8:12: info: data dependencies proved
-pack.ads:11:12: info: data dependencies proved

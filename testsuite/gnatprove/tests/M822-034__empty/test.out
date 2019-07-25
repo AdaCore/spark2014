@@ -1,5 +1,4 @@
 empty.ads:4:14: warning: subprogram "P" has no effect
-
 Summary of SPARK analysis
 =========================
 
@@ -14,11 +13,14 @@ Run-time Checks                   .         .          .          .         .   
 Assertions                        .         .          .          .         .           .          .
 Functional Contracts              .         .          .          .         .           .          .
 LSP Verification                  .         .          .          .         .           .          .
+Termination                       .         .          .          .         .           .          .
+Concurrency                       .         .          .          .         .           .          .
 ----------------------------------------------------------------------------------------------------
 Total                             .         .          .          .         .           .          .
 
 
 max steps used for successful proof: 0
+
 Analyzed 1 unit
 in unit empty, 2 subprograms and packages out of 3 analyzed
   Empty at empty.ads:1 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)

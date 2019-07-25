@@ -96,8 +96,9 @@ package Flow_Error_Messages is
       Tracefile    : String        := "";
       Continuation : Boolean       := False)
    with Pre => (if Present (F2) then Present (F1))
-                and then (if Present (F3) then Present (F2))
-                and then (if Continuation then Tracefile = "");
+     and then (if Present (F3) then Present (F2))
+     and then (if Continuation then Tracefile = "")
+     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind);
    --  Output a message attached to the given node with a substitution
    --  using F1, F2 and F3. It also adds a JSON entry in the "unit.flow" file
    --  for the given entity E.
@@ -127,8 +128,9 @@ package Flow_Error_Messages is
       Vertex       : Flow_Graphs.Vertex_Id := Flow_Graphs.Null_Vertex;
       Continuation : Boolean               := False)
    with Pre => (if Present (F2) then Present (F1))
-                and then (if Present (F3) then Present (F2))
-                and then (if Continuation then Path.Is_Empty);
+     and then (if Present (F3) then Present (F2))
+     and then (if Continuation then Path.Is_Empty)
+     and then (if Severity in Check_Kind then Tag in Valid_Flow_Tag_Kind);
    --  As above but it also writes the tracefile.
    --
    --  Also:

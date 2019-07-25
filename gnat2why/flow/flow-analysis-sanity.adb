@@ -476,6 +476,7 @@ package body Flow.Analysis.Sanity is
                           "cannot call boundary subprogram & " &
                           "for type & in its own invariant",
                         Severity => High_Check_Kind,
+                        Tag      => Call_In_Type_Invariant,
                         N        => Full_View (Typ),
                         F1       => Direct_Mapping_Id (F),
                         F2       => Direct_Mapping_Id (Typ),
@@ -1162,6 +1163,7 @@ package body Flow.Analysis.Sanity is
                      SRM_Ref  => "7.7.1(6)",
                      N        => Error_Location (FA.PDG, FA.Atr, V),
                      Severity => High_Check_Kind,
+                     Tag      => Illegal_Update,
                      F1       => Entire_Variable (Var),
                      F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Vertex   => V);
@@ -1199,6 +1201,7 @@ package body Flow.Analysis.Sanity is
                            SRM_Ref  => "7.7.1(6)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => High_Check_Kind,
+                           Tag      => Illegal_Update,
                            F1       => Var,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
@@ -1384,6 +1387,7 @@ package body Flow.Analysis.Sanity is
                                            then Var
                                            else Entire_Variable (Var)),
                               Severity => High_Check_Kind,
+                              Tag      => Global_Missing,
                               F2       => Subprogram,
                               Vertex   => V);
 
@@ -1415,6 +1419,7 @@ package body Flow.Analysis.Sanity is
                                                     Next_Aspect_To_Fix &
                                                     " of &",
                                     Severity     => High_Check_Kind,
+                                    Tag          => Global_Missing,
                                     N            => First_Var_Use,
                                     F1           => Missing,
                                     F2           => Subprogram,

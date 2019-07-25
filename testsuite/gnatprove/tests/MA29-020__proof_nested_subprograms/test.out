@@ -65,6 +65,8 @@ Run-time Checks 21 . . . 18 . 3
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 28 7 (25%) . . 18 (64%) . 3 (11%)
 
