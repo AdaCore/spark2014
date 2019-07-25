@@ -18,7 +18,6 @@ actions.adb:28:68: info: index check proved (CVC4: 2 VC)
 actions.adb:33:35: info: overflow check proved (CVC4: 1 VC)
 actions.adb:33:45: info: index check proved (CVC4: 2 VC)
 actions.adb:37:25: info: assertion proved (altergo: 2 VC)
-actions.adb:37:40: warning: unreachable branch (CVC4: 1 VC)
 actions.adb:40:04: warning: statement has no effect
 actions.adb:41:35: info: overflow check proved (CVC4: 1 VC)
 actions.adb:41:45: info: index check proved (CVC4: 2 VC)
