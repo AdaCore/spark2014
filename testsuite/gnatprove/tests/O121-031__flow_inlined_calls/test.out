@@ -1,3 +1,5 @@
+foo.adb:5:13: info: add a contract to analyze it separately from calling contexts
+foo.adb:5:13: info: local subprogram "Foo" only analyzed in the context of calls
 foo.adb:14:09: info: data dependencies proved
 foo.adb:18:22: info: division check proved (CVC4: 1 VC)
 foo.adb:23:23: info: initialization of "B" proved

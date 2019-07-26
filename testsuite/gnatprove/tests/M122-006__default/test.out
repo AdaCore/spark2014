@@ -1,4 +1,6 @@
 p.adb:8:09: info: range check proved (CVC4: 1 VC)
 p.adb:8:16: info: discriminant check proved (CVC4: 1 VC)
+p.adb:10:12: info: add a contract to analyze it separately from calling contexts
+p.adb:10:12: info: local subprogram "Int_Ident" only analyzed in the context of calls
 p.adb:17:05: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:18:09: medium: discriminant check might fail

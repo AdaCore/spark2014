@@ -1,3 +1,5 @@
+ap-altitude-pitch-rate.adb:15:13: info: add a contract to analyze it separately from calling contexts
+ap-altitude-pitch-rate.adb:15:13: info: local subprogram "History_Average" only analyzed in the context of calls
 ap-altitude-pitch-rate.adb:18:07: info: initialization of "Gap" proved
 ap-altitude-pitch-rate.adb:18:07: info: initialization of "Gap" proved, in call inlined at ap-altitude-pitch-rate.adb:58
 ap-altitude-pitch-rate.adb:19:07: info: initialization of "Average" proved
@@ -27,12 +29,16 @@ ap-altitude-pitch-rate.ads:6:08: info: flow dependencies proved
 ap-altitude-pitch-rate.ads:9:29: info: initialization of "Present_Pitchrate" proved
 ap-altitude-pitch-rate.ads:10:11: info: data dependencies proved
 ap-altitude-pitch-rate.ads:11:11: info: flow dependencies proved
+ap-altitude-pitch.adb:21:13: info: add a contract to analyze it separately from calling contexts
+ap-altitude-pitch.adb:21:13: info: local subprogram "Target_ROC" only analyzed in the context of calls
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45
 ap-altitude-pitch.adb:25:07: info: initialization of "Result" proved, in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:28:69: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:34:14: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:45, in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:37:13: info: add a contract to analyze it separately from calling contexts
+ap-altitude-pitch.adb:37:13: info: local subprogram "Target_Rate" only analyzed in the context of calls
 ap-altitude-pitch.adb:41:07: info: initialization of "Target_Climb_Rate" proved
 ap-altitude-pitch.adb:41:07: info: initialization of "Target_Climb_Rate" proved, in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:42:07: info: initialization of "Floor_Climb_Rate" proved
@@ -43,6 +49,8 @@ ap-altitude-pitch.adb:45:28: info: analyzing call to "Target_ROC" in context
 ap-altitude-pitch.adb:51:30: info: range check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:53:30: info: assertion proved (CVC4: 2 VC), in call inlined at ap-altitude-pitch.adb:101
 ap-altitude-pitch.adb:55:71: info: division check proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:101
+ap-altitude-pitch.adb:64:13: info: add a contract to analyze it separately from calling contexts
+ap-altitude-pitch.adb:64:13: info: local subprogram "Calc_Elevator_Move" only analyzed in the context of calls
 ap-altitude-pitch.adb:69:07: info: initialization of "Target_Angle" proved
 ap-altitude-pitch.adb:69:07: info: initialization of "Target_Angle" proved, in call inlined at ap-altitude-pitch.adb:104
 ap-altitude-pitch.adb:71:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-altitude-pitch.adb:104
@@ -61,6 +69,8 @@ ap-altitude.ads:5:08: info: flow dependencies proved
 ap-altitude.ads:12:11: info: data dependencies proved
 ap-altitude.ads:14:11: info: flow dependencies proved
 ap-heading-roll-rate.ads:5:08: info: flow dependencies proved
+ap-heading-roll.adb:20:13: info: add a contract to analyze it separately from calling contexts
+ap-heading-roll.adb:20:13: info: local subprogram "Target_ROR" only analyzed in the context of calls
 ap-heading-roll.adb:24:07: info: initialization of "Result" proved
 ap-heading-roll.adb:24:07: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48
 ap-heading-roll.adb:24:07: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
@@ -69,12 +79,16 @@ ap-heading-roll.adb:25:07: info: initialization of "Offset" proved, in call inli
 ap-heading-roll.adb:25:07: info: initialization of "Offset" proved, in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:33:42: info: range check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:35:46: info: range check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:48, in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:40:13: info: add a contract to analyze it separately from calling contexts
+ap-heading-roll.adb:40:13: info: local subprogram "Target_Rate" only analyzed in the context of calls
 ap-heading-roll.adb:45:07: info: initialization of "Target_Bank" proved
 ap-heading-roll.adb:45:07: info: initialization of "Target_Bank" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:46:07: info: initialization of "Result" proved
 ap-heading-roll.adb:46:07: info: initialization of "Result" proved, in call inlined at ap-heading-roll.adb:94
 ap-heading-roll.adb:48:22: info: analyzing call to "Target_ROR" in context
 ap-heading-roll.adb:49:53: info: division check proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:94
+ap-heading-roll.adb:59:13: info: add a contract to analyze it separately from calling contexts
+ap-heading-roll.adb:59:13: info: local subprogram "Calc_Aileron_Move" only analyzed in the context of calls
 ap-heading-roll.adb:64:07: info: initialization of "Target_Angle" proved
 ap-heading-roll.adb:64:07: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-roll.adb:97
 ap-heading-roll.adb:66:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-heading-roll.adb:97
@@ -90,6 +104,8 @@ ap-heading-roll.ads:5:08: info: flow dependencies proved
 ap-heading-roll.ads:11:11: info: data dependencies proved
 ap-heading-roll.ads:13:11: info: flow dependencies proved
 ap-heading-yaw-rate.ads:5:08: info: flow dependencies proved
+ap-heading-yaw.adb:19:13: info: add a contract to analyze it separately from calling contexts
+ap-heading-yaw.adb:19:13: info: local subprogram "Calc_Rudder_Move" only analyzed in the context of calls
 ap-heading-yaw.adb:23:07: info: initialization of "Target_Angle" proved
 ap-heading-yaw.adb:23:07: info: initialization of "Target_Angle" proved, in call inlined at ap-heading-yaw.adb:47
 ap-heading-yaw.adb:25:28: info: precondition proved (CVC4: 1 VC), in call inlined at ap-heading-yaw.adb:47

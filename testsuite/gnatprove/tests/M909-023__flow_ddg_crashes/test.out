@@ -1,1 +1,5 @@
+foo.adb:6:14: info: add a contract to analyze it separately from calling contexts
+foo.adb:6:14: info: local subprogram "A" only analyzed in the context of calls
+foo.adb:11:14: info: add a contract to analyze it separately from calling contexts
+foo.adb:11:14: info: local subprogram "B" only analyzed in the context of calls
 foo.adb:18:04: warning: analyzing unreferenced procedure "Do_Test"

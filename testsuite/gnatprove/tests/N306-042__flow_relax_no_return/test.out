@@ -1,1 +1,3 @@
+noreturn.adb:6:13: info: add a contract to analyze it separately from calling contexts
+noreturn.adb:6:13: info: local subprogram "Success" only analyzed in the context of calls
 noreturn.adb:23:07: medium: call to nonreturning subprogram might be executed

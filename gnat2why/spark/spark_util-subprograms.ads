@@ -32,9 +32,16 @@ package SPARK_Util.Subprograms is
    -- General Queries related to subprograms --
    --------------------------------------------
 
+   type Analysis_Status is
+     (Not_In_Analyzed_Files,
+      Not_The_Analyzed_Subprogram,
+      Contextually_Analyzed,
+      Analyzed);
+   --  Reasons for analyzing or not a subprogram/package
+
    function Analysis_Requested
      (E            : Entity_Id;
-      With_Inlined : Boolean) return Boolean
+      With_Inlined : Boolean) return Analysis_Status
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Package
@@ -43,10 +50,10 @@ package SPARK_Util.Subprograms is
    --  @param E entity for which requesting an analysis is meaningful, e.g.
    --     using the GPS contextual menu.
    --  @param With_Inlined True if inlined subprograms should be analyzed
-   --  @return True iff subprogram, task or package E must be analyzed,
+   --  @return Analyzed iff subprogram, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
    --     complete unit is analyzed, or E is the specific entity whose analysis
-   --     was requested.
+   --     was requested. Otherwise return the reason why it is not analyzed.
    --
    --  With_Inlined is set to False in proof to avoid analyzing when possible
    --  subprograms that are inlined, and to True in flow analysis to always
@@ -85,6 +92,12 @@ package SPARK_Util.Subprograms is
    --     end Local;
    --
    --     Local (X);
+
+   function Analysis_Requested
+     (E            : Entity_Id;
+      With_Inlined : Boolean) return Boolean
+   is (Analysis_Requested (E, With_Inlined) = Analyzed);
+   --  Variant of Analysis_Requested that ignores the reason for no analysis
 
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
    with Pre => (case Ekind (E) is

@@ -74,6 +74,8 @@ lists.adb:13:19: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 lists.ads:10:14: info: postcondition proved (CVC4: 1 VC)
 lists.ads:26:46: info: discriminant check proved (CVC4: 1 VC)
 p.adb:2:04: warning: variable "Memory" is read but never assigned
+p.adb:7:16: info: add a contract to analyze it separately from calling contexts
+p.adb:7:16: info: local subprogram "ReadOne" only analyzed in the context of calls
 p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:20
 p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:23
 p.adb:12:52: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:24
@@ -328,6 +330,8 @@ ring_buffer.adb:74:24: info: range check proved (CVC4: 1 VC)
 ring_buffer.adb:79:16: info: precondition proved (CVC4: 2 VC)
 ring_buffer.adb:81:24: info: range check proved (CVC4: 1 VC)
 ring_buffer.adb:83:25: info: range check proved (CVC4: 1 VC)
+ring_buffer.adb:90:17: info: add a contract to analyze it separately from calling contexts
+ring_buffer.adb:90:17: info: local subprogram "Update_Model" only analyzed in the context of calls
 ring_buffer.adb:93:22: info: precondition proved (CVC4: 2 VC), in call inlined at ring_buffer.adb:106
 ring_buffer.adb:99:27: info: range check proved (CVC4: 1 VC)
 ring_buffer.adb:101:28: info: range check proved (CVC4: 1 VC)
@@ -350,11 +354,11 @@ ring_buffer.ads:43:14: info: postcondition proved (CVC4: 2 VC)
 ring_buffer.ads:49:24: info: postcondition proved (CVC4: 1 VC)
 ring_buffer.ads:51:26: info: contract case proved (CVC4: 1 VC; Trivial: 1 VC)
 ring_buffer.ads:52:26: info: contract case proved (CVC4: 2 VC; Trivial: 1 VC)
-protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+protected_complex.adb:7:24: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-61183/src/Concurrency/spark.adc:1
 protected_complex.adb:7:24: violation of restriction "Pure_Barriers"
-rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:3:04: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-61183/src/Concurrency/spark.adc:1
 rendezvous.adb:3:04: violation of restriction "No_Task_Hierarchy"
-rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at Concurrency/spark.adc:1
+rendezvous.adb:4:07: from profile "Gnat_Extended_Ravenscar" at /bar.a/gnatmail/sandbox/wave-ms/x86_64-linux/spark2014-test/tmp/test/tmp-test-adacore_u-61183/src/Concurrency/spark.adc:1
 rendezvous.adb:4:07: violation of restriction "Max_Task_Entries = 0"
 gnatprove: error during generation of Global contracts
 abstract_ints.adb:12:30: info: overflow check proved (CVC4: 1 VC)
@@ -432,6 +436,8 @@ a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation 
 fixed_mem.adb:6:04: warning: variable "Data" is never read and never assigned
 fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [possible explanation: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
+fixed_mem.adb:14:17: info: add a contract to analyze it separately from calling contexts
+fixed_mem.adb:14:17: info: local subprogram "Check" only analyzed in the context of calls
 fixed_mem.adb:17:13: info: raise statement proved unreachable (CVC4: 1 VC), in call inlined at fixed_mem.adb:25
 fixed_mem.adb:24:20: info: overflow check proved (CVC4: 1 VC)
 fixed_mem.adb:25:07: info: analyzing call to "Check" in context
@@ -439,6 +445,8 @@ fixed_mem.ads:6:14: info: postcondition proved (CVC4: 1 VC)
 mem.adb:7:04: warning: variable "Data" is read but never assigned
 mem.adb:9:04: warning: variable "High" is read but never assigned
 mem.adb:11:55: medium: range check might fail (e.g. when Free = 1002) [possible explanation: subprogram at mem.ads:9 should mention Free in a precondition]
+mem.adb:13:14: info: add a contract to analyze it separately from calling contexts
+mem.adb:13:14: info: local subprogram "Assign" only analyzed in the context of calls
 mem.adb:13:41: info: initialization of "To" proved
 mem.adb:19:07: info: initialization of "Free_Init" proved
 mem.adb:21:17: warning: unused assignment

@@ -1,3 +1,5 @@
+flight_manager.adb:9:17: info: add a contract to analyze it separately from calling contexts
+flight_manager.adb:9:17: info: local subprogram "Adjust_Speed" only analyzed in the context of calls
 flight_manager.adb:16:19: medium: "Result.X_Speed" might not be initialized, in call inlined at flight_manager.adb:42
 flight_manager.adb:16:19: medium: "Result.Y_Speed" might not be initialized, in call inlined at flight_manager.adb:43
 flight_manager.adb:16:21: medium: overflow check might fail, in call inlined at flight_manager.adb:42 (e.g. when Result = (X_Speed => 2, Y_Speed => -100))

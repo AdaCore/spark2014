@@ -1,3 +1,5 @@
+async_globals.adb:5:14: info: add a contract to analyze it separately from calling contexts
+async_globals.adb:5:14: info: local subprogram "Get_1" only analyzed in the context of calls
 async_globals.adb:5:21: info: initialization of "X" proved
 async_globals.adb:10:21: info: initialization of "X" proved
 async_globals.adb:11:09: info: data dependencies proved

@@ -1,1 +1,5 @@
+p.adb:5:14: info: add a contract to analyze it separately from calling contexts
+p.adb:5:14: info: local subprogram "Init" only analyzed in the context of calls
 p.adb:5:20: info: initialization of "X" proved
+p.adb:10:13: info: add a contract to analyze it separately from calling contexts
+p.adb:10:13: info: local subprogram "F" only analyzed in the context of calls

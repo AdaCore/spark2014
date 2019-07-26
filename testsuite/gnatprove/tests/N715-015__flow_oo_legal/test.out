@@ -1,10 +1,16 @@
+main.adb:29:14: info: add a contract to analyze it separately from calling contexts
+main.adb:29:14: info: local subprogram "Train_Everyone" only analyzed in the context of calls
 main.adb:35:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:39:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:43:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
 main.adb:47:13: info: precondition proved (CVC4: 13 VC), in call inlined at main.adb:70
+main.adb:52:14: info: add a contract to analyze it separately from calling contexts
+main.adb:52:14: info: local subprogram "OMG" only analyzed in the context of calls
 main.adb:54:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:57:07: medium: precondition might fail, cannot prove Is_Alive (Killer), in call inlined at main.adb:71
 main.adb:58:35: warning: unused assignment to "Kenny", in call inlined at main.adb:71
+main.adb:61:14: info: add a contract to analyze it separately from calling contexts
+main.adb:61:14: info: local subprogram "Print_Everyone" only analyzed in the context of calls
 main.adb:61:14: warning: subprogram "Print_Everyone" has no effect
 main.adb:70:04: info: in inlined body at line 31
 main.adb:70:04: info: unrolling loop

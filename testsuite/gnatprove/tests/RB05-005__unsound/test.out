@@ -1,4 +1,6 @@
 longest_common_prefix.ads:2:08: info: flow dependencies proved
+main.adb:8:14: info: add a contract to analyze it separately from calling contexts
+main.adb:8:14: info: local subprogram "Test" only analyzed in the context of calls
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:19
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:20
 main.adb:11:41: info: range check proved (CVC4: 1 VC), in call inlined at main.adb:21

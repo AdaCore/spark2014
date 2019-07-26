@@ -1,3 +1,5 @@
+update_lists.adb:4:14: info: add a contract to analyze it separately from calling contexts
+update_lists.adb:4:14: info: local subprogram "Assign" only analyzed in the context of calls
 update_lists.adb:4:22: warning: unused initial value of "Target"
 update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
 update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:36

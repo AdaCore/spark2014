@@ -1,3 +1,5 @@
+red_black_trees.adb:3:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:3:14: info: local subprogram "Rotate_Left" only analyzed in the context of calls
 red_black_trees.adb:4:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:4:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:4:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
@@ -14,6 +16,8 @@ red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), i
 red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:7:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:8:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
+red_black_trees.adb:11:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:11:14: info: local subprogram "Rotate_Right" only analyzed in the context of calls
 red_black_trees.adb:12:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
@@ -30,6 +34,8 @@ red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), 
 red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:15:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
 red_black_trees.adb:16:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
+red_black_trees.adb:19:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:19:14: info: local subprogram "Balance" only analyzed in the context of calls
 red_black_trees.adb:21:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
 red_black_trees.adb:22:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
 red_black_trees.adb:23:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73

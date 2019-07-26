@@ -1,3 +1,5 @@
+c45253a.adb:40:13: info: add a contract to analyze it separately from calling contexts
+c45253a.adb:40:13: info: local subprogram "The_Delta" only analyzed in the context of calls
 c45253a.adb:49:07: info: assertion proved (CVC4: 1 VC)
 c45253a.adb:54:07: info: assertion proved (CVC4: 1 VC)
 c45253a.adb:58:07: medium: assertion might fail

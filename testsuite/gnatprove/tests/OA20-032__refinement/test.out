@@ -7,6 +7,8 @@ patris.adb:51:04: info: initialization of "Next_Piece" constituent of "Game_Stat
 patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_State" has no effect
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
+patris.adb:59:13: info: add a contract to analyze it separately from calling contexts
+patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand"
 patris.adb:67:56: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:306

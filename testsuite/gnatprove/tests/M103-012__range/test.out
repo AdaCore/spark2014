@@ -1,2 +1,4 @@
+p.adb:6:13: info: add a contract to analyze it separately from calling contexts
+p.adb:6:13: info: local subprogram "Q" only analyzed in the context of calls
 p.adb:6:13: warning: subprogram "Q" has no effect
 p.adb:7:17: medium: range check might fail, in call inlined at p.adb:14

@@ -1,100 +1,6 @@
-ap_engaged_implies_modes_on.adb:26:07: info: initialization of "Unit_Delay_out1" proved
-ap_engaged_implies_modes_on.adb:27:07: info: initialization of "Is_AP_Engaged_out1" proved
-ap_engaged_implies_modes_on.adb:28:07: info: initialization of "Modes_On_out1" proved
-ap_engaged_implies_modes_on.adb:29:07: info: initialization of "NOT1_out1" proved
-ap_engaged_implies_modes_on.adb:30:07: info: initialization of "NOT5_out1" proved
-ap_engaged_implies_modes_on.adb:31:07: info: initialization of "OR_out1" proved
-ap_engaged_implies_modes_on.adb:64:22: medium: assertion might fail, cannot prove OR_out1 (e.g. when OR_out1 = False)
-at_least_one_lateral_mode_active.adb:23:07: info: initialization of "HDG_Active_out1" proved
-at_least_one_lateral_mode_active.adb:24:07: info: initialization of "LAPPR_Active_out1" proved
-at_least_one_lateral_mode_active.adb:25:07: info: initialization of "LGA_Active_out1" proved
-at_least_one_lateral_mode_active.adb:26:07: info: initialization of "NAV_Active_out1" proved
-at_least_one_lateral_mode_active.adb:27:07: info: initialization of "ROLL_Active_out1" proved
-at_least_one_lateral_mode_active.adb:28:07: info: initialization of "OR_out1" proved
-at_least_one_lateral_mode_active.adb:59:22: medium: assertion might fail, cannot prove OR_out1
-at_least_one_lateral_mode_active.ads:15:14: warning: subprogram "comp" has no effect
-at_most_one_lateral_mode_active.adb:23:07: info: initialization of "HDG_Active_out1" proved
-at_most_one_lateral_mode_active.adb:24:07: info: initialization of "LAPPR_Active_out1" proved
-at_most_one_lateral_mode_active.adb:25:07: info: initialization of "LGA_Active_out1" proved
-at_most_one_lateral_mode_active.adb:26:07: info: initialization of "NAV_Active_out1" proved
-at_most_one_lateral_mode_active.adb:27:07: info: initialization of "ROLL_Active_out1" proved
-at_most_one_lateral_mode_active.adb:28:07: info: initialization of "NOR_LGA_out1" proved
-at_most_one_lateral_mode_active.adb:29:07: info: initialization of "NOT1_out1" proved
-at_most_one_lateral_mode_active.adb:30:07: info: initialization of "NOT5_out1" proved
-at_most_one_lateral_mode_active.adb:31:07: info: initialization of "NOR_LAPPR_out1" proved
-at_most_one_lateral_mode_active.adb:32:07: info: initialization of "NOT1_out1_1" proved
-at_most_one_lateral_mode_active.adb:33:07: info: initialization of "NOT5_out1_1" proved
-at_most_one_lateral_mode_active.adb:34:07: info: initialization of "NOR_NAV_out1" proved
-at_most_one_lateral_mode_active.adb:35:07: info: initialization of "NOT1_out1_2" proved
-at_most_one_lateral_mode_active.adb:36:07: info: initialization of "NOT5_out1_2" proved
-at_most_one_lateral_mode_active.adb:37:07: info: initialization of "NOR_HDG_out1" proved
-at_most_one_lateral_mode_active.adb:38:07: info: initialization of "NOT1_out1_3" proved
-at_most_one_lateral_mode_active.adb:39:07: info: initialization of "NOT5_out1_3" proved
-at_most_one_lateral_mode_active.adb:40:07: info: initialization of "NOR_ROLL_out1" proved
-at_most_one_lateral_mode_active.adb:41:07: info: initialization of "NOT1_out1_4" proved
-at_most_one_lateral_mode_active.adb:42:07: info: initialization of "NOT5_out1_4" proved
-at_most_one_lateral_mode_active.adb:43:07: info: initialization of "AND_out1" proved
-at_most_one_lateral_mode_active.adb:154:22: medium: assertion might fail, cannot prove AND_out1 (e.g. when AND_out1 = False)
-at_most_one_lateral_mode_active.ads:15:14: warning: subprogram "comp" has no effect
-changed.adb:31:07: info: initialization of "Unit_Delay_out1" proved
-changed.adb:32:07: info: initialization of "NEQ_out1" proved
-changed.ads:21:08: info: initialization of "Out1" proved
-event_processing.adb:126:07: info: initialization of "ALTSEL_Capture_Cond_Met_out1" proved
-event_processing.adb:127:07: info: initialization of "ALTSEL_Target_Changed_out1" proved
-event_processing.adb:128:07: info: initialization of "ALTSEL_Track_Cond_Met_out1" proved
-event_processing.adb:129:07: info: initialization of "ALT_Switch_out1" proved
-event_processing.adb:130:07: info: initialization of "APPR_Switch_out1" proved
-event_processing.adb:131:07: info: initialization of "AP_Engaged_out1" proved
-event_processing.adb:132:07: info: initialization of "FD_Switch_out1" proved
-event_processing.adb:133:07: info: initialization of "FLC_Switch_out1" proved
-event_processing.adb:134:07: info: initialization of "GA_Switch_out1" proved
-event_processing.adb:135:07: info: initialization of "HDG_Switch_out1" proved
-event_processing.adb:136:07: info: initialization of "Is_Pilot_Flying_Side_out1" proved
-event_processing.adb:137:07: info: initialization of "Changed_Out1" proved
-event_processing.adb:138:07: info: initialization of "LAPPR_Capture_Cond_Met_out1" proved
-event_processing.adb:139:07: info: initialization of "NAV_Capture_Cond_Met_out1" proved
-event_processing.adb:140:07: info: initialization of "NAV_Switch_out1" proved
-event_processing.adb:141:07: info: initialization of "Rising_Edge_Out1" proved
-event_processing.adb:142:07: info: initialization of "Rising_Edge_1_Out1" proved
-event_processing.adb:143:07: info: initialization of "Rising_Edge_2_Out1" proved
-event_processing.adb:144:07: info: initialization of "Rising_Edge_3_Out1" proved
-event_processing.adb:145:07: info: initialization of "Rising_Edge_4_Out1" proved
-event_processing.adb:146:07: info: initialization of "Rising_Edge_5_Out1" proved
-event_processing.adb:147:07: info: initialization of "Rising_Edge_6_Out1" proved
-event_processing.adb:148:07: info: initialization of "Rising_Edge_7_Out1" proved
-event_processing.adb:149:07: info: initialization of "Rising_Edge_8_Out1" proved
-event_processing.adb:150:07: info: initialization of "SYNC_Switch_out1" proved
-event_processing.adb:151:07: info: initialization of "Rising_Edge_9_Out1" proved
-event_processing.adb:152:07: info: initialization of "VAPPR_Capture_Cond_Met_out1" proved
-event_processing.adb:153:07: info: initialization of "VS_Pitch_Wheel_Rotated_out1" proved
-event_processing.adb:154:07: info: initialization of "Rising_Edge_11_Out1" proved
-event_processing.adb:155:07: info: initialization of "VS_Switch_out1" proved
-event_processing.adb:156:07: info: initialization of "Rising_Edge_10_Out1" proved
-event_processing.adb:157:07: info: initialization of "False_out1" proved
-event_processing.adb:158:07: info: initialization of "Seen_13_Seen" proved
-event_processing.adb:159:07: info: initialization of "Seen_13_Inhibit_Out" proved
-event_processing.adb:160:07: info: initialization of "Seen_8_Seen" proved
-event_processing.adb:161:07: info: initialization of "Seen_8_Inhibit_Out" proved
-event_processing.adb:162:07: info: initialization of "Seen_4_Seen" proved
-event_processing.adb:163:07: info: initialization of "Seen_4_Inhibit_Out" proved
-event_processing.adb:164:07: info: initialization of "Seen_1_Seen" proved
-event_processing.adb:165:07: info: initialization of "Seen_1_Inhibit_Out" proved
-event_processing.adb:166:07: info: initialization of "Seen_3_Seen" proved
-event_processing.adb:167:07: info: initialization of "Seen_3_Inhibit_Out" proved
-event_processing.adb:168:07: info: initialization of "Seen_7_Seen" proved
-event_processing.adb:169:07: info: initialization of "Seen_7_Inhibit_Out" proved
-event_processing.adb:170:07: info: initialization of "Seen_16_Seen" proved
-event_processing.adb:171:07: info: initialization of "Seen_16_Inhibit_Out" proved
-event_processing.adb:172:07: info: initialization of "Seen_15_Seen" proved
-event_processing.adb:173:07: info: initialization of "Seen_15_Inhibit_Out" proved
-event_processing.adb:174:07: info: initialization of "Seen_9_Seen" proved
-event_processing.adb:175:07: info: initialization of "Seen_9_Inhibit_Out" proved
-event_processing.adb:176:07: info: initialization of "Seen_12_Seen" proved
-event_processing.adb:177:07: info: initialization of "Seen_12_Inhibit_Out" proved
-event_processing.adb:178:07: info: initialization of "False1_out1" proved
-event_processing.adb:179:07: info: initialization of "Seen_5_Seen" proved
-event_processing.adb:180:07: info: initialization of "Seen_5_Inhibit_Out" proved
-event_processing.adb:181:07: info: initialization of "OR3_out1" proved
+
+ >% --- output too long --- %<
+out1" proved
 event_processing.adb:182:07: info: initialization of "Seen_6_Seen" proved
 event_processing.adb:183:07: info: initialization of "Seen_6_Inhibit_Out" proved
 event_processing.adb:184:07: info: initialization of "Seen_10_Seen" proved
@@ -123,6 +29,26 @@ event_processing.ads:52:08: info: initialization of "If_LAPPR_Capture_Cond_Met_S
 event_processing.ads:53:08: info: initialization of "If_ALTSEL_Capture_Cond_Met_Seen" proved
 event_processing.ads:54:08: info: initialization of "If_ALTSEL_Track_Cond_Met_Seen" proved
 event_processing.ads:55:08: info: initialization of "If_VAPPR_Capture_Cond_Met_Seen" proved
+flight_modes.adb:169:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:169:13: info: local subprogram "LATERAL_HDG_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:177:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:177:13: info: local subprogram "LATERAL_NAV_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:185:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:185:13: info: local subprogram "LATERAL_LAPPR_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:191:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:191:13: info: local subprogram "LATERAL_LGA_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:203:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:203:13: info: local subprogram "VERTICAL_VS_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:209:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:209:13: info: local subprogram "VERTICAL_FLC_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:215:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:215:13: info: local subprogram "VERTICAL_ALT_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:223:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:223:13: info: local subprogram "VERTICAL_VAPPR_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:229:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:229:13: info: local subprogram "VERTICAL_VGA_Will_Be_Activated" only analyzed in the context of calls
+flight_modes.adb:241:13: info: add a contract to analyze it separately from calling contexts
+flight_modes.adb:241:13: info: local subprogram "VERTICAL_ALTSEL_Will_Be_Activated" only analyzed in the context of calls
 flight_modes.adb:535:43: warning: unused assignment
 flight_modes.adb:536:43: warning: unused assignment
 flight_modes.adb:537:45: warning: unused assignment

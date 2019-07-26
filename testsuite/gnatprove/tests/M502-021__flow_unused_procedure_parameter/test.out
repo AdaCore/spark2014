@@ -1,3 +1,5 @@
+test.adb:4:14: info: add a contract to analyze it separately from calling contexts
+test.adb:4:14: info: local subprogram "Loc" only analyzed in the context of calls
 test.adb:4:19: info: initialization of "X1" proved
 test.adb:4:23: info: initialization of "X2" proved
 test.adb:6:10: warning: unused assignment, in call inlined at test.adb:14

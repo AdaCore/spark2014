@@ -1,3 +1,7 @@
+linted-controls.adb:27:13: info: add a contract to analyze it separately from calling contexts
+linted-controls.adb:27:13: info: local subprogram "To_Int" only analyzed in the context of calls
+linted-controls.adb:28:13: info: add a contract to analyze it separately from calling contexts
+linted-controls.adb:28:13: info: local subprogram "From_Bytes" only analyzed in the context of calls
 linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
 linted-controls.adb:33:36: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:55
 linted-controls.adb:34:59: info: range check proved (CVC4: 4 VC), in call inlined at linted-controls.adb:43, in call inlined at linted-controls.adb:54
@@ -77,6 +81,14 @@ linted-timer.adb:23:04: call to operation of a formal protected parameter is not
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:17
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:22
 linted-timer.adb:23:04: instantiation error at linted-channels.adb:31
+linted-update.adb:24:13: info: add a contract to analyze it separately from calling contexts
+linted-update.adb:24:13: info: local subprogram "To_Nat" only analyzed in the context of calls
+linted-update.adb:25:13: info: add a contract to analyze it separately from calling contexts
+linted-update.adb:25:13: info: local subprogram "To_Bytes" only analyzed in the context of calls
+linted-update.adb:26:13: info: add a contract to analyze it separately from calling contexts
+linted-update.adb:26:13: info: local subprogram "To_Int" only analyzed in the context of calls
+linted-update.adb:27:13: info: add a contract to analyze it separately from calling contexts
+linted-update.adb:27:13: info: local subprogram "From_Bytes" only analyzed in the context of calls
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:100
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:101
 linted-update.adb:34:74: info: range check proved (CVC4: 2 VC), in call inlined at linted-update.adb:94

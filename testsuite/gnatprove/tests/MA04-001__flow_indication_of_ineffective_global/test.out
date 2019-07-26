@@ -1,5 +1,9 @@
 foo.adb:9:14: warning: subprogram "Test_01_E" has no effect
+foo.adb:11:17: info: add a contract to analyze it separately from calling contexts
+foo.adb:11:17: info: local subprogram "Local" only analyzed in the context of calls
 foo.adb:19:25: info: initialization of "R" proved
+foo.adb:21:17: info: add a contract to analyze it separately from calling contexts
+foo.adb:21:17: info: local subprogram "Local" only analyzed in the context of calls
 foo.adb:27:12: medium: "My_A" might not be initialized
 foo.adb:32:26: info: initialization of "X" proved
 foo.adb:32:29: info: initialization of "Y" proved

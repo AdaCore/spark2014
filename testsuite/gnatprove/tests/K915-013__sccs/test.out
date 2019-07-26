@@ -1,9 +1,15 @@
+sccs.adb:3:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:3:14: info: local subprogram "Set_True" only analyzed in the context of calls
+sccs.adb:9:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:9:14: info: local subprogram "G2" only analyzed in the context of calls
 sccs.adb:9:26: warning: statement has no effect
 sccs.adb:9:26: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: statement has no effect
 sccs.adb:9:36: warning: statement has no effect, in call inlined at sccs.adb:10
 sccs.adb:9:36: warning: unused assignment to "B"
 sccs.adb:9:36: warning: unused assignment to "B", in call inlined at sccs.adb:10
+sccs.adb:13:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:13:14: info: local subprogram "G5" only analyzed in the context of calls
 sccs.adb:13:26: warning: statement has no effect
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14
 sccs.adb:13:26: warning: statement has no effect, in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
@@ -19,6 +25,12 @@ sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:1
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16
 sccs.adb:13:36: warning: unused assignment to "B", in call inlined at sccs.adb:14, in call inlined at sccs.adb:15, in call inlined at sccs.adb:16, in call inlined at sccs.adb:17
+sccs.adb:14:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:14:14: info: local subprogram "H5" only analyzed in the context of calls
+sccs.adb:15:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:15:14: info: local subprogram "I5" only analyzed in the context of calls
+sccs.adb:16:14: info: add a contract to analyze it separately from calling contexts
+sccs.adb:16:14: info: local subprogram "J5" only analyzed in the context of calls
 sccs.adb:21:19: medium: assertion might fail, cannot prove B [possible explanation: subprogram at line 1 should mention B in a precondition]
 sccs.adb:23:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 22 should mention B in a postcondition]
 sccs.adb:25:19: medium: assertion might fail, cannot prove B (e.g. when B = False) [possible explanation: call at line 24 should mention B in a postcondition]

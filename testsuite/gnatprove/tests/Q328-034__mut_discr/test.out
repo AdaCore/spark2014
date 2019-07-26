@@ -1,4 +1,10 @@
 input.adb:30:24: info: initialization of "C" proved
+input.adb:34:13: info: add a contract to analyze it separately from calling contexts
+input.adb:34:13: info: local subprogram "End_Line" only analyzed in the context of calls
+input.adb:42:14: info: add a contract to analyze it separately from calling contexts
+input.adb:42:14: info: local subprogram "Skip_Spaces" only analyzed in the context of calls
+input.adb:46:14: info: add a contract to analyze it separately from calling contexts
+input.adb:46:14: info: local subprogram "Unread_Char" only analyzed in the context of calls
 input.adb:66:33: info: loop invariant initialization proved (CVC4: 1 VC)
 input.adb:66:33: info: loop invariant preservation proved (CVC4: 1 VC)
 input.adb:66:41: info: overflow check proved (CVC4: 2 VC)

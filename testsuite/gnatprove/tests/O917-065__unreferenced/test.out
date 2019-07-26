@@ -1,5 +1,7 @@
 unref.adb:4:28: info: initialization of "X" proved
 unref.adb:5:19: info: postcondition proved (CVC4: 1 VC)
+unref.adb:11:14: info: add a contract to analyze it separately from calling contexts
+unref.adb:11:14: info: local subprogram "Nested_Inlined" only analyzed in the context of calls
 unref.adb:11:30: info: initialization of "X" proved
 unref.adb:21:07: warning: statement has no effect
 unref.ads:4:21: info: initialization of "Y" proved

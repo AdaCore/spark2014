@@ -48,29 +48,40 @@ package body SPARK_Util.Subprograms is
 
    function Analysis_Requested
      (E            : Entity_Id;
-      With_Inlined : Boolean) return Boolean is
+      With_Inlined : Boolean) return Analysis_Status is
    begin
-      return
-        --  Either the analysis is requested for the complete unit, or if it is
-        --  requested for a specific subprogram/task, check whether it is E.
+      --  Either the analysis is requested for the complete unit, or if it is
+      --  requested for a specific subprogram/task, check whether it is E.
 
-        Is_In_Analyzed_Files (E) and then
-        (
-         --  Always analyze the subprogram if analysis was specifically
-         --  requested for it.
-         Is_Requested_Subprogram_Or_Task (E)
+      if not Is_In_Analyzed_Files (E) then
+         return Not_In_Analyzed_Files;
 
-         --  Anlways analyze if With_Inlined is True. Also, always analyze
-         --  unreferenced subprograms, as they are likely to correspond to
-         --  an intermediate stage of development. Otherwise, only analyze
-         --  subprograms that are not inlined.
+      --  Always analyze the subprogram if analysis was specifically requested
+      --  for it, and not other subprograms in that case.
 
-         or else (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-                    and then
-                    (With_Inlined
-                       or else not Referenced (E)
-                       or else not Is_Local_Subprogram_Always_Inlined (E))));
+      elsif Is_Requested_Subprogram_Or_Task (E) then
+         return Analyzed;
 
+      elsif Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+         return Not_The_Analyzed_Subprogram;
+
+      --  Always analyze if With_Inlined is True. Also, always analyze
+      --  unreferenced subprograms, as they are likely to correspond to
+      --  an intermediate stage of development. Otherwise, only analyze
+      --  subprograms that are not inlined.
+
+      elsif With_Inlined then
+         return Analyzed;
+
+      elsif not Referenced (E) then
+         return Analyzed;
+
+      elsif Is_Local_Subprogram_Always_Inlined (E) then
+         return Contextually_Analyzed;
+
+      else
+         return Analyzed;
+      end if;
    end Analysis_Requested;
 
    -------------------------------

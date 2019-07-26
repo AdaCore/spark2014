@@ -1,3 +1,7 @@
+vectors.adb:5:14: info: add a contract to analyze it separately from calling contexts
+vectors.adb:5:14: info: local subprogram "Set_Id" only analyzed in the context of calls
+vectors.adb:13:14: info: add a contract to analyze it separately from calling contexts
+vectors.adb:13:14: info: local subprogram "Bump_Sig" only analyzed in the context of calls
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:108 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 2)) [possible explanation: loop at line 103 should mention Container in a loop invariant]
 vectors.adb:17:38: medium: overflow check might fail, in call inlined at vectors.adb:120 (e.g. when Container = (Id => 0, Sig => Positive'Last, Elements => (others => 0), Last_Index => 0)) [possible explanation: loop at line 116 should mention Container in a loop invariant]
 vectors.adb:32:07: info: initialization of "Position" proved

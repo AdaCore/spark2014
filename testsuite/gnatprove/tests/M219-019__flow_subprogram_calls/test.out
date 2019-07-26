@@ -1,7 +1,13 @@
 test.adb:16:24: info: initialization of "Sum" proved
+test.adb:18:17: info: add a contract to analyze it separately from calling contexts
+test.adb:18:17: info: local subprogram "HRB_Add" only analyzed in the context of calls
 test.adb:19:26: warning: "B" is not modified, could be IN
 test.adb:22:17: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:29, in call inlined at test.adb:37, in call inlined at test.adb:45
 test.adb:22:17: medium: overflow check might fail, in call inlined at test.adb:36, in call inlined at test.adb:45 [possible explanation: loop at line 44 should mention Sum in a loop invariant]
+test.adb:25:17: info: add a contract to analyze it separately from calling contexts
+test.adb:25:17: info: local subprogram "HRB_Increment" only analyzed in the context of calls
+test.adb:32:17: info: add a contract to analyze it separately from calling contexts
+test.adb:32:17: info: local subprogram "HRB_A" only analyzed in the context of calls
 test.adb:40:07: info: initialization of "I" proved
 test.adb:53:29: warning: unused initial value of "A"
 test.adb:70:07: info: initialization of "Tmp" proved
@@ -23,10 +29,14 @@ test.adb:167:07: warning: unused assignment to "Counter"
 test.adb:168:07: warning: statement has no effect
 test.adb:168:07: warning: unused assignment to "Counter"
 test.adb:171:30: info: initialization of "N" proved
+test.adb:175:17: info: add a contract to analyze it separately from calling contexts
+test.adb:175:17: info: local subprogram "Do_Stuff_C" only analyzed in the context of calls
 test.adb:178:23: info: overflow check proved (CVC4: 1 VC), in call inlined at test.adb:190
 test.adb:179:18: warning: unused assignment, in call inlined at test.adb:190
 test.adb:179:21: high: "Counter" is not initialized, in call inlined at test.adb:190
 test.adb:179:29: medium: overflow check might fail, in call inlined at test.adb:190
+test.adb:182:17: info: add a contract to analyze it separately from calling contexts
+test.adb:182:17: info: local subprogram "Do_Stuff_D" only analyzed in the context of calls
 test.adb:185:18: warning: unused assignment, in call inlined at test.adb:191
 test.adb:195:30: info: initialization of "B" proved
 test.adb:197:07: info: initialization of "S" proved

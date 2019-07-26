@@ -1,3 +1,5 @@
+achiever.adb:19:18: info: add a contract to analyze it separately from calling contexts
+achiever.adb:19:18: info: local subprogram "Do_Something" only analyzed in the context of calls
 achiever.adb:19:18: warning: subprogram "Do_Something" has no effect
 achiever.ads:24:31: warning: unused variable "St"
 achiever.ads:25:31: warning: unused variable "Op"

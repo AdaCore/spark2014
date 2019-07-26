@@ -378,6 +378,8 @@ server_spark_boundary.adb:30:07: info: initialization of "Write_Status" proved
 server_spark_boundary.ads:24:08: info: data dependencies proved
 server_spark_boundary.ads:27:08: info: flow dependencies proved
 server_timestamp_maker.adb:20:34: warning: literal "Failure" is not referenced
+server_timestamp_maker.adb:34:14: info: add a contract to analyze it separately from calling contexts
+server_timestamp_maker.adb:34:14: info: local subprogram "Get_Message_Imprint" only analyzed in the context of calls
 server_timestamp_maker.adb:35:07: warning: unused variable "Request_Message"
 server_timestamp_maker.adb:36:07: warning: unused variable "Index"
 server_timestamp_maker.adb:37:07: high: "Stop" is not initialized in "Get_Message_Imprint"
@@ -386,6 +388,8 @@ server_timestamp_maker.adb:38:07: high: "Message_Imprint.X" is not initialized i
 server_timestamp_maker.adb:38:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:39:07: high: "Imprint_Status" is not initialized in "Get_Message_Imprint"
 server_timestamp_maker.adb:39:07: warning: unused variable "Imprint_Status"
+server_timestamp_maker.adb:45:13: info: add a contract to analyze it separately from calling contexts
+server_timestamp_maker.adb:45:13: info: local subprogram "Valid_Request" only analyzed in the context of calls
 server_timestamp_maker.adb:47:07: warning: initialization of "Result" has no effect
 server_timestamp_maker.adb:48:07: info: initialization of "Length_Stop" proved
 server_timestamp_maker.adb:49:07: info: initialization of "Length" proved

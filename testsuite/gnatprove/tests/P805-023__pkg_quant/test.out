@@ -1,0 +1,2 @@
+pkg3.adb:10:13: info: add a contract to analyze it separately from calling contexts
+pkg3.adb:10:13: info: local subprogram "G" only analyzed in the context of calls

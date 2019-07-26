@@ -1,1 +1,3 @@
+pack.adb:4:14: info: add a contract to analyze it separately from calling contexts
+pack.adb:4:14: info: local subprogram "Q" only analyzed in the context of calls
 pack.adb:6:14: medium: overflow check might fail, in call inlined at pack.adb:12 (e.g. when X = Integer'Last) [possible explanation: subprogram at pack.ads:4 should mention X in a precondition]

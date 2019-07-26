@@ -1,3 +1,5 @@
+no_inlining.adb:6:16: info: add a contract to analyze it separately from calling contexts
+no_inlining.adb:6:16: info: local subprogram "Recurse1" only analyzed in the context of calls
 no_inlining.adb:10:10: info: initialization of "Tmp" proved
 no_inlining.adb:10:10: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:26
 no_inlining.adb:10:10: info: initialization of "Tmp" proved, in call inlined at no_inlining.adb:31

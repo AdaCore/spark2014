@@ -1,3 +1,5 @@
+test.adb:5:14: info: add a contract to analyze it separately from calling contexts
+test.adb:5:14: info: local subprogram "Swap" only analyzed in the context of calls
 test.adb:5:23: warning: unused initial value of "Y"
 test.adb:13:04: warning: initialization of "B" has no effect
 test.adb:17:32: info: range check proved (CVC4: 1 VC)

@@ -8,3 +8,5 @@ some_package.adb:8:04: info: implicit function contract not available for proof 
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:46
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:65
 some_package.adb:8:04: info: in instantiation at generic_queue.ads:73
+some_package.adb:13:14: info: add a contract to analyze it separately from calling contexts
+some_package.adb:13:14: info: local subprogram "foo" only analyzed in the context of calls

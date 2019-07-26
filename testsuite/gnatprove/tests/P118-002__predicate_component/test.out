@@ -1,2 +1,4 @@
 pred_comp.adb:9:04: medium: predicate check might fail on default value
+pred_comp.adb:11:14: info: add a contract to analyze it separately from calling contexts
+pred_comp.adb:11:14: info: local subprogram "Inner" only analyzed in the context of calls
 pred_comp.adb:11:14: warning: subprogram "Inner" has no effect

@@ -1,2 +1,4 @@
+p.adb:5:14: info: add a contract to analyze it separately from calling contexts
+p.adb:5:14: info: local subprogram "Inner" only analyzed in the context of calls
 p.adb:5:14: warning: subprogram "Inner" has no effect
 p.adb:11:22: info: assertion proved (CVC4: 2 VC), in call inlined at p.adb:17

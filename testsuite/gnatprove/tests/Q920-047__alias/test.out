@@ -1,2 +1,4 @@
+ex7.adb:5:15: info: add a contract to analyze it separately from calling contexts
+ex7.adb:5:15: info: local subprogram "P" only analyzed in the context of calls
 ex7.adb:5:18: info: initialization of "Str" proved
 ex7.adb:11:06: high: formal parameter "Str" and global "S" are aliased (SPARK RM 6.4.2)

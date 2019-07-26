@@ -1,3 +1,5 @@
+foo.adb:7:14: info: add a contract to analyze it separately from calling contexts
+foo.adb:7:14: info: local subprogram "Put" only analyzed in the context of calls
 foo.adb:7:14: warning: subprogram "Put" has no effect
 foo.adb:14:04: warning: analyzing unreferenced procedure "Foo"
 foo.adb:14:14: warning: subprogram "Foo" has no effect

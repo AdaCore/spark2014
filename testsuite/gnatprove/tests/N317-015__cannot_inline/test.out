@@ -2,9 +2,13 @@ cannot_inline.adb:6:14: warning: subprogram "Has_Local_Subprogram" has no effect
 cannot_inline.adb:7:14: warning: subprogram "Has_Local_Subprogram_In_Block" has no effect
 cannot_inline.adb:9:04: info: no contextual analysis of "Return_String" (unconstrained return type)
 cannot_inline.adb:15:07: info: no contextual analysis of "Has_Local_Subprogram" (nested subprogram)
+cannot_inline.adb:15:17: info: add a contract to analyze it separately from calling contexts
+cannot_inline.adb:15:17: info: local subprogram "Local" only analyzed in the context of calls
 cannot_inline.adb:15:17: warning: subprogram "Local" has no effect
 cannot_inline.adb:20:07: info: analyzing call to "Local" in context
 cannot_inline.adb:26:10: info: no contextual analysis of "Has_Local_Subprogram_In_Block" (nested subprogram)
+cannot_inline.adb:26:20: info: add a contract to analyze it separately from calling contexts
+cannot_inline.adb:26:20: info: local subprogram "Local" only analyzed in the context of calls
 cannot_inline.adb:26:20: warning: subprogram "Local" has no effect
 cannot_inline.adb:31:10: info: analyzing call to "Local" in context
 cannot_inline.adb:42:17: warning: subprogram "Proc" has no effect

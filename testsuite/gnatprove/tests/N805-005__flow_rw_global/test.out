@@ -4,5 +4,7 @@ read_write.adb:16:27: warning: unused initial value of "V"
 read_write.adb:17:16: info: postcondition proved (CVC4: 1 VC)
 read_write.adb:24:06: info: data dependencies proved
 read_write.adb:27:22: medium: assertion might fail, cannot prove not V [possible explanation: subprogram at line 23 should mention V in a precondition]
+read_write.adb:31:14: info: add a contract to analyze it separately from calling contexts
+read_write.adb:31:14: info: local subprogram "Wibble" only analyzed in the context of calls
 read_write.adb:34:22: medium: assertion might fail, cannot prove not V, in call inlined at read_write.adb:42 [possible explanation: subprogram at line 38 should mention V in a precondition]
 read_write.adb:39:06: info: data dependencies proved

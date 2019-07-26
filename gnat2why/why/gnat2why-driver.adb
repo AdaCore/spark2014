@@ -864,9 +864,34 @@ package body Gnat2Why.Driver is
                        | E_Package
                        | E_Procedure
                        | Type_Kind
-             and then Analysis_Requested (E, With_Inlined => False)
          then
-            Do_Generate_VCs (E);
+            case Analysis_Status'
+              (Analysis_Requested (E, With_Inlined => False))
+            is
+               when Analyzed =>
+                  Do_Generate_VCs (E);
+
+               --  This subprogram is only analyzed contextually. In the case
+               --  that it is referenced without being called (by taking its
+               --  address for example) or if all calls are in non-SPARK code,
+               --  the subprogram may not be analyzed at all. Warn the user if
+               --  --info is set.
+
+               when Contextually_Analyzed =>
+                  if Debug.Debug_Flag_Underscore_F then
+                     Error_Msg_NE
+                       ("info: ?local subprogram &" &
+                          " only analyzed in the context of calls", E, E);
+                     Error_Msg_N
+                       ("\add a contract to" &
+                          " analyze it separately from calling contexts", E);
+                  end if;
+
+               when Not_In_Analyzed_Files
+                  | Not_The_Analyzed_Subprogram
+               =>
+                  null;
+            end case;
          end if;
       end Generate_VCs;
 

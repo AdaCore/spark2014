@@ -82,6 +82,8 @@ records.adb:426:22: medium: assertion might fail, cannot prove X.The_Pair.A /= X
 records.adb:429:22: info: initialization of "X" proved
 records.adb:430:11: info: flow dependencies proved
 records.adb:436:22: medium: assertion might fail, cannot prove not X.Exists (e.g. when X = (Exists => True, The_Pair => (A => 5, B => 10)))
+records.adb:439:13: info: add a contract to analyze it separately from calling contexts
+records.adb:439:13: info: local subprogram "Swap_Fields" only analyzed in the context of calls
 records.adb:446:04: warning: analyzing unreferenced function "Apply_Command"
 records.adb:448:07: info: initialization of "R" proved
 records.adb:453:24: medium: range check might fail (e.g. when R = (A => Unsigned_Byte'Last, B => Unsigned_Byte'Last))

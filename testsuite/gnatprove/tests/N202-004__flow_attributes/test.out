@@ -29,11 +29,15 @@ foo.adb:78:25: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:80:26: info: discriminant check proved (CVC4: 1 VC)
 foo.adb:84:26: info: initialization of "A" proved
 foo.adb:85:09: info: flow dependencies proved
+foo.adb:91:14: info: add a contract to analyze it separately from calling contexts
+foo.adb:91:14: info: local subprogram "Test_09_Ok" only analyzed in the context of calls
 foo.adb:91:26: info: initialization of "A" proved
 foo.adb:94:09: info: length check proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at foo.adb:102
 foo.adb:95:11: medium: array index check might fail, in call inlined at foo.adb:102
 foo.adb:98:26: info: initialization of "A" proved
 foo.adb:99:09: info: flow dependencies proved
+foo.adb:105:14: info: add a contract to analyze it separately from calling contexts
+foo.adb:105:14: info: local subprogram "Test_11_Ok" only analyzed in the context of calls
 foo.adb:105:26: info: initialization of "A" proved
 foo.adb:109:25: info: discriminant check proved (CVC4: 1 VC), in call inlined at foo.adb:119
 foo.adb:111:26: info: discriminant check proved (CVC4: 1 VC), in call inlined at foo.adb:119

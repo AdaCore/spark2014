@@ -1,2 +1,4 @@
+test.adb:6:13: info: add a contract to analyze it separately from calling contexts
+test.adb:6:13: info: local subprogram "F" only analyzed in the context of calls
 test.adb:11:04: warning: analyzing unreferenced function "F"
 test.adb:16:04: warning: analyzing unreferenced function "Test_01"

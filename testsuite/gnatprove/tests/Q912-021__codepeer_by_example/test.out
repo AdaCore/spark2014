@@ -84,6 +84,8 @@ cond_assign.adb:1:24: info: initialization of "X" proved
 cond_assign.adb:4:14: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 cond_assign.adb:6:14: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 context.adb:3:04: info: initialization of "X" proved
+context.adb:4:14: info: add a contract to analyze it separately from calling contexts
+context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls
 context.adb:7:25: info: overflow check proved (CVC4: 10 VC), in call inlined at context.adb:12
 context.adb:12:04: info: in inlined body at line 6
 context.adb:12:04: info: unrolling loop

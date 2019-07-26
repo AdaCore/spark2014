@@ -724,9 +724,9 @@ Depends, Pre, Post, Contract_Cases), and respect the following conditions:
  * not called in a potentially unevaluated context
  * not called before its body is seen
 
-If any of the above conditions is violated, |GNATprove| issues a warning to
-explain why the subprogram could not be analyzed in the context of its calls,
-and then proceeds to analyze it normally, using the default
+If any of the above conditions is violated, |GNATprove| issues an info message
+to explain why the subprogram could not be analyzed in the context of its
+calls, and then proceeds to analyze it normally, using the default
 contract. Otherwise, both flow analysis and proof are done for the subprogram
 in the context of its calls.
 

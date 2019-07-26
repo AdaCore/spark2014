@@ -1,4 +1,12 @@
 hw-dbc-transfer_rings.adb:116:07: info: initialization of "Toggle" proved
+hw-dbc-transfer_rings.adb:133:13: info: add a contract to analyze it separately from calling contexts
+hw-dbc-transfer_rings.adb:133:13: info: local subprogram "Prev" only analyzed in the context of calls
+hw-dbc-transfer_rings.adb:140:13: info: add a contract to analyze it separately from calling contexts
+hw-dbc-transfer_rings.adb:140:13: info: local subprogram "Next" only analyzed in the context of calls
+hw-dbc-transfer_rings.adb:147:14: info: add a contract to analyze it separately from calling contexts
+hw-dbc-transfer_rings.adb:147:14: info: local subprogram "Enqueue_TRB" only analyzed in the context of calls
+hw-dbc-transfer_rings.adb:160:14: info: add a contract to analyze it separately from calling contexts
+hw-dbc-transfer_rings.adb:160:14: info: local subprogram "Dequeue_TRB" only analyzed in the context of calls
 hw-dbc-transfer_rings.adb:177:07: info: initialization of "Current" proved
 hw-dbc-transfer_rings.adb:178:07: info: initialization of "Invalid" proved
 hw-dbc-transfer_rings.adb:182:36: info: division check proved (CVC4: 1 VC)

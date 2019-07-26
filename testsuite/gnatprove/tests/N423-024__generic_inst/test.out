@@ -5,4 +5,6 @@ context.adb:15:25: info: data dependencies proved
 context_b.adb:1:11: warning: subprogram "Context_B" has no effect
 context_b.adb:10:17: warning: subprogram "Check_Cond" has no effect, in instantiation at context_b.adb:24
 context_b.adb:18:25: info: assertion proved (CVC4: 1 VC), in instantiation at context_b.adb:24
+context_b.adb:26:14: info: add a contract to analyze it separately from calling contexts
+context_b.adb:26:14: info: local subprogram "Local" only analyzed in the context of calls
 context_b.adb:26:14: warning: subprogram "Local" has no effect

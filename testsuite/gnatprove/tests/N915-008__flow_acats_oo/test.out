@@ -30,6 +30,8 @@ c3900063.adb:120:19: medium: precondition might fail, cannot prove false
 c3900063.adb:132:13: medium: precondition might fail, cannot prove false
 c392004.adb:9:03: info: initialization of "My_Car" proved
 c392004.adb:10:03: info: initialization of "Your_Car" proved
+c392004.adb:12:13: info: add a contract to analyze it separately from calling contexts
+c392004.adb:12:13: info: local subprogram "TC_Assert" only analyzed in the context of calls
 c392004.adb:12:13: warning: subprogram "TC_Assert" has no effect
 c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:26
 c392004.adb:15:13: medium: precondition might fail, cannot prove false, in call inlined at c392004.adb:29
@@ -100,7 +102,15 @@ cc1311a.adb:332:23: info: precondition proved (CVC4: 1 VC), in instantiation at 
 cc1311a.adb:343:11: info: initialization of "RESULTS" proved, in instantiation at cc1311a.adb:447
 cc1311a.adb:345:11: info: range check proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
 cc1311a.adb:347:22: info: precondition proved (CVC4: 1 VC), in instantiation at cc1311a.adb:447
+cc1311a.adb:352:15: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:352:15: info: local subprogram "F1" only analyzed in the context of calls
+cc1311a.adb:357:16: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:357:16: info: local subprogram "P2" only analyzed in the context of calls
 cc1311a.adb:357:20: info: initialization of "OUTVAR" proved
+cc1311a.adb:362:15: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:362:15: info: local subprogram "TD_FUNC" only analyzed in the context of calls
+cc1311a.adb:375:16: info: add a contract to analyze it separately from calling contexts
+cc1311a.adb:375:16: info: local subprogram "TD_PROC" only analyzed in the context of calls
 cc1311a.adb:380:25: info: initialization of "OUTPUT" proved
 cc1311a.adb:387:06: info: analyzing call to "TD_FUNC" in context
 cc1311a.adb:387:06: info: in instantiation at line 98
