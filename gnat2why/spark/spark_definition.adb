@@ -5025,37 +5025,39 @@ package body SPARK_Definition is
 
                         if not In_SPARK (Comp_Type) then
                            Mark_Violation (Comp, From => Comp_Type);
-                        end if;
-
-                        --  Tagged types cannot be owning in SPARK
-
-                        if Is_Tagged_Type (E)
-                          and then Ownership_Checking.Is_Deep (Comp_Type)
-                        then
-                           Mark_Violation
-                             ("owning component of a tagged type", Comp);
-                        end if;
-
-                        --  Mark the equality function for Comp_Type if it is
-                        --  used for the predefined equality of E.
-
-                        if Is_Record_Type
-                          (Get_Full_Type_Without_Checking (Comp_Type))
-                          and then Present
-                            (Get_User_Defined_Eq (Base_Type (Comp_Type)))
-                        then
-                           Mark_Entity
-                             (Ultimate_Alias
-                                (Get_User_Defined_Eq (Base_Type (Comp_Type))));
-                        end if;
-
-                        --  Mark default value of component or discriminant
-                        Mark_Default_Expression (Comp);
-
-                        if Has_Init_By_Proof (Comp_Type) then
-                           Init_By_Proof := Comp;
                         else
-                           Not_Init_By_Proof := Comp;
+
+                           --  Tagged types cannot be owning in SPARK
+
+                           if Is_Tagged_Type (E)
+                             and then Ownership_Checking.Is_Deep (Comp_Type)
+                           then
+                              Mark_Violation
+                                ("owning component of a tagged type", Comp);
+                           end if;
+
+                           --  Mark the equality function for Comp_Type if it
+                           --  is used for the predefined equality of E.
+
+                           if Is_Record_Type
+                             (Get_Full_Type_Without_Checking (Comp_Type))
+                             and then Present
+                               (Get_User_Defined_Eq (Base_Type (Comp_Type)))
+                           then
+                              Mark_Entity
+                                (Ultimate_Alias
+                                   (Get_User_Defined_Eq
+                                        (Base_Type (Comp_Type))));
+                           end if;
+
+                           --  Mark default value of component or discriminant
+                           Mark_Default_Expression (Comp);
+
+                           if Has_Init_By_Proof (Comp_Type) then
+                              Init_By_Proof := Comp;
+                           else
+                              Not_Init_By_Proof := Comp;
+                           end if;
                         end if;
                      end if;
 

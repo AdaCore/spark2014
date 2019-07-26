@@ -628,37 +628,43 @@ package body SPARK_Util is
    -----------------------------------
 
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Scope (E);
+      Ty      : constant Entity_Id := Scope (E);
+      Full_Ty : constant Entity_Id :=
+        (if Present (Full_View (Ty))
+         then Full_View (Ty)
+         else Ty);
 
    begin
+      pragma Assert (Entity_Marked (Full_Ty));
+
       --  Hidden discriminants are only in SPARK if Ty's full view is in SPARK
 
       if Ekind (E) = E_Discriminant then
          if Has_Discriminants (Ty) then
             return True;
          else
-            pragma Assert (Has_Discriminants (Full_View (Ty)));
-            return Entity_In_SPARK (Full_View (Ty));
+            pragma Assert (Has_Discriminants (Full_Ty));
+            return Entity_In_SPARK (Full_Ty);
          end if;
-
-      --  Components of a protected type are visible except if the type full
-      --  view is not in SPARK.
-
-      elsif Is_Protected_Type (Ty) then
-
-         return not Full_View_Not_In_SPARK (Ty);
 
       --  If the type itself is private, no components can be visible in it.
       --  This case has to be handled specifically to prevent visible
       --  components of hidden ancestors from leaking in.
 
-      elsif not Entity_In_SPARK (Ty)
-        or else (Full_View_Not_In_SPARK (Ty)
-                 and then Get_First_Ancestor_In_SPARK (Ty) = Ty)
+      elsif Is_Private_Type (Base_Type (Ty))
+        and then Etype (Base_Type (Ty)) = Base_Type (Ty)
+        and then not Entity_In_SPARK (Full_Ty)
       then
          pragma Assert (if not Entity_In_SPARK (Ty) then Entity_Marked (Ty));
 
          return False;
+
+      --  Components of a protected type are visible except if the type full
+      --  view is not in SPARK.
+
+      elsif Is_Protected_Type (Full_Ty) then
+
+         return not Full_View_Not_In_SPARK (Full_Ty);
 
       --  Find the first record type in the hierarchy in which the field is
       --  present and see if it is in SPARK.
