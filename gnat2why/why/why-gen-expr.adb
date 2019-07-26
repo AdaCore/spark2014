@@ -1830,14 +1830,16 @@ package body Why.Gen.Expr is
 
       --  4. If From and To do not share the same base type (bool, int, __fixed
       --     bitvector_? or real), convert from one to the other.
+      --     Note that for checks, the base type of Boolean is "int".
 
-      if Cur /= Base_Why_Type (To) then
+      if Cur /= Base_Why_Type_No_Bool (To) then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              From     => Cur,
-                                             To       => Base_Why_Type (To),
+                                             To       =>
+                                               Base_Why_Type_No_Bool (To),
                                              Expr     => Result);
-         Cur := Base_Why_Type (To);
+         Cur := Base_Why_Type_No_Bool (To);
       end if;
 
       --  5. Possibly perform the range check, if not already applied
@@ -1869,9 +1871,12 @@ package body Why.Gen.Expr is
                                             W_Expr   => +Result);
       end if;
 
-      --  7. If To is an abstract type, convert from int, __fixed or real to it
+      --  7. If To is an abstract type or bool, convert from int, __fixed or
+      --     real to it.
 
-      if Get_Type_Kind (To_Conc) = EW_Abstract then
+      if Get_Type_Kind (To_Conc) = EW_Abstract
+        or else To_Conc = EW_Bool_Type
+      then
          Result := Insert_Single_Conversion (Ada_Node => Ada_Node,
                                              Domain   => Domain,
                                              From     => Cur,
