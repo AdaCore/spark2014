@@ -96,19 +96,19 @@ package body Configuration is
 
          LocalText : AuditTypes.DescriptionT := AuditTypes.NoDescription;
          Str       : String :=
-           Clock.DurationT_Image(TheAlarmSilentDuration / 10) & "; "
-           & Clock.DurationT_Image(TheLatchUnlockDuration / 10) & "; "
-           & Clock.DurationT_Image(TheTokenRemovalDuration / 10) & "; "
-           & Clock.DurationT_Image(TheFingerWaitDuration / 10) & "; "
+           Clock.DurationT'Image(TheAlarmSilentDuration / 10) & "; "
+           & Clock.DurationT'Image(TheLatchUnlockDuration / 10) & "; "
+           & Clock.DurationT'Image(TheTokenRemovalDuration / 10) & "; "
+           & Clock.DurationT'Image(TheFingerWaitDuration / 10) & "; "
            & PrivTypes.ClassT_Image(TheEnclaveClearance) & "; "
            & Clock.PrintDuration(TheWorkingHoursStart)(1 .. 5) & "; "
            & Clock.PrintDuration(TheWorkingHoursEnd)(1 .. 5) & "; "
            & Clock.PrintDuration(TheMaxAuthDuration)(1 .. 5) & "; "
            & ConfigData.AccessPolicyT_Image(TheAccessPolicy) & "; "
            & PrivTypes.ClassT_Image(TheMinEntryClass) & "; "
-           & AuditTypes.FileSizeT_Image(TheMinPreservedLogSize / 1024) & "; "
-           & AuditTypes.FileSizeT_Image(TheAlarmThresholdSize / 1024) & "; "
-           & IandATypes.FarT_Image(TheSystemMaxFar);
+           & AuditTypes.FileSizeT'Image(TheMinPreservedLogSize / 1024) & "; "
+           & AuditTypes.FileSizeT'Image(TheAlarmThresholdSize / 1024) & "; "
+           & IandATypes.FarT'Image(TheSystemMaxFar);
 
       begin
 

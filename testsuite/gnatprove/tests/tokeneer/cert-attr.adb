@@ -30,24 +30,16 @@ package body Cert.Attr is
    --     Prints the Issuer ID& SerialNumber.
    ------------------------------------------------------------------
 
-   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT
-
-   is
+   function ExtractUser (Contents : ContentsT) return AuditTypes.UserTextT is
       LocalUser : AuditTypes.UserTextT := AuditTypes.NoUser;
       FullString : String := "Issuer: "
-        & CryptoTypes.IssuerIdT_Image (Contents.BaseCertID.Issuer.ID)
+        & CryptoTypes.IssuerIdT'Image (Contents.BaseCertID.Issuer.ID)
         & " SerialNo:  "
-        & CertTypes.SerialNumberT_Image (Contents.BaseCertID.SerialNumber);
+        & CertTypes.SerialNumberT'Image (Contents.BaseCertID.SerialNumber);
 
    begin
-      -- if the Full string is shorter then use it all otherwise
-      -- truncate it.
-
-      if FullString'Last <= AuditTypes.UserTextI'Last then
-         LocalUser (1 .. FullString'Last) := FullString;
-      else
-         LocalUser := FullString (1 .. AuditTypes.UserTextI'Last);
-      end if;
+      -- the Full string is short enough to use it all
+      LocalUser (1 .. FullString'Last) := FullString;
 
       return LocalUser;
    end ExtractUser;

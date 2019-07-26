@@ -147,13 +147,6 @@ package AuditTypes is
    MaxSupportedLogSize :constant := 2**22;
    type FileSizeT is new Integer range 0..MaxSupportedLogSize;
 
-   function FileSizeT_Image (X : FileSizeT) return CommonTypes.StringF1L1000 is
-      (FileSizeT'Image (X));
-   pragma Annotate (GNATprove, False_Positive,
-                    "predicate check might fail",
-                    "Image of integers of type FileSizeT are short strings starting at index 1");
-
-
    MaxSupportedLogEntries : constant := MaxSupportedLogSize / SizeAuditElement;
    type AuditEntryCountT is range 0..MaxSupportedLogEntries;
 

@@ -701,7 +701,7 @@ is
          begin
             DisplayAPI.SetBottomText
               (BottomText => "Private key " &
-                 CommonTypes.Unsigned32T_Image (ThePrivateKeyH),
+                 CommonTypes.Unsigned32T'Image (ThePrivateKeyH),
                Written    => Unused);
          end;
 #end if;

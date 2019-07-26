@@ -298,7 +298,7 @@
   </transf>
   </goal>
   <goal name="VC def.11" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="5915"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.12" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -311,7 +311,7 @@
   <proof prover="0"><result status="valid" steps="91"/></proof>
   </goal>
   <goal name="VC def.15" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="6496"/></proof>
+  <proof prover="0" timelimit="1"><result status="timeout"/></proof>
   </goal>
   <goal name="VC def.16" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
