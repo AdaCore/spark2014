@@ -390,6 +390,12 @@ package Flow_Utility is
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
 
+   function Get_Protected_Object (N : Node_Id) return Flow_Id
+   with Pre => Is_External_Call (N);
+   --  Returns the target object of an external call to protected operation.
+   --  It is similar to Get_Enclosing_Object (hence this name), but handles
+   --  composite objects just like they are handled everywhere else in flow.
+
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;
       Scope                : Flow_Scope;

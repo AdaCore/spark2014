@@ -24,7 +24,6 @@
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
-with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
 with SPARK_Util;     use SPARK_Util;
 
@@ -299,23 +298,25 @@ package body Flow.Interprocedural is
 
             if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
-                  Implicit : constant Entity_Id :=
+                  Implicit : constant Flow_Id :=
                     (if Is_External_Call (N)
-                     then Get_Enclosing_Object (Prefix (Name (N)))
-                     else Scope (Called_Thing));
+                     then Get_Protected_Object (N)
+                     else Direct_Mapping_Id (Scope (Called_Thing)));
                   --  If this is an external call then the implicit parameter
                   --  is the the protected object. If this is an internal call
                   --  we don't have a protected object but only the protected
                   --  type itself and therefore this will be the implicit
                   --  parameter.
 
-                  pragma Assert (Ekind (Implicit) = (if Is_External_Call (N)
-                                                     then E_Variable
-                                                     else E_Protected_Type));
-
+                  pragma Assert
+                    (Ekind (Get_Direct_Mapping_Id (Implicit)) =
+                       (if Is_External_Call (N)
+                        then E_Variable
+                        else E_Protected_Type));
                begin
-                  The_In  := Direct_Mapping_Id (Implicit, In_View);
-                  The_Out := Direct_Mapping_Id (Implicit, Out_View);
+
+                  The_In  := Change_Variant (Implicit, In_View);
+                  The_Out := Change_Variant (Implicit, Out_View);
 
                   --  The protected object may already appear as a (generated)
                   --  Global, e.g. when a protected subprogram calls an
@@ -333,7 +334,7 @@ package body Flow.Interprocedural is
             end if;
 
             if Globals.Outputs.Is_Empty then
-               --  All inputs flow into the null export vertex
+               --  Every input flows into the null export vertex
                declare
                   Output_V : constant Flow_Graphs.Vertex_Id :=
                     Find_Parameter_Vertex
@@ -348,7 +349,7 @@ package body Flow.Interprocedural is
                   end loop;
                end;
             else
-               --  Each output depends on all inputs
+               --  Every input flows into all outputs
                for Output of Globals.Outputs loop
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
@@ -361,8 +362,8 @@ package body Flow.Interprocedural is
                        Change_Variant (Output, In_View);
 
                   begin
-                     if Is_Implicit_Input (The_In)
-                       and then not Globals.Inputs.Contains (The_In)
+                     if not Globals.Inputs.Contains (The_In)
+                       and then Is_Implicit_Input (The_In)
                      then
                         Globals.Inputs.Insert (The_In);
                      end if;

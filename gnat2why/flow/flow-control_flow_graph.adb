@@ -5036,10 +5036,10 @@ package body Flow.Control_Flow_Graph is
 
          --  Create vertices for the implicit formal parameter
          declare
-            Parameter : constant Entity_Id :=
+            Parameter : constant Flow_Id :=
                 (if Is_External_Call (Callsite)
-                 then Get_Enclosing_Object (Prefix (Name (Callsite)))
-                 else Scope (Called_Thing));
+                 then Get_Protected_Object (Callsite)
+                 else Direct_Mapping_Id (Scope (Called_Thing)));
 
             V : Flow_Graphs.Vertex_Id;
 
@@ -5049,7 +5049,7 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Make_Implicit_Parameter_Attributes
                  (Call_Vertex => Callsite,
-                  Implicit    => Direct_Mapping_Id (Parameter, In_View),
+                  Implicit    => Change_Variant (Parameter, In_View),
                   Loops       => Ctx.Current_Loops,
                   E_Loc       => Callsite),
                V);
@@ -5061,7 +5061,7 @@ package body Flow.Control_Flow_Graph is
                  (FA,
                   Make_Implicit_Parameter_Attributes
                     (Call_Vertex => Callsite,
-                     Implicit    => Direct_Mapping_Id (Parameter, Out_View),
+                     Implicit    => Change_Variant (Parameter, Out_View),
                      Loops       => Ctx.Current_Loops,
                      E_Loc       => Callsite),
                   V);

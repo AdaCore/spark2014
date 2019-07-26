@@ -1038,12 +1038,10 @@ package body Flow_Utility is
         and then Is_External_Call (Callsite)
       then
          declare
-            The_PO : constant Entity_Id :=
-              Get_Enclosing_Object (Prefix (Name (Callsite)));
+            The_PO : constant Flow_Id :=
+              Get_Protected_Object (Callsite);
 
             PO_Type : constant Entity_Id := Sinfo.Scope (Subprogram);
-
-            pragma Assert (Ekind (The_PO) = E_Variable);
 
          begin
             --  Substitute reference on LHS
@@ -1054,7 +1052,7 @@ package body Flow_Utility is
                   Inserted : Boolean;
 
                begin
-                  Depends.Insert (Key      => Direct_Mapping_Id (The_PO),
+                  Depends.Insert (Key      => The_PO,
                                   Position => Position,
                                   Inserted => Inserted);
 
@@ -1079,7 +1077,7 @@ package body Flow_Utility is
                   if Flow_Id_Sets.Has_Element (C) then
                      Inputs.Replace_Element
                        (Position => C,
-                        New_Item => Direct_Mapping_Id (The_PO));
+                        New_Item => The_PO);
                   end if;
                end;
             end loop;
@@ -1890,6 +1888,34 @@ package body Flow_Utility is
       end if;
    end Get_Proof_Globals;
 
+   --------------------------
+   -- Get_Protected_Object --
+   --------------------------
+
+   function Get_Protected_Object (N : Node_Id) return Flow_Id is
+      Partial_Definition : Boolean;
+      View_Conversion    : Boolean;
+      Seq                : Node_Lists.List;
+      --  Unused parameters
+
+      Map_Root : Flow_Id;
+
+   begin
+      Get_Assignment_Target_Properties
+        (N                  => Prefix (Name (N)),
+         Partial_Definition => Partial_Definition,
+         View_Conversion    => View_Conversion,
+         Map_Root           => Map_Root,
+         Seq                => Seq);
+
+      pragma Assert
+        (Map_Root.Kind in Direct_Mapping | Record_Field
+           and then Ekind (Map_Root.Node) = E_Variable
+           and then Map_Root.Variant = Normal_Use);
+
+      return Map_Root;
+   end Get_Protected_Object;
+
    --------------
    -- Get_Type --
    --------------
@@ -2337,13 +2363,12 @@ package body Flow_Utility is
          --  if this is an internal call, then add the protected type itself.
 
          if Ekind (Scope (Subprogram)) = E_Protected_Type then
-            if Is_External_Call (Callsite) then
-               Merge_Entity
-                 (V,
-                  Get_Enclosing_Object (Prefix (Name (Callsite))));
-            else
-               Merge_Entity (V, Scope (Subprogram));
-            end if;
+            V.Union
+              (Flatten_Variable
+                 ((if Is_External_Call (Callsite)
+                   then Get_Protected_Object (Callsite)
+                   else Direct_Mapping_Id (Scope (Subprogram))),
+                  Ctx.Scope));
          end if;
 
          --  If we fold functions we need to obtain the used inputs
