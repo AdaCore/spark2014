@@ -4516,9 +4516,10 @@ package body Flow.Control_Flow_Graph is
 
             Null_Depends := D_Map.Find (Null_Flow_Id);
 
-            if Dependency_Maps.Has_Element (Null_Depends)
-              and then not D_Map (Null_Depends).Is_Empty
-            then
+            if Dependency_Maps.Has_Element (Null_Depends) then
+
+               pragma Assert (not D_Map (Null_Depends).Is_Empty);
+
                Add_Vertex
                  (FA,
                   Make_Global_Attributes
