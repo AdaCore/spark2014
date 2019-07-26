@@ -388,3 +388,49 @@ where the Reference_Type is ultimately a pointer and is very cheap. This type
 is declared with Implicit_Dereference aspect, which allows GNAT to magically
 use it where an element type would be needed. We could explicitly use this
 type in flow, but that would be quite verbose; renamings seem much better.
+
+Handling of protected objects
+*****************************
+
+There are few nuances in how protected units are represented in flow. They are
+not documented explicitly in the code for historical reasons: the initial
+handling was different (and slightly broken), yet equally undocumented. The
+code is now fixed, but there were no comments to be fixed and we did not add
+any.
+
+The simplest protected type looks like this:
+
+   protected type PT is
+      procedure Proc;
+   begin
+      Comp : Boolean := True;
+   end;
+
+and is completed like this:
+
+   protected body PT is
+      procedure Proc is
+         procedure Inner with Global => (In_Out => PT) is
+         begin
+            Comp := not Comp;
+         end Inner;
+      begin
+         Comp := not Comp;
+         Inner;
+      end Proc;
+   end protected;
+
+Note the lack of Global aspect on `Proc`, where the current instance of the
+*entire* protected object is an _implicit_ formal parameter for this
+subprogram; likewise, note the explicit Global aspect on `Inner`. This in turn
+dictates the only reasonable representation of Comp as a Flow_Id where
+
+  {Kind => Record_Field; Node => PT; Components => [Comp]}
+
+The same representation is also used for Part_Ofs single concurrent objects and
+discriminants (for both task and protected units).
+
+However, when a Part_Of is seen from the outside of a single concurrent unit
+(i.e. when we process its object declaration and possibly access from the
+elaboration of its enclosing package), we shall represent them as standalone
+objects. As of today, this is probably broken (but it is a corner case).
