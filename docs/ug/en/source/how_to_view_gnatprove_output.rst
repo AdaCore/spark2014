@@ -44,19 +44,21 @@ A summary table at the start of file ``gnatprove.out`` provides an overview of
 the verification results for all checks in the project. The table may look like
 this::
 
-      ----------------------------------------------------------------------------------------------------------------
-      SPARK Analysis Results      Total        Flow   Interval                          Provers   Justified   Unproved
-      ----------------------------------------------------------------------------------------------------------------
-      Data Dependencies               .           .          .                                .           .          .
-      Flow Dependencies               .           .          .                                .           .          .
-      Initialization               2100        2079          .                                .           .         21
-      Non-Aliasing                    .           .          .                                .           .          .
-      Run-time Checks               596           .          .    480 (altergo  31%, CVC4  69%)           .        116
-      Assertions                      3           .          .      3 (altergo  33%, CVC4  67%)           .          .
-      Functional Contracts          323           .          .    168 (altergo  24%, CVC4  76%)           .        155
-      LSP Verification                .           .          .                                .           .          .
-      ----------------------------------------------------------------------------------------------------------------
-      Total                        3022  2079 (69%)          .                        651 (22%)           .   292 (9%)
+  -----------------------------------------------------------------------------------------------------------------------------
+  SPARK Analysis results        Total          Flow   Interval   CodePeer                        Provers   Justified   Unproved
+  -----------------------------------------------------------------------------------------------------------------------------
+  Data Dependencies               281           281          .          .                              .           .          .
+  Flow Dependencies               228           228          .          .                              .           .          .
+  Initialization                  693           692          .          .                              .           1          .
+  Non-Aliasing                      .             .          .          .                              .           .          .
+  Run-time Checks                 474             .          .          .     458 (CVC4 95%, Trivial 5%)          16          .
+  Assertions                       45             .          .          .     45 (CVC4 82%, Trivial 18%)           .          .
+  Functional Contracts            304             .          .          .    302 (CVC4 82%, Trivial 18%)           2          .
+  LSP Verification                  .             .          .          .                              .           .          .
+  Termination                       .             .          .          .                              .           .          .
+  Concurrency                       .             .          .          .                              .           .          .
+  -----------------------------------------------------------------------------------------------------------------------------
+  Total                          2025    1201 (59%)          .          .                      805 (40%)     19 (1%)          .
 
 The following table explains the lines of the summary table:
 
@@ -74,6 +76,8 @@ The following table explains the lines of the summary table:
    "Assertions", "Verification of :ref:`Assertion Pragmas`"
    "Functional Contracts", "Verification of functional contracts (includes :ref:`Subprogram Contracts`, :ref:`Package Contracts` and :ref:`Type Contracts`)"
    "LSP Verification", "Verification related to :ref:`Object Oriented Programming and Liskov Substitution Principle`"
+   "Termination", "Verification related to :ref:`Loop Variants` and :ref:`Subprogram Termination`"
+   "Concurrency", "Verification related to :ref:`Concurrency and Ravenscar Profile`"
 
 We now explain the columns of the table.
 
@@ -85,6 +89,9 @@ We now explain the columns of the table.
   checks) proved by a simple static analysis of bounds for floating-point
   expressions based on type bounds of sub-expressions.
 
+* The ``CodePeer`` column describes the number of checks proved by calling
+  CodePeer when :ref:`Using CodePeer Static Analysis`.
+
 * The ``Provers`` column describes the number of checks proved by automatic or
   manual provers. The column also gives information on the provers used, and
   the percentage of checks proved by each prover. Note that sometimes a check
@@ -92,7 +99,9 @@ We now explain the columns of the table.
   an absolute count. Also note that generally the prover which is run first (as
   determined by the ``--prover`` command line switch) proves the most checks,
   because each prover is called only on those checks that were not previously
-  proved. The prover percentages are provided in alphabetical order.
+  proved. The prover percentages are provided in alphabetical order. The special
+  name ``Trivial`` is used to refer to an internal simplication that discards
+  checks that are trivially true.
 
 * The ``Justified`` column contains the number of checks for which the user has
   provided a :ref:`Direct Justification with Pragma Annotate`.
