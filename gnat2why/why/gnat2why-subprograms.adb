@@ -24,6 +24,7 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Doubly_Linked_Lists;
+with Atree;
 with Common_Containers;              use Common_Containers;
 with Debug;
 with Errout;                         use Errout;
@@ -44,6 +45,7 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
+with Sem_Util;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
@@ -3911,14 +3913,44 @@ package body Gnat2Why.Subprograms is
       --  Body is not in SPARK
 
       else
-         declare
-            Dummy_CC_And_RTE_Post : W_Prog_Id;
-         begin
-            --  Translate the contract cases and postcondition in order to fill
-            --  the mapping for uses of 'Old to later check absence of run-time
-            --  errors in these expressions, and drop the generated program.
+         --  Fill the mapping for uses of 'Old to later check absence of
+         --  run-time errors in these expressions.
 
-            Dummy_CC_And_RTE_Post := CC_And_RTE_Post;
+         declare
+            use type Atree.Traverse_Result;
+
+            function Search_Old (N : Node_Id) return Atree.Traverse_Result;
+            --  Search for attribute Old and enter its prefix in the map
+
+            ----------------
+            -- Search_Old --
+            ----------------
+
+            function Search_Old (N : Node_Id) return Atree.Traverse_Result is
+               Dummy : W_Identifier_Id;
+            begin
+               if Nkind (N) = N_Attribute_Reference
+                 and then
+                   Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
+               then
+                  Dummy := Name_For_Old (Prefix (N));
+               end if;
+
+               return Atree.OK;
+            end Search_Old;
+
+            procedure Search_Olds is new
+              Sem_Util.Traverse_More_Proc (Search_Old);
+
+            Prag_Post : constant Node_Id :=
+              Get_Pragma (E, Pragma_Postcondition);
+
+            Prag_CC : constant Node_Id :=
+              Get_Pragma (E, Pragma_Contract_Cases);
+
+         begin
+            Search_Olds (Prag_Post);
+            Search_Olds (Prag_CC);
 
             Why_Body := +Void;
          end;
