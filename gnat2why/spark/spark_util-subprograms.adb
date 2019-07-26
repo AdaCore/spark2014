@@ -81,7 +81,7 @@ package body SPARK_Util.Subprograms is
       Scop : Node_Id := Scope (E);
    begin
       while Present (Scop) loop
-         if Ekind (Scop) in Protected_Kind then
+         if Is_Protected_Type (Scop) then
             return Scop;
          end if;
          Scop := Scope (Scop);

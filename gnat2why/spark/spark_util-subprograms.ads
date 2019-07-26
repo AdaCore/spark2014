@@ -90,7 +90,7 @@ package SPARK_Util.Subprograms is
    with Pre => (case Ekind (E) is
                    when E_Component    |
                         E_Discriminant =>
-                      Ekind (Scope (E)) in Protected_Kind,
+                      Is_Protected_Type (Scope (E)),
 
                    when E_Function  |
                         E_Procedure |
@@ -100,7 +100,7 @@ package SPARK_Util.Subprograms is
 
                    when others =>
                       False),
-   Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
+   Post => Is_Protected_Type (Containing_Protected_Type'Result);
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
    --  @return the enclosing protected type

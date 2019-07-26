@@ -2968,9 +2968,9 @@ package body Why.Gen.Records is
       Ancestor : Entity_Id := Current;
 
    begin
-      --  Protected types and task types are not handled.
+      --  Concurrent types are not handled
 
-      if Ekind (Current) in Protected_Kind | Task_Kind then
+      if Is_Concurrent_Type (Current) then
          return E;
       end if;
 

@@ -2959,7 +2959,7 @@ package body SPARK_Definition is
       is
          Target : constant Entity_Id := Get_Called_Entity (Call_Node);
       begin
-         if Ekind (Scope (Target)) in Protected_Kind
+         if Is_Protected_Type (Scope (Target))
            and then not Is_External_Call (Call_Node)
          then
 
