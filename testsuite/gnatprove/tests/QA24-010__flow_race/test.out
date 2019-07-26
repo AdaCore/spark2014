@@ -36,6 +36,7 @@ effects on parameters and Global variables of P.InsiderTK depends on
  effects on parameters and Global variables of P.Flip
 absence of run-time errors of P.InsiderTK depends on
  effects on parameters and Global variables of P.Flip
+ absence of run-time errors of P.Flip
 in unit q, 2 subprograms and packages out of 3 analyzed
  Q at q.ads:3 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
 absence of run-time errors of Q fully established
@@ -45,4 +46,5 @@ effects on parameters and Global variables of Q.OutsiderTK depends on
  effects on parameters and Global variables of P.Flip
 absence of run-time errors of Q.OutsiderTK depends on
  effects on parameters and Global variables of P.Flip
+ absence of run-time errors of P.Flip
 

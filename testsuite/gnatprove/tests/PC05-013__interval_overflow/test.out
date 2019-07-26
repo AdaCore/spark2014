@@ -3,7 +3,7 @@ mult.adb:10:22: info: assertion proved (CodePeer)
 mult.adb:10:24: info: overflow check proved (CVC4: 1 VC)
 mult.adb:10:29: info: overflow check proved (CVC4: 1 VC)
 mult.adb:10:42: medium: overflow check might fail [possible explanation: precondition of subprogram at line 6 should mention N]
-mult.adb:11:22: medium: assertion might fail, cannot prove Float(N * 65 + 1) <= Float((N+1) * 65) [possible explanation: precondition of subprogram at line 6 should menti
+mult.adb:11:22: medium: assertion might fail, cannot prove Float(N * 65 + 1) <= Float((N+1) * 65) [possible explanation: precondition of subprogram at line 6 should mention N]
 mult.adb:11:30: info: overflow check proved (CodePeer)
 mult.adb:11:35: info: overflow check proved (CVC4: 1 VC)
 mult.adb:11:35: info: range check proved (Interval)
