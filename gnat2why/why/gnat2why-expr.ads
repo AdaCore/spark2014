@@ -384,8 +384,8 @@ package Gnat2Why.Expr is
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id;
-      --  Return the guard that corresponds to a branch. In programs, also
-      --  generate a check that dynamic choices are in the subtype Choice_Type.
+   --  Return the guard that corresponds to a branch. In programs, also
+   --  generate a check that dynamic choices are in the subtype Choice_Type.
 
    function Transform_Expr
      (Expr          : Node_Id;

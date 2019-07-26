@@ -12952,6 +12952,23 @@ package body Gnat2Why.Expr is
       if Nkind (Choice) = N_Others_Choice then
          R := New_Literal (Domain => Domain, Value => EW_True);
 
+      --  When the choice denotes a subtype with a static predicate, check the
+      --  expression against the predicate values.
+
+      elsif (Nkind (Choice) = N_Subtype_Indication
+              or else (Is_Entity_Name (Choice)
+                        and then Is_Type (Entity (Choice))))
+        and then Has_Predicates (Etype (Choice))
+        and then Has_Static_Predicate (Etype (Choice))
+      then
+         pragma Assert (Is_Discrete_Type (Etype (Choice)));
+         R := Transform_Discrete_Choices
+                (Static_Discrete_Predicate (Etype (Choice)),
+                 Choice_Type,
+                 Expr,
+                 Domain,
+                 Params);
+
       elsif Is_Range then
          R := Range_Expr (Choice, Expr, Domain, Params);
 
