@@ -2341,36 +2341,6 @@ package body Flow_Utility is
       --  Start of processing for Do_Subprogram_Call
 
       begin
-         --  Determine the global effects of the called program
-
-         Get_Globals (Subprogram          => Subprogram,
-                      Scope               => Ctx.Scope,
-                      Classwide           =>
-                        Flow_Classwide.Is_Dispatching_Call (Callsite),
-                      Globals             => Globals,
-                      Use_Deduced_Globals => Ctx.Use_Computed_Globals);
-
-         if not Ctx.Fold_Functions then
-
-            --  If we fold functions we're interested in real world, otherwise
-            --  (this case) we're interested in the proof world too.
-
-            Globals.Inputs.Union (Globals.Proof_Ins);
-         end if;
-
-         --  If this is an external call to protected subprogram then we also
-         --  need to add the enclosing object to the variables we're using;
-         --  if this is an internal call, then add the protected type itself.
-
-         if Ekind (Scope (Subprogram)) = E_Protected_Type then
-            V.Union
-              (Flatten_Variable
-                 ((if Is_External_Call (Callsite)
-                   then Get_Protected_Object (Callsite)
-                   else Direct_Mapping_Id (Scope (Subprogram))),
-                  Ctx.Scope));
-         end if;
-
          --  If we fold functions we need to obtain the used inputs
 
          if Folding then
@@ -2396,6 +2366,62 @@ package body Flow_Utility is
             end;
          end if;
 
+         --  If this is an external call to protected subprogram then we also
+         --  need to add the enclosing object to the variables we're using;
+         --  if this is an internal call, then add the protected type itself.
+
+         if Ekind (Scope (Subprogram)) = E_Protected_Type then
+            declare
+               Implicit_Actual : constant Flow_Id :=
+                 (if Is_External_Call (Callsite)
+                  then Get_Protected_Object (Callsite)
+                  else Direct_Mapping_Id (Scope (Subprogram)));
+
+            begin
+               if not Folding
+                 or else Used_Reads.Contains (Implicit_Actual)
+               then
+                  V.Union
+                    (Flatten_Variable (Implicit_Actual, Ctx.Scope));
+               end if;
+            end;
+         end if;
+
+         --  Merge the actuals into the set of variables used
+
+         Handle_Parameters (Callsite);
+
+         --  Determine the global effects of the called program
+
+         Get_Globals (Subprogram          => Subprogram,
+                      Scope               => Ctx.Scope,
+                      Classwide           =>
+                        Flow_Classwide.Is_Dispatching_Call (Callsite),
+                      Globals             => Globals,
+                      Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+
+         if not Ctx.Fold_Functions then
+
+            --  If we fold functions we're interested in real world, otherwise
+            --  (this case) we're interested in the proof world too.
+
+            Globals.Inputs.Union (Globals.Proof_Ins);
+         end if;
+
+         --  Merge global inputs into the variables used
+
+         for G of Globals.Inputs loop
+            if not Folding
+              or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
+            then
+               V.Include (Change_Variant (G, Normal_Use));
+               if Extensions_Visible (G, Ctx.Scope) then
+                  V.Include (Change_Variant (G, Normal_Use)'Update
+                               (Facet => Extension_Part));
+               end if;
+            end if;
+         end loop;
+
          --  Apply sanity check for functions
          --  ??? we should not emit errors from an utility routine like this,
          --  but otherwise we would need:
@@ -2413,24 +2439,6 @@ package body Flow_Utility is
                N   => Callsite,
                E   => Subprogram);
          end if;
-
-         --  Merge global inputs into the variables used
-
-         for G of Globals.Inputs loop
-            if not Folding
-              or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
-            then
-               V.Include (Change_Variant (G, Normal_Use));
-               if Extensions_Visible (G, Ctx.Scope) then
-                  V.Include (Change_Variant (G, Normal_Use)'Update
-                               (Facet => Extension_Part));
-               end if;
-            end if;
-         end loop;
-
-         --  Merge the actuals into the set of variables used
-
-         Handle_Parameters (Callsite);
 
          --  Finally, expand the collected set (if necessary)
 

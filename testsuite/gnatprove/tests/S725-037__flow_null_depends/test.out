@@ -1,3 +1,2 @@
-p.ads:3:66: medium: missing dependency "Id1'Result => PT"
-p.ads:3:91: medium: incorrect dependency "null => PT"
+p.ads:3:54: info: flow dependencies proved
 p.ads:4:54: info: flow dependencies proved
