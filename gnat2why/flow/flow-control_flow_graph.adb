@@ -4414,8 +4414,8 @@ package body Flow.Control_Flow_Graph is
          Add_Loop_Entry_References (N);
       end if;
 
-      --  If we find a pragma Loop_Variant we set the flag Has_Loop_Variants to
-      --  True.
+      --  If we find a pragma Loop_Variant we set the Termination_Proved flag
+
       if Get_Pragma_Id (N) = Pragma_Loop_Variant then
          Ctx.Termination_Proved := True;
       end if;
