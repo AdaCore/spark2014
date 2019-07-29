@@ -202,6 +202,8 @@ auditlog.adb:669:14: info: data dependencies proved
 auditlog.adb:673:14: info: flow dependencies proved
 auditlog.adb:686:25: info: postcondition proved (CVC4: 3 VC)
 auditlog.adb:690:10: info: initialization of "TheFile" proved
+auditlog.adb:692:20: info: add a contract to analyze it separately from calling contexts
+auditlog.adb:692:20: info: local subprogram "SetCurrentFileToNextFreeFile" only analyzed in the context of calls
 auditlog.adb:707:10: info: analyzing call to "SetCurrentFileToNextFreeFile" in context
 auditlog.adb:707:10: info: in inlined body at line 695
 auditlog.adb:707:10: info: unrolling loop
@@ -359,6 +361,10 @@ auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
 audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
+bio.adb:99:13: info: add a contract to analyze it separately from calling contexts
+bio.adb:99:13: info: local subprogram "ValueOf" only analyzed in the context of calls
+bio.adb:120:13: info: add a contract to analyze it separately from calling contexts
+bio.adb:120:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
 bio.adb:126:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:190
 bio.adb:126:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:190
 bio.adb:129:25: info: analyzing call to "ValueOf" in context
@@ -743,6 +749,8 @@ configdata.adb:839:14: info: flow dependencies proved
 configdata.adb:843:10: info: initialization of "TheTitle" proved
 configdata.adb:844:10: info: initialization of "Stop" proved
 configdata.adb:996:07: info: initialization of "CloseOK" proved
+configdata.adb:1010:16: info: add a contract to analyze it separately from calling contexts
+configdata.adb:1010:16: info: local subprogram "WorkingHoursText" only analyzed in the context of calls
 configdata.adb:1013:10: info: initialization of "LocalValue" proved
 configdata.adb:1013:10: info: initialization of "LocalValue" proved, in call inlined at configdata.adb:1098
 configdata.adb:1013:10: info: initialization of "LocalValue" proved, in call inlined at configdata.adb:1108
@@ -963,6 +971,8 @@ configuration.ads:67:07: info: initialization of "DataValid" proved
 configuration.ads:68:11: info: data dependencies proved
 configuration.ads:74:11: info: flow dependencies proved
 display-interfac.ads:24:08: info: flow dependencies proved
+display.adb:120:13: info: add a contract to analyze it separately from calling contexts
+display.adb:120:13: info: local subprogram "CombineLines" only analyzed in the context of calls
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:191
 display.adb:128:11: info: range check proved (CVC4: 2 VC), in call inlined at display.adb:287
 display.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at display.adb:191
@@ -1540,9 +1550,13 @@ screen.adb:446:41: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:446:44: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 screen.adb:446:44: info: range check proved (CVC4: 4 VC)
 screen.adb:446:72: info: overflow check proved (CVC4: 1 VC)
+screen.adb:462:16: info: add a contract to analyze it separately from calling contexts
+screen.adb:462:16: info: local subprogram "HrsMinsString" only analyzed in the context of calls
 screen.adb:465:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:629
 screen.adb:465:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:635
 screen.adb:465:22: info: range check proved (CVC4: 4 VC), in call inlined at screen.adb:641
+screen.adb:478:16: info: add a contract to analyze it separately from calling contexts
+screen.adb:478:16: info: local subprogram "FileSizeString" only analyzed in the context of calls
 screen.adb:481:59: info: division check proved (CVC4: 1 VC), in call inlined at screen.adb:659
 screen.adb:481:59: info: division check proved (CVC4: 1 VC), in call inlined at screen.adb:665
 screen.adb:481:67: info: range check proved (CVC4: 1 VC), in call inlined at screen.adb:659
@@ -1978,6 +1992,8 @@ usertoken.adb:676:07: info: initialization of "IandACertContents" proved
 usertoken.adb:677:07: info: initialization of "PrivCertContents" proved
 usertoken.adb:678:07: info: initialization of "PrivValid" proved
 usertoken.adb:678:18: info: initialization of "IandAValid" proved
+usertoken.adb:690:16: info: add a contract to analyze it separately from calling contexts
+usertoken.adb:690:16: info: local subprogram "MakeDescription" only analyzed in the context of calls
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:740
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:743
 usertoken.adb:698:23: info: range check proved (CVC4: 4 VC), in call inlined at usertoken.adb:746
