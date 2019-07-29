@@ -2161,11 +2161,6 @@ package body Flow_Utility is
       --  Process the given attribute reference. Do not follow children after
       --  calling this.
 
-      procedure Merge_Entity (Variables : in out Flow_Id_Sets.Set;
-                              E         : Entity_Id)
-      with Pre => Nkind (E) in N_Entity;
-      --  Add the given entity to Variables, respecting the Context
-
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (E) in N_Entity;
       --  Return a set that can be merged into Variables, as above
@@ -2266,13 +2261,6 @@ package body Flow_Utility is
       ------------------
       -- Merge_Entity --
       ------------------
-
-      procedure Merge_Entity (Variables : in out Flow_Id_Sets.Set;
-                              E         : Entity_Id)
-      is
-      begin
-         Variables.Union (Merge_Entity (E));
-      end Merge_Entity;
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
@@ -2816,7 +2804,8 @@ package body Flow_Utility is
             =>
                --  Add the implicit use of
                --  Ada.Task_Identification.Tasking_State
-               Merge_Entity (Variables, RTE (RE_Tasking_State));
+               Variables.Union
+                 (Flatten_Variable (RTE (RE_Tasking_State), Ctx.Scope));
 
                --  We also need to do the usual
 
