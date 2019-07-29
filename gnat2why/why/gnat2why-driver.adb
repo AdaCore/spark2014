@@ -264,15 +264,14 @@ package body Gnat2Why.Driver is
       pragma Assert (Text /= null);
 
       Main_Lib_Id := Scan_ALI
-        (F                => Main_Lib_File,
-         T                => Text,
-         Ignore_ED        => False,
-         Err              => False,
-         Ignore_Errors    => Debug_Flag_I,
-         Directly_Scanned => True);
+        (F             => Main_Lib_File,
+         T             => Text,
+         Ignore_ED     => False,
+         Err           => False,
+         Ignore_Errors => Debug_Flag_I);
       Free (Text);
 
-      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
+      Read_Withed_ALIs (Main_Lib_Id);
    end Prescan_ALI_Files;
 
    ---------------------
