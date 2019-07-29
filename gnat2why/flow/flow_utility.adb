@@ -2402,11 +2402,9 @@ package body Flow_Utility is
             if not Folding
               or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
             then
-               V.Include (Change_Variant (G, Normal_Use));
-               if Extensions_Visible (G, Ctx.Scope) then
-                  V.Include (Change_Variant (G, Normal_Use)'Update
-                               (Facet => Extension_Part));
-               end if;
+               V.Union
+                 (Flatten_Variable
+                    (Change_Variant (G, Normal_Use), Ctx.Scope));
             end if;
          end loop;
 
@@ -2428,17 +2426,7 @@ package body Flow_Utility is
                E   => Subprogram);
          end if;
 
-         --  Finally, expand the collected set (if necessary)
-
-         return R : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set do
-            for Tmp of V loop
-               if Tmp.Kind = Record_Field then
-                  R.Include (Tmp);
-               else
-                  R.Union (Flatten_Variable (Tmp, Ctx.Scope));
-               end if;
-            end loop;
-         end return;
+         return V;
       end Do_Subprogram_Call;
 
       ---------------
