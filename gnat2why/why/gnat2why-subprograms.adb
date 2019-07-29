@@ -3929,10 +3929,7 @@ package body Gnat2Why.Subprograms is
             function Search_Old (N : Node_Id) return Atree.Traverse_Result is
                Dummy : W_Identifier_Id;
             begin
-               if Nkind (N) = N_Attribute_Reference
-                 and then
-                   Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
-               then
+               if Sem_Util.Is_Attribute_Old (N) then
                   Dummy := Name_For_Old (Prefix (N));
                end if;
 

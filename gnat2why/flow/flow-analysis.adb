@@ -4712,9 +4712,7 @@ package body Flow.Analysis is
 
       function Check_Prefix (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) = N_Attribute_Reference
-           and then Get_Attribute_Id (Attribute_Name (N)) = Attribute_Old
-         then
+         if Is_Attribute_Old (N) then
             declare
                Vars : constant Flow_Id_Sets.Set :=
                  Get_Variables
@@ -4724,7 +4722,6 @@ package body Flow.Analysis is
                     Use_Computed_Globals => True);
 
             begin
-
                for Var of Vars loop
                   declare
                      Initial_V : constant Flow_Graphs.Vertex_Id :=
