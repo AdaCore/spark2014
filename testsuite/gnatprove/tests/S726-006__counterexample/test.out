@@ -1,0 +1,36 @@
+finnuc.adb:97:20: info: initialization of "Mux_out1" proved
+finnuc.adb:98:20: info: initialization of "Mux_out1" proved
+finnuc.adb:98:23: info: initialization of "Logical_Operator1_out1" proved
+finnuc.adb:99:20: info: initialization of "Mux_out1" proved
+finnuc.adb:105:48: info: initialization of "Mux_out1" proved
+finnuc.adb:109:21: info: initialization of "Logic_table" proved
+finnuc.adb:109:44: info: initialization of "Logic_index" proved
+finnuc.adb:109:58: info: index check proved (CVC4: 2 VC)
+finnuc.adb:110:21: info: initialization of "Logic_table" proved
+finnuc.adb:110:44: info: initialization of "Logic_index" proved
+finnuc.adb:110:58: info: index check proved (CVC4: 2 VC)
+finnuc.adb:115:12: info: initialization of "Demux_out1" proved
+finnuc.adb:124:22: info: initialization of "Mux_out1_1" proved
+finnuc.adb:124:25: info: initialization of "Logical_Operator1_out1" proved
+finnuc.adb:125:22: info: initialization of "Mux_out1_1" proved
+finnuc.adb:127:22: info: initialization of "Mux_out1_1" proved
+finnuc.adb:136:50: info: initialization of "Mux_out1_1" proved
+finnuc.adb:140:23: info: initialization of "Logic_table_1" proved
+finnuc.adb:140:48: info: initialization of "Logic_index_1" proved
+finnuc.adb:140:64: info: index check proved (CVC4: 2 VC)
+finnuc.adb:141:23: info: initialization of "Logic_table_1" proved
+finnuc.adb:141:48: info: initialization of "Logic_index_1" proved
+finnuc.adb:141:64: info: index check proved (CVC4: 2 VC)
+finnuc.adb:146:12: info: initialization of "Demux_out1_1" proved
+finnuc.adb:154:28: info: initialization of "Demux_out1" proved
+finnuc.adb:158:24: info: initialization of "Demux_out1" proved
+finnuc.adb:162:26: info: initialization of "Demux_out1_1" proved
+finnuc.ads:43:14: info: initialization of "Memory_memory" constituent of "State" proved
+finnuc.ads:43:14: info: initialization of "Memory_memory_1" constituent of "State" proved
+finnuc.ads:43:14: info: initialization of "Unit_Delay_memory" constituent of "State" proved
+finnuc.ads:49:07: info: initialization of "A" proved
+finnuc.ads:50:07: info: initialization of "B" proved
+finnuc.ads:51:07: info: initialization of "OldA" proved
+finnuc.ads:53:14: medium: postcondition might fail, cannot prove R_1 (SetA, A, B) (e.g. when A = False and B = False and SetA = True)
+finnuc.ads:53:25: info: initialization of "A" proved
+finnuc.ads:53:28: info: initialization of "B" proved
