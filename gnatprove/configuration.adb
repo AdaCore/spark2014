@@ -2235,15 +2235,15 @@ package body Configuration is
       --  The first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it.
 
+      Args.Append ("spark_semaphore_wrapper");
+      Args.Append (Base_Name (Socket_Name.all));
+
       if CL_Switches.Memcached_Server /= null
         and then CL_Switches.Memcached_Server.all /= ""
       then
          Args.Append ("spark_memcached_wrapper");
          Args.Append (CL_Switches.Memcached_Server.all);
       end if;
-
-      Args.Append ("spark_semaphore_wrapper");
-      Args.Append (Base_Name (Socket_Name.all));
 
       Args.Append ("gnatwhy3");
 
