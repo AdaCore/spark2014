@@ -90,11 +90,11 @@
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.20" expl="postcondition" proved="true">
+  <goal name="VC def.20" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.21" expl="precondition" proved="true">
+  <goal name="VC def.21" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
