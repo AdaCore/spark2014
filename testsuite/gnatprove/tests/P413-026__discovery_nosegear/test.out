@@ -1,3 +1,9 @@
+ng.adb:5:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:5:13: info: local subprogram "Millisecs" only analyzed in the context of calls
+ng.adb:11:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:11:13: info: local subprogram "NGClickTime" only analyzed in the context of calls
+ng.adb:17:13: info: add a contract to analyze it separately from calling contexts
+ng.adb:17:13: info: local subprogram "NGRotations" only analyzed in the context of calls
 ng.adb:29:07: info: initialization of "Success" proved
 ng.adb:30:07: info: initialization of "Result" proved
 ng.adb:34:17: medium: postcondition might fail, cannot prove Result = Velocity( (((WHCF * Integer (ThisCount - PrevCount)) + ((WHCF * Integer (ThisCount - PrevCount)) * Integer (CurrTime - ThisTime)) / Integer (ThisTime - PrevTime)) * 3600) / Integer (CurrTime - PrevTime))
