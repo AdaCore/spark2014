@@ -31,7 +31,6 @@ with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
 with Snames;              use Snames;
-with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -51,12 +50,12 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Pointers is
 
-   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) with
-     Pre => Is_Access_Type (E);
+   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   with Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
-   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) with
-     Pre => Is_Access_Type (E);
+   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   with Pre => Is_Access_Type (E);
    --  Declares everything for a representative access type but the type and
    --  predefined equality.
 
@@ -111,20 +110,20 @@ package body Why.Gen.Pointers is
       --  (cannot access a null pointer).
 
       procedure Declare_Allocation_Function;
-      --  Generate program functions called when allocating deep objects.
+      --  Generate program functions called when allocating deep objects
 
       ---------------------
       -- Local Variables --
       ---------------------
 
-      Root      : constant Entity_Id  := Root_Pointer_Type (E);
-      Is_Root   : constant Boolean    := Root = E;
-      Ty_Name   : constant W_Name_Id  := To_Name (WNE_Rec_Rep);
-      Abstr_Ty  : constant W_Type_Id  := New_Named_Type (Name => Ty_Name);
+      Root     : constant Entity_Id := Root_Pointer_Type (E);
+      Is_Root  : constant Boolean   := Root = E;
+      Ty_Name  : constant W_Name_Id := To_Name (WNE_Rec_Rep);
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
 
-      A_Ident   : constant W_Identifier_Id :=
+      A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      A_Binder  : constant Binder_Array :=
+      A_Binder : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
 
@@ -134,7 +133,7 @@ package body Why.Gen.Pointers is
 
       procedure Declare_Access_Function is
 
-         Null_Access_Name  : constant String := To_String (WNE_Rec_Comp_Prefix)
+         Null_Access_Name : constant String := To_String (WNE_Rec_Comp_Prefix)
          & (Full_Name (E)) & To_String (WNE_Pointer_Value) & "__pred";
 
          --  The null exclusion defined here is related to the designated type
@@ -146,15 +145,15 @@ package body Why.Gen.Pointers is
          --  type Typ is [null_exclusion] access [subtype_indication]
          --  X : Typ := new [subtype_indication]
 
-         Ty         : constant Entity_Id := Etype (E);
-         Condition  : W_Pred_Id          := True_Pred;
-         Top_Field  : constant W_Expr_Id := +New_Pointer_Is_Null_Access
+         Ty        : constant Entity_Id := Etype (E);
+         Condition : W_Pred_Id          := True_Pred;
+         Top_Field : constant W_Expr_Id := +New_Pointer_Is_Null_Access
            (E, +To_Local (E_Symb (Ty, WNE_Null_Pointer)), Local => True);
 
          Axiom_Name : constant String :=
            To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
 
-         True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
+         True_Term : constant W_Term_Id := New_Literal (Value => EW_True);
 
          Assign_Pointer : constant W_Identifier_Id :=
            To_Local (E_Symb (E, WNE_Assign_Null_Check));
@@ -720,17 +719,17 @@ package body Why.Gen.Pointers is
 
    procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id)
    is
-      Current_Module   : constant W_Module_Id := E_Module (E);
-      Pledge_Ty_Name   : constant String := "__pledge_ty";
-      Pledge_Name      : constant String := Full_Name (E) & "__pledge";
-      Pledge_Get_Name  : constant String := "__pledge_get";
-      Ref_Type         : constant W_Type_Id :=
+      Current_Module  : constant W_Module_Id := E_Module (E);
+      Pledge_Ty_Name  : constant String := "__pledge_ty";
+      Pledge_Name     : constant String := Full_Name (E) & "__pledge";
+      Pledge_Get_Name : constant String := "__pledge_get";
+      Ref_Type        : constant W_Type_Id :=
         New_Named_Type (New_Name (Symb   => NID (Pledge_Ty_Name),
                                   Module => Current_Module));
-      Borrowed_Expr    : Node_Id := Expression (Enclosing_Declaration (E));
-      Borrowed_Ty      : Entity_Id := Etype (E);
-      Borrowed_Entity  : Entity_Id;
-      Cur              : Node_Id := Expression (Enclosing_Declaration (E));
+      Borrowed_Expr   : Node_Id := Expression (Enclosing_Declaration (E));
+      Borrowed_Ty     : Entity_Id := Etype (E);
+      Borrowed_Entity : Entity_Id;
+      Cur             : Node_Id := Expression (Enclosing_Declaration (E));
 
    begin
       --  Find the borrowed initial expression and type.
@@ -793,16 +792,16 @@ package body Why.Gen.Pointers is
                          (Type_Of_Node (Borrowed_Entity))))));
 
       declare
-         Loc_Pledge_Id  : constant W_Identifier_Id :=
+         Loc_Pledge_Id : constant W_Identifier_Id :=
            New_Identifier (Symb   => NID (Pledge_Name),
                            Typ    => New_Named_Type (Pledge_Ty_Name),
                            Domain => EW_Prog);
-         Pledge_Id      : constant W_Identifier_Id :=
+         Pledge_Id     : constant W_Identifier_Id :=
            New_Identifier (Symb   => NID (Pledge_Name),
                            Module => Current_Module,
                            Typ    => Ref_Type,
                            Domain => EW_Prog);
-         Pledge_Get_Id  : constant W_Identifier_Id :=
+         Pledge_Get_Id : constant W_Identifier_Id :=
            New_Identifier (Symb   => NID (Pledge_Get_Name),
                            Module => Current_Module,
                            Typ    => EW_Bool_Type,
@@ -1202,10 +1201,10 @@ package body Why.Gen.Pointers is
    -----------------------
 
    function New_Pledge_Update
-     (E            : Entity_Id;
-      Borrowed_Id  : W_Identifier_Id;
-      Brower_Id    : W_Identifier_Id;
-      Def          : W_Term_Id) return W_Prog_Id
+     (E           : Entity_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Brower_Id   : W_Identifier_Id;
+      Def         : W_Term_Id) return W_Prog_Id
    is
       Pledge_Id  : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Id;
@@ -1276,9 +1275,9 @@ package body Why.Gen.Pointers is
          else E_Symb (E, WNE_Is_Null_Pointer));
 
    begin
-      return New_Record_Access (Name   => +Name,
-                                Field  => Field,
-                                Typ    => EW_Bool_Type);
+      return New_Record_Access (Name  => +Name,
+                                Field => Field,
+                                Typ   => EW_Bool_Type);
    end New_Pointer_Is_Null_Access;
 
    ------------------------------
