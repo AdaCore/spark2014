@@ -5035,6 +5035,15 @@ package body SPARK_Definition is
                                 ("owning component of a tagged type", Comp);
                            end if;
 
+                           --  Check that the component is not of an anonymous
+                           --  access type.
+
+                           if Is_Anonymous_Access_Type (Retysp (Comp_Type))
+                           then
+                              Mark_Violation
+                                ("component of anonymous access type", Comp);
+                           end if;
+
                            --  Mark the equality function for Comp_Type if it
                            --  is used for the predefined equality of E.
 
@@ -5258,6 +5267,18 @@ package body SPARK_Definition is
                            --  Mark type and default value of component
 
                            if In_SPARK (Etype (Comp)) then
+
+                              --  Check that the component is not of an
+                              --  anonymous access type.
+
+                              if Is_Anonymous_Access_Type
+                                (Retysp (Etype (Comp)))
+                              then
+                                 Mark_Violation
+                                   ("component of anonymous access type",
+                                    Comp);
+                              end if;
+
                               Mark_Default_Expression (Comp);
 
                               --  Protected types need full default
@@ -5299,6 +5320,19 @@ package body SPARK_Definition is
                              Iter (Part_Of_Constituents (Anonymous_Object (E)))
                            loop
                               Mark_Entity (Part);
+
+                              --  Check that the part_of constituent is not of
+                              --  an anonymous access type.
+
+                              if Is_Object (Part)
+                                and then Retysp_In_SPARK (Etype (Part))
+                                and then Is_Anonymous_Access_Type
+                                  (Retysp (Etype (Part)))
+                              then
+                                 Mark_Violation
+                                   ("anonymous access variable marked Part_Of"
+                                      & " a protected object", Part);
+                              end if;
 
                               --  Initialization by proof of Part_Of variables
                               --  is not supported yet.

@@ -416,7 +416,7 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - a (named) pool-specific access type,
 
 - the anonymous type of a stand-alone object (including a generic formal **in**
-  mode object),
+  mode object) which is not Part_Of a protected object,
 
 - the anonymous type of an object renaming declaration, or
 
