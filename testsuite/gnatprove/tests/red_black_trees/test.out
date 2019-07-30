@@ -1198,6 +1198,8 @@ red_black_trees.adb:178:26: info: precondition proved (CVC4: 2 VC)
 red_black_trees.adb:184:56: info: range check proved (CVC4: 1 VC)
 red_black_trees.adb:199:22: info: precondition proved (CVC4: 1 VC)
 red_black_trees.adb:200:27: info: precondition proved (CVC4: 1 VC)
+red_black_trees.adb:204:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:204:14: info: local subprogram "Prove_Same_Nb_Blacks" only analyzed in the context of calls
 red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:218:16: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:219:22: info: precondition proved (CVC4: 2 VC), in call inlined at red_black_trees.adb:364
@@ -1225,6 +1227,8 @@ red_black_trees.adb:224:25: medium: assertion might fail, cannot prove Same_Nb_B
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:364
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:368
 red_black_trees.adb:226:30: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:522
+red_black_trees.adb:229:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:229:14: info: local subprogram "Prove_Same_Nb_Blacks_Swap" only analyzed in the context of calls
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:239:22: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:247:13: info: loop invariant initialization proved (CVC4: 3 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:416
@@ -1259,6 +1263,8 @@ red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:262:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:262:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:471
+red_black_trees.adb:265:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:265:14: info: local subprogram "Prove_Same_Nb_Blacks_Rotate" only analyzed in the context of calls
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:273:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:285:13: info: loop invariant initialization proved (CVC4: 1 VC; Trivial: 1 VC), in call inlined at red_black_trees.adb:427
@@ -1301,6 +1307,8 @@ red_black_trees.adb:298:32: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:298:32: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:482
 red_black_trees.adb:300:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:427
 red_black_trees.adb:300:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:482
+red_black_trees.adb:303:14: info: add a contract to analyze it separately from calling contexts
+red_black_trees.adb:303:14: info: local subprogram "Prove_Same_Nb_Blacks_Rotate_Swap" only analyzed in the context of calls
 red_black_trees.adb:312:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:440
 red_black_trees.adb:312:34: info: range check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:495
 red_black_trees.adb:314:22: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:440
@@ -1948,8 +1956,12 @@ search_trees.adb:659:44: info: range check proved (CVC4: 1 VC)
 search_trees.adb:668:07: info: initialization of "X" proved
 search_trees.adb:668:10: info: initialization of "Y" proved
 search_trees.adb:669:07: info: initialization of "YL" proved
+search_trees.adb:686:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:686:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls
 search_trees.adb:694:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:882
 search_trees.adb:694:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:882
+search_trees.adb:699:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:699:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls
 search_trees.adb:705:10: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:887
 search_trees.adb:706:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:887
 search_trees.adb:706:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:887
@@ -1957,6 +1969,8 @@ search_trees.adb:706:30: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:707:25: medium: assertion might fail, cannot prove T.Values (X) < T.Values (Y), in call inlined at search_trees.adb:887
 search_trees.adb:713:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:887
 search_trees.adb:713:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:887
+search_trees.adb:718:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:718:17: info: local subprogram "Prove_Extract_YL" only analyzed in the context of calls
 search_trees.adb:726:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:892
 search_trees.adb:726:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
 search_trees.adb:727:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:892
@@ -1967,6 +1981,8 @@ search_trees.adb:734:13: info: precondition proved (CVC4: 4 VC), in call inlined
 search_trees.adb:740:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
 search_trees.adb:742:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:892
 search_trees.adb:742:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:892
+search_trees.adb:747:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:747:17: info: local subprogram "Prove_Plug_YL" only analyzed in the context of calls
 search_trees.adb:752:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:897
 search_trees.adb:752:28: medium: assertion might fail, cannot prove Get (Model (T.Struct, X) (YL).A, 1) = Right, in call inlined at search_trees.adb:897
 search_trees.adb:752:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
@@ -1984,6 +2000,8 @@ search_trees.adb:774:13: info: precondition proved (CVC4: 4 VC), in call inlined
 search_trees.adb:780:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:897
 search_trees.adb:782:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:897
 search_trees.adb:782:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:897
+search_trees.adb:787:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:787:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
 search_trees.adb:793:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:902
 search_trees.adb:793:25: medium: assertion might fail, cannot prove Get (Model (T.Struct, Y) (X).A, 1) = Left, in call inlined at search_trees.adb:902
 search_trees.adb:793:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
@@ -1999,6 +2017,8 @@ search_trees.adb:804:25: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:809:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:902
 search_trees.adb:815:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:902
 search_trees.adb:815:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:902
+search_trees.adb:820:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:820:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
 search_trees.adb:820:17: warning: subprogram "Prove_Plug_Y" has no effect
 search_trees.adb:825:25: medium: assertion might fail, cannot prove Model (F_5, T.Root) = Model (F_1, T.Root), in call inlined at search_trees.adb:910
 search_trees.adb:825:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:910
@@ -2091,8 +2111,12 @@ search_trees.adb:921:10: info: initialization of "Y" proved
 search_trees.adb:922:07: info: initialization of "XR" proved
 search_trees.adb:923:41: info: invariant check proved (CVC4: 1 VC)
 search_trees.adb:923:41: info: precondition proved (CVC4: 1 VC)
+search_trees.adb:939:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:939:17: info: local subprogram "Prove_Extract_Y" only analyzed in the context of calls
 search_trees.adb:947:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:1134
 search_trees.adb:947:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1134
+search_trees.adb:952:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:952:17: info: local subprogram "Prove_Extract_X" only analyzed in the context of calls
 search_trees.adb:958:10: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:1139
 search_trees.adb:959:25: info: assertion proved (CVC4: 1 VC), in call inlined at search_trees.adb:1139
 search_trees.adb:959:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1139
@@ -2100,6 +2124,8 @@ search_trees.adb:959:30: info: precondition proved (CVC4: 1 VC), in call inlined
 search_trees.adb:960:25: medium: assertion might fail, cannot prove T.Values (X) < T.Values (Y), in call inlined at search_trees.adb:1139
 search_trees.adb:966:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1139
 search_trees.adb:966:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1139
+search_trees.adb:971:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:971:17: info: local subprogram "Prove_Extract_XR" only analyzed in the context of calls
 search_trees.adb:979:13: info: precondition proved (CVC4: 12 VC; Trivial: 5 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:979:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:980:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1144
@@ -2110,6 +2136,8 @@ search_trees.adb:987:13: info: precondition proved (CVC4: 4 VC), in call inlined
 search_trees.adb:993:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:995:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1144
 search_trees.adb:995:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1144
+search_trees.adb:1000:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:1000:17: info: local subprogram "Prove_Plug_XR" only analyzed in the context of calls
 search_trees.adb:1005:28: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1005:28: medium: assertion might fail, cannot prove Get (Model (T.Struct, Y) (XR).A, 1) = Left, in call inlined at search_trees.adb:1149
 search_trees.adb:1005:33: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
@@ -2124,6 +2152,8 @@ search_trees.adb:1026:13: info: precondition proved (CVC4: 4 VC), in call inline
 search_trees.adb:1032:10: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1034:13: info: precondition proved (CVC4: 4 VC), in call inlined at search_trees.adb:1149
 search_trees.adb:1034:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1149
+search_trees.adb:1039:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:1039:17: info: local subprogram "Prove_Plug_Y" only analyzed in the context of calls
 search_trees.adb:1045:25: info: precondition proved (CVC4: 2 VC), in call inlined at search_trees.adb:1154
 search_trees.adb:1045:25: medium: assertion might fail, cannot prove Get (Model (T.Struct, X) (Y).A, 1) = Right, in call inlined at search_trees.adb:1154
 search_trees.adb:1045:30: info: precondition proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
@@ -2142,6 +2172,8 @@ search_trees.adb:1060:25: info: precondition proved (CVC4: 1 VC), in call inline
 search_trees.adb:1065:10: medium: precondition might fail, cannot prove Values (J) < Values (I), in call inlined at search_trees.adb:1154
 search_trees.adb:1071:13: medium: precondition might fail, cannot prove Valid_Root (F1, Root), in call inlined at search_trees.adb:1154
 search_trees.adb:1071:52: info: range check proved (CVC4: 1 VC), in call inlined at search_trees.adb:1154
+search_trees.adb:1076:17: info: add a contract to analyze it separately from calling contexts
+search_trees.adb:1076:17: info: local subprogram "Prove_Plug_X" only analyzed in the context of calls
 search_trees.adb:1076:17: warning: subprogram "Prove_Plug_X" has no effect
 search_trees.adb:1081:25: medium: assertion might fail, cannot prove Model (F_5, T.Root) = Model (F_1, T.Root), in call inlined at search_trees.adb:1162
 search_trees.adb:1081:25: medium: precondition might fail, cannot prove Valid_Root (F, Root), in call inlined at search_trees.adb:1162
