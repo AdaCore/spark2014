@@ -1,5 +1,7 @@
+derived_types_and_classes_illegal.ads:5:07: component of anonymous access type is not allowed in SPARK
 derived_types_and_classes_illegal.ads:5:07: owning component of a tagged type is not allowed in SPARK
 derived_types_and_classes_illegal.ads:5:07: violation of aspect SPARK_Mode at line 2
-derived_types_and_classes_illegal.ads:8:09: "Record_T" is not allowed in SPARK (due to owning component of a tagged type)
+derived_types_and_classes_illegal.ads:5:07: violation of aspect SPARK_Mode at line 2
+derived_types_and_classes_illegal.ads:8:09: "Record_T" is not allowed in SPARK (due to component of anonymous access type)
 derived_types_and_classes_illegal.ads:8:09: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof
