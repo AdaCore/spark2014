@@ -121,7 +121,7 @@ package body Call is
       File   : Mapped_File;
       Region : Mapped_Region;
 
-      Result : JSON_Value;
+      Result : Read_Result;
    begin
       File := Open_Read (Fn);
 
@@ -133,15 +133,17 @@ package body Call is
          --  A fake string directly mapped onto the file contents
 
       begin
-         Result := Read (S, Fn);
-      exception when Invalid_JSON_Stream =>
-         --  ??? We should close the file here, but the subprogram is likely to
-         --  terminate anyway, so this is not crucial.
-         raise Invalid_JSON_Stream with S;
+         Result := Read (S);
+
+         if not Result.Success then
+            --  ??? We should close the file here, but the subprogram is likely
+            --  to terminate anyway, so this is not crucial.
+            raise Invalid_JSON_Stream with S;
+         end if;
       end;
 
       Free (Region);
-      return Result;
+      return Result.Value;
    end Read_File_Into_JSON;
 
    ---------------------------
