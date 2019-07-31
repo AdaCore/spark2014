@@ -2,7 +2,7 @@ from test_support import *
 import xml.etree.ElementTree as ET
 
 def check_session_file():
-    sessionfile = "proof/sessions/greatest_common_divisor/why3session.xml"
+    sessionfile = "proof/sessions/greatest_common_divisor__g_c_d/why3session.xml"
     tree = ET.parse(sessionfile)
     root = tree.getroot()
     # magic XPath string to check whether the manual proof is at the expected

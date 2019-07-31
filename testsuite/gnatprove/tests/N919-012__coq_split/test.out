@@ -9,5 +9,5 @@ greatest_common_divisor.ads:7:40: info: initialization of "G" proved
 greatest_common_divisor.ads:9:06: info: flow dependencies proved
 greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prove G = Gcd (M, N)
 =======================================
-greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prove G = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor/../../Coq/greatest_common_divisor/Greatest_common_divisor__g_c_d__pragargs__cmp.v
+greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prove G = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/greatest_common_divisor__g_c_d/Greatest_common_divisor__g_c_d__pragargs__cmp.v
 =======================================

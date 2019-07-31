@@ -1,6 +1,6 @@
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1"
-lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas/../../Coq/lemmas/Lemmas__lemma_div_is_monotonic1__pragargs__cmp.v
+lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic1/../../Coq/lemmas__lemma_div_is_monotonic1/Lemmas__lemma_div_is_monotonic1__pragargs__cmp.v
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2"
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1"
@@ -9,7 +9,7 @@ lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1"
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2"
-lemmas.ads:24:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas/../../Coq/lemmas/Lemmas__lemma_div_is_monotonic2__pragargs__cmp.v
+lemmas.ads:24:14: medium: postcondition might fail, cannot prove Val1 / Denom <= Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic2/../../Coq/lemmas__lemma_div_is_monotonic2/Lemmas__lemma_div_is_monotonic2__pragargs__cmp.v
 =======================================
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic1"
 lemmas.ads:24:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic2"
