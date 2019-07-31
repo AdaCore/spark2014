@@ -36,11 +36,11 @@ RLIMIT = "\nrlimit: Real time limit (8 s) exceeded\n"
 TASK_MONITOR = "Task_Monitor"
 
 # Node above the split transformation
-CST_NODE = 10
+CST_NODE = 7
 # Node corresponding to the split transformation
-CST_SPLIT = 11
+CST_SPLIT = 8
 # Goal on which we apply z3 etc
-CST_GOAL = 18
+CST_GOAL = 15
 
 # This launches the itp_server
 def launch_server(limit_line, input_file):
@@ -48,7 +48,7 @@ def launch_server(limit_line, input_file):
     installdir = spark_install_path()
     bindir = os.path.join(installdir, 'libexec', 'spark', 'bin')
 
-    cmd = [os.path.join (bindir, "gnat_server"), "--limit-line", limit_line, "test"]
+    cmd = [os.path.join (bindir, "gnat_server"), "--limit-line", limit_line, "test__parity"]
     # Create a pipe to give request to the process one by one.
     read, write = os.pipe()
     # process writes output to file, so we can avoid deadlocking
