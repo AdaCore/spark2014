@@ -1,1 +1,1 @@
-p.adb:13:47: high: constant with variable input "C" must be listed in the Global aspect of "Test" (SPARK RM 6.1.4(14))
+p.adb:13:59: info: data dependencies proved

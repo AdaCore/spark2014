@@ -3475,7 +3475,9 @@ package body Flow_Utility is
 
                      begin
                         for F of Effects loop
-                           Variables.Include (Change_Variant (F, Normal_Use));
+                           Variables.Union
+                             (Flatten_Variable
+                                (Change_Variant (F, Normal_Use), Ctx.Scope));
                         end loop;
                      end;
                   end Process_Type;
