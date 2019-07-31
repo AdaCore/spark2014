@@ -3312,6 +3312,16 @@ package body Flow_Utility is
                   then
                      pragma Assert (Is_Rewrite_Substitution (N));
                      Variables.Union (Recurse (Original_Node (N)));
+
+                  --  For flow it is better to consider variables captured by
+                  --  internal constants introduced when processing actions.
+
+                  elsif Ekind (Entity (N)) = E_Constant
+                    and then Is_Action (Parent (Entity (N)))
+                  then
+                     pragma Assert (not Comes_From_Source (Entity (N)));
+                     Variables.Union
+                       (Recurse (Expression (Parent (Entity (N)))));
                   else
                      Variables.Union (Do_Entity (Entity (N)));
                   end if;
@@ -3510,53 +3520,12 @@ package body Flow_Utility is
    begin
       Traverse (N);
 
-      return S : Flow_Id_Sets.Set do
+      --  And finally, we remove all local constants
+      Remove_Constants (Variables);
 
-         --  We need to do some post-processing on the result here. First we
-         --  check each variable to see if it is the result of an action. For
-         --  flow analysis its more helpful to talk about the original
-         --  variables, so we undo these actions whenever possible.
+      Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
 
-         for F of Variables loop
-            case F.Kind is
-               when Direct_Mapping | Record_Field =>
-                  declare
-                     N : constant Node_Id := Parent (F.Node);
-
-                  begin
-                     if Nkind (N) = N_Object_Declaration
-                       and then Is_Action (N)
-                     then
-                        declare
-                           Expr : constant Node_Id := Expression (N);
-
-                        begin
-                           case Nkind (Expr) is
-                              when N_Identifier | N_Expanded_Name =>
-                                 S.Include
-                                   (F'Update
-                                      (Node =>
-                                         Unique_Entity (Entity (Expr))));
-
-                              when others =>
-                                 S.Union (Recurse (Expr));
-                           end case;
-                        end;
-                     else
-                        S.Include (F);
-                     end if;
-                  end;
-
-               when others =>
-                  S.Include (F);
-            end case;
-         end loop;
-
-         --  And finally, we remove all local constants
-         Remove_Constants (S);
-
-         Map_Generic_In_Formals (Ctx.Scope, S, Entire => False);
-      end return;
+      return Variables;
    end Get_Variables_Internal;
 
    function Get_Variables_Internal (L   : List_Id;
