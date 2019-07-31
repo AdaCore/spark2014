@@ -72,7 +72,7 @@ package Gnat2Why.Error_Messages is
    --  It is OK to call this function even when Load_CodePeer_Results was not
    --  called before. The function will return "False" in that case.
 
-   procedure Parse_Why3_Results (S : String; Timing : in out Time_Token);
+   procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
    procedure Emit_Proof_Result
      (Node       : Node_Id;

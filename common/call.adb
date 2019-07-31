@@ -134,6 +134,10 @@ package body Call is
 
       begin
          Result := Read (S, Fn);
+      exception when Invalid_JSON_Stream =>
+         --  ??? We should close the file here, but the subprogram is likely to
+         --  terminate anyway, so this is not crucial.
+         raise Invalid_JSON_Stream with S;
       end;
 
       Free (Region);

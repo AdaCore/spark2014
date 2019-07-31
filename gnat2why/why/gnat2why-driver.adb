@@ -190,8 +190,7 @@ package body Gnat2Why.Driver is
          exit when Pid = Invalid_Pid;
       end loop;
       for Name of Output_File_List loop
-         Parse_Why3_Results
-           (Call.Read_File_Into_String (Get_Name_String (Name)), Timing);
+         Parse_Why3_Results (Get_Name_String (Name), Timing);
       end loop;
    end Collect_Results;
 
