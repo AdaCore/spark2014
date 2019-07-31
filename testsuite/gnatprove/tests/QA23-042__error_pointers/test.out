@@ -120,7 +120,8 @@ spark02.adb:35:11: name expected here for move/borrow/observe
 spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
 spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
 spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)
-spark03.ads:8:07: info: flow dependencies proved
+spark03.ads:8:07: medium: missing dependency "null => AA"
+spark03.ads:8:36: medium: incorrect dependency "AA => AA"
 spark03.ads:9:21: info: initialization of "An_Item" proved
 spark03.ads:10:07: info: flow dependencies proved
 spark03.ads:21:24: info: data dependencies proved

@@ -3745,23 +3745,6 @@ package body Flow.Analysis is
       Missing_Deps        : Dependency_Maps.Map;
       Unused_Deps         : Dependency_Maps.Map;
 
-      Implicit_Param : constant Entity_Id :=
-        (if Is_Protected_Operation (FA.Spec_Entity)
-         then Get_Implicit_Formal (FA.Analyzed_Entity)
-         else Empty);
-      --  Implicit formal parameter for protected operations
-      --  ??? this implicit parameter is *not* an implicit dependency, so
-      --  it should not be involved in any suppression, see SPARK 6.1.4:
-      --
-      --  "Similarly, for purposes of the rules concerning the Global,
-      --  Refined_Global, Depends, and Refined_Depends aspects as they apply to
-      --  protected operations, the current instance of the enclosing protected
-      --  unit is considered to be a formal parameter (of mode in for a
-      --  protected function, of mode in out otherwise) and a protected
-      --  entry is considered to be a protected procedure."
-      --
-      --  And that is all what SPARK RM says abut this "implicit" parameter.
-
       Depends_Scope : constant Flow_Scope := (if Present (FA.Refined_Depends_N)
                                               then FA.B_Scope
                                               else FA.S_Scope);
@@ -3843,16 +3826,6 @@ package body Flow.Analysis is
                if Is_Dummy_Abstract_State (Unused_In, FA.B_Scope) then
                   null;
 
-               --  Suppress incorrect dependencies related to implicit
-               --  concurrent units, i.e. "X => CU".
-
-               elsif Unused_Out.Kind = Direct_Mapping
-                 and then Present (Implicit_Param)
-                 and then Unused_In.Kind = Direct_Mapping
-                 and then Implicit_Param = Get_Direct_Mapping_Id (Unused_In)
-               then
-                  null;
-
                --  Extra items on the RHS of a user dependency
 
                elsif not Is_Variable (Unused_In) then
@@ -3920,12 +3893,8 @@ package body Flow.Analysis is
             if not Dependency_Maps.Has_Element
               (Find_Out (User_Deps, Missing_Out))
             then
-               if Present (Implicit_Param)
-                 and then Missing_Out = Direct_Mapping_Id (Implicit_Param)
-               then
-                  null;
 
-               elsif Missing_Out = Null_Flow_Id then
+               if Missing_Out = Null_Flow_Id then
                   null;
 
                else
@@ -3941,86 +3910,77 @@ package body Flow.Analysis is
             end if;
 
             for Missing_In of Missing_Ins loop
-               if Missing_Out = Null_Flow_Id
-                 and then Missing_In.Kind = Direct_Mapping
-                 and then Present (Implicit_Param)
-                 and then Implicit_Param = Get_Direct_Mapping_Id (Missing_In)
-               then
-                  null;
 
                --  Items missing from the RHS of a user dependency
-
+               if Missing_Out = Null_Flow_Id then
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "missing dependency ""null => %""",
+                     N        => FA.Depends_N,
+                     F1       => Missing_In,
+                     Tag      => Depends_Null,
+                     Severity => Medium_Check_Kind);
                else
-                  if Missing_Out = Null_Flow_Id then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "missing dependency ""null => %""",
-                        N        => FA.Depends_N,
-                        F1       => Missing_In,
-                        Tag      => Depends_Null,
-                        Severity => Medium_Check_Kind);
-                  else
-                     declare
-                        use Flow_Id_Sets;
+                  declare
+                     use Flow_Id_Sets;
 
-                        Path : constant Vertex_Sets.Set :=
-                          Dependency_Path (FA      => FA,
-                                           Input   => Missing_In,
-                                           Outputs => To_Set (Missing_Out));
+                     Path : constant Vertex_Sets.Set :=
+                       Dependency_Path (FA      => FA,
+                                        Input   => Missing_In,
+                                        Outputs => To_Set (Missing_Out));
 
-                     begin
-                        if Missing_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
-                        then
+                  begin
+                     if Missing_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+                     then
+                        Error_Msg_Flow
+                          (FA       => FA,
+                           Path     => Path,
+                           Msg      => "missing dependency ""%'Result => " &
+                             "%""",
+                           N        => Search_Depends_Contract
+                             (FA.Analyzed_Entity,
+                              FA.Analyzed_Entity),
+                           F1       => Missing_Out,
+                           F2       => Missing_In,
+                           Tag      => Depends_Missing,
+                           Severity => Medium_Check_Kind);
+
+                     else
+                        declare
+                           N : constant Node_Id :=
+                             Search_Depends_Contract
+                               (FA.Analyzed_Entity,
+                                Get_Direct_Mapping_Id (Missing_Out));
+
+                           Kind : constant String :=
+                             (if Missing_Out = Missing_In
+                              then "self-dependency "
+                              else "dependency ");
+
+                           Hint : constant String :=
+                             (if Missing_Out = Missing_In then
+                                (if Has_Bounds (Missing_Out, FA.B_Scope)
+                                 then " (array bounds are preserved)"
+                                 elsif Contains_Discriminants (Missing_Out,
+                                   FA.B_Scope)
+                                 then " (discriminants are preserved)"
+                                 else "")
+                              else "");
+
+                        begin
                            Error_Msg_Flow
                              (FA       => FA,
                               Path     => Path,
-                              Msg      => "missing dependency ""%'Result => " &
-                                          "%""",
-                              N        => Search_Depends_Contract
-                                             (FA.Analyzed_Entity,
-                                              FA.Analyzed_Entity),
+                              Msg      => "missing " & Kind & """% => %""" &
+                                Hint,
+                              N        => N,
                               F1       => Missing_Out,
                               F2       => Missing_In,
                               Tag      => Depends_Missing,
                               Severity => Medium_Check_Kind);
-
-                        else
-                           declare
-                              N : constant Node_Id :=
-                                Search_Depends_Contract
-                                  (FA.Analyzed_Entity,
-                                   Get_Direct_Mapping_Id (Missing_Out));
-
-                              Kind : constant String :=
-                                (if Missing_Out = Missing_In
-                                 then "self-dependency "
-                                 else "dependency ");
-
-                              Hint : constant String :=
-                                (if Missing_Out = Missing_In then
-                                   (if Has_Bounds (Missing_Out, FA.B_Scope)
-                                    then " (array bounds are preserved)"
-                                    elsif Contains_Discriminants (Missing_Out,
-                                                                  FA.B_Scope)
-                                    then " (discriminants are preserved)"
-                                    else "")
-                                 else "");
-
-                           begin
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Path     => Path,
-                                 Msg      => "missing " & Kind & """% => %""" &
-                                             Hint,
-                                 N        => N,
-                                 F1       => Missing_Out,
-                                 F2       => Missing_In,
-                                 Tag      => Depends_Missing,
-                                 Severity => Medium_Check_Kind);
-                           end;
-                        end if;
-                     end;
-                  end if;
+                        end;
+                     end if;
+                  end;
                end if;
             end loop;
          end;
