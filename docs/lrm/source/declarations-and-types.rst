@@ -736,7 +736,7 @@ a class-wide type might be an owning type).]
 3. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
    shall be a name denoting a part of a stand-alone object, a part of a
-   parameter, or a call to a traversal function.
+   parameter, or a part of a call to a traversal function.
 
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]
