@@ -1,0 +1,3 @@
+crash1.adb:11:11: object of anonymous access type must be declared immediately within a subprogram, entry or block (SPARK RM 3.10(4))
+crash2.adb:8:11: object of anonymous access type must be declared immediately within a subprogram, entry or block (SPARK RM 3.10(4))
+gnatprove: error during flow analysis and proof
