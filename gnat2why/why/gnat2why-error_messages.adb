@@ -115,6 +115,8 @@ package body Gnat2Why.Error_Messages is
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
 
+   Registered_VCs_In_Why3 : Natural := 0;
+
    VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
    --  This table maps entities to the set of unproved VCs
 
@@ -432,6 +434,13 @@ package body Gnat2Why.Error_Messages is
 
    function Num_Registered_VCs return Ada.Containers.Count_Type is
      (VC_Table.Length);
+
+   --------------------------------
+   -- Num_Registered_VCs_In_Why3 --
+   --------------------------------
+
+   function Num_Registered_VCs_In_Why3 return Natural is
+      (Registered_VCs_In_Why3);
 
    ---------------------------
    -- Load_Codepeer_Results --
@@ -1061,9 +1070,10 @@ package body Gnat2Why.Error_Messages is
    -----------------
 
    function Register_VC
-     (N      : Node_Id;
-      Reason : VC_Kind;
-      E      : Entity_Id)
+     (N               : Node_Id;
+      Reason          : VC_Kind;
+      E               : Entity_Id;
+      Present_In_Why3 : Boolean := True)
       return VC_Id
    is
       Registered_Id : VC_Id;
@@ -1077,6 +1087,9 @@ package body Gnat2Why.Error_Messages is
          Add_Id_To_Entity (Registered_Id, E);
       end if;
 
+      if Present_In_Why3 then
+         Registered_VCs_In_Why3 := Registered_VCs_In_Why3 + 1;
+      end if;
       return Registered_Id;
    end Register_VC;
 

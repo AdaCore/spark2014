@@ -36,15 +36,19 @@ package Gnat2Why.Error_Messages is
    type VC_Id is new Natural;
 
    function Register_VC
-     (N      : Node_Id;
-      Reason : VC_Kind;
-      E      : Entity_Id)
+     (N               : Node_Id;
+      Reason          : VC_Kind;
+      E               : Entity_Id;
+      Present_In_Why3 : Boolean := True)
       return VC_Id
    with Pre => Present (N) and then Present (E);
    --  @param N node at which the VC is located
    --  @param Reason VC kind
    --  @param E entity of the subprogram/package elaboration to which the VC
    --    belongs
+   --  @param Present_In_Why3 if the VC actually appears in the Why3. This
+   --    Boolean explains the difference between the functions
+   --    Num_Registered_VCs and Num_Registered_VCs_In_Why3 below.
    --  @return a fresh ID for this VC
 
    procedure Register_VC_Entity (E : Entity_Id);
@@ -54,6 +58,9 @@ package Gnat2Why.Error_Messages is
 
    function Num_Registered_VCs return Ada.Containers.Count_Type;
    --  Returns the number of registered VCs
+
+   function Num_Registered_VCs_In_Why3 return Natural;
+   --  VCs that actually appear in the Why3 file(s)
 
    procedure Load_Codepeer_Results;
    --  Load the CodePeer result file and store results. Can be queried with

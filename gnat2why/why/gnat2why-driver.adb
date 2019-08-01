@@ -343,7 +343,7 @@ package body Gnat2Why.Driver is
    ---------------------
 
    procedure Do_Generate_VCs (E : Entity_Id) is
-      Old_Num : constant Ada.Containers.Count_Type := Num_Registered_VCs;
+      Old_Num : constant Natural := Num_Registered_VCs_In_Why3;
    begin
 
       --  Delete all theories in main so that we start this file with no other
@@ -417,7 +417,7 @@ package body Gnat2Why.Driver is
          when others =>
             raise Program_Error;
       end case;
-      if Num_Registered_VCs > Old_Num then
+      if Num_Registered_VCs_In_Why3 > Old_Num then
          declare
             File_Name : constant String := Full_Name (E) & Why_File_Suffix;
          begin
