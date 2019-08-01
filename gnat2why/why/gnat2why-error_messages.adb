@@ -25,7 +25,7 @@
 
 with Ada.Exceptions;
 with Ada.Strings;
-with Ada.Strings.Fixed;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
@@ -931,14 +931,7 @@ package body Gnat2Why.Error_Messages is
          begin
             --  If it is an OOM error, then output the prefix alone
 
-            if Error_Msg'Length >= OOM_Prefix'Length
-              and then
-              Error_Msg
-                (Error_Msg'First
-                   ..
-                 Error_Msg'First + OOM_Prefix'Length - 1) =
-              OOM_Prefix
-            then
+            if Head (Error_Msg, OOM_Prefix'Length) = OOM_Prefix then
                Handle_Error (OOM_Prefix, Internal => False);
 
             --  Otherwise, output gnatwhy3 error as is
