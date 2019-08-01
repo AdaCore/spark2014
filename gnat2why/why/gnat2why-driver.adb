@@ -24,7 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Doubly_Linked_Lists;
+with Ada.Containers.Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
@@ -58,6 +58,7 @@ with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
 with Gnat2Why.Util;                   use Gnat2Why.Util;
 with Gnat2Why_Args;
+with Hashing;                         use Hashing;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
@@ -97,6 +98,13 @@ with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
 
 package body Gnat2Why.Driver is
+
+   use type Ada.Containers.Count_Type;
+   --  for comparison of map length
+
+   Max_Subprocesses : constant := 63;
+   --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
+   --  This limits corresponds to MAXIMUM_WAIT_OBJECTS on Windows.
 
    -----------------------
    -- Local Subprograms --
@@ -139,12 +147,6 @@ package body Gnat2Why.Driver is
    procedure Print_Why_File (Filename : String);
    --  Print the input Why3 file on disk
 
-   procedure Collect_Results (Timing : in out Time_Token);
-   --  Wait until all child gnatwhy3 processes finish and collect their results
-
-   procedure Run_Gnatwhy3 (Filename : String);
-   --  After generating the Why file, run the proof tool
-
    procedure Create_JSON_File (Proof_Done : Boolean);
    --  At the very end, write the analysis results to disk
 
@@ -163,29 +165,65 @@ package body Gnat2Why.Driver is
    --  Global contracts (where repetitions are fine) and keep track of them to
    --  translate each of them exactly once.
 
-   package Path_Name_Lists is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Path_Name_Type,
-      "="          => "=");
+   function Process_Id_Hash (X : Process_Id) return Ada.Containers.Hash_Type
+     is (Generic_Integer_Hash (Pid_To_Integer (X)));
+   --  Hash function for process ids to be used in Hashed maps
 
-   Output_File_List : Path_Name_Lists.List;
-   --  Global list which stores the temp file names in which the various
-   --  gnatwhy3 processes store their output.
+   package Pid_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Process_Id,
+      Element_Type    => Path_Name_Type,
+      Hash            => Process_Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Output_File_Map : Pid_Maps.Map;
+   --  Global map which stores the temp file names in which the various
+   --  gnatwhy3 processes store their output, by process id.
+
+   procedure Collect_One_Result
+     with Pre => not Output_File_Map.Is_Empty;
+   --  Wait for one gnatwhy3 process to finish and process its results. If a
+   --  previously finished gnatwhy3 is already waiting to be collected, this
+   --  procedure returns immediately.
+
+   procedure Collect_Results
+     with Post => Output_File_Map.Is_Empty;
+   --  Wait until all child gnatwhy3 processes finish and collect their results
+
+   procedure Run_Gnatwhy3 (Filename : String)
+   with Pre => Output_File_Map.Length <= Max_Subprocesses;
+   --  After generating the Why file, run the proof tool. Wait for existing
+   --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
+
+   ------------------------
+   -- Collect_One_Result --
+   ------------------------
+
+   procedure Collect_One_Result
+   is
+      Pid     : Process_Id;
+      Success : Boolean;
+      pragma Unreferenced (Success);
+   begin
+      Wait_Process (Pid, Success);
+      pragma Assert (Pid /= Invalid_Pid);
+      declare
+         Fn : constant String := Get_Name_String (Output_File_Map (Pid));
+      begin
+         Parse_Why3_Results (Fn, Timing);
+         Delete_File (Fn, Success);
+         Output_File_Map.Delete (Pid);
+      end;
+   end Collect_One_Result;
 
    ---------------------
    -- Collect_Results --
    ---------------------
 
-   procedure Collect_Results (Timing : in out Time_Token)
-   is
-      Pid     : Process_Id;
-      Success : Boolean;
+   procedure Collect_Results is
    begin
-      loop
-         Wait_Process (Pid, Success);
-         exit when Pid = Invalid_Pid;
-      end loop;
-      for Name of Output_File_List loop
-         Parse_Why3_Results (Get_Name_String (Name), Timing);
+      while not Output_File_Map.Is_Empty loop
+         Collect_One_Result;
       end loop;
    end Collect_Results;
 
@@ -306,7 +344,6 @@ package body Gnat2Why.Driver is
 
    procedure Do_Generate_VCs (E : Entity_Id) is
       Old_Num : constant Ada.Containers.Count_Type := Num_Registered_VCs;
-      use type Ada.Containers.Count_Type;
    begin
 
       --  Delete all theories in main so that we start this file with no other
@@ -631,7 +668,7 @@ package body Gnat2Why.Driver is
 
             Why.Atree.Tables.Free;
 
-            Collect_Results (Timing);
+            Collect_Results;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
@@ -784,12 +821,19 @@ package body Gnat2Why.Driver is
 
    procedure Run_Gnatwhy3 (Filename : String) is
       use Ada.Directories;
+      use Ada.Containers;
       Fn        : constant String := Compose (Current_Directory, Filename);
       Old_Dir   : constant String := Current_Directory;
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
       Command   : GNAT.OS_Lib.String_Access :=
         GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
    begin
+
+      --  If the maximum is reached, we wait for one process to finish first
+
+      if Output_File_Map.Length = Max_Subprocesses then
+         Collect_One_Result;
+      end if;
 
       --  modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
@@ -820,7 +864,6 @@ package body Gnat2Why.Driver is
       begin
          Create_Temp_File (Fd, Name);
          pragma Assert (Fd /= Invalid_FD);
-         Output_File_List.Append (Name);
          Pid :=
            GNAT.OS_Lib.Non_Blocking_Spawn
              (Program_Name           => Command.all,
@@ -829,6 +872,7 @@ package body Gnat2Why.Driver is
               Output_File_Descriptor => Fd,
               Err_To_Out             => True);
          pragma Assert (Pid /= Invalid_Pid);
+         Output_File_Map.Insert (Pid, Name);
          Close (Fd);
       end;
       Set_Directory (Old_Dir);
