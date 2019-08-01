@@ -142,11 +142,6 @@ package body Gnat2Why.Driver is
    procedure Collect_Results (Timing : in out Time_Token);
    --  Wait until all child gnatwhy3 processes finish and collect their results
 
-   procedure Touch_Main_File (Prefix : String);
-   --  This procedure is used when there is nothing to do, but it should be
-   --  signalled that everything went fine. This is done by creating the main
-   --  output file of gnat2why, the main Why file.
-
    procedure Run_Gnatwhy3 (Filename : String);
    --  After generating the Why file, run the proof tool
 
@@ -402,9 +397,6 @@ package body Gnat2Why.Driver is
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
       E         : constant Entity_Id :=
         Unique_Defining_Entity (Unit (GNAT_Root));
-      Base_Name : constant String :=
-        File_Name_Without_Suffix
-          (Get_Name_String (Unit_File_Name (Main_Unit)));
 
       generic
          with procedure Action (N : Node_Id);
@@ -493,11 +485,9 @@ package body Gnat2Why.Driver is
          --  We do nothing for generic units currently. If this get revised
          --  at some point to provide proof of generics, then the special
          --  SPARK expansion in the frontend should be applied to generic
-         --  units as well. We still need to create the Why files to
-         --  indicate that everything went OK.
+         --  units as well.
 
          if not Gnat2Why_Args.Global_Gen_Mode then
-            Touch_Main_File (Base_Name);
 
             --  Issue warning if analyzing specific units with -u switch, but
             --  the main entity in the compilation unit is generic.
@@ -844,17 +834,6 @@ package body Gnat2Why.Driver is
       Set_Directory (Old_Dir);
       Free (Command);
    end Run_Gnatwhy3;
-
-   ---------------------
-   -- Touch_Main_File --
-   ---------------------
-
-   procedure Touch_Main_File (Prefix : String) is
-      Filename : constant String := Prefix & Why_File_Suffix;
-   begin
-      Open_Current_File (Filename);
-      Close_Current_File;
-   end Touch_Main_File;
 
    ---------------------
    -- Translate_CUnit --
