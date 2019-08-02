@@ -5596,11 +5596,6 @@ package body Gnat2Why.Expr is
            Nkind (Actual) in N_Identifier | N_Expanded_Name
              and then not
            Is_Protected_Component_Or_Discr (Entity (Actual));
-         No_Init_Checks : constant Boolean :=
-           Present (Formal)
-           and then Ekind (Formal) = E_Out_Parameter
-           and then Needs_Init_Wrapper_Type (Etype (Actual));
-         --  We should not introduce initialization checks for out parameters
 
       begin
          --  Handle the initialization flag
@@ -5809,7 +5804,8 @@ package body Gnat2Why.Expr is
                        +Transform_Expr (Actual,
                                         EW_Prog,
                                         Params,
-                                        No_Init => No_Init_Checks);
+                                        No_Init =>
+                                          Ekind (Formal) = E_Out_Parameter);
                      --  We should not introduce initialization checks for out
                      --  parameters.
 
@@ -5821,7 +5817,8 @@ package body Gnat2Why.Expr is
                              Expr     =>
                                +Prefetch_Actual,
                              To       => Formal_T,
-                             No_Init  => No_Init_Checks)
+                             No_Init  =>
+                               Ekind (Formal) = E_Out_Parameter)
                         else
                         +Insert_Simple_Conversion (Ada_Node => Actual,
                                                    Domain   => EW_Prog,
@@ -5902,7 +5899,8 @@ package body Gnat2Why.Expr is
                      --  the actual.
 
                      Act_T_Fetch : constant W_Type_Id :=
-                       (if No_Init_Checks then EW_Init_Wrapper (Actual_T)
+                       (if Ekind (Formal) = E_Out_Parameter
+                        then EW_Init_Wrapper (Actual_T)
                         else Actual_T);
                      --  Type for fetching the actual. Use a wrapper type if no
                      --  initialization checks are required.
@@ -5962,12 +5960,13 @@ package body Gnat2Why.Expr is
                         else Prefetch_Actual);
 
                      Fetch_Actual  : constant W_Prog_Id :=
-                       +Insert_Checked_Conversion (Ada_Node => Actual,
-                                                   Domain   => EW_Prog,
-                                                   Expr     =>
-                                                     +Prefetch_Actual_Rec,
-                                                   To       => Formal_T,
-                                                   No_Init  => No_Init_Checks);
+                       +Insert_Checked_Conversion
+                       (Ada_Node => Actual,
+                        Domain   => EW_Prog,
+                        Expr     =>
+                          +Prefetch_Actual_Rec,
+                        To       => Formal_T,
+                        No_Init  => Ekind (Formal) = E_Out_Parameter);
 
                      --  2/ After the call (storing the result):
                      -------------------------------------------
@@ -6049,7 +6048,7 @@ package body Gnat2Why.Expr is
                      --  actual if it cannot be used as is.
 
                      Prefetch_Actual         : constant W_Prog_Id :=
-                       (if No_Init_Checks
+                       (if Ekind (Formal) = E_Out_Parameter
                         then +Insert_Checked_Conversion
                           (Ada_Node => Actual,
                            Domain   => EW_Prog,
@@ -6060,7 +6059,7 @@ package body Gnat2Why.Expr is
                               No_Init => True),
                            To       => Formal_T,
                            No_Init  => True)
-                        --  Do the conversion explicitly to avoid
+                        --  Do the conversion explicitly to avoid predicate and
                         --  initialization checks.
 
                         else +Transform_Expr

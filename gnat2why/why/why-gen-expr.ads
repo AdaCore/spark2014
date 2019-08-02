@@ -289,7 +289,7 @@ package Why.Gen.Expr is
       Need_Check     : Boolean := False;
       Force_No_Slide : Boolean := False;
       Is_Qualif      : Boolean := False;
-      Do_Init        : Boolean := True)
+      No_Init        : Boolean := False)
       return W_Expr_Id;
    --  Generate a conversion between two Ada array types. If Range check
    --  is set, add a length or range check to the expression. Which
@@ -306,8 +306,9 @@ package Why.Gen.Expr is
    --  @param In_Qualif True if the conversion is in fact a qualification. In
    --     qualifications, arrays are never slided, and index checks are
    --     introduced to ensure that the bounds match.
-   --  @param Do_Init True if we want to perform initialization checks
-   --     during the conversion.
+   --  @param No_Init True if we are converting a potentially uninitialized
+   --     value (ie if want to skip initialization checks and predicate checks
+   --     during the conversion).
    --  @result converted expression of Expr to type To
 
    function Insert_Checked_Conversion
@@ -328,8 +329,9 @@ package Why.Gen.Expr is
    --     assignment or to in out or out parameter calls when performing copy
    --     back assignments. This has an effect on retrieving the type for the
    --     check.
-   --  @param No_Init True if we do not want to perform initialization checks
-   --     during the conversion.
+   --  @param No_Init True if we are converting a potentially uninitialized
+   --     value (ie if want to skip initialization checks and predicate checks
+   --     during the conversion).
    --  @result converted expression of Expr to type To, with possible check
 
    function Insert_Simple_Conversion
@@ -356,7 +358,7 @@ package Why.Gen.Expr is
       To       : W_Type_Id;
       Do_Check : Boolean := False;
       Lvalue   : Boolean := False;
-      Do_Init  : Boolean := True) return W_Expr_Id;
+      No_Init  : Boolean := False) return W_Expr_Id;
    --  We insert a conversion on Expr so that its type corresponds to "To".
    --  When Range_Check is set, a range check is inserted into the conversion,
    --  and the node Ada_Node is used to determine the kind of the check.
@@ -367,8 +369,9 @@ package Why.Gen.Expr is
    --  @param Do_Check True iff a check should be inserted
    --  @param Lvalue True iff this is applied to the left-hand side of an
    --     assignment. This has an effect on retrieving the type for the check.
-   --  @param Do_Init True if we want to perform initialization checks
-   --     during the conversion.
+   --  @param No_Init True if we are converting a potentially uninitialized
+   --     value (ie if want to skip initialization checks and predicate checks
+   --     during the conversion).
    --  @result converted expression of Expr to type To
 
    function Insert_Scalar_Conversion
@@ -379,7 +382,7 @@ package Why.Gen.Expr is
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
-      Do_Init    : Boolean := True;
+      No_Init    : Boolean := False;
       Skip_Pred  : Boolean := False) return W_Expr_Id
    with Pre => (if Present (Range_Type) then Is_Type (Range_Type));
    --  Same as the above except that we take directly the kind of check as
@@ -391,17 +394,24 @@ package Why.Gen.Expr is
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id;
-   --  when Need_Check is set, a discriminant check is inserted into the
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id;
+   --  When Need_Check is set, a discriminant check is inserted into the
    --  conversion, and the node is used to determine the subtype for the check.
+   --  No_Init is set if we are converting a potentially uninitialized
+   --  value (ie if want to skip predicate checks during the conversion).
 
    function Insert_Pointer_Conversion
      (Ada_Node   : Node_Id;
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id;
-   --  If Need_Check is True, insert range, null exclusion and predicate checks
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id;
+   --  If Need_Check is True, insert range, null exclusion and predicate
+   --  checks.
+   --  No_Init is set if we are converting a potentially uninitialized
+   --  value (ie if want to skip predicate checks during the conversion).
 
    function Insert_Cnt_Loc_Label
      (Ada_Node     : Node_Id;

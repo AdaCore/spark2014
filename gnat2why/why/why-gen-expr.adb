@@ -349,7 +349,7 @@ package body Why.Gen.Expr is
       Need_Check     : Boolean := False;
       Force_No_Slide : Boolean := False;
       Is_Qualif      : Boolean := False;
-      Do_Init        : Boolean := True)
+      No_Init        : Boolean := False)
       return W_Expr_Id
    is
       From      : constant W_Type_Id := Get_Type (Expr);
@@ -523,14 +523,16 @@ package body Why.Gen.Expr is
         not Force_No_Slide and then Need_Slide and then not Is_Qualif;
       Arr_Expr   : W_Expr_Id := Expr;
       T          : W_Expr_Id;
+
       Pred_Check : constant Boolean :=
         Domain = EW_Prog
+        and then not No_Init
         and then Need_Check
         and then Has_Predicates (Get_Ada_Node (+To))
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
       Init_Check : constant Boolean :=
         Domain = EW_Prog
-        and then Do_Init
+        and then not No_Init
         and then Need_Check
         and then Has_Init_By_Proof (From_Ent)
         and then not Has_Init_By_Proof (To_Ent);
@@ -838,7 +840,8 @@ package body Why.Gen.Expr is
                                         Ada_Node   => Ada_Node,
                                         Expr       => T,
                                         To         => To,
-                                        Need_Check => Check_Needed);
+                                        Need_Check => Check_Needed,
+                                        No_Init    => No_Init);
 
       elsif Is_Array_Conversion (From, To) then
          --  The flag Do_Length_Check is not set consistently in the
@@ -849,7 +852,7 @@ package body Why.Gen.Expr is
                                        Expr       => T,
                                        To         => To,
                                        Need_Check => Check_Needed,
-                                       Do_Init    => not No_Init);
+                                       No_Init    => No_Init);
 
       elsif Is_Pointer_Conversion (From, To) then
 
@@ -857,7 +860,8 @@ package body Why.Gen.Expr is
                                          Ada_Node   => Ada_Node,
                                          Expr       => T,
                                          To         => To,
-                                         Need_Check => Check_Needed);
+                                         Need_Check => Check_Needed,
+                                         No_Init    => No_Init);
 
       --  Conversion between scalar types
 
@@ -886,7 +890,7 @@ package body Why.Gen.Expr is
                                            To       => To,
                                            Do_Check => Do_Check,
                                            Lvalue   => Lvalue,
-                                           Do_Init  => not No_Init);
+                                           No_Init  => No_Init);
          end;
       end if;
 
@@ -902,7 +906,8 @@ package body Why.Gen.Expr is
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id
    is
       From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
@@ -928,6 +933,7 @@ package body Why.Gen.Expr is
       --  predicate function inside the definition of a predicate function.
       Need_Pred_Check : constant Boolean :=
         Need_Check
+          and then not No_Init
           and then Has_Predicates (R)
           and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
       Check_Entity    : constant Entity_Id := Get_Ada_Node (+To);
@@ -996,7 +1002,8 @@ package body Why.Gen.Expr is
       Domain     : EW_Domain;
       Expr       : W_Expr_Id;
       To         : W_Type_Id;
-      Need_Check : Boolean := False) return W_Expr_Id
+      Need_Check : Boolean := False;
+      No_Init    : Boolean := False) return W_Expr_Id
    is
       From   : constant W_Type_Id := Get_Type (Expr);
       --  Current result expression
@@ -1015,7 +1022,7 @@ package body Why.Gen.Expr is
       --  predicate function inside the definition of a predicate function.
 
       Need_Pred_Check : constant Boolean :=
-        Has_Predicates (R)
+        not No_Init and then Has_Predicates (R)
         and then not Is_Call_Arg_To_Predicate_Function (Ada_Node);
 
    begin
@@ -1516,7 +1523,7 @@ package body Why.Gen.Expr is
       To       : W_Type_Id;
       Do_Check : Boolean := False;
       Lvalue   : Boolean := False;
-      Do_Init  : Boolean := True) return W_Expr_Id
+      No_Init  : Boolean := False) return W_Expr_Id
    is
       From : constant W_Type_Id := Get_Type (Expr);
 
@@ -1566,7 +1573,7 @@ package body Why.Gen.Expr is
          Range_Type  => Range_Type,
          Check_Kind  => Check_Kind,
          Lvalue      => Lvalue,
-         Do_Init     => Do_Init);
+         No_Init     => No_Init);
    end Insert_Scalar_Conversion;
 
    function Insert_Scalar_Conversion
@@ -1577,7 +1584,7 @@ package body Why.Gen.Expr is
       Range_Type : Entity_Id;
       Check_Kind : Scalar_Check_Kind;
       Lvalue     : Boolean := False;
-      Do_Init    : Boolean := True;
+      No_Init    : Boolean := False;
       Skip_Pred  : Boolean := False) return W_Expr_Id
    is
       From    : constant W_Type_Id := Get_Type (Expr);
@@ -1587,7 +1594,7 @@ package body Why.Gen.Expr is
       --  Concrete type for To if To is a wrapper for initialization
 
       Init_Domain : constant EW_Domain :=
-        (if Domain = EW_Prog and then not Do_Init then EW_Pterm
+        (if Domain = EW_Prog and then No_Init then EW_Pterm
          else Domain);
       --  Domain for initialization checks
 
@@ -1595,6 +1602,7 @@ package body Why.Gen.Expr is
       --  predicate function inside the definition of a predicate function.
       Do_Predicate_Check : constant Boolean :=
         Present (Ada_Node)
+          and then not No_Init
           and then Present (Get_Ada_Node (+To))
           and then Has_Predicates (Get_Ada_Node (+To))
           and then Get_Ada_Node (+To) /= Get_Ada_Node (+From)
@@ -1967,7 +1975,7 @@ package body Why.Gen.Expr is
                                           Ada_Node => Ada_Node,
                                           Expr     => Expr,
                                           To       => To,
-                                          Do_Init  => False);
+                                          No_Init  => True);
       end if;
    end Insert_Simple_Conversion;
 
