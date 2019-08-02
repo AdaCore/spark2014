@@ -47,6 +47,7 @@ with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Visibility;                 use Flow_Visibility;
 with GNAT.OS_Lib;                     use GNAT.OS_Lib;
+with GNAT.SHA1;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
@@ -195,6 +196,18 @@ package body Gnat2Why.Driver is
    --  After generating the Why file, run the proof tool. Wait for existing
    --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
 
+   Max_Why3_Filename_Length : constant := 104;
+   --  On windows, a path can be no longer than 250 or so chars. We allow a
+   --  maximum of 104 chars (100 chars + 4 four the file extension) for the
+   --  why3 file so that users still have 150 chars or so for their own project
+   --  structure.
+
+   function Compute_Why3_File_Name (E : Entity_Id) return String
+     with Post =>
+       Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
+   --  Compute the why3 file to be used. Guarantees to be no longer than
+   --  Max_Why3_Filename_Length and makes some effort to still be unique.
+
    ------------------------
    -- Collect_One_Result --
    ------------------------
@@ -273,6 +286,31 @@ package body Gnat2Why.Driver is
             null;
       end case;
    end Complete_Declaration;
+
+   ----------------------------
+   -- Compute_Why3_File_Name --
+   ----------------------------
+
+   function Compute_Why3_File_Name (E : Entity_Id) return String is
+      S : constant String := Full_Name (E);
+      Digest_Length : constant := 20;
+      --  arbitrary number of digits that we take from the SHA1 digest to
+      --  achieve uniqueness
+   begin
+      if S'Length > Max_Why3_Filename_Length - 4 then
+         --  the slice bound is computed as follows:
+         --  take Max_Why3_Filename_Length - 1
+         --  remove 4 for the file ending
+         --  remove 1 for the dash
+         --  remove Digest_Length for the digest
+         return GNAT.SHA1.Digest (S) (1 .. Digest_Length) & "-" &
+           S (S'Last - (Max_Why3_Filename_Length - 1 - 4 - 1 - Digest_Length)
+              .. S'Last)
+           & ".mlw";
+      else
+         return S  & ".mlw";
+      end if;
+   end Compute_Why3_File_Name;
 
    ----------------------
    -- Create_JSON_File --
@@ -419,7 +457,7 @@ package body Gnat2Why.Driver is
       end case;
       if Num_Registered_VCs_In_Why3 > Old_Num then
          declare
-            File_Name : constant String := Full_Name (E) & Why_File_Suffix;
+            File_Name : constant String := Compute_Why3_File_Name (E);
          begin
             Print_Why_File (File_Name);
             Run_Gnatwhy3 (File_Name);
