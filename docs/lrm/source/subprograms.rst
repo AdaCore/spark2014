@@ -1497,6 +1497,11 @@ Overloading of Operators
     aspect of ``null``; see :ref:`global-aspects` for the statement of this
     rule.]
 
+.. centered:: **Verification Rules**
+
+2.  A user-defined equality operation on a record type shall always
+    terminate.
+
 .. _etu-overloading_of_operators-lr:
 
 Null Procedures
