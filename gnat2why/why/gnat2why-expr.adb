@@ -3345,8 +3345,6 @@ package body Gnat2Why.Expr is
                          (Domain    => EW_Pred,
                           Condition => +Condition,
                           Then_Part => W_Def_Init_Expr);
-                     DIC_Node        : constant Node_Id :=
-                       (if Is_Full_View (Ty) then Partial_View (Ty) else Ty);
 
                   begin
                      Checks := Sequence
@@ -3363,7 +3361,7 @@ package body Gnat2Why.Expr is
                              +Sequence (New_Ignore (Prog => +W_Def_Init_Prog),
                              New_Assert
                                (Pred        => +New_VC_Expr
-                                  (Ada_Node => DIC_Node,
+                                  (Ada_Node => Ada_Node,
                                    Expr     => Def_Init_Check,
                                    Reason   => VC_Default_Initial_Condition,
                                    Domain   => EW_Pred),
@@ -3620,7 +3618,7 @@ package body Gnat2Why.Expr is
 
                            T_Comp :=
                              +Compute_Default_Check
-                             (Ada_Node, Etype (Field), Params);
+                             (Field, Etype (Field), Params);
                         end if;
 
                         if T_Comp /= +Void then

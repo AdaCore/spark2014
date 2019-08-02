@@ -61,13 +61,13 @@ package body Preds is
    end Create_Rec_Bad;
 
    procedure Create_Rec_Wrap_OK (X : out Rec_Wrap_OK) is
-      Tmp : Rec_Wrap_OK;  --  @PREDICATE_CHECK:PASS
+      Tmp : Rec_Wrap_OK;
    begin
       X := Tmp;
    end Create_Rec_Wrap_OK;
 
    procedure Create_Rec_Wrap_Bad (X : out Rec_Wrap_Bad) is
-      Tmp : Rec_Wrap_Bad;  --  @PREDICATE_CHECK:FAIL
+      Tmp : Rec_Wrap_Bad;
    begin
       X := Tmp;
    end Create_Rec_Wrap_Bad;

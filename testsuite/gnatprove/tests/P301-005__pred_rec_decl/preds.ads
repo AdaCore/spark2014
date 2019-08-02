@@ -51,15 +51,15 @@ package Preds is
 
    type Rec_OK is record
       I : Integer := 1;
-      X : Int_OK;
-      A : Arr_OK;
+      X : Int_OK;  --  @PREDICATE_CHECK:PASS
+      A : Arr_OK;  --  @PREDICATE_CHECK:PASS
    end record with
      Predicate => Rec_OK.I /= 0 and Rec_OK.X /= 0 and (for all K in Rec_OK.A'Range => Rec_OK.A (K) /= 0);
 
    type Rec_Bad is record
       I : Integer := 0;
-      X : Int_Bad;
-      A : Arr_Bad;
+      X : Int_Bad;  --  @PREDICATE_CHECK:FAIL
+      A : Arr_Bad;  --  @PREDICATE_CHECK:FAIL
    end record with
      Predicate => Rec_Bad.I /= 0 and Rec_Bad.X /= 0 and (for all K in Rec_Bad.A'Range => Rec_Bad.A (K) /= 0);
 
@@ -75,11 +75,11 @@ package Preds is
      Predicate => Rec_Int_Bad /= 0;
 
    type Rec_Wrap_OK is record
-      X : Rec_Int_OK;
+      X : Rec_Int_OK;  --  @PREDICATE_CHECK:PASS
    end record;
 
    type Rec_Wrap_Bad is record
-      X : Rec_Int_Bad;
+      X : Rec_Int_Bad;  --  @PREDICATE_CHECK:FAIL
    end record;
 
 end Preds;
