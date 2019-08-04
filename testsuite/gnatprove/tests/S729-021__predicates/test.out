@@ -1,8 +1,11 @@
 foo.adb:7:18: info: predicate check proved (altergo: 1 VC)
 foo.ads:7:26: info: initialization of "Context" proved
 foo.ads:8:14: info: postcondition proved (CVC4: 1 VC)
+generic_bar.adb:7:27: info: predicate check proved (CVC4: 1 VC), in instantiation at bar.ads:6
 generic_bar.ads:9:34: info: initialization of "Context" proved, in instantiation at bar.ads:6
-generic_bar.ads:10:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC), in instantiation at bar.ads:6
+generic_bar.ads:10:14: info: postcondition proved (CVC4: 2 VC), in instantiation at bar.ads:6
 test.adb:9:07: info: initialization of "Context" proved
 test.adb:16:07: info: initialization of "Context" proved
+test.adb:18:31: info: predicate check proved (CVC4: 1 VC)
 test.adb:18:31: medium: predicate check might fail
+test.adb:19:33: info: predicate check proved (CVC4: 1 VC)
