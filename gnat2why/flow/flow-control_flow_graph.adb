@@ -1820,6 +1820,7 @@ package body Flow.Control_Flow_Graph is
             Loops      => Ctx.Current_Loops,
             E_Loc      => N),
          V);
+      Ctx.Folded_Function_Checks.Append (Expression (N));
       CM.Insert (Union_Id (N), Trivial_Connection (V));
    end Do_Delay_Statement;
 
