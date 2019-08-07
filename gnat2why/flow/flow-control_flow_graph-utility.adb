@@ -155,11 +155,11 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Explicitly_Used := Var_Use;
       end if;
 
-      A.Subprograms_Called        := Sub_Called;
-      A.Is_Assertion              := Is_Assertion;
-      A.Is_Loop_Entry             := Is_Loop_Entry;
-      A.Error_Location            := E_Loc;
-      A.Execution                 := Execution;
+      A.Subprograms_Called := Sub_Called;
+      A.Is_Assertion       := Is_Assertion;
+      A.Is_Loop_Entry      := Is_Loop_Entry;
+      A.Error_Location     := E_Loc;
+      A.Execution          := Execution;
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
@@ -266,20 +266,20 @@ package body Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    is
-      Subprogram : constant Entity_Id  := Get_Called_Entity (Call_Vertex);
-      Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
+      Scope      : Flow_Scope renames FA.B_Scope;
 
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
-      A        : V_Attributes     := Null_Attributes;
-      Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      A      : V_Attributes     := Null_Attributes;
+      Unused : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
    begin
       A.Is_Parameter                 := True;
@@ -369,16 +369,17 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
+      Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
       Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      G     : constant Flow_Id    := Change_Variant (Global, Normal_Use);
-      A     : V_Attributes        := Null_Attributes;
-      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Tmp   : Flow_Id_Sets.Set;
+      G : constant Flow_Id := Change_Variant (Global, Normal_Use);
+      A : V_Attributes     := Null_Attributes;
+
+      Tmp : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter          := True;
       A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
@@ -435,13 +436,13 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Implicit_Parameter_Attributes
      (Call_Vertex : Node_Id;
       Implicit    : Flow_Id;
+      Scope       : Flow_Scope;
       Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    is
-      I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
-      A     : V_Attributes        := Null_Attributes;
-      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      I : constant Flow_Id := Change_Variant (Implicit, Normal_Use);
+      A : V_Attributes     := Null_Attributes;
 
       Implicit_Flat : constant Flow_Id_Sets.Set := Flatten_Variable (I, Scope);
       --  Flat view of the implicit parameter

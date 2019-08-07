@@ -4546,6 +4546,7 @@ package body Flow.Control_Flow_Graph is
                     (Call_Vertex                  => N,
                      Global                       => Change_Variant
                        (Null_Export_Flow_Id, Out_View),
+                     Scope                        => FA.B_Scope,
                      Discriminants_Or_Bounds_Only => False,
                      Loops                        => Ctx.Current_Loops,
                      E_Loc                        => N),
@@ -4563,6 +4564,7 @@ package body Flow.Control_Flow_Graph is
                  (Call_Vertex                  => N,
                   Global                       => Change_Variant
                     (Null_Export_Flow_Id, Out_View),
+                  Scope                        => FA.B_Scope,
                   Discriminants_Or_Bounds_Only => False,
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => N),
@@ -4974,6 +4976,7 @@ package body Flow.Control_Flow_Graph is
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
                         Global                       => R,
+                        Scope                        => FA.B_Scope,
                         Discriminants_Or_Bounds_Only => False,
                         Loops                        => Ctx.Current_Loops,
                         E_Loc                        => Callsite,
@@ -4987,6 +4990,7 @@ package body Flow.Control_Flow_Graph is
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
                         Global                       => R,
+                        Scope                        => FA.B_Scope,
                         Discriminants_Or_Bounds_Only => False,
                         Loops                        => Ctx.Current_Loops,
                         E_Loc                        => Callsite),
@@ -5001,6 +5005,7 @@ package body Flow.Control_Flow_Graph is
                Make_Global_Attributes
                  (Call_Vertex                  => Callsite,
                   Global                       => Change_Variant (W, In_View),
+                  Scope                        => FA.B_Scope,
                   Discriminants_Or_Bounds_Only => True,
                   Loops                        => Ctx.Current_Loops,
                   E_Loc                        => Callsite),
@@ -5011,6 +5016,7 @@ package body Flow.Control_Flow_Graph is
                      Make_Global_Attributes
                        (Call_Vertex                  => Callsite,
                         Global                       => W,
+                        Scope                        => FA.B_Scope,
                         Discriminants_Or_Bounds_Only => False,
                         Loops                        => Ctx.Current_Loops,
                         E_Loc                        => Callsite),
@@ -5117,6 +5123,7 @@ package body Flow.Control_Flow_Graph is
                Make_Implicit_Parameter_Attributes
                  (Call_Vertex => Callsite,
                   Implicit    => Change_Variant (Parameter, In_View),
+                  Scope       => FA.B_Scope,
                   Loops       => Ctx.Current_Loops,
                   E_Loc       => Callsite),
                V);
@@ -5129,6 +5136,7 @@ package body Flow.Control_Flow_Graph is
                   Make_Implicit_Parameter_Attributes
                     (Call_Vertex => Callsite,
                      Implicit    => Change_Variant (Parameter, Out_View),
+                     Scope       => FA.B_Scope,
                      Loops       => Ctx.Current_Loops,
                      E_Loc       => Callsite),
                   V);

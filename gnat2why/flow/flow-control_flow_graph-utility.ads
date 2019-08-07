@@ -125,9 +125,9 @@ package Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    with Pre  => (if In_Vertex
                  then
@@ -153,6 +153,7 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
+      Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
       Is_Assertion                 : Boolean := False;
@@ -171,8 +172,9 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Implicit_Parameter_Attributes
      (Call_Vertex : Node_Id;
       Implicit    : Flow_Id;
+      Scope       : Flow_Scope;
       Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    with Post =>
      not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node and
