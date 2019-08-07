@@ -253,6 +253,15 @@ package SPARK_Util.Types is
    --     checking the DIC, either because it has its own DIC, or because it
    --     is a tagged type which inherits a DIC which requires rechecking.
 
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
+     Pre => Present (Get_Initial_DIC_Procedure (E));
+   --  @param E type entity with a DIC (inherited or not)
+   --  @return True if the DIC expression depends on the current type instance.
+   --        If it depends on the type instance, it is considered as a
+   --        postcondtion of the default initialization of the private type
+   --        and is checked at declaration. Otherwise, it is considered as a
+   --        precondition of the default initialization, and is checked at use.
+
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T)
    with Pre => Is_Type (T);

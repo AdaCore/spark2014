@@ -209,6 +209,74 @@ package body SPARK_Util.Types is
         Is_Declared_In_Main_Lib_Unit (Real_Node);
    end Has_Visible_Type_Invariants;
 
+   ------------------------------
+   -- Check_DIC_At_Declaration --
+   ------------------------------
+
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
+      Default_Init_Subp : constant Entity_Id := Get_Initial_DIC_Procedure (E);
+      Default_Init_Expr : constant Node_Id :=
+        Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+      Init_Param        : constant Entity_Id :=
+        Unique_Entity (First_Formal (Default_Init_Subp));
+
+      function Is_Ref_Through_Discr (N : Node_Id) return Boolean with
+        Pre => Nkind (N) in N_Identifier | N_Expanded_Name;
+      --  Return True if N is the prefix of a discriminant
+
+      function Is_Type_Instance (N : Node_Id) return Traverse_Result;
+      --  Traverse N searching for references to the current type instance. The
+      --  traversal stops with Abandon if and only if such a reference is
+      --  found. References through discriminants do not count.
+
+      --------------------------
+      -- Is_Ref_Through_Discr --
+      --------------------------
+
+      function Is_Ref_Through_Discr (N : Node_Id) return Boolean is
+         P : constant Node_Id := Parent (N);
+
+      begin
+         --  We should only be called on a node with a Parent
+
+         pragma Assert (Present (P));
+
+         --  For selected components, traversal should only consider the
+         --  prefix.
+
+         pragma Assert
+           (if Nkind (P) = N_Selected_Component then Prefix (P) = N);
+
+         return Nkind (P) = N_Selected_Component
+           and then Ekind (Entity (Selector_Name (P))) = E_Discriminant;
+      end Is_Ref_Through_Discr;
+
+      ----------------------
+      -- Is_Type_Instance --
+      ----------------------
+
+      function Is_Type_Instance (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               if Unique_Entity (Entity (N)) = Init_Param
+                 and then not Is_Ref_Through_Discr (N)
+               then
+                  return Abandon;
+               end if;
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Is_Type_Instance;
+
+      function Refers_To_Type_Instance is new Traverse_More_Func
+        (Process => Is_Type_Instance);
+
+   begin
+      return Refers_To_Type_Instance (Default_Init_Expr) = Abandon;
+   end Check_DIC_At_Declaration;
+
    --------------------------------
    -- Check_Needed_On_Conversion --
    --------------------------------
