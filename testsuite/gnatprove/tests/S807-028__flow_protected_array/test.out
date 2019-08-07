@@ -1,0 +1,2 @@
+main.adb:4:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+main.adb:4:21: info: data dependencies proved
