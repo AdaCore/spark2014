@@ -159,7 +159,8 @@ package Flow.Control_Flow_Graph.Utility is
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => (if Discriminants_Or_Bounds_Only
-                 then Global.Variant = In_View),
+                 then Global.Variant = In_View
+                 else Global.Variant in In_View | Out_View),
         Post => not Make_Global_Attributes'Result.Is_Null_Node and
                 not Make_Global_Attributes'Result.Is_Program_Node and
                 not Make_Global_Attributes'Result.Is_Parameter and
