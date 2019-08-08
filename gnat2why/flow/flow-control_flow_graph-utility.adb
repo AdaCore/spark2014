@@ -278,8 +278,7 @@ package body Flow.Control_Flow_Graph.Utility is
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
-      A      : V_Attributes     := Null_Attributes;
-      Unused : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      A : V_Attributes := Null_Attributes;
 
    begin
       A.Is_Parameter                 := True;
@@ -320,6 +319,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Unused_Vc  : Boolean;
             Unused_Seq : Node_Lists.List;
             Map_Root   : Flow_Id;
+            Unused     : Flow_Id_Sets.Set;
 
          begin
             --  We're interested in the map root, since we might have to do
