@@ -10,7 +10,7 @@ greatest_common_divisor.ads:9:06: info: flow dependencies proved
 greatest_common_divisor.ads:10:14: medium: postcondition might fail, cannot prove G = Gcd (M, N)
 =======================================
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC4: 1 VC)
-greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/greatest_common_divisor__g_c_d/Greatest_common_divisor__g_c_d__L_1_loop__pragargs__cmp.v
+greatest_common_divisor.adb:10:33: medium: loop invariant might fail after first iteration, cannot prove Gcd (C, D) = Gcd (M, N), vc file: gnatprove/../proof/sessions/greatest_common_divisor__g_c_d/../../Coq/Greatest_common_divisor__g_c_d__L_1_loop__pragargs__cmp.v
 =======================================
 greatest_common_divisor.adb:10:33: info: loop invariant initialization proved (CVC4: 1 VC)
 greatest_common_divisor.adb:10:33: info: loop invariant preservation proved (Coq: 1 VC)
