@@ -30,13 +30,40 @@ package body Debug.Timing is
    -- External_Timing --
    ---------------------
 
-   procedure External_Timing (Timer : in out Time_Token;
+   procedure Register_Timing (Timer : in out Time_Token;
                               Msg   : String;
                               Time  : Duration) is
+      use Timings;
+      package Duration_IO is new Ada.Text_IO.Fixed_IO (Duration);
+
+      C         : Cursor;
+      Inserted  : Boolean;
+      New_Total : Duration;
    begin
-      Timer.History.Append ((Name   => To_Unbounded_String (Msg),
-                             Length => Time));
-   end External_Timing;
+      Timer.History.Insert
+        (Key      => Msg,
+         New_Item => Time,
+         Position => C,
+         Inserted => Inserted);
+
+      if not Inserted then
+         New_Total := Element (C) + Time;
+         Timer.History.Replace_Element (C, New_Total);
+      else
+         New_Total := Time;
+      end if;
+      if Debug_Mode then
+         Put (Msg);
+         for I in Msg'Length + 1 .. 35 loop
+            Put (' ');
+         end loop;
+         --  Print elapsed time in 1234.5 notation; this is enough for around
+         --  2.5 hours and if we hit this limit then we have other problems to
+         --  worry about.
+         Duration_IO.Put (New_Total, Fore => 4, Aft => 1);
+         Put_Line ("s");
+      end if;
+   end Register_Timing;
 
    ------------------
    -- Timing_Start --
@@ -45,7 +72,7 @@ package body Debug.Timing is
    procedure Timing_Start (Timer : out Time_Token)
    is
    begin
-      Timer := (History => Histories.Empty_List,
+      Timer := (History => Timings.Empty_Map,
                 Start   => Ada.Calendar.Clock);
    end Timing_Start;
 
@@ -61,22 +88,8 @@ package body Debug.Timing is
       Now     : constant Time := Clock;
       Elapsed : constant Duration := Now - Timer.Start;
 
-      package Duration_IO is new Ada.Text_IO.Fixed_IO (Duration);
-
    begin
-      if Debug_Mode then
-         Put (Msg);
-         for I in Msg'Length + 1 .. 35 loop
-            Put (' ');
-         end loop;
-         --  Print elapsed time in 1234.5 notation; this is enough for around
-         --  2.5 hours and if we hit this limit then we have other problems to
-         --  worry about.
-         Duration_IO.Put (Elapsed, Fore => 4, Aft => 1);
-         Put_Line ("s");
-      end if;
-      Timer.History.Append ((Name   => To_Unbounded_String (Msg),
-                             Length => Elapsed));
+      Register_Timing (Timer, Msg, Elapsed);
       Timer.Start := Now;
    end Timing_Phase_Completed;
 
@@ -86,10 +99,11 @@ package body Debug.Timing is
 
    function Timing_History (Timer : Time_Token) return JSON_Value
    is
+      use Timings;
    begin
       return V : constant JSON_Value := Create_Object do
-         for P of Timer.History loop
-            Set_Field (V, To_String (P.Name), Float (P.Length));
+         for P in Timer.History.Iterate loop
+            Set_Field (V, Key (P), Float (Element (P)));
          end loop;
       end return;
    end Timing_History;
