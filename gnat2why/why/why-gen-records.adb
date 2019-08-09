@@ -1041,7 +1041,6 @@ package body Why.Gen.Records is
          Num_Discrs      : constant Natural := Count_Discriminants (E);
          Num_E_Fields    : constant Natural := Count_Why_Regular_Fields (E);
          Num_Root_Fields : constant Natural := Count_Why_Regular_Fields (Root);
-         Is_Mutable_E    : constant Boolean := Has_Defaulted_Discriminants (E);
          Num_E_All       : constant Natural := Count_Why_Top_Level_Fields (E);
          Num_Root_All    : constant Natural :=
            Count_Why_Top_Level_Fields (Root);
@@ -1294,44 +1293,7 @@ package body Why.Gen.Records is
             end;
          end if;
 
-         --  Step 3. Copy or generate the attr__constrained field
-
-         --  If type E is not constrained and it has default discriminant
-         --  values, then a value may be constrained or not, depending on
-         --  whether it was declared with explicit values for the discriminants
-         --  or not. Hence the Why3 type contains a field attr__constrained
-         --  which must be copied between the root type and the current type.
-
-         if Is_Mutable_E then
-            pragma Assert (Has_Defaulted_Discriminants (Root));
-
-            From_Index := From_Index + 1;
-            From_Root_Aggr (From_Index) :=
-              New_Field_Association
-                (Domain => EW_Term,
-                 Field  => To_Ident (WNE_Attr_Constrained),
-                 Value  =>
-                   New_Record_Access
-                     (Name => +R_Ident,
-                      Field =>
-                        +New_Attribute_Expr
-                        (Root, EW_Term, Attribute_Constrained),
-                      Typ   => EW_Bool_Type));
-
-            To_Index := To_Index + 1;
-            To_Root_Aggr (To_Index) :=
-              New_Field_Association
-                (Domain => EW_Term,
-                 Field  =>
-                   +New_Attribute_Expr (Root, EW_Term, Attribute_Constrained),
-                 Value  =>
-                   New_Record_Access
-                     (Name  => +A_Ident,
-                      Field => To_Ident (WNE_Attr_Constrained),
-                      Typ   => EW_Bool_Type));
-         end if;
-
-         --  Step 4. Copy the tag field of tagged types
+         --  Step 3. Copy the tag field of tagged types
 
          --  For tagged types, copy the tag field between the root type
          --  and the current type.
@@ -1897,7 +1859,6 @@ package body Why.Gen.Records is
       procedure Declare_Record_Type is
          Num_Discrs : constant Natural := Count_Discriminants (E);
          Num_Fields : constant Natural := Count_Why_Regular_Fields (E);
-         Is_Mutable : constant Boolean := Has_Defaulted_Discriminants (E);
          Num_All    : constant Natural := Count_Why_Top_Level_Fields (E);
 
          Binders_D  : Binder_Array (1 .. Num_Discrs);
@@ -2045,18 +2006,6 @@ package body Why.Gen.Records is
                                            To_Name (WNE_Rec_Split_Fields),
                                          Is_Mutable => False)),
                   others   => <>);
-               Index_All := Index_All + 1;
-            end if;
-
-            --  Additional record field for records with mutable discriminants
-
-            if Is_Mutable then
-               Binders_A (Index_All) :=
-                 (B_Name =>
-                    New_Identifier (Name => To_String (WNE_Attr_Constrained),
-                                    Typ  => EW_Bool_Type),
-                  Labels => Get_Model_Trace_Label ("'" & Constrained_Label),
-                  others => <>);
                Index_All := Index_All + 1;
             end if;
 
@@ -2570,17 +2519,6 @@ package body Why.Gen.Records is
          Assocs (Index) := Assoc;
       end if;
 
-      if Has_Defaulted_Discriminants (Ty) then
-         pragma Assert (Is_Constrained (Ty));
-
-         Assoc := New_Field_Association
-           (Domain => Domain,
-            Field  => E_Symb (Ty, WNE_Attr_Constrained),
-            Value  => +True_Pred);
-         Index := Index + 1;
-         Assocs (Index) := Assoc;
-      end if;
-
       if Is_Tagged_Type (Ty) then
          Assoc := New_Field_Association
            (Domain => Domain,
@@ -2807,7 +2745,6 @@ package body Why.Gen.Records is
       Ty       : Entity_Id)
       return W_Expr_Id
    is
-
      (New_Record_Update
         (Ada_Node => Ada_Node,
          Name     => Name,
@@ -2817,123 +2754,6 @@ package body Why.Gen.Records is
                  Field  => E_Symb (Ty, WNE_Rec_Split_Fields),
                  Value  => Value)),
          Typ      => EW_Abstract (Ty)));
-
-   -------------------------------
-   -- New_Is_Constrained_Access --
-   -------------------------------
-
-   function New_Is_Constrained_Access
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id
-   is
-   begin
-      if Has_Defaulted_Discriminants (Ty) then
-         return New_Call
-           (Ada_Node => Ada_Node,
-            Name     => +New_Attribute_Expr
-              (Ty     => Ty,
-               Domain => Domain,
-               Attr   => Attribute_Constrained),
-            Args     => (1 => Name),
-            Domain   => Domain,
-            Typ      => EW_Bool_Type);
-      else
-         return +True_Term;
-      end if;
-   end New_Is_Constrained_Access;
-
-   ----------------------------------
-   -- New_Record_Attributes_Update --
-   ----------------------------------
-
-   function New_Record_Attributes_Update
-     (Ada_Node  : Node_Id := Empty;
-      Domain    : EW_Domain;
-      Name      : W_Expr_Id;
-      From_Expr : W_Expr_Id := Why_Empty;
-      Is_Cst    : Boolean := False;
-      Ty        : Entity_Id)
-      return W_Expr_Id
-   is
-      Has_Constrained : constant Boolean :=
-        Has_Defaulted_Discriminants (Ty)
-        and then not Is_Constrained (Ty);
-      --  If Ty has default discriminants and is not constrained then its
-      --  'Constrained attribute should be preserved.
-
-      Has_Tag         : constant Boolean :=
-        (Is_Tagged_Type (Ty)
-         and then (From_Expr /= Why_Empty
-           or else not Is_Class_Wide_Type (Ty)));
-      --  If Ty is tagged, its 'Tag attribute should be preserved except for
-      --  defaults of classwide types.
-
-      Num_Attr     : constant Natural :=
-        (if Has_Constrained then (if Has_Tag then 2 else 1)
-         else (if Has_Tag then 1 else 0));
-      Associations : W_Field_Association_Array (1 .. Num_Attr);
-      Index        : Positive := 1;
-
-   begin
-      if Num_Attr = 0 then
-         return Name;
-      end if;
-
-      if Has_Constrained then
-         declare
-            Value : constant W_Expr_Id :=
-              (if Is_Cst then +True_Term
-               elsif From_Expr = Why_Empty then
-                 (if Is_Constrained (Ty) then +True_Term
-                  else +False_Term)
-               else New_Is_Constrained_Access
-                 (Domain => Domain,
-                  Name   => From_Expr,
-                  Ty     => Ty));
-         begin
-            Associations (Index) :=
-              New_Field_Association
-                (Domain => Domain,
-                 Field  => +New_Attribute_Expr
-                   (Ty     => Ty,
-                    Domain => Domain,
-                    Attr   => Attribute_Constrained),
-                 Value  => Value);
-            Index := Index + 1;
-         end;
-      end if;
-
-      if Has_Tag then
-         declare
-            Value : constant W_Expr_Id :=
-              (if From_Expr = Why_Empty then
-                  +E_Symb (E => Ty, S => WNE_Tag)
-               else New_Tag_Access
-                 (Domain => Domain,
-                  Name   => From_Expr,
-                  Ty     => Ty));
-         begin
-            Associations (Index) :=
-              New_Field_Association
-                (Domain => Domain,
-                 Field  => +New_Attribute_Expr
-                   (Ty     => Ty,
-                    Domain => Domain,
-                    Attr   => Attribute_Tag),
-                 Value  => Value);
-            Index := Index + 1;
-         end;
-      end if;
-
-      return New_Record_Update
-        (Ada_Node => Ada_Node,
-         Name     => Name,
-         Updates  => Associations,
-         Typ      => Get_Type (Name));
-   end New_Record_Attributes_Update;
 
    --------------------
    -- New_Tag_Access --
@@ -2958,6 +2778,55 @@ package body Why.Gen.Records is
          Domain   => Domain,
          Typ      => EW_Int_Type);
    end New_Tag_Access;
+
+   --------------------
+   -- New_Tag_Update --
+   --------------------
+
+   function New_Tag_Update
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : W_Expr_Id;
+      From_Expr : W_Expr_Id := Why_Empty;
+      Ty        : Entity_Id)
+      return W_Expr_Id
+   is
+      Has_Tag         : constant Boolean :=
+        (Is_Tagged_Type (Ty)
+         and then (From_Expr /= Why_Empty
+           or else not Is_Class_Wide_Type (Ty)));
+      --  If Ty is tagged, its 'Tag attribute should be preserved except for
+      --  defaults of classwide types.
+
+   begin
+      if Has_Tag then
+         declare
+            Value : constant W_Expr_Id :=
+              (if From_Expr = Why_Empty then
+                  +E_Symb (E => Ty, S => WNE_Tag)
+               else New_Tag_Access
+                 (Domain => Domain,
+                  Name   => From_Expr,
+                  Ty     => Ty));
+         begin
+            return
+              (New_Record_Update
+                 (Ada_Node => Ada_Node,
+                  Name     => Name,
+                  Updates  =>
+                    (1 => New_Field_Association
+                         (Domain => Domain,
+                          Field  => +New_Attribute_Expr
+                            (Ty     => Ty,
+                             Domain => Domain,
+                             Attr   => Attribute_Tag),
+                          Value  => Value)),
+                  Typ      => EW_Abstract (Ty)));
+         end;
+      else
+         return Name;
+      end if;
+   end New_Tag_Update;
 
    ------------------------------------
    -- Oldest_Parent_With_Same_Fields --
@@ -3113,18 +2982,6 @@ package body Why.Gen.Records is
          Index := Index + 1;
       end if;
 
-      --  Store association for the 'Constrained attribute
-
-      if Has_Defaulted_Discriminants (Ty) then
-         Associations (Index) := New_Field_Association
-           (Domain => EW_Term,
-            Field  => +New_Attribute_Expr (Ty     => Ty,
-                                           Domain => EW_Term,
-                                           Attr   => Attribute_Constrained),
-            Value  => A (Index));
-         Index := Index + 1;
-      end if;
-
       --  Store association for the 'Tag attribute
 
       if Is_Tagged_Type (Ty) then
@@ -3177,13 +3034,6 @@ package body Why.Gen.Records is
          else
             Values (Index) := +I.Discrs.Binder.B_Name;
          end if;
-         Index := Index + 1;
-      end if;
-
-      --  Store association for the 'Constrained attribute
-
-      if I.Constr.Present then
-         Values (Index) := +I.Constr.Id;
          Index := Index + 1;
       end if;
 

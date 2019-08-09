@@ -235,6 +235,10 @@ package SPARK_Atree is
    function Ancestor_Part (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Extension_Aggregate;
 
+   function Attribute_Constrained_Static_Value (N : Node_Id) return Boolean
+   with
+     Pre => SPARK_Util.Attr_Constrained_Statically_Known (N);
+
    function Attribute_Name (N : Node_Id) return Name_Id with
      Pre => Nkind (N) = N_Attribute_Reference;
 

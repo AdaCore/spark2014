@@ -309,6 +309,13 @@ package body Gnat2Why.Expr is
    --  @param Ada_Node node associated to the operation
    --  @return a Why3 expression for Left Op Right
 
+   function New_Constrained_Attribute_Expr
+     (Prefix : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id;
+   --  @param Prefix prefix of the 'constrained attribute
+   --  @param Domain domain of the expression
+   --  @return a Why3 expression Prefix'Constrained
+
    function New_Predicate_Call
      (Ty     : Entity_Id;
       W_Expr : W_Term_Id;
@@ -1139,7 +1146,7 @@ package body Gnat2Why.Expr is
                            Value    =>
                              (if Has_Record_Type (Etype (Lvalue))
                               or else Full_View_Not_In_SPARK (Etype (Lvalue))
-                              then +New_Record_Attributes_Update
+                              then +New_Tag_Update
                                 (Ada_Node => N,
                                  Domain   => EW_Prog,
                                  Name     => +Why_Expr,
@@ -1165,7 +1172,7 @@ package body Gnat2Why.Expr is
                           New_Call
                             (Name => Why_Eq,
                              Typ  => EW_Bool_Type,
-                             Args => (New_Record_Attributes_Update
+                             Args => (New_Tag_Update
                                         (Ada_Node => N,
                                          Domain   => EW_Prog,
                                          Name     => +Tmp_Var,
@@ -1232,22 +1239,41 @@ package body Gnat2Why.Expr is
                   Prog     => Default_Checks);
             end if;
 
+            --  L has its top-level constrained flag True iff its subtype is
+            --  constrained.
+
+            if Binder.Kind = DRecord and then Binder.Constr.Present then
+               Default_Checks := Sequence
+                   (Left  => Default_Checks,
+                    Right => New_Assume_Statement
+                      (Ada_Node => N,
+                       Pred     =>
+                         +New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => +Binder.Constr.Id,
+                          Right  => (if Is_Constrained (Constrained_Ty)
+                                     then +True_Term
+                                     else +False_Term),
+                          Domain => EW_Pred)));
+            end if;
+
             --  L has its top-level initialization flag True iff its type
             --  has some initialized component.
 
             if Binder.Init.Present then
-               Default_Checks :=
-                 New_Assignment
-                   (Ada_Node => N,
-                    Name     => Binder.Init.Id,
-                    Labels   => Symbol_Sets.Empty_Set,
-                    Value    =>
-                      (if Default_Initialization
-                         (Constrained_Ty, Get_Flow_Scope (Constrained_Ty))
-                       /= No_Default_Initialization
-                       then True_Prog
-                       else False_Prog),
-                    Typ      => EW_Bool_Type);
+               Default_Checks := Sequence
+                   (Left  => Default_Checks,
+                    Right => New_Assignment
+                      (Ada_Node => N,
+                       Name     => Binder.Init.Id,
+                       Labels   => Symbol_Sets.Empty_Set,
+                       Value    =>
+                         (if Default_Initialization
+                              (Constrained_Ty, Get_Flow_Scope (Constrained_Ty))
+                          /= No_Default_Initialization
+                          then True_Prog
+                          else False_Prog),
+                       Typ      => EW_Bool_Type));
             end if;
 
             if Init_Assumption = True_Pred then
@@ -1347,10 +1373,9 @@ package body Gnat2Why.Expr is
                           or else Full_View_Not_In_SPARK
                             (Etype (E))
                           then
-                             New_Record_Attributes_Update
+                             New_Tag_Update
                             (Domain => EW_Prog,
                              Name   => +Tmp_Var,
-                             Is_Cst => True,
                              Ty     => Etype (E))
                           else +Tmp_Var),
                           +L_Id));
@@ -1380,10 +1405,7 @@ package body Gnat2Why.Expr is
                    Get_Ada_Node (+Get_Why_Type_From_Item (B));
          begin
 
-            if Present (Ty)
-              and then Has_Defaulted_Discriminants (Ty)
-              and then not Is_Constrained (Ty)
-            then
+            if B.Kind = DRecord and then B.Constr.Present then
                Context := Sequence
                  (Context,
                   New_Assume_Statement
@@ -1391,11 +1413,10 @@ package body Gnat2Why.Expr is
                        New_Call
                          (Name => Why_Eq,
                           Typ  => EW_Bool_Type,
-                          Args => (1 => New_Is_Constrained_Access
-                                   (Domain => EW_Term,
-                                    Name   => +L_Id,
-                                    Ty     => Ty),
-                                   2 => +False_Term))));
+                          Args =>
+                            (1 => +B.Constr.Id,
+                             2 => (if Is_Constrained (Ty) then +True_Term
+                                   else +False_Term)))));
             end if;
          end;
       end if;
@@ -2836,11 +2857,9 @@ package body Gnat2Why.Expr is
 
                            if Formal_Binder.Constr.Present then
                               Why_Args (Arg_Cnt) :=
-                                New_Is_Constrained_Access
-                                  (Ada_Node => Actual,
-                                   Domain   => EW_Prog,
-                                   Name     => Tmp_Actual,
-                                   Ty       => Formal_Binder.Typ);
+                                New_Constrained_Attribute_Expr
+                                  (Prefix => Actual,
+                                   Domain => EW_Prog);
 
                               Arg_Cnt := Arg_Cnt + 1;
                            end if;
@@ -3928,7 +3947,7 @@ package body Gnat2Why.Expr is
                  (Domain => EW_Term,
                   Expr   => +F_Expr,
                   To     => Type_Of_Node (F_Ty)),
-               Right  => New_Record_Attributes_Update
+               Right  => New_Tag_Update
                  (Domain    => EW_Term,
                   Name      => Transform_Expr
                     (Expr          => Expression (Enclosing_Declaration (E)),
@@ -4071,36 +4090,13 @@ package body Gnat2Why.Expr is
 
          --  Generates:
          --  let tmp1 = <Expr>.rec__disc1 in
-         --  <Expr>.is_constrained = False /\ <if Ty_Ext as default discrs>
+         --   <if Ty_Ext as default discrs>
          --  <Expr>.rec__disc1 = Discr1.default  <if Ty_Ext is unconstrained>
          --  <Expr>.rec__disc1 = Discr1 /\ ..    <if Ty_Ext is constrained>
          --  (check_for_field1 expr ->
          --      <Expr>.rec__field1 = Field1.def      <if Field1 has a default>
          --      default_init (<Expr>.rec__field1, Etype (Field1))) <otherwise>
          --  /\ ..
-
-            --  if Ty_Ext as default discrs, generate
-            --     <Expr>.is_constrained = False
-
-         if Has_Defaulted_Discriminants (Ty_Ext) then
-               --  The variable is not constrained
-
-            Assumption :=
-              +W_Expr_Id'
-              (New_Call
-                 (Domain => EW_Pred,
-                  Typ    => EW_Bool_Type,
-                  Name   => Why_Eq,
-                  Args =>
-                    (1 =>
-                         New_Is_Constrained_Access
-                       (Ada_Node => Ty,
-                        Domain   => EW_Term,
-                        Name     => Tmp,
-                        Ty       => Ty_Ext),
-                     2 => (if Is_Constrained (Ty_Ext) then +True_Term
-                           else +False_Term))));
-         end if;
 
          --  if Ty_Ext is tagged, generate
          --     <Expr>.attr__tag = <Ty_Ext>.__tag
@@ -4358,28 +4354,6 @@ package body Gnat2Why.Expr is
             New_Incompl_Acc  => New_Incompl_Acc,
             Expand_Incompl   => Expand_Incompl);
 
-         --  If elements of a composite type have default discriminants and are
-         --  not constrained then 'Constrained returns false on them.
-
-         if Has_Defaulted_Discriminants (Retysp (C_Ty)) then
-            T_Comp := +New_And_Expr
-              (Left   => +T_Comp,
-               Right  =>
-                 New_Call
-                   (Domain => EW_Term,
-                    Typ    => EW_Bool_Type,
-                    Name   => Why_Eq,
-                    Args   =>
-                      (1 => New_Is_Constrained_Access
-                         (Ada_Node => Empty,
-                          Domain   => EW_Term,
-                          Name     => +C_Expr,
-                          Ty       => Retysp (C_Ty)),
-                       2 => (if Is_Constrained (Retysp (C_Ty))
-                             then +True_Term else +False_Term))),
-               Domain => EW_Pred);
-         end if;
-
          return T_Comp;
       end Invariant_For_Comp;
 
@@ -4595,19 +4569,6 @@ package body Gnat2Why.Expr is
                                                 Expr   => +Expr,
                                                 Params => Params),
             Typ       => EW_Bool_Type);
-
-         if Has_Defaulted_Discriminants (Ty_Ext) then
-            T := +New_And_Expr (Left   => +T,
-                                Right  => New_Comparison
-                                  (Symbol => Why_Eq,
-                                   Left   => New_Is_Constrained_Access
-                                     (Domain  => EW_Term,
-                                      Name    => +Expr,
-                                      Ty      => Ty_Ext),
-                                   Right  => +True_Term,
-                                   Domain => EW_Pred),
-                                Domain => EW_Pred);
-         end if;
       elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
          T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
                                                             Name => +Expr));
@@ -6244,21 +6205,10 @@ package body Gnat2Why.Expr is
                              New_Conditional
                                (Domain      => EW_Pred,
                                 Condition   =>
-                                  New_Is_Constrained_Access
-                                    (Domain   => EW_Term,
-                                     Name     => +Prefetch_Actual_Tmp,
-                                     Ty       => Binders (Bind_Cnt).Typ),
+                                  New_Constrained_Attribute_Expr
+                                    (Domain => EW_Term,
+                                     Prefix => Actual),
                                 Then_Part   => Assumption);
-                        end if;
-
-                        if Binders (Bind_Cnt).Constr.Present then
-                           Arg_Array (Index) :=
-                             New_Is_Constrained_Access
-                               (Domain => EW_Prog,
-                                Name   => +Prefetch_Actual_Tmp,
-                                Ty     => Binders (Bind_Cnt).Typ);
-
-                           Index := Index + 1;
                         end if;
 
                         if Binders (Bind_Cnt).Tag.Present then
@@ -6936,7 +6886,7 @@ package body Gnat2Why.Expr is
       begin
          if Is_Record_Type_In_Why (Ty) then
             Right_Side :=
-              +New_Record_Attributes_Update
+              +New_Tag_Update
               (Ada_Node  => Ada_Node,
                Domain    => EW_Prog,
                Name      => +Right_Side,
@@ -7602,6 +7552,45 @@ package body Gnat2Why.Expr is
       end case;
       return T;
    end New_Binary_Op_Expr;
+
+   ------------------------------------
+   -- New_Constrained_Attribute_Expr --
+   ------------------------------------
+
+   function New_Constrained_Attribute_Expr
+     (Prefix : Node_Id;
+      Domain : EW_Domain) return W_Expr_Id
+   is
+      Var : Node_Id := Prefix;
+
+   begin
+      --  Prefix can be either an object, a type, or a conversion of an object
+      --  (when it is called on an actual parameter). In the latter case, the
+      --  constrained attribute is the attribute of the converted object.
+
+      while Nkind (Var) in N_Type_Conversion loop
+         Var := Expression (Var);
+      end loop;
+
+      if Attr_Constrained_Statically_Known (Var) then
+         return New_Literal
+           (Domain => Domain,
+            Value  =>
+              (if Attribute_Constrained_Static_Value (Var)
+               then EW_True else EW_False));
+      else
+         declare
+            Binder : constant Item_Type :=
+              Ada_Ent_To_Why.Element (Symbol_Table, Entity (Var));
+         begin
+            if Binder.Constr.Present then
+               return +Binder.Constr.Id;
+            else
+               return +False_Term;
+            end if;
+         end;
+      end if;
+   end New_Constrained_Attribute_Expr;
 
    ---------------------------------------
    -- New_Pledge_Update_From_Assignment --
@@ -8567,7 +8556,7 @@ package body Gnat2Why.Expr is
             if Has_Record_Type (Element (Typ))
               or else Full_View_Not_In_SPARK (Element (Typ))
             then
-               Args (Cnt) := New_Record_Attributes_Update
+               Args (Cnt) := New_Tag_Update
                  (Domain   => Domain,
                   Name     => Args (Cnt),
                   Ty       => Element (Typ));
@@ -10537,7 +10526,7 @@ package body Gnat2Why.Expr is
                Check := New_Conditional
                  (Domain      => EW_Pred,
                   Condition   =>
-                    New_Is_Constrained_Access (Empty, EW_Term, Lval, Ty),
+                    New_Constrained_Attribute_Expr (Lvalue, EW_Term),
                   Then_Part   => Check);
             end if;
 
@@ -11417,36 +11406,12 @@ package body Gnat2Why.Expr is
             end if;
 
          when Attribute_Constrained =>
-
-            --  To be able to handle affectations, we put the constrained why
-            --  field to false in components of aggregates that have an
-            --  unconstrained type with defaulted discriminants.
-            --  Thus, on constant objects, we should not use this field to
-            --  translate 'Constrained but rather return true directly.
-
-            if not Has_Dereferences (Var)
-              and then
-                (No (Get_Enclosing_Object (Var))
-                 or else Is_Constant_Object (Get_Enclosing_Object (Var)))
-            then
-               T := +True_Term;
-            else
-               declare
-                  Ty_Ent : constant Entity_Id := Retysp (Etype (Var));
-               begin
-                  declare
-                     Why_Expr : constant W_Expr_Id :=
-                       Transform_Expr (Var, Domain, Params);
-                  begin
-                     T := New_Is_Constrained_Access (Domain => Domain,
-                                                     Name   => Why_Expr,
-                                                     Ty     => Ty_Ent);
-                     if Domain = EW_Prog then
-                        T :=
-                          +Sequence (New_Ignore (Prog => +Why_Expr), +T);
-                     end if;
-                  end;
-               end;
+            T := New_Constrained_Attribute_Expr (Domain => Domain,
+                                                 Prefix => Var);
+            if Domain = EW_Prog then
+               T := +Sequence
+                 (New_Ignore
+                    (Prog => +Transform_Expr (Var, Domain, Params)), +T);
             end if;
 
          when Attribute_Address =>
@@ -14370,7 +14335,7 @@ package body Gnat2Why.Expr is
                            --  Also assume bounds / discriminants
                            Only_Var         => False_Term),
                         Domain => EW_Pred);
-                     Value_Expr : W_Expr_Id :=
+                     Value_Expr : constant W_Expr_Id :=
                        New_Any_Expr
                          (Post        => Pred,
                           Labels      => Symbol_Sets.Empty_Set,
@@ -14379,20 +14344,6 @@ package body Gnat2Why.Expr is
                      pragma Assert
                        (Is_Constrained (Constr_Ty)
                         or else Has_Defaulted_Discriminants (Constr_Ty));
-
-                     --  Update the constrained attribute to True as access
-                     --  objects are always constrained by their initial
-                     --  value.
-
-                     if Has_Discriminants (Constr_Ty)
-                       and then Has_Defaulted_Discriminants (Constr_Ty)
-                     then
-                        Value_Expr := New_Record_Attributes_Update
-                          (Domain    => EW_Term,
-                           Name      => Value_Expr,
-                           Is_Cst    => True,
-                           Ty        => Constr_Ty);
-                     end if;
 
                      Call := New_Binding
                        (Name    => New_Identifier (Name => "_"),
@@ -14449,19 +14400,12 @@ package body Gnat2Why.Expr is
                         Params        => Local_Params);
 
                   begin
-                     --  Update the constrained attribute to True as access
-                     --  objects are always constrained by their initial
-                     --  value. Also update the tag attribute if Des_Ty is a
-                     --  specific type.
+                     --  Update the tag attribute if Des_Ty is a specific type
 
-                     if (Has_Discriminants (Des_Ty)
-                         and then Has_Defaulted_Discriminants (Des_Ty))
-                       or else Is_Tagged_Type (Des_Ty)
-                     then
-                        Value_Expr := New_Record_Attributes_Update
+                     if Is_Tagged_Type (Des_Ty) then
+                        Value_Expr := New_Tag_Update
                           (Domain => EW_Term,
                            Name   => Value_Expr,
-                           Is_Cst => True,
                            Ty     => Des_Ty);
                      end if;
 
@@ -17596,7 +17540,7 @@ package body Gnat2Why.Expr is
                if Has_Record_Type (Etype (Component))
                  or else Full_View_Not_In_SPARK (Etype (Component))
                then
-                  Expr := New_Record_Attributes_Update
+                  Expr := New_Tag_Update
                     (Domain   => Domain,
                      Name     => Expr,
                      Ty       => Etype (Component));

@@ -385,7 +385,6 @@ package Gnat2Why.Util is
    --     - A field __split_discrs for discriminants if E has at least one
    --     - A field __split_fields for regular fields if E has at least one
    --       (use Count_Why_Regular_Fields)
-   --     - A field attr__constrained if E's discriminants have default values
    --     - A field __tag if E is tagged
 
    function Is_Simple_Private_Type (E : Entity_Id) return Boolean with

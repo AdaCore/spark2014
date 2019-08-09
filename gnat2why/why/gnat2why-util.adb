@@ -642,14 +642,8 @@ package body Gnat2Why.Util is
          Count := Count + 1;
       end if;
 
-      --  Directly store the attr__constrained and __tag fields in the record,
-      --  as these fields cannot be modified after object creation.
-
-      if Count_Discriminants (E) > 0
-        and then Has_Defaulted_Discriminants (E)
-      then
-         Count := Count + 1;
-      end if;
+      --  Directly store the __tag field in the record, as this field cannot be
+      --  modified after object creation.
 
       if Is_Tagged_Type (E) then
          Count := Count + 1;

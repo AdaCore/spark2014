@@ -745,4 +745,8 @@ package SPARK_Util is
    --  instances of generic subprograms (where the Main_Unit_Entity is
    --  has a void Ekind).
 
+   function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
+   --  Approximation of cases where we know that the Constrained attribute of
+   --  N is known statically.
+
 end SPARK_Util;

@@ -755,7 +755,9 @@ package body Why.Gen.Binders is
                                  Labels   => <>));
             end if;
 
-            if Has_Defaulted_Discriminants (Ty) then
+            if Ekind (E) in E_In_Out_Parameter | E_Out_Parameter | E_Variable
+              and then Has_Defaulted_Discriminants (Ty)
+            then
                Result.Constr :=
                  (Present => True,
                   Id      =>

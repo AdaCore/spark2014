@@ -189,6 +189,15 @@ package body SPARK_Util is
       end loop;
    end Append;
 
+   ---------------------------------------
+   -- Attr_Constrained_Statically_Known --
+   ---------------------------------------
+
+   function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean is
+     (Nkind (N) not in N_Expanded_Name | N_Identifier
+      or else Ekind (Entity (N)) not in
+        E_Variable | E_Out_Parameter | E_In_Out_Parameter);
+
    --------------------
    -- Body_File_Name --
    --------------------
