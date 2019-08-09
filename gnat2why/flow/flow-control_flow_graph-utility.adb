@@ -434,39 +434,139 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (Call_Vertex : Node_Id;
-      Implicit    : Flow_Id;
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      In_Vertex   : Boolean;
       Scope       : Flow_Scope;
+      Sub_Called  : Node_Sets.Set := Node_Sets.Empty_Set;
       Loops       : Node_Sets.Set;
       E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    is
-      I : constant Flow_Id := Change_Variant (Implicit, Normal_Use);
-      A : V_Attributes     := Null_Attributes;
+      A : V_Attributes := Null_Attributes;
 
-      Implicit_Flat : constant Flow_Id_Sets.Set := Flatten_Variable (I, Scope);
-      --  Flat view of the implicit parameter
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
 
    begin
-      A.Is_Implicit_Parameter := True;
-      A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal      := Implicit;
-      A.Loops                 := Loops;
-      A.Error_Location        := E_Loc;
+      --  External calls appear in the code as:
+      --
+      --    PO.Proc (Actual1, Actual2, ...);
+      --
+      --  but we handle them very much like:
+      --
+      --    Proc (PO, Actual1, Actual2, ...);
+      --
+      --  and set attributes very much like in Make_Parameter_Attributes.
+      --
+      --  Note: we can't simply reuse that routine because it is (rightly)
+      --  flooded with assertions that check for ordinary formal parameters.
 
-      case Implicit.Variant is
-         when In_View =>
-            A.Variables_Used := Implicit_Flat;
-            A.Variables_Explicitly_Used := Implicit_Flat;
+      if Is_External_Call (Call_Vertex) then
+         A.Is_Parameter       := True;
+         A.Subprograms_Called := Sub_Called;
+         A.Call_Vertex        := Direct_Mapping_Id (Call_Vertex);
+         A.Parameter_Actual   :=
+           Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
+         A.Parameter_Formal :=
+           Direct_Mapping_Id (Sinfo.Scope (Subprogram));
+         A.Loops              := Loops;
+         A.Error_Location     := E_Loc;
 
-         when Out_View =>
-            A.Variables_Defined := Implicit_Flat;
+         if In_Vertex then
+            declare
+               Used : constant Flow_Id_Sets.Set :=
+                 Get_Variables
+                   (N                    => Prefix (Name (Call_Vertex)),
+                    Scope                => Scope,
+                    Fold_Functions       => True,
+                    Use_Computed_Globals => not FA.Generating_Globals);
+            begin
+               A.Variables_Used := Used;
+               for F of Used loop
+                  if not Is_Bound (F) and then Has_Bounds (F, Scope) then
+                     A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  end if;
+               end loop;
 
-         when others =>
-            raise Program_Error;
-      end case;
+               A.Variables_Explicitly_Used := A.Variables_Used;
+            end;
+         else
+            declare
+               Partial    : Boolean;
+               Unused_Vc  : Boolean;
+               Unused_Seq : Node_Lists.List;
+               Map_Root   : Flow_Id;
+               Unused     : Flow_Id_Sets.Set;
 
-      Add_Volatile_Effects (A, I);
+            begin
+               --  We're interested in the map root, since we might have to do
+               --  something about extensions.
+               Get_Assignment_Target_Properties
+                 (N                  => Prefix (Name (Call_Vertex)),
+                  Partial_Definition => Partial,
+                  View_Conversion    => Unused_Vc,
+                  Map_Root           => Map_Root,
+                  Seq                => Unused_Seq);
+
+               --  We have an unconditional addition to folded_function_checks
+               --  for each actual anyway, so we can ignore the proof variables
+               --  here.
+               Untangle_Assignment_Target
+                 (N                    => Prefix (Name (Call_Vertex)),
+                  Scope                => Scope,
+                  Use_Computed_Globals => not FA.Generating_Globals,
+                  Vars_Defined         => A.Variables_Defined,
+                  Vars_Used            => A.Variables_Explicitly_Used,
+                  Vars_Proof           => Unused,
+                  Partial_Definition   => Partial);
+
+               A.Variables_Used := A.Variables_Explicitly_Used;
+
+               if Partial then
+                  A.Variables_Used.Union (A.Variables_Defined);
+               end if;
+            end;
+         end if;
+
+         Add_Volatile_Effects (A);
+
+      --  In internal calls the implicit parameter behaves more like a global,
+      --  i.e. we don't have an actual expression for it.
+
+      else
+         declare
+            Implicit : constant Flow_Id :=
+              Direct_Mapping_Id (Sinfo.Scope (Subprogram));
+
+            Implicit_Flat : constant Flow_Id_Sets.Set :=
+              Flatten_Variable (Implicit, Scope);
+            --  Flat view of the implicit parameter
+
+         begin
+            A.Is_Implicit_Parameter := True;
+            A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
+            A.Parameter_Formal      :=
+              Change_Variant (Implicit,
+                              (if In_Vertex then In_View else Out_View));
+            A.Loops                 := Loops;
+            A.Error_Location        := E_Loc;
+
+            if In_Vertex then
+               A.Variables_Used            := Implicit_Flat;
+               A.Variables_Explicitly_Used := Implicit_Flat;
+            else
+               A.Variables_Defined         := Implicit_Flat;
+            end if;
+
+            --  For internal calls the implicit parameter acts as an ordinary
+            --  record object and cannot be annotated with effective reads or
+            --  writes.
+
+            pragma Assert (not Has_Effective_Reads (Implicit));
+            pragma Assert (not Has_Effective_Writes (Implicit));
+         end;
+      end if;
+
       return A;
    end Make_Implicit_Parameter_Attributes;
 

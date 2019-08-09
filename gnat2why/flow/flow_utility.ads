@@ -130,8 +130,7 @@ package Flow_Utility is
       Scope                : Flow_Scope;
       Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True;
-      Callsite             : Node_Id := Empty)
+      Use_Computed_Globals : Boolean := True)
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
@@ -392,12 +391,6 @@ package Flow_Utility is
    --  * View_Conversion: N contains a view conversion.
    --  * Map_Root: the non-flattened Flow_Id which is assigned to.
    --  * Seq: items used to derive Map_Root.
-
-   function Get_Protected_Object (N : Node_Id) return Flow_Id
-   with Pre => Is_External_Call (N);
-   --  Returns the target object of an external call to protected operation.
-   --  It is similar to Get_Enclosing_Object (hence this name), but handles
-   --  composite objects just like they are handled everywhere else in flow.
 
    procedure Untangle_Assignment_Target
      (N                    : Node_Id;

@@ -4531,8 +4531,7 @@ package body Flow.Control_Flow_Graph is
                          Classwide            =>
                            Flow_Classwide.Is_Dispatching_Call (N),
                          Depends              => D_Map,
-                         Use_Computed_Globals => not FA.Generating_Globals,
-                         Callsite             => N);
+                         Use_Computed_Globals => not FA.Generating_Globals);
 
             Null_Depends := D_Map.Find (Null_Flow_Id);
 
@@ -5105,44 +5104,87 @@ package body Flow.Control_Flow_Graph is
    begin
       Handle_Parameters (Callsite);
 
+      --  Create vertices for the implicit formal parameter
       if Ekind (Scope (Called_Thing)) = E_Protected_Type then
+         if Is_External_Call (Callsite) then
+            declare
+               V : Flow_Graphs.Vertex_Id;
 
-         --  Create vertices for the implicit formal parameter
-         declare
-            Parameter : constant Flow_Id :=
-                (if Is_External_Call (Callsite)
-                 then Get_Protected_Object (Callsite)
-                 else Direct_Mapping_Id (Scope (Called_Thing)));
+               Actual : constant Node_Id := Prefix (Name (Callsite));
+               Funcs  : Node_Sets.Set;
 
-            V : Flow_Graphs.Vertex_Id;
+            begin
+               --  Reading
+               Collect_Functions_And_Read_Locked_POs
+                 (Actual,
+                  Functions_Called   => Funcs,
+                  Tasking            => FA.Tasking,
+                  Generating_Globals => FA.Generating_Globals);
 
-         begin
-            --  Reading
-            Add_Vertex
-              (FA,
-               Make_Implicit_Parameter_Attributes
-                 (Call_Vertex => Callsite,
-                  Implicit    => Change_Variant (Parameter, In_View),
-                  Scope       => FA.B_Scope,
-                  Loops       => Ctx.Current_Loops,
-                  E_Loc       => Callsite),
-               V);
-            Ins.Append (V);
+               Add_Vertex
+                 (FA,
+                  Direct_Mapping_Id (Actual, In_View),
+                  Make_Implicit_Parameter_Attributes
+                    (FA          => FA,
+                     Call_Vertex => Callsite,
+                     In_Vertex   => True,
+                     Scope       => FA.B_Scope,
+                     Sub_Called  => Funcs,
+                     Loops       => Ctx.Current_Loops,
+                     E_Loc       => Callsite),
+                  V);
+               Ins.Append (V);
 
-            --  Writing
-            if Ekind (Called_Thing) /= E_Function then
+               --  Writing
+               if Ekind (Called_Thing) /= E_Function then
+                  Add_Vertex
+                    (FA,
+                     Direct_Mapping_Id (Actual, Out_View),
+                     Make_Implicit_Parameter_Attributes
+                       (FA          => FA,
+                        Call_Vertex => Callsite,
+                        In_Vertex   => False,
+                        Scope       => FA.B_Scope,
+                        Loops       => Ctx.Current_Loops,
+                        E_Loc       => Callsite),
+                     V);
+                  Outs.Append (V);
+               end if;
+            end;
+         else
+            declare
+               V : Flow_Graphs.Vertex_Id;
+
+            begin
+               --  Reading
                Add_Vertex
                  (FA,
                   Make_Implicit_Parameter_Attributes
-                    (Call_Vertex => Callsite,
-                     Implicit    => Change_Variant (Parameter, Out_View),
+                    (FA          => FA,
+                     Call_Vertex => Callsite,
+                     In_Vertex   => True,
                      Scope       => FA.B_Scope,
                      Loops       => Ctx.Current_Loops,
                      E_Loc       => Callsite),
                   V);
-               Outs.Append (V);
-            end if;
-         end;
+               Ins.Append (V);
+
+               --  Writing
+               if Ekind (Called_Thing) /= E_Function then
+                  Add_Vertex
+                    (FA,
+                     Make_Implicit_Parameter_Attributes
+                       (FA          => FA,
+                        Call_Vertex => Callsite,
+                        In_Vertex   => False,
+                        Scope       => FA.B_Scope,
+                        Loops       => Ctx.Current_Loops,
+                        E_Loc       => Callsite),
+                     V);
+                  Outs.Append (V);
+               end if;
+            end;
+         end if;
       end if;
    end Process_Call_Actuals;
 

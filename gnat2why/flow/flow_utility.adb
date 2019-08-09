@@ -850,8 +850,7 @@ package body Flow_Utility is
       Scope                : Flow_Scope;
       Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True;
-      Callsite             : Node_Id := Empty)
+      Use_Computed_Globals : Boolean := True)
    is
       pragma Unreferenced (Classwide);
       --  For now we assume classwide globals are the same as the actual
@@ -1039,64 +1038,7 @@ package body Flow_Utility is
       end if;
 
       ----------------------------------------------------------------------
-      --  Step 4: If we are dealing with a protected operation and the Callsite
-      --  is present then we need to substitute references to the protected
-      --  type with references to the protected object.
-      ----------------------------------------------------------------------
-
-      if Present (Callsite)
-        and then Ekind (Sinfo.Scope (Subprogram)) = E_Protected_Type
-        and then Is_External_Call (Callsite)
-      then
-         declare
-            The_PO : constant Flow_Id :=
-              Get_Protected_Object (Callsite);
-
-            PO_Type : constant Entity_Id := Sinfo.Scope (Subprogram);
-
-         begin
-            --  Substitute reference on LHS
-
-            if Depends.Contains (Direct_Mapping_Id (PO_Type)) then
-               declare
-                  Position : Dependency_Maps.Cursor;
-                  Inserted : Boolean;
-
-               begin
-                  Depends.Insert (Key      => The_PO,
-                                  Position => Position,
-                                  Inserted => Inserted);
-
-                  pragma Assert (Inserted);
-
-                  Flow_Id_Sets.Move
-                    (Target => Depends (Position),
-                     Source => Depends (Direct_Mapping_Id (PO_Type)));
-
-                  Depends.Delete (Direct_Mapping_Id (PO_Type));
-               end;
-            end if;
-
-            --  Substitute references on RHS
-
-            for Inputs of Depends loop
-               declare
-                  C : constant Flow_Id_Sets.Cursor :=
-                    Inputs.Find (Direct_Mapping_Id (PO_Type));
-
-               begin
-                  if Flow_Id_Sets.Has_Element (C) then
-                     Inputs.Replace_Element
-                       (Position => C,
-                        New_Item => The_PO);
-                  end if;
-               end;
-            end loop;
-         end;
-      end if;
-
-      ----------------------------------------------------------------------
-      --  Step 5: If we are dealing with a task unit T then, as per SPARK RM
+      --  Step 4: If we are dealing with a task unit T then, as per SPARK RM
       --  6.1.4. in the section Global Aspects, we assume an implicit
       --  specification of T => T. In practice, we add this dependency into
       --  the Depends map in case is not already there.
@@ -1938,34 +1880,6 @@ package body Flow_Utility is
       end if;
    end Get_Proof_Globals;
 
-   --------------------------
-   -- Get_Protected_Object --
-   --------------------------
-
-   function Get_Protected_Object (N : Node_Id) return Flow_Id is
-      Partial_Definition : Boolean;
-      View_Conversion    : Boolean;
-      Seq                : Node_Lists.List;
-      --  Unused parameters
-
-      Map_Root : Flow_Id;
-
-   begin
-      Get_Assignment_Target_Properties
-        (N                  => Prefix (Name (N)),
-         Partial_Definition => Partial_Definition,
-         View_Conversion    => View_Conversion,
-         Map_Root           => Map_Root,
-         Seq                => Seq);
-
-      pragma Assert
-        (Map_Root.Kind in Direct_Mapping | Record_Field
-           and then Ekind (Map_Root.Node) = E_Variable
-           and then Map_Root.Variant = Normal_Use);
-
-      return Map_Root;
-   end Get_Protected_Object;
-
    --------------
    -- Get_Type --
    --------------
@@ -2400,8 +2314,7 @@ package body Flow_Utility is
                             Classwide            =>
                               Flow_Classwide.Is_Dispatching_Call (Callsite),
                             Depends              => Depends,
-                            Use_Computed_Globals => Ctx.Use_Computed_Globals,
-                            Callsite             => Callsite);
+                            Use_Computed_Globals => Ctx.Use_Computed_Globals);
 
                pragma Assert (Depends.Length in 1 .. 2);
                --  For functions Depends always mentions the 'Result
@@ -2420,16 +2333,16 @@ package body Flow_Utility is
          if Ekind (Scope (Subprogram)) = E_Protected_Type then
             declare
                Implicit_Actual : constant Flow_Id :=
-                 (if Is_External_Call (Callsite)
-                  then Get_Protected_Object (Callsite)
-                  else Direct_Mapping_Id (Scope (Subprogram)));
+                 Direct_Mapping_Id (Scope (Subprogram));
 
             begin
                if not Folding
                  or else Used_Reads.Contains (Implicit_Actual)
                then
                   V.Union
-                    (Flatten_Variable (Implicit_Actual, Ctx.Scope));
+                    (if Is_External_Call (Callsite)
+                     then Recurse (Prefix (Name (Callsite)))
+                     else Flatten_Variable (Implicit_Actual, Ctx.Scope));
                end if;
             end;
          end if;

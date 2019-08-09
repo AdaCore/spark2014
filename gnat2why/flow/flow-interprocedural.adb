@@ -25,7 +25,6 @@ with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
 with Sinfo;          use Sinfo;
-with SPARK_Util;     use SPARK_Util;
 
 package body Flow.Interprocedural is
 
@@ -77,21 +76,12 @@ package body Flow.Interprocedural is
             elsif A.Is_Global_Parameter
               or else A.Is_Implicit_Parameter
             then
-               --  Globals and Implicit_Parameters can be direct mappings,
-               --  record fields or magic strings, but in any case the
-               --  parameter and the formal will always match in kind.
+               --  Global and implicit parameters can be direct mappings,
+               --  magic strings or synthetic null exports, but in any case
+               --  the parameter and the formal will always match in kind.
                case A.Parameter_Formal.Kind is
                   when Direct_Mapping =>
                      if Parameter.Kind = Direct_Mapping
-                       and then A.Parameter_Formal.Variant = Parameter.Variant
-                       and then Get_Direct_Mapping_Id (Parameter) =
-                                  Get_Direct_Mapping_Id (A.Parameter_Formal)
-                     then
-                        return V;
-                     end if;
-
-                  when Record_Field =>
-                     if Parameter.Kind = Record_Field
                        and then A.Parameter_Formal.Variant = Parameter.Variant
                        and then Get_Direct_Mapping_Id (Parameter) =
                                   Get_Direct_Mapping_Id (A.Parameter_Formal)
@@ -203,8 +193,7 @@ package body Flow.Interprocedural is
                          Classwide            =>
                            Flow_Classwide.Is_Dispatching_Call (N),
                          Depends              => Deps,
-                         Use_Computed_Globals => not FA.Generating_Globals,
-                         Callsite             => N);
+                         Use_Computed_Globals => not FA.Generating_Globals);
 
             for C in Deps.Iterate loop
                declare
@@ -299,22 +288,9 @@ package body Flow.Interprocedural is
             if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
                   Implicit : constant Flow_Id :=
-                    (if Is_External_Call (N)
-                     then Get_Protected_Object (N)
-                     else Direct_Mapping_Id (Scope (Called_Thing)));
-                  --  If this is an external call then the implicit parameter
-                  --  is the the protected object. If this is an internal call
-                  --  we don't have a protected object but only the protected
-                  --  type itself and therefore this will be the implicit
-                  --  parameter.
+                    Direct_Mapping_Id (Scope (Called_Thing));
 
-                  pragma Assert
-                    (Ekind (Get_Direct_Mapping_Id (Implicit)) =
-                       (if Is_External_Call (N)
-                        then E_Variable
-                        else E_Protected_Type));
                begin
-
                   The_In  := Change_Variant (Implicit, In_View);
                   The_Out := Change_Variant (Implicit, Out_View);
 
