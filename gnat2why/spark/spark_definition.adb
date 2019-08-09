@@ -6134,6 +6134,24 @@ package body SPARK_Definition is
                end loop;
             end if;
 
+            --  Mark the initial condition if present
+
+            declare
+               Init_Cond : constant Node_Id :=
+                 Get_Pragma (Id, Pragma_Initial_Condition);
+
+            begin
+               if Present (Init_Cond) then
+                  declare
+                     Expr : constant Node_Id :=
+                       Expression (First (Pragma_Argument_Associations
+                                   (Init_Cond)));
+                  begin
+                     Mark (Expr);
+                  end;
+               end if;
+            end;
+
             Mark_Stmt_Or_Decl_List (Vis_Decls);
 
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
