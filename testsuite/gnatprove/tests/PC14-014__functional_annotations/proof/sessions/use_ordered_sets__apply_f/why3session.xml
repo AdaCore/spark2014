@@ -331,7 +331,7 @@
   <proof prover="0"><result status="valid" steps="137075"/></proof>
   </goal>
   <goal name="VC def.87" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="189816"/></proof>
+  <proof prover="0"><result status="valid" steps="109308"/></proof>
   </goal>
  </transf>
  </goal>
