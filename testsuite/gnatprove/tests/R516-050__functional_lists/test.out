@@ -10,8 +10,10 @@ conts-lists.ads:515:19: info: precondition proved (CVC4: 1 VC), in instantiation
 conts-lists.ads:522:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:526:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
-functional_sequences.ads:15:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 13 should mention S1 in a precondition]
+functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
+functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
+functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
+functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
 use_lists.adb:3:22: side effects of function "First" are not modeled in SPARK
 use_lists.adb:5:14: medium: "L2" is not set
 use_lists.adb:5:14: medium: private part of "L2" is not set
@@ -205,38 +207,38 @@ use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:83
 use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:84
 use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:89
 use_lists.ads:5:04: info: in instantiation at formal_doubly_linked_lists.ads:90
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:14
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:14
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:15
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:15
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:16
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:19
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:19
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:20
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:20
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:16
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:17
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:21
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:21
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:22
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:22
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:23
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:24
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:24
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:25
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:25
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:28
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:28
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:29
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:29
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:27
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:27
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:30
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:30
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:31
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:31
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:33
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:34
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:34
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:34
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:35
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:37
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:37
-use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:37
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:36
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:38
 use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:39
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:40
+use_lists.ads:5:04: info: in instantiation at functional_sequences.ads:41
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:51
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:64
 use_lists.ads:5:04: instantiation error at formal_doubly_linked_lists.ads:80

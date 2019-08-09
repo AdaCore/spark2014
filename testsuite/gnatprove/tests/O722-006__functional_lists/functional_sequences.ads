@@ -7,13 +7,15 @@ generic
 package Functional_Sequences with SPARK_Mode is
    type Sequence is private;
 
-   function Get (S : Sequence; N : Natural) return Element_Type;
-   function Length (S : Sequence) return Natural;
-
+   function Get (S : Sequence; N : Natural) return Element_Type
+   with Global => null;
+   function Length (S : Sequence) return Natural
+   with Global => null;
    function "=" (S1, S2 : Sequence) return Boolean is
      (Length (S1) = Length (S2)
       and then (for all N in Natural (0) .. Natural (Length (S1) - 1) =>
-                   Get (S1, N) = Get (S2, N)));
+                  Get (S1, N) = Get (S2, N)))
+   with Global => null;
    function Set (S : Sequence; N : Natural; E : Element_Type) return Sequence
      with Post =>
        (if N in 0 .. Length (S) - 1 then
