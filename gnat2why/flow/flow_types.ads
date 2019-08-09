@@ -739,4 +739,24 @@ package Flow_Types is
      Null_Attributes'Update (Is_Null_Node    => True,
                              Is_Program_Node => True);
 
+   type Reference_Kind is (Inputs, Proof_Ins, Null_Deps);
+   --  Modes for queries about variables referenced in a given expression. For
+   --  example, when quering a call to function annotated like this:
+   --
+   --    function F return Integer
+   --    with Global  => (Input => (A, B), Proof_In => C),
+   --         Depends => (F'Result => A,
+   --                     null     => B);
+   --
+   --  when routine Get_Variables is called it will return the following:
+   --
+   --    Inputs    => {A}
+   --    Proof_Ins => {C}
+   --    Null_Deps => {B}
+   --
+   --  Results in modes Inputs and Proof_Ins are come from straightforward
+   --  references to variables; results in mode Null_Deps come from calls to
+   --  subprograms with "null => ..." dependency clauses, 'Update expressions,
+   --  delay statements, etc.
+
 end Flow_Types;

@@ -364,11 +364,10 @@ package body Flow.Analysis is
          then
             declare
                Expr_Vars : constant Flow_Id_Sets.Set :=
-                 Get_Variables (N,
-                                Scope                => Scope,
-                                Assume_In_Expression => False,
-                                Fold_Functions       => False,
-                                Use_Computed_Globals => True);
+                 Get_All_Variables (N,
+                                    Scope                => Scope,
+                                    Assume_In_Expression => False,
+                                    Use_Computed_Globals => True);
 
             begin
                if (if Precise
@@ -769,12 +768,11 @@ package body Flow.Analysis is
             loop
                Vars_Used :=
                  To_Entire_Variables
-                   (Get_Variables
+                   (Get_All_Variables
                       (Expr,
                        Scope                => (if Refined
                                                 then FA.B_Scope
                                                 else FA.S_Scope),
-                       Fold_Functions       => False,
                        Use_Computed_Globals => True));
 
                for Var of Vars_Used loop
@@ -4727,10 +4725,9 @@ package body Flow.Analysis is
          if Is_Attribute_Old (N) then
             declare
                Vars : constant Flow_Id_Sets.Set :=
-                 Get_Variables
+                 Get_All_Variables
                    (N,
                     Scope                => FA.B_Scope,
-                    Fold_Functions       => False,
                     Use_Computed_Globals => True);
 
             begin
@@ -5487,10 +5484,9 @@ package body Flow.Analysis is
       for Precondition of Preconditions loop
          declare
             VU : constant Flow_Id_Sets.Set :=
-              Get_Variables (Precondition,
-                             Scope                => FA.S_Scope,
-                             Fold_Functions       => False,
-                             Use_Computed_Globals => True);
+              Get_All_Variables (Precondition,
+                                 Scope                => FA.S_Scope,
+                                 Use_Computed_Globals => True);
             --  The above set contains all variables used in the precondition.
          begin
             for Var of VU loop

@@ -1302,7 +1302,7 @@ package body Flow_Utility is
                              Get_Variables
                                (Expression (Declaration_Node (E)),
                                 Scope                => Scop,
-                                Fold_Functions       => True,
+                                Fold_Functions       => Flow_Types.Inputs,
                                 Use_Computed_Globals => False);
 
                         begin
@@ -2025,13 +2025,42 @@ package body Flow_Utility is
       return Formals;
    end Get_Formals;
 
+   ------------------------
+   --  Get_All_Variables --
+   ------------------------
+
+   function Get_All_Variables
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Use_Computed_Globals    : Boolean;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
+      return Flow_Id_Sets.Set
+   is
+      Vars : Flow_Id_Sets.Set;
+
+   begin
+      for Ref_Kind in Reference_Kind loop
+         Vars.Union
+           (Get_Variables (N                       => N,
+                           Scope                   => Scope,
+                           Fold_Functions          => Ref_Kind,
+                           Use_Computed_Globals    => Use_Computed_Globals,
+                           Assume_In_Expression    => Assume_In_Expression,
+                           Expand_Internal_Objects => Expand_Internal_Objects,
+                           Consider_Extensions     => False));
+      end loop;
+
+      return Vars;
+   end Get_All_Variables;
+
    -------------------
    -- Get_Variables --
    -------------------
 
    type Get_Variables_Context is record
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean;
       Expand_Internal_Objects : Boolean;
@@ -2057,7 +2086,7 @@ package body Flow_Utility is
    function Get_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
@@ -2079,7 +2108,7 @@ package body Flow_Utility is
    function Get_Variables
      (L                       : List_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
@@ -2137,7 +2166,7 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                       : Node_Id;
          Scope                   : Flow_Scope;
-         Fold_Functions          : Boolean;
+         Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
          return Flow_Id_Sets.Set
@@ -2255,16 +2284,20 @@ package body Flow_Utility is
          Globals : Global_Flow_Ids;
 
          Folding : constant Boolean :=
-           Ctx.Fold_Functions
+           Ctx.Fold_Functions in Inputs | Null_Deps
            and then Ekind (Subprogram) = E_Function
            and then Has_Depends (Subprogram);
+         --  ??? the name "Folding" refers to the previous implementation
 
          Used_Reads : Flow_Id_Sets.Set;
 
-         V          : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+         V : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
 
          procedure Handle_Parameter (Formal : Entity_Id; Actual : Node_Id);
-         --  Processing related to parameter of a call
+         --  Process parameter of a call. In particular, take into account:
+         --  * the Inputs/Proof_Ins/Null_Deps mode
+         --  * whether the Depends contract is present
+         --  * what the Depends says about the current parameter
 
          ----------------------
          -- Handle_Parameter --
@@ -2280,11 +2313,48 @@ package body Flow_Utility is
             --  type directly (since that may or may not have extensions).
 
          begin
-            if not Folding
-              or else Used_Reads.Contains (Direct_Mapping_Id (Formal))
-            then
-               V.Union (Recurse (Actual, May_Use_Extensions));
-            end if;
+            --  When detecting Inputs and Null_Deps we use the Depends
+            --  contract, if present; when detecting Proof_Ins, we go straight
+            --  to the actual expression.
+
+            case Ctx.Fold_Functions is
+               when Inputs =>
+                  if Ekind (Subprogram) = E_Function
+                    and then Has_Depends (Subprogram)
+                  then
+                     if Used_Reads.Contains (Direct_Mapping_Id (Formal)) then
+                        V.Union (Recurse (Actual, May_Use_Extensions));
+                     end if;
+                  else
+                     V.Union (Recurse (Actual, May_Use_Extensions));
+                  end if;
+
+               when Proof_Ins =>
+                  V.Union (Recurse (Actual, May_Use_Extensions));
+
+               when Null_Deps =>
+                  if Ekind (Subprogram) = E_Function
+                    and then Has_Depends (Subprogram)
+                  then
+                     --  If the Depends contract designates the current
+                     --  parameter as a null dependency, then all pick both
+                     --  its Inputs and Null_Deps.
+
+                     if Used_Reads.Contains (Direct_Mapping_Id (Formal)) then
+                        V.Union (Recurse (Actual, May_Use_Extensions));
+                        V.Union
+                          (Get_Variables_Internal
+                             (Actual,
+                              Ctx'Update
+                                (Fold_Functions      => Inputs,
+                                 Consider_Extensions => May_Use_Extensions)));
+                     else
+                        V.Union (Recurse (Actual, May_Use_Extensions));
+                     end if;
+                  else
+                     V.Union (Recurse (Actual, May_Use_Extensions));
+                  end if;
+            end case;
          end Handle_Parameter;
 
          procedure Handle_Parameters is
@@ -2320,15 +2390,29 @@ package body Flow_Utility is
                --  For functions Depends always mentions the 'Result
                --  (user-written or synthesized) and possibly also null.
 
-               Flow_Id_Sets.Move
-                 (Target => Used_Reads,
-                  Source => Depends (Direct_Mapping_Id (Subprogram)));
+               case Ctx.Fold_Functions is
+                  when Inputs =>
+                     Flow_Id_Sets.Move
+                       (Target => Used_Reads,
+                        Source => Depends (Direct_Mapping_Id (Subprogram)));
+
+                  when Proof_Ins =>
+                     raise Program_Error;
+
+                  when Null_Deps =>
+                     if Depends.Contains (Null_Flow_Id) then
+                        Flow_Id_Sets.Move
+                          (Target => Used_Reads,
+                           Source => Depends (Null_Flow_Id));
+                     end if;
+               end case;
             end;
          end if;
 
          --  If this is an external call to protected subprogram then we also
          --  need to add the enclosing object to the variables we're using;
          --  if this is an internal call, then add the protected type itself.
+         --  Also, take into account same things as in Handle_Parameter.
 
          if Ekind (Scope (Subprogram)) = E_Protected_Type then
             declare
@@ -2336,14 +2420,63 @@ package body Flow_Utility is
                  Direct_Mapping_Id (Scope (Subprogram));
 
             begin
-               if not Folding
-                 or else Used_Reads.Contains (Implicit_Actual)
-               then
-                  V.Union
-                    (if Is_External_Call (Callsite)
-                     then Recurse (Prefix (Name (Callsite)))
-                     else Flatten_Variable (Implicit_Actual, Ctx.Scope));
-               end if;
+               case Ctx.Fold_Functions is
+                  when Inputs =>
+                     if Ekind (Subprogram) = E_Function
+                       and then Has_Depends (Subprogram)
+                     then
+                        if Used_Reads.Contains (Implicit_Actual) then
+                           V.Union
+                             (if Is_External_Call (Callsite)
+                              then Recurse (Prefix (Name (Callsite)))
+                              else Flatten_Variable (Implicit_Actual,
+                                                     Ctx.Scope));
+                        end if;
+                     else
+                        V.Union
+                          (if Is_External_Call (Callsite)
+                           then Recurse (Prefix (Name (Callsite)))
+                           else Flatten_Variable (Implicit_Actual,
+                                                  Ctx.Scope));
+                     end if;
+
+                  when Proof_Ins =>
+                     if Is_External_Call (Callsite) then
+                        V.Union (Recurse (Prefix (Name (Callsite))));
+                     end if;
+
+                  when Null_Deps =>
+                     if Is_External_Call (Callsite) then
+                        if Ekind (Subprogram) = E_Function
+                          and then Has_Depends (Subprogram)
+                        then
+                           if Used_Reads.Contains (Implicit_Actual) then
+                              V.Union (Recurse (Prefix (Name (Callsite))));
+
+                              V.Union
+                                (Get_Variables_Internal
+                                   (Prefix (Name (Callsite)),
+                                    Ctx'Update (Fold_Functions => Inputs)));
+                           else
+                              V.Union (Recurse (Prefix (Name (Callsite))));
+                           end if;
+                        else
+                           V.Union (Recurse (Prefix (Name (Callsite))));
+                        end if;
+                     else
+                        if Ekind (Subprogram) = E_Function
+                          and then Has_Depends (Subprogram)
+                        then
+                           if Used_Reads.Contains (Implicit_Actual) then
+                              V.Union
+                                (Flatten_Variable
+                                   (Implicit_Actual, Ctx.Scope));
+                           end if;
+                        else
+                           null;
+                        end if;
+                     end if;
+               end case;
             end;
          end if;
 
@@ -2360,25 +2493,48 @@ package body Flow_Utility is
                       Globals             => Globals,
                       Use_Deduced_Globals => Ctx.Use_Computed_Globals);
 
-         if not Ctx.Fold_Functions then
+         --  Handle globals; very much like in Handle_Parameter
 
-            --  If we fold functions we're interested in real world, otherwise
-            --  (this case) we're interested in the proof world too.
+         case Ctx.Fold_Functions is
+            when Inputs =>
+               for G of Globals.Inputs loop
+                  if Ekind (Subprogram) = E_Function
+                    and then Has_Depends (Subprogram)
+                  then
+                     if Used_Reads.Contains (Change_Variant (G, Normal_Use))
+                     then
+                        V.Union
+                          (Flatten_Variable
+                             (Change_Variant (G, Normal_Use), Ctx.Scope));
+                     end if;
+                  else
+                     V.Union
+                       (Flatten_Variable
+                          (Change_Variant (G, Normal_Use), Ctx.Scope));
+                  end if;
+               end loop;
 
-            Globals.Inputs.Union (Globals.Proof_Ins);
-         end if;
+            when Proof_Ins =>
+               for G of Globals.Proof_Ins loop
+                  V.Union
+                    (Flatten_Variable
+                       (Change_Variant (G, Normal_Use), Ctx.Scope));
+               end loop;
 
-         --  Merge global inputs into the variables used
-
-         for G of Globals.Inputs loop
-            if not Folding
-              or else Used_Reads.Contains (Change_Variant (G, Normal_Use))
-            then
-               V.Union
-                 (Flatten_Variable
-                    (Change_Variant (G, Normal_Use), Ctx.Scope));
-            end if;
-         end loop;
+            when Null_Deps =>
+               for G of Globals.Inputs loop
+                  if Ekind (Subprogram) = E_Function
+                    and then Has_Depends (Subprogram)
+                  then
+                     if Used_Reads.Contains (Change_Variant (G, Normal_Use))
+                     then
+                        V.Union
+                          (Flatten_Variable
+                             (Change_Variant (G, Normal_Use), Ctx.Scope));
+                     end if;
+                  end if;
+               end loop;
+         end case;
 
          --  Apply sanity check for functions
          --  ??? we should not emit errors from an utility routine like this,
@@ -2407,6 +2563,16 @@ package body Flow_Utility is
 
       function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
+         --  ??? This might be too early for return, e.g. when handling
+         --  discriminant constraints (but their handling is suspicious on its
+         --  own). Anyway, the idea is that this routine processes references
+         --  to entities and when collecting Proof_Ins/Null_Deps such a
+         --  reference itself doesn't contribute any object.
+
+         if Ctx.Fold_Functions /= Inputs then
+            return Flow_Id_Sets.Empty_Set;
+         end if;
+
          case Ekind (E) is
             --------------------------------------------
             -- Entities requiring some kind of action --
@@ -2810,7 +2976,7 @@ package body Flow_Utility is
       function Untangle_Record_Fields
         (N                       : Node_Id;
          Scope                   : Flow_Scope;
-         Fold_Functions          : Boolean;
+         Fold_Functions          : Reference_Kind;
          Use_Computed_Globals    : Boolean;
          Expand_Internal_Objects : Boolean)
          return Flow_Id_Sets.Set
@@ -3114,32 +3280,63 @@ package body Flow_Utility is
                               --     null;
 
                               when others =>
-                                 Expr_Vars :=
-                                   Get_Vars_Wrapper
-                                     (Expression (Component_Association));
+                                 if Fold_Functions = Inputs then
+                                    Expr_Vars :=
+                                      Get_Vars_Wrapper
+                                        (Expression (Component_Association));
 
-                                 --  Not sure what to do, so set all sensible
-                                 --  fields to the given variables.
+                                    --  Not sure what to do, so set all
+                                    --  sensible fields to the given variables.
 
-                                 FS := Flatten_Variable
-                                   (Add_Component (Current_Field, E), Scope);
+                                    FS :=
+                                      Flatten_Variable
+                                        (Add_Component (Current_Field, E),
+                                         Scope);
 
-                                 for F of FS loop
-                                    M.Replace (F, Expr_Vars);
-                                    All_Vars.Union (Expr_Vars);
-                                 end loop;
+                                    for F of FS loop
+                                       M.Replace (F, Expr_Vars);
+                                    end loop;
+
+                                 else
+                                    All_Vars.Union
+                                      (Get_Variables
+                                         (N                       =>
+                                            Expression (Component_Association),
+                                          Scope                   => Scope,
+                                          Fold_Functions          => Inputs,
+                                          Use_Computed_Globals    =>
+                                            Use_Computed_Globals,
+                                          Expand_Internal_Objects =>
+                                            Expand_Internal_Objects));
+                                 end if;
+
                            end case;
 
                         --  Direct field update of M
 
                         else
-                           Expr_Vars :=
-                             Get_Vars_Wrapper
-                               (Expression (Component_Association));
+                           if Fold_Functions = Inputs then
+                              Expr_Vars :=
+                                Get_Vars_Wrapper
+                                  (Expression (Component_Association));
 
-                           M.Replace
-                             (Add_Component (Current_Field, E), Expr_Vars);
-                           All_Vars.Union (Expr_Vars);
+                              M.Replace
+                                (Add_Component (Current_Field, E), Expr_Vars);
+                           else
+                              All_Vars.Union
+                                (Get_Variables
+                                   (N                       =>
+                                      Expression (Component_Association),
+                                    Scope                   => Scope,
+                                    Fold_Functions          =>
+                                      (if Fold_Functions = Proof_Ins
+                                       then Proof_Ins
+                                       else Inputs),
+                                    Use_Computed_Globals    =>
+                                      Use_Computed_Globals,
+                                    Expand_Internal_Objects =>
+                                      Expand_Internal_Objects));
+                           end if;
                         end if;
 
                         Next (Choice);
@@ -3216,7 +3413,6 @@ package body Flow_Utility is
          --  We merge what is left after trimming
 
          for S of M loop
-            All_Vars.Union (S);
             Depends_Vars.Union (S);
          end loop;
 
@@ -3234,7 +3430,7 @@ package body Flow_Utility is
 
          --  proof variables (requires N709-009)
 
-         if Fold_Functions then
+         if Fold_Functions = Inputs then
             return Depends_Vars;
          else
             return All_Vars;
@@ -3553,14 +3749,6 @@ package body Flow_Utility is
                                      Scope_N : Node_Id)
                                      return Flow_Id_Sets.Set
    is
-      Ctx : constant Get_Variables_Context :=
-        (Scope                   => Get_Flow_Scope (Scope_N),
-         Fold_Functions          => False,
-         Use_Computed_Globals    => True,
-         Assume_In_Expression    => True,
-         Expand_Internal_Objects => False,
-         Consider_Extensions     => False);
-
       Entire_Variables : Flow_Id_Sets.Set;
 
    begin
@@ -3568,7 +3756,13 @@ package body Flow_Utility is
       --  mutable) but keep references to array bounds of components (becayse
       --  they might be mutable).
 
-      for V of Get_Variables_Internal (Expr_N, Ctx) loop
+      for V of Get_All_Variables
+        (Expr_N,
+         Scope                   => Get_Flow_Scope (Scope_N),
+         Use_Computed_Globals    => True,
+         Assume_In_Expression    => True,
+         Expand_Internal_Objects => False)
+      loop
          if V.Kind = Direct_Mapping
            and then V.Facet = The_Bounds
          then
@@ -3680,7 +3874,7 @@ package body Flow_Utility is
       Vars := Get_Variables
         (Expr,
          Scope                => Get_Flow_Scope (E),
-         Fold_Functions       => True,
+         Fold_Functions       => Inputs,
          Use_Computed_Globals => GG_Has_Been_Generated);
       --  Note that Get_Variables calls Has_Variable_Input when it finds a
       --  constant. This means that there might be some mutual recursion here
@@ -4452,7 +4646,7 @@ package body Flow_Utility is
       Map_Root                : Flow_Id;
       Map_Type                : Entity_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
       Extensions_Irrelevant   : Boolean := True)
@@ -4749,14 +4943,18 @@ package body Flow_Utility is
                E : constant Entity_Id := Entity (N);
 
                Is_Pure_Constant : constant Boolean :=
-                 Ekind (E) = E_Constant
-                 and then not Has_Variable_Input (E);
+                 Fold_Functions /= Inputs
+                   or else
+                 (Ekind (E) = E_Constant
+                  and then not Has_Variable_Input (E));
                --  If we are assigning a pure constant, we don't really want to
                --  see it (just like if we assign integer/string/... literals
                --  then we don't want to see them in flow). However, we can't
                --  just pretend that the RHS is an empty map; it is a map
                --  (i.e. a certain structure) with empty elements, e.g. the
                --  private extension part.
+               --  Same when we detect Proof_Ins/Null_Deps and see a plain
+               --  object reference.
 
                LHS : constant Flow_Id_Sets.Set :=
                  Flatten_Variable (Map_Root, Scope);
@@ -5057,7 +5255,7 @@ package body Flow_Utility is
       --  results (yet).
 
       function Get_Vars_Wrapper (N    : Node_Id;
-                                 Fold : Boolean)
+                                 Fold : Reference_Kind)
                                  return Flow_Id_Sets.Set
       is (Get_Variables
             (N,
@@ -5177,14 +5375,13 @@ package body Flow_Utility is
             when N_Indexed_Component =>
                declare
                   Expr : Node_Id := First (Expressions (N));
-                  A, B : Flow_Id_Sets.Set;
 
                begin
                   while Present (Expr) loop
-                     A := Get_Vars_Wrapper (Expr, Fold => False);
-                     B := Get_Vars_Wrapper (Expr, Fold => True);
-                     Vars_Used.Union (B);
-                     Vars_Proof.Union (A - B);
+                     Vars_Used.Union
+                       (Get_Vars_Wrapper (Expr, Fold => Inputs));
+                     Vars_Proof.Union
+                       (Get_Vars_Wrapper (Expr, Fold => Proof_Ins));
 
                      Next (Expr);
                   end loop;
@@ -5192,15 +5389,11 @@ package body Flow_Utility is
                Process_Type_Conversions := False;
 
             when N_Slice =>
-               declare
-                  A, B : Flow_Id_Sets.Set;
+               Vars_Used.Union
+                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Inputs));
+               Vars_Proof.Union
+                 (Get_Vars_Wrapper (Discrete_Range (N), Fold => Proof_Ins));
 
-               begin
-                  A := Get_Vars_Wrapper (Discrete_Range (N), Fold => False);
-                  B := Get_Vars_Wrapper (Discrete_Range (N), Fold => True);
-                  Vars_Used.Union (B);
-                  Vars_Proof.Union (A - B);
-               end;
                Process_Type_Conversions := False;
 
             when N_Selected_Component

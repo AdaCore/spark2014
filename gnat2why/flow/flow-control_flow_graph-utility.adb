@@ -296,7 +296,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Get_Variables
                 (Actual,
                  Scope                => Scope,
-                 Fold_Functions       => True,
+                 Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals,
                  Consider_Extensions  => Ext_Relevant_To_Formal);
          begin
@@ -478,7 +478,7 @@ package body Flow.Control_Flow_Graph.Utility is
                  Get_Variables
                    (N                    => Prefix (Name (Call_Vertex)),
                     Scope                => Scope,
-                    Fold_Functions       => True,
+                    Fold_Functions       => Inputs,
                     Use_Computed_Globals => not FA.Generating_Globals);
             begin
                A.Variables_Used := Used;
@@ -754,10 +754,9 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
-         A.Variables_Used := Get_Variables
+         A.Variables_Used := Get_All_Variables
            (A.Default_Init_Val,
             Scope                => Scope,
-            Fold_Functions       => False,
             Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;

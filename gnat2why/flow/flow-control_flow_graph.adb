@@ -1506,7 +1506,7 @@ package body Flow.Control_Flow_Graph is
                  Map_Root                => LHS_Root,
                  Map_Type                => LHS_Type,
                  Scope                   => FA.B_Scope,
-                 Fold_Functions          => True,
+                 Fold_Functions          => Inputs,
                  Use_Computed_Globals    => not FA.Generating_Globals,
                  Expand_Internal_Objects => False);
 
@@ -1631,16 +1631,14 @@ package body Flow.Control_Flow_Graph is
               (Get_Variables
                  (Expression (N),
                   Scope                => FA.B_Scope,
-                  Fold_Functions       => True,
+                  Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals,
                   Consider_Extensions  => To_Cw));
 
-            --  Any proof variables we need to check separately. We also
-            --  need to check the RHS for proof variables.
+            --  Any proof or null dependency variables need to be checked
+            --  separately. We need to check both the LHS and RHS.
             Ctx.Folded_Function_Checks.Append (Expression (N));
-            if not Vars_Proof.Is_Empty then
-               Ctx.Folded_Function_Checks.Append (Name (N));
-            end if;
+            Ctx.Folded_Function_Checks.Append (Name (N));
 
             --  Produce the vertex
             Add_Vertex
@@ -1690,7 +1688,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use => Get_Variables
               (Expression (N),
                Scope                => FA.B_Scope,
-               Fold_Functions       => True,
+               Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
@@ -1791,7 +1789,7 @@ package body Flow.Control_Flow_Graph is
       Vars_Used := Get_Variables
                      (Expression (N),
                       Scope                => FA.B_Scope,
-                      Fold_Functions       => True,
+                      Fold_Functions       => Inputs,
                       Use_Computed_Globals => not FA.Generating_Globals);
 
       --  Add the implicit use of Ada.Real_Time.Clock_Time or
@@ -1888,7 +1886,7 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use => Get_Variables
                  (Cond,
                   Scope                => FA.B_Scope,
-                  Fold_Functions       => True,
+                  Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
@@ -2027,7 +2025,7 @@ package body Flow.Control_Flow_Graph is
            (Var_Ex_Use => Get_Variables
               (Condition (N),
                Scope                => FA.B_Scope,
-               Fold_Functions       => True,
+               Fold_Functions       => Inputs,
                Use_Computed_Globals => not FA.Generating_Globals),
             Sub_Called => Funcs,
             Loops      => Ctx.Current_Loops,
@@ -2094,7 +2092,7 @@ package body Flow.Control_Flow_Graph is
                     (Var_Ex_Use => Get_Variables
                        (Condition (Elsif_Statement),
                         Scope                => FA.B_Scope,
-                        Fold_Functions       => True,
+                        Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals),
                      Sub_Called => Funcs,
                      Loops      => Ctx.Current_Loops,
@@ -2433,7 +2431,7 @@ package body Flow.Control_Flow_Graph is
               (Var_Ex_Use => Get_Variables
                  (Condition (Iteration_Scheme (N)),
                   Scope                => FA.B_Scope,
-                  Fold_Functions       => True,
+                  Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
@@ -2554,7 +2552,7 @@ package body Flow.Control_Flow_Graph is
                   Var_Ex_Use => Get_Variables
                     (DSD,
                      Scope                => FA.B_Scope,
-                     Fold_Functions       => True,
+                     Fold_Functions       => Inputs,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
@@ -3150,7 +3148,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Get_Variables
                  (Cont,
                   Scope                => FA.B_Scope,
-                  Fold_Functions       => True,
+                  Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
@@ -3267,10 +3265,9 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (Reference),
                Make_Sink_Vertex_Attributes
-                 (Var_Use       => Get_Variables
+                 (Var_Use       => Get_All_Variables
                     (Prefix (Reference),
                      Scope                => FA.B_Scope,
-                     Fold_Functions       => False,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Is_Assertion  => True,
                   Is_Loop_Entry => True),
@@ -3588,7 +3585,7 @@ package body Flow.Control_Flow_Graph is
          Variables_Used := Get_Variables
            (Expr,
             Scope                => FA.B_Scope,
-            Fold_Functions       => True,
+            Fold_Functions       => Inputs,
             Use_Computed_Globals => not FA.Generating_Globals);
 
          declare
@@ -3754,7 +3751,7 @@ package body Flow.Control_Flow_Graph is
                      Map_Root                => Direct_Mapping_Id (E),
                      Map_Type                => Get_Type (E, FA.B_Scope),
                      Scope                   => FA.B_Scope,
-                     Fold_Functions          => True,
+                     Fold_Functions          => Inputs,
                      Use_Computed_Globals    => not FA.Generating_Globals,
                      Expand_Internal_Objects => False);
 
@@ -3834,7 +3831,7 @@ package body Flow.Control_Flow_Graph is
                      Var_Ex_Use => Get_Variables
                        (Expr,
                         Scope                => FA.B_Scope,
-                        Fold_Functions       => True,
+                        Fold_Functions       => Inputs,
                         Use_Computed_Globals => not FA.Generating_Globals,
                         Consider_Extensions  => To_CW),
                      Sub_Called => Funcs,
@@ -4395,15 +4392,32 @@ package body Flow.Control_Flow_Graph is
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
 
+         --  Syntax for pragmas relevant to flow is:
+         --
+         --    pragma Check (
+         --       [Name    =>] CHECK_KIND,
+         --       [Check   =>] Boolean_EXPRESSION
+         --    [, [Message =>] string_EXPRESSION] );
+         --
+         --    pragma Loop_Invariant ( boolean_EXPRESSION );
+         --
+         --  and we are only interested in boolean_EXPRESSION.
+
          Add_Vertex
            (FA,
             Direct_Mapping_Id (N),
             Make_Sink_Vertex_Attributes
-              (Var_Use      => Get_Variables
-                   (Pragma_Argument_Associations (N),
-                    Scope                => FA.B_Scope,
-                    Fold_Functions       => False,
-                    Use_Computed_Globals => not FA.Generating_Globals),
+              (Var_Use      => Get_All_Variables
+                 (Expression
+                    (case Get_Pragma_Id (N) is
+                        when Pragma_Check =>
+                           Next (First (Pragma_Argument_Associations (N))),
+                        when Pragma_Loop_Variant =>
+                           First (Pragma_Argument_Associations (N)),
+                        when others =>
+                           raise Program_Error),
+                  Scope                => FA.B_Scope,
+                  Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called   => Funcs,
                Is_Assertion => True,
                E_Loc        => N,
@@ -4668,14 +4682,13 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (N),
          Make_Sink_Vertex_Attributes
-           (Var_Use         => Get_Variables
+           (Var_Use      => Get_All_Variables
               (N,
                Scope                => FA.B_Scope,
-               Fold_Functions       => False,
                Use_Computed_Globals => not FA.Generating_Globals),
-            Sub_Called      => Funcs,
-            Is_Assertion    => True,
-            E_Loc           => N),
+            Sub_Called   => Funcs,
+            Is_Assertion => True,
+            E_Loc        => N),
          V);
 
       CM.Insert (Union_Id (N), Trivial_Connection (V));
@@ -4720,7 +4733,7 @@ package body Flow.Control_Flow_Graph is
                Var_Ex_Use => Get_Variables
                  (Expr,
                   Scope                => FA.B_Scope,
-                  Fold_Functions       => True,
+                  Fold_Functions       => Inputs,
                   Use_Computed_Globals => not FA.Generating_Globals),
                Sub_Called => Funcs,
                Loops      => Ctx.Current_Loops,
@@ -4795,10 +4808,9 @@ package body Flow.Control_Flow_Graph is
               (FA,
                Direct_Mapping_Id (Cond),
                Make_Basic_Attributes
-                 (Var_Ex_Use => Get_Variables
+                 (Var_Ex_Use => Get_All_Variables
                     (Cond,
                      Scope                => FA.B_Scope,
-                     Fold_Functions       => False,
                      Use_Computed_Globals => not FA.Generating_Globals),
                   Sub_Called => Funcs,
                   Loops      => Ctx.Current_Loops,
@@ -4884,10 +4896,9 @@ package body Flow.Control_Flow_Graph is
       then
          declare
             Vars_Read : constant Flow_Id_Sets.Set :=
-              Get_Variables
+              Get_All_Variables
                 (N                    => Typ,
                  Scope                => FA.B_Scope,
-                 Fold_Functions       => False,
                  Use_Computed_Globals => not FA.Generating_Globals);
 
          begin
@@ -5350,30 +5361,30 @@ package body Flow.Control_Flow_Graph is
          declare
             Expr : constant Node_Id := Ctx.Folded_Function_Checks.Last_Element;
 
-            Unchecked : constant Flow_Id_Sets.Set :=
-              Get_Variables
-              (Expr,
-               Scope                => FA.B_Scope,
-               Fold_Functions       => False,
-               Use_Computed_Globals => not FA.Generating_Globals) -
+            Unchecked : Flow_Id_Sets.Set;
 
-              Get_Variables
-              (Expr,
-               Scope                => FA.B_Scope,
-               Fold_Functions       => True,
-               Use_Computed_Globals => not FA.Generating_Globals);
             V : Flow_Graphs.Vertex_Id;
          begin
-            if not Unchecked.Is_Empty then
-               Add_Vertex
-                 (FA,
-                  Make_Sink_Vertex_Attributes (Var_Use       => Unchecked,
-                                               Is_Fold_Check => True,
-                                               Is_Assertion  => True,
-                                               E_Loc         => Expr),
-                  V);
-               L.Append (V);
-            end if;
+            for Ref_Kind in Proof_Ins .. Null_Deps loop
+               Unchecked :=
+                 Get_Variables
+                   (Expr,
+                    Scope                => FA.B_Scope,
+                    Fold_Functions       => Ref_Kind,
+                    Use_Computed_Globals => not FA.Generating_Globals);
+
+               if not Unchecked.Is_Empty then
+                  Add_Vertex
+                    (FA,
+                     Make_Sink_Vertex_Attributes
+                       (Var_Use       => Unchecked,
+                        Is_Fold_Check => True,
+                        Is_Assertion  => (Ref_Kind = Proof_Ins),
+                        E_Loc         => Expr),
+                     V);
+                  L.Append (V);
+               end if;
+            end loop;
 
             Ctx.Folded_Function_Checks.Delete_Last;
          end;

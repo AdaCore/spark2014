@@ -2124,7 +2124,7 @@ package body Flow_Generated_Globals.Partial is
               Get_Variables
                 (Expr,
                  Scope                => Get_Flow_Scope (Full),
-                 Fold_Functions       => True,
+                 Fold_Functions       => Inputs,
                  Use_Computed_Globals => False);
 
             Inputs : Node_Lists.List;

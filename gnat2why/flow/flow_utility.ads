@@ -261,22 +261,17 @@ package Flow_Utility is
    function Get_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
       Consider_Extensions     : Boolean := False)
-      return Flow_Id_Sets.Set
-   with Pre => (if Fold_Functions then Assume_In_Expression);
+      return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --
-   --  If Fold_Functions is True, we exclude variables that a function does not
-   --  use to derive its result from. For example, given the following
-   --  dependency relation on a function:
-   --     Depends => (Foo'Result => A,
-   --                 null       => B)
-   --  Then we return only {A} instead of {A, B} if Fold_Functions is True.
+   --  ??? Fold_Functions parmeter refers to previous handling of objects
+   --  referenced in assertions and null dependencies; should be renamed.
    --
    --  The following other options all have default parameters as they are only
    --  useful in certain usage scenarios. In the majority of flow analysis, one
@@ -294,7 +289,7 @@ package Flow_Utility is
    function Get_Variables
      (L                       : List_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
@@ -312,6 +307,16 @@ package Flow_Utility is
    --  A wrapper around Get_Variables, as used by proof. Expr_N is the
    --  expression for which we obtain variables, and Scope_N is the node
    --  controlling visibility.
+
+   function Get_All_Variables
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Use_Computed_Globals    : Boolean;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
+      return Flow_Id_Sets.Set;
+   --  Returns variables referenced by N in all modes, i.e. inputs, proof_ins
+   --  and null dependencies.
 
    function Flatten_Variable
      (F     : Flow_Id;
@@ -439,7 +444,7 @@ package Flow_Utility is
       Map_Root                : Flow_Id;
       Map_Type                : Entity_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
       Extensions_Irrelevant   : Boolean := True)

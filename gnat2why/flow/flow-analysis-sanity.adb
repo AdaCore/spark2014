@@ -183,11 +183,10 @@ package body Flow.Analysis.Sanity is
 
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
-        (Get_Variables (N,
-                        Scope                   => FA.B_Scope,
-                        Fold_Functions          => False,
-                        Use_Computed_Globals    => True,
-                        Expand_Internal_Objects => True));
+        (Get_All_Variables (N,
+                            Scope                   => FA.B_Scope,
+                            Use_Computed_Globals    => True,
+                            Expand_Internal_Objects => True));
       --  Wrapper around Get_Variables
 
       -------------------
