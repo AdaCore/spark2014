@@ -18,12 +18,12 @@ module Bvext__nth__2
  use        Standard__natural
  use        Interfaces__unsigned_8
 
- function nth__2__logic (value : BV8.t) (pos : int)  :bool
+ function nth__logic (value : BV8.t) (pos : int)  :bool
    = BV8.nth value pos
 
- val nth__2  (value : BV8.t) (pos : int)  :bool
+ val nth  (value : BV8.t) (pos : int)  :bool
   requires { true }
-  ensures { result = nth__2__logic value pos }
+  ensures { result = nth__logic value pos }
 end
 
 module Bvext__nth_bv
@@ -46,12 +46,12 @@ module Bvext__nth_bv__2
  use        Standard__natural
  use        Interfaces__unsigned_8
 
- function nth_bv__2__logic (value pos : BV8.t)  :bool
+ function nth_bv__logic (value pos : BV8.t)  :bool
    = BV8.nth_bv value pos
 
- val nth_bv__2  (value pos : BV8.t)  :bool
+ val nth_bv  (value pos : BV8.t)  :bool
   requires { true }
-  ensures { result = nth_bv__2__logic value pos }
+  ensures { result = nth_bv__logic value pos }
 
 end
 
