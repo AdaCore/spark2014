@@ -37,7 +37,7 @@
   </transf>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1700"/></proof>
+  <proof prover="0"><result status="valid" steps="1878"/></proof>
   </goal>
   <goal name="VC def.7" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

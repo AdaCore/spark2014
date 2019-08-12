@@ -13,7 +13,7 @@
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8338"/></proof>
+  <proof prover="0"><result status="valid" steps="14086"/></proof>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >

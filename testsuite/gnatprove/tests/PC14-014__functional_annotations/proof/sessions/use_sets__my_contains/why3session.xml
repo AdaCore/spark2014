@@ -29,10 +29,10 @@
   </transf>
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6330"/></proof>
+  <proof prover="0"><result status="valid" steps="7062"/></proof>
   </goal>
   <goal name="VC def.5" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="25711"/></proof>
+  <proof prover="0"><result status="valid" steps="30099"/></proof>
   </goal>
  </transf>
  </goal>

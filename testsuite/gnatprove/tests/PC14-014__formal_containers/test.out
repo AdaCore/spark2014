@@ -467,7 +467,7 @@ my_maps.adb:113:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:117:07: info: precondition proved (CVC4: 1 VC)
 my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:121:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_maps.adb:124:07: medium: assertion might fail
 my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)

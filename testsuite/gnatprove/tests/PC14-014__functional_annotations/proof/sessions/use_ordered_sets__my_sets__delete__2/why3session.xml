@@ -21,7 +21,7 @@
   </transf>
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1680"/></proof>
+  <proof prover="0"><result status="valid" steps="1858"/></proof>
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -88,7 +88,7 @@
   </transf>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1680"/></proof>
+  <proof prover="0"><result status="valid" steps="1858"/></proof>
   </goal>
   <goal name="VC def.20" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

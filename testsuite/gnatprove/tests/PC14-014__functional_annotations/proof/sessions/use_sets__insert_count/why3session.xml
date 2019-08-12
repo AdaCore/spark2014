@@ -3,15 +3,16 @@
 "http://why3.lri.fr/why3session.dtd">
 <why3session shape_version="6">
 <prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="10" steplimit="610000" memlimit="1000"/>
-<file proved="true">
+<prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="60" steplimit="22000" memlimit="2000"/>
+<file>
 <path name=".."/>
 <path name=".."/>
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="use_sets__insert_count.mlw"/>
-<theory name="Use_sets__insert_count__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
- <transf name="split_goal_wp_conj" proved="true" >
+<theory name="Use_sets__insert_count__subprogram_def">
+ <goal name="VC def" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
@@ -49,22 +50,22 @@
   </transf>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="30583"/></proof>
+  <proof prover="0"><result status="valid" steps="32167"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="36856"/></proof>
+  <proof prover="0"><result status="valid" steps="38440"/></proof>
   </goal>
   <goal name="VC def.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="42701"/></proof>
+  <proof prover="0"><result status="valid" steps="44285"/></proof>
   </goal>
   <goal name="VC def.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="50277"/></proof>
+  <proof prover="0"><result status="valid" steps="51861"/></proof>
   </goal>
   <goal name="VC def.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="64177"/></proof>
+  <proof prover="0"><result status="valid" steps="69923"/></proof>
   </goal>
   <goal name="VC def.14" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="80528"/></proof>
+  <proof prover="0"><result status="valid" steps="90044"/></proof>
   </goal>
   <goal name="VC def.15" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -75,10 +76,10 @@
   </transf>
   </goal>
   <goal name="VC def.17" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3424"/></proof>
+  <proof prover="0"><result status="valid" steps="3510"/></proof>
   </goal>
   <goal name="VC def.18" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="3428"/></proof>
+  <proof prover="0"><result status="valid" steps="3514"/></proof>
   </goal>
   <goal name="VC def.19" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -105,7 +106,7 @@
   </transf>
   </goal>
   <goal name="VC def.25" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="52262"/></proof>
+  <proof prover="0"><result status="valid" steps="53909"/></proof>
   </goal>
   <goal name="VC def.26" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -116,16 +117,17 @@
   </transf>
   </goal>
   <goal name="VC def.28" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="115648"/></proof>
+  <proof prover="0"><result status="valid" steps="134153"/></proof>
   </goal>
   <goal name="VC def.29" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="274108"/></proof>
+  <proof prover="0"><result status="valid" steps="276509"/></proof>
   </goal>
   <goal name="VC def.30" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="186815"/></proof>
+  <proof prover="0"><result status="valid" steps="227524"/></proof>
   </goal>
-  <goal name="VC def.31" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="446556"/></proof>
+  <goal name="VC def.31" expl="postcondition">
+  <proof prover="0" timelimit="60" memlimit="2000"><result status="unknown" steps="610966"/></proof>
+  <proof prover="1"><result status="unknown" steps="22012"/></proof>
   </goal>
  </transf>
  </goal>

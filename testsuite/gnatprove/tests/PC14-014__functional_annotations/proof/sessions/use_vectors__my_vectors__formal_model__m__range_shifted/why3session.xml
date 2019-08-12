@@ -17,38 +17,38 @@
   </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5050"/></proof>
+  <proof prover="0"><result status="valid" steps="7699"/></proof>
   </goal>
   <goal name="VC def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5150"/></proof>
+  <proof prover="0"><result status="valid" steps="7798"/></proof>
   </goal>
   <goal name="VC def.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5933"/></proof>
+  <proof prover="0"><result status="valid" steps="8584"/></proof>
   </goal>
   <goal name="VC def.4" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5788"/></proof>
+  <proof prover="0"><result status="valid" steps="8566"/></proof>
   </goal>
   <goal name="VC def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="5914"/></proof>
+  <proof prover="0"><result status="valid" steps="8692"/></proof>
   </goal>
   <goal name="VC def.7" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6586"/></proof>
+  <proof prover="0"><result status="valid" steps="9368"/></proof>
   </goal>
   <goal name="VC def.8" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6606"/></proof>
+  <proof prover="0"><result status="valid" steps="9388"/></proof>
   </goal>
   <goal name="VC def.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6264"/></proof>
+  <proof prover="0"><result status="valid" steps="9040"/></proof>
   </goal>
   <goal name="VC def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1789"/></proof>
+  <proof prover="0"><result status="valid" steps="2351"/></proof>
   </goal>
   <goal name="VC def.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="6712"/></proof>
+  <proof prover="0"><result status="valid" steps="9492"/></proof>
   </goal>
   <goal name="VC def.12" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
