@@ -628,6 +628,7 @@ package Flow_Utility is
                           or else Ekind (Output) in Assignable_Kind
                                                   | E_Abstract_State
                                                   | E_Constant
+                                                  | E_In_Parameter
                                                   | E_Function
                                                   | E_Protected_Type
                                                   | E_Task_Type)
