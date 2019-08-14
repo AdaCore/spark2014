@@ -7,29 +7,33 @@ show_failed_proof_attempt.adb:32:17: info: overflow check proved (CVC4: 1 VC)
 show_failed_proof_attempt.adb:39:17: info: overflow check proved (CVC4: 1 VC)
 show_failed_proof_attempt.adb:43:17: info: overflow check proved (CVC4: 1 VC)
 show_failed_proof_attempt.ads:7:20: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10 and X'Old = 0)
-show_failed_proof_attempt.ads:12:25: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
-show_failed_proof_attempt.ads:18:25: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
-show_failed_proof_attempt.ads:21:53: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10)
+show_failed_proof_attempt.ads:12:25: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10 and X'Old = 0)
+show_failed_proof_attempt.ads:18:25: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10 and X'Old = 0)
+show_failed_proof_attempt.ads:21:53: medium: postcondition might fail, cannot prove X = C (e.g. when C = 0 and X = 10 and X'Old = 0)
 counterexample expected for check at show_failed_proof_attempt.ads:7
   trace at show_failed_proof_attempt.adb:5 --> X = 0
   trace at show_failed_proof_attempt.adb:6 --> X = 10
+  trace at show_failed_proof_attempt.adb:7 --> X = 0
   trace at show_failed_proof_attempt.ads:3 --> C = 0
   trace at show_failed_proof_attempt.ads:7 --> C = 0 and X = 10 and X'Old = 0
 counterexample expected for check at show_failed_proof_attempt.ads:12
   trace at show_failed_proof_attempt.adb:16 --> X = 0
   trace at show_failed_proof_attempt.adb:17 --> X = 10
+  trace at show_failed_proof_attempt.adb:18 --> X = 0
   trace at show_failed_proof_attempt.ads:3 --> C = 0
   trace at show_failed_proof_attempt.ads:9 --> X = 0
-  trace at show_failed_proof_attempt.ads:12 --> C = 0 and X = 10
+  trace at show_failed_proof_attempt.ads:12 --> C = 0 and X = 10 and X'Old = 0
 counterexample expected for check at show_failed_proof_attempt.ads:18
   trace at show_failed_proof_attempt.adb:27 --> X = 0
   trace at show_failed_proof_attempt.adb:28 --> X = 10
+  trace at show_failed_proof_attempt.adb:29 --> X = 0
   trace at show_failed_proof_attempt.ads:3 --> C = 0
   trace at show_failed_proof_attempt.ads:14 --> X = 0
-  trace at show_failed_proof_attempt.ads:18 --> C = 0 and X = 10
+  trace at show_failed_proof_attempt.ads:18 --> C = 0 and X = 10 and X'Old = 0
 counterexample expected for check at show_failed_proof_attempt.ads:21
   trace at show_failed_proof_attempt.adb:38 --> X = 0
   trace at show_failed_proof_attempt.adb:39 --> X = 10
+  trace at show_failed_proof_attempt.adb:40 --> X = 0
   trace at show_failed_proof_attempt.ads:3 --> C = 0
   trace at show_failed_proof_attempt.ads:20 --> X = 0
-  trace at show_failed_proof_attempt.ads:21 --> C = 0 and X = 10
+  trace at show_failed_proof_attempt.ads:21 --> C = 0 and X = 10 and X'Old = 0

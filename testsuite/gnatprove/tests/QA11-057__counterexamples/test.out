@@ -3,4 +3,5 @@ absolute_values.adb:5:37: info: overflow check proved (CVC4: 1 VC)
 absolute_values.adb:11:14: medium: overflow check might fail (e.g. when X = Integer'First) [possible explanation: subprogram at line 1 should mention X in a precondition]
 counterexample expected for check at absolute_values.adb:11
   trace at absolute_values.adb:1 --> X = Integer'First
+  trace at absolute_values.adb:8 --> X = Integer'First
   trace at absolute_values.adb:11 --> X = Integer'First

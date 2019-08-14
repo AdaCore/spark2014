@@ -28,30 +28,30 @@ counter_example_loop_index.adb:74:33: medium: loop invariant might fail after fi
 counter_example_loop_index.ads:8:14: warning: subprogram "P" has no effect
 counterexample expected for check at counter_example_loop_index.adb:14
   trace at counter_example_loop_index.adb:12 --> I = 2
-  trace at counter_example_loop_index.adb:13 --> K = 1
+  trace at counter_example_loop_index.adb:13 --> I = 1 and K = 1
   trace at counter_example_loop_index.adb:14 --> J = 1
 [PREVIOUS]  trace at counter_example_loop_index.adb:14 --> I = 1 and J = 0 and K = 0
-  trace at counter_example_loop_index.adb:15 --> J = 1
+  trace at counter_example_loop_index.adb:15 --> I = 1 and J = 1
 counterexample expected for check at counter_example_loop_index.adb:25
   trace at counter_example_loop_index.adb:23 --> I = 1
   trace at counter_example_loop_index.adb:25 --> J = 51
 [PREVIOUS]  trace at counter_example_loop_index.adb:26 --> I = 51 and J = 0 and K = 0
-  trace at counter_example_loop_index.adb:28 --> J = 51
+  trace at counter_example_loop_index.adb:28 --> I = 51 and J = 51
 counterexample expected for check at counter_example_loop_index.adb:47
   trace at counter_example_loop_index.adb:45 --> I = 1
   trace at counter_example_loop_index.adb:47 --> J = 1
 [PREVIOUS]  trace at counter_example_loop_index.adb:48 --> I = 1 and J = 0 and K = 0
-  trace at counter_example_loop_index.adb:50 --> J = 1
+  trace at counter_example_loop_index.adb:50 --> I = 1 and J = 1
 counterexample expected for check at counter_example_loop_index.adb:61
   trace at counter_example_loop_index.adb:55 --> X = 0
   trace at counter_example_loop_index.adb:59 --> I = 52
-  trace at counter_example_loop_index.adb:60 --> K = 1
+  trace at counter_example_loop_index.adb:60 --> I = 1 and K = 1
   trace at counter_example_loop_index.adb:61 --> J = 51
 [PREVIOUS]  trace at counter_example_loop_index.adb:61 --> I = 51 and J = 0 and K = 0
-  trace at counter_example_loop_index.adb:62 --> J = 51
+  trace at counter_example_loop_index.adb:62 --> I = 51 and J = 51
 counterexample expected for check at counter_example_loop_index.adb:74
   trace at counter_example_loop_index.adb:71 --> I = 51
-  trace at counter_example_loop_index.adb:72 --> K = 1
-  trace at counter_example_loop_index.adb:73 --> J = 51
+  trace at counter_example_loop_index.adb:72 --> I = 1 and K = 1
+  trace at counter_example_loop_index.adb:73 --> I = 1 and J = 51
   trace at counter_example_loop_index.adb:74 --> J = 51
 [PREVIOUS]  trace at counter_example_loop_index.adb:74 --> I = 50 and J = 0 and K = 0

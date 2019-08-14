@@ -4,7 +4,7 @@ string_utilities.adb:10:12: info: range check proved (CVC4: 2 VC)
 string_utilities.adb:17:24: info: index check proved (CVC4: 2 VC)
 string_utilities.adb:17:28: info: index check proved (CVC4: 2 VC)
 string_utilities.adb:18:15: info: range check proved (CVC4: 1 VC)
-string_utilities.adb:25:31: medium: array index check might fail (e.g. when Lengths'First (1) = 1 and X1 = 0) [possible explanation: subprogram at line 20 should mention X1 in a precondition]
+string_utilities.adb:25:31: medium: array index check might fail (e.g. when Lengths'First (1) = 1 and Lengths'Last (2) = 1 and X1 = 0) [possible explanation: subprogram at line 20 should mention X1 in a precondition]
 string_utilities.adb:25:35: medium: array index check might fail (e.g. when Lengths'First (2) = 1 and X2 = 0) [possible explanation: subprogram at line 20 should mention X2 in a precondition]
 string_utilities.adb:27:22: info: range check proved (CVC4: 1 VC)
 string_utilities.adb:29:17: info: range check proved (CVC4: 1 VC)

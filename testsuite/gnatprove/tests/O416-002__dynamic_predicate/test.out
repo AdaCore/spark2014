@@ -7,7 +7,7 @@ dynamic_preds.adb:29:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:34:19: medium: predicate check might fail [possible explanation: subprogram at dynamic_preds.ads:23 should mention X in a precondition]
 dynamic_preds.adb:35:22: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:39:27: info: range check proved (CVC4: 1 VC)
-dynamic_preds.adb:39:27: medium: predicate check might fail (e.g. when A = -1) [possible explanation: subprogram at dynamic_preds.ads:28 should mention A in a precondition]
+dynamic_preds.adb:39:27: medium: predicate check might fail (e.g. when A = -1 and B = 0) [possible explanation: subprogram at dynamic_preds.ads:28 should mention A in a precondition]
 dynamic_preds.adb:39:30: info: range check proved (CVC4: 1 VC)
 dynamic_preds.adb:39:30: medium: predicate check might fail (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds.ads:28 should mention B in a precondition]
 dynamic_preds.adb:45:27: info: predicate check proved (CVC4: 1 VC)
@@ -41,7 +41,7 @@ dynamic_preds.adb:112:07: info: initialization of "Result" proved
 dynamic_preds.adb:114:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds.adb:115:16: medium: predicate check might fail
 dynamic_preds.adb:115:22: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds.adb:117:16: medium: predicate check might fail (e.g. when Result = (A => 0, B => 0))
+dynamic_preds.adb:117:16: medium: predicate check might fail (e.g. when Above = -1 and Result = (A => 0, B => 0))
 dynamic_preds.adb:117:28: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds.adb:117:28: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds.ads:41 should mention Above in a precondition]
 dynamic_preds.adb:120:13: info: predicate check proved (CVC4: 1 VC)
@@ -79,7 +79,7 @@ dynamic_preds_array.adb:29:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:34:18: medium: predicate check might fail (e.g. when X = (1 => 0, 2 => 0, others => -1)) [possible explanation: subprogram at dynamic_preds_array.ads:18 should mention X in a precondition]
 dynamic_preds_array.adb:35:21: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:27: info: range check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:40:27: medium: predicate check might fail (e.g. when A = -1) [possible explanation: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
+dynamic_preds_array.adb:40:27: medium: predicate check might fail (e.g. when A = -1 and B = 0) [possible explanation: subprogram at dynamic_preds_array.ads:23 should mention A in a precondition]
 dynamic_preds_array.adb:40:30: info: range check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:40:30: medium: predicate check might fail (e.g. when B = -1) [possible explanation: subprogram at dynamic_preds_array.ads:23 should mention B in a precondition]
 dynamic_preds_array.adb:46:27: info: predicate check proved (CVC4: 1 VC)
@@ -111,7 +111,7 @@ dynamic_preds_array.adb:109:14: medium: predicate check might fail (e.g. when Re
 dynamic_preds_array.adb:115:16: info: division check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:116:10: medium: predicate check might fail
 dynamic_preds_array.adb:116:23: info: predicate check proved (CVC4: 1 VC)
-dynamic_preds_array.adb:118:10: medium: predicate check might fail (e.g. when Result = (others => 0))
+dynamic_preds_array.adb:118:10: medium: predicate check might fail (e.g. when Above = -1 and Result = (others => 0))
 dynamic_preds_array.adb:118:29: info: predicate check proved (CVC4: 1 VC)
 dynamic_preds_array.adb:118:29: medium: overflow check might fail (e.g. when Above = Integer'Last) [possible explanation: subprogram at dynamic_preds_array.ads:36 should mention Above in a precondition]
 dynamic_preds_array.adb:121:07: info: predicate check proved (CVC4: 1 VC)

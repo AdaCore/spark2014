@@ -23,14 +23,14 @@ decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:133:38: medium: predicate check might fail
+decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 1023 and Next_Idx = 1)
 decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:156:35: medium: predicate check might fail
+decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 1)
 decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"

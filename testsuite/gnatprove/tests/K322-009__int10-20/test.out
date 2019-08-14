@@ -3,7 +3,7 @@ inrange.adb:8:18: info: precondition proved (CVC4: 1 VC)
 inrange.adb:14:14: info: range check proved (CodePeer)
 inrange.adb:21:07: info: precondition proved (CVC4: 1 VC)
 inrange.adb:21:16: info: range check proved (CVC4: 1 VC)
-inrange.adb:21:16: medium: range check might fail
+inrange.adb:21:16: medium: range check might fail (e.g. when X = 10)
 inrange.ads:7:12: info: postcondition proved (CVC4: 1 VC)
 inrange.ads:10:17: info: postcondition proved (CVC4: 1 VC)
 inrange.ads:14:20: info: postcondition proved (CVC4: 1 VC)

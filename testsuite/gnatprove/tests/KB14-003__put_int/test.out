@@ -5,7 +5,7 @@ put.adb:16:18: info: division check proved (CVC4: 1 VC)
 put.adb:17:19: info: overflow check proved (CVC4: 1 VC)
 put.adb:17:26: info: division check proved (CVC4: 1 VC)
 put.adb:18:22: medium: range check might fail (e.g. when First = 0) [possible explanation: loop at line 13 should mention First in a loop invariant]
-put.adb:19:10: medium: array index check might fail (e.g. when First = 0) [possible explanation: loop at line 13 should mention First in a loop invariant]
+put.adb:19:10: medium: array index check might fail (e.g. when First = 0 and Val = 0) [possible explanation: loop at line 13 should mention First in a loop invariant]
 put.adb:19:55: info: overflow check proved (CVC4: 1 VC)
 put.adb:19:55: info: range check proved (CVC4: 1 VC)
 put.adb:24:22: info: range check proved (CVC4: 1 VC)

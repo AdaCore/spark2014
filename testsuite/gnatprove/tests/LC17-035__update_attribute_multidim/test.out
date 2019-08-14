@@ -3,9 +3,9 @@ update.ads:31:19: info: postcondition proved (CVC4: 1 VC)
 update.ads:38:19: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when I = 1 and New_Val = Integer'First+1)
 update_checks.adb:10:04: warning: analyzing unreferenced procedure "Test1"
 update_checks.adb:22:04: warning: analyzing unreferenced procedure "Test2"
-update_checks.adb:29:25: medium: range check might fail (e.g. when X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
-update_checks.adb:29:32: medium: range check might fail (e.g. when Y = 1) [possible explanation: subprogram at line 22 should mention Y in a precondition]
-update_checks.adb:29:39: medium: range check might fail (e.g. when Z = 10) [possible explanation: subprogram at line 22 should mention Z in a precondition]
+update_checks.adb:29:25: medium: range check might fail (e.g. when New_Val = 0 and X = 1) [possible explanation: subprogram at line 22 should mention X in a precondition]
+update_checks.adb:29:32: medium: range check might fail (e.g. when New_Val = 0 and Y = 1) [possible explanation: subprogram at line 22 should mention Y in a precondition]
+update_checks.adb:29:39: medium: range check might fail (e.g. when New_Val = 0 and Z = 10) [possible explanation: subprogram at line 22 should mention Z in a precondition]
 update_checks.adb:29:55: medium: range check might fail (e.g. when New_Val = ET1'Last) [possible explanation: subprogram at line 22 should mention New_Val in a precondition]
 update_checks.adb:34:04: warning: analyzing unreferenced procedure "Test3"
 update_checks.adb:43:28: info: range check proved (CVC4: 1 VC)
@@ -14,12 +14,12 @@ update_checks.adb:43:42: info: range check proved (CVC4: 1 VC)
 update_checks.adb:43:58: info: range check proved (CVC4: 1 VC)
 update_checks.adb:49:04: warning: analyzing unreferenced procedure "Test4"
 update_checks.adb:61:04: warning: analyzing unreferenced procedure "Test5"
-update_checks.adb:68:26: medium: range check might fail (e.g. when X1 = 1) [possible explanation: subprogram at line 61 should mention X1 in a precondition]
-update_checks.adb:68:34: medium: range check might fail (e.g. when Y1 = 1) [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
+update_checks.adb:68:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention X1 in a precondition]
+update_checks.adb:68:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 61 should mention Y1 in a precondition]
 update_checks.adb:68:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 61 should mention Z1 in a precondition]
-update_checks.adb:69:28: medium: range check might fail (e.g. when X2 = 3) [possible explanation: subprogram at line 61 should mention X2 in a precondition]
-update_checks.adb:69:36: medium: range check might fail (e.g. when Y2 = 5) [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
-update_checks.adb:69:44: medium: range check might fail (e.g. when Z2 = 10) [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
+update_checks.adb:69:28: medium: range check might fail (e.g. when New_Val = 0 and X2 = 3) [possible explanation: subprogram at line 61 should mention X2 in a precondition]
+update_checks.adb:69:36: medium: range check might fail (e.g. when New_Val = 0 and Y2 = 5) [possible explanation: subprogram at line 61 should mention Y2 in a precondition]
+update_checks.adb:69:44: medium: range check might fail (e.g. when New_Val = 0 and Z2 = 10) [possible explanation: subprogram at line 61 should mention Z2 in a precondition]
 update_checks.adb:69:60: medium: range check might fail (e.g. when New_Val = ET1'Last) [possible explanation: subprogram at line 61 should mention New_Val in a precondition]
 update_checks.adb:74:04: warning: analyzing unreferenced procedure "Test6"
 update_checks.adb:84:29: info: range check proved (CVC4: 1 VC)
@@ -30,16 +30,16 @@ update_checks.adb:85:39: info: range check proved (CVC4: 1 VC)
 update_checks.adb:85:47: info: range check proved (CVC4: 1 VC)
 update_checks.adb:85:63: info: range check proved (CVC4: 1 VC)
 update_checks.adb:91:04: warning: analyzing unreferenced procedure "Test7"
-update_checks.adb:99:26: medium: range check might fail (e.g. when X1 = 1) [possible explanation: subprogram at line 91 should mention X1 in a precondition]
-update_checks.adb:99:34: medium: range check might fail (e.g. when Y1 = 1) [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
+update_checks.adb:99:26: medium: range check might fail (e.g. when X1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention X1 in a precondition]
+update_checks.adb:99:34: medium: range check might fail (e.g. when Y1 = 1 and Z1 = 2) [possible explanation: subprogram at line 91 should mention Y1 in a precondition]
 update_checks.adb:99:42: medium: range check might fail (e.g. when Z1 = 1) [possible explanation: subprogram at line 91 should mention Z1 in a precondition]
-update_checks.adb:100:28: medium: range check might fail (e.g. when X2 = 3) [possible explanation: subprogram at line 91 should mention X2 in a precondition]
-update_checks.adb:100:36: medium: range check might fail (e.g. when Y2 = 5) [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
-update_checks.adb:100:44: medium: range check might fail (e.g. when Z2 = 10) [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
+update_checks.adb:100:28: medium: range check might fail (e.g. when New_Val_1 = 0 and X2 = 3) [possible explanation: subprogram at line 91 should mention X2 in a precondition]
+update_checks.adb:100:36: medium: range check might fail (e.g. when New_Val_1 = 0 and Y2 = 5) [possible explanation: subprogram at line 91 should mention Y2 in a precondition]
+update_checks.adb:100:44: medium: range check might fail (e.g. when New_Val_1 = 0 and Z2 = 10) [possible explanation: subprogram at line 91 should mention Z2 in a precondition]
 update_checks.adb:100:62: medium: range check might fail (e.g. when New_Val_1 = ET1'Last) [possible explanation: subprogram at line 91 should mention New_Val_1 in a precondition]
-update_checks.adb:101:26: medium: range check might fail (e.g. when X3 = 3) [possible explanation: subprogram at line 91 should mention X3 in a precondition]
-update_checks.adb:101:34: medium: range check might fail (e.g. when Y3 = 5) [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
-update_checks.adb:101:42: medium: range check might fail (e.g. when Z3 = 10) [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
+update_checks.adb:101:26: medium: range check might fail (e.g. when New_Val_2 = 1 and X3 = 3) [possible explanation: subprogram at line 91 should mention X3 in a precondition]
+update_checks.adb:101:34: medium: range check might fail (e.g. when New_Val_2 = 1 and Y3 = 5) [possible explanation: subprogram at line 91 should mention Y3 in a precondition]
+update_checks.adb:101:42: medium: range check might fail (e.g. when New_Val_2 = 1 and Z3 = 10) [possible explanation: subprogram at line 91 should mention Z3 in a precondition]
 update_checks.adb:101:62: medium: range check might fail (e.g. when New_Val_2 = 0) [possible explanation: subprogram at line 91 should mention New_Val_2 in a precondition]
 update_checks.adb:106:04: warning: analyzing unreferenced procedure "Test8"
 update_checks.adb:118:29: info: range check proved (CVC4: 1 VC)
@@ -93,7 +93,7 @@ update_logic_fn.ads:74:11: info: flow dependencies proved
 update_logic_fn.ads:75:14: medium: postcondition might fail, cannot prove A = A3'(others => (others => (others => 1000 ))) 'update (e.g. when V1 = Integer'First and V2 = 1001 and X = 5 and Y = 7)
 update_logic_fn.ads:83:18: info: initialization of "A" proved
 update_logic_fn.ads:88:11: info: flow dependencies proved
-update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99)
+update_logic_fn.ads:90:17: medium: postcondition might fail, cannot prove A = A2'(5 => (7 => V2, others => 1000), others => (others => 1000)) (e.g. when V2 = 99 and X = 5)
 update_logic_fn.ads:97:18: info: initialization of "A" proved
 update_logic_fn.ads:102:11: info: flow dependencies proved
 update_logic_fn.ads:103:14: info: postcondition proved (CVC4: 7 VC; Trivial: 4 VC)

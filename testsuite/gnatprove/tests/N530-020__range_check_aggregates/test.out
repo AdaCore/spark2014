@@ -6,7 +6,7 @@ aggregate_checks.adb:25:15: info: range check proved (CVC4: 2 VC)
 aggregate_checks.adb:28:50: info: range check proved (CVC4: 1 VC)
 aggregate_checks.adb:28:58: medium: range check might fail
 aggregate_checks.adb:34:15: info: range check proved (CVC4: 2 VC)
-aggregate_checks.adb:37:44: medium: range check might fail
+aggregate_checks.adb:37:44: medium: range check might fail (e.g. when A = (others => 0))
 aggregate_checks.ads:4:14: warning: subprogram "Do_Wrong_Aggregate" has no effect
 aggregate_checks.ads:6:14: warning: subprogram "Do_Wrong_Aggregate_2" has no effect
 aggregate_checks.ads:8:14: warning: subprogram "Do_Wrong_Aggregate_3" has no effect

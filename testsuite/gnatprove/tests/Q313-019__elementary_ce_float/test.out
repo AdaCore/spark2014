@@ -6,14 +6,14 @@ float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = 
 counterexample expected for check at float_example.adb:8
   trace at float_example.adb:7 --> A = 0.0 and B = 1.2399245806E-308
   trace at float_example.adb:8 --> A = 0.0 and B = 1.2399245806E-308 and Minus_I'Result = -1.2399245806E-308
-  trace at float_example.adb:12 --> Minus_I'Result = -1.2399245806E-308
+  trace at float_example.adb:12 --> B = 1.2399245806E-308 and Minus_I'Result = -1.2399245806E-308
 counterexample expected for check at float_example.adb:12
   trace at float_example.adb:7 --> A = 1.7957314671E+308 and B = -1.7906438437E+308
   trace at float_example.adb:12 --> A = 1.7957314671E+308 and B = -1.7906438437E+308
 counterexample expected for check at float_example.adb:17
   trace at float_example.adb:15 --> A = 3.5039062500E+0 and B = 3.4970703125E+0
   trace at float_example.adb:17 --> Bounded_Add'Result = 7.0009765625E+0
-  trace at float_example.adb:21 --> Bounded_Add'Result = 7.0009765625E+0
+  trace at float_example.adb:21 --> B = 3.4970703125E+0 and Bounded_Add'Result = 7.0009765625E+0
 counterexample expected for check at float_example.adb:21
   trace at float_example.adb:15 --> A = -1.7906708961E+308 and B = -1.4044477616E+306
   trace at float_example.adb:21 --> A = -1.7906708961E+308 and B = -1.4044477616E+306

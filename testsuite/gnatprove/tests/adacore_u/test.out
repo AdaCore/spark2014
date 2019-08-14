@@ -1,14 +1,14 @@
 aliasing.adb:21:14: info: non-aliasing of formal parameters "X" and "Y" proved
 aliasing.adb:26:13: medium: formal parameters "X" and "Y" might be aliased (SPARK RM 6.4.2)
 aliasing.adb:26:16: info: index check proved (CVC4: 2 VC)
-aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
+aliasing.adb:26:16: medium: array index check might fail (e.g. when A'First = 1 and A'Last = 1 and I = 0) [possible explanation: subprogram at aliasing.ads:17 should mention I in a precondition]
 aliasing.adb:26:23: info: index check proved (CVC4: 2 VC)
 aliasing.adb:26:23: medium: array index check might fail (e.g. when A'First = 1 and J = 0) [possible explanation: subprogram at aliasing.ads:17 should mention J in a precondition]
 global_stack.adb:7:03: warning: variable "Content" is read but never assigned
 global_stack.ads:4:12: function with output global "Top" is not allowed in SPARK
 search_array.adb:7:24: info: cannot unroll loop (too many loop iterations)
 search_array.adb:9:20: info: range check proved (CVC4: 1 VC)
-search_array.adb:12:07: medium: exception might be raised
+search_array.adb:12:07: medium: exception might be raised (e.g. when A = (others => 0))
 stack.ads:7:13: function with "in out" parameter is not allowed in SPARK
 stack.ads:7:13: violation of aspect SPARK_Mode at line 1
 use_access.adb:3:41: medium: range check might fail (e.g. when First_Letter = 'NUL' and W = (others => 'NUL') and W'First = 1 and W'Last = 1) [possible explanation: subprogram at use_access.ads:4 should mention W in a precondition]
@@ -104,12 +104,12 @@ stacks.adb:9:19: info: index check proved (CVC4: 2 VC)
 stacks.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:27:52: info: index check proved (CVC4: 2 VC)
 communication.adb:5:15: medium: length check might fail (e.g. when Address = (others => 'NUL') and Address'First = 1 and Address'Last = 1 and Port = 0) [possible explanation: subprogram at communication.ads:9 should mention Address in a precondition]
-communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:19:25: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 0 and E = 0) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:20:32: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => Natural'Last) and B.Content'First = 1 and B.Content'Last = 2147483647) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:21:24: medium: overflow check might fail (e.g. when B = (Content => (others => 0), First => Positive'Last, Length => 1) and B.Content'First = 1 and B.Content'Last = 2) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:22:32: info: overflow check proved (CVC4: 1 VC)
 communication.adb:22:43: info: overflow check proved (CVC4: 1 VC)
-communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and Max = 1) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
+communication.adb:22:43: medium: array index check might fail (e.g. when B = (Content => (others => 0), First => 1, Length => 0) and B.Content'First = 1 and B.Content'Last = 1 and E = 0 and Max = 1) [possible explanation: subprogram at communication.ads:17 should mention B in a precondition]
 communication.adb:23:34: info: overflow check proved (CVC4: 1 VC)
 communication.adb:25:32: info: index check proved (CVC4: 2 VC)
 communication.adb:25:32: info: overflow check proved (CVC4: 1 VC)

@@ -8,16 +8,21 @@ test.adb:46:18: info: overflow check proved (CVC4: 1 VC)
 counterexample expected for check at test.adb:5
   trace at test.adb:4 --> A = 4
   trace at test.adb:5 --> Test_If'Result = 5
+  trace at test.adb:9 --> A = 4
   trace at test.adb:10 --> B = 5
+  trace at test.adb:11 --> A = 4
   trace at test.adb:16 --> B = 5 and Test_If'Result = 5
 counterexample expected for check at test.adb:20
   trace at test.adb:19 --> A = 3
   trace at test.adb:20 --> Test_Case'Result = 5
+  trace at test.adb:25 --> A = 3
   trace at test.adb:26 --> B = 5
   trace at test.adb:34 --> B = 5 and Test_Case'Result = 5
 counterexample expected for check at test.adb:39
   trace at test.adb:38 --> A = 0
   trace at test.adb:39 --> Test_If_2'Result = -1
   trace at test.adb:41 --> B = 0
-  trace at test.adb:43 --> B = -1
-  trace at test.adb:47 --> Test_If_2'Result = -1
+  trace at test.adb:43 --> A = 0 and B = -1
+  trace at test.adb:44 --> B = 0
+  trace at test.adb:46 --> B = 0
+  trace at test.adb:47 --> B = -1 and Test_If_2'Result = -1

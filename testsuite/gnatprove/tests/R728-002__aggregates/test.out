@@ -4,16 +4,16 @@ pragmarc-b_strings.adb:22:61: info: length check proved (CVC4: 3 VC; Trivial: 1 
 pragmarc-b_strings.adb:36:12: info: range check proved (CVC4: 4 VC)
 pragmarc-b_strings.adb:36:33: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:36:40: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-pragmarc-b_strings.adb:36:40: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0)
+pragmarc-b_strings.adb:36:40: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0 and To = (Max_Length => 1, others => ?))
 pragmarc-b_strings.adb:44:10: medium: exception might be raised
 pragmarc-b_strings.adb:50:19: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:50:26: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-pragmarc-b_strings.adb:50:26: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 2, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0)
+pragmarc-b_strings.adb:50:26: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 2, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0 and To = (Max_Length => 1, others => ?))
 pragmarc-b_strings.adb:50:43: info: overflow check proved (CVC4: 1 VC)
 pragmarc-b_strings.adb:50:52: medium: overflow check might fail (e.g. when From = (Max_Length => 0, Len => Natural'Last, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0 and To = (Max_Length => ?, Len => 0, Value => (others => 'NUL')) and To.Value'First = 1 and To.Value'Last = 0)
 pragmarc-b_strings.adb:57:16: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.adb:57:23: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-pragmarc-b_strings.adb:57:23: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 2, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0)
+pragmarc-b_strings.adb:57:23: medium: range check might fail (e.g. when From = (Max_Length => 0, Len => 2, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0 and To = (Max_Length => 1, others => ?))
 pragmarc-b_strings.adb:63:14: info: range check proved (CVC4: 1 VC)
 pragmarc-b_strings.adb:64:24: info: range check proved (CVC4: 1 VC)
 pragmarc-b_strings.adb:65:12: info: range check proved (CVC4: 4 VC)
@@ -30,11 +30,11 @@ pragmarc-b_strings.adb:86:19: info: length check proved (CVC4: 3 VC; Trivial: 1 
 pragmarc-b_strings.adb:86:19: info: range check proved (CVC4: 4 VC)
 pragmarc-b_strings.adb:86:50: info: overflow check proved (CVC4: 1 VC)
 pragmarc-b_strings.adb:86:59: info: overflow check proved (CVC4: 1 VC)
-pragmarc-b_strings.adb:92:48: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:49 should mention Left in a precondition]
+pragmarc-b_strings.adb:92:48: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0 and Right = (Max_Length => 1, Len => 1, Value => (others => 'NUL'))) [possible explanation: subprogram at pragmarc-b_strings.ads:49 should mention Left in a precondition]
 pragmarc-b_strings.adb:92:78: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Right.Value'First = 1 and Right.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:49 should mention Right in a precondition]
-pragmarc-b_strings.adb:98:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:50 should mention Left in a precondition]
+pragmarc-b_strings.adb:98:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0 and Right = (Max_Length => 0, Len => 0, Value => (others => 'NUL'))) [possible explanation: subprogram at pragmarc-b_strings.ads:50 should mention Left in a precondition]
 pragmarc-b_strings.adb:98:48: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Right.Value'First = 1 and Right.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:50 should mention Right in a precondition]
-pragmarc-b_strings.adb:110:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:52 should mention Left in a precondition]
+pragmarc-b_strings.adb:110:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0 and Right = (Max_Length => 0, Len => 0, Value => (others => 'NUL'))) [possible explanation: subprogram at pragmarc-b_strings.ads:52 should mention Left in a precondition]
 pragmarc-b_strings.adb:110:48: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Right.Value'First = 1 and Right.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:52 should mention Right in a precondition]
 pragmarc-b_strings.ads:26:40: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:26:40: medium: postcondition might fail, cannot prove +"+"'Result = Source (e.g. when Oadd'Result = (others => 'NUL') and Oadd'Result'First = 1 and Oadd'Result'Last = 0 and Source = (Max_Length => 0, Len => 0, Value => (others => 'NUL')) and Source.Value'First = 1 and Source.Value'Last = 0)

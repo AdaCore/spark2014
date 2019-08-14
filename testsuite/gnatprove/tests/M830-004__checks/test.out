@@ -36,11 +36,11 @@ do_checks.adb:167:39: info: range check proved (CVC4: 2 VC)
 do_checks.adb:167:67: medium: overflow check might fail (e.g. when Zero = Integer'First) [possible explanation: precondition of subprogram at line 5 should mention Zero]
 do_checks.adb:210:32: warning: "Y" is not modified, could be IN
 do_checks.adb:212:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-do_checks.adb:212:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 210 should mention X and Y]
+do_checks.adb:212:26: medium: length check might fail (e.g. when X'Last = 0 and Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 210 should mention X and Y]
 do_checks.adb:217:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:221:32: warning: "Y" is not modified, could be IN
 do_checks.adb:223:21: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-do_checks.adb:223:26: medium: length check might fail (e.g. when Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 221 should mention X and Y]
+do_checks.adb:223:26: medium: length check might fail (e.g. when X'Last = 0 and Y'First = 1 and Y'Last = 0) [possible explanation: precondition of subprogram at line 221 should mention X and Y]
 do_checks.adb:228:16: info: precondition proved (Trivial: 1 VC)
 do_checks.adb:234:37: info: initialization of "Y" proved
 do_checks.adb:236:24: medium: length check might fail [possible explanation: precondition of subprogram at line 234 should mention X]
@@ -63,7 +63,7 @@ do_checks.adb:305:24: info: range check proved (CVC4: 1 VC)
 do_checks.adb:306:25: info: range check proved (CVC4: 1 VC)
 do_checks.adb:312:32: warning: "Y" is not modified, could be IN
 do_checks.adb:314:20: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 312 should mention X]
-do_checks.adb:314:25: medium: array index check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 2 and X.Arr'Last = 0)
+do_checks.adb:314:25: medium: array index check might fail (e.g. when X = (J => ?, Arr => (others => False)) and X.Arr'First = 2 and X.Arr'Last = 0 and Y = (J => ?, Arr => (others => False)))
 do_checks.adb:314:32: medium: discriminant check might fail [possible explanation: precondition of subprogram at line 312 should mention Y]
 do_checks.adb:314:37: medium: array index check might fail (e.g. when Y = (J => ?, Arr => (others => False)) and Y.Arr'First = 11 and Y.Arr'Last = 0)
 do_checks.adb:316:23: info: range check proved (CVC4: 1 VC)
