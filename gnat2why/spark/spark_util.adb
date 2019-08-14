@@ -1199,6 +1199,68 @@ package body SPARK_Util is
       end if;
    end Get_Initialized_Object;
 
+   -----------------------------------
+   -- Get_Observed_Or_Borrowed_Expr --
+   -----------------------------------
+
+   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id is
+
+      function Find_Func_Call (Expr : Node_Id) return Node_Id;
+      --  Search for function calls in the prefixes of Expr
+
+      --------------------
+      -- Find_Func_Call --
+      --------------------
+
+      function Find_Func_Call (Expr : Node_Id) return Node_Id is
+      begin
+         case Nkind (Expr) is
+            when N_Expanded_Name
+               | N_Identifier
+            =>
+               return Empty;
+
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Find_Func_Call (Prefix (Expr));
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return Find_Func_Call (Expression (Expr));
+
+            when N_Function_Call =>
+               return Expr;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Find_Func_Call;
+
+      B_Expr : Node_Id := Expr;
+
+   begin
+      --  Search for the first call to a traversal function in Expr. If there
+      --  is one, its first parameter is the borrowed expression. Otherwise,
+      --  it is Expr.
+
+      loop
+         declare
+            Call : constant Node_Id := Find_Func_Call (B_Expr);
+         begin
+            exit when No (Call);
+            pragma Assert (Is_Traversal_Function_Call (Call));
+            B_Expr := First_Actual (Call);
+         end;
+      end loop;
+
+      return B_Expr;
+   end Get_Observed_Or_Borrowed_Expr;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -1241,6 +1303,94 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Get_Range;
+
+   ---------------------
+   -- Get_Root_Object --
+   ---------------------
+
+   function Get_Root_Object
+     (Expr              : Node_Id;
+      Through_Traversal : Boolean := True) return Entity_Id
+   is
+      function GRO (Expr : Node_Id) return Entity_Id;
+      --  Local wrapper on the actual function, to propagate the values of
+      --  optional parameters.
+
+      ---------
+      -- GRO --
+      ---------
+
+      function GRO (Expr : Node_Id) return Entity_Id is
+      begin
+         return Get_Root_Object (Expr, Through_Traversal);
+      end GRO;
+
+      Get_Root_Object : Boolean;
+      pragma Unmodified (Get_Root_Object);
+      --  Local variable to mask the name of function Get_Root_Object, to
+      --  prevent direct call. Instead GRO wrapper should be called.
+
+   --  Start of processing for Get_Root_Object
+
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+         =>
+            return Entity (Expr);
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return GRO (Prefix (Expr));
+
+         --  There is no root object for an (extension) aggregate, allocator,
+         --  concat, or NULL.
+
+         when N_Aggregate
+            | N_Allocator
+            | N_Extension_Aggregate
+            | N_Null
+            | N_Op_Concat
+         =>
+            return Empty;
+
+         --  In the case of a call to a traversal function, the root object is
+         --  the root of the traversed parameter. Otherwise there is no root
+         --  object.
+
+         when N_Function_Call =>
+            if Through_Traversal
+              and then Is_Traversal_Function_Call (Expr)
+            then
+               return GRO (First_Actual (Expr));
+            else
+               return Empty;
+            end if;
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return GRO (Expression (Expr));
+
+         when N_Attribute_Reference =>
+            pragma Assert
+              (Get_Attribute_Id (Attribute_Name (Expr)) =
+                 Attribute_Loop_Entry
+               or else
+               Get_Attribute_Id (Attribute_Name (Expr)) =
+                 Attribute_Update
+               or else Get_Attribute_Id (Attribute_Name (Expr)) =
+                 Attribute_Image);
+            return Empty;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Root_Object;
 
    ----------------------
    -- Has_Dereferences --
@@ -1774,6 +1924,16 @@ package body SPARK_Util is
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
 
+   ----------------------
+   -- Is_Local_Context --
+   ----------------------
+
+   function Is_Local_Context (Scop : Entity_Id) return Boolean is
+   begin
+      return Is_Subprogram_Or_Entry (Scop)
+        or else Ekind (Scop) = E_Block;
+   end Is_Local_Context;
+
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
    ---------------------------------
@@ -1807,6 +1967,48 @@ package body SPARK_Util is
           when others           => False)
       and then
         not Is_Internal (E));
+
+   ------------------------
+   -- Is_Path_Expression --
+   ------------------------
+
+   function Is_Path_Expression (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Explicit_Dereference
+            | N_Identifier
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return True;
+
+         --  Special value NULL corresponds to an empty path
+
+         when N_Null =>
+            return True;
+
+         --  Object returned by an (extension) aggregate, an allocator, or
+         --  a function call corresponds to a path.
+
+         when N_Aggregate
+            | N_Allocator
+            | N_Extension_Aggregate
+            | N_Function_Call
+         =>
+            return True;
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Is_Path_Expression (Expression (Expr));
+
+         when others =>
+            return False;
+      end case;
+   end Is_Path_Expression;
 
    ---------------
    -- Is_Pragma --
@@ -1947,6 +2149,48 @@ package body SPARK_Util is
         and then Unroll /= No_Unrolling;
    end Is_Selected_For_Loop_Unrolling;
 
+   -------------------------
+   -- Is_Singleton_Choice --
+   -------------------------
+
+   function Is_Singleton_Choice (Choices : List_Id) return Boolean is
+      Choice : constant Node_Id := First (Choices);
+   begin
+      return List_Length (Choices) = 1
+        and then Nkind (Choice) /= N_Others_Choice
+        and then not Nkind_In (Choice, N_Subtype_Indication, N_Range)
+        and then not
+          (Nkind_In (Choice, N_Identifier, N_Expanded_Name)
+           and then Is_Type (Entity (Choice)));
+   end Is_Singleton_Choice;
+
+   ---------------------------
+   -- Is_Subpath_Expression --
+   ---------------------------
+
+   function Is_Subpath_Expression (Expr : Node_Id) return Boolean is
+   begin
+      return Is_Path_Expression (Expr)
+
+        or else (Nkind_In (Expr, N_Qualified_Expression,
+                                 N_Type_Conversion,
+                                 N_Unchecked_Type_Conversion)
+                  and then Is_Subpath_Expression (Expression (Expr)))
+
+        or else (Nkind (Expr) = N_Attribute_Reference
+                  and then
+                    (Get_Attribute_Id (Attribute_Name (Expr)) =
+                       Attribute_Update
+                     or else
+                     Get_Attribute_Id (Attribute_Name (Expr)) =
+                       Attribute_Loop_Entry
+                     or else
+                     Get_Attribute_Id (Attribute_Name (Expr)) =
+                       Attribute_Image))
+
+        or else Nkind (Expr) = N_Op_Concat;
+   end Is_Subpath_Expression;
+
    ---------------------
    -- Is_Synchronized --
    ---------------------
@@ -1961,6 +2205,17 @@ package body SPARK_Util is
           --  We get protected/task types here when they act as globals for
           --  subprograms nested in the type itself.
    end Is_Synchronized;
+
+   --------------------------------
+   -- Is_Traversal_Function_Call --
+   --------------------------------
+
+   function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean is
+   begin
+      return Nkind (Expr) = N_Function_Call
+        and then Present (Get_Called_Entity (Expr))
+        and then Is_Traversal_Function (Get_Called_Entity (Expr));
+   end Is_Traversal_Function_Call;
 
    -------------------------------
    -- May_Issue_Warning_On_Node --

@@ -3,5 +3,7 @@ test_access_comp.ads:6:07: violation of aspect SPARK_Mode at line 3
 test_access_comp.ads:11:07: component of anonymous access type is not allowed in SPARK
 test_access_comp.ads:11:07: violation of aspect SPARK_Mode at line 3
 test_access_comp.ads:17:04: anonymous access variable marked Part_Of a protected object is not allowed in SPARK
+test_access_comp.ads:17:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+test_access_comp.ads:17:04: violation of aspect SPARK_Mode at line 3
 test_access_comp.ads:17:04: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

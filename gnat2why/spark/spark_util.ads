@@ -302,6 +302,10 @@ package SPARK_Util is
    --  @param E any entity
    --  @return The unqualified name of E as it appears in the source code
 
+   function Is_Local_Context (Scop : Entity_Id) return Boolean;
+   --  Return if a given scope defines a local context where it is legal to
+   --  declare a variable of anonymous access type.
+
    ----------------------------------------------
    -- Queries related to objects or components --
    ----------------------------------------------
@@ -354,6 +358,10 @@ package SPARK_Util is
 
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
+
+   function Is_Local_Borrower (E : Entity_Id) return Boolean;
+   --  Return True is E is a constant or a variable of an anonymous access to
+   --  variable type.
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Discriminant;
@@ -424,10 +432,6 @@ package SPARK_Util is
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
    --  In particular returns empty on hidden components.
-
-   function Is_Local_Borrower (E : Entity_Id) return Boolean;
-   --  Return True is E is a constant or a variable of an anonymous access to
-   --  variable type.
 
    function Unique_Component (E : Entity_Id) return Entity_Id
    with Pre  => Ekind (E) in E_Component | E_Discriminant,
@@ -597,6 +601,21 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
+   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id with
+     Pre => Is_Path_Expression (Expr);
+   --  Return the expression being borrowed/observed when borrowing or
+   --  observing Expr. If Expr contains a call to traversal function, this is
+   --  the first actual of the first such call, otherwise it is Expr.
+
+   function Get_Root_Object
+     (Expr              : Node_Id;
+      Through_Traversal : Boolean := True) return Entity_Id
+   with
+     Pre => Is_Subpath_Expression (Expr);
+   --  Return the root of the path expression Expr, or Empty for an allocator,
+   --  NULL, or a function call. Through_Traversal is True if it should follow
+   --  through calls to traversal functions.
+
    function Has_Dereferences (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
    --  Return True if there is a dereference in the suffix of N which is a path
@@ -649,9 +668,22 @@ package SPARK_Util is
    --  However, the front end rejects these two cases. For the SPARK back end,
    --  this routine gives correct results.
 
+   function Is_Path_Expression (Expr : Node_Id) return Boolean;
+   --  Return whether Expr corresponds to a path
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
+
+   function Is_Singleton_Choice (Choices : List_Id) return Boolean;
+   --  Return whether Choices is a singleton choice
+
+   function Is_Subpath_Expression (Expr : Node_Id) return Boolean;
+   --  Return True if Expr can be part of a path expression
+
+   function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is a call to a traversal function
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node

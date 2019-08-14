@@ -1,3 +1,17 @@
+pack.adb:4:17: warning: subprogram "P3" has no effect
 pack.adb:6:15: cannot use global variable "Y" of deep type
 pack.adb:6:15: without prior declaration in a Global aspect
-gnatprove: error during generation of Global contracts
+pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok"
+pack.adb:10:17: warning: subprogram "P0_Ok" has no effect
+pack.adb:19:07: warning: analyzing unreferenced procedure "P4"
+pack.adb:19:17: warning: subprogram "P4" has no effect
+pack.adb:25:07: warning: analyzing unreferenced procedure "P1_Ok"
+pack.adb:25:17: warning: subprogram "P1_Ok" has no effect
+pack.adb:38:10: warning: analyzing unreferenced procedure "P5"
+pack.adb:38:20: warning: subprogram "P5" has no effect
+pack.adb:47:10: warning: analyzing unreferenced procedure "P2_Ok"
+pack.adb:47:20: warning: subprogram "P2_Ok" has no effect
+pack.ads:13:14: warning: subprogram "P0" has no effect
+pack.ads:15:14: warning: subprogram "P1" has no effect
+pack.ads:17:14: warning: subprogram "P2" has no effect
+gnatprove: error during flow analysis and proof

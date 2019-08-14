@@ -657,6 +657,60 @@ package body SPARK_Util.Types is
       return False;
    end Invariant_Check_Needed;
 
+   -------------
+   -- Is_Deep --
+   -------------
+
+   function Is_Deep (Typ : Entity_Id) return Boolean is
+      Rep_Typ : constant Entity_Id := Retysp (Typ);
+   begin
+      case Type_Kind'(Ekind (Rep_Typ)) is
+         when Access_Kind =>
+            return True;
+
+         when E_Array_Type
+            | E_Array_Subtype
+         =>
+            return Is_Deep (Component_Type (Rep_Typ));
+
+         when Record_Kind =>
+            declare
+               Comp : Entity_Id := First_Component_Or_Discriminant (Rep_Typ);
+            begin
+               while Present (Comp) loop
+
+                  --  Ignore components not visible in SPARK
+
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Is_Deep (Etype (Comp))
+                  then
+                     return True;
+                  end if;
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
+            return False;
+
+         when Scalar_Kind
+            | E_String_Literal_Subtype
+            | Concurrent_Kind
+            | Incomplete_Kind
+            | E_Exception_Type
+            | E_Subprogram_Type
+         =>
+            return False;
+
+         --  Ignore full view of types if it is not in SPARK
+
+         when E_Private_Type
+            | E_Private_Subtype
+            | E_Limited_Private_Type
+            | E_Limited_Private_Subtype
+         =>
+            return False;
+      end case;
+   end Is_Deep;
+
    -------------------
    -- Is_Null_Range --
    -------------------

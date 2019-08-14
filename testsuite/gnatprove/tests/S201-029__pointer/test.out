@@ -1,3 +1,22 @@
-acc.adb:12:13: cannot use global variable "Global_Int" of deep type
-acc.adb:12:13: without prior declaration in a Global aspect
-gnatprove: error during generation of Global contracts
+acc.adb:3:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+acc.adb:3:04: violation of pragma SPARK_Mode at line 1
+acc.adb:5:28: uninitialized allocator without default initialization is not allowed in SPARK
+acc.adb:5:28: violation of pragma SPARK_Mode at line 1
+acc.adb:6:04: warning: analyzing unreferenced procedure "Foo"
+acc.adb:7:06: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+acc.adb:7:06: violation of pragma SPARK_Mode at line 1
+acc.adb:9:35: uninitialized allocator without default initialization is not allowed in SPARK
+acc.adb:9:35: violation of pragma SPARK_Mode at line 1
+acc.adb:12:08: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+acc.adb:12:08: violation of pragma SPARK_Mode at line 1
+acc.adb:12:13: "Global_Int" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+acc.adb:12:13: violation of pragma SPARK_Mode at line 1
+acc.adb:14:08: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+acc.adb:14:08: violation of pragma SPARK_Mode at line 1
+acc.adb:14:13: "Local_Int" is not allowed in SPARK (due to uninitialized allocator without default initialization)
+acc.adb:14:13: violation of pragma SPARK_Mode at line 1
+acc.adb:16:06: "X" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+acc.adb:16:06: violation of pragma SPARK_Mode at line 1
+acc.adb:16:11: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+acc.adb:16:11: violation of pragma SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

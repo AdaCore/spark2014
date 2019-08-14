@@ -1,7 +1,13 @@
+n01.adb:16:04: info: initialization of "X" proved
 n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
+n03.adb:31:04: warning: statement has no effect
 n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
+n03.adb:31:18: warning: unused assignment to "X"
+n03.adb:37:07: warning: unused assignment
+n03.adb:38:07: warning: unused assignment
+n03.adb:39:06: warning: unused assignment
 n04.adb:11:10: component of anonymous access type is not allowed in SPARK
 n04.adb:11:10: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:11:12: component of anonymous access type is not allowed in SPARK
@@ -10,19 +16,24 @@ n04.adb:14:12: "MyStruct" is not allowed in SPARK (due to component of anonymous
 n04.adb:14:12: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:15:07: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:15:07: violation of pragma SPARK_Mode at test.adc:3
-n04.adb:15:16: traversal function returning access-to-variable type is not yet supported
-n04.adb:16:07: object of anonymous access type must be declared immediately within a subprogram, entry or block (SPARK RM 3.10(4))
+n04.adb:16:07: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+n04.adb:16:07: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:22:11: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:22:11: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:33:07: "MyStruct" is not allowed in SPARK (due to component of anonymous access type)
 n04.adb:33:07: violation of pragma SPARK_Mode at test.adc:3
+n04.adb:37:07: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+n04.adb:37:07: violation of pragma SPARK_Mode at test.adc:3
 n05.adb:37:22: insufficient permission on dereference from "X"
 n05.adb:37:22: object was declared as not writeable at line 31
 n06.adb:39:22: insufficient permission on dereference from "X"
 n06.adb:39:22: object was declared as not writeable at line 33
 n07.adb:10:16: anonymous access type for result for non-traversal functions is not allowed in SPARK
 n07.adb:10:16: violation of pragma SPARK_Mode at test.adc:3
-n07.adb:23:04: object of anonymous access type must be initialized (SPARK RM 3.10(4))
+n07.adb:23:04: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+n07.adb:23:04: violation of pragma SPARK_Mode at test.adc:3
+n07.adb:25:04: "A" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+n07.adb:25:04: violation of pragma SPARK_Mode at test.adc:3
 n07.adb:25:09: "Get_Local_Pointer" is not allowed in SPARK (due to anonymous access type for result for non-traversal functions)
 n07.adb:25:09: violation of pragma SPARK_Mode at test.adc:3
 n08.adb:21:18: insufficient permission on dereference from "A"
@@ -33,100 +44,153 @@ n09.adb:16:19: insufficient permission on dereference from "A"
 n09.adb:16:19: object was declared as not writeable at line 11
 n09b.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
 n09b.adb:11:17: object was moved at line 20
+n09b.adb:11:43: info: initialization of "B" proved
+n09b.adb:13:11: info: data dependencies proved
+n09b.adb:14:11: medium: expected to see "A" on the left-hand-side of a dependency relation
+n09b.adb:14:11: medium: missing self-dependency "A => A"
 n09c.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
 n09c.adb:11:17: object was moved at line 18
+n09c.adb:11:44: info: initialization of "B" proved
+n09c.adb:12:09: info: data dependencies proved
+n09c.adb:13:09: medium: expected to see "A" on the left-hand-side of a dependency relation
+n09c.adb:13:09: medium: missing self-dependency "A => A"
 n10.adb:12:17: insufficient permission for "A" when returning from "Modify"
 n10.adb:12:17: object was moved at line 19
+n10.adb:14:09: info: data dependencies proved
+n10.adb:19:10: warning: initialization of "B" has no effect
+n10.adb:20:10: warning: initialization of "T1" has no effect
 n10.adb:20:21: insufficient permission for "A"
 n10.adb:20:21: object was moved at line 19
-n11.adb:11:17: insufficient permission for "A" when returning from "Modify"
-n11.adb:11:17: object was moved at line 17
-n11.adb:18:37: expression must be part of stand-alone object or parameter
-n11.adb:18:37: incorrect borrow or observe (SPARK RM 3.10(3))
+n10.adb:23:17: warning: unused assignment
+n11.adb:18:37: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n11.adb:18:37: violation of pragma SPARK_Mode at test.adc:3
+n11.adb:21:10: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+n11.adb:21:10: violation of pragma SPARK_Mode at test.adc:3
+n11.adb:21:24: "T1" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+n11.adb:21:24: violation of pragma SPARK_Mode at test.adc:3
 n12.adb:13:17: insufficient permission for "A" when returning from "Modify"
 n12.adb:13:17: object was moved at line 19
+n12.adb:13:25: warning: "A" is not modified, could be IN
+n12.adb:14:09: info: flow dependencies proved
+n12.adb:15:09: info: data dependencies proved
+n12.adb:19:10: warning: initialization of "B" has no effect
+n12.adb:20:10: warning: initialization of "T1" has no effect
 n12.adb:20:28: insufficient permission for "A"
 n12.adb:20:28: object was moved at line 19
+n12.adb:23:21: warning: unused assignment
+n13.adb:14:09: info: flow dependencies proved
+n13.adb:15:09: info: data dependencies proved
+n13.adb:19:10: warning: initialization of "B" has no effect
 n13.adb:25:20: insufficient permission for "A"
 n13.adb:25:20: object was moved at line 19
-n14.adb:12:17: insufficient permission for "T0" when returning from "Modify"
-n14.adb:12:17: object was moved at line 18
-n14.adb:21:37: expression must be part of stand-alone object or parameter
-n14.adb:21:37: incorrect borrow or observe (SPARK RM 3.10(3))
-n15.adb:12:17: insufficient permission for "T0" when returning from "Modify"
-n15.adb:12:17: object was moved at line 18
-n15.adb:21:37: expression must be part of stand-alone object or parameter
-n15.adb:21:37: incorrect borrow or observe (SPARK RM 3.10(3))
-n15.adb:27:21: insufficient permission for "T0"
-n15.adb:27:21: object was moved at line 18
+n14.adb:21:37: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n14.adb:21:37: violation of pragma SPARK_Mode at test.adc:3
+n14.adb:24:36: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+n14.adb:24:36: violation of pragma SPARK_Mode at test.adc:3
+n15.adb:21:37: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+n15.adb:21:37: violation of pragma SPARK_Mode at test.adc:3
+n15.adb:24:25: "T2" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
+n15.adb:24:25: violation of pragma SPARK_Mode at test.adc:3
 n16.adb:13:17: insufficient permission for "T0" when returning from "Modify"
 n16.adb:13:17: object was moved at line 19
+n16.adb:15:09: info: data dependencies proved
+n16.adb:23:10: warning: initialization of "P" has no effect
 n16.adb:23:23: insufficient permission on dereference from "T0"
 n16.adb:23:23: object was moved at line 19
+n16.adb:27:21: warning: unused assignment
 pointers.adb:46:10: insufficient permission on dereference from "XX"
 pointers.adb:46:10: object was declared as not writeable at pointers.ads:31
+pointers.adb:46:14: high: "XX" must be a global output of "Bad_Swap2" (SPARK RM 6.1.4(17))
 pointers.adb:46:20: insufficient permission on dereference from "YY"
 pointers.adb:46:20: object was declared as not writeable at pointers.ads:31
 pointers.adb:50:27: insufficient permission on dereference from "XX"
 pointers.adb:50:27: object was declared as not writeable at pointers.ads:34
 pointers.adb:52:10: insufficient permission on dereference from "XX"
 pointers.adb:52:10: object was declared as not writeable at pointers.ads:34
+pointers.adb:52:14: high: "XX" must be a global output of "Swap2" (SPARK RM 6.1.4(17))
 pointers.adb:52:20: insufficient permission on dereference from "YY"
 pointers.adb:52:20: object was declared as not writeable at pointers.ads:34
 pointers.adb:53:10: insufficient permission on dereference from "YY"
 pointers.adb:53:10: object was declared as not writeable at pointers.ads:34
+pointers.adb:53:14: high: "YY" must be a global output of "Swap2" (SPARK RM 6.1.4(17))
 pointers.adb:98:11: insufficient permission on dereference from "CXX"
 pointers.adb:98:11: object was declared as not writeable at pointers.ads:63
+pointers.adb:98:15: high: "CXX" must be a global output of "Bad_Swap4" (SPARK RM 6.1.4(17))
 pointers.adb:98:22: insufficient permission on dereference from "CYY"
 pointers.adb:98:22: object was declared as not writeable at pointers.ads:63
 pointers.adb:102:32: insufficient permission on dereference from "CXX"
 pointers.adb:102:32: object was declared as not writeable at pointers.ads:66
 pointers.adb:104:11: insufficient permission on dereference from "CXX"
 pointers.adb:104:11: object was declared as not writeable at pointers.ads:66
+pointers.adb:104:15: high: "CXX" must be a global output of "Swap4" (SPARK RM 6.1.4(17))
 pointers.adb:104:22: insufficient permission on dereference from "CYY"
 pointers.adb:104:22: object was declared as not writeable at pointers.ads:66
 pointers.adb:105:11: insufficient permission on dereference from "CYY"
 pointers.adb:105:11: object was declared as not writeable at pointers.ads:66
+pointers.adb:105:15: high: "CYY" must be a global output of "Swap4" (SPARK RM 6.1.4(17))
 pointers.adb:118:13: insufficient permission on dereference from "X"
 pointers.adb:118:13: object was moved at line 116
 pointers.adb:124:16: insufficient permission on dereference from "CCXX"
 pointers.adb:124:16: object was declared as not writeable at pointers.ads:79
+pointers.adb:124:20: high: "CCXX" must be a global output of "Bad_Swap5" (SPARK RM 6.1.4(17))
 pointers.adb:128:29: insufficient permission on dereference from "CCXX"
 pointers.adb:128:29: object was declared as not writeable at pointers.ads:82
 pointers.adb:130:16: insufficient permission on dereference from "CCXX"
 pointers.adb:130:16: object was declared as not writeable at pointers.ads:82
+pointers.adb:130:20: high: "CCXX" must be a global output of "Swap5" (SPARK RM 6.1.4(17))
 pointers.adb:131:16: insufficient permission on dereference from "CCYY"
 pointers.adb:131:16: object was declared as not writeable at pointers.ads:82
+pointers.adb:131:20: high: "CCYY" must be a global output of "Swap5" (SPARK RM 6.1.4(17))
 pointers.ads:8:14: insufficient permission for "Y" when returning from "Bad_Swap"
 pointers.ads:8:14: object was moved at pointers.adb:8
+pointers.ads:8:24: warning: unused initial value of "X"
+pointers.ads:8:27: warning: "Y" is not modified, could be IN
 pointers.ads:14:14: insufficient permission for "Y" when returning from "Bad_Swap"
 pointers.ads:14:14: object was moved at pointers.adb:20
+pointers.ads:15:06: info: data dependencies proved
+pointers.ads:15:28: warning: unused initial value of "X"
+pointers.ads:15:31: warning: "Y" is not modified, could be INPUT
+pointers.ads:18:06: info: data dependencies proved
 pointers.ads:24:14: insufficient permission for "Y" when returning from "Bad_Swap2"
 pointers.ads:24:14: object was moved at pointers.adb:34
 pointers.ads:40:14: insufficient permission for "Y" when returning from "Bad_Swap3"
 pointers.ads:40:14: object was moved at pointers.adb:60
+pointers.ads:40:25: warning: unused initial value of "X"
+pointers.ads:40:28: warning: "Y" is not modified, could be IN
 pointers.ads:46:14: insufficient permission for "CY" when returning from "Bad_Swap3"
 pointers.ads:46:14: object was moved at pointers.adb:72
+pointers.ads:47:06: info: data dependencies proved
+pointers.ads:47:28: warning: unused initial value of "CX"
+pointers.ads:47:32: warning: "CY" is not modified, could be INPUT
+pointers.ads:50:06: info: data dependencies proved
 pointers.ads:56:14: insufficient permission for "Y" when returning from "Bad_Swap4"
 pointers.ads:56:14: object was moved at pointers.adb:86
 pointers.ads:74:14: insufficient permission for "X" when returning from "Swap5"
 pointers.ads:74:14: object was moved at pointers.adb:116
 pointers2.adb:31:16: insufficient permission for "Y"
 pointers2.adb:31:16: object was moved at line 30
+pointers2.adb:36:09: warning: unused assignment
 pointers2.adb:37:12: insufficient permission for "Y"
 pointers2.adb:37:12: object was moved at line 36
 pointers2.ads:6:14: insufficient permission for "Y" when returning from "Bad_Swap"
 pointers2.ads:6:14: object was moved at pointers2.adb:6
+pointers2.ads:6:24: warning: unused initial value of "X"
+pointers2.ads:6:27: warning: "Y" is not modified, could be IN
 pointers2.ads:12:14: insufficient permission for "Y" when returning from "Bad_Swap_Global"
 pointers2.ads:12:14: object was moved at pointers2.adb:18
+pointers2.ads:13:06: info: data dependencies proved
+pointers2.ads:13:28: warning: unused initial value of "X"
+pointers2.ads:13:31: warning: "Y" is not modified, could be INPUT
+pointers2.ads:16:06: info: data dependencies proved
 pointers2.ads:18:14: insufficient permission for "Y" when returning from "Bad_Borrow"
 pointers2.ads:18:14: object was moved at pointers2.adb:30
+pointers2.ads:18:26: warning: unused initial value of "X"
 pointers2.ads:20:14: insufficient permission for "Y" when returning from "Bad_Move"
 pointers2.ads:20:14: object was moved at pointers2.adb:36
-spark02.adb:18:17: insufficient permission for "x"
-spark02.adb:18:17: object was declared as not writeable at line 10
-spark02.adb:32:11: illegal target for assignment
-spark02.adb:35:11: name expected here for move/borrow/observe
+pointers2.ads:20:24: warning: unused initial value of "X"
+pointers2.ads:20:27: warning: "Y" is not modified, could be IN
+spark02.adb:32:04: assignment to a complex expression is not allowed in SPARK
+spark02.adb:32:04: violation of pragma SPARK_Mode at test.adc:3
 spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
 spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
 spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)
@@ -139,8 +203,18 @@ spark03.ads:21:63: info: initialization of "Z" proved
 spark03.ads:21:65: info: initialization of "W" proved
 spark03b.ads:4:13: insufficient permission for "An_Item" when returning from "Insert"
 spark03b.ads:4:13: object was moved at spark03b.adb:6
+spark03b.ads:4:21: warning: "An_Item" is not modified, could be IN
+spark03b.ads:5:07: info: flow dependencies proved
+spark03b.ads:6:21: info: initialization of "An_Item" proved
+spark03b.ads:17:24: info: data dependencies proved
+spark03b.ads:17:63: info: initialization of "Z" proved
+spark03b.ads:17:65: info: initialization of "W" proved
 spark03c.ads:7:13: insufficient permission for "An_Item" when returning from "Insert"
 spark03c.ads:7:13: object was moved at spark03c.adb:6
+spark03c.ads:8:21: info: initialization of "An_Item" proved
+spark03c.ads:19:24: info: data dependencies proved
+spark03c.ads:19:63: info: initialization of "Z" proved
+spark03c.ads:19:65: info: initialization of "W" proved
 gnatprove: error during flow analysis and proof
 n08b.adb:28:26: expected type universal integer
 n08b.adb:28:26: found type "ACI" defined at line 12

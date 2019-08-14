@@ -1,7 +1,6 @@
-pack.adb:17:10: object of anonymous access type must be initialized (SPARK RM 3.10(4))
-pack.adb:19:15: expression must be part of stand-alone object or parameter
-pack.adb:19:15: incorrect borrow or observe (SPARK RM 3.10(3))
-pack.ads:4:26: uninitialized allocator without default initialization is not allowed in SPARK
+pack.ads:4:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+pack.ads:4:04: violation of aspect SPARK_Mode at line 2
+pack.ads:4:26: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
 pack.ads:4:26: violation of aspect SPARK_Mode at line 2
 pack.ads:7:18: "G" is not allowed in SPARK (due to uninitialized allocator without default initialization)
 pack.ads:7:18: violation of aspect SPARK_Mode at line 2

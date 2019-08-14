@@ -373,6 +373,10 @@ package SPARK_Util.Subprograms is
    --     of modulus smaller or equal to 2 ** 64, with no functional contract
    --     (precondition, postcondition or contract cases).
 
+   function Is_Traversal_Function (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is a traversal function
+
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);
    --  @param E any subprogram

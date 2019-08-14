@@ -1,4 +1,4 @@
-q.adb:7:33: attribute "Access" is not allowed in SPARK
+q.adb:7:33: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
 q.adb:7:33: violation of pragma SPARK_Mode at test.adc:1
 q.adb:9:07: "X_Ptr" is not allowed in SPARK (due to attribute "Access")
 q.adb:9:07: violation of pragma SPARK_Mode at test.adc:1

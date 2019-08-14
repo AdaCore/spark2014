@@ -1,7 +1,21 @@
-pack.adb:7:07: object of anonymous access type must be initialized (SPARK RM 3.10(4))
+pack.adb:7:07: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+pack.adb:7:07: violation of aspect SPARK_Mode at line 2
+pack.adb:9:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pack.adb:9:07: violation of aspect SPARK_Mode at line 2
 pack.adb:9:12: uninitialized allocator without default initialization is not allowed in SPARK
 pack.adb:9:12: violation of aspect SPARK_Mode at line 2
-pacq.adb:7:07: object of anonymous access type must be initialized (SPARK RM 3.10(4))
+pack.adb:10:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pack.adb:10:07: violation of aspect SPARK_Mode at line 2
+pack.adb:11:14: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pack.adb:11:14: violation of aspect SPARK_Mode at line 2
+pacq.adb:7:07: uninitialized object of anonymous access type is not allowed in SPARK (SPARK RM 3.10(4))
+pacq.adb:7:07: violation of aspect SPARK_Mode at line 2
+pacq.adb:9:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pacq.adb:9:07: violation of aspect SPARK_Mode at line 2
 pacq.adb:9:12: uninitialized allocator without default initialization is not allowed in SPARK
 pacq.adb:9:12: violation of aspect SPARK_Mode at line 2
+pacq.adb:10:07: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pacq.adb:10:07: violation of aspect SPARK_Mode at line 2
+pacq.adb:11:14: "B" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+pacq.adb:11:14: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

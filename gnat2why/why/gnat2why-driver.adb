@@ -51,6 +51,7 @@ with GNAT.SHA1;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
+with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
@@ -144,6 +145,9 @@ package body Gnat2Why.Driver is
                 else Entity_In_SPARK (E));
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
+
+   procedure Do_Ownership_Checking;
+   --  Perform SPARK access legality checking
 
    procedure Print_Why_File (Filename : String);
    --  Print the input Why3 file on disk
@@ -465,6 +469,29 @@ package body Gnat2Why.Driver is
       end if;
    end Do_Generate_VCs;
 
+   ---------------------------
+   -- Do_Ownership_Checking --
+   ---------------------------
+
+   procedure Do_Ownership_Checking is
+   begin
+      for E of Entities_To_Translate loop
+         --  Set error node so that bugbox information will be correct
+
+         Current_Error_Node := E;
+         Borrow_Checker.Check_Entity (E);
+      end loop;
+
+      --  If an error was found then print all errors/warnings and return
+      --  with an error status.
+
+      if Found_Permission_Error then
+         Errout.Finalize (Last_Call => True);
+         Errout.Output_Messages;
+         Exit_Program (E_Errors);
+      end if;
+   end Do_Ownership_Checking;
+
    -----------------
    -- GNAT_To_Why --
    -----------------
@@ -613,7 +640,6 @@ package body Gnat2Why.Driver is
       Finalize (Last_Call => False);
 
       if Compilation_Errors
-        or else SPARK_Definition.Ownership_Errors
         or else Gnat2Why_Args.Check_Mode
       then
          return;
@@ -680,6 +706,14 @@ package body Gnat2Why.Driver is
          Flow_Analyse_CUnit (GNAT_Root);
          Generate_Assumptions;
          Timing_Phase_Completed (Timing, "flow analysis");
+
+         --  Perform the new SPARK checking rules for pointer aliasing. This is
+         --  only activated on SPARK code. The debug flag -gnatdF is used to
+         --  deactivate the new pointer rules.
+
+         if not Debug_Flag_FF then
+            Do_Ownership_Checking;
+         end if;
 
          --  Start the translation to Why
 

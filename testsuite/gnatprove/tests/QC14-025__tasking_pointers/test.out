@@ -1,3 +1,11 @@
-s.adb:10:60: cannot use global variable "Ptr" of deep type
-s.adb:10:60: without prior declaration in a Global aspect
-gnatprove: error during generation of Global contracts
+r.adb:11:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+r.adb:11:04: violation of pragma SPARK_Mode at test.adc:1
+r.adb:11:23: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+r.adb:11:23: violation of pragma SPARK_Mode at test.adc:1
+r.adb:14:04: call through access to protected operation is not allowed in SPARK
+r.adb:14:04: violation of pragma SPARK_Mode at test.adc:1
+s.adb:6:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+s.adb:6:04: violation of pragma SPARK_Mode at test.adc:1
+s.adb:10:07: suspension through access to suspension object is not allowed in SPARK
+s.adb:10:07: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof

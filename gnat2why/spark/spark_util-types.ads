@@ -300,6 +300,10 @@ package SPARK_Util.Types is
    --  @return True if initialization of objects of type E should be checked by
    --     proof.
 
+   function Is_Deep (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+   --  Returns True if the type passed as argument is deep
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

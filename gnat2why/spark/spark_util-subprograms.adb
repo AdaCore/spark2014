@@ -1149,6 +1149,28 @@ package body SPARK_Util.Subprograms is
       end;
    end Is_Simple_Shift_Or_Rotate;
 
+   ---------------------------
+   -- Is_Traversal_Function --
+   ---------------------------
+
+   function Is_Traversal_Function (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) = E_Function
+
+        --  A function is said to be a traversal function if the result type of
+        --  the function is an anonymous access-to-object type,
+
+        and then Is_Anonymous_Access_Type (Etype (E))
+
+        --  the function has at least one formal parameter,
+
+        and then Present (First_Formal (E))
+
+        --  and the function's first parameter is of an access type.
+
+        and then Is_Access_Type (Retysp (Etype (First_Formal (E))));
+   end Is_Traversal_Function;
+
    ------------------------------------
    -- Is_Volatile_For_Internal_Calls --
    ------------------------------------
