@@ -161,27 +161,28 @@ package body SPARK_Util.Types is
                else
                   return Typ;
                end if;
+
+            --  Derived types without additional constraints might not have
+            --  Full_View defined; search the on the Etype instead.
+
+            elsif Is_Private_Type (Typ) then
+               pragma Assert (Etype (Typ) /= Typ);
+               if Entity_In_SPARK (Etype (Typ)) then
+                  Typ := Etype (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  return Typ;
+               end if;
             else
                return Typ;
             end if;
          end loop;
 
-      --  Otherwise, T's most underlying type is in SPARK, return it.
+      --  Otherwise, Typ's most underlying type is in SPARK, return it.
 
       else
-         loop
-            --  If Typ is a private type, reach to its Underlying_Type
-
-            if Is_Private_Type (Typ) then
-               Typ := Underlying_Type (Typ);
-               pragma Assert (Entity_In_SPARK (Typ));
-
-            --  Otherwise, we've reached T's most underlying type
-
-            else
-               return Typ;
-            end if;
-         end loop;
+         pragma Assert (Entity_In_SPARK (Unchecked_Full_Type (Typ)));
+         return Unchecked_Full_Type (Typ);
       end if;
    end Retysp;
 
@@ -955,6 +956,13 @@ package body SPARK_Util.Types is
          return Unchecked_Full_Type (Underlying_Full_View (E));
       elsif Present (Full_View (E)) then
          return Unchecked_Full_Type (Full_View (E));
+
+      --  Derived types without additional constraints might not have Full_View
+      --  defined; search the on the Etype instead.
+
+      elsif Is_Private_Type (E) then
+         pragma Assert (Etype (E) /= E);
+         return Unchecked_Full_Type (Etype (E));
       else
          return E;
       end if;
