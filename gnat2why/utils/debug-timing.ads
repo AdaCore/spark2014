@@ -41,7 +41,7 @@ package Debug.Timing is
                                      Msg   : String);
    --  Note how much time has elapsed since the last call of this procedure
    --  (or the call to Timing_Start if it is called for the first time).
-   --  Make sure S is unique if you want to call Timing_History.
+   --  Make sure Msg is unique if you want to call Timing_History.
 
    function Timing_History (Timer : Time_Token) return JSON_Value;
    --  Return the history so far as a mapping {string -> float} with
