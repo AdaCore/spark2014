@@ -1,0 +1,5 @@
+flip.adb:3:42: info: data dependencies proved
+flip.adb:8:05: warning: statement has no effect
+flip.adb:9:05: warning: statement has no effect
+flip.adb:12:05: warning: statement has no effect
+flip.adb:13:05: warning: statement has no effect
