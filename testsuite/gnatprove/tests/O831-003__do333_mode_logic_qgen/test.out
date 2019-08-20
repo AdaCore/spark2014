@@ -455,7 +455,7 @@ flight_modes.ads:100:08: info: initialization of "VAPPR_Selected" proved
 flight_modes.ads:101:08: info: initialization of "VAPPR_Active" proved
 flight_modes.ads:102:08: info: initialization of "VGA_Selected" proved
 flight_modes.ads:103:08: info: initialization of "VGA_Active" proved
-flight_modes.ads:106:10: medium: postcondition might fail, cannot prove ROLL_Active or HDG_Active or NAV_Active or LAPPR_Active or LGA_Active
+flight_modes.ads:106:10: medium: postcondition might fail, cannot prove ROLL_Active or HDG_Active or NAV_Active or LAPPR_Active or LGA_Active (e.g. when HDG_Active = False and LAPPR_Active = False and LGA_Active = False and NAV_Active = False and ROLL_Active = False)
 mode_logic_props.adb:62:07: info: initialization of "Inputs_out1" proved
 mode_logic_props.adb:63:07: info: initialization of "Pilot_Flying_Side" proved
 mode_logic_props.adb:64:07: info: initialization of "Is_AP_Engaged" proved
