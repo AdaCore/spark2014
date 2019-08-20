@@ -795,6 +795,21 @@ package body Gnat2Why.Subprograms is
    is
       Includes : Node_Sets.Set;
 
+      procedure Include_Entity (E : Entity_Id; Kind : Formal_Kind);
+      --  Add an entity to Includes
+
+      --------------------
+      -- Include_Entity --
+      --------------------
+
+      procedure Include_Entity (E : Entity_Id; Kind : Formal_Kind) is
+         pragma Unreferenced (Kind);
+      begin
+         Includes.Include (E);
+      end Include_Entity;
+
+      procedure Include_Referenced_Entities is
+         new Process_Referenced_Entities (Include_Entity);
    begin
       --  Collect global variables read or written in E
 
@@ -803,47 +818,9 @@ package body Gnat2Why.Subprograms is
             | E_Function
             | E_Procedure
             | E_Task_Type
+            | E_Package
          =>
-            declare
-               Write_Ids : Flow_Types.Flow_Id_Sets.Set;
-               Read_Ids  : Flow_Types.Flow_Id_Sets.Set;
-
-               procedure Include (S : Flow_Types.Flow_Id_Sets.Set);
-               --  Include entities represented in S (as Flow_Ids) in Includes
-
-               -------------
-               -- Include --
-               -------------
-
-               procedure Include (S : Flow_Types.Flow_Id_Sets.Set) is
-               begin
-                  for F of S loop
-                     case F.Kind is
-                        when Direct_Mapping =>
-                           Includes.Include (Get_Direct_Mapping_Id (F));
-
-                        when Magic_String =>
-                           pragma Assert (Is_Opaque_For_Proof (F));
-
-                        when others =>
-                           raise Program_Error;
-                     end case;
-                  end loop;
-               end Include;
-
-            begin
-
-               --  Also get references to global constants with variable inputs
-               --  even if they are constants in Why.
-
-               Flow_Utility.Get_Proof_Globals (Subprogram      => E,
-                                               Reads           => Read_Ids,
-                                               Writes          => Write_Ids,
-                                               Erase_Constants => False);
-
-               Include (Read_Ids);
-               Include (Write_Ids);
-            end;
+            Include_Referenced_Entities (E);
 
             --  Collect parameters of E if any
 
@@ -868,55 +845,6 @@ package body Gnat2Why.Subprograms is
                   while Present (Discr) loop
                      Includes.Include (Discr);
                      Next_Discriminant (Discr);
-                  end loop;
-               end;
-            end if;
-
-         when E_Package =>
-            if not Is_Wrapper_Package (E) then
-
-               --  For packages, we use the Initializes aspect to get the
-               --  variables referenced during elaboration.
-               --  We don't do it for wrapper packages as Initializes are not
-               --  generated for them.
-
-               declare
-                  Scop : constant Flow_Scope :=
-                    Get_Flow_Scope (Package_Spec (E));
-                  --  The scope of where the package is declared, not of the
-                  --  package itself (because from the package itself we would
-                  --  still see the constants that capture expressions of the
-                  --  generic IN parameters).
-
-                  Init_Map : constant Dependency_Maps.Map :=
-                    Parse_Initializes (E, Scop);
-
-               begin
-                  for RHS of Init_Map loop
-                     for Input of RHS loop
-
-                        --  Expand Abstract_State if any
-
-                        declare
-                           Reads : constant Flow_Id_Sets.Set :=
-                             Expand_Abstract_State (Input);
-                        begin
-
-                           --  Get the entity associated with the Flow_Ids
-                           for X of Reads loop
-                              case X.Kind is
-                              when Direct_Mapping =>
-                                 Includes.Include (Get_Direct_Mapping_Id (X));
-
-                              when Magic_String =>
-                                 pragma Assert (Is_Opaque_For_Proof (X));
-
-                              when others =>
-                                 raise Program_Error;
-                              end case;
-                           end loop;
-                        end;
-                     end loop;
                   end loop;
                end;
             end if;

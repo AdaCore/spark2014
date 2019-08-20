@@ -397,6 +397,18 @@ package SPARK_Util.Subprograms is
    --  restrictive than Ada RM (which allows pretty much every subprogram to
    --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
 
+   generic
+      with procedure Process (E : Entity_Id; Kind : Formal_Kind);
+   procedure Process_Referenced_Entities (E : Entity_Id)
+   with Pre => Ekind (E) in E_Function       |
+                            E_Package        |
+                            E_Procedure      |
+                            E_Entry          |
+                            E_Protected_Type;
+   --  Retrieve the set of entities referenced from an entity's spec and body.
+   --  It uses flow analysis and ignores entities which are opaque for proof
+   --  (abstract states with invisible constituents and entities not in SPARK).
+
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |
                             E_Procedure |

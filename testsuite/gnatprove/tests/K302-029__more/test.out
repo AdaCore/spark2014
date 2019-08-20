@@ -1,6 +1,5 @@
 pack.adb:4:17: warning: subprogram "P3" has no effect
-pack.adb:6:15: cannot use global variable "Y" of deep type
-pack.adb:6:15: without prior declaration in a Global aspect
+pack.adb:6:15: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at line 4 should mention Y in a precondition]
 pack.adb:10:07: warning: analyzing unreferenced procedure "P0_Ok"
 pack.adb:10:17: warning: subprogram "P0_Ok" has no effect
 pack.adb:19:07: warning: analyzing unreferenced procedure "P4"
@@ -13,5 +12,6 @@ pack.adb:47:10: warning: analyzing unreferenced procedure "P2_Ok"
 pack.adb:47:20: warning: subprogram "P2_Ok" has no effect
 pack.ads:13:14: warning: subprogram "P0" has no effect
 pack.ads:15:14: warning: subprogram "P1" has no effect
+pack.ads:15:30: medium: postcondition might fail, cannot prove Y.all = 0 (e.g. when Y.all = -1)
+pack.ads:15:32: medium: pointer dereference check might fail (e.g. when Y = null)
 pack.ads:17:14: warning: subprogram "P2" has no effect
-gnatprove: error during flow analysis and proof

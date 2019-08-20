@@ -1,5 +1,5 @@
 locate_checks.adb:7:21: info: data dependencies proved
-locate_checks.adb:7:41: insufficient permission for "X"
-locate_checks.adb:7:41: object was moved at line 12
 locate_checks.adb:7:54: info: initialization of "Z" proved
+locate_checks.adb:14:04: insufficient permission for "X"
+locate_checks.adb:14:04: object was moved at line 12
 gnatprove: error during flow analysis and proof
