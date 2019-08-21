@@ -120,8 +120,15 @@ package body Memcache_Client is
       --  Hardcoding unused flag and expiration values
 
       String'Write (Conn.Stream, "set " & Key & " 0 0" &
-                      Natural'Image (Len) & CRLF &
-                    Value & CRLF);
+                      Natural'Image (Len) & CRLF);
+
+      --  The stored value might be arbitrarily large, so we need to send it
+      --  separately, i.e. without concatenating with the "set ..." command
+      --  using "&" operator, because that would create a temporary object that
+      --  might cause stack to overflow.
+
+      String'Write (Conn.Stream, Value);
+      String'Write (Conn.Stream, CRLF);
 
       declare
          Answer : constant String := Read_Stop_When_End_Marker (Conn, CRLF);
