@@ -24,23 +24,24 @@
 --  This package implements a variety of sanity checks that are run before
 --  the rest of flow analysis is performed.
 
-with Nlists;                 use Nlists;
-with Sem_Aux;                use Sem_Aux;
-with Sem_Util;               use Sem_Util;
-with Sinfo;                  use Sinfo;
-with Snames;                 use Snames;
+with Nlists;                         use Nlists;
+with Sem_Aux;                        use Sem_Aux;
+with Sem_Util;                       use Sem_Util;
+with Sinfo;                          use Sinfo;
+with Snames;                         use Snames;
 
-with Checked_Types;          use Checked_Types;
+with Checked_Types;                  use Checked_Types;
 with Gnat2Why_Args;
-with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
-with SPARK_Util.Types;       use SPARK_Util.Types;
-with SPARK_Util;             use SPARK_Util;
-with VC_Kinds;               use VC_Kinds;
+with SPARK_Definition;               use SPARK_Definition;
+with SPARK_Util.Subprograms;         use SPARK_Util.Subprograms;
+with SPARK_Util.Types;               use SPARK_Util.Types;
+with SPARK_Util;                     use SPARK_Util;
+with VC_Kinds;                       use VC_Kinds;
 
-with Flow_Error_Messages;    use Flow_Error_Messages;
-with Flow_Utility;           use Flow_Utility;
-with Flow_Refinement;        use Flow_Refinement;
+with Flow_Error_Messages;            use Flow_Error_Messages;
+with Flow_Utility;                   use Flow_Utility;
+with Flow_Refinement;                use Flow_Refinement;
+with Flow_Generated_Globals.Phase_2; use Flow_Generated_Globals.Phase_2;
 
 package body Flow.Analysis.Sanity is
 
@@ -111,6 +112,11 @@ package body Flow.Analysis.Sanity is
       --  where E is either a wrapper package (for generic subprograms) or a
       --  package instance (for generic packages).
 
+      procedure Check_Component_Declaration (N : Node_Id)
+      with Pre => Nkind (N) = N_Component_Declaration;
+      --  Check both the default expression of a component declaration and
+      --  its subtype constraint.
+
       procedure Check_Default_Expression (N : Node_Id)
       with Pre => Nkind (N) in N_Component_Declaration
                              | N_Discriminant_Specification;
@@ -126,7 +132,7 @@ package body Flow.Analysis.Sanity is
       --    part of that index or slice.
 
       procedure Check_Name_Indexes_And_Slices is new
-        Traverse_Proc (Check_Name_Index_And_Slice);
+        Traverse_More_Proc (Check_Name_Index_And_Slice);
 
       procedure Check_Subtype_Constraints (N : Node_Id);
       --  Check that subtype constraints do not have variable inputs
@@ -144,13 +150,10 @@ package body Flow.Analysis.Sanity is
       --  * a Type_Invariant aspect specification
 
       procedure Detect_Variable_Inputs
-        (Flow_Ids : Flow_Id_Sets.Set;
+        (N        : Node_Id;
          Err_Desc : String;
-         Err_Node : Node_Id)
-      with Pre => (for all F of Flow_Ids => F.Kind in Direct_Mapping
-                                                    | Record_Field
-                                                    | Magic_String);
-      --  Emit error for any member of the Flow_Ids which does NOT denote
+         Err_Node : Node_Id);
+      --  Emit error for any object referenced within N which does NOT denote
       --  a constant, a bound or a discriminant (of an enclosing concurrent
       --  type).
 
@@ -160,17 +163,25 @@ package body Flow.Analysis.Sanity is
       procedure Traverse_Handled_Statement_Sequence (N : Node_Id);
       --  Traverse declarations and statements
 
-      procedure Traverse_Components                 (L : List_Id);
-      procedure Traverse_Discriminants              (L : List_Id);
-      --  Traverse lists of component and discriminants, respectively
+      procedure Traverse_Component_List             (N : Node_Id)
+      with Pre => Nkind (N) = N_Component_List;
+      procedure Traverse_Component_Items            (L : List_Id);
+      procedure Traverse_Discriminants              (N : Node_Id);
+      procedure Traverse_Variant_Part               (N : Node_Id)
+      with Pre => Nkind (N) = N_Variant_Part;
+      --  Traversals for components and discriminants
+      --
+      --  Note: discriminants appear in various nodes; components appear in
+      --  protected types and record types (both as immediate children or in
+      --  arbitrarily nested variant parts).
 
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
         (Get_Variables (N,
-                        Scope                        => FA.B_Scope,
-                        Fold_Functions               => False,
-                        Use_Computed_Globals         => True,
-                        Expand_Synthesized_Constants => True));
+                        Scope                   => FA.B_Scope,
+                        Fold_Functions          => False,
+                        Use_Computed_Globals    => True,
+                        Expand_Internal_Objects => True));
       --  Wrapper around Get_Variables
 
       -------------------
@@ -191,7 +202,7 @@ package body Flow.Analysis.Sanity is
                  and then Constant_Present (Decl)
                then
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Expression (Decl)),
+                    (N        => Expression (Decl),
                      Err_Desc => "actual for formal object with mode in",
                      Err_Node => Decl);
                end if;
@@ -200,6 +211,43 @@ package body Flow.Analysis.Sanity is
             Next_Entity (Formal);
          end loop;
       end Check_Actuals;
+
+      ---------------------------------
+      -- Check_Component_Declaration --
+      ---------------------------------
+
+      procedure Check_Component_Declaration (N : Node_Id) is
+      begin
+         Check_Default_Expression (N);
+
+         --  Check that the subtype constraint for the component, if present,
+         --  does not depend on variable inputs.
+
+         declare
+            S_Indication_Mark : constant Node_Id :=
+              Subtype_Indication (Component_Definition (N));
+
+         begin
+            case Nkind (S_Indication_Mark) is
+               --  Subtype either points to a constraint, for example
+               --  "String (1 .. 10)".
+
+               when N_Subtype_Indication =>
+                  Check_Subtype_Constraints
+                    (Constraint (S_Indication_Mark));
+
+               --  or to a type, for example "Integer", or "Standard.Integer"
+
+               when N_Identifier | N_Expanded_Name =>
+                  pragma Assert
+                    (Is_Type (Entity (S_Indication_Mark)));
+
+               when others =>
+                  raise Program_Error;
+
+            end case;
+         end;
+      end Check_Component_Declaration;
 
       ------------------------------
       -- Check_Default_Expression --
@@ -211,7 +259,7 @@ package body Flow.Analysis.Sanity is
       begin
          if Present (Default_Expression) then
             Detect_Variable_Inputs
-              (Flow_Ids => Variables (Default_Expression),
+              (N        => Default_Expression,
                Err_Desc => "default initialization",
                Err_Node => Default_Expression);
          end if;
@@ -232,7 +280,7 @@ package body Flow.Analysis.Sanity is
                begin
                   loop
                      Detect_Variable_Inputs
-                       (Flow_Ids => Variables (Expr),
+                       (N        => Expr,
                         Err_Desc => "renamed index",
                         Err_Node => Expr);
                      Next (Expr);
@@ -242,7 +290,7 @@ package body Flow.Analysis.Sanity is
 
             when N_Slice =>
                Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Discrete_Range (N)),
+                 (N        => Discrete_Range (N),
                   Err_Desc => "renamed slice",
                   Err_Node => Discrete_Range (N));
 
@@ -267,12 +315,12 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Lo),
+                    (N        => Lo,
                      Err_Desc => "subtype constraint",
                      Err_Node => Lo);
 
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Hi),
+                    (N        => Hi,
                      Err_Desc => "subtype constraint",
                      Err_Node => Hi);
                end;
@@ -286,12 +334,12 @@ package body Flow.Analysis.Sanity is
 
                begin
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Lo),
+                    (N        => Lo,
                      Err_Desc => "subtype constraint",
                      Err_Node => Lo);
 
                   Detect_Variable_Inputs
-                    (Flow_Ids => Variables (Hi),
+                    (N        => Hi,
                      Err_Desc => "subtype constraint",
                      Err_Node => Hi);
                end;
@@ -303,7 +351,7 @@ package body Flow.Analysis.Sanity is
                begin
                   loop
                      Detect_Variable_Inputs
-                       (Flow_Ids => Variables (Constraint),
+                       (N        => Constraint,
                         Err_Desc => "subtype constraint",
                         Err_Node => Constraint);
                      Next (Constraint);
@@ -341,10 +389,8 @@ package body Flow.Analysis.Sanity is
 
          if Present (Get_Pragma (Typ, Pragma_Predicate)) then
             Detect_Variable_Inputs
-              (Flow_Ids =>
-                 Variables
-                   (Get_Expr_From_Return_Only_Func
-                        (Predicate_Function (Typ))),
+              (N        => Get_Expr_From_Return_Only_Func
+                             (Predicate_Function (Typ)),
                Err_Desc => "predicate",
                Err_Node => Typ);
          end if;
@@ -369,7 +415,7 @@ package body Flow.Analysis.Sanity is
                --  Check 7.3.2(3) [which is really 4.4(2)] (no variable inputs)
 
                Detect_Variable_Inputs
-                 (Flow_Ids => Variables (Expr),
+                 (N        => Expr,
                   Err_Desc => "invariant",
                   Err_Node => Full_View (Typ));
 
@@ -490,7 +536,7 @@ package body Flow.Analysis.Sanity is
       ---------------------------
 
       procedure Detect_Variable_Inputs
-        (Flow_Ids : Flow_Id_Sets.Set;
+        (N        : Node_Id;
          Err_Desc : String;
          Err_Node : Node_Id)
       is
@@ -540,7 +586,7 @@ package body Flow.Analysis.Sanity is
       --  Start of processing for Detect_Variable_Inputs
 
       begin
-         for F of Flow_Ids loop
+         for F of Variables (N) loop
             case F.Kind is
                when Direct_Mapping
                   | Record_Field
@@ -561,8 +607,8 @@ package body Flow.Analysis.Sanity is
                                    then F.Component.Length = 1);
 
                   begin
-                     --  We shall not get internal objects here, because we
-                     --  call Get_Variables with Expand_Synthesized_Constants
+                     --  We shall not get internal objects here, because
+                     --  we call Get_Variables with Expand_Internal_Objects
                      --  parameter set.
                      pragma Assert (not Is_Internal (F.Node));
 
@@ -589,8 +635,10 @@ package body Flow.Analysis.Sanity is
                   end;
 
                when Magic_String =>
-                  Emit_Error (F);
-                  Sane := False;
+                  if not GG_Is_Constant (F.Name) then
+                     Emit_Error (F);
+                     Sane := False;
+                  end if;
 
                when others =>
                   raise Program_Error;
@@ -599,55 +647,37 @@ package body Flow.Analysis.Sanity is
          end loop;
       end Detect_Variable_Inputs;
 
-      -------------------------
-      -- Traverse_Components --
-      -------------------------
+      ------------------------------
+      -- Traverse_Component_Items --
+      ------------------------------
 
-      procedure Traverse_Components (L : List_Id) is
+      procedure Traverse_Component_Items (L : List_Id) is
          N : Node_Id := First (L);
 
       begin
          while Present (N) loop
-
-            --  When expecting component declarations we might also get
-            --  protected operations, pragmas, representation clauses, etc.
-
             if Nkind (N) = N_Component_Declaration then
-               Check_Default_Expression (N);
-
-               --  Check that the subtype constraint for the component, if
-               --  present, does not depend on variable inputs.
-
-               declare
-                  S_Indication_Mark : constant Node_Id :=
-                    Subtype_Indication (Component_Definition (N));
-
-               begin
-                  case Nkind (S_Indication_Mark) is
-                     --  Subtype either points to a constraint, for example
-                     --  "String (1 .. 10)".
-
-                     when N_Subtype_Indication =>
-                        Check_Subtype_Constraints
-                          (Constraint (S_Indication_Mark));
-
-                     --  or to a type, for example "Integer", or
-                     --  "Standard.Integer".
-
-                     when N_Identifier | N_Expanded_Name =>
-                        pragma Assert
-                          (Is_Type (Entity (S_Indication_Mark)));
-
-                     when others =>
-                        raise Program_Error;
-
-                  end case;
-               end;
+               Check_Component_Declaration (N);
             end if;
 
             Next (N);
          end loop;
-      end Traverse_Components;
+      end Traverse_Component_Items;
+
+      -----------------------------
+      -- Traverse_Component_List --
+      -----------------------------
+
+      procedure Traverse_Component_List (N : Node_Id) is
+         Optional_Variant_Part : constant Node_Id := Variant_Part (N);
+
+      begin
+         Traverse_Component_Items (Component_Items (N));
+
+         if Present (Optional_Variant_Part) then
+            Traverse_Variant_Part (Optional_Variant_Part);
+         end if;
+      end Traverse_Component_List;
 
       -----------------------------------
       -- Traverse_Declarations_And_HSS --
@@ -722,8 +752,7 @@ package body Flow.Analysis.Sanity is
                      --  the type declaration.
 
                      if not Is_Private_Type (Etype (Typ)) then
-                        Traverse_Discriminants
-                          (Discriminant_Specifications (N));
+                        Traverse_Discriminants (N);
                      end if;
 
                      declare
@@ -734,7 +763,8 @@ package body Flow.Analysis.Sanity is
                           (Visible_Declarations (Def));
 
                         if Private_Spec_In_SPARK (Typ) then
-                           Traverse_Components (Private_Declarations (Def));
+                           Traverse_Component_Items
+                             (Private_Declarations (Def));
                         end if;
                      end;
                   end if;
@@ -753,8 +783,7 @@ package body Flow.Analysis.Sanity is
                      --  be checked at their declarations.
 
                      if not Is_Private_Type (Etype (Typ)) then
-                        Traverse_Discriminants
-                          (Discriminant_Specifications (N));
+                        Traverse_Discriminants (N);
                      end if;
 
                      --  Traverse visible and private parts. The body part is
@@ -787,12 +816,15 @@ package body Flow.Analysis.Sanity is
 
                   case Nkind (N) is
                      when N_Private_Type_Declaration =>
-                        Traverse_Discriminants
-                          (Discriminant_Specifications (N));
+                        Traverse_Discriminants (N);
 
                      when N_Full_Type_Declaration =>
                         declare
                            Typ : constant Entity_Id := Defining_Identifier (N);
+
+                           Typ_Def : constant Node_Id := Type_Definition (N);
+
+                           Optional_Component_List : Node_Id;
 
                         begin
                            --  Skip discriminants of a completion of a private
@@ -800,34 +832,35 @@ package body Flow.Analysis.Sanity is
                            --  type was declared.
 
                            if not Is_Private_Type (Etype (Typ)) then
-                              Traverse_Discriminants
-                                (Discriminant_Specifications (N));
+                              Traverse_Discriminants (N);
                            end if;
 
                            --  Traverse record components
+                           case Nkind (Typ_Def) is
+                              when N_Record_Definition =>
+                                 Optional_Component_List :=
+                                   Component_List (Typ_Def);
 
-                           if Ekind (Typ) = E_Record_Type then
-                              declare
-                                 Typ_Def : constant Node_Id :=
-                                   Type_Definition (N);
-
-                                 Components : constant Node_Id :=
-                                   (case Nkind (Typ_Def) is
-                                       when N_Record_Definition =>
-                                          Component_List (Typ_Def),
-                                       when N_Derived_Type_Definition =>
-                                          Component_List
-                                            (Record_Extension_Part (Typ_Def)),
-                                       when others =>
-                                          raise Program_Error);
-
-                              begin
-                                 if Present (Components) then
-                                    Traverse_Components
-                                      (Component_Items (Components));
+                              when N_Derived_Type_Definition =>
+                                 if Present (Record_Extension_Part (Typ_Def))
+                                 then
+                                    Optional_Component_List :=
+                                      Component_List
+                                        (Record_Extension_Part
+                                           (Typ_Def));
+                                 else
+                                    Optional_Component_List := Empty;
                                  end if;
-                              end;
+
+                              when others =>
+                                 Optional_Component_List := Empty;
+                           end case;
+
+                           if Present (Optional_Component_List) then
+                              Traverse_Component_List
+                                (Optional_Component_List);
                            end if;
+
                         end;
 
                      --  Discriminants on derived type are not allowed in
@@ -913,13 +946,14 @@ package body Flow.Analysis.Sanity is
       -- Traverse_Discriminants --
       ----------------------------
 
-      procedure Traverse_Discriminants (L : List_Id) is
-         N : Node_Id := First (L);
+      procedure Traverse_Discriminants (N : Node_Id) is
+         L : constant List_Id := Discriminant_Specifications (N);
+         D : Node_Id := First (L);
 
       begin
-         while Present (N) loop
-            Check_Default_Expression (N);
-            Next (N);
+         while Present (D) loop
+            Check_Default_Expression (D);
+            Next (D);
          end loop;
       end Traverse_Discriminants;
 
@@ -945,6 +979,21 @@ package body Flow.Analysis.Sanity is
          end if;
       end Traverse_Handled_Statement_Sequence;
 
+      ---------------------------
+      -- Traverse_Variant_Part --
+      ---------------------------
+
+      procedure Traverse_Variant_Part (N : Node_Id) is
+         Variant : Node_Id := First (Variants (N));
+
+      begin
+         loop
+            Traverse_Component_List (Component_List (Variant));
+            Next (Variant);
+            exit when No (Variant);
+         end loop;
+      end Traverse_Variant_Part;
+
    --  Start of processing for Check_Expressions
 
    begin
@@ -959,21 +1008,32 @@ package body Flow.Analysis.Sanity is
                Traverse_Declarations_And_HSS (Subp_Body);
 
                --  If this is a user defined equality on a record type, then it
-               --  cannot have variable inputs.
+               --  shall have a Global aspect of null.
 
                if Is_User_Defined_Equality (FA.Spec_Entity) then
                   declare
                      Typ : constant Entity_Id :=
                        Get_Full_Type_Without_Checking
                          (First_Formal (FA.Spec_Entity));
-
+                     Globals : Global_Flow_Ids;
                   begin
                      if Is_Record_Type (Typ) then
-                        Detect_Variable_Inputs
-                          (Flow_Ids => Variables
-                             (Get_Expr_From_Return_Only_Func (FA.Spec_Entity)),
-                           Err_Desc => "user-defined equality",
-                           Err_Node => FA.Spec_Entity);
+                        Get_Globals (Subprogram => FA.Spec_Entity,
+                                     Scope      => FA.S_Scope,
+                                     Classwide  => False,
+                                     Globals    => Globals);
+
+                        if not (Globals.Proof_Ins.Is_Empty and then
+                                Globals.Inputs.Is_Empty)
+                        then
+                           Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      => "user-defined equality shall " &
+                                   "have a Global aspect of null",
+                                 SRM_Ref  => "6.6(1)",
+                                 N        => FA.Spec_Entity,
+                                 Severity => Error_Kind);
+                        end if;
                      end if;
                   end;
                end if;

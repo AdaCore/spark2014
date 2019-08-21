@@ -18,12 +18,16 @@ database.adb:173:30: info: range check proved (altergo: 1 VC), in call inlined a
 database.adb:182:07: info: analyzing call to "Initialize_Links" in context
 database.adb:182:07: info: cannot unroll loop (too many loop iterations)
 database.adb:182:07: info: in inlined body at line 164
+database.adb:247:18: warning: unreachable code (altergo: 1 VC)
 database.adb:251:19: info: precondition proved (altergo: 1 VC)
 database.adb:272:10: info: precondition proved (altergo: 1 VC)
+database.adb:273:10: warning: unreachable code (altergo: 1 VC)
 database.adb:283:22: info: precondition proved (altergo: 1 VC)
 database.adb:296:17: info: precondition proved (altergo: 1 VC)
+database.adb:298:10: warning: unreachable code (altergo: 1 VC)
 database.adb:302:42: info: precondition proved (altergo: 2 VC)
 database.adb:314:27: info: precondition proved (altergo: 1 VC)
+database.adb:316:10: warning: unreachable code (altergo: 1 VC)
 database.adb:320:42: info: precondition proved (altergo: 2 VC)
 database.ads:62:07: info: initialization of "Account" proved
 database.ads:65:14: info: postcondition proved (altergo: 3 VC)

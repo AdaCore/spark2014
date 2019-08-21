@@ -1,5 +1,5 @@
-simple_private_type.ads:11:36: info: function contract not available for proof ("=" is recursive)
-simple_private_type.ads:14:54: info: function contract not available for proof ("=" is recursive)
+simple_private_type.ads:11:36: info: function contract not available for proof ("=" might not return)
+simple_private_type.ads:14:54: info: function contract not available for proof ("=" might not return)
 use_simple_private_type.adb:8:22: info: precondition proved (CVC4: 1 VC)
 use_simple_private_type.adb:17:15: info: precondition proved (CVC4: 1 VC)
 use_simple_private_type.adb:25:27: info: precondition proved (CVC4: 1 VC)

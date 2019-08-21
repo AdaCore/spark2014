@@ -45,6 +45,12 @@ simplifications to Ada. The most notable simplifications are:
   exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
   Mechanisms`).
 
+* Generic code is not analyzed directly. Doing so would require lengthy
+  contracts on generic parameters, and would restrict the kind of code that can
+  be analyzed, e.g. by forcing the variables read/written by a generic
+  subprogram parameter. Instead, instantiations of generic code are analyzed in
+  |SPARK|. See :ref:`Analysis of Generics`.
+
 The features listed above are excluded from |SPARK| because, currently, they
 defy formal verification. As formal verification technology advances the list
 will be revisited and it may be possible to relax some of these
@@ -341,3 +347,46 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 |GNATprove| also checks that procedures that are marked with aspect or pragma
 ``No_Return`` do not return: they should either raise an exception or loop
 forever on any input.
+
+.. _Analysis of Generics:
+
+Analysis of Generics
+--------------------
+
+|GNATprove| does not directly analyze the code of generics. The following
+message is issued if you call |GNATprove| on a generic unit::
+
+  warning: no bodies have been analyzed by GNATprove
+  enable analysis of a non-generic body using SPARK_Mode
+
+The advice given is to use ``SPARK_Mode`` on non-generic code, for example an
+instantiation of the generic unit. As ``SPARK_Mode`` aspect cannot be attached
+to a generic instantiation, it should be specified on the enclosing context,
+either through a pragma or aspect.
+
+For example, consider the following generic increment procedure:
+
+.. literalinclude:: /gnatprove_by_example/examples/generic_increment.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /gnatprove_by_example/examples/generic_increment.adb
+   :language: ada
+   :linenos:
+
+Procedure ``Instance_Increment`` is a specific instance of
+``Generic_Increment`` for the type ``Integer``:
+
+.. literalinclude:: /gnatprove_by_example/examples/instance_increment.ads
+   :language: ada
+   :linenos:
+
+|GNATprove| analyzes this instantiation and reports messages on the generic
+code, always stating to which instantiation the messages correspond to:
+
+.. literalinclude:: /gnatprove_by_example/results/generic_increment.prove
+   :language: none
+
+Thus, it is possible that some checks are proved on an instance and not on
+another one. In that case, the chained locations in the messages issued by
+|GNATprove| allow you to locate the problematic instantiation.

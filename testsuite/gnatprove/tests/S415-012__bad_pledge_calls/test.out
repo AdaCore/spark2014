@@ -1,0 +1,3 @@
+bad_pledge_calls.adb:12:27: first actual of a pledge function which is not a local borrower is not yet supported
+bad_pledge_calls.adb:15:27: first actual of a pledge function which is not a local borrower is not yet supported
+gnatprove: error during flow analysis and proof

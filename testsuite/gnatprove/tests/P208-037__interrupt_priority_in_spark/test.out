@@ -1,1 +1,5 @@
-p.ads:6:43: medium: range check might fail
+p.ads:6:34: "Expr" is not allowed in SPARK
+p.ads:6:34: violation of aspect SPARK_Mode at line 5
+p.ads:9:04: "PT" is not allowed in SPARK
+p.ads:9:04: violation of aspect SPARK_Mode at line 3
+gnatprove: error during flow analysis and proof

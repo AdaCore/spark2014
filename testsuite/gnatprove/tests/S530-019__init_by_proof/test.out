@@ -1,0 +1,23 @@
+a.adb:12:37: info: unrolling loop
+a.adb:24:17: info: initialization check proved (CVC4: 1 VC)
+a.adb:31:27: info: overflow check proved (CVC4: 1 VC)
+a.adb:31:29: info: initialization check proved (CVC4: 1 VC)
+a.adb:32:17: info: overflow check proved (CVC4: 1 VC)
+a.adb:32:19: info: initialization check proved (CVC4: 1 VC)
+a.ads:13:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
+a.ads:14:06: medium: "A.Global_AS" must be a global In_Out of "initGlobalsA"
+a.ads:18:06: info: data dependencies proved
+aa.adb:17:27: info: overflow check proved (CVC4: 1 VC)
+aa.adb:18:17: info: overflow check proved (CVC4: 1 VC)
+aa.ads:6:29: info: initialization of "status" proved
+aa.ads:7:06: info: data dependencies proved
+aa.ads:7:27: info: initialization of "Global_AA" proved
+aa.ads:10:06: info: data dependencies proved
+main.adb:7:03: info: data dependencies proved
+main.adb:7:25: info: initialization of "Global_AA" proved
+main.adb:7:36: info: initialization of "A.Global_AS" proved
+main.adb:10:04: info: initialization of "status" proved
+main.adb:15:07: info: precondition proved (CVC4: 1 VC)
+main.adb:18:31: info: range check proved (CVC4: 1 VC)
+main.adb:19:38: info: range check proved (CVC4: 1 VC)
+main.adb:19:53: info: range check proved (CVC4: 1 VC)

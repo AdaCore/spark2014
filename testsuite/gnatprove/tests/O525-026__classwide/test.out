@@ -1,11 +1,690 @@
-a-cfinve.ads:601:57: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:729:23: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:732:38: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:765:14: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cfinve.ads:769:35: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:602:57: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:730:23: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:733:38: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:766:14: info: precondition proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cfinve.ads:770:35: info: range check proved (CVC4: 1 VC), in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at objt_types_jauge.ads:20
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("<=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("=" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Capacity" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Constant_Range" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Constant_Range" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Constant_Range" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Constant_Range" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Contains" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Contains" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Contains" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Contains" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Contains" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Equal_Except" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Equal_Except" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Equal_Except" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("First_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Is_Empty" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Is_Empty" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Iter_Has_Element" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Last_Index" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Length" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("M_Elements_Reversed" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("M_Elements_Swapped" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Model" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Equal" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: function contract not available for proof ("Range_Shifted" might not return)
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:127
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:128
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:130
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:145
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:161
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:162
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:164
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:165
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:167
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:178
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:181
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:184
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:194
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:207
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:211
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:211
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:219
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:220
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:221
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:223
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:242
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:242
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:246
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:250
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:257
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:258
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:258
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:265
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:267
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:267
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:269
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:276
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:276
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:277
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:277
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:277
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:284
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:284
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:285
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:294
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:294
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:296
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:300
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:304
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:305
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:306
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:316
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:316
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:317
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:319
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:321
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:325
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:326
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:327
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:333
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:334
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:335
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:336
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:338
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:343
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:344
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:345
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:347
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:348
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:357
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:357
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:358
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:360
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:364
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:365
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:366
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:372
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:376
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:377
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:378
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:380
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:391
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:391
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:392
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:394
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:396
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:400
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:401
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:402
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:409
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:410
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:417
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:418
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:419
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:421
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:426
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:426
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:428
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:432
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:433
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:434
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:436
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:440
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:441
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:442
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:444
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:445
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:449
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:449
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:451
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:455
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:459
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:460
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:461
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:463
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:472
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:472
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:474
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:478
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:479
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:486
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:487
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:488
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:490
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:496
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:496
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:498
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:502
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:502
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:506
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:507
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:508
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:509
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:511
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:514
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:518
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:518
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:520
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:524
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:524
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:529
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:529
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:537
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:537
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:539
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:543
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:543
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:548
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:549
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:550
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:552
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:557
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:557
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:559
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:563
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:564
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:565
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:571
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:572
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:573
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:575
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:585
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:585
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:587
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:588
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:592
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:593
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:594
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:602
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:603
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:606
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:610
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:611
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:612
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:614
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:619
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:621
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:625
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:626
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:627
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:629
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:638
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:641
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:645
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:646
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:647
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:649
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:654
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:656
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:660
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:660
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:668
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:671
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:675
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:675
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:679
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:679
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:688
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:688
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:689
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:689
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:691
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:691
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:700
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:702
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:707
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:707
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:712
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:715
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:715
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:729
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:730
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:731
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:733
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:741
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:745
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:749
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:750
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:766
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:767
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:769
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:770
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:780
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:784
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:788
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:789
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:792
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:795
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:805
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:806
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:808
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:818
+objt_types_jauge.ads:20:04: info: in instantiation at a-cfinve.ads:96
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:108
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:109
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:119
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:120
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:130
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:131
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:144
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:160
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:174
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:177
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:178
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:191
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:194
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:195
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:210
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:228
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:237
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:268
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:271
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:280
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:281
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:283
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:284
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:285
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:297
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:298
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:299
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:301
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:303
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:308
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:312
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:323
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:325
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:326
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:331
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:335
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:352
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:360
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:52
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:83
+objt_types_jauge.ads:20:04: info: in instantiation at a-cofuve.ads:92
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: assuming "=" has no effect on global items
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:102
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:129
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:131
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:150
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:163
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:166
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:182
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:183
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:285
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:300
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:372
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:455
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:529
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:702
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:714
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:745
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cfinve.ads:784
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:110
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:121
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:132
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:147
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:163
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:179
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:197
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:213
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:242
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:248
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:270
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:284
+objt_types_jauge.ads:20:04: warning: in instantiation at a-cofuve.ads:302
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="
+objt_types_jauge.ads:20:04: warning: no Global contract available for "="

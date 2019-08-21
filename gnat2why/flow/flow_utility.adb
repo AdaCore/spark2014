@@ -37,6 +37,7 @@ with Sem_Prag;                        use Sem_Prag;
 with Sem_Type;                        use Sem_Type;
 with Sprint;                          use Sprint;
 with Treepr;                          use Treepr;
+with Uintp;                           use Uintp;
 
 with Common_Iterators;                use Common_Iterators;
 with Gnat2Why_Args;
@@ -319,7 +320,7 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_Proc (Process => Proc);
+      procedure Traverse is new Traverse_More_Proc (Process => Proc);
       --  AST traversal procedure
 
    --  Start of processing for Collect_Functions_And_Read_Locked_POs
@@ -1426,12 +1427,12 @@ package body Flow_Utility is
    -- Get_Globals --
    -----------------
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Scope                  : Flow_Scope;
-                          Classwide              : Boolean;
-                          Globals                : out Global_Flow_Ids;
-                          Use_Deduced_Globals    : Boolean := True;
-                          Ignore_Depends         : Boolean := False)
+   procedure Get_Globals (Subprogram          : Entity_Id;
+                          Scope               : Flow_Scope;
+                          Classwide           : Boolean;
+                          Globals             : out Global_Flow_Ids;
+                          Use_Deduced_Globals : Boolean := True;
+                          Ignore_Depends      : Boolean := False)
    is
       Global_Node  : constant Node_Id := Get_Contract_Node (Subprogram,
                                                             Scope,
@@ -2081,14 +2082,13 @@ package body Flow_Utility is
    -------------------
 
    type Get_Variables_Context is record
-      Scope                           : Flow_Scope;
-      Fold_Functions                  : Boolean;
-      Use_Computed_Globals            : Boolean;
-      Reduced                         : Boolean;
-      Assume_In_Expression            : Boolean;
-      Expand_Synthesized_Constants    : Boolean;
-      Consider_Extensions             : Boolean;
-      Quantified_Variables_Introduced : Node_Sets.Set;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean;
+      Assume_In_Expression    : Boolean;
+      Expand_Internal_Objects : Boolean;
+      Consider_Extensions     : Boolean;
    end record;
 
    function Get_Variables_Internal
@@ -2108,49 +2108,47 @@ package body Flow_Utility is
    -------------------
 
    function Get_Variables
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False;
-      Consider_Extensions          : Boolean := False)
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False;
+      Consider_Extensions     : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Scope,
-         Fold_Functions                  => Fold_Functions,
-         Use_Computed_Globals            => Use_Computed_Globals,
-         Reduced                         => Reduced,
-         Assume_In_Expression            => Assume_In_Expression,
-         Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
-         Consider_Extensions             => Consider_Extensions,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                   => Scope,
+         Fold_Functions          => Fold_Functions,
+         Use_Computed_Globals    => Use_Computed_Globals,
+         Reduced                 => Reduced,
+         Assume_In_Expression    => Assume_In_Expression,
+         Expand_Internal_Objects => Expand_Internal_Objects,
+         Consider_Extensions     => Consider_Extensions);
 
    begin
       return Get_Variables_Internal (N, Ctx);
    end Get_Variables;
 
    function Get_Variables
-     (L                            : List_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False)
+     (L                       : List_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Scope,
-         Fold_Functions                  => Fold_Functions,
-         Use_Computed_Globals            => Use_Computed_Globals,
-         Reduced                         => Reduced,
-         Assume_In_Expression            => Assume_In_Expression,
-         Expand_Synthesized_Constants    => Expand_Synthesized_Constants,
-         Consider_Extensions             => False,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                   => Scope,
+         Fold_Functions          => Fold_Functions,
+         Use_Computed_Globals    => Use_Computed_Globals,
+         Reduced                 => Reduced,
+         Assume_In_Expression    => Assume_In_Expression,
+         Expand_Internal_Objects => Expand_Internal_Objects,
+         Consider_Extensions     => False);
 
    begin
       return Get_Variables_Internal (L, Ctx);
@@ -2176,11 +2174,10 @@ package body Flow_Utility is
       --  entry/subprogram call and add them to the given set. Do not follow
       --  children after calling this.
 
-      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      with Pre => Nkind (E) in N_Entity;
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set;
       --  Process the given entity and return the variables associated with it
 
-      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
+      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Attribute_Reference;
       --  Process the given attribute reference. Do not follow children after
       --  calling this.
@@ -2195,25 +2192,17 @@ package body Flow_Utility is
       with Pre => Nkind (E) in N_Entity;
       --  Return a set that can be merged into Variables, as above
 
-      function Filter (Variables : Flow_Id_Sets.Set) return Flow_Id_Sets.Set;
-      --  Some functions called by Get_Variables do not know about the context
-      --  we've built up, so we may need to strip some variables from their
-      --  returned set. In particular, we remove quantified variables.
-
-      function Recurse (N                        : Node_Id;
-                        Consider_Extensions      : Boolean   := False;
-                        With_Quantified_Variable : Entity_Id := Empty)
-                        return Flow_Id_Sets.Set
-      with Pre => (if Present (With_Quantified_Variable)
-                   then Nkind (With_Quantified_Variable) in N_Entity);
+      function Recurse (N                   : Node_Id;
+                        Consider_Extensions : Boolean := False)
+                        return Flow_Id_Sets.Set;
       --  Helper function to recurse on N
 
       function Untangle_Record_Fields
-        (N                            : Node_Id;
-         Scope                        : Flow_Scope;
-         Fold_Functions               : Boolean;
-         Use_Computed_Globals         : Boolean;
-         Expand_Synthesized_Constants : Boolean)
+        (N                       : Node_Id;
+         Scope                   : Flow_Scope;
+         Fold_Functions          : Boolean;
+         Use_Computed_Globals    : Boolean;
+         Expand_Internal_Objects : Boolean)
       return Flow_Id_Sets.Set
       with Pre => Nkind (N) = N_Selected_Component
                     or else Is_Attribute_Update (N);
@@ -2230,23 +2219,22 @@ package body Flow_Utility is
       --     R'Update (X => N)    False           {R.Y, N}
       --     R'Update (X => N)    True            {R.Y, N}
       --
-      --  Scope, Use_Computed_Globals, Expand_Synthesized_Constants will be
-      --  passed on to Get_Variables if necessary.
+      --  Scope, Use_Computed_Globals, Expand_Internal_Objects will be passed
+      --  on to Get_Variables if necessary.
       --
       --  Get_Variables will be called with Reduced set to False (as this
       --  function should never be called when it's True...).
 
       function Untangle_With_Context (N : Node_Id)
                                       return Flow_Id_Sets.Set
-      is (Filter (Untangle_Record_Fields
+      is (Untangle_Record_Fields
            (N,
-            Scope                        => Ctx.Scope,
-            Fold_Functions               => Ctx.Fold_Functions,
-            Use_Computed_Globals         => Ctx.Use_Computed_Globals,
-            Expand_Synthesized_Constants =>
-              Ctx.Expand_Synthesized_Constants)));
+            Scope                   => Ctx.Scope,
+            Fold_Functions          => Ctx.Fold_Functions,
+            Use_Computed_Globals    => Ctx.Use_Computed_Globals,
+            Expand_Internal_Objects => Ctx.Expand_Internal_Objects));
       --  Helper function to call Untangle_Record_Fields with the appropriate
-      --  context, but also filtering out quantified variables.
+      --  context.
 
       function Discriminant_Constraints (E : Entity_Id)
                                          return Flow_Id_Sets.Set
@@ -2290,18 +2278,13 @@ package body Flow_Utility is
       -- Recurse --
       -------------
 
-      function Recurse (N                        : Node_Id;
-                        Consider_Extensions      : Boolean   := False;
-                        With_Quantified_Variable : Entity_Id := Empty)
+      function Recurse (N                   : Node_Id;
+                        Consider_Extensions : Boolean := False)
                         return Flow_Id_Sets.Set
       is
          New_Ctx : Get_Variables_Context := Ctx;
       begin
          New_Ctx.Consider_Extensions := Consider_Extensions;
-         if Present (With_Quantified_Variable) then
-            New_Ctx.Quantified_Variables_Introduced.Insert
-              (With_Quantified_Variable);
-         end if;
          return Get_Variables_Internal (N, New_Ctx);
       end Recurse;
 
@@ -2350,26 +2333,6 @@ package body Flow_Utility is
          end if;
       end Merge_Entity;
 
-      ------------
-      -- Filter --
-      ------------
-
-      function Filter (Variables : Flow_Id_Sets.Set) return Flow_Id_Sets.Set
-      is
-      begin
-         return Filtered_Variables : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set
-         do
-            for V of Variables loop
-               if V.Kind not in Direct_Mapping | Record_Field
-                 or else
-                 not Ctx.Quantified_Variables_Introduced.Contains (V.Node)
-               then
-                  Filtered_Variables.Insert (V);
-               end if;
-            end loop;
-         end return;
-      end Filter;
-
       ------------------------
       -- Do_Subprogram_Call --
       ------------------------
@@ -2400,7 +2363,7 @@ package body Flow_Utility is
          is
             May_Use_Extensions : constant Boolean :=
               Has_Extensions_Visible (Subprogram) or else
-              Ekind (Get_Type (Formal, Ctx.Scope)) in Class_Wide_Kind;
+              Is_Class_Wide_Type (Get_Type (Formal, Ctx.Scope));
             --  True if we have the aspect set (so we know the subprogram might
             --  convert to a classwide type), or we're dealing with a classwide
             --  type directly (since that may or may not have extensions).
@@ -2533,20 +2496,15 @@ package body Flow_Utility is
       -- Do_Entity --
       ---------------
 
-      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      is
+      function Do_Entity (E : Entity_Id) return Flow_Id_Sets.Set is
       begin
-         if Ctx.Quantified_Variables_Introduced.Contains (E) then
-            return Flow_Id_Sets.Empty_Set;
-         end if;
-
          case Ekind (E) is
             --------------------------------------------
             -- Entities requiring some kind of action --
             --------------------------------------------
 
             when E_Constant =>
-               if Ctx.Expand_Synthesized_Constants
+               if Ctx.Expand_Internal_Objects
                  and then not Comes_From_Source (E)
                then
 
@@ -2686,8 +2644,9 @@ package body Flow_Utility is
                | E_Function
                | E_Procedure
             =>
-               --  Dealt with when dealing with N_Subprogram_Call nodes
-               null;
+               --  Dealt with when dealing with N_Subprogram_Call nodes, except
+               --  when traversing the AST looking for first use of a variable.
+               pragma Assert (not Ctx.Assume_In_Expression);
 
             when E_Block
                | E_Exception
@@ -2743,11 +2702,11 @@ package body Flow_Utility is
          return Flow_Id_Sets.Empty_Set;
       end Do_Entity;
 
-      ------------------------------
-      -- Do_N_Attribute_Reference --
-      ------------------------------
+      ----------------------------
+      -- Do_Attribute_Reference --
+      ----------------------------
 
-      function Do_N_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
+      function Do_Attribute_Reference (N : Node_Id) return Flow_Id_Sets.Set
       is
          The_Attribute : constant Attribute_Id :=
            Get_Attribute_Id (Attribute_Name (N));
@@ -2765,6 +2724,20 @@ package body Flow_Utility is
          -----------------
 
          case The_Attribute is
+            when Attribute_Result =>
+               pragma Assert (Ekind (Entity (Prefix (N))) = E_Function);
+
+               --  It is an over-approximation to return all components of the
+               --  'Result, but it is actually harmless, because in the Post
+               --  expression the entire 'Result object must be initialized
+               --  anyway.
+
+               return
+                 (if Ctx.Reduced
+                  then Flow_Id_Sets.To_Set
+                    (Direct_Mapping_Id (Entity (Prefix (N))))
+                  else Flatten_Variable (Entity (Prefix (N)), Ctx.Scope));
+
             when Attribute_Update =>
                if Ctx.Reduced or else Is_Tagged_Type (Get_Type (N, Ctx.Scope))
                then
@@ -2805,17 +2778,38 @@ package body Flow_Utility is
                | Attribute_Range
             =>
                declare
-                  T  : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
-                  pragma Assert (Nkind (T) in N_Entity);
+                  T : constant Entity_Id := Get_Type (Prefix (N), Ctx.Scope);
+
                   LB : Node_Id;
                   HB : Node_Id;
+                  --  Low and high bounds, respectively
+
+                  Dims  : Pos;
+                  Index : Node_Id;
+                  --  Number of dimensions and index for multi-dimensional
+                  --  arrays.
+
                begin
                   if Is_Constrained (T) then
                      if Is_Array_Type (T) then
-                        LB := Type_Low_Bound (Etype (First_Index (T)));
-                        HB := Type_High_Bound (Etype (First_Index (T)));
+                        if Present (Expressions (N)) then
+                           Dims :=
+                             UI_To_Int (Intval (First (Expressions (N))));
+                           Index := First_Index (T);
+
+                           for J in 1 .. Dims - 1 loop
+                              Next_Index (Index);
+                           end loop;
+
+                           LB := Type_Low_Bound  (Etype (Index));
+                           HB := Type_High_Bound (Etype (Index));
+
+                        else
+                           LB := Type_Low_Bound  (Etype (First_Index (T)));
+                           HB := Type_High_Bound (Etype (First_Index (T)));
+                        end if;
                      else
-                        pragma Assert (Ekind (T) in Scalar_Kind);
+                        pragma Assert (Is_Scalar_Type (T));
                         LB := Low_Bound (Scalar_Range (T));
                         HB := High_Bound (Scalar_Range (T));
                      end if;
@@ -2830,22 +2824,34 @@ package body Flow_Utility is
                         Variables.Union (Recurse (LB));
                      end if;
 
-                  elsif not Ctx.Reduced then
-                     for F of Recurse (Prefix (N)) loop
-                        if F.Kind in Direct_Mapping | Record_Field
-                          and then F.Facet = Normal_Part
-                          and then Has_Bounds (F, Ctx.Scope)
-                        then
-                           --  This is not a bound variable, but it requires
-                           --  bounds tracking. We make it a bound variable.
-                           Variables.Include
-                             (F'Update (Facet => The_Bounds));
+                  else
+                     if Ctx.Reduced then
+                        --  ??? The "Reduced" mode is only used for more
+                        --  precise slocs in flow error messages. We don't
+                        --  care, instead let's focus on removing this mode.
+                        null;
+                     else
+                        for F of Recurse (Prefix (N)) loop
+                           if F.Kind in Direct_Mapping | Record_Field
+                             and then F.Facet = Normal_Part
+                             and then Has_Bounds (F, Ctx.Scope)
+                           then
+                              --  This is not a bound variable, but it requires
+                              --  bounds tracking. We make it a bound variable.
 
-                        else
-                           --  This is something else, we just copy it
-                           Variables.Include (F);
-                        end if;
-                     end loop;
+                              --  ??? we should only do this if the immediate
+                              --  prefix denotes an object (e.g. "Obj'Length"
+                              --  but not "Func (Obj)'Length").
+
+                              Variables.Include
+                                (F'Update (Facet => The_Bounds));
+
+                           else
+                              --  This is something else, we just copy it
+                              Variables.Include (F);
+                           end if;
+                        end loop;
+                     end if;
                   end if;
                end;
                return Variables;
@@ -2903,18 +2909,18 @@ package body Flow_Utility is
          end if;
 
          return Variables;
-      end Do_N_Attribute_Reference;
+      end Do_Attribute_Reference;
 
       ----------------------------
       -- Untangle_Record_Fields --
       ----------------------------
 
       function Untangle_Record_Fields
-        (N                            : Node_Id;
-         Scope                        : Flow_Scope;
-         Fold_Functions               : Boolean;
-         Use_Computed_Globals         : Boolean;
-         Expand_Synthesized_Constants : Boolean)
+        (N                       : Node_Id;
+         Scope                   : Flow_Scope;
+         Fold_Functions          : Boolean;
+         Use_Computed_Globals    : Boolean;
+         Expand_Internal_Objects : Boolean)
       return Flow_Id_Sets.Set
       is
          function Is_Ignored_Node (N : Node_Id) return Boolean
@@ -2926,11 +2932,11 @@ package body Flow_Utility is
          function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
          is (Get_Variables
              (N,
-              Scope                        => Scope,
-              Fold_Functions               => Fold_Functions,
-              Use_Computed_Globals         => Use_Computed_Globals,
-              Reduced                      => False,
-              Expand_Synthesized_Constants => Expand_Synthesized_Constants));
+              Scope                   => Scope,
+              Fold_Functions          => Fold_Functions,
+              Use_Computed_Globals    => Use_Computed_Globals,
+              Reduced                 => False,
+              Expand_Internal_Objects => Expand_Internal_Objects));
 
          M             : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
@@ -3342,6 +3348,9 @@ package body Flow_Utility is
       function Proc (N : Node_Id) return Traverse_Result is
       begin
          case Nkind (N) is
+            when N_Ignored_In_SPARK =>
+               return Skip;
+
             when N_Entry_Call_Statement
                | N_Function_Call
                | N_Procedure_Call_Statement
@@ -3361,15 +3370,15 @@ package body Flow_Utility is
                pragma Assert (Is_Intrinsic_Subprogram (Entity (N)));
 
             when N_Abstract_Subprogram_Declaration
-               | N_Call_Marker
+               | N_Body_Stub
                | N_Entry_Body
                | N_Entry_Declaration
-               | N_Freeze_Entity
-               | N_Freeze_Generic_Entity
-               | N_Later_Decl_Item
-               | N_Renaming_Declaration
+               | N_Package_Declaration
+               | N_Proper_Body
                | N_Representation_Clause
-               | N_Variable_Reference_Marker
+               | N_Single_Task_Declaration
+               | N_Subprogram_Declaration
+               | N_Task_Type_Declaration
             =>
                pragma Assert (not Ctx.Assume_In_Expression);
 
@@ -3378,10 +3387,25 @@ package body Flow_Utility is
 
             when N_Identifier | N_Expanded_Name =>
                if Present (Entity (N)) then
-                  Variables.Union (Do_Entity (Entity (N)));
+
+                  --  When detecting variable inputs and seeing an internal
+                  --  variable (which comes from inlining for proof), recurse
+                  --  into the original expression.
+
+                  if Ekind (Entity (N)) = E_Variable
+                    and then Is_Internal (Entity (N))
+                    and then Ctx.Expand_Internal_Objects
+                  then
+                     pragma Assert (Is_Rewrite_Substitution (N));
+                     Variables.Union (Recurse (Original_Node (N)));
+                  else
+                     Variables.Union (Do_Entity (Entity (N)));
+                  end if;
                end if;
+               return Skip;
 
             --  Within expression, a defining identifier only appears as a
+            --  declaration for a compiler-generated temporary or as a
             --  parameter of a quantified expression (effectively, it declares
             --  a local object). Such identifiers are not considered as "uses"
             --  of any variable, so we ignore them.
@@ -3394,7 +3418,8 @@ package body Flow_Utility is
                if Is_Type (N) then
                   Variables.Union (Do_Entity (N));
                else
-                  pragma Assert (Is_Quantified_Loop_Param (N));
+                  pragma Assert (Is_Internal (N)
+                                  or else Is_Quantified_Loop_Param (N));
                end if;
 
             when N_Aggregate =>
@@ -3431,20 +3456,20 @@ package body Flow_Utility is
                      M : constant Flow_Id_Maps.Map :=
                        Untangle_Record_Assignment
                          (N,
-                          Map_Root                     =>
+                          Map_Root                =>
                             Direct_Mapping_Id (Etype (N)),
-                          Map_Type                     =>
+                          Map_Type                =>
                             Get_Type (N, Ctx.Scope),
-                          Scope                        => Ctx.Scope,
-                          Fold_Functions               => Ctx.Fold_Functions,
-                          Use_Computed_Globals         =>
+                          Scope                   => Ctx.Scope,
+                          Fold_Functions          => Ctx.Fold_Functions,
+                          Use_Computed_Globals    =>
                             Ctx.Use_Computed_Globals,
-                          Expand_Synthesized_Constants =>
-                            Ctx.Expand_Synthesized_Constants);
+                          Expand_Internal_Objects =>
+                            Ctx.Expand_Internal_Objects);
 
                   begin
                      for FS of M loop
-                        Variables.Union (Filter (FS));
+                        Variables.Union (FS);
                      end loop;
                   end;
 
@@ -3455,7 +3480,7 @@ package body Flow_Utility is
                end if;
 
             when N_Attribute_Reference =>
-               Variables.Union (Do_N_Attribute_Reference (N));
+               Variables.Union (Do_Attribute_Reference (N));
                return Skip;
 
             when N_In | N_Not_In =>
@@ -3555,10 +3580,21 @@ package body Flow_Utility is
                   E : constant Entity_Id := Defining_Identifier (It);
 
                begin
-                  Variables.Union (Recurse (It,
-                                            With_Quantified_Variable => E));
-                  Variables.Union (Recurse (Condition (N),
-                                            With_Quantified_Variable => E));
+                  Variables.Union (Recurse (It));
+
+                  --  Filter the quantified expression parameter from variables
+                  --  referenced in the predicate, because the parameter is
+                  --  only visible within that predicate.
+
+                  for V of Recurse (Condition (N)) loop
+                     if V.Kind in Direct_Mapping | Record_Field
+                       and then V.Node = E
+                     then
+                        null;
+                     else
+                        Variables.Include (V);
+                     end if;
+                  end loop;
                end;
                return Skip;
 
@@ -3568,7 +3604,7 @@ package body Flow_Utility is
          return OK;
       end Proc;
 
-      procedure Traverse is new Traverse_Proc (Process => Proc);
+      procedure Traverse is new Traverse_More_Proc (Process => Proc);
 
    --  Start of processing for Get_Variables_Internal
 
@@ -3650,19 +3686,32 @@ package body Flow_Utility is
                                      return Flow_Id_Sets.Set
    is
       Ctx : constant Get_Variables_Context :=
-        (Scope                           => Get_Flow_Scope (Scope_N),
-         Fold_Functions                  => False,
-         Use_Computed_Globals            => True,
-         Reduced                         => True,
-         Assume_In_Expression            => True,
-         Expand_Synthesized_Constants    => False,
-         Consider_Extensions             => False,
-         Quantified_Variables_Introduced => Node_Sets.Empty_Set);
+        (Scope                   => Get_Flow_Scope (Scope_N),
+         Fold_Functions          => False,
+         Use_Computed_Globals    => True,
+         Reduced                 => False,
+         Assume_In_Expression    => True,
+         Expand_Internal_Objects => False,
+         Consider_Extensions     => False);
+
+      Entire_Variables : Flow_Id_Sets.Set;
 
    begin
-      return
-        Expand_Abstract_States
-          (Get_Variables_Internal (Expr_N, Ctx));
+      --  Ignore references to array bounds of objects (because they are never
+      --  mutable) but keep references to array bounds of components (becayse
+      --  they might be mutable).
+
+      for V of Get_Variables_Internal (Expr_N, Ctx) loop
+         if V.Kind = Direct_Mapping
+           and then V.Facet = The_Bounds
+         then
+            null;
+         else
+            Entire_Variables.Include (Entire_Variable (V));
+         end if;
+      end loop;
+
+      return Expand_Abstract_States (Entire_Variables);
    end Get_Variables_For_Proof;
 
    -----------------
@@ -4244,7 +4293,6 @@ package body Flow_Utility is
             when Direct_Mapping | Record_Field =>
                declare
                   E : constant Entity_Id := Get_Direct_Mapping_Id (F);
-                  pragma Assert (Nkind (E) = N_Defining_Identifier);
 
                begin
                   if Ekind (E) = E_Constant
@@ -4734,14 +4782,14 @@ package body Flow_Utility is
    --------------------------------
 
    function Untangle_Record_Assignment
-     (N                            : Node_Id;
-      Map_Root                     : Flow_Id;
-      Map_Type                     : Entity_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean;
-      Extensions_Irrelevant        : Boolean := True)
+     (N                       : Node_Id;
+      Map_Root                : Flow_Id;
+      Map_Type                : Entity_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Expand_Internal_Objects : Boolean;
+      Extensions_Irrelevant   : Boolean := True)
       return Flow_Id_Maps.Map
    is
       --  !!! Join/Merge need to be able to deal with private parts and
@@ -4750,11 +4798,11 @@ package body Flow_Utility is
       function Get_Vars_Wrapper (N : Node_Id) return Flow_Id_Sets.Set
       is (Get_Variables
             (N,
-             Scope                        => Scope,
-             Fold_Functions               => Fold_Functions,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Reduced                      => False,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants))
+             Scope                   => Scope,
+             Fold_Functions          => Fold_Functions,
+             Use_Computed_Globals    => Use_Computed_Globals,
+             Reduced                 => False,
+             Expand_Internal_Objects => Expand_Internal_Objects))
       with Pre => Nkind (N) in N_Subexpr;
       --  Helpful wrapper for calling Get_Variables
 
@@ -4766,15 +4814,15 @@ package body Flow_Utility is
          return Flow_Id_Maps.Map
       is (Untangle_Record_Assignment
             (N,
-             Map_Root                     => Map_Root,
-             Map_Type                     => (if Present (Map_Type)
-                                              then Map_Type
-                                              else Get_Type (N, Scope)),
-             Scope                        => Scope,
-             Fold_Functions               => Fold_Functions,
-             Use_Computed_Globals         => Use_Computed_Globals,
-             Expand_Synthesized_Constants => Expand_Synthesized_Constants,
-             Extensions_Irrelevant        => Ext_Irrelevant))
+             Map_Root                => Map_Root,
+             Map_Type                => (if Present (Map_Type)
+                                         then Map_Type
+                                         else Get_Type (N, Scope)),
+             Scope                   => Scope,
+             Fold_Functions          => Fold_Functions,
+             Use_Computed_Globals    => Use_Computed_Globals,
+             Expand_Internal_Objects => Expand_Internal_Objects,
+             Extensions_Irrelevant   => Ext_Irrelevant))
       with Pre => Nkind (N) in N_Subexpr
                     and then
                   (if not Extensions_Irrelevant
@@ -5127,7 +5175,7 @@ package body Flow_Utility is
                T_To   : constant Entity_Id := Get_Type (N, Scope);
 
                --  To_Class_Wide : constant Boolean :=
-               --    Ekind (T_To) in Class_Wide_Kind;
+               --    Is_Class_Wide_Type (T_To);
 
                Class_Wide_Conversion : constant Boolean :=
                  not Is_Class_Wide_Type (T_From)
@@ -5286,7 +5334,8 @@ package body Flow_Utility is
                   raise Why.Not_Implemented;
             end case;
 
-         when N_Function_Call
+         when N_Explicit_Dereference
+            | N_Function_Call
             | N_Indexed_Component
             | N_Unchecked_Type_Conversion
          =>
@@ -5447,7 +5496,7 @@ package body Flow_Utility is
                            elsif F.Kind = Direct_Mapping then
                               case F.Facet is
                                  when Extension_Part =>
-                                    if Ekind (New_Typ) in Class_Wide_Kind then
+                                    if Is_Class_Wide_Type (New_Typ) then
                                        Vars_Defined.Include (F);
                                     end if;
                                  when others =>
@@ -5506,7 +5555,7 @@ package body Flow_Utility is
       end loop;
 
       if Nkind (N) = N_Type_Conversion
-        and then Ekind (Etype (N)) in Class_Wide_Kind
+        and then Is_Class_Wide_Type (Etype (N))
         and then Extensions_Visible (Base_Node, Scope)
       then
          Vars_Defined.Include (Base_Node'Update (Facet => Extension_Part));

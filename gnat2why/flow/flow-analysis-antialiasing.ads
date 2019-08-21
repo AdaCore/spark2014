@@ -47,7 +47,7 @@ package Flow.Analysis.Antialiasing is
    --  specified by the user. It checks if there is:
    --     * aliasing between any two parameters
    --     * aliasing between a parameter and a global
-   --     * potential aliasing between a computed global and abstract state
+   --     * potential aliasing between a generated global and abstract state
    --
    --  This procedure stores into a map the procedure call and its computed
    --  aliasing status.

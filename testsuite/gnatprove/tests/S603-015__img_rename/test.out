@@ -1,0 +1,2 @@
+im.adb:3:25: expect object name in renaming
+gnatprove: error during generation of Global contracts

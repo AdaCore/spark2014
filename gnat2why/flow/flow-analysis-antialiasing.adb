@@ -53,9 +53,9 @@ package body Flow.Analysis.Antialiasing is
 
    Aliasing_Status : Aliasing_Statuses.Map := Aliasing_Statuses.Empty_Map;
 
-   function Check_Range (AL, AH : Node_Id;
-                         BL, BH : Node_Id)
-                         return Non_Obvious_Aliasing_Check_Result;
+   function Check_Ranges (Range_A : Node_Id;
+                          Range_B : Node_Id)
+                          return Non_Obvious_Aliasing_Check_Result;
    --  Checks two ranges for potential overlap
 
    function Aliasing (A,        B        : Node_Id;
@@ -87,13 +87,13 @@ package body Flow.Analysis.Antialiasing is
    --  Updates the aliasing Status only if the Current_Status is worse (in
    --  terms of the ordering given by the type Computed_Aliasing_Result).
 
-   -----------------
-   -- Check_Range --
-   -----------------
+   ------------------
+   -- Check_Ranges --
+   ------------------
 
-   function Check_Range (AL, AH : Node_Id;
-                         BL, BH : Node_Id)
-                         return Non_Obvious_Aliasing_Check_Result
+   function Check_Ranges (Range_A : Node_Id;
+                          Range_B : Node_Id)
+                          return Non_Obvious_Aliasing_Check_Result
    is
       function LT (A, B : Node_Id) return Boolean;
       --  Return true iff A < B
@@ -135,6 +135,11 @@ package body Flow.Analysis.Antialiasing is
       function Full (A, B : Node_Id) return Boolean is
         (Compile_Time_Compare (A, B, True) in LT | LE | EQ);
 
+      AL : constant Node_Id := Low_Bound  (Range_A);
+      AH : constant Node_Id := High_Bound (Range_A);
+      BL : constant Node_Id := Low_Bound  (Range_B);
+      BH : constant Node_Id := High_Bound (Range_B);
+
    --  Start of processing for Check_Range
 
    begin
@@ -159,7 +164,7 @@ package body Flow.Analysis.Antialiasing is
          --  We don't know
          return Possible_Aliasing;
       end if;
-   end Check_Range;
+   end Check_Ranges;
 
    --------------
    -- Aliasing --
@@ -202,6 +207,9 @@ package body Flow.Analysis.Antialiasing is
          --  Generalized reference and indexing are suitably expanded
 
          --  Everything else must be an expression and is thus not interesting
+
+         N_Explicit_Dereference      => True,
+
          others                      => False);
 
       Is_Root : constant array (Node_Kind) of Boolean :=
@@ -278,7 +286,8 @@ package body Flow.Analysis.Antialiasing is
       function Down_One_Level (N : Node_Id) return Node_Id is
       begin
          case Nkind (N) is
-            when N_Indexed_Component
+            when N_Explicit_Dereference
+               | N_Indexed_Component
                | N_Slice
                | N_Selected_Component
             =>
@@ -525,10 +534,8 @@ package body Flow.Analysis.Antialiasing is
                   end;
 
                when N_Slice =>
-                  case Check_Range (Low_Bound (Discrete_Range (Ptr_A)),
-                                    High_Bound (Discrete_Range (Ptr_A)),
-                                    Low_Bound (Discrete_Range (Ptr_B)),
-                                    High_Bound (Discrete_Range (Ptr_B))) is
+                  case Check_Ranges (Discrete_Range (Ptr_A),
+                                     Discrete_Range (Ptr_B)) is
                      when No_Aliasing =>
                         if Trace_Antialiasing then
                            Write_Str ("   -> slice ");
@@ -545,6 +552,9 @@ package body Flow.Analysis.Antialiasing is
                      when Possible_Aliasing =>
                         Definitive_Result := False;
                   end case;
+
+               when N_Explicit_Dereference =>
+                  null;
 
                when others =>
                   raise Why.Unexpected_Node;
@@ -583,7 +593,7 @@ package body Flow.Analysis.Antialiasing is
 
       end loop;
 
-      --  The tree so far was exactly the same, so we A and B definitely alias
+      --  The tree so far was exactly the same, so A and B definitely alias
 
       if Trace_Antialiasing then
          Write_Line ("   -> identical tree so far, hit end");
@@ -615,7 +625,8 @@ package body Flow.Analysis.Antialiasing is
             --  not then we are conservative and assume the worst case, i.e.
             --  that the type is by-reference. See O916-007.
 
-            return Is_Elementary_Type (Etype (F));
+            return Is_Elementary_Type (Etype (F))
+              and then not Is_Access_Type (Etype (F));
 
          when E_In_Out_Parameter
             | E_Out_Parameter

@@ -294,6 +294,12 @@ package body SPARK_Definition is
    --  ??? ideally, it would be better to avoid this case so that we don't end
    --  up translating things we don't use.
 
+   function Has_Deep_Subcomponents_With_Predicates
+     (E : Entity_Id) return Boolean
+     with Pre => Is_Type (E);
+   --  Return true if E has subcomponents of a deep type which are subjected
+   --  to a subtype predicate.
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
@@ -915,7 +921,8 @@ package body SPARK_Definition is
      (Retysp                        => Safe_Retysp,
       Component_Is_Visible_In_SPARK => Component_Is_Visible_In_SPARK,
       Emit_Messages                 =>
-        Set_Ownership_Errors_And_Get_Emit_Messages);
+        Set_Ownership_Errors_And_Get_Emit_Messages,
+      Is_Pledge_Function            => SPARK_Annotate.Has_Pledge_Annotation);
 
    ----------------------------------
    -- Recursive Marking of the AST --
@@ -1121,6 +1128,89 @@ package body SPARK_Definition is
       return SPARK_Status_JSON;
    end Get_SPARK_JSON;
 
+   --------------------------------------------
+   -- Has_Deep_Subcomponents_With_Predicates --
+   --------------------------------------------
+
+   function Has_Deep_Subcomponents_With_Predicates
+     (E : Entity_Id) return Boolean
+   is
+      Seen : Node_Sets.Set;
+
+      function Subcomponents_With_Predicates (E : Entity_Id) return Boolean;
+      --  Auxiliary function doing the actual computation. It stops if E is
+      --  in Seen.
+
+      -----------------------------------
+      -- Subcomponents_With_Predicates --
+      -----------------------------------
+
+      function Subcomponents_With_Predicates (E : Entity_Id) return Boolean
+      is
+         Typ : constant Entity_Id := Retysp (E);
+         Res : Boolean;
+      begin
+         if Seen.Contains (Typ) or not Ownership_Checking.Is_Deep (Typ) then
+            return False;
+         elsif Has_Predicates (Typ) then
+            return True;
+         end if;
+
+         Seen.Insert (Typ);
+
+         case Ekind (Typ) is
+         when Record_Kind =>
+            declare
+               Comp : Entity_Id := First_Component (Typ);
+            begin
+               Res := False;
+               while Present (Comp) loop
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Subcomponents_With_Predicates (Etype (Comp))
+                  then
+                     Res := True;
+                     exit;
+                  end if;
+                  Next_Component (Comp);
+               end loop;
+            end;
+         when Array_Kind =>
+            Res := Subcomponents_With_Predicates (Component_Type (Typ));
+         when Access_Kind =>
+            declare
+               Des_Ty : Entity_Id := Directly_Designated_Type (Typ);
+
+            begin
+               --  If Typ designates an incomplete or private type, the
+               --  designated type may not be marked. We mark it using
+               --  Retysp_In_SPARK. If it is not in SPARK, we consider that its
+               --  full view is private, so we return False.
+
+               if (Is_Partial_View (Des_Ty)
+                   or else Is_Incomplete_Type (Des_Ty))
+                 and then not Retysp_In_SPARK (Full_View (Des_Ty))
+               then
+                  Res := False;
+               else
+                  if Is_Partial_View (Des_Ty)
+                    or else Is_Incomplete_Type (Des_Ty)
+                  then
+                     Des_Ty := Full_View (Des_Ty);
+                  end if;
+
+                  Res := Subcomponents_With_Predicates (Des_Ty);
+               end if;
+            end;
+         when others => Res := False;
+         end case;
+
+         return Res;
+      end Subcomponents_With_Predicates;
+
+   begin
+      return Subcomponents_With_Predicates (E);
+   end Has_Deep_Subcomponents_With_Predicates;
+
    --------------
    -- In_SPARK --
    --------------
@@ -1320,7 +1410,7 @@ package body SPARK_Definition is
          end Handle_Object_Declaration;
 
          procedure Handle_All_Object_Declarations is new
-           Traverse_Proc (Handle_Object_Declaration);
+           Traverse_More_Proc (Handle_Object_Declaration);
 
       --  Start of processing for Check_Unrolled_Loop
 
@@ -1499,7 +1589,8 @@ package body SPARK_Definition is
                --  Uninitialized allocators are only allowed on types defining
                --  full default initialization.
 
-               if Nkind (Expression (N)) = N_Identifier
+               if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
+                 and then In_SPARK (Entity (Expression (N)))
                  and then Default_Initialization
                    (Entity (Expression (N)), Get_Flow_Scope (N))
                      /= Full_Default_Initialization
@@ -2804,8 +2895,8 @@ package body SPARK_Definition is
         --  implementation of the standard library.
 
         and then
-          (not Location_In_Standard_Library (Sloc (N))
-            or else Unit_In_Standard_Library (Main_Unit))
+          (not In_Internal_Unit (N)
+            or else Is_Internal_Unit (Main_Unit))
         and then SPARK_Pragma_Is (Opt.On)
 
       then
@@ -3065,6 +3156,17 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
+      elsif Has_Pledge_Annotation (E)
+        and then
+          (Nkind (First_Actual (N)) not in N_Expanded_Name | N_Identifier
+           or else not Is_Local_Borrower (Entity (First_Actual (N))))
+      then
+         --  We may want to support other parameters later when traversal
+         --  functions are supported.
+
+         Mark_Unsupported
+           ("first actual of a pledge function which is not a local borrower",
+            N);
       end if;
    end Mark_Call;
 
@@ -3531,6 +3633,7 @@ package body SPARK_Definition is
 
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
+           and then In_SPARK (Etype (E))
            and then Default_Initialization (Etype (E), Get_Flow_Scope (E))
              not in Full_Default_Initialization | No_Possible_Initialization
            and then not Has_Initial_Value (E)
@@ -3555,19 +3658,21 @@ package body SPARK_Definition is
             return;
          end if;
 
-         --  Local borrowers of access to variable types are not supported yet
+         --  We do not support local borrowers if they have predicates that
+         --  can be broken arbitrarily deeply during the traversal.
 
-         if Ekind (E) = E_Variable
-           and then Is_Access_Type (T)
-           and then not Is_Access_Constant (T)
-           and then Is_Anonymous_Access_Type (T)
+         if Is_Local_Borrower (E)
 
-            --  Only issue message on legal declarations. Others are handled in
-            --  ownership checking code in the frontend.
+           --  Only issue message on legal declarations. Others are handled in
+           --  ownership checking code in the frontend.
 
            and then Ownership_Checking.Is_Local_Context (Scope (E))
+           and then Has_Deep_Subcomponents_With_Predicates
+             (Directly_Designated_Type (T))
          then
-            Mark_Unsupported ("local borrower of an access object", E);
+            Mark_Unsupported
+              ("local borrower of a type with predicates on subcomponents of"
+               & " deep type", E);
          end if;
 
          if Present (Sub)
@@ -3975,7 +4080,7 @@ package body SPARK_Definition is
                return OK;
             end Replace_Type;
 
-            procedure Replace_Types is new Traverse_Proc (Replace_Type);
+            procedure Replace_Types is new Traverse_More_Proc (Replace_Type);
 
          --  Start of processing for Process_Class_Wide_Condition
 
@@ -4255,7 +4360,7 @@ package body SPARK_Definition is
                end Is_Current_Instance;
 
                function Find_Current_Instance is new
-                 Traverse_Func (Is_Current_Instance);
+                 Traverse_More_Func (Is_Current_Instance);
 
             begin
                return Find_Current_Instance (N) = Abandon;
@@ -4279,9 +4384,9 @@ package body SPARK_Definition is
                                   & "instance of enclosing type",
                                   E,
                                   SRM_Reference => "SPARK RM 3.8(2)");
+               else
+                  Mark (Expr);
                end if;
-
-               Mark (Expr);
             end if;
          end Mark_Default_Expression;
 
@@ -5039,9 +5144,15 @@ package body SPARK_Definition is
             elsif Ekind (Base_Type (E)) = E_Access_Attribute_Type then
                Mark_Violation ("access attribute", E);
 
-               --   Reject general access types
+            --  Reject general access types. We check the underlying type of
+            --  the base type as the base type itself can be private.
+            --  ??? We assume that access subtypes have visibility on the full
+            --  view of their base type or we would have a private subtype
+            --  instead of an access subtype.
 
-            elsif Ekind (Base_Type (E)) = E_General_Access_Type then
+            elsif Ekind (Underlying_Type (Base_Type (E))) =
+              E_General_Access_Type
+            then
                Mark_Violation ("general access type", E);
 
             --  Store the type in the Incomplete_Type map to be marked later.
@@ -5053,6 +5164,15 @@ package body SPARK_Definition is
                   Mark_Unsupported
                     ("incomplete type with deferred full view",
                      Directly_Designated_Type (E));
+                  Mark_Violation (E, From => Directly_Designated_Type (E));
+
+               --  Do not pull types declared in private parts with no
+               --  SPARK_mode to avoid crashes if they are out of SPARK later.
+
+               elsif Is_Declared_In_Private (Directly_Designated_Type (E))
+                 and then
+                   No (SPARK_Pragma_Of_Entity (Directly_Designated_Type (E)))
+               then
                   Mark_Violation (E, From => Directly_Designated_Type (E));
                else
                   Access_To_Incomplete_Types.Append (E);
@@ -5134,6 +5254,8 @@ package body SPARK_Definition is
 
                         Comp : Entity_Id := First_Component (E);
 
+                        Scop : constant Flow_Scope := Get_Flow_Scope (E);
+
                      begin
                         while Present (Comp) loop
 
@@ -5141,6 +5263,23 @@ package body SPARK_Definition is
 
                            if In_SPARK (Etype (Comp)) then
                               Mark_Default_Expression (Comp);
+
+                              --  Protected types need full default
+                              --  initialization, so we check their components.
+
+                              if No (Expression (Parent (Comp)))
+                                and then
+                                  Default_Initialization (Etype (Comp), Scop)
+                                  not in Full_Default_Initialization
+                                       | No_Possible_Initialization
+                              then
+                                 Mark_Violation
+                                   ("protected component "
+                                    & "with no default initialization",
+                                    Comp,
+                                    SRM_Reference => "SPARK RM 9.4");
+                              end if;
+
                            else
                               Mark_Violation (Comp, From => Etype (Comp));
                            end if;
@@ -5177,20 +5316,6 @@ package body SPARK_Definition is
                                     & " proof", Part);
                               end if;
                            end loop;
-                        end if;
-
-                        --  Protected types need full default initialization.
-                        --  No check needed if the private view of the type is
-                        --  not in SPARK.
-
-                        if Default_Initialization (E, Get_Flow_Scope (E))
-                          not in Full_Default_Initialization
-                               | No_Possible_Initialization
-                        then
-                           Mark_Violation ("protected type "
-                                           & "with no default initialization",
-                                           E,
-                                           SRM_Reference => "SPARK RM 9.4");
                         end if;
 
                         --  If the private part is marked On, then the full
@@ -5367,8 +5492,7 @@ package body SPARK_Definition is
       if SPARK_Pragma_Is (Opt.Off)
         and then Ekind (E) /= E_Abstract_State
       then
-         Current_SPARK_Pragma := Save_SPARK_Pragma;
-         return;
+         goto Restore;
       end if;
 
       --  For recursive references, start with marking the entity in SPARK
@@ -5398,6 +5522,27 @@ package body SPARK_Definition is
 
       if Ekind (E) in E_Constant | E_Variable then
          Mark_Address (E);
+      end if;
+
+      --  Check for ownership legality violations on entities that are
+      --  analyzed in SPARK_Mode Auto.
+
+      if No (Current_SPARK_Pragma) then
+         declare
+            Decl : constant Node_Id :=
+              (case Ekind (E) is
+                  when E_Variable | E_Constant =>
+                    Parent (E),
+                  when others =>
+                    Empty);
+         begin
+            if Present (Decl)
+              and then not Ownership_Checking.Is_Legal (Decl)
+            then
+               Violation_Detected := True;
+               Last_Violation_Root_Cause_Node := Decl;
+            end if;
+         end;
       end if;
 
       --  Mark differently each kind of entity
@@ -5574,7 +5719,7 @@ package body SPARK_Definition is
       end if;
 
       --  Restore prestate
-
+   <<Restore>>
       Violation_Detected := Save_Violation_Detected;
       Last_Violation_Root_Cause_Node := Save_Last_Violation_Root_Cause_Node;
       Current_SPARK_Pragma := Save_SPARK_Pragma;
@@ -5823,7 +5968,9 @@ package body SPARK_Definition is
    procedure Mark_Object_Declaration (N : Node_Id) is
       E : constant Entity_Id := Defining_Entity (N);
    begin
-      if not In_SPARK (E) then
+      if In_SPARK (E) then
+         pragma Assert (In_SPARK (Etype (E)));
+      else
          Mark_Violation (N, From => E);
       end if;
    end Mark_Object_Declaration;
@@ -6167,6 +6314,7 @@ package body SPARK_Definition is
             | Pragma_Initial_Condition
             | Pragma_Initializes
             | Pragma_Invariant
+            | Pragma_No_Caching
             | Pragma_Part_Of
             | Pragma_Postcondition
             | Pragma_Precondition
@@ -6656,14 +6804,14 @@ package body SPARK_Definition is
       --  are analyzing the standard library itself). As a result, no VC is
       --  generated in this case for standard library code.
 
-      if Location_In_Standard_Library (Sloc (N))
-        and not Unit_In_Standard_Library (Main_Unit)
+      if In_Internal_Unit (N)
+        and then not Is_Internal_Unit (Main_Unit)
       then
          return;
 
       --  Ignore generic subprograms
 
-      elsif Ekind (E) in Generic_Subprogram_Kind then
+      elsif Is_Generic_Subprogram (E) then
          return;
 
       --  Ignore some functions generated by the frontend for aspects
@@ -7020,11 +7168,15 @@ package body SPARK_Definition is
       --  all subtype indications "syntactically", i.e. by traversing the AST;
       --  however, we mark them "semantically", i.e. by looking directly at the
       --  (implicit) type of an object/component which bypasses this routine.
+      --  In fact, we may see a node of kind N_Index_Or_Discriminant_Constraint
+      --  as part of an allocator in an interfering context, which will get
+      --  rejected.
 
       pragma Assert
         (Nkind (Constraint (N)) in N_Delta_Constraint
                                  | N_Digits_Constraint
-                                 | N_Range_Constraint);
+                                 | N_Range_Constraint
+                                 | N_Index_Or_Discriminant_Constraint);
    end Mark_Subtype_Indication;
 
    -------------------
@@ -7090,9 +7242,15 @@ package body SPARK_Definition is
    -----------------
 
    function Safe_Retysp (E : Entity_Id) return Entity_Id is
+      --  Ownership checking relies on finding the components of a record type
+      --  from the type returned by Safe_Retysp. Hence return the specific
+      --  tagged type instead of a class-wide type.
+      Typ : constant Entity_Id :=
+        (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
+         else E);
    begin
       Mark_Entity (E);
-      return Retysp (E);
+      return Retysp (Typ);
    end Safe_Retysp;
 
    ------------------------------------------------

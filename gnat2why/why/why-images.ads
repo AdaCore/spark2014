@@ -23,13 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols; use GNATCOLL.Symbols;
-with Outputs;          use Outputs;
-with Types;            use Types;
-with Uintp;            use Uintp;
-with Urealp;           use Urealp;
-with Why.Sinfo;        use Why.Sinfo;
-with Why.Types;        use Why.Types;
+with Common_Containers; use Common_Containers;
+with GNATCOLL.Symbols;  use GNATCOLL.Symbols;
+with Outputs;           use Outputs;
+with Types;             use Types;
+with Uintp;             use Uintp;
+with Urealp;            use Urealp;
+with Why.Sinfo;         use Why.Sinfo;
+with Why.Types;         use Why.Types;
 
 package Why.Images is
 
@@ -60,11 +61,19 @@ package Why.Images is
 
    procedure P (O : Output_Id; Value : EW_Assert_Kind);
 
-   procedure P (O : Output_Id; Value : Source_Ptr);
+   procedure P
+     (O      : Output_Id;
+      Value  : Source_Ptr;
+      Marker : Symbol := No_Symbol);
 
    procedure P
      (O         : Output_Id;
       Value     : Symbol_Set;
+      As_Labels : Boolean := False);
+
+   procedure P
+     (O         : Output_Id;
+      Value     : String_Sets.Set;
       As_Labels : Boolean := False);
 
    procedure P

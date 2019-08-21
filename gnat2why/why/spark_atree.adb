@@ -364,13 +364,55 @@ package body SPARK_Atree is
       end Search_Old_Or_Loop_Entry;
 
       function Search_Attrs is new
-        Atree.Traverse_Func (Search_Old_Or_Loop_Entry);
+        Sem_Util.Traverse_More_Func (Search_Old_Or_Loop_Entry);
 
    --  Start of processing for Expression_Contains_Old_Or_Loop_Entry
 
    begin
       return Search_Attrs (Expr) = Atree.Abandon;
    end Expression_Contains_Old_Or_Loop_Entry;
+
+   ------------------------------------------------
+   -- Expression_Contains_Valid_Or_Valid_Scalars --
+   ------------------------------------------------
+
+   function Expression_Contains_Valid_Or_Valid_Scalars
+     (Expr : Node_Id) return Boolean
+   is
+      use type Atree.Traverse_Result;
+
+      function Search_Valid_Or_Valid_Scalars
+        (N : Node_Id) return Atree.Traverse_Result;
+      --  Search for attribute Valid or Valid_Scalars
+
+      -----------------------------------
+      -- Search_Valid_Or_Valid_Scalars --
+      -----------------------------------
+
+      function Search_Valid_Or_Valid_Scalars
+        (N : Node_Id) return Atree.Traverse_Result is
+      begin
+         if Nkind (N) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (N))
+             in Attribute_Valid | Attribute_Valid_Scalars
+         then
+            --  There is no need to continue the traversal, as one such
+            --  attribute suffices.
+
+            return Atree.Abandon;
+         end if;
+
+         return Atree.OK;
+      end Search_Valid_Or_Valid_Scalars;
+
+      function Search_Attrs is new
+        Sem_Util.Traverse_More_Func (Search_Valid_Or_Valid_Scalars);
+
+   --  Start of processing for Expression_Contains_Valid_Or_Valid_Scalars
+
+   begin
+      return Search_Attrs (Expr) = Atree.Abandon;
+   end Expression_Contains_Valid_Or_Valid_Scalars;
 
    -----------------
    -- Expressions --
@@ -430,8 +472,27 @@ package body SPARK_Atree is
    -- Get_Enclosing_Object --
    --------------------------
 
-   function Get_Enclosing_Object (N : Node_Id) return Entity_Id renames
-     Sem_Util.Get_Enclosing_Object;
+   function Get_Enclosing_Object (N : Node_Id) return Entity_Id is
+   begin
+      if Einfo.Is_Entity_Name (N) then
+         return Entity (N);
+      else
+         case Nkind (N) is
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Get_Enclosing_Object (Prefix (N));
+
+            when N_Type_Conversion =>
+               return Get_Enclosing_Object (Expression (N));
+
+            when others =>
+               return Empty;
+         end case;
+      end if;
+   end Get_Enclosing_Object;
 
    -------------------
    -- Get_Pragma_Id --

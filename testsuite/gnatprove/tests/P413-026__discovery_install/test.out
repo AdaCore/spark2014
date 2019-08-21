@@ -23,8 +23,10 @@ why3realize
 why3server
 why3session
 libexec/spark/share dir
+alt-ergo
 gcc-8.3.1
 gpr
 gprconfig
 info
 man
+why3

@@ -9,7 +9,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="cert-attr-auth.mlw"/>
-<theory name="Cert__attr__auth__contentst__default_checks" proved="true">
+<theory name="Ada___ada___cert__attr__auth__contentst__default_checks" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -47,7 +47,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__therole__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__therole__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -61,7 +61,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__theclearance__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__theclearance__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -75,7 +75,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__extract__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__extract__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -177,7 +177,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__construct__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__construct__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -283,7 +283,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__setcontents__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__setcontents__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -325,7 +325,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__isok__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__isok__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -351,7 +351,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__clear__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__clear__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -372,7 +372,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__cert_attr_auth_to_cert__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__cert_attr_auth_to_cert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -386,7 +386,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__cert_attr_auth_to_cert_attr__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__cert_attr_auth_to_cert_attr__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -400,7 +400,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__auth__construct__converttistime__subprogram_def" proved="true">
+<theory name="Ada___ada___cert__attr__auth__construct__converttistime__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">

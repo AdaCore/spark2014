@@ -1,0 +1,6 @@
+no_optim.adb:9:25: info: assertion proved (CVC4: 1 VC)
+no_optim.adb:12:25: info: assertion proved (CVC4: 1 VC)
+various_no_optim.adb:9:07: info: initialization of "Cond" proved
+various_no_optim.adb:18:13: info: call to nonreturning procedure never executed (CVC4: 1 VC)
+various_no_optim.adb:32:22: info: assertion proved (CVC4: 1 VC)
+various_no_optim.adb:48:22: info: assertion proved (CVC4: 1 VC)

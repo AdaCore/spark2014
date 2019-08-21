@@ -1,0 +1,3 @@
+pragma SPARK_Mode (On);
+pragma Warnings (Off, "* has no effect*");
+pragma Warnings (Off, "unused *");

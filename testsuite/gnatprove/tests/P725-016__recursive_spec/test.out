@@ -1,4 +1,4 @@
-main.adb:5:19: info: function contract not available for proof ("Rec" is recursive)
+main.adb:5:19: info: function contract not available for proof ("Rec" might not return)
 main.adb:5:19: info: precondition proved (CVC4: 1 VC)
 main.adb:5:19: medium: assertion might fail, cannot prove Rec (3)
-rec.ads:4:34: info: function contract not available for proof ("Rec" is recursive)
+rec.ads:4:34: info: function contract not available for proof ("Rec" might not return)

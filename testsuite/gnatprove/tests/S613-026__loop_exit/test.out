@@ -1,0 +1,14 @@
+loop_exit.adb:15:13: info: precondition proved (Trivial: 1 VC)
+loop_exit.adb:17:16: info: precondition proved (Trivial: 1 VC)
+loop_exit.adb:18:16: info: precondition proved (Trivial: 1 VC)
+loop_exit.ads:5:14: warning: subprogram "P" has no effect
+loop_exit2.adb:15:13: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:17:16: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:18:16: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:20:22: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:22:25: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:23:25: info: precondition proved (Trivial: 1 VC)
+loop_exit2.adb:35:26: info: unrolling loop
+loop_exit2.ads:5:14: warning: subprogram "P" has no effect
+loop_exit3.adb:13:26: info: unrolling loop
+loop_exit3.adb:17:22: medium: assertion might fail, cannot prove Y = false (e.g. when Y = True) [possible explanation: loop at line 7 should mention Y in a loop invariant]

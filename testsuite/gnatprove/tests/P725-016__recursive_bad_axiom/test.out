@@ -1,3 +1,3 @@
 recursive_through_type.ads:3:27: info: expression function body not available for proof ("Bad_F" might not return)
-recursive_through_type.ads:3:27: info: function contract not available for proof ("Bad_F" is recursive)
+recursive_through_type.ads:3:27: info: function contract not available for proof ("Bad_F" might not return)
 recursive_through_type.ads:6:12: medium: postcondition might fail, cannot prove false

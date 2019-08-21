@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Gnat2Why_Args;
 with Sem_Disp;
 
 package SPARK_Util.Subprograms is
@@ -208,12 +209,10 @@ package SPARK_Util.Subprograms is
    function Get_Execution_Kind
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
-   with Pre  => Ekind (E) = E_Procedure,
-        Post => Get_Execution_Kind'Result in Normal_Execution     |
-                                             Abnormal_Termination |
-                                             Infinite_Loop;
-   --  @param E is a procedure that never returns, either marked with No_Return
-   --     or for which flow analysis determines that no path returns.
+   with Pre  => Ekind (E) = E_Procedure and then No_Return (E),
+        Post => Get_Execution_Kind'Result in Abnormal_Termination
+                                           | Infinite_Loop;
+   --  @param E is a non-returning procedure
    --  @param After_GG True if this call is made after generation of globals,
    --     so we can query the globals computed for E if not specified by the
    --     user.
@@ -250,22 +249,20 @@ package SPARK_Util.Subprograms is
    --     return Empty.
 
    function Get_Expr_From_Check_Only_Proc (E : Entity_Id) return Node_Id
-   with Pre => Ekind (E) = E_Procedure;
-   --  @param E procedure
+   with Pre => Is_DIC_Procedure (E) or else Is_Invariant_Procedure (E);
+   --  @param E a Default_Initial_Condition or Type_Invariant procedure
    --  @return the expression in the first pragma Check found in the body of E,
    --     if any, or Empty otherwise
-   --  Extract a condition being checked from a procedure intended to check
-   --  this condition. This is used to extract the condition checked for aspect
-   --  Default_Initialization and Type_Invariant.
+   --  Extract a condition checked for aspect Default_Initialization and
+   --  Type_Invariant.
 
    function Get_Expr_From_Return_Only_Func (E : Entity_Id) return Node_Id
-   with Pre => Ekind (E) = E_Function;
-   --  @param E function
+   with Pre => Is_Predicate_Function (E);
+   --  @param E a predicate function
    --  @return the expression in the first return statement found in the body
    --     of E, if any, or Empty otherwise
-   --  Extract a condition being checked from a procedure intended to test
-   --  this condition. This is used to extract the condition checked for aspect
-   --  Dynamic_Predicate.
+   --  Extract a condition checked by a function generated for aspect
+   --  [Dynamic_]Predicate.
 
    function Get_Priority_Or_Interrupt_Priority (E : Entity_Id) return Node_Id
    with Pre => Ekind (E) in Protected_Kind |
@@ -325,17 +322,15 @@ package SPARK_Util.Subprograms is
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
-   function Is_Error_Signaling_Procedure
-     (E        : Entity_Id;
-      After_GG : Boolean := True)
-      return Boolean
-   is
+   function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
      (No_Return (E)
-      and then Get_Execution_Kind (E, After_GG) = Abnormal_Termination);
-   --  @param E subprogram
-   --  @param After_GG is True when we can use the generated globals
-   --  @return True iff E is marked No_Return and is considered to always
-   --     terminate abnormally.
+      and then
+      Get_Execution_Kind (E, After_GG => True) = Abnormal_Termination)
+    with Pre => not Gnat2Why_Args.Global_Gen_Mode;
+   --  @param E any entity
+   --  @return True iff E is a procedure annotated with No_Return
+   --     and is considered to always terminate abnormally.
+   --  Note: this routine is meant to be only used in phase 2
 
    function Is_Intrinsic (E : Entity_Id) return Boolean
    is

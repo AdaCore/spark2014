@@ -1,0 +1,2 @@
+p.ads:2:09: info: default initial condition proved (CVC4: 2 VC)
+p.ads:8:22: warning: unused variable "Arg"

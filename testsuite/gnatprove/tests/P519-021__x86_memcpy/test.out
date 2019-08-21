@@ -205,7 +205,7 @@ memcpy.ads:112:45: info: initialization of "SignFlag" proved
 memcpy.ads:112:59: info: initialization of "CarryFlag" proved
 memcpy.ads:112:75: info: initialization of "OverflowFlag" proved
 memcpy.ads:113:61: warning: unused initial value of "RAX"
-memcpy.ads:129:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old-32+4) = X86.Memory'Old(X86.RBP'Old-32+4)
+memcpy.ads:147:06: medium: postcondition might fail, cannot prove X86.Memory(X86.RBP'Old) = X86.Memory'Old(X86.RBP'old)
 memcpy.ads:169:09: info: data dependencies proved
 memcpy.ads:170:52: warning: unused initial value of "SignFlag"
 memcpy.ads:170:66: warning: unused initial value of "ZeroFlag"

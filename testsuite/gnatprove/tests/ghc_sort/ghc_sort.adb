@@ -36,6 +36,14 @@ package body GHC_Sort with SPARK_Mode is
          Cut (Top) := Y; -- extend cut by adding y to its end
          X := Y;
          Y := X + 1;
+
+         pragma Assert
+           (if Y in S'Range then
+              (((for all L in Cut (Top - 1) + 1 .. Cut (Top) - 1 => S (L - 1) < S (L))
+               and then S (Cut (Top)) <= S (Cut (Top) - 1))
+            or else
+              ((for all L in Cut (Top - 1) + 1 .. Cut (Top) - 1 => S (L - 1) >= S (L))
+               and then S (Cut (Top)) > S (Cut (Top) - 1))));
       end loop;
 
       if X <= S'Last then

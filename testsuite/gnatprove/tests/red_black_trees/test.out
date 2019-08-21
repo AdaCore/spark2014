@@ -2,12 +2,12 @@ a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation 
 a-cofuse.ads:243:22: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:78
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at binary_trees.adb:8
 a-cofuse.ads:244:26: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:78
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at tree_model.ads:22
 binary_trees.adb:17:08: info: postcondition proved (CVC4: 2 VC)
 binary_trees.adb:21:07: info: initialization of "S" proved
 binary_trees.adb:24:33: info: loop invariant initialization proved (CVC4: 1 VC)
@@ -1251,10 +1251,10 @@ red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inli
 red_black_trees.adb:257:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:416
 red_black_trees.adb:257:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Status, in call inlined at red_black_trees.adb:471
-red_black_trees.adb:258:28: info: assertion proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:258:28: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:416
+red_black_trees.adb:258:28: medium: assertion might fail, cannot prove Nb_Blacks (T) (Except).Count = Nb_Blacks (T_Old) (Except).Count, in call inlined at red_black_trees.adb:471
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:416
 red_black_trees.adb:259:30: info: precondition proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:471
 red_black_trees.adb:262:30: medium: assertion might fail, cannot prove Same_Nb_Blacks (T), in call inlined at red_black_trees.adb:416

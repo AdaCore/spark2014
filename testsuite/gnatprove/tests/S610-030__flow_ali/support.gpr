@@ -1,0 +1,5 @@
+project Support is
+  for Externally_Built use "True";
+  for Source_List_File use "support.list";
+  for Source_Dirs use ("lib");
+end Support;

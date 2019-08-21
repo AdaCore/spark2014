@@ -370,10 +370,6 @@ spark-text_io-unbounded_io.ads:106:21: info: implicit function contract not avai
 spark-text_io-unbounded_io.ads:106:45: info: implicit function contract not available for proof ("Form" might not return)
 spark-text_io-unbounded_io.ads:106:45: medium: precondition might fail, cannot prove Is_Open (File)
 spark-text_io.ads:28:08: info: flow dependencies proved
-spark-text_io.ads:29:08: medium: initial condition might fail
-spark-text_io.ads:32:29: info: implicit function contract not available for proof ("Status" might not return)
-spark-text_io.ads:33:29: info: implicit function contract not available for proof ("Status" might not return)
-spark-text_io.ads:34:29: info: implicit function contract not available for proof ("Status" might not return)
 spark-text_io.ads:80:04: info: initialization of "Standard_Input" proved
 spark-text_io.ads:81:04: info: initialization of "Standard_Output" proved
 spark-text_io.ads:82:04: info: initialization of "Standard_Error" proved

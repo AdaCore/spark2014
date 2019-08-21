@@ -1,4 +1,7 @@
-pack.adb:7:07: local borrower of an access object is not yet supported
+pack.adb:7:07: object of anonymous access type must be initialized (SPARK RM 3.10(4))
 pack.adb:9:12: uninitialized allocator without default initialization is not allowed in SPARK
 pack.adb:9:12: violation of aspect SPARK_Mode at line 2
+pacq.adb:7:07: object of anonymous access type must be initialized (SPARK RM 3.10(4))
+pacq.adb:9:12: uninitialized allocator without default initialization is not allowed in SPARK
+pacq.adb:9:12: violation of aspect SPARK_Mode at line 2
 gnatprove: error during flow analysis and proof

@@ -25,6 +25,7 @@
 
 with Ada.Strings;                use Ada.Strings;
 with Ada.Strings.Fixed;          use Ada.Strings.Fixed;
+with Flow_Generated_Globals.Phase_2;
 with Flow_Types;
 with Flow_Utility;
 with GNATCOLL.Symbols;           use GNATCOLL.Symbols;
@@ -33,6 +34,7 @@ with Gnat2Why.Expr;              use Gnat2Why.Expr;
 with Gnat2Why.External_Axioms;   use Gnat2Why.External_Axioms;
 with Lib;
 with Namet;                      use Namet;
+with Nlists;                     use Nlists;
 with SPARK_Annotate;
 with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
@@ -303,6 +305,31 @@ package body Gnat2Why.Util is
       end loop;
       return Ty;
    end Get_Base_Of_Type;
+
+   ----------------------------
+   -- Get_Borrows_From_Decls --
+   ----------------------------
+
+   procedure Get_Borrows_From_Decls
+     (Decls   : List_Id;
+      Borrows : in out Node_Lists.List)
+   is
+      Cur_Decl : Node_Id := First (Decls);
+
+   begin
+      while Present (Cur_Decl) loop
+         if Nkind (Cur_Decl) = N_Object_Declaration then
+            declare
+               E : constant Entity_Id := Defining_Identifier (Cur_Decl);
+            begin
+               if Is_Local_Borrower (E) then
+                  Borrows.Prepend (E);
+               end if;
+            end;
+         end if;
+         Next (Cur_Decl);
+      end loop;
+   end Get_Borrows_From_Decls;
 
    ---------------------------------------------
    -- Get_Container_In_Iterator_Specification --
@@ -843,6 +870,21 @@ package body Gnat2Why.Util is
    begin
       return +Get_Static_Call_Contract (Params, E, Kind, EW_Pred);
    end Get_Static_Call_Contract;
+
+   --------------------
+   -- Has_Post_Axiom --
+   --------------------
+
+   function Has_Post_Axiom (E : Entity_Id) return Boolean is
+     (Ekind (E) not in E_Procedure | Entry_Kind
+      and then not No_Return (E)
+      and then not Has_Pragma_Volatile_Function (E)
+      and then not
+        Flow_Generated_Globals.Phase_2.Is_Potentially_Nonreturning (E));
+   --  Do not generate an axiom for the postcondition of:
+   --    * procedures or entries,
+   --    * potentially non returning functions as the axiom could be unsound,
+   --    * volatile functions and protected subprograms.
 
    -----------------------
    -- Init_Why_Sections --

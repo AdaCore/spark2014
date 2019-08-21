@@ -12,7 +12,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="tokenreader-interfac.mlw"/>
-<theory name="Tokenreader__interfac__package_def" proved="true">
+<theory name="Ada___tokenreader__interfac__package_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -22,7 +22,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__cardhandlet__default_checks" proved="true">
+<theory name="Ada___tokenreader__interfac__cardhandlet__default_checks" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -32,7 +32,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__responsecodet_image__subprogram_def">
+<theory name="Ada___tokenreader__interfac__responsecodet_image__subprogram_def">
  <goal name="VC def" expl="VC for def">
  <transf name="split_goal_wp_conj" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -55,7 +55,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__listreaders__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__listreaders__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -65,7 +65,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__getstatuschange__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__getstatuschange__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -75,7 +75,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__connect__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__connect__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -85,7 +85,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__status__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__status__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -95,7 +95,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__disconnect__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__disconnect__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -105,7 +105,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__getidcert__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__getidcert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -115,7 +115,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__getprivcert__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__getprivcert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -125,7 +125,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__getiacert__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__getiacert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -135,7 +135,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__getauthcert__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__getauthcert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -145,7 +145,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Tokenreader__interfac__updateauthcert__subprogram_def" proved="true">
+<theory name="Ada___tokenreader__interfac__updateauthcert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">

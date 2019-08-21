@@ -23,7 +23,6 @@
 
 with Flow_Utility;           use Flow_Utility;
 with Sem_Aux;                use Sem_Aux;
-with Sem_Type;               use Sem_Type;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Flow.Control_Flow_Graph.Utility is
@@ -531,15 +530,9 @@ package body Flow.Control_Flow_Graph.Utility is
             --  Is_Import is True for:
             --    * formal "in" and "in out" parameters
             --    * concurrent types (since they are implicit formal
-            --      parameters)
-            --    * components of protected objects
-            --    * parts of task objects that are initialized
+            --      parameters), they components, discriminants and Part_Ofs
             A.Is_Import :=
-              Ekind (Entire_Var) in E_In_Out_Parameter |
-                                    E_In_Parameter     |
-                                    E_Protected_Type   |
-                                    E_Task_Type
-              or else In_Generic_Actual (Entire_Var);
+              A.Mode in Mode_In | Mode_In_Out;
 
             if Is_Discriminant (F_Ent)
               or else Is_Bound (F_Ent)
@@ -566,17 +559,8 @@ package body Flow.Control_Flow_Graph.Utility is
                                                           (F_Ent, Normal_Use));
 
          when Final_Value =>
-            --  Is_Export is True for:
-            --    * formal "in" and "in out" parameters
-            --    * function results
-            --    * exported modes (modes "in", "out" and "in out")
-            --  Array bounds are not exported.
             A.Is_Export :=
-              (Ekind (Entire_Var) in E_In_Out_Parameter
-                                   | E_Out_Parameter
-                                   | E_Function
-                 or else
-               A.Mode in Exported_Global_Modes)
+              A.Mode in Exported_Global_Modes
               and then not Is_Bound (F_Ent);
 
             A.Is_Loop_Parameter := Ekind (Entire_Var) = E_Loop_Parameter;

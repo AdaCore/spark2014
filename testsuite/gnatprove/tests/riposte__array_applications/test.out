@@ -1,7 +1,7 @@
 array_applications.adb:14:09: info: data dependencies proved
 array_applications.adb:15:09: info: flow dependencies proved
 array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040
-array_applications.adb:23:27: info: overflow check proved (CVC4: 1 VC; Z3: 1 VC)
+array_applications.adb:23:27: medium: overflow check might fail
 array_applications.adb:26:13: info: loop invariant initialization proved (CVC4: 3 VC)
 array_applications.adb:26:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
 array_applications.adb:26:22: info: range check proved (CVC4: 4 VC)
@@ -12,7 +12,7 @@ array_applications.adb:27:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:34:09: info: data dependencies proved
 array_applications.adb:35:09: info: flow dependencies proved
 array_applications.adb:36:20: info: postcondition proved (CVC4: 1 VC)
-array_applications.adb:43:27: info: overflow check proved (CVC4: 1 VC; Z3: 1 VC)
+array_applications.adb:43:27: medium: overflow check might fail
 array_applications.adb:46:13: info: loop invariant initialization proved (CVC4: 3 VC)
 array_applications.adb:46:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
 array_applications.adb:46:22: info: range check proved (CVC4: 4 VC)

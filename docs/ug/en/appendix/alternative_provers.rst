@@ -13,8 +13,9 @@ default to use one or more provers depending on the chosen level (see
 use another prover, or a list of provers. Prover names ``altergo``, ``cvc4``
 and ``z3`` are used to refer to the versions of provers Alt-Ergo, CVC4 and Z3
 that are installed with the |SPARK| toolset. The string ``alt-ergo`` can also
-be used to refer to Alt-Ergo. More information on Alt-Ergo, CVC4 and Z3 can be
-found on their respective websites:
+be used to refer to Alt-Ergo. Using the switch ``--prover=all``, one can select
+all three built-in provers, in the order ``cvc4, z3, altergo``. More information
+on Alt-Ergo, CVC4 and Z3 can be found on their respective websites:
 
  * Alt-Ergo: https://alt-ergo.ocamlpro.com
  * CVC4: http://cvc4.cs.stanford.edu/web/
@@ -25,7 +26,8 @@ Installed with |SPARK| Discovery
 
 In this case, only prover Alt-Ergo is installed with the |SPARK| tool. Hence,
 by default |GNATprove| only uses prover Alt-Ergo. In particular, switch
-``--level`` has no impact on the use of different provers.
+``--level`` has no impact on the use of different provers, and ``--prover=all``
+will only select Alt-Ergo.
 
 Installed with |SPARK| Community
 --------------------------------
@@ -50,10 +52,10 @@ configuration file ``.why3.conf`` in your ``HOME``, or a configuration file
 given in argument with switch ``-C <file>``.  This file consists of a few
 general settings and a section for each prover which is supported.
 
-|GNATprove| reads the default configuration file ``.why3.conf`` in your
-``HOME``, or the configuration file given in argument with switch
-``--why3-conf=<file>``. Any prover name configured in this configuration file
-can be used as an argument to switch ``--prover``.
+Note that |GNATprove| never reads the default configuration file ``.why3.conf``
+in your ``HOME``. You need to pass the configuration file explicitly with
+switch ``--why3-conf=<file>``. Any prover name configured in this configuration
+file can be used as an argument to switch ``--prover``.
 
 Note that using this mechanism, you cannot replace the definitions provided
 with the SPARK tools for the provers ``altergo``, ``cvc4`` and ``z3``.

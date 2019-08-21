@@ -112,7 +112,8 @@ a volatile type, an array type whose Volatile_Component
 aspect is True, or an array type whose component type is
 effectively volatile, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
-An *effectively volatile object* is a volatile object or an object
+An *effectively volatile object* is a volatile object for which
+the property No_Caching (see below) is False, or an object
 of an effectively volatile type.
 
 External state is an effectively volatile object or a state abstraction which
@@ -139,6 +140,11 @@ defined:
 These properties may be specified for an effectively volatile object
 as Boolean aspects or as external properties of an external state abstraction.
 
+A fifth property No_Caching can be specified on a volatile object of a
+non-effectively volatile type, to express that such a variable can be analyzed
+as not volatile in SPARK, but that the compiler should not cache its value
+between accesses to the object (e.g. as a defense against fault injection).
+
 The Boolean aspect Volatile_Function may be specified as part of the
 (explicit) initial declaration of a function. A function whose
 Volatile_Function aspect is True is said to be a *volatile function*.
@@ -158,8 +164,8 @@ to be "nonvolatile for internal calls".
 .. _tu-fe-external_state-01:
 
 1. If an external state is declared without any of the external
-   properties specified then all of the properties default to a value
-   of True.
+   properties specified then all of the external properties
+   [i.e. except No_Caching] default to a value of True.
 
 .. _tu-fe-external_state-02:
 
@@ -183,20 +189,22 @@ to be "nonvolatile for internal calls".
 
 6. Only the following combinations of properties are valid:
 
-   ============= ============= ================ ===============
-   Async_Readers Async_Writers Effective_Writes Effective_Reads
-   ============= ============= ================ ===============
-   True          --            True             --
-   --            True          --               True
-   True          --            --               --
-   --            True          --               --
-   True          True          True             --
-   True          True          --               True
-   True          True          --               --
-   True          True          True             True
-   ============= ============= ================ ===============
+   ============= ============= ================ =============== ==========
+   Async_Readers Async_Writers Effective_Writes Effective_Reads No_Caching
+   ============= ============= ================ =============== ==========
+   True          --            True             --              --
+   --            True          --               True            --
+   True          --            --               --              --
+   --            True          --               --              --
+   True          True          True             --              --
+   True          True          --               True            --
+   True          True          --               --              --
+   True          True          True             True            --
+   --            --            --               --              True
+   ============= ============= ================ =============== ==========
 
-   [Another way of expressing this rule is that Effective_Reads can
+   [Another way of expressing this rule is that No_Caching is incompatible
+   with the four external properties, that Effective_Reads can
    only be True if Async_Writers is True and Effective_Writes can only
    be True if Async_Readers is True.]
 

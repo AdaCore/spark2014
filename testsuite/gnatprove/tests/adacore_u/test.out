@@ -185,12 +185,12 @@ use_stack.adb:10:09: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: assertion proved (CVC4: 1 VC)
 use_stack.adb:12:19: info: precondition proved (CVC4: 1 VC)
 use_stack.adb:12:32: info: precondition proved (CVC4: 1 VC)
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at ring_buffer.ads:8
 p_max_array.adb:4:07: info: initialization of "R" proved
 p_max_array.adb:4:07: info: range check proved (CVC4: 2 VC)
 p_max_array.adb:8:33: info: loop invariant initialization proved (CVC4: 2 VC)
@@ -423,12 +423,12 @@ use_file_system.adb:11:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:12:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:14:05: info: precondition proved (CVC4: 1 VC)
 use_file_system.adb:15:05: medium: precondition might fail
-a-cofuve.ads:230:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:235:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:236:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:236:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:237:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
-a-cofuve.ads:298:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at use_vectors.ads:9
 fixed_mem.adb:6:04: warning: variable "Data" is never read and never assigned
 fixed_mem.adb:9:55: medium: range check might fail (e.g. when Free = 1002) [possible explanation: subprogram at fixed_mem.ads:8 should mention Free in a precondition]
 fixed_mem.adb:12:07: info: initialization of "Free_Init" proved
@@ -448,17 +448,14 @@ mem.adb:25:22: info: assertion proved (CVC4: 1 VC)
 mem.ads:3:21: warning: no procedure exists that can initialize abstract state "Mem.State"
 mem.ads:7:14: info: postcondition proved (CVC4: 1 VC)
 resources.adb:6:24: info: unrolling loop
+resources.ads:9:13: info: implicit function contract might not be available on recursive calls
 resources.ads:9:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC4: 2 VC)
 resources.ads:10:36: medium: overflow check might fail (e.g. when D = (others => -2147483649) and To = 1) [possible explanation: subprogram at line 9 should mention D and To in a precondition]
-resources.ads:10:38: info: implicit function contract not available for proof ("Sum" is recursive)
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
-resources.ads:15:14: info: implicit function contract not available for proof ("Sum" is recursive)
 resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, others => 6))
-resources.ads:18:14: info: implicit function contract not available for proof ("Sum" is recursive)
-resources.ads:19:14: info: implicit function contract not available for proof ("Sum" is recursive)
-resources.ads:19:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, 6 => 0, others => 1))
+resources.ads:19:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 0, 2 => 0, 3 => 0, 4 => 0, 5 => 0, others => 1))
 use_vectors.adb:5:07: info: initialization of "S" proved
 use_vectors.adb:8:15: info: precondition proved (CVC4: 4 VC)
 use_vectors.adb:9:33: info: loop invariant initialization proved (CVC4: 1 VC)

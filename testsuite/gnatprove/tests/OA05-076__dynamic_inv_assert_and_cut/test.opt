@@ -1,5 +1,4 @@
 Windows SKIP test takes too long on Windows (use of -j4 does not help due to other tests run in parallel)
-Darwin SKIP test takes too long on Darwin (use of -j4 does not help due to other tests run in parallel)
 assertions SKIP too slow for run assertions
 inverse-prover SKIP too slow
 !large SKIP part of large testsuite

@@ -1,4 +1,3 @@
-Darwin DEAD too slow on Darwin (OA05-034)
 assertions DEAD too slow for assertions
-NT DEAD too slow on Darwin (PA06-025)
+NT DEAD too slow on Windows (PA06-025)
 !large SKIP part of large testsuite

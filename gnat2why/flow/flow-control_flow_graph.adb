@@ -1242,10 +1242,17 @@ package body Flow.Control_Flow_Graph is
      (E  : Entity_Id;
       FA : in out Flow_Analysis_Graphs)
    is
+      Typ : constant Entity_Id := Get_Type (E, FA.B_Scope);
+
       M : constant Param_Mode :=
         (case Ekind (E) is
+            --  Formal parameters of mode IN with a non-constant access type
+            --  can be assigned, so we handle them very much like IN OUTs.
             when E_In_Parameter =>
-               Mode_In,
+               (if Is_Access_Type (Typ)
+                  and then not Is_Access_Constant (Typ)
+                then Mode_In_Out
+                else Mode_In),
 
             when E_In_Out_Parameter
                | E_Task_Type
@@ -1293,25 +1300,20 @@ package body Flow.Control_Flow_Graph is
       procedure Process (F : Flow_Id) is
          Initial_V, Final_V : Flow_Graphs.Vertex_Id;
 
-         PM : constant Param_Mode :=
-           (if Ekind (Get_Direct_Mapping_Id (F)) = E_Discriminant
-            then Mode_In
-            else M);
-
          F_Initial : constant Flow_Id := Change_Variant (F, Initial_Value);
          F_Final   : constant Flow_Id := Change_Variant (F, Final_Value);
 
          Initial_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (F_Ent => F_Initial,
-              Mode  => PM,
+              Mode  => M,
               E_Loc => E,
               S     => Scop);
 
          Final_Atr : constant V_Attributes :=
            Make_Variable_Attributes
              (F_Ent => F_Final,
-              Mode  => PM,
+              Mode  => M,
               E_Loc => E);
 
       begin
@@ -1494,12 +1496,12 @@ package body Flow.Control_Flow_Graph is
             RHS_Map : constant Flow_Id_Maps.Map :=
               Untangle_Record_Assignment
                 (Expression (N),
-                 Map_Root                     => LHS_Root,
-                 Map_Type                     => LHS_Type,
-                 Scope                        => FA.B_Scope,
-                 Fold_Functions               => True,
-                 Use_Computed_Globals         => not FA.Generating_Globals,
-                 Expand_Synthesized_Constants => False);
+                 Map_Root                => LHS_Root,
+                 Map_Type                => LHS_Type,
+                 Scope                   => FA.B_Scope,
+                 Fold_Functions          => True,
+                 Use_Computed_Globals    => not FA.Generating_Globals,
+                 Expand_Internal_Objects => False);
 
          begin
             Missing := Flatten_Variable (LHS_Root, FA.B_Scope);
@@ -2153,7 +2155,8 @@ package body Flow.Control_Flow_Graph is
       with Pre => Is_For_Loop (N);
       --  Return the range given for loop
 
-      function Loop_Might_Exit_Early (N : Node_Id) return Boolean;
+      function Loop_Might_Exit_Early (Loop_N : Node_Id) return Boolean
+      with Pre => Nkind (Loop_N) = N_Loop_Statement;
       --  Return true if the loop contains an exit or return statement
 
       procedure Do_Loop;
@@ -2273,8 +2276,9 @@ package body Flow.Control_Flow_Graph is
       --  This means the loop body may not be executed, so any initializations
       --  in the loop which subsequent code depends on will be flagged up.
 
-      function Variables_Initialized_By_Loop (N : Node_Id)
-                                              return Flow_Id_Sets.Set;
+      function Variables_Initialized_By_Loop (Loop_N : Node_Id)
+                                              return Flow_Id_Sets.Set
+      with Pre => Nkind (N) = N_Loop_Statement;
       --  A conservative heuristic to determine the set of possible variables
       --  fully initialized by the given statement list.
 
@@ -2300,8 +2304,6 @@ package body Flow.Control_Flow_Graph is
       -------------
 
       procedure Do_Loop is
-         Contains_Return : Boolean := False;
-
          function Proc (N : Node_Id) return Traverse_Result;
          --  Set Contains_Return to true if we find a return statement
 
@@ -2309,20 +2311,38 @@ package body Flow.Control_Flow_Graph is
          -- Proc --
          ----------
 
-         function Proc (N : Node_Id) return Traverse_Result
-         is
+         function Proc (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
-               when N_Simple_Return_Statement   |
-                    N_Extended_Return_Statement =>
-                  Contains_Return := True;
+
+               --  These might cause the loop to exit early
+
+               when N_Simple_Return_Statement
+                  | N_Extended_Return_Statement
+               =>
                   return Abandon;
+
+               --  In these the EXIT/RETURN statement, if present, will
+               --  certainly refer to subprogram's own loop (EXIT) or to
+               --  the suprogram itself (RETURN).
+
+               when N_Subprogram_Body
+                  | N_Subprogram_Declaration
+                  | N_Package_Declaration
+                  | N_Package_Body
+                  | N_Generic_Declaration
+               =>
+                  return Skip;
+
                when others =>
                   return OK;
             end case;
          end Proc;
 
-         procedure Find_Return is new Traverse_Proc (Process => Proc);
+         function Find_Return is new Traverse_More_Func (Process => Proc);
+
+         Contains_Return : constant Boolean := Find_Return (N) = Abandon;
+         --  True if we have a return statement
 
          V           : Flow_Graphs.Vertex_Id;
          Faux_Exit_V : Flow_Graphs.Vertex_Id;
@@ -2330,9 +2350,6 @@ package body Flow.Control_Flow_Graph is
       --  Start of processing for Do_Loop
 
       begin
-         --  Check if we have a return statement
-         Find_Return (N);
-
          --  We have a null vertex for the loop, as we have no
          --  condition.
          Add_Vertex (FA,
@@ -2553,7 +2570,7 @@ package body Flow.Control_Flow_Graph is
       -- Loop_Might_Exit_Early --
       ---------------------------
 
-      function Loop_Might_Exit_Early (N : Node_Id) return Boolean is
+      function Loop_Might_Exit_Early (Loop_N : Node_Id) return Boolean is
 
          function Proc_Search (N : Node_Id) return Traverse_Result;
 
@@ -2561,8 +2578,7 @@ package body Flow.Control_Flow_Graph is
          -- Proc_Search --
          -----------------
 
-         function Proc_Search (N : Node_Id) return Traverse_Result
-         is
+         function Proc_Search (N : Node_Id) return Traverse_Result is
          begin
             case Nkind (N) is
 
@@ -2591,21 +2607,21 @@ package body Flow.Control_Flow_Graph is
             end case;
          end Proc_Search;
 
-         function Do_Search is new Traverse_Func (Proc_Search);
+         function Do_Search is new Traverse_More_Func (Proc_Search);
          --  Returns Abandon when Proc_Search returns it for any of the
          --  traversed nodes.
 
       --  Start of processing for Loop_Might_Exit_Early
 
       begin
-         return Do_Search (N) = Abandon;
+         return Do_Search (Loop_N) = Abandon;
       end Loop_Might_Exit_Early;
 
       -----------------------------------
       -- Variables_Initialized_By_Loop --
       -----------------------------------
 
-      function Variables_Initialized_By_Loop (N : Node_Id)
+      function Variables_Initialized_By_Loop (Loop_N : Node_Id)
                                               return Flow_Id_Sets.Set
       is
          Fully_Initialized : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
@@ -2626,26 +2642,42 @@ package body Flow.Control_Flow_Graph is
          Current_Loop : Node_Id       := Empty;
          Active_Loops : Node_Sets.Set := Node_Sets.Empty_Set;
 
-         Lc : constant Graph_Connections := CM (Union_Id (Statements (N)));
+         Lc : constant Graph_Connections :=
+           CM (Union_Id (Statements (Loop_N)));
          --  A slice (represented by Standard_Entry and Standard_Exits) of the
          --  CFG for checking whether a variable is defined on all paths in
          --  the current loop.
 
          function Get_Array_Index (N : Node_Id) return Target
-         with Pre => Present (N);
+         with Pre  => Present (N),
+              Post => (if Get_Array_Index'Result.Valid
+                       then Get_Array_Index'Result.Var.Kind in Direct_Mapping
+                                                             | Record_Field
+                        and then not Get_Array_Index'Result.D.Is_Empty
+                        and then (for all E of Get_Array_Index'Result.D =>
+                                      Ekind (E) = E_Loop_Parameter));
          --  Convert the target of an assignment to an array into a flow id
-         --  and a list of indices.
+         --  and a list of loop parameters.
 
          function Fully_Defined_In_Original_Loop (T : Target) return Boolean
          with Pre => T.Valid;
          --  Performs a mini-flow analysis on the current loop statements to
          --  see if T is defined on all paths (but not explicitly used).
 
+         function Is_Declared_Within_Current_Loop
+           (E : Entity_Id) return Boolean
+         with Pre => Is_Object (E);
+         --  Returns True iff object E is declared within the currently
+         --  analysed loop.
+         --  Note: this is similar to Scope_Within, but operating on the
+         --  syntactic level, because FOR loops do not act as scopes for
+         --  objects declared within them.
+
          function Proc_Search (N : Node_Id) return Traverse_Result;
          --  In the traversal of the loop body, this finds suitable targets
          --  and checks if they are fully initialized.
 
-         procedure Rec (N : Node_Id);
+         procedure Rec is new Traverse_More_Proc (Proc_Search);
          --  Wrapper around the traversal, so that Proc_Search can call itself
 
          ---------------------
@@ -2715,7 +2747,8 @@ package body Flow.Control_Flow_Graph is
                  (Bound : Node_Id;
                   Attr  : Attribute_Id)
                   return Boolean
-                 with Pre => Attr in Attribute_First | Attribute_Last;
+                 with Pre => Nkind (Bound) in N_Subexpr
+                             and then Attr in Attribute_First | Attribute_Last;
                --  Returns True iff the bound of the loop parameter's range
                --  ('First or 'Last) matches that same bound of the assigned
                --  array, e.g.:
@@ -2780,13 +2813,13 @@ package body Flow.Control_Flow_Graph is
 
                         if (Compile_Time_Compare (Low_Bound (Param_Range),
                                                   Low_Bound (Index_Range),
-                                                  True) = EQ
+                                                  Assume_Valid => True) = EQ
                             or else Matches_Object_Bound
                               (Low_Bound (Param_Range), Attribute_First))
                           and then
                             (Compile_Time_Compare (High_Bound (Param_Range),
                                                    High_Bound (Index_Range),
-                                                   True) = EQ
+                                                   Assume_Valid => True) = EQ
                              or else Matches_Object_Bound
                                (High_Bound (Param_Range), Attribute_Last))
                         then
@@ -2891,6 +2924,13 @@ package body Flow.Control_Flow_Graph is
                         else
                            Tv := Flow_Graphs.Abort_Traversal;
                         end if;
+
+                     --  ??? same as the enclosing ELSIF block; refactor
+
+                     elsif Lc.Standard_Exits.Contains (V) then
+                        Fully_Defined := False;
+                        Tv            := Flow_Graphs.Abort_Traversal;
+
                      else
                         Tv := Flow_Graphs.Continue;
                      end if;
@@ -2934,6 +2974,22 @@ package body Flow.Control_Flow_Graph is
             return Fully_Defined;
          end Fully_Defined_In_Original_Loop;
 
+         -------------------------------------
+         -- Is_Declared_Within_Current_Loop --
+         -------------------------------------
+
+         function Is_Declared_Within_Current_Loop
+           (E : Entity_Id) return Boolean
+         is
+            function Is_Current_Loop (N : Node_Id) return Boolean is
+              (N = Loop_N);
+
+            function Current_Loop_Parent is new First_Parent_With_Property
+              (Is_Current_Loop);
+         begin
+            return Present (Current_Loop_Parent (E));
+         end Is_Declared_Within_Current_Loop;
+
          -----------------
          -- Proc_Search --
          -----------------
@@ -2971,6 +3027,8 @@ package body Flow.Control_Flow_Graph is
 
                      begin
                         if T.Valid
+                          and then not Is_Declared_Within_Current_Loop
+                            (Get_Direct_Mapping_Id (T.Var))
                           and then Fully_Defined_In_Original_Loop (T)
                         then
                            Fully_Initialized.Include (T.Var);
@@ -3003,6 +3061,8 @@ package body Flow.Control_Flow_Graph is
 
                            begin
                               if T.Valid
+                                and then not Is_Declared_Within_Current_Loop
+                                  (Get_Direct_Mapping_Id (T.Var))
                                 and then Fully_Defined_In_Original_Loop (T)
                               then
                                  Fully_Initialized.Include (T.Var);
@@ -3037,22 +3097,14 @@ package body Flow.Control_Flow_Graph is
             return OK;
          end Proc_Search;
 
-         procedure Rec_Inner is new Traverse_Proc (Proc_Search);
-
-         ---------
-         -- Rec --
-         ---------
-
-         procedure Rec (N : Node_Id) renames Rec_Inner;
-
       --  Start of processing for Variables_Initialized_By_Loop
 
       begin
-         if Loop_Might_Exit_Early (N) then
+         if Loop_Might_Exit_Early (Loop_N) then
             return Flow_Id_Sets.Empty_Set;
          end if;
 
-         Rec (N);
+         Rec (Loop_N);
 
          return Fully_Initialized;
       end Variables_Initialized_By_Loop;
@@ -3690,13 +3742,13 @@ package body Flow.Control_Flow_Graph is
 
                declare
                   M : constant Flow_Id_Maps.Map := Untangle_Record_Assignment
-                    (N                            => Expr,
-                     Map_Root                     => Direct_Mapping_Id (E),
-                     Map_Type                     => Get_Type (E, FA.B_Scope),
-                     Scope                        => FA.B_Scope,
-                     Fold_Functions               => True,
-                     Use_Computed_Globals         => not FA.Generating_Globals,
-                     Expand_Synthesized_Constants => False);
+                    (N                       => Expr,
+                     Map_Root                => Direct_Mapping_Id (E),
+                     Map_Type                => Get_Type (E, FA.B_Scope),
+                     Scope                   => FA.B_Scope,
+                     Fold_Functions          => True,
+                     Use_Computed_Globals    => not FA.Generating_Globals,
+                     Expand_Internal_Objects => False);
 
                   All_Vertices : Vertex_Sets.Set  := Vertex_Sets.Empty_Set;
                   Missing      : Flow_Id_Sets.Set := Var_Def;
@@ -4303,7 +4355,7 @@ package body Flow.Control_Flow_Graph is
       end Add_Loop_Entry_Reference;
 
       procedure Add_Loop_Entry_References is new
-        Traverse_Proc (Add_Loop_Entry_Reference);
+        Traverse_More_Proc (Add_Loop_Entry_Reference);
 
       V     : Flow_Graphs.Vertex_Id;
       Funcs : Node_Sets.Set;
@@ -4518,7 +4570,9 @@ package body Flow.Control_Flow_Graph is
             Prev := Var;
          end loop;
 
-         if No_Return (Called_Thing) then
+         if No_Return (Called_Thing)
+           and then not No_Return (FA.Spec_Entity)
+         then
             CM.Insert
               (Union_Id (N),
                Graph_Connections'

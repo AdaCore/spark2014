@@ -1,0 +1,2 @@
+p.ads:6:13: user-defined equality shall have a Global aspect of null (SPARK RM 6.6(1))
+gnatprove: error during flow analysis and proof

@@ -31,7 +31,6 @@ with Debug;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
-with Gnat2Why_Args;
 with GNATCOLL.Utils;                     use GNATCOLL.Utils;
 with Rtsfind;                            use Rtsfind;
 with Sem_Ch12;                           use Sem_Ch12;
@@ -440,16 +439,16 @@ package body SPARK_Util.Subprograms is
      (E        : Entity_Id;
       After_GG : Boolean := True) return Execution_Kind_T
    is
-      function Has_No_Output return Boolean;
-      --  Return True if procedure E has no output (parameter or global).
-      --  Otherwise, or if we don't know for sure, return False. If After_GG
-      --  is False, then we will not query generated globals.
+      function Has_Output return Boolean;
+      --  Return True either when procedure E has output (parameter or global)
+      --  or when don't know for sure (because no Global has been generated
+      --  yet). If After_GG is False, then we will not query generated globals.
 
-      -------------------
-      -- Has_No_Output --
-      -------------------
+      ----------------
+      -- Has_Output --
+      ----------------
 
-      function Has_No_Output return Boolean is
+      function Has_Output return Boolean is
          Formal : Entity_Id := First_Formal (E);
 
          Globals : Global_Flow_Ids;
@@ -462,7 +461,7 @@ package body SPARK_Util.Subprograms is
                when E_Out_Parameter
                   | E_In_Out_Parameter
                =>
-                  return False;
+                  return True;
                when E_In_Parameter =>
                   null;
             end case;
@@ -480,23 +479,21 @@ package body SPARK_Util.Subprograms is
                          Globals             => Globals,
                          Use_Deduced_Globals => After_GG);
 
-            return Globals.Outputs.Is_Empty;
+            return not Globals.Outputs.Is_Empty;
 
-         --  Otherwise we don't know, return False to be on the safe side
+         --  Otherwise we don't know, return True to be on the safe side
 
          else
-            return False;
+            return True;
          end if;
-      end Has_No_Output;
+      end Has_Output;
 
    --  Start of processing for Get_Execution_Kind
 
    begin
-      if Has_No_Output then
-         return Abnormal_Termination;
-      else
-         return Infinite_Loop;
-      end if;
+      return (if Has_Output
+              then Infinite_Loop
+              else Abnormal_Termination);
    end Get_Execution_Kind;
 
    -----------------------------------
@@ -509,7 +506,7 @@ package body SPARK_Util.Subprograms is
       Arg    : Node_Id;
 
    begin
-      --  If there is no associated body, return Empty.
+      --  If there is no associated body, return Empty
 
       if No (Body_N) then
          return Empty;
@@ -530,7 +527,7 @@ package body SPARK_Util.Subprograms is
             pragma Assert (Present (Arg));
             Arg := Next (Arg);
             pragma Assert (Present (Arg));
-            return (Get_Pragma_Arg (Arg));
+            return Get_Pragma_Arg (Arg);
          end if;
 
          Next (Stmt);
@@ -550,12 +547,6 @@ package body SPARK_Util.Subprograms is
       Stmt   : Node_Id;
 
    begin
-      --  If there is no associated body, return Empty.
-
-      if No (Body_N) then
-         return Empty;
-      end if;
-
       Stmt := First (Statements (Handled_Statement_Sequence (Body_N)));
 
       while Present (Stmt) loop

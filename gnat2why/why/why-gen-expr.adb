@@ -30,6 +30,7 @@ with Checks;                  use Checks;
 with Common_Containers;       use Common_Containers;
 with Errout;                  use Errout;
 with Eval_Fat;
+with Flow_Error_Messages;     use Flow_Error_Messages;
 with Gnat2Why.Error_Messages; use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;           use Gnat2Why.Expr;
 with Gnat2Why.Subprograms;    use Gnat2Why.Subprograms;
@@ -499,9 +500,9 @@ package body Why.Gen.Expr is
          for I in 1 .. Dim loop
             declare
                Low_From : constant Node_Id :=
-                 Type_Low_Bound (Nth_Index_Type (From_Ent, I));
+                 Type_Low_Bound (Retysp (Nth_Index_Type (From_Ent, I)));
                Low_To   : constant Node_Id :=
-                 Type_Low_Bound (Nth_Index_Type (To_Ent, I));
+                 Type_Low_Bound (Retysp (Nth_Index_Type (To_Ent, I)));
             begin
                if not Is_Static_Expression (Low_From)
                  or else not Is_Static_Expression (Low_To)
@@ -1090,18 +1091,30 @@ package body Why.Gen.Expr is
    --------------------------
 
    function Insert_Cnt_Loc_Label
-     (Ada_Node : Node_Id;
-      E        : W_Expr_Id) return W_Expr_Id
+     (Ada_Node     : Node_Id;
+      E            : W_Expr_Id;
+      Is_Loop_Head : Boolean := False) return W_Expr_Id
    is
    begin
       if Present (Ada_Node)
         and then Safe_First_Sloc (Ada_Node) > No_Location
       then
-         return New_Loc_Label
-           (Ada_Node => Get_Ada_Node (+E),
-            Sloc     => Safe_First_Sloc (Ada_Node),
-            Domain   => Get_Domain (+E),
-            Def      => E);
+         declare
+            --  This is intentionnally not generated in case of Implicit
+            --  invariant (no explicit Loop_Invariant in the loop).
+            Marker : constant Symbol :=
+              (if Is_Loop_Head and then Nkind (Ada_Node) = N_Pragma then
+                  NID ("Loop" & Node_Id'Image (Ada_Node))
+               else
+                  No_Symbol);
+         begin
+            return New_Loc_Label
+              (Ada_Node     => Get_Ada_Node (+E),
+               Sloc         => Safe_First_Sloc (Ada_Node),
+               Domain       => Get_Domain (+E),
+               Def          => E,
+               Marker       => Marker);
+         end;
       else
          return E;
       end if;
@@ -3269,6 +3282,7 @@ package body Why.Gen.Expr is
             Reason,
             True,
             Current_Subp,
+            No_Session_Dir,
             How_Proved => PC_Codepeer);
          Labels.Insert (GP_Already_Proved);
       end if;

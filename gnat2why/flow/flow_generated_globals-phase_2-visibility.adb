@@ -313,14 +313,15 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
          Rule := Rule_Up_Priv;
 
          --  This rule deals with upwards visibility for the private part of a
-         --  child package. It doesn't apply to instances.
+         --  child package or subprogram. It doesn't apply to instances.
 
-         if Info.Is_Package
-           and then Is_Child (Info)
+         if Is_Child (Info)
            and then not Is_Instance (Info)
          then
             Connect
-              (Priv_V,
+              ((if Info.Is_Package
+                then Priv_V
+                else Body_V),
                Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
                                         Part => Private_Part)));
          end if;

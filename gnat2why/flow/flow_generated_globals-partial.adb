@@ -47,6 +47,7 @@ with SPARK_Definition;                 use SPARK_Definition;
 with SPARK_Frame_Conditions;           use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;           use SPARK_Util.Subprograms;
 with SPARK_Xrefs;                      use SPARK_Xrefs;
+with Why;
 
 package body Flow_Generated_Globals.Partial is
 
@@ -821,6 +822,19 @@ package body Flow_Generated_Globals.Partial is
                   Done.Insert (Pick);
 
                   if Scope_Truly_Within_Or_Same (Pick, Analyzed) then
+
+                     --  ??? global generation with calls to abstract
+                     --  subprograms is not yet implemented; explicitly
+                     --  crash with an informational message, as otherwise
+                     --  we would crash with "key not in map" when accessing
+                     --  "Contracts (Pick)" below.
+
+                     if Is_Abstract_Subprogram (Pick) then
+                        Ada.Text_IO.Put_Line
+                          ("[Find_Definite_Calls] abstract subprogram = "
+                           & Full_Source_Name (Pick));
+                        raise Why.Not_Implemented;
+                     end if;
 
                      Todo.Union
                        (Contracts (Pick).Globals.Calls.Definite_Calls - Done);

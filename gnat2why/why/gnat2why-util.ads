@@ -500,6 +500,16 @@ package Gnat2Why.Util is
      Pre => Is_Type (E);
    --  Whether we need a wrapper type with a specific initialization flag for E
 
+   procedure Get_Borrows_From_Decls
+     (Decls   : List_Id;
+      Borrows : in out Node_Lists.List);
+   --  From a list of declarations, returns a list of borrowers, in reverse
+   --  order of the declarations.
+
+   function Has_Post_Axiom (E : Entity_Id) return Boolean with
+     Pre => Is_Subprogram_Or_Entry (E);
+   --  Returns True if we may produce an axiom for the post of E
+
    ------------------------------
    -- Symbol table subprograms --
    ------------------------------

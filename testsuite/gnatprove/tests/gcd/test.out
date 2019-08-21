@@ -62,7 +62,7 @@ math_simple_abstract.adb:22:33: info: loop invariant initialization proved (Z3: 
 math_simple_abstract.adb:22:33: info: loop invariant preservation proved (altergo: 1 VC)
 math_simple_abstract.adb:28:06: info: data dependencies proved
 math_simple_abstract.adb:29:19: info: division check proved (Z3: 1 VC)
-math_simple_abstract.adb:30:14: info: postcondition proved (Z3: 1 VC)
+math_simple_abstract.adb:30:14: info: postcondition proved (altergo: 1 VC)
 math_simple_abstract.adb:37:30: info: range check proved (Z3: 1 VC)
 math_simple_abstract.adb:40:22: info: division check proved (Z3: 2 VC)
 math_simple_abstract.adb:40:38: info: division check proved (Z3: 2 VC)

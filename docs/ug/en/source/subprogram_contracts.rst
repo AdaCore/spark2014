@@ -108,7 +108,7 @@ the condition ``Total >= 0`` to the precondition:
 Finally, |GNATprove| also analyzes preconditions to ensure that they are free
 from run-time errors in all contexts. This may require writing the precondition
 in a special way. For example, the precondition of ``Add_To_Total`` above uses
-the shorcut boolean operator ``and then`` instead of ``and``, so that calling
+the shortcut boolean operator ``and then`` instead of ``and``, so that calling
 the procedure in a context where ``Incr`` is negative does not result in an
 overflow when evaluating ``Integer'Last - Incr``. Instead, the use of ``and
 then`` ensures that a precondition failure will occur before the expression

@@ -262,6 +262,12 @@ procedure Gnatprove with SPARK_Mode is
 
       Args.Append ("-gnates=" & Opt_File);
 
+      if GnateT_Switch /= null
+        and then GnateT_Switch.all /= ""
+      then
+         Args.Append (Configuration.GnateT_Switch.all);
+      end if;
+
       Call_With_Status
         (Command   => "gprbuild",
          Arguments => Args,
@@ -464,7 +470,9 @@ procedure Gnatprove with SPARK_Mode is
                       then "--no-complete-output"
                       else "--complete-output");
 
-         Id := Spawn_VC_Server (Proj.Root_Project);
+         if Configuration.Mode in GPM_All | GPM_Prove then
+            Id := Spawn_VC_Server (Proj.Root_Project);
+         end if;
 
          declare
             Cnf_DB : constant String :=
@@ -480,9 +488,11 @@ procedure Gnatprove with SPARK_Mode is
                            Args              => Args,
                            Status            => Status);
          end;
-         Close (Id);
-         GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
-         pragma Assert (Del_Succ);
+         if Configuration.Mode in GPM_All | GPM_Prove then
+            Close (Id);
+            GNAT.OS_Lib.Delete_File (Socket_Name.all, Del_Succ);
+            pragma Assert (Del_Succ);
+         end if;
       end;
    end Flow_Analysis_And_Proof;
 

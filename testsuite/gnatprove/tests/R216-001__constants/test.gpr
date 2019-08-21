@@ -1,6 +1,0 @@
-project Test is
-   package Compiler is
-      for Default_Switches ("ada") use ("-gnatdk", "-gnatws");
-      for Local_Configuration_Pragmas use "test.adc";
-   end Compiler;
-end Test;

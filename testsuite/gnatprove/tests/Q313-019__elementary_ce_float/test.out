@@ -1,19 +1,19 @@
-float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = 6.8436609264E+192 and B = 4.5980846849E+192 and Minus_I'Result = 2.2455762415E+192)
-float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = 1.6853373123E+308 and B = 1.1235582260E+307) [possible explanation: subprogram at line 7 should mention A and B in a precondition]
-float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = 1.5729832100E+308 and B = -2.2558942171E+307) [possible explanation: subprogram at line 7 should mention A and B in a precondition]
-float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = 7.7500000000E+0)
-float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = -1.7975834124E+308 and B = -1.7905611736E+308)
+float_example.adb:8:19: medium: postcondition might fail, cannot prove Minus_I'Result = A + B (e.g. when A = 0.0 and B = 1.2399245806E-308 and Minus_I'Result = -1.2399245806E-308)
+float_example.adb:8:38: medium: float overflow check might fail (e.g. when A = 1.5168036865E+308 and B = 1.3974255251E+308) [possible explanation: subprogram at line 7 should mention A and B in a precondition]
+float_example.adb:12:16: medium: float overflow check might fail (e.g. when A = 1.7957314671E+308 and B = -1.7906438437E+308) [possible explanation: subprogram at line 7 should mention A and B in a precondition]
+float_example.adb:17:14: medium: postcondition might fail, cannot prove Bounded_Add'Result < 7.0 (e.g. when Bounded_Add'Result = 7.0009765625E+0)
+float_example.adb:21:16: medium: float overflow check might fail (e.g. when A = -1.7906708961E+308 and B = -1.4044477616E+306)
 counterexample expected for check at float_example.adb:8
-  trace at float_example.adb:7 --> A = 6.8436609264E+192 and B = 4.5980846849E+192
-  trace at float_example.adb:8 --> A = 6.8436609264E+192 and B = 4.5980846849E+192 and Minus_I'Result = 2.2455762415E+192
-  trace at float_example.adb:12 --> Minus_I'Result = 2.2455762415E+192
+  trace at float_example.adb:7 --> A = 0.0 and B = 1.2399245806E-308
+  trace at float_example.adb:8 --> A = 0.0 and B = 1.2399245806E-308 and Minus_I'Result = -1.2399245806E-308
+  trace at float_example.adb:12 --> Minus_I'Result = -1.2399245806E-308
 counterexample expected for check at float_example.adb:12
-  trace at float_example.adb:7 --> A = 1.5729832100E+308 and B = -2.2558942171E+307
-  trace at float_example.adb:12 --> A = 1.5729832100E+308 and B = -2.2558942171E+307
+  trace at float_example.adb:7 --> A = 1.7957314671E+308 and B = -1.7906438437E+308
+  trace at float_example.adb:12 --> A = 1.7957314671E+308 and B = -1.7906438437E+308
 counterexample expected for check at float_example.adb:17
-  trace at float_example.adb:15 --> A = 3.8749997582E+0 and B = 3.8750002418E+0
-  trace at float_example.adb:17 --> Bounded_Add'Result = 7.7500000000E+0
-  trace at float_example.adb:21 --> Bounded_Add'Result = 7.7500000000E+0
+  trace at float_example.adb:15 --> A = 3.5039062500E+0 and B = 3.4970703125E+0
+  trace at float_example.adb:17 --> Bounded_Add'Result = 7.0009765625E+0
+  trace at float_example.adb:21 --> Bounded_Add'Result = 7.0009765625E+0
 counterexample expected for check at float_example.adb:21
-  trace at float_example.adb:15 --> A = -1.7975834124E+308 and B = -1.7905611736E+308
-  trace at float_example.adb:21 --> A = -1.7975834124E+308 and B = -1.7905611736E+308
+  trace at float_example.adb:15 --> A = -1.7906708961E+308 and B = -1.4044477616E+306
+  trace at float_example.adb:21 --> A = -1.7906708961E+308 and B = -1.4044477616E+306

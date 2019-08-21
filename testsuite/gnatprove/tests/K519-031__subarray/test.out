@@ -25,6 +25,7 @@ subar.adb:50:32: info: cannot unroll loop (too many loop iterations)
 subar.adb:53:14: info: overflow check proved (CodePeer)
 subar.adb:54:11: info: range check proved (CVC4: 2 VC)
 subar.adb:54:32: info: cannot unroll loop (too many loop iterations)
+subar.adb:55:10: warning: unreachable code (CVC4: 1 VC)
 subar.adb:57:14: info: overflow check proved (CodePeer)
 subar.adb:59:11: medium: range check might fail
 subar.adb:59:32: info: cannot unroll loop (too many loop iterations)

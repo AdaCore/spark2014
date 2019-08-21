@@ -9,7 +9,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="cert-attr.mlw"/>
-<theory name="Cert__attr__contentst__default_checks" proved="true">
+<theory name="Ada___cert__attr__contentst__default_checks" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -43,7 +43,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__extractuser__subprogram_def" proved="true">
+<theory name="Ada___cert__attr__extractuser__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -132,7 +132,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__attr__thebasecert__subprogram_def" proved="true">
+<theory name="Ada___cert__attr__thebasecert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">

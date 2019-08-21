@@ -30,7 +30,7 @@ package Platform is
 
    type Host_Operating_System_Flavor is
       (X86_Windows, X86_64_Windows, X86_Linux, X86_64_Linux, X86_64_Darwin,
-       CodePeer_OS);
+       X86_64_FreeBSD, CodePeer_OS);
 
    function Get_OS_Flavor return Host_Operating_System_Flavor;
 

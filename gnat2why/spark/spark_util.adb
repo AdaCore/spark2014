@@ -283,7 +283,7 @@ package body SPARK_Util is
       end Is_Applicable_Loop_Variant_Or_Invariant;
 
       function Find_Applicable_Loop_Variant_Or_Invariant is new
-        Traverse_Func (Is_Applicable_Loop_Variant_Or_Invariant);
+        Traverse_More_Func (Is_Applicable_Loop_Variant_Or_Invariant);
 
       --------------------------------------
       -- Is_Non_Scalar_Object_Declaration --
@@ -310,7 +310,7 @@ package body SPARK_Util is
       end Is_Non_Scalar_Object_Declaration;
 
       function Find_Non_Scalar_Object_Declaration is new
-        Traverse_Func (Is_Non_Scalar_Object_Declaration);
+        Traverse_More_Func (Is_Non_Scalar_Object_Declaration);
 
       ---------------------
       -- Local Variables --
@@ -700,7 +700,7 @@ package body SPARK_Util is
       end Is_Allocator;
 
       function Check_Allocator is new
-        Traverse_Func (Is_Allocator);
+        Traverse_More_Func (Is_Allocator);
 
    begin
       return Check_Allocator (N) = Abandon;
@@ -734,7 +734,7 @@ package body SPARK_Util is
       end Is_Volatile_Function_Call;
 
       function Check_Volatile_Function is new
-        Traverse_Func (Is_Volatile_Function_Call);
+        Traverse_More_Func (Is_Volatile_Function_Call);
 
    begin
       return Check_Volatile_Function (N) = Abandon;
@@ -1225,6 +1225,33 @@ package body SPARK_Util is
       end case;
    end Get_Range;
 
+   ----------------------
+   -- Has_Dereferences --
+   ----------------------
+
+   function Has_Dereferences (N : Node_Id) return Boolean is
+   begin
+      if Einfo.Is_Entity_Name (N) then
+         return False;
+      else
+         case Nkind (N) is
+            when N_Explicit_Dereference =>
+               return True;
+            when N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Has_Dereferences (Prefix (N));
+
+            when N_Type_Conversion =>
+               return Has_Dereferences (Expression (N));
+
+            when others =>
+               return False;
+         end case;
+      end if;
+   end Has_Dereferences;
+
    ------------------
    -- Has_Volatile --
    ------------------
@@ -1407,6 +1434,29 @@ package body SPARK_Util is
         and then Ekind (Scope (E)) in E_Protected_Type | E_Task_Type;
    end Is_Concurrent_Component_Or_Discr;
 
+   ----------------------------
+   -- Is_Declared_In_Private --
+   ----------------------------
+
+   function Is_Declared_In_Private (E : Entity_Id) return Boolean is
+      Current : Entity_Id := E;
+   begin
+      loop
+         declare
+            Decl : constant Node_Id :=
+              (if Is_Itype (Current) then Associated_Node_For_Itype (Current)
+               else Enclosing_Declaration (Current));
+         begin
+            if In_Private_Declarations (Decl) then
+               return True;
+            end if;
+            Current := Scope (Current);
+            exit when No (Current);
+         end;
+      end loop;
+      return False;
+   end Is_Declared_In_Private;
+
    -------------------------
    -- Is_Declared_In_Unit --
    -------------------------
@@ -1488,6 +1538,9 @@ package body SPARK_Util is
 
          when N_Procedure_Call_Statement =>
             return Is_Error_Signaling_Procedure (Get_Called_Entity (N));
+
+         when N_Call_Marker =>
+            return Is_Error_Signaling_Statement (Next (N));
 
          when others =>
             return False;
@@ -1692,14 +1745,26 @@ package body SPARK_Util is
       return False;
    end Is_In_Statically_Dead_Branch;
 
+   -----------------------
+   -- Is_Local_Borrower --
+   -----------------------
+
+   function Is_Local_Borrower (E : Entity_Id) return Boolean is
+      T : constant Entity_Id := Retysp (Etype (E));
+   begin
+      return Ekind (E) in E_Variable | E_Constant
+        and then Is_Anonymous_Access_Type (T)
+        and then not Is_Access_Constant (T);
+   end Is_Local_Borrower;
+
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
    ---------------------------------
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean is
-     (not (Ekind (E) = E_Discriminant and then
-              (Is_Completely_Hidden (E)
-                or else No (Root_Record_Component (E)))));
+     (not (Is_Completely_Hidden (E)
+             or else
+           No (Root_Record_Component (E))));
 
    ----------------------
    -- Is_Others_Choice --
@@ -1833,9 +1898,15 @@ package body SPARK_Util is
    ------------------------------
 
    function Is_Quantified_Loop_Param (E : Entity_Id) return Boolean is
-     (Present (Scope (E))
+   begin
+      --  Parent of the scope might be rewritten by inlining for proof, so we
+      --  look at the original node.
+      return
+        Present (Scope (E))
         and then Present (Parent (Scope (E)))
-        and then Nkind (Parent (Scope (E))) = N_Quantified_Expression);
+        and then Nkind (Original_Node (Parent (Scope (E))))
+                 = N_Quantified_Expression;
+   end Is_Quantified_Loop_Param;
 
    ------------------------------------
    -- Is_Selected_For_Loop_Unrolling --
@@ -1873,21 +1944,6 @@ package body SPARK_Util is
           --  We get protected/task types here when they act as globals for
           --  subprograms nested in the type itself.
    end Is_Synchronized;
-
-   ----------------------------------
-   -- Location_In_Standard_Library --
-   ----------------------------------
-
-   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean is
-      (case Loc is
-          when No_Location =>
-             False,
-
-          when Standard_Location | Standard_ASCII_Location | System_Location =>
-             True,
-
-          when others =>
-             Unit_In_Standard_Library (Unit (Get_Source_File_Index (Loc))));
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
@@ -1934,7 +1990,7 @@ package body SPARK_Util is
          return OK;
       end Find_Assoc;
 
-      procedure Count_Assoc is new Traverse_Proc (Find_Assoc);
+      procedure Count_Assoc is new Traverse_More_Proc (Find_Assoc);
 
    --  Start of processing for Number_Of_Assocs_In_Expression
 
@@ -2447,34 +2503,30 @@ package body SPARK_Util is
          return Name_Buffer (1 .. Name_Len);
       end Short_Name;
 
+      --  Local variables
+
+      Name : String := Short_Name (E);
+      Loc  : Source_Ptr := Sloc (E);
+      Buf  : Source_Buffer_Ptr;
+
    --  Start of processing for Source_Name
 
    begin
-      if E = Empty then
-         return "";
+      if Name /= "" and then Loc >= First_Source_Ptr then
+         Buf := Source_Text (Get_Source_File_Index (Loc));
+
+         --  Copy characters from source while they match (modulo
+         --  capitalization) the name of the entity.
+
+         for Idx in Name'Range loop
+            exit when not Identifier_Char (Buf (Loc))
+              or else Fold_Lower (Buf (Loc)) /= Name (Idx);
+            Name (Idx) := Buf (Loc);
+            Loc := Loc + 1;
+         end loop;
       end if;
 
-      declare
-         Name : String := Short_Name (E);
-         Loc  : Source_Ptr := Sloc (E);
-         Buf  : Source_Buffer_Ptr;
-      begin
-         if Name /= "" and then Loc >= First_Source_Ptr then
-            Buf := Source_Text (Get_Source_File_Index (Loc));
-
-            --  Copy characters from source while they match (modulo
-            --  capitalization) the name of the entity.
-
-            for Idx in Name'Range loop
-               exit when not Identifier_Char (Buf (Loc))
-                 or else Fold_Lower (Buf (Loc)) /= Name (Idx);
-               Name (Idx) := Buf (Loc);
-               Loc := Loc + 1;
-            end loop;
-         end if;
-
-         return Name;
-      end;
+      return Name;
    end Source_Name;
 
    --------------------

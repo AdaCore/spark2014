@@ -533,3 +533,186 @@ Currently, the higher-order function library provides the following functions:
    not verified once and for all as their correction depends on the functions
    provided at each instance. As a result, each instance should be verified by
    running the SPARK tools.
+
+.. _Input-Output Libraries:
+
+Input-Output Libraries
+----------------------
+
+The following text is about ``Ada.Text_IO`` and its child packages,
+``Ada.Text_IO.Integer_IO``, ``Ada.Text_IO.Modular_IO``,
+``Ada.Text_IO.Float_IO``, ``Ada.Text_IO.Fixed_IO``,
+``Ada.Text_IO.Decimal_IO`` and ``Ada.Text_IO.Enumeration_IO``.
+
+The effect of functions and procedures of input-output units is
+partially modelled. This means in particular:
+
+* that SPARK functions cannot directly call procedures that do
+  input-output. The solution is either to transform them into
+  procedures, or to hide the effect from GNATprove (if not relevant
+  for analysis) by wrapping the standard input-output procedures in
+  procedures with an explicit ``Global => null`` and body with
+  ``SPARK_Mode => Off``.
+
+  .. code-block:: ada
+
+     with Ada.Text_IO;
+
+     function Foo return Integer is
+
+        procedure Put_Line (Item : String) with
+          Global => null;
+
+        procedure Put_Line (Item : String) with
+          SPARK_Mode => Off
+        is
+        begin
+           Ada.Text_IO.Put_Line (Item);
+        end Put_Line;
+
+     begin
+        Put_Line ("Hello, world!");
+        return 0;
+     end Foo;
+
+* SPARK procedures that call input-output subprograms need to reflect
+  these effects in their Global/Depends contract if they have one.
+
+  .. code-block:: ada
+
+    with Ada.Text_IO;
+
+    procedure Foo with
+      Global => (Input  => Var,
+                 In_Out => Ada.Text_IO.File_System)
+    is
+    begin
+       Ada.Text_IO.Put_Line (Var);
+    end Foo;
+
+    procedure Bar is
+    begin
+       Ada.Text_IO.Put_Line (Var);
+    end Bar;
+
+In the examples above, procedure ``Foo`` and ``Bar`` have the same
+body, but their declarations are different. Global contracts have to
+be complete or not present at all. In the case of ``Foo``, it has an
+``Input`` contract on ``Var`` and an ``In_Out`` contract on
+``File_System``, an abstract state from ``Ada.Text_IO``. Without the
+latter contract, a high message would be raised when running
+GNATprove. Global contracts will be automatically generated for
+``Bar`` by flow analysis if this is user code. Both declarations are
+accepted by SPARK.
+
+State Abstraction and Global Contracts
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+The abstract state ``File_System`` is used to model the memory on
+the system and the file handles (``Line_Length``, ``Col``, etc.). This
+is explained by the fact that almost every procedure in ``Text_IO``
+that actually modifies attributes of the ``File_Type`` parameter has
+``in File_Type`` as a parameter and not ``in out``. This would be
+inconsistent with SPARK rules without the abstract state.
+
+All functions and procedures are annoted with Global, and Pre, Post if
+necessary. The Global contracts are most of the time ``In_Out`` for
+``File_System``, even in ``Put`` or ``Get`` procedures that update the
+current column and/or line. Functions have an ``Input`` global
+contract. The only functions with ``Global => null`` are the functions
+``Get`` and ``Put`` in the generic packages that have a similar
+behaviour as sprintf and sscanf.
+
+Functions and Procedures Removed in SPARK
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+
+Some functions and procedures are removed from SPARK usage because they
+are not consistent with SPARK rules:
+
+#. Aliasing
+
+   The functions ``Current_Input``, ``Current_Output``,
+   ``Current_Error``, ``Standard_Input``, ``Standard_Output`` and
+   ``Standard_Error`` are turned off in ``SPARK_Mode`` because they
+   create aliasing, by returning the corresponding file.
+
+   ``Set_Input``, ``Set_Output`` and ``Set_Error`` are turned off
+   because they also create aliasing, by assigning a ``File_Type``
+   variable to ``Current_Input`` or the other two.
+
+   It is still possible to use ``Set_Input`` and the 3 others to make
+   the code clearer. This is doable by calling ``Set_Input`` in a
+   different subprogram whose body has ``SPARK_Mode => Off``. However,
+   it is necessary to check that the file is open and the mode is
+   correct, because there are no checks made on procedures that do not
+   take a file as a parameter (i.e. implicit, so it will write to/read
+   from the current output/input).
+
+#. ``Get_Line`` function
+
+   The function ``Get_Line`` is disabled in SPARK because it is a
+   function with side effects. Even with the ``Volatile_Function``
+   attribute, it is not possible to model its action on the files
+   and global variables in SPARK. The function is very convenient
+   because it returns an unconstrained string, but a workaround is
+   possible by constructing the string with a buffer:
+
+ .. code-block:: ada
+
+    with Ada.Text_IO;
+    with Ada.Strings.Unbounded; use Ada.Strings.Unbounded;
+
+    procedure Echo is
+       Unb_Str : Unbounded_String := Null_Unbounded_String;
+       Buffer  : String (1 .. 1024);
+       Last    : Natural := 1024;
+    begin
+
+       while Last = 1024 loop
+          Ada.Text_IO.Get_Line (Buffer, Last);
+          exit when Last > Natural'Last - Length (Unb_Str);
+          Unb_Str := Unb_Str & Buffer (1 .. Last);
+       end loop;
+
+       declare
+          Str : String := To_String (Unb_Str);
+       begin
+          Ada.Text_IO.Put_Line (Str);
+       end;
+    end Echo;
+
+Errors Handling
+^^^^^^^^^^^^^^^
+
+``Status_Error`` (due to a file already open/not open) and ``Mode_Error`` are fully
+handled.
+
+Except for ``Layout_Error``, which is a special case of a partially
+handled error and explained in a few lines below, all other errors are
+not handled:
+
+-  ``Use_Error`` is related to the external environment.
+
+-  ``Name_Error`` would require to check availability on disk beforehand.
+
+-  ``End_Error`` is raised when a file terminator is read while running
+   the procedure.
+
+For an ``Out_File``, it is possible to set a ``Line_Length`` and
+``Page_Length``. When writing in this file, the procedures will add
+Line markers and Page markers each ``Line_Length`` characters or
+``Page_Length`` lines respectively. ``Layout_Error`` occurs when
+trying to set the current column or line to a value that is greater
+than ``Line_Length`` or ``Page_Length`` respectively. This error is
+handled when using ``Set_Col`` or ``Set_Line`` procedures.
+
+However, this error is not handled when no ``Line_Length`` or
+``Page_Length`` has been specified, e.g, if the lines are unbounded,
+it is possible to have a ``Col`` greater than ``Count'Last`` and
+therefore have a ``Layout_Error`` raised when calling ``Col``.
+
+Not only the handling is partial, but it is also impossible to prove
+preconditions when working with two files or more. Since
+``Line_Length`` etc. attributes are stored in the ``File_System``, it
+is not posible to prove that the ``Line_Length`` of ``File_2`` has not
+been modified when running any procedure that do input-output on ``File_1``.

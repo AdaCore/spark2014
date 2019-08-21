@@ -25,7 +25,6 @@ with Aspects;                    use Aspects;
 with Flow_Refinement;            use Flow_Refinement;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
-with SPARK_Definition;           use SPARK_Definition;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with Sem_Type;                   use Sem_Type;
 with Why;
@@ -203,7 +202,7 @@ package body Flow_Utility.Initialization is
                                               Ignore_DIC);
          else
             declare
-               Type_Def : Node_Id := Empty;
+               Type_Def : Node_Id;
                Rec_Part : Node_Id := Empty;
 
                Parent_Typ : constant Node_Id := Parent (Typ);
@@ -384,9 +383,9 @@ package body Flow_Utility.Initialization is
             end if;
          end;
 
-      --  Task types are always fully default initialized
+      --  Concurrent types are always fully default initialized
 
-      elsif Is_Task_Type (Typ) then
+      elsif Is_Concurrent_Type (Typ) then
          Result := Full_Default_Initialization;
 
       --  An array type subject to aspect/pragma Default_Component_Value is
@@ -409,7 +408,7 @@ package body Flow_Utility.Initialization is
       --  Record types and protected types offer several initialization options
       --  depending on their components (if any).
 
-      elsif Is_Record_Type (Typ) or else Is_Protected_Type (Typ) then
+      elsif Is_Record_Type (Typ) then
          Comp := First_Component (Typ);
 
          --  Inspect all components

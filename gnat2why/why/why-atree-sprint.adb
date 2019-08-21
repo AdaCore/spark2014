@@ -59,8 +59,11 @@ package body Why.Atree.Sprint is
    --  Print_Any_Expr). When a Loc_Label node is traversed, the location is
    --  stored here for this purpose.
 
-   Curr_Sloc : Source_Ptr := No_Location;
+   Curr_Sloc   : Source_Ptr := No_Location;
    --  The source code location of currently printed node
+
+   Curr_Marker : Symbol := No_Symbol;
+   --  The marker for the source code location of currently printed node
 
    procedure Print_Sloc_Tag;
    --  Print the location tag for currently printed node
@@ -310,9 +313,8 @@ package body Why.Atree.Sprint is
       Print_Node (+Name);
       --  Trick simplify_intros transformation into believing that this should
       --  be simplified
-      if Get_Is_Temp (Name) then
-         P (O, " [@mlw:proxy_symbol] [@introduced]");
-      end if;
+      P (O, " ");
+      P (O, Identifier_Get_Labels (+Name), As_Labels => True);
       P (O, " = ");
       Print_Node (+Def);
       PL (O, " in (");
@@ -344,9 +346,8 @@ package body Why.Atree.Sprint is
       Print_Node (+Name);
       --  Trick simplify_intros transformation into believing that this should
       --  be simplified
-      if Get_Is_Temp (Name) then
-         P (O, " [@mlw:proxy_symbol] [@introduced]");
-      end if;
+      P (O, " ");
+      P (O, Identifier_Get_Labels (+Name), As_Labels => True);
       P (O, " = { ");
       pragma Assert (Get_Typ (Name) /= Why_Empty);
       Print_Node (+Get_Typ (Name));
@@ -1166,6 +1167,7 @@ package body Why.Atree.Sprint is
             --  Change to current sloc
 
             Curr_Sloc := Get_Location (Node);
+            Curr_Marker := No_Symbol;
 
             if Def = Why_Empty then
                Print_Header ("val");
@@ -1204,6 +1206,7 @@ package body Why.Atree.Sprint is
             end;
 
             Curr_Sloc := No_Location;
+            Curr_Marker := No_Symbol;
 
          when EW_Pred =>
 
@@ -1490,11 +1493,13 @@ package body Why.Atree.Sprint is
    procedure Print_Loc_Label (Node : W_Loc_Label_Id) is
    begin
       Curr_Sloc := Get_Sloc (Node);
+      Curr_Marker := Get_Marker (Node);
       P (O, "(");
       Print_Sloc_Tag;
       Print_Node (+Get_Def (Node));
       P (O, ")");
       Curr_Sloc := No_Location;
+      Curr_Marker := No_Symbol;
    end Print_Loc_Label;
 
    ------------------------
@@ -1986,7 +1991,7 @@ package body Why.Atree.Sprint is
 
    procedure Print_Sloc_Tag is
    begin
-      P (O, Curr_Sloc);
+      P (O, Curr_Sloc, Curr_Marker);
       P (O, " ");
    end Print_Sloc_Tag;
 

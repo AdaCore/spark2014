@@ -292,6 +292,7 @@ package body Xtree_Sinfo is
 
       New_Field (W_Loc_Label, "Sloc", "Source_Ptr");
       New_Field (W_Loc_Label, "Def", "W_Expr", Id_One);
+      New_Field (W_Loc_Label, "Marker", "Symbol", "No_Symbol");
 
       --------------
       -- W_Module --
@@ -307,7 +308,8 @@ package body Xtree_Sinfo is
 
       New_Field (W_Identifier, "Name", "W_Name", Id_One);
       New_Field (W_Identifier, "Typ", "W_Type", Id_Lone);
-      New_Field (W_Identifier, "Is_Temp", "Boolean", "False");
+      New_Field (W_Identifier,
+                 "Labels", "String_Sets.Set", "String_Sets.Empty_Set");
 
       --------------
       -- W_Tagged --

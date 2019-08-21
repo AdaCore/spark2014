@@ -95,6 +95,12 @@ package body Gnat2Why.Expr.Loops.Exits is
      (Instrs : List_Id;
       Expr   : in out W_Prog_Id)
    is
+      function Ends_In_Unconditional_Exit (Stmts : List_Id) return Boolean is
+        (Unconditional_Loop_Exit (Nlists.Last (Stmts)));
+
+      --  Identify the direct enclosing loop statement. It might not be the
+      --  same as the loop that the exit statement exits from.
+
       function Is_Loop_Stmt (N : Node_Id) return Boolean is
         (Nkind (N) = N_Loop_Statement);
 
@@ -104,11 +110,51 @@ package body Gnat2Why.Expr.Loops.Exits is
       Loop_Stmt : constant Node_Id :=
         Enclosing_Loop_Stmt (Nlists.First (Instrs));
 
+      --  Identify a parent node inside the loop which is part of a list ending
+      --  in an unconditional exit, if any, so that we don't perform the
+      --  optimization in that case.
+
+      function Leads_To_Exit (N : Node_Id) return Boolean is
+        (Is_List_Member (N)
+         and then Ends_In_Unconditional_Exit (List_Containing (N)));
+
+      function Is_Loop_Or_Leads_To_Exit (N : Node_Id) return Boolean is
+        (Is_Loop_Stmt (N) or else Leads_To_Exit (N));
+
+      function Enclosing_Loop_Or_Not_Stmt is new
+        First_Parent_With_Property (Is_Loop_Or_Leads_To_Exit);
+
+      Loop_Or_Not_Stmt : constant Node_Id :=
+        Enclosing_Loop_Or_Not_Stmt (Nlists.First (Instrs));
+
+   --  Start of processing for Record_And_Replace
+
    begin
       if Present (Loop_Stmt)
+
+        --  If there is a parent node inside the loop that is part of a list
+        --  ending in an unconditional exit, then the current code will be
+        --  hoisted out of the loop as part of this parent node. Do not hoist
+        --  it here, as this would lead to the new exception raised not being
+        --  caught.
+
+        and then Loop_Stmt = Loop_Or_Not_Stmt
+
+        --  Do not perform this optimization for loops that are already
+        --  unrolled.
+
         and then not Is_Selected_For_Loop_Unrolling (Loop_Stmt)
+
+        --  No benefit in doing this unless there are instructions before
+        --  the exit statement.
+
         and then List_Length (Instrs) > 1
-        and then Unconditional_Loop_Exit (Nlists.Last (Instrs))
+
+        --  Currently only do this optimization for list of statements that
+        --  end up in an unconditional exit. Possibly do this also for return
+        --  statements in the future???
+
+        and then Ends_In_Unconditional_Exit (Instrs)
       then
          declare
             Name : constant Symbol :=
@@ -126,6 +172,24 @@ package body Gnat2Why.Expr.Loops.Exits is
 
          begin
             Subprogram_Exit_Exceptions.Insert (+Exc);
+
+            --  All blocks of code that end up in an exit statement are
+            --  associated to the closest enclosing loop. We could improve on
+            --  that optimization for exit statements that exit more than the
+            --  direct enclosing loop:
+            --
+            --     Loop_1: while Cond1 loop
+            --       Loop_2: while Cond2 loop
+            --         ...
+            --              <some-code>
+            --              exit Cond1;
+            --         ...
+            --
+            --  In the case above, <some-code> will be hoisted out of the Why3
+            --  loop for Loop_2, but still inside the Why3 loop for Loop_1.
+            --  We cannot simply associate this code to Loop_1, as <some-code>
+            --  might itself contain an exit statement for Loop_1.
+
             Loop_Exit_Statements.Update_Element
               (Position => Loop_Exit_Statements.First,
                Process  => Add_In_Map'Access);

@@ -37,6 +37,7 @@ with Why.Gen.Binders;              use Why.Gen.Binders;
 with Why.Gen.Decl;                 use Why.Gen.Decl;
 with Why.Gen.Expr;                 use Why.Gen.Expr;
 with Why.Gen.Names;                use Why.Gen.Names;
+with Why.Gen.Pointers;             use Why.Gen.Pointers;
 with Why.Ids;                      use Why.Ids;
 with Why.Inter;                    use Why.Inter;
 with Why.Sinfo;                    use Why.Sinfo;
@@ -530,6 +531,12 @@ package body Gnat2Why.Decls is
                Location    => No_Location,
                Labels      => Symbol_Sets.Empty_Set,
                Return_Type => EW_Int_Type));
+
+      --  Declare the variable for the pledge of E
+
+      if Is_Local_Borrower (E) then
+         Declare_Pledge_Ref (File, E);
+      end if;
 
       Close_Theory (File,
                     Kind           => Definition_Theory,

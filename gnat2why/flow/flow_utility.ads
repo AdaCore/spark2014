@@ -128,10 +128,10 @@ is
    --  @return the equivalent set of flow ids
 
    function Has_Depends (Subprogram : Entity_Id) return Boolean
-   with Pre => Ekind (Subprogram) in E_Entry     |
-                                     E_Function  |
-                                     E_Procedure |
-                                     E_Task_Type;
+   with Pre => Ekind (Subprogram) in E_Entry
+                                   | E_Function
+                                   | E_Procedure
+                                   | E_Task_Type;
    --  Return true if the given subprogram has been annotated with a dependency
    --  relation.
 
@@ -142,10 +142,10 @@ is
       Depends              : out Dependency_Maps.Map;
       Use_Computed_Globals : Boolean := True;
       Callsite             : Node_Id := Empty)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type
                   and then Has_Depends (Subprogram),
         Post => (for all Inputs of Depends =>
                    (for all Input of Inputs => Present (Input)));
@@ -172,16 +172,16 @@ is
    --  globals phase. It prevents us from attempting to use generated globals
    --  before they have actually been produced.
 
-   procedure Get_Globals (Subprogram             : Entity_Id;
-                          Scope                  : Flow_Scope;
-                          Classwide              : Boolean;
-                          Globals                : out Global_Flow_Ids;
-                          Use_Deduced_Globals    : Boolean := True;
-                          Ignore_Depends         : Boolean := False)
-   with Pre  => Ekind (Subprogram) in E_Entry     |
-                                      E_Function  |
-                                      E_Procedure |
-                                      E_Task_Type
+   procedure Get_Globals (Subprogram          : Entity_Id;
+                          Scope               : Flow_Scope;
+                          Classwide           : Boolean;
+                          Globals             : out Global_Flow_Ids;
+                          Use_Deduced_Globals : Boolean := True;
+                          Ignore_Depends      : Boolean := False)
+   with Pre  => Ekind (Subprogram) in E_Entry
+                                    | E_Function
+                                    | E_Procedure
+                                    | E_Task_Type
                 and then not Is_Derived_Type (Subprogram)
                 and then (if Ekind (Subprogram) = E_Procedure
                           then not Is_DIC_Procedure (Subprogram)
@@ -194,10 +194,9 @@ is
                    Is_Entire_Variable (G) and then G.Variant = Out_View);
    --  Given a subprogram, work out globals from the appropriate global aspect
    --  (relative to Scope), or the depends aspect (if no global aspect is
-   --  given). If the Global and Depends aspects are not present then use the
-   --  generated globals or finally, if non of the above exist fall back to
-   --  the computed globals. The sets returned will contain Flow_Id with the
-   --  variant set to In_View and Out_View.
+   --  given). If the Global and Depends aspects are not present then use
+   --  the generated globals. The sets returned will contain Flow_Id with
+   --  the variant set to In_View and Out_View.
    --
    --  This query is meaningless for derived task types (whose entities are
    --  also of an E_Task_Type kind), because derived types cannot be annotated
@@ -269,14 +268,14 @@ is
    --  True, then also include implicit calls to predicate functions.
 
    function Get_Variables
-     (N                            : Node_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False;
-      Consider_Extensions          : Boolean := False)
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False;
+      Consider_Extensions     : Boolean := False)
       return Flow_Id_Sets.Set
    with Pre  => (if Fold_Functions then Assume_In_Expression),
         Post => (if Reduced
@@ -302,18 +301,19 @@ is
    --       some kind of expression, and aggressively raise exceptions if we
    --       find nodes that make no sense in such a context.
    --
-   --     * Expand_Synthesized_Constants: if True, then constants that do not
-   --       come from source are expanded out to the variable set of their
-   --       initializing expression.
+   --     * Expand_Internal_Objects: if True, then constants that do not come
+   --       from source (i.e. constants that capture variables) are expanded to
+   --       the variables referenced in their initialization expression;
+   --       similar for variables that come from inlining-for-proof.
 
    function Get_Variables
-     (L                            : List_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Reduced                      : Boolean := False;
-      Assume_In_Expression         : Boolean := True;
-      Expand_Synthesized_Constants : Boolean := False)
+     (L                       : List_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Reduced                 : Boolean := False;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set;
    --  As above, but operating on a list. Note we don't have the
    --  Consider_Extensions parameter here as its implicitly false.
@@ -451,14 +451,14 @@ is
    --     Foo (Positive (X))
 
    function Untangle_Record_Assignment
-     (N                            : Node_Id;
-      Map_Root                     : Flow_Id;
-      Map_Type                     : Entity_Id;
-      Scope                        : Flow_Scope;
-      Fold_Functions               : Boolean;
-      Use_Computed_Globals         : Boolean;
-      Expand_Synthesized_Constants : Boolean;
-      Extensions_Irrelevant        : Boolean := True)
+     (N                       : Node_Id;
+      Map_Root                : Flow_Id;
+      Map_Type                : Entity_Id;
+      Scope                   : Flow_Scope;
+      Fold_Functions          : Boolean;
+      Use_Computed_Globals    : Boolean;
+      Expand_Internal_Objects : Boolean;
+      Extensions_Irrelevant   : Boolean := True)
       return Flow_Id_Maps.Map
    with Pre => Ekind (Get_Type (N, Scope)) in Record_Kind | Private_Kind
                  and then Map_Root.Kind in Direct_Mapping | Record_Field
@@ -475,8 +475,7 @@ is
    --     Tmp.F.Y -> H
    --
    --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
-   --  Expand_Synthesized_Constants will be passed on to Get_Variables if
-   --  necessary.
+   --  Expand_Internal_Objects will be passed on to Get_Variables if necessary.
    --
    --  Get_Variables will be called with Reduced set to False (as this function
    --  should never be called when its True...).

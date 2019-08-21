@@ -253,7 +253,7 @@ package body Flow.Analysis is
                   end if;
                end Process;
 
-               procedure Traverse is new Traverse_Proc (Process);
+               procedure Traverse is new Traverse_More_Proc (Process);
 
             begin
                --  For packages scan the Initializes contract
@@ -347,9 +347,8 @@ package body Flow.Analysis is
                         Normal_Use);
 
       function Search_Expr (N : Node_Id) return Traverse_Result;
-      --  This function sets First_Use to the given node if it
-      --  contains the variable we're looking for. If not, we abort
-      --  the search.
+      --  Sets First_Use to the given node if it contains the variable we're
+      --  looking for. If not, we abort the search.
 
       -----------------
       -- Search_Expr --
@@ -357,32 +356,36 @@ package body Flow.Analysis is
 
       function Search_Expr (N : Node_Id) return Traverse_Result is
       begin
-         if Nkind (N) not in N_Subprogram_Call
-                           | N_Entry_Call_Statement
-                           | N_Expanded_Name
-                           | N_Identifier
-                           | N_Selected_Component
+         if Nkind (N) in N_Subprogram_Call
+                       | N_Entry_Call_Statement
+                       | N_Expanded_Name
+                       | N_Identifier
+                       | N_Selected_Component
          then
-            --  Calling Get_Variables can be very slow. Let's only do it on
-            --  nodes that actually make sense to flag up in an check/info
-            --  message from flow; i.e. nodes that describe a
-            --  variable/constant or might use a global.
-            return OK;
-         elsif Get_Variables (N,
+            if Get_Variables (N,
                               Scope                => Scope,
                               Reduced              => not Precise,
                               Assume_In_Expression => False,
                               Fold_Functions       => False,
                               Use_Computed_Globals => True).Contains (Var_Tgt)
-         then
-            First_Use := N;
-            return OK;
+            then
+               First_Use := N;
+               return OK;
+            else
+               return Skip;
+            end if;
+
+         --  Calling Get_Variables can be very slow. Let's only do it on nodes
+         --  that actually make sense to flag up in an check/info message from
+         --  flow; i.e. nodes that describe a variable/constant or might use a
+         --  global.
+
          else
-            return Skip;
+            return OK;
          end if;
       end Search_Expr;
 
-      procedure Search_Expression is new Traverse_Proc (Search_Expr);
+      procedure Search_Expression is new Traverse_More_Proc (Search_Expr);
       --  This will narrow down the location of the searched for
       --  variable in the given node as far as possible.
 
@@ -667,9 +670,6 @@ package body Flow.Analysis is
    procedure Sanity_Check_Postcondition (FA   : in out Flow_Analysis_Graphs;
                                          Sane : in out Boolean)
    is
-      Vars_Used  : Flow_Id_Sets.Set;
-      Vars_Known : Flow_Id_Sets.Set;
-
    begin
       for Refined in Boolean loop
          declare
@@ -695,18 +695,30 @@ package body Flow.Analysis is
                   | Kind_Package_Body => "7.1.5(11)",
                when Kind_Task         => raise Program_Error);
 
+            Vars_Used  : Flow_Id_Sets.Set;
+            Vars_Known : Flow_Id_Sets.Set;
+
          begin
             if Refined then
                Vars_Known := To_Entire_Variables (FA.All_Vars);
+               --  Copy all variables introduced into the flow graph, i.e.
+               --  globals, formals and implicit 'Result (for functions).
+               --  Note: we also copy local objects, which is unnecessary but
+               --  harmless, because they can't be referenced in Post anyway.
+
             else
                case FA.Kind is
                   when Kind_Subprogram =>
                      --  We need to assemble the variables known from the spec:
-                     --  these are parameters (both explicit and implicit) and
-                     --  globals.
+                     --  parameters (both explicit and implicit), globals and
+                     --  the implicit 'Result (for functions).
 
                      Vars_Known :=
                        To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
+
+                     if Ekind (FA.Spec_Entity) = E_Function then
+                        Vars_Known.Insert (Direct_Mapping_Id (FA.Spec_Entity));
+                     end if;
 
                      declare
                         Globals : Global_Flow_Ids;
@@ -756,7 +768,6 @@ package body Flow.Analysis is
                                                 then FA.B_Scope
                                                 else FA.S_Scope),
                        Fold_Functions       => False,
-                       Reduced              => True,
                        Use_Computed_Globals => True));
 
                for Var of Vars_Used loop
@@ -781,7 +792,7 @@ package body Flow.Analysis is
                                                                 FA.B_Scope)
                   then
 
-                     --  To check an initial_condition aspect, we make sure
+                     --  To check an Initial_Condition aspect, we make sure
                      --  that all variables mentioned are also mentioned in
                      --  an initializes aspect.
 
@@ -843,12 +854,40 @@ package body Flow.Analysis is
       --  ??? would be better to have those symmetric, but even better, we
       --  should reuse more code with Find_Ineffective_Imports_...
 
+      function Is_In_Access_Parameter (E : Entity_Id) return Boolean;
+      --  Returns True iff E is a formal parameter of mode IN with a named
+      --  access type. Such parameters appear as exports (except if they are
+      --  access-to-constant) and they can be written, but they are typically
+      --  used without being written and then we suppress the warning.
+
       function Is_Or_Belongs_To_Concurrent_Object
         (F : Flow_Id)
          return Boolean
       with Pre => F.Kind in Direct_Mapping | Record_Field;
       --  @param F is the Flow_Id that we want to check
       --  @return True iff F is or belongs to a concurrent object
+
+      ----------------------------
+      -- Is_In_Access_Parameter --
+      ----------------------------
+
+      function Is_In_Access_Parameter (E : Entity_Id) return Boolean is
+      begin
+         if Ekind (E) = E_In_Parameter then
+            declare
+               Typ : constant Entity_Id := Get_Type (E, FA.B_Scope);
+
+            begin
+               --  Access constant types never appear as exports
+               pragma Assert (not Is_Access_Constant (Typ));
+
+               return Is_Access_Type (Typ)
+                 and then not Is_Anonymous_Access_Type (Typ);
+            end;
+         else
+            return False;
+         end if;
+      end Is_In_Access_Parameter;
 
       ----------------------------------------
       -- Is_Or_Belongs_To_Concurrent_Object --
@@ -880,7 +919,7 @@ package body Flow.Analysis is
          begin
             if F_Final.Variant = Final_Value
               and then A_Final.Is_Export
-              and then F_Final.Kind /= Synthetic_Null_Export
+              and then not Synthetic (F_Final)
             then
 
                --  We have a final use vertex which is an export that has
@@ -977,6 +1016,9 @@ package body Flow.Analysis is
                            Is_Or_Belongs_To_Concurrent_Object (F_Final)
                              or else
                            Is_Param_Of_Null_Subp_Of_Generic
+                             (Get_Direct_Mapping_Id (F_Final))
+                             or else
+                           Is_In_Access_Parameter
                              (Get_Direct_Mapping_Id (F_Final)))
                then
                   null;
@@ -1144,7 +1186,7 @@ package body Flow.Analysis is
                Suppressed.Union (To_Entire_Variables (Atr.Variables_Read));
 
                if Var.Variant = Initial_Value
-                 and then Var.Kind /= Synthetic_Null_Export
+                 and then not Synthetic (Var)
                then
                   declare
                      Entire_Var : constant Flow_Id :=
@@ -1351,9 +1393,6 @@ package body Flow.Analysis is
                   --  here; also, we do not warn for ineffective declarations
                   --  of constants in wrapper packages of generic subprograms.
                   --  ??? maybe we want a separate check for them.
-                  null;
-               elsif Atr.Mode = Mode_Proof then
-                  --  Proof_Ins are never ineffective imports, for now
                   null;
                elsif Atr.Is_Global then
                   if FA.Kind = Kind_Subprogram
@@ -1988,10 +2027,7 @@ package body Flow.Analysis is
                  not Defines_Async_Reader_Var (V) and then
 
                  --  Suppression for elaboration of nested packages
-                 not Is_Package_Elaboration (V) and then
-
-                 --  Suppression for ghost entities
-                 not Is_Ghost_Entity (FA.Spec_Entity)
+                 not Is_Package_Elaboration (V)
 
                then
                   declare
@@ -4709,7 +4745,7 @@ package body Flow.Analysis is
       end Check_Prefix;
 
       procedure Check_Prefix_Of_Tick_Old is new
-        Traverse_Proc (Process => Check_Prefix);
+        Traverse_More_Proc (Process => Check_Prefix);
 
       Postconditions : Node_Lists.List;
 

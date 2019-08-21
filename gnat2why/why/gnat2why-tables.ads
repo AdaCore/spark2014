@@ -158,8 +158,7 @@ package Gnat2Why.Tables is
    function Search_Component_In_Type (Rec, Comp : Entity_Id) return Entity_Id
    with
      Pre => Retysp_Kind (Rec) in Private_Kind | Record_Kind | Concurrent_Kind
-     and Ekind (Comp) in
-     E_Discriminant | E_Component | Type_Kind | E_Variable;
+     and Ekind (Comp) in E_Discriminant | E_Component | Type_Kind;
    --  @param Rec is a record type or a protected type
    --  @param Comp component of the record type or of one of its ancestors
    --  @return the corresponding component stored in Rec's component

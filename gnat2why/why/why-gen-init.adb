@@ -31,6 +31,7 @@ with VC_Kinds;                 use VC_Kinds;
 with Why.Atree.Accessors;      use Why.Atree.Accessors;
 with Why.Atree.Builders;       use Why.Atree.Builders;
 with Why.Atree.Modules;        use Why.Atree.Modules;
+with Why.Conversions;          use Why.Conversions;
 with Why.Gen.Arrays;           use Why.Gen.Arrays;
 with Why.Gen.Binders;          use Why.Gen.Binders;
 with Why.Gen.Decl;             use Why.Gen.Decl;
@@ -39,6 +40,7 @@ with Why.Gen.Names;            use Why.Gen.Names;
 with Why.Gen.Preds;            use Why.Gen.Preds;
 with Why.Gen.Progs;            use Why.Gen.Progs;
 with Why.Gen.Records;          use Why.Gen.Records;
+with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Inter;                use Why.Inter;
 
 package body Why.Gen.Init is
@@ -455,10 +457,9 @@ package body Why.Gen.Init is
    ------------------------------
 
    function Reconstruct_Init_Wrapper
-     (Ada_Node  : Node_Id := Empty;
-      Ty        : Entity_Id;
-      Value     : W_Expr_Id;
-      Init_Attr : W_Expr_Id := +True_Term)
+     (Ada_Node : Node_Id := Empty;
+      Ty       : Entity_Id;
+      Value    : W_Expr_Id)
       return W_Expr_Id
    is
    begin
@@ -475,7 +476,7 @@ package body Why.Gen.Init is
                2 => New_Field_Association
                  (Domain => EW_Term,
                   Field  => E_Symb (Ty, WNE_Attr_Init),
-                  Value  => Init_Attr)),
+                  Value  => +True_Term)),
             Typ          => EW_Init_Wrapper (Ty, EW_Abstract));
       end if;
    end Reconstruct_Init_Wrapper;

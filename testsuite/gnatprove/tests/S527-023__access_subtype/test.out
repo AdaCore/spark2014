@@ -1,0 +1,5 @@
+p.ads:12:32: allocators in interfering context is not allowed in SPARK
+p.ads:12:32: allocators in interfering context is not allowed in SPARK
+p.ads:12:32: violation of pragma SPARK_Mode at line 1
+p.ads:12:32: violation of pragma SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

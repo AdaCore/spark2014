@@ -1,0 +1,5 @@
+test.adb:6:22: info: assertion proved (Trivial: 2 VC)
+test.adb:6:67: warning: unreachable branch (CVC4: 1 VC)
+test.adb:8:10: info: assertion proved (CVC4: 1 VC)
+test.ads:15:14: warning: subprogram "Test" has no effect
+test.ads:16:87: warning: unreachable branch (CVC4: 1 VC)

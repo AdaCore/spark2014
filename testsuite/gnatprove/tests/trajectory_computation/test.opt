@@ -1,3 +1,2 @@
-Darwin SKIP platform diffs and no CodePeer integration on Darwin
 ALL TIMING
 community SKIP codepeer not supported in community

@@ -22,8 +22,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Characters.Handling;               use Ada.Characters.Handling;
-with Ada.Strings.Unbounded;                 use Ada.Strings.Unbounded;
+with Ada.Characters.Handling;   use Ada.Characters.Handling;
+with Ada.Containers.Indefinite_Vectors;
+with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
 
 with Assumption_Types;          use Assumption_Types;
@@ -58,6 +59,12 @@ package body Flow_Error_Messages is
 
    Flow_Msgs_Set : String_Sets.Set;
    --  Container with flow-related messages; used to prevent duplicate messages
+
+   package Session_File_Maps is new Ada.Containers.Indefinite_Vectors
+     (Index_Type => Session_Dir_ID, Element_Type => String, "=" => "=");
+
+   Session_File_Map : Session_File_Maps.Vector;
+   --  The list of session files that belong to this gnat2why invocation
 
    function Get_Explanation (N : Node_Id; Tag : VC_Kind) return String;
    --  @param N node associated to an unproved check
@@ -119,6 +126,7 @@ package body Flow_Error_Messages is
       Tracefile  : String := "";
       Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree : JSON_Value;
+      SD_Id      : Session_Dir_Base_ID := No_Session_Dir;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
@@ -587,6 +595,7 @@ package body Flow_Error_Messages is
       Editor_Cmd  : String;
       E           : Entity_Id;
       How_Proved  : Prover_Category;
+      SD_Id       : Session_Dir_Base_ID;
       Stats       : Prover_Stat_Maps.Map;
       Place_First : Boolean)
    is
@@ -711,6 +720,7 @@ package body Flow_Error_Messages is
          Tracefile   => Tracefile,
          Cntexmp     => Pretty_Cntexmp,
          Check_Tree  => Check_Tree,
+         SD_Id       => SD_Id,
          VC_File     => VC_File,
          VC_Loc      => VC_Slc,
          How_Proved  => How_Proved,
@@ -1165,15 +1175,10 @@ package body Flow_Error_Messages is
 
          elsif Nkind (N) = N_Assignment_Statement then
             declare
-               --  If the target of the assignment has a pointer dereference,
-               --  it does not have an enclosing object. Possibly change that
-               --  to get the root object in some cases of dereferences.
-
-               V : constant Entity_Id := Get_Enclosing_Object (Name (N));
+               V : constant Entity_Id :=
+                 SPARK_Atree.Get_Enclosing_Object (Name (N));
             begin
-               if Present (V) then
-                  Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
-               end if;
+               Vars := Flow_Id_Sets.To_Set (Direct_Mapping_Id (V));
             end;
 
          --  As Get_Variables_For_Proof only apply to expressions, we do not
@@ -1205,7 +1210,7 @@ package body Flow_Error_Messages is
             else OK);
 
          function Check_Function_Result is
-           new Traverse_Func (Is_Function_Result);
+           new Traverse_More_Func (Is_Function_Result);
 
       --  Start of processing for Has_Attribute_Result
 
@@ -1272,7 +1277,7 @@ package body Flow_Error_Messages is
             return OK;
          end Is_Post_State;
 
-         function Find_Post_State is new Traverse_Func (Is_Post_State);
+         function Find_Post_State is new Traverse_More_Func (Is_Post_State);
 
       --  Start of processing for Has_Post_State
 
@@ -1886,6 +1891,22 @@ package body Flow_Error_Messages is
 
    function Get_Proof_JSON return JSON_Array is (Proof_Msgs);
 
+   --------------------------
+   -- Get_Session_Map_JSON --
+   --------------------------
+
+   function Get_Session_Map_JSON return JSON_Value is
+      Value : constant JSON_Value := Create_Object;
+   begin
+      for Key in Session_File_Map.First_Index .. Session_File_Map.Last_Index
+      loop
+         Set_Field (Value,
+                    Session_Dir_ID'Image (Key),
+                    Session_File_Map (Key));
+      end loop;
+      return Value;
+   end Get_Session_Map_JSON;
+
    -----------------------
    -- Is_Specified_Line --
    -----------------------
@@ -1961,6 +1982,7 @@ package body Flow_Error_Messages is
       Tracefile  : String := "";
       Cntexmp    : Cntexample_File_Maps.Map := Cntexample_File_Maps.Empty_Map;
       Check_Tree : JSON_Value;
+      SD_Id      : Session_Dir_Base_ID := No_Session_Dir;
       VC_File    : String := "";
       VC_Loc     : Source_Ptr := No_Location;
       Stats      : Prover_Stat_Maps.Map := Prover_Stat_Maps.Empty_Map;
@@ -2028,6 +2050,10 @@ package body Flow_Error_Messages is
          Set_Field (Value, "msg_id", Integer (Msg_Id));
       end if;
 
+      if SD_Id /= No_Session_Dir then
+         Set_Field (Value, "session_dir", Integer (SD_Id));
+      end if;
+
       Set_Field (Value, "how_proved", To_JSON (How_Proved));
 
       if not Stats.Is_Empty then
@@ -2068,6 +2094,16 @@ package body Flow_Error_Messages is
       Error_Msg (Actual_Msg, Slc);
       return Id;
    end Print_Regular_Msg;
+
+   ---------------------------
+   -- Register_Session_File --
+   ---------------------------
+
+   function Register_Session_Dir (S : String) return Session_Dir_ID is
+   begin
+      Session_File_Map.Append (S);
+      return Session_File_Map.Last_Index;
+   end Register_Session_Dir;
 
    ----------------
    -- Substitute --

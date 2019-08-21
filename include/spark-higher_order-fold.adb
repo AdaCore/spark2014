@@ -159,6 +159,10 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
                  (K - 1, A1'Last (2))), K, A1'First (2)));
             for L in A1'Range (2) loop
                pragma Loop_Invariant
+                 (if L > A1'First (2) then
+                       In_Range (A2, (Fold_Count.Acc.Fold (A2, 0)
+                    (K, L - 1)), K, L));
+               pragma Loop_Invariant
                  (if K < I or else (K = I and then L < J) then
                        Fold_Count.Acc.Fold (A1, 0) (K, L) =
                        Fold_Count.Acc.Fold (A2, 0) (K, L)

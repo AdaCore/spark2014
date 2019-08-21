@@ -1,3 +1,2 @@
-Darwin SKIP too slow on Darwin (OA05-034)
-NT SKIP too slow on Darwin (PA06-025)
+NT SKIP too slow on Windows (PA06-025)
 ALL RLIMIT 1500

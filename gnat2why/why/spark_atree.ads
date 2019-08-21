@@ -377,6 +377,12 @@ package SPARK_Atree is
    with Pre => Nkind (Expr) in Sinfo.N_Subexpr;
    --  Traverse expression to find references to Old and Loop_Entry attributes
 
+   function Expression_Contains_Valid_Or_Valid_Scalars
+     (Expr : Node_Id) return Boolean
+   with Pre => Nkind (Expr) in Sinfo.N_Subexpr;
+   --  Traverse expression to find references to Valid and Valid_Scalars
+   --  attributes.
+
    function Expression_Contains_Primitives_Calls_Of
      (Expr : Node_Id;
       Typ  : Entity_Id) return Boolean
@@ -417,6 +423,9 @@ package SPARK_Atree is
 
    function Get_Enclosing_Object (N : Node_Id) return Entity_Id with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Copied from Sem_Util.Get_Enclosing_Object except that it does not
+   --  return Empty on dereferences of access objects.
+   --  It can only return Empty when called on expressions which are not paths.
 
    function Get_Pragma_Arg (N : Node_Id) return Node_Id renames
      Sinfo.Get_Pragma_Arg;

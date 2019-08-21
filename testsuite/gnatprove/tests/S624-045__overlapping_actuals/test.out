@@ -1,0 +1,2 @@
+r.adb:20:10: writable actual for "X" overlaps with actual for "Y"
+gnatprove: error during generation of Global contracts

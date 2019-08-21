@@ -26,9 +26,7 @@
 with Gnat2Why.Util;            use Gnat2Why.Util;
 with SPARK_Atree.Entities;     use SPARK_Atree.Entities;
 with Types;                    use Types;
-with Why.Conversions;          use Why.Conversions;
 with Why.Ids;                  use Why.Ids;
-with Why.Gen.Terms;            use Why.Gen.Terms;
 with Why.Sinfo;                use Why.Sinfo;
 
 package Why.Gen.Init is
@@ -68,10 +66,9 @@ package Why.Gen.Init is
    --  True is a type is a wrapper type
 
    function Reconstruct_Init_Wrapper
-     (Ada_Node  : Node_Id := Empty;
-      Ty        : Entity_Id;
-      Value     : W_Expr_Id;
-      Init_Attr : W_Expr_Id := +True_Term)
+     (Ada_Node : Node_Id := Empty;
+      Ty       : Entity_Id;
+      Value    : W_Expr_Id)
       return W_Expr_Id;
    --  From a value of type EW_Abstract (Ty), reconstruct the corresponding
    --  wrapper if any.

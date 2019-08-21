@@ -9,7 +9,7 @@
 <path name=".."/>
 <path name="gnatprove"/>
 <path name="cert-id.mlw"/>
-<theory name="Cert__id__contentst__default_checks" proved="true">
+<theory name="Ada___cert__id__contentst__default_checks" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -43,7 +43,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__thesubject__subprogram_def" proved="true">
+<theory name="Ada___cert__id__thesubject__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -57,7 +57,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__thepublickey__subprogram_def" proved="true">
+<theory name="Ada___cert__id__thepublickey__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -71,7 +71,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__extract__subprogram_def" proved="true">
+<theory name="Ada___cert__id__extract__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -192,7 +192,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__clear__subprogram_def" proved="true">
+<theory name="Ada___cert__id__clear__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">
@@ -206,7 +206,7 @@
  </transf>
  </goal>
 </theory>
-<theory name="Cert__id__cert_id_to_cert__subprogram_def" proved="true">
+<theory name="Ada___cert__id__cert_id_to_cert__subprogram_def" proved="true">
  <goal name="VC def" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="postcondition" proved="true">

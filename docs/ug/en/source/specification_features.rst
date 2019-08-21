@@ -57,6 +57,37 @@ unsynchronized modifications (see :ref:`Tasks and Data Races`).
       Legal;
    end CAE;
 
+Aspect ``No_Caching``
+---------------------
+
+Aspect ``No_Caching`` can be specified for a volatile variable to indicate that
+this variable can be analyzed as non-volatile by |GNATprove|. This is typically
+used to hold the value of local variables guarding the access to some critical
+section of the code. To defend against fault injection attacks, a common
+practice is to duplicate the test guarding the critical section, and the
+variable is marked as volatile to prevent the compiler from optimizing out the
+duplicate tests. For example:
+
+.. code-block:: ada
+
+    Cond : Boolean with Volatile, No_Caching := Some_Computation;
+
+    if not Cond then
+        return;
+    end if;
+
+    if not Cond then
+        return;
+    end if;
+
+    if Cond then
+        -- here do some critical work
+    end if;
+
+Without ``No_Caching``, the volatile variable is assumed to be used for
+:ref:`Interfaces to the Physical World`, |GNATprove| analyses it specially and
+one cannot declare it inside a subprogram.
+
 .. _Attribute Old:
 
 Attribute ``Old``
@@ -863,7 +894,7 @@ This can be done using a global ghost variable. This can be used in particular
 to split the specification of a complex procedure into smaller parts:
 
 .. code-block:: ada
-        
+
    X_Interm : T with Ghost;
 
    procedure Do_Two_Thing (X : in out T) with
@@ -875,7 +906,7 @@ to split the specification of a complex procedure into smaller parts:
      Do_Something (X);
      pragma Assert (First_Thing_Done (X_Init, X));
      X_Interm := X;
- 
+
      Do_Something_Else (X);
      pragma Assert (Second_Thing_Done (X_Interm, X));
    end Do_Two_Things;
@@ -888,19 +919,19 @@ to the other:
 .. code-block:: ada
 
   Perm : Permutation with Ghost;
- 
+
   procedure Permutation_Sort (A : Nat_Array) with
     Post => A = Apply_Perm (Perm, A'Old)
   is
   begin
     --  Initalize Perm with the identity
     Perm := Identity_Perm;
-    
+
     for Current in A'First .. A'Last - 1 loop
       Smallest := Index_Of_Minimum_Value (A, Current, A'Last);
       if Smallest /= Current then
         Swap (A, Current, Smallest);
-    
+
         --  Update Perm each time we permute two elements in A
         Permute (Perm, Current, Smallest);
       end if;
@@ -1091,7 +1122,7 @@ as a two state automaton. The mailbox can either be full, in which case
 is ``Send`` that can be called and not ``Receive``. To express this property, we
 can define a ghost global variable of a ghost enumeration type to hold the
 state of the automaton:
-    
+
 .. code-block:: ada
 
    type Mailbox_Status_Kind is (Empty, Full) with Ghost;
@@ -1100,7 +1131,7 @@ state of the automaton:
    procedure Receive (X : out Message) with
      Pre  => Mailbox_Status = Full,
      Post => Mailbox_Status = Empty;
-     
+
    procedure Send (X : Message) with
      Pre  => Mailbox_Status = Empty,
      Post => Mailbox_Status = Full;
@@ -1151,17 +1182,17 @@ buffer. A ghost variable ``Buffer_Model`` is used to write the specification of
 the ``Enqueue`` procedure:
 
 .. code-block:: ada
-		
+
   package Ring_Buffer is
     function Get_Model return Nat_Array with Ghost;
-    
+
     procedure Enqueue (E : Natural) with
       Post => Get_Model = E & Get_Model'Old (1 .. Max – 1);
   private
     Buffer_Content : Nat_Array;
     Buffer_Top     : Natural;
     Buffer_Model   : Nat_Array with Ghost;
-    
+
     function Get_Model return Nat_Array is (Buffer_Model);
   end Ring_Buffer;
 
@@ -1169,11 +1200,11 @@ Then, just like for models of control flow, an invariant should be supplied to
 link the regular data structure to its model:
 
 .. code-block:: ada
-		
+
   package Ring_Buffer is
     function Get_Model return Nat_Array with Ghost;
     function Invariant return Boolean with Ghost;
-    
+
     procedure Enqueue (E : Natural) with
       Pre  => Invariant,
       Post => Invariant and then Get_Model = E & Get_Model'Old (1 .. Max – 1);
@@ -1181,7 +1212,7 @@ link the regular data structure to its model:
     Buffer_Content : Nat_Array;
     Buffer_Top     : Natural;
     Buffer_Model   : Nat_Array with Ghost;
-    
+
     function Get_Model return Nat_Array is (Buffer_Model);
     function Invariant return Boolean is
       (Buffer_Model = Buffer_Content (Buffer_Top .. Max)
@@ -1193,17 +1224,17 @@ compute a model for objects of the data structure type, and the invariant can
 be stated as a postcondition of this function:
 
 .. code-block:: ada
-		
+
   package Ring_Buffer is
     type Buffer_Type is private;
     subtype Model_Type is Nat_Array with Ghost;
-    
+
     function Invariant (X : Buffer_Type; M : Model_Type) return Boolean with
       Ghost;
     function Get_Model (X : Buffer_Type) return Model_Type with
       Ghost,
       Post => Invariant (X, Get_Model'Result);
-    
+
     procedure Enqueue (X : in out Buffer_Type; E : Natural) with
       Post => Get_Model (X) = E & Get_Model (X)'Old (1 .. Max – 1);
   private
@@ -1215,7 +1246,7 @@ be stated as a postcondition of this function:
 
 More complex examples of models of data structure can be found in the
 :ref:`Formal Containers Library`.
-  
+
 .. _Removal of Ghost Code:
 
 Removal of Ghost Code

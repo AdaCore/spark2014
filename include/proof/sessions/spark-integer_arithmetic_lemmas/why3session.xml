@@ -4,17 +4,19 @@
 <why3session shape_version="6">
 <prover id="0" name="Coq" version="8.5pl2" timelimit="0" steplimit="0" memlimit="0"/>
 <prover id="1" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
-<file>
+<file proved="true">
 <path name=".."/>
 <path name=".."/>
 <path name=".."/>
 <path name="obj"/>
 <path name="gnatprove"/>
 <path name="spark-integer_arithmetic_lemmas.mlw"/>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -22,19 +24,23 @@
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition">
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_div_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
   <proof prover="1"><result status="valid" steps="1287"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_div_is_antimonotonic__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -42,7 +48,9 @@
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition">
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="795"/></proof>
@@ -50,10 +58,12 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mod_range__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -61,7 +71,9 @@
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition">
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="13"/></proof>
@@ -72,10 +84,12 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mod_symmetry__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -83,52 +97,66 @@
   <goal name="VC def.2" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition">
+  <goal name="VC def.3" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.4" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_mod_symmetry__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="unknown" steps="121"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_mult_is_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
   <proof prover="1"><result status="valid" steps="727"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_mult_is_strictly_monotonic__pragargs__cmp.v"><result status="unknown"/></proof>
   <proof prover="1"><result status="valid" steps="455"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_protect__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.2" expl="postcondition">
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="739"/></proof>
@@ -136,25 +164,33 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_scale__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
   <goal name="VC def.0" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.2" expl="postcondition">
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.3" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="1032"/></proof>
   </goal>
-  <goal name="VC def.4" expl="postcondition">
+  <goal name="VC def.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.5" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="842"/></proof>
   </goal>
-  <goal name="VC def.6" expl="postcondition">
+  <goal name="VC def.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.7" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
@@ -168,15 +204,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_div_is_ident__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_then_div_is_ident__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.2" expl="postcondition">
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="2028"/></proof>
@@ -184,15 +224,19 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_mult_then_mod_is_zero__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.1" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
-  <goal name="VC def.2" expl="postcondition">
+  <goal name="VC def.2" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.3" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="629"/></proof>
@@ -200,29 +244,37 @@
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic__pragargs__cmp.v"><result status="valid"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
  </transf>
  </goal>
 </theory>
-<theory name="Spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic_2__subprogram_def">
- <goal name="VC def" expl="VC for def">
- <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition">
+<theory name="Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic_2__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
-  <goal name="VC def.1" expl="postcondition">
+  <goal name="VC def.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
   </goal>
   <goal name="VC def.2" expl="postcondition" proved="true">
-  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic_2__pragargs__cmp.v"><result status="unknown"/></proof>
+  <proof prover="0" edited="../../Coq/spark-integer_arithmetic_lemmas/Ada___spark__integer_arithmetic_lemmas__lemma_exp_is_monotonic_2__pragargs__cmp.v"><result status="unknown"/></proof>
   <proof prover="1"><result status="valid" steps="52"/></proof>
   </goal>
  </transf>

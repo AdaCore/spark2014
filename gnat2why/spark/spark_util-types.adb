@@ -617,6 +617,13 @@ package body SPARK_Util.Types is
       and then Expr_Value (Low_Bound (Scalar_Range (T))) >
           Expr_Value (High_Bound (Scalar_Range (T))));
 
+   ----------------------
+   -- Is_Standard_Type --
+   ----------------------
+
+   function Is_Standard_Type (E : Entity_Id) return Boolean is
+     (for some S_Type in S_Types => Standard_Entity (S_Type) = E);
+
    ------------------------------
    -- Is_Standard_Boolean_Type --
    ------------------------------

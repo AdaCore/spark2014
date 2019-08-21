@@ -1,0 +1,2 @@
+repro.adb:1:18: info: initialization of "X" proved
+repro.adb:3:04: warning: initialization of "S" has no effect

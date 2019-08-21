@@ -86,7 +86,8 @@ gnatprove advanced switches:
  --proof-warnings     Issue warnings by proof
  --proof=g[:l]        Set the proof modes for generation of formulas
                       (g=per_check*, per_path, progressive) (l=lazy*, all)
- --prover=s[,s]*      Use given provers (s=altergo, cvc4*, z3, ...)
+ --prover=s[,s]*      Use given provers (s=altergo, cvc4*, z3, ..., or s=all
+                      for using all built-in provers)
  --RTS=dir            Specify the Ada runtime name/location
  --steps=nnn          Set the maximum number of proof steps (prover-specific)
                       Use value 0 for no steps limit.

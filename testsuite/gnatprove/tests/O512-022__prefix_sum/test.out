@@ -15,9 +15,9 @@ prefixsum.adb:39:15: info: loop invariant initialization proved (CVC4: 6 VC; Tri
 prefixsum.adb:39:26: info: division check proved (CVC4: 2 VC)
 prefixsum.adb:41:56: info: range check proved (CVC4: 2 VC)
 prefixsum.adb:43:57: info: range check proved (CVC4: 2 VC)
-prefixsum.adb:45:15: medium: loop invariant might fail after first iteration, cannot prove (Left + 1) mod (Space * 2) = Space
 prefixsum.adb:45:26: info: division check proved (CVC4: 2 VC)
 prefixsum.adb:51:37: info: division check proved (CVC4: 2 VC)
+prefixsum.adb:53:21: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum.adb:53:64: info: index check proved (CVC4: 3 VC; Z3: 1 VC)
 prefixsum.adb:56:13: info: loop variant proved (CVC4: 1 VC)
 prefixsum.adb:58:31: info: overflow check proved (CVC4: 1 VC)
@@ -98,10 +98,10 @@ prefixsum_expanded.adb:12:14: info: loop invariant preservation proved (CVC4: 2 
 prefixsum_expanded.adb:12:40: info: range check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:52:10: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:58:15: info: loop invariant initialization proved (CVC4: 6 VC; Trivial: 1 VC; Z3: 1 VC)
-prefixsum_expanded.adb:58:15: info: loop invariant preservation proved (CVC4: 3 VC; Trivial: 1 VC; Z3: 4 VC)
 prefixsum_expanded.adb:58:26: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:60:56: info: range check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:62:57: info: range check proved (CVC4: 2 VC)
+prefixsum_expanded.adb:64:15: medium: loop invariant might fail after first iteration, cannot prove (Left + 1) mod (Space * 2) = Space
 prefixsum_expanded.adb:64:26: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:70:37: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:72:64: info: index check proved (CVC4: 3 VC; Z3: 1 VC)
@@ -134,10 +134,10 @@ prefixsum_expanded.adb:163:29: info: overflow check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:163:29: info: range check proved (CVC4: 1 VC)
 prefixsum_expanded.adb:166:15: info: loop invariant initialization proved (CVC4: 6 VC; Trivial: 1 VC)
 prefixsum_expanded.adb:168:31: info: division check proved (CVC4: 2 VC)
-prefixsum_expanded.adb:169:23: medium: loop invariant might fail after first iteration, cannot prove A (K) = A'Loop_Entry (K) + A'Loop_Entry (K - Space)
 prefixsum_expanded.adb:169:66: info: index check proved (CVC4: 4 VC)
 prefixsum_expanded.adb:170:34: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:171:47: info: index check proved (CVC4: 4 VC)
+prefixsum_expanded.adb:177:15: medium: loop invariant might fail after first iteration, cannot prove (Right + 1) mod (Space * 2) = 0
 prefixsum_expanded.adb:177:27: info: division check proved (CVC4: 2 VC)
 prefixsum_expanded.adb:181:13: info: loop variant proved (CVC4: 1 VC)
 prefixsum_expanded.adb:183:32: info: overflow check proved (CVC4: 1 VC)
@@ -173,10 +173,10 @@ prefixsum_expanded.ads:55:08: info: postcondition proved (CVC4: 8 VC)
 prefixsum_general.adb:5:07: info: initialization of "Left" proved
 prefixsum_general.adb:6:07: info: initialization of "Right" proved
 prefixsum_general.adb:13:13: info: loop invariant initialization proved (CVC4: 9 VC; Trivial: 2 VC)
+prefixsum_general.adb:13:13: medium: loop invariant might fail after first iteration, cannot prove A'Length mod Space = 0
 prefixsum_general.adb:13:22: info: division check proved (CVC4: 2 VC)
 prefixsum_general.adb:21:24: info: division check proved (CVC4: 2 VC)
 prefixsum_general.adb:30:27: info: division check proved (CVC4: 2 VC)
-prefixsum_general.adb:31:17: medium: loop invariant might fail after first iteration, cannot prove A (K) = Summation (A'Loop_Entry, K + 1 - Space, K)
 prefixsum_general.adb:31:25: info: precondition proved (CVC4: 2 VC)
 prefixsum_general.adb:31:56: info: range check proved (CVC4: 1 VC; Z3: 1 VC)
 prefixsum_general.adb:32:10: info: loop variant proved (CVC4: 1 VC)
@@ -232,10 +232,10 @@ prefixsum_general.adb:97:32: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:97:32: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:97:40: info: overflow check proved (CVC4: 1 VC)
 prefixsum_general.adb:99:25: info: division check proved (CVC4: 1 VC)
+prefixsum_general.adb:108:16: info: function contract might not be available on recursive calls
 prefixsum_general.adb:108:16: medium: subprogram "Rec_Summation" might not terminate, terminating annotation could be incorrect
 prefixsum_general.adb:114:17: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 prefixsum_general.adb:123:27: medium: overflow check might fail [possible explanation: precondition of subprogram at line 108 should mention A]
-prefixsum_general.adb:123:29: info: function contract not available for proof ("Rec_Summation" is recursive)
 prefixsum_general.adb:123:29: info: precondition proved (CVC4: 1 VC)
 prefixsum_general.adb:123:66: info: range check proved (CVC4: 1 VC)
 prefixsum_general.adb:126:14: info: precondition proved (CVC4: 1 VC)

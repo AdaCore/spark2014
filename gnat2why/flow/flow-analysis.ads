@@ -50,8 +50,8 @@ package Flow.Analysis is
                FA.Kind in Kind_Subprogram
                         | Kind_Package_Body
                         | Kind_Package;
-   --  Check post, refined_post and initializes for use of variables we have
-   --  not introduced through a global or parameter.
+   --  Check Post, Refined_Post and Initial_Condition for use of variables we
+   --  have not introduced through a global or parameter.
    --
    --  Complexity is O(N)
 

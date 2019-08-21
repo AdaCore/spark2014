@@ -649,10 +649,7 @@ package body Gnat2Why.Tables is
    is
       Is_Duplicate : Boolean;
    begin
-      if Ekind (Comp) = E_In_Parameter then
-
-         return Search_Component_By_Name (Rec, Comp);
-      elsif Ekind (Comp) = E_Discriminant then
+      if Ekind (Comp) = E_Discriminant then
          return Root_Record_Component (Comp);
       else
          pragma Assert (Ekind (Comp) in E_Component | Type_Kind);

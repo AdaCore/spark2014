@@ -47,7 +47,7 @@ stack_external_prover.ads:42:21: medium: postcondition might fail, cannot prove 
 stack_external_prover.ads:42:39: medium: overflow check might fail (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
 stack_external_prover.ads:45:19: info: initialization of "X" proved
 stack_external_prover.ads:46:11: info: data dependencies proved
-stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1
+stack_external_prover.ads:48:21: medium: postcondition might fail, cannot prove Count = Count'Old - 1 (e.g. when My_Stack = (S => (others => 0), Pointer => 0))
 stack_external_prover.ads:51:11: info: data dependencies proved
 stack_external_prover.ads:53:21: medium: postcondition might fail, cannot prove Count = Count'old (e.g. when My_Stack = (S => (2 => 1, others => 0), Pointer => 2))
 stack_external_prover.ads:54:62: info: range check proved (CVC4: 1 VC)

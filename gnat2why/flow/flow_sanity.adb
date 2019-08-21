@@ -175,6 +175,12 @@ package body Flow_Sanity is
              or
            To_Flow_Id_Set (Get_Formals (E));
 
+         --  For functions we also have the implicit 'Result object
+
+         if Ekind (E) = E_Function then
+            Proof_Context.Insert (Direct_Mapping_Id (E));
+         end if;
+
          if Is_Expression_Function (E)
            or else (Ekind (E) = E_Function
                     and then Present (Get_Expression_Function (E))

@@ -269,6 +269,10 @@ package SPARK_Util.Types is
    --  @return True if we can determine that E is Standard_Boolean or a subtype
    --    of Standard_Boolean which also ranges over False .. True
 
+   function Is_Standard_Type (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
+   --  Returns True iff type E is declared in Standard
+
    function Needs_Default_Checks_At_Decl (E : Entity_Id) return Boolean
    with Pre => Is_Type (E);
    --  @param E type

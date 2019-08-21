@@ -5,16 +5,13 @@ number_theory.adb:9:07: info: initialization of "Temp" proved
 number_theory.adb:18:17: info: range check proved (CVC4: 2 VC)
 number_theory.adb:19:38: info: loop invariant initialization proved (CVC4: 2 VC)
 number_theory.adb:19:38: info: loop invariant preservation proved (CVC4: 1 VC; Z3: 1 VC)
-number_theory.adb:19:44: info: function contract not available for proof ("Fib" is recursive)
 number_theory.adb:19:50: info: range check proved (CVC4: 2 VC)
-number_theory.adb:19:68: info: function contract not available for proof ("Fib" is recursive)
 number_theory.adb:19:74: info: range check proved (CVC4: 2 VC)
 number_theory.adb:23:30: medium: overflow check might fail (e.g. when Old = Positive'Last and Temp = 1) [possible explanation: loop invariant at line 19 should mention Temp]
+number_theory.ads:17:13: info: function contract might not be available on recursive calls
 number_theory.ads:17:13: medium: subprogram "Fib" might not terminate, terminating annotation could be incorrect
-number_theory.ads:20:26: info: function contract not available for proof ("Fib" is recursive)
 number_theory.ads:20:32: info: range check proved (CVC4: 1 VC)
 number_theory.ads:20:37: medium: overflow check might fail (e.g. when N = 4) [possible explanation: subprogram at line 17 should mention N in a precondition]
-number_theory.ads:20:39: info: function contract not available for proof ("Fib" is recursive)
 number_theory.ads:20:45: info: range check proved (CVC4: 1 VC)
 number_theory.ads:23:16: medium: postcondition might fail, cannot prove Float(Fib'Result) < (1.6181**N)/2.2360 + 1.0 (e.g. when Fib'Result = 1 and N = 1)
 number_theory.ads:23:25: info: range check proved (Interval)
@@ -23,7 +20,5 @@ number_theory.ads:23:43: info: float overflow check proved (CVC4: 1 VC)
 number_theory.ads:23:47: info: division check proved (CVC4: 1 VC)
 number_theory.ads:23:47: info: float overflow check proved (Interval)
 number_theory.ads:23:55: info: float overflow check proved (Interval)
-number_theory.ads:28:19: info: postcondition proved (CVC4: 1 VC)
-number_theory.ads:28:38: info: function contract not available for proof ("Fib" is recursive)
+number_theory.ads:28:19: medium: postcondition might fail, cannot prove Fibonacci'Result = Fib(N)
 number_theory.ads:32:19: medium: postcondition might fail, cannot prove Fibonacci2'Result = Fib(N)
-number_theory.ads:32:39: info: function contract not available for proof ("Fib" is recursive)

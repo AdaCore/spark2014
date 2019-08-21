@@ -138,7 +138,9 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
-      Next_Stmt          : Node_Id := Empty)
+      First_Stmt         : Node_Id;
+      Next_Stmt          : Node_Id := Empty;
+      Last_Inv           : Node_Id := Empty)
       return W_Prog_Id;
    --  Returns the loop expression in Why
    --
@@ -162,6 +164,11 @@ package body Gnat2Why.Expr.Loops is
    --  value of the loop variant expressions to these temporary variables.
    --  Variant_Check checks both the absence of run-time errors in the loop
    --  variant, and that the loop variant makes progress.
+   --
+   --  First_Stmt is the first statement in the loop body, to help decide
+   --  whether to issue a dead code warning. Similarly, Next_Stmt is the first
+   --  statement after the loop, to help decide whether to issue a dead code
+   --  warning if control cannot reach that point.
    --
    --  See comments in Wrap_Loop's body for the actual transformation
 
@@ -424,11 +431,13 @@ package body Gnat2Why.Expr.Loops is
       High_Id         : W_Identifier_Id := Why_Empty;
 
    begin
-      --  Push a scope for the exit statements of the loop. This
-      --  scope is popped later by calling [Wrap_Loop] which calls
-      --  [Exits.Wrap_Loop_Body].
+      --  Push a scope for the exit statements of the loop. This scope is
+      --  popped later by calling Wrap_Loop which calls Exits.Wrap_Loop_Body,
+      --  in the cases where the loop is not unrolled.
 
-      Exits.Before_Start_Of_Loop;
+      if not Is_Selected_For_Loop_Unrolling (Stmt) then
+         Exits.Before_Start_Of_Loop;
+      end if;
 
       --  Add the loop index to the entity table
 
@@ -606,7 +615,11 @@ package body Gnat2Why.Expr.Loops is
                               Variant_Tmps       => Variant_Tmps,
                               Variant_Update     => Variant_Update,
                               Variant_Check      => Variant_Check,
-                              Next_Stmt          => Next_Stmt);
+                              First_Stmt         => Loop_Stmts.First_Element,
+                              Next_Stmt          => Next_Stmt,
+                              Last_Inv           =>
+                                (if Loop_Invariants.Is_Empty then Empty
+                                 else Loop_Invariants.Last_Element));
 
          --  Case of a WHILE loop
 
@@ -656,7 +669,12 @@ package body Gnat2Why.Expr.Loops is
                                  Variant_Tmps       => Variant_Tmps,
                                  Variant_Update     => Variant_Update,
                                  Variant_Check      => Variant_Check,
-                                 Next_Stmt          => Next_Stmt);
+                                 First_Stmt         =>
+                                   Loop_Stmts.First_Element,
+                                 Next_Stmt          => Next_Stmt,
+                                 Last_Inv           =>
+                                   (if Loop_Invariants.Is_Empty then Empty
+                                    else Loop_Invariants.Last_Element));
             end While_Loop;
 
          --  Case of a FOR loop
@@ -1320,7 +1338,11 @@ package body Gnat2Why.Expr.Loops is
                                Variant_Update     => Variant_Update,
                                Variant_Check      => Variant_Check,
                                Update_Stmt        => Update_Stmt,
-                               Next_Stmt          => Next_Stmt);
+                               First_Stmt         => Loop_Stmts.First_Element,
+                               Next_Stmt          => Next_Stmt,
+                               Last_Inv           =>
+                                 (if Loop_Invariants.Is_Empty then Empty
+                                  else Loop_Invariants.Last_Element));
 
                   Entire_Loop :=
                     Sequence
@@ -1705,7 +1727,7 @@ package body Gnat2Why.Expr.Loops is
 
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
 
-      Try_Body : constant W_Prog_Id :=
+      Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Expr
           (Params => Body_Params,
            Map    => Map_For_Loop_Entry (Loop_Id),
@@ -1719,19 +1741,20 @@ package body Gnat2Why.Expr.Loops is
                       else ""))),
                Repeat_Loop));
 
-      Loop_Try : constant W_Prog_Id :=
+   begin
+      Try_Body :=
         New_Try_Block
           (Prog    => Try_Body,
            Handler => (1 => New_Handler (Name => Loop_Ident,
                                          Def  => +Void)));
-   begin
+
       return Sequence
         (New_Comment
            (Comment => NID ("Translation of an unrolled Ada loop"
             & (if Sloc (Loop_Id) > 0 then
                  " from " & Build_Location_String (Sloc (Loop_Id))
               else ""))),
-         Loop_Try);
+         Try_Body);
    end Unroll_Loop;
 
    ---------------
@@ -1791,7 +1814,9 @@ package body Gnat2Why.Expr.Loops is
       Variant_Update     : W_Prog_Id;
       Variant_Check      : W_Prog_Id;
       Update_Stmt        : W_Prog_Id := Why_Empty;
-      Next_Stmt          : Node_Id := Empty)
+      First_Stmt         : Node_Id;
+      Next_Stmt          : Node_Id := Empty;
+      Last_Inv           : Node_Id := Empty)
       return W_Prog_Id
    is
       Loop_Ident : constant W_Name_Id := Loop_Exception_Name (Loop_Id);
@@ -1838,11 +1863,14 @@ package body Gnat2Why.Expr.Loops is
                    4 => Loop_Inner));
 
       Loop_Stmt : constant W_Prog_Id :=
-        New_While_Loop
-          (Ada_Node     => Loop_Id,
-           Condition    => True_Prog,
-           Invariants   => User_Invariants,
-           Loop_Content => Loop_Body);
+        +Insert_Cnt_Loc_Label
+        (Ada_Node     => (if Present (Last_Inv) then Last_Inv else Loop_Id),
+         E            => New_While_Loop
+           (Ada_Node     => Loop_Id,
+            Condition    => True_Prog,
+            Invariants   => User_Invariants,
+            Loop_Content => Loop_Body),
+         Is_Loop_Head => True);
 
       Try_Body : W_Prog_Id :=
         Bind_From_Mapping_In_Expr
@@ -1887,31 +1915,15 @@ package body Gnat2Why.Expr.Loops is
          Handler => (1 => New_Handler (Name => Loop_Ident,
                                        Def  => +Void)));
 
-      if Present (Next_Stmt)
-        --  Do not issue a check for dead code if switch --proof-warnings is
-        --  not set
-        and then Gnat2Why_Args.Proof_Warnings
-        --  or if warnings are suppressed
-        and then Opt.Warning_Mode /= Opt.Suppress
-        --  or when the next statement if an inconditional error, signaled as
-        --  either a raise statement or a pragma Assert (False).
-        and then not Is_Error_Signaling_Statement (Next_Stmt)
-      then
-         Warn_Dead_Code :=
-           +New_VC_Expr
-             (Ada_Node => Next_Stmt,
-              Expr     => +New_Identifier (Name => "absurd"),
-              Reason   => VC_Dead_Code,
-              Domain   => EW_Prog);
+      --  Possibly warn on dead code, both when entering the loop and after the
+      --  loop.
 
+      Loop_Try :=
+        Warn_On_Dead_Code (First_Stmt, Loop_Try, Generate_VCs_For_Body);
+
+      if Present (Next_Stmt) then
          Warn_Dead_Code :=
-           Sequence
-             (New_Comment
-                (Comment => NID ("Check dead code after loop"
-                 & (if Sloc (Next_Stmt) > 0 then
-                      " at " & Build_Location_String (Sloc (Next_Stmt))
-                   else ""))),
-              New_Ignore (Prog => Warn_Dead_Code));
+           Warn_On_Dead_Code (Next_Stmt, +Void, Generate_VCs_For_Body);
       end if;
 
       return

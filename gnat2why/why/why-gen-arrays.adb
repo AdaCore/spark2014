@@ -752,6 +752,40 @@ package body Why.Gen.Arrays is
                  Left   => A_Comp,
                  Right  => B_Comp,
                  Domain => EW_Pred);
+
+            if Needs_Init_Wrapper_Type (To_Comp) then
+               declare
+                  A_Init    : constant W_Expr_Id :=
+                    (if Needs_Init_Wrapper_Type (From_Comp)
+                     then New_Init_Attribute_Access
+                       (E    => From_Comp,
+                        Name => New_Call
+                          (Domain  => EW_Term,
+                           Name    => From_Symb.Get,
+                           Binders => A_Binder & Indexes,
+                           Typ     =>
+                             EW_Init_Wrapper (From_Comp, EW_Abstract)))
+                     else +True_Term);
+                  B_Init    : constant W_Expr_Id :=
+                    New_Init_Attribute_Access
+                      (E    => To_Comp,
+                       Name => New_Call
+                         (Domain  => EW_Term,
+                          Name    => To_Symb.Get,
+                          Binders => B_Binder & Indexes,
+                          Typ     => EW_Init_Wrapper (To_Comp, EW_Abstract)));
+               begin
+                  T_Comp :=
+                    New_And_Expr
+                      (Left   => T_Comp,
+                       Right  => New_Comparison
+                         (Symbol => Why_Eq,
+                          Left   => B_Init,
+                          Right  => A_Init,
+                          Domain => EW_Pred),
+                       Domain => EW_Pred);
+               end;
+            end if;
          end;
 
          T := New_Universal_Quantif
@@ -1987,7 +2021,7 @@ package body Why.Gen.Arrays is
                  Orig_Name => New_Name
                    (Symb => NID (Append_Num ("index_rep_le", Dim_Count))),
                  Image     => Get_Name
-                   (if Is_Modular_Integer_Type (Ind_Ty) then
+                   (if Has_Modular_Integer_Type (Ind_Ty) then
                          MF_BVs (R_Ty).Ule
                     else
                        Int_Infix_Le));
@@ -2205,7 +2239,7 @@ package body Why.Gen.Arrays is
             Type_Name := To_Unbounded_String
               (To_String (WNE_Array_BV_Suffix)
                & Image (Integer (UI_To_Int
-                 (Modular_Size (Etype (Index)))), 1));
+                 (Modular_Size (Retysp (Etype (Index))))), 1));
          else
             Type_Name :=
               To_Unbounded_String (To_String (WNE_Array_Int_Suffix));
@@ -2243,7 +2277,7 @@ package body Why.Gen.Arrays is
 
          when W_Deref =>
             declare
-               Id : constant W_Identifier_Id := Get_Right (+E);
+               Id : constant W_Identifier_Id := Get_Right (W_Deref_Id (E));
             begin
                return Get_Ada_Node (+Id);
             end;
@@ -2416,10 +2450,13 @@ package body Why.Gen.Arrays is
 
                  2 => New_Comparison
                    (Symbol => Why_Eq,
-                    Left   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_First,
-                                              Dim    => I),
+                    Left   =>
+                      Insert_Conversion_To_Rep_No_Bool
+                        (Domain,
+                         Get_Array_Attr (Domain => EW_Term,
+                                         Expr   => Left_Arr,
+                                         Attr   => Attribute_First,
+                                         Dim    => I)),
                     Right  => Right_Bounds (2 * I - 1),
                     Domain => Domain),
 
@@ -2427,10 +2464,13 @@ package body Why.Gen.Arrays is
 
                  3 => New_Comparison
                    (Symbol => Why_Eq,
-                    Left   => Get_Array_Attr (Domain => EW_Term,
-                                              Expr   => Left_Arr,
-                                              Attr   => Attribute_Last,
-                                              Dim    => I),
+                    Left   =>
+                      Insert_Conversion_To_Rep_No_Bool
+                        (Domain,
+                         Get_Array_Attr (Domain => EW_Term,
+                                         Expr   => Left_Arr,
+                                         Attr   => Attribute_Last,
+                                         Dim    => I)),
                     Right  => Right_Bounds (2 * I),
                     Domain => Domain)),
               Domain    => Domain);

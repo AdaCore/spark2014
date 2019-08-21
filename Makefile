@@ -76,8 +76,8 @@ all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
 #   install-all  install of gnatprove and why3
 
 setup:
-	cd why3 && ./configure --prefix=$(INSTALLDIR) \
-		--enable-relocation
+	cd why3 && ./configure --prefix=$(INSTALLDIR)/libexec/spark \
+		--enable-relocation --disable-js-of-ocaml
 
 why3:
 	$(MAKE) -C why3
@@ -85,20 +85,6 @@ why3:
 install-all:
 	$(MAKE) install
 	$(MAKE) -C why3 install_spark2014_dev
-	# Move internal binaries to libexec/spark/bin like the nighty build
-	# does (in anod scripts), as why3 executables expect this relative
-	# location to find the Why3 installation files in share. Do this for
-	# all internal binaries even if not strictly needed.
-	mkdir -p install/libexec/spark/bin
-	$(MV) install/bin/why3server install/libexec/spark/bin
-	$(MV) install/bin/why3realize install/libexec/spark/bin
-	$(MV) install/bin/gnatwhy3 install/libexec/spark/bin
-	$(MV) install/bin/gnat_server install/libexec/spark/bin
-	$(MV) install/bin/why3config install/libexec/spark/bin
-	$(MV) install/bin/why3session install/libexec/spark/bin
-	# the following line is allowed to fail - why3ide might not be
-	# installed
-	-$(MV) install/bin/why3ide install/libexec/spark/bin
 	# Create the fake prover scripts to help extract benchmarks.
 	$(CP) benchmark_script/fake_* install/libexec/spark/bin
 

@@ -1,0 +1,3 @@
+generic_increment.adb:5:11: info: overflow check proved, in instantiation at instance_increment.ads:4
+generic_increment.ads:6:11: info: postcondition proved, in instantiation at instance_increment.ads:4
+generic_increment.ads:6:21: info: overflow check proved, in instantiation at instance_increment.ads:4

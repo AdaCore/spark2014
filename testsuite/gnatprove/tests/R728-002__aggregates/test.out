@@ -36,15 +36,15 @@ pragmarc-b_strings.adb:98:18: medium: range check might fail (e.g. when Left = (
 pragmarc-b_strings.adb:98:48: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Right.Value'First = 1 and Right.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:50 should mention Right in a precondition]
 pragmarc-b_strings.adb:110:18: medium: range check might fail (e.g. when Left = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Left.Value'First = 1 and Left.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:52 should mention Left in a precondition]
 pragmarc-b_strings.adb:110:48: medium: range check might fail (e.g. when Right = (Max_Length => 0, Len => 1, Value => (others => 'NUL')) and Right.Value'First = 1 and Right.Value'Last = 0) [possible explanation: subprogram at pragmarc-b_strings.ads:52 should mention Right in a precondition]
-pragmarc-b_strings.ads:26:40: info: function contract not available for proof ("+" is recursive)
+pragmarc-b_strings.ads:26:40: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:26:40: medium: postcondition might fail, cannot prove +"+"'Result = Source (e.g. when Oadd'Result = (others => 'NUL') and Oadd'Result'First = 1 and Oadd'Result'Last = 0 and Source = (Max_Length => 0, Len => 0, Value => (others => 'NUL')) and Source.Value'First = 1 and Source.Value'Last = 0)
 pragmarc-b_strings.ads:29:45: info: range check proved (CVC4: 1 VC)
-pragmarc-b_strings.ads:29:57: info: function contract not available for proof ("+" is recursive)
+pragmarc-b_strings.ads:29:57: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:29:57: medium: postcondition might fail, cannot prove +"+"'Result = Source (e.g. when Oadd'Result = (Max_Length => 0, Len => 0, Value => (others => 'NUL')) and Oadd'Result.Value'First = 1 and Oadd'Result.Value'Last = 0 and Source = (others => 'NUL') and Source'First = 0 and Source'Last = -1)
 pragmarc-b_strings.ads:39:21: medium: postcondition might fail, cannot prove To = From (e.g. when From = (Max_Length => 0, Len => 0, Value => (others => 'NUL')) and From.Value'First = 1 and From.Value'Last = 0 and To = (Max_Length => ?, Len => 0, Value => (others => 'NUL')) and To.Value'First = 1 and To.Value'Last = 0)
 pragmarc-b_strings.ads:45:76: info: range check proved (CVC4: 1 VC)
 pragmarc-b_strings.ads:46:21: medium: postcondition might fail, cannot prove To = +From (e.g. when From = (others => 'NUL') and From'First = 1 and From'Last = 1 and To = (Max_Length => ?, Len => 1, Value => (others => 'NUL')) and To.Value'First = 1 and To.Value'Last = 1)
-pragmarc-b_strings.ads:46:26: info: function contract not available for proof ("+" is recursive)
+pragmarc-b_strings.ads:46:26: info: function contract not available for proof ("+" might not return)
 pragmarc-b_strings.ads:57:07: info: range check proved (CVC4: 2 VC)
 pragmarc-b_strings.ads:57:43: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 pragmarc-b_strings.ads:57:46: info: range check proved (CVC4: 2 VC)

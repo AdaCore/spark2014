@@ -40,6 +40,7 @@ with Why.Gen.Arrays;         use Why.Gen.Arrays;
 with Why.Gen.Binders;        use Why.Gen.Binders;
 with Why.Gen.Expr;           use Why.Gen.Expr;
 with Why.Gen.Names;          use Why.Gen.Names;
+with Why.Gen.Pointers;       use Why.Gen.Pointers;
 with Why.Gen.Preds;          use Why.Gen.Preds;
 with Why.Gen.Records;        use Why.Gen.Records;
 with Why.Gen.Terms;          use Why.Gen.Terms;
@@ -47,13 +48,18 @@ with Why.Gen.Terms;          use Why.Gen.Terms;
 package body Gnat2Why.Expr.Loops.Inv is
 
    type Write_Kind is
-     (Entire_Object, Record_Components, Array_Components, Discard);
+     (Entire_Object,
+      Record_Components,
+      Array_Components,
+      Access_Value,
+      Discard);
    --  The status of a variable or a part of a variable.
    --   * Entire_Object the object is entirely written.
    --   * Record_Components some fields (maybe all) of the record object are
    --                   written.
    --   * Array_Components  some indexes (maybe all) of the array object are
    --                   written.
+   --   * Access_Value  the value referenced by the access object is written.
    --   * Discard       we don't care about the variable and won't output any
    --                   invariant for it (typically for local variables).
 
@@ -81,6 +87,8 @@ package body Gnat2Why.Expr.Loops.Inv is
          when Array_Components  =>
             Write_Constraints : Array_Constraints_Maps.Map;
             Content_Status    : Write_Status_Access;
+         when Access_Value  =>
+            Value_Status      : Write_Status_Access;
       end case;
    end record;
    --  If only some parts of the object are written, we store their write
@@ -98,7 +106,8 @@ package body Gnat2Why.Expr.Loops.Inv is
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
       Expr_Ty   : Entity_Id;
-      Status    : Write_Status_Access)
+      Status    : Write_Status_Access;
+      Only_Vars : Boolean := True)
       return W_Pred_Id
    with
      Pre => Status /= null and then Status.Kind /= Discard;
@@ -113,6 +122,8 @@ package body Gnat2Why.Expr.Loops.Inv is
    --  @param At_Entry Why expression at the loop's entry
    --  @param Expr_Ty Ada type of Expr
    --  @param Status Write_Status of Expr
+   --  @param Only_Vars False if we also want to assume preservation of bounds
+   --    of unconstrained arrays.
    --  @return a predicate stating that fields not written in Status are equal
    --          in Expr and At_Entry.
 
@@ -308,7 +319,8 @@ package body Gnat2Why.Expr.Loops.Inv is
       Expr      : W_Expr_Id;
       At_Entry  : W_Expr_Id;
       Expr_Ty   : Entity_Id;
-      Status    : Write_Status_Access)
+      Status    : Write_Status_Access;
+      Only_Vars : Boolean := True)
       return W_Pred_Id
    is
       Preserved_Components : W_Pred_Id := True_Pred;
@@ -707,7 +719,7 @@ package body Gnat2Why.Expr.Loops.Inv is
                   --  discriminants of types without default discriminants
                   --  or of constrained types.
 
-                  if Discrs > 0 and then not Is_Constrained (Expr_Ty) then
+                  if not Is_Constrained (Expr_Ty) then
                      Handle_Record_Component (Discr);
                   end if;
 
@@ -821,6 +833,83 @@ package body Gnat2Why.Expr.Loops.Inv is
                         Pred    => +Component_Status);
                   end if;
                end;
+
+               --  If needed, also assume preservation of bounds
+
+               if not Is_Constrained (Expr_Ty) and then not Only_Vars then
+                  Preserved_Components := +New_And_Expr
+                    (Left   => +New_Bounds_Equality
+                       (Left_Arr  => Expr,
+                        Right_Arr => At_Entry,
+                        Dim       => Positive (Number_Dimensions (Expr_Ty))),
+                     Right  => +Preserved_Components,
+                     Domain => EW_Pred);
+               end if;
+            end;
+
+         --  For accesses, generate:
+         --  <Expr>.is_null = <At_Entry>.is_null
+         --  /\ <Expr>.address = <At_Entry>.address
+         --  /\ (not <Expr>.is_null ->
+         --        Equality_Of_Preserved_Components <Expr>.value)
+
+         when Access_Value =>
+
+            declare
+               E_Expr_Ty    : constant Entity_Id :=
+                 Retysp (Directly_Designated_Type (Expr_Ty));
+               E_Is_Null    : constant W_Expr_Id :=
+                 New_Pointer_Is_Null_Access (Expr_Ty, Expr);
+               E_Expr       : constant W_Expr_Id :=
+                 New_Pointer_Value_Access (Empty, Expr_Ty, Expr, EW_Term);
+               E_At_Entry   : constant W_Expr_Id :=
+                 New_Pointer_Value_Access
+                   (Empty, Expr_Ty, At_Entry, EW_Term);
+               Value_Status : W_Pred_Id :=
+                 Equality_Of_Preserved_Components
+                   (Loop_Idx  => Loop_Idx,
+                    Low_Id    => Low_Id,
+                    High_Id   => High_Id,
+                    Is_Rev    => Is_Rev,
+                    Loop_Vars => Loop_Vars,
+                    Expr      => E_Expr,
+                    At_Entry  => E_At_Entry,
+                    Expr_Ty   => E_Expr_Ty,
+                    Status    => Status.Value_Status,
+                    Only_Vars => False);
+               --  Also assume preservation of array bounds and immutable
+               --  discriminants which can only be modified by entire
+               --  affectations.
+
+            begin
+               if +Value_Status /= True_Pred then
+                  Value_Status := New_Conditional
+                    (Condition => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => E_Is_Null,
+                        Right  => +False_Term,
+                        Domain => EW_Pred),
+                     Then_Part => +Value_Status,
+                     Typ       => EW_Bool_Type);
+               end if;
+
+               Preserved_Components := +New_And_Expr
+                 (Conjuncts =>
+                    (1 => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => E_Is_Null,
+                        Right  => New_Pointer_Is_Null_Access
+                          (Expr_Ty, At_Entry),
+                        Domain => EW_Pred),
+                     2 => New_Comparison
+                       (Symbol => Why_Eq,
+                        Left   => New_Pointer_Address_Access
+                          (Expr_Ty, Expr),
+                        Right  => New_Pointer_Address_Access
+                          (Expr_Ty, At_Entry),
+                        Domain => EW_Pred),
+                     3 => +Value_Status),
+                  Domain    => EW_Pred);
             end;
       end case;
       return Preserved_Components;
@@ -843,8 +932,10 @@ package body Gnat2Why.Expr.Loops.Inv is
             for E of Status.Component_Status loop
                Finalize (E);
             end loop;
-         when Array_Components   =>
+         when Array_Components  =>
             Finalize (Status.Content_Status);
+         when Access_Value      =>
+            Finalize (Status.Value_Status);
       end case;
 
       Free (Status);
@@ -1093,6 +1184,9 @@ package body Gnat2Why.Expr.Loops.Inv is
                                  Write_Constraints =>
                                     Array_Constraints_Maps.Empty_Map,
                                  Content_Status    => null);
+            when Access_Value =>
+               return new Write_Status'(Kind         => Access_Value,
+                                        Value_Status => null);
          end case;
       end if;
    end New_Status;
@@ -1697,8 +1791,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                          (New_Write, Discard_Writes => False,
                           Expected_Kind             => Expected_Kind);
 
-                     --  If Expected_Kind is Entire_Object, update New_Write's
-                     --  status to Entire_Object if needed.
+                  --  If Expected_Kind is Entire_Object, update New_Write's
+                  --  status to Entire_Object if needed.
 
                   elsif Expected_Kind = Entire_Object
                     and then not (Updated_Status.Content_Status.Kind in
@@ -1714,8 +1808,8 @@ package body Gnat2Why.Expr.Loops.Inv is
                      Updated_Status.Content_Status :=
                        new Write_Status'(Kind => Entire_Object);
 
-                     --  Sanity check: the kind of a variable cannot change
-                     --  from Array_Elmt to Record_Components or reverse.
+                  --  Sanity check: the kind of a variable cannot change
+                  --  between Array_Elmt, Record_Components and Access_Value.
 
                   elsif Expected_Kind /= Entire_Object
                     and then not (Updated_Status.Content_Status.Kind in
@@ -1744,16 +1838,66 @@ package body Gnat2Why.Expr.Loops.Inv is
 
          when N_Explicit_Dereference =>
 
-            --  Access types are considered as entire objects here. Should be
-            --  refined later.
+            --  Call Update_Status on Prefix (New_Write) with Expected_Kind set
+            --  to Access_Value to create a status for it.
 
             Update_Status (New_Write      => Prefix (New_Write),
                            Loop_Writes    => Loop_Writes,
                            Inv_Seen       => Inv_Seen,
-                           Ignore_Slices  => False,
-                           Expected_Kind  => Entire_Object,
+                           Expected_Kind  => Access_Value,
+                           Ignore_Slices  => True,
                            Expected_Type  => Expected_Type,
                            Updated_Status => Updated_Status);
+
+            pragma Assert (Updated_Status.Kind in Entire_Object
+                             | Discard | Access_Value);
+
+            --  If Prefix (New_Write) is entirely written or if it is
+            --  discarded, there is nothing to do.
+
+            if Updated_Status.Kind = Access_Value then
+
+               --  If Updated_Status.Value_Status is null, create a new
+               --  status for it.
+
+               if Updated_Status.Value_Status = null then
+                  Updated_Status.Value_Status :=
+                    New_Status
+                      (New_Write, Discard_Writes => False,
+                       Expected_Kind             => Expected_Kind);
+
+               --  If Expected_Kind is Entire_Object, update New_Write's
+               --  status to Entire_Object if needed.
+
+               elsif Expected_Kind = Entire_Object
+                 and then Updated_Status.Value_Status.Kind not in
+                   Entire_Object | Discard
+               then
+                  declare
+                     Old_Status : Write_Status_Access renames
+                       Updated_Status.Value_Status;
+                  begin
+                     Finalize (Old_Status);
+                  end;
+
+                  Updated_Status.Value_Status :=
+                    new Write_Status'(Kind => Entire_Object);
+
+               --  Sanity check: the kind of a variable cannot change between
+               --  Array_Elmt, Record_Components and Access_Value.
+
+               elsif Expected_Kind /= Entire_Object
+                 and then not (Updated_Status.Value_Status.Kind in
+                                 Entire_Object | Discard)
+               then
+                  pragma Assert
+                    (Updated_Status.Value_Status.Kind = Expected_Kind);
+               end if;
+
+               Updated_Status := Updated_Status.Value_Status;
+               Expected_Type :=
+                 Retysp (Directly_Designated_Type (Expected_Type));
+            end if;
 
          when others =>
             Ada.Text_IO.Put_Line ("[Update_Status] kind ="

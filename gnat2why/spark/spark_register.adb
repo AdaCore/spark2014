@@ -44,7 +44,8 @@ package body SPARK_Register is
       function Process_Node (N : Node_Id) return Traverse_Result;
       --  Process a single node
 
-      procedure Process_Tree is new Traverse_Proc (Process_Node);
+      procedure Process_Tree is
+        new Traverse_More_Proc (Process_Node, Process_Itypes => True);
       --  Recursively process an AST tree
 
       ------------------

@@ -482,11 +482,12 @@ package body VC_Kinds is
 
    function From_JSON (V : JSON_Value) return  Cntexample_Lines is
       Res : Cntexample_Lines :=
-        Cntexample_Lines'(VC_Line =>
-                             (if Has_Field (V, "vc_line")
-                              then From_JSON ((Get (V, "vc_line")))
-                              else Cntexample_Elt_Lists.Empty_List),
-                           Other_Lines => Cntexample_Line_Maps.Empty_Map);
+        Cntexample_Lines'(VC_Line        =>
+                            (if Has_Field (V, "vc_line")
+                             then From_JSON ((Get (V, "vc_line")))
+                             else Cntexample_Elt_Lists.Empty_List),
+                          Other_Lines    => Cntexample_Line_Maps.Empty_Map,
+                          Previous_Lines => Previous_Line_Maps.Empty_Map);
 
       procedure Process_Entry (Name : UTF8_String; Value : JSON_Value);
 
@@ -972,6 +973,8 @@ package body VC_Kinds is
 
    function To_JSON (L : Cntexample_Lines) return JSON_Value is
       Obj : constant JSON_Value := Create_Object;
+      Obj_Prev : constant JSON_Value := Create_Object;
+      Obj_Cur  : constant JSON_Value := Create_Object;
 
       function Line_Number_Image (L : Natural) return String;
 
@@ -988,27 +991,32 @@ package body VC_Kinds is
    --  Start of processing for To_JSON
 
    begin
+      Set_Field (Obj, "previous", Obj_Prev);
+      Set_Field (Obj, "current", Obj_Cur);
       for C in L.Other_Lines.Iterate loop
-         Set_Field (Obj,
+         Set_Field (Obj_Cur,
                     Line_Number_Image (Cntexample_Line_Maps.Key (C)),
                     To_JSON (L.Other_Lines (C)));
       end loop;
-      if not L.VC_Line.Is_Empty then
-         Set_Field (Obj, "vc_line", To_JSON (L.VC_Line));
-      end if;
+      for C in L.Previous_Lines.Iterate loop
+         Set_Field (Obj_Prev,
+                    Line_Number_Image (Previous_Line_Maps.Key (C)),
+                    To_JSON (L.Previous_Lines (C).Line_Cnt));
+      end loop;
       return Obj;
    end To_JSON;
 
    function To_JSON (C : Cntexample_Elt) return JSON_Value is
       Obj : constant JSON_Value := Create_Object;
    begin
-      Set_Field (Obj, "name", C.Name);
+      Set_Field (Obj, "name",  C.Name);
       Set_Field (Obj, "value", C.Val_Str.Str);
-      Set_Field (Obj, "kind", To_JSON (C.Kind));
+      Set_Field (Obj, "kind",  To_JSON (C.Kind));
       return Obj;
    end To_JSON;
 
-   function To_JSON (L : Cntexample_Elt_Lists.List) return JSON_Value is
+   function To_JSON (L : Cntexample_Elt_Lists.List)
+                     return JSON_Value is
       Result : JSON_Array := Empty_Array;
    begin
       for Elt of L loop

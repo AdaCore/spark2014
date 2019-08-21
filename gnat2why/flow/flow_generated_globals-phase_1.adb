@@ -59,6 +59,9 @@ package body Flow_Generated_Globals.Phase_1 is
    --  proof_ins, because in phase 2 we might only know them by Entity_Name
    --  (which is not enough to decide their initialization status).
 
+   Constants : Node_Sets.Set;
+   --  Constants
+
    Ghost_Entities : Node_Sets.Set;
    --  Entities marked with a Ghost aspect
 
@@ -199,8 +202,12 @@ package body Flow_Generated_Globals.Phase_1 is
       --  Picks ghost entities from Objects and stores them in the appropriate
       --  container.
 
+      procedure Process_Constants (Objects : Node_Sets.Set);
+      --  Picks constants from Objects and stores them in the appropriate
+      --  container.
+
       procedure Process_CAE (Objects : Node_Sets.Set);
-      --  Goes through Objects, finds Costant_After_Elaboration variables and
+      --  Goes through Objects, finds Constant_After_Elaboration variables and
       --  stores them in the appropriate container.
 
       procedure Process_Protected_Objects (Objects : Node_Sets.Set);
@@ -310,13 +317,27 @@ package body Flow_Generated_Globals.Phase_1 is
       begin
          for E of Objects loop
             if not Is_Heap_Variable (E)
-              and then Is_Library_Level_Entity (E)
               and then Is_Ghost_Entity (E)
             then
                Ghost_Entities.Include (E);
             end if;
          end loop;
       end Process_Ghost;
+
+      -----------------------
+      -- Process_Constants --
+      -----------------------
+
+      procedure Process_Constants (Objects : Node_Sets.Set) is
+      begin
+         for E of Objects loop
+            if not Is_Heap_Variable (E)
+              and then Ekind (E) = E_Constant
+            then
+               Constants.Include (E);
+            end if;
+         end loop;
+      end Process_Constants;
 
       -----------------
       -- Process_CAE --
@@ -399,6 +420,17 @@ package body Flow_Generated_Globals.Phase_1 is
       Process_Protected_Objects (Tasking (Locks));
 
       if not Local then
+         --  If the current entity is non-local, i.e. can be called from
+         --  other compilation units, then it must be library-level (or is
+         --  a protected operation/task entry of a library-level concurrent
+         --  object). Consequently, all of their global objects must be
+         --  library-level as well.
+
+         pragma Assert
+           (Is_Library_Level_Entity (E)
+              or else
+            (Is_Concurrent_Type (Scope (E))
+             and then Is_Library_Level_Entity (Scope (E))));
 
          --  Collect volatile variables and state abstractions; these sets are
          --  disjoint, so it is more efficient to process them separately
@@ -419,6 +451,11 @@ package body Flow_Generated_Globals.Phase_1 is
          Process_Ghost (Globals.Proper.Proof_Ins);
          Process_Ghost (Globals.Proper.Inputs);
          Process_Ghost (Globals.Proper.Outputs);
+
+         --  Collect constants
+
+         Process_Constants (Globals.Proper.Proof_Ins);
+         Process_Constants (Globals.Proper.Inputs);
 
          --  Collect CAE Entities
 
@@ -678,6 +715,12 @@ package body Flow_Generated_Globals.Phase_1 is
       if not Ghost_Entities.Is_Empty then
          New_GG_Line (EK_Ghost_Entities);
          Serialize (Ghost_Entities);
+         Terminate_GG_Line;
+      end if;
+
+      if not Constants.Is_Empty then
+         New_GG_Line (EK_Constants);
+         Serialize (Constants);
          Terminate_GG_Line;
       end if;
 

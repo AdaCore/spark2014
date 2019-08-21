@@ -15,7 +15,7 @@ complex_arrays.adb:87:22: medium: postcondition might fail, cannot prove A(I)(J)
 complex_arrays.adb:97:11: info: flow dependencies proved
 complex_arrays.adb:99:22: medium: postcondition might fail, cannot prove A(I) /= A(23) (e.g. when A = (42 => (others => 0), others => (others => 0)) and I = 43)
 complex_arrays.adb:110:11: info: flow dependencies proved
-complex_arrays.adb:112:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (0 => (1 => 0, others => 0), others => (others => 0)) and A'Old = (0 => (1 => 0, others => 0), others => (others => 0)))
+complex_arrays.adb:112:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => (0 => 0, others => 0), others => (others => 0)) and A'Old = (1 => (0 => 0, others => 0), others => (others => 0)))
 complex_arrays.adb:114:07: info: initialization of "Tmp" proved
 complex_arrays.adb:124:11: info: flow dependencies proved
 complex_arrays.adb:126:22: medium: postcondition might fail, cannot prove A /= A'old (e.g. when A = (1 => (others => 0), others => (others => 0)) and A'Old = (0 => (others => 0), others => (others => 0)))

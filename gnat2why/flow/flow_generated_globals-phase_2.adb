@@ -267,6 +267,13 @@ package body Flow_Generated_Globals.Phase_2 is
    --  Entities annotated as ghost
 
    ----------------------------------------------------------------------
+   --  Constant information
+   ----------------------------------------------------------------------
+
+   Constants : Name_Sets.Set;
+   --  Constants
+
+   ----------------------------------------------------------------------
    --  CAE information
    ----------------------------------------------------------------------
 
@@ -342,6 +349,10 @@ package body Flow_Generated_Globals.Phase_2 is
    function Is_Recursive (EN : Entity_Name) return Boolean;
    --  Returns True iff there is an edge in the subprogram call graph that
    --  connects a subprogram to itself.
+
+   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean;
+   --  Returns True iff there is an edge in the subprogram call graph that
+   --  connects EN1 to EN2.
 
    function Is_Directly_Nonreturning (EN : Entity_Name) return Boolean is
      ((Phase_1_Info.Contains (EN) and then Phase_1_Info (EN).Nonreturning)
@@ -1299,6 +1310,9 @@ package body Flow_Generated_Globals.Phase_2 is
 
                when EK_CAE_Entities =>
                   Serialize (CAE_Entities);
+
+               when EK_Constants =>
+                  Serialize (Constants);
 
                when EK_Volatiles =>
                   Serialize (Async_Readers_Vars,    "AR");
@@ -2507,10 +2521,9 @@ package body Flow_Generated_Globals.Phase_2 is
       end Resolve_Globals;
 
       --  Now that the Globals Graph has been generated we set GG_Generated to
-      --  True. Notice that we set GG_Generated to True before we remove edges
-      --  leading to constants without variable input. The reasoning behind
-      --  this is to use the generated globals instead of the computed globals
-      --  when we call Get_Globals from within Has_Variable_Input.
+      --  True. We do this before we remove edges leading to constants without
+      --  variable input. It is to use the generated globals when we call
+      --  Get_Globals from within Has_Variable_Input.
       GG_Generated := True;
 
       --  Put tasking-related information back to the bag
@@ -2662,6 +2675,13 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function GG_Is_Ghost_Entity (EN : Entity_Name) return Boolean
      renames Ghost_Entities.Contains;
+
+   --------------------
+   -- GG_Is_Constant --
+   --------------------
+
+   function GG_Is_Constant (EN : Entity_Name) return Boolean
+     renames Constants.Contains;
 
    ----------------------
    -- GG_Is_CAE_Entity --
@@ -2969,6 +2989,19 @@ package body Flow_Generated_Globals.Phase_2 is
 
    function Is_Recursive (E : Entity_Id) return Boolean is
      (Is_Recursive (To_Entity_Name (E)));
+
+   ------------------------
+   -- Mutually_Recursive --
+   ------------------------
+
+   function Mutually_Recursive (EN1, EN2 : Entity_Name) return Boolean is
+     (Subprogram_Call_Graph.Contains (EN1)
+      and then Subprogram_Call_Graph.Contains (EN2)
+      and then Subprogram_Call_Graph.Edge_Exists (EN1, EN2)
+      and then Subprogram_Call_Graph.Edge_Exists (EN2, EN1));
+
+   function Mutually_Recursive (E1, E2 : Entity_Id) return Boolean is
+     (Mutually_Recursive (To_Entity_Name (E1), To_Entity_Name (E2)));
 
    ------------------------
    -- Calls_Current_Task --

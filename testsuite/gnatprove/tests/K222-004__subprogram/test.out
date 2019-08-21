@@ -1,7 +1,7 @@
-sub.adb:5:07: local borrower of an access object is not yet supported
+sub.adb:5:07: object of anonymous access type must be initialized (SPARK RM 3.10(4))
 sub.adb:7:12: uninitialized allocator without default initialization is not allowed in SPARK
 sub.adb:7:12: violation of pragma SPARK_Mode at line 1
-sub.adb:16:10: local borrower of an access object is not yet supported
+sub.adb:16:10: object of anonymous access type must be initialized (SPARK RM 3.10(4))
 sub.adb:18:15: uninitialized allocator without default initialization is not allowed in SPARK
 sub.adb:18:15: violation of pragma SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

@@ -1,0 +1,7 @@
+with "support";
+project Test is
+  for Source_Dirs use (".");
+  package Builder is
+    for Global_Configuration_Pragmas use "test.adc";
+  end Builder;
+end Test;

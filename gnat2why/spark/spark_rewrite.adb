@@ -202,7 +202,7 @@ package body SPARK_Rewrite is
          loop
             pragma Loop_Invariant (Present (E));
 
-            if Is_Subprogram (E)
+            if Ekind (E) in E_Function | E_Procedure
               and then not Is_Generic_Actual_Subprogram (E)
             then
                return E;
@@ -252,7 +252,7 @@ package body SPARK_Rewrite is
       --  Apply expansion operations on a node
 
       procedure Rewrite_Nodes is
-        new Traverse_Proc (Rewrite_Node);
+        new Traverse_More_Proc (Rewrite_Node, Process_Itypes => True);
 
       procedure Rewrite_Unchecked_Type_Conversion (N : Node_Id);
       --  Remove compiler-generated unchecked type conversions, which should
@@ -408,23 +408,6 @@ package body SPARK_Rewrite is
                         --  ??? this is slighly different from SPARK_Register;
                         --  both should be unified.
                      end if;
-                  end if;
-               end;
-
-            --  Slices cause the creation of Itypes with associated nodes for
-            --  the range of the corresponding index. These nodes should be
-            --  rewritten as well, which require special handling as they are
-            --  not attached to the tree. Possibly this could be done in
-            --  a variant of Traverse_Proc that does only traverse syntactic
-            --  children nodes???
-
-            when N_Slice =>
-               declare
-                  Typ   : constant Entity_Id := Etype (N);
-                  Index : constant Node_Id := First_Index (Typ);
-               begin
-                  if Is_Itype (Typ) then
-                     Rewrite_Nodes (Scalar_Range (Entity (Index)));
                   end if;
                end;
 

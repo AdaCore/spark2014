@@ -6,7 +6,7 @@ from gnatpython.ex import Run
 # This test recreates the Coq realizations of the SPARK Why3 definitions and
 # checks them using Coq
 
-why3_share = os.path.join(spark_install_path(), 'share', 'why3')
+why3_share = os.path.join(spark_install_path(), 'libexec', 'spark', 'share', 'why3')
 why3_lib = os.path.join(why3_share, 'theories')
 coq_libs_dir = os.path.join(why3_share, 'libs', 'coq')
 driver_dir = os.path.join(why3_share, 'drivers')

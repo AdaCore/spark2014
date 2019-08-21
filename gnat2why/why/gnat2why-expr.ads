@@ -298,6 +298,13 @@ package Gnat2Why.Expr is
    --  If Expr can be translated into a pure logic term (without dereference),
    --  return this term. Otherwise, return Why_Empty.
 
+   function Havoc_Borrowed_Expression (Brower : Entity_Id) return W_Prog_Id;
+   --  Construct a program which havocs a borrowed expression. After the havoc,
+   --  we get information about potential updates from the borrower by
+   --  assuming that its pledge (relation between the borrower and the borrowed
+   --  expression) holds. We also check here that we have not broken any
+   --  constraints on the borrowed object during the borrow.
+
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
@@ -526,8 +533,14 @@ package Gnat2Why.Expr is
       W     : W_Expr_Id;
       Phase : Transformation_Phase) return W_Expr_Id;
    --  In cases where we want to detect unreachable branches, wrap program
-   --  expression W with a warning by proof on branch reachability. Otherwise
-   --  simply return W (which may or not be a program in that case).
+   --  expression W with a warning by proof on reachability. Otherwise simply
+   --  return W (which may or not be a program in that case).
+
+   function Warn_On_Dead_Code
+     (N     : Node_Id;
+      W     : W_Prog_Id;
+      Phase : Transformation_Phase) return W_Prog_Id;
+   --  Same as Warn_On_Dead_Branch except for dead code
 
    function Warn_On_Inconsistent_Assume (N : Node_Id) return W_Prog_Id;
    --  In cases where we want to detect inconsistent pragma Assume, attempt to

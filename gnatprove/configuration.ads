@@ -178,6 +178,7 @@ package Configuration is
    CodePeer       : Boolean;
    Counterexample : Boolean;
    Debug          : Boolean;
+   GnateT_Switch  : GNAT.Strings.String_Access;
    Mode           : GP_Mode;
    Only_Given     : Boolean;
    Parallel       : Integer;
@@ -243,16 +244,14 @@ package Configuration is
            Compose (Libexec_Spark, "bin");
          Share                    : constant String :=
            Compose (Prefix, "share");
-         Share_Why3               : constant String :=
-           Compose (Share, "why3");
+         Libexec_Share_Why3       : constant String :=
+           Compose (Compose (Libexec_Spark, "share"), "why3");
          Share_Spark              : constant String :=
            Compose (Share, "spark");
          Share_Spark_Theories     : constant String :=
            Compose (Share_Spark, "theories");
          Share_Spark_Config       : constant String :=
            Compose (Share_Spark, "config");
-         Share_Why3_Drivers       : constant String :=
-           Compose (Share_Why3, "drivers");
          Share_Spark_Runtimes     : constant String :=
            Compose (Share_Spark, "runtimes");
          Help_Msg_File            : constant String :=

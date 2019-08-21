@@ -154,6 +154,13 @@ package body Call is
       File     : File_String_IO.File_Type;
       Contents : File_String;
    begin
+
+      --  The read operation below will crash with an empty buffer
+
+      if File_Size = 0 then
+         return "";
+      end if;
+
       File_String_IO.Open  (File, Mode => File_String_IO.In_File, Name => Fn);
       File_String_IO.Read  (File, Item => Contents);
       File_String_IO.Close (File);

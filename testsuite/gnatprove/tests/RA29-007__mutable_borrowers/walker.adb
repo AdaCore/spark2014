@@ -16,5 +16,5 @@ begin
    begin
       Y.all := 3;
    end;
-   pragma Assert (X.Fst.all = 1);
+   pragma Assert (X.Fst.all = 1); --@ASSERT:FAIL
 end Walker;

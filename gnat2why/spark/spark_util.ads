@@ -28,7 +28,6 @@ with Atree;             use Atree;
 with Checked_Types;     use Checked_Types;
 with Common_Containers; use Common_Containers;
 with Einfo;             use Einfo;
-with Impunit;           use Impunit;
 with Lib;               use Lib;
 with Namet;             use Namet;
 with Nlists;            use Nlists;
@@ -66,7 +65,7 @@ package SPARK_Util is
          --  the renaming objects are not removed from the tree. We can safely
          --  ignore them.
 
-         | N_Object_Renaming_Declaration
+         | N_Renaming_Declaration
 
          --  Generic instantiations are expanded into the corresponding
          --  declarations in the frontend. The instantiations themselves can be
@@ -276,6 +275,10 @@ package SPARK_Util is
    --  @return True iff E is declared in the same library unit as the analysed
    --      unit. Go from child packages to parents for comparison.
 
+   function Is_Declared_In_Private (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is declared in the private part of a package
+
    function Is_In_Analyzed_Files (E : Entity_Id) return Boolean
      with Pre => Nkind (E) in N_Entity;
    --  Use this routine to ensure that the entity will be processed only by one
@@ -295,10 +298,9 @@ package SPARK_Util is
    --  (which do yet something else).
 
    function Source_Name (E : Entity_Id) return String
-     with Pre => Nkind (E) in N_Has_Chars;
+     with Pre => Present (E) and then Nkind (E) in N_Has_Chars;
    --  @param E any entity
-   --  @return The unqualified name of E as it appears in the source code;
-   --          "" if E is equal to Empty.
+   --  @return The unqualified name of E as it appears in the source code
 
    ----------------------------------------------
    -- Queries related to objects or components --
@@ -353,12 +355,10 @@ package SPARK_Util is
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
 
-   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean;
-   --  @param E any entity
-   --  @return Return True if E is not a Discriminant or if E is visible in
-   --  SPARK.
-   --  Contrary to Einfo.Is_Completely_Hidden, this function can be called on
-   --  any entity E, not only discriminants.
+   function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) = E_Discriminant;
+   --  @param E entity of a discriminant
+   --  @return Return True if E is visible in SPARK
 
    function Is_Package_State (E : Entity_Id) return Boolean;
    --  @param E any entity
@@ -422,6 +422,10 @@ package SPARK_Util is
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
    --  In particular returns empty on hidden components.
+
+   function Is_Local_Borrower (E : Entity_Id) return Boolean;
+   --  Return True is E is a constant or a variable of an anonymous access to
+   --  variable type.
 
    --------------------------------
    -- Queries related to pragmas --
@@ -582,6 +586,10 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
+   function Has_Dereferences (N : Node_Id) return Boolean with
+     Pre => Nkind (N) in Sinfo.N_Subexpr;
+   --  Return True if there is a dereference in the suffix of N which is a path
+
    function Is_Action (N : Node_Id) return Boolean
      with Pre => Nkind (N) = N_Object_Declaration;
    --  @param N is an object declaration
@@ -657,15 +665,6 @@ package SPARK_Util is
    --  @return a string representing the character for humans to read, which is
    --     the character itself if it is a graphic one, otherwise its name.
 
-   function Unit_In_Standard_Library (U : Unit_Number_Type) return Boolean is
-     (Get_Kind_Of_Unit (U) /= Not_Predefined_Unit);
-   --  Returns True is unit U is in the standard library, which includes all
-   --  units defined in Ada RM, and all units predefined by GNAT.
-
-   function Location_In_Standard_Library (Loc : Source_Ptr) return Boolean;
-   --  Returns True if location Loc is in a unit of the standard library, as
-   --  computed by Unit_In_Standard_Library.
-
    function Get_Flat_Statement_And_Declaration_List
      (Stmts : List_Id) return Node_Lists.List;
    --  Given a list of statements and declarations Stmts, returns the flattened
@@ -674,13 +673,6 @@ package SPARK_Util is
 
    function Is_Others_Choice (Choices : List_Id) return Boolean;
    --  Returns True if Choices is the singleton list with an "others" element
-
-   function Is_Standard_Entity (E : Entity_Id) return Boolean is
-     (Location_In_Standard_Library (Sloc (E)));
-   --  This function is used to detect that an entity was defined in
-   --  the standard library. They should correspond to node created by
-   --  Create_Standard in cstand.ads. This is checked by looking at
-   --  locations of entities.
 
    function File_Name_Without_Suffix (File_Name : String) return String;
 

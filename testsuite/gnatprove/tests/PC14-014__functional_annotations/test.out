@@ -1,23 +1,23 @@
-a-cfdlli.ads:468:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:609:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:699:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:765:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:851:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:851:39: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1027:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1208:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1347:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1362:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1377:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1392:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1414:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1420:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1469:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfdlli.ads:1476:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
-a-cfhama.ads:679:39: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
-a-cfhama.ads:688:17: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
-a-cfhama.ads:718:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
-a-cfhama.ads:733:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
+a-cfdlli.ads:469:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:610:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:700:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:766:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:852:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:852:39: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1028:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1209:06: info: disjoint contract cases proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1348:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1363:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1378:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1393:20: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1415:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1421:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1470:14: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfdlli.ads:1477:23: info: precondition proved (Z3: 1 VC), in instantiation at use_lists.ads:7
+a-cfhama.ads:680:39: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
+a-cfhama.ads:689:17: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
+a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
+a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
 a-cfhase.ads:460:18: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:728:39: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:737:17: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
@@ -30,50 +30,50 @@ a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfinve.ads:59:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:60:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:61:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:63:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:69:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:60:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:61:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:62:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:64:56: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:70:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:70:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:72:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:72:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:73:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:73:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:73:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:79:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:315:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:318:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:357:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:390:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:393:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:425:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:471:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:495:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:536:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:601:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:601:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:601:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:729:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:731:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:71:27: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:71:50: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:20: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:73:43: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:74:22: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:74:46: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:74:46: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:80:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:316:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:319:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:358:73: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:391:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:394:37: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:426:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:472:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:496:51: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:537:59: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:602:28: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:602:57: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:602:57: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:730:23: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:732:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:765:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:767:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:768:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cfinve.ads:769:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
-a-cforma.ads:743:39: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:752:17: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:787:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:795:21: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:822:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:830:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:900:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:915:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:930:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:945:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:985:46: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
-a-cforma.ads:1000:40: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cfinve.ads:733:38: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:766:14: info: precondition proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:768:39: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:769:70: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cfinve.ads:770:35: info: range check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
+a-cforma.ads:744:39: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:753:17: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:788:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:796:21: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:823:42: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:831:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:901:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:916:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:931:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:946:20: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:986:46: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
+a-cforma.ads:1001:40: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_maps.ads:9
 a-cforse.ads:511:18: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:869:39: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
 a-cforse.ads:878:17: info: precondition proved (Z3: 1 VC), in instantiation at use_ordered_sets.ads:7
@@ -98,49 +98,49 @@ a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at
 a-cofuse.ads:243:22: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:90, in instantiation at use_sets.ads:10
 a-cofuse.ads:244:26: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:95, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:44:12: info: range check proved (Z3: 2 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:45:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:230:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:231:25: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:27: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:235:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:236:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:236:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:68, in instantiation at use_lists.ads:7
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:106, in instantiation at use_maps.ads:9
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:101, in instantiation at use_vectors.ads:23
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:111, in instantiation at use_ordered_maps.ads:9
-a-cofuve.ads:298:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:45:12: info: range check proved (Z3: 2 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:46:33: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:231:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:232:25: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:27: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:51: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:236:63: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:237:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:237:54: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:237:59: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:237:76: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:238:30: info: range check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at use_lists.ads:7
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at use_maps.ads:9
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfhase.ads:102, in instantiation at use_sets.ads:10
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cfinve.ads:102, in instantiation at use_vectors.ads:23
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at use_ordered_maps.ads:9
+a-cofuve.ads:299:52: info: overflow check proved (Z3: 1 VC), in instantiation at a-cforse.ads:107, in instantiation at use_ordered_sets.ads:7
 use_lists.adb:10:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_lists.adb:10:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_lists.adb:10:32: info: precondition proved (Z3: 2 VC)
@@ -288,7 +288,7 @@ use_lists.adb:151:10: info: precondition proved (Z3: 1 VC)
 use_lists.adb:157:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:158:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:159:07: info: precondition proved (Z3: 2 VC)
-use_lists.adb:160:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
+use_lists.adb:160:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:161:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 use_lists.adb:162:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 use_lists.adb:163:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
@@ -353,20 +353,20 @@ use_lists.ads:105:35: info: range check proved (Z3: 1 VC)
 use_lists.ads:106:13: info: precondition proved (Z3: 2 VC)
 use_lists.ads:106:39: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:106:39: info: range check proved (Z3: 1 VC)
-use_lists.ads:108:11: medium: precondition might fail, cannot prove Has_Key (Container, Key)
+use_lists.ads:108:11: info: precondition proved (CVC4: 1 VC)
 use_lists.ads:109:09: info: precondition proved (Z3: 1 VC)
 use_lists.ads:109:38: info: overflow check proved (Z3: 1 VC)
 use_lists.ads:119:06: info: data dependencies proved
-use_lists.ads:120:17: info: precondition proved (Z3: 1 VC)
+use_lists.ads:120:17: info: precondition proved (Trivial: 1 VC)
 use_lists.ads:120:17: info: precondition proved (Z3: 2 VC)
 use_lists.ads:121:16: info: postcondition proved (Z3: 1 VC)
-use_lists.ads:121:17: info: precondition proved (Z3: 1 VC)
+use_lists.ads:121:17: info: precondition proved (Trivial: 1 VC)
 use_lists.ads:121:42: info: precondition proved (Z3: 1 VC)
 use_lists.ads:127:06: info: data dependencies proved
-use_lists.ads:128:17: info: precondition proved (Z3: 1 VC)
+use_lists.ads:128:17: info: precondition proved (Trivial: 1 VC)
 use_lists.ads:128:42: info: precondition proved (Z3: 1 VC)
 use_lists.ads:129:16: info: postcondition proved (Z3: 1 VC)
-use_lists.ads:129:17: info: precondition proved (Z3: 1 VC)
+use_lists.ads:129:17: info: precondition proved (Trivial: 1 VC)
 use_lists.ads:129:17: info: precondition proved (Z3: 2 VC)
 use_maps.adb:8:10: info: loop variant proved (Z3: 1 VC)
 use_maps.adb:8:45: info: precondition proved (Z3: 1 VC)
@@ -382,22 +382,22 @@ use_maps.adb:25:47: info: precondition proved (Z3: 2 VC)
 use_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_maps.adb:27:32: info: precondition proved (Z3: 2 VC)
-use_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
+use_maps.adb:28:16: info: precondition proved (Trivial: 2 VC)
 use_maps.adb:28:16: info: precondition proved (Z3: 4 VC)
 use_maps.adb:29:20: info: precondition proved (Z3: 2 VC)
 use_maps.adb:30:23: info: precondition proved (Z3: 2 VC)
 use_maps.adb:30:49: info: precondition proved (Z3: 4 VC)
 use_maps.adb:32:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
+use_maps.adb:32:13: info: precondition proved (Trivial: 2 VC)
 use_maps.adb:32:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:33:38: info: precondition proved (Z3: 2 VC)
 use_maps.adb:34:22: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:25: info: precondition proved (Z3: 2 VC)
 use_maps.adb:35:51: info: precondition proved (Z3: 4 VC)
 use_maps.adb:37:13: info: loop invariant initialization proved (Z3: 1 VC)
+use_maps.adb:37:13: info: loop invariant preservation proved (CVC4: 1 VC)
 use_maps.adb:37:27: info: precondition proved (Z3: 2 VC)
-use_maps.adb:38:18: medium: loop invariant might fail after first iteration, cannot prove not Contains (Model (R), K.Get (Keys (S), I))
 use_maps.adb:38:44: info: precondition proved (Z3: 4 VC)
 use_maps.adb:38:60: info: range check proved (Z3: 2 VC)
 use_maps.adb:39:10: info: precondition proved (Z3: 1 VC)
@@ -417,7 +417,7 @@ use_maps.adb:54:20: info: precondition proved (Z3: 2 VC)
 use_maps.adb:54:33: info: precondition proved (Z3: 4 VC)
 use_maps.adb:56:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
+use_maps.adb:56:13: info: precondition proved (Trivial: 2 VC)
 use_maps.adb:56:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:57:38: info: precondition proved (Z3: 2 VC)
 use_maps.adb:58:40: info: precondition proved (Z3: 4 VC)
@@ -489,7 +489,7 @@ use_maps.adb:124:50: info: overflow check proved (Z3: 2 VC)
 use_maps.adb:124:53: info: precondition proved (Z3: 2 VC)
 use_maps.adb:126:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_maps.adb:126:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_maps.adb:126:13: info: precondition proved (Z3: 2 VC)
+use_maps.adb:126:13: info: precondition proved (Trivial: 2 VC)
 use_maps.adb:126:13: info: precondition proved (Z3: 4 VC)
 use_maps.adb:126:38: info: precondition proved (Z3: 2 VC)
 use_maps.adb:127:10: info: precondition proved (Z3: 1 VC)
@@ -506,62 +506,62 @@ use_maps.ads:24:28: info: precondition proved (Z3: 1 VC)
 use_maps.ads:30:12: info: postcondition proved (Z3: 2 VC)
 use_maps.ads:34:35: info: overflow check proved (Z3: 1 VC)
 use_maps.ads:38:14: info: postcondition proved (Z3: 3 VC)
-use_maps.ads:39:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:39:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:39:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:40:16: info: precondition proved (Z3: 1 VC)
+use_maps.ads:40:16: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:40:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:40:35: info: precondition proved (Z3: 1 VC)
 use_maps.ads:40:55: info: precondition proved (Z3: 1 VC)
-use_maps.ads:41:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:41:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:41:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:42:16: info: precondition proved (Z3: 1 VC)
+use_maps.ads:42:16: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:42:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:42:35: info: precondition proved (Z3: 1 VC)
 use_maps.ads:42:55: info: precondition proved (Z3: 1 VC)
 use_maps.ads:47:14: info: postcondition proved (Z3: 4 VC)
-use_maps.ads:48:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:48:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:48:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:49:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:49:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:49:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:50:20: info: precondition proved (Z3: 1 VC)
 use_maps.ads:50:41: info: precondition proved (Z3: 1 VC)
 use_maps.ads:54:14: info: postcondition proved (Z3: 3 VC)
-use_maps.ads:55:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:55:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:55:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:56:16: info: precondition proved (Z3: 1 VC)
+use_maps.ads:56:16: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:56:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:57:22: info: precondition proved (Z3: 1 VC)
 use_maps.ads:57:42: info: precondition proved (Z3: 1 VC)
-use_maps.ads:58:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:58:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:58:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:59:16: info: precondition proved (Z3: 1 VC)
+use_maps.ads:59:16: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:59:16: info: precondition proved (Z3: 2 VC)
 use_maps.ads:60:22: info: precondition proved (Z3: 1 VC)
 use_maps.ads:60:42: info: precondition proved (Z3: 1 VC)
 use_maps.ads:64:14: info: postcondition proved (Z3: 3 VC)
-use_maps.ads:66:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:66:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:66:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:67:15: info: precondition proved (Z3: 1 VC)
 use_maps.ads:67:36: info: precondition proved (Z3: 1 VC)
 use_maps.ads:71:14: info: postcondition proved (Z3: 2 VC)
-use_maps.ads:72:09: info: precondition proved (Z3: 1 VC)
+use_maps.ads:72:09: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:72:09: info: precondition proved (Z3: 2 VC)
-use_maps.ads:79:15: info: precondition proved (Z3: 1 VC)
+use_maps.ads:79:15: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:79:15: info: precondition proved (Z3: 2 VC)
 use_maps.ads:79:40: info: precondition proved (Z3: 1 VC)
-use_maps.ads:80:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:80:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:80:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:80:36: info: precondition proved (Z3: 1 VC)
 use_maps.ads:81:22: info: overflow check proved (Z3: 1 VC)
 use_maps.ads:82:14: info: postcondition proved (Z3: 1 VC)
-use_maps.ads:82:15: info: precondition proved (Z3: 1 VC)
+use_maps.ads:82:15: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:82:15: info: precondition proved (Z3: 2 VC)
 use_maps.ads:82:40: info: precondition proved (Z3: 1 VC)
-use_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:92:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
-use_maps.ads:93:14: info: postcondition proved (Z3: 6 VC)
+use_maps.ads:93:14: info: postcondition proved (Trivial: 1 VC; Z3: 5 VC)
 use_maps.ads:93:43: info: overflow check proved (Z3: 1 VC)
-use_maps.ads:94:11: info: precondition proved (Z3: 1 VC)
+use_maps.ads:94:11: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:94:11: info: precondition proved (Z3: 2 VC)
 use_maps.ads:96:23: info: precondition proved (Z3: 1 VC)
 use_maps.ads:96:40: info: precondition proved (Z3: 1 VC)
@@ -570,11 +570,11 @@ use_maps.ads:108:06: info: data dependencies proved
 use_maps.ads:110:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:110:37: info: precondition proved (Z3: 2 VC)
 use_maps.ads:111:16: info: postcondition proved (Z3: 1 VC)
-use_maps.ads:111:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:111:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:111:17: info: precondition proved (Z3: 2 VC)
 use_maps.ads:111:38: info: precondition proved (Z3: 1 VC)
 use_maps.ads:117:06: info: data dependencies proved
-use_maps.ads:118:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:118:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:118:46: info: precondition proved (Z3: 1 VC)
 use_maps.ads:119:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:120:24: info: precondition proved (Z3: 1 VC)
@@ -583,25 +583,25 @@ use_maps.ads:126:06: info: data dependencies proved
 use_maps.ads:128:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:128:37: info: precondition proved (Z3: 2 VC)
 use_maps.ads:129:16: info: postcondition proved (Z3: 1 VC)
-use_maps.ads:129:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:129:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:129:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:136:06: info: data dependencies proved
-use_maps.ads:137:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:137:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:137:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:138:16: info: postcondition proved (Z3: 1 VC)
 use_maps.ads:139:24: info: precondition proved (Z3: 1 VC)
 use_maps.ads:139:37: info: precondition proved (Z3: 2 VC)
 use_maps.ads:145:06: info: data dependencies proved
-use_maps.ads:146:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:146:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:146:46: info: precondition proved (Z3: 1 VC)
 use_maps.ads:147:16: info: postcondition proved (Z3: 1 VC)
-use_maps.ads:147:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:147:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:147:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:153:06: info: data dependencies proved
-use_maps.ads:154:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:154:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:154:39: info: precondition proved (Z3: 1 VC)
 use_maps.ads:155:16: info: postcondition proved (Z3: 1 VC)
-use_maps.ads:155:17: info: precondition proved (Z3: 1 VC)
+use_maps.ads:155:17: info: precondition proved (Trivial: 1 VC)
 use_maps.ads:155:17: info: precondition proved (Z3: 2 VC)
 use_maps.ads:155:38: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.adb:8:10: info: loop variant proved (Z3: 1 VC)
@@ -618,14 +618,14 @@ use_ordered_maps.adb:25:47: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:27:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:27:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_maps.adb:27:32: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.adb:28:16: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:28:16: info: precondition proved (Trivial: 2 VC)
 use_ordered_maps.adb:28:16: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:29:20: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:30:23: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:30:49: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:32:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:32:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:32:13: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:32:13: info: precondition proved (Trivial: 2 VC)
 use_ordered_maps.adb:32:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:33:38: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:34:22: info: precondition proved (Z3: 2 VC)
@@ -653,7 +653,7 @@ use_ordered_maps.adb:54:20: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:54:33: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:56:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:56:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:56:13: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:56:13: info: precondition proved (Trivial: 2 VC)
 use_ordered_maps.adb:56:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:57:38: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:58:40: info: precondition proved (Z3: 4 VC)
@@ -721,7 +721,7 @@ use_ordered_maps.adb:122:50: info: overflow check proved (Z3: 2 VC)
 use_ordered_maps.adb:122:53: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:124:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_maps.adb:124:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_maps.adb:124:13: info: precondition proved (Z3: 2 VC)
+use_ordered_maps.adb:124:13: info: precondition proved (Trivial: 2 VC)
 use_ordered_maps.adb:124:13: info: precondition proved (Z3: 4 VC)
 use_ordered_maps.adb:124:38: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.adb:125:10: info: precondition proved (Z3: 1 VC)
@@ -737,61 +737,61 @@ use_ordered_maps.ads:22:28: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:28:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_maps.ads:32:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_maps.ads:36:14: info: postcondition proved (Z3: 3 VC)
-use_ordered_maps.ads:37:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:37:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:37:11: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:38:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:38:16: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:38:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:38:35: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:38:55: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:39:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:39:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:39:11: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:40:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:40:16: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:40:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:40:35: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:40:55: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:45:14: info: postcondition proved (Z3: 4 VC)
-use_ordered_maps.ads:46:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:46:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:46:11: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:47:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:47:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:47:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:48:20: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:48:41: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:52:14: info: postcondition proved (Z3: 3 VC)
-use_ordered_maps.ads:53:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:53:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:53:11: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:54:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:54:16: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:54:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:55:22: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:55:42: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:56:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:56:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:56:11: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:57:16: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:57:16: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:57:16: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:58:22: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:58:42: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:62:14: info: postcondition proved (Z3: 3 VC)
-use_ordered_maps.ads:64:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:64:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:64:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:65:15: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:65:36: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:69:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_maps.ads:70:09: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:70:09: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:70:09: info: precondition proved (Z3: 2 VC)
-use_ordered_maps.ads:77:15: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:77:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:77:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:77:40: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:78:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:78:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:78:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:78:36: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:79:22: info: overflow check proved (Z3: 1 VC)
 use_ordered_maps.ads:80:14: info: postcondition proved (Z3: 1 VC)
-use_ordered_maps.ads:80:15: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:80:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:80:15: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:80:40: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:90:34: info: precondition proved (Z3: 1 VC)
-use_ordered_maps.ads:91:14: info: postcondition proved (Z3: 6 VC)
+use_ordered_maps.ads:91:14: info: postcondition proved (Trivial: 1 VC; Z3: 5 VC)
 use_ordered_maps.ads:91:43: info: overflow check proved (Z3: 1 VC)
-use_ordered_maps.ads:92:11: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:92:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:92:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:94:23: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:94:40: info: precondition proved (Z3: 1 VC)
@@ -800,11 +800,11 @@ use_ordered_maps.ads:106:06: info: data dependencies proved
 use_ordered_maps.ads:108:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:108:37: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:109:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_maps.ads:109:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:109:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:109:17: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:109:38: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:115:06: info: data dependencies proved
-use_ordered_maps.ads:116:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:116:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:116:46: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:117:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:118:24: info: precondition proved (Z3: 1 VC)
@@ -813,25 +813,25 @@ use_ordered_maps.ads:124:06: info: data dependencies proved
 use_ordered_maps.ads:126:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:126:37: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:127:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_maps.ads:127:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:127:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:127:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:134:06: info: data dependencies proved
-use_ordered_maps.ads:135:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:135:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:135:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:136:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_maps.ads:137:24: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:137:37: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:143:06: info: data dependencies proved
-use_ordered_maps.ads:144:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:144:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:144:46: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:145:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_maps.ads:145:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:145:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:145:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:151:06: info: data dependencies proved
-use_ordered_maps.ads:152:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:152:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:152:39: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:153:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_maps.ads:153:17: info: precondition proved (Z3: 1 VC)
+use_ordered_maps.ads:153:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:153:17: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:153:38: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:9:13: info: loop invariant initialization proved (Z3: 1 VC)
@@ -849,7 +849,7 @@ use_ordered_sets.adb:26:32: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:27:32: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:29:13: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:29:13: info: precondition proved (Trivial: 2 VC)
 use_ordered_sets.adb:30:36: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.adb:31:28: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:32:10: info: precondition proved (Z3: 1 VC)
@@ -909,7 +909,7 @@ use_ordered_sets.adb:120:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_ordered_sets.adb:121:42: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:123:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_ordered_sets.adb:123:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_ordered_sets.adb:123:13: info: precondition proved (Z3: 2 VC)
+use_ordered_sets.adb:123:13: info: precondition proved (Trivial: 2 VC)
 use_ordered_sets.adb:125:38: info: precondition proved (Z3: 4 VC)
 use_ordered_sets.adb:126:10: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.adb:126:23: info: precondition proved (Z3: 1 VC)
@@ -980,29 +980,29 @@ use_ordered_sets.ads:15:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:18:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:22:35: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:26:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_sets.ads:26:15: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:26:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:26:15: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:27:11: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:27:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:27:11: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:28:16: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:28:16: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:28:16: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:33:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:38:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_sets.ads:39:09: info: precondition proved (Z3: 1 VC)
-use_ordered_sets.ads:47:15: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:39:09: info: precondition proved (Trivial: 1 VC)
+use_ordered_sets.ads:47:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:47:15: info: precondition proved (Z3: 2 VC)
-use_ordered_sets.ads:48:11: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:48:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:48:11: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:49:22: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:50:14: info: postcondition proved (Z3: 1 VC)
-use_ordered_sets.ads:50:15: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:50:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:50:15: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:55:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:61:14: info: postcondition proved (Z3: 3 VC)
 use_ordered_sets.ads:68:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:73:14: info: postcondition proved (Z3: 3 VC)
 use_ordered_sets.ads:83:25: info: division check proved (Z3: 1 VC)
-use_ordered_sets.ads:84:07: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:84:07: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:84:07: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:84:27: info: division check proved (Z3: 1 VC)
 use_ordered_sets.ads:85:29: info: overflow check proved (Z3: 1 VC)
@@ -1019,36 +1019,36 @@ use_ordered_sets.ads:89:13: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:89:40: info: overflow check proved (Z3: 1 VC)
 use_ordered_sets.ads:98:14: info: postcondition proved (Z3: 4 VC)
 use_ordered_sets.ads:98:43: info: overflow check proved (Z3: 1 VC)
-use_ordered_sets.ads:101:11: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:101:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:101:11: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:111:06: info: data dependencies proved
 use_ordered_sets.ads:113:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:114:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_sets.ads:114:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:114:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:120:06: info: data dependencies proved
-use_ordered_sets.ads:121:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:121:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:122:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:123:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:129:06: info: data dependencies proved
 use_ordered_sets.ads:131:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:132:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_sets.ads:132:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:132:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:132:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:139:06: info: data dependencies proved
-use_ordered_sets.ads:140:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:140:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:140:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:141:16: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:142:25: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:148:06: info: data dependencies proved
-use_ordered_sets.ads:149:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:149:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:150:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_sets.ads:150:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:150:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:150:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:156:06: info: data dependencies proved
-use_ordered_sets.ads:157:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:157:17: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:157:39: info: precondition proved (Z3: 1 VC)
 use_ordered_sets.ads:158:16: info: postcondition proved (Z3: 1 VC)
-use_ordered_sets.ads:158:17: info: precondition proved (Z3: 1 VC)
+use_ordered_sets.ads:158:17: info: precondition proved (Trivial: 1 VC)
 use_sets.adb:9:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:9:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:9:32: info: precondition proved (Z3: 2 VC)
@@ -1064,7 +1064,7 @@ use_sets.adb:26:32: info: precondition proved (Z3: 2 VC)
 use_sets.adb:27:32: info: precondition proved (Z3: 4 VC)
 use_sets.adb:29:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:29:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:29:13: info: precondition proved (Z3: 2 VC)
+use_sets.adb:29:13: info: precondition proved (Trivial: 2 VC)
 use_sets.adb:29:13: info: precondition proved (Z3: 4 VC)
 use_sets.adb:30:36: info: precondition proved (Z3: 2 VC)
 use_sets.adb:31:28: info: precondition proved (Z3: 4 VC)
@@ -1109,7 +1109,7 @@ use_sets.adb:101:13: info: loop invariant preservation proved (Z3: 1 VC)
 use_sets.adb:102:32: info: precondition proved (Z3: 4 VC)
 use_sets.adb:104:13: info: loop invariant initialization proved (Z3: 1 VC)
 use_sets.adb:104:13: info: loop invariant preservation proved (Z3: 1 VC)
-use_sets.adb:104:13: info: precondition proved (Z3: 2 VC)
+use_sets.adb:104:13: info: precondition proved (Trivial: 2 VC)
 use_sets.adb:104:13: info: precondition proved (Z3: 4 VC)
 use_sets.adb:106:38: info: precondition proved (Z3: 4 VC)
 use_sets.adb:107:10: info: precondition proved (Z3: 1 VC)
@@ -1126,58 +1126,58 @@ use_sets.ads:20:14: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:24:35: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:24:35: info: range check proved (Z3: 1 VC)
 use_sets.ads:28:14: info: postcondition proved (Z3: 2 VC)
-use_sets.ads:28:15: info: precondition proved (Z3: 1 VC)
+use_sets.ads:28:15: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:28:15: info: precondition proved (Z3: 2 VC)
-use_sets.ads:29:11: info: precondition proved (Z3: 1 VC)
+use_sets.ads:29:11: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:29:11: info: precondition proved (Z3: 2 VC)
-use_sets.ads:29:30: info: precondition proved (Z3: 1 VC)
+use_sets.ads:29:30: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:29:30: info: precondition proved (Z3: 2 VC)
 use_sets.ads:34:14: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:39:14: info: postcondition proved (Z3: 2 VC)
-use_sets.ads:40:09: info: precondition proved (Z3: 1 VC)
-use_sets.ads:48:15: info: precondition proved (Z3: 1 VC)
+use_sets.ads:40:09: info: precondition proved (Trivial: 1 VC)
+use_sets.ads:48:15: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:48:15: info: precondition proved (Z3: 2 VC)
-use_sets.ads:49:11: info: precondition proved (Z3: 1 VC)
+use_sets.ads:49:11: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:49:11: info: precondition proved (Z3: 2 VC)
 use_sets.ads:50:24: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:51:14: info: postcondition proved (Z3: 1 VC)
-use_sets.ads:51:15: info: precondition proved (Z3: 1 VC)
+use_sets.ads:51:15: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:51:15: info: precondition proved (Z3: 2 VC)
 use_sets.ads:56:14: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:62:14: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:72:14: info: postcondition proved (Z3: 4 VC)
 use_sets.ads:72:43: info: overflow check proved (Z3: 1 VC)
-use_sets.ads:75:11: info: precondition proved (Z3: 1 VC)
+use_sets.ads:75:11: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Z3: 2 VC)
 use_sets.ads:85:06: info: data dependencies proved
 use_sets.ads:87:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:88:16: info: postcondition proved (Z3: 1 VC)
-use_sets.ads:88:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:88:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:88:17: info: precondition proved (Z3: 2 VC)
 use_sets.ads:94:06: info: data dependencies proved
-use_sets.ads:95:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:95:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:96:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:97:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:103:06: info: data dependencies proved
 use_sets.ads:105:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:106:16: info: postcondition proved (Z3: 1 VC)
-use_sets.ads:106:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:106:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:106:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:113:06: info: data dependencies proved
-use_sets.ads:114:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:114:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:114:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:115:16: info: postcondition proved (Z3: 1 VC)
 use_sets.ads:116:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:122:06: info: data dependencies proved
-use_sets.ads:123:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:123:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:124:16: info: postcondition proved (Z3: 1 VC)
-use_sets.ads:124:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:124:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:124:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:130:06: info: data dependencies proved
-use_sets.ads:131:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:131:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:131:39: info: precondition proved (Z3: 1 VC)
 use_sets.ads:132:16: info: postcondition proved (Z3: 1 VC)
-use_sets.ads:132:17: info: precondition proved (Z3: 1 VC)
+use_sets.ads:132:17: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:132:17: info: precondition proved (Z3: 2 VC)
 use_vectors.adb:11:33: info: loop invariant initialization proved (Z3: 1 VC)
 use_vectors.adb:11:33: info: loop invariant preservation proved (Z3: 1 VC)
@@ -1312,9 +1312,9 @@ use_vectors.ads:57:12: info: precondition proved (Z3: 2 VC)
 use_vectors.ads:57:36: info: range check proved (Z3: 1 VC)
 use_vectors.ads:67:11: info: precondition proved (Z3: 2 VC)
 use_vectors.ads:67:23: info: range check proved (Z3: 1 VC)
-use_vectors.ads:67:32: info: contract case proved (Z3: 2 VC)
+use_vectors.ads:67:32: info: contract case proved (Trivial: 1 VC; Z3: 1 VC)
 use_vectors.ads:68:47: info: overflow check proved (Z3: 1 VC)
-use_vectors.ads:69:16: info: contract case proved (Z3: 5 VC)
+use_vectors.ads:69:16: info: contract case proved (Trivial: 1 VC; Z3: 4 VC)
 use_vectors.ads:70:18: info: precondition proved (Z3: 2 VC)
 use_vectors.ads:70:37: info: range check proved (Z3: 1 VC)
 use_vectors.ads:71:67: info: overflow check proved (Z3: 1 VC)

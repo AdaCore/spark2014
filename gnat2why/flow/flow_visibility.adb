@@ -78,6 +78,10 @@ package body Flow_Visibility is
    Hierarchy_Info : Hierarchy_Info_Maps.Map;
    Scope_Graph    : Scope_Graphs.Graph := Scope_Graphs.Create;
 
+   Components : Scope_Graphs.Strongly_Connected_Components;
+   --  Pre-computed strongly connected components of the visibility graph for
+   --  quickly answering visibility queries.
+
    ----------------------------------------------------------------------------
    --  Subprogram declarations
    ----------------------------------------------------------------------------
@@ -320,14 +324,15 @@ package body Flow_Visibility is
          Rule := Rule_Up_Priv;
 
          --  This rule deals with upwards visibility for the private part of a
-         --  child package. It doesn't apply to instances.
+         --  child package or subprogram. It doesn't apply to instances.
 
-         if Info.Is_Package
-           and then Is_Child (Info)
+         if Is_Child (Info)
            and then not Is_Instance (Info)
          then
             Connect
-              (Priv_V,
+              ((if Info.Is_Package
+                then Priv_V
+                else Body_V),
                Scope_Graph.Get_Vertex ((Ent  => Info.Parent,
                                         Part => Private_Part)));
          end if;
@@ -385,6 +390,8 @@ package body Flow_Visibility is
          Hierarchy_Info.Clear;
       end if;
 
+      Components := Scope_Graph.SCC;
+
       --  Sanity check: all vertices should be now connected to Standard
 
       declare
@@ -399,7 +406,7 @@ package body Flow_Visibility is
          pragma Assert
            (for all V of Scope_Graph.Get_Collection (All_Vertices) =>
                (if V /= Standard
-                then Scope_Graph.Non_Trivial_Path_Exists (V, Standard)));
+                then Scope_Graph.Edge_Exists (Components, V, Standard)));
       end;
 
    end Connect_Flow_Scopes;
@@ -459,9 +466,10 @@ package body Flow_Visibility is
       --  visibility between the same scopes.
 
       return Looking_From = Looking_At
-        or else Scope_Graph.Non_Trivial_Path_Exists
-          (Scope_Graph.Get_Vertex (Sanitize (Looking_From)),
-           Scope_Graph.Get_Vertex (Sanitize (Looking_At)));
+        or else Scope_Graph.Edge_Exists
+          (Components,
+           Sanitize (Looking_From),
+           Sanitize (Looking_At));
    end Is_Visible;
 
    ---------------
@@ -576,7 +584,9 @@ package body Flow_Visibility is
          end if;
       end if;
 
-      if Is_Generic_Instance (E) then
+      if Is_Generic_Instance (E)
+        and then not Is_Wrapper_Package (E)
+      then
          Template := Generic_Parent (Specification (N));
 
          --  Deal with instances of child instances; this is based on frontend
@@ -586,14 +596,30 @@ package body Flow_Visibility is
            and then Is_Generic_Unit (Scope (Template))
          then
             declare
-               Inst_Node : constant Node_Id := Get_Unit_Instantiation_Node (E);
+               Child_Inst : constant Entity_Id :=
+                 (if Ekind (E) = E_Package
+                  then E
+                  else Defining_Entity (Atree.Parent (Subprogram_Spec (E))));
+               --  If the child instance is a package, we can directly pass it
+               --  to Get_Unit_Instantiation_Node; when it is a subprogram, we
+               --  must get its wrapper package. Typically it is just the Scope
+               --  of E, except for instance-as-compilation-unit, where we need
+               --  to retrieve the wrapper package syntactically.
+
+               pragma Assert
+                 (Ekind (E) = E_Package
+                    or else
+                  (Ekind (E) in E_Function | E_Procedure
+                   and then Is_Wrapper_Package (Child_Inst)));
+
+               Inst_Node : constant Node_Id :=
+                 Get_Unit_Instantiation_Node (Child_Inst);
 
             begin
-               pragma Assert (Nkind (Inst_Node) = N_Package_Instantiation);
+               pragma Assert (Nkind (Inst_Node) in N_Generic_Instantiation);
                --  The original frontend routine expects formal packages too,
-               --  but in the backend we only get package instantiations,
-               --  because formal packages have been expanded to renamings of
-               --  instances.
+               --  but in the backend we only instantiations, because formal
+               --  packages have been expanded to renamings of instances.
 
                pragma Assert (Nkind (Name (Inst_Node)) = N_Expanded_Name);
                --  When analysing the generic parent body, frontend expects the

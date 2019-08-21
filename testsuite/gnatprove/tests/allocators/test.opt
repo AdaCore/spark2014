@@ -1,4 +1,3 @@
-Darwin SKIP too slow on darwin
 NT SKIP too slow on windows
 32bits SKIP minor proof diffs on x86-linux
 assertions SKIP minor proof diff
