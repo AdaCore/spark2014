@@ -55,7 +55,6 @@ DOC=ug lrm
 PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
-GNATMAKE=gnatmake
 VERSION=0.0w
 
 # main target for developers
@@ -92,7 +91,7 @@ install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
 	  $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
-	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
+	gprbuild -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/help.txt $(GNATPROVEDIR)
 	$(CP) share/spark/config/* $(CONFIGDIR)

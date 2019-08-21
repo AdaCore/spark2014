@@ -56,7 +56,7 @@ setup: setup_precheck
 	do \
 	  cp -p gnat_src/$$f obj-tools; \
 	done
-	cd obj-tools && gnatmake -q xtreeprs xnmake xsnamest && \
+	cd obj-tools && $(GPRBUILD) -q xtreeprs xnmake xsnamest && \
 	./xtreeprs && ./xnmake && mv nmake.ads nmake.adb treeprs.ads ../obj && \
 	./xsnamest && mv snames.ns ../obj/snames.ads && mv snames.nb ../obj/snames.adb
 	cp -f gnat_src/ada_get_targ.adb obj/get_targ.adb
