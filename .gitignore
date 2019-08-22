@@ -31,3 +31,5 @@ gnat2why/why/xgen/b__xtree.ad?
 testsuite/gnatprove/temp
 include/proof/Coq/*/*.v
 include/proof/Coq/*.v
+spark2014vsn.ads.stderr
+spark2014vsn.ads.stdout
