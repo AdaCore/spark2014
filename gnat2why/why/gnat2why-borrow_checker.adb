@@ -664,7 +664,17 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Node (N : Node_Id);
    --  Main traversal procedure to check safe pointer usage
 
+   procedure Check_Package_Spec (Id : Entity_Id);
+   --  Check the package visible and private declarations in the current
+   --  context. Update the context accordingly.
+
+   procedure Check_Package_Body (Id : Entity_Id);
+   --  Check the package body in the current context. Reset the context
+   --  afterwards.
+
    procedure Check_Package_Entity (Id : Entity_Id);
+   --  Check both the package declaration and its body in a fresh context.
+   --  Reset the context afterwards.
 
    procedure Check_Parameter_Or_Global
      (Expr       : Node_Id;
@@ -884,11 +894,6 @@ package body Gnat2Why.Borrow_Checker is
 
    Current_Observers : Variable_Mapping;
    --  Mapping from observers to the path observed
-
-   Package_Env : Env_Backups;
-   --  Snapshots of environment of package specs that can be used by enclosing
-   --  scopes to update the environment with all the declarations from the
-   --  package.
 
    Permission_Error : Boolean := False;
    --  Should be set to true when an error message is emitted
@@ -1404,16 +1409,24 @@ package body Gnat2Why.Borrow_Checker is
 
          when E_Package =>
             declare
-               Id    : constant Entity_Id :=
-                 Unique_Entity (E);
-               P_Env : constant Perm_Env_Access :=
-                 Get (Package_Env, Id);
+               Scope : constant Entity_Id :=
+                 (if Is_Compilation_Unit (E) then Empty
+                  else Enclosing_Unit (E));
+
             begin
-               if P_Env = null then
+               --  Only check a package entity if its enclosing unit is not
+               --  already checked. Otherwise, E will be checked in the
+               --  context of its scope.
+
+               if Present (Scope) and then Entity_Spec_In_SPARK (Scope) then
+                  pragma Assert
+                    (for some E of Entities_To_Translate => E = Scope);
+               else
+                  pragma Assert
+                    (for all E of Entities_To_Translate => E /= Scope);
                   Check_Package_Entity (E);
                end if;
             end;
-
          when E_Loop =>
             null;
 
@@ -2473,7 +2486,16 @@ package body Gnat2Why.Borrow_Checker is
             Check_Call_Statement (N);
 
          when N_Package_Body =>
-            null;
+            declare
+               Id : constant Entity_Id := Unique_Defining_Entity (N);
+            begin
+               if Ekind (Id) = E_Package
+                 and then Entity_In_SPARK (Id)
+                 and then Entity_Body_In_SPARK (Id)
+               then
+                  Check_Package_Body (Id);
+               end if;
+            end;
 
          when N_Subprogram_Body =>
             null;
@@ -2488,18 +2510,11 @@ package body Gnat2Why.Borrow_Checker is
 
          when N_Package_Declaration =>
             declare
-               Id    : constant Entity_Id :=
-                 Unique_Entity (Defining_Entity (N));
-               P_Env : Perm_Env_Access := Get (Package_Env, Id);
+               Id : constant Entity_Id := Defining_Entity (N);
             begin
-               --  ??? Here we should check that variables read by the package
-               --  elaboration are not moved or borrowed, see S813-013.
-
-               if P_Env = null then
-                  Check_Package_Entity (Id);
-                  P_Env := Get (Package_Env, Id);
+               if Entity_In_SPARK (Id) then
+                  Check_Package_Spec (Id);
                end if;
-               Merge_Env (P_Env.all, Current_Perm_Env);
             end;
 
          when N_Handled_Sequence_Of_Statements =>
@@ -2571,46 +2586,21 @@ package body Gnat2Why.Borrow_Checker is
       end case;
    end Check_Node;
 
-   --------------------------
-   -- Check_Package_Entity --
-   --------------------------
+   ------------------------
+   -- Check_Package_Body --
+   ------------------------
 
-   procedure Check_Package_Entity (Id : Entity_Id) is
+   procedure Check_Package_Body (Id : Entity_Id) is
       Save_In_Elab : constant Boolean := Inside_Elaboration;
-      Spec         : constant Node_Id := Package_Specification (Id);
       Body_N       : constant Node_Id := Package_Body (Id);
-      Vis_Decls    : constant List_Id := Visible_Declarations (Spec);
-      Priv_Decls   : constant List_Id := Private_Declarations (Spec);
       Saved_Env    : Perm_Env;
 
    begin
       Inside_Elaboration := True;
 
-      --  Save environment and put a new one in place
+      --  Save environment
 
-      Move_Env (Current_Perm_Env, Saved_Env);
-
-      --  Check declarations in the special mode for elaboration
-
-      if Present (Vis_Decls) then
-         Check_List (Visible_Declarations (Spec));
-      end if;
-
-      if Present (Priv_Decls)
-        and then Private_Spec_In_SPARK (Id)
-      then
-         Check_List (Private_Declarations (Spec));
-      end if;
-
-      --  Store the environment in the Package_Env map
-
-      declare
-         Pack_Env : constant Perm_Env_Access := new Perm_Env;
-
-      begin
-         Copy_Env (From => Current_Perm_Env, To => Pack_Env.all);
-         Set (Package_Env, Id, Pack_Env);
-      end;
+      Copy_Env (Current_Perm_Env, Saved_Env);
 
       --  Check declarations and statements in the special mode for
       --  elaboration.
@@ -2626,7 +2616,58 @@ package body Gnat2Why.Borrow_Checker is
       Move_Env (Saved_Env, Current_Perm_Env);
 
       Inside_Elaboration := Save_In_Elab;
+   end Check_Package_Body;
+
+   --------------------------
+   -- Check_Package_Entity --
+   --------------------------
+
+   procedure Check_Package_Entity (Id : Entity_Id) is
+      Saved_Env : Perm_Env;
+
+   begin
+      --  Save environment
+
+      Move_Env (Current_Perm_Env, Saved_Env);
+
+      Check_Package_Spec (Id);
+
+      if Entity_Body_In_SPARK (Id) then
+         Check_Package_Body (Id);
+      end if;
+
+      --  Restore the saved environment and free the current one
+
+      Move_Env (Saved_Env, Current_Perm_Env);
    end Check_Package_Entity;
+
+   ------------------------
+   -- Check_Package_Spec --
+   ------------------------
+
+   procedure Check_Package_Spec (Id : Entity_Id) is
+      Save_In_Elab : constant Boolean := Inside_Elaboration;
+      Spec         : constant Node_Id := Package_Specification (Id);
+      Vis_Decls    : constant List_Id := Visible_Declarations (Spec);
+      Priv_Decls   : constant List_Id := Private_Declarations (Spec);
+
+   begin
+      Inside_Elaboration := True;
+
+      --  Check declarations in the special mode for elaboration
+
+      if Present (Vis_Decls) then
+         Check_List (Visible_Declarations (Spec));
+      end if;
+
+      if Present (Priv_Decls)
+        and then Private_Spec_In_SPARK (Id)
+      then
+         Check_List (Private_Declarations (Spec));
+      end if;
+
+      Inside_Elaboration := Save_In_Elab;
+   end Check_Package_Spec;
 
    -------------------------------
    -- Check_Parameter_Or_Global --
@@ -4079,13 +4120,13 @@ package body Gnat2Why.Borrow_Checker is
         and then Get (Current_Perm_Env, Root) = null
       then
          Illegal_Global_Usage (Expr, Root);
-      end if;
+         return;
 
-      --  During elaboration, only the validity of operations is checked, no
-      --  need to compute the permission of Expr.
+      --  If the root object is not in the current environment, so it must be
+      --  coming from no spark code. Assume that it has read/write permission.
 
-      if Inside_Elaboration then
-         Perm := None;
+      elsif Get (Current_Perm_Env, Root) = null then
+         Perm := Read_Write;
       else
          Perm := Get_Perm (Expr);
       end if;
@@ -4095,13 +4136,6 @@ package body Gnat2Why.Borrow_Checker is
       case Mode is
 
          when Read =>
-
-            --  No checking needed during elaboration
-
-            if Inside_Elaboration then
-               return;
-            end if;
-
             --  Check path is readable
 
             if Perm not in Read_Perm then
@@ -4144,13 +4178,6 @@ package body Gnat2Why.Borrow_Checker is
             end if;
 
          when Assign =>
-
-            --  No checking needed during elaboration
-
-            if Inside_Elaboration then
-               return;
-            end if;
-
             --  For assignment, check W permission
 
             if Perm not in Write_Perm then
