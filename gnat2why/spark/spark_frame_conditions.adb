@@ -63,10 +63,6 @@ package body SPARK_Frame_Conditions is
    procedure Add_To_Map (Map : in out Node_Graphs.Map; From, To : Entity_Id);
    --  Add the relation From -> To in map Map
 
-   function Make_Entity_Name (Name : String_Ptr) return Entity_Name
-   with Pre => Name /= null and then Name.all /= "";
-   --  Build a name for an entity, making sure the name is not empty
-
    function Get_Frontend_Xrefs
      (Map : Node_Graphs.Map;
       Key : Entity_Id)
@@ -275,13 +271,6 @@ package body SPARK_Frame_Conditions is
    begin
       Load;
    end Load_SPARK_Xrefs;
-
-   ----------------------
-   -- Make_Entity_Name --
-   ----------------------
-
-   function Make_Entity_Name (Name : String_Ptr) return Entity_Name is
-     (To_Entity_Name (Name.all));
 
    ---------------------
    -- Register_Entity --
