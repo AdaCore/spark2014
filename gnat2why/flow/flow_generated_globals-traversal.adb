@@ -471,21 +471,8 @@ package body Flow_Generated_Globals.Traversal is
       -- Traverse_Package_Body --
       ---------------------------
 
-      procedure Traverse_Package_Body (N : Node_Id) is
-         Spec_E : constant Entity_Id := Unique_Defining_Entity (N);
-
-      begin
-         case Ekind (Spec_E) is
-            when E_Package =>
-               Traverse_Declarations_And_HSS (N);
-
-            when E_Generic_Package =>
-               null;
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end Traverse_Package_Body;
+      procedure Traverse_Package_Body (N : Node_Id) renames
+        Traverse_Declarations_And_HSS;
 
       -----------------------------
       -- Traverse_Protected_Body --
@@ -500,22 +487,8 @@ package body Flow_Generated_Globals.Traversal is
       -- Traverse_Subprogram_Body --
       ------------------------------
 
-      procedure Traverse_Subprogram_Body (N : Node_Id) is
-      begin
-         case Ekind (Unique_Defining_Entity (N)) is
-            when Entry_Kind
-               | E_Function
-               | E_Procedure
-            =>
-               Traverse_Declarations_And_HSS (N);
-
-            when Generic_Subprogram_Kind =>
-               null;
-
-            when others =>
-               raise Program_Error;
-         end case;
-      end Traverse_Subprogram_Body;
+      procedure Traverse_Subprogram_Body (N : Node_Id) renames
+        Traverse_Declarations_And_HSS;
 
       ------------------------
       -- Traverse_Task_Body --
