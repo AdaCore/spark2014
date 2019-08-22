@@ -103,7 +103,7 @@ package body Flow_Generated_Globals.Partial is
    --  Preliminaries
    ----------------------------------------------------------------------------
 
-   function Is_Caller_Entity (E : Entity_Id) return Boolean;
+   function Is_Caller_Entity (E : Entity_Id) return Boolean with Ghost;
    --  Returns True iff E represent an entity is can call other routines
 
    function Is_Callable (E : Entity_Id) return Boolean;
