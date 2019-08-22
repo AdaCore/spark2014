@@ -305,19 +305,12 @@ package body SPARK_Definition is
    ------------------------------
 
    function Body_Statements_In_SPARK (E : Entity_Id) return Boolean is
+      Prag : constant Node_Id :=
+        SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
    begin
-      if Entity_Body_In_SPARK (E) then
-         declare
-            Prag : constant Node_Id :=
-              SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
-         begin
-            return
-              (if Present (Prag)
-               then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
-         end;
-      else
-         return False;
-      end if;
+      return
+        (if Present (Prag)
+         then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
    end Body_Statements_In_SPARK;
 
    --------------------------
