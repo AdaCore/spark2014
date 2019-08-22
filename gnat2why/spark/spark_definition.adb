@@ -3168,19 +3168,6 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
-      --  Separately mark declarations from Standard as in SPARK or not
-
-      if N = Standard_Package_Node then
-         return;
-      end if;
-
-      --  Avoid rewriting generic units which are only preanalyzed, which may
-      --  cause rewriting to fail, as this is not needed.
-
-      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
-         return;
-      end if;
-
       --  Violations within Context_Items, e.g. unknown configuration pragmas,
       --  should not affect the SPARK status of the entities in the compilation
       --  unit itself, so we reset the Violation_Detected flag to False after
