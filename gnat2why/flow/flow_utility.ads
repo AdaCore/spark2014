@@ -484,11 +484,6 @@ package Flow_Utility is
    --  cases and the initial condition; or an empty list of none of these
    --  exist.
 
-   function Is_Precondition_Check (N : Node_Id) return Boolean
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) = Pragma_Check;
-   --  Given a check pragma, return if this is a precondition check
-
    function Contains_Discriminants
      (F : Flow_Id;
       S : Flow_Scope)

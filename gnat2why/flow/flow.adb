@@ -227,19 +227,6 @@ package body Flow is
       Outdent;
    end Debug_Print_Generated_Contracts;
 
-   ----------------------
-   -- Vertex_Pair_Hash --
-   ----------------------
-
-   function Vertex_Pair_Hash
-     (VD : Vertex_Pair)
-      return Ada.Containers.Hash_Type is
-      use Ada.Containers;
-   begin
-      return Flow_Graphs.Vertex_Hash (VD.To) +
-             Flow_Graphs.Vertex_Hash (VD.From);
-   end Vertex_Pair_Hash;
-
    ------------------------
    -- Print_Graph_Vertex --
    ------------------------

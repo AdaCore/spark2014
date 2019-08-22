@@ -3952,17 +3952,6 @@ package body Flow_Utility is
       end case;
    end Is_Initialized_In_Specification;
 
-   ---------------------------
-   -- Is_Precondition_Check --
-   ---------------------------
-
-   function Is_Precondition_Check (N : Node_Id) return Boolean is
-      A : constant Node_Id := First (Pragma_Argument_Associations (N));
-   begin
-      pragma Assert (Nkind (Expression (A)) = N_Identifier);
-      return Chars (Expression (A)) in Name_Pre | Name_Precondition;
-   end Is_Precondition_Check;
-
    --------------------------------
    -- Is_Valid_Assignment_Target --
    --------------------------------
