@@ -54,7 +54,7 @@ package body Debug.Timing is
       end if;
       if Debug_Mode then
          Put (Msg);
-         for I in Msg'Length + 1 .. 35 loop
+         for I in Msg'Length + 1 .. 60 loop
             Put (' ');
          end loop;
          --  Print elapsed time in 1234.5 notation; this is enough for around
