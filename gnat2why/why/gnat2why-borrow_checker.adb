@@ -761,6 +761,11 @@ package body Gnat2Why.Borrow_Checker is
    --  a prefix, in the sense that they could still refer to overlapping memory
    --  locations.
 
+   function Is_Read_Only (E : Entity_Id) return Boolean with
+     Pre => Is_Object (E);
+   --  Return True if E is declared as Read_Only (ie. a constant which is not
+   --  an access to variable type).
+
    function Loop_Of_Exit (N : Node_Id) return Entity_Id;
    --  A function that takes an exit statement node and returns the entity of
    --  the loop that this statement is exiting from.
@@ -1284,14 +1289,16 @@ package body Gnat2Why.Borrow_Checker is
 
             if Is_Deep (Target_Typ) then
                declare
+                  Perm : constant Perm_Kind :=
+                    (if Is_Read_Only (Target) then Read_Only else Read_Write);
                   Tree : constant Perm_Tree_Access :=
                     new Perm_Tree_Wrapper'
                       (Tree =>
                          (Kind                => Entire_Object,
                           Is_Node_Deep        => True,
                           Explanation         => Decl,
-                          Permission          => Read_Write,
-                          Children_Permission => Read_Write));
+                          Permission          => Perm,
+                          Children_Permission => Perm));
                begin
                   Set (Current_Perm_Env, Target, Tree);
                end;
@@ -3572,6 +3579,18 @@ package body Gnat2Why.Borrow_Checker is
    end Is_Prefix_Or_Almost;
 
    ------------------
+   -- Is_Read_Only --
+   ------------------
+
+   function Is_Read_Only (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Retysp (Etype (E));
+   begin
+      return Ekind (E) in E_Constant | E_In_Parameter
+        and then (not Is_Access_Type (Ty)
+                  or else Is_Access_Constant (Ty));
+   end Is_Read_Only;
+
+   ------------------
    -- Loop_Of_Exit --
    ------------------
 
@@ -4364,10 +4383,16 @@ package body Gnat2Why.Borrow_Checker is
 
       elsif Kind = E_In_Parameter then
 
-         --  Input global variables are observed only
+         --  If Id is a read-only global variable, it cannot have been moved.
+         --  Otherwise, the variable was declared with the permission from its
+         --  declaration, and not the one from the global contract to
+         --  have better error messages in the case of generated globals (see
+         --  Set_Parameter_Or_Global). So we need to check its permission here.
 
          if Global_Var then
-            return;
+            if Is_Read_Only (Id) then
+               return;
+            end if;
 
          --  Anonymous access to constant is an observe
 
@@ -5063,14 +5088,21 @@ package body Gnat2Why.Borrow_Checker is
             if not Is_Deep (Typ) then
                Perm := None;
 
+            --  Use the permission of the declaration for global variables to
+            --  have better error messages in the case of generated globals.
+            --  The problematic case is a global variable which is moved by
+            --  the subprogram, but is only read so flow analysis tags it as a
+            --  global input. It seems clearer to complain at the end of the
+            --  scope when the variable is not assigned back, than to emit a
+            --  strange message stating that the variable was declared as
+            --  read-only by a flow generated contract.
+
+            elsif Global_Var then
+               Perm := (if Is_Read_Only (Id) then Read_Only else Read_Write);
+
             --  Inputs of functions have R permission only
 
             elsif Ekind (Subp) = E_Function then
-               Perm := Read_Only;
-
-            --  Input global variables have R permission only
-
-            elsif Global_Var then
                Perm := Read_Only;
 
             --  Anonymous access to constant is an observe
