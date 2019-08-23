@@ -153,8 +153,11 @@ package body Flow.Interprocedural is
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
-      procedure Add_TD_Edge (A, B : Flow_Id);
-      --  Add a parameter dependency edge from the input A to the output B
+      procedure Add_TD_Edge (A, B : Flow_Id)
+      with Pre => A.Variant = Normal_Use and then B.Variant = Normal_Use;
+      --  Add a parameter dependency edge from the input A to the output B.
+      --  This is only meant to be called with Normal_Use parameters, exactly
+      --  as they come from Get_Depends.
 
       -----------------
       -- Add_TD_Edge --
@@ -331,9 +334,19 @@ package body Flow.Interprocedural is
 
             if Globals.Outputs.Is_Empty then
                --  All inputs flow into the null export vertex
-               for Input of Globals.Inputs loop
-                  Add_TD_Edge (Input, Null_Export_Flow_Id);
-               end loop;
+               declare
+                  Output_V : constant Flow_Graphs.Vertex_Id :=
+                    Find_Parameter_Vertex
+                      (FA, V, Change_Variant (Null_Export_Flow_Id, Out_View));
+
+               begin
+                  for Input of Globals.Inputs loop
+                     FA.TDG.Add_Edge
+                       (Find_Parameter_Vertex (FA, V, Input),
+                        Output_V,
+                        EC_TDG);
+                  end loop;
+               end;
             else
                --  Each output depends on all inputs
                for Output of Globals.Outputs loop
