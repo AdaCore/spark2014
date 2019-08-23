@@ -425,7 +425,8 @@ package body Flow.Control_Flow_Graph is
    procedure Create_Record_Tree
      (F        : Flow_Id;
       Leaf_Atr : V_Attributes;
-      FA       : in out Flow_Analysis_Graphs);
+      FA       : in out Flow_Analysis_Graphs)
+   with Pre => F.Kind in Direct_Mapping | Record_Field | Magic_String;
    --  Create part of the tree structure used to represent records. In
    --  particular, we create the subtree which is formed by the leaf F up to
    --  the entire variable represented by F. In the art below the vertices
@@ -1163,10 +1164,10 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Value | Final_Value =>
             case F.Kind is
-               when Null_Value =>
+               when Null_Value | Synthetic_Null_Export =>
                   raise Program_Error;
 
-               when Magic_String | Synthetic_Null_Export =>
+               when Magic_String =>
                   null;
 
                when Direct_Mapping | Record_Field =>
@@ -1201,10 +1202,10 @@ package body Flow.Control_Flow_Graph is
 
          when Initial_Grouping | Final_Grouping =>
             case F.Kind is
-               when Null_Value =>
+               when Null_Value | Synthetic_Null_Export =>
                   raise Program_Error;
 
-               when Magic_String | Synthetic_Null_Export =>
+               when Magic_String =>
                   null;
 
                when Direct_Mapping | Record_Field =>
