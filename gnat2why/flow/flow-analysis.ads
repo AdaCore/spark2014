@@ -98,6 +98,10 @@ package Flow.Analysis is
    --  Detect global inputs that are only used in assertions (and therefore
    --  should be Proof_In).
 
+   procedure Find_Illegal_Reads_Of_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs);
+   --  Detect Proof_In globals used in non-assertion expressions
+
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --

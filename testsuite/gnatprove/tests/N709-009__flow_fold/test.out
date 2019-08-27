@@ -4,5 +4,5 @@ main2.adb:5:24: info: data dependencies proved
 main2.adb:7:22: info: assertion proved (CVC4: 1 VC)
 main2.adb:7:22: medium: precondition might fail, cannot prove X [possible explanation: subprogram at line 5 should mention X in a precondition]
 p.adb:9:20: info: initialization of "Z" proved
-p.adb:10:11: info: data dependencies proved
 p.adb:11:11: info: flow dependencies proved
+p.adb:14:27: medium: Proof_In global "Y" can only be used in assertions (SPARK RM 6.1.4(18))

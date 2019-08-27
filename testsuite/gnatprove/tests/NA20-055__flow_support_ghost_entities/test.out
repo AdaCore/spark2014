@@ -1,4 +1,5 @@
 casper.adb:4:17: medium: overflow check might fail [possible explanation: subprogram at casper.ads:9 should mention G1 and G2 in a precondition]
+casper.adb:4:19: medium: Proof_In global "G2" can only be used in assertions (SPARK RM 6.1.4(18))
 casper.adb:8:27: medium: overflow check might fail [possible explanation: subprogram at casper.ads:14 should mention G2 in a precondition]
 casper.adb:11:22: info: assertion proved (CVC4: 1 VC)
 casper.ads:2:08: info: flow dependencies proved

@@ -3233,6 +3233,77 @@ package body Flow.Analysis is
       end if;
    end Find_Input_Only_Used_In_Assertions;
 
+   -------------------------------------
+   -- Find_Illegal_Reads_Of_Proof_Ins --
+   -------------------------------------
+
+   procedure Find_Illegal_Reads_Of_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      use Flow_Graphs;
+
+      Globals : Global_Flow_Ids;
+
+   begin
+      --  We start from a user-written contract, scan each of its Proof_In
+      --  global, each of its flattened component and each of its use. This
+      --  is more efficient than scanning the entire CFG.
+
+      if FA.Kind in Kind_Subprogram | Kind_Task
+        and then Has_User_Supplied_Globals (FA.Analyzed_Entity)
+      then
+         Get_Globals (Subprogram          => FA.Spec_Entity,
+                      Scope               => FA.B_Scope,
+                      Classwide           => False,
+                      Globals             => Globals,
+                      Use_Deduced_Globals => False,
+                      Ignore_Depends      => True);
+
+         for Proof_In of Globals.Proof_Ins loop
+            for Var of Flatten_Variable (Proof_In, FA.B_Scope) loop
+               declare
+                  Initial_V : constant Flow_Graphs.Vertex_Id :=
+                    Get_Initial_Vertex (FA.CFG,
+                                        Change_Variant (Var, Normal_Use));
+
+                  pragma Assert (FA.Atr (Initial_V).Is_Global);
+                  pragma Assert (FA.Atr (Initial_V).Mode = Mode_Proof);
+
+               begin
+                  for Use_V of
+                    FA.PDG.Get_Collection (Initial_V, Out_Neighbours)
+                  loop
+                     declare
+                        Use_F : Flow_Id      renames FA.PDG.Get_Key (Use_V);
+                        Use_A : V_Attributes renames FA.Atr (Use_V);
+
+                     begin
+                        if Use_F.Variant /= Final_Value
+                          and then not Use_A.Is_Assertion
+                        then
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Msg      => "Proof_In global & " &
+                                          "can only be used in assertions",
+                              SRM_Ref  => "6.1.4(18)",
+                              N        => First_Variable_Use
+                                (N       => Use_A.Error_Location,
+                                 Scope   => FA.B_Scope,
+                                 Var     => Var,
+                                 Precise => False),
+                              F1       => Var,
+                              Vertex   => Use_V,
+                              Tag      => Global_Wrong,
+                              Severity => Medium_Check_Kind);
+                        end if;
+                     end;
+                  end loop;
+               end;
+            end loop;
+         end loop;
+      end if;
+   end Find_Illegal_Reads_Of_Proof_Ins;
+
    ---------------------------------
    -- Find_Hidden_Unexposed_State --
    ---------------------------------
