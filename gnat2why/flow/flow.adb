@@ -1435,7 +1435,6 @@ package body Flow is
                      Analysis.Check_Terminating_Annotation (FA);
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
-                  Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
                   Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
                   if FA.Is_Main then

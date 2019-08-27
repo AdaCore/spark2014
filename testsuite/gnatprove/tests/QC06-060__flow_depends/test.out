@@ -1,8 +1,5 @@
 p.adb:6:15: medium: Proof_In global "X" can only be used in assertions (SPARK RM 6.1.4(18))
-p.ads:6:51: medium: export "PO" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 q.adb:5:14: medium: Proof_In global "X" can only be used in assertions (SPARK RM 6.1.4(18))
 q.ads:9:21: info: initialization of "Y" proved
-q.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 r.adb:5:14: medium: Proof_In global "X.C" can only be used in assertions (SPARK RM 6.1.4(18))
 r.ads:9:21: info: initialization of "Y" proved
-r.ads:9:60: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))

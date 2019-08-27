@@ -1,4 +1,3 @@
-proof_in_ghost.adb:8:29: medium: export "G" must not depend on Proof_In "B" (SPARK RM 6.1.4(18))
 proof_in_ghost.adb:8:42: info: initialization of "G" proved
 proof_in_ghost.adb:10:24: medium: Proof_In global "B" can only be used in assertions (SPARK RM 6.1.4(18))
 proof_in_ghost.adb:12:12: medium: Proof_In global "B" can only be used in assertions (SPARK RM 6.1.4(18))

@@ -4,7 +4,6 @@ casper.adb:8:27: medium: overflow check might fail [possible explanation: subpro
 casper.adb:11:22: info: assertion proved (CVC4: 1 VC)
 casper.ads:2:08: info: flow dependencies proved
 casper.ads:9:26: info: initialization of "Par" proved
-casper.ads:12:34: medium: export "Par" must not depend on Proof_In "G2" (SPARK RM 6.1.4(18))
 casper.ads:14:17: info: initialization of "Par" proved
 casper.ads:15:11: info: data dependencies proved
 casper.ads:17:34: info: initialization of "Ghost_G1" proved
