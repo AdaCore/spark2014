@@ -192,7 +192,9 @@ package body Flow.Slice is
 
       --  Determine all out vertices
 
-      for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V_Final of FA.CFG.Get_Collection
+        (FA.End_Vertex, Flow_Graphs.Out_Neighbours)
+      loop
          declare
             F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
 
@@ -213,8 +215,9 @@ package body Flow.Slice is
             --  being written with no data dependency.
 
          begin
-            if F_Final.Variant = Final_Value
-              and then FA.Atr (V_Final).Is_Export
+            pragma Assert (F_Final.Variant = Final_Value);
+
+            if FA.Atr (V_Final).Is_Export
               and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
               and then not
@@ -231,14 +234,17 @@ package body Flow.Slice is
 
       --  Determine all input vertices
 
-      for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V_Initial of FA.CFG.Get_Collection
+        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      loop
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
             Atr       : V_Attributes renames FA.Atr (V_Initial);
 
          begin
-            if F_Initial.Variant = Initial_Value
-              and then Atr.Is_Import
+            pragma Assert (F_Initial.Variant = Initial_Value);
+
+            if Atr.Is_Import
               and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then

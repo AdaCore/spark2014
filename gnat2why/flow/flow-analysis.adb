@@ -917,7 +917,9 @@ package body Flow.Analysis is
          Unwritten_Global_Exports := Contract_Globals (FA.Spec_Entity).Outputs;
       end if;
 
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V of FA.CFG.Get_Collection
+        (FA.End_Vertex, Flow_Graphs.Out_Neighbours)
+      loop
          declare
             F_Final : Flow_Id      renames FA.PDG.Get_Key (V);
             A_Final : V_Attributes renames FA.Atr (V);
@@ -925,8 +927,9 @@ package body Flow.Analysis is
             Written : Boolean;
 
          begin
-            if F_Final.Variant = Final_Value
-              and then A_Final.Is_Export
+            pragma Assert (F_Final.Variant = Final_Value);
+
+            if A_Final.Is_Export
               and then not Synthetic (F_Final)
             then
 
@@ -1704,13 +1707,15 @@ package body Flow.Analysis is
          return;
       end if;
 
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V of FA.CFG.Get_Collection
+        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      loop
          declare
             F : Flow_Id renames FA.PDG.Get_Key (V);
          begin
-            if F.Variant = Initial_Value
-              and then Is_Abstract_State (F)
-            then
+            pragma Assert (F.Variant = Initial_Value);
+
+            if Is_Abstract_State (F) then
                Check_If_From_Another_Non_Elaborated_CU (F, V);
             end if;
          end;
