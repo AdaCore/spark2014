@@ -1766,11 +1766,11 @@ package body Flow.Analysis is
                                        return Boolean;
       --  Checks if V represents elaboration of a nested package
 
-      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
-                                             return Boolean;
-      --  This function returns True if V corresponds to an assignment to a
-      --  record field that has been introduced by a record split and the rest
-      --  of the fields are ineffective.
+      function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
+                                         return Boolean;
+      --  Returns True if V corresponds to an assignment to a record field
+      --  that has been introduced by a record split and some of the fields
+      --  is effective.
 
       function Skip_Any_Conversions (N : Node_Id) return Node_Id
       with Pre  => Nkind (N) in N_Subexpr,
@@ -1956,30 +1956,22 @@ package body Flow.Analysis is
          end loop;
       end Skip_Any_Conversions;
 
-      ----------------------------------
-      -- Other_Fields_Are_Ineffective --
-      ----------------------------------
+      ------------------------------
+      -- Other_Field_Is_Effective --
+      ------------------------------
 
-      function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
-                                             return Boolean
+      function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
+                                         return Boolean
       is
          C : constant Vertex_To_Vertex_Set_Maps.Cursor :=
            FA.Other_Fields.Find (V);
       begin
-         if Vertex_To_Vertex_Set_Maps.Has_Element (C) then
-            for Other_Field of FA.Other_Fields (C) loop
-               if FA.PDG.Non_Trivial_Path_Exists
-                 (Other_Field, Is_Final_Use_Any_Export'Access)
-               then
-                  return False;
-               end if;
-            end loop;
-         end if;
-
-         --  If we reach this point then all other fields are ineffective
-
-         return True;
-      end Other_Fields_Are_Ineffective;
+         return Vertex_To_Vertex_Set_Maps.Has_Element (C)
+           and then
+             (for some Other_Field of FA.Other_Fields (C) =>
+                FA.PDG.Non_Trivial_Path_Exists
+                  (Other_Field, Is_Final_Use_Any_Export'Access));
+      end Other_Field_Is_Effective;
 
    --  Start of processing for Find_Ineffective_Statements
 
@@ -2036,8 +2028,8 @@ package body Flow.Analysis is
 
                  --  Suppression for vertices that correspond to an assignment
                  --  to a record field, that comes from a record split, while
-                 --  the rest of the fields are not ineffective.
-                 Other_Fields_Are_Ineffective (V) and then
+                 --  some of the other fields is effective.
+                 not Other_Field_Is_Effective (V) and then
 
                  --  Suppression for vertices that define a variable that has
                  --  Async_Readers set.
