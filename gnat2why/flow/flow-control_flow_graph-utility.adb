@@ -31,7 +31,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects
      (A      : in out V_Attributes;
-      Global : Flow_Id := Null_Flow_Id);
+      Global : Flow_Id := Null_Flow_Id)
+   with Pre => (if Present (Global) then Global.Variant = Normal_Use);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
    --  effective will be noted in the volatiles_read and volatiles_written
@@ -423,7 +424,7 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      Add_Volatile_Effects (A, Global);
+      Add_Volatile_Effects (A, G);
       return A;
    end Make_Global_Attributes;
 
