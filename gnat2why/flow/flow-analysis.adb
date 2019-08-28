@@ -1961,9 +1961,11 @@ package body Flow.Analysis is
       function Other_Fields_Are_Ineffective (V : Flow_Graphs.Vertex_Id)
                                              return Boolean
       is
+         C : constant Vertex_To_Vertex_Set_Maps.Cursor :=
+           FA.Other_Fields.Find (V);
       begin
-         if FA.Other_Fields.Contains (V) then
-            for Other_Field of FA.Other_Fields (V) loop
+         if Vertex_To_Vertex_Set_Maps.Has_Element (C) then
+            for Other_Field of FA.Other_Fields (C) loop
                if FA.PDG.Non_Trivial_Path_Exists
                  (Other_Field, Is_Final_Use_Any_Export'Access)
                then
