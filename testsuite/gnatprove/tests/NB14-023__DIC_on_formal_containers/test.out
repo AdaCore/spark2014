@@ -18,18 +18,18 @@ a-cfhama.ads:680:39: info: precondition proved (CVC4: 1 VC), in instantiation at
 a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:13
 a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:13
 a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:13
-a-cfhase.ads:460:18: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:728:39: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:737:17: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:754:24: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:755:26: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:801:49: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:964:24: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:965:26: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:965:44: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1001:49: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1074:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
-a-cfhase.ads:1089:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:497:18: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:812:39: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:821:17: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:842:24: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:843:26: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:891:49: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1068:24: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1069:26: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1069:44: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1109:49: info: overflow check proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1201:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
+a-cfhase.ads:1222:20: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:18
 a-cforma.ads:744:39: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:753:17: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
 a-cforma.ads:788:42: info: precondition proved (CVC4: 1 VC), in instantiation at dic_of_cont.ads:22
