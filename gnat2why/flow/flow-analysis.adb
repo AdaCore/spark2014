@@ -1821,9 +1821,11 @@ package body Flow.Analysis is
                TV := Flow_Graphs.Continue;
             else
                declare
+                  V_Atr : V_Attributes renames FA.Atr (V);
+
                   Intersection : constant Flow_Id_Sets.Set :=
                     Vars_Defined and
-                    (FA.Atr (V).Variables_Defined - FA.Atr (V).Variables_Used);
+                    (V_Atr.Variables_Defined - V_Atr.Variables_Used);
 
                begin
                   if Intersection.Is_Empty then
