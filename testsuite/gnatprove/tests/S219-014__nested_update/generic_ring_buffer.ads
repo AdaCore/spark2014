@@ -15,7 +15,7 @@ is
    subtype Small_Positive is Natural range 1 .. Natural'Last / 2;
 
    type Element_Array_Type is array (Small_Positive range <>) of Element_Type;
-   
+
    type Ring_Buffer_Type (Max_Size : Small_Positive) is record
       Count : Small_Natural  := 0;
       Head  : Small_Positive := 1;
@@ -27,12 +27,12 @@ is
 	Ring_Buffer_Type.Count    <= Ring_Buffer_Type.Max_Size and
 	Ring_Buffer_Type.Head     <= Ring_Buffer_Type.Max_Size and
 	Ring_Buffer_Type.Tail     <= Ring_Buffer_Type.Max_Size and
-        ((Ring_Buffer_Type.Count = 0 and 
-	    Ring_Buffer_Type.Tail = Ring_Buffer_Type.Max_Size and 
+        ((Ring_Buffer_Type.Count = 0 and
+	    Ring_Buffer_Type.Tail = Ring_Buffer_Type.Max_Size and
 	    Ring_Buffer_Type.Head = 1) or
 	 (Ring_Buffer_Type.Count = Ring_Buffer_Type.Max_Size + Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1) or
 	 (Ring_Buffer_Type.Count = Ring_Buffer_Type.Tail - Ring_Buffer_Type.Head + 1)));
-     
+
 
      ----------------------------------------------------------------------------
 
@@ -77,8 +77,8 @@ is
      with
        Pre   => not Empty (Buffer) and
                 Size (Buffer) >= 1,
-       Post  => not Full (Buffer) and 
-                Element = First (Buffer'Old) and 
+       Post  => not Full (Buffer) and
+                Element = First (Buffer'Old) and
                 Size (Buffer) = Size (Buffer'Old) - 1;
 
 
@@ -87,8 +87,8 @@ is
 	Element  : in     Element_Type)
      with
        Pre   => not Full (Buffer),
-       Post  => not Empty (Buffer) and 
-                Last (Buffer) = Element and 
+       Post  => not Empty (Buffer) and
+                Last (Buffer) = Element and
                 Size (Buffer) = Size (Buffer'Old) + 1;
 
      ----------------------------------------------------------------------------
@@ -96,8 +96,8 @@ is
      procedure Clear
        (Buffer : in out Ring_Buffer_Type)
      with
-       Post => Empty (Buffer) and 
-               not Full (Buffer) and 
+       Post => Empty (Buffer) and
+               not Full (Buffer) and
                Size (Buffer) = 0;
 
      ----------------------------------------------------------------------------

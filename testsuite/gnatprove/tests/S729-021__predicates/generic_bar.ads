@@ -8,7 +8,7 @@ package Generic_Bar with
 
    procedure Initialize_Element (Context : out Element_Context_Type) with
      Post => Element_Valid (Context) and then Context in Element_Context_Type;
-   
+
    function Valid_Element (Context : Element_Context_Type) return Boolean;
 
 end Generic_Bar;

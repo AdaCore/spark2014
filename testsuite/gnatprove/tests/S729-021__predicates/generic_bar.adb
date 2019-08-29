@@ -9,5 +9,5 @@ package body Generic_Bar with
 
    function Valid_Element (Context : Element_Context_Type) return Boolean is
       (Element_Valid (Context));
-   
+
 end Generic_Bar;

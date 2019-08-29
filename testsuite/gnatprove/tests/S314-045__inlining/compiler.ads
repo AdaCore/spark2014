@@ -56,7 +56,7 @@ type PCode_Entry is record
   instruction: PCode := OPR;          -- an appropriate p-code instruction
   level:       Integer := 0;
   -- the relation of the data with respect to the current stack frame
-  data:        Integer := 0;        -- data 
+  data:        Integer := 0;        -- data
   comment:     String80 := ( others => ' ' ); -- an optional string explaining what is going on
 end record;
 

@@ -18,5 +18,5 @@ is
       Bar.Initialize_Element (Context);
       return Bar.Valid_Element (Context);
    end Test_Bar;
-   
+
 end Test;
