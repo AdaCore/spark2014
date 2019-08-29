@@ -1,4 +1,3 @@
 p.adb:16:06: high: "Dummy" must be listed in the Global aspect of "Do_Nothing" (SPARK RM 6.1.4(14))
+p.adb:22:06: high: "Dummy" must be listed in the Global aspect of "Do_Something" (SPARK RM 6.1.4(14))
 p.adb:23:06: medium: call to nonreturning subprogram might be executed
-p.ads:9:13: high: all paths in "Do_Something" raise exceptions or do not terminate normally
-p.ads:9:31: info: data dependencies proved

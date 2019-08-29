@@ -1746,6 +1746,17 @@ package body Flow.Analysis is
       function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex
 
+      function Is_Dummy_Call (N : Node_Id) return Boolean
+      with Pre => Nkind (N) in N_Procedure_Call_Statement
+                             | N_Entry_Call_Statement;
+      --  Returns True iff N is a call to subprogram with no parameters
+      --  whatsoever (i.e. no formal parameters, no implicit parameters and no
+      --  globals). Such a subprogram doesn't read or write anything, so from
+      --  the flow analysis point of view it is equivalent to a null statement.
+      --
+      --  We prefer to warn about this once, when analysing that subprogram
+      --  itself and not everytime it is called.
+
       function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if from the given vertex V it is impossible to reach the end
       --  vertex.
@@ -1857,6 +1868,41 @@ package body Flow.Analysis is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value;
       end Is_Any_Final_Use;
+
+      -------------------
+      -- Is_Dummy_Call --
+      -------------------
+
+      function Is_Dummy_Call (N : Node_Id) return Boolean is
+         E : constant Entity_Id := Get_Called_Entity (N);
+
+         Globals : Global_Flow_Ids;
+
+      begin
+         --  The implicit formal parameter is an effect
+
+         if Ekind (Scope (E)) = E_Protected_Type then
+            return False;
+
+         --  Any explicit formal parameter is an effect
+
+         elsif Present (First_Formal (E)) then
+            return False;
+
+         --  Any global parameter is an effect
+
+         else
+            Get_Globals (Subprogram          => E,
+                         Scope               => FA.B_Scope,
+                         Classwide           => False,
+                         Globals             => Globals,
+                         Use_Deduced_Globals => True);
+
+            return Globals.Proof_Ins.Is_Empty
+              and then Globals.Inputs.Is_Empty
+              and then Globals.Outputs.Is_Empty;
+         end if;
+      end Is_Dummy_Call;
 
       -----------------
       -- Is_Dead_End --
@@ -2036,7 +2082,11 @@ package body Flow.Analysis is
                  not Defines_Async_Reader_Var (V) and then
 
                  --  Suppression for elaboration of nested packages
-                 not Is_Package_Elaboration (V)
+                 not Is_Package_Elaboration (V) and then
+
+                 --  Suppression for calls to subprograms with no effects
+                 not (Atr.Is_Callsite
+                      and then Is_Dummy_Call (Get_Direct_Mapping_Id (Key)))
 
                then
                   declare

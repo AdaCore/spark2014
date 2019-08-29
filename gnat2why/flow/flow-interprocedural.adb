@@ -334,20 +334,23 @@ package body Flow.Interprocedural is
             end if;
 
             if Globals.Outputs.Is_Empty then
-               --  Every input flows into the null export vertex
-               declare
-                  Output_V : constant Flow_Graphs.Vertex_Id :=
-                    Find_Parameter_Vertex
-                      (FA, V, Change_Variant (Null_Export_Flow_Id, Out_View));
+               if not Globals.Inputs.Is_Empty then
+                  --  Every input flows into the null export vertex
+                  declare
+                     Output_V : constant Flow_Graphs.Vertex_Id :=
+                       Find_Parameter_Vertex
+                         (FA, V,
+                          Change_Variant (Null_Export_Flow_Id, Out_View));
 
-               begin
-                  for Input of Globals.Inputs loop
-                     FA.TDG.Add_Edge
-                       (Find_Parameter_Vertex (FA, V, Input),
-                        Output_V,
-                        EC_TDG);
-                  end loop;
-               end;
+                  begin
+                     for Input of Globals.Inputs loop
+                        FA.TDG.Add_Edge
+                          (Find_Parameter_Vertex (FA, V, Input),
+                           Output_V,
+                           EC_TDG);
+                     end loop;
+                  end;
+               end if;
             else
                --  Every input flows into all outputs
                for Output of Globals.Outputs loop

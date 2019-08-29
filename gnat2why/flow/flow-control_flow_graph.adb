@@ -4506,7 +4506,7 @@ package body Flow.Control_Flow_Graph is
 
       --  A magic null export is needed when:
       --    * there is a usable Depends => (null => ...);
-      --    * the subprogram has no exports
+      --    * the subprogram has imports but no exports
       --
       --  Notice that we can only use the Depends when it:
       --    * does not need to be refined or
@@ -4551,8 +4551,7 @@ package body Flow.Control_Flow_Graph is
                Outs.Append (V);
             end if;
          end;
-      elsif Outs.Is_Empty then
-         --  Check if there are no exports
+      elsif not Ins.Is_Empty and then Outs.Is_Empty then
          declare
             V : Flow_Graphs.Vertex_Id;
          begin
