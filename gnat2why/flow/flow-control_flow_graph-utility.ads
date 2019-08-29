@@ -103,7 +103,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Returns a copy of Leaf, but with blank def/use sets.
 
    function Make_Call_Attributes
-     (Callsite   : Node_Id           := Empty;
+     (Callsite   : Node_Id;
       Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
