@@ -1,0 +1,8 @@
+p.adb:2:29: warning: unused variable "I"
+p.adb:2:32: warning: unused variable "J"
+p.adb:6:19: warning: statement has no effect
+p.adb:17:08: info: precondition proved (Trivial: 1 VC)
+p.adb:23:14: info: subprogram "Bad" will terminate, terminating annotation has been proved
+p.adb:27:05: info: initialization of "X" proved
+p.adb:27:08: info: initialization of "Y" proved
+p.adb:29:20: medium: assertion might fail, cannot prove Bad (X, Y)
