@@ -10,6 +10,8 @@ conts-lists.ads:515:19: info: precondition proved (CVC4: 1 VC), in instantiation
 conts-lists.ads:522:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts-lists.ads:526:19: info: precondition proved (CVC4: 1 VC), in instantiation at conts-lists-indefinite_unbounded_spark.ads:34, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
 conts.ads:145:31: warning: unused variable "E", in instantiation at conts-lists-indefinite_unbounded_spark.ads:15, in instantiation at formal_doubly_linked_lists.ads:10, in instantiation at use_lists.ads:5
+functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5
+functional_sequences.ads:14:13: medium: user-defined equality might not terminate (SPARK RM 6.6(2)), in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5
 functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
 functional_sequences.ads:16:66: medium: range check might fail, in instantiation at formal_doubly_linked_lists.ads:26, in instantiation at use_lists.ads:5 [possible explanation: subprogram at line 14 should mention S1 in a precondition]
 functional_sequences.ads:18:09: info: data dependencies proved, in instantiation at formal_doubly_linked_lists.ads:23, in instantiation at use_lists.ads:5

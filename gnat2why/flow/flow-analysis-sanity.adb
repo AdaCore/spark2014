@@ -1031,7 +1031,7 @@ package body Flow.Analysis.Sanity is
                Traverse_Declarations_And_HSS (Subp_Body);
 
                --  If this is a user defined equality on a record type, then it
-               --  shall have a Global aspect of null.
+               --  shall have a Global aspect of null, and shall terminate.
 
                if Is_User_Defined_Equality (FA.Spec_Entity) then
                   declare
@@ -1056,6 +1056,17 @@ package body Flow.Analysis.Sanity is
                                  SRM_Ref  => "6.6(1)",
                                  N        => FA.Spec_Entity,
                                  Severity => Error_Kind);
+                        end if;
+
+                        if Is_Potentially_Nonreturning (FA.Spec_Entity) then
+                           Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      => "user-defined equality might " &
+                                   "not terminate",
+                                 SRM_Ref  => "6.6(2)",
+                                 N        => FA.Spec_Entity,
+                                 Severity => Medium_Check_Kind,
+                                 Tag      => Subprogram_Termination);
                         end if;
                      end if;
                   end;
