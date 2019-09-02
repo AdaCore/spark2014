@@ -1,0 +1,5 @@
+project Test is
+   package Compiler is
+      for Switches ("Ada") use ("-gnatg");
+   end Compiler;
+end Test;
