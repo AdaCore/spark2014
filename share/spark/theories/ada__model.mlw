@@ -1269,8 +1269,8 @@ module Unconstr_Array
     predicate index_dynamic_property = index_dynamic_property
 
   (* An unconstrained array comes with its bounds *)
-  type __t =
-    { elts [@model_trace:] : map; rt : I1.t }
+  type __t [@syntax:array:elts] =
+    { elts [@syntax:getter:elts] [@model_trace:] : map; rt : I1.t }
 
   let function to_array (a : __t) : map = a.elts
 
@@ -1279,11 +1279,11 @@ module Unconstr_Array
 
   use int.Int
 
-  function first [@model_trace:'First] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
+  function first [@name:First] [@model_trace:'First] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
 
-  function last [@model_trace:'Last] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
+  function last [@name:Last] [@model_trace:'Last] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
 

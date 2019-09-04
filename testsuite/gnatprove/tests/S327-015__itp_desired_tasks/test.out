@@ -1,0 +1,19 @@
+example.adb:24:14: medium: postcondition might fail, cannot prove B * A = A'old
+example.adb:24:16: medium: overflow check might fail
+example.adb:27:14: medium: range check might fail
+example.adb:28:14: medium: divide by zero might fail
+example.adb:28:14: medium: range check might fail
+example.adb:29:14: medium: range check might fail
+example.adb:30:14: medium: overflow check might fail
+example.adb:30:14: medium: range check might fail
+example.adb:39:19: medium: postcondition might fail, cannot prove Is_Id'Result = (M (C) = C)
+example.adb:39:38: medium: array index check might fail [possible explanation: subprogram at line 36 should mention C in a precondition]
+example.adb:42:17: medium: array index check might fail [possible explanation: subprogram at line 36 should mention C in a precondition]
+example.adb:59:24: warning: unused initial value of "A"
+example.adb:59:27: warning: unused initial value of "B"
+example.adb:62:17: medium: postcondition might fail, cannot prove B.I = 1
+example.adb:62:30: medium: discriminant check might fail
+example.adb:64:18: medium: discriminant check might fail
+example.adb:64:25: medium: discriminant check might fail
+example.adb:67:09: medium: discriminant check might fail
+example.adb:68:09: medium: discriminant check might fail

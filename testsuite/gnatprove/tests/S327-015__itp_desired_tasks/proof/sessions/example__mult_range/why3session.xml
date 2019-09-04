@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="8">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="0" steplimit="18500" memlimit="0"/>
+<prover id="1" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="18500" memlimit="0"/>
+<file format="whyml">
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="example__mult_range.mlw"/>
+<theory name="Example__mult_range__subprogram_def">
+ <goal name="def&#39;vc" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="def&#39;vc.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.2" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="159"/></proof>
+  <proof prover="1"><result status="unknown" steps="122"/></proof>
+  </goal>
+  <goal name="def&#39;vc.3" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="109"/></proof>
+  <proof prover="1"><result status="unknown" steps="112"/></proof>
+  </goal>
+  <goal name="def&#39;vc.4" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="201"/></proof>
+  <proof prover="1"><result status="unknown" steps="245"/></proof>
+  </goal>
+  <goal name="def&#39;vc.5" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="189"/></proof>
+  <proof prover="1"><result status="unknown" steps="234"/></proof>
+  </goal>
+  <goal name="def&#39;vc.6" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="1786"/></proof>
+  <proof prover="1"><result status="unknown" steps="1011"/></proof>
+  </goal>
+  <goal name="def&#39;vc.7" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="1143"/></proof>
+  <proof prover="1"><result status="unknown" steps="2138"/></proof>
+  </goal>
+  <goal name="def&#39;vc.8" expl="precondition">
+  <proof prover="0"><result status="unknown" steps="18513"/></proof>
+  <proof prover="1"><result status="unknown" steps="2423"/></proof>
+  </goal>
+  <goal name="def&#39;vc.9" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;vc.10" expl="postcondition">
+  <proof prover="0"><result status="unknown" steps="502"/></proof>
+  <proof prover="1"><result status="unknown" steps="650"/></proof>
+  <transf name="assert" arg1="(for all x in 0 .. 82 =&gt; x /= 103)">
+   <goal name="def&#39;vc.10.0" expl="asserted formula">
+   <proof prover="0" timelimit="5" steplimit="0" obsolete="true"><result status="valid" steps="5"/></proof>
+   </goal>
+   <goal name="def&#39;vc.10.1" expl="postcondition">
+   <proof prover="0" timelimit="5" steplimit="0" obsolete="true"><result status="unknown" steps="502"/></proof>
+   </goal>
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

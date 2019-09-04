@@ -14,9 +14,10 @@ Task
 goal def'vc :
   dynamic_invariant A True False True True ->
   A > 0 ->
-  (forall test__parity__result:int.
+  (for all test__parity__result:int =>
     test__parity__result = A ->
-    (exists x:int. (0 <= x // x <= 255) // (A = (x + x) // A = ((x + x) + 2))))
+    (for some x:int =>
+      (0 <= x and x <= 255) and (A = (x + x) or A = ((x + x) + 2))))
 
 
 Process Ended
