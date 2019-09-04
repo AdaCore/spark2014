@@ -404,6 +404,7 @@ package SPARK_Util.Subprograms is
                             E_Package        |
                             E_Procedure      |
                             E_Entry          |
+                            E_Task_Type      |
                             E_Protected_Type;
    --  Retrieve the set of entities referenced from an entity's spec and body.
    --  It uses flow analysis and ignores entities which are opaque for proof
