@@ -5,6 +5,7 @@ alt-ergo
 codepeer-gcc
 codepeer-gnatls
 codepeer-gprbuild
+codepeer-gprls
 codepeer_be
 cvc4
 gcc
