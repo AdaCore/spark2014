@@ -701,11 +701,10 @@ package Flow_Utility is
 
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);
-   --  Returns True if F is either not a constant or is a constant
-   --  with variable input.
+   --  Returns whether F represents a variable in flow.
    --  @param F is the Flow_Id that we check
-   --  @return True if F is either not a constant or if it is a constant
-   --     which Has_Variable_Input
+   --  @return True if F is either not a constant or a constant of access type
+   --     or a constant with variable input.
 
    function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
      Pre => No (T) or else Is_Type (T);

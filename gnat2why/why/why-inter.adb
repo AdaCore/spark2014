@@ -974,8 +974,8 @@ package body Why.Inter is
    function Is_Pointer_Conversion (Left, Right : W_Type_Id) return Boolean
    is (Get_Type_Kind (Base_Why_Type (Left)) in EW_Abstract | EW_Split and then
        Get_Type_Kind (Base_Why_Type (Right)) in EW_Abstract | EW_Split and then
-       Has_Pointer_Type (Get_Ada_Node (+Left)) and then
-       Has_Pointer_Type (Get_Ada_Node (+Right)));
+       Has_Access_Type (Get_Ada_Node (+Left)) and then
+       Has_Access_Type (Get_Ada_Node (+Right)));
 
    ---------------------------
    -- Is_Private_Conversion --

@@ -3963,7 +3963,8 @@ package body Flow_Utility is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
                if Ekind (E) = E_Constant then
-                  return Has_Variable_Input (E);
+                  return Has_Access_Type (Etype (E))
+                    or else Has_Variable_Input (E);
                else
                   return True;
                end if;

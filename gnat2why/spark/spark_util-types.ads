@@ -126,9 +126,6 @@ package SPARK_Util.Types is
    function Has_Record_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
 
-   function Has_Pointer_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Access_Kind);
-
    function Has_Private_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Private_Kind);
 
