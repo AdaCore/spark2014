@@ -4239,7 +4239,7 @@ package body Gnat2Why.Borrow_Checker is
                return;
             end if;
 
-            --  For borrowing, check R permission
+            --  For observing, check R permission
 
             if Perm not in Read_Perm then
                Perm_Error (Expr, Read_Only, Perm, Expl => Expl);
