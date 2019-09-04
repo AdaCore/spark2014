@@ -4,7 +4,7 @@ Flow Analysis
 To start hacking on the flow analaysis you should first read about the general
 tool architecture (:ref:`Tool Structure`). Then the main entry point for the
 gnat2why backed is the GNAT_To_Why routine. Note: we hack on gnat2why with
-different editors, but for newcomers it is the easiest to stick with GPS,
+different editors, but for newcomers it is the easiest to stick with GNAT Studio,
 because it seems best with code navigation (e.g. showing where objects are
 written and where subprograms are called).
 

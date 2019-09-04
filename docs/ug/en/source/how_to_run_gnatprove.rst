@@ -14,7 +14,7 @@ If not already done, create a GNAT project file (`.gpr`), as documented in the
 Attributes` for optional project attributes to specify the proof directory and
 other |GNATprove| switches in the project file directly.
 
-Note that you can use the project wizard from GPS to create a project file
+Note that you can use the project wizard from GNAT Studio to create a project file
 interactively, via the menu :menuselection:`File --> New Project...`.
 In the dialog, see in particular the default option (:menuselection:`Single Project`).
 
@@ -465,12 +465,12 @@ used.
 floating-point computations, as |CodePeer| is both fast and precise for proving
 bounds of floating-point operations.
 
-.. _Running GNATprove from GPS:
+.. _Running GNATprove from GNAT Studio:
 
-Running |GNATprove| from GPS
-----------------------------
+Running |GNATprove| from GNAT Studio
+------------------------------------
 
-|GNATprove| can be run from GPS. When |GNATprove| is installed and found on
+|GNATprove| can be run from GNAT Studio. When |GNATprove| is installed and found on
 your PATH, a :menuselection:`SPARK` menu is available with the following
 entries:
 
@@ -500,7 +500,7 @@ neither main files nor includes other projects, menus :menuselection:`SPARK
 Sources` are equivalent.
 
 Keyboard shortcuts for these menu items can be set using the
-:menuselection:`Edit --> Preferences` dialog in GPS, and opening
+:menuselection:`Edit --> Preferences` dialog in GNAT Studio, and opening
 the :menuselection:`General --> Key Shortcuts` section.
 
 .. note::
@@ -553,21 +553,21 @@ section of the dialog).
 
 When proving a check fails on a specific path through a subprogram (for both
 checks verified in flow analysis and in proof), |GNATprove| may generate path
-information for the user to see. The user can display this path in GPS by
+information for the user to see. The user can display this path in GNAT Studio by
 clicking on the icon to the left of the failed proof message, or to the left of
 the corresponding line in the editor. The path is hidden again when re-clicking
 on the same icon.
 
 For checks verified in proof, |GNATprove| may also generate counterexample
 information for the user to see (see :ref:`Understanding Counterexamples`). The
-user can display this counterexample in GPS by clicking on the icon to the left
+user can display this counterexample in GNAT Studio by clicking on the icon to the left
 of the failed proof message, or to the left of the corresponding line in the
 editor. The counterexample is hidden again when re-clicking on the same icon.
 
 A monospace font with ligature like Fira Code
 (https://github.com/tonsky/FiraCode) or Hasklig
 (https://github.com/i-tu/Hasklig) can be separately installed and selected to
-make contracts more readable inside GPS or GNATbench. See the following
+make contracts more readable inside GNAT Studio or GNATbench. See the following
 screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 (greater than or equal) are displayed in such a font:
 
@@ -633,7 +633,7 @@ When editing an Ada file, |GNATprove| can also be run from a
 ----------------------------
 
 When automated provers fail to prove some condition that is valid, the validity
-may be proved using manual proof inside GPS or an external interactive prover.
+may be proved using manual proof inside GNAT Studio or an external interactive prover.
 
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
@@ -671,8 +671,8 @@ Analysis with |GNATprove| can be limited to a single condition with the
 Please use the output of ``gnatprove --list-categories`` to determine the
 ``check-kind`` to be provided in this command.
 
-Calling an Interactive Prover From GPS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Calling an Interactive Prover From GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
@@ -683,20 +683,20 @@ because of a single condition (i.e. there is only one check in the output of
 In the dialog box, the field "Alternate prover" can be filled to use another
 prover than Alt-Ergo. If the alternative prover is configured as
 "interactive", after the execution of :menuselection:`SPARK --> Prove Check`,
-GPS opens the manual proof file with the editor corresponding to the prover
+GNAT Studio opens the manual proof file with the editor corresponding to the prover
 under the condition that an editor is specified in the configuration of the
 alternative prover.
 
-Once the editor is closed, GPS re-executes
+Once the editor is closed, GNAT Studio re-executes
 :menuselection:`SPARK --> Prove Check`. The user should verify the same
-alternative prover as before is still specified. After execution, GPS will
+alternative prover as before is still specified. After execution, GNAT Studio will
 offer to re-edit the file if the proof fails.
 
 
-Manual Proof Within GPS
-^^^^^^^^^^^^^^^^^^^^^^^
+Manual Proof Within GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-A manual proof system is integrated into GPS. It allows the user to directly
+A manual proof system is integrated into GNAT Studio. It allows the user to directly
 visualize the verification condition, apply simple proof steps on it, and call
 provers to discharge it. The proof system is available after running
 |GNATprove| via one of the ``Prove ...`` menus. By right-clicking on a check
@@ -725,7 +725,7 @@ The Manual proof system can be quit by selecting :menuselection:`SPARK --> Exit
 Manual Proof` in the menu. A pop-up window asks if the user wants to save the
 session. It is recommended to close it using the menu because it makes sure to
 close everything related to manual proof. A tutorial to the proof system can be
-found in :ref:`Manual Proof Using GPS`.
+found in :ref:`Manual Proof Using GNAT Studio`.
 
 List of Useful Transformations and Commands for Manual Proof
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""

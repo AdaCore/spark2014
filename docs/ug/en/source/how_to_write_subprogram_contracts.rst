@@ -531,15 +531,15 @@ complete):
 
 The counterexample displayed for the postcondition not proved corresponds to a
 case where ``Max1 = Max2 = 2`` on entry to procedure ``Seen_Two``. By
-highlighting the path for the counterexample in GPS (see :ref:`Running
-GNATprove from GPS`), the values of parameters for this counterexample are also
+highlighting the path for the counterexample in GNAT Studio (see :ref:`Running
+GNATprove from GNAT Studio`), the values of parameters for this counterexample are also
 displayed, here ``X = 0`` and ``Y = 1``. With these values, ``Max1`` and ``Max2``
 would still be equal to 2 on exit, thus violating the part of the postcondition
 stating that ``Max_Value_Seen /= Second_Max_Value_Seen``.
 
 Another way to see it is to run |GNATprove| in mode ``per_path`` (see
 :ref:`Running GNATprove from the Command Line` or :ref:`Running GNATprove from
-GPS`), and highlight the path on which the postcondition is not proved, which
+GNAT Studio`), and highlight the path on which the postcondition is not proved, which
 shows that when the last branch of the if-statement is taken, the following
 property is not proved::
 

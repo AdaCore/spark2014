@@ -21,7 +21,7 @@ degre of interaction required depends on the difficuly of the proof:
 
 * interaction at the level of Verification Condition formulas in the syntax of
   Why3 for arbitrary complex properties, as described in
-  :ref:`Manual Proof Using GPS`
+  :ref:`Manual Proof Using GNAT Studio`
 
 .. _Manual Proof Using SPARK Lemma Library:
 
@@ -178,7 +178,7 @@ which the property holds and solvers are not good at guessing. As an example,
 consider the following program:
 
 .. code-block:: ada
-		
+
   pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);
 
   pragma Assert
@@ -367,7 +367,7 @@ can be done when automatic provers fail to prove a check. We will use Coq here.
 
 The Coq input file associated to this postcondition can be produced by either
 selecting :menuselection:`SPARK --> Prove Check` and specifying ``Coq`` as
-alternate prover in GPS or by executing on the command-line:
+alternate prover in GNAT Studio or by executing on the command-line:
 
     ``gnatprove -P <prj_file>.gpr --limit-line=nonlinear.adb:4:11:VC_POSTCONDITION --prover=Coq``
 
@@ -684,10 +684,10 @@ proved::
   nonlinear.adb:8:12: info: division check proved
 
 
-.. _Manual Proof Using GPS:
+.. _Manual Proof Using GNAT Studio:
 
-Manual Proof Using GPS
-^^^^^^^^^^^^^^^^^^^^^^
+Manual Proof Using GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This section presents a simple example of how to prove interactively a check
 with the manual proof feature. We reuse here the example presented in
@@ -696,7 +696,7 @@ check at::
 
   nonlinear.adb:4:11:VC_POSTCONDITION
 
-Right click on the corresponding location in the ``Locations`` terminal of GPS
+Right click on the corresponding location in the ``Locations`` terminal of GNAT Studio
 and select the menu
 :menuselection:`SPARK --> Start Manual Proof`. The manual proof interface
 immediately starts. Both the ``Proof Tree`` and the ``Verification Condition``
@@ -923,6 +923,3 @@ clicking on
 The proof is complete and |GNATprove| can be called again on the whole project to
 check that the former failing check is now understood as proved by
 |GNATprove|.
-
-
-

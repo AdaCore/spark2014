@@ -36,7 +36,7 @@ features listed here.
 Some code snippets presented in this section are available in the example
 called ``gnatprove_by_example`` distributed with the |SPARK| toolset. It can be
 found in the ``share/examples/spark`` directory below the directory where the
-toolset is installed, and can be accessed from the IDE (either GPS or
+toolset is installed, and can be accessed from the IDE (either GNAT Studio or
 GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
 .. only : : core

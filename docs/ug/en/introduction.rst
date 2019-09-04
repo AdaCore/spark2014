@@ -29,7 +29,7 @@ and other units validated through testing.
 SPARK 2014 is supported by various tools in the |GNAT Pro| toolsuite:
 
 * the GNAT compiler
-* the GPS integrated development environment
+* the GNAT Studio integrated development environment
 * the GNATtest tool for unit testing harness generation
 * the |GNATprove| tool for formal program verification
 

@@ -11,7 +11,7 @@
 
 まだ終わってなければ，GNATプロジェクトファイル（`.gpr`）を作成します．このプロジェクトファイルについては， |GNAT Pro| ユーザガイドの `GNAT Project Manager` の章を見て下さい．
 
-GPS のプロジェクトウィザードを用いて，会話的にプロジェクトファイルを作成することもできます．メニューから :menuselection:`Project --> New...` をたどります．特に最初のオプション（ :menuselection:`Single Project` ）を見て下さい．
+GNAT Studio のプロジェクトウィザードを用いて，会話的にプロジェクトファイルを作成することもできます．メニューから :menuselection:`Project --> New...` をたどります．特に最初のオプション（ :menuselection:`Single Project` ）を見て下さい．
 
 もし，素早く始めたいのであれば，かつ ``.ads/.adb`` という小文字のファイル名を用いた標準的な名前規則に従い，ソースコードを単一ディレクトリ中に格納します．プロジェクトファイルは次のようになります：
 
@@ -327,12 +327,12 @@ CodePeer 静的解析器を使う
 
 |CodePeer| 解析は，浮動小数点演算を用いているコードを解析するときに特に有効です．というのは， |CodePeer| は，浮動小数点演算における限界値を証明するときに，高速かつ正確に動作するからです．
 
-.. _ja Running GNATprove from GPS:
+.. _ja Running GNATprove from GNAT Studio:
 
-GPS で |GNATprove| を実行する
----------------------------------
+GNAT Studio で |GNATprove| を実行する
+-----------------------------------------
 
-GPS から |GNATprove| を実行できます． |GNATprove| がインストールされており，PATH上に存在するならば，以下に関して  :menuselection:`SPARK` メニューが使用可能になっています．
+GNAT Studio から |GNATprove| を実行できます． |GNATprove| がインストールされており，PATH上に存在するならば，以下に関して  :menuselection:`SPARK` メニューが使用可能になっています．
 
 .. csv-table::
    :header: "サブメニュー", "アクション"
@@ -352,7 +352,7 @@ GPS から |GNATprove| を実行できます． |GNATprove| がインストー�
 
 メニュー :menuselection:`SPARK --> Examine/Prove All` は，プロジェクト中の全てのメインファイルおよび依存している全てのファイル（依存は再帰的に調べます）に対して， |GNATprove| を実行します．ルートプロジェクトおよびルートプロジェクトに含まれるプロジェクトのメインファイルが対象です．メニュー :menuselection:`SPARK --> Examine/Prove All Sources` は，全てのプロジェクトの全てのファイルに対して， |GNATprove| を実行します．メインファイルを持っていない，或いは，他のプロジェクトを含んでいないプロジェクトの場合は，メニュー :menuselection:`SPARK --> Examine/Prove All` と :menuselection:`SPARK --> Examine/Prove All Sources` は同じになります．
 
-メニュー項目のキーボードショートカットは，GPS の :menuselection:`Edit --> Key Shortcuts` を用いて設定することができます．
+メニュー項目のキーボードショートカットは，GNAT Studio の :menuselection:`Edit --> Key Shortcuts` を用いて設定することができます．
 
 .. note::
 
@@ -379,9 +379,9 @@ Adaファイルを編集するときに， |GNATprove| を，:menuselection:`SPA
 
 |GNATprove| プロジェクトのスイッチは，パネル ``GNATprove`` で変更することができます（ :menuselection:`Project --> Edit Project Properties --> Switches` )．
 
-フロー解析および証明に関する検査を行ったときに，あるサブプログラムの特定の経路が不合格となった場合， |GNATprove| は，ユーザに対して経路情報を生成する場合があります．次の操作によって，ユーザは GPS 上にこの経路を表示することができます．最初の方法は，不合格を示す証明メッセージの左にあるアイコンをクリックすることです．二番目の方法は，エディタ中で関係する行の左にあるアイコンをクリックすることです．同じアイコンを再度クリックすると，経路は再び見えなくなります．
+フロー解析および証明に関する検査を行ったときに，あるサブプログラムの特定の経路が不合格となった場合， |GNATprove| は，ユーザに対して経路情報を生成する場合があります．次の操作によって，ユーザは GNAT Studio 上にこの経路を表示することができます．最初の方法は，不合格を示す証明メッセージの左にあるアイコンをクリックすることです．二番目の方法は，エディタ中で関係する行の左にあるアイコンをクリックすることです．同じアイコンを再度クリックすると，経路は再び見えなくなります．
 
-証明を用いて検証を行う検査に対して， |GNATprove| は，ユーザに対して反例も表示する場合があります（参照： :ref:`ja Understanding Counterexamples` ）．次の操作によって，ユーザは GPS 上にこの反例を表示することができます．最初の方法は，不合格を示す証明メッセージの左にあるアイコンをクリックすることです．二番目の方法は，エディタ中で関係する行の左にあるアイコンをクリックすることです．同じアイコンを再度クリックすると，反例は再び見えなくなります．
+証明を用いて検証を行う検査に対して， |GNATprove| は，ユーザに対して反例も表示する場合があります（参照： :ref:`ja Understanding Counterexamples` ）．次の操作によって，ユーザは GNAT Studio 上にこの反例を表示することができます．最初の方法は，不合格を示す証明メッセージの左にあるアイコンをクリックすることです．二番目の方法は，エディタ中で関係する行の左にあるアイコンをクリックすることです．同じアイコンを再度クリックすると，反例は再び見えなくなります．
 
 .. _ja Running GNATprove from GNATbench:
 
@@ -498,11 +498,11 @@ Ada ファイルを編集しているときは，右クリックにより表示�
    "class-wide precondition might be stronger than overridden one",             "VC_WEAKER_CLASSWIDE_PRE"
    "class-wide postcondition might be weaker than overridden one",              "VC_STRONGER_CLASSWIDE_POST"
 
-GPS での手動による証明
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+GNAT Studio での手動による証明
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 |GNATprove| を証明モードで実行した後，ローケーションタブ中の検査メッセージ上で右クリックするか，単一の条件の検査で失敗した行を右クリックすることによって（即ち，選択行に関して |GNATprove| は出力中に一つの検査のみを含んでいます），メニュー :menuselection:`SPARK --> Prove Check` を利用できるようになります．
 
-ダイアログボックスの中の "Alternate prover (代替検証器)" では，Alt-Ergo とは異なる別の検証器を指定することができます．もし，別の検証器が，"interactive（会話的）"と指定され場合， :menuselection:`SPARK --> Prove Check` を実行することで，GPS は，手動による証明のためのファイルを開き，検証器に関係するエディタを立ち上げます．このエディタは，代替検証器の構成の中で指定されているものです．
+ダイアログボックスの中の "Alternate prover (代替検証器)" では，Alt-Ergo とは異なる別の検証器を指定することができます．もし，別の検証器が，"interactive（会話的）"と指定され場合， :menuselection:`SPARK --> Prove Check` を実行することで，GNAT Studio は，手動による証明のためのファイルを開き，検証器に関係するエディタを立ち上げます．このエディタは，代替検証器の構成の中で指定されているものです．
 
-いったんエディタが閉じられると，GPS は， :menuselection:`SPARK --> Prove Check` を再実行します．ユーザは，同じ代替検証器が以前と同様に指定されていることを確認してください．実行後，証明が失敗した場合，GPS は，再編集を要求します．
+いったんエディタが閉じられると，GNAT Studio は， :menuselection:`SPARK --> Prove Check` を再実行します．ユーザは，同じ代替検証器が以前と同様に指定されていることを確認してください．実行後，証明が失敗した場合，GNAT Studio は，再編集を要求します．

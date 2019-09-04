@@ -21,7 +21,7 @@
 
 この章の残りでは，[Ada 2005] (或いは [Ada 2012]) によって， |SPARK| でサポートしている Ada の特徴が，どの　Ada の版に基づいているかを示します．また， [Ravenscar] と標識がついている部分は， |SPARK| がサポートする Ravenscar プロファイルに基づく Ada の並列処理を示しています． [ |SPARK| ] が示しているのは，|SPARK| のみの特徴です． |GNAT Pro| コンパイラと |GNATprove| 証明器は，ここに示している全ての特徴を支援します．
 
-この節で示すコードの断片の幾つかは， |SPARK| ツールセットと一緒に配布している ``gnatprove_by_example`` の例にあります．ツールセットをインストールしたディレクトリ以下の ``share/examples/spark`` に見つけることができます．IDE(GPS ないしは GNATBench）からは，メニューアイテム :menuselection:`Help --> SPARK --> Examples` でアクセスすることができます．
+この節で示すコードの断片の幾つかは， |SPARK| ツールセットと一緒に配布している ``gnatprove_by_example`` の例にあります．ツールセットをインストールしたディレクトリ以下の ``share/examples/spark`` に見つけることができます．IDE(GNAT Studio ないしは GNATBench）からは，メニューアイテム :menuselection:`Help --> SPARK --> Examples` でアクセスすることができます．
 
 .. toctree::
    :maxdepth: 2

@@ -41,7 +41,7 @@ of a project. The main difference in that case is that one would not want
 to start at the lowest level but already take into account the final
 targeted level starting with the initial design phase.
 
-This version of the document is based on the SPARK Pro 18 and GPS 18
+This version of the document is based on the SPARK Pro 18 and GNAT Studio 18
 versions. Further references are given at the end of this document.
 
 .. _Levels of Software Assurance:
@@ -249,8 +249,8 @@ to denote the formal verification tool in SPARK product.
 
 GNATprove can be run at the different levels mentioned in this document, either
 through the Integrated Development Environments (IDE) Eclipse (GNATbench
-plugin) or GNAT Pro Studio (GPS), or on the command line. In the following, we
-describe the use of GPS, but the use of Eclipse is based on similar menus. Use
+plugin) or GNAT Studio, or on the command line. In the following, we
+describe the use of GNAT Studio, but the use of Eclipse is based on similar menus. Use
 of the command-line interface at a given level is facilitated by convenient
 synonyms:
 
@@ -378,24 +378,24 @@ analyzed::
   warning: no bodies have been analyzed by GNATprove
   enable analysis of a body using SPARK_Mode
 
-.. index:: GPS (GNAT Programming Studio)
+.. index:: GNAT Studio
 
-At this point, you should switch to using GNAT Pro Studio (GPS), the
+At this point, you should switch to using GNAT Studio, the
 integrated development environment provided with GNAT, in order to more
-easily interact with GNATprove. For example, GPS provides basic facilities
+easily interact with GNATprove. For example, GNAT Studio provides basic facilities
 for code navigation and location of errors that facilitate the adoption of
-SPARK. Open GPS on your project::
+SPARK. Open GNAT Studio on your project::
 
   > gps -P my_project.gpr
 
-There should be a SPARK menu available. Repeat the previous action within GPS
+There should be a SPARK menu available. Repeat the previous action within GNAT Studio
 by selecting the :menuselection:`SPARK --> Examine All` menu, select the
 :guilabel:`check fast` mode in the popup window, and click :guilabel:`Execute`. The
-following snapshot shows the popup window from GPS with these settings:
+following snapshot shows the popup window from GNAT Studio with these settings:
 
 .. image:: _static/check_fast.png
    :align: center
-   :alt: Popup window from GPS for "check fast" mode
+   :alt: Popup window from GNAT Studio for "check fast" mode
 
 GNATprove should output the same messages as before. If error messages are
 generated, they should now be located on the code that violates SPARK
@@ -450,7 +450,7 @@ or::
 
   > cat list_of_sources.txt | python mark.py
 
-Then, open GPS on your project again and rerun the SPARK validity checker by
+Then, open GNAT Studio on your project again and rerun the SPARK validity checker by
 again selecting menu :menuselection:`SPARK --> Examine All`, select the
 :guilabel:`check fast` mode in the popup window that opens, and click
 :guilabel:`Execute`. This mode doesn't issue all possible violations of SPARK
@@ -1133,15 +1133,15 @@ analysis technique, proof, will be described in the sections on Silver and Gold
 levels.
 
 To run GNATprove in flow analysis mode on your project, select the
-:menuselection:`SPARK --> Examine All` menu. In the GPS panel, select the
+:menuselection:`SPARK --> Examine All` menu. In the GNAT Studio panel, select the
 :guilabel:`flow analysis` mode, check the :guilabel:`Do not report warnings`
 box, uncheck the :guilabel:`Report checks proved` box, and click
-:guilabel:`Execute`. The following snapshot shows the popup window from GPS
+:guilabel:`Execute`. The following snapshot shows the popup window from GNAT Studio
 with these settings:
 
 .. image:: _static/flow_analysis.png
    :align: center
-   :alt: Popup window from GPS for "flow analysis" mode
+   :alt: Popup window from GNAT Studio for "flow analysis" mode
 
 GNATprove should output the following messages, possibly followed by a
 number of messages pointing to potential problems in your program::
@@ -1159,7 +1159,7 @@ Listed first is the severity of the check, which is one of *low*, *medium*, or
 bug and the criticality if it is a bug. Following the colon is the type of
 check message, here a potential read of an uninitialized variable. They'll be
 located at the point in your code where the error can occur.  The corresponding
-line in GPS will be highlighted in red.
+line in GNAT Studio will be highlighted in red.
 
 .. index:: Aliasing
 
@@ -1175,7 +1175,7 @@ http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_o
 Once you have addressed each check message, you can rerun flow analysis with
 the :guilabel:`Report checks proved` box checked to see the verification
 successfully performed by GNATprove.  This time, it should only issue 'info'
-messages, highlighted in green in GPS, like the following::
+messages, highlighted in green in GNAT Studio, like the following::
 
   info: initialization of "V" proved
 
@@ -1211,12 +1211,12 @@ or::
   medium: "V" might not be initialized
 
 Choose a unit in which GNATprove reports an unproved initialization check and
-open it in GPS. You can launch flow analysis on only this unit by opening the
+open it in GNAT Studio. You can launch flow analysis on only this unit by opening the
 :menuselection:`SPARK --> Examine File` menu, selecting the :guilabel:`flow analysis`
-mode in the GPS panel, checking the :guilabel:`Do not report warnings` box,
+mode in the GNAT Studio panel, checking the :guilabel:`Do not report warnings` box,
 unchecking the :guilabel:`Report checks proved` box, and
 clicking :guilabel:`Execute`. To investigate an unproved initialization check,
-click on the corresponding check message in the GPS :guilabel:`Locations`
+click on the corresponding check message in the GNAT Studio :guilabel:`Locations`
 tab. The editor should move to the corresponding location in your program.
 
 .. index:: False alarm
@@ -1852,7 +1852,7 @@ flag suspicious code that may be the sign of an error in the program. They
 should be inspected, but can be suppressed when they're deemed spurious,
 without risk of missing a critical issue for the soundness of the analysis. To
 see these warnings, run the tool in flow analysis mode with warnings
-enabled. Select :menuselection:`SPARK --> Examine All` menu, in the GPS panel,
+enabled. Select :menuselection:`SPARK --> Examine All` menu, in the GNAT Studio panel,
 select the :guilabel:`flow` mode, uncheck the :guilabel:`Do not report warnings`
 and :guilabel:`Report checks proved` boxes, and click
 :guilabel:`Execute`.
@@ -1866,7 +1866,7 @@ source location and prefixed with the word 'warning'::
 
 You can suppress GNATprove warnings globally by using the switch
 ``--warnings=off``, which is equivalent to checking the :guilabel:`Do not report warnings`
-box in GPS, or locally by using ``pragma Warnings``. For
+box in GNAT Studio, or locally by using ``pragma Warnings``. For
 example, the above warning can be suppressed by switching off local warnings
 with the above message around the declaration of the procedure ``Test`` as
 follows:
@@ -2058,7 +2058,7 @@ subprogram parameter modes, data-dependency contracts are checked by the tool
 in flow analysis mode and checks and warnings are issued in case of
 nonconformance. To verify manually supplied data-dependency contracts, run
 GNATprove in flow analysis mode by selecting the :menuselection:`SPARK --> Examine File`
-menu, selecting the :guilabel:`flow` mode in the GPS panel,
+menu, selecting the :guilabel:`flow` mode in the GNAT Studio panel,
 checking the :guilabel:`Do not report warnings` box, unchecking the
 :guilabel:`Report checks proved` box, and clicking :guilabel:`Execute`.
 
@@ -2245,7 +2245,7 @@ parameter modes, flow-dependency contracts are checked by the tool in flow
 analysis mode, and checks and warnings are issued in case of nonconformance. To
 verify manually supplied flow-dependency contracts, run GNATprove in flow
 analysis mode by selecting the :menuselection:`SPARK --> Examine File` menu,
-selecting the :guilabel:`flow` mode in the GPS panel, checking the
+selecting the :guilabel:`flow` mode in the GNAT Studio panel, checking the
 :guilabel:`Do not report warnings` box, unchecking the :guilabel:`Report checks proved`
 box, and clicking :guilabel:`Execute`.
 
@@ -2429,15 +2429,15 @@ less time to run, depending on the selected proof level. The higher the
 proof level, the more precise the results and the longer the analysis.
 
 Launch GNATprove in proof mode on your project by selecting the
-:menuselection:`SPARK --> Prove All` menu. In the GPS panel, select
+:menuselection:`SPARK --> Prove All` menu. In the GNAT Studio panel, select
 :guilabel:`0` as the value of :guilabel:`Proof level`, check the
 :guilabel:`Multiprocessing` box, uncheck the :guilabel:`Report checks proved`
 box, and click :guilabel:`Execute`. The following snapshot shows the popup
-window from GPS with these settings:
+window from GNAT Studio with these settings:
 
 .. image:: _static/prove.png
    :align: center
-   :alt: Popup window from GPS for "prove" mode
+   :alt: Popup window from GNAT Studio for "prove" mode
 
 GNATprove should output the following messages, possibly followed by a
 number of messages pointing to potential problems in your program::
@@ -2457,7 +2457,7 @@ is shown first. It is one of ``low``, ``medium``, or ``high`` and reflects both 
 likelihood of the reported problem being a bug and the criticality of the
 bug, if it exists. Following the colon is the type of the check message,
 here a potential arithmetic overflow. Each message is located in your code
-at the point where the error can occur and the corresponding line in GPS
+at the point where the error can occur and the corresponding line in GNAT Studio
 editor is highlighted in red.
 
 GNATprove can issue several kinds of check messages. In this document, we
@@ -2469,7 +2469,7 @@ find more information about these additional checks in the SPARK User's
 Guide:
 http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_view_gnatprove_output.html#description-of-messages.
 
-Proving AoRTE requires interacting with GNATprove inside GPS to either fix
+Proving AoRTE requires interacting with GNATprove inside GNAT Studio to either fix
 the code, add annotations, succeed in proving the check, or to justify that the
 message is not a real problem. This process is explained in section
 :ref:`Investigating Unproved Run-time Checks`.
@@ -2477,7 +2477,7 @@ message is not a real problem. This process is explained in section
 Once each unproved check message has been addressed in some way, you can run
 proof mode again with the box :guilabel:`Report checks proved` checked to see
 the verifications successfully performed by GNATprove. It should only issue
-'info' messages, highlighted in green in GPS, like the following::
+'info' messages, highlighted in green in GNAT Studio, like the following::
 
   info: overflow check proved
 
@@ -2731,11 +2731,11 @@ types and missing contracts. As you add precise types and contracts to the
 program, you can perform analyses at higher proof
 levels 1 and 2 to get more run-time checks proved automatically.
 
-Proving AoRTE requires interacting with GNATprove inside GPS. Thus, we
+Proving AoRTE requires interacting with GNATprove inside GNAT Studio. Thus, we
 suggest that you select a unit (preferably one with few dependences over
 other unproved units, ideally a leaf unit not depending on other unproved
-units) with some unproved checks. Open GPS on your project, display this
-unit inside GPS, and place the focus on this unit. Inside this unit, select a
+units) with some unproved checks. Open GNAT Studio on your project, display this
+unit inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
 unproved checks. This is the first subprogram you will analyze at Silver
@@ -2769,10 +2769,10 @@ following steps:
 
 #. Once you're confident this check should be provable, run SPARK in proof mode
    on the specific line with the check by right-clicking on the line in the
-   editor panel inside GPS, selecting :menuselection:`SPARK --> Prove Line`
+   editor panel inside GNAT Studio, selecting :menuselection:`SPARK --> Prove Line`
    from the contextual menu, selecting :guilabel:`2` as value for
    :guilabel:`Proof level` and checking the :guilabel:`Report checks proved`
-   box, both in the GPS panel, and clicking :guilabel:`Execute`. GNATprove
+   box, both in the GNAT Studio panel, and clicking :guilabel:`Execute`. GNATprove
    should either output a message confirming that the check is proved or the
    same message as before. In the latter case, you will need to interact with
    GNATprove to investigate why the check still isn't proved.
@@ -3439,22 +3439,22 @@ analyzed:
    precise results. Note that using timeouts instead of steps is not portable
    between machines, so it's better to reserve it for interactive use.  Other
    settings may be appropriate, and can be set through the various options in
-   the popup window from GPS or on the command line (see the specific section
+   the popup window from GNAT Studio or on the command line (see the specific section
    of the SPARK User's Guide on that topic:
    http://docs.adacore.com/spark2014-docs/html/ug/en/source/how_to_run_gnatprove.html#running-gnatprove-from-the-command-line).
-   The following snapshot shows the popup window from GPS (using the
+   The following snapshot shows the popup window from GNAT Studio (using the
    :guilabel:`Advanced User profile` set through the
    :menuselection:`Preference --> SPARK` menu) with these settings:
 
 .. image:: _static/prove_more.png
    :align: center
-   :alt: Popup window from GPS for "prove" mode
+   :alt: Popup window from GNAT Studio for "prove" mode
 
-Proving properties requires interacting with GNATprove inside GPS. Thus, we
+Proving properties requires interacting with GNATprove inside GNAT Studio. Thus, we
 suggest you select a unit (preferably one with few dependences over other
 unproved units, ideally a leaf unit not depending on other unproved units)
-with some unproved checks. Open GPS on your project, display this unit
-inside GPS, and place the focus on this unit. Inside this unit, select a
+with some unproved checks. Open GNAT Studio on your project, display this unit
+inside GNAT Studio, and place the focus on this unit. Inside this unit, select a
 subprogram (preferably one with few calls to other unproved subprograms,
 ideally a leaf subprogram not calling other unproved subprograms) with some
 unproved checks. This is the first subprogram you will analyze at Gold
@@ -3488,11 +3488,11 @@ For each unproved property in this subprogram, you should follow the following s
 
 #. Once you're confident this property should be provable, run SPARK in proof
    mode on the specific line with the check by right-clicking on this line in
-   the editor panel inside GPS, selecting :menuselection:`SPARK --> Prove Line`
+   the editor panel inside GNAT Studio, selecting :menuselection:`SPARK --> Prove Line`
    from the contextual menu, selecting :guilabel:`2` as value for
    :guilabel:`Proof level` (and possibly setting the switches
    ``--prover=cvc4 --steps=0 --timeout=30`` in the textual box, as described
-   above) and checking the :guilabel:`Report checks proved` box, all in the GPS
+   above) and checking the :guilabel:`Report checks proved` box, all in the GNAT Studio
    panel, and clicking :guilabel:`Execute`. GNATprove should either output a
    message that confirms that the check is proved or the same message as
    before. In the latter case, you will need to interact with GNATprove to
