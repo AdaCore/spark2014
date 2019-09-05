@@ -3517,7 +3517,7 @@ package body Gnat2Why.Borrow_Checker is
       Prefix_Path : constant Expr_Array := Get_Expr_Array (Pref);
       Expr_Path   : constant Expr_Array :=
         (if Expr.Is_Ent then (1 => Expr.Ent)
-         else Get_Expr_Array (Expr.Expr));
+         else Get_Expr_Array (Get_Observed_Or_Borrowed_Expr (Expr.Expr)));
 
       Prefix_Root : constant Entity_Id := Prefix_Path (1);
       Expr_Root   : constant Entity_Id := Expr_Path (1);
