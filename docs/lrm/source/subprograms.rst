@@ -1494,8 +1494,8 @@ Overloading of Operators
 .. _tu-overloading_of_operators-01:
 
 1. [A user-defined equality operation on a record type shall have a Global
-    aspect of ``null``; see :ref:`global-aspects` for the statement of this
-    rule.]
+   aspect of ``null``; see :ref:`global-aspects` for the statement of this
+   rule.]
 
 .. centered:: **Verification Rules**
 
