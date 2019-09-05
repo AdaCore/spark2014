@@ -4843,16 +4843,10 @@ package body Flow.Control_Flow_Graph is
             V : Flow_Graphs.Vertex_Id;
 
          begin
-            --  If the RHS is a function call, it must be a traversal function
-            --  and then the borrowed object its first actual. Otherwise, the
-            --  borrowed object is the RHS itself.
-            --  ??? This code doesn't work for chained traversal functions,
-            --  e.g. "Traversal_Func1 (Traversal_Func2 (Obj))". We should be
-            --  reusing some utility routine from the borrow checker.
+            --  Go through traversal function calls using
+            --  Get_Observed_Or_Borrowed_Expr.
             Get_Assignment_Target_Properties
-              (N                  => (if Nkind (Expr) = N_Function_Call
-                                      then First_Actual (Expr)
-                                      else Expr),
+              (N                  => Get_Observed_Or_Borrowed_Expr (Expr),
                Partial_Definition => Partial_Definition,
                View_Conversion    => View_Conversion,
                Map_Root           => Borrowed,
