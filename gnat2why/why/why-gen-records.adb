@@ -389,7 +389,7 @@ package body Why.Gen.Records is
                   Name        => To_Local (E_Symb (E, WNE_To_Base)),
                   Binders     => R_Binder,
                   Location    => No_Location,
-                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => (if Is_Root then Abstr_Ty
                                   else EW_Abstract (Root)),
                   Def         => +A_Ident));
@@ -401,7 +401,7 @@ package body Why.Gen.Records is
                   Binders     => Binder_Array'(1 => (B_Name => R_Ident,
                                                      others => <>)),
                   Location    => No_Location,
-                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => Abstr_Ty,
                   Def         => +R_Ident));
          end;
@@ -424,7 +424,7 @@ package body Why.Gen.Records is
                                                     others => <>)),
                   Return_Type => +EW_Bool_Type,
                   Location    => No_Location,
-                  Labels      => Symbol_Sets.To_Set (NID ("inline")),
+                  Labels      => Symbol_Sets.Empty_Set,
                   Def         => +True_Term));
 
             Emit

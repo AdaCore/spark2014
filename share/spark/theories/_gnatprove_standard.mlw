@@ -35,7 +35,7 @@ module Main
     a.int__content
   meta "model_projection" function int__ref___projection
   meta "inline:no" function int__ref___projection
- 
+
   function __fixed__ref___projection
     (a : __fixed__ref)  : __fixed =
     a.__fixed__content
@@ -293,7 +293,7 @@ module Floating
   val rem_ (x:t) (y:t) : t
      requires { not (is_zero y) }
      ensures { result = rem x y }
-     
+
   val neq (x : t) (y : t) : bool
    ensures { result <-> neq x y }
 end
@@ -677,7 +677,7 @@ module Boolean
   val in_range (x : int) : bool
   ensures { result <-> in_range x }
 
-  predicate dynamic_property [@inline] (f l x : int) = in_range x
+  predicate dynamic_property (f l x : int) = in_range x
 
   val function attr__ATTRIBUTE_IMAGE bool : __image
 
@@ -758,8 +758,8 @@ module Array__1
   val map__havoc (x : map__ref) : unit
      writes { x }
 
-  function get [@inline] (a : map) (i : I1.t) : component_type = Map.get a i
-  function set [@inline] (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
+  function get (a : map) (i : I1.t) : component_type = Map.get a i
+  function set (a : map) (i : I1.t) (v : component_type) : map = Map.set a i v
 
   val get (a : map) (i : I1.t) : component_type
     ensures { result = Map.get a i }
@@ -1040,7 +1040,7 @@ end
 module BVAda
   type t
 
-  let function abs [@inline] (x : t) : t = x
+  let function abs (x : t) : t = x
 
   predicate ult t t
   predicate ule t t
@@ -1147,7 +1147,7 @@ module BV8
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int [@inline] (x : t) : int = t'int x
+  function t_int (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -1185,7 +1185,7 @@ module BV16
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int [@inline] (x : t) : int = t'int x
+  function t_int (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -1223,7 +1223,7 @@ module BV32
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int [@inline] (x : t) : int = t'int x
+  function t_int (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }
@@ -1261,7 +1261,7 @@ module BV64
   val constant _two_power_size : int
     ensures{ result = two_power_size }
 
-  function t_int [@inline] (x : t) : int = t'int x
+  function t_int (x : t) : int = t'int x
 
   val t_int (x : t) : int
     ensures { result = t'int x }

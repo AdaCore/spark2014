@@ -5793,9 +5793,7 @@ package body Gnat2Why.Subprograms is
                   Name        => Logic_Id,
                   Binders     => Logic_Why_Binders,
                   Location    => No_Location,
-                  Labels      =>
-                    (if Def = Why_Empty then Symbol_Sets.Empty_Set
-                     else Symbol_Sets.To_Set (NID ("inline"))),
+                  Labels      => Symbol_Sets.Empty_Set,
                   Def         => Def,
                   Return_Type => Why_Type));
 
