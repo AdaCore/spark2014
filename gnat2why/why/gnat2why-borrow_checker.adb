@@ -989,6 +989,7 @@ package body Gnat2Why.Borrow_Checker is
    ----------------------
 
    procedure Check_Assignment (Target : Node_Or_Entity_Id; Expr : Node_Id) is
+      Is_Decl : constant Boolean := Nkind (Target) = N_Defining_Identifier;
 
       --  Local subprograms
 
@@ -1012,7 +1013,11 @@ package body Gnat2Why.Borrow_Checker is
       is
          Borrowed : constant Node_Id := Get_Observed_Or_Borrowed_Expr (Expr);
       begin
-         Set (Current_Borrowers, Var, Borrowed);
+         if Is_Decl then
+            Set (Current_Borrowers, Var, Borrowed);
+         else
+            pragma Assert (Get_Root_Object (Borrowed) = Var);
+         end if;
       end Handle_Borrow;
 
       --------------------
@@ -1025,14 +1030,16 @@ package body Gnat2Why.Borrow_Checker is
       is
          Observed : constant Node_Id := Get_Observed_Or_Borrowed_Expr (Expr);
       begin
-
-         Set (Current_Observers, Var, Observed);
+         if Is_Decl then
+            Set (Current_Observers, Var, Observed);
+         else
+            pragma Assert (Get_Root_Object (Observed) = Var);
+         end if;
       end Handle_Observe;
 
       --  Local variables
 
       Target_Typ  : constant Node_Id := Etype (Target);
-      Is_Decl     : constant Boolean := Nkind (Target) = N_Defining_Identifier;
       Target_Root : Entity_Id;
       Expr_Root   : Entity_Id;
       Perm        : Perm_Kind;
@@ -2957,6 +2964,7 @@ package body Gnat2Why.Borrow_Checker is
                                    ("return value of a traversal function "
                                     & "should be rooted at &", Expr, Param);
                                  Permission_Error := True;
+                                 exit;
                               end if;
                            end loop;
                         end;
