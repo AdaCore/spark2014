@@ -3964,8 +3964,12 @@ package body Flow_Utility is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
+               --  Constants that are visibly of an access type are treated
+               --  like variables. Hence using Is_Access_Type instead of
+               --  Has_Access_Type here.
+
                if Ekind (E) = E_Constant then
-                  return Has_Access_Type (Etype (E))
+                  return Is_Access_Type (Etype (E))
                     or else Has_Variable_Input (E);
                else
                   return True;

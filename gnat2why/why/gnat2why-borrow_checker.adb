@@ -947,7 +947,7 @@ package body Gnat2Why.Borrow_Checker is
               (Is_Ent => True,
                Ent    => E,
                Loc    => Loc),
-            Formal_Typ => Retysp (Etype (E)),
+            Formal_Typ => Etype (E),
             Param_Mode => Kind,
             Subp       => Subp,
             Global_Var => True);
@@ -1156,7 +1156,7 @@ package body Gnat2Why.Borrow_Checker is
       begin
          Check_Parameter_Or_Global
            (Expr       => +Actual,
-            Typ        => Retysp (Etype (Formal)),
+            Typ        => Etype (Formal),
             Kind       => Ekind (Formal),
             Subp       => Subp,
             Global_Var => False);
