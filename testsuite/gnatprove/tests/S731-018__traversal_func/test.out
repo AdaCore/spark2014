@@ -1,11 +1,18 @@
-local_borrow.adb:10:13: traversal function returning access-to-variable type is not yet supported
-local_borrow.adb:24:46: "Get_Next" is not allowed in SPARK (due to traversal function returning access-to-variable type)
-local_borrow.adb:24:46: violation of aspect SPARK_Mode at line 1
-local_borrow.adb:26:07: "Y" is not allowed in SPARK (due to traversal function returning access-to-variable type)
-local_borrow.adb:26:07: violation of aspect SPARK_Mode at line 1
-local_borrow_array.adb:12:13: traversal function returning access-to-variable type is not yet supported
-local_borrow_array.adb:29:48: "Get_Nexts" is not allowed in SPARK (due to traversal function returning access-to-variable type)
-local_borrow_array.adb:29:48: violation of aspect SPARK_Mode at line 1
-local_borrow_array.adb:31:07: "Y" is not allowed in SPARK (due to traversal function returning access-to-variable type)
-local_borrow_array.adb:31:07: violation of aspect SPARK_Mode at line 1
-gnatprove: error during flow analysis and proof
+local_borrow.adb:10:23: warning: "X" is not modified, could be IN
+local_borrow.adb:14:15: info: pointer dereference check proved (CVC4: 1 VC)
+local_borrow.adb:24:26: medium: precondition might fail, cannot prove X /= null
+local_borrow.adb:24:36: medium: precondition might fail, cannot prove X /= null
+local_borrow.adb:24:46: info: precondition proved (CVC4: 1 VC)
+local_borrow.adb:26:08: medium: pointer dereference check might fail (e.g. when Y = null)
+local_borrow_array.adb:12:24: warning: "X" is not modified, could be IN
+local_borrow_array.adb:16:15: info: pointer dereference check proved (CVC4: 1 VC)
+local_borrow_array.adb:29:26: medium: pointer dereference check might fail (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 0 and X.all.N.all'Last = -1)
+local_borrow_array.adb:29:26: medium: precondition might fail, cannot prove X /= null (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 1 and X.all.N.all'Last = 0)
+local_borrow_array.adb:29:37: medium: pointer dereference check might fail (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 0 and X.all.N.all'Last = -1)
+local_borrow_array.adb:29:37: medium: precondition might fail, cannot prove X /= null (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 1 and X.all.N.all'Last = 0)
+local_borrow_array.adb:29:48: info: precondition proved (CVC4: 1 VC)
+local_borrow_array.adb:29:48: medium: pointer dereference check might fail (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 0 and X.all.N.all'Last = -1)
+local_borrow_array.adb:29:63: medium: array index check might fail (e.g. when X.all = (V => ?, N => (all => @not_display)) and X.all.N.all'First = 1 and X.all.N.all'Last = 0)
+local_borrow_array.adb:29:68: medium: array index check might fail
+local_borrow_array.adb:29:73: medium: array index check might fail
+local_borrow_array.adb:31:08: medium: pointer dereference check might fail (e.g. when Y = null)

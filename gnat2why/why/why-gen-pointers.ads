@@ -149,6 +149,13 @@ package Why.Gen.Pointers is
    -- Borrowers --
    ---------------
 
+   procedure Declare_Pledge_Function
+     (File    : W_Section_Id;
+      E       : Entity_Id;
+      Binders : Binder_Array);
+   --  Clone the pledge module for E and emit a function returning the pledge
+   --  for the result of a traversal function.
+
    procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id);
    --  Clone the pledge module for E and emit a global reference for the pledge
 
@@ -170,7 +177,15 @@ package Why.Gen.Pointers is
      (E            : Entity_Id;
       Borrowed_Arg : W_Expr_Id;
       Brower_Arg   : W_Expr_Id) return W_Expr_Id;
-   --  Construct a call to the pledge of E
+   --  Construct a call to the pledge of a borrower E
+
+   function New_Pledge_Fun_Call
+     (E            : Entity_Id;
+      Args         : W_Expr_Array;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
+   --  Construct a call to the pledge of a call to a traversal function E with
+   --  parameters Args.
 
    function New_Pledge_Update
      (E           : Entity_Id;

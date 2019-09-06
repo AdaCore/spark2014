@@ -738,12 +738,10 @@ package body Gnat2Why.Expr is
    --  Compute constraints preserved throughout the life of a borrower
 
    function New_Pledge_Update_From_Assignment
-     (Brower  : Entity_Id;
-      Path    : Node_Id;
-      In_Decl : Boolean) return W_Prog_Id;
+     (Brower : Entity_Id;
+      Path   : Node_Id) return W_Prog_Id;
    --  Create an assignment updating the pledge of a borrower from an update
-   --  Path. In_Decl is true if the assignment comes from the declaration of
-   --  Brower.
+   --  Path.
 
    function Transform_Pledge_Call
      (Brower : Entity_Id;
@@ -855,8 +853,7 @@ package body Gnat2Why.Expr is
             if Is_Local_Borrower (Lvalue) then
                Res := New_Pledge_Update_From_Assignment
                  (Brower  => Lvalue,
-                  Path    => Rexpr,
-                  In_Decl => True);
+                  Path    => Rexpr);
             end if;
 
             case Binder.Kind is
@@ -5281,7 +5278,7 @@ package body Gnat2Why.Expr is
          when N_Slice | N_Indexed_Component | N_Selected_Component =>
             return EW_Abstract (Expected_Type_Of_Prefix (N));
 
-         when N_Explicit_Dereference =>
+         when N_Explicit_Dereference | N_Function_Call =>
             return EW_Abstract (Etype (N));
 
          when others =>
@@ -7597,97 +7594,219 @@ package body Gnat2Why.Expr is
    ---------------------------------------
 
    function New_Pledge_Update_From_Assignment
-     (Brower  : Entity_Id;
-      Path    : Node_Id;
-      In_Decl : Boolean) return W_Prog_Id
+     (Brower : Entity_Id;
+      Path   : Node_Id) return W_Prog_Id
    is
 
-      function Update_Value_From_Assignment
-        (Borrowed_Id : W_Identifier_Id;
+      function Create_Pledge_Call_For_Prefix
+        (Borrowed_Id : out W_Identifier_Id;
          Brower_Id   : W_Identifier_Id;
-         Path        : Node_Id) return W_Expr_Id;
-      --  pledge (Borrowed_Id, (Brower with Path = Brower_Id))
+         Path        : in out Node_Id) return W_Expr_Id;
+      --  The path Path corresponds to a borrow (rooted at the borrowed
+      --  entity Borrowed) or a reborrow (rooted at the borrower entity
+      --  Brower).
+      --  This function traverses the path Path until it finds either the root
+      --  or a call to a traversal function. It generates a new identifier
+      --  corresponding to the expression borrowed in the path (either the
+      --  borrowed entity if we have reached the root or the first parameter of
+      --  the traversal function call otherwise) and stores it in Borrowed_Id.
+      --  After the call, Path contains what remains to be traversed: either
+      --  the root, or the traversal function call.
+      --  It returns a call relating at all time (time of pledge), the value
+      --  of the borrower (represented by the identifier brower_id given as a
+      --  parameter) and the value of expression borrowed in the traversed
+      --  prefixed (represented by the identifier borrowed_id computed by the
+      --  call).
 
       ----------------------------------
-      -- Update_Value_From_Assignment --
+      -- Create_Pledge_Call_For_Prefix --
       ----------------------------------
 
-      function Update_Value_From_Assignment
-        (Borrowed_Id : W_Identifier_Id;
+      function Create_Pledge_Call_For_Prefix
+        (Borrowed_Id : out W_Identifier_Id;
          Brower_Id   : W_Identifier_Id;
-         Path        : Node_Id) return W_Expr_Id
+         Path        : in out Node_Id) return W_Expr_Id
       is
-         N     : Node_Id := Path;
          Expr  : W_Expr_Id := +Brower_Id;
-         Dummy : Node_Id := N;
+         Dummy : Node_Id := Path;
       begin
-         --  With Brower designating the current value of the borrower, and
-         --  Brower_Id designating the value of the borrower after the
-         --  assignment (the one that will be referred to in the new pledge),
-         --  we handle the assignment:
-         --
-         --     Brower := Path;  --  Path originates in Brower
-         --
-         --  as an update of the inner Path inside Brower:
-         --
-         --     Path := Brower_Id;
-         --
-         --  This explains why we're using here the existing function
-         --  Shift_Rvalue to produce the updated value of Brower after the
-         --  assignment, to use in the current pledge.
+         --  We traverse prefixes of Path until we find the root or a function
+         --  call constructing along the way in Expr an expression which stands
+         --  for the value of Path'Old at the time of borrow updated at path
+         --  Path by brower_id.
 
-         while Nkind (N) not in
+         while Nkind (Path) not in
            N_Identifier | N_Expanded_Name | N_Function_Call
          loop
-            Shift_Rvalue (N           => N,
+            Shift_Rvalue (N           => Path,
                           Expr        => Expr,
                           Last_Access => Dummy,
                           Domain      => EW_Term);
-            pragma Assert (Nkind (N) /= N_Function_Call);
          end loop;
 
-         return New_Pledge_Call (Brower, +Borrowed_Id, Expr);
-      end Update_Value_From_Assignment;
+         --  From a path F_1 (Args).Path where Path does not contain
+         --  any traversal function calls, we generate:
+         --
+         --  get (f_1__pledge args ...)       (* the pledge of the call *)
+         --      borrowed_id                  (* a new identifier standing for
+         --                                      expr at the time of pledge *)
+         --      { (f_1 args ...)             (* the result of the call at the
+         --                                      time of borrow *)
+         --          with path1 = brower_id } (* updated at path with the
+         --                                      borrower at the time of pledge
+         --                                    *)
+
+         if Nkind (Path) = N_Function_Call then
+
+            declare
+               Subp       : constant Entity_Id := Get_Called_Entity (Path);
+               Nb_Of_Refs : Integer;
+               Nb_Of_Lets : Integer;
+               Args       : constant W_Expr_Array :=
+                 Compute_Call_Args
+                   (Call       => Path,
+                    Domain     => EW_Term,
+                    Nb_Of_Refs => Nb_Of_Refs,
+                    Nb_Of_Lets => Nb_Of_Lets,
+                    Params     => Body_Params);
+               pragma Assert (Nb_Of_Lets = 0 and then Nb_Of_Refs = 0);
+
+            begin
+               --  If we have found a function call, the borrowed identifier
+               --  will represent the first parameter of the call.
+
+               Borrowed_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Etype (First_Formal (Subp))),
+                    Base_Name => "borrowed");
+
+               return New_Pledge_Fun_Call (Subp, Args, +Borrowed_Id, Expr);
+            end;
+
+         --  From a path Brower.Path where Path does not contain any traversal
+         --  function calls, we generate:
+         --
+         --  get brower__pledge               (* the pledge of the borrower
+         --                                      before the update *)
+         --      borrowed_id                  (* a new identifier standing for
+         --                                      the borrowed entity at the
+         --                                      time of pledge *)
+         --      { brower.path                (* the borrower before the update
+         --                                    *)
+         --           with path = brower_id } (* updated at path with the value
+         --                                      of the borrower at the time of
+         --                                      pledge *)
+
+         elsif Entity (Path) = Brower then
+
+            --  We have a reborrow, Borrowed_id represents the borrowed entity
+
+            Borrowed_Id :=
+              New_Temp_Identifier
+                (Typ       => Type_Of_Node
+                   (Etype (Get_Borrowed_Entity (Brower))),
+                 Base_Name => "borrowed");
+
+            return New_Pledge_Call (Brower, +Borrowed_Id, Expr);
+
+         --  From a path Borrowed.Path where Path does not contain any
+         --  traversal function calls, we generate:
+         --
+         --  brower_id =           (* the borrower at the time of pledge *)
+         --      borrowed_id.path  (* the part corresponding to path in a new
+         --                           identifier standing for the borrowed
+         --                           entity at the time of pledge *)
+         --
+         --  Note that it would be incorrect to generate:
+         --    borrowed_id = { borrowed_id with path = brower_id }
+         --  like we do for reborrows, as other components of borrowed_id are
+         --  not frozen by the borrow and can be updated simultaneously.
+
+         else
+            declare
+               Borrowed   : constant Entity_Id := Entity (Path);
+               Borrowed_E : W_Expr_Id;
+
+            begin
+               --  Borrowed_Id represents the root of the path
+
+               Borrowed_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Etype (Borrowed)),
+                    Base_Name => "borrowed");
+
+               Ada_Ent_To_Why.Push_Scope (Symbol_Table);
+               Insert_Entity (Borrowed, Borrowed_Id);
+               Borrowed_E := +Insert_Simple_Conversion
+                 (Domain => EW_Term,
+                  Expr   => Transform_Expr
+                    (Expr    => Get_Borrowed_Expr (Brower),
+                     Domain  => EW_Term,
+                     Params  => Body_Params),
+                  To     => Type_Of_Node (Get_Borrowed_Typ (Brower)));
+               Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
+
+               return New_Comparison (Symbol => Why_Eq,
+                                      Left   => Borrowed_E,
+                                      Right  => +Brower_Id,
+                                      Domain => EW_Term);
+            end;
+         end if;
+      end Create_Pledge_Call_For_Prefix;
 
       --  Local variables
 
-      Borrowed_Ty : constant Entity_Id := Get_Borrowed_Typ (Brower);
-      Borrowed    : constant Entity_Id := Get_Borrowed_Entity (Brower);
       Brower_Id   : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ       => Type_Of_Node (Etype (Brower)),
-                             Base_Name => "brower");
-      Borrowed_Id : constant W_Identifier_Id :=
-        New_Temp_Identifier (Typ       => Type_Of_Node (Borrowed),
-                             Base_Name => "borrowed");
-      Def         : W_Expr_Id;
+        New_Temp_Identifier
+          (Typ       => Type_Of_Node (Etype (Brower)),
+           Base_Name => "brower");
+      --  The identifier for the borrower Brower at the time of pledge
+
+      Current     : Node_Id := Path;
+      Def         : W_Expr_Id := +True_Term;
+      Current_Id  : W_Identifier_Id := Brower_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Pledge_Call : W_Expr_Id;
+      First_Call  : Boolean := True;
 
    --  Start of processing for New_Pledge_Update_From_Assignment
 
    begin
-      --  For a declaration, we generate:
-      --    brower_id = borrowed_id.path
-      --  Note that it would be incorrect to generate:
-      --    borrowed_id = { borrowed_id with path = brower_id }
-      --  like we do for reborrows, as other components of borrowed_id are not
-      --  frozen by the borrow and can be updated simultaneously.
+      --  We construct the definition of the pledge linking the borrower and
+      --  the borrowed entities at the time of pledge by part. We conjoin
+      --  them inside Def. When we introduce additional identifiers for
+      --  borrowed entities in pledges of traversal function calls, we
+      --  link them using existential quantifiers.
 
-      if In_Decl then
-         Ada_Ent_To_Why.Push_Scope (Symbol_Table);
-         Insert_Entity (Borrowed, Borrowed_Id);
-         Def := New_Comparison (Symbol => Why_Eq,
-                                Left   => +Insert_Simple_Conversion
-                                  (Domain => EW_Term,
-                                   Expr   => Transform_Expr
-                                     (Expr    => Get_Borrowed_Expr (Brower),
-                                      Domain  => EW_Term,
-                                      Params  => Body_Params),
-                                   To     => Type_Of_Node (Borrowed_Ty)),
-                                Right  => +Brower_Id,
-                                Domain => EW_Term);
-         Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
-      else
-         Def := Update_Value_From_Assignment (Borrowed_Id, Brower_Id, Path);
-      end if;
+      loop
+         Pledge_Call := Create_Pledge_Call_For_Prefix
+           (Borrowed_Id => Borrowed_Id,
+            Brower_Id   => Current_Id,
+            Path        => Current);
+
+         Def := New_And_Expr
+           (Left   => Pledge_Call,
+            Right  => Def,
+            Domain => EW_Term);
+
+         if not First_Call then
+            Def :=
+              +Boolean_Term_Of_Pred
+              (New_Existential_Quantif
+                 (Variables => (1 => Current_Id),
+                  Labels    => Symbol_Sets.Empty_Set,
+                  Var_Type  => Get_Typ (Current_Id),
+                  Pred      => Pred_Of_Boolean_Term (+Def)));
+         end if;
+
+         exit when Nkind (Current) in N_Expanded_Name | N_Identifier;
+
+         pragma Assert (Nkind (Current) = N_Function_Call);
+
+         First_Call := False;
+         Current_Id := Borrowed_Id;
+         Current := First_Actual (Current);
+      end loop;
 
       return New_Pledge_Update (Brower, Borrowed_Id, Brower_Id, +Def);
    end New_Pledge_Update_From_Assignment;
@@ -10592,8 +10711,7 @@ package body Gnat2Why.Expr is
          T := Sequence
            (New_Pledge_Update_From_Assignment
               (Brower  => Entity (Lvalue),
-               Path    => Expression (Stmt),
-               In_Decl => False),
+               Path    => Expression (Stmt)),
             T);
       end if;
       return T;
@@ -10610,11 +10728,15 @@ package body Gnat2Why.Expr is
    is
    begin
       --  Do not generate old when they are not allowed (eg in postconditions
-      --  of functions or inside prefixes of 'Old attributes), or when the
-      --  expression contains no variable.
+      --  of functions or inside prefixes of 'Old attributes). When the
+      --  expression contains no variables, we may still need to generate old
+      --  in special cases (pledge functions). In these cases, we will use the
+      --  map for old. When we create old why3 nodes, the expression should
+      --  contain variable (or Why3 will complain).
 
       if not Params.Old_Allowed
-        or else Get_Variables_For_Proof (Expr, Expr).Is_Empty
+        or else (Get_Variables_For_Proof (Expr, Expr).Is_Empty
+                 and then Params.Ref_Allowed)
       then
          return Transform_Expr (Expr, Domain, Params);
       end if;

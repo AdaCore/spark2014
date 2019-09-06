@@ -3375,12 +3375,18 @@ package body Gnat2Why.Subprograms is
         (Borrows : Node_Lists.List) return W_Prog_Id
       is
          Result : W_Statement_Sequence_Id := Void_Sequence;
+
       begin
-         for E of Borrows loop
-            Sequence_Append
-              (Result,
-               Havoc_Borrowed_Expression (E));
-         end loop;
+         --  Don't havoc local borrowers in functions. They cannot have
+         --  modified anything visible from outside of the subprogram.
+
+         if Ekind (E) /= E_Function then
+            for E of Borrows loop
+               Sequence_Append
+                 (Result,
+                  Havoc_Borrowed_Expression (E));
+            end loop;
+         end if;
          return +Result;
       end Havoc_Borrowed_Expressions;
 
@@ -5797,6 +5803,8 @@ package body Gnat2Why.Subprograms is
                   Def         => Def,
                   Return_Type => Why_Type));
 
+            --  Generate the guard for the postcondition of the function
+
             Emit
               (File,
                New_Function_Decl
@@ -5806,6 +5814,9 @@ package body Gnat2Why.Subprograms is
                   Location    => No_Location,
                   Labels      => Symbol_Sets.Empty_Set,
                   Return_Type => EW_Bool_Type));
+
+            --  Generate logic functions and guards for dispatching and
+            --  refined versions of the function.
 
             if Is_Visible_Dispatching_Operation (E) then
                Emit
@@ -5853,6 +5864,16 @@ package body Gnat2Why.Subprograms is
                              Labels      => Symbol_Sets.Empty_Set,
                              Location    => No_Location,
                              Return_Type => EW_Bool_Type))));
+            end if;
+
+            --  Generate a function return the pledge of a traversal function.
+            --  We don't need anything specific for dispatching functions as
+            --  tagged types cannot be deep.
+
+            if Is_Traversal_Function (E)
+              and then not Is_Access_Constant (Etype (E))
+            then
+               Declare_Pledge_Function (File, E, Logic_Why_Binders);
             end if;
          end;
       end if;

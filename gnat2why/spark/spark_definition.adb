@@ -3995,19 +3995,6 @@ package body SPARK_Definition is
                   & "non-traversal functions", Id);
             end if;
 
-            --  Traversal functions returning access to variable types are not
-            --  supported yet.
-
-            if Present (First_Formal (Id))
-              and then Retysp_In_SPARK (Etype (First_Formal (Id)))
-              and then Is_Traversal_Function (Id)
-              and then not Is_Access_Constant (Etype (Id))
-            then
-               Mark_Unsupported
-                 ("traversal function returning access-to-variable type",
-                  Id);
-            end if;
-
             while Present (Formal) loop
 
                --  A nonvolatile function shall not have a formal parameter
