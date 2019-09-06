@@ -96,6 +96,8 @@ package body Flow_Generated_Globals.Traversal is
          begin
             if not Is_Wrapper_Package (E)
               and then not Is_Eliminated (E)
+              and then not (Ekind (E) = E_Function
+                            and then Is_Predicate_Function (E))
             then
                declare
                   P : constant Entity_Id := Parent_Scope (E);

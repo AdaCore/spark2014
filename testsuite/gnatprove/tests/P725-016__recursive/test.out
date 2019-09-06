@@ -1,2 +1,1 @@
-p.ads:3:12: warning: "T" is not used in its predicate
 p.ads:3:51: info: expression function body not available for proof ("F" might not return)

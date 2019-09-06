@@ -1344,12 +1344,6 @@ package body Flow.Analysis is
                      E     : constant Entity_Id := Get_Direct_Mapping_Id (F);
                      E_Typ : constant Entity_Id := Etype (E);
 
-                     Msg : constant String :=
-                       (if Ekind (Scope (E)) = E_Function
-                        and then Is_Predicate_Function (Scope (E))
-                        then "& is not used in its predicate"
-                        else "unused variable &");
-
                   begin
                      if Is_Concurrent_Type (E_Typ)
                        or else Is_Empty_Record_Type (E_Typ)
@@ -1362,7 +1356,7 @@ package body Flow.Analysis is
                      else
                         Error_Msg_Flow
                           (FA       => FA,
-                           Msg      => Msg,
+                           Msg      => "unused variable &",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            F1       => F,
                            Tag      => VC_Kinds.Unused,

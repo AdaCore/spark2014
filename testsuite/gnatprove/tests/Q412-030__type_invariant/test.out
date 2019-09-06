@@ -5,7 +5,6 @@ package_instance.ads:2:47: actual for formal object with mode in cannot depend o
 varinput.adb:13:40: actual for formal object with mode in cannot depend on variable input "G2" (SPARK RM 4.4(2))
 varinput.ads:27:09: invariant cannot depend on variable input "G" (SPARK RM 4.4(2))
 varinput.ads:29:09: predicate cannot depend on variable input "G" (SPARK RM 4.4(2))
-varinput.ads:29:09: warning: "T2" is not used in its predicate
 varinput.ads:31:27: default initialization cannot depend on variable input "G" (SPARK RM 4.4(2))
 varinput.ads:32:21: default initialization cannot depend on variable input "G" (SPARK RM 4.4(2))
 varinput.ads:37:13: subtype constraint cannot depend on variable input "G2" (SPARK RM 4.4(2))

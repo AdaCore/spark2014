@@ -35,7 +35,6 @@ generic_ring_buffer.ads:77:49: info: overflow check proved (CVC4: 1 VC), in inst
 generic_ring_buffer.ads:81:14: info: subprogram "Clear" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
 generic_ring_buffer.ads:84:14: info: postcondition proved (CVC4: 3 VC), in instantiation at tester.adb:9
 generic_ring_buffer.ads:93:04: medium: type "Ring_Buffer_Type" is not fully initialized, in instantiation at tester.adb:9
-generic_ring_buffer.ads:93:09: info: subprogram "Ring_Buffer_Typepredicate" will terminate, terminating annotation has been proved, in instantiation at tester.adb:9
 generic_ring_buffer.ads:97:07: info: range check proved (CVC4: 2 VC), in instantiation at tester.adb:9
 tester.adb:13:04: info: initialization of "X" proved
 tester.adb:13:26: info: range check proved (CVC4: 1 VC)

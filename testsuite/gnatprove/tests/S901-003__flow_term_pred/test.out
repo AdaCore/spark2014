@@ -1,6 +1,5 @@
 bad.adb:5:34: info: expression function body not available for proof ("B" might not return)
 bad.adb:6:34: info: expression function body not available for proof ("A" might not return)
-bad.adb:9:12: warning: "T" is not used in its predicate
 bad.adb:9:43: info: expression function body not available for proof ("A" might not return)
 bad.adb:12:13: info: add a contract to analyze it separately from calling contexts
 bad.adb:12:13: info: local subprogram "In_T" only analyzed in the context of calls

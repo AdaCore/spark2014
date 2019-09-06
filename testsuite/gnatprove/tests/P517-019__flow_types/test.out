@@ -16,7 +16,6 @@ q.ads:10:38: default initialization cannot depend on variable input "X" (SPARK R
 q.ads:11:38: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
 q.ads:15:38: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
 r.ads:3:12: predicate cannot depend on variable input "X" (SPARK RM 4.4(2))
-r.ads:4:12: predicate cannot depend on variable input "X" (SPARK RM 4.4(2))
-r.ads:14:28: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
-r.ads:21:29: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
+r.ads:8:28: default initialization cannot depend on variable input "X" (SPARK RM 4.4(2))
+r.ads:15:29: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 gnatprove: error during flow analysis and proof

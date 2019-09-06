@@ -1,2 +1,1 @@
-p.adb:6:09: warning: "T_Rec2" is not used in its predicate
 p.adb:12:04: info: predicate check proved on default value (CVC4: 1 VC)

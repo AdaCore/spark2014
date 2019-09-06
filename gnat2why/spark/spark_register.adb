@@ -111,8 +111,8 @@ package body SPARK_Register is
                E : constant Entity_Id := Entity (N);
 
                subtype N_Call is Node_Kind with
-                 Static_Predicate => N_Call in N_Subprogram_Call |
-                                               N_Entry_Call_Statement;
+                 Static_Predicate => N_Call in N_Subprogram_Call
+                                             | N_Entry_Call_Statement;
 
             begin
                case Ekind (E) is
@@ -121,7 +121,15 @@ package body SPARK_Register is
                         --  Register ordinary subprogram calls and internal
                         --  calls to protected subprograms and entries.
                         when N_Call =>
-                           Register_Entity (E);
+
+                           --  Ignore calls to predicate functions
+                           if Ekind (E) = E_Function
+                             and then Is_Predicate_Function (E)
+                           then
+                              null;
+                           else
+                              Register_Entity (E);
+                           end if;
 
                         --  Register external calls to protected subprograms
                         --  and entries.
@@ -226,10 +234,9 @@ package body SPARK_Register is
          --  or raises an exception. None of these cause flow information (and
          --  that's why it is not registered in Direct_Calls).
          --
-         --  Predicate: opposite of DIC, i.e. expression is traversed anyway
-         --  and unlike DIC we need to register them, because when called in
-         --  type memberhsip test it will affect the information flow (and
-         --  that's why it is registered in Direct_Calls).
+         --  Predicate: expression is traversed anyway (because it is attached
+         --  to the tree); just like DIC, it don't need to be registered,
+         --  because it doesn't appear in Direct_Calls.
 
          if Nkind (N) in N_Entity
            and then Is_Type (N)
@@ -256,19 +263,6 @@ package body SPARK_Register is
                   end if;
                end;
             end if;
-
-            --  We register type predicate functions unlike other subprograms,
-            --  i.e. when they are declared and not when they are (implicitly)
-            --  referenced.
-
-            declare
-               Pred : constant Entity_Id := Predicate_Function (N);
-
-            begin
-               if Present (Pred) then
-                  Register_Entity (Pred);
-               end if;
-            end;
          end if;
 
          --  Register dispatching operations, because they might be called only

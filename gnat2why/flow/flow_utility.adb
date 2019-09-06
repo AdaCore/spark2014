@@ -174,7 +174,7 @@ package body Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
-      Functions_Called   : out Node_Sets.Set;
+      Functions_Called   : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
@@ -185,7 +185,7 @@ package body Flow_Utility is
       --  corresponding Entity_Id; for protected functions store the
       --  read-locked protected object.
 
-      procedure Process_Type (E : Entity_Id) with Pre => Generating_Globals;
+      procedure Process_Type (E : Entity_Id);
       --  Merge predicate function for the given type
 
       ------------------
@@ -196,7 +196,11 @@ package body Flow_Utility is
          P : constant Entity_Id := Predicate_Function (E);
       begin
          if Present (P) then
-            Functions_Called.Include (P);
+            Collect_Functions_And_Read_Locked_POs
+              (N                  => Get_Expr_From_Return_Only_Func (P),
+               Functions_Called   => Functions_Called,
+               Tasking            => Tasking,
+               Generating_Globals => Generating_Globals);
          end if;
       end Process_Type;
 
@@ -214,6 +218,20 @@ package body Flow_Utility is
                   Called_Func : constant Entity_Id := Get_Called_Entity (N);
 
                begin
+                  --  For predicate functions descend into the predicate
+                  --  expression and continue traversal.
+
+                  if Is_Predicate_Function (Called_Func) then
+                     Collect_Functions_And_Read_Locked_POs
+                       (N                  =>
+                          Get_Expr_From_Return_Only_Func (Called_Func),
+                        Functions_Called   => Functions_Called,
+                        Tasking            => Tasking,
+                        Generating_Globals => Generating_Globals);
+
+                     return OK;
+                  end if;
+
                   --  We include the called function only if it is visible from
                   --  the scope. For example, the call might not be visible
                   --  when it happens in the type invariant of an externally
@@ -236,33 +254,27 @@ package body Flow_Utility is
                end;
 
             when N_In | N_Not_In =>
-               --  Membership tests involving type with predicates have the
-               --  predicate function appear during GG, but not in phase 2.
-               --  See mirroring code in Get_Variables that deals with this
-               --  as well.
-               if Generating_Globals then
-                  if Present (Right_Opnd (N)) then
-                     --  x in t
-                     P := Right_Opnd (N);
+               if Present (Right_Opnd (N)) then
+                  --  x in t
+                  P := Right_Opnd (N);
+                  if Nkind (P) in N_Identifier | N_Expanded_Name
+                    and then Is_Type (Entity (P))
+                  then
+                     Process_Type (Get_Type (P, Scop));
+                  end if;
+               else
+                  --  x in t | 1 .. y | u
+                  P := First (Alternatives (N));
+                  loop
                      if Nkind (P) in N_Identifier | N_Expanded_Name
                        and then Is_Type (Entity (P))
                      then
                         Process_Type (Get_Type (P, Scop));
                      end if;
-                  else
-                     --  x in t | 1 .. y | u
-                     P := First (Alternatives (N));
-                     loop
-                        if Nkind (P) in N_Identifier | N_Expanded_Name
-                          and then Is_Type (Entity (P))
-                        then
-                           Process_Type (Get_Type (P, Scop));
-                        end if;
-                        Next (P);
+                     Next (P);
 
-                        exit when No (P);
-                     end loop;
-                  end if;
+                     exit when No (P);
+                  end loop;
                end if;
 
             --  Operator nodes represent calls to intrinsic subprograms, which
@@ -284,7 +296,6 @@ package body Flow_Utility is
    --  Start of processing for Collect_Functions_And_Read_Locked_POs
 
    begin
-      Functions_Called := Node_Sets.Empty_Set;
       Traverse (N);
    end Collect_Functions_And_Read_Locked_POs;
 
@@ -1867,20 +1878,53 @@ package body Flow_Utility is
          E := Subprogram;
       end if;
 
-      Get_Globals
-        (Subprogram          => E,
-         Scope               => S,
-         Classwide           => True,
-         Globals             => Globals,
-         Use_Deduced_Globals => True);
+      --  For predicate functions we generate globals on the fly as any objects
+      --  referenced in the predicate expression (except for the predicate type
+      --  itself, which is represented by the formal parameter of a predicate
+      --  function).
 
-      --  Expand all variables; it is more efficent to process Proof_Ins and
-      --  Reads separaterly, because they are disjoint and there is no point
-      --  in computing their union.
-      Reads := Flow_Id_Sets.Union (Expand_Abstract_States (Globals.Proof_Ins),
-                                   Expand_Abstract_States (Globals.Inputs));
+      if Ekind (E) = E_Function
+        and then Is_Predicate_Function (E)
+      then
+         declare
+            Param : constant Entity_Id := First_Formal (E);
 
-      Writes := Expand_Abstract_States (Globals.Outputs);
+         begin
+            for V of Get_Variables_For_Proof
+              (Expr_N  => Get_Expr_From_Return_Only_Func (E),
+               Scope_N => Etype (First_Formal (E)))
+            loop
+               if V.Kind = Direct_Mapping
+                 and then V.Node = Param
+               then
+                  null;
+               else
+                  Reads.Include (V);
+               end if;
+            end loop;
+         end;
+
+         Writes := Flow_Id_Sets.Empty_Set;
+
+      --  Otherwise, we rely on the flow analysis
+
+      else
+         Get_Globals
+           (Subprogram          => E,
+            Scope               => S,
+            Classwide           => True,
+            Globals             => Globals,
+            Use_Deduced_Globals => True);
+
+         --  Expand all variables; it is more efficent to process Proof_Ins and
+         --  Reads separaterly, because they are disjoint and there is no point
+         --  in computing their union.
+         Reads := Flow_Id_Sets.Union
+           (Expand_Abstract_States (Globals.Proof_Ins),
+            Expand_Abstract_States (Globals.Inputs));
+
+         Writes := Expand_Abstract_States (Globals.Outputs);
+      end if;
 
       if Erase_Constants then
          Reads  := Only_Mutable (Reads);
@@ -2329,6 +2373,15 @@ package body Flow_Utility is
       --  Start of processing for Do_Subprogram_Call
 
       begin
+         --  Ignore calls to predicate functions, which come from the frontend
+         --  applying predicate checks where needed.
+
+         if Ekind (Subprogram) = E_Function
+           and then Is_Predicate_Function (Subprogram)
+         then
+            return Flow_Id_Sets.Empty_Set;
+         end if;
+
          --  If we fold functions we need to obtain the used inputs
 
          if Folding then
@@ -3433,41 +3486,31 @@ package body Flow_Utility is
                   procedure Process_Type (E : Entity_Id) is
                      P : constant Entity_Id := Predicate_Function (E);
 
-                     Globals : Global_Flow_Ids;
                   begin
-                     if No (P) then
-                        return;
+                     if Present (P) then
+
+                        --  Filter the predicate function parameter from
+                        --  variables referenced in the predicate, because the
+                        --  parameter is only visible within that expression
+                        --  (similar to what we do for quantified expression).
+
+                        declare
+                           Param : constant Entity_Id := First_Formal (P);
+
+                        begin
+                           for V of Recurse
+                             (Get_Expr_From_Return_Only_Func (P))
+                           loop
+                              if V.Kind in Direct_Mapping | Record_Field
+                                and then V.Node = Param
+                              then
+                                 null;
+                              else
+                                 Variables.Include (V);
+                              end if;
+                           end loop;
+                        end;
                      end if;
-
-                     --  Something to note here: we include the predicate
-                     --  function in the set of called subprograms during GG,
-                     --  but not in phase 2. The idea is that 'calling' the
-                     --  subprogram will introduce the dependencies on its
-                     --  global, wheras in phase 2 we directly include its
-                     --  globals.
-
-                     Get_Globals
-                       (Subprogram          => P,
-                        Scope               => Ctx.Scope,
-                        Classwide           => False,
-                        Globals             => Globals,
-                        Use_Deduced_Globals => Ctx.Use_Computed_Globals);
-
-                     pragma Assert (Globals.Outputs.Is_Empty);
-                     --  No function folding to deal with for predicate
-                     --  functions (they always consume their single input).
-
-                     declare
-                        Effects : constant Flow_Id_Sets.Set :=
-                          Globals.Proof_Ins or Globals.Inputs;
-
-                     begin
-                        for F of Effects loop
-                           Variables.Union
-                             (Flatten_Variable
-                                (Change_Variant (F, Normal_Use), Ctx.Scope));
-                        end loop;
-                     end;
                   end Process_Type;
 
                   P : Node_Id;
@@ -3520,7 +3563,8 @@ package body Flow_Utility is
 
                   --  Filter the quantified expression parameter from variables
                   --  referenced in the predicate, because the parameter is
-                  --  only visible within that predicate.
+                  --  only visible within that predicate (similar to what we
+                  --  do for type predicate expressions).
 
                   for V of Recurse (Condition (N)) loop
                      if V.Kind in Direct_Mapping | Record_Field

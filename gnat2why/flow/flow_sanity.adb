@@ -240,6 +240,9 @@ package body Flow_Sanity is
                 or else
               (not Flow_Generated_Globals.Phase_2.GG_Has_Globals (E)
                and then not In_Predefined_Unit (E)))
+           and then
+             (if Ekind (E) = E_Function
+              then not Is_Predicate_Function (E))
          then
             Check_Incomplete_Global (E);
          end if;

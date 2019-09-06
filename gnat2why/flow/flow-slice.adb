@@ -486,15 +486,16 @@ package body Flow.Slice is
             end if;
 
             for E of A.Subprograms_Called loop
-               --  Check if flow effects have been already "inlined" in CFG;
-               --  see the call to Process_Subprogram_Globals in
-               --  Do_Call_Statement.
-               --  ??? refactor those to using a common routine
 
                pragma Assert (Ekind (E) in Entry_Kind
                                          | E_Function
                                          | E_Procedure
                                          | E_Package);
+
+               --  We don't expect calls to predicate functions in the CFG
+
+               pragma Assert (if Ekind (E) = E_Function
+                              then not Is_Predicate_Function (E));
 
                --  Nested packages with Initializes contract have their reads
                --  and writes are already inlined in the CFG; those without the
@@ -505,6 +506,12 @@ package body Flow.Slice is
                   if No (Get_Pragma (E, Pragma_Initializes)) then
                      Unresolved.Insert (E);
                   end if;
+
+               --  For ordinary subprograms, check if their flow effects
+               --  have been already "inlined" in CFG; see the call
+               --  to Process_Subprogram_Globals in Do_Call_Statement.
+               --  ??? refactor those to using a common routine
+
                else
                   if not Has_User_Supplied_Globals (E)
                     or else Rely_On_Generated_Global (E, FA.B_Scope)

@@ -44,10 +44,11 @@ package Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
-      Functions_Called   : out Node_Sets.Set;
+      Functions_Called   : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
-   with Pre => Present (N);
+   with Pre  => Present (N),
+        Post => Functions_Called'Old.Is_Subset (Of_Set => Functions_Called);
    --  For an expression N collect its called functions and update the set of
    --  protected objects that are read-locked when evaluating these functions.
    --
@@ -172,9 +173,11 @@ package Flow_Utility is
                                     | E_Procedure
                                     | E_Task_Type
                 and then not Is_Derived_Type (Subprogram)
-                and then (if Ekind (Subprogram) = E_Procedure
-                          then not Is_DIC_Procedure (Subprogram)
-                            and then not Is_Invariant_Procedure (Subprogram)),
+                and then (if Ekind (Subprogram) = E_Procedure then
+                            not Is_DIC_Procedure (Subprogram)
+                            and then not Is_Invariant_Procedure (Subprogram)
+                          elsif Ekind (Subprogram) = E_Function then
+                            not Is_Predicate_Function (Subprogram)),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
        and then (for all G of Globals.Inputs =>
