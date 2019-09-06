@@ -2945,29 +2945,31 @@ package body Gnat2Why.Borrow_Checker is
                      --  check for flow analysis?
 
                      if Is_Anonymous_Access_Type (Return_Typ) then
+                        if Nkind (Expr) /= N_Null then
+                           declare
+                              Param : constant Entity_Id :=
+                                First_Formal (Subp);
+                              Root : Entity_Id := Get_Root_Object (Expr);
 
-                        declare
-                           Param : constant Entity_Id := First_Formal (Subp);
-                           Root : Entity_Id :=
-                             Get_Root_Object (Expr);
-
-                        begin
-                           while Root /= Param loop
-                              if Get (Current_Observers, Root) /= Empty then
-                                 Root := Get_Root_Object
-                                   (Get (Current_Observers, Root));
-                              elsif Get (Current_Borrowers, Root) /= Empty then
-                                 Root := Get_Root_Object
-                                   (Get (Current_Borrowers, Root));
-                              else
-                                 Error_Msg_NE
-                                   ("return value of a traversal function "
-                                    & "should be rooted at &", Expr, Param);
-                                 Permission_Error := True;
-                                 exit;
-                              end if;
-                           end loop;
-                        end;
+                           begin
+                              while Root /= Param loop
+                                 if Get (Current_Observers, Root) /= Empty then
+                                    Root := Get_Root_Object
+                                      (Get (Current_Observers, Root));
+                                 elsif Get (Current_Borrowers, Root) /= Empty
+                                 then
+                                    Root := Get_Root_Object
+                                      (Get (Current_Borrowers, Root));
+                                 else
+                                    Error_Msg_NE
+                                      ("return value of a traversal function "
+                                       & "should be rooted at &", Expr, Param);
+                                    Permission_Error := True;
+                                    exit;
+                                 end if;
+                              end loop;
+                           end;
+                        end if;
 
                      --  Otherwise, if the return type is deep, we have a move
 
