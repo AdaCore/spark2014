@@ -7075,7 +7075,10 @@ package body SPARK_Definition is
 
                --  Issue warning on unreferenced local subprograms, which are
                --  analyzed anyway, unless the subprogram is marked with pragma
-               --  Unreferenced.
+               --  Unreferenced. Local subprograms are identified by calling
+               --  Is_Local_Subprogram_Always_Inlined, but this does not take
+               --  into account local subprograms which are not inlined. It
+               --  would be better to look at the scope of E. ???
 
                if Is_Local_Subprogram_Always_Inlined (E)
                  and then not Referenced (E)
