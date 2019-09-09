@@ -1,4 +1,3 @@
-traversal_funcs.adb:9:04: warning: analyzing unreferenced function "F"
 traversal_funcs.adb:9:16: warning: unused variable "X"
 traversal_funcs.adb:11:14: return value of a traversal function should be rooted at "X"
 gnatprove: error during flow analysis and proof
