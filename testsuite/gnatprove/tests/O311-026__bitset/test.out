@@ -1,6 +1,6 @@
 foo.adb:12:21: medium: array index check might fail (e.g. when A = (others => 0) and A'First = 0 and A'Last = 0 and A_First = 0 and I = 18446744073709551584) [possible explanation: subprogram at foo.ads:10 should mention A_First and I in a precondition]
 foo.adb:12:21: medium: overflow check might fail (e.g. when A_First = 0 and I = 18446744073709551584) [possible explanation: subprogram at foo.ads:10 should mention A_First and I in a precondition]
 foo.adb:12:34: info: division check proved (CVC4: 1 VC)
-foo.adb:12:34: medium: range check might fail (e.g. when I = 18446744073709551615) [possible explanation: subprogram at foo.ads:10 should mention I in a precondition]
+foo.adb:12:34: medium: range check might fail (e.g. when I = Word64'Last) [possible explanation: subprogram at foo.ads:10 should mention I in a precondition]
 foo.adb:13:27: info: division check proved (CVC4: 1 VC)
 foo.adb:13:27: info: range check proved (CVC4: 1 VC)

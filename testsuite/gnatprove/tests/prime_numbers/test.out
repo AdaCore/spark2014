@@ -144,8 +144,8 @@ prime_and_coprime_numbers.ads:148:92: info: overflow check proved (CVC4: 1 VC), 
 prime_and_coprime_numbers.ads:148:123: info: overflow check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 prime_and_coprime_numbers.ads:149:28: info: range check proved (CVC4: 1 VC), in instantiation at test_prime_and_coprime_numbers.adb:6
 test_prime_and_coprime_numbers.adb:9:04: info: initialization of "Coprimes" proved
+test_prime_and_coprime_numbers.adb:12:15: info: precondition proved (CVC4: 5 VC; altergo: 1 VC)
 test_prime_and_coprime_numbers.adb:12:15: info: range check proved (CVC4: 1 VC)
-test_prime_and_coprime_numbers.adb:12:15: medium: precondition might fail
 test_prime_and_coprime_numbers.adb:13:17: info: precondition proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: info: range check proved (CVC4: 1 VC)
 test_prime_and_coprime_numbers.adb:14:15: medium: precondition might fail

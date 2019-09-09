@@ -1,5 +1,5 @@
 mod_subtypes.ads:7:52: info: division check proved (CVC4: 1 VC)
 mod_subtypes.ads:17:31: info: predicate check proved (CVC4: 1 VC)
 mod_subtypes.ads:18:38: info: predicate check proved (CVC4: 1 VC)
-mod_subtypes.ads:19:29: medium: predicate check might fail (e.g. when B = 254 and C = 1)
-mod_types.ads:21:19: medium: assertion might fail, cannot prove A + B = C (e.g. when A = 2 and B = 254 and C = 0)
+mod_subtypes.ads:19:29: medium: predicate check might fail (e.g. when B = My_Sub'Last and C = 1)
+mod_types.ads:21:19: medium: assertion might fail, cannot prove A + B = C (e.g. when A = 2 and B = My_Mod'Last and C = 0)

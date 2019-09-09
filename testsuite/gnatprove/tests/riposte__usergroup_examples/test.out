@@ -3,7 +3,7 @@ usergroup_examples.adb:38:32: info: division check proved (CVC4: 1 VC)
 usergroup_examples.adb:38:32: medium: range check might fail (e.g. when Current = Index_T'Last-1) [possible explanation: subprogram at line 32 should mention Current in a precondition]
 usergroup_examples.adb:42:04: warning: analyzing unreferenced function "Example_3"
 usergroup_examples.adb:47:07: info: initialization of "Tmp" proved
-usergroup_examples.adb:51:27: medium: range check might fail (e.g. when Tmp = 18446744073709551615)
+usergroup_examples.adb:51:27: medium: range check might fail (e.g. when Tmp = U64'Last)
 usergroup_examples.adb:51:32: info: division check proved (CVC4: 1 VC)
 usergroup_examples.adb:51:32: medium: array index check might fail
 usergroup_examples.adb:59:19: medium: postcondition might fail, cannot prove Example_5'Result > 0 (e.g. when Example_5'Result = 0)

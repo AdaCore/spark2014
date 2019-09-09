@@ -46,5 +46,5 @@ test_stack.adb:7:08: info: precondition proved (CVC4: 5 VC)
 test_stack.adb:9:19: info: assertion proved (Z3: 1 VC)
 test_stack.adb:10:42: info: unrolling loop
 test_stack.adb:11:08: info: precondition proved (CVC4: 5 VC)
-test_stack.adb:12:22: info: assertion proved (Z3: 5 VC)
+test_stack.adb:12:22: info: assertion proved (Z3: 4 VC; altergo: 1 VC)
 test_stack.adb:14:19: info: assertion proved (CVC4: 1 VC)

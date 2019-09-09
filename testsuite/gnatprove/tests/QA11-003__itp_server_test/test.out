@@ -11,7 +11,7 @@ Task
 
 ------------------------------- Goal --------------------------------
 
-goal VC def :
+goal def'VC :
   dynamic_invariant A True False True True ->
   A > 0 ->
   (forall test__parity__result:int.
