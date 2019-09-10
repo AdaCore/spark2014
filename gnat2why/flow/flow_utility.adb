@@ -1331,7 +1331,8 @@ package body Flow_Utility is
    ----------------------------
 
    procedure Map_Generic_In_Formals
-     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set)
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set;
+      Entire : Boolean := True)
    is
       Mapped : Flow_Id_Sets.Set;
 
@@ -1368,9 +1369,14 @@ package body Flow_Utility is
                            --  Get_Global or Normal_Use for those coming from
                            --  other contexts.
 
-                           Mapped.Union
-                             (Change_Variant (To_Entire_Variables (Inputs),
-                                              Object.Variant));
+                           if Entire then
+                              Mapped.Union
+                                (Change_Variant
+                                   (To_Entire_Variables (Inputs),
+                                    Object.Variant));
+                           else
+                              Mapped.Union (Inputs);
+                           end if;
                         end;
                      end if;
                   else
@@ -3636,7 +3642,7 @@ package body Flow_Utility is
          --  And finally, we remove all local constants
          Remove_Constants (S);
 
-         Map_Generic_In_Formals (Ctx.Scope, S);
+         Map_Generic_In_Formals (Ctx.Scope, S, Entire => False);
       end return;
    end Get_Variables_Internal;
 
