@@ -354,13 +354,21 @@ package body Flow_Utility.Initialization is
 
       elsif Is_Private_Type (Typ) then
          declare
-            Full_V : constant Entity_Id := Full_View (Typ);
+            Full_V : constant Entity_Id :=
+              (if Present (Full_View (Typ))
+               then Full_View (Typ)
+               elsif Present (Underlying_Full_View (Typ))
+               then Underlying_Full_View (Typ)
+               else Etype (Typ));
+            --  Typicall we expect the full view to be present, but for example
+            --  on derived types without additional constraints it is not. This
+            --  code is inspired by Einfo.Underlying_Type and should be robust.
+
+            pragma Assert (Is_Type (Full_V) and then Full_V /= Typ);
 
          begin
             --  Continue analysing the full view of the private type only if it
             --  is visible from the Scope and its full view is in SPARK.
-
-            pragma Assert (Present (Full_V));
 
             if Is_Visible (Full_V, Scope)
               and then not Full_View_Not_In_SPARK (Typ)
