@@ -1,0 +1,4 @@
+c83012d.adb:10:04: high: "R" must be listed in the Global aspect of "C83012D" (SPARK RM 6.1.4(14))
+c83012d.adb:18:32: actual for formal object with mode in cannot depend on variable input "R" (SPARK RM 4.4(2))
+report.ads:3:64: info: data dependencies proved
+gnatprove: error during flow analysis and proof
