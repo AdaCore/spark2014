@@ -781,16 +781,10 @@ package Flow_Utility is
    --  Same as above but for Flow_Ids; returns Null_Flow_Id instead of Empty
 
    procedure Map_Generic_In_Formals
-     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set;
-      Entire : Boolean := True);
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
    --  Map generic IN formal parameters, which are visible inside of generic
    --  instances (e.g. might appear in Global and Initializes contracts) into
    --  objects used in their corresponding generic actual parameter expression.
-   --
-   --  If Entire is True, then map to the entire objects; if it is False, then
-   --  map to individual components referenced in the actual parameter.
-   --  ??? This parameter should be removed and the callers should use
-   --  To_Entire_Variables if needed, but this would be a bit ugly as well.
 
    function Strip_Child_Prefixes (EN : String) return String;
    --  Strip Child_Prefix from the string representation of an Entity_Name
