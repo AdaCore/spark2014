@@ -90,7 +90,7 @@ exact (if Z_le_dec x y then ((y - x) + 1)%Z else 0%Z).
 Defined.
 
 (* Why3 goal *)
-Lemma length_def :
+Lemma length'def :
 forall (x:Z) (y:Z),
  ((x <= y)%Z -> ((length x y) = ((y - x)%Z + 1%Z)%Z))
  /\ ((~ (x <= y)%Z) -> ((length x y) = 0%Z)).

@@ -234,7 +234,7 @@ Definition dynamic_invariant1 (temp___expr_172:Z) (temp___is_init_168:bool)
   in_range1 temp___expr_172.
 
 (* Why3 goal *)
-Theorem VC_def :
+Theorem def'VC :
   (dynamic_invariant1 val__ true false true true) ->
   (dynamic_invariant exp1 true false true true) ->
   (dynamic_invariant exp2 true false true true) -> (exp1 <= exp2)%Z ->

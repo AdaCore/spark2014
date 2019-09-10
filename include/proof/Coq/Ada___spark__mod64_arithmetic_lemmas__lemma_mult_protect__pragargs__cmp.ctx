@@ -575,7 +575,7 @@ Definition dynamic_invariant (temp___expr_165:t) (temp___is_init_161:bool)
   True.
 
 (* Why3 goal *)
-Theorem VC_def :
+Theorem def'VC :
   (dynamic_invariant arg1 true false true true) ->
   (dynamic_invariant arg2 true false true true) ->
   (dynamic_invariant upper_bound true false true true) ->

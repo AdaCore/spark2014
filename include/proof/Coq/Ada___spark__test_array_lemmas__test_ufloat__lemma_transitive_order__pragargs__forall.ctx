@@ -1331,7 +1331,7 @@ Definition dynamic_invariant2 (temp___expr_60:t) (temp___is_init_56:bool)
   t'isFinite temp___expr_60.
 
 (* Why3 goal *)
-Theorem VC_def :
+Theorem def'VC :
   (dynamic_invariant arr true false true true) ->
   (forall (i:Z), (((first1 arr) <= i)%Z /\ (i <= (last1 arr))%Z) ->
    (~ (i = (first1 arr)) /\

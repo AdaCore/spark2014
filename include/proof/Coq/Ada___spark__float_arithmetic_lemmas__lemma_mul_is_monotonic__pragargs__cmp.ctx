@@ -1119,7 +1119,7 @@ Axiom fliteral_axiom3 :
   (t'isFinite fliteral3) /\ ((t'real fliteral3) = (0 / 10)%R).
 
 (* Why3 goal *)
-Theorem VC_def :
+Theorem def'VC :
   (dynamic_invariant fl_last_sqrt true false true true) ->
   (fliteral2 = fl_last_sqrt) ->
   (dynamic_invariant val1 true false true true) ->

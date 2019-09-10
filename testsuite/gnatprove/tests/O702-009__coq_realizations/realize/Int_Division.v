@@ -22,7 +22,7 @@ else (int.EuclideanDivision.mod1 x y) + y)%Z.
 Defined.
 
 (* Why3 goal *)
-Lemma mod_def :
+Lemma mod'def :
 forall (x:Z) (y:Z),
  ((0%Z < y)%Z -> ((mod1 x y) = (int.EuclideanDivision.mod1 x y)))
  /\ ((~ (0%Z < y)%Z) ->

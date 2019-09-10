@@ -9,7 +9,8 @@ def edit_session():
     content = ""
     with open(session, 'r') as file:
         for current_line in file.readlines():
-            if not current_line.rfind ("edited") == -1:
+            # We detect the end of the Coq filename
+            if current_line.rfind ('.v"') >= 0:
                 current_line = re.sub (r'<result status.*/>', '<result status="valid" time="1.23"/>', current_line)
             content = content + current_line
     with open(session, 'w') as file:

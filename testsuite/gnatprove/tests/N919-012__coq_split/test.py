@@ -9,7 +9,7 @@ def check_session_file():
     # place. This will return a list of matched xml elements. As the search
     # string matches exactly the required element, if the search contains one
     # element we are good. if it is empty, we have a problem.
-    manual_proof = root.findall("./file/theory[@name='Greatest_common_divisor__g_c_d__subprogram_def']/goal/transf/goal/transf/goal/proof[@edited]")
+    manual_proof = root.findall("./file/theory[@name='Greatest_common_divisor__g_c_d__subprogram_def']/goal/transf/goal/transf/goal/proof/path[@name='Greatest_common_divisor__g_c_d__pragargs__cmp.v']")
     assert len(manual_proof) == 1, "did not find manual proof at correct place"
 
 prove_all(opt=['--proof=progressive'], counterexample=False)
