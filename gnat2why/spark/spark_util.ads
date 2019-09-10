@@ -774,8 +774,8 @@ package SPARK_Util is
                                                         | E_Package
                                                         | Generic_Unit_Kind;
    --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
-   --  instances of generic subprograms (where the Main_Unit_Entity is
-   --  has a void Ekind).
+   --  instances of generic subprograms (where the Main_Unit_Entity has a
+   --  void Ekind).
 
    function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
    --  Approximation of cases where we know that the Constrained attribute of
