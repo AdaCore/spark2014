@@ -408,9 +408,6 @@ indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:882
 indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:883
 indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:884
 indefinite_bounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:885
-indefinite_bounded_tagged.adb:9:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.adb:9:04: warning: in instantiation at a-cfinve.ads:834
-indefinite_bounded_tagged.adb:9:04: warning: no Global contract available for "="
 indefinite_bounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_bounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_bounded_tagged.adb:15:22: info: function contract not available for proof ("Is_Empty" might not return)
@@ -1171,106 +1168,6 @@ indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:360
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:52
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:83
 indefinite_bounded_tagged.ads:12:04: info: in instantiation at a-cofuve.ads:92
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: assuming "=" has no effect on global items
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:129
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:131
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:150
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:163
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:166
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:182
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:183
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:285
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:300
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:372
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:455
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:529
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:702
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:714
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:745
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cfinve.ads:784
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:110
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:121
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:132
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:147
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:163
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:179
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:197
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:213
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:242
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:248
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:270
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:284
-indefinite_bounded_tagged.ads:12:04: warning: in instantiation at a-cofuve.ads:302
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
-indefinite_bounded_tagged.ads:12:04: warning: no Global contract available for "="
 indefinite_bounded_tagged.ads:15:40: medium: range check might fail
 indefinite_bounded_tagged.ads:19:14: warning: subprogram "Test" has no effect
 indefinite_unbounded.adb:11:07: info: initialization of "V" proved
@@ -1456,9 +1353,6 @@ indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:882
 indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:883
 indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:884
 indefinite_unbounded_tagged.adb:9:04: info: in instantiation at a-cfinve.ads:885
-indefinite_unbounded_tagged.adb:9:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.adb:9:04: warning: in instantiation at a-cfinve.ads:834
-indefinite_unbounded_tagged.adb:9:04: warning: no Global contract available for "="
 indefinite_unbounded_tagged.adb:12:07: info: initialization of "V" proved
 indefinite_unbounded_tagged.adb:12:19: info: range check proved (CVC4: 1 VC)
 indefinite_unbounded_tagged.adb:15:22: info: function contract not available for proof ("Is_Empty" might not return)
@@ -2203,106 +2097,6 @@ indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:36
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:52
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:83
 indefinite_unbounded_tagged.ads:14:04: info: in instantiation at a-cofuve.ads:92
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: assuming "=" has no effect on global items
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:102
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:129
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:131
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:150
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:163
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:166
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:182
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:183
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:285
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:300
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:372
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:455
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:529
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:702
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:714
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:745
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cfinve.ads:784
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:110
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:121
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:132
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:147
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:163
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:179
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:197
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:213
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:242
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:248
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:270
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:284
-indefinite_unbounded_tagged.ads:14:04: warning: in instantiation at a-cofuve.ads:302
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
-indefinite_unbounded_tagged.ads:14:04: warning: no Global contract available for "="
 indefinite_unbounded_tagged.ads:17:40: medium: range check might fail
 indefinite_unbounded_tagged.ads:21:14: warning: subprogram "Test" has no effect
 unbounded.adb:10:07: info: initialization of "V" proved
