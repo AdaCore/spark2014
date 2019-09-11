@@ -71,7 +71,18 @@ we map Entity_Name to a corresponding string (e.g. "other__hidden").
 To have unique representation, if an object can be represented by both
 Entity_Name and Entity_Id, we choose Entity_Id, as it makes navigating the AST
 and writing assertions easier. The correspondence in maintained in
-``SPARK_Register``.
+``SPARK_Register``. However, if we need to know any property of an object known
+by an Entity_Name (e.g. its ghost status), we must store it the ALI file in
+phase 1 and read it back in phase 2.
+
+This unique representation is convenient for flow analysis, but for proof it is
+simpler if Entity_Name is used for any object that should not be "translated"
+into Why3. By "translated" we mean "given to the Translate_Entity routine",
+which examines what this object is and how it should be represented in Why3.
+Such objects include those which are not known by an Entity_Id, those whose
+Entity_Id is known but they have not been marked as "in SPARK", and finally,
+abstract states; all these objects are represented as "blobs" without any
+internal structure in Why3.
 
 Flow graphs
 ***********
