@@ -7,19 +7,19 @@
 == Goals not proved ==
   +-- file [../add__addtwo.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal VC def
+      +-- goal def'VC
         +-- transformation split_goal_wp_conj
-          +-- goal VC def.0
+          +-- goal def'VC.0
 
 == Goals proved by only one prover ==
   +-- file [../add__addtwo.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal VC def
+      +-- goal def'VC
         +-- transformation split_goal_wp_conj
-          +-- goal VC def.1: CVC4 1.6-gnatprove
-          +-- goal VC def.3: CVC4 1.6-gnatprove
-          +-- goal VC def.4: CVC4 1.6-gnatprove
-          +-- goal VC def.6: CVC4 1.6-gnatprove
+          +-- goal def'VC.1: CVC4 1.6-gnatprove
+          +-- goal def'VC.3: CVC4 1.6-gnatprove
+          +-- goal def'VC.4: CVC4 1.6-gnatprove
+          +-- goal def'VC.6: CVC4 1.6-gnatprove
 
 == Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
   CVC4 1.6-gnatprove  :   4   0.00   0.00   0.00
