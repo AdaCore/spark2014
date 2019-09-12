@@ -557,7 +557,8 @@ package Gnat2Why.Expr is
    --  errors, therefore a special mechanism is needed to deal with expressions
    --  X'Old and F'Result.
 
-   Result_Name : W_Identifier_Id := Why_Empty;
+   Result_Name       : W_Identifier_Id := Why_Empty;
+   Result_Is_Mutable : Boolean := False;
    --  Name to use for occurrences of F'Result in the postcondition. It should
    --  be equal to Why_Empty when we are not translating a postcondition of a
    --  function.

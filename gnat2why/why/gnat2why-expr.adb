@@ -5302,7 +5302,7 @@ package body Gnat2Why.Expr is
          Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => As_Old);
       Result : constant W_Term_Id :=
         +Transform_Expr (Expr, Expected_Type, EW_Term, Params);
    begin
@@ -8875,7 +8875,7 @@ package body Gnat2Why.Expr is
                             Phase       => Params.Phase,
                             Gen_Marker  => GM_None,
                             Ref_Allowed => False,
-                            Old_Allowed => False);
+                            Old_Policy  => Ignore);
 
          --  Values used in calls to the aggregate function
 
@@ -10734,9 +10734,9 @@ package body Gnat2Why.Expr is
       --  map for old. When we create old why3 nodes, the expression should
       --  contain variable (or Why3 will complain).
 
-      if not Params.Old_Allowed
-        or else (Get_Variables_For_Proof (Expr, Expr).Is_Empty
-                 and then Params.Ref_Allowed)
+      if Params.Old_Policy = Ignore
+        or else (Params.Old_Policy = As_Old
+                 and then Get_Variables_For_Proof (Expr, Expr).Is_Empty)
       then
          return Transform_Expr (Expr, Domain, Params);
       end if;
@@ -10757,7 +10757,7 @@ package body Gnat2Why.Expr is
 
       --  Use the map for old when references are not allowed
 
-      elsif Params.Phase in Generate_VCs or else not Params.Ref_Allowed then
+      elsif Params.Old_Policy = Use_Map then
          return +Name_For_Old (Expr);
       else
          return New_Old (Expr   => Transform_Expr (Expr, Domain, Params),
@@ -10787,7 +10787,7 @@ package body Gnat2Why.Expr is
       --  SPARK_Definition.Mark_Attribute_Reference.
       case Attr_Id is
          when Attribute_Result =>
-            if Params.Phase in Generate_VCs | Generate_For_Body then
+            if Result_Is_Mutable then
                T :=
                  New_Deref
                    (Ada_Node => Expr,

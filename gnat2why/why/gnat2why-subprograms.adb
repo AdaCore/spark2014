@@ -1491,7 +1491,7 @@ package body Gnat2Why.Subprograms is
       then
          declare
             Result : constant W_Term_Id :=
-              (if Params.Phase = Generate_Logic
+              (if not Result_Is_Mutable
                then +Result_Name
                else New_Deref
                  (Right => Result_Name,
@@ -2155,6 +2155,7 @@ package body Gnat2Why.Subprograms is
       Reset_Map_For_Old;
 
       if Ekind (E) = E_Function then
+         Result_Is_Mutable := True;
          Result_Name :=
            New_Identifier
              (Name  => Name & "__result",
@@ -2166,7 +2167,7 @@ package body Gnat2Why.Subprograms is
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => Use_Map);
 
       --  First retrieve contracts specified on the subprogram and the
       --  subprograms it overrides.
@@ -2410,6 +2411,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Result_Name := Why_Empty;
+         Result_Is_Mutable := False;
       end if;
 
       Close_Theory (File,
@@ -2462,7 +2464,7 @@ package body Gnat2Why.Subprograms is
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => GM_None,
                  Ref_Allowed => True,
-                 Old_Allowed => True);
+                 Old_Policy  => Use_Map);
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -2561,7 +2563,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Package (E, Params);
       begin
@@ -2628,7 +2630,7 @@ package body Gnat2Why.Subprograms is
                         Phase       => Generate_Contract_For_Body,
                         Gen_Marker  => GM_None,
                         Ref_Allowed => True,
-                        Old_Allowed => True);
+                        Old_Policy  => Use_Map);
                      Barrier : constant Node_Id :=
                        Entry_Body_Barrier (Get_Body (Enclosing_Subp));
                   begin
@@ -3057,7 +3059,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
       begin
          if Ekind (E) = E_Procedure and then Null_Present (E) then
             return +Void;
@@ -3090,7 +3092,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
          Pre_Node : constant Node_Id :=
            Get_Location_For_Aspect (E, Pragma_Precondition);
          Pre : W_Pred_Id :=
@@ -3124,7 +3126,7 @@ package body Gnat2Why.Subprograms is
                      Phase       => Generate_Contract_For_Body,
                      Gen_Marker  => GM_None,
                      Ref_Allowed => True,
-                     Old_Allowed => True);
+                     Old_Policy  => Use_Map);
                   Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
                begin
                   Pre :=
@@ -3158,7 +3160,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
       begin
          return
            Sequence
@@ -3215,7 +3217,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
       begin
          if Present (Value) and then
            (No (Get_Expression_Function (E))
@@ -3255,7 +3257,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
          Check : constant W_Pred_Id :=
            Compute_Type_Invariants_For_Subprogram (E, False, Params);
       begin
@@ -3284,7 +3286,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
 
          Prog : W_Prog_Id := Arg;
       begin
@@ -3400,7 +3402,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_Contract_For_Body,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => As_Old);
          Mark_Params : Transformation_Params := Params;
          Post_N    : Node_Id;
       begin
@@ -3457,7 +3459,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
 
          Pre   : constant W_Prog_Id :=
            +Compute_Spec (Params, E, Pragma_Precondition, EW_Prog);
@@ -3528,7 +3530,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
          Post : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Postcondition);
          Stmt : W_Prog_Id;
@@ -3569,7 +3571,7 @@ package body Gnat2Why.Subprograms is
             Phase       => Generate_VCs_For_Contract,
             Gen_Marker  => GM_None,
             Ref_Allowed => True,
-            Old_Allowed => True);
+            Old_Policy  => Use_Map);
          Pre : W_Pred_Id :=
            Get_Static_Call_Contract (Params, E, Pragma_Precondition);
          Stmt : W_Prog_Id;
@@ -3587,7 +3589,7 @@ package body Gnat2Why.Subprograms is
                   Phase       => Generate_Contract_For_Body,
                   Gen_Marker  => GM_None,
                   Ref_Allowed => True,
-                  Old_Allowed => True);
+                  Old_Policy  => Use_Map);
                Barrier : constant Node_Id := Entry_Body_Barrier (Body_N);
             begin
                Pre :=
@@ -3684,14 +3686,14 @@ package body Gnat2Why.Subprograms is
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => Use_Map);
 
       Contract_Params :=
         (File        => File,
          Phase       => Generate_VCs_For_Contract,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => As_Old);
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -3707,13 +3709,13 @@ package body Gnat2Why.Subprograms is
            New_Identifier
              (Name  => Name & "__result",
               Typ   => Type_Of_Node (Etype (E)));
+         Result_Is_Mutable := True;
 
          Result_Var :=
            New_Deref
              (Ada_Node => Body_N,
               Right    => Result_Name,
               Typ      => Type_Of_Node (Etype (E)));
-
       else
          Result_Var := +Void;
       end if;
@@ -3953,6 +3955,7 @@ package body Gnat2Why.Subprograms is
 
       if Ekind (E) = E_Function then
          Result_Name := Why_Empty;
+         Result_Is_Mutable := False;
       end if;
 
       --  We should *not* filter our own entity, it is needed for recursive
@@ -4002,7 +4005,7 @@ package body Gnat2Why.Subprograms is
                  Phase       => Generate_VCs_For_Body,
                  Gen_Marker  => GM_None,
                  Ref_Allowed => True,
-                 Old_Allowed => True);
+                 Old_Policy  => Use_Map);
 
       --  Reset the toplevel exceptions for exit paths
 
@@ -4155,7 +4158,7 @@ package body Gnat2Why.Subprograms is
          Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
          Ref_Allowed => False,
-         Old_Allowed => False);
+         Old_Policy  => Ignore);
 
       if Ekind (E) = E_Function then
          Why_Type := Type_Of_Node (Etype (E));
@@ -4757,7 +4760,7 @@ package body Gnat2Why.Subprograms is
                      Phase       => Generate_Logic,
                      Gen_Marker  => GM_None,
                      Ref_Allowed => False,
-                     Old_Allowed => True);
+                     Old_Policy  => Use_Map);
 
                   --  Translate the specific postcondition of Descendant_E
 
@@ -4838,7 +4841,7 @@ package body Gnat2Why.Subprograms is
                      Phase       => Generate_Logic,
                      Gen_Marker  => GM_None,
                      Ref_Allowed => False,
-                     Old_Allowed => False);
+                     Old_Policy  => Ignore);
 
                   --  Insert let bindings for old expressions
 
@@ -4938,6 +4941,7 @@ package body Gnat2Why.Subprograms is
       begin
          if Use_Result_Name then
             Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+            Result_Is_Mutable := False;
          end if;
 
          if Within_Protected_Type (E) then
@@ -4961,6 +4965,7 @@ package body Gnat2Why.Subprograms is
 
          if Use_Result_Name then
             Result_Name := Why_Empty;
+            Result_Is_Mutable := False;
          end if;
       end;
 
@@ -4997,7 +5002,7 @@ package body Gnat2Why.Subprograms is
          Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => As_Old);
 
       --  We fill the map of parameters, so that in the Pre and Post, we use
       --  local names of the parameters, instead of the global names.
@@ -5613,6 +5618,7 @@ package body Gnat2Why.Subprograms is
       --  Store an appropriate value for the result identifier in Result_Name.
 
       Result_Name := New_Result_Ident (Type_Of_Node (Etype (E)));
+      Result_Is_Mutable := False;
 
       if Within_Protected_Type (E) then
          Self_Name :=
@@ -5652,6 +5658,7 @@ package body Gnat2Why.Subprograms is
          Close_Theory (File,
                        Kind => Definition_Theory);
          Result_Name := Why_Empty;
+         Result_Is_Mutable := False;
          return;
       end if;
 
@@ -5660,7 +5667,7 @@ package body Gnat2Why.Subprograms is
          Phase       => Generate_Logic,
          Gen_Marker  => GM_None,
          Ref_Allowed => False,
-         Old_Allowed => False);
+         Old_Policy  => Ignore);
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
       Push_Binders_To_Symbol_Table (Logic_Func_Binders);
@@ -5720,6 +5727,7 @@ package body Gnat2Why.Subprograms is
       end if;
 
       Result_Name := Why_Empty;
+      Result_Is_Mutable := False;
 
       --  No filtering is necessary here, as the theory should on the contrary
       --  use the previously defined theory for the function declaration. Pass
@@ -5785,7 +5793,7 @@ package body Gnat2Why.Subprograms is
                Phase       => Generate_Logic,
                Gen_Marker  => GM_None,
                Ref_Allowed => False,
-               Old_Allowed => False);
+               Old_Policy  => Ignore);
             Def               : constant W_Expr_Id :=
               Compute_Inlined_Expr
                 (E, Logic_Func_Binders, Why_Type, Params);

@@ -687,7 +687,7 @@ package body Gnat2Why.Types is
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => Use_Map);
 
       Current_Subp := E;
 
