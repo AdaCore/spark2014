@@ -3129,11 +3129,15 @@ package body SPARK_Definition is
                   SRM_Reference => "SPARK RM 7.1.3(11)");
             end if;
 
-         --  Copy in of a parameter of an anonymous access type is
-         --  considered to be an observe/a borrow. Check that it abides by
-         --  the corresponding rules.
+         --  In a procedure or entry call, copy in of a parameter of an
+         --  anonymous access type is considered to be an observe/a borrow.
+         --  Check that it abides by the corresponding rules.
+         --  This will also recursively check borrows occuring as part of calls
+         --  of traversal functions in these parameters.
 
-         elsif Is_Anonymous_Access_Type (Etype (Formal)) then
+         elsif Is_Anonymous_Access_Type (Etype (Formal))
+           and then Ekind (E) /= E_Function
+         then
             Check_Source_Of_Borrow_Or_Observe (Actual);
          end if;
 
