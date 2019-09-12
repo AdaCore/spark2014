@@ -690,6 +690,12 @@ package body Gnat2Why.Borrow_Checker is
    procedure Check_Node (N : Node_Id);
    --  Main traversal procedure to check safe pointer usage
 
+   procedure Check_Not_Borrowed (Expr : Expr_Or_Ent; Root : Entity_Id);
+   --  Check expression Expr originating in Root was not borrowed
+
+   procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
+   --  Check expression Expr originating in Root was not observed
+
    procedure Check_Package_Spec (Id : Entity_Id);
    --  Check the package visible and private declarations in the current
    --  context. Update the context accordingly.
@@ -764,7 +770,7 @@ package body Gnat2Why.Borrow_Checker is
    function Is_Read_Only (E : Entity_Id) return Boolean with
      Pre => Is_Object (E);
    --  Return True if E is declared as Read_Only (ie. a constant which is not
-   --  an access to variable type).
+   --  of access-to-variable type, or a variable of access-to-constant type).
 
    function Loop_Of_Exit (N : Node_Id) return Entity_Id;
    --  A function that takes an exit statement node and returns the entity of
@@ -2590,6 +2596,116 @@ package body Gnat2Why.Borrow_Checker is
    end Check_Node;
 
    ------------------------
+   -- Check_Not_Borrowed --
+   ------------------------
+
+   procedure Check_Not_Borrowed (Expr : Expr_Or_Ent; Root : Entity_Id) is
+   begin
+      --  An expression without root object cannot be borrowed
+
+      if No (Root) then
+         return;
+      end if;
+
+      --  Otherwise, try to match the expression with one of the borrowed
+      --  expressions.
+
+      declare
+         Key      : Variable_Maps.Key_Option :=
+           Get_First_Key (Current_Borrowers);
+         Var      : Entity_Id;
+         Borrowed : Node_Id;
+         B_Pledge : Entity_Id := Empty;
+
+      begin
+         if not Expr.Is_Ent then
+
+            --  Search for a call to a pledge function in the parents of
+            --  Expr.
+
+            declare
+               Call : Node_Id := Expr.Expr;
+            begin
+               while Present (Call)
+                 and then
+                   (Nkind (Call) /= N_Function_Call
+                    or else
+                      not Has_Pledge_Annotation (Get_Called_Entity (Call)))
+               loop
+                  Call := Parent (Call);
+               end loop;
+
+               if Present (Call)
+                 and then Nkind (First_Actual (Call)) in N_Has_Entity
+               then
+                  B_Pledge := Entity (First_Actual (Call));
+               end if;
+            end;
+         end if;
+
+         while Key.Present loop
+            Var := Key.K;
+            Borrowed := Get (Current_Borrowers, Var);
+
+            if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+              and then Var /= B_Pledge
+            then
+               Error_Msg_Sloc := Sloc (Borrowed);
+               if Expr.Is_Ent then
+                  Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
+               else
+                  Error_Msg_N ("object was borrowed #", Expr.Expr);
+               end if;
+               Permission_Error := True;
+            end if;
+
+            Key := Get_Next_Key (Current_Borrowers);
+         end loop;
+      end;
+   end Check_Not_Borrowed;
+
+   ------------------------
+   -- Check_Not_Observed --
+   ------------------------
+
+   procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id) is
+   begin
+      --  An expression without root object cannot be observed
+
+      if No (Root) then
+         return;
+      end if;
+
+      --  Otherwise, try to match the expression with one of the observed
+      --  expressions.
+
+      declare
+         Key      : Variable_Maps.Key_Option :=
+           Get_First_Key (Current_Observers);
+         Var      : Entity_Id;
+         Observed : Node_Id;
+
+      begin
+         while Key.Present loop
+            Var := Key.K;
+            Observed := Get (Current_Observers, Var);
+
+            if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr) then
+               Error_Msg_Sloc := Sloc (Observed);
+               if Expr.Is_Ent then
+                  Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
+               else
+                  Error_Msg_N ("object was observed #", Expr.Expr);
+               end if;
+               Permission_Error := True;
+            end if;
+
+            Key := Get_Next_Key (Current_Observers);
+         end loop;
+      end;
+   end Check_Not_Observed;
+
+   ------------------------
    -- Check_Package_Body --
    ------------------------
 
@@ -2841,7 +2957,24 @@ package body Gnat2Why.Borrow_Checker is
                Check_Assignment (Target => Target,
                                  Expr   => Expression (Stmt));
 
-               Check_Expression (Target, Assign);
+               --  Local observers and borrowers can always be assigned, unless
+               --  they are themselves observed/borrowed. We skip checking for
+               --  them as observers have only read permission. Note that
+               --  includes regular observers of access-to-constant type as
+               --  well as observers of access-to-variable type inside
+               --  traversal functions.
+
+               if Is_Anonymous_Access_Type (Etype (Target)) then
+                  declare
+                     Root : constant Entity_Id := Get_Root_Object (Target);
+                  begin
+                     Check_Not_Observed (+Target, Root);
+                     Check_Not_Borrowed (+Target, Root);
+                  end;
+
+               else
+                  Check_Expression (Target, Assign);
+               end if;
             end;
 
          when N_Block_Statement =>
@@ -3595,11 +3728,18 @@ package body Gnat2Why.Borrow_Checker is
    ------------------
 
    function Is_Read_Only (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Retysp (Etype (E));
+      Ty : constant Entity_Id := Etype (E);
    begin
-      return Ekind (E) in E_Constant | E_In_Parameter
-        and then (not Is_Access_Type (Ty)
-                  or else Is_Access_Constant (Ty));
+      case Ekind (E) is
+         when E_Constant | E_In_Parameter =>
+            return not Is_Access_Type (Ty)
+              or else Is_Access_Constant (Ty);
+         when E_Variable =>
+            return Is_Access_Type (Ty)
+              and then Is_Access_Constant (Ty);
+         when others =>
+            return False;
+      end case;
    end Is_Read_Only;
 
    ------------------
@@ -4009,125 +4149,6 @@ package body Gnat2Why.Borrow_Checker is
    ------------------
 
    procedure Process_Path (Expr : Expr_Or_Ent; Mode : Checking_Mode) is
-
-      procedure Check_Not_Borrowed (Expr : Expr_Or_Ent; Root : Entity_Id);
-      --  Check expression Expr originating in Root was not borrowed
-
-      procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id);
-      --  Check expression Expr originating in Root was not observed
-
-      ------------------------
-      -- Check_Not_Borrowed --
-      ------------------------
-
-      procedure Check_Not_Borrowed (Expr : Expr_Or_Ent; Root : Entity_Id) is
-      begin
-         --  An expression without root object cannot be borrowed
-
-         if No (Root) then
-            return;
-         end if;
-
-         --  Otherwise, try to match the expression with one of the borrowed
-         --  expressions.
-
-         declare
-            Key      : Variable_Maps.Key_Option :=
-              Get_First_Key (Current_Borrowers);
-            Var      : Entity_Id;
-            Borrowed : Node_Id;
-            B_Pledge : Entity_Id := Empty;
-
-         begin
-            if not Expr.Is_Ent then
-
-               --  Search for a call to a pledge function in the parents of
-               --  Expr.
-
-               declare
-                  Call : Node_Id := Expr.Expr;
-               begin
-                  while Present (Call)
-                    and then
-                      (Nkind (Call) /= N_Function_Call
-                       or else
-                         not Has_Pledge_Annotation (Get_Called_Entity (Call)))
-                  loop
-                     Call := Parent (Call);
-                  end loop;
-
-                  if Present (Call)
-                    and then Nkind (First_Actual (Call)) in N_Has_Entity
-                  then
-                     B_Pledge := Entity (First_Actual (Call));
-                  end if;
-               end;
-            end if;
-
-            while Key.Present loop
-               Var := Key.K;
-               Borrowed := Get (Current_Borrowers, Var);
-
-               if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
-                 and then Var /= B_Pledge
-               then
-                  Error_Msg_Sloc := Sloc (Borrowed);
-                  if Expr.Is_Ent then
-                     Error_Msg_NE ("& was borrowed #", Expr.Loc, Expr.Ent);
-                  else
-                     Error_Msg_N ("object was borrowed #", Expr.Expr);
-                  end if;
-                  Permission_Error := True;
-               end if;
-
-               Key := Get_Next_Key (Current_Borrowers);
-            end loop;
-         end;
-      end Check_Not_Borrowed;
-
-      ------------------------
-      -- Check_Not_Observed --
-      ------------------------
-
-      procedure Check_Not_Observed (Expr : Expr_Or_Ent; Root : Entity_Id) is
-      begin
-         --  An expression without root object cannot be observed
-
-         if No (Root) then
-            return;
-         end if;
-
-         --  Otherwise, try to match the expression with one of the observed
-         --  expressions.
-
-         declare
-            Key      : Variable_Maps.Key_Option :=
-              Get_First_Key (Current_Observers);
-            Var      : Entity_Id;
-            Observed : Node_Id;
-
-         begin
-            while Key.Present loop
-               Var := Key.K;
-               Observed := Get (Current_Observers, Var);
-
-               if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr) then
-                  Error_Msg_Sloc := Sloc (Observed);
-                  if Expr.Is_Ent then
-                     Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
-                  else
-                     Error_Msg_N ("object was observed #", Expr.Expr);
-                  end if;
-                  Permission_Error := True;
-               end if;
-
-               Key := Get_Next_Key (Current_Observers);
-            end loop;
-         end;
-      end Check_Not_Observed;
-
-      --  Local variables
-
       Expr_Type : constant Entity_Id :=
         (if Expr.Is_Ent then Etype (Expr.Ent)
          else Etype (Expr.Expr));
@@ -4138,8 +4159,6 @@ package body Gnat2Why.Borrow_Checker is
         (if Expr.Is_Ent then Expr.Loc else Expr.Expr);
       Perm      : Perm_Kind_Option;
       Expl      : Node_Id;
-
-   --  Start of processing for Process_Path
 
    begin
       --  Nothing to do if the root type is not deep, or the path is not rooted

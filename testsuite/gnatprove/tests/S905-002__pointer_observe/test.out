@@ -1,0 +1,3 @@
+p.adb:7:10: insufficient permission on dereference from "C"
+p.adb:7:10: object was declared as not writeable at line 5
+gnatprove: error during flow analysis and proof
