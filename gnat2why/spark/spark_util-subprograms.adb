@@ -1005,6 +1005,13 @@ package body SPARK_Util.Subprograms is
         and then List_Containing (Decl) = Declarations (Par);
    end In_Body_Declarations;
 
+   -------------------------------------
+   -- Is_Borrowing_Traversal_Function --
+   -------------------------------------
+
+   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean is
+      (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
+
    ----------------------------------------
    -- Is_Invisible_Dispatching_Operation --
    ----------------------------------------

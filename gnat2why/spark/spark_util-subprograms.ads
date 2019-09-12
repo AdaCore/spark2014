@@ -335,6 +335,9 @@ package SPARK_Util.Subprograms is
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
+   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean;
+   --  Return true if E is a borrowing traversal function
+
    function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
      (No_Return (E)
       and then

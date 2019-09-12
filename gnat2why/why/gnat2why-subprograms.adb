@@ -3797,6 +3797,23 @@ package body Gnat2Why.Subprograms is
                Labels   => Get_Counterexample_Labels (E),
                Location => No_Location,
                Ref_Type => Type_Of_Node (Etype (E))));
+
+         --  If E is a traversal function returning a borrower, declare a
+         --  reference for the plege of its result.
+
+         if Is_Borrowing_Traversal_Function (E) then
+            declare
+               Result_Pledge : constant W_Identifier_Id :=
+                 Result_Pledge_Id (E);
+            begin
+               Emit (File,
+                     New_Global_Ref_Declaration
+                       (Name     => Result_Pledge,
+                        Ref_Type => Get_Typ (Result_Pledge),
+                        Labels   => Symbol_Sets.Empty_Set,
+                        Location => No_Location));
+            end;
+         end if;
       end if;
 
       if Entity_Body_In_SPARK (E) then
@@ -4421,7 +4438,17 @@ package body Gnat2Why.Subprograms is
 
             Complete_Post : constant W_Pred_Id :=
               +New_And_Expr (Conjuncts =>
-                               (1 => +Post,
+                               (1 =>
+                                  (if Is_Borrowing_Traversal_Function (E)
+                                   then New_Typed_Binding
+                                     (Domain  => EW_Pred,
+                                      Name    => Result_Pledge_Id (E),
+                                      Def     => New_Pledge_For_Call
+                                        (E    => E,
+                                         Args => Compute_Args
+                                           (E, Logic_Why_Binders)),
+                                      Context => +Post)
+                                   else +Post),
                                 2 => +Dynamic_Prop_Result,
                                 3 => +Tag_Comp),
                              Domain    => EW_Pred);
@@ -5146,7 +5173,16 @@ package body Gnat2Why.Subprograms is
                Param_Post : W_Pred_Id :=
                  +New_And_Expr
                  (Left   => +Dynamic_Prop_Result,
-                  Right  => +Post,
+                  Right  =>
+                    (if Is_Borrowing_Traversal_Function (E)
+                     then New_Typed_Binding
+                       (Domain  => EW_Pred,
+                        Name    => Result_Pledge_Id (E),
+                        Def     => New_Pledge_For_Call
+                          (E    => E,
+                           Args => Logic_Func_Args),
+                        Context => +Post)
+                     else +Post),
                   Domain => EW_Pred);
                Tag_Arg    : constant W_Expr_Array :=
                  (if Dispatch then (1 => +Tag_Binder.B_Name)
@@ -5878,9 +5914,7 @@ package body Gnat2Why.Subprograms is
             --  We don't need anything specific for dispatching functions as
             --  tagged types cannot be deep.
 
-            if Is_Traversal_Function (E)
-              and then not Is_Access_Constant (Etype (E))
-            then
+            if Is_Borrowing_Traversal_Function (E) then
                Declare_Pledge_Function (File, E, Logic_Why_Binders);
             end if;
          end;

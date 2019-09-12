@@ -1,0 +1,31 @@
+traversal_funcs.adb:11:22: warning: unused variable "X"
+traversal_funcs.adb:15:13: info: implicit function contract might not be available on recursive calls
+traversal_funcs.adb:15:13: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
+traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:17:57: info: overflow check proved (CVC4: 1 VC)
+traversal_funcs.adb:17:57: info: range check proved (CVC4: 1 VC)
+traversal_funcs.adb:21:19: warning: "X" is not modified, could be IN
+traversal_funcs.adb:24:18: info: contract case proved (CVC4: 2 VC; Trivial: 2 VC)
+traversal_funcs.adb:25:18: info: contract case proved (CVC4: 2 VC; Trivial: 3 VC)
+traversal_funcs.adb:26:118: info: overflow check proved (CVC4: 1 VC)
+traversal_funcs.adb:30:18: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:36:21: warning: "X" is not modified, could be IN
+traversal_funcs.adb:38:14: info: postcondition proved (CVC4: 2 VC; Trivial: 3 VC)
+traversal_funcs.adb:39:130: info: overflow check proved (CVC4: 1 VC)
+traversal_funcs.adb:42:10: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:43:17: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:43:25: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:52:14: info: postcondition proved (CVC4: 1 VC)
+traversal_funcs.adb:55:26: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:55:34: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:57:10: info: assertion proved (CVC4: 2 VC; Trivial: 3 VC)
+traversal_funcs.adb:58:89: info: overflow check proved (CVC4: 1 VC)
+traversal_funcs.adb:61:11: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:68:14: info: postcondition proved (CVC4: 1 VC)
+traversal_funcs.adb:70:26: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:70:33: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:73:11: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:79:14: info: postcondition proved (CVC4: 1 VC)
+traversal_funcs.adb:81:26: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:81:32: info: precondition proved (CVC4: 1 VC)
+traversal_funcs.adb:84:11: info: pointer dereference check proved (CVC4: 1 VC)

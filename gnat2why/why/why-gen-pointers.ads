@@ -23,14 +23,15 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Gnat2Why.Util;        use Gnat2Why.Util;
-with SPARK_Atree;          use SPARK_Atree;
-with SPARK_Atree.Entities; use SPARK_Atree.Entities;
-with SPARK_Util.Types;     use SPARK_Util.Types;
-with Types;                use Types;
-with Why.Gen.Binders;      use Why.Gen.Binders;
-with Why.Ids;              use Why.Ids;
-with Why.Sinfo;            use Why.Sinfo;
+with Gnat2Why.Util;          use Gnat2Why.Util;
+with SPARK_Atree;            use SPARK_Atree;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
+with SPARK_Util.Types;       use SPARK_Util.Types;
+with Types;                  use Types;
+with Why.Gen.Binders;        use Why.Gen.Binders;
+with Why.Ids;                use Why.Ids;
+with Why.Sinfo;              use Why.Sinfo;
 
 package Why.Gen.Pointers is
    --  This package encapsulates the encoding of access types into Why.
@@ -163,7 +164,8 @@ package Why.Gen.Pointers is
    --  Get the borrowed entity
 
    function Get_Borrowed_Expr (E : Entity_Id) return Node_Id
-   with Post => Nkind (Get_Borrowed_Expr'Result) in N_Subexpr;
+   with Pre  => Ekind (E) /= E_Function,
+        Post => Nkind (Get_Borrowed_Expr'Result) in N_Subexpr;
    --  Get the initial borrowed expression
 
    function Get_Borrowed_Typ (E : Entity_Id) return Entity_Id
@@ -173,13 +175,20 @@ package Why.Gen.Pointers is
    function Get_Pledge_Id (E : Entity_Id) return W_Identifier_Id;
    --  Get the identifier of the pledge reference
 
+   function New_Pledge_For_Call
+     (E    : Entity_Id;
+      Args : W_Expr_Array) return W_Expr_Id;
+   --  Construct the pledge of a call to a traversal function E with
+   --  parameters Args.
+
    function New_Pledge_Call
      (E            : Entity_Id;
       Borrowed_Arg : W_Expr_Id;
-      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
+      Brower_Arg   : W_Expr_Id;
+      Ref_Allowed  : Boolean) return W_Expr_Id;
    --  Construct a call to the pledge of a borrower E
 
-   function New_Pledge_Fun_Call
+   function New_Pledge_Call
      (E            : Entity_Id;
       Args         : W_Expr_Array;
       Borrowed_Arg : W_Expr_Id;
@@ -193,5 +202,10 @@ package Why.Gen.Pointers is
       Brower_Id   : W_Identifier_Id;
       Def         : W_Term_Id) return W_Prog_Id;
    --  Construct an update of the pledge of E
+
+   function Result_Pledge_Id (E : Entity_Id) return W_Identifier_Id with
+     Pre => Is_Borrowing_Traversal_Function (E);
+   --  E is a traversal function, create an identifier for references to the
+   --  pledge of E in its postcondition.
 
 end Why.Gen.Pointers;

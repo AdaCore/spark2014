@@ -3278,17 +3278,54 @@ package body SPARK_Definition is
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
-      elsif Has_Pledge_Annotation (E)
-        and then
-          (Nkind (First_Actual (N)) not in N_Expanded_Name | N_Identifier
-           or else not Is_Local_Borrower (Entity (First_Actual (N))))
-      then
-         --  We may want to support other parameters later when traversal
-         --  functions are supported.
+      end if;
 
-         Mark_Unsupported
-           ("first actual of a pledge function which is not a local borrower",
-            N);
+      --  Check special rules for calls to pledge functions. The first
+      --  parameter should be a local borrower of the result of a traversal
+      --  function.
+
+      if Has_Pledge_Annotation (E) then
+         declare
+            Fst_Act   : constant Node_Id := First_Actual (N);
+            Violation : Boolean := False;
+            Err_Msg   : Unbounded_String :=
+              To_Unbounded_String
+                ("first actual of a pledge function which is not a local"
+                 & " borrower");
+         begin
+            case Nkind (Fst_Act) is
+               when N_Expanded_Name | N_Identifier =>
+                  Violation := not Is_Local_Borrower (Entity (Fst_Act));
+               when N_Attribute_Reference =>
+                  declare
+                     Aname   : constant Name_Id := Attribute_Name (Fst_Act);
+                     Attr_Id : constant Attribute_Id :=
+                       Get_Attribute_Id (Aname);
+                     Var     : constant Node_Id := Prefix (Fst_Act);
+                  begin
+                     if Attr_Id /= Attribute_Result then
+                        Violation := True;
+                     elsif not Is_Traversal_Function (Entity (Var)) then
+                        Violation := True;
+                        Err_Msg := To_Unbounded_String
+                          ("first actual of a pledge function which is not the"
+                           & " result of a traversal function");
+                     elsif Is_Access_Constant (Etype (Entity (Var))) then
+                        Violation := True;
+                        Err_Msg := To_Unbounded_String
+                          ("first actual of a pledge function which is the"
+                           & " result of a traversal function returning an "
+                           & "access to constant type");
+                     end if;
+                  end;
+               when others =>
+                  Violation := True;
+            end case;
+
+            if Violation then
+               Mark_Violation (To_String (Err_Msg), N);
+            end if;
+         end;
       end if;
    end Mark_Call;
 

@@ -73,6 +73,14 @@ package body Why.Gen.Pointers is
    --  borrower types. Also insert the relevant informations in the
    --  Borrow_Infos map.
 
+   function New_Pledge_Call
+     (E            : Entity_Id;
+      Pledge_Expr  : W_Expr_Id;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
+   --  Call get for pledge of E on the pledge object Pledge_Expr and the two
+   --  parameters Borrowed_Arg and Brower_Arg.
+
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
       Element_Type    => Node_Id,
@@ -1248,49 +1256,74 @@ package body Why.Gen.Pointers is
 
    function New_Pledge_Call
      (E            : Entity_Id;
+      Pledge_Expr  : W_Expr_Id;
       Borrowed_Arg : W_Expr_Id;
       Brower_Arg   : W_Expr_Id) return W_Expr_Id
    is
-      Pledge_Id    : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Id;
       Pledge_Get   : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Get;
-      Pledge_Deref : constant W_Expr_Id :=
-        New_Deref (Right => Pledge_Id, Typ => Get_Typ (Pledge_Id));
    begin
       return New_Call
         (Domain => EW_Term,
          Name   => Pledge_Get,
-         Args   => (Pledge_Deref, Borrowed_Arg, Brower_Arg),
-         Typ    => Get_Typ (Pledge_Id));
+         Args   => (Pledge_Expr, Borrowed_Arg, Brower_Arg),
+         Typ    => EW_Bool_Type);
    end New_Pledge_Call;
 
-   -------------------------
-   -- New_Pledge_Fun_Call --
-   -------------------------
+   function New_Pledge_Call
+     (E            : Entity_Id;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id;
+      Ref_Allowed  : Boolean) return W_Expr_Id
+   is
+      Pledge_Id    : constant W_Identifier_Id :=
+        (if Ekind (E) = E_Function then Result_Pledge_Id (E)
+         else Borrow_Infos (E).Pledge_Id);
+      Pledge_Deref : constant W_Expr_Id :=
+        (if Ref_Allowed
+         then New_Deref (Right => Pledge_Id, Typ => Get_Typ (Pledge_Id))
+         else +Pledge_Id);
+   begin
+      return New_Pledge_Call
+        (E            => E,
+         Pledge_Expr  => Pledge_Deref,
+         Borrowed_Arg => Borrowed_Arg,
+         Brower_Arg   => Brower_Arg);
+   end New_Pledge_Call;
 
-   function New_Pledge_Fun_Call
+   function New_Pledge_Call
      (E            : Entity_Id;
       Args         : W_Expr_Array;
       Borrowed_Arg : W_Expr_Id;
       Brower_Arg   : W_Expr_Id) return W_Expr_Id
    is
+      Pledge_Call : constant W_Expr_Id :=
+        New_Pledge_For_Call (E, Args);
+   begin
+      return New_Pledge_Call
+        (E            => E,
+         Pledge_Expr  => Pledge_Call,
+         Borrowed_Arg => Borrowed_Arg,
+         Brower_Arg   => Brower_Arg);
+   end New_Pledge_Call;
+
+   -------------------------
+   -- New_Pledge_For_Call --
+   -------------------------
+
+   function New_Pledge_For_Call
+     (E    : Entity_Id;
+      Args : W_Expr_Array) return W_Expr_Id
+   is
       Pledge_Id   : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Id;
-      Pledge_Get  : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Get;
-      Pledge_Call : constant W_Expr_Id :=
-        New_Call (Domain => EW_Term,
-                  Name   => Pledge_Id,
-                  Args   => Args,
-                  Typ    => Get_Typ (Pledge_Id));
    begin
       return New_Call
         (Domain => EW_Term,
-         Name   => Pledge_Get,
-         Args   => (Pledge_Call, Borrowed_Arg, Brower_Arg),
+         Name   => Pledge_Id,
+         Args   => Args,
          Typ    => Get_Typ (Pledge_Id));
-   end New_Pledge_Fun_Call;
+   end New_Pledge_For_Call;
 
    -----------------------
    -- New_Pledge_Update --
@@ -1303,7 +1336,9 @@ package body Why.Gen.Pointers is
       Def         : W_Term_Id) return W_Prog_Id
    is
       Pledge_Id  : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Id;
+        (if Ekind (E) = E_Function
+         then Result_Pledge_Id (E)
+         else Borrow_Infos (E).Pledge_Id);
       Pledge_Get : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Get;
       Res        : constant W_Identifier_Id :=
@@ -1575,6 +1610,19 @@ package body Why.Gen.Pointers is
          return Empty;
       end if;
    end Repr_Pointer_Type;
+
+   ----------------------
+   -- Result_Pledge_Id --
+   ----------------------
+
+   function Result_Pledge_Id (E : Entity_Id) return W_Identifier_Id is
+      Pledge_Ty : constant W_Type_Id :=
+        Get_Typ (Get_Pledge_Id (E));
+   begin
+      return New_Identifier
+        (Name  => "__result_pledge",
+         Typ   => Pledge_Ty);
+   end Result_Pledge_Id;
 
    -----------------------
    -- Root_Pointer_Type --
