@@ -1,0 +1,6 @@
+wrong_warning.adb:11:61: warning: unused initial value of "V"
+wrong_warning.adb:15:14: info: pointer dereference check proved (CVC4: 1 VC)
+wrong_warning.adb:16:14: info: pointer dereference check proved (CVC4: 1 VC)
+wrong_warning.adb:16:21: info: pointer dereference check proved (CVC4: 1 VC)
+wrong_warning.adb:16:25: warning: unused assignment
+wrong_warning.adb:19:16: info: pointer dereference check proved (CVC4: 1 VC)
