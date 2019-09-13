@@ -5447,6 +5447,30 @@ package body Gnat2Why.Expr is
                 Context => +Havoc_Expr));
    end Havoc_Borrowed_Expression;
 
+   -------------------------------
+   -- Havoc_Borrowed_From_Block --
+   -------------------------------
+
+   function Havoc_Borrowed_From_Block
+     (N : Node_Id) return W_Statement_Sequence_Id
+   is
+   begin
+      return Result  : W_Statement_Sequence_Id := Void_Sequence do
+         if Present (Declarations (N)) then
+            declare
+               Borrows : Node_Lists.List;
+            begin
+               Get_Borrows_From_Decls (Declarations (N), Borrows);
+               for E of Borrows loop
+                  Sequence_Append
+                    (Result,
+                     Havoc_Borrowed_Expression (E));
+               end loop;
+            end;
+         end if;
+      end return;
+   end Havoc_Borrowed_From_Block;
+
    ----------------------------
    -- Insert_Invariant_Check --
    ----------------------------
@@ -11813,18 +11837,7 @@ package body Gnat2Why.Expr is
 
          --  Havoc all entities borrowed in the block
 
-         declare
-            Borrows : Node_Lists.List;
-            Result  : W_Statement_Sequence_Id := Void_Sequence;
-         begin
-            Get_Borrows_From_Decls (Declarations (N), Borrows);
-            for E of Borrows loop
-               Sequence_Append
-                 (Result,
-                  Havoc_Borrowed_Expression (E));
-            end loop;
-            Core := Sequence (Core, +Result);
-         end;
+         Core := Sequence (Core, +Havoc_Borrowed_From_Block (N));
 
          return Transform_Declarations_Block (Declarations (N), Core);
       else
@@ -18152,6 +18165,36 @@ package body Gnat2Why.Expr is
       Assert_And_Cut      : out W_Pred_Id)
       return W_Prog_Id
    is
+
+      function Havoc_Borrowed_On_Return return W_Prog_Id;
+      --  Havoc the local borrowers declared in blocks traversed by a return
+      --  statement.
+
+      ------------------------------
+      -- Havoc_Borrowed_On_Return --
+      ------------------------------
+
+      function Havoc_Borrowed_On_Return return W_Prog_Id is
+         function Is_Body_Or_Block (N : Node_Id) return Boolean is
+           (Nkind (N) in N_Block_Statement
+                       | N_Entity_Body);
+
+         function Enclosing_Block_Stmt is new
+           First_Parent_With_Property (Is_Body_Or_Block);
+
+         Scop : Node_Id := Stmt_Or_Decl;
+         Res  : W_Prog_Id := +Void;
+      begin
+         loop
+            Scop := Enclosing_Block_Stmt (Scop);
+            exit when Nkind (Scop) /= N_Block_Statement;
+            Res := Sequence (Res, +Havoc_Borrowed_From_Block (Scop));
+         end loop;
+         return Res;
+      end Havoc_Borrowed_On_Return;
+
+   --  Start of processing for Transform_Statement_Or_Declaration
+
    begin
       --  Make sure that outputs are initialized
 
@@ -18176,13 +18219,20 @@ package body Gnat2Why.Expr is
 
          when N_Simple_Return_Statement =>
             declare
-               Raise_Stmt  : constant W_Prog_Id :=
+               Raise_Stmt  : W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
                     Name     => M_Main.Return_Exc,
                     Typ      => EW_Unit_Type);
                Result_Stmt : W_Prog_Id;
+
             begin
+               --  Havoc objects borrowed in scopes traversed by the return
+               --  statement.
+
+               Raise_Stmt :=
+                 Sequence (Havoc_Borrowed_On_Return, Raise_Stmt);
+
                if Expression (Stmt_Or_Decl) /= Empty then
                   declare
                      Subp        : constant Entity_Id := Return_Applies_To
@@ -18262,7 +18312,7 @@ package body Gnat2Why.Expr is
 
          when N_Extended_Return_Statement =>
             declare
-               Raise_Stmt : constant W_Prog_Id :=
+               Raise_Stmt : W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
                     Name     => M_Main.Return_Exc);
@@ -18282,7 +18332,14 @@ package body Gnat2Why.Expr is
                        Ent    => Ret_Obj,
                        Domain => EW_Prog),
                     To     => Ret_Type);
+
             begin
+               --  Havoc objects borrowed in scopes traversed by the return
+               --  statement.
+
+               Raise_Stmt :=
+                 Sequence (Havoc_Borrowed_On_Return, Raise_Stmt);
+
                if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
                   Expr :=
                     Sequence

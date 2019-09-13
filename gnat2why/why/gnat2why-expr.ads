@@ -305,6 +305,10 @@ package Gnat2Why.Expr is
    --  expression) holds. We also check here that we have not broken any
    --  constraints on the borrowed object during the borrow.
 
+   function Havoc_Borrowed_From_Block
+     (N : Node_Id) return W_Statement_Sequence_Id;
+   --  Havoc all entities borrowed in the block
+
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;

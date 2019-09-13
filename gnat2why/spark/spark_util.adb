@@ -1903,12 +1903,8 @@ package body SPARK_Util is
          end if;
          return False;
       end Has_True_Condition;
-
-      subtype Subprogram_Boundary is Node_Kind
-        with Static_Predicate => Subprogram_Boundary in
-          N_Subprogram_Body | N_Protected_Body | N_Entry_Body | N_Package_Body;
    begin
-      while Nkind (Anc) not in Subprogram_Boundary and then Present (Anc) loop
+      while Nkind (Anc) not in N_Entity_Body and then Present (Anc) loop
          if Nkind (Anc) = N_If_Statement
            and then Comes_From_Dead_Branch (Anc, Prev)
          then

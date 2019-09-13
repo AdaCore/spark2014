@@ -337,15 +337,46 @@ package body Gnat2Why.Expr.Loops is
    -- Transform_Exit_Statement --
    ------------------------------
 
-   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id
-   is
+   function Transform_Exit_Statement (Stmt : Node_Id) return W_Prog_Id is
+
+      function Havoc_Borrowed_On_Exit return W_Prog_Id;
+      --  Havoc the local borrowers declared in blocks traversed by the exit
+      --  statement.
+
+      ----------------------------
+      -- Havoc_Borrowed_On_Exit --
+      ----------------------------
+
+      function Havoc_Borrowed_On_Exit return W_Prog_Id is
+         Loop_Id : constant Entity_Id := Loop_Entity_Of_Exit_Statement (Stmt);
+
+         function Is_Loop_Or_Block (N : Node_Id) return Boolean is
+           (Nkind (N) = N_Block_Statement
+            or else (Nkind (N) = N_Loop_Statement
+                     and then Entity (Identifier (N)) = Loop_Id));
+
+         function Enclosing_Block_Stmt is new
+           First_Parent_With_Property (Is_Loop_Or_Block);
+
+         Scop : Node_Id := Stmt;
+         Res  : W_Prog_Id := +Void;
+      begin
+         loop
+            Scop := Enclosing_Block_Stmt (Scop);
+            exit when Nkind (Scop) = N_Loop_Statement;
+            Res := Sequence (Res, +Havoc_Borrowed_From_Block (Scop));
+         end loop;
+         return Res;
+      end Havoc_Borrowed_On_Exit;
+
       Exc_Name   : constant W_Name_Id :=
         Loop_Exception_Name (Loop_Entity_Of_Exit_Statement (Stmt));
-      Raise_Stmt : constant W_Prog_Id :=
-                     New_Raise
-                       (Ada_Node => Stmt,
-                        Name => Exc_Name);
+      Raise_Stmt : W_Prog_Id := New_Raise
+        (Ada_Node => Stmt,
+         Name => Exc_Name);
    begin
+      Raise_Stmt := Sequence (Havoc_Borrowed_On_Exit, Raise_Stmt);
+
       if No (Condition (Stmt)) then
          return Raise_Stmt;
       else

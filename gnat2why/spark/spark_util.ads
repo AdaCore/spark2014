@@ -78,6 +78,10 @@ package SPARK_Util is
          | N_Validate_Unchecked_Conversion
          | N_Variable_Reference_Marker;
 
+   subtype N_Entity_Body is Node_Kind
+     with Static_Predicate => N_Entity_Body in
+       Sinfo.N_Proper_Body | Sinfo.N_Entry_Body;
+
    type Execution_Kind_T is
      (Normal_Execution,      --  regular subprogram
       Barrier,               --  conditional execution
