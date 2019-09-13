@@ -1,0 +1,2 @@
+test_img.ads:2:45: info: range check proved (CVC4: 4 VC)
+test_img.ads:2:63: info: overflow check proved (CVC4: 1 VC)

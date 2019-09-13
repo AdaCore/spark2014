@@ -1713,13 +1713,15 @@ package body Gnat2Why.Borrow_Checker is
                   or else
                   Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
                   or else
-                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Image);
+                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Image
+                  or else
+                  Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Img);
 
                Read_Expression (Prefix (Expr));
 
                if Get_Attribute_Id (Attribute_Name (Expr)) = Attribute_Update
-                 or else (Get_Attribute_Id (Attribute_Name (Expr)) =
-                            Attribute_Image
+                 or else (Get_Attribute_Id (Attribute_Name (Expr)) in
+                            Attribute_Image | Attribute_Img
                           and then Is_Type_Name (Prefix (Expr)))
                then
                   Read_Expression_List (Expressions (Expr));

@@ -1384,7 +1384,9 @@ package body SPARK_Util is
                Get_Attribute_Id (Attribute_Name (Expr)) =
                  Attribute_Update
                or else Get_Attribute_Id (Attribute_Name (Expr)) =
-                 Attribute_Image);
+                 Attribute_Image
+               or else Get_Attribute_Id (Attribute_Name (Expr)) =
+                 Attribute_Img);
             return Empty;
 
          when others =>
@@ -2192,7 +2194,10 @@ package body SPARK_Util is
                        Attribute_Loop_Entry
                      or else
                      Get_Attribute_Id (Attribute_Name (Expr)) =
-                       Attribute_Image))
+                       Attribute_Image
+                     or else
+                     Get_Attribute_Id (Attribute_Name (Expr)) =
+                       Attribute_Img))
 
         or else Nkind (Expr) = N_Op_Concat;
    end Is_Subpath_Expression;
