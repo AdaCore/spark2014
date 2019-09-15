@@ -2903,8 +2903,8 @@ package body Flow_Utility is
          return Flow_Id_Sets.Set
       is
          function Is_Ignored_Attribute (N : Node_Id) return Boolean;
-         --  Returns Truee if N denotes an attribute 'Old or 'Loop_Entry,
-         --  which are ignored when detecting references to variables.
+         --  Returns True if N denotes an attribute 'Old or 'Loop_Entry, which
+         --  are ignored when detecting references to variables.
 
          function Is_Ignored_Attribute (N : Node_Id) return Boolean
          is (Nkind (N) = N_Attribute_Reference
@@ -3115,19 +3115,19 @@ package body Flow_Utility is
          --  take) and update the map or eliminate entries from it.
          --
          --  = Update =
-         --  For example, if we get an update 'update (y => z) then we change
+         --  For example, if we get an update 'Update (y => z) then we change
          --  the map accordingly:
          --
          --     r.x -> r.x
          --     r.y -> z
          --
-         --  = Access =
+         --  = Selection =
          --  Otherwise, we trim down the map. For example .y will throw away
          --  any entries in the map that are not related:
          --
          --     r.y -> z
          --
-         --  Once we have processed all instructions, then the set of relevant
+         --  Once we have processed all actions, then the set of relevant
          --  variables remains in all elements of the map. In this example,
          --  just `z'.
 
