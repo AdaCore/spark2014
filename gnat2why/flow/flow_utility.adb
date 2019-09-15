@@ -2406,6 +2406,8 @@ package body Flow_Utility is
                            Source => Depends (Null_Flow_Id));
                      end if;
                end case;
+
+               Remove_Constants (Used_Reads);
             end;
          end if;
 
@@ -2492,6 +2494,9 @@ package body Flow_Utility is
                         Flow_Classwide.Is_Dispatching_Call (Callsite),
                       Globals             => Globals,
                       Use_Deduced_Globals => Ctx.Use_Computed_Globals);
+
+         Remove_Constants (Globals.Proof_Ins);
+         Remove_Constants (Globals.Inputs);
 
          --  Handle globals; very much like in Handle_Parameter
 
@@ -2609,7 +2614,11 @@ package body Flow_Utility is
                   --  concurrent type we want to detect their discriminant
                   --  constraints so we add them as well.
 
-                  return Merge_Entity (E) or Discriminant_Constraints (E);
+                  if Has_Variable_Input (E) then
+                     return Merge_Entity (E) or Discriminant_Constraints (E);
+                  else
+                     return Flow_Id_Sets.Empty_Set;
+                  end if;
                end if;
 
             when E_Component
@@ -3134,11 +3143,20 @@ package body Flow_Utility is
             end return;
          end if;
 
-         --  Ok, so the root is an entire variable, we can untangle this
-         --  further.
+         --  Ok, so the root is an entire object, so we can untangle it further
 
          pragma Assert (Nkind (Root_Node) in N_Identifier | N_Expanded_Name);
          pragma Assert (not Must_Abort);
+
+         --  If the root is a constant without variable inputs and we are
+         --  looking for genuine inputs, then we will find none.
+
+         if Fold_Functions = Inputs
+           and then Ekind (Entity (Root_Node)) = E_Constant
+           and then not Has_Variable_Input (Entity (Root_Node))
+         then
+            return Flow_Id_Sets.Empty_Set;
+         end if;
 
          --  We set up an identity map of all fields of the original record.
          --  For example a record with two fields would produce this kind of
@@ -3716,8 +3734,13 @@ package body Flow_Utility is
    begin
       Traverse (N);
 
-      --  And finally, we remove all local constants
-      Remove_Constants (Variables);
+      --  Sanity check: no constants without variable inputs should come from
+      --  the traversal.
+      pragma Assert
+        (for all V of Variables =>
+           (if V.Kind in Direct_Mapping | Record_Field
+              and then Ekind (V.Node) = E_Constant
+            then Has_Variable_Input (V.Node)));
 
       Map_Generic_In_Formals (Ctx.Scope, Variables, Entire => False);
 
