@@ -1501,8 +1501,7 @@ package body Gnat2Why.Expr is
             --  No need to assume anything if Obj is not an object, if it is
             --  not in SPARK or if it is a local object of the unit.
 
-            elsif not (Nkind (Obj) in N_Entity)
-              or else not (Is_Object (Obj) or else Is_Named_Number (Obj))
+            elsif not (Is_Object (Obj) or else Is_Named_Number (Obj))
               or else not Ada_Ent_To_Why.Has_Element (Symbol_Table, Obj)
               or else (Present (Scope)
                        and then Is_Declared_In_Unit (Obj, Scope))
@@ -1520,8 +1519,8 @@ package body Gnat2Why.Expr is
                   Params        => Params,
                   Initialized   =>
                     (if Is_Object (Obj)
-                     and then Is_Mutable_In_Why (Obj)
-                     and then not Initialized
+                       and then Is_Mutable_In_Why (Obj)
+                       and then not Initialized
                      then Is_Initialized_In_Scope (Obj, Scope)
                      else True),
                   Top_Predicate => Top_Predicate,
@@ -19095,9 +19094,9 @@ package body Gnat2Why.Expr is
         (Ty          : Entity_Id;
          Variables   : in out Flow_Id_Sets.Set;
          Incompl_Acc : in out Entity_Sets.Set);
-      --  Auxiliary function with an additional parameter storing access types
-      --  to incomplete types already encountered (to avoid looping on
-      --  recursive data-structures.
+      --  Auxiliary function with an additional parameter storing access
+      --  types to incomplete types already encountered (to avoid looping
+      --  on recursive data-structures).
 
       ------------------------------------
       -- Variables_In_Dynamic_Invariant --
@@ -19113,8 +19112,8 @@ package body Gnat2Why.Expr is
             then Get_Specific_Type_From_Classwide (Ty)
             else Ty);
          Ty_Ext  : constant Entity_Id := Retysp (Spec_Ty);
-      begin
 
+      begin
          --  Dynamic property of the type itself
 
          if Type_Is_Modeled_As_Base (Ty_Ext) then
@@ -19164,7 +19163,7 @@ package body Gnat2Why.Expr is
                begin
                   while Present (Index) loop
                      declare
-                        Rng       : constant Node_Id := Get_Range (Index);
+                        Rng : constant Node_Id := Get_Range (Index);
                      begin
                         Variables.Union
                           (Get_Variables_For_Proof (Low_Bound (Rng), Ty_Ext));
@@ -19261,7 +19260,12 @@ package body Gnat2Why.Expr is
          end;
       end Variables_In_Dynamic_Invariant;
 
+      --  Local variables
+
       Incompl_Acc : Entity_Sets.Set;
+
+   --  Start of processing for Variables_In_Dynamic_Invariant
+
    begin
       Variables_In_Dynamic_Invariant (Ty, Variables, Incompl_Acc);
    end Variables_In_Dynamic_Invariant;
