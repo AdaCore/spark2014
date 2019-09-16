@@ -1,34 +1,31 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="6">
+<why3session shape_version="8">
 <prover id="0" name="altergo" version="1.30-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="1" name="Z3" version="4.5.1-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="2" name="CVC4" version="1.6-gnatprove" timelimit="20" steplimit="0" memlimit="1000"/>
 <prover id="3" name="CVC4_CE" version="1.6-gnatprove" timelimit="10" steplimit="0" memlimit="1000"/>
 <file>
-<path name=".."/>
-<path name=".."/>
-<path name=".."/>
-<path name="gnatprove"/>
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="audittypes__elementt_image.mlw"/>
 <theory name="Audittypes__elementt_image__subprogram_def">
- <goal name="VC def" expl="VC for def">
+ <goal name="def&#39;VC" expl="VC for def">
  <transf name="split_goal_wp_conj" >
-  <goal name="VC def.0" expl="postcondition" proved="true">
+  <goal name="def&#39;VC.0" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.1" expl="assertion" proved="true">
+  <goal name="def&#39;VC.1" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="96"/></proof>
   </goal>
-  <goal name="VC def.2" expl="assertion">
+  <goal name="def&#39;VC.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
   <proof prover="1"><result status="unknown" steps="14816"/></proof>
   <proof prover="2"><result status="unknown" steps="150"/></proof>
   <proof prover="3"><result status="unknown" steps="186"/></proof>
   </goal>
-  <goal name="VC def.3" expl="postcondition" proved="true">
+  <goal name="def&#39;VC.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
