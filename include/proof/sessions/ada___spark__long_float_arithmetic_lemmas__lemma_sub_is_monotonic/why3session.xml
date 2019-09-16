@@ -29,7 +29,7 @@
   <goal name="def&#39;VC.4" expl="postcondition" proved="true">
   <proof prover="0" timelimit="5"><result status="timeout"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
-  <proof prover="2"><result status="valid" steps="1913"/></proof>
+  <proof prover="2"><result status="valid" steps="1933"/></proof>
   </goal>
  </transf>
  </goal>
