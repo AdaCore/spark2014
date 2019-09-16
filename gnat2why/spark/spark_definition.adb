@@ -1665,6 +1665,9 @@ package body SPARK_Definition is
                then
                   Mark_Violation ("assignment to a complex expression", Var);
 
+               elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
+                  Mark_Violation ("assignment into a constant object", Var);
+
                --  SPARK RM 3.10(7): If the type of the target is an anonymous
                --  access-to-variable type (an owning access type), the source
                --  shall be an owning access object [..] whose root object is

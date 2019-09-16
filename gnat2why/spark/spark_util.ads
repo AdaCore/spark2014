@@ -355,6 +355,11 @@ package SPARK_Util is
    --  @param E entity of a variable
    --  @return True iff a Constant_After_Elaboration applies to E
 
+   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Is_Object (E);
+   --  Return True if E is a constant in SPARK (ie. a constant which is not
+   --  of access-to-variable type).
+
    function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a

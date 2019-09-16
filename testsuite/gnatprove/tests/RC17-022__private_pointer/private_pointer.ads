@@ -9,9 +9,9 @@ package Private_Pointer with SPARK_Mode is
         Post => not Is_Null (Uninit_Alloc'Result);
       function Init_Alloc (X : Integer) return T with Volatile_Function,
         Post => not Is_Null (Init_Alloc'Result) and Get (Init_Alloc'Result) = X;
-      procedure Set (X : T; Y : Integer) with
+      procedure Set (X : in out T; Y : Integer) with
         Pre => not Is_Null (X),
-        Post => Get (X) = Y;
+        Post => not Is_Null (X) and Get (X) = Y;
    private
       type My_Int is new Integer with Default_Value => 0;
       type T is access My_Int;

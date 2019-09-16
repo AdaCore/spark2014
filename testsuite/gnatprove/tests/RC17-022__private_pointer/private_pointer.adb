@@ -1,6 +1,6 @@
 package body Private_Pointer with SPARK_Mode is
    package body Mode_On is
-      procedure Set (X : T; Y : Integer) is
+      procedure Set (X : in out T; Y : Integer) is
       begin
          X.all := My_Int (Y);
       end Set;

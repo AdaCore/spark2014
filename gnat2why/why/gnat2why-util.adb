@@ -1016,29 +1016,12 @@ package body Gnat2Why.Util is
       --  access to its designated object
 
       elsif Is_Constant_Object (E) then
-         declare
-            E_Typ : constant Entity_Id := Retysp (Etype (E));
-         begin
-            if Ekind (E) = E_In_Parameter then
-               if Is_Access_Type (E_Typ)
-                 and then not Is_Access_Constant (E_Typ)
-                 and then Ekind (Enclosing_Unit (E)) /= E_Function
-               then
-                  return True;
-               else
-                  return False;
-               end if;
-
-            elsif Is_Access_Type (E_Typ)
-              and then not Is_Access_Constant (E_Typ)
-            then
-               return True;
-
-            else
-               return False;
-            end if;
-         end;
-
+         if Ekind (E) = E_In_Parameter then
+            return not Is_Constant_In_SPARK (E)
+              and then Ekind (Enclosing_Unit (E)) /= E_Function;
+         else
+            return not Is_Constant_In_SPARK (E);
+         end if;
       else
          return True;
       end if;

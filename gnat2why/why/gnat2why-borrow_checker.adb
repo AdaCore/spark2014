@@ -3732,8 +3732,7 @@ package body Gnat2Why.Borrow_Checker is
    begin
       case Ekind (E) is
          when E_Constant | E_In_Parameter =>
-            return not Is_Access_Type (Ty)
-              or else Is_Access_Constant (Ty);
+            return Is_Constant_In_SPARK (E);
          when E_Variable =>
             return Is_Access_Type (Ty)
               and then Is_Access_Constant (Ty);

@@ -1553,6 +1553,18 @@ package body SPARK_Util is
       end if;
    end Is_Constant_After_Elaboration;
 
+   --------------------------
+   -- Is_Constant_In_SPARK --
+   --------------------------
+
+   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Etype (E);
+   begin
+      return Ekind (E) in E_Constant | E_In_Parameter
+            and then (not Is_Access_Type (Ty)
+              or else Is_Access_Constant (Ty));
+   end Is_Constant_In_SPARK;
+
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --
    ------------------------------------------
