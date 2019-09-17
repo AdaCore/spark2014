@@ -1676,6 +1676,9 @@ package body SPARK_Definition is
                --  ??? We are currently using the same restriction for
                --  observers as for borrowers. To be seen if the SPARK RM
                --  current rule really allows more uses.
+               --  Note that for borrowers which are handled as observers
+               --  (those rooted at the first parameter of borrowing traversal
+               --  functions), we should keep the rules of borrowers.
 
                elsif Is_Anonymous_Access_Type (Etype (Var)) then
 

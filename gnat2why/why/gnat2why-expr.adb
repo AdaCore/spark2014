@@ -738,13 +738,12 @@ package body Gnat2Why.Expr is
    --  Compute constraints preserved throughout the life of a borrower
 
    function New_Pledge_Update_From_Assignment
-     (Brower       : Entity_Id;
-      Path         : Node_Id;
-      In_Traversal : Boolean := False) return W_Prog_Id;
+     (Brower : Entity_Id;
+      Path   : Node_Id) return W_Prog_Id;
    --  Create an assignment updating the pledge of a borrower from an update
    --  Path. Brower is either the local borrower in the case of a borrow or
    --  a reborrow, or the subprogram entity when returning from a traversal
-   --  function (when In_Traversal is true).
+   --  function.
 
    function Transform_Pledge_Call
      (Brower : Entity_Id;
@@ -7645,9 +7644,8 @@ package body Gnat2Why.Expr is
    ---------------------------------------
 
    function New_Pledge_Update_From_Assignment
-     (Brower       : Entity_Id;
-      Path         : Node_Id;
-      In_Traversal : Boolean := False) return W_Prog_Id
+     (Brower : Entity_Id;
+      Path   : Node_Id) return W_Prog_Id
    is
 
       function Create_Pledge_Call_For_Prefix
@@ -7673,9 +7671,22 @@ package body Gnat2Why.Expr is
       --  If In_Traversal is True, then the whole borrowed entity is considered
       --  to be frozen by the borrow, and not only the borrowed expression.
 
-      ----------------------------------
+      procedure Wrap_Pledge_Call
+        (W_Id : W_Identifier_Id;
+         Expr : W_Expr_Id;
+         Ty   : Entity_Id;
+         Def  : in out W_Expr_Id);
+      --  Introduce an existential quantification to link W_Id in Def.
+      --  Expr is the expression for W_Id at the time of borrow and Ty is its
+      --  Ada type. They will be used to assume the value of the is_null
+      --  field of the existentially quantified variable.
+      --  We generate:
+      --
+      --    exists w_id. w_id.is_null = expr.is_null /\ def
+
+      -----------------------------------
       -- Create_Pledge_Call_For_Prefix --
-      ----------------------------------
+      -----------------------------------
 
       function Create_Pledge_Call_For_Prefix
         (Borrowed_Id  : out W_Identifier_Id;
@@ -7839,6 +7850,37 @@ package body Gnat2Why.Expr is
          end if;
       end Create_Pledge_Call_For_Prefix;
 
+      ----------------------
+      -- Wrap_Pledge_Call --
+      ----------------------
+
+      procedure Wrap_Pledge_Call
+        (W_Id : W_Identifier_Id;
+         Expr : W_Expr_Id;
+         Ty   : Entity_Id;
+         Def  : in out W_Expr_Id)
+      is
+         --  Store in guard the fact that the is_null field match, as this
+         --  is required to use the pledge later.
+
+         Guard : constant W_Pred_Id := +New_Comparison
+           (Symbol => Why_Eq,
+            Left   => New_Pointer_Is_Null_Access (Ty, Expr),
+            Right  => New_Pointer_Is_Null_Access (Ty, +W_Id),
+            Domain => EW_Pred);
+      begin
+         Def :=
+           +Boolean_Term_Of_Pred
+           (New_Existential_Quantif
+              (Variables => (1 => W_Id),
+               Labels    => Symbol_Sets.Empty_Set,
+               Var_Type  => Get_Typ (W_Id),
+               Pred      => +New_And_Expr
+                 (Left   => +Guard,
+                  Right  => +Pred_Of_Boolean_Term (+Def),
+                  Domain => EW_Pred)));
+      end Wrap_Pledge_Call;
+
       --  Local variables
 
       Brower_Id   : constant W_Identifier_Id :=
@@ -7847,13 +7889,18 @@ package body Gnat2Why.Expr is
            Base_Name => "brower");
       --  The identifier for the borrower Brower at the time of pledge
 
+      In_Traversal : constant Boolean :=
+        Ekind (Brower) = E_Function or else Is_Constant_Borrower (Brower);
+      --  We are inside a traversal function if Brower is a function or if it
+      --  is a constant borrower.
+
       Current     : Node_Id := Path;
       Def         : W_Expr_Id := +True_Term;
       Current_Id  : W_Identifier_Id := Brower_Id;
       Borrowed_Id : W_Identifier_Id;
       Pledge_Call : W_Expr_Id;
       First_Call  : Boolean := True;
-      Guard       : W_Pred_Id := True_Pred;
+      Borrowed    : Entity_Id := Empty;
 
    --  Start of processing for New_Pledge_Update_From_Assignment
 
@@ -7865,6 +7912,8 @@ package body Gnat2Why.Expr is
       --  link them using existential quantifiers.
 
       loop
+         Borrowed := Current;
+
          Pledge_Call := Create_Pledge_Call_For_Prefix
            (Borrowed_Id  => Borrowed_Id,
             Brower_Id    => Current_Id,
@@ -7876,46 +7925,71 @@ package body Gnat2Why.Expr is
             Right  => Def,
             Domain => EW_Term);
 
+         --  If we are not in the first iteration, Current_Id contains the
+         --  value of the borrowed_id from previous iteration. We existentially
+         --  quantify over it in Def.
+
          if not First_Call then
-            Def :=
-              +Boolean_Term_Of_Pred
-              (New_Existential_Quantif
-                 (Variables => (1 => Current_Id),
-                  Labels    => Symbol_Sets.Empty_Set,
-                  Var_Type  => Get_Typ (Current_Id),
-                  Pred      => +New_And_Expr
-                    (Left   => +Guard,
-                     Right  => +Pred_Of_Boolean_Term (+Def),
-                     Domain => EW_Pred)));
+            Wrap_Pledge_Call
+              (W_Id => Current_Id,
+               Expr => Transform_Expr (Params   => Body_Params,
+                                       Expr     => Borrowed,
+                                       Domain   => EW_Term),
+               Ty   => Retysp (Etype (Borrowed)),
+               Def  => Def);
          end if;
 
          exit when Nkind (Current) in N_Expanded_Name | N_Identifier;
 
          pragma Assert (Nkind (Current) = N_Function_Call);
-
          First_Call := False;
-
-         --  Borrowed_Id stands for the first actual parameter of Current.
-         --  Store in guard the fact that the is_null field match, as this
-         --  is required to use the pledge later.
-
-         declare
-            Ty : constant Entity_Id := Retysp (Etype (First_Actual (Current)));
-         begin
-            Guard := +New_Comparison
-                (Symbol => Why_Eq,
-                 Left   => New_Pointer_Is_Null_Access
-                   (Ty, Transform_Expr
-                      (Params   => Body_Params,
-                       Expr     => First_Actual (Current),
-                       Domain   => EW_Term)),
-                 Right  => New_Pointer_Is_Null_Access (Ty, +Borrowed_Id),
-                 Domain => EW_Pred);
-         end;
 
          Current_Id := Borrowed_Id;
          Current := First_Actual (Current);
       end loop;
+
+      --  In the return statement of a borrowing traversal function, we need to
+      --  continue the reconstruction until the borrowed parameter is reached.
+
+      if Ekind (Brower) = E_Function then
+         declare
+            B_Ent    : Entity_Id := Entity (Current);
+            Borrowed : Entity_Id;
+         begin
+            while Ekind (B_Ent) /= E_In_Parameter loop
+               Current_Id := Borrowed_Id;
+
+               --  We use the pledge of the borrowed object to link it to its
+               --  own root.
+
+               Borrowed := Get_Borrowed_Entity (B_Ent);
+               Borrowed_Id :=
+                 New_Temp_Identifier
+                   (Typ       => Type_Of_Node (Etype (Borrowed)),
+                    Base_Name => "borrowed");
+
+               Pledge_Call := New_Pledge_Call
+                 (B_Ent, +Borrowed_Id, +Current_Id, True);
+
+               Def := New_And_Expr
+                 (Left   => Pledge_Call,
+                  Right  => Def,
+                  Domain => EW_Term);
+
+               Wrap_Pledge_Call
+                 (W_Id => Current_Id,
+                  Expr => Transform_Identifier
+                    (Params   => Body_Params,
+                     Expr     => B_Ent,
+                     Ent      => B_Ent,
+                     Domain   => EW_Term),
+                  Ty   => Retysp (Etype (B_Ent)),
+                  Def  => Def);
+
+               B_Ent := Borrowed;
+            end loop;
+         end;
+      end if;
 
       return New_Pledge_Update (Brower, Borrowed_Id, Brower_Id, +Def);
    end New_Pledge_Update_From_Assignment;
@@ -18297,9 +18371,8 @@ package body Gnat2Why.Expr is
                              Sequence
                                (Result_Stmt,
                                 New_Pledge_Update_From_Assignment
-                                  (Brower       => Subp,
-                                   Path         => Expression (Stmt_Or_Decl),
-                                   In_Traversal => True));
+                                  (Brower => Subp,
+                                   Path   => Expression (Stmt_Or_Decl)));
                         end if;
                      end if;
 

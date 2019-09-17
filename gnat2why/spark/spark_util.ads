@@ -365,6 +365,12 @@ package SPARK_Util is
    --  @return True iff the entity is a component or discriminant of a
    --            concurrent type
 
+   function Is_Constant_Borrower (E : Entity_Id) return Boolean with
+     Pre => Is_Local_Borrower (E);
+   --  Return True is E is a local borrower which is acting like an observer
+   --  (it is directly or indirectly rooted at the first parameter of a
+   --  borrowing traversal function).
+
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
 

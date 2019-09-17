@@ -1554,6 +1554,29 @@ package body SPARK_Util is
    end Is_Constant_After_Elaboration;
 
    --------------------------
+   -- Is_Constant_Borrower --
+   --------------------------
+
+   function Is_Constant_Borrower (E : Entity_Id) return Boolean is
+      Root : Entity_Id := E;
+
+   begin
+      --  Search for the ultimate root of the borrow
+
+      loop
+         Root := Get_Root_Object (Expression (Parent (Root)));
+         exit when not Is_Local_Borrower (Root);
+      end loop;
+
+      --  Return True if it is the first parameter of a borrowing traversal
+      --  function.
+
+      return Ekind (Root) = E_In_Parameter
+        and then Is_Borrowing_Traversal_Function (Scope (Root))
+        and then Root = First_Formal (Scope (Root));
+   end Is_Constant_Borrower;
+
+   --------------------------
    -- Is_Constant_In_SPARK --
    --------------------------
 

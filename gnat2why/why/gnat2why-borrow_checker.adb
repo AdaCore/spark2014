@@ -1074,8 +1074,13 @@ package body Gnat2Why.Borrow_Checker is
          --  root object is not in the Moved state and is not declared at a
          --  statically deeper accessibility level than that of the target
          --  object.
+         --  A borrower directly or indirectly borrowing the first parameter of
+         --  a borrowing traversal function is also considered to be an
+         --  observe.
 
-         if Is_Access_Constant (Target_Typ) then
+         if Is_Access_Constant (Target_Typ)
+           or else Is_Constant_Borrower (Target_Root)
+         then
             declare
                E_Root : constant Expr_Or_Ent :=
                  (Is_Ent => True, Ent => Expr_Root, Loc => Expr);
@@ -1099,6 +1104,13 @@ package body Gnat2Why.Borrow_Checker is
                end if;
             end;
 
+            --  The fact that a re-observe is always rooted at the observer for
+            --  access to variable observe is checked in marking.
+
+            pragma Assert
+              (if not Is_Decl and then not Is_Access_Constant (Target_Typ)
+               then Is_Entity_Name (Target) and then Target_Root = Expr_Root);
+
             --  ??? check accessibility level
 
             Check_Expression (Expr, Observe);
@@ -1117,6 +1129,9 @@ package body Gnat2Why.Borrow_Checker is
                            Expl => Get_Expl (+Expr));
                return;
             end if;
+
+            --  The fact that a re-borrow is always rooted at the borrower is
+            --  checked in marking.
 
             pragma Assert
               (if not Is_Decl
