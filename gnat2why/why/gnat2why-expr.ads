@@ -498,8 +498,7 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Is_Type (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's default initialization
 
@@ -507,8 +506,7 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Has_Predicates (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type with a predicate
    --  @param Variables used in the expression for Ty's predicate
 
@@ -516,15 +514,15 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Is_Type (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's dynamic invariant
 
    procedure Variables_In_Type_Invariant
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
-   with Pre => Has_Invariants_In_SPARK (Ty);
+   with Pre  => Has_Invariants_In_SPARK (Ty),
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type with a visible type invariant
    --  @param Variables used in the expression for Ty's invariant
 
