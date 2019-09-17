@@ -16471,6 +16471,8 @@ package body Gnat2Why.Expr is
             | Pragma_Elaborate_All
             | Pragma_Elaborate_Body
             | Pragma_Export
+            | Pragma_Export_Function
+            | Pragma_Export_Procedure
             | Pragma_Import
             | Pragma_Independent
             | Pragma_Independent_Components
@@ -16607,9 +16609,7 @@ package body Gnat2Why.Expr is
             | Pragma_Elaboration_Checks
             | Pragma_Eliminate
             | Pragma_Enable_Atomic_Synchronization
-            | Pragma_Export_Function
             | Pragma_Export_Object
-            | Pragma_Export_Procedure
             | Pragma_Export_Value
             | Pragma_Export_Valued_Procedure
             | Pragma_Extend_System
