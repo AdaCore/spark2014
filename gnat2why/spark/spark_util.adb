@@ -702,9 +702,9 @@ package body SPARK_Util is
       function Is_Allocator (N : Node_Id) return Traverse_Result;
       --  Will return Abandon if we encounter an allocator
 
-      -------------
-      -- Process --
-      -------------
+      ------------------
+      -- Is_Allocator --
+      ------------------
 
       function Is_Allocator (N : Node_Id) return Traverse_Result
       is
@@ -733,9 +733,9 @@ package body SPARK_Util is
       --  Will return Abandon if we encounter a call to a function with
       --  Volatile_Function set.
 
-      -------------
-      -- Process --
-      -------------
+      -------------------------------
+      -- Is_Volatile_Function_Call --
+      -------------------------------
 
       function Is_Volatile_Function_Call (N : Node_Id) return Traverse_Result
       is

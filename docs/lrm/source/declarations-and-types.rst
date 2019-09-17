@@ -172,11 +172,20 @@ initialization expression depends on:
 
 Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
-.. centered:: **Verification Rules**
+.. centered:: **Legality Rules**
 
 .. _tu-object_declarations-01:
 
-1. Constants without variable inputs shall not be denoted in Global,
+1. [The borrowed name of the expression of an object declaration defining a
+   borrowing operation shall not have a variable input, except for a single
+   occurrence of the root object of the expression;
+   see :ref:`expressions` for the statement of this rule.]
+
+.. centered:: **Verification Rules**
+
+.. _tu-object_declarations-02:
+
+2. Constants without variable inputs shall not be denoted in Global,
    Depends, Initializes or Refined_State aspect specifications.
    [Two elaborations of such a constant declaration will always
    yield equal initialization expression values.]
@@ -658,6 +667,9 @@ and identify a corresponding *borrower*:
   or Borrowed state. The newly declared name is the borrower.
 
 Such an operation is called a *borrowing operation*.
+
+The *borrowed name* of the source of a borrow operation is the smallest
+name that is borrowed in the borrow operation.
 
 In the region of program text beween the point where a name denoting a
 managed object is borrowed and the end of the scope of the borrower, the

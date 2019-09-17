@@ -2028,6 +2028,7 @@ package body SPARK_Definition is
                Mark (Prefix (N));
                Mark (Discrete_Range (N));
             end if;
+
          when N_Subprogram_Body =>
 
             --  For expression functions that have a unique declaration, the

@@ -718,20 +718,110 @@ package body Flow.Analysis.Sanity is
 
             --  Check type declarations affected by SPARK RM 4.4(2)
 
-            if Nkind (N) in N_Full_Type_Declaration
-                          | N_Subtype_Declaration
-                          | N_Incomplete_Type_Declaration
-                          | N_Private_Type_Declaration
-                          | N_Private_Extension_Declaration
-            then
-               Check_Type_Declaration (N);
+            case Nkind (N) is
+               when N_Full_Type_Declaration
+                  | N_Subtype_Declaration
+                  | N_Incomplete_Type_Declaration
+                  | N_Private_Type_Declaration
+                  | N_Private_Extension_Declaration
+               =>
+                  Check_Type_Declaration (N);
 
-            --  Components and discriminants are not expected here
+               when N_Object_Declaration =>
+                  Traverse_Object_Declaration : declare
 
-            else
-               pragma Assert (Nkind (N) not in N_Component_Declaration
-                                             | N_Discriminant_Specification);
-            end if;
+                     Indexes : Node_Lists.List;
+                     --  List of indexes to check for variable input
+
+                     procedure Collect_Indexes (Expr : Node_Id);
+                     --  Add to Indexes all the indexes of indexed_component
+                     --  and slice in the path expression Expr.
+
+                     ---------------------
+                     -- Collect_Indexes --
+                     ---------------------
+
+                     procedure Collect_Indexes (Expr : Node_Id) is
+                     begin
+                        case Nkind (Expr) is
+                           when N_Expanded_Name
+                              | N_Identifier
+                           =>
+                              null;
+
+                           when N_Explicit_Dereference
+                              | N_Selected_Component
+                           =>
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Indexed_Component =>
+                              declare
+                                 Ind_Expr : Node_Id :=
+                                   First (Expressions (Expr));
+                              begin
+                                 while Present (Ind_Expr) loop
+                                    Indexes.Append (Ind_Expr);
+                                    Next (Ind_Expr);
+                                 end loop;
+                              end;
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Slice =>
+                              Indexes.Append (Discrete_Range (Expr));
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Qualified_Expression
+                              | N_Type_Conversion
+                              | N_Unchecked_Type_Conversion
+                           =>
+                              Collect_Indexes (Expression (Expr));
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end Collect_Indexes;
+
+                     --  Local variables
+
+                     Target : constant Node_Id := Defining_Entity (N);
+                     Typ    : constant Entity_Id := Etype (Target);
+                     Root   : Node_Id;
+
+                  --  Start of processing for Traverse_Object_Declaration
+
+                  begin
+                     --  Check SPARK RM 4.4(2) rule about:
+                     --  * the root name of the expression of an object
+                     --    declaration defining a borrowing operation, except
+                     --    for a single occurrence of the root object of the
+                     --    expression.
+
+                     if Is_Anonymous_Access_Type (Typ)
+                       and then not Is_Access_Constant (Typ)
+                       and then not Is_Constant_Borrower (Target)
+                     then
+                        Root := Get_Observed_Or_Borrowed_Expr (Expression (N));
+                        Collect_Indexes (Root);
+
+                        for Ind_Expr of Indexes loop
+                           Detect_Variable_Inputs
+                             (N        => Ind_Expr,
+                              Err_Desc => "borrowed expression",
+                              Err_Node => Ind_Expr);
+                        end loop;
+                     end if;
+                  end Traverse_Object_Declaration;
+
+               --  Components and discriminants are not expected here
+
+               when N_Component_Declaration
+                  | N_Discriminant_Specification
+               =>
+                  pragma Assert (False);
+
+               when others =>
+                  null;
+            end case;
 
             Traverse_Declaration_Or_Statement (N);
 

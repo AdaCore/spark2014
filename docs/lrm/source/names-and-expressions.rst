@@ -174,6 +174,10 @@ free from side-effects only retrieves or computes a value.
     * a generic actual parameter corresponding to a generic formal object
       having mode **in** (see :ref:`generic_instantiation`);
 
+    * the borrowed name of the expression of an object declaration defining a
+      borrowing operation, except for a single occurrence of the root object
+      of the expression (see :ref:`access-types`).
+
 .. _etu-expressions:
 
 [An expression in one of these contexts may read a constant

@@ -23,7 +23,7 @@ begin
       Y.Value := 2;
       I := 2;
    end;
-   pragma Assert (X.Nexts (1).Nexts (2).Value = 1); --@ASSERT:PASS
+   pragma Assert (X.Nexts (1).Nexts (2).Value = 1);
    declare
       I : Integer := 1;
       Y : access Tree := X.Nexts (I);
@@ -31,5 +31,5 @@ begin
       Y.Value := 2;
       I := 2;
    end;
-   pragma Assert (X.Nexts (2).Value = 2);--@ASSERT:FAIL
+   pragma Assert (X.Nexts (2).Value = 2);
 end Borrow_With_Variables;
