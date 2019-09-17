@@ -5631,4 +5631,92 @@ package body Flow_Utility is
                                  (EN'First + Child_Prefix'Length .. EN'Last))
       else EN);
 
+   ---------------------
+   -- Path_To_Flow_Id --
+   ---------------------
+
+   function Path_To_Flow_Id (Expr : Node_Id) return Flow_Id is
+      Seq : Node_Lists.List;
+      --  A sequence of nodes on the path expression; we use a list here,
+      --  because it makes an expression like "A.B.C" easy to process
+      --  left-to-right, while the AST of this expression only allows
+      --  processing right-to-left.
+
+      N : Node_Id := Expr;
+      --  Current node
+
+      Obj : Flow_Id;
+      --  The flow representation of the object denoted by the Expr path
+
+   begin
+      while Nkind (N) not in N_Expanded_Name | N_Identifier loop
+         Seq.Prepend (N);
+
+         N :=
+           (case Nkind (Expr) is
+               when N_Explicit_Dereference
+                  | N_Indexed_Component
+                  | N_Slice
+                  | N_Selected_Component
+               =>
+                  Prefix (N),
+
+               when N_Qualified_Expression
+                  | N_Type_Conversion
+                  | N_Unchecked_Type_Conversion
+               =>
+                  Expression (N),
+
+               when others =>
+                  raise Program_Error);
+      end loop;
+
+      declare
+         Root_Entity : constant Entity_Id := Entity (N);
+
+      begin
+         Obj :=
+           (if Is_Protected_Component (Root_Entity) then
+              Add_Component
+                (Direct_Mapping_Id (Scope (Root_Entity)),
+                 Root_Entity)
+
+            elsif Is_Part_Of_Concurrent_Object (Root_Entity) then
+              Add_Component
+                (Direct_Mapping_Id
+                   (Etype (Encapsulating_State (Root_Entity))),
+                 Root_Entity)
+
+            else
+               Direct_Mapping_Id (Root_Entity));
+      end;
+
+      for N of Seq loop
+         case Nkind (N) is
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Slice
+            =>
+               return Obj;
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               null;
+
+            when N_Selected_Component =>
+               Obj :=
+                 Add_Component
+                   (Obj,
+                    Original_Record_Component (Entity (Selector_Name (N))));
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end loop;
+
+      return Obj;
+   end Path_To_Flow_Id;
+
 end Flow_Utility;

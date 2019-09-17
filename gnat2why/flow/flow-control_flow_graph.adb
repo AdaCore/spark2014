@@ -4828,29 +4828,13 @@ package body Flow.Control_Flow_Graph is
             Borrower : constant Flow_Id :=
               Direct_Mapping_Id (Defining_Identifier (Decl));
 
-            Borrowed : Flow_Id;
-            --  The root of the borrowed object
-            --  ??? we get the latter by misusing a routine for analysing the
-            --  LHS of an assignment statement, but it works well and is better
-            --  than duplicating its code.
-
-            Partial_Definition : Boolean;
-            View_Conversion    : Boolean;
-            Seq                : Node_Lists.List;
-            --  Unused parameters
+            Borrowed : constant Flow_Id :=
+              Path_To_Flow_Id (Get_Observed_Or_Borrowed_Expr (Expr));
+            --  The the borrowed object
 
             V : Flow_Graphs.Vertex_Id;
 
          begin
-            --  Go through traversal function calls using
-            --  Get_Observed_Or_Borrowed_Expr.
-            Get_Assignment_Target_Properties
-              (N                  => Get_Observed_Or_Borrowed_Expr (Expr),
-               Partial_Definition => Partial_Definition,
-               View_Conversion    => View_Conversion,
-               Map_Root           => Borrowed,
-               Seq                => Seq);
-
             --  Add vertex for assigning the borrower back to the borrowed
             --  object and connect it with the graph.
 
