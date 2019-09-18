@@ -95,6 +95,7 @@ project GNAT2Why is
       for Excluded_Units use ("atree",
                               "debug",
                               "einfo",
+                              "get_targ",
                               "lib",
                               "lib.list",
                               "lib.sort",
