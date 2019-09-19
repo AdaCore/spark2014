@@ -417,7 +417,9 @@ package body Flow.Control_Flow_Graph is
       CM    : in out Connection_Maps.Map;
       Nodes : Union_Lists.List;
       Block : out Graph_Connections)
-   with Post => CM.Length = CM.Length'Old - Nodes.Length;
+   with Pre  => (for all Node of Nodes => CM.Contains (Node)),
+        Post => CM.Length = CM.Length'Old - Nodes.Length
+                and then (for all Node of Nodes => not CM.Contains (Node));
    --  Join up the standard entry and standard exits of the given nodes.
    --  Block contains the combined standard entry and exits of the joined
    --  up sequence. Entries for the nodes are removed from the connection map.
