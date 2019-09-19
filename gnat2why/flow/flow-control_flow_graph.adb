@@ -4192,7 +4192,7 @@ package body Flow.Control_Flow_Graph is
                               Src => Union_Id (Pkg_Body_Declarations));
          else
             declare
-               Verts          : Union_Lists.List := Union_Lists.Empty_List;
+               Init_Items     : Union_Lists.List := Union_Lists.Empty_List;
                Initializes_CM : Graph_Connections;
             begin
                for C in DM.Iterate loop
@@ -4207,7 +4207,7 @@ package body Flow.Control_Flow_Graph is
 
                   begin
                      if Present (Init_Item) then
-                        Verts.Append (Union_Id (Init_Item));
+                        Init_Items.Append (Union_Id (Init_Item));
 
                         Add_Vertex
                           (FA,
@@ -4227,7 +4227,7 @@ package body Flow.Control_Flow_Graph is
 
                Join (FA    => FA,
                      CM    => CM,
-                     Nodes => Verts,
+                     Nodes => Init_Items,
                      Block => Initializes_CM);
 
                if Elaboration_Has_Effect then
@@ -5143,9 +5143,9 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    is
-      P              : Node_Or_Entity_Id;
-      Statement_List : Union_Lists.List := Union_Lists.Empty_List;
-      Block          : Graph_Connections;
+      P          : Node_Or_Entity_Id;
+      Statements : Union_Lists.List := Union_Lists.Empty_List;
+      Block      : Graph_Connections;
    begin
       --  Create initial nodes for the statements.
       P := First (L);
@@ -5157,7 +5157,7 @@ package body Flow.Control_Flow_Graph is
 
             when others =>
                Process_Statement (P, FA, CM, Ctx);
-               Statement_List.Append (Union_Id (P));
+               Statements.Append (Union_Id (P));
 
          end case;
          Next (P);
@@ -5166,7 +5166,7 @@ package body Flow.Control_Flow_Graph is
       --  Produce the joined up list.
       Join (FA    => FA,
             CM    => CM,
-            Nodes => Statement_List,
+            Nodes => Statements,
             Block => Block);
       CM.Insert (Union_Id (L), Block);
 
