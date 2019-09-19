@@ -3146,6 +3146,21 @@ package body SPARK_Definition is
            and then Ekind (E) /= E_Function
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
+
+         --  Parts of deep constant objects should not appear as out or in out
+         --  parameters in procedure calls.
+
+         elsif Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
+           and then Is_Constant_In_SPARK (Get_Root_Object (Actual))
+         then
+            declare
+               Mode : constant String :=
+                 (if Ekind (Formal) = E_In_Out_Parameter
+                  then "`IN OUT`" else "`OUT`");
+            begin
+               Mark_Violation
+                 ("constant object as " & Mode & " parameter", Actual);
+            end;
          end if;
 
          --  Regular checks
