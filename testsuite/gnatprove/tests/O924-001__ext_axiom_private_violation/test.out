@@ -1,6 +1,6 @@
 gen.ads:2:09: generic package with External_Axiomatization is not allowed in SPARK
 gen.ads:2:09: violation of aspect SPARK_Mode at line 3, instance at my_gen.ads:3
-my_gen.ads:3:01: borrow or observe of an expression which is not part of stand-alone object or parameter is not allowed in SPARK (SPARK RM 3.10(3)))
+my_gen.ads:3:01: attribute "Access" is not allowed in SPARK
 my_gen.ads:3:01: instantiation error at gen.ads:8
 my_gen.ads:3:01: instantiation error at gen.ads:8
 my_gen.ads:3:01: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))

@@ -3135,6 +3135,10 @@ package body SPARK_Definition is
                   N             => Actual,
                   SRM_Reference => "SPARK RM 7.1.3(11)");
             end if;
+         end if;
+
+         --  Regular checks
+         Mark (Actual);
 
          --  In a procedure or entry call, copy in of a parameter of an
          --  anonymous access type is considered to be an observe/a borrow.
@@ -3142,7 +3146,7 @@ package body SPARK_Definition is
          --  This will also recursively check borrows occuring as part of calls
          --  of traversal functions in these parameters.
 
-         elsif Is_Anonymous_Access_Type (Etype (Formal))
+         if Is_Anonymous_Access_Type (Etype (Formal))
            and then Ekind (E) /= E_Function
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
@@ -3162,9 +3166,6 @@ package body SPARK_Definition is
                  ("constant object as " & Mode & " parameter", Actual);
             end;
          end if;
-
-         --  Regular checks
-         Mark (Actual);
       end Mark_Param;
 
       procedure Mark_Actuals is new Iterate_Call_Parameters (Mark_Param);
@@ -3834,12 +3835,10 @@ package body SPARK_Definition is
                end if;
             end;
 
-            if No (Expression (N)) then
+            if No (Expr) then
                Mark_Violation
                  ("uninitialized object of anonymous access type",
                   N, "SPARK RM 3.10(4)");
-            else
-               Check_Source_Of_Borrow_Or_Observe (Expression (N));
             end if;
          end if;
 
@@ -3869,6 +3868,16 @@ package body SPARK_Definition is
 
          if Present (Expr) then
             Mark (Expr);
+
+            --  If the type of the object is an anonymous access type, then the
+            --  declaration is an observe or a borrow. Check that it follows
+            --  the rules.
+
+            if Nkind (N) = N_Object_Declaration
+              and then Is_Anonymous_Access_Type (Etype (E))
+            then
+               Check_Source_Of_Borrow_Or_Observe (Expr);
+            end if;
          end if;
       end Mark_Object_Entity;
 
