@@ -3173,6 +3173,11 @@ package body SPARK_Definition is
          E := Get_Called_Entity (N);
       end if;
 
+      --  There should not be calls to default initial condition and invariant
+      --  procedures.
+
+      pragma Assert (not Subprogram_Is_Ignored_For_Proof (E));
+
       --  External calls to non-library-level objects are not yet supported
       if Ekind (Scope (E)) = E_Protected_Type
         and then Is_External_Call (N)
@@ -3245,15 +3250,9 @@ package body SPARK_Definition is
 
       Mark_Actuals (N);
 
-      --  There should not be calls to default initial condition and invariant
-      --  procedures.
-
-      if Subprogram_Is_Ignored_For_Proof (E) then
-         raise Program_Error;
-
       --  Call is in SPARK only if the subprogram called is in SPARK
 
-      elsif not In_SPARK (E) then
+      if not In_SPARK (E) then
          Mark_Violation (N,
                          From => (if Ekind (E) = E_Function
                                     and then Is_Predicate_Function (E)
