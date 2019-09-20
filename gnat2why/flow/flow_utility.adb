@@ -5653,7 +5653,7 @@ package body Flow_Utility is
          Seq.Prepend (N);
 
          N :=
-           (case Nkind (Expr) is
+           (case Nkind (N) is
                when N_Explicit_Dereference
                   | N_Indexed_Component
                   | N_Slice
