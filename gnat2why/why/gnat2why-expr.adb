@@ -2351,6 +2351,7 @@ package body Gnat2Why.Expr is
 
          if Nkind (Cur) not in N_Type_Conversion
                              | N_Unchecked_Type_Conversion
+                             | N_Qualified_Expression
                              | N_Slice
          then
             declare
@@ -2442,6 +2443,7 @@ package body Gnat2Why.Expr is
 
             when N_Type_Conversion
                | N_Unchecked_Type_Conversion
+               | N_Qualified_Expression
             =>
                Cur := Expression (Cur);
 
@@ -8536,8 +8538,14 @@ package body Gnat2Why.Expr is
          =>
             null;
 
+         --  We include a type qualification here even if it may not occur
+         --  on the left-hand side of an assignment, due to the use of
+         --  Shift_Rvalue on borrowed expressions, where a type qualification
+         --  may appear.
+
          when N_Type_Conversion
             | N_Unchecked_Type_Conversion
+            | N_Qualified_Expression
          =>
             N := Expression (N);
             Typ := Retysp (Etype (N));
