@@ -1,29 +1,11 @@
-update_lists.adb:4:14: info: add a contract to analyze it separately from calling contexts
-update_lists.adb:4:14: info: local subprogram "Assign" only analyzed in the context of calls
 update_lists.adb:4:22: warning: unused initial value of "Target"
-update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
-update_lists.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:36
-update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:24
-update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
-update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
-update_lists.adb:6:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:44
-update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:24
-update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:27
-update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:33
-update_lists.adb:12:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at update_lists.adb:44
-update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:36
-update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:37
-update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:40
-update_lists.adb:12:14: warning: unused assignment, in call inlined at update_lists.adb:43
 update_lists.adb:16:04: info: initialization of "Rover" proved
-update_lists.adb:18:04: info: analyzing call to "Assign" in context
 update_lists.adb:20:15: info: pointer dereference check proved (CVC4: 1 VC)
-update_lists.adb:24:13: info: analyzing call to "Assign" in context
-update_lists.adb:27:13: info: analyzing call to "Assign" in context
+update_lists.adb:24:34: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:27:25: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:27:37: info: pointer dereference check proved (CVC4: 1 VC)
 update_lists.adb:31:13: info: initialization of "Next_Rover" proved
-update_lists.adb:33:13: info: analyzing call to "Assign" in context
-update_lists.adb:36:13: info: analyzing call to "Assign" in context
-update_lists.adb:37:13: info: analyzing call to "Assign" in context
-update_lists.adb:40:13: info: analyzing call to "Assign" in context
-update_lists.adb:43:10: info: analyzing call to "Assign" in context
-update_lists.adb:44:10: info: analyzing call to "Assign" in context
+update_lists.adb:33:38: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:36:26: info: pointer dereference check proved (CVC4: 1 VC)
+update_lists.adb:40:28: warning: unused assignment to "Next_Rover"
+update_lists.adb:44:29: medium: pointer dereference check might fail (e.g. when Prev = null) [possible explanation: call at line 43 should mention Target (for argument Prev) in a postcondition]

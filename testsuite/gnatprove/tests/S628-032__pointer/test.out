@@ -1,4 +1,3 @@
-traverse_list.adb:13:05: warning: analyzing unreferenced procedure "Do_Smthing"
 traverse_list.adb:14:46: medium: pointer dereference check might fail (e.g. when X = null) [possible explanation: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:55: medium: pointer dereference check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]
 traverse_list.adb:14:64: medium: pointer dereference check might fail [possible explanation: subprogram at line 13 should mention X in a precondition]

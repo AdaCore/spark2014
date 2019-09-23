@@ -715,10 +715,23 @@ expression functions) or procedures that are not externally visible (not
 declared in the public part of the unit), without contracts (any of Global,
 Depends, Pre, Post, Contract_Cases), and respect the following conditions:
 
- * does not contain nested subprogram or package declarations or instantiations
- * not recursive
+ * not dispatching
+ * not marked ``No_Return``
  * not a generic instance
  * not defined in a generic instance
+ * not defined in a protected type
+ * without a parameter of unconstrained record type with discriminant dependent
+   components
+ * without a parameter or result of deep type (access type or composite type
+   containing an access type)
+ * not a traversal function
+
+Subprograms that respects all of the above conditions are candidates for
+contextual analysis, and calls to such subprograms are inlined provided the
+subprogram and its calls respect the following additional conditions:
+
+ * does not contain nested subprogram or package declarations or instantiations
+ * not recursive
  * has a single point of return at the end of the subprogram
  * not called in an assertion or a contract
  * not called in a potentially unevaluated context

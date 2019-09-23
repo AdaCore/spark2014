@@ -1,3 +1,2 @@
-traversal_funcs.adb:15:04: warning: analyzing unreferenced procedure "P"
 traversal_funcs.adb:15:31: warning: unused initial value of "I"
 traversal_funcs.adb:18:13: medium: pointer dereference check might fail (e.g. when Y = null)

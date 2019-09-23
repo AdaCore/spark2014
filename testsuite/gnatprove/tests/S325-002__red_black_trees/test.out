@@ -1,87 +1,52 @@
-red_black_trees.adb:3:14: info: add a contract to analyze it separately from calling contexts
-red_black_trees.adb:3:14: info: local subprogram "Rotate_Left" only analyzed in the context of calls
-red_black_trees.adb:4:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:4:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:4:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:4:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:6:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:45, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:50, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:7:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:8:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:33, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:11:14: info: add a contract to analyze it separately from calling contexts
-red_black_trees.adb:11:14: info: local subprogram "Rotate_Right" only analyzed in the context of calls
-red_black_trees.adb:12:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:12:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:08: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:14:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:28, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:34, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:15:21: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:16:07: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:44, in call inlined at red_black_trees.adb:73
-red_black_trees.adb:19:14: info: add a contract to analyze it separately from calling contexts
-red_black_trees.adb:19:14: info: local subprogram "Balance" only analyzed in the context of calls
-red_black_trees.adb:21:11: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:22:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:23:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:23:24: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:25:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:25:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:26:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:26:27: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:26:32: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:28:13: info: analyzing call to "Rotate_Right" in context
-red_black_trees.adb:29:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:29:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:30:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:30:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:31:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:31:27: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:31:33: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:33:13: info: analyzing call to "Rotate_Left" in context
-red_black_trees.adb:34:13: info: analyzing call to "Rotate_Right" in context
-red_black_trees.adb:35:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:35:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:37:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:38:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:39:19: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:39:25: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:41:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:41:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:42:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:42:28: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:42:33: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:44:13: info: analyzing call to "Rotate_Right" in context
-red_black_trees.adb:45:13: info: analyzing call to "Rotate_Left" in context
-red_black_trees.adb:46:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:46:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:47:17: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:47:23: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:48:22: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:48:28: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:48:34: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:50:13: info: analyzing call to "Rotate_Left" in context
-red_black_trees.adb:51:14: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:51:20: info: pointer dereference check proved (CVC4: 1 VC), in call inlined at red_black_trees.adb:73
-red_black_trees.adb:57:14: info: postcondition proved (CVC4: 1 VC)
+red_black_trees.adb:4:23: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 3 should mention T in a precondition]
+red_black_trees.adb:6:08: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 3 should mention T in a precondition]
+red_black_trees.adb:6:22: medium: pointer dereference check might fail (e.g. when Tnew = null)
+red_black_trees.adb:7:11: medium: pointer dereference check might fail (e.g. when Tnew = null)
+red_black_trees.adb:12:23: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 11 should mention T in a precondition]
+red_black_trees.adb:14:08: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 11 should mention T in a precondition]
+red_black_trees.adb:14:21: medium: pointer dereference check might fail (e.g. when Tnew = null)
+red_black_trees.adb:15:11: medium: pointer dereference check might fail (e.g. when Tnew = null)
+red_black_trees.adb:21:11: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:22:19: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:23:19: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:23:24: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:25:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:25:19: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:26:22: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:26:27: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:26:32: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:29:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: call at line 28 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:29:19: medium: pointer dereference check might fail [possible explanation: call at line 28 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:30:17: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:30:22: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:31:22: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:31:27: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:31:33: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:33:27: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:35:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: call at line 34 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:35:19: medium: pointer dereference check might fail [possible explanation: call at line 34 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:37:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:38:19: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:39:19: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:39:25: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:41:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:41:20: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:42:22: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:42:28: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:42:33: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:44:28: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:46:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: call at line 45 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:46:20: medium: pointer dereference check might fail [possible explanation: call at line 45 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:47:17: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:47:23: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:48:22: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: subprogram at line 19 should mention T in a precondition]
+red_black_trees.adb:48:28: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:48:34: info: pointer dereference check proved (CVC4: 1 VC)
+red_black_trees.adb:51:14: medium: pointer dereference check might fail (e.g. when T = null) [possible explanation: call at line 50 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:51:20: medium: pointer dereference check might fail [possible explanation: call at line 50 should mention T (for argument T) in a postcondition]
+red_black_trees.adb:57:14: medium: postcondition might fail, cannot prove T /= null (e.g. when T = null) [possible explanation: call at line 73 should mention T (for argument T) in a postcondition]
 red_black_trees.adb:65:14: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:67:14: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:68:23: info: pointer dereference check proved (CVC4: 1 VC)
 red_black_trees.adb:70:23: info: pointer dereference check proved (CVC4: 1 VC)
-red_black_trees.adb:73:07: info: analyzing call to "Balance" in context
 red_black_trees.adb:79:08: info: pointer dereference check proved (CVC4: 1 VC)

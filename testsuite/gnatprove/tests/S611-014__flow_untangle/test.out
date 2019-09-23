@@ -1,3 +1,2 @@
-c393012.adb:10:04: warning: analyzing unreferenced procedure "TC_Convert"
 c393012.adb:10:14: warning: subprogram "TC_Convert" has no effect
 c393012.adb:11:41: medium: pointer dereference check might fail [possible explanation: subprogram at line 10 should mention I in a precondition]
