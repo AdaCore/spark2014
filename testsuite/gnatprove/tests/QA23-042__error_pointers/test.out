@@ -167,6 +167,10 @@ pointers2.ads:20:24: warning: unused initial value of "X"
 pointers2.ads:20:27: warning: "Y" is not modified, could be IN
 spark02.adb:32:04: assignment to a complex expression is not allowed in SPARK
 spark02.adb:32:04: violation of pragma SPARK_Mode at test.adc:3
+spark02.adb:34:09: expression as "in out" parameter is not allowed in SPARK
+spark02.adb:34:09: violation of pragma SPARK_Mode at test.adc:3
+spark02.adb:35:09: expression as "in out" parameter is not allowed in SPARK
+spark02.adb:35:09: violation of pragma SPARK_Mode at test.adc:3
 spark03.adb:19:09: medium: pointer dereference check might fail (e.g. when Y = null) [possible explanation: subprogram at spark03.ads:21 should mention Y in a precondition]
 spark03.adb:23:09: medium: pointer dereference check might fail (e.g. when Z = null)
 spark03.adb:25:09: medium: pointer dereference check might fail (e.g. when W = null)

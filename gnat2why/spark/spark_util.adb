@@ -1353,7 +1353,6 @@ package body SPARK_Util is
             | N_Allocator
             | N_Extension_Aggregate
             | N_Null
-            | N_Op_Concat
          =>
             return Empty;
 
@@ -1375,19 +1374,6 @@ package body SPARK_Util is
             | N_Unchecked_Type_Conversion
          =>
             return GRO (Expression (Expr));
-
-         when N_Attribute_Reference =>
-            pragma Assert
-              (Get_Attribute_Id (Attribute_Name (Expr)) =
-                 Attribute_Loop_Entry
-               or else
-               Get_Attribute_Id (Attribute_Name (Expr)) =
-                 Attribute_Update
-               or else Get_Attribute_Id (Attribute_Name (Expr)) =
-                 Attribute_Image
-               or else Get_Attribute_Id (Attribute_Name (Expr)) =
-                 Attribute_Img);
-            return Empty;
 
          when others =>
             raise Program_Error;
@@ -2015,13 +2001,16 @@ package body SPARK_Util is
    begin
       case Nkind (Expr) is
          when N_Expanded_Name
-            | N_Explicit_Dereference
             | N_Identifier
+         =>
+            return True;
+
+         when N_Explicit_Dereference
             | N_Indexed_Component
             | N_Selected_Component
             | N_Slice
          =>
-            return True;
+            return Is_Path_Expression (Prefix (Expr));
 
          --  Special value NULL corresponds to an empty path
 
@@ -2202,36 +2191,6 @@ package body SPARK_Util is
           (Nkind_In (Choice, N_Identifier, N_Expanded_Name)
            and then Is_Type (Entity (Choice)));
    end Is_Singleton_Choice;
-
-   ---------------------------
-   -- Is_Subpath_Expression --
-   ---------------------------
-
-   function Is_Subpath_Expression (Expr : Node_Id) return Boolean is
-   begin
-      return Is_Path_Expression (Expr)
-
-        or else (Nkind_In (Expr, N_Qualified_Expression,
-                                 N_Type_Conversion,
-                                 N_Unchecked_Type_Conversion)
-                  and then Is_Subpath_Expression (Expression (Expr)))
-
-        or else (Nkind (Expr) = N_Attribute_Reference
-                  and then
-                    (Get_Attribute_Id (Attribute_Name (Expr)) =
-                       Attribute_Update
-                     or else
-                     Get_Attribute_Id (Attribute_Name (Expr)) =
-                       Attribute_Loop_Entry
-                     or else
-                     Get_Attribute_Id (Attribute_Name (Expr)) =
-                       Attribute_Image
-                     or else
-                     Get_Attribute_Id (Attribute_Name (Expr)) =
-                       Attribute_Img))
-
-        or else Nkind (Expr) = N_Op_Concat;
-   end Is_Subpath_Expression;
 
    ---------------------
    -- Is_Synchronized --

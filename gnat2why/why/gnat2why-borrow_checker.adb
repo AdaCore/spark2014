@@ -1577,7 +1577,7 @@ package body Gnat2Why.Borrow_Checker is
       --  Start of processing for Read_Indexes
 
       begin
-         pragma Assert (Is_Subpath_Expression (Expr));
+         pragma Assert (Is_Path_Expression (Expr));
 
          case N_Subexpr'(Nkind (Expr)) is
             when N_Identifier
@@ -2018,6 +2018,19 @@ package body Gnat2Why.Borrow_Checker is
          =>
             null;
 
+         when N_Explicit_Dereference
+            | N_Selected_Component
+         =>
+            Check_Expression (Prefix (Expr), Mode);
+
+         when N_Indexed_Component =>
+            Check_Expression (Prefix (Expr), Mode);
+            Read_Expression_List (Expressions (Expr));
+
+         when N_Slice =>
+            Check_Expression (Prefix (Expr), Mode);
+            Read_Expression (Discrete_Range (Expr));
+
          --  Procedure calls are handled in Check_Node
 
          when N_Procedure_Call_Statement =>
@@ -2028,14 +2041,10 @@ package body Gnat2Why.Borrow_Checker is
          when N_Aggregate
             | N_Allocator
             | N_Expanded_Name
-            | N_Explicit_Dereference
             | N_Extension_Aggregate
             | N_Function_Call
             | N_Identifier
-            | N_Indexed_Component
             | N_Null
-            | N_Selected_Component
-            | N_Slice
          =>
             raise Program_Error;
 

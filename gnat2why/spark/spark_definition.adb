@@ -1659,7 +1659,7 @@ package body SPARK_Definition is
                --  functions). Otherwise there is no way to update the
                --  corresponding path permission.
 
-               if not Is_Subpath_Expression (Var)
+               if not Is_Path_Expression (Var)
                  or else No (Get_Root_Object
                              (Var, Through_Traversal => False))
                then
@@ -3151,19 +3151,24 @@ package body SPARK_Definition is
          then
             Check_Source_Of_Borrow_Or_Observe (Actual);
 
-         --  Parts of deep constant objects should not appear as out or in out
+         --  Parts of constant objects should not appear as out or in out
          --  parameters in procedure calls.
 
-         elsif Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter
-           and then Is_Constant_In_SPARK (Get_Root_Object (Actual))
-         then
+         elsif Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
             declare
                Mode : constant String :=
                  (if Ekind (Formal) = E_In_Out_Parameter
                   then "`IN OUT`" else "`OUT`");
             begin
-               Mark_Violation
-                 ("constant object as " & Mode & " parameter", Actual);
+               if not Is_Path_Expression (Actual)
+                 or else No (Get_Root_Object (Actual))
+               then
+                  Mark_Violation
+                    ("expression as " & Mode & " parameter", Actual);
+               elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
+                  Mark_Violation
+                    ("constant object as " & Mode & " parameter", Actual);
+               end if;
             end;
          end if;
       end Mark_Param;
@@ -3962,6 +3967,14 @@ package body SPARK_Definition is
               and then Is_Anonymous_Access_Type (Etype (E))
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
+
+            --  If we are performing a move operation, check that we are
+            --  moving a path.
+
+            elsif Is_Deep (Etype (E))
+              and then not Is_Path_Expression (Expr)
+            then
+               Mark_Violation ("expression as source of move", Expr);
             end if;
          end if;
       end Mark_Object_Entity;

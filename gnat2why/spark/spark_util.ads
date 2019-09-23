@@ -626,7 +626,7 @@ package SPARK_Util is
      (Expr              : Node_Id;
       Through_Traversal : Boolean := True) return Entity_Id
    with
-     Pre => Is_Subpath_Expression (Expr);
+     Pre => Is_Path_Expression (Expr);
    --  Return the root of the path expression Expr, or Empty for an allocator,
    --  NULL, or a function call. Through_Traversal is True if it should follow
    --  through calls to traversal functions.
@@ -692,9 +692,6 @@ package SPARK_Util is
 
    function Is_Singleton_Choice (Choices : List_Id) return Boolean;
    --  Return whether Choices is a singleton choice
-
-   function Is_Subpath_Expression (Expr : Node_Id) return Boolean;
-   --  Return True if Expr can be part of a path expression
 
    function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
    --  @param N any node
