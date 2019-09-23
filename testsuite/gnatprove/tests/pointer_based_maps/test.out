@@ -198,14 +198,3 @@ use_my_map.adb:5:14: info: postcondition proved (Z3: 2 VC)
 use_my_map.adb:5:45: info: precondition proved (CVC4: 1 VC)
 use_my_map.adb:8:38: info: precondition proved (CVC4: 1 VC)
 use_my_map.adb:10:09: info: pointer dereference check proved (CVC4: 1 VC)
-
-
-
-
-
-
-
-
-
-
-
