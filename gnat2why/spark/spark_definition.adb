@@ -3308,6 +3308,87 @@ package body SPARK_Definition is
 
       if Has_Pledge_Annotation (E) then
          declare
+            function Check_Pledge_Context (Call : Node_Id) return Boolean;
+            --  Check that call occurs at top-level or in a positive position
+            --  inside an assertion.
+
+            --------------------------
+            -- Check_Pledge_Context --
+            --------------------------
+
+            function Check_Pledge_Context (Call : Node_Id) return Boolean is
+               N : Node_Id := Call;
+               P : Node_Id;
+            begin
+               loop
+                  P := Parent (N);
+
+                  case Nkind (P) is
+                     when N_Pragma_Argument_Association =>
+                        declare
+                           Prag_Id : constant Pragma_Id :=
+                             Get_Pragma_Id (Pragma_Name (Parent (P)));
+                        begin
+                           case Prag_Id is
+                              when Pragma_Precondition
+                                 | Pragma_Postcondition
+                                 | Pragma_Pre
+                                 | Pragma_Post
+                                 | Pragma_Check
+                                 =>
+                                 return True;
+                              when Pragma_Contract_Cases =>
+                                 raise Program_Error;
+                              when others =>
+                                 return False;
+                           end case;
+                        end;
+                     when N_Component_Association =>
+
+                        --  We are interested here in allowing contract cases.
+                        --  Guards are not allowed as they may occur negatively
+                        --  in others case (or completeness checking).
+
+                        declare
+                           CC_Aggr  : constant Node_Id := Parent (P);
+                           CC_Assoc : constant Node_Id := Parent (CC_Aggr);
+                           CC_Prag  : constant Node_Id := Parent (CC_Assoc);
+                        begin
+                           return Nkind (CC_Aggr) = N_Aggregate
+                             and then Nkind (CC_Assoc) =
+                               N_Pragma_Argument_Association
+                             and then Nkind (CC_Prag) = N_Pragma
+                             and then Get_Pragma_Id (Pragma_Name (CC_Prag)) =
+                               Pragma_Contract_Cases
+                             and then N = Expression (P);
+                        end;
+                     when N_Op_And | N_Op_Or | N_And_Then | N_Or_Else =>
+                        null;
+                     when N_If_Expression =>
+
+                        --  The condition of an if expression occurs negatively
+                        --  when proving the else case.
+
+                        if N = First (Expressions (P)) then
+                           return False;
+                        end if;
+                     when N_Case_Expression =>
+
+                        --  The condition of a case expression occurs
+                        --  negatively when proving the others case.
+
+                        if N = Expression (P) then
+                           return False;
+                        end if;
+                     when N_Case_Expression_Alternative =>
+                        null;
+                     when others =>
+                        return False;
+                  end case;
+                  N := P;
+               end loop;
+            end Check_Pledge_Context;
+
             Fst_Act   : constant Node_Id := First_Actual (N);
             Violation : Boolean := False;
             Err_Msg   : Unbounded_String :=
@@ -3346,6 +3427,10 @@ package body SPARK_Definition is
 
             if Violation then
                Mark_Violation (To_String (Err_Msg), N);
+            elsif not Check_Pledge_Context (N) then
+               Mark_Violation
+                 ("possibly negative occurrence of call to a Pledge function",
+                  N);
             end if;
          end;
       end if;
