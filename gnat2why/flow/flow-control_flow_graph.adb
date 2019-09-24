@@ -4762,9 +4762,11 @@ package body Flow.Control_Flow_Graph is
          L.Append (Union_Id (Decls));
       end if;
 
-      if Present (HSS) and then
-        (if Nkind (N) = N_Package_Body
-         then Body_Statements_In_SPARK (Unique_Defining_Entity (N)))
+      --  When processing a package body respect the optional SPARK_Mode => Off
+      --  on the package body statements.
+
+      if (if Nkind (N) = N_Package_Body
+          then Body_Statements_In_SPARK (Unique_Defining_Entity (N)))
       then
          Process_Statement (HSS, FA, CM, Ctx);
          L.Append (Union_Id (HSS));
@@ -4774,9 +4776,9 @@ package body Flow.Control_Flow_Graph is
 
       if Nkind (N) = N_Entry_Body then
          declare
-            Cond : constant Node_Id := Condition (Entry_Body_Formal_Part (N));
-            V_C  : Flow_Graphs.Vertex_Id;
-            V    : Flow_Graphs.Vertex_Id;
+            Cond  : constant Node_Id := Condition (Entry_Body_Formal_Part (N));
+            V_C   : Flow_Graphs.Vertex_Id;
+            V     : Flow_Graphs.Vertex_Id;
             Funcs : Node_Sets.Set;
          begin
             Collect_Functions_And_Read_Locked_POs
