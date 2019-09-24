@@ -735,11 +735,11 @@ X.Link is poisoned by the assignment to Y.]
 
 .. centered:: **Legality Rules**
 
-[Redundant: For clarity of presentation, some legality rules are stated
-in the preceding "Static Semantics" section (e.g., the rule that an
-owning type shall not be a tagged type; stating that rule earlier eliminates
-the need to say anything about about the circumstances, if any, under which
-a class-wide type might be an owning type).]
+[Redundant: For clarity of presentation, some legality rules are stated in the
+preceding "Static Semantics" section (e.g., the rule that an owning type shall
+not be a tagged type; stating that rule earlier eliminates the need to say
+anything about the circumstances, if any, under which a class-wide type might
+be an owning type).]
 
 ..  _tu-access_types-01:
 

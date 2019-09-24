@@ -142,7 +142,7 @@ Non-Language Requirements
    intended to meet.
 
    **Rationale**: This provides the rationale for the existence and use of the Profile. The
-   goals associated with the Profile are to to be met by the Policies that make
+   goals associated with the Profile are to be met by the Policies that make
    up the Profile, by the properties of the code that is outside of the
    Profile and by the set of compiler switches used when building the code. Hence, it may
    be necessary to impose certain restrictions on the code
@@ -162,5 +162,3 @@ Non-Language Requirements
 
    **Rationale**: In order to meet the goal/s associated with a given Profile, it may be
    necessary to require the use of certain switches.
-
-

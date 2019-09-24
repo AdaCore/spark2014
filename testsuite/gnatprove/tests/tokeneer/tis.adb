@@ -12,7 +12,7 @@
 -- TIS main program
 --
 -- Description:
---    Harness for the The TIS main program
+--    Harness for the TIS main program
 --
 -- Implementation Notes:
 --    Not SPARK since it starts Support software first and

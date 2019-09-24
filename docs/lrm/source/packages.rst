@@ -2128,7 +2128,7 @@ be a Boolean ``expression``.
    as usual (i.e., just like any other run-time check).
 
    Next, an additional proof obligation is generated which relates
-   the Refined_Post to to the Post (and Post'Class) aspects of
+   the Refined_Post to the Post (and Post'Class) aspects of
    the subprogram according to a "wrapper" model. Imagine two
    subprograms with the same parameter profile and Global and
    Depends aspects, but with different postconditions P1 and P2
@@ -2545,7 +2545,7 @@ Default_Initial_Condition Aspects
    class-wide precondition and postcondition expressions.]
    Any operations within a Default_Initial_Condition expression that
    were resolved in this way (i.e., as primitive operations of the (notional)
-   formal derived type NT), are in the evaluation of the the expression
+   formal derived type NT), are in the evaluation of the expression
    (i.e., at run-time) bound to the corresponding operations of the type of the
    object being "initialized by default" (see Ada RM 3.3.1).
 

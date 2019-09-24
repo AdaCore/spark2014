@@ -134,10 +134,10 @@ package Why.Gen.Binders is
    --  the pointer itself is mutable, and records where we can have up to four
    --  objects, a set of fields, a set of discriminants, a 'Constrained
    --  attribute, and a 'Tag attribute.
-   --  The 'Concurrent_Self' case corresponds to the "self" object
-   --  used in task types, protected subprograms and entries, and can be seen
-   --  as as "0 to 1" mapping. See also the general description of protected
-   --  types in gnat2why.
+   --  The 'Concurrent_Self' case corresponds to the "self" object used in
+   --  task types, protected subprograms and entries, and can be seen as "0
+   --  to 1" mapping. See also the general description of protected types in
+   --  gnat2why.
 
    type Item_Array is array (Positive range <>) of Item_Type;
 

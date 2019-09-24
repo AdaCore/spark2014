@@ -4621,9 +4621,9 @@ package body Gnat2Why.Subprograms is
                         Args   => Dispatch_Args,
                         Typ    => Anc_Ty);
          begin
-            --  If Descendant_E has has not the same globals as E, there
-            --  should be an error in flow analysis. Do not attempt to
-            --  generate a compatibility axiom.
+            --  If Descendant_E has not the same globals as E, there should
+            --  be an error in flow analysis. Do not attempt to generate a
+            --  compatibility axiom.
 
             if not Same_Globals (E, Descendant_E) then
                return;

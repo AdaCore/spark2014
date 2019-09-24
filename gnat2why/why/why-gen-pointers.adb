@@ -228,7 +228,7 @@ package body Why.Gen.Pointers is
          --  The null exclusion defined here is related to the designated type
          --  (that gives the subtype_indication).
          --  This is because the __new_uninitialized_allocator_ is defined
-         --  with regard to the the access_type_definition while the
+         --  with regard to the access_type_definition while the
          --  null_exclusion is checked for the subtype_indication.
          --
          --  type Typ is [null_exclusion] access [subtype_indication]

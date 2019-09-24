@@ -6365,8 +6365,8 @@ package body SPARK_Definition is
                end if;
             end;
 
-            --  Finally, if the the package has SPARK_Mode On | None and there
-            --  are no violations then record it as in SPARK.
+            --  Finally, if the package has SPARK_Mode On | None and there are
+            --  no violations then record it as in SPARK.
 
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 

@@ -414,6 +414,6 @@ that are useful for the proof.
 
 In yet other cases, where the difficulty is related to the size of the loop
 rather than the complexity of the properties, it may be useful to factor the
-loop into into local subprograms so that the subprograms' preconditions and
+loop into local subprograms so that the subprograms' preconditions and
 postconditions provide the intermediate assertions that are needed to prove the
 loop invariant.

@@ -165,7 +165,7 @@ package body Configuration is
 
       File_Specific_Only
       --  File_Specific_Only - only accept switches that can be put in the
-      --  'for Proof_Switches ("file")' section of of the project file. This
+      --  'for Proof_Switches ("file")' section of the project file. This
       --  excludes most switches except --timeout, --steps, etc.
      );
 

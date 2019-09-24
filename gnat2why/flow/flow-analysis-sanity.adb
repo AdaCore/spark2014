@@ -1044,7 +1044,7 @@ package body Flow.Analysis.Sanity is
                   Check_Name_Indexes_And_Slices (Name (N));
                end if;
 
-            --  Check that that the constrained array definition of an object
+            --  Check that the constrained array definition of an object
             --  declaration does not contain variable inputs.
 
             when N_Object_Declaration =>

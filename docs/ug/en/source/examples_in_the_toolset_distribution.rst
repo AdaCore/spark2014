@@ -374,7 +374,7 @@ the correctness of signaling ``Safe_Signaling``, namely that:
 * tracks that precede an occupied track are signalled in orange.
 
 As the algorithm in ``Move`` relies on the correctness of the signaling, the
-preservation of the collision-free property depends also on the the correctness
+preservation of the collision-free property depends also on the correctness
 of the signaling. :ref:`Pragma Assume` is used to express an essential property
 of the railroad on which correctness depends, namely that no track precedes
 itself. |GNATprove| proves all checks on this program, when using provers

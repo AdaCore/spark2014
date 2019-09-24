@@ -236,7 +236,7 @@ package body VC_Kinds is
             return "Check that the given pointer is not null so that it can " &
               "be dereferenced.";
          when VC_Null_Exclusion                   =>
-            return "Check that the the subtype_indication of the allocator " &
+            return "Check that the subtype_indication of the allocator " &
               "does not specify a null_exclusion";
          when VC_Invariant_Check                  =>
             return "Check that the given value respects the applicable type " &

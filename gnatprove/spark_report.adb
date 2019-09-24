@@ -29,8 +29,8 @@
 --  program reads all those files in and prints a summary in a file called
 --  "gnatprove.out".
 --
---  For each unit, the tool expects a file "<unit>.spark" be be present. This
---  file is in JSON format. The format of these files is documented in the
+--  For each unit, the tool expects a file "<unit>.spark" be present. This file
+--  is in JSON format. The format of these files is documented in the
 --  user's guide.
 
 with Ada.Calendar;
