@@ -4776,10 +4776,13 @@ package body Flow.Control_Flow_Graph is
 
       if Nkind (N) = N_Entry_Body then
          declare
-            Cond  : constant Node_Id := Condition (Entry_Body_Formal_Part (N));
+            Formal_Part : constant Node_Id := Entry_Body_Formal_Part (N);
+            Cond        : constant Node_Id := Condition (Formal_Part);
+
             V_C   : Flow_Graphs.Vertex_Id;
             V     : Flow_Graphs.Vertex_Id;
             Funcs : Node_Sets.Set;
+
          begin
             Collect_Functions_And_Read_Locked_POs
               (Cond,
@@ -4806,9 +4809,9 @@ package body Flow.Control_Flow_Graph is
 
             Add_Vertex
               (FA,
-               Direct_Mapping_Id (Entry_Body_Formal_Part (N)),
+               Direct_Mapping_Id (Formal_Part),
                Make_Aux_Vertex_Attributes
-                 (E_Loc     => Entry_Body_Formal_Part (N),
+                 (E_Loc     => Formal_Part,
                   Execution => Barrier),
                V);
 
