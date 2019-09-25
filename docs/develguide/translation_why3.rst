@@ -181,7 +181,7 @@ types):
 Scalar Types
 ^^^^^^^^^^^^
 
-All scalar types have a resentative type, which is the Why type used
+All scalar types have a representative type, which is the Why type used
 to represent this scalar type. It differs depending on the kind of
 scalar type which is declared. Scalar types also have a more complete
 form, which includes additional constraints (bounds, modulus etc).
@@ -1431,7 +1431,7 @@ Here is the predicate defined for predefined equality on type Big_Rec:
 We see that it uses the predefined equality on X and the primitive
 equality on Y. Also notice that, if the type has discriminants,
 equalities on components are only considered if the components are
-indeed present (ie when the predicate discriminant check for the
+indeed present (i.e. when the predicate discriminant check for the
 corresponding component returns True).
 
 For types with a private part, an uninterpreted logic function is
@@ -1810,7 +1810,7 @@ of the address field is never accessed directly in the program. It is only used
 so that two access objects pointing to different memory cells which happen to
 contain the same object are not considered equal.
 
-Along with the representative type, the presentative module contains other
+Along with the representative type, the representative module contains other
 declarations which are shared between access types. Among them, the null
 pointer, a protected access function which checks whether a pointer is null
 before returning its value, and the primitive equality over access objects. Here
@@ -2403,7 +2403,7 @@ Mutable and Constant Objects
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 Objects are translated differently depending on their type, but also depending
 on whether they are mutable or not. Let's first consider constants. Are
-translated as constants in Why3 all Ada objects wich are constants in Ada
+translated as constants in Why3 all Ada objects which are constants in Ada
 except:
 
  * Loop parameters, as they need to be updated during the generated Why3 loop;
@@ -2695,10 +2695,10 @@ access-to-variable type:
 
 .. code-block:: whyml
 
- val x__pointer_value : Standard__integer.integer__ref 
- 
+ val x__pointer_value : Standard__integer.integer__ref
+
  val constant x__pointer_address : int
- 
+
  val constant x__is_null_pointer : bool
 
 Let us now consider a variable:
@@ -2711,11 +2711,11 @@ Here, both the designated value, the ``is_null`` flag and the address of ``Y``
 are mutable, so we declare three references:
 
 .. code-block:: whyml
-		
+
  val y__pointer_value  : Standard__integer.integer__ref
- 
+
  val y__pointer_address : int__ref
- 
+
  val y__is_null_pointer : bool__ref
 
 In addition, if the access object is a local borrower (a constant or a
@@ -2738,9 +2738,9 @@ components described previously, we generate:
 .. code-block:: whyml
 
  clone export "ada__model".Pledge with axiom .,
- type borrower = Test__T2b.t2b, 
+ type borrower = Test__T2b.t2b,
  type borrowed = Test__int_acc.int_acc
- 
+
  val test__b__pledge  : __pledge_ty__ref
 
 Here ``t2b`` is the type introduced by the compiler for the anonymous type of
@@ -2986,12 +2986,12 @@ objects of the compiler generated type for the return type of the function
 (the borrower):
 
 .. code-block:: whyml
- 
+
  clone export "ada__model".Pledge with axiom .,
- type borrower = t3b, 
+ type borrower = t3b,
  type borrowed = int_acc_arr_acc
- 
- val function test__f__pledge 
+
+ val function test__f__pledge
    (x : int_acc_arr_acc) (i : int) : __pledge_ty
 
 The clone of the pledge module here is similar to the one used for local
@@ -3571,9 +3571,8 @@ On borrows (declaration of local borrowers) and re-borrows (assignment at
 top-level inside a local borrower), the reference for the `pledge` of the
 local borrower needs to be updated (see ``New_Pledge_Update_From_Assignment``).
 In this pledge, we try to compute the most precise relation possible between
-the value of the
-borrowed expression and the value of the borrower at all time. To understand
-how it works, let us look at some examples.
+the value of the borrowed expression and the value of the borrower at all time.
+To understand how it works, let us look at some examples.
 
 First, let us consider the simplest possible case: a borrow of a complete
 object.
@@ -3593,12 +3592,11 @@ Here is the pledge computed for this declaration:
     (forall brower : t2b [ __pledge_get result borrowed brower ].
        __pledge_get result borrowed brower = (borrowed = brower)))
 
-So here we have indeed the most precise relation possible, that is, that
-the borrowed object ``Y`` and the borrower ``B`` are always equal.
+So here we have indeed the most precise relation possible, that is, that the
+borrowed object ``Y`` and the borrower ``B`` are always equal.
 
-At the end of the scope of ``B``, or when this scope is exited
-prematurely through a return or exit statement, the borrowed object ``Y`` is
-havoc'ed:
+At the end of the scope of ``B``, or when this scope is exited prematurely
+through a return or exit statement, the borrowed object ``Y`` is havoc'ed:
 
 .. code-block:: whyml
 
@@ -3643,8 +3641,8 @@ the borrowed object, the part which was actually borrowed:
 
 .. code-block:: whyml
 
-  let borrowed  =  (val _f : two_acc in _f) in
-  let borrowed_expr = borrowed.f in 
+  let borrowed = (val _f : two_acc in _f) in
+  let borrowed_expr = borrowed.f in
      assume
        { __pledge_get test__b__pledge.__pledge_ty__content borrowed b
       /\ y__split_fields.__split_fields__content.f.is_null_pointer =
@@ -3673,7 +3671,7 @@ the array it designates:
 
 .. code-block:: whyml
 
-  let borrowed =  (val _f : int_acc_arr_acc in _f) in 
+  let borrowed = (val _f : int_acc_arr_acc in _f) in
   let borrowed_expr = get (to_array borrowed.pointer_value) 1 in
      assume
        { __pledge_get test__b__pledge.__pledge_ty__content borrowed y
@@ -3698,14 +3696,14 @@ Let's see what happens on an example. Here we have a list ``X``
 ``Y``. We then update ``Y`` so that it now points to the next element:
 
 .. code-block:: ada
-   
+
    type List;
    type List_Acc is access List;
    type List is record
       V : Integer;
       N : List_Acc;
    end record;
-   
+
    X : List_Acc;
    Y : access List := X;
 
@@ -3748,7 +3746,7 @@ an example:
 .. code-block:: ada
 
    function F (X : Int_Acc_Arr_Acc; I : Integer) return access Integer;
-   
+
    X : Int_Acc_Arr_Acc := new Int_Acc_Arr'(1 => null, 2 => null);
    Y : access Integer := F (X, 1);
 
@@ -3776,7 +3774,7 @@ is not really needed, but it would be if we had two nested calls for example:
 .. code-block:: ada
 
    function F (X : access List) return access List;
-   
+
    X : List_Acc;
    Y : access List := F (F (X));
 
