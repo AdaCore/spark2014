@@ -11668,19 +11668,19 @@ package body Gnat2Why.Expr is
             | Attribute_Max
          =>
             declare
-               Ada_Ty : constant Entity_Id := Etype (Expr);
-               Base : constant W_Type_Id := Base_Why_Type_No_Bool (Ada_Ty);
-               Arg1 : constant W_Expr_Id :=
+               Ada_Ty : constant Entity_Id := Retysp (Etype (Expr));
+               Base   : constant W_Type_Id := Base_Why_Type_No_Bool (Ada_Ty);
+               Arg1   : constant W_Expr_Id :=
                  Transform_Expr (First (Expressions (Expr)),
                                  Base,
                                  Domain,
                                  Params);
-               Arg2 : constant W_Expr_Id :=
+               Arg2   : constant W_Expr_Id :=
                  Transform_Expr (Next (First (Expressions (Expr))),
                                  Base,
                                  Domain,
                                  Params);
-               Func : constant W_Identifier_Id :=
+               Func   : constant W_Identifier_Id :=
                  (if Is_Discrete_Type (Ada_Ty)
                     or else Is_Fixed_Point_Type (Ada_Ty)
                   then
