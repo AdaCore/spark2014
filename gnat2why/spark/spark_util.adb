@@ -359,7 +359,7 @@ package body SPARK_Util is
          --  its type...
 
          if not Compile_Time_Known_Value (Low) then
-            Low := Type_Low_Bound (Etype (Low));
+            Low := Type_Low_Bound (Unchecked_Full_Type (Etype (Low)));
             Dynamic_Range := True;
          end if;
 
@@ -367,7 +367,7 @@ package body SPARK_Util is
          --  of its type...
 
          if not Compile_Time_Known_Value (High) then
-            High := Type_High_Bound (Etype (High));
+            High := Type_High_Bound (Unchecked_Full_Type (Etype (High)));
             Dynamic_Range := True;
          end if;
 

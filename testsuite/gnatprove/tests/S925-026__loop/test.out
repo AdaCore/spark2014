@@ -1,0 +1,2 @@
+repro.adb:7:07: info: cannot unroll loop (too many loop iterations)
+repro.ads:5:14: warning: subprogram "Foo" has no effect
