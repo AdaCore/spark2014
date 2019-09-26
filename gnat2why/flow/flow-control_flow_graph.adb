@@ -1077,7 +1077,10 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Linkup
 
    begin
-      if From_Atr.Is_Parameter or else From_Atr.Is_Global_Parameter then
+      if From_Atr.Is_Implicit_Parameter
+        or else From_Atr.Is_Parameter
+        or else From_Atr.Is_Global_Parameter
+      then
          Col := Get_Colour (FA.CFG.Get_Vertex (From_Atr.Call_Vertex));
       elsif not From_Atr.Is_Callsite then
          Col := Get_Colour (From);
