@@ -1,0 +1,4 @@
+p.adb:3:42: info: data dependencies proved
+p.adb:5:10: medium: exception might be raised
+p.adb:8:29: info: data dependencies proved
+p.adb:10:10: medium: call to nonreturning subprogram might be executed
