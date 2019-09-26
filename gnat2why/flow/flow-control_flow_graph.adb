@@ -1079,13 +1079,17 @@ package body Flow.Control_Flow_Graph is
    --  Start of processing for Linkup
 
    begin
+      --  For parameter vertices we get the execution kind from their
+      --  corresponding call vertex.
+
       if From_Atr.Is_Implicit_Parameter
         or else From_Atr.Is_Parameter
         or else From_Atr.Is_Global_Parameter
       then
          Col := Get_Colour (FA.CFG.Get_Vertex (From_Atr.Call_Vertex));
-      elsif From_Atr.Is_Callsite then
-         Col := EC_Default;
+
+      --  For other vertices we get the execution kind from the vertex itself
+
       else
          Col := Get_Colour (From);
       end if;

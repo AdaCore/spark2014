@@ -166,6 +166,7 @@ formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate
 formal_cont.ads:32:14: info: subprogram "Test_02" will terminate
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
 functions.adb:11:07: warning: unreachable code (CVC4: 1 VC)
+functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
 functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
 functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
 functions.adb:14:14: warning: subprogram "G" has no effect
@@ -176,6 +177,7 @@ functions.ads:3:13: warning: subprogram "Non_Ter_Func" might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: warning: subprogram "Expr_Func" might not terminate
 functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" might not return)
+functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram "Nested_Proc" might not terminate
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
