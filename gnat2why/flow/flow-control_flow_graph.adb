@@ -1265,9 +1265,19 @@ package body Flow.Control_Flow_Graph is
         (case Ekind (E) is
             --  Formal parameters of mode IN with a non-constant access type
             --  can be assigned, so we handle them very much like IN OUTs.
+            --
+            --  However, first parameter of a borrowing traversal function is
+            --  special: it is of an access type (thus appears writable), so
+            --  that the function's result is of an access type as well (so
+            --  that this result is writable), but actually this parameter
+            --  cannot be written (because functions cannot have side-effects).
+
             when E_In_Parameter =>
                (if Is_Access_Type (Typ)
                   and then not Is_Access_Constant (Typ)
+                  and then not
+                    (Is_Borrowing_Traversal_Function (FA.Spec_Entity)
+                     and then E = First_Formal (FA.Spec_Entity))
                 then Mode_In_Out
                 else Mode_In),
 

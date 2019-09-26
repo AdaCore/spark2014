@@ -4,12 +4,10 @@ traversal_funcs.adb:15:13: medium: subprogram "Length" might not terminate, term
 traversal_funcs.adb:17:52: info: pointer dereference check proved (CVC4: 1 VC)
 traversal_funcs.adb:17:57: info: overflow check proved (CVC4: 1 VC)
 traversal_funcs.adb:17:57: info: range check proved (CVC4: 1 VC)
-traversal_funcs.adb:21:19: warning: "X" is not modified, could be IN
 traversal_funcs.adb:24:18: info: contract case proved (CVC4: 2 VC; Trivial: 2 VC)
 traversal_funcs.adb:25:18: info: contract case proved (CVC4: 2 VC; Trivial: 3 VC)
 traversal_funcs.adb:26:118: info: overflow check proved (CVC4: 1 VC)
 traversal_funcs.adb:30:18: info: pointer dereference check proved (CVC4: 1 VC)
-traversal_funcs.adb:36:21: warning: "X" is not modified, could be IN
 traversal_funcs.adb:38:14: info: postcondition proved (CVC4: 2 VC; Trivial: 3 VC)
 traversal_funcs.adb:39:130: info: overflow check proved (CVC4: 1 VC)
 traversal_funcs.adb:42:10: info: precondition proved (CVC4: 1 VC)

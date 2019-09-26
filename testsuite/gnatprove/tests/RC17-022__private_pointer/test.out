@@ -5,6 +5,8 @@ private_pointer.adb:13:29: info: precondition proved (CVC4: 1 VC)
 private_pointer.adb:14:14: info: precondition proved (CVC4: 1 VC)
 private_pointer.adb:15:22: info: assertion proved (CVC4: 1 VC)
 private_pointer.adb:15:29: info: precondition proved (CVC4: 1 VC)
+private_pointer.ads:5:25: warning: "X" is not modified, could be of access constant type
+private_pointer.ads:6:21: warning: "X" is not modified, could be of access constant type
 private_pointer.ads:8:16: warning: volatile function "Uninit_Alloc" has no volatile effects
 private_pointer.ads:9:17: info: postcondition proved (CVC4: 1 VC)
 private_pointer.ads:10:16: warning: volatile function "Init_Alloc" has no volatile effects

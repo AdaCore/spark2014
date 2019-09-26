@@ -1,10 +1,8 @@
-local_borrow.adb:10:23: warning: "X" is not modified, could be IN
 local_borrow.adb:14:15: info: pointer dereference check proved (CVC4: 1 VC)
 local_borrow.adb:24:26: medium: precondition might fail, cannot prove X /= null
 local_borrow.adb:24:36: medium: precondition might fail, cannot prove X /= null
 local_borrow.adb:24:46: info: precondition proved (CVC4: 1 VC)
 local_borrow.adb:26:08: medium: pointer dereference check might fail
-local_borrow_array.adb:12:24: warning: "X" is not modified, could be IN
 local_borrow_array.adb:16:15: info: pointer dereference check proved (CVC4: 1 VC)
 local_borrow_array.adb:29:26: medium: pointer dereference check might fail
 local_borrow_array.adb:29:26: medium: precondition might fail, cannot prove X /= null

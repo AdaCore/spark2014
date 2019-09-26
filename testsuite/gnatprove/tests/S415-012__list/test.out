@@ -1,4 +1,5 @@
 list_borrow.adb:8:13: medium: subprogram "All_Pos" might not terminate, terminating annotation could be incorrect
+list_borrow.adb:8:22: warning: "X" is not modified, could be of access constant type
 list_borrow.adb:9:26: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:10:26: info: pointer dereference check proved (CVC4: 1 VC)
 list_borrow.adb:16:21: info: predicate check proved (CVC4: 1 VC)
