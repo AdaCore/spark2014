@@ -1,1 +1,0 @@
-ALL XFAIL borrow checker ignores vars under abstract state
