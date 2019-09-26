@@ -1,0 +1,5 @@
+noret.adb:1:34: medium: "Y" might not be initialized in "Noret"
+noret.adb:2:20: info: data dependencies proved
+noret.adb:4:36: info: data dependencies proved
+noret.adb:6:07: medium: exception might be raised
+noret.adb:11:07: medium: call to nonreturning subprogram might be executed
