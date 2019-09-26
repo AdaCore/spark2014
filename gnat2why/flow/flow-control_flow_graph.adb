@@ -1055,10 +1055,6 @@ package body Flow.Control_Flow_Graph is
                      From  : Flow_Graphs.Vertex_Id;
                      To    : Flow_Graphs.Vertex_Id)
    is
-      Col : Edge_Colours;
-
-      From_Atr : V_Attributes renames FA.Atr (From);
-
       function Get_Colour (V : Flow_Graphs.Vertex_Id) return Edge_Colours;
       --  Produce the correct colour for outbound edges depending on the
       --  execution kind of the given vertex.
@@ -1074,6 +1070,12 @@ package body Flow.Control_Flow_Graph is
                when Abnormal_Termination => EC_Abend,
                when Infinite_Loop        => EC_Inf);
 
+      --  Local variables
+
+      Col : Edge_Colours;
+
+      From_Atr : V_Attributes renames FA.Atr (From);
+
    --  Start of processing for Linkup
 
    begin
@@ -1082,11 +1084,12 @@ package body Flow.Control_Flow_Graph is
         or else From_Atr.Is_Global_Parameter
       then
          Col := Get_Colour (FA.CFG.Get_Vertex (From_Atr.Call_Vertex));
-      elsif not From_Atr.Is_Callsite then
-         Col := Get_Colour (From);
-      else
+      elsif From_Atr.Is_Callsite then
          Col := EC_Default;
+      else
+         Col := Get_Colour (From);
       end if;
+
       FA.CFG.Add_Edge (From, To, Col);
    end Linkup;
 
