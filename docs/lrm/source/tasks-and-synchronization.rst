@@ -321,7 +321,9 @@ are in |SPARK|.
     state abstraction Ada.Task_Identification.Tasking_State
     is referenced as an In_Out global:
 
-  * Ada.Interrupts.Detach_Handler.
+  * Ada.Interrupts.Detach_Handler;
+
+  * Ada.Dispatching.Yield.
 
 .. _tu-tasks_and_synchronization-17:
 
