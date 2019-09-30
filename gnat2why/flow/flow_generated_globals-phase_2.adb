@@ -2383,8 +2383,8 @@ package body Flow_Generated_Globals.Phase_2 is
                     (if Constant_Calls.Contains (E)
                      then Direct_Inputs_Of_Constant (E)
                      elsif Contracts.Contains (E)
-                     then Name_Lists.Empty_List
-                     else Direct_Inputs_Of_Subprogram (E));
+                     then Direct_Inputs_Of_Subprogram (E)
+                     else Name_Lists.Empty_List);
 
                   LHS : constant Constant_Graphs.Vertex_Id :=
                     Constant_Graph.Get_Vertex (E);
