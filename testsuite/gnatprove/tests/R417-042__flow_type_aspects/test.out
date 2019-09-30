@@ -7,6 +7,8 @@ p.adb:6:35: low: unused global "Low"
 p.adb:6:40: low: unused global "High"
 p.adb:12:12: medium: predicate check might fail, cannot prove T in Low .. High
 p.adb:16:11: info: data dependencies proved
+p.adb:17:35: low: unused global "Low"
+p.adb:17:40: low: unused global "High"
 p.adb:21:16: medium: predicate check might fail, cannot prove T in Low .. High
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved

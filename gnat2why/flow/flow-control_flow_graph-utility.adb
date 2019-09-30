@@ -167,10 +167,6 @@ package body Flow.Control_Flow_Graph.Utility is
          case Aspect is
             when DIC =>
                A.Pretty_Print_Kind := Pretty_Print_DIC;
-            when Predicate =>
-               A.Pretty_Print_Kind := Pretty_Print_Predicate;
-            when Invariant =>
-               A.Pretty_Print_Kind := Pretty_Print_Invariant;
             when No_Aspect =>
                null;
          end case;

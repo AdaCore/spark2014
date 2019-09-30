@@ -261,10 +261,7 @@ package Flow_Types is
               not Global_Names.Inputs.Contains (G) and then
                  not Global_Names.Outputs.Contains (G));
 
-   type Type_Aspect is (No_Aspect,
-                        DIC,
-                        Predicate,
-                        Invariant);
+   type Type_Aspect is (No_Aspect, DIC);
 
    function "=" (Left, Right : Flow_Id) return Boolean;
    --  Equality for Flow_Id
@@ -536,8 +533,6 @@ package Flow_Types is
    type Pretty_Print_Kind_T is (Pretty_Print_Null,
                                 Pretty_Print_DIC,
                                 Pretty_Print_Package,
-                                Pretty_Print_Predicate,
-                                Pretty_Print_Invariant,
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field,

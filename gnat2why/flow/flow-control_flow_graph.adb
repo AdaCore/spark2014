@@ -142,8 +142,6 @@ package body Flow.Control_Flow_Graph is
    package Vertex_Lists is new Ada.Containers.Doubly_Linked_Lists
      (Element_Type => Flow_Graphs.Vertex_Id);
 
-   subtype Valid_Type_Aspect is Type_Aspect range DIC .. Invariant;
-
    ---------------------
    -- Connection_Maps --
    ---------------------
@@ -3469,16 +3467,10 @@ package body Flow.Control_Flow_Graph is
       --  This procedure mirrors Count_Tasks from
       --  Sem_Ch3.Analyze_Object_Declaration.
 
-      procedure Add_Vertex_For_Type_Aspect (Subp   : Entity_Id;
-                                            Aspect : Valid_Type_Aspect)
-      with Pre => (case Aspect is
-                      when DIC       => Is_DIC_Procedure (Subp),
-                      when Predicate => Is_Predicate_Function (Subp),
-                      when Invariant => Is_Invariant_Procedure (Subp));
-      --  Add a sink vertex for a type aspect.
-      --  Subp represents the subprogram called in the expression for the
-      --  aspect (a function for a type predicate and a procedure for a type
-      --  invariant or DIC). Aspect refers to the current type aspect.
+      procedure Add_Vertex_For_DIC (DIC_Proc : Entity_Id)
+      with Pre => Is_DIC_Procedure (DIC_Proc);
+      --  Add a sink vertex for a Default_Initial_Condition aspect. DIC_Proc is
+      --  the DIC procedure evaluated at the vertex.
 
       ----------------
       -- Find_Tasks --
@@ -3623,31 +3615,26 @@ package body Flow.Control_Flow_Graph is
          end if;
       end Find_Tasks;
 
-      --------------------------------
-      -- Add_Vertex_For_Type_Aspect --
-      --------------------------------
+      ------------------------
+      -- Add_Vertex_For_DIC --
+      ------------------------
 
-      procedure Add_Vertex_For_Type_Aspect (Subp   : Entity_Id;
-                                            Aspect : Valid_Type_Aspect)
-      is
+      procedure Add_Vertex_For_DIC (DIC_Proc : Entity_Id) is
          Expr : constant Node_Id :=
-           (case Aspect is
-               when Predicate       => Get_Expr_From_Return_Only_Func (Subp),
-               when Invariant | DIC => Get_Expr_From_Check_Only_Proc (Subp));
+           Get_Expr_From_Check_Only_Proc (DIC_Proc);
 
          Funcs          : Node_Sets.Set;
          Variables_Used : Flow_Id_Sets.Set;
 
          --  Calculate components of Type and Object
          Components_Of_Type   : Flow_Id_Sets.Set :=
-           Flatten_Variable (First_Entity (Subp), FA.B_Scope);
+           Flatten_Variable (First_Entity (DIC_Proc), FA.B_Scope);
 
          Components_Of_Object : constant Flow_Id_Sets.Set :=
            Flatten_Variable (E, FA.B_Scope);
 
       begin
-         --  Note that default initial conditions can make use of the type
-         --  mark. For example
+         --  Default initial condition can refer to the type mark, e.g.:
          --
          --     type T is private
          --       with Default_Initial_Condition => Foo (T) > 2;
@@ -3659,7 +3646,7 @@ package body Flow.Control_Flow_Graph is
          --  we need to replace all occurrences of T with X (and all components
          --  of T with all components of X) to produce the correct default
          --  initial condition.
-         --  Same holds for type predicates and invariants.
+
          Variables_Used := Get_Variables
            (Expr,
             Scope                => FA.B_Scope,
@@ -3698,19 +3685,19 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Make_Sink_Vertex_Attributes
               (Var_Use      => Replace_Flow_Ids
-                   (Of_This   => First_Entity (Subp),
+                   (Of_This   => First_Entity (DIC_Proc),
                     With_This => E,
                     The_Set   => Variables_Used),
                Sub_Called   => Funcs,
                Is_Assertion => True,
-               Aspect       => Aspect,
+               Aspect       => DIC,
                E_Loc        => N),
             V);
          Inits.Append (V);
 
          --  Check for folded functions
          Ctx.Folded_Function_Checks.Append (Expr);
-      end Add_Vertex_For_Type_Aspect;
+      end Add_Vertex_For_DIC;
 
    --  Start of processing for Do_Object_Declaration
 
@@ -3933,32 +3920,6 @@ package body Flow.Control_Flow_Graph is
             end if;
 
             Ctx.Folded_Function_Checks.Append (Expr);
-
-            if Has_Predicates (Typ) then
-               declare
-                  Predicate_Func : constant Entity_Id :=
-                    Predicate_Function (Typ);
-
-               begin
-                  if Present (Predicate_Func) then
-                     Add_Vertex_For_Type_Aspect (Subp   => Predicate_Func,
-                                                 Aspect => Predicate);
-                  end if;
-               end;
-            end if;
-
-            if Has_Invariants_In_SPARK (Typ) then
-               declare
-                  Invariant_Proc : constant Entity_Id :=
-                    Invariant_Procedure (Typ);
-
-               begin
-                  if Present (Invariant_Proc) then
-                     Add_Vertex_For_Type_Aspect (Subp   => Invariant_Proc,
-                                                 Aspect => Invariant);
-                  end if;
-               end;
-            end if;
          end;
 
          pragma Assert (not Inits.Is_Empty);
@@ -4001,8 +3962,7 @@ package body Flow.Control_Flow_Graph is
 
          begin
             if Present (DIC_Proc) then
-               Add_Vertex_For_Type_Aspect (Subp   => DIC_Proc,
-                                           Aspect => DIC);
+               Add_Vertex_For_DIC (DIC_Proc);
             end if;
          end;
       end if;

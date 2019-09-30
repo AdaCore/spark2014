@@ -502,16 +502,6 @@ package body Flow is
             Write_Str ("Default Initial Condition: ");
             Print_Node (A.Error_Location);
 
-         elsif A.Pretty_Print_Kind = Pretty_Print_Predicate then
-            Rv.Shape := Shape_None;
-            Write_Str ("Predicate: ");
-            Print_Node (A.Error_Location);
-
-         elsif A.Pretty_Print_Kind = Pretty_Print_Invariant then
-            Rv.Shape := Shape_None;
-            Write_Str ("Invariant: ");
-            Print_Node (A.Error_Location);
-
          elsif A.Pretty_Print_Kind = Pretty_Print_Record_Field then
             --  Sanity check that we only have one defined variable
             pragma Assert (A.Variables_Defined.Length = 1);
