@@ -459,10 +459,6 @@ compiler.adb:1470:52: info: range check proved (CVC4: 1 VC)
 compiler.adb:1484:11: info: add a contract to analyze it separately from calling contexts
 compiler.adb:1484:11: info: local subprogram "Base" only analyzed in the context of calls
 compiler.adb:1488:03: info: initialization of "result" proved
-compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1781
-compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1788
-compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1796
-compiler.adb:1491:03: warning: initialization of "new_stack" has no effect, in call inlined at compiler.adb:1804
 compiler.adb:1492:03: info: initialization of "new_base" proved
 compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1781
 compiler.adb:1492:03: info: initialization of "new_base" proved, in call inlined at compiler.adb:1788
