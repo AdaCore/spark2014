@@ -187,6 +187,7 @@ imported.ads:9:14: info: subprogram "Q_01" will terminate
 imported.ads:9:14: warning: subprogram "Q_01" has no effect
 imported.ads:16:14: warning: subprogram "Q_02" has no effect
 imported.ads:16:14: warning: subprogram "Q_02" might not terminate
+modular_analysis.adb:5:04: warning: analyzing unreferenced procedure "Test_01"
 modular_analysis.adb:5:14: warning: subprogram "Test_01" might not terminate
 modular_analysis.adb:5:23: info: initialization of "F" proved
 nest_in_proc.adb:5:17: info: subprogram "Nothing" will terminate
