@@ -3628,7 +3628,7 @@ package body Flow.Control_Flow_Graph is
 
          --  Calculate components of Type and Object
          Components_Of_Type   : Flow_Id_Sets.Set :=
-           Flatten_Variable (First_Entity (DIC_Proc), FA.B_Scope);
+           Flatten_Variable (First_Formal (DIC_Proc), FA.B_Scope);
 
          Components_Of_Object : constant Flow_Id_Sets.Set :=
            Flatten_Variable (E, FA.B_Scope);
@@ -3685,7 +3685,7 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Make_Sink_Vertex_Attributes
               (Var_Use      => Replace_Flow_Ids
-                   (Of_This   => First_Entity (DIC_Proc),
+                   (Of_This   => First_Formal (DIC_Proc),
                     With_This => E,
                     The_Set   => Variables_Used),
                Sub_Called   => Funcs,
