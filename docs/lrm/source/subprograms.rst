@@ -1493,6 +1493,8 @@ Overloading of Operators
    aspect of ``null``; see :ref:`global-aspects` for the statement of this
    rule.]
 
+.. _tu-overloading_of_operators-vr:
+
 .. centered:: **Verification Rules**
 
 2.  A user-defined equality operation on a record type shall always

@@ -142,6 +142,16 @@ Static predicates and dynamic predicates are both in
 
 .. _etu-subtype_predicates-03:
 
+.. _tu-subtype_predicates-vr:
+
+.. centered:: **Verification Rules**
+
+.. _tu-sf-subtype_predicates-04:
+
+4. A Dynamic_Predicate expression shall always terminate.
+
+.. _etu-subtype_predicates-04:
+
 Objects and Named Numbers
 -------------------------
 
