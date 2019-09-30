@@ -62,6 +62,7 @@ all: gnat2why gnatprove why3
 
 # main target for nightly builds
 all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
+coverage-nightly: coverage gnatprove-nightly install install-examples
 
 # Setup and installation of why3
 # ==============================
@@ -133,7 +134,7 @@ coverage:
 
 coverage-report:
 	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
-	gnatcov coverage --level=stmt --annotate=dhtml --isi gnat2why/project.isi --output-dir=dhtml-report @tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --sid gnat2why/project.isi --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run
