@@ -62,7 +62,7 @@ all: gnat2why gnatprove why3
 
 # main target for nightly builds
 all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
-coverage-nightly: coverage gnatprove-nightly install install-examples
+coverage-nightly: coverage gnatprove-nightly install install-coverage install-examples
 
 # Setup and installation of why3
 # ==============================
@@ -131,6 +131,9 @@ gnat2why:
 
 coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage
+
+install-coverage:
+	$(CP) gnat2why/project.isi $(SHAREDIR)
 
 coverage-report:
 	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
