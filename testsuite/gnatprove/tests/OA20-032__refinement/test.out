@@ -110,6 +110,7 @@ patris.ads:278:14: info: postcondition proved (CVC4: 1 VC)
 patris.ads:281:11: info: data dependencies proved
 patris.ads:284:06: info: data dependencies proved
 patris.ads:287:11: info: data dependencies proved
+patris.ads:289:14: info: initialization of "Best_Score_Nbr" constituent of "Best_Score_State" proved
 patris.ads:290:06: info: data dependencies proved
 patris.ads:293:11: info: data dependencies proved
 patris.ads:296:06: info: data dependencies proved

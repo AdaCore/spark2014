@@ -10,9 +10,7 @@ foo.adb:46:40: info: initialization of "N" proved
 foo.adb:47:40: info: initialization of "M" proved
 foo.adb:48:40: info: initialization of "O" proved
 foo.adb:49:09: info: data dependencies proved
-foo.adb:49:31: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46
 foo.adb:49:31: high: "X" is not initialized
-foo.adb:49:31: high: either make "X" an input in the Global contract or initialize it before use
 foo.adb:49:37: info: initialization of "Z" proved
 foo.adb:49:40: info: initialization of "W" proved
 foo.adb:52:12: high: "X" is not an input in the Global contract of subprogram "Test_SRM_6_1_4_Rule_15_B" at line 46

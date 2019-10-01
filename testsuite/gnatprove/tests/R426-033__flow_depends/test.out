@@ -1,11 +1,13 @@
-angles-hall.ads:4:06: global Output "Angles.State" of "Update" not written
-angles-hall.ads:4:06: global Output "Hall.State" of "Update" not written
-angles-hall.ads:4:06: low: global Input "Angles.State" of "Update" not read
-angles-hall.ads:4:06: low: global Input "Hall.State" of "Update" not read
-angles-hall.ads:5:06: info: flow dependencies proved
-angles-hall.ads:11:06: global Output "Angles.State" of "Update" not written
-angles-hall.ads:11:06: global Output "Hall.State" of "Update" not written
-angles-hall.ads:11:06: low: global Input "Angles.State" of "Update" not read
-angles-hall.ads:11:06: low: global Input "Hall.State" of "Update" not read
+angles-hall.adb:14:15: warning: unused assignment to "Position"
+angles-hall.ads:3:14: warning: "X" constituent of "State" is not modified, could be INPUT
+angles-hall.ads:3:22: high: "Position" is not initialized in "Update"
+angles-hall.ads:3:22: warning: unused variable "Position"
+angles-hall.ads:4:06: info: data dependencies proved
+angles-hall.ads:4:35: low: unused global "Angles.State"
+angles-hall.ads:4:35: warning: "Angles.State" is not modified, could be INPUT
+angles-hall.ads:4:43: low: unused global "Hall.State"
+angles-hall.ads:5:35: medium: incorrect dependency "Angles.State => Hall.State"
+angles-hall.ads:6:35: medium: incorrect dependency "Position => Angles.State"
+angles-hall.ads:6:49: medium: incorrect dependency "Position => Hall.State"
+angles-hall.ads:11:06: info: data dependencies proved
 angles-hall.ads:12:06: info: flow dependencies proved
-gnatprove: error during flow analysis and proof

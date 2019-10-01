@@ -1,5 +1,7 @@
 polyorb_hi-epoch.ads:40:08: info: flow dependencies proved
-polyorb_hi-epoch.ads:44:11: global Output "Epoch.Elaborated_Variables" of "System_Startup_Time" not written
+polyorb_hi-epoch.ads:43:14: warning: "Epoch_Data" constituent of "Elaborated_Variables" is not modified, could be INPUT
+polyorb_hi-epoch.ads:43:35: info: initialization of "SST" proved
+polyorb_hi-epoch.ads:44:11: info: data dependencies proved
 polyorb_hi-epoch.ads:48:11: info: data dependencies proved
 polyorb_hi-messages.adb:72:57: info: range check proved (CVC4: 1 VC)
 polyorb_hi-messages.adb:73:07: info: range check proved (CVC4: 2 VC)
@@ -62,6 +64,8 @@ polyorb_hi-output.adb:185:15: info: length check proved (CVC4: 3 VC; Trivial: 1 
 polyorb_hi-output.adb:185:15: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:185:42: info: division check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:186:28: info: range check proved (CVC4: 1 VC)
+polyorb_hi-output.adb:188:13: high: "Epoch.Elaborated_Variables" must be a global output of "Dump" (SPARK RM 6.1.4(17))
+polyorb_hi-output.adb:194:07: high: "Epoch.Elaborated_Variables" must be a global output of "Dump" (SPARK RM 6.1.4(17))
 polyorb_hi-output.adb:202:07: info: range check proved (CVC4: 2 VC)
 polyorb_hi-output.adb:202:26: info: range check proved (CVC4: 1 VC)
 polyorb_hi-output.adb:202:34: info: overflow check proved (CVC4: 1 VC)
@@ -81,7 +85,6 @@ polyorb_hi-output.adb:205:38: info: range check proved (CVC4: 4 VC)
 polyorb_hi-output.ads:45:08: info: flow dependencies proved
 polyorb_hi-output.ads:76:11: info: data dependencies proved
 polyorb_hi-output.ads:82:11: info: data dependencies proved
-polyorb_hi-output.ads:88:11: info: data dependencies proved
 polyorb_hi-suspenders.ads:46:08: info: flow dependencies proved
 polyorb_hi-utils.adb:46:25: info: range check proved (CVC4: 1 VC)
 polyorb_hi-utils.adb:46:33: info: cannot unroll loop (too many loop iterations)
@@ -134,6 +137,7 @@ polyorb_hi_generated-transport.adb:37:05: info: initialization of "Port" proved
 polyorb_hi_generated-transport.adb:41:07: high: "Msg" is not initialized
 polyorb_hi_generated-transport.adb:54:07: info: no contextual analysis of "Producer_Consumer_Result_Consumer_Deliver" (body not seen yet)
 polyorb_hi_generated-transport.adb:58:09: warning: unused assignment to "Msg"
+polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.adb:62:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Producer_Consumer_Producer_Send" (body not seen yet)
 polyorb_hi_generated-transport.adb:87:14: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
@@ -141,6 +145,7 @@ polyorb_hi_generated-transport.adb:100:03: info: no contextual analysis of "Prod
 polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
 polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
+polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
 pr_a.adb:25:33: medium: "polyorb_hi.transport_low_level.nodes" might not be initialized after elaboration of main program "pr_A"

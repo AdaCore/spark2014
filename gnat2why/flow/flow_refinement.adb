@@ -27,6 +27,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Nlists;                         use Nlists;
 with Output;                         use Output;
 with Sem_Aux;                        use Sem_Aux;
+with Sem_Prag;                       use Sem_Prag;
 with Sprint;                         use Sprint;
 
 with Common_Iterators;               use Common_Iterators;
@@ -1155,51 +1156,71 @@ package body Flow_Refinement is
 
    end Is_Initialized_At_Elaboration;
 
-   --------------------------------------------
-   -- Mentions_State_With_Visible_Refinement --
-   --------------------------------------------
+   ----------------------------------------------
+   -- Mentions_State_With_Ambiguous_Refinement --
+   ----------------------------------------------
 
-   function Mentions_State_With_Visible_Refinement
+   function Mentions_State_With_Ambiguous_Refinement
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Boolean
    is
-      function Proc (N : Node_Id) return Traverse_Result;
-      --  Traversal procedure; returns Abandon when we find an abstract state
-      --  whose refinement is visible from Scope.
 
-      ----------
-      -- Proc --
-      ----------
+      Decl_Id : constant Entity_Id := Defining_Entity
+        (Find_Related_Declaration_Or_Body (N));
+      --  Declaration of the entity to which the parsed pragma is attached
 
-      function Proc (N : Node_Id) return Traverse_Result is
-      begin
-         if Nkind (N) in N_Identifier | N_Expanded_Name then
-            declare
-               E : constant Entity_Id := Entity (N);
-            begin
-               if Present (E)
-                 and then Ekind (E) = E_Abstract_State
-                 and then State_Refinement_Is_Visible (E, Scope)
-               then
-                  return Abandon;
-               end if;
-            end;
-         end if;
+      Spec_Id : constant Entity_Id :=
+        (if Is_Single_Task_Object (Decl_Id)
+         then Etype (Decl_Id)
+         else Decl_Id);
+      --  If this is a single task object, get the corresponding task type
 
-         --  Keep looking...
-         return OK;
-      end Proc;
+      Globals : constant Raw_Global_Nodes :=
+        (case Get_Pragma_Id (N) is
+            when Pragma_Depends => Parse_Depends_Contract (Spec_Id, N),
+            when Pragma_Global  => Parse_Global_Contract (Spec_Id, N),
+            when others         => raise Program_Error);
+      --  The Global Ins, Proof_Ins and Outputs of E
 
-      --  Simple syntactic AST traversal here, as we don't need to traverse
-      --  actions nodes added in semantic analysis.
-      function Find_Abstract_State is new Traverse_Func (Process => Proc);
-
-   --  Start of processing for Mentions_State_With_Visible_Refinement
+      function At_Most_One_Constituent (E : Entity_Id) return Boolean
+      is (Down_Project (E, Scope).Length <= 1)
+      with Pre => State_Refinement_Is_Visible (E, Scope);
+      --  Checks if the refinement of abstract state E has at most one
+      --  constituent.
 
    begin
-      return Find_Abstract_State (N) = Abandon;
-   end Mentions_State_With_Visible_Refinement;
+      --  In the case of either Global Inputs or Proof_Ins, if all of the
+      --  abstract states have just one constituent, we know what the
+      --  Refined_Global needs to be, thus it is unique (not ambiguous). If
+      --  they have zero constituents, then this is a null refinement and thus
+      --  it is also unique (not ambiguous).
+
+      for Input of Globals.Inputs loop
+         if Ekind (Input) = E_Abstract_State
+           and then State_Refinement_Is_Visible (Input, Scope)
+           and then not At_Most_One_Constituent (Input) --  ambiguous
+         then
+            return True; --  thus we can return early. Otherwise keep checking
+         end if;
+      end loop;
+
+      for Proof_In of Globals.Proof_Ins loop
+         if Ekind (Proof_In) = E_Abstract_State
+           and then State_Refinement_Is_Visible (Proof_In, Scope)
+           and then not At_Most_One_Constituent (Proof_In) --  ambiguous
+         then
+            return True; --  thus we can return early. Otherwise keep checking
+         end if;
+      end loop;
+
+      --  In the case of Global Outputs, if we have gotten this far then all
+      --  the abstract states appear as a Global Output, and we know what the
+      --  Refined_Global needs to be - thus it is unique (not ambiguous).
+
+      return False;
+
+   end Mentions_State_With_Ambiguous_Refinement;
 
    -----------------------
    -- Refinement_Needed --
@@ -1230,7 +1251,7 @@ package body Flow_Refinement is
         (Present (Global_N) and then
          No (Refined_Global_N) and then
          No (Refined_Depends_N) and then  -- ???
-         Mentions_State_With_Visible_Refinement (Global_N, B_Scope))
+         Mentions_State_With_Ambiguous_Refinement (Global_N, B_Scope))
 
           or else
 
@@ -1239,7 +1260,7 @@ package body Flow_Refinement is
         (Present (Depends_N) and then
          No (Refined_Depends_N) and then
          No (Refined_Global_N) and then  -- ???
-         Mentions_State_With_Visible_Refinement (Depends_N, B_Scope));
+         Mentions_State_With_Ambiguous_Refinement (Depends_N, B_Scope));
    end Refinement_Needed;
 
    -----------------------------------

@@ -269,13 +269,13 @@ package Flow_Refinement is
    --  Then from the scope of Inner, X is not initialized at elaboration, but
    --  from the scope of Outer, it is.
 
-   function Mentions_State_With_Visible_Refinement
+   function Mentions_State_With_Ambiguous_Refinement
      (N     : Node_Id;
       Scope : Flow_Scope)
       return Boolean
    with Pre => Get_Pragma_Id (N) in Pragma_Depends | Pragma_Global;
-   --  Traverses the tree under N and returns True if it finds a state
-   --  abstraction whose refinement is visible from Scope.
+   --  Iterates over the Globals of N and returns True if it finds a state
+   --  abstraction whose refinement is ambiguous from Scope.
 
    function Refinement_Needed (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure | E_Task_Type

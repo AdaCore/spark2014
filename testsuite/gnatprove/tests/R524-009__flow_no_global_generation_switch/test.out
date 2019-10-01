@@ -1,2 +1,2 @@
-p.ads:3:11: global Output "P.State" of "Initialize" not written
-gnatprove: error during flow analysis and proof
+p.ads:2:14: info: initialization of "A" constituent of "State" proved
+p.ads:3:11: info: data dependencies proved

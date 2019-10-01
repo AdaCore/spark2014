@@ -1,4 +1,6 @@
 foo.ads:11:07: info: data dependencies proved
-foo.ads:16:07: low: global Input "Foo.State" of "Check" not read
+foo.ads:14:20: warning: unused variable "S"
+foo.ads:16:07: info: data dependencies proved
+foo.ads:16:27: low: unused global "Foo.State"
 main.adb:5:14: warning: subprogram "Run" has no effect
 main.adb:8:15: info: postcondition proved (CVC4: 1 VC)

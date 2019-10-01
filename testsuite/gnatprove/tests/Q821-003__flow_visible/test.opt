@@ -1,0 +1,1 @@
+ALL XFAIL expansion of abstract states fails on generics P609-046

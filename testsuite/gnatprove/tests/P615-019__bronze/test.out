@@ -20,7 +20,11 @@ my_package.adb:82:26: info: initialization of "X" proved
 my_package.adb:83:06: info: data dependencies proved
 my_package.adb:87:09: info: data dependencies proved
 my_package.adb:87:42: info: initialization of "X" proved
+my_package.adb:99:17: info: initialization of "B" constituent of "State" proved
+my_package.adb:99:17: info: initialization of "H" constituent of "State" proved
 my_package.adb:100:09: info: data dependencies proved
+my_package.adb:100:31: info: initialization of "V" proved
+my_package.adb:120:17: info: initialization of "H" constituent of "State1" proved
 my_package.adb:121:09: info: data dependencies proved
 my_package.adb:164:37: info: initialization of "Y" proved
 my_package.adb:174:28: info: initialization of "Y" proved

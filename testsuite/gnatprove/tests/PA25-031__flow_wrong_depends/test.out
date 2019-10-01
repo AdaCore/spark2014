@@ -1,3 +1,9 @@
-p.ads:7:11: global Output "P.State_A" of "Proc" not written
-p.ads:7:11: info: flow dependencies proved
-gnatprove: error during flow analysis and proof
+p.ads:5:14: high: "A" constituent of "State_A" is not initialized
+p.ads:5:14: info: initialization of "B" constituent of "State_B" proved
+p.ads:5:14: low: unused global "P.State_A"
+p.ads:5:20: warning: unused variable "X"
+p.ads:7:11: medium: missing dependency "null => X"
+p.ads:7:34: medium: incorrect dependency "P.State_A => X"
+p.ads:8:23: medium: missing dependency "P.State_B => Y"
+p.ads:8:34: medium: incorrect dependency "P.State_B => X"
+p.ads:9:34: medium: incorrect dependency "null => Y"

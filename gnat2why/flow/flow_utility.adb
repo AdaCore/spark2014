@@ -870,7 +870,7 @@ package body Flow_Utility is
 
       Trimming_Required : constant Boolean :=
         (Get_Pragma_Id (Depends_N) = Pragma_Depends
-           and then Mentions_State_With_Visible_Refinement (Depends_N, Scope));
+         and then Mentions_State_With_Ambiguous_Refinement (Depends_N, Scope));
       --  True iff the down-projected Depends need to be trimmed using
       --  Refined_Global aspect.
 
@@ -1468,7 +1468,7 @@ package body Flow_Utility is
               and then Present (Depends_Node)
               and then Pragma_Name (Global_Node)  = Name_Global
               and then Pragma_Name (Depends_Node) = Name_Refined_Depends
-              and then Mentions_State_With_Visible_Refinement
+              and then Mentions_State_With_Ambiguous_Refinement
                          (Global_Node, Scope)
             then
                declare

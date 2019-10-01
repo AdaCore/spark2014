@@ -28,9 +28,7 @@ global_illegal_3.adb:62:11: info: data dependencies proved
 global_illegal_3.adb:62:21: low: unused global "X"
 global_illegal_3.adb:80:11: info: data dependencies proved
 global_illegal_3.adb:80:32: low: unused global "X"
-global_illegal_3.adb:81:32: high: "Y" is not an input in the Global contract of subprogram "P5" at line 69
 global_illegal_3.adb:81:32: high: "Y" is not initialized
-global_illegal_3.adb:81:32: high: either make "Y" an input in the Global contract or initialize it before use
 global_illegal_3.adb:81:32: low: unused global "Y"
 global_illegal_3.adb:82:32: low: unused global "Z"
 global_illegal_3.adb:82:32: warning: "Z" is not modified, could be INPUT

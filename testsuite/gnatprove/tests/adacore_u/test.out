@@ -138,6 +138,8 @@ counting.ads:13:06: info: data dependencies proved
 counting.ads:14:16: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:14: info: postcondition proved (CVC4: 1 VC)
 counting.ads:17:48: info: overflow check proved (CVC4: 1 VC)
+counting.ads:20:14: info: initialization of "Black_Counter" constituent of "State" proved
+counting.ads:20:14: info: initialization of "Red_Counter" constituent of "State" proved
 counting.ads:21:06: info: data dependencies proved
 data_package.adb:6:07: info: initialization of "Data" proved
 data_package.ads:3:01: info: flow dependencies proved

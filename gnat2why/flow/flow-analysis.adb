@@ -2543,6 +2543,7 @@ package body Flow.Analysis is
          if Kind = Err
            and then not Default_Init
            and then Is_Global
+           and then not Is_Final_Use
          then
             Error_Msg_Flow (FA           => FA,
                             Msg          => "& is not an input " &

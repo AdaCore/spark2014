@@ -1,15 +1,16 @@
+bad_refinement.adb:9:12: high: "Y" constituent of "State2" must be listed in the Global aspect of "Liar" (SPARK RM 6.1.4(14))
+bad_refinement.adb:20:09: high: "X" constituent of "State" must be a global output of "Liar3" (SPARK RM 6.1.4(17))
+bad_refinement.adb:25:14: high: "Y" constituent of "State2" must be listed in the Depends aspect of "Liar4" (SPARK RM 6.1.4(14))
+bad_refinement.adb:31:16: high: "Y" constituent of "State2" is not an input in the Global contract of subprogram "Liar5" at bad_refinement.ads:17
+bad_refinement.adb:31:16: high: "Y" constituent of "State2" is not initialized
+bad_refinement.adb:31:16: high: either make "Y" constituent of "State2" an input in the Global contract or initialize it before use
 bad_refinement.adb:50:12: high: "Z" constituent of "State2" must be listed in the Refined_Depends aspect of "Liar8" (SPARK RM 6.1.4(14))
 bad_refinement.ads:3:08: info: flow dependencies proved
-bad_refinement.ads:6:11: low: global Input "Bad_Refinement.State" of "Liar" not read
-bad_refinement.ads:6:11: medium: "Bad_Refinement.State2" must be a global Input of "Liar"
 bad_refinement.ads:9:11: medium: "Bad_Refinement.State" must be a global Input of "Liar2"
-bad_refinement.ads:12:11: high: "Bad_Refinement.State" must be a global In_Out of "Liar3"
-bad_refinement.ads:12:11: low: global Input "Bad_Refinement.State" of "Liar3" not read
 bad_refinement.ads:15:11: info: flow dependencies proved
-bad_refinement.ads:15:11: low: global Input "Bad_Refinement.State" of "Liar4" not read
-bad_refinement.ads:15:11: medium: "Bad_Refinement.State2" must be a global Input of "Liar4"
-bad_refinement.ads:18:11: info: flow dependencies proved
-bad_refinement.ads:18:11: medium: "Bad_Refinement.State2" must be a global In_Out of "Liar5"
+bad_refinement.ads:17:14: high: "Z" constituent of "State2" is not initialized
+bad_refinement.ads:17:21: info: initialization of "I" proved
+bad_refinement.ads:19:23: medium: missing self-dependency "Bad_Refinement.State2 => Bad_Refinement.State2"
 bad_refinement.ads:21:21: info: initialization of "I" proved
 bad_refinement.ads:21:24: info: initialization of "J" proved
 bad_refinement.ads:22:11: info: data dependencies proved
@@ -23,6 +24,9 @@ bad_refinement.ads:34:11: high: "Bad_Refinement.State" must be a global Output o
 bad_refinement.ads:34:11: info: flow dependencies proved
 lots_of_tests.adb:10:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:7 should mention A and G1 in a precondition]
 lots_of_tests.adb:10:19: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:7 should mention A and C and G1 in a precondition]
+lots_of_tests.adb:20:07: high: "A" constituent of "State" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:20:07: high: "C" constituent of "State2" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
+lots_of_tests.adb:20:07: high: "G1" must be listed in the Depends aspect of "Internal_User_Of_No_Contracts_BAD" (SPARK RM 6.1.4(14))
 lots_of_tests.adb:25:14: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:15 should mention X and Y in a precondition]
 lots_of_tests.adb:26:15: medium: overflow check might fail [possible explanation: subprogram at lots_of_tests.ads:15 should mention A and G1 in a precondition]
 lots_of_tests.adb:40:07: high: "A" constituent of "State" must be listed in the Refined_Global aspect of "Internal_User_Of_G_BAD" (SPARK RM 6.1.4(14))
@@ -53,10 +57,6 @@ lots_of_tests.ads:7:28: info: initialization of "X" proved
 lots_of_tests.ads:9:48: info: initialization of "X" proved
 lots_of_tests.ads:10:11: info: flow dependencies proved
 lots_of_tests.ads:13:11: info: flow dependencies proved
-lots_of_tests.ads:13:11: low: global Input "G2" of "Internal_User_Of_No_Contracts_BAD" not read
-lots_of_tests.ads:13:11: medium: "G1" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
-lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
-lots_of_tests.ads:13:11: medium: "Lots_Of_Tests.State2" must be a global Input of "Internal_User_Of_No_Contracts_BAD"
 lots_of_tests.ads:16:11: info: data dependencies proved
 lots_of_tests.ads:20:11: info: data dependencies proved
 lots_of_tests.ads:25:32: info: initialization of "Y" proved
