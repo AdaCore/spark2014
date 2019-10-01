@@ -55,7 +55,7 @@ with Flow_Utility.Initialization;    use Flow_Utility.Initialization;
 
 package body Flow.Analysis is
 
-   Debug_Trace_Depends     : constant Boolean := False;
+   Debug_Trace_Depends : constant Boolean := False;
    --  Enable this to show the specified and computed dependency relation
 
    use type Ada.Containers.Count_Type;
@@ -66,15 +66,13 @@ package body Flow.Analysis is
                              Input   : Flow_Id;
                              Outputs : Flow_Id_Sets.Set)
                              return Vertex_Sets.Set
-   with Pre => not Outputs.Is_Empty,
-        Post => not Vertex_Sets.Contains (Dependency_Path'Result,
-                                          Flow_Graphs.Get_Vertex (FA.PDG,
-                                                                  Input))
+   with Pre  => not Outputs.Is_Empty,
+        Post => not Dependency_Path'Result.Contains
+                      (Flow_Graphs.Get_Vertex (FA.PDG, Input))
                 and then
-                  (for all O of Outputs
-                   => not Vertex_Sets.Contains
-                            (Dependency_Path'Result,
-                             Flow_Graphs.Get_Vertex (FA.PDG, O)));
+                  (for all Output of Outputs
+                   => not Dependency_Path'Result.Contains
+                            (Flow_Graphs.Get_Vertex (FA.PDG, Output)));
    --  Finds the shortest path in the PDG graph connecting vertex Input and
    --  Outputs or a vertex that defines one of the variables in Output. Returns
    --  the vertices in this path (Input and Outputs excluded).
