@@ -640,6 +640,10 @@ package body Configuration is
             Long_Switch => "--debug-save-vcs");
          Define_Switch
            (Config,
+            CL_Switches.Dbg_No_Sem'Access,
+            Long_Switch => "--debug-no-semaphore");
+         Define_Switch
+           (Config,
             CL_Switches.Debug_Trivial'Access,
             Long_Switch => "--debug-trivial");
          Define_Switch
@@ -2235,8 +2239,15 @@ package body Configuration is
       --  The first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it.
 
-      Args.Append ("spark_semaphore_wrapper");
-      Args.Append (Base_Name (Socket_Name.all));
+      --  ??? If the semaphore is disabled via the --debug-no-semaphore switch,
+      --  each gnat2why process may spawn many gnatwhy3 processes all at once.
+      --  This may freeze the developer's machine if each of these processes
+      --  takes a lot of memory.
+
+      if not CL_Switches.Dbg_No_Sem then
+         Args.Append ("spark_semaphore_wrapper");
+         Args.Append (Base_Name (Socket_Name.all));
+      end if;
 
       if CL_Switches.Memcached_Server /= null
         and then CL_Switches.Memcached_Server.all /= ""

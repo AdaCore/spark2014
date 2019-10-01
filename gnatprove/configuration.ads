@@ -78,6 +78,8 @@ package Configuration is
       Coverage             : aliased Boolean;
       CWE                  : aliased Boolean;
       D                    : aliased Boolean;
+      Dbg_No_Sem           : aliased Boolean;
+      --  disable use of semaphores for ease of debugging
       Debug_Save_VCs       : aliased Boolean;
       Debug_Trivial        : aliased Boolean;
       Dbg_Proof_Only       : aliased Boolean;
