@@ -63,19 +63,24 @@ package body Flow.Analysis is
    use type Flow_Id_Sets.Set;
 
    function Dependency_Path (FA      : Flow_Analysis_Graphs;
-                             Input   : Flow_Id;
+                             Inputs  : Flow_Id_Sets.Set;
                              Outputs : Flow_Id_Sets.Set)
                              return Vertex_Sets.Set
-   with Pre  => not Outputs.Is_Empty,
-        Post => not Dependency_Path'Result.Contains
-                      (Flow_Graphs.Get_Vertex (FA.PDG, Input))
-                and then
-                  (for all Output of Outputs
+   with Pre  => not Outputs.Is_Empty
+                  and then
+                (for all Input of Inputs => Input.Variant = Normal_Use)
+                  and then
+                (for all Output of Outputs => Output.Variant = Normal_Use),
+        Post => (for all Input of Inputs
+                   => not Dependency_Path'Result.Contains
+                            (Flow_Graphs.Get_Vertex (FA.PDG, Input)))
+                  and then
+                (for all Output of Outputs
                    => not Dependency_Path'Result.Contains
                             (Flow_Graphs.Get_Vertex (FA.PDG, Output)));
-   --  Finds the shortest path in the PDG graph connecting vertex Input and
-   --  Outputs or a vertex that defines one of the variables in Output. Returns
-   --  the vertices in this path (Input and Outputs excluded).
+   --  Finds the shortest path in the PDG graph connecting any initial vertex
+   --  for Inputs with any vertex that defines a variable from Outputs. Returns
+   --  the vertices in this path (Inputs and Outputs excluded).
 
    function Find_Global
      (S : Entity_Id;
@@ -145,7 +150,7 @@ package body Flow.Analysis is
    ---------------------
 
    function Dependency_Path (FA      : Flow_Analysis_Graphs;
-                             Input   : Flow_Id;
+                             Inputs  : Flow_Id_Sets.Set;
                              Outputs : Flow_Id_Sets.Set)
                              return Vertex_Sets.Set
    is
@@ -167,7 +172,7 @@ package body Flow.Analysis is
          F   : Flow_Id renames FA.PDG.Get_Key (V);
          Atr : V_Attributes renames FA.Atr (V);
       begin
-         if F /= Input
+         if not Inputs.Contains (F)
            and then not Outputs.Contains (F)
            and then Atr.Is_Program_Node
          then
@@ -199,13 +204,22 @@ package body Flow.Analysis is
    --  Start of processing for Dependency_Path
 
    begin
-      FA.PDG.Shortest_Path (Start         => Get_Initial_Vertex (FA.PDG,
-                                                                 Input),
-                            Allow_Trivial => False,
-                            Search        => Are_We_There_Yet'Access,
-                            Step          => Add_Loc'Access);
+      for Input of Inputs loop
+         FA.PDG.Shortest_Path
+           (Start         => Get_Initial_Vertex (FA.PDG, Input),
+            Allow_Trivial => False,
+            Search        => Are_We_There_Yet'Access,
+            Step          => Add_Loc'Access);
 
-      return Vertices;
+         if not Vertices.Is_Empty then
+            return Vertices;
+         end if;
+      end loop;
+
+      --  ??? This should not happen, but Add_Loc is broken wrt vertices for
+      --  subprogram OUT parameters and Output globals.
+
+      return Vertex_Sets.Empty_Set;
    end Dependency_Path;
 
    -----------------
@@ -3991,9 +4005,10 @@ package body Flow.Analysis is
                      use Flow_Id_Sets;
 
                      Path : constant Vertex_Sets.Set :=
-                       Dependency_Path (FA      => FA,
-                                        Input   => Missing_In,
-                                        Outputs => To_Set (Missing_Out));
+                       Dependency_Path
+                         (FA      => FA,
+                          Inputs  => Down_Project (Missing_In,  FA.B_Scope),
+                          Outputs => Down_Project (Missing_Out, FA.B_Scope));
 
                   begin
                      if Missing_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
@@ -4325,9 +4340,10 @@ package body Flow.Analysis is
                if not All_Contract_Ins.Contains (Actual_In) then
                   declare
                      Path : constant Vertex_Sets.Set :=
-                       Dependency_Path (FA      => FA,
-                                        Input   => Actual_In,
-                                        Outputs => All_Contract_Outs);
+                       Dependency_Path
+                         (FA      => FA,
+                          Inputs  => Flow_Id_Sets.To_Set (Actual_In),
+                          Outputs => All_Contract_Outs);
 
                   begin
                      Error_Msg_Flow
@@ -4449,7 +4465,9 @@ package body Flow.Analysis is
                            Path : constant Vertex_Sets.Set :=
                              Dependency_Path
                                (FA      => FA,
-                                Input   => Change_Variant (Input, Normal_Use),
+                                Inputs  =>
+                                  Flow_Id_Sets.To_Set
+                                    (Change_Variant (Input, Normal_Use)),
                                 Outputs => Outputs);
 
                         begin
