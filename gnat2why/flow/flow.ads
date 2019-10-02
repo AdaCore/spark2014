@@ -318,7 +318,9 @@ package Flow is
                           | E_Package_Body
                and then (if Ekind (E) = E_Procedure
                          then not Is_DIC_Procedure (E)
-                            and then not Is_Invariant_Procedure (E));
+                            and then not Is_Invariant_Procedure (E)
+                         elsif Ekind (E) = E_Function
+                         then not Is_Predicate_Function (E));
    --  Flow analyse entity E. Do nothing for entities with no body or not in
    --  SPARK 2014.
 

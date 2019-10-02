@@ -815,20 +815,6 @@ package body Flow_Types is
                      Nam := Anonymous_Object (N);
                   end if;
 
-               --  For references to internal formal argument in predicate
-               --  function bodies use name of the predicated type.
-
-               when E_In_Parameter =>
-                  declare
-                     S : constant Entity_Id := Scope (N);
-                  begin
-                     if Ekind (S) = E_Function
-                       and then Is_Predicate_Function (S)
-                     then
-                        Nam := Etype (N);
-                     end if;
-                  end;
-
                when others =>
                   null;
             end case;
