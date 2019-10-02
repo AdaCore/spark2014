@@ -71,13 +71,8 @@ package body Flow.Analysis is
                 (for all Input of Inputs => Input.Variant = Normal_Use)
                   and then
                 (for all Output of Outputs => Output.Variant = Normal_Use),
-        Post => (for all Input of Inputs
-                   => not Dependency_Path'Result.Contains
-                            (Flow_Graphs.Get_Vertex (FA.PDG, Input)))
-                  and then
-                (for all Output of Outputs
-                   => not Dependency_Path'Result.Contains
-                            (Flow_Graphs.Get_Vertex (FA.PDG, Output)));
+        Post => (for all V of Dependency_Path'Result =>
+                   FA.Atr (V).Is_Program_Node);
    --  Finds the shortest path in the PDG graph connecting any initial vertex
    --  for Inputs with any vertex that defines a variable from Outputs. Returns
    --  the vertices in this path (Inputs and Outputs excluded).
@@ -169,27 +164,22 @@ package body Flow.Analysis is
       -------------
 
       procedure Add_Loc (V : Flow_Graphs.Vertex_Id) is
-         F   : Flow_Id renames FA.PDG.Get_Key (V);
          Atr : V_Attributes renames FA.Atr (V);
       begin
-         if not Inputs.Contains (F)
-           and then not Outputs.Contains (F)
+         --  If object is written in a program statement or the path goes
+         --  through such a statement, we pick its vertex directly.
+
+         if Atr.Is_Program_Node then
+            Vertices.Insert (V);
+
+         --  If it is written as a subprogram call parameter, we pick the
+         --  vertex of the call statement.
+
+         elsif Atr.Is_Parameter
+           or else Atr.Is_Global_Parameter
+           or else Atr.Is_Implicit_Parameter
          then
-            --  If object is written in a program statement or the path goes
-            --  through such a statement, we pick its vertex directly.
-
-            if Atr.Is_Program_Node then
-               Vertices.Insert (V);
-
-            --  If it is written as a subprogram call parameter, we pick the
-            --  vertex of the call statement.
-
-            elsif Atr.Is_Parameter
-              or else Atr.Is_Global_Parameter
-              or else Atr.Is_Implicit_Parameter
-            then
-               Vertices.Include (FA.PDG.Get_Vertex (Atr.Call_Vertex));
-            end if;
+            Vertices.Include (FA.PDG.Get_Vertex (Atr.Call_Vertex));
          end if;
       end Add_Loc;
 
@@ -201,12 +191,9 @@ package body Flow.Analysis is
         (V           : Flow_Graphs.Vertex_Id;
          Instruction : out Flow_Graphs.Traversal_Instruction)
       is
-         F   : Flow_Id renames FA.PDG.Get_Key (V);
          Atr : V_Attributes renames FA.Atr (V);
       begin
-         if Outputs.Contains (F)
-           or else (for some Var of Atr.Variables_Defined
-                    => Outputs.Contains (Var))
+         if (for some Var of Atr.Variables_Defined => Outputs.Contains (Var))
          then
             Instruction := Flow_Graphs.Found_Destination;
          else
