@@ -174,9 +174,22 @@ package body Flow.Analysis is
       begin
          if not Inputs.Contains (F)
            and then not Outputs.Contains (F)
-           and then Atr.Is_Program_Node
          then
-            Vertices.Insert (V);
+            --  If object is written in a program statement or the path goes
+            --  through such a statement, we pick its vertex directly.
+
+            if Atr.Is_Program_Node then
+               Vertices.Insert (V);
+
+            --  If it is written as a subprogram call parameter, we pick the
+            --  vertex of the call statement.
+
+            elsif Atr.Is_Parameter
+              or else Atr.Is_Global_Parameter
+              or else Atr.Is_Implicit_Parameter
+            then
+               Vertices.Include (FA.PDG.Get_Vertex (Atr.Call_Vertex));
+            end if;
          end if;
       end Add_Loc;
 
@@ -216,8 +229,8 @@ package body Flow.Analysis is
          end if;
       end loop;
 
-      --  ??? This should not happen, but Add_Loc is broken wrt vertices for
-      --  subprogram OUT parameters and Output globals.
+      --  ??? This should not happen, but this routine is broken when it comes
+      --  to initialization of constituents declared in private child packages.
 
       return Vertex_Sets.Empty_Set;
    end Dependency_Path;
