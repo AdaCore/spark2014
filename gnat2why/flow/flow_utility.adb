@@ -5467,30 +5467,6 @@ package body Flow_Utility is
       end if;
    end Untangle_Assignment_Target;
 
-   ----------------------
-   -- Replace_Flow_Ids --
-   ----------------------
-
-   function Replace_Flow_Ids
-     (Of_This   : Entity_Id;
-      With_This : Entity_Id;
-      The_Set   : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set
-   is
-      FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
-   begin
-      for F of The_Set loop
-         if F.Kind in Direct_Mapping | Record_Field
-           and then Get_Direct_Mapping_Id (F) = Of_This
-         then
-            FS.Insert (F'Update (Node => With_This));
-         else
-            FS.Insert (F);
-         end if;
-      end loop;
-      return FS;
-   end Replace_Flow_Ids;
-
    --------------------------
    -- Is_Empty_Record_Type --
    --------------------------

@@ -650,17 +650,6 @@ package Flow_Utility is
         Post => Present (Search_Initializes_Contract'Result);
    --  Same as Search_Depends_Contract, but for the Initializes contract
 
-   function Replace_Flow_Ids
-     (Of_This   : Entity_Id;
-      With_This : Entity_Id;
-      The_Set   : Flow_Id_Sets.Set)
-      return Flow_Id_Sets.Set;
-   --  Returns a flow set that replaces all Flow_Ids of The_Set that correspond
-   --  to Of_This with equivalent Flow_Ids that correspond to With_This.
-   --
-   --  ??? this function is inefficient and its uses should be probably
-   --  replaced with a call to Ada.Containers.Hashed_Sets.Replace_Element
-
    function Has_Variable_Input (C : Entity_Id) return Boolean
    with Pre => Ekind (C) = E_Constant;
    --  Returns True if V is a constant with variable input

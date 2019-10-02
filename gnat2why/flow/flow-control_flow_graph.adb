@@ -3627,12 +3627,9 @@ package body Flow.Control_Flow_Graph is
          Funcs          : Node_Sets.Set;
          Variables_Used : Flow_Id_Sets.Set;
 
-         --  Calculate components of Type and Object
-         Components_Of_Type   : Flow_Id_Sets.Set :=
+         DIC_Param_Components : Flow_Id_Sets.Set :=
            Flatten_Variable (First_Formal (DIC_Proc), FA.B_Scope);
-
-         Components_Of_Object : constant Flow_Id_Sets.Set :=
-           Flatten_Variable (E, FA.B_Scope);
+         --  Flattened view of the DIC procedure parameter
 
       begin
          --  Default initial condition can refer to the type mark, e.g.:
@@ -3640,13 +3637,53 @@ package body Flow.Control_Flow_Graph is
          --     type T is private
          --       with Default_Initial_Condition => Foo (T) > 2;
          --
-         --  When an object of that type is later declared
+         --  and the frontend will wrap the DIC expression inside a procedure:
+         --
+         --      procedure TDefault_Initial_Condition (_object : T) is
+         --      begin
+         --         pragma Check
+         --           (Default_Initial_Condition,
+         --            Foo (_object) > 2);
+         --      end TDefault_Initial_Condition;
+         --
+         --  When an object of that type is later declared like:
          --
          --     X : T;
          --
-         --  we need to replace all occurrences of T with X (and all components
-         --  of T with all components of X) to produce the correct default
-         --  initial condition.
+         --  we "inline" a call to this procedure by creating a single
+         --  assertion vertex with references to _object in the pragma Check
+         --  expression replaced with references to X.
+         --
+         --  However, instead of replacing individual references to _object
+         --  components, we check if any of the components is referenced. If it
+         --  is, we simply remove all references to _object components and add
+         --  refences to all components of X.
+         --
+         --  This is closer to what really happens when the DIC procedure is
+         --  called and also nicely supports an otherwise complicated scenario
+         --  when a DIC procedure that takes a parameter of an unconstrained
+         --  type is called with an object of a constrained type. (In this
+         --  scenario the DIC expression might refer to components of the
+         --  _object parameter that are not present in the declared object.)
+
+         --  The flattened view of the DIC parameter does not include array
+         --  bounds, so we add them (very much like with subprogram calls).
+
+         declare
+            Bounds_Of_Param_Components : Flow_Id_Sets.Set;
+            --  We need this extra container, because inserting elements into
+            --  DIC_Param_Components while iterating would tamper with cursors.
+
+         begin
+            for Comp of DIC_Param_Components loop
+               if Has_Bounds (Comp, FA.B_Scope) then
+                  Bounds_Of_Param_Components.Insert
+                    (Comp'Update (Facet => The_Bounds));
+               end if;
+            end loop;
+
+            DIC_Param_Components.Union (Bounds_Of_Param_Components);
+         end;
 
          Variables_Used := Get_Variables
            (Expr,
@@ -3654,26 +3691,12 @@ package body Flow.Control_Flow_Graph is
             Fold_Functions       => Inputs,
             Use_Computed_Globals => not FA.Generating_Globals);
 
-         declare
-            Other_Components_Of_Type : Flow_Id_Sets.Set;
-
-         begin
-            for Comp of Components_Of_Type loop
-               if Has_Bounds (Comp, FA.B_Scope) then
-                  Other_Components_Of_Type.Include
-                    (Comp'Update (Facet => The_Bounds));
-               end if;
-            end loop;
-
-            Components_Of_Type.Union (Other_Components_Of_Type);
-         end;
-
          --  Replace components if needed
-         if (for some Comp of Components_Of_Type =>
+         if (for some Comp of DIC_Param_Components =>
                Variables_Used.Contains (Comp))
          then
-            Variables_Used.Difference (Components_Of_Type);
-            Variables_Used.Union (Components_Of_Object);
+            Variables_Used.Difference (DIC_Param_Components);
+            Variables_Used.Union (Flatten_Variable (E, FA.B_Scope));
          end if;
 
          Collect_Functions_And_Read_Locked_POs
@@ -3685,10 +3708,7 @@ package body Flow.Control_Flow_Graph is
          Add_Vertex
            (FA,
             Make_Sink_Vertex_Attributes
-              (Var_Use      => Replace_Flow_Ids
-                   (Of_This   => First_Formal (DIC_Proc),
-                    With_This => E,
-                    The_Set   => Variables_Used),
+              (Var_Use      => Variables_Used,
                Sub_Called   => Funcs,
                Is_Assertion => True,
                Aspect       => DIC,
