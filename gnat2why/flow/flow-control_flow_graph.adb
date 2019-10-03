@@ -4158,8 +4158,6 @@ package body Flow.Control_Flow_Graph is
         Parse_Initializes (Package_Spec, FA.B_Scope);
       --  ??? This needs to take into account initializes from gg
 
-      V : Flow_Graphs.Vertex_Id;
-
    begin
       --  If package spec is not in SPARK, then ignore its body and its
       --  Initializes contract, if any.
@@ -4201,6 +4199,8 @@ package body Flow.Control_Flow_Graph is
                        (if Present (The_Out)
                         then Get_Direct_Mapping_Id (The_Out)
                         else Empty);
+
+                     V : Flow_Graphs.Vertex_Id;
 
                   begin
                      if Present (Init_Item) then
