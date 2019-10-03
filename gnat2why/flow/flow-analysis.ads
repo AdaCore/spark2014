@@ -23,7 +23,8 @@
 
 --  This package looks at the produced graphs and emits error messages
 
-with Sinfo; use Sinfo;
+with Sinfo;            use Sinfo;
+with SPARK_Definition; use SPARK_Definition;
 
 package Flow.Analysis is
 
@@ -48,7 +49,6 @@ package Flow.Analysis is
                                          Sane : in out Boolean)
    with Pre => Sane and then
                FA.Kind in Kind_Subprogram
-                        | Kind_Package_Body
                         | Kind_Package;
    --  Check Post, Refined_Post and Initial_Condition for use of variables we
    --  have not introduced through a global or parameter.
@@ -69,7 +69,7 @@ package Flow.Analysis is
 
    procedure Find_Non_Elaborated_State_Abstractions
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Find uses of state abstractions that belong to other non-elaborated
    --  packages.
    --
@@ -134,7 +134,7 @@ package Flow.Analysis is
 
    procedure Find_Impossible_To_Initialize_State
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Finds state abstractions that are not mentioned in an Initializes aspect
    --  and are not pure global outputs of any of the package's subprograms.
    --  This makes it impossible for users of these package's to initialize
@@ -149,13 +149,13 @@ package Flow.Analysis is
    --  Complexity is O(N^2)
 
    procedure Check_Initializes_Contract (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Check if the Initializes contract has extra or missing dependencies.
    --
    --  Complexity is O(N^2)
 
    procedure Check_Refined_State_Contract (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Check if the Refined_State references any constant without variable
    --  inputs and if so emits a check. This enforces SPARK RM 7.2.2(16).
 
@@ -187,7 +187,7 @@ package Flow.Analysis is
 
    procedure Check_Consistent_AS_For_Private_Child
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Check if the refinement of the parent package contains the state of the
    --  private child with Part_Of aspect.
 
@@ -232,7 +232,7 @@ package Flow.Analysis is
    --  variables that have Constant_After_Elaboration set.
 
    procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Package_Body
+   with Pre => Entity_Body_In_SPARK (FA.Spec_Entity)
                and then Is_Compilation_Unit (FA.Analyzed_Entity);
    --  Checks that the compilation unit package has Elaborate_Body applied if
    --  at least one variable declared in the specification is modified in the
@@ -253,7 +253,7 @@ package Flow.Analysis is
 
    procedure Check_State_Volatility_Escalation
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+   with Pre => FA.Kind = Kind_Package;
    --  Any external abstract state can be annotated with precise volatility
    --  information, here we need to make sure that we do not have anything
    --  exceeding what the contract allows.

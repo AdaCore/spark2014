@@ -1181,9 +1181,7 @@ package body Flow.Analysis.Sanity is
 
             Traverse_Declarations_And_HSS (Task_Body (FA.Analyzed_Entity));
 
-         when Kind_Package
-            | Kind_Package_Body
-         =>
+         when Kind_Package =>
             if Entity_Spec_In_SPARK (FA.Spec_Entity) then
                declare
                   Pkg_Spec : constant Node_Id :=
@@ -1249,7 +1247,7 @@ package body Flow.Analysis.Sanity is
             for Var of A.Variables_Defined loop
                F := Change_Variant (Var, Normal_Use);
 
-               if FA.Kind in Kind_Package | Kind_Package_Body
+               if FA.Kind = Kind_Package
                  and then not Synthetic (F)
                  and then not FA.All_Vars.Contains (F)
                then
@@ -1293,7 +1291,7 @@ package body Flow.Analysis.Sanity is
                   if Final_Atr.Is_Global
                     and then Final_Atr.Is_Constant
                   then
-                     if FA.Kind in Kind_Package | Kind_Package_Body then
+                     if FA.Kind = Kind_Package then
                         Error_Msg_Flow
                           (FA       => FA,
                            Msg      => "cannot write & during" &
@@ -1344,7 +1342,7 @@ package body Flow.Analysis.Sanity is
                elsif Present (FA.Depends_N)         then "Depends"
                else                                      "Global"),
 
-            when Kind_Package | Kind_Package_Body  =>
+            when Kind_Package =>
                "Initializes");
       --  A string representation of the aspect that needs to be corrected; the
       --  preference in choosing a contract matches the preference hardcoded in
@@ -1362,7 +1360,7 @@ package body Flow.Analysis.Sanity is
                 then "Depends"
                 else ""),
 
-            when Kind_Package | Kind_Package_Body => "");
+            when Kind_Package => "");
       --  A string representation of the next aspect that needs to be
       --  corrected, i.e. this is the Global/Depends aspect if a global has
       --  been detected to be missing from a Refined_Global/Refined_Depends
@@ -1373,8 +1371,8 @@ package body Flow.Analysis.Sanity is
 
       SRM_Ref : constant String :=
         (case FA.Kind is
-            when Kind_Subprogram | Kind_Task      => "6.1.4(14)",
-            when Kind_Package | Kind_Package_Body => "7.1.5(11)");
+            when Kind_Subprogram | Kind_Task => "6.1.4(14)",
+            when Kind_Package                => "7.1.5(11)");
       --  String representation of the violated SPARK RM rule
 
       function In_Abstract_Contract (FA : Flow_Analysis_Graphs; G : Flow_Id)
@@ -1433,7 +1431,7 @@ package body Flow.Analysis.Sanity is
           (case FA.Kind is
              when Kind_Subprogram | Kind_Task =>
                 "must be listed in the " & Aspect_To_Fix & " aspect of",
-             when Kind_Package | Kind_Package_Body =>
+             when Kind_Package =>
                 "must be mentioned as an input of the " & Aspect_To_Fix &
                 " aspect of");
 

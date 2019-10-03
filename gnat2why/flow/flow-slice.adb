@@ -337,7 +337,7 @@ package body Flow.Slice is
       --  Get subprograms that are definitely called
 
       procedure Get_Local_Definite_Writes
-      with Pre => FA.Kind in Kind_Package | Kind_Package_Body;
+      with Pre => FA.Kind = Kind_Package;
       --  Collect local variables of the package that are definitely
       --  initialized after package elaboration.
 
@@ -606,7 +606,7 @@ package body Flow.Slice is
                   Outputs   => Outputs);
 
       --  Only needed for packages
-      if FA.Kind in Kind_Package | Kind_Package_Body then
+      if FA.Kind = Kind_Package then
          Get_Local_Definite_Writes;
       end if;
    end Compute_Globals;

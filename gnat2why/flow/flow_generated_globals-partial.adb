@@ -485,7 +485,10 @@ package body Flow_Generated_Globals.Partial is
       --  and non-library-level packages, but meaningless for tasks and
       --  library-level packages, which cannot be called from the outside.
       Contr.Nonreturning :=
-        FA.Kind in Kind_Subprogram | Kind_Package_Body
+        (FA.Kind = Kind_Subprogram
+          or else
+         (FA.Kind = Kind_Package
+          and then Entity_Body_In_SPARK (FA.Spec_Entity)))
           and then
         (FA.Has_Potentially_Nonterminating_Loops
            or else

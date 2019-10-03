@@ -36,7 +36,6 @@ with Snames;                      use Snames;
 
 with Common_Iterators;            use Common_Iterators;
 with SPARK_Annotate;              use SPARK_Annotate;
-with SPARK_Definition;            use SPARK_Definition;
 with SPARK_Frame_Conditions;      use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms;      use SPARK_Util.Subprograms;
 with SPARK_Util;                  use SPARK_Util;
@@ -763,9 +762,7 @@ package body Flow.Analysis is
                    then "Refined_Global"
                    else "Global"),
 
-               when Kind_Package
-                  | Kind_Package_Body
-               =>
+               when Kind_Package =>
                   "Initializes",
 
                when Kind_Task =>
@@ -773,10 +770,9 @@ package body Flow.Analysis is
 
             SRM_Ref : constant String :=
               (case FA.Kind is
-               when Kind_Subprogram   => "6.1.4(14)",
-               when Kind_Package
-                  | Kind_Package_Body => "7.1.5(11)",
-               when Kind_Task         => raise Program_Error);
+               when Kind_Subprogram => "6.1.4(14)",
+               when Kind_Package    => "7.1.5(11)",
+               when Kind_Task       => raise Program_Error);
 
             Vars_Used  : Flow_Id_Sets.Set;
             Vars_Known : Flow_Id_Sets.Set;
@@ -830,7 +826,7 @@ package body Flow.Analysis is
                         end loop;
                      end;
 
-                  when Kind_Package | Kind_Package_Body =>
+                  when Kind_Package =>
                      Vars_Known :=
                        Down_Project (To_Entire_Variables (FA.Visible_Vars),
                                      FA.S_Scope);
@@ -869,7 +865,7 @@ package body Flow.Analysis is
                         Severity => High_Check_Kind);
                      Sane := False;
 
-                  elsif FA.Kind in Kind_Package | Kind_Package_Body
+                  elsif FA.Kind = Kind_Package
                     and then Is_Library_Level_Entity (FA.Analyzed_Entity)
                     and then not Is_Initialized_At_Elaboration (Var,
                                                                 FA.B_Scope)
@@ -2087,7 +2083,7 @@ package body Flow.Analysis is
                  --  If we analyse a package, we suppress this message if we
                  --  don't have an initializes clause *and* the given vertex
                  --  has an effect on any final use (export or otherwise).
-                 (if FA.Kind in Kind_Package | Kind_Package_Body
+                 (if FA.Kind = Kind_Package
                     and then No (FA.Initializes_N)
                   then
                      not FA.PDG.Non_Trivial_Path_Exists
@@ -2191,7 +2187,7 @@ package body Flow.Analysis is
 
                            --  This warning is ignored for local constants
 
-                           if FA.Kind in Kind_Package | Kind_Package_Body
+                           if FA.Kind = Kind_Package
                              and then
                                Scope (Defining_Identifier (N)) = FA.Spec_Entity
                              and then
@@ -2544,7 +2540,7 @@ package body Flow.Analysis is
 
             --  ??? only when Is_Final_Use ?
             if Is_Constituent (Var)
-              and then FA.Kind in Kind_Package | Kind_Package_Body
+              and then FA.Kind = Kind_Package
               and then Present (FA.Initializes_N)
             then
                Error_Msg_Flow

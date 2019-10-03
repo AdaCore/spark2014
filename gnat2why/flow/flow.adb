@@ -142,7 +142,7 @@ package body Flow is
       Write_Eol;
       Indent;
 
-      if FA.Kind in Kind_Package | Kind_Package_Body then
+      if FA.Kind = Kind_Package then
          declare
             M : constant Dependency_Maps.Map :=
               GG_Get_Initializes (FA.Spec_Entity);
@@ -332,11 +332,10 @@ package body Flow is
 
    function Is_Valid (X : Flow_Analysis_Graphs_Root)
                       return Boolean
-   is (X.Kind = (case Ekind (X.Analyzed_Entity) is
+   is (X.Kind = (case Ekind (X.Spec_Entity) is
                  when E_Function | E_Procedure | E_Entry => Kind_Subprogram,
                  when E_Task_Type                        => Kind_Task,
                  when E_Package                          => Kind_Package,
-                 when E_Package_Body                     => Kind_Package_Body,
                  when others => raise Program_Error)
        and then (if not X.Generating_Globals
                  then
@@ -993,8 +992,8 @@ package body Flow is
                                    | E_Procedure
                                    | E_Entry        => Kind_Subprogram,
                                 when E_Task_Type    => Kind_Task,
-                                when E_Package      => Kind_Package,
-                                when E_Package_Body => Kind_Package_Body,
+                                when E_Package
+                                   | E_Package_Body => Kind_Package,
                                 when others         => raise Program_Error),
          Generating_Globals => Generating_Globals);
 
@@ -1070,15 +1069,15 @@ package body Flow is
                Debug ("Spec in SPARK: ", Entity_In_SPARK (E));
                Debug ("Body in SPARK: ", Entity_Body_In_SPARK (E));
 
-            when Kind_Package | Kind_Package_Body =>
+            when Kind_Package =>
                if not FA.Is_Generative then
                   Debug ("skipped (package spec)");
-                  if FA.Kind = Kind_Package_Body then
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
                      Debug ("skipped (package body)");
                   end if;
                else
                   Debug ("Spec in SPARK: ", True);
-                  if FA.Kind = Kind_Package_Body then
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
                      Debug ("Body in SPARK: ", True);
                   end if;
                end if;
@@ -1395,9 +1394,7 @@ package body Flow is
          Analysis.Sanity_Check (FA, Success);
          if Success then
             case FA.Kind is
-               when Kind_Package      |
-                    Kind_Package_Body |
-                    Kind_Subprogram   =>
+               when Kind_Package | Kind_Subprogram =>
                   Analysis.Sanity_Check_Postcondition (FA, Success);
 
                when Kind_Task =>
@@ -1455,7 +1452,7 @@ package body Flow is
                                             Kind => Claim_Effects));
                   end if;
 
-               when Kind_Package | Kind_Package_Body =>
+               when Kind_Package =>
                   declare
                      Have_Full_Package_Code : constant Boolean :=
                        not Unit_Requires_Body (FA.Spec_Entity,
@@ -1490,8 +1487,8 @@ package body Flow is
                      --  check this when we use the gnat static elaboration
                      --  model, since otherwise the front-end has a much more
                      --  brutal method of enforcing this.
-                     if FA.Kind = Kind_Package_Body
-                       and then Is_Compilation_Unit (FA.Analyzed_Entity)
+                     if Entity_Body_In_SPARK (FA.Spec_Entity)
+                       and then Is_Compilation_Unit (FA.Spec_Entity)
                        and then not Has_Pragma_Elaborate_Body (FA.Spec_Entity)
                        and then not Dynamic_Elaboration_Checks
                      then
@@ -1573,7 +1570,7 @@ package body Flow is
                      Severity => Info_Kind);
                end if;
 
-            when Kind_Package | Kind_Package_Body =>
+            when Kind_Package =>
                if Present (FA.Initializes_N)
                  and then not FA.Flow_Dependency_Errors
                then

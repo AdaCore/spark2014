@@ -4023,7 +4023,7 @@ package body Flow.Control_Flow_Graph is
       --  'Initial and 'Final vertices for an entity that is mentioned in an
       --  Initializes aspect, we have to set Is_Export on the corresponding
       --  'Final vertices.
-      if FA.Kind in Kind_Package | Kind_Package_Body
+      if FA.Kind = Kind_Package
         and then Present (Find_In_Initializes (E))
       then
          for F of Flatten_Variable (E, FA.B_Scope) loop
@@ -4106,7 +4106,7 @@ package body Flow.Control_Flow_Graph is
             begin
                Create_Initial_And_Final_Vertices (State, FA);
 
-               if FA.Kind in Kind_Package | Kind_Package_Body then
+               if FA.Kind = Kind_Package then
                   Final_V_Id := FA.CFG.Get_Vertex (Final_F_Id);
 
                   declare
@@ -6263,7 +6263,7 @@ package body Flow.Control_Flow_Graph is
    is
    begin
       if FA.Generating_Globals
-        and then FA.Kind in Kind_Package | Kind_Package_Body
+        and then FA.Kind = Kind_Package
         and then FA.Is_Generative
         and then Is_Package_State (E)
       then
@@ -6301,12 +6301,11 @@ package body Flow.Control_Flow_Graph is
             Body_N := Task_Body (FA.Analyzed_Entity);
 
          when Kind_Package =>
-            Spec_N := Package_Specification (FA.Analyzed_Entity);
-            Body_N := Spec_N;
-
-         when Kind_Package_Body =>
-            Body_N := Package_Body (FA.Analyzed_Entity);
             Spec_N := Package_Specification (FA.Spec_Entity);
+            Body_N :=
+              (if Entity_Body_In_SPARK (FA.Spec_Entity)
+               then Package_Body (FA.Analyzed_Entity)
+               else Spec_N);
 
       end case;
 
@@ -6347,7 +6346,7 @@ package body Flow.Control_Flow_Graph is
             --      formal in parameters)
             Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
 
-         when Kind_Package | Kind_Package_Body =>
+         when Kind_Package =>
             null;
       end case;
 
@@ -6394,7 +6393,7 @@ package body Flow.Control_Flow_Graph is
                   end loop;
                end;
 
-         when Kind_Package | Kind_Package_Body =>
+         when Kind_Package =>
             --  Packages have no obvious globals, but we can extract a list of
             --  global variables used from the optional rhs of the initializes
             --  clause:
@@ -6532,7 +6531,7 @@ package body Flow.Control_Flow_Graph is
             --  No pre or post here
             null;
 
-         when Kind_Package | Kind_Package_Body =>
+         when Kind_Package =>
             --  Flowgraph for initial_condition aspect
             declare
                NL             : Union_Lists.List := Union_Lists.Empty_List;
@@ -6591,7 +6590,7 @@ package body Flow.Control_Flow_Graph is
                     FA.Helper_End_Vertex,
                     FA.End_Vertex);
 
-         when Kind_Package | Kind_Package_Body =>
+         when Kind_Package =>
             declare
                Nodes : Union_Lists.List := Union_Lists.Empty_List;
                Block : Graph_Connections;
@@ -6626,7 +6625,7 @@ package body Flow.Control_Flow_Graph is
                      Nodes.Append (Union_Id (Private_Decls));
                   end if;
 
-                  if FA.Kind = Kind_Package_Body then
+                  if Entity_Body_In_SPARK (FA.Spec_Entity) then
                      Do_Subprogram_Or_Block (Body_N,
                                              FA, Connection_Map, The_Context);
                      Nodes.Append (Union_Id (Body_N));

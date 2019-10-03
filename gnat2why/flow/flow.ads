@@ -235,7 +235,7 @@ package Flow is
       case Kind is
          when Kind_Subprogram | Kind_Task =>
             Is_Main : Boolean;
-            --  True if this is a task, a main program, i.e. a library level
+            --  True if this is a task, a main program, i.e. a library-level
             --  subprogram without formal parameters (global parameters are
             --  allowed) or an interrupt handler.
 
@@ -245,7 +245,7 @@ package Flow is
             Refined_Depends_N : Node_Id;
             --  A few contract nodes cached as they can be a tedious to find
 
-         when Kind_Package | Kind_Package_Body =>
+         when Kind_Package =>
             Initializes_N : Node_Id;
             --  Contract node cached, since it is tedious to find
 

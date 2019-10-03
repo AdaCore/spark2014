@@ -39,8 +39,7 @@ package Flow_Types is
 
    type Analyzed_Subject_Kind is (Kind_Subprogram,
                                   Kind_Task,
-                                  Kind_Package,
-                                  Kind_Package_Body);
+                                  Kind_Package);
    --  The different kinds of things we will analyze
 
    ----------------------------------------------------------------------
