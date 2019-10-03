@@ -639,11 +639,12 @@ package body SPARK_Util is
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
       Ty      : constant Entity_Id := Scope (E);
       Full_Ty : constant Entity_Id :=
-        (if Present (Full_View (Ty))
-         then Full_View (Ty)
-         else Ty);
+        (if Present (Full_View (Ty)) then Full_View (Ty) else Ty);
 
    begin
+      --  Since we are marking the component, the full type should be marked
+      --  already. The type itself may not have been marked yet if it is
+      --  private.
       pragma Assert (Entity_Marked (Full_Ty));
 
       --  Hidden discriminants are only in SPARK if Ty's full view is in SPARK
@@ -656,39 +657,66 @@ package body SPARK_Util is
             return Entity_In_SPARK (Full_Ty);
          end if;
 
-      --  If the type itself is private, no components can be visible in it.
-      --  This case has to be handled specifically to prevent visible
-      --  components of hidden ancestors from leaking in.
+      --  Components of a protected type and untagged types are visible except
+      --  if the type full view is not in SPARK.
 
-      elsif Is_Private_Type (Base_Type (Ty))
-        and then Etype (Base_Type (Ty)) = Base_Type (Ty)
-        and then not Entity_In_SPARK (Full_Ty)
+      elsif Is_Protected_Type (Full_Ty)
+        or else not Is_Tagged_Type (Full_Ty)
       then
-         pragma Assert (if not Entity_In_SPARK (Ty) then Entity_Marked (Ty));
-
-         return False;
-
-      --  Components of a protected type are visible except if the type full
-      --  view is not in SPARK.
-
-      elsif Is_Protected_Type (Full_Ty) then
-
-         return not Full_View_Not_In_SPARK (Full_Ty);
+         return Entity_In_SPARK (Full_Ty)
+           and then not Full_View_Not_In_SPARK (Full_Ty);
 
       --  Find the first record type in the hierarchy in which the field is
-      --  present and see if it is in SPARK.
+      --  present. The component is visible in SPARK if:
+      --  * the type we are interested derives from this type by going only
+      --    through SPARK derivations
+      --  * the full view of this type is in SPARK.
 
       else
          declare
             Orig_Comp : constant Entity_Id := Original_Record_Component (E);
             Orig_Rec  : constant Entity_Id := Scope (Orig_Comp);
-            Pview_Rec : constant Entity_Id :=
-              (if Present (Full_View (Orig_Rec))
-               then Full_View (Orig_Rec)
+            Full_Orig : constant Entity_Id :=
+              (if Present (Full_View (Orig_Rec)) then Full_View (Orig_Rec)
                else Orig_Rec);
+            --  First record type in the hierarchy in which the field is
+            --  present.
+
+            Rec       : Entity_Id := Ty;
+            Full_Rec  : Entity_Id;
+
          begin
-            pragma Assert (Entity_Marked (Pview_Rec));
-            return Entity_In_SPARK (Pview_Rec);
+            --  Go over the ancestors of Ty to see if it derives from Full_Orig
+            --  by going only through SPARK derivations.
+
+            loop
+               Full_Rec :=
+                 (if Present (Full_View (Rec)) then Full_View (Rec) else Rec);
+
+               --  We have found Full_Orig, exit the loop
+
+               exit when Full_Rec = Full_Orig;
+
+               --  The next ancestor is the ancestor of the full view if the
+               --  full view is in SPARK. Otherwise it is the ancestor of the
+               --  partial view.
+
+               pragma Assert (Entity_Marked (Full_Rec));
+               Rec := (if Entity_In_SPARK (Full_Rec) then Etype (Full_Rec)
+                       else Etype (Rec));
+
+               --  Return False if we have reached the root of the derivation
+               --  tree without finding Full_Orig.
+               --  ??? We could possibly stop the search earlier using
+               --  Is_Ancestor.
+
+               if Unique_Entity (Rec) = Unique_Entity (Full_Rec) then
+                  return False;
+               end if;
+            end loop;
+
+            pragma Assert (Entity_Marked (Full_Orig));
+            return Entity_In_SPARK (Full_Orig);
          end;
       end if;
    end Component_Is_Visible_In_SPARK;
