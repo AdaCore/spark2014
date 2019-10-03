@@ -7680,7 +7680,13 @@ package body SPARK_Definition is
       --  ??? similar code might be required for Type_Invariants and DIC, but
       --  the current code seems to work.
 
-      if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
+      if Ekind (E) = E_In_Parameter
+        and then Ekind (Scope (E)) = E_Function
+        and then Is_Predicate_Function (Scope (E))
+      then
+         return SPARK_Pragma_Of_Entity (Scope (E));
+
+      elsif Ekind (E) = E_Function and then Is_Predicate_Function (E) then
          declare
             Ty : constant Entity_Id := Etype (First_Formal (E));
          begin
