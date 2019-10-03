@@ -6626,9 +6626,6 @@ package body Flow.Control_Flow_Graph is
                   Nodes.Append (Union_Id (Private_Decls));
                end if;
 
-               --  We need to keep track of these for checking Elaborate_Body
-               FA.Spec_Vars := FA.All_Vars;
-
                if FA.Kind = Kind_Package_Body then
                   Do_Subprogram_Or_Block (Body_N,
                                           FA, Connection_Map, The_Context);

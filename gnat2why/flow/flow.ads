@@ -252,10 +252,6 @@ package Flow is
             Visible_Vars : Flow_Id_Sets.Set;
             --  Variables visible in the package elaboration
 
-            Spec_Vars : Flow_Id_Sets.Set;
-            --  Variables visible in the package specification (including
-            --  private ones).
-
       end case;
    end record;
 

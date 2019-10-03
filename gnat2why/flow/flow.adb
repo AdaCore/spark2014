@@ -1153,7 +1153,6 @@ package body Flow is
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
-            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
@@ -1167,7 +1166,6 @@ package body Flow is
                                             Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
-            FA.Spec_Vars     := Flow_Id_Sets.Empty_Set;
 
             FA.Is_Generative := No (FA.Initializes_N);
 
