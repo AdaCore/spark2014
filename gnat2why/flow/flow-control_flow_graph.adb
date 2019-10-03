@@ -4154,7 +4154,7 @@ package body Flow.Control_Flow_Graph is
 
       Pkg_Body_Declarations : constant List_Id := Declarations (Pkg_Body);
 
-      DM : Dependency_Maps.Map :=
+      DM : constant Dependency_Maps.Map :=
         Parse_Initializes (Package_Spec, FA.B_Scope);
       --  ??? This needs to take into account initializes from gg
 
@@ -4197,7 +4197,7 @@ package body Flow.Control_Flow_Graph is
                      The_Out : Flow_Id renames Dependency_Maps.Key (C);
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
 
-                     Init_Item : constant Node_Id :=
+                     Init_Item : constant Entity_Id :=
                        (if Present (The_Out)
                         then Get_Direct_Mapping_Id (The_Out)
                         else Empty);
