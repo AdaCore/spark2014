@@ -4981,7 +4981,9 @@ package body Gnat2Why.Subprograms is
 
          Generate_Axiom_For_Post (File, E);
 
-         if Is_Visible_Dispatching_Operation (E) then
+         if Is_Visible_Dispatching_Operation (E)
+           and then not Is_Predicate_Function (E)
+         then
             Generate_Dispatch_Compatibility_Axioms (File, E);
          end if;
 
