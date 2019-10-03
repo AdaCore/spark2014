@@ -1,0 +1,7 @@
+p.adb:7:09: high: modification of "X" in elaboration requires Elaborate_Body on package "P" (SPARK RM 7.7.1(5))
+p.ads:2:04: info: flow dependencies proved
+p.ads:3:04: info: initial condition proved (CVC4: 2 VC)
+p.ads:14:19: info: assertion proved (CVC4: 2 VC)
+p.ads:17:19: info: initialization of "A" proved
+p.ads:17:49: info: postcondition proved (CVC4: 1 VC)
+p.ads:17:52: info: data dependencies proved
