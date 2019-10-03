@@ -6618,18 +6618,19 @@ package body Flow.Control_Flow_Graph is
                --  the hard work we've done so far.
                FA.Visible_Vars := FA.All_Vars or Package_Writes;
 
-               if Present (Private_Decls)
-                 and then Private_Spec_In_SPARK (FA.Spec_Entity)
-               then
-                  Process_Statement_List (Private_Decls,
-                                          FA, Connection_Map, The_Context);
-                  Nodes.Append (Union_Id (Private_Decls));
-               end if;
+               if Private_Spec_In_SPARK (FA.Spec_Entity) then
+                  if Present (Private_Decls) then
 
-               if FA.Kind = Kind_Package_Body then
-                  Do_Subprogram_Or_Block (Body_N,
-                                          FA, Connection_Map, The_Context);
-                  Nodes.Append (Union_Id (Body_N));
+                     Process_Statement_List (Private_Decls,
+                                             FA, Connection_Map, The_Context);
+                     Nodes.Append (Union_Id (Private_Decls));
+                  end if;
+
+                  if FA.Kind = Kind_Package_Body then
+                     Do_Subprogram_Or_Block (Body_N,
+                                             FA, Connection_Map, The_Context);
+                     Nodes.Append (Union_Id (Body_N));
+                  end if;
                end if;
 
                Join (FA    => FA,
