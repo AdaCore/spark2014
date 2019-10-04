@@ -32,10 +32,10 @@ GNAT Studio repository at ``share/plugins/spark2014/itp_lib.py``.
              is *****very***** useful. In GNAT Studio, go to
              ``View -> Python Console``, it will start an interactive console
              where you can test all GNAT Studio primitives described in
-             http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html
+             http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html
 
 .. warning:: Documentation on primitives is found both in:
-             http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html
+             http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html
              and
              http://docs.adacore.com/gtkada-docs/gtkada_rm/gtkada_rm/
 

@@ -17,7 +17,7 @@ the rest. The integration testsuite tests the behavior of tools combined with
 each others. For example, there are tests checking that GNAT Studio works with
 SPARK. These tests are written using an X environnment simulator called Xvcd and
 the plugin documentation of GNAT Studio
-(see http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html) which
+(see http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html) which
 virtually allows you to simulate any behavior of GNAT Studio that you would be able to
 do in a plugin.
 The integration testsuite is located in
