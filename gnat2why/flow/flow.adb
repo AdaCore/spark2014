@@ -138,7 +138,7 @@ package body Flow is
 
    begin
       Write_Str ("Generated contracts for ");
-      Sprint_Node (FA.Analyzed_Entity);
+      Sprint_Node (FA.Spec_Entity);
       Write_Eol;
       Indent;
 
@@ -204,7 +204,7 @@ package body Flow is
             Globals : Global_Flow_Ids;
 
          begin
-            GG_Get_Globals (E       => FA.Analyzed_Entity,
+            GG_Get_Globals (E       => FA.Spec_Entity,
                             S       => FA.S_Scope,
                             Globals => Globals);
             Write_Str ("Global =>");
@@ -213,7 +213,7 @@ package body Flow is
             Print (Globals);
             Outdent;
 
-            GG_Get_Globals (E       => FA.Analyzed_Entity,
+            GG_Get_Globals (E       => FA.Spec_Entity,
                             S       => FA.B_Scope,
                             Globals => Globals);
             Write_Str ("Refined_Global =>");
@@ -1090,7 +1090,6 @@ package body Flow is
    begin
       Current_Error_Node := E;
 
-      FA.Analyzed_Entity                      := E;
       FA.Spec_Entity                          := Unique_Entity (E);
       FA.Start_Vertex                         := Null_Vertex;
       FA.Helper_End_Vertex                    := Null_Vertex;
@@ -1387,7 +1386,7 @@ package body Flow is
                           FA.Kind'Img &
                           " " &
                           Character'Val (8#33#) & "[1m" &
-                          Get_Name_String (Chars (FA.Analyzed_Entity)) &
+                          Get_Name_String (Chars (FA.Spec_Entity)) &
                           Character'Val (8#33#) & "[0m");
          end if;
 
@@ -1448,7 +1447,7 @@ package body Flow is
                   --  analysis of the subprogram then emit the
                   --  relevant claim.
                   if not FA.Errors_Or_Warnings then
-                     Register_Claim (Claim'(E    => FA.Analyzed_Entity,
+                     Register_Claim (Claim'(E    => FA.Spec_Entity,
                                             Kind => Claim_Effects));
                   end if;
 
@@ -1503,38 +1502,38 @@ package body Flow is
          --  Check for potentially blocking operations in protected actions and
          --  for calls to Current_Task from entry body.
          if FA.Kind = Kind_Subprogram
-           and then Convention (FA.Analyzed_Entity) in Convention_Entry |
-                                                       Convention_Protected
+           and then Convention (FA.Spec_Entity) in Convention_Entry
+                                                 | Convention_Protected
          then
             Flow.Analysis.Check_Potentially_Blocking (FA);
 
             --  We issue a high error message in case the Current_Task function
             --  is called from an entry body.
-            if Ekind (FA.Analyzed_Entity) = E_Entry
-              and then Calls_Current_Task (FA.Analyzed_Entity)
+            if Ekind (FA.Spec_Entity) = E_Entry
+              and then Calls_Current_Task (FA.Spec_Entity)
             then
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "Current_Task should not be called from " &
                               "an entry body & (RM C.7.1(17))",
-                  N        => FA.Analyzed_Entity,
-                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  N        => FA.Spec_Entity,
+                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;
 
             --  We issue a high error message in case the Current_Task function
             --  is called from an interrupt handler.
-            if Ekind (FA.Analyzed_Entity) = E_Procedure
-              and then Is_Interrupt_Handler (FA.Analyzed_Entity)
-              and then Calls_Current_Task (FA.Analyzed_Entity)
+            if Ekind (FA.Spec_Entity) = E_Procedure
+              and then Is_Interrupt_Handler (FA.Spec_Entity)
+              and then Calls_Current_Task (FA.Spec_Entity)
             then
                Error_Msg_Flow
                  (FA       => FA,
                   Msg      => "Current_Task should not be called from " &
                               "an interrupt handler & (RM C.7.1(17))",
-                  N        => FA.Analyzed_Entity,
-                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  N        => FA.Spec_Entity,
+                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;

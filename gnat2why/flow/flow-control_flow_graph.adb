@@ -1318,7 +1318,7 @@ package body Flow.Control_Flow_Graph is
                Mode_Out,
 
             when E_Protected_Type =>
-               (if Ekind (FA.Analyzed_Entity) = E_Function
+               (if Ekind (FA.Spec_Entity) = E_Function
                 then Mode_In
                 else Mode_In_Out),
 
@@ -2007,7 +2007,7 @@ package body Flow.Control_Flow_Graph is
         (FA,
          Direct_Mapping_Id (Ret_Entity),
          Make_Extended_Return_Attributes
-           (Var_Def         => Flatten_Variable (FA.Analyzed_Entity,
+           (Var_Def         => Flatten_Variable (FA.Spec_Entity,
                                                  FA.B_Scope),
             Var_Use         => Flatten_Variable (Ret_Object,
                                                  FA.B_Scope),
@@ -4806,7 +4806,7 @@ package body Flow.Control_Flow_Graph is
            (FA,
             Direct_Mapping_Id (N),
             Make_Basic_Attributes
-              (Var_Def    => Flatten_Variable (FA.Analyzed_Entity,
+              (Var_Def    => Flatten_Variable (FA.Spec_Entity,
                                                FA.B_Scope),
                Var_Ex_Use => Get_Variables
                  (Expr,
@@ -5815,7 +5815,7 @@ package body Flow.Control_Flow_Graph is
       then
          if not FA.Generating_Globals
            and then FA.Kind = Kind_Subprogram
-           and then not No_Return (FA.Analyzed_Entity)
+           and then not No_Return (FA.Spec_Entity)
          then
             --  We warn about this, but only for subprograms not
             --  annotated with No_Return.
@@ -5823,10 +5823,10 @@ package body Flow.Control_Flow_Graph is
               (FA       => FA,
                Msg      => "all paths in & raise exceptions " &
                            "or do not terminate normally",
-               N        => FA.Analyzed_Entity,
+               N        => FA.Spec_Entity,
                Severity => High_Check_Kind,
                Tag      => Missing_Return,
-               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
+               F1       => Direct_Mapping_Id (FA.Spec_Entity));
             FA.Has_Only_Exceptional_Paths := True;
          end if;
          FA.CFG.Add_Edge (FA.Start_Vertex, FA.End_Vertex, EC_Default);
@@ -6291,20 +6291,20 @@ package body Flow.Control_Flow_Graph is
    begin
       case FA.Kind is
          when Kind_Subprogram =>
-            Body_N        := Get_Body (FA.Analyzed_Entity);
+            Body_N        := Get_Body (FA.Spec_Entity);
             Preconditions :=
-              Get_Precondition_Expressions (FA.Analyzed_Entity);
+              Get_Precondition_Expressions (FA.Spec_Entity);
 
          when Kind_Task =>
             --  Tasks cannot have pre- or postconditions right now. This is
             --  a matter for the ARG perhaps.
-            Body_N := Task_Body (FA.Analyzed_Entity);
+            Body_N := Task_Body (FA.Spec_Entity);
 
          when Kind_Package =>
             Spec_N := Package_Specification (FA.Spec_Entity);
             Body_N :=
               (if Entity_Body_In_SPARK (FA.Spec_Entity)
-               then Package_Body (FA.Analyzed_Entity)
+               then Package_Body (Body_Entity (FA.Spec_Entity))
                else Spec_N);
 
       end case;
@@ -6333,7 +6333,7 @@ package body Flow.Control_Flow_Graph is
       --  entity.
       case FA.Kind is
          when Kind_Subprogram =>
-            for Param of Get_Formals (FA.Analyzed_Entity) loop
+            for Param of Get_Formals (FA.Spec_Entity) loop
                Create_Initial_And_Final_Vertices (Param, FA);
             end loop;
 
@@ -6344,7 +6344,7 @@ package body Flow.Control_Flow_Graph is
             --    * variables that are Part_Of tasks,
             --    * discriminants of tasks (but these are only considered to be
             --      formal in parameters)
-            Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
+            Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
 
          when Kind_Package =>
             null;
@@ -6359,7 +6359,7 @@ package body Flow.Control_Flow_Graph is
                   Globals : Global_Flow_Ids;
 
                begin
-                  Get_Globals (Subprogram => FA.Analyzed_Entity,
+                  Get_Globals (Subprogram => FA.Spec_Entity,
                                Scope      => FA.B_Scope,
                                Classwide  => False,
                                Globals    => Globals);
@@ -6473,8 +6473,8 @@ package body Flow.Control_Flow_Graph is
 
       --  If we are dealing with a function, we use its entity as a vertex for
       --  the returned value.
-      if Ekind (FA.Analyzed_Entity) = E_Function then
-         Create_Initial_And_Final_Vertices (FA.Analyzed_Entity, FA);
+      if Ekind (FA.Spec_Entity) = E_Function then
+         Create_Initial_And_Final_Vertices (FA.Spec_Entity, FA);
       end if;
 
       --  If you're now wondering where we deal with locally declared objects
@@ -6510,7 +6510,7 @@ package body Flow.Control_Flow_Graph is
             begin
                for Refined in Boolean loop
                   Postconditions := Get_Postcondition_Expressions
-                    (FA.Analyzed_Entity,
+                    (FA.Spec_Entity,
                      Refined);
 
                   for Postcondition of Postconditions loop

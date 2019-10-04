@@ -470,7 +470,7 @@ package body Flow_Generated_Globals.Partial is
       --  ??? isn't this just checking if there are any abstract states?
       if Ekind (E) = E_Package
         and then Entity_Body_In_SPARK (E)
-        and then Present (Get_Pragma (FA.Analyzed_Entity,
+        and then Present (Get_Pragma (Body_Entity (FA.Spec_Entity),
                           Pragma_Refined_State))
       then
          GG_Register_State_Refinement (FA.Spec_Entity);
@@ -2647,10 +2647,10 @@ package body Flow_Generated_Globals.Partial is
       --  ??? isn't this just checking if there are any
       --  abstract states?
       --  if FA.Kind = Kind_Package_Body
-      --    and then Present (Get_Pragma (FA.Analyzed_Entity,
+      --    and then Present (Get_Pragma (FA.Spec_Entity,
       --                      Pragma_Refined_State))
       --  then
-      --     GG_Register_State_Refinement (FA.Analyzed_Entity);
+      --     GG_Register_State_Refinement (FA.Spec_Entity);
       --  end if;
    end Write_Contracts_To_ALI;
 

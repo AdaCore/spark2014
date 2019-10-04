@@ -61,9 +61,9 @@ package body Flow.Analysis.Sanity is
    begin
       Sane := True;
 
-      if Ekind (FA.Analyzed_Entity) = E_Function then
+      if Ekind (FA.Spec_Entity) = E_Function then
 
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
+         Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
                       Globals    => Globals);
@@ -77,7 +77,7 @@ package body Flow.Analysis.Sanity is
                  (FA       => FA,
                   Msg      => "function with output global & " &
                               "is not allowed in SPARK",
-                  N        => FA.Analyzed_Entity,
+                  N        => FA.Spec_Entity,
                   F1       => G,
                   Severity => Error_Kind,
                   Tag      => Side_Effects);
@@ -88,9 +88,9 @@ package body Flow.Analysis.Sanity is
                  (FA       => FA,
                   Msg      => "flow analysis of & abandoned due to " &
                               "function with side effects",
-                  N        => FA.Analyzed_Entity,
+                  N        => FA.Spec_Entity,
                   Severity => Error_Kind,
-                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
+                  F1       => Direct_Mapping_Id (FA.Spec_Entity));
             end if;
          end if;
       end if;
@@ -567,7 +567,7 @@ package body Flow.Analysis.Sanity is
 
          function Is_Within_Protected_Function return Boolean
          is
-            Curr_Scope : Entity_Id := FA.Analyzed_Entity;
+            Curr_Scope : Entity_Id := FA.Spec_Entity;
             Prev_Scope : Entity_Id;
          begin
             loop
@@ -1114,7 +1114,7 @@ package body Flow.Analysis.Sanity is
       case FA.Kind is
          when Kind_Subprogram =>
             declare
-               Subp_Body : constant Node_Id := Get_Body (FA.Analyzed_Entity);
+               Subp_Body : constant Node_Id := Get_Body (FA.Spec_Entity);
 
             begin
                Traverse_Declarations_And_HSS (Subp_Body);
@@ -1164,7 +1164,7 @@ package body Flow.Analysis.Sanity is
                --  If the node is an instance of a generic then we need to
                --  check its actuals.
 
-               if Is_Generic_Instance (FA.Analyzed_Entity) then
+               if Is_Generic_Instance (FA.Spec_Entity) then
 
                   --  For subprogram instances we need to get to the
                   --  wrapper package.
@@ -1179,7 +1179,7 @@ package body Flow.Analysis.Sanity is
             --  with the visible and private parts of the task when analysing
             --  the enclosing subprogram/package.
 
-            Traverse_Declarations_And_HSS (Task_Body (FA.Analyzed_Entity));
+            Traverse_Declarations_And_HSS (Task_Body (FA.Spec_Entity));
 
          when Kind_Package =>
             if Entity_Spec_In_SPARK (FA.Spec_Entity) then
@@ -1217,9 +1217,9 @@ package body Flow.Analysis.Sanity is
               (FA       => FA,
                Msg      => "flow analysis of & abandoned due to" &
                            " expressions with variable inputs",
-               N        => FA.Analyzed_Entity,
+               N        => FA.Spec_Entity,
                Severity => Error_Kind,
-               F1       => Direct_Mapping_Id (FA.Analyzed_Entity));
+               F1       => Direct_Mapping_Id (FA.Spec_Entity));
          end if;
       end if;
    end Check_Expressions;
@@ -1263,7 +1263,7 @@ package body Flow.Analysis.Sanity is
                      Severity => High_Check_Kind,
                      Tag      => Illegal_Update,
                      F1       => Entire_Variable (Var),
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
                      Vertex   => V);
 
                   Sane := False;
@@ -1301,7 +1301,7 @@ package body Flow.Analysis.Sanity is
                            Severity => High_Check_Kind,
                            Tag      => Illegal_Update,
                            F1       => Var,
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
                            Vertex   => V);
 
                      else
@@ -1312,7 +1312,7 @@ package body Flow.Analysis.Sanity is
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => High_Check_Kind,
                            F1       => Var,
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
                            Tag      => Illegal_Update,
                            Vertex   => V);
                      end if;
@@ -1405,9 +1405,9 @@ package body Flow.Analysis.Sanity is
 
                   Raw_Globals : constant Raw_Global_Nodes :=
                     (if Present (FA.Refined_Global_N)
-                     then Parse_Global_Contract (FA.Analyzed_Entity,
+                     then Parse_Global_Contract (FA.Spec_Entity,
                                                  FA.Global_N)
-                     else Parse_Depends_Contract (FA.Analyzed_Entity,
+                     else Parse_Depends_Contract (FA.Spec_Entity,
                                                   FA.Depends_N));
 
                   use type Node_Sets.Set;
@@ -1473,7 +1473,7 @@ package body Flow.Analysis.Sanity is
                                                  Precise => False);
 
                            Subprogram : constant Flow_Id :=
-                             Direct_Mapping_Id (FA.Analyzed_Entity);
+                             Direct_Mapping_Id (FA.Spec_Entity);
 
                         begin
                            Error_Msg_Flow
@@ -1609,7 +1609,7 @@ package body Flow.Analysis.Sanity is
             N        => Error_Loc,
             Severity => Severity,
             F1       => F,
-            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            F2       => Direct_Mapping_Id (FA.Spec_Entity),
             Tag      => Global_Missing);
       end Error_Msg;
 
@@ -1674,7 +1674,7 @@ package body Flow.Analysis.Sanity is
 
       --  Read the generated Refined_Global
 
-      Get_Globals (Subprogram => FA.Analyzed_Entity,
+      Get_Globals (Subprogram => FA.Spec_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
                    Globals    => Generated_Refined_Global);

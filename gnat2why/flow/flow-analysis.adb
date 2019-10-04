@@ -345,15 +345,15 @@ package body Flow.Analysis is
    is
    begin
       if not FA.Is_Main
-        and then not Is_Error_Signaling_Procedure (FA.Analyzed_Entity)
-        and then not Has_User_Supplied_Globals (FA.Analyzed_Entity)
-        and then not Is_Ghost_Entity (FA.Analyzed_Entity)
+        and then not Is_Error_Signaling_Procedure (FA.Spec_Entity)
+        and then not Has_User_Supplied_Globals (FA.Spec_Entity)
+        and then not Is_Ghost_Entity (FA.Spec_Entity)
       then
          Error_Msg_Flow
            (FA       => FA,
             Msg      => "subprogram & " & "has no effect",
-            N        => FA.Analyzed_Entity,
-            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            N        => FA.Spec_Entity,
+            F1       => Direct_Mapping_Id (FA.Spec_Entity),
             Tag      => Ineffective,
             Severity => Warning_Kind);
       end if;
@@ -454,7 +454,7 @@ package body Flow.Analysis is
       Var_Normal   : constant Flow_Id := Change_Variant (Var, Normal_Use);
       E_Var_Normal : constant Flow_Id := Entire_Variable (Var_Normal);
 
-      First_Use : Node_Id := FA.Analyzed_Entity;
+      First_Use : Node_Id := FA.Spec_Entity;
 
       procedure Proc
         (V      : Flow_Graphs.Vertex_Id;
@@ -700,7 +700,7 @@ package body Flow.Analysis is
       --     Proof_In -> initialized
       --     Input    -> initialized
       --     Output   -> always OK
-      Get_Globals (Subprogram => FA.Analyzed_Entity,
+      Get_Globals (Subprogram => FA.Spec_Entity,
                    Scope      => FA.B_Scope,
                    Classwide  => False,
                    Globals    => Globals);
@@ -793,7 +793,7 @@ package body Flow.Analysis is
                      --  the implicit 'Result (for functions).
 
                      Vars_Known :=
-                       To_Flow_Id_Set (Get_Formals (FA.Analyzed_Entity));
+                       To_Flow_Id_Set (Get_Formals (FA.Spec_Entity));
 
                      if Ekind (FA.Spec_Entity) = E_Function then
                         Vars_Known.Insert (Direct_Mapping_Id (FA.Spec_Entity));
@@ -860,13 +860,13 @@ package body Flow.Analysis is
                                                         Var     => Var,
                                                         Precise => False),
                         F1       => Var,
-                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
                         Tag      => Global_Wrong,
                         Severity => High_Check_Kind);
                      Sane := False;
 
                   elsif FA.Kind = Kind_Package
-                    and then Is_Library_Level_Entity (FA.Analyzed_Entity)
+                    and then Is_Library_Level_Entity (FA.Spec_Entity)
                     and then not Is_Initialized_At_Elaboration (Var,
                                                                 FA.B_Scope)
                   then
@@ -1247,7 +1247,7 @@ package body Flow.Analysis is
                Null_Position  : Dependency_Maps.Cursor;
 
             begin
-               Get_Depends (Subprogram => FA.Analyzed_Entity,
+               Get_Depends (Subprogram => FA.Spec_Entity,
                             Scope      => FA.B_Scope,
                             Classwide  => False,
                             Depends    => Dependency_Map);
@@ -1491,7 +1491,7 @@ package body Flow.Analysis is
                         Msg      => "unused initial value of &",
                         N        => Find_Global (FA.Spec_Entity, F),
                         F1       => F,
-                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
                         Tag      => Unused_Initial_Value,
                         Severity => Warning_Kind,
                         Vertex   => V);
@@ -1516,7 +1516,7 @@ package body Flow.Analysis is
                         --  ??? find_import
                         N        => Error_Location (FA.PDG, FA.Atr, V),
                         F1       => F,
-                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
                         Tag      => Unused_Initial_Value,
                         Severity => Warning_Kind,
                         Vertex   => V);
@@ -1541,7 +1541,7 @@ package body Flow.Analysis is
       --  user then we continue the analysis.
 
       if Has_Effects (FA)
-        or else Has_User_Supplied_Globals (FA.Analyzed_Entity)
+        or else Has_User_Supplied_Globals (FA.Spec_Entity)
       then
          declare
             Suppressed         : Flow_Id_Sets.Set;
@@ -1749,10 +1749,13 @@ package body Flow.Analysis is
 
                --  Check also clauses of the body
                if not Found
-                 and then FA.Analyzed_Entity /= FA.Spec_Entity
+                 and then Entity_Body_In_SPARK (FA.Spec_Entity)
                then
                   Check_Clauses
-                    (Enclosing_Comp_Unit_Node (FA.Analyzed_Entity));
+                    (Enclosing_Comp_Unit_Node
+                       (if Ekind (FA.Spec_Entity) = E_Package
+                        then Body_Entity (FA.Spec_Entity)
+                        else Get_Body_Entity (FA.Spec_Entity)));
                end if;
 
                if not Found then
@@ -1778,7 +1781,7 @@ package body Flow.Analysis is
    begin
       --  If we are not analyzing a compilation unit then there is
       --  nothing to do here.
-      if not Is_Compilation_Unit (FA.Analyzed_Entity) then
+      if not Is_Compilation_Unit (FA.Spec_Entity) then
          return;
       end if;
 
@@ -2527,7 +2530,7 @@ package body Flow.Analysis is
                Msg      => To_String (Msg),
                N        => N,
                F1       => Var,
-               F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+               F2       => Direct_Mapping_Id (FA.Spec_Entity),
                Tag      => Uninitialized,
                Severity => (case Kind is
                             when Unknown => (if Default_Init
@@ -3195,7 +3198,7 @@ package body Flow.Analysis is
 
    begin
       if FA.Kind in Kind_Subprogram | Kind_Task
-        and then Has_User_Supplied_Globals (FA.Analyzed_Entity)
+        and then Has_User_Supplied_Globals (FA.Spec_Entity)
       then
          Raw_Globals := Contract_Globals (FA.Spec_Entity);
 
@@ -3233,7 +3236,7 @@ package body Flow.Analysis is
       --  is more efficient than scanning the entire CFG.
 
       if FA.Kind in Kind_Subprogram | Kind_Task
-        and then Has_User_Supplied_Globals (FA.Analyzed_Entity)
+        and then Has_User_Supplied_Globals (FA.Spec_Entity)
       then
          Get_Globals (Subprogram          => FA.Spec_Entity,
                       Scope               => FA.B_Scope,
@@ -3807,7 +3810,7 @@ package body Flow.Analysis is
          Stripped : Dependency_Maps.Map;
 
       begin
-         Get_Globals (FA.Analyzed_Entity, FA.B_Scope, False, User_Globals);
+         Get_Globals (FA.Spec_Entity, FA.B_Scope, False, User_Globals);
 
          for C in Deps.Iterate loop
             declare
@@ -3890,7 +3893,7 @@ package body Flow.Analysis is
       --  Debug output
 
       if Debug_Trace_Depends then
-         Write_Line (Get_Name_String (Chars (FA.Analyzed_Entity)) & ":");
+         Write_Line (Get_Name_String (Chars (FA.Spec_Entity)) & ":");
          Print_Dependency_Map ("user",    Projected_User_Deps);
          Print_Dependency_Map ("actual",  Actual_Deps);
          Print_Dependency_Map ("missing", Missing_Deps);
@@ -3914,10 +3917,10 @@ package body Flow.Analysis is
                  (FA       => FA,
                   Msg      => "incorrect dependency & is not an output of &",
                   N        => Search_Depends_Contract
-                                 (FA.Analyzed_Entity,
+                                 (FA.Spec_Entity,
                                   Get_Direct_Mapping_Id (Unused_Out)),
                   F1       => Unused_Out,
-                  F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Depends_Null,
                   Severity => Medium_Check_Kind);
             end if;
@@ -3937,7 +3940,7 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "& cannot appear in Depends",
                      N        => Search_Depends_Contract
-                                   (FA.Analyzed_Entity,
+                                   (FA.Spec_Entity,
                                     Get_Direct_Mapping_Id (Unused_Out),
                                     Get_Direct_Mapping_Id (Unused_In)),
                      F1       => Unused_In,
@@ -3949,21 +3952,21 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "incorrect dependency ""null => %""",
                      N        => Search_Depends_Contract
-                                   (FA.Analyzed_Entity,
+                                   (FA.Spec_Entity,
                                     Empty,
                                     Get_Direct_Mapping_Id (Unused_In)),
                      F1       => Unused_In,
                      Tag      => Depends_Wrong,
                      Severity => Medium_Check_Kind);
 
-               elsif Unused_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
-                 and then Ekind (FA.Analyzed_Entity) = E_Function
+               elsif Unused_Out = Direct_Mapping_Id (FA.Spec_Entity)
+                 and then Ekind (FA.Spec_Entity) = E_Function
                then
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "incorrect dependency ""%'Result => %""",
                      N        => Search_Depends_Contract
-                                   (FA.Analyzed_Entity,
+                                   (FA.Spec_Entity,
                                     Get_Direct_Mapping_Id (Unused_Out),
                                     Get_Direct_Mapping_Id (Unused_In)),
                      F1       => Unused_Out,
@@ -3976,7 +3979,7 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "incorrect dependency ""% => %""",
                      N        => Search_Depends_Contract
-                                   (FA.Analyzed_Entity,
+                                   (FA.Spec_Entity,
                                     Get_Direct_Mapping_Id (Unused_Out),
                                     Get_Direct_Mapping_Id (Unused_In)),
                      F1       => Unused_Out,
@@ -4035,7 +4038,7 @@ package body Flow.Analysis is
                           Outputs => Down_Project (Missing_Out, FA.B_Scope));
 
                   begin
-                     if Missing_Out = Direct_Mapping_Id (FA.Analyzed_Entity)
+                     if Missing_Out = Direct_Mapping_Id (FA.Spec_Entity)
                      then
                         Error_Msg_Flow
                           (FA       => FA,
@@ -4043,8 +4046,8 @@ package body Flow.Analysis is
                            Msg      => "missing dependency ""%'Result => " &
                              "%""",
                            N        => Search_Depends_Contract
-                             (FA.Analyzed_Entity,
-                              FA.Analyzed_Entity),
+                             (FA.Spec_Entity,
+                              FA.Spec_Entity),
                            F1       => Missing_Out,
                            F2       => Missing_In,
                            Tag      => Depends_Missing,
@@ -4054,7 +4057,7 @@ package body Flow.Analysis is
                         declare
                            N : constant Node_Id :=
                              Search_Depends_Contract
-                               (FA.Analyzed_Entity,
+                               (FA.Spec_Entity,
                                 Get_Direct_Mapping_Id (Missing_Out));
 
                            Kind : constant String :=
@@ -4100,10 +4103,10 @@ package body Flow.Analysis is
    is
       Globals : Global_Flow_Ids;
    begin
-      if Ekind (FA.Analyzed_Entity) = E_Procedure
-        and then Is_Ghost_Entity (FA.Analyzed_Entity)
+      if Ekind (FA.Spec_Entity) = E_Procedure
+        and then Is_Ghost_Entity (FA.Spec_Entity)
       then
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
+         Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.B_Scope,
                       Classwide  => False,
                       Globals    => Globals);
@@ -4113,9 +4116,9 @@ package body Flow.Analysis is
                Error_Msg_Flow (FA       => FA,
                                Msg      => "ghost procedure & cannot have " &
                                            "non-ghost global output &",
-                               N        => FA.Analyzed_Entity,
+                               N        => FA.Spec_Entity,
                                F1       => Direct_Mapping_Id
-                                             (FA.Analyzed_Entity),
+                                             (FA.Spec_Entity),
                                F2       => Output,
                                Severity => Medium_Check_Kind,
                                Tag      => Ghost_Wrong,
@@ -4243,7 +4246,7 @@ package body Flow.Analysis is
       --  For library-level packages check if everything in the RHS of an
       --  initialization_item is indeed initialized.
 
-      if Is_Library_Level_Entity (FA.Analyzed_Entity) then
+      if Is_Library_Level_Entity (FA.Spec_Entity) then
          declare
             Found_Uninitialized : Boolean := False;
 
@@ -4553,7 +4556,8 @@ package body Flow.Analysis is
          if Entity_Body_In_SPARK (FA.Spec_Entity) then
             declare
                Refined_State_N : constant Node_Id :=
-                 Get_Pragma (FA.Analyzed_Entity, Pragma_Refined_State);
+                 Get_Pragma (Body_Entity (FA.Spec_Entity),
+                             Pragma_Refined_State);
 
             begin
                for State of Iter (Abstract_States (FA.Spec_Entity)) loop
@@ -4648,7 +4652,7 @@ package body Flow.Analysis is
                     "potentially blocking delay statement " &
                     "in protected operation &",
                   N        => Atr.Error_Location,
-                  F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  F1       => Direct_Mapping_Id (FA.Spec_Entity),
                   Tag      => Potentially_Blocking_In_Protected,
                   Severity => High_Check_Kind);
             else
@@ -4663,7 +4667,7 @@ package body Flow.Analysis is
                           "potentially blocking entry call " &
                           "in protected operation &",
                         N        => Atr.Error_Location,
-                        F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        F1       => Direct_Mapping_Id (FA.Spec_Entity),
                         Tag      => Potentially_Blocking_In_Protected,
                         Severity => High_Check_Kind);
 
@@ -4680,7 +4684,7 @@ package body Flow.Analysis is
                              "in protected operation &",
                            N        => Atr.Error_Location,
                            F1       => Direct_Mapping_Id (E),
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
                            Tag      => Potentially_Blocking_In_Protected,
                            Severity => High_Check_Kind);
                      end if;
@@ -4695,7 +4699,7 @@ package body Flow.Analysis is
                           "in protected operation &",
                         N        => Atr.Error_Location,
                         F1       => Direct_Mapping_Id (E),
-                        F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
                         Tag      => Potentially_Blocking_In_Protected,
                         Severity => High_Check_Kind);
 
@@ -4720,7 +4724,7 @@ package body Flow.Analysis is
                              "in protected operation &",
                            N        => Atr.Error_Location,
                            F1       => Magic_String_Id (Blocking_Callee),
-                           F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                           F2       => Direct_Mapping_Id (FA.Spec_Entity),
                            Tag      => Potentially_Blocking_In_Protected,
                            Severity => High_Check_Kind);
 
@@ -4748,7 +4752,7 @@ package body Flow.Analysis is
                                   (Call_With_Same_Target.External_Callee),
 
                               F3       =>
-                                Direct_Mapping_Id (FA.Analyzed_Entity),
+                                Direct_Mapping_Id (FA.Spec_Entity),
 
                               Tag      => Potentially_Blocking_In_Protected,
                               Severity => High_Check_Kind);
@@ -4825,7 +4829,7 @@ package body Flow.Analysis is
    begin
       for Refined in Boolean loop
          Postconditions := Get_Postcondition_Expressions
-           (FA.Analyzed_Entity,
+           (FA.Spec_Entity,
             Refined);
 
          for Postcondition of Postconditions loop
@@ -4925,7 +4929,7 @@ package body Flow.Analysis is
                                     "after elaboration & must not be called " &
                                     "during elaboration of &",
                         Severity => High_Check_Kind,
-                        N        => FA.Analyzed_Entity,
+                        N        => FA.Spec_Entity,
                         --  ??? This error location should be improved
                         F1       => Direct_Mapping_Id (E),
                         F2       => Global,
@@ -4939,7 +4943,7 @@ package body Flow.Analysis is
                         Msg      => "constant after elaboration & must not " &
                                     "be an output of subprogram &",
                         Severity => High_Check_Kind,
-                        N        => FA.Analyzed_Entity,
+                        N        => FA.Spec_Entity,
                         --  ??? This error location should be improved
                         F1       => Global,
                         F2       => Direct_Mapping_Id (FA.Spec_Entity),
@@ -5050,9 +5054,9 @@ package body Flow.Analysis is
                      Msg      => "& cannot act as global item of " &
                                  "nonvolatile function &",
                      Severity => Error_Kind,
-                     N        => FA.Analyzed_Entity,
+                     N        => FA.Spec_Entity,
                      F1       => F,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
                      Tag      => Non_Volatile_Function_With_Volatile_Effects);
                end if;
             end if;
@@ -5062,7 +5066,7 @@ package body Flow.Analysis is
    --  Start of processing for Check_Function_For_Volatile_Effects
 
    begin
-      if Ekind (FA.Analyzed_Entity) /= E_Function then
+      if Ekind (FA.Spec_Entity) /= E_Function then
 
          --  If we are not dealing with a function then we have nothing to do
          --  here.
@@ -5071,9 +5075,9 @@ package body Flow.Analysis is
       end if;
 
       Volatile_Effect_Expected :=
-        (if Is_Protected_Type (Scope (FA.Analyzed_Entity))
-         then Is_Volatile_For_Internal_Calls (FA.Analyzed_Entity)
-         else Is_Volatile_Function (FA.Analyzed_Entity));
+        (if Is_Protected_Type (Scope (FA.Spec_Entity))
+         then Is_Volatile_For_Internal_Calls (FA.Spec_Entity)
+         else Is_Volatile_Function (FA.Spec_Entity));
 
       declare
          Globals : Global_Flow_Ids;
@@ -5082,7 +5086,7 @@ package body Flow.Analysis is
          --  Populate global sets using (possibly generated) Global from the
          --  function specification.
 
-         Get_Globals (Subprogram => FA.Analyzed_Entity,
+         Get_Globals (Subprogram => FA.Spec_Entity,
                       Scope      => FA.S_Scope,
                       Classwide  => False,
                       Globals    => Globals);
@@ -5101,7 +5105,7 @@ package body Flow.Analysis is
 
       Volatile_Effect_Found :=
         Volatile_Effect_Found
-        or else (for some F of Get_Explicit_Formals (FA.Analyzed_Entity)
+        or else (for some F of Get_Explicit_Formals (FA.Spec_Entity)
                  => Is_Effectively_Volatile (Etype (F)));
 
       --  Warn about volatile function without volatile effects
@@ -5113,8 +5117,8 @@ package body Flow.Analysis is
            (FA       => FA,
             Msg      => "volatile function & has no volatile effects",
             Severity => Warning_Kind,
-            N        => FA.Analyzed_Entity,
-            F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+            N        => FA.Spec_Entity,
+            F1       => Direct_Mapping_Id (FA.Spec_Entity),
             Tag      => Volatile_Function_Without_Volatile_Effects);
       end if;
    end Check_Function_For_Volatile_Effects;
@@ -5524,14 +5528,14 @@ package body Flow.Analysis is
 
    begin
       --  We only perform this check on protected operations
-      if not Is_Protected_Operation (FA.Analyzed_Entity) then
+      if not Is_Protected_Operation (FA.Spec_Entity) then
          return;
       end if;
 
-      Preconditions := Get_Precondition_Expressions (FA.Analyzed_Entity);
+      Preconditions := Get_Precondition_Expressions (FA.Spec_Entity);
 
       --  Populate global sets
-      Get_Globals (Subprogram => FA.Analyzed_Entity,
+      Get_Globals (Subprogram => FA.Spec_Entity,
                    Scope      => FA.S_Scope,
                    Classwide  => False,
                    Globals    => Globals);
@@ -5558,7 +5562,7 @@ package body Flow.Analysis is
                      Severity => High_Check_Kind,
                      N        => Precondition,
                      F1       => Var,
-                     F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                     F2       => Direct_Mapping_Id (FA.Spec_Entity),
                      SRM_Ref  => "9(10)",
                      Tag      => Reference_To_Non_CAE_Variable);
                end if;

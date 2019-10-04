@@ -233,7 +233,7 @@ package Flow.Analysis is
 
    procedure Check_Elaborate_Body (FA : in out Flow_Analysis_Graphs)
    with Pre => Entity_Body_In_SPARK (FA.Spec_Entity)
-               and then Is_Compilation_Unit (FA.Analyzed_Entity);
+               and then Is_Compilation_Unit (FA.Spec_Entity);
    --  Checks that the compilation unit package has Elaborate_Body applied if
    --  at least one variable declared in the specification is modified in the
    --  package elaboration.
@@ -292,7 +292,6 @@ private
    --  look for the entire variable represented by Var (in our example we'd
    --  also look for R).
    --
-   --  If no suitable node can be found we return FA.Analyzed_Entity as a
-   --  fallback.
+   --  If no suitable node can be found we return FA.Spec_Entity as a fallback
 
 end Flow.Analysis;
