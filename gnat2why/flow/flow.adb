@@ -1429,7 +1429,7 @@ package body Flow is
                      Analysis.Analyse_Main (FA);
                   end if;
                   Analysis.Check_Function_For_Volatile_Effects (FA);
-                  Analysis.Check_Constant_After_Elaboration (FA);
+                  Analysis.Check_Output_Constant_After_Elaboration (FA);
 
                   if FA.Kind = Kind_Subprogram
                     and then Gnat2Why_Args.Flow_Termination_Proof
@@ -1488,7 +1488,7 @@ package body Flow is
                         Analysis.Check_Elaborate_Body (FA);
                      end if;
                      Analysis.Check_State_Volatility_Escalation (FA);
-                     Analysis.Check_Constant_After_Elaboration (FA);
+                     Analysis.Check_Calls_With_Constant_After_Elaboration (FA);
                   end;
             end case;
          end if;

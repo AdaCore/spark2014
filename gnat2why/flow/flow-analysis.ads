@@ -196,16 +196,18 @@ package Flow.Analysis is
    --
    --  Complexity is O(N^2)
 
-   procedure Check_Constant_After_Elaboration
+   procedure Check_Output_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs);
-   --  Enforce SPARK RM 6.1.4(2). Checks that:
+   --  Enforce SPARK RM 6.1.4(2) for subprograms, i.e. check that:
    --  * a subprogram does not modify variables that have
-   --    Constant_After_Elaboration set
+   --    Constant_After_Elaboration set.
+
+   procedure Check_Calls_With_Constant_After_Elaboration
+     (FA : in out Flow_Analysis_Graphs);
+   --  Enforce SPARK RM 6.1.4(2) for packages, i.e. check that:
    --  * a subprogram or entry having an Input or Proof_In global marked as
    --    Constant_After_Elaboration shall not be called during library unit
    --    elaboration.
-   --
-   --  Complexity is O(N)
 
    procedure Check_Function_For_Volatile_Effects
      (FA : in out Flow_Analysis_Graphs)

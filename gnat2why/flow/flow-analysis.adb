@@ -4895,17 +4895,54 @@ package body Flow.Analysis is
       end loop;
    end Check_Aliasing;
 
-   --------------------------------------
-   -- Check_Constant_After_Elaboration --
-   --------------------------------------
+   ---------------------------------------------
+   -- Check_Output_Constant_After_Elaboration --
+   ---------------------------------------------
 
-   procedure Check_Constant_After_Elaboration
+   procedure Check_Output_Constant_After_Elaboration
      (FA : in out Flow_Analysis_Graphs)
    is
-      Package_Elaboration : constant Boolean :=
-        Ekind (FA.Spec_Entity) = E_Package;
+      Globals : Global_Flow_Ids;
 
-      procedure Check_Subprogram (E : Entity_Id);
+   begin
+      --  Ignore packages (which have no Global contracts) and functions (which
+      --  have no global outputs).
+
+      if Ekind (FA.Spec_Entity) in E_Procedure | E_Entry | E_Task_Type then
+
+         Get_Globals (Subprogram => FA.Spec_Entity,
+                      Scope      => FA.B_Scope,
+                      Classwide  => False,
+                      Globals    => Globals);
+
+         --  Check that the program unit does not modify variables that have
+         --  Constant_After_Elaboration set.
+
+         for Output of Globals.Outputs loop
+            if Is_Constant_After_Elaboration (Output) then
+               Error_Msg_Flow
+                 (FA       => FA,
+                  Msg      => "constant after elaboration & " &
+                              "must not be an output of subprogram &",
+                  Severity => High_Check_Kind,
+                  N        => Find_Global (FA.Spec_Entity, Output),
+                  F1       => Output,
+                  F2       => Direct_Mapping_Id (FA.Spec_Entity),
+                  SRM_Ref  => "6.1.4(21)",
+                  Tag      => Not_Constant_After_Elaboration);
+            end if;
+         end loop;
+      end if;
+   end Check_Output_Constant_After_Elaboration;
+
+   -------------------------------------------------
+   -- Check_Calls_With_Constant_After_Elaboration --
+   -------------------------------------------------
+
+   procedure Check_Calls_With_Constant_After_Elaboration
+     (FA : in out Flow_Analysis_Graphs)
+   is
+      procedure Check_Subprogram (E : Entity_Id; Err_Loc : Node_Id);
       --  Inspects globals of subprogram E to detect violations of SPARK RM
       --  6.1.4(21).
 
@@ -4913,7 +4950,8 @@ package body Flow.Analysis is
       -- Check_Subprogram --
       ----------------------
 
-      procedure Check_Subprogram (E : Entity_Id) is
+      procedure Check_Subprogram (E : Entity_Id; Err_Loc : Node_Id) is
+
          procedure Emit_Check (Globals : Flow_Id_Sets.Set);
          --  Emit check when SRM 6.1.4(21) is violated
 
@@ -4925,34 +4963,18 @@ package body Flow.Analysis is
          begin
             for Global of Globals loop
                if Is_Constant_After_Elaboration (Global) then
-                  if Package_Elaboration then
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "subprogram & with global constant " &
-                                    "after elaboration & must not be called " &
-                                    "during elaboration of &",
-                        Severity => High_Check_Kind,
-                        N        => FA.Spec_Entity,
-                        --  ??? This error location should be improved
-                        F1       => Direct_Mapping_Id (E),
-                        F2       => Global,
-                        F3       => Direct_Mapping_Id (FA.Spec_Entity),
-                        SRM_Ref  => "6.1.4(21)",
-                        Tag      => Not_Constant_After_Elaboration);
-
-                  else
-                     Error_Msg_Flow
-                       (FA       => FA,
-                        Msg      => "constant after elaboration & must not " &
-                                    "be an output of subprogram &",
-                        Severity => High_Check_Kind,
-                        N        => FA.Spec_Entity,
-                        --  ??? This error location should be improved
-                        F1       => Global,
-                        F2       => Direct_Mapping_Id (FA.Spec_Entity),
-                        SRM_Ref  => "6.1.4(21)",
-                        Tag      => Not_Constant_After_Elaboration);
-                  end if;
+                  Error_Msg_Flow
+                    (FA       => FA,
+                     Msg      => "subprogram & with global constant " &
+                                 "after elaboration & must not be called " &
+                                 "during elaboration of &",
+                     Severity => High_Check_Kind,
+                     N        => Err_Loc,
+                     F1       => Direct_Mapping_Id (E),
+                     F2       => Global,
+                     F3       => Direct_Mapping_Id (FA.Spec_Entity),
+                     SRM_Ref  => "6.1.4(21)",
+                     Tag      => Not_Constant_After_Elaboration);
                end if;
             end loop;
          end Emit_Check;
@@ -4971,55 +4993,29 @@ package body Flow.Analysis is
          --  call a subprogram or entry having an Input or Proof_In global
          --  marked as constant after elaboration.
 
-         if Package_Elaboration then
-
-            Emit_Check (Globals.Inputs);
-            Emit_Check (Globals.Proof_Ins);
-
-         --  Check that the procedure/entry/task does not modify variables
-         --  that have Constant_After_Elaboration set.
-
-         else
-
-            Emit_Check (Globals.Outputs);
-
-         end if;
+         Emit_Check (Globals.Inputs);
+         Emit_Check (Globals.Proof_Ins);
       end Check_Subprogram;
 
    --  Start of processing for Check_Constant_After_Elaboration
 
    begin
-      case Ekind (FA.Spec_Entity) is
+      --  Check calls of a package elaboration
 
-         --  Check calls of a package elaboration
-
-         when E_Package =>
-            if Is_Library_Level_Entity (FA.Spec_Entity) then
-               for Call of Generated_Calls (FA.Spec_Entity) loop
-                  if Is_Subprogram (Call)
-                    or else Is_Entry (Call)
-                  then
-                     Check_Subprogram (Call);
+      if Is_Library_Level_Entity (FA.Spec_Entity) then
+         for V of FA.CFG.Get_Collection (Flow_Graphs.All_Vertices) loop
+            declare
+               Atr : V_Attributes renames FA.Atr (V);
+            begin
+               for E of Atr.Subprograms_Called loop
+                  if Ekind (E) /= E_Package then
+                     Check_Subprogram (E, Atr.Error_Location);
                   end if;
                end loop;
-            end if;
-
-         --  Check procedures/entries/tasks
-
-         when E_Procedure
-            | E_Entry
-            | E_Task_Type
-         =>
-            Check_Subprogram (FA.Spec_Entity);
-
-         when E_Function =>
-            null;
-
-         when others =>
-            raise Program_Error;
-
-      end case;
-   end Check_Constant_After_Elaboration;
+            end;
+         end loop;
+      end if;
+   end Check_Calls_With_Constant_After_Elaboration;
 
    -----------------------------------------
    -- Check_Function_For_Volatile_Effects --
