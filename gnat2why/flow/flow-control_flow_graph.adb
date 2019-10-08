@@ -6287,7 +6287,7 @@ package body Flow.Control_Flow_Graph is
       Postcon_Block   : Graph_Connections;
       Body_N          : Node_Id;
       Spec_N          : Node_Id;
-      Package_Writes  : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+
    begin
       case FA.Kind is
          when Kind_Subprogram =>
@@ -6438,8 +6438,10 @@ package body Flow.Control_Flow_Graph is
 
                      --  Ignore the "null => ..." clause
 
-                     if Present (The_Out) then
-                        Package_Writes.Insert (The_Out);
+                     if Present (The_Out)
+                       and then not FA.Generating_Globals
+                     then
+                        FA.Visible_Vars.Insert (The_Out);
                      end if;
                   end;
                end loop;
@@ -6616,8 +6618,7 @@ package body Flow.Control_Flow_Graph is
                --  place we can assemble them easily without re-doing a lot of
                --  the hard work we've done so far.
                if not FA.Generating_Globals then
-                  FA.Visible_Vars :=
-                    To_Entire_Variables (FA.All_Vars) or Package_Writes;
+                  FA.Visible_Vars.Union (To_Entire_Variables (FA.All_Vars));
                end if;
 
                if Private_Spec_In_SPARK (FA.Spec_Entity) then
