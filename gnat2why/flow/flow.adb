@@ -1146,14 +1146,17 @@ package body Flow is
                FA.B_Scope := (Ent => E, Part => Body_Part);
 
                Append (FA.Base_Filename, "pkg_body_");
-            else
+            elsif Private_Spec_In_SPARK (E) then
                FA.B_Scope := (Ent => E, Part => Private_Part);
+
+               Append (FA.Base_Filename, "pkg_priv_");
+            else
+               FA.B_Scope := (Ent => E, Part => Visible_Part);
 
                Append (FA.Base_Filename, "pkg_spec_");
             end if;
 
-            --  ??? this should take SPARK_Mode into account
-            FA.S_Scope := (Ent => E, Part => Private_Part);
+            FA.S_Scope := (Ent => E, Part => Visible_Part);
 
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
