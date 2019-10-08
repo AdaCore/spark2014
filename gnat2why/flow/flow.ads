@@ -308,7 +308,6 @@ package Flow is
                           | E_Protected_Type
                           | E_Entry
                           | E_Package
-                          | E_Package_Body
                and then (if Ekind (E) = E_Procedure
                          then not Is_DIC_Procedure (E)
                             and then not Is_Invariant_Procedure (E)

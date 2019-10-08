@@ -990,11 +990,10 @@ package body Flow is
         (Kind               => (case Ekind (E) is
                                 when E_Function
                                    | E_Procedure
-                                   | E_Entry        => Kind_Subprogram,
-                                when E_Task_Type    => Kind_Task,
-                                when E_Package
-                                   | E_Package_Body => Kind_Package,
-                                when others         => raise Program_Error),
+                                   | E_Entry     => Kind_Subprogram,
+                                when E_Task_Type => Kind_Task,
+                                when E_Package   => Kind_Package,
+                                when others      => raise Program_Error),
          Generating_Globals => Generating_Globals);
 
       Phase : constant String := (if Generating_Globals
@@ -1143,25 +1142,20 @@ package body Flow is
             FA.Is_Generative := Refinement_Needed (E);
 
          when E_Package =>
-            FA.B_Scope := Private_Scope (Get_Flow_Scope (E));
-            FA.S_Scope := Private_Scope (Get_Flow_Scope (E));
+            if Entity_Body_In_SPARK (E) then
+               FA.B_Scope := (Ent => E, Part => Body_Part);
 
-            Append (FA.Base_Filename, "pkg_spec_");
+               Append (FA.Base_Filename, "pkg_body_");
+            else
+               FA.B_Scope := (Ent => E, Part => Private_Part);
+
+               Append (FA.Base_Filename, "pkg_spec_");
+            end if;
+
+            --  ??? this should take SPARK_Mode into account
+            FA.S_Scope := (Ent => E, Part => Private_Part);
 
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
-
-            FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
-
-            FA.Is_Generative := No (FA.Initializes_N);
-
-         when E_Package_Body =>
-            FA.B_Scope := Body_Scope (Get_Flow_Scope (FA.Spec_Entity));
-            FA.S_Scope := Private_Scope (Get_Flow_Scope (FA.Spec_Entity));
-
-            Append (FA.Base_Filename, "pkg_body_");
-
-            FA.Initializes_N := Get_Pragma (FA.Spec_Entity,
-                                            Pragma_Initializes);
 
             FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
 
@@ -1264,8 +1258,7 @@ package body Flow is
       -----------------------------
 
       procedure Build_Graphs_For_Entity (E : Entity_Id) is
-         Graph_Start : Entity_Id := Empty;
-         --  Graph entry point, if any
+         Build : Boolean;
 
       begin
          for Child of Scope_Map (E) loop
@@ -1274,41 +1267,39 @@ package body Flow is
 
          case Container_Scope'(Ekind (E)) is
             when Entry_Kind | E_Function | E_Procedure | E_Task_Type =>
+
                --  Only analyse if requested, body is in SPARK and is annotated
                --  with SPARK_Mode => On.
-               if Analysis_Requested (E, With_Inlined => True)
+
+               Build :=
+                 Analysis_Requested (E, With_Inlined => True)
                  and then Entity_In_SPARK (E)
-                 and then Entity_Body_In_SPARK (E)
-               then
-                  Graph_Start := E;
-               end if;
+                 and then Entity_Body_In_SPARK (E);
 
             when E_Package =>
                --  Build graphs only when requested, the package is in SPARK
                --  and it is annotated with SPARK_Mode => On.
-               if Analysis_Requested (E, With_Inlined => True)
+               --
+               --  Do not generate graphs for wrapper packages of subprogram
+               --  instantiations since messages emitted on them would be
+               --  confusing.
+
+               Build :=
+                 Analysis_Requested (E, With_Inlined => True)
                  and then Entity_In_SPARK (E)
                  and then Entity_Spec_In_SPARK (E)
                  and then not In_Predefined_Unit (E)
-                 and then not Is_Wrapper_Package (E)
-                 --  Do not generate graphs for wrapper packages of subprogram
-                 --  instantiations since messages emitted on them would be
-                 --  confusing.
-               then
-                  Graph_Start := (if Entity_Body_In_SPARK (E)
-                                  then Body_Entity (E)
-                                  else E);
-               end if;
+                 and then not Is_Wrapper_Package (E);
 
             when E_Protected_Type =>
                --   ??? perhaps we should do something, but now we don't
-               null;
+               Build := False;
          end case;
 
-         if Present (Graph_Start) then
-            FA_Graphs.Insert (Key      => Graph_Start,
+         if Build then
+            FA_Graphs.Insert (Key      => E,
                               New_Item => Flow_Analyse_Entity
-                                            (Graph_Start,
+                                            (E,
                                              Generating_Globals => False));
          end if;
 

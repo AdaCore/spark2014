@@ -390,11 +390,7 @@ package body Flow_Generated_Globals.Partial is
    function Preanalyze_Body (E : Entity_Id) return Contract
    is
       FA : constant Flow_Analysis_Graphs :=
-        Flow_Analyse_Entity
-          ((if Ekind (E) = E_Package and then Entity_Body_In_SPARK (E)
-            then Body_Entity (E)
-            else E),
-           Generating_Globals => True);
+        Flow_Analyse_Entity (E, Generating_Globals => True);
 
       Contr : Contract;
 
