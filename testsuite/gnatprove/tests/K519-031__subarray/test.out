@@ -31,5 +31,5 @@ subar.adb:59:11: medium: range check might fail
 subar.adb:59:32: info: cannot unroll loop (too many loop iterations)
 subar.ads:21:14: warning: subprogram "F" has no effect
 subar.ads:24:14: warning: subprogram "G" has no effect
-subar.ads:25:23: medium: array index check might fail (e.g. when X = (others => 0) and X'First = 1 and X'Last = 0)
+subar.ads:25:23: medium: array index check might fail (e.g. when X'First = 1 and X'Last = 0)
 subar.ads:27:14: warning: subprogram "Local" has no effect

@@ -354,26 +354,29 @@ package body Gnat2Why.Counter_Examples is
             Element_Type => Array_Elem,
             "<"          => "<");
 
-      Fst_Index  : constant Node_Id := First_Index (Value.Ent_Ty);
-      Index_Type : constant Entity_Id := Retysp (Etype (Fst_Index));
-
-      S   : Unbounded_String;
-      Nul : Boolean := True;
-      Fst : Uint;
-      Lst : Uint;
-      S_Array : Sorted_Array.Map := Sorted_Array.Empty_Map;
-
-      procedure Reorder_Indices (S_Array : out Sorted_Array.Map;
-                                 Value   : CNT_Element_Ptr);
+      procedure Reorder_Indices
+        (S_Array : out Sorted_Array.Map;
+         Nul     : in out Boolean;
+         Value   : CNT_Element_Ptr);
 
       ---------------------
       -- Reorder_Indices --
       ---------------------
 
-      procedure Reorder_Indices (S_Array : out Sorted_Array.Map;
-                                 Value   : CNT_Element_Ptr)
+      procedure Reorder_Indices
+        (S_Array : out Sorted_Array.Map;
+         Nul     : in out Boolean;
+         Value   : CNT_Element_Ptr)
       is
+         Fst_Index  : constant Node_Id := First_Index (Value.Ent_Ty);
+         Index_Type : constant Entity_Id := Retysp (Etype (Fst_Index));
+
+         Fst : Uint;
+         Lst : Uint;
+
       begin
+         Find_First_Static_Range (Fst_Index, Fst, Lst);
+
          for C in Value.Indices.Iterate loop
             --  Reorder the elements inside S_Array
             declare
@@ -397,6 +400,7 @@ package body Gnat2Why.Counter_Examples is
                if Ind_Printed.Str /= Null_Unbounded_String
                  and then UI_Le (Fst, Ind_Value)
                  and then UI_Le (Ind_Value, Lst)
+                 and then Elem_Printed /= Dont_Display
                then
                   Nul := Nul and then Elem_Printed.Nul;
                   Sorted_Array.Include (Container => S_Array,
@@ -409,15 +413,20 @@ package body Gnat2Why.Counter_Examples is
          end loop;
       end Reorder_Indices;
 
-   begin
-      Find_First_Static_Range (Fst_Index, Fst, Lst);
+      --  Local variables
 
+      S       : Unbounded_String;
+      Nul     : Boolean := True;
+      S_Array : Sorted_Array.Map := Sorted_Array.Empty_Map;
+
+   --  Start of processing for Refine_Array_Components
+
+   begin
       if Value.Indices.Is_Empty and then Value.Other = null then
          return Dont_Display;
       end if;
 
-      Reorder_Indices (S_Array, Value);
-      Append (S, "(");
+      Reorder_Indices (S_Array, Nul, Value);
       for C in S_Array.Iterate loop
          declare
             Ind_Printed : constant CNT_Unbounded_String :=
@@ -434,12 +443,17 @@ package body Gnat2Why.Counter_Examples is
             V : constant CNT_Unbounded_String := Refine (Value.Other);
          begin
             Nul := Nul and then V.Nul;
-            Append (S, "others => " & V.Str);
+            if V /= Dont_Display then
+               Append (S, "others => " & V.Str);
+            end if;
          end;
       end if;
-      Append (S, ")");
 
-      return Make_Trivial (Nul => Nul, Str => S);
+      if S = "" then
+         return Dont_Display;
+      else
+         return Make_Trivial (Nul => Nul, Str => "(" & S & ")");
+      end if;
    end Refine_Array_Components;
 
    ----------------------
@@ -1665,6 +1679,7 @@ package body Gnat2Why.Counter_Examples is
       Remove_Vars.Remove_Extra_Vars (Pretty_Cntexmp);
 
       return Pretty_Cntexmp;
+
    end Create_Pretty_Cntexmp;
 
    ---------------------------

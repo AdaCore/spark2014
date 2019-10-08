@@ -2,4 +2,4 @@ p.ads:12:16: info: expression function body not available for proof ("Sum" might
 p.ads:12:16: info: implicit function contract not available for proof ("Sum" might not return)
 p.ads:12:31: medium: range check might fail [possible explanation: subprogram at line 10 should mention Hi in a precondition]
 p.ads:12:36: info: overflow check proved (CVC4: 1 VC)
-p.ads:12:41: medium: array index check might fail (e.g. when Hi = 0 and X = (others => 0) and X'First = 0 and X'Last = -1) [possible explanation: subprogram at line 10 should mention Hi in a precondition]
+p.ads:12:41: medium: array index check might fail (e.g. when Hi = 0 and X'First = 0 and X'Last = -1) [possible explanation: subprogram at line 10 should mention Hi in a precondition]

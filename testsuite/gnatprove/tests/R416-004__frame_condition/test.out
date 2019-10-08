@@ -32,4 +32,4 @@ check_loop_inv.adb:31:19: info: range check proved (CVC4: 4 VC)
 check_loop_inv.adb:32:19: info: assertion proved (CVC4: 1 VC)
 check_loop_inv.adb:32:19: info: range check proved (CVC4: 4 VC)
 check_loop_inv.adb:33:19: info: range check proved (CVC4: 4 VC)
-check_loop_inv.adb:33:19: medium: assertion might fail, cannot prove A (31 .. 40) = (31 .. 40 => 3) (e.g. when A = (20 => 1, 40 => -1, others => 0)) [possible explanation: loop invariant at line 26 should mention A]
+check_loop_inv.adb:33:19: medium: assertion might fail, cannot prove A (31 .. 40) = (31 .. 40 => 3) (e.g. when A = (20 => 1, others => 0)) [possible explanation: loop invariant at line 26 should mention A]

@@ -34,6 +34,7 @@ package Ce_Pretty_Printing is
 
    Dont_Display : constant CNT_Unbounded_String :=
      (Nul => True, Str => To_Unbounded_String ("@not_display"));
+   --  Value in a counterexample that should not be displayed
 
    function StringBits_To_Approx (Sign, Significand, Exp : String)
                                   return String;
@@ -72,7 +73,7 @@ package Ce_Pretty_Printing is
       Bound_Value : Int;
    function Print_Discrete (Nb : String; Nb_Type : Entity_Id) return String
      with Pre => Is_Discrete_Type (Nb_Type);
-   --  This routinie is used to alter printing for values of Discrete_Type.
+   --  This routine is used to alter printing for values of Discrete_Type.
    --  When a value is close enough to the bounds of its type (Bound_Value
    --  close) and the type is not too small (Range greater than Bound_Type)
    --  then we print the value as a function of the bound of the type.

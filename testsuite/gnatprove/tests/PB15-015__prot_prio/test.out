@@ -1,1 +1,1 @@
-p.ads:8:24: medium: range check might fail (e.g. when X = -1)
+p.ads:8:24: medium: range check might fail

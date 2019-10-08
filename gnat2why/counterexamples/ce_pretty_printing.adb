@@ -115,6 +115,20 @@ package body Ce_Pretty_Printing is
          when others => return Nb;
       end;
 
+      --  Do not print the counterexample if a value falls outside of the
+      --  bounds of its type.
+
+      if Compile_Time_Known_Value (Type_Low_Bound (Nb_Type))
+        and then Nb_Value < Expr_Value (Type_Low_Bound (Nb_Type))
+      then
+         return "";
+
+      elsif Compile_Time_Known_Value (Type_High_Bound (Nb_Type))
+        and then Nb_Value > Expr_Value (Type_High_Bound (Nb_Type))
+      then
+         return "";
+      end if;
+
       --  If one of the bound is not known, we cannot evaluate the type range
       --  so we cannot decide if we alter printing.
       if not Compile_Time_Known_Value (Type_Low_Bound (Nb_Type)) or else
@@ -478,10 +492,11 @@ package body Ce_Pretty_Printing is
                     (Print_Fixed (Small_Value (AST_Type),
                      To_String (Cnt_Value.I))));
 
-               --  Only integer types are expected in that last case
+            --  Only integer types are expected in that last case
 
             else
-               pragma Assert (Is_Discrete_Type (AST_Type));
+               pragma Assert (Has_Integer_Type (AST_Type));
+
                declare
                   --  Decision: generic values for Bound_Type and Bound_Value
                   --  are random for now. They can be adjusted in the future.

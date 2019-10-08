@@ -33,7 +33,7 @@ p.adb:63:24: info: cannot unroll loop (too many loop iterations)
 p.adb:65:20: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:70:14: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 p.adb:76:07: info: initialization of "End_Of_Seq" proved
-p.adb:78:38: medium: overflow check might fail (e.g. when A = (others => 0) and A'First = -2147483648 and A'Last = 0)
+p.adb:78:38: medium: overflow check might fail (e.g. when A'First = -2147483648 and A'Last = 0)
 p.adb:81:09: info: data dependencies proved
 p.adb:82:31: info: initialization of "End_Of_Seq" proved
 p.adb:84:09: info: flow dependencies proved
@@ -461,7 +461,7 @@ resources.adb:6:24: info: unrolling loop
 resources.ads:9:13: info: implicit function contract might not be available on recursive calls
 resources.ads:9:13: medium: subprogram "Sum" might not terminate, terminating annotation could be incorrect
 resources.ads:10:32: info: index check proved (CVC4: 2 VC)
-resources.ads:10:36: medium: overflow check might fail (e.g. when D = (others => -2147483649) and To = 1) [possible explanation: subprogram at line 9 should mention D and To in a precondition]
+resources.ads:10:36: medium: overflow check might fail (e.g. when To = 1) [possible explanation: subprogram at line 9 should mention D and To in a precondition]
 resources.ads:10:46: info: range check proved (CVC4: 1 VC)
 resources.ads:14:22: info: initialization of "D" proved
 resources.ads:15:14: medium: postcondition might fail, cannot prove Sum (D, D'Last) < 42 (e.g. when D = (1 => 1, 2 => 2, 3 => 3, 4 => 4, 5 => 5, others => 6))
