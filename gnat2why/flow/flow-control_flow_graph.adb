@@ -6615,7 +6615,10 @@ package body Flow.Control_Flow_Graph is
                --  Although this is somewhat out-of-place, this is the only
                --  place we can assemble them easily without re-doing a lot of
                --  the hard work we've done so far.
-               FA.Visible_Vars := FA.All_Vars or Package_Writes;
+               if not FA.Generating_Globals then
+                  FA.Visible_Vars :=
+                    To_Entire_Variables (FA.All_Vars) or Package_Writes;
+               end if;
 
                if Private_Spec_In_SPARK (FA.Spec_Entity) then
                   if Present (Private_Decls) then

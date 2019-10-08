@@ -828,8 +828,7 @@ package body Flow.Analysis is
 
                   when Kind_Package =>
                      Vars_Known :=
-                       Down_Project (To_Entire_Variables (FA.Visible_Vars),
-                                     FA.S_Scope);
+                       Down_Project (FA.Visible_Vars, FA.S_Scope);
 
                   when Kind_Task =>
                      raise Program_Error;
