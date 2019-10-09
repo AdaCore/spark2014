@@ -5628,7 +5628,7 @@ package body Flow.Analysis is
                     and then Ekind (Obj) /= E_Constant
                     and then Is_Initialized_At_Elaboration (Obj, FA.S_Scope)
                   then
-                     Visible_Vars.Insert (Var);
+                     Visible_Vars.Union (Flatten_Variable (Var, FA.B_Scope));
                   end if;
                end;
             end if;
