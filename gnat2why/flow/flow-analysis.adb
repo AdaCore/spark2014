@@ -4721,7 +4721,7 @@ package body Flow.Analysis is
 
                               F2       =>
                                 Magic_String_Id
-                                  (Call_With_Same_Target. External_Callee),
+                                  (Call_With_Same_Target.External_Callee),
 
                               F3       =>
                                 Direct_Mapping_Id (FA.Analyzed_Entity),
