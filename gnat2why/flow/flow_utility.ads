@@ -44,6 +44,7 @@ package Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
+      Scop               : Flow_Scope;
       Functions_Called   : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)

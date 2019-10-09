@@ -175,12 +175,11 @@ package body Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
+      Scop               : Flow_Scope;
       Functions_Called   : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
    is
-      Scop : constant Flow_Scope := Get_Flow_Scope (N);
-
       function Proc (N : Node_Id) return Traverse_Result;
       --  If the node being processed is an N_Function_Call, store a
       --  corresponding Entity_Id; for protected functions store the
@@ -199,6 +198,7 @@ package body Flow_Utility is
          if Present (P) then
             Collect_Functions_And_Read_Locked_POs
               (N                  => Get_Expr_From_Return_Only_Func (P),
+               Scop               => Scop,
                Functions_Called   => Functions_Called,
                Tasking            => Tasking,
                Generating_Globals => Generating_Globals);
@@ -226,6 +226,7 @@ package body Flow_Utility is
                      Collect_Functions_And_Read_Locked_POs
                        (N                  =>
                           Get_Expr_From_Return_Only_Func (Called_Func),
+                        Scop               => Scop,
                         Functions_Called   => Functions_Called,
                         Tasking            => Tasking,
                         Generating_Globals => Generating_Globals);
@@ -1104,6 +1105,7 @@ package body Flow_Utility is
    begin
       Collect_Functions_And_Read_Locked_POs
         (N,
+         Scop               => Get_Flow_Scope (N), --  ??? could be parameter
          Functions_Called   => Funcs,
          Tasking            => Unused,
          Generating_Globals => Include_Predicates);

@@ -1546,6 +1546,7 @@ package body Flow.Control_Flow_Graph is
       --  its LHS and RHS.
       Collect_Functions_And_Read_Locked_POs
         (N,
+         FA.B_Scope,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
@@ -1752,6 +1753,7 @@ package body Flow.Control_Flow_Graph is
    begin
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
+         FA.B_Scope,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
@@ -1887,6 +1889,7 @@ package body Flow.Control_Flow_Graph is
 
       Collect_Functions_And_Read_Locked_POs
         (Expression (N),
+         FA.B_Scope,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
@@ -1962,6 +1965,7 @@ package body Flow.Control_Flow_Graph is
       else
          Collect_Functions_And_Read_Locked_POs
            (Cond,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -2184,6 +2188,7 @@ package body Flow.Control_Flow_Graph is
       --  We have a vertex for the if statement itself
       Collect_Functions_And_Read_Locked_POs
         (Condition (N),
+         FA.B_Scope,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
@@ -2251,6 +2256,7 @@ package body Flow.Control_Flow_Graph is
                --  We have a vertex V for each elsif statement
                Collect_Functions_And_Read_Locked_POs
                  (Condition (Elsif_Statement),
+                  FA.B_Scope,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
@@ -2620,6 +2626,7 @@ package body Flow.Control_Flow_Graph is
       begin
          Collect_Functions_And_Read_Locked_POs
            (Condition (Iteration_Scheme (N)),
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -2740,6 +2747,7 @@ package body Flow.Control_Flow_Graph is
             --  We don't know if the loop will be executed or not
             Collect_Functions_And_Read_Locked_POs
               (DSD,
+               FA.B_Scope,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
@@ -3337,6 +3345,7 @@ package body Flow.Control_Flow_Graph is
          --  loop parameter here.
          Collect_Functions_And_Read_Locked_POs
            (Cont,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -3825,6 +3834,7 @@ package body Flow.Control_Flow_Graph is
 
          Collect_Functions_And_Read_Locked_POs
            (Expr,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -3949,6 +3959,7 @@ package body Flow.Control_Flow_Graph is
 
             Collect_Functions_And_Read_Locked_POs
               (Expr,
+               FA.B_Scope,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
@@ -4571,6 +4582,7 @@ package body Flow.Control_Flow_Graph is
          --  for uninitialized variables.
          Collect_Functions_And_Read_Locked_POs
            (N,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -4861,6 +4873,7 @@ package body Flow.Control_Flow_Graph is
       --  We just need to check for uninitialized variables
       Collect_Functions_And_Read_Locked_POs
         (N,
+         FA.B_Scope,
          Functions_Called   => Funcs,
          Tasking            => FA.Tasking,
          Generating_Globals => FA.Generating_Globals);
@@ -4907,6 +4920,7 @@ package body Flow.Control_Flow_Graph is
          --  We have a function return
          Collect_Functions_And_Read_Locked_POs
            (Expr,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -5027,6 +5041,7 @@ package body Flow.Control_Flow_Graph is
          begin
             Collect_Functions_And_Read_Locked_POs
               (Cond,
+               FA.B_Scope,
                Functions_Called   => Funcs,
                Tasking            => FA.Tasking,
                Generating_Globals => FA.Generating_Globals);
@@ -5252,6 +5267,7 @@ package body Flow.Control_Flow_Graph is
          --  Build an in vertex
          Collect_Functions_And_Read_Locked_POs
            (Actual,
+            FA.B_Scope,
             Functions_Called   => Funcs,
             Tasking            => FA.Tasking,
             Generating_Globals => FA.Generating_Globals);
@@ -5314,6 +5330,7 @@ package body Flow.Control_Flow_Graph is
                --  Reading
                Collect_Functions_And_Read_Locked_POs
                  (Actual,
+                  FA.B_Scope,
                   Functions_Called   => Funcs,
                   Tasking            => FA.Tasking,
                   Generating_Globals => FA.Generating_Globals);
