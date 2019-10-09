@@ -208,6 +208,40 @@ argument as ``X`` is already accessed as a global variable by ``Proc``.
 .. literalinclude:: /gnatprove_by_example/results/ownership_transfer_at_call.flow
    :language: none
 
+It is also possible to transfer the ownership of an object temporarily, for
+the duration of the lifetime of a local object. This can be achieved by
+declaring a local object of an anonymous access type and initializing it with
+a part of an existing object. In the following example, ``B`` temporarily
+borrows the ownership of ``X``:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_borrowing.adb
+   :language: ada
+   :linenos:
+
+During the lifetime of ``B``, it is incorrect to either read or modify ``X``,
+but complete ownership is restored to ``X`` when ``B`` goes out of scope.
+GNATprove correctly detects that reading or assigning to ``X`` in the scope of
+``B`` is incorrect.
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_borrowing.flow
+   :language: none
+
+It is also possible to only transfer read access to a local variable. This
+happens when the variable has an anonymous access-to-constant type, as in the
+following example:
+
+.. literalinclude:: /gnatprove_by_example/examples/ownership_observing.adb
+   :language: ada
+   :linenos:
+
+In this case, we say that ``B`` observes the value of ``X``. During the
+lifetime of an observer, it is illegal to move or modify the observed object.
+GNATprove correctly flags the write inside ``X`` in the scope of ``B`` as
+illegal. Note that reading ``X`` is still possible in the scope of ``B``:
+
+.. literalinclude:: /gnatprove_by_example/results/ownership_observing.flow
+   :language: none
+
 Only pool-specific access types are allowed in SPARK, so it is not possible to
 declare access types with the qualifiers ``all`` or ``const``, as these define
 general access types. This ensures in particular that access values in SPARK
