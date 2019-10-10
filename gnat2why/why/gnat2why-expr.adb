@@ -16419,7 +16419,12 @@ package body Gnat2Why.Expr is
                   Res := New_Typed_Binding
                     (Domain  => Domain,
                      Name    => Name,
-                     Def     => Transform_Attribute_Old (N, Domain, Params),
+                     Def     => +Insert_Checked_Conversion
+                       (Ada_Node => N,
+                        Domain   => Domain,
+                        Expr     =>
+                          Transform_Attribute_Old (N, Domain, Params),
+                        To       => Get_Typ (Name)),
                      Context => Res);
                end;
             end loop;
