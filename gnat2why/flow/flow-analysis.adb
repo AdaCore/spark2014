@@ -108,9 +108,8 @@ package body Flow.Analysis is
                                 F : Flow_Id)
                                 return Flow_Graphs.Vertex_Id
    with Pre  => F.Variant = Normal_Use,
-        Post => Get_Initial_Vertex'Result = Flow_Graphs.Null_Vertex
-                  or else G.Get_Key (Get_Initial_Vertex'Result).Variant in
-                            Initial_Value | Initial_Grouping;
+        Post => G.Get_Key (Get_Initial_Vertex'Result).Variant in
+                   Initial_Value | Initial_Grouping;
    --  Returns the vertex id which represents the initial value for F
 
    function Is_Param_Of_Null_Subp_Of_Generic (E : Entity_Id)
@@ -330,6 +329,7 @@ package body Flow.Analysis is
    begin
       --  Look for either the Initial_Value or Initial_Grouping variant
       if Initial_Value_Vertex = Flow_Graphs.Null_Vertex then
+         pragma Assert (Is_Entire_Variable (F));
          return G.Get_Vertex (Change_Variant (F, Initial_Grouping));
       else
          return Initial_Value_Vertex;
@@ -1168,14 +1168,18 @@ package body Flow.Analysis is
       procedure Warn_On_Unused_Objects
         (Unused         : Flow_Id_Sets.Set;
          Unused_Globals : Node_Sets.Set)
-      with Pre => (if FA.Is_Generative then Unused_Globals.Is_Empty);
+      with Pre => (if FA.Is_Generative then Unused_Globals.Is_Empty)
+                    and then
+                  Components_Are_Entire_Variables (Unused);
       --  Issue a warning on unused objects; the second parameter controls
       --  emitting messages on globals coming from a user-written contract.
 
       procedure Warn_On_Ineffective_Imports
         (Ineffective         : Flow_Id_Sets.Set;
          Ineffective_Globals : Node_Sets.Set)
-      with Pre => (if FA.Is_Generative then Ineffective_Globals.Is_Empty);
+      with Pre => (if FA.Is_Generative then Ineffective_Globals.Is_Empty)
+                    and then
+                  Components_Are_Entire_Variables (Ineffective);
       --  Issue a warning on ineffective imports; the second parameter controls
       --  emitting messages on globals coming from a user-written contract.
 
