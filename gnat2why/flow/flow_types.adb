@@ -669,19 +669,24 @@ package body Flow_Types is
                          Facet   => F.Facet);
       end if;
 
-      return R : Flow_Id := F do
-         if R.Facet /= Normal_Part then
-            R.Facet := Normal_Part;
+      --  If this is normal record component, then remove the last component
+      --  (possibly returning the entire object).
+
+      if F.Facet = Normal_Part then
+         if F.Component.Length = 1 then
+            return
+              (Kind    => Direct_Mapping,
+               Variant => F.Variant,
+               Node    => F.Node,
+               Facet   => F.Facet);
          else
-            R.Component.Delete_Last;
+            return R : Flow_Id := F do
+               R.Component.Delete_Last;
+            end return;
          end if;
-         if F.Kind = Record_Field and then R.Component.Is_Empty then
-            R := (Kind    => Direct_Mapping,
-                  Variant => F.Variant,
-                  Node    => F.Node,
-                  Facet   => F.Facet);
-         end if;
-      end return;
+      else
+         return F'Update (Facet => Normal_Part);
+      end if;
    end Parent_Record;
 
    ---------------------
