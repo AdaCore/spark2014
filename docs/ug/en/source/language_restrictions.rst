@@ -389,4 +389,7 @@ code, always stating to which instantiation the messages correspond to:
 
 Thus, it is possible that some checks are proved on an instance and not on
 another one. In that case, the chained locations in the messages issued by
-|GNATprove| allow you to locate the problematic instantiation.
+|GNATprove| allow you to locate the problematic instantiation. In order to
+prove a generic library for all possible uses, you should choose extreme values
+for the generic parameters such that, if these instantiations are proved, any
+other choice of parameters will be provable as well.

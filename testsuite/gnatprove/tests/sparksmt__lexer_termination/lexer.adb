@@ -460,7 +460,7 @@ is
 
          pragma Loop_Invariant (Local_Invariant and
                                 Current_Read.Status = Success);
-         pragma Loop_Variant (Increases => Current_Idx);
+         pragma Loop_Variant (Increases => Current_Idx); -- @LOOP_VARIANT:FAIL
 
          First_Line := Current_Line;
          First_Col  := Current_Col;

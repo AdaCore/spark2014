@@ -1,0 +1,2 @@
+borrow_with_variables.adb:29:35: borrowed expression cannot depend on variable input "I" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof

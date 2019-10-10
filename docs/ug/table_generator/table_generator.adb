@@ -53,15 +53,19 @@ procedure Table_Generator is
 
    Flow_Msg_Type : constant Flow_Msg_Types :=
      (Aliasing                                    => 'C',
+      Call_In_Type_Invariant                      => 'C',
+      Call_To_Current_Task                        => 'C',
+      Concurrent_Access                           => 'C',
       Dead_Code                                   => 'W',
       Default_Initialization_Mismatch             => 'C',
-      Depends_Null                                => 'C',
       Depends_Missing                             => 'C',
       Depends_Missing_Clause                      => 'C',
+      Depends_Null                                => 'C',
       Depends_Wrong                               => 'C',
+      Export_Depends_On_Proof_In                  => 'C',
+      Ghost_Wrong                                 => 'C',
       Global_Missing                              => 'E',
       Global_Wrong                                => 'C',
-      Export_Depends_On_Proof_In                  => 'C',
       Hidden_Unexposed_State                      => 'C',
       Illegal_Update                              => 'C',
       Impossible_To_Initialize_State              => 'C',
@@ -69,18 +73,20 @@ procedure Table_Generator is
       Initializes_Wrong                           => 'C',
       Inout_Only_Read                             => 'C',
       Missing_Return                              => 'C',
+      Non_Volatile_Function_With_Volatile_Effects => 'C',
       Not_Constant_After_Elaboration              => 'C',
       Pragma_Elaborate_All_Needed                 => 'C',
       Pragma_Elaborate_Body_Needed                => 'C',
+      Potentially_Blocking_In_Protected           => 'C',
+      Reference_To_Non_CAE_Variable               => 'C',
       Refined_State_Wrong                         => 'C',
       Side_Effects                                => 'E',
       Stable                                      => 'W',
+      Subprogram_Termination                      => 'C',
       Uninitialized                               => 'C',
       Unused                                      => 'W',
       Unused_Initial_Value                        => 'W',
-      Non_Volatile_Function_With_Volatile_Effects => 'C',
-      Volatile_Function_Without_Volatile_Effects  => 'C',
-      Reference_To_Non_CAE_Variable               => 'C'
+      Volatile_Function_Without_Volatile_Effects  => 'C'
      );
    --  ??? some tags are used for both checks and warnings
 

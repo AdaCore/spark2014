@@ -24,6 +24,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers.Hashed_Maps;
 with Ada.Directories;
 with Ada.Environment_Variables;
 with Ada.Strings.Unbounded;           use Ada.Strings.Unbounded;
@@ -45,10 +46,12 @@ with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Visibility;                 use Flow_Visibility;
-with GNAT.Expect;
+with GNAT.OS_Lib;                     use GNAT.OS_Lib;
+with GNAT.SHA1;
 with GNAT.Source_Info;
 with GNATCOLL.JSON;                   use GNATCOLL.JSON;
 with Gnat2Why.Assumptions;            use Gnat2Why.Assumptions;
+with Gnat2Why.Borrow_Checker;         use Gnat2Why.Borrow_Checker;
 with Gnat2Why.Decls;                  use Gnat2Why.Decls;
 with Gnat2Why.Error_Messages;         use Gnat2Why.Error_Messages;
 with Gnat2Why.External_Axioms;        use Gnat2Why.External_Axioms;
@@ -57,6 +60,7 @@ with Gnat2Why.Tables;                 use Gnat2Why.Tables;
 with Gnat2Why.Types;                  use Gnat2Why.Types;
 with Gnat2Why.Util;                   use Gnat2Why.Util;
 with Gnat2Why_Args;
+with Hashing;                         use Hashing;
 with Lib;                             use Lib;
 with Namet;                           use Namet;
 with Nlists;                          use Nlists;
@@ -80,6 +84,7 @@ with SPARK_Xrefs;
 with Stand;                           use Stand;
 with String_Utils;                    use String_Utils;
 with Switch;                          use Switch;
+with Tempdir;                         use Tempdir;
 with VC_Kinds;
 with Why;                             use Why;
 with Why.Atree.Modules;               use Why.Atree.Modules;
@@ -95,6 +100,13 @@ with Why.Atree.Treepr;  --  To force the link of debug routines (wpn, wpt)
 pragma Warnings (On,  "unit ""Why.Atree.Treepr"" is not referenced");
 
 package body Gnat2Why.Driver is
+
+   use type Ada.Containers.Count_Type;
+   --  for comparison of map length
+
+   Max_Subprocesses : constant := 63;
+   --  The maximal number of gnatwhy3 processes spawned by a single gnat2why.
+   --  This limits corresponds to MAXIMUM_WAIT_OBJECTS on Windows.
 
    -----------------------
    -- Local Subprograms --
@@ -134,16 +146,11 @@ package body Gnat2Why.Driver is
    --  Generates VCs for entity E. This is currently a noop for E other than
    --  subprogram, entry, task or package.
 
+   procedure Do_Ownership_Checking;
+   --  Perform SPARK access legality checking
+
    procedure Print_Why_File (Filename : String);
    --  Print the input Why3 file on disk
-
-   procedure Touch_Main_File (Prefix : String);
-   --  This procedure is used when there is nothing to do, but it should be
-   --  signalled that everything went fine. This is done by creating the main
-   --  output file of gnat2why, the main Why file.
-
-   procedure Run_Gnatwhy3 (Filename : String);
-   --  After generating the Why file, run the proof tool
 
    procedure Create_JSON_File (Proof_Done : Boolean);
    --  At the very end, write the analysis results to disk
@@ -162,6 +169,80 @@ package body Gnat2Why.Driver is
    --  Objects not in SPARK but still translated to Why; we get them from the
    --  Global contracts (where repetitions are fine) and keep track of them to
    --  translate each of them exactly once.
+
+   function Process_Id_Hash (X : Process_Id) return Ada.Containers.Hash_Type
+     is (Generic_Integer_Hash (Pid_To_Integer (X)));
+   --  Hash function for process ids to be used in Hashed maps
+
+   package Pid_Maps is new Ada.Containers.Hashed_Maps
+     (Key_Type        => Process_Id,
+      Element_Type    => Path_Name_Type,
+      Hash            => Process_Id_Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
+
+   Output_File_Map : Pid_Maps.Map;
+   --  Global map which stores the temp file names in which the various
+   --  gnatwhy3 processes store their output, by process id.
+
+   procedure Collect_One_Result
+     with Pre => not Output_File_Map.Is_Empty;
+   --  Wait for one gnatwhy3 process to finish and process its results. If a
+   --  previously finished gnatwhy3 is already waiting to be collected, this
+   --  procedure returns immediately.
+
+   procedure Collect_Results
+     with Post => Output_File_Map.Is_Empty;
+   --  Wait until all child gnatwhy3 processes finish and collect their results
+
+   procedure Run_Gnatwhy3 (Filename : String)
+   with Pre => Output_File_Map.Length <= Max_Subprocesses;
+   --  After generating the Why file, run the proof tool. Wait for existing
+   --  gnatwhy3 processes to finish if Max_Subprocesses is already reached.
+
+   Max_Why3_Filename_Length : constant := 104;
+   --  On windows, a path can be no longer than 250 or so chars. We allow a
+   --  maximum of 104 chars (100 chars + 4 four the file extension) for the
+   --  why3 file so that users still have 150 chars or so for their own project
+   --  structure.
+
+   function Compute_Why3_File_Name (E : Entity_Id) return String
+     with Post =>
+       Compute_Why3_File_Name'Result'Length <= Max_Why3_Filename_Length;
+   --  Compute the why3 file to be used. Guarantees to be no longer than
+   --  Max_Why3_Filename_Length and makes some effort to still be unique.
+
+   ------------------------
+   -- Collect_One_Result --
+   ------------------------
+
+   procedure Collect_One_Result
+   is
+      Pid     : Process_Id;
+      Success : Boolean;
+      pragma Unreferenced (Success);
+   begin
+      Wait_Process (Pid, Success);
+      pragma Assert (Pid /= Invalid_Pid);
+      declare
+         Fn : constant String := Get_Name_String (Output_File_Map (Pid));
+      begin
+         Parse_Why3_Results (Fn, Timing);
+         Delete_File (Fn, Success);
+         Output_File_Map.Delete (Pid);
+      end;
+   end Collect_One_Result;
+
+   ---------------------
+   -- Collect_Results --
+   ---------------------
+
+   procedure Collect_Results is
+   begin
+      while not Output_File_Map.Is_Empty loop
+         Collect_One_Result;
+      end loop;
+   end Collect_Results;
 
    --------------------------
    -- Complete_Declaration --
@@ -209,6 +290,31 @@ package body Gnat2Why.Driver is
             null;
       end case;
    end Complete_Declaration;
+
+   ----------------------------
+   -- Compute_Why3_File_Name --
+   ----------------------------
+
+   function Compute_Why3_File_Name (E : Entity_Id) return String is
+      S : constant String := Full_Name (E);
+      Digest_Length : constant := 20;
+      --  arbitrary number of digits that we take from the SHA1 digest to
+      --  achieve uniqueness
+   begin
+      if S'Length > Max_Why3_Filename_Length - 4 then
+         --  the slice bound is computed as follows:
+         --  take Max_Why3_Filename_Length - 1
+         --  remove 4 for the file ending
+         --  remove 1 for the dash
+         --  remove Digest_Length for the digest
+         return GNAT.SHA1.Digest (S) (1 .. Digest_Length) & "-" &
+           S (S'Last - (Max_Why3_Filename_Length - 1 - 4 - 1 - Digest_Length)
+              .. S'Last)
+           & ".mlw";
+      else
+         return S  & ".mlw";
+      end if;
+   end Compute_Why3_File_Name;
 
    ----------------------
    -- Create_JSON_File --
@@ -264,15 +370,14 @@ package body Gnat2Why.Driver is
       pragma Assert (Text /= null);
 
       Main_Lib_Id := Scan_ALI
-        (F                => Main_Lib_File,
-         T                => Text,
-         Ignore_ED        => False,
-         Err              => False,
-         Ignore_Errors    => Debug_Flag_I,
-         Directly_Scanned => True);
+        (F             => Main_Lib_File,
+         T             => Text,
+         Ignore_ED     => False,
+         Err           => False,
+         Ignore_Errors => Debug_Flag_I);
       Free (Text);
 
-      Read_Withed_ALIs (Main_Lib_Id, Ignore_Errors => True);
+      Read_Withed_ALIs (Main_Lib_Id);
    end Prescan_ALI_Files;
 
    ---------------------
@@ -280,7 +385,14 @@ package body Gnat2Why.Driver is
    ---------------------
 
    procedure Do_Generate_VCs (E : Entity_Id) is
+      Old_Num : constant Natural := Num_Registered_VCs_In_Why3;
    begin
+
+      --  Delete all theories in main so that we start this file with no other
+      --  VCs.
+
+      Why_Sections (WF_Main).Theories.Clear;
+
       case Ekind (E) is
          when Entry_Kind
             | E_Function
@@ -347,7 +459,38 @@ package body Gnat2Why.Driver is
          when others =>
             raise Program_Error;
       end case;
+      if Num_Registered_VCs_In_Why3 > Old_Num then
+         declare
+            File_Name : constant String := Compute_Why3_File_Name (E);
+         begin
+            Print_Why_File (File_Name);
+            Run_Gnatwhy3 (File_Name);
+         end;
+      end if;
    end Do_Generate_VCs;
+
+   ---------------------------
+   -- Do_Ownership_Checking --
+   ---------------------------
+
+   procedure Do_Ownership_Checking is
+   begin
+      for E of Entities_To_Translate loop
+         --  Set error node so that bugbox information will be correct
+
+         Current_Error_Node := E;
+         Borrow_Checker.Check_Entity (E);
+      end loop;
+
+      --  If an error was found then print all errors/warnings and return
+      --  with an error status.
+
+      if Found_Permission_Error then
+         Errout.Finalize (Last_Call => True);
+         Errout.Output_Messages;
+         Exit_Program (E_Errors);
+      end if;
+   end Do_Ownership_Checking;
 
    -----------------
    -- GNAT_To_Why --
@@ -356,9 +499,6 @@ package body Gnat2Why.Driver is
    procedure GNAT_To_Why (GNAT_Root : Node_Id) is
       E         : constant Entity_Id :=
         Unique_Defining_Entity (Unit (GNAT_Root));
-      Base_Name : constant String :=
-        File_Name_Without_Suffix
-          (Get_Name_String (Unit_File_Name (Main_Unit)));
 
       generic
          with procedure Action (N : Node_Id);
@@ -447,11 +587,9 @@ package body Gnat2Why.Driver is
          --  We do nothing for generic units currently. If this get revised
          --  at some point to provide proof of generics, then the special
          --  SPARK expansion in the frontend should be applied to generic
-         --  units as well. We still need to create the Why files to
-         --  indicate that everything went OK.
+         --  units as well.
 
          if not Gnat2Why_Args.Global_Gen_Mode then
-            Touch_Main_File (Base_Name);
 
             --  Issue warning if analyzing specific units with -u switch, but
             --  the main entity in the compilation unit is generic.
@@ -502,16 +640,10 @@ package body Gnat2Why.Driver is
       Finalize (Last_Call => False);
 
       if Compilation_Errors
-        or else SPARK_Definition.Ownership_Errors
         or else Gnat2Why_Args.Check_Mode
       then
          return;
       end if;
-
-      --  Set up the flow tree utility package; it is done before the flow GG
-      --  traversal to support detection of constants with variable inputs.
-
-      Flow_Utility.Initialize;
 
       --  Build hierarchical representation of scopes in the current
       --  compilation unit. This may require two traversals: for spec and body.
@@ -575,6 +707,14 @@ package body Gnat2Why.Driver is
          Generate_Assumptions;
          Timing_Phase_Completed (Timing, "flow analysis");
 
+         --  Perform the new SPARK checking rules for pointer aliasing. This is
+         --  only activated on SPARK code. The debug flag -gnatdF is used to
+         --  deactivate the new pointer rules.
+
+         if not Debug_Flag_FF then
+            Do_Ownership_Checking;
+         end if;
+
          --  Start the translation to Why
 
          if not Gnat2Why_Args.Check_All_Mode
@@ -593,26 +733,14 @@ package body Gnat2Why.Driver is
             Timing_Phase_Completed (Timing, "translation of standard");
 
             Translate_CUnit;
-            Timing_Phase_Completed (Timing, "translation of compilation unit");
 
-            if Has_Registered_VCs then
-               declare
-                  Filename : constant String := Unit_Name & Why_File_Suffix;
-               begin
-                  Print_Why_File (Filename);
+            --  After printing the .mlw files the memory consumed by the
+            --  Why3 AST is no longer needed; give it back to OS, so that
+            --  provers can use it.
 
-                  --  After printing the .mlw file the memory consumed by the
-                  --  Why3 AST is no longer needed; give it back to OS, so that
-                  --  provers can use it. When not printing the .mlw file just
-                  --  do nothing; there is almost nothing left to do and there
-                  --  is no point to waste time on manually releasing memory.
+            Why.Atree.Tables.Free;
 
-                  Why.Atree.Tables.Free;
-
-                  Run_Gnatwhy3 (Filename);
-               end;
-            end if;
-
+            Collect_Results;
             --  If the analysis is requested for a specific piece of code, we
             --  do not warn about useless pragma Annotate, because it's likely
             --  to be a false positive.
@@ -624,7 +752,6 @@ package body Gnat2Why.Driver is
                Generate_Useless_Pragma_Annotate_Warnings;
             end if;
 
-            Timing_Phase_Completed (Timing, "proof");
          end if;
          Create_JSON_File (Proof_Done);
       end if;
@@ -645,6 +772,14 @@ package body Gnat2Why.Driver is
                                         then "_phase1"
                                         else "_phase2") & "_gmon",
               Extension => "out"));
+      Ada.Environment_Variables.Set
+        (Name  => "GNATCOV_TRACE_FILE",
+         Value =>
+           Ada.Directories.Compose
+             (Name      => Unit_Name & (if Gnat2Why_Args.Global_Gen_Mode
+                                        then "_phase1"
+                                        else "_phase2"),
+              Extension => "srctrace"));
 
    end GNAT_To_Why;
 
@@ -766,13 +901,19 @@ package body Gnat2Why.Driver is
 
    procedure Run_Gnatwhy3 (Filename : String) is
       use Ada.Directories;
-      Status    : aliased Integer;
-      Fn        : constant String :=
-        Compose (Current_Directory, Filename);
+      use Ada.Containers;
+      Fn        : constant String := Compose (Current_Directory, Filename);
       Old_Dir   : constant String := Current_Directory;
       Why3_Args : String_Lists.List := Gnat2Why_Args.Why3_Args;
-      Command   : constant String := Why3_Args.First_Element;
+      Command   : GNAT.OS_Lib.String_Access :=
+        GNAT.OS_Lib.Locate_Exec_On_Path (Why3_Args.First_Element);
    begin
+
+      --  If the maximum is reached, we wait for one process to finish first
+
+      if Output_File_Map.Length = Max_Subprocesses then
+         Collect_One_Result;
+      end if;
 
       --  modifying the command line and printing it for debug purposes. We
       --  need to append the file first, then print the debug output, because
@@ -796,27 +937,27 @@ package body Gnat2Why.Driver is
       --  We need to capture stderr of gnatwhy3 output in case of Out_Of_Memory
       --  messages.
 
-      Parse_Why3_Results
-        (GNAT.Expect.Get_Command_Output
-           (Command,
-            Call.Argument_List_Of_String_List (Why3_Args),
-            Err_To_Out => True,
-            Input      => "",
-            Status     => Status'Access),
-         Timing);
+      declare
+         Fd   : File_Descriptor;
+         Name : Path_Name_Type;
+         Pid  : Process_Id;
+      begin
+         Create_Temp_File (Fd, Name);
+         pragma Assert (Fd /= Invalid_FD);
+         Pid :=
+           GNAT.OS_Lib.Non_Blocking_Spawn
+             (Program_Name           => Command.all,
+              Args                   =>
+                Call.Argument_List_Of_String_List (Why3_Args),
+              Output_File_Descriptor => Fd,
+              Err_To_Out             => True);
+         pragma Assert (Pid /= Invalid_Pid);
+         Output_File_Map.Insert (Pid, Name);
+         Close (Fd);
+      end;
       Set_Directory (Old_Dir);
+      Free (Command);
    end Run_Gnatwhy3;
-
-   ---------------------
-   -- Touch_Main_File --
-   ---------------------
-
-   procedure Touch_Main_File (Prefix : String) is
-      Filename : constant String := Prefix & Why_File_Suffix;
-   begin
-      Open_Current_File (Filename);
-      Close_Current_File;
-   end Touch_Main_File;
 
    ---------------------
    -- Translate_CUnit --
@@ -864,9 +1005,34 @@ package body Gnat2Why.Driver is
                        | E_Package
                        | E_Procedure
                        | Type_Kind
-             and then Analysis_Requested (E, With_Inlined => False)
          then
-            Do_Generate_VCs (E);
+            case Analysis_Status'
+              (Analysis_Requested (E, With_Inlined => False))
+            is
+               when Analyzed =>
+                  Do_Generate_VCs (E);
+
+               --  This subprogram is only analyzed contextually. In the case
+               --  that it is referenced without being called (by taking its
+               --  address for example) or if all calls are in non-SPARK code,
+               --  the subprogram may not be analyzed at all. Warn the user if
+               --  --info is set.
+
+               when Contextually_Analyzed =>
+                  if Debug.Debug_Flag_Underscore_F then
+                     Error_Msg_NE
+                       ("info: ?local subprogram &" &
+                          " only analyzed in the context of calls", E, E);
+                     Error_Msg_N
+                       ("\add a contract to" &
+                          " analyze it separately from calling contexts", E);
+                  end if;
+
+               when Not_In_Analyzed_Files
+                  | Not_The_Analyzed_Subprogram
+               =>
+                  null;
+            end case;
          end if;
       end Generate_VCs;
 
@@ -944,6 +1110,7 @@ package body Gnat2Why.Driver is
       --  Clear global data that is no longer be needed to leave more memory
       --  for solvers.
       Translated_Object_Names.Clear;
+      Translated_Object_Names.Reserve_Capacity (0);
    end Translate_CUnit;
 
    ----------------------

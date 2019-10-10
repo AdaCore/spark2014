@@ -5,7 +5,7 @@ Examples in the Toolset Distribution
 
 Further examples of |SPARK| are distributed with the |SPARK| toolset. These are
 contained in the ``share/examples/spark`` directory below the directory where
-the toolset is installed, and can be accessed from the IDE (either GPS or
+the toolset is installed, and can be accessed from the IDE (either GNAT Studio or
 GNATBench) via the :menuselection:`Help --> SPARK --> Examples` menu item.
 
 These examples range from single subprograms to demo programs with dozens of
@@ -148,7 +148,7 @@ units, examples with formally verified data flow, functional, or abstraction
 contracts, as well as erroneous programs, on which |GNATprove| detects failing
 checks.
 
-Opening the example in GPS or GNATbench opens an aggregate project, with
+Opening the example in GNAT Studio or GNATbench opens an aggregate project, with
 separate sub-projects for each lecture.
 
 .. rubric:: ``allocators``
@@ -374,7 +374,7 @@ the correctness of signaling ``Safe_Signaling``, namely that:
 * tracks that precede an occupied track are signalled in orange.
 
 As the algorithm in ``Move`` relies on the correctness of the signaling, the
-preservation of the collision-free property depends also on the the correctness
+preservation of the collision-free property depends also on the correctness
 of the signaling. :ref:`Pragma Assume` is used to express an essential property
 of the railroad on which correctness depends, namely that no track precedes
 itself. |GNATprove| proves all checks on this program, when using provers
@@ -418,7 +418,7 @@ The examples follow the chapters of the book:
 8. Software engineering with SPARK
 9. Advanced techniques
 
-Opening the example in GPS or GNATbench opens a project with all
+Opening the example in GNAT Studio or GNATbench opens a project with all
 sources. Projects corresponding to individual chapters are available in
 subdirectories and can be opened manually.
 
@@ -788,9 +788,9 @@ transition from SPARK 2005 to SPARK 2014 was presented in a post on the AdaCore
 Blog: https://blog.adacore.com/tokeneer-fully-verified-with-spark-2014
 
 Tokeneer can be used as the basis for demonstrating four types of security
-vulnerabilities that can be detected by |GNATprove|, when calling GPS with
+vulnerabilities that can be detected by |GNATprove|, when calling GNAT Studio with
 ``-XSECURITY_DEMO=True`` (or changing the value of the scenario variable in
-GPS). Analyzing the code in that setting detects:
+GNAT Studio). Analyzing the code in that setting detects:
 
 * an information leak in ``keystore.adb``
 * a back door in ``bio.adb``

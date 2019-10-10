@@ -1,0 +1,1 @@
+pragma Suppress (Tampering_Check);  --  due to GNAT bug S830-020

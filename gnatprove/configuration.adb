@@ -165,7 +165,7 @@ package body Configuration is
 
       File_Specific_Only
       --  File_Specific_Only - only accept switches that can be put in the
-      --  'for Proof_Switches ("file")' section of of the project file. This
+      --  'for Proof_Switches ("file")' section of the project file. This
       --  excludes most switches except --timeout, --steps, etc.
      );
 
@@ -2235,15 +2235,17 @@ package body Configuration is
       --  The first "argument" is in fact the command name itself, because in
       --  some cases we might want to change it.
 
+      Args.Append ("spark_semaphore_wrapper");
+      Args.Append (Base_Name (Socket_Name.all));
+
       if CL_Switches.Memcached_Server /= null
         and then CL_Switches.Memcached_Server.all /= ""
       then
          Args.Append ("spark_memcached_wrapper");
          Args.Append (CL_Switches.Memcached_Server.all);
-         Args.Append ("gnatwhy3");
-      else
-         Args.Append ("gnatwhy3");
       end if;
+
+      Args.Append ("gnatwhy3");
 
       Args.Append ("--timeout");
       Args.Append (Image (FS.Timeout, 1));

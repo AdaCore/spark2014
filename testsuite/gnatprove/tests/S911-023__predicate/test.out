@@ -1,0 +1,13 @@
+main.adb:2:11: high: all paths in "Main" raise exceptions or do not terminate normally
+main.adb:6:43: info: predicate check proved (CVC4: 1 VC)
+main.adb:6:44: info: predicate check proved (CVC4: 1 VC)
+main.adb:9:05: medium: assertion might fail (e.g. when Buffer.all = (others => 0) and Buffer.all'First = 1 and Buffer.all'Last = 1500)
+types.ads:18:37: info: division check proved (CVC4: 1 VC)
+types.ads:18:37: info: range check proved (CVC4: 1 VC)
+types.ads:18:42: info: overflow check proved (CVC4: 1 VC)
+types.ads:21:38: info: overflow check proved (CVC4: 1 VC)
+types.ads:21:42: info: overflow check proved (CVC4: 1 VC)
+types.ads:21:42: info: range check proved (CVC4: 1 VC)
+types.ads:24:38: info: overflow check proved (CVC4: 1 VC)
+types.ads:24:42: info: overflow check proved (CVC4: 1 VC)
+types.ads:24:42: info: range check proved (CVC4: 1 VC)

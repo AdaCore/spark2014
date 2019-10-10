@@ -1,3 +1,5 @@
+no_separate_spec.adb:6:14: info: add a contract to analyze it separately from calling contexts
+no_separate_spec.adb:6:14: info: local subprogram "Should_Inline" only analyzed in the context of calls
 no_separate_spec.adb:13:33: info: initialization of "B" proved
 no_separate_spec.adb:14:14: info: postcondition proved (CVC4: 1 VC)
 no_separate_spec.ads:4:28: info: initialization of "B" proved

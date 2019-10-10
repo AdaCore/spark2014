@@ -1,1 +1,1 @@
-linear_search.ads:35:67: medium: contract case might fail (e.g. when Search'Result = (Found => False, At_Index => 10) and Search'Result'Constrained = False)
+linear_search.ads:35:67: medium: contract case might fail (e.g. when Search'Result = (Found => False, At_Index => 10))

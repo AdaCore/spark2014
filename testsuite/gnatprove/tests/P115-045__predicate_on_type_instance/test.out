@@ -1,2 +1,1 @@
 g.ads:5:03: medium: predicate check might fail on default value, in instantiation at inst.adb:6
-pred.ads:5:11: warning: "A_Subtype" is not used in its predicate

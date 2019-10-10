@@ -132,6 +132,8 @@ Compile_Time_Error	      Yes		     Ignored (replaced by null statement)
 Compile_Time_Warning	      Yes		     Ignored (replaced by null statement)
 Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes
+Export_Function               Yes
+Export_Procedure              Yes
 Inline_Always      	      Yes
 Linker_Section      	      Yes
 Max_Queue_Length              Yes                    Extended Ravenscar

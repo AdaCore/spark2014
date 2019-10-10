@@ -11,7 +11,7 @@ Admitted.
 """
 
 def edit_proof(num):
-    proof_file = glob.glob("proof/Coq/lemmas_v1/*monotonic" + str(num) + "*.v")[0]
+    proof_file = glob.glob("proof/Coq/Lemmas_v1*monotonic" + str(num) + "*.v")[0]
     with open(proof_file, 'r') as file:
         content = file.read()
     content = str.replace(content, "Qed.", proof)

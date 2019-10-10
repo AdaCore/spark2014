@@ -1,6 +1,12 @@
 c74402a.adb:60:26: warning: subprogram "G1" has no effect
 c74402a.adb:61:26: warning: subprogram "G2" has no effect
 c74402a.adb:62:26: warning: subprogram "G3" has no effect
+c74402a.adb:122:21: info: add a contract to analyze it separately from calling contexts
+c74402a.adb:122:21: info: local subprogram "G4" only analyzed in the context of calls
 c74402a.adb:122:21: warning: subprogram "G4" has no effect
+c74402a.adb:128:21: info: add a contract to analyze it separately from calling contexts
+c74402a.adb:128:21: info: local subprogram "G5" only analyzed in the context of calls
 c74402a.adb:128:21: warning: subprogram "G5" has no effect
+c74402a.adb:134:21: info: add a contract to analyze it separately from calling contexts
+c74402a.adb:134:21: info: local subprogram "G6" only analyzed in the context of calls
 c74402a.adb:134:21: warning: subprogram "G6" has no effect

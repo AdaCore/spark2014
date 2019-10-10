@@ -161,27 +161,28 @@ package body SPARK_Util.Types is
                else
                   return Typ;
                end if;
+
+            --  Derived types without additional constraints might not have
+            --  Full_View defined; search the on the Etype instead.
+
+            elsif Is_Private_Type (Typ) then
+               pragma Assert (Etype (Typ) /= Typ);
+               if Entity_In_SPARK (Etype (Typ)) then
+                  Typ := Etype (Typ);
+                  pragma Assert (Full_View_Not_In_SPARK (Typ));
+               else
+                  return Typ;
+               end if;
             else
                return Typ;
             end if;
          end loop;
 
-      --  Otherwise, T's most underlying type is in SPARK, return it.
+      --  Otherwise, Typ's most underlying type is in SPARK, return it.
 
       else
-         loop
-            --  If Typ is a private type, reach to its Underlying_Type
-
-            if Is_Private_Type (Typ) then
-               Typ := Underlying_Type (Typ);
-               pragma Assert (Entity_In_SPARK (Typ));
-
-            --  Otherwise, we've reached T's most underlying type
-
-            else
-               return Typ;
-            end if;
-         end loop;
+         pragma Assert (Entity_In_SPARK (Unchecked_Full_Type (Typ)));
+         return Unchecked_Full_Type (Typ);
       end if;
    end Retysp;
 
@@ -208,6 +209,74 @@ package body SPARK_Util.Types is
       return Has_Invariants_In_SPARK (Ty) and then
         Is_Declared_In_Main_Lib_Unit (Real_Node);
    end Has_Visible_Type_Invariants;
+
+   ------------------------------
+   -- Check_DIC_At_Declaration --
+   ------------------------------
+
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
+      Default_Init_Subp : constant Entity_Id := Get_Initial_DIC_Procedure (E);
+      Default_Init_Expr : constant Node_Id :=
+        Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
+      Init_Param        : constant Entity_Id :=
+        Unique_Entity (First_Formal (Default_Init_Subp));
+
+      function Is_Ref_Through_Discr (N : Node_Id) return Boolean with
+        Pre => Nkind (N) in N_Identifier | N_Expanded_Name;
+      --  Return True if N is the prefix of a discriminant
+
+      function Is_Type_Instance (N : Node_Id) return Traverse_Result;
+      --  Traverse N searching for references to the current type instance. The
+      --  traversal stops with Abandon if and only if such a reference is
+      --  found. References through discriminants do not count.
+
+      --------------------------
+      -- Is_Ref_Through_Discr --
+      --------------------------
+
+      function Is_Ref_Through_Discr (N : Node_Id) return Boolean is
+         P : constant Node_Id := Parent (N);
+
+      begin
+         --  We should only be called on a node with a Parent
+
+         pragma Assert (Present (P));
+
+         --  For selected components, traversal should only consider the
+         --  prefix.
+
+         pragma Assert
+           (if Nkind (P) = N_Selected_Component then Prefix (P) = N);
+
+         return Nkind (P) = N_Selected_Component
+           and then Ekind (Entity (Selector_Name (P))) = E_Discriminant;
+      end Is_Ref_Through_Discr;
+
+      ----------------------
+      -- Is_Type_Instance --
+      ----------------------
+
+      function Is_Type_Instance (N : Node_Id) return Traverse_Result is
+      begin
+         case Nkind (N) is
+            when N_Identifier | N_Expanded_Name =>
+               if Unique_Entity (Entity (N)) = Init_Param
+                 and then not Is_Ref_Through_Discr (N)
+               then
+                  return Abandon;
+               end if;
+            when others =>
+               null;
+         end case;
+         return OK;
+      end Is_Type_Instance;
+
+      function Refers_To_Type_Instance is new Traverse_More_Func
+        (Process => Is_Type_Instance);
+
+   begin
+      return Refers_To_Type_Instance (Default_Init_Expr) = Abandon;
+   end Check_DIC_At_Declaration;
 
    --------------------------------
    -- Check_Needed_On_Conversion --
@@ -291,25 +360,6 @@ package body SPARK_Util.Types is
 
       return Count;
    end Count_Non_Inherited_Discriminants;
-
-   ------------------------------------
-   -- Get_Full_Type_Without_Checking --
-   ------------------------------------
-
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id is
-      T : constant Entity_Id := Etype (N);
-   begin
-      if Nkind (N) in N_Entity and then Ekind (N) = E_Abstract_State then
-         return T;
-      else
-         pragma Assert (Is_Type (T));
-         if Present (Full_View (T)) then
-            return Full_View (T);
-         else
-            return T;
-         end if;
-      end if;
-   end Get_Full_Type_Without_Checking;
 
    -------------------------------
    -- Get_Initial_DIC_Procedure --
@@ -607,6 +657,60 @@ package body SPARK_Util.Types is
       return False;
    end Invariant_Check_Needed;
 
+   -------------
+   -- Is_Deep --
+   -------------
+
+   function Is_Deep (Typ : Entity_Id) return Boolean is
+      Rep_Typ : constant Entity_Id := Retysp (Typ);
+   begin
+      case Type_Kind'(Ekind (Rep_Typ)) is
+         when Access_Kind =>
+            return True;
+
+         when E_Array_Type
+            | E_Array_Subtype
+         =>
+            return Is_Deep (Component_Type (Rep_Typ));
+
+         when Record_Kind =>
+            declare
+               Comp : Entity_Id := First_Component_Or_Discriminant (Rep_Typ);
+            begin
+               while Present (Comp) loop
+
+                  --  Ignore components not visible in SPARK
+
+                  if Component_Is_Visible_In_SPARK (Comp)
+                    and then Is_Deep (Etype (Comp))
+                  then
+                     return True;
+                  end if;
+                  Next_Component_Or_Discriminant (Comp);
+               end loop;
+            end;
+            return False;
+
+         when Scalar_Kind
+            | E_String_Literal_Subtype
+            | Concurrent_Kind
+            | Incomplete_Kind
+            | E_Exception_Type
+            | E_Subprogram_Type
+         =>
+            return False;
+
+         --  Ignore full view of types if it is not in SPARK
+
+         when E_Private_Type
+            | E_Private_Subtype
+            | E_Limited_Private_Type
+            | E_Limited_Private_Subtype
+         =>
+            return False;
+      end case;
+   end Is_Deep;
+
    -------------------
    -- Is_Null_Range --
    -------------------
@@ -893,6 +997,30 @@ package body SPARK_Util.Types is
          return Empty;
       end if;
    end Task_Body_Entity;
+
+   -------------------------
+   -- Unchecked_Full_Type --
+   -------------------------
+
+   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id is
+   begin
+      if Is_Private_Type (E)
+        and then Present (Underlying_Full_View (E))
+      then
+         return Unchecked_Full_Type (Underlying_Full_View (E));
+      elsif Present (Full_View (E)) then
+         return Unchecked_Full_Type (Full_View (E));
+
+      --  Derived types without additional constraints might not have Full_View
+      --  defined; search the on the Etype instead.
+
+      elsif Is_Private_Type (E) then
+         pragma Assert (Etype (E) /= E);
+         return Unchecked_Full_Type (Etype (E));
+      else
+         return E;
+      end if;
+   end Unchecked_Full_Type;
 
    ---------------------------------------
    -- Visible_Declarations_Of_Prot_Type --

@@ -1,3 +1,5 @@
+demo.adb:4:14: info: add a contract to analyze it separately from calling contexts
+demo.adb:4:14: info: local subprogram "called" only analyzed in the context of calls
 demo.adb:4:22: info: initialization of "a" proved
 demo.adb:6:07: medium: range check might fail, in call inlined at demo.adb:14
 demo.ads:7:22: info: initialization of "b" proved

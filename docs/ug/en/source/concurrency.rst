@@ -1,3 +1,5 @@
+.. _Concurrency and Ravenscar Profile:
+
 Concurrency and Ravenscar Profile
 =================================
 

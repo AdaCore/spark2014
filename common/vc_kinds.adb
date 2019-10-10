@@ -91,7 +91,18 @@ package body VC_Kinds is
 
          when VC_Initialization_Check      => "457",
 
-            --  We did not find a relevant CWE for the following yet
+         --  CWE-628: Function Call with Incorrectly Specified Arguments
+
+         when VC_Precondition
+             | VC_Precondition_Main        => "628",
+
+         --  CWE-682: Incorrect Calculation
+
+         when VC_Postcondition
+            | VC_Refined_Post
+            | VC_Contract_Case             => "682",
+
+         --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
             | VC_Invariant_Check_On_Default_Value
@@ -102,11 +113,6 @@ package body VC_Kinds is
             | VC_Task_Termination
             | VC_Initial_Condition
             | VC_Default_Initial_Condition
-            | VC_Precondition
-            | VC_Precondition_Main
-            | VC_Postcondition
-            | VC_Refined_Post
-            | VC_Contract_Case
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
             | VC_Loop_Invariant
@@ -133,10 +139,19 @@ package body VC_Kinds is
 
          when Dead_Code                     => "561",
 
+         --  CWE-362: Concurrent Execution using Shared Resource with Improper
+         --  Synchronization ('Race Condition')
+
+         when Concurrent_Access             => "362",
+
          --  CWE-457: Use of Uninitialized Variable
 
          when Default_Initialization_Mismatch
             | Uninitialized                 => "457",
+
+         --  CWE-667: Improper Locking
+
+         when Potentially_Blocking_In_Protected => "667",
 
          --  CWE-563: Assignment to Variable without Use ('Unused Variable')
 
@@ -147,29 +162,36 @@ package body VC_Kinds is
 
          when Ineffective                   => "1164",
 
+         --  CWE-674: Uncontrolled Recursion
+
+         when Call_In_Type_Invariant
+            | Subprogram_Termination        => "674",
+
          when Aliasing
+            | Call_To_Current_Task
             | Depends_Null
             | Depends_Missing
             | Depends_Missing_Clause
             | Depends_Wrong
+            | Export_Depends_On_Proof_In
+            | Ghost_Wrong
             | Global_Missing
             | Global_Wrong
-            | Export_Depends_On_Proof_In
             | Hidden_Unexposed_State
             | Illegal_Update
             | Impossible_To_Initialize_State
             | Initializes_Wrong
             | Inout_Only_Read
             | Missing_Return
+            | Non_Volatile_Function_With_Volatile_Effects
             | Not_Constant_After_Elaboration
             | Pragma_Elaborate_All_Needed
             | Pragma_Elaborate_Body_Needed
+            | Reference_To_Non_CAE_Variable
             | Refined_State_Wrong
             | Side_Effects
             | Stable
-            | Non_Volatile_Function_With_Volatile_Effects
-            | Volatile_Function_Without_Volatile_Effects
-            | Reference_To_Non_CAE_Variable => "");
+            | Volatile_Function_Without_Volatile_Effects => "");
    end CWE_ID;
 
    -----------------
@@ -214,7 +236,7 @@ package body VC_Kinds is
             return "Check that the given pointer is not null so that it can " &
               "be dereferenced.";
          when VC_Null_Exclusion                   =>
-            return "Check that the the subtype_indication of the allocator " &
+            return "Check that the subtype_indication of the allocator " &
               "does not specify a null_exclusion";
          when VC_Invariant_Check                  =>
             return "Check that the given value respects the applicable type " &
@@ -330,32 +352,34 @@ package body VC_Kinds is
 
    function Description (Kind : Valid_Flow_Tag_Kind) return String is
      (case Kind is
+         when Aliasing                                    =>
+            "Aliasing between formal parameters or global objects.",
+         when Call_In_Type_Invariant                      =>
+            "A type invariant calls a boundary subprogram for the type.",
+         when Call_To_Current_Task                        =>
+            "Current_Task is called from an invalid context.",
+         when Concurrent_Access                           =>
+            "An unsynchronized global object is accessed concurrently.",
          when Dead_Code                                   =>
             "A statement is never executed.",
          when Default_Initialization_Mismatch             =>
             "A type is wrongly declared as initialized by default.",
-         when Uninitialized                               =>
-            "Flow analysis has detected the use of an uninitialized variable.",
-         when Unused                                      =>
-            "A global or locally declared object is never used.",
-         when Unused_Initial_Value                        =>
-            "The initial value of an object is not used.",
-         when Aliasing                                    =>
-            "Aliasing between formal parameters or global objects.",
-         when Depends_Null                                =>
-            "An input item is missing from the null dependency clause.",
          when Depends_Missing                             =>
             "An input is missing from the dependency clause.",
          when Depends_Missing_Clause                      =>
             "An output item is missing from the dependency clause.",
+         when Depends_Null                                =>
+            "An input item is missing from the null dependency clause.",
          when Depends_Wrong                               =>
             "Extra input item in the dependency clause.",
+         when Export_Depends_On_Proof_In                  =>
+            "Subprogram output depends on a Proof_In global.",
+         when Ghost_Wrong                                =>
+            "A ghost procedure has a non-ghost global output.",
          when Global_Missing                              =>
             "A Global or Initializes contract fails to mention some objects.",
          when Global_Wrong                                =>
             "A Global or Initializes contract wrongly mentions some objects.",
-         when Export_Depends_On_Proof_In                  =>
-            "Subprogram output depends on a Proof_In global.",
          when Hidden_Unexposed_State                      =>
             "Constants with variable inputs that are not state constituents.",
          when Illegal_Update                              =>
@@ -365,11 +389,13 @@ package body VC_Kinds is
          when Ineffective                                 =>
             "A statement with no effect on subprogram's outputs.",
          when Initializes_Wrong                           =>
-            "An object that shall not appear in the Initializes contract",
+            "An object that shall not appear in the Initializes contract.",
          when Inout_Only_Read                             =>
             "An IN OUT parameter or an In_Out global that is not written.",
          when Missing_Return                              =>
             "All execution paths raise exceptions or do not return.",
+         when Non_Volatile_Function_With_Volatile_Effects =>
+            "A volatile function wrongly declared as non-volatile.",
          when Not_Constant_After_Elaboration              =>
             "Illegal write of an object " &
             "declared as constant after elaboration.",
@@ -378,6 +404,11 @@ package body VC_Kinds is
             "that was not yet elaborated.",
          when Pragma_Elaborate_Body_Needed                =>
             "A missing pragma Elaborate_Body.",
+         when Potentially_Blocking_In_Protected =>
+            "A protected operation may block.",
+         when Reference_To_Non_CAE_Variable               =>
+            "An illegal reference to global " &
+            "in precondition of a protected operation.",
          when Refined_State_Wrong                         =>
             "Constant with no variable inputs " &
             "as an abstract state's constituent.",
@@ -385,13 +416,16 @@ package body VC_Kinds is
             "A function with side effects.",
          when Stable                                      =>
             "A loop with stable statement.",  --  ??? appears dead
-         when Non_Volatile_Function_With_Volatile_Effects =>
-            "A volatile function wrongly declared as non-volatile.",
+         when Subprogram_Termination                      =>
+            "A subprogram with Terminating annotation may not terminate.",
+         when Uninitialized                               =>
+            "Flow analysis has detected the use of an uninitialized variable.",
+         when Unused                                      =>
+            "A global or locally declared object is never used.",
+         when Unused_Initial_Value                        =>
+            "The initial value of an object is not used.",
          when Volatile_Function_Without_Volatile_Effects  =>
-            "A non-volatile function wrongly declared as volatile.",
-         when Reference_To_Non_CAE_Variable               =>
-            "An illegal reference to global " &
-            "in precondition of a protected operation");
+            "A non-volatile function wrongly declared as volatile.");
 
    ---------------
    -- From_JSON --
@@ -840,32 +874,34 @@ package body VC_Kinds is
 
    function Kind_Name (Kind : Valid_Flow_Tag_Kind) return String is
      (case Kind is
+         when Aliasing                                    =>
+            "aliasing between subprogram parameters",
+         when Call_In_Type_Invariant                      =>
+            "invalid call in type invariant",
+         when Call_To_Current_Task                        =>
+            "invalid context for call to Current_Task",
+         when Concurrent_Access                           =>
+            "race condition",
          when Dead_Code                                   =>
             "dead code",
          when Default_Initialization_Mismatch             =>
             "wrong Default_Initial_Condition aspect",
-         when Uninitialized                               =>
-            "use of an uninitialized variable",
-         when Unused                                      =>
-            "object is not used",
-         when Unused_Initial_Value                        =>
-            "initial value of an object is not used",
-         when Aliasing                                    =>
-            "aliasing between subprogram parameters",
-         when Depends_Null                                =>
-            "input item missing from the null dependency clause",
          when Depends_Missing                             =>
             "input item missing from the dependency clause",
          when Depends_Missing_Clause                      =>
             "output item missing from the dependency clause",
+         when Depends_Null                                =>
+            "input item missing from the null dependency clause",
          when Depends_Wrong                               =>
             "extra input item in the dependency clause",
+         when Export_Depends_On_Proof_In                  =>
+            "subprogram output depends on a Proof_In global",
+         when Ghost_Wrong                                =>
+            "non-ghost output of ghost procedure",
          when Global_Missing                              =>
             "incomplete Global or Initializes contract",
          when Global_Wrong                                =>
             "an extra item in the Global or Initializes contract",
-         when Export_Depends_On_Proof_In                  =>
-            "subprogram output depends on a Proof_In global",
          when Hidden_Unexposed_State                      =>
             "constants with variable inputs that is not a state constituent",
          when Illegal_Update                              =>
@@ -880,6 +916,8 @@ package body VC_Kinds is
             "an IN OUT parameter or an In_Out global that is not written",
          when Missing_Return                              =>
             "all execution paths raise exceptions or do not return",
+         when Non_Volatile_Function_With_Volatile_Effects =>
+            "volatile function wrongly declared as non-volatile",
          when Not_Constant_After_Elaboration              =>
             "illegal write of an object " &
             "declared as constant after elaboration",
@@ -888,6 +926,11 @@ package body VC_Kinds is
             "that was not yet elaborated",
          when Pragma_Elaborate_Body_Needed                =>
             "a missing pragma Elaborate_Body",
+         when Potentially_Blocking_In_Protected           =>
+            "protected operation blocks",
+         when Reference_To_Non_CAE_Variable               =>
+            "illegal reference to a global object " &
+            "in precondition of a protected operation",
          when Refined_State_Wrong                         =>
             "constant with no variable inputs " &
             "as an abstract state's constituent",
@@ -895,13 +938,16 @@ package body VC_Kinds is
             "function with side effects",
          when Stable                                      =>
             "loop with stable statement",  --  ??? appears dead
-         when Non_Volatile_Function_With_Volatile_Effects =>
-            "volatile function wrongly declared as non-volatile",
+         when Subprogram_Termination                      =>
+            "subprogram marked Terminating may not terminate",
+         when Uninitialized                               =>
+            "use of an uninitialized variable",
+         when Unused                                      =>
+            "object is not used",
+         when Unused_Initial_Value                        =>
+            "initial value of an object is not used",
          when Volatile_Function_Without_Volatile_Effects  =>
-            "non-volatile function wrongly declared as volatile",
-         when Reference_To_Non_CAE_Variable               =>
-            "illegal reference to a global object " &
-            "in precondition of a protected operation");
+            "non-volatile function wrongly declared as volatile");
 
    ---------------
    -- Rule_Name --

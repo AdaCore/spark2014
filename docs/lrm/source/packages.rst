@@ -109,12 +109,25 @@ whether a read or write is always significant.
 
 A type is said to be *effectively volatile* if it is either
 a volatile type, an array type whose Volatile_Component
-aspect is True, or an array type whose component type is
+aspect is True, an array type whose component type is
 effectively volatile, a protected type, or a descendant of
 the type Ada.Synchronous_Task_Control.Suspension_Object.
+
+A nonvolatile protected type is said to be *nonvolatile during a protected
+action* if none of its subcomponent types are effectively volatile. [In other
+words, if the only reason that the protected type is effectively volatile
+is because it is protected.]
+
 An *effectively volatile object* is a volatile object for which
 the property No_Caching (see below) is False, or an object
-of an effectively volatile type.
+of an effectively volatile type. There is one exception to this rule:
+the current instance of a protected unit whose (protected) type is nonvolatile
+during a protected action is, by definition, not an effectively volatile
+object. [This exception reflects the fact that the current instance
+cannot be referenced in contexts where unsynchronized updates are possible.
+This means, for example, that the Global aspect of a nonvolatile function
+which is declared inside of a protected operation may reference the current
+instance of the protected unit.]
 
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
@@ -156,8 +169,9 @@ inputs equal need not return the same result. However note that the rule
 that a function must not have any output still applies; in effect this bans
 a volatile function from reading an object with Effective_Reads => True.]
 
-A protected function whose Volatile_Function aspect is False is said
-to be "nonvolatile for internal calls".
+A protected function whose corresponding protected type is
+nonvolatile during a protected action and whose Volatile_Function aspect is
+False is said to be *nonvolatile for internal calls*.
 
 .. centered:: **Legality Rules**
 
@@ -1282,7 +1296,7 @@ whose refinement is not visible at the point of the subprogram_body
 may also be similarly replaced if Part_Of aspect specifications
 which are visible at the point of the subprogram body
 identify one or more constituents of the abstraction; such a state
-abstraction is said to be "optionally refinable" at the point of the
+abstraction is said to be *optionally refinable* at the point of the
 subprogram body.
 
 See section :ref:`global-aspects` regarding how the rules given in this
@@ -2114,7 +2128,7 @@ be a Boolean ``expression``.
    as usual (i.e., just like any other run-time check).
 
    Next, an additional proof obligation is generated which relates
-   the Refined_Post to to the Post (and Post'Class) aspects of
+   the Refined_Post to the Post (and Post'Class) aspects of
    the subprogram according to a "wrapper" model. Imagine two
    subprograms with the same parameter profile and Global and
    Depends aspects, but with different postconditions P1 and P2
@@ -2531,7 +2545,7 @@ Default_Initial_Condition Aspects
    class-wide precondition and postcondition expressions.]
    Any operations within a Default_Initial_Condition expression that
    were resolved in this way (i.e., as primitive operations of the (notional)
-   formal derived type NT), are in the evaluation of the the expression
+   formal derived type NT), are in the evaluation of the expression
    (i.e., at run-time) bound to the corresponding operations of the type of the
    object being "initialized by default" (see Ada RM 3.3.1).
 

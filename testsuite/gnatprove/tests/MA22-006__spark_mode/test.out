@@ -16,6 +16,8 @@ Run-time Checks 2 . . . 2 . .
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 4 2 (50%) . . 2 (50%) . .
 
@@ -43,6 +45,8 @@ Run-time Checks 2 . . . 2 . .
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 4 2 (50%) . . 2 (50%) . .
 
@@ -71,6 +75,8 @@ Run-time Checks 2 . . . 2 . .
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 4 2 (50%) . . 2 (50%) . .
 
@@ -103,6 +109,8 @@ Run-time Checks 2 . . . 2 . .
 Assertions . . . . . . .
 Functional Contracts . . . . . . .
 LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency . . . . . . .
 -
 Total 4 2 (50%) . . 2 (50%) . .
 

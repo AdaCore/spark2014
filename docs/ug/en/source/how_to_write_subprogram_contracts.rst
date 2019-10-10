@@ -531,15 +531,15 @@ complete):
 
 The counterexample displayed for the postcondition not proved corresponds to a
 case where ``Max1 = Max2 = 2`` on entry to procedure ``Seen_Two``. By
-highlighting the path for the counterexample in GPS (see :ref:`Running
-GNATprove from GPS`), the values of parameters for this counterexample are also
+highlighting the path for the counterexample in GNAT Studio (see :ref:`Running
+GNATprove from GNAT Studio`), the values of parameters for this counterexample are also
 displayed, here ``X = 0`` and ``Y = 1``. With these values, ``Max1`` and ``Max2``
 would still be equal to 2 on exit, thus violating the part of the postcondition
 stating that ``Max_Value_Seen /= Second_Max_Value_Seen``.
 
 Another way to see it is to run |GNATprove| in mode ``per_path`` (see
 :ref:`Running GNATprove from the Command Line` or :ref:`Running GNATprove from
-GPS`), and highlight the path on which the postcondition is not proved, which
+GNAT Studio`), and highlight the path on which the postcondition is not proved, which
 shows that when the last branch of the if-statement is taken, the following
 property is not proved::
 
@@ -715,18 +715,31 @@ expression functions) or procedures that are not externally visible (not
 declared in the public part of the unit), without contracts (any of Global,
 Depends, Pre, Post, Contract_Cases), and respect the following conditions:
 
- * does not contain nested subprogram or package declarations or instantiations
- * not recursive
+ * not dispatching
+ * not marked ``No_Return``
  * not a generic instance
  * not defined in a generic instance
+ * not defined in a protected type
+ * without a parameter of unconstrained record type with discriminant dependent
+   components
+ * without a parameter or result of deep type (access type or composite type
+   containing an access type)
+ * not a traversal function
+
+Subprograms that respects all of the above conditions are candidates for
+contextual analysis, and calls to such subprograms are inlined provided the
+subprogram and its calls respect the following additional conditions:
+
+ * does not contain nested subprogram or package declarations or instantiations
+ * not recursive
  * has a single point of return at the end of the subprogram
  * not called in an assertion or a contract
  * not called in a potentially unevaluated context
  * not called before its body is seen
 
-If any of the above conditions is violated, |GNATprove| issues a warning to
-explain why the subprogram could not be analyzed in the context of its calls,
-and then proceeds to analyze it normally, using the default
+If any of the above conditions is violated, |GNATprove| issues an info message
+to explain why the subprogram could not be analyzed in the context of its
+calls, and then proceeds to analyze it normally, using the default
 contract. Otherwise, both flow analysis and proof are done for the subprogram
 in the context of its calls.
 

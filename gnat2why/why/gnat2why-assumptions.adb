@@ -25,11 +25,12 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with SPARK_Atree;                use SPARK_Atree;
-with SPARK_Atree.Entities;       use SPARK_Atree.Entities;
-with Snames;                     use Snames;
-with SPARK_Util;                 use SPARK_Util;
-with SPARK_Util.Subprograms;     use SPARK_Util.Subprograms;
+with SPARK_Atree;            use SPARK_Atree;
+with SPARK_Atree.Entities;   use SPARK_Atree.Entities;
+with SPARK_Definition;       use SPARK_Definition;
+with Snames;                 use Snames;
+with SPARK_Util;             use SPARK_Util;
+with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Assumptions is
 
@@ -160,6 +161,17 @@ package body Gnat2Why.Assumptions is
 
    procedure Register_Proof_Claims (E : Entity_Id) is
    begin
+
+      --  SPARK can't say anything about entities whose body is not in SPARK,
+      --  so safe guard against this here.
+
+      if Ekind (E) in Entry_Kind | Subprogram_Kind | E_Package |
+                      E_Protected_Type | E_Task_Type
+        and then not Entity_Body_In_SPARK (E)
+      then
+         return;
+      end if;
+
       Register_Claim ((E => E, Kind => Claim_AoRTE));
 
       --  ??? Add proper handling of Initial_Condition

@@ -473,16 +473,10 @@ is
                 Depends => (Result =>+ AchievedFAR)
          is
             FullString : String := "Acheived FAR : "
-              & IandATypes.FarT_Image(AchievedFAR) ;
+              & IandATypes.FarT'Image(AchievedFAR) ;
          begin
-
-            -- if the Full string is shorter then use it all otherwise
-            -- truncate it.
-            if FullString'Last <= AuditTypes.DescriptionI'Last then
-               Result (1.. FullString'Last) := FullString;
-            else
-               Result := FullString (1 .. AuditTypes.DescriptionI'Last);
-            end if;
+            -- the Full string is short enough to use it all
+            Result (1.. FullString'Last) := FullString;
          end SetResultString;
 
       --------------------------------------------------------------------

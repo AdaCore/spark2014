@@ -65,7 +65,7 @@ package body Enrolment is
          Result  : AuditTypes.DescriptionT := AuditTypes.NoDescription;
          TheDesc : constant String :=
                                "Enrolment failed at certificate" &
-                               CommonTypes.Integer_Image(CertNo) & " - " &
+                               Integer'Image(CertNo) & " - " &
                                Detail;
       begin
          if TheDesc'Last < Result'Last then

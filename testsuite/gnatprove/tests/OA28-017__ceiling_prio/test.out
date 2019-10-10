@@ -1,4 +1,6 @@
 account8.adb:7:31: medium: overflow check might fail
+account8.adb:16:14: info: add a contract to analyze it separately from calling contexts
+account8.adb:16:14: info: local subprogram "Get_Next_Account_Created" only analyzed in the context of calls
 account8.adb:16:14: warning: subprogram "Get_Next_Account_Created" has no effect
 account8.ads:15:14: info: nontermination of task proved (CVC4: 1 VC)
 account8.ads:15:14: medium: ceiling priority protocol might not be respected

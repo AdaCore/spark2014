@@ -1,3 +1,3 @@
-p.adb:5:09: cannot use global variable "X" of deep type
-p.adb:5:09: without prior declaration in a Global aspect
-gnatprove: error during generation of Global contracts
+p.ads:3:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+p.ads:3:04: violation of pragma SPARK_Mode at line 2
+gnatprove: error during flow analysis and proof

@@ -24,7 +24,7 @@ counterexamples.adb:48:28: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:48:31: info: range check proved (CVC4: 1 VC)
 counterexamples.adb:51:14: warning: subprogram "Bad_6" has no effect
 counterexamples.adb:52:48: info: range check proved (CVC4: 2 VC)
-counterexamples.adb:54:22: medium: assertion might fail, cannot prove C in A.all'range (e.g. when C = 0)
+counterexamples.adb:54:22: medium: assertion might fail, cannot prove C in A.all'range (e.g. when A.all = (others => 1) and C = 0)
 counterexamples.adb:54:29: info: pointer dereference check proved (CVC4: 2 VC)
 counterexamples.adb:55:22: info: pointer dereference check proved (CVC4: 1 VC)
 counterexamples.adb:55:22: medium: assertion might fail, cannot prove A (C) = 15 (e.g. when A.all = (others => 1) and A.all'First = 1 and A.all'Last = 1 and C = 1)

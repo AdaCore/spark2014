@@ -1,0 +1,23 @@
+borrow.adb:9:19: warning: "X" is not modified, could be IN
+borrow.adb:11:15: medium: pointer dereference check might fail [possible explanation: precondition of subprogram at line 9 should mention X]
+borrow.adb:16:07: high: "X" must be a global output of "Get" (SPARK RM 6.1.4(17))
+borrow.adb:17:29: info: precondition proved (Trivial: 1 VC)
+borrow.adb:17:35: info: precondition proved (Trivial: 1 VC)
+borrow.adb:19:18: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:22:07: warning: this statement is never reached
+borrow.adb:23:10: info: initialization of "X" proved
+borrow.adb:24:29: info: precondition proved (Trivial: 1 VC)
+borrow.adb:24:35: info: precondition proved (Trivial: 1 VC)
+borrow.adb:26:18: medium: pointer dereference check might fail (e.g. when Y = null)
+borrow.adb:29:26: info: precondition proved (Trivial: 1 VC)
+borrow.adb:29:32: info: precondition proved (Trivial: 1 VC)
+borrow.adb:31:08: medium: pointer dereference check might fail (e.g. when Y = null)
+traversal_funcs.adb:9:19: warning: "X" is not modified, could be IN
+traversal_funcs.adb:12:18: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:18:26: info: precondition proved (Trivial: 1 VC)
+traversal_funcs.adb:20:29: info: precondition proved (Trivial: 1 VC)
+traversal_funcs.adb:20:36: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:21:15: info: precondition proved (Trivial: 1 VC)
+traversal_funcs.adb:21:22: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:21:25: info: pointer dereference check proved (CVC4: 1 VC)
+traversal_funcs.adb:24:11: info: pointer dereference check proved (CVC4: 1 VC)

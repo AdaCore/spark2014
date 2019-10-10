@@ -7,6 +7,8 @@ patris.adb:51:04: info: initialization of "Next_Piece" constituent of "Game_Stat
 patris.adb:52:04: warning: initialization of "Cur_State" constituent of "Game_State" has no effect
 patris.adb:53:04: info: initialization of "Action_Request_Nbr" constituent of "Game_State" proved
 patris.adb:54:04: info: initialization of "Speed_Up" constituent of "Game_State" proved
+patris.adb:59:13: info: add a contract to analyze it separately from calling contexts
+patris.adb:59:13: info: local subprogram "Get_New_Piece" only analyzed in the context of calls
 patris.adb:67:49: warning: assuming "Rand" has no effect on global items
 patris.adb:67:49: warning: no Global contract available for "Rand"
 patris.adb:67:56: info: division check proved (CVC4: 1 VC), in call inlined at patris.adb:306
@@ -27,7 +29,7 @@ patris.adb:116:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Boar
 patris.adb:118:30: info: unrolling loop
 patris.adb:119:33: info: unrolling loop
 patris.adb:121:45: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => 1, Y => PY_Coord'First+1) and Y = 0)
-patris.adb:121:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => -1, Y => PY_Coord'First+1) and X = 1)
+patris.adb:121:63: medium: array index check might fail (e.g. when Cur_Board = (others => (others => I)) and Cur_Piece = (S => I, D => West, X => -1, Y => PY_Coord'First+1) and X = 1 and Y = 0)
 patris.adb:131:57: info: index check proved (CVC4: 2 VC)
 patris.adb:132:24: medium: assertion might fail, cannot prove Is_Empty (Cur_Board, Cur_Piece.Y + YY, Cur_Piece.X + XX) (e.g. when Cur_Board = (others => (others => Empty)) and Cur_Piece = (S => J, D => North, X => 0, Y => PY_Coord'First+1) and XX = 0 and YY = 0)
 patris.adb:134:34: info: unrolling loop
@@ -67,7 +69,6 @@ patris.adb:280:07: info: initialization of "Success" proved
 patris.adb:290:10: info: precondition proved (CVC4: 2 VC)
 patris.adb:294:13: info: precondition proved (CVC4: 2 VC)
 patris.adb:295:13: info: precondition proved (CVC4: 2 VC)
-patris.adb:306:13: warning: unreachable code (CVC4: 1 VC)
 patris.adb:306:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:323:27: info: analyzing call to "Get_New_Piece" in context
 patris.adb:408:07: info: initialization of "Success" proved

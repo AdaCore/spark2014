@@ -9,7 +9,7 @@ ar.adb:19:49: info: range check proved (CVC4: 1 VC)
 ar.adb:19:56: info: range check proved (CVC4: 1 VC)
 ar.adb:19:65: info: range check proved (CVC4: 1 VC)
 ar.adb:30:04: warning: analyzing unreferenced procedure "Test3"
-ar.adb:33:12: medium: array index check might fail (e.g. when I = 10) [possible explanation: subprogram at line 30 should mention I in a precondition]
+ar.adb:33:12: medium: array index check might fail (e.g. when E = 1 and I = 10) [possible explanation: subprogram at line 30 should mention I in a precondition]
 ar.adb:33:22: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 30 should mention E in a precondition]
 ar.adb:39:04: warning: analyzing unreferenced procedure "Test4"
 ar.adb:43:15: info: index check proved (CVC4: 2 VC)
@@ -23,19 +23,19 @@ ar.adb:68:24: info: range check proved (CVC4: 1 VC)
 ar.adb:68:33: info: range check proved (CVC4: 1 VC)
 ar.adb:76:04: warning: analyzing unreferenced procedure "Test7"
 ar.adb:85:04: warning: analyzing unreferenced procedure "Test8"
-ar.adb:88:25: medium: range check might fail (e.g. when I = 1) [possible explanation: subprogram at line 85 should mention I in a precondition]
+ar.adb:88:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 85 should mention I in a precondition]
 ar.adb:88:34: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 85 should mention E in a precondition]
 ar.adb:94:04: warning: analyzing unreferenced procedure "Test9"
 ar.adb:98:27: info: range check proved (CVC4: 1 VC)
 ar.adb:98:36: info: range check proved (CVC4: 1 VC)
 ar.adb:106:04: warning: analyzing unreferenced procedure "Test10"
 ar.adb:115:04: warning: analyzing unreferenced procedure "Test11"
-ar.adb:119:25: medium: range check might fail (e.g. when I = 1) [possible explanation: subprogram at line 115 should mention I in a precondition]
-ar.adb:119:34: medium: range check might fail (e.g. when J = 10) [possible explanation: subprogram at line 115 should mention J in a precondition]
+ar.adb:119:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 115 should mention I in a precondition]
+ar.adb:119:34: medium: range check might fail (e.g. when E = 1 and J = 10) [possible explanation: subprogram at line 115 should mention J in a precondition]
 ar.adb:119:43: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 115 should mention E in a precondition]
 ar.adb:125:04: warning: analyzing unreferenced procedure "Test12"
-ar.adb:128:25: medium: range check might fail (e.g. when I = 1) [possible explanation: subprogram at line 125 should mention I in a precondition]
-ar.adb:128:33: medium: range check might fail (e.g. when J = 10) [possible explanation: subprogram at line 125 should mention J in a precondition]
+ar.adb:128:25: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 125 should mention I in a precondition]
+ar.adb:128:33: medium: range check might fail (e.g. when E = 1 and J = 10) [possible explanation: subprogram at line 125 should mention J in a precondition]
 ar.adb:128:42: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 125 should mention E in a precondition]
 ar.adb:134:04: warning: analyzing unreferenced procedure "Test13"
 ar.adb:137:27: info: range check proved (CVC4: 1 VC)
@@ -49,8 +49,8 @@ ar.ads:19:54: info: range check proved (CVC4: 1 VC)
 ar.ads:19:63: info: range check proved (CVC4: 1 VC)
 ar.ads:22:10: info: flow dependencies proved
 ar.ads:24:06: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (1 => 0, others => 1) and A'Old = (1 => 0, others => 1) and E = 0 and I = 1 and J = 1)
-ar.ads:24:26: medium: range check might fail (e.g. when I = 1) [possible explanation: subprogram at line 21 should mention I in a precondition]
-ar.ads:24:39: medium: range check might fail (e.g. when J = 9) [possible explanation: subprogram at line 21 should mention J in a precondition]
+ar.ads:24:26: medium: range check might fail (e.g. when E = 1 and I = 1) [possible explanation: subprogram at line 21 should mention I in a precondition]
+ar.ads:24:39: medium: range check might fail (e.g. when E = 1 and J = 9) [possible explanation: subprogram at line 21 should mention J in a precondition]
 ar.ads:24:48: medium: range check might fail (e.g. when E = 0) [possible explanation: subprogram at line 21 should mention E in a precondition]
-ar.ads:24:55: medium: range check might fail (e.g. when J = 10) [possible explanation: subprogram at line 21 should mention J in a precondition]
+ar.ads:24:55: medium: range check might fail (e.g. when E = 0 and J = 10) [possible explanation: subprogram at line 21 should mention J in a precondition]
 ar.ads:24:64: medium: range check might fail (e.g. when E = ET1'Last) [possible explanation: subprogram at line 21 should mention E in a precondition]

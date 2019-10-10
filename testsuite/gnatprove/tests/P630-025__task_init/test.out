@@ -23,14 +23,14 @@ decadriver.adb:127:38: high: call to potentially blocking subprogram "dw1000.bsp
 decadriver.adb:127:38: info: precondition proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:131:43: info: range check proved (CVC4: 4 VC)
-decadriver.adb:133:38: medium: predicate check might fail
+decadriver.adb:133:38: medium: predicate check might fail (e.g. when Frame_Length = 1023 and Next_Idx = 1)
 decadriver.adb:133:50: info: range check proved (CVC4: 1 VC)
 decadriver.adb:134:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:135:38: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:145:10: info: initialization of "Next_Idx" proved
 decadriver.adb:152:60: info: range check proved (CVC4: 1 VC)
 decadriver.adb:154:34: info: overflow check proved (CVC4: 1 VC)
-decadriver.adb:156:35: medium: predicate check might fail
+decadriver.adb:156:35: medium: predicate check might fail (e.g. when Next_Idx = 1)
 decadriver.adb:157:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:158:35: info: predicate check proved (CVC4: 1 VC)
 decadriver.adb:189:23: high: call to potentially blocking subprogram "dw1000.bsp.write_transaction" in protected operation "Set_Tx_Data"
@@ -117,11 +117,12 @@ decadriver.ads:202:24: info: overflow check proved (CVC4: 1 VC)
 decadriver.ads:203:07: warning: no check message justified by this pragma
 decadriver.ads:210:27: info: initialization of "Result" proved
 decadriver.ads:211:14: info: data dependencies proved
-decadriver.ads:212:09: info: flow dependencies proved
+decadriver.ads:212:09: medium: missing dependency "null => Transmitter_Type"
+decadriver.ads:218:49: medium: incorrect dependency "Transmitter_Type => Transmitter_Type"
 decadriver.ads:222:07: warning: no check message justified by this pragma
 decadriver.ads:242:19: info: ceiling priority in Interrupt_Priority proved (CVC4: 2 VC)
 decadriver.ads:250:14: info: data dependencies proved
-decadriver.ads:251:09: info: flow dependencies proved
+decadriver.ads:252:49: medium: incorrect dependency "BSP.Device_State => Driver_Type"
 decadriver.ads:281:07: warning: no check message justified by this pragma
 decadriver.ads:287:14: info: data dependencies proved
 decadriver.ads:288:09: info: flow dependencies proved
@@ -134,5 +135,5 @@ decadriver.ads:327:14: info: flow dependencies proved
 decadriver.ads:331:17: info: ceiling priority protocol is respected (CVC4: 1 VC)
 decadriver.ads:332:49: medium: this interrupt might be reserved
 decadriver.ads:333:09: info: data dependencies proved
-decadriver.ads:336:09: info: flow dependencies proved
+decadriver.ads:342:49: medium: incorrect dependency "Transmitter => Driver_Type"
 decadriver.ads:346:07: warning: no check message justified by this pragma

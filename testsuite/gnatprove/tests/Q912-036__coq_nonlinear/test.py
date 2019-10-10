@@ -25,7 +25,7 @@ Qed.
 """
 
 def edit_proof():
-    proof_file = "proof/Coq/nonlinear/Nonlinear__pragargs__cmp.v"
+    proof_file = "proof/Coq/Nonlinear__pragargs__cmp.v"
     with open(proof_file, 'r') as file:
         content = file.read()
     content = str.replace(content, "Qed.", proof)

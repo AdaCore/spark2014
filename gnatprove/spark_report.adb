@@ -29,8 +29,8 @@
 --  program reads all those files in and prints a summary in a file called
 --  "gnatprove.out".
 --
---  For each unit, the tool expects a file "<unit>.spark" be be present. This
---  file is in JSON format. The format of these files is documented in the
+--  For each unit, the tool expects a file "<unit>.spark" be present. This file
+--  is in JSON format. The format of these files is documented in the
 --  user's guide.
 
 with Ada.Calendar;
@@ -174,7 +174,12 @@ procedure SPARK_Report is
 
    procedure Dump_Summary_Table (Handle : Ada.Text_IO.File_Type) is
 
-      T : Table := Create_Table (Lines => 10, Cols => 8);
+      T : Table := Create_Table
+        (Lines => Summary_Entries'Pos (Summary_Entries'Last)
+                - Summary_Entries'Pos (Summary_Entries'First) + 2,
+         --  all categories (includes total) + label column
+         Cols  => 6 + 2);
+         --  all 6 types + label column + total column
 
       procedure Print_Table_Header;
       --  print the header of the table
@@ -215,16 +220,18 @@ procedure SPARK_Report is
       procedure Compute_Total_Summary_Line is
          Tot : Summary_Line renames Summary (Total);
       begin
-         for Entr in Summary_Entries range Data_Dep .. LSP loop
-            Tot.Flow := Tot.Flow + Summary (Entr).Flow;
-            Tot.Interval :=
-              Tot.Interval + Summary (Entr).Interval;
-            Tot.CodePeer :=
-              Tot.CodePeer + Summary (Entr).CodePeer;
-            Tot.Provers.Total :=
-              Tot.Provers.Total + Summary (Entr).Provers.Total;
-            Tot.Justified := Tot.Justified + Summary (Entr).Justified;
-            Tot.Unproved := Tot.Unproved + Summary (Entr).Unproved;
+         for Entr in Summary_Entries loop
+            if Entr /= Total then
+               Tot.Flow := Tot.Flow + Summary (Entr).Flow;
+               Tot.Interval :=
+                 Tot.Interval + Summary (Entr).Interval;
+               Tot.CodePeer :=
+                 Tot.CodePeer + Summary (Entr).CodePeer;
+               Tot.Provers.Total :=
+                 Tot.Provers.Total + Summary (Entr).Provers.Total;
+               Tot.Justified := Tot.Justified + Summary (Entr).Justified;
+               Tot.Unproved := Tot.Unproved + Summary (Entr).Unproved;
+            end if;
          end loop;
       end Compute_Total_Summary_Line;
 
@@ -392,15 +399,24 @@ procedure SPARK_Report is
          when Aliasing =>
             return Non_Aliasing;
 
+         when Call_To_Current_Task =>
+            return Runtime_Checks;
+
+         when Concurrent_Access
+            | Potentially_Blocking_In_Protected
+         =>
+            return Concurrency;
+
          when Global_Missing
             | Global_Wrong
             | Export_Depends_On_Proof_In
+            | Ghost_Wrong
             | Hidden_Unexposed_State
             | Illegal_Update
             | Non_Volatile_Function_With_Volatile_Effects
-            | Volatile_Function_Without_Volatile_Effects
-            | Side_Effects
             | Refined_State_Wrong
+            | Side_Effects
+            | Volatile_Function_Without_Volatile_Effects
          =>
             return Data_Dep;
 
@@ -411,12 +427,17 @@ procedure SPARK_Report is
          =>
             return Init;
 
-         when Depends_Null
-            | Depends_Missing
+         when Depends_Missing
             | Depends_Missing_Clause
+            | Depends_Null
             | Depends_Wrong
          =>
             return Flow_Dep;
+
+         when Call_In_Type_Invariant
+            | Subprogram_Termination
+         =>
+            return Termination;
 
          when Dead_Code
             | Ineffective
@@ -996,9 +1017,11 @@ procedure SPARK_Report is
             | VC_Loop_Invariant
             | VC_Loop_Invariant_Init
             | VC_Loop_Invariant_Preserv
-            | VC_Loop_Variant
          =>
             return Assertions;
+
+         when VC_Loop_Variant =>
+            return Termination;
 
          when VC_Initial_Condition
             | VC_Default_Initial_Condition
@@ -1062,6 +1085,8 @@ procedure SPARK_Report is
          when Assertions           => return "Assertions";
          when Functional_Contracts => return "Functional Contracts";
          when LSP                  => return "LSP Verification";
+         when Termination          => return "Termination";
+         when Concurrency          => return "Concurrency";
          when Total                => return "Total";
       end case;
    end To_String;

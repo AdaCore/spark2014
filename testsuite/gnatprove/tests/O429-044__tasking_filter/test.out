@@ -8,6 +8,8 @@ tasks.ads:3:46: access discriminant is not allowed in SPARK
 tasks.ads:3:46: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:24:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)
 tasks.ads:24:07: violation of pragma SPARK_Mode at test.adc:1
+tasks.ads:25:07: component of anonymous access type is not allowed in SPARK
+tasks.ads:25:07: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:25:45: attribute "Access" is not allowed in SPARK
 tasks.ads:25:45: violation of pragma SPARK_Mode at test.adc:1
 tasks.ads:51:07: protected component with no default initialization is not allowed in SPARK (SPARK RM 9.4)

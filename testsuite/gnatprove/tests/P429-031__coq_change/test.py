@@ -14,7 +14,7 @@ ads_file = "lemmas.ads"
 new_file = "lemmas.ads.new"
 
 def edit_proof():
-    proof_file = glob.glob("proof/Coq/lemmas/*.v")[0]
+    proof_file = glob.glob("proof/Coq/*.v")[0]
     with open(proof_file, 'r') as file:
         content = file.read()
     content = str.replace(content, "Qed.", proof)

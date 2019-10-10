@@ -40,22 +40,15 @@ with Types;                use Types;
 
 use type Ada.Containers.Count_Type;
 
-package Flow_Utility
-  with Initial_Condition => not Is_Initialized
-is
-
-   procedure Initialize with Pre => not Is_Initialized;
-   --  Set up state required by some functions in this package
-
-   function Is_Initialized return Boolean with Ghost;
-   --  Tests if we're initialized
+package Flow_Utility is
 
    procedure Collect_Functions_And_Read_Locked_POs
      (N                  : Node_Id;
-      Functions_Called   : out Node_Sets.Set;
+      Functions_Called   : in out Node_Sets.Set;
       Tasking            : in out Tasking_Info;
       Generating_Globals : Boolean)
-   with Pre => Present (N);
+   with Pre  => Present (N),
+        Post => Functions_Called'Old.Is_Subset (Of_Set => Functions_Called);
    --  For an expression N collect its called functions and update the set of
    --  protected objects that are read-locked when evaluating these functions.
    --
@@ -65,10 +58,8 @@ is
    --  global effects directly.
 
    function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
-   with Pre => Is_Initialized and then
-                 Nkind (E) = N_Defining_Identifier and then
-                 (Ekind (E) in E_Component | E_Discriminant
-                  or else Is_Part_Of_Concurrent_Object (E));
+   with Pre => Ekind (E) in E_Component | E_Discriminant
+               or else Is_Part_Of_Concurrent_Object (E);
    --  Compute a suitable hash for the given record component
 
    procedure Remove_Constants
@@ -93,8 +84,7 @@ is
    --     instance, such a global_item is ignored."
 
    function Same_Component (C1, C2 : Entity_Id) return Boolean
-   with Pre => Is_Initialized and then
-               (Ekind (C1) in E_Component | E_Discriminant
+   with Pre => (Ekind (C1) in E_Component | E_Discriminant
                 or else Is_Part_Of_Concurrent_Object (C1))
                 and then
                (Ekind (C2) in E_Component | E_Discriminant
@@ -140,8 +130,7 @@ is
       Scope                : Flow_Scope;
       Classwide            : Boolean;
       Depends              : out Dependency_Maps.Map;
-      Use_Computed_Globals : Boolean := True;
-      Callsite             : Node_Id := Empty)
+      Use_Computed_Globals : Boolean := True)
    with Pre  => Ekind (Subprogram) in E_Entry
                                     | E_Function
                                     | E_Procedure
@@ -183,9 +172,11 @@ is
                                     | E_Procedure
                                     | E_Task_Type
                 and then not Is_Derived_Type (Subprogram)
-                and then (if Ekind (Subprogram) = E_Procedure
-                          then not Is_DIC_Procedure (Subprogram)
-                            and then not Is_Invariant_Procedure (Subprogram)),
+                and then (if Ekind (Subprogram) = E_Procedure then
+                            not Is_DIC_Procedure (Subprogram)
+                            and then not Is_Invariant_Procedure (Subprogram)
+                          elsif Ekind (Subprogram) = E_Function then
+                            not Is_Predicate_Function (Subprogram)),
         Post => (for all G of Globals.Proof_Ins =>
                    Is_Entire_Variable (G) and then G.Variant = In_View)
        and then (for all G of Globals.Inputs =>
@@ -270,32 +261,21 @@ is
    function Get_Variables
      (N                       : Node_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False;
       Consider_Extensions     : Boolean := False)
-      return Flow_Id_Sets.Set
-   with Pre  => (if Fold_Functions then Assume_In_Expression),
-        Post => (if Reduced
-                 then (for all F of Get_Variables'Result
-                         => Is_Entire_Variable (F)));
+      return Flow_Id_Sets.Set;
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --
-   --  If Fold_Functions is True, we exclude variables that a function does not
-   --  use to derive its result from. For example, given the following
-   --  dependency relation on a function:
-   --     Depends => (Foo'Result => A,
-   --                 null       => B)
-   --  Then we return only {A} instead of {A, B} if Fold_Functions is True.
+   --  ??? Fold_Functions parmeter refers to previous handling of objects
+   --  referenced in assertions and null dependencies; should be renamed.
    --
    --  The following other options all have default parameters as they are only
    --  useful in certain usage scenarios. In the majority of flow analysis, one
    --  does not have to think about them. They are:
-   --
-   --     * Reduced: if True, obtain only entire variables
    --
    --     * Assume_In_Expression: if True, we assume that node N is part of
    --       some kind of expression, and aggressively raise exceptions if we
@@ -309,9 +289,8 @@ is
    function Get_Variables
      (L                       : List_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
-      Reduced                 : Boolean := False;
       Assume_In_Expression    : Boolean := True;
       Expand_Internal_Objects : Boolean := False)
       return Flow_Id_Sets.Set;
@@ -328,6 +307,16 @@ is
    --  A wrapper around Get_Variables, as used by proof. Expr_N is the
    --  expression for which we obtain variables, and Scope_N is the node
    --  controlling visibility.
+
+   function Get_All_Variables
+     (N                       : Node_Id;
+      Scope                   : Flow_Scope;
+      Use_Computed_Globals    : Boolean;
+      Assume_In_Expression    : Boolean := True;
+      Expand_Internal_Objects : Boolean := False)
+      return Flow_Id_Sets.Set;
+   --  Returns variables referenced by N in all modes, i.e. inputs, proof_ins
+   --  and null dependencies.
 
    function Flatten_Variable
      (F     : Flow_Id;
@@ -455,7 +444,7 @@ is
       Map_Root                : Flow_Id;
       Map_Type                : Entity_Id;
       Scope                   : Flow_Scope;
-      Fold_Functions          : Boolean;
+      Fold_Functions          : Reference_Kind;
       Use_Computed_Globals    : Boolean;
       Expand_Internal_Objects : Boolean;
       Extensions_Irrelevant   : Boolean := True)
@@ -476,9 +465,6 @@ is
    --
    --  Scope, Local_Constants, Fold_Functions, Use_Computed_Globals,
    --  Expand_Internal_Objects will be passed on to Get_Variables if necessary.
-   --
-   --  Get_Variables will be called with Reduced set to False (as this function
-   --  should never be called when its True...).
 
    function Get_Precondition_Expressions (E : Entity_Id) return Node_Lists.List
    with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
@@ -494,11 +480,6 @@ is
    --  associated with postconditions: the postcondition, the rhs for contract
    --  cases and the initial condition; or an empty list of none of these
    --  exist.
-
-   function Is_Precondition_Check (N : Node_Id) return Boolean
-   with Pre => Nkind (N) = N_Pragma and then
-               Get_Pragma_Id (N) = Pragma_Check;
-   --  Given a check pragma, return if this is a precondition check
 
    function Contains_Discriminants
      (F : Flow_Id;
@@ -639,6 +620,7 @@ is
                           or else Ekind (Output) in Assignable_Kind
                                                   | E_Abstract_State
                                                   | E_Constant
+                                                  | E_In_Parameter
                                                   | E_Function
                                                   | E_Protected_Type
                                                   | E_Task_Type)
@@ -720,11 +702,10 @@ is
 
    function Is_Variable (F : Flow_Id) return Boolean
    with Pre => Present (F);
-   --  Returns True if F is either not a constant or is a constant
-   --  with variable input.
+   --  Returns whether F represents a variable in flow.
    --  @param F is the Flow_Id that we check
-   --  @return True if F is either not a constant or if it is a constant
-   --     which Has_Variable_Input
+   --  @return True if F is either not a constant or a constant of access type
+   --     or a constant with variable input.
 
    function Is_Empty_Record_Type (T : Entity_Id) return Boolean with
      Pre => No (T) or else Is_Type (T);
@@ -798,21 +779,26 @@ is
    --  Same as above but for Flow_Ids; returns Null_Flow_Id instead of Empty
 
    procedure Map_Generic_In_Formals
-     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set);
+     (Scop : Flow_Scope; Objects : in out Flow_Id_Sets.Set;
+      Entire : Boolean := True);
    --  Map generic IN formal parameters, which are visible inside of generic
    --  instances (e.g. might appear in Global and Initializes contracts) into
    --  objects used in their corresponding generic actual parameter expression.
+   --
+   --  If Entire is True, then map to the entire objects; if it is False, then
+   --  map to individual components referenced in the actual parameter.
+   --  ??? This parameter should be removed and the callers should use
+   --  To_Entire_Variables if needed, but this would be a bit ugly as well.
 
    function Strip_Child_Prefixes (EN : String) return String;
    --  Strip Child_Prefix from the string representation of an Entity_Name
 
-private
-   Init_Done : Boolean := False with Ghost;
-
-   --------------------
-   -- Is_Initialized --
-   --------------------
-
-   function Is_Initialized return Boolean is (Init_Done);
+   function Path_To_Flow_Id (Expr : Node_Id) return Flow_Id
+   with Pre  => Is_Path_Expression (Expr),
+        Post => Path_To_Flow_Id'Result.Kind in Direct_Mapping | Record_Field
+                and then Path_To_Flow_Id'Result.Variant = Normal_Use;
+   --  Converts a "path expression", which is how objects are represented in
+   --  the borrow checker, to a "flow_id", which is how objects are represented
+   --  in flow.
 
 end Flow_Utility;

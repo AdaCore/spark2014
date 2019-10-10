@@ -3,9 +3,6 @@ a-ngelfu.ads:117:66: info: float overflow check proved (Interval), in instantiat
 a-ngelfu.ads:126:32: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
 a-ngelfu.ads:127:36: info: division check proved (CVC4: 1 VC), in instantiation at ff.ads:3
 a-ngelfu.ads:127:64: info: float overflow check proved (Interval), in instantiation at ff.ads:3
-a.adb:5:04: warning: assuming "Length" has no effect on global items
-a.adb:5:04: warning: in instantiation at a-ngrear.adb:542
-a.adb:5:04: warning: no Global contract available for "Length"
 a.adb:12:32: warning: assuming "Unit_Vector" has no effect on global items
 a.adb:12:32: warning: no Global contract available for "Unit_Vector"
 foo.adb:5:09: medium: precondition might fail, cannot prove X > 0.0 [possible explanation: subprogram at line 3 should mention N in a precondition]

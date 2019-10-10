@@ -9,10 +9,10 @@ one toolchain for each platform that you target, for example one toolchain for
 native compilation on your machine and one toolchain for cross compilation to
 an embedded platform.
 
-For analyzing |SPARK| programs, we recommend to first install GPS and then
+For analyzing |SPARK| programs, we recommend to first install GNAT Studio and then
 install |GNATprove| under the same location. Alternatively, you can install the
-GNATbench plug-in for Eclipse instead of GPS, using the Eclipse installation
-mechanism. The same version of GPS or GNATbench can support both native and
+GNATbench plug-in for Eclipse instead of GNAT Studio, using the Eclipse installation
+mechanism. The same version of GNAT Studio or GNATbench can support both native and
 cross compilations, as well as |SPARK| analysis.
 
 If you choose to install |GNATprove| in a different location, you should also
@@ -31,7 +31,7 @@ or on Linux/Mac with C shell::
 
   setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:<GNAT install dir>/share/gpr:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
-See below for detailed installation instructions of GPS and |GNATprove|.
+See below for detailed installation instructions of GNAT Studio and |GNATprove|.
 
 System Requirements
 -------------------
@@ -55,13 +55,13 @@ if your code is very complex, then you will likely need more memory.
 Installation under Windows
 --------------------------
 
-If not already done, first run the GPS installer by e.g. double clicking
-on `gps-<version>-i686-pc-mingw32.exe` and follow the instructions.
+If not already done, first run the GNAT Studio installer by e.g. double clicking
+on `gnatstudio-<version>-i686-pc-mingw32.exe` and follow the instructions.
 
 .. note::
 
   If you're using GNAT GPL instead of GNAT Pro, you should run instead
-  the GNAT GPL installer, which installs GPS.
+  the GNAT GPL installer, which installs GNAT Studio.
 
 Then similarly run the |GNATprove| installer, by e.g. double clicking on
 `spark-<version>-x86-windows-bin.exe`.
@@ -73,11 +73,11 @@ single user).
 Installation under Linux/Mac
 ----------------------------
 
-If not already done, you need to extract and install the GPS compressed
+If not already done, you need to extract and install the GNAT Studio compressed
 tarball and then run the install, e.g.::
 
-  $ gzip -dc gps-<version>-<platform>-bin.tar.gz | tar xf -
-  $ cd gps-<version>-<platform>-bin
+  $ gzip -dc gnatstudio-<version>-<platform>-bin.tar.gz | tar xf -
+  $ cd gnatstudio-<version>-<platform>-bin
   $ ./doinstall
 
 Then follow the instructions displayed.
@@ -85,7 +85,7 @@ Then follow the instructions displayed.
 .. note::
 
   If you're using GNAT GPL instead of GNAT Pro, you should install instead
-  the GNAT GPL package, which installs GPS.
+  the GNAT GPL package, which installs GNAT Studio.
 
 Then do the same with the SPARK tarball, e.g.::
 

@@ -43,7 +43,8 @@ package body Why.Gen.Progs is
       Check_Kind : Scalar_Check_Kind)
    is
       Reason : constant VC_Kind := To_VC_Kind (Check_Kind);
-      Id     : constant VC_Id := Register_VC (Ada_Node, Reason, Current_Subp);
+      Id     : constant VC_Id :=
+        Register_VC (Ada_Node, Reason, Current_Subp, Present_In_Why3 => False);
    begin
       Emit_Proof_Result
         (Ada_Node,

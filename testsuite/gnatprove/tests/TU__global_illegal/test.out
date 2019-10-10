@@ -20,11 +20,9 @@ global_illegal_2.adb:44:35: global item "X" cannot have mode In_Out or Output
 global_illegal_2.adb:44:35: item already appears as input of subprogram "P3"
 global_illegal_2.adb:45:35: global item "Y" cannot have mode In_Out or Output
 global_illegal_2.adb:45:35: item already appears as input of subprogram "P3"
-global_illegal_3.adb:29:11: info: data dependencies proved
 global_illegal_3.adb:32:17: medium: overflow check might fail (e.g. when X = 0 and Y = -2147483649) [possible explanation: subprogram at line 22 should mention X in a precondition]
 global_illegal_3.adb:32:19: high: "Y" must be listed in the Global aspect of "P1" (SPARK RM 6.1.4(14))
 global_illegal_3.adb:43:09: high: "X" must be a global output of "P2" (SPARK RM 6.1.4(17))
-global_illegal_3.adb:50:11: info: data dependencies proved
 global_illegal_3.adb:53:07: high: "X" must be listed in the Global aspect of "P3" (SPARK RM 6.1.4(14))
 global_illegal_3.adb:62:11: info: data dependencies proved
 global_illegal_3.adb:62:21: low: unused global "X"
@@ -38,8 +36,8 @@ global_illegal_3.adb:82:32: low: unused global "Z"
 global_illegal_3.adb:82:32: warning: "Z" is not modified, could be INPUT
 global_illegal_3.adb:105:09: high: "X" must be a global output of "P6" (SPARK RM 6.1.4(17))
 global_illegal_3.adb:115:34: info: initialization of "Y" proved
-global_illegal_3.adb:116:34: medium: export "Y" must not depend on Proof_In "X" (SPARK RM 6.1.4(18))
 global_illegal_3.adb:119:22: medium: assertion might fail, cannot prove X > 5 [possible explanation: subprogram at line 110 should mention X in a precondition]
+global_illegal_3.adb:120:12: medium: Proof_In global "X" can only be used in assertions (SPARK RM 6.1.4(18))
 global_illegal_3.adb:125:11: info: data dependencies proved
 global_illegal_3.adb:125:34: low: unused global "X"
 global_illegal_3.adb:133:11: info: data dependencies proved

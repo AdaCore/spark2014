@@ -189,6 +189,15 @@ package body SPARK_Util is
       end loop;
    end Append;
 
+   ---------------------------------------
+   -- Attr_Constrained_Statically_Known --
+   ---------------------------------------
+
+   function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean is
+     (Nkind (N) not in N_Expanded_Name | N_Identifier
+      or else Ekind (Entity (N)) not in
+        E_Variable | E_Out_Parameter | E_In_Out_Parameter);
+
    --------------------
    -- Body_File_Name --
    --------------------
@@ -350,7 +359,7 @@ package body SPARK_Util is
          --  its type...
 
          if not Compile_Time_Known_Value (Low) then
-            Low := Type_Low_Bound (Etype (Low));
+            Low := Type_Low_Bound (Unchecked_Full_Type (Etype (Low)));
             Dynamic_Range := True;
          end if;
 
@@ -358,7 +367,7 @@ package body SPARK_Util is
          --  of its type...
 
          if not Compile_Time_Known_Value (High) then
-            High := Type_High_Bound (Etype (High));
+            High := Type_High_Bound (Unchecked_Full_Type (Etype (High)));
             Dynamic_Range := True;
          end if;
 
@@ -628,36 +637,43 @@ package body SPARK_Util is
    -----------------------------------
 
    function Component_Is_Visible_In_SPARK (E : Entity_Id) return Boolean is
-      Ty : constant Entity_Id := Scope (E);
+      Ty      : constant Entity_Id := Scope (E);
+      Full_Ty : constant Entity_Id :=
+        (if Present (Full_View (Ty))
+         then Full_View (Ty)
+         else Ty);
 
    begin
+      pragma Assert (Entity_Marked (Full_Ty));
+
       --  Hidden discriminants are only in SPARK if Ty's full view is in SPARK
 
       if Ekind (E) = E_Discriminant then
          if Has_Discriminants (Ty) then
             return True;
          else
-            pragma Assert (Has_Discriminants (Full_View (Ty)));
-            return Entity_In_SPARK (Full_View (Ty));
+            pragma Assert (Has_Discriminants (Full_Ty));
+            return Entity_In_SPARK (Full_Ty);
          end if;
-
-      --  Components of a protected type are visible except if the type full
-      --  view is not in SPARK.
-
-      elsif Is_Protected_Type (Ty) then
-
-         return not Full_View_Not_In_SPARK (Ty);
 
       --  If the type itself is private, no components can be visible in it.
       --  This case has to be handled specifically to prevent visible
       --  components of hidden ancestors from leaking in.
 
-      elsif not Entity_In_SPARK (Ty)
-        or else (Full_View_Not_In_SPARK (Ty)
-                 and then Get_First_Ancestor_In_SPARK (Ty) = Ty)
+      elsif Is_Private_Type (Base_Type (Ty))
+        and then Etype (Base_Type (Ty)) = Base_Type (Ty)
+        and then not Entity_In_SPARK (Full_Ty)
       then
+         pragma Assert (if not Entity_In_SPARK (Ty) then Entity_Marked (Ty));
 
          return False;
+
+      --  Components of a protected type are visible except if the type full
+      --  view is not in SPARK.
+
+      elsif Is_Protected_Type (Full_Ty) then
+
+         return not Full_View_Not_In_SPARK (Full_Ty);
 
       --  Find the first record type in the hierarchy in which the field is
       --  present and see if it is in SPARK.
@@ -671,6 +687,7 @@ package body SPARK_Util is
                then Full_View (Orig_Rec)
                else Orig_Rec);
          begin
+            pragma Assert (Entity_Marked (Pview_Rec));
             return Entity_In_SPARK (Pview_Rec);
          end;
       end if;
@@ -685,9 +702,9 @@ package body SPARK_Util is
       function Is_Allocator (N : Node_Id) return Traverse_Result;
       --  Will return Abandon if we encounter an allocator
 
-      -------------
-      -- Process --
-      -------------
+      ------------------
+      -- Is_Allocator --
+      ------------------
 
       function Is_Allocator (N : Node_Id) return Traverse_Result
       is
@@ -716,9 +733,9 @@ package body SPARK_Util is
       --  Will return Abandon if we encounter a call to a function with
       --  Volatile_Function set.
 
-      -------------
-      -- Process --
-      -------------
+      -------------------------------
+      -- Is_Volatile_Function_Call --
+      -------------------------------
 
       function Is_Volatile_Function_Call (N : Node_Id) return Traverse_Result
       is
@@ -1182,6 +1199,68 @@ package body SPARK_Util is
       end if;
    end Get_Initialized_Object;
 
+   -----------------------------------
+   -- Get_Observed_Or_Borrowed_Expr --
+   -----------------------------------
+
+   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id is
+
+      function Find_Func_Call (Expr : Node_Id) return Node_Id;
+      --  Search for function calls in the prefixes of Expr
+
+      --------------------
+      -- Find_Func_Call --
+      --------------------
+
+      function Find_Func_Call (Expr : Node_Id) return Node_Id is
+      begin
+         case Nkind (Expr) is
+            when N_Expanded_Name
+               | N_Identifier
+            =>
+               return Empty;
+
+            when N_Explicit_Dereference
+               | N_Indexed_Component
+               | N_Selected_Component
+               | N_Slice
+            =>
+               return Find_Func_Call (Prefix (Expr));
+
+            when N_Qualified_Expression
+               | N_Type_Conversion
+               | N_Unchecked_Type_Conversion
+            =>
+               return Find_Func_Call (Expression (Expr));
+
+            when N_Function_Call =>
+               return Expr;
+
+            when others =>
+               raise Program_Error;
+         end case;
+      end Find_Func_Call;
+
+      B_Expr : Node_Id := Expr;
+
+   begin
+      --  Search for the first call to a traversal function in Expr. If there
+      --  is one, its first parameter is the borrowed expression. Otherwise,
+      --  it is Expr.
+
+      loop
+         declare
+            Call : constant Node_Id := Find_Func_Call (B_Expr);
+         begin
+            exit when No (Call);
+            pragma Assert (Is_Traversal_Function_Call (Call));
+            B_Expr := First_Actual (Call);
+         end;
+      end loop;
+
+      return B_Expr;
+   end Get_Observed_Or_Borrowed_Expr;
+
    ---------------
    -- Get_Range --
    ---------------
@@ -1224,6 +1303,82 @@ package body SPARK_Util is
             raise Program_Error;
       end case;
    end Get_Range;
+
+   ---------------------
+   -- Get_Root_Object --
+   ---------------------
+
+   function Get_Root_Object
+     (Expr              : Node_Id;
+      Through_Traversal : Boolean := True) return Entity_Id
+   is
+      function GRO (Expr : Node_Id) return Entity_Id;
+      --  Local wrapper on the actual function, to propagate the values of
+      --  optional parameters.
+
+      ---------
+      -- GRO --
+      ---------
+
+      function GRO (Expr : Node_Id) return Entity_Id is
+      begin
+         return Get_Root_Object (Expr, Through_Traversal);
+      end GRO;
+
+      Get_Root_Object : Boolean;
+      pragma Unmodified (Get_Root_Object);
+      --  Local variable to mask the name of function Get_Root_Object, to
+      --  prevent direct call. Instead GRO wrapper should be called.
+
+   --  Start of processing for Get_Root_Object
+
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+         =>
+            return Entity (Expr);
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return GRO (Prefix (Expr));
+
+         --  There is no root object for an (extension) aggregate, allocator,
+         --  concat, or NULL.
+
+         when N_Aggregate
+            | N_Allocator
+            | N_Extension_Aggregate
+            | N_Null
+         =>
+            return Empty;
+
+         --  In the case of a call to a traversal function, the root object is
+         --  the root of the traversed parameter. Otherwise there is no root
+         --  object.
+
+         when N_Function_Call =>
+            if Through_Traversal
+              and then Is_Traversal_Function_Call (Expr)
+            then
+               return GRO (First_Actual (Expr));
+            else
+               return Empty;
+            end if;
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return GRO (Expression (Expr));
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Get_Root_Object;
 
    ----------------------
    -- Has_Dereferences --
@@ -1383,6 +1538,41 @@ package body SPARK_Util is
          return False;
       end if;
    end Is_Constant_After_Elaboration;
+
+   --------------------------
+   -- Is_Constant_Borrower --
+   --------------------------
+
+   function Is_Constant_Borrower (E : Entity_Id) return Boolean is
+      Root : Entity_Id := E;
+
+   begin
+      --  Search for the ultimate root of the borrow
+
+      loop
+         Root := Get_Root_Object (Expression (Parent (Root)));
+         exit when not Is_Local_Borrower (Root);
+      end loop;
+
+      --  Return True if it is the first parameter of a borrowing traversal
+      --  function.
+
+      return Ekind (Root) = E_In_Parameter
+        and then Is_Borrowing_Traversal_Function (Scope (Root))
+        and then Root = First_Formal (Scope (Root));
+   end Is_Constant_Borrower;
+
+   --------------------------
+   -- Is_Constant_In_SPARK --
+   --------------------------
+
+   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean is
+      Ty : constant Entity_Id := Etype (E);
+   begin
+      return Ekind (E) in E_Constant | E_In_Parameter
+            and then (not Is_Access_Type (Ty)
+              or else Is_Access_Constant (Ty));
+   end Is_Constant_In_SPARK;
 
    ------------------------------------------
    -- Is_Converted_Actual_Output_Parameter --
@@ -1575,7 +1765,13 @@ package body SPARK_Util is
                  | E_Protected_Type
                  | E_Task_Type
         or else
-      (Ekind (E) = E_Constant and then Has_Variable_Input (E))
+
+      --  Constants that are visibly of an access type are treated like
+      --  variables. Hence using Is_Access_Type instead of Has_Access_Type
+      --  here.
+
+      (Ekind (E) = E_Constant and then
+         (Is_Access_Type (Etype (E)) or else Has_Variable_Input (E)))
         or else
       (Ekind (E) = E_Abstract_State and then not Is_Null_State (E)));
    --  ??? this could be further restricted basen on what may appear in
@@ -1728,12 +1924,8 @@ package body SPARK_Util is
          end if;
          return False;
       end Has_True_Condition;
-
-      subtype Subprogram_Boundary is Node_Kind
-        with Static_Predicate => Subprogram_Boundary in
-          N_Subprogram_Body | N_Protected_Body | N_Entry_Body | N_Package_Body;
    begin
-      while Nkind (Anc) not in Subprogram_Boundary and then Present (Anc) loop
+      while Nkind (Anc) not in N_Entity_Body and then Present (Anc) loop
          if Nkind (Anc) = N_If_Statement
            and then Comes_From_Dead_Branch (Anc, Prev)
          then
@@ -1756,6 +1948,16 @@ package body SPARK_Util is
         and then Is_Anonymous_Access_Type (T)
         and then not Is_Access_Constant (T);
    end Is_Local_Borrower;
+
+   ----------------------
+   -- Is_Local_Context --
+   ----------------------
+
+   function Is_Local_Context (Scop : Entity_Id) return Boolean is
+   begin
+      return Is_Subprogram_Or_Entry (Scop)
+        or else Ekind (Scop) = E_Block;
+   end Is_Local_Context;
 
    ---------------------------------
    -- Is_Not_Hidden_Discriminant  --
@@ -1790,6 +1992,51 @@ package body SPARK_Util is
           when others           => False)
       and then
         not Is_Internal (E));
+
+   ------------------------
+   -- Is_Path_Expression --
+   ------------------------
+
+   function Is_Path_Expression (Expr : Node_Id) return Boolean is
+   begin
+      case Nkind (Expr) is
+         when N_Expanded_Name
+            | N_Identifier
+         =>
+            return True;
+
+         when N_Explicit_Dereference
+            | N_Indexed_Component
+            | N_Selected_Component
+            | N_Slice
+         =>
+            return Is_Path_Expression (Prefix (Expr));
+
+         --  Special value NULL corresponds to an empty path
+
+         when N_Null =>
+            return True;
+
+         --  Object returned by an (extension) aggregate, an allocator, or
+         --  a function call corresponds to a path.
+
+         when N_Aggregate
+            | N_Allocator
+            | N_Extension_Aggregate
+            | N_Function_Call
+         =>
+            return True;
+
+         when N_Qualified_Expression
+            | N_Type_Conversion
+            | N_Unchecked_Type_Conversion
+         =>
+            return Is_Path_Expression (Expression (Expr));
+
+         when others =>
+            return False;
+      end case;
+   end Is_Path_Expression;
 
    ---------------
    -- Is_Pragma --
@@ -1930,6 +2177,21 @@ package body SPARK_Util is
         and then Unroll /= No_Unrolling;
    end Is_Selected_For_Loop_Unrolling;
 
+   -------------------------
+   -- Is_Singleton_Choice --
+   -------------------------
+
+   function Is_Singleton_Choice (Choices : List_Id) return Boolean is
+      Choice : constant Node_Id := First (Choices);
+   begin
+      return List_Length (Choices) = 1
+        and then Nkind (Choice) /= N_Others_Choice
+        and then not Nkind_In (Choice, N_Subtype_Indication, N_Range)
+        and then not
+          (Nkind_In (Choice, N_Identifier, N_Expanded_Name)
+           and then Is_Type (Entity (Choice)));
+   end Is_Singleton_Choice;
+
    ---------------------
    -- Is_Synchronized --
    ---------------------
@@ -1944,6 +2206,17 @@ package body SPARK_Util is
           --  We get protected/task types here when they act as globals for
           --  subprograms nested in the type itself.
    end Is_Synchronized;
+
+   --------------------------------
+   -- Is_Traversal_Function_Call --
+   --------------------------------
+
+   function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean is
+   begin
+      return Nkind (Expr) = N_Function_Call
+        and then Present (Get_Called_Entity (Expr))
+        and then Is_Traversal_Function (Get_Called_Entity (Expr));
+   end Is_Traversal_Function_Call;
 
    -------------------------------
    -- May_Issue_Warning_On_Node --
@@ -2748,5 +3021,22 @@ package body SPARK_Util is
 
       return Unique_Entity (Cunit_Entity (Main_Unit));
    end Unique_Main_Unit_Entity;
+
+   ----------------------
+   -- Unique_Component --
+   ----------------------
+
+   function Unique_Component (E : Entity_Id) return Entity_Id is
+   begin
+      if Ekind (E) = E_Discriminant
+        and then Present (Corresponding_Discriminant (E))
+      then
+         return Unique_Component (Corresponding_Discriminant (E));
+      elsif Present (Corresponding_Record_Component (E)) then
+         return Unique_Component (Corresponding_Record_Component (E));
+      else
+         return Original_Record_Component (E);
+      end if;
+   end Unique_Component;
 
 end SPARK_Util;

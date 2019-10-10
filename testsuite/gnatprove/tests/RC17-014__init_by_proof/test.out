@@ -85,7 +85,7 @@ nested_init_by_proof.adb:27:55: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:32:07: info: range check proved (CVC4: 2 VC)
 nested_init_by_proof.adb:35:20: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:40:22: warning: unused initial value of "X"
-nested_init_by_proof.adb:46:14: info: postcondition proved (CVC4: 6 VC; Trivial: 1 VC; altergo: 1 VC)
+nested_init_by_proof.adb:46:14: info: postcondition proved (CVC4: 7 VC; Trivial: 1 VC)
 nested_init_by_proof.adb:48:22: info: discriminant check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:51:31: info: initialization check proved (CVC4: 1 VC)
 nested_init_by_proof.adb:51:42: info: initialization check proved (CVC4: 1 VC)

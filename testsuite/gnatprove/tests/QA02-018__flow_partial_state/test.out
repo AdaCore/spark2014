@@ -1,10 +1,8 @@
 p.ads:3:08: info: flow dependencies proved
 p.ads:11:38: high: "P.State" must be listed in the Global aspect of "Read1" (SPARK RM 6.1.4(14))
 p.ads:11:56: "P.State" is referenced in expression function but missing from the Global
-p.ads:11:56: info: data dependencies proved
 p.ads:12:38: high: "P.State" must be listed in the Global aspect of "Read2" (SPARK RM 6.1.4(14))
 p.ads:12:56: "P.State" is referenced in expression function but missing from the Global
-p.ads:12:56: info: data dependencies proved
 p.ads:13:56: info: data dependencies proved
 p.ads:15:56: info: data dependencies proved
 p.ads:16:56: info: data dependencies proved

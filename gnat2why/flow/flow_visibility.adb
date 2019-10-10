@@ -388,6 +388,7 @@ package body Flow_Visibility is
          end if;
       else
          Hierarchy_Info.Clear;
+         Hierarchy_Info.Reserve_Capacity (0);
       end if;
 
       Components := Scope_Graph.SCC;
@@ -1267,6 +1268,7 @@ package body Flow_Visibility is
       --  Release data that is no longer needed
 
       Hierarchy_Info.Clear;
+      Hierarchy_Info.Reserve_Capacity (0);
    end Iterate_Flow_Scopes;
 
 end Flow_Visibility;

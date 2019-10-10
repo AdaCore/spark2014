@@ -5,20 +5,21 @@ proof_in_legal.ads:9:11: info: data dependencies proved
 proof_in_legal.ads:12:11: info: data dependencies proved
 proof_in_legal.ads:14:11: info: flow dependencies proved
 proof_in_legal.ads:16:22: info: postcondition proved (CVC4: 1 VC)
-proof_in_illegal.adb:8:43: medium: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Body_Var" constituent of "State" (SPARK RM 6.1.4(18))
-proof_in_illegal.adb:9:43: medium: export "Error_Derived_From_Proof_In" must not depend on Proof_In "Var" (SPARK RM 6.1.4(18))
 proof_in_illegal.adb:11:07: info: initialization of "Temp" proved
 proof_in_illegal.adb:13:17: medium: overflow check might fail [possible explanation: subprogram at proof_in_illegal.ads:7 should mention Body_Var and X in a precondition]
+proof_in_illegal.adb:13:19: medium: Proof_In global "Body_Var" constituent of "State" can only be used in assertions (SPARK RM 6.1.4(18))
 proof_in_illegal.adb:14:20: medium: overflow check might fail [possible explanation: subprogram at proof_in_illegal.ads:7 should mention Var in a precondition]
+proof_in_illegal.adb:14:22: medium: Proof_In global "Var" can only be used in assertions (SPARK RM 6.1.4(18))
 proof_in_illegal.adb:20:43: low: unused global "Body_Var" constituent of "State"
 proof_in_illegal.adb:21:43: low: unused global "Var"
 proof_in_illegal.ads:3:26: warning: no procedure exists that can initialize abstract state "Proof_In_Illegal.State"
 proof_in_illegal.ads:12:11: info: data dependencies proved
-proof_in_illegal_2.adb:8:42: medium: export "X" must not depend on Proof_In "Body_Var" constituent of "State" (SPARK RM 6.1.4(18))
 proof_in_illegal_2.adb:10:07: warning: initialization of "Temp" has no effect
 proof_in_illegal_2.adb:12:24: info: unrolling loop
 proof_in_illegal_2.adb:14:18: info: overflow check proved (CVC4: 10 VC)
 proof_in_illegal_2.adb:15:26: info: overflow check proved (CVC4: 10 VC)
+proof_in_illegal_2.adb:20:27: medium: Proof_In global "Body_Var" constituent of "State" can only be used in assertions (SPARK RM 6.1.4(18))
 proof_in_illegal_2.adb:20:36: medium: overflow check might fail [possible explanation: subprogram at proof_in_illegal_2.ads:6 should mention Body_Var in a precondition]
+proof_in_illegal_2.adb:24:21: medium: Proof_In global "Body_Var" constituent of "State" can only be used in assertions (SPARK RM 6.1.4(18))
 proof_in_illegal_2.adb:24:30: medium: overflow check might fail [possible explanation: subprogram at proof_in_illegal_2.ads:6 should mention Body_Var in a precondition]
 proof_in_illegal_2.ads:4:08: info: flow dependencies proved

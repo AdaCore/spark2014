@@ -1,0 +1,11 @@
+test_pledge.adb:24:09: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+test_pledge.adb:24:09: violation of aspect SPARK_Mode at line 1
+test_pledge.adb:36:19: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+test_pledge.adb:36:19: violation of aspect SPARK_Mode at line 1
+test_pledge.adb:37:22: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+test_pledge.adb:37:22: violation of aspect SPARK_Mode at line 1
+test_pledge.adb:38:47: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+test_pledge.adb:38:47: violation of aspect SPARK_Mode at line 1
+test_pledge.adb:39:24: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+test_pledge.adb:39:24: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

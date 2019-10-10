@@ -1,3 +1,7 @@
-bad_pledge_calls.adb:12:27: first actual of a pledge function which is not a local borrower is not yet supported
-bad_pledge_calls.adb:15:27: first actual of a pledge function which is not a local borrower is not yet supported
+bad_pledge_calls.adb:12:27: first actual of a pledge function which is not a local borrower is not allowed in SPARK
+bad_pledge_calls.adb:12:27: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:15:27: first actual of a pledge function which is not a local borrower is not allowed in SPARK
+bad_pledge_calls.adb:15:27: violation of aspect SPARK_Mode at line 1
+bad_pledge_calls.adb:18:27: possibly negative occurrence of call to a Pledge function is not allowed in SPARK
+bad_pledge_calls.adb:18:27: violation of aspect SPARK_Mode at line 1
 gnatprove: error during flow analysis and proof

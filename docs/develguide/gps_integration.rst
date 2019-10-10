@@ -1,17 +1,17 @@
-###############
-GPS Integration
-###############
+#######################
+GNAT Studio Integration
+#######################
 
-GPS is the richest of the two IDE integrations, with some features not
+GNAT Studio is the richest of the two IDE integrations, with some features not
 available on the command-line of in GNATbench. It has unique features for
 launching a GNATprove analysis and for displaying the results.
 
 The plugin detects automatically if the executable ``gnatprove`` is on the PATH
 by calling ``os_utils.locate_exec_on_the_path``, in which case it activates
-itself and adds corresponding menus in GPS.
+itself and adds corresponding menus in GNAT Studio.
 
-The integration of manual proof in GPS is described in :ref:`Python plugin to
-GPS`.
+The integration of manual proof in GNAT Studio is described in :ref:`Python plugin to
+GNAT Studio`.
 
 User Profile
 ============
@@ -35,7 +35,7 @@ GNATprove only analyzes instances of generics, either:
  - when analyzing the generic itself and passing ``-U`` to the command-line so
    that all instantiations of the target generic are analyzed.
 
-In the second case, the GPS plugin automatically adds ``-U`` to the
+In the second case, the GNAT Studio plugin automatically adds ``-U`` to the
 command-line when it detects that the action (:menuselection:`SPARK -->
 Examine` or :menuselection:`SPARK --> Prove`) is applied to a
 subprogram/region/line/check inside a generic, by calling
@@ -51,11 +51,11 @@ proving the enclosing subprogram. Selecting that submenu calls GNATprove with
 ``--limit-subp=<location>`` where ``<location>`` points to the declaration of
 the subprogram.
 
-Getting that declaration is done by calling ``GPS.Entity`` so it relies on
-cross-reference information in GPS, which may be not perfect when the program
+Getting that declaration is done by calling ``GS.Entity`` so it relies on
+cross-reference information in GNAT Studio, which may be not perfect when the program
 has not been compiled previously as the cross-reference information generated
 by GNAT is not available in that case. That should be improved in the future
-when cross-reference in GPS is provided by Libadalang-based tools.
+when cross-reference in GNAT Studio is provided by Libadalang-based tools.
 
 The switch ``--limit-subp=<location>`` is similarly generated when proving a
 region/line of code, as a way to restrict the work in gnat2why to that
@@ -77,7 +77,7 @@ its counterexample.
 The specific parser fulfils multiple objectives:
  - it adds actions to messages when needed (for example to associate the action
    to display/hide a counterexample),
- - it provides input to ``GPS.Analysis_Tool`` which collects and organizes
+ - it provides input to ``GS.Analysis_Tool`` which collects and organizes
    messages by kind and severity, in order to display the interactive Analysis
    Report,
  - it splits the possibly long command-line messages into a main message and
@@ -92,9 +92,9 @@ Counterexamples
 
 When a counterexample is available for a given check message, a magnify icon is
 displayed on the left of the message in the ``Locations`` view and on the left
-of the corresponding line in the editor. Clicking on this icon causes GPS to
+of the corresponding line in the editor. Clicking on this icon causes GNAT Studio to
 display the counterexample.
 
 The creation of the toggle action to display/hide the counterexample is done in
-``act_on_extra_info`` from the GPS plugin, which reads the counterexamples from
+``act_on_extra_info`` from the GNAT Studio plugin, which reads the counterexamples from
 the :file:`.spark` files and registers the actions with the icons.

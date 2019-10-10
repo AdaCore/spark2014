@@ -325,8 +325,12 @@ package body Gnat2Why.Counter_Examples is
          declare
             V : constant CNT_Unbounded_String := Refine (Value.Ptr_Val);
          begin
-            Value.Val_Str :=
-              Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")");
+            if V = Dont_Display then
+               Value.Val_Str := Dont_Display;
+            else
+               Value.Val_Str :=
+                 Make_Trivial (Nul => V.Nul, Str => "(all => " & V.Str & ")");
+            end if;
          end;
       end if;
       return Value.Val_Str;

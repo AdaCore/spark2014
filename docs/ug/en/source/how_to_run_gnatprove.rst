@@ -14,7 +14,7 @@ If not already done, create a GNAT project file (`.gpr`), as documented in the
 Attributes` for optional project attributes to specify the proof directory and
 other |GNATprove| switches in the project file directly.
 
-Note that you can use the project wizard from GPS to create a project file
+Note that you can use the project wizard from GNAT Studio to create a project file
 interactively, via the menu :menuselection:`File --> New Project...`.
 In the dialog, see in particular the default option (:menuselection:`Single Project`).
 
@@ -465,12 +465,12 @@ used.
 floating-point computations, as |CodePeer| is both fast and precise for proving
 bounds of floating-point operations.
 
-.. _Running GNATprove from GPS:
+.. _Running GNATprove from GNAT Studio:
 
-Running |GNATprove| from GPS
-----------------------------
+Running |GNATprove| from GNAT Studio
+------------------------------------
 
-|GNATprove| can be run from GPS. When |GNATprove| is installed and found on
+|GNATprove| can be run from GNAT Studio. When |GNATprove| is installed and found on
 your PATH, a :menuselection:`SPARK` menu is available with the following
 entries:
 
@@ -500,7 +500,7 @@ neither main files nor includes other projects, menus :menuselection:`SPARK
 Sources` are equivalent.
 
 Keyboard shortcuts for these menu items can be set using the
-:menuselection:`Edit --> Preferences` dialog in GPS, and opening
+:menuselection:`Edit --> Preferences` dialog in GNAT Studio, and opening
 the :menuselection:`General --> Key Shortcuts` section.
 
 .. note::
@@ -553,21 +553,21 @@ section of the dialog).
 
 When proving a check fails on a specific path through a subprogram (for both
 checks verified in flow analysis and in proof), |GNATprove| may generate path
-information for the user to see. The user can display this path in GPS by
+information for the user to see. The user can display this path in GNAT Studio by
 clicking on the icon to the left of the failed proof message, or to the left of
 the corresponding line in the editor. The path is hidden again when re-clicking
 on the same icon.
 
 For checks verified in proof, |GNATprove| may also generate counterexample
 information for the user to see (see :ref:`Understanding Counterexamples`). The
-user can display this counterexample in GPS by clicking on the icon to the left
+user can display this counterexample in GNAT Studio by clicking on the icon to the left
 of the failed proof message, or to the left of the corresponding line in the
 editor. The counterexample is hidden again when re-clicking on the same icon.
 
 A monospace font with ligature like Fira Code
 (https://github.com/tonsky/FiraCode) or Hasklig
 (https://github.com/i-tu/Hasklig) can be separately installed and selected to
-make contracts more readable inside GPS or GNATbench. See the following
+make contracts more readable inside GNAT Studio or GNATbench. See the following
 screenshot which shows how symbols like :code:`=>` (arrow) or :code:`>=`
 (greater than or equal) are displayed in such a font:
 
@@ -633,7 +633,7 @@ When editing an Ada file, |GNATprove| can also be run from a
 ----------------------------
 
 When automated provers fail to prove some condition that is valid, the validity
-may be proved using manual proof inside GPS or an external interactive prover.
+may be proved using manual proof inside GNAT Studio or an external interactive prover.
 
 In the appendix, section :ref:`Alternative_Provers`, is explained how to use
 different provers than the one |GNATprove| uses as default.
@@ -671,8 +671,8 @@ Analysis with |GNATprove| can be limited to a single condition with the
 Please use the output of ``gnatprove --list-categories`` to determine the
 ``check-kind`` to be provided in this command.
 
-Calling an Interactive Prover From GPS
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+Calling an Interactive Prover From GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 After running |GNATprove| with proof mode, the menu
 :menuselection:`SPARK --> Prove Check` is available by right-clicking on a
@@ -683,57 +683,168 @@ because of a single condition (i.e. there is only one check in the output of
 In the dialog box, the field "Alternate prover" can be filled to use another
 prover than Alt-Ergo. If the alternative prover is configured as
 "interactive", after the execution of :menuselection:`SPARK --> Prove Check`,
-GPS opens the manual proof file with the editor corresponding to the prover
+GNAT Studio opens the manual proof file with the editor corresponding to the prover
 under the condition that an editor is specified in the configuration of the
 alternative prover.
 
-Once the editor is closed, GPS re-executes
+Once the editor is closed, GNAT Studio re-executes
 :menuselection:`SPARK --> Prove Check`. The user should verify the same
-alternative prover as before is still specified. After execution, GPS will
+alternative prover as before is still specified. After execution, GNAT Studio will
 offer to re-edit the file if the proof fails.
 
 
-Manual Proof Within GPS
-^^^^^^^^^^^^^^^^^^^^^^^
+Manual Proof Within GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
-After running |GNATprove| with proof mode, the menu
-:menuselection:`SPARK --> Start Manual Proof` is available by right-clicking on
-a check message in the location tab.
+A manual proof system is integrated into GNAT Studio. It allows the user to directly
+visualize the verification condition, apply simple proof steps on it, and call
+provers to discharge it. The proof system is available after running
+|GNATprove| via one of the ``Prove ...`` menus. By right-clicking on a check
+message in the location tab, and selecting the menu :menuselection:`SPARK -->
+Start Manual Proof` the proof system starts. It consists of the Manual Proof
+console, the Proof Tree and the current Verification Condition being dealt
+with.
 
-The manual proof interface immediately starts. It will change the GPS
-window by adding a Manual Proof console, a Proof Tree and the current
-Verification Condition being dealt with.
-This is an experimental system that allows the user to directly visualize the
-condition given to the prover. We provide safe transformations that can be
-used to help the prover. For example, you can directly provide a value to an
-existential in the goal, perform an induction on an integer or instantiate
-hypothesis with values that should be used by the prover.
+The user interacts with the system mainly using the manual proof console. Three
+types of commands can be entered:
 
-At first, you can type ``help`` in the Manual Proof console. This will return
-the available commands. The most useful commands to the beginner are
-``list-provers`` and ``list-transforms``.
-``list-provers`` returns the list of provers available on your machine. You can
-use any of them on your goal by typing its name in the console. For example,
-one can type ``z3`` to launch ``z3`` on the current Verification Condition.
-``list-transforms`` returns a list of transformations that can be used on the
-Verification Condition.
-You can then try transformations like ``assert (0 = 0)``. It will add two
-subgoals in the Proof Tree, one
-asking you to prove ``0 = 0`` and one assuming ``0 = 0`` to prove the current
-condition. The first one is easy, ``CVC4`` should be able to solve it. The
-corresponding part of the Proof Tree switched to green because ``CVC4`` proved
-the subgoal.
+ * Some helper commands such as ``help``, ``list-provers`` and
+   ``list-transforms`` are available.
+ * When a prover name (type ``list-provers`` to see a list of the available
+   provers) is entered, the corresponding prover is run on the verification
+   condition that is selected in the proof tree.
+ * A transformation (see ``list-transforms`` and the below table for the
+   available transformations) can modify the proof tree. A transformation
+   applies to a verification condition or goal and may produce several new
+   subgoals. For example, the transformation ``assert`` allows the user to
+   assert an auxiliary fact. This transformation will create two subgoals, one
+   to prove the assertion, and the other to prove that the assertion implies
+   the previous goal.
 
-Once the goal is completely proved, you will get a popup window asking you if
-you want
-to save the session and exit. Answer yes and run |GNATprove| again on your
-file. The condition that was failing before should now be reported as checked.
-If you want to exit manual proof, you can select
-:menuselection:`SPARK --> Exit Manual Proof` in the menu. It is recommended to
-close it using the menu because it makes sure to close everything related to
-manual proof.
+The Manual proof system can be quit by selecting :menuselection:`SPARK --> Exit
+Manual Proof` in the menu. A pop-up window asks if the user wants to save the
+session. It is recommended to close it using the menu because it makes sure to
+close everything related to manual proof. A tutorial to the proof system can be
+found in :ref:`Manual Proof Using GNAT Studio`.
 
-More details on how to use it are available in :ref:`Manual Proof Using GPS`.
+List of Useful Transformations and Commands for Manual Proof
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+The transformations all contain a specific documentation through the
+``list-transforms`` command and ``help transform_name`` command. The most
+useful transformations/commands are the following:
+
+* ``apply``: apply an hypothesis to the current goal.
+  For example: ``H : x > 0 -> not x = 0`` can be applied on the goal
+  ``G : not x = 0``. After the application you will be left to prove a new goal
+  ``x > 0``.
+
+* ``assert``: adds a new lemma you can use for proving the current Verification
+  Condition.
+  For example: ``assert x = 0`` will generate two new subgoals. In the first
+  one you have to prove that x is indeed equal to 0. In the second one, you can
+  use this hypothesis.
+
+* ``case``: takes a formula and perform an analysis by case on its boolean
+  value. You will have to prove your Verification Condition once with this
+  formula asserted to true and once asserted to false.
+
+* ``clean``: removes unsuccessful proof attempts below proved goals.
+
+* ``clear_but``: removes all hypotheses except the one provided by the user as
+  argument. Removing unused context helps the provers.
+  For example, ``clear_but H,H2,h`` will remove everything but hypotheses H H2
+  and h.
+
+* ``compute_in_goal``: performs possible computations in goal.
+
+* ``destruct``: destruct the head constructor of a formula ( ``/\`` , ``\/``
+  or ``->``).
+  With ``H: A /\ B``, applying ``destruct H`` make two new hypotheses (``H: A``
+  and ``H1: B``). With ``H: A \/ B``, applying ``destruct H`` duplicates the
+  goal which has to be proved with ``H: A`` and ``H: B`` independently. With
+  ``H: A -> B``, ``destruct H`` creates a new subgoal for ``A`` and simplify to
+  ``H: B`` in the current one.
+
+* ``eliminate_epsilon``: sometimes the goal appears as ``epsilon [...]``. This
+  transforms epsilons into adapted logic.
+
+* ``exists``: allows the user to provide a term that instantiates a goal
+  starting with an existential.
+
+* ``help``: with no arguments, return basic commands that can be used. If a
+  transformation is given as argument, it displays a small description of the
+  transformation.
+
+* ``induction``: performs an induction on the unbounded integer specified.
+
+* ``instantiate``: instantiates a ``forall`` quantification at the head of an
+  hypothesis with a term given by the user (a list of terms can be provided).
+
+* ``intros``: introduces a list of constants/hypotheses. This transformation
+  should not be necessary but it can be used to rename constants/hypotheses.
+
+* ``left``: In a goal, transforms ``A \/ B`` into ``A``.
+
+* ``list-provers``: gives a list of the provers available on your machine. You
+  should have at least ``altergo``.
+
+* ``list-transforms``: list transformations.
+
+* ``pose``: defines a new constant equal to a given term.
+
+* ``print``: prints the definition of a name.
+
+* ``remove``: removes a list of hypotheses.
+
+* ``replace``: replace a term by another and create a subgoal asking the user
+  to show that they are equivalent.
+
+* ``rewrite``: rewrites an equality in a goal or hypothesis. For example, with
+  ``H: x = 0`` and goal ``y = x``, ``rewrite H`` transforms the goal into
+  ``y = 0``.
+
+* ``right``: In a goal, transforms ``A \/ B`` into ``B``.
+
+* ``search``: search all occurrences of a name in the context.
+
+* ``split_*``: a set of transformations that split the goals/hypotheses. For
+  example, ``split_goal_wp`` transforms the goal ``A /\ B`` into two new
+  subgoals ``A`` and ``B``.
+
+* ``subst``: try to find an equality that could be used for a given constant and
+  replace each occurrence of this constant by the other side of the equality. It
+  then removes said constant.
+
+* ``subst_all``: do all possible substitutions.
+
+* ``unfold``: unfolds the definition of a function in an hypothesis or a goal.
+
+Recommendations and Tips for Manual Proof
+"""""""""""""""""""""""""""""""""""""""""
+
+* As for proofs with an external interactive prover, the user should set the
+  attribute ``Proof_Dir`` so that proofs can be saved under version control.
+
+* The ``Proof_Dir`` is recommended to be under a version control system (git or
+  svn for example). The proofs can be tedious to rewrite so it is better not to
+  lose them.
+
+* There is currently no way to adapt proofs made on a given version of the code
+  when the code is changed. The update will have to be done manually but
+  we hope to automate the process in the future.
+
+* This feature is experimental and we currently recommend to keep the proof as
+  short as possible.
+
+* If the goal contains epsilons, they can be removed by using
+  ``eliminate_epsilon``.
+
+* Manual provers can be launched during the edition of the proof like
+  other provers. The user can select a goal node and type ``coq`` for example.
+
+* The command line remembers what is typed. Arrow keys can be used to get the
+  lasts queried commands.
 
 How to Speed Up a Run of |GNATprove|
 ------------------------------------

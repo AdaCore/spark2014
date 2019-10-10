@@ -305,6 +305,10 @@ package Gnat2Why.Expr is
    --  expression) holds. We also check here that we have not broken any
    --  constraints on the borrowed object during the borrow.
 
+   function Havoc_Borrowed_From_Block
+     (N : Node_Id) return W_Statement_Sequence_Id;
+   --  Havoc all entities borrowed in the block
+
    function Insert_Predicate_Check
      (Ada_Node : Node_Id;
       Check_Ty : Entity_Id;
@@ -384,8 +388,8 @@ package Gnat2Why.Expr is
       Matched_Expr : W_Expr_Id;
       Cond_Domain  : EW_Domain;
       Params       : Transformation_Params) return W_Expr_Id;
-      --  Return the guard that corresponds to a branch. In programs, also
-      --  generate a check that dynamic choices are in the subtype Choice_Type.
+   --  Return the guard that corresponds to a branch. In programs, also
+   --  generate a check that dynamic choices are in the subtype Choice_Type.
 
    function Transform_Expr
      (Expr          : Node_Id;
@@ -494,8 +498,7 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Is_Type (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's default initialization
 
@@ -503,8 +506,7 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Has_Predicates (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type with a predicate
    --  @param Variables used in the expression for Ty's predicate
 
@@ -512,15 +514,15 @@ package Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    with Pre  => Is_Type (Ty),
-        Post => Flow_Id_Sets.Is_Subset (Subset => Variables'Old,
-                                        Of_Set => Variables);
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type
    --  @param Variables used in the expression for Ty's dynamic invariant
 
    procedure Variables_In_Type_Invariant
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
-   with Pre => Has_Invariants_In_SPARK (Ty);
+   with Pre  => Has_Invariants_In_SPARK (Ty),
+        Post => Variables'Old.Is_Subset (Of_Set => Variables);
    --  @param Ty a type with a visible type invariant
    --  @param Variables used in the expression for Ty's invariant
 
@@ -557,7 +559,8 @@ package Gnat2Why.Expr is
    --  errors, therefore a special mechanism is needed to deal with expressions
    --  X'Old and F'Result.
 
-   Result_Name : W_Identifier_Id := Why_Empty;
+   Result_Name       : W_Identifier_Id := Why_Empty;
+   Result_Is_Mutable : Boolean := False;
    --  Name to use for occurrences of F'Result in the postcondition. It should
    --  be equal to Why_Empty when we are not translating a postcondition of a
    --  function.

@@ -79,6 +79,6 @@ package Flow_Generated_Globals.Partial is
       --  globals, i.e. calls to subprograms *with* contracts do not
       --  appear here because we already understand the effects.
    end record;
-   --  Information needed to synthesize the the Global contract
+   --  Information needed to synthesize the Global contract
 
 end Flow_Generated_Globals.Partial;

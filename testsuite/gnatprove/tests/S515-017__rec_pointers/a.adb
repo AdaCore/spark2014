@@ -22,4 +22,4 @@ begin
          pragma Assert (L.Val = 1);
       end;
    end;
-end A; 
+end A;

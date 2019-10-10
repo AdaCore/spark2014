@@ -1,3 +1,5 @@
+x86.adb:21:17: info: add a contract to analyze it separately from calling contexts
+x86.adb:21:17: info: local subprogram "Prove_Post" only analyzed in the context of calls
 x86.adb:30:22: info: initialization of "N1" proved
 x86.adb:30:22: info: initialization of "N1" proved, in call inlined at x86.adb:99
 x86.adb:31:22: info: initialization of "N2" proved

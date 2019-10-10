@@ -142,6 +142,16 @@ Static predicates and dynamic predicates are both in
 
 .. _etu-subtype_predicates-03:
 
+.. _tu-subtype_predicates-vr:
+
+.. centered:: **Verification Rules**
+
+.. _tu-sf-subtype_predicates-04:
+
+4. A Dynamic_Predicate expression shall always terminate.
+
+.. _etu-subtype_predicates-04:
+
 Objects and Named Numbers
 -------------------------
 
@@ -172,11 +182,20 @@ initialization expression depends on:
 
 Otherwise, a stand-alone constant is a *constant without variable inputs*.
 
-.. centered:: **Verification Rules**
+.. centered:: **Legality Rules**
 
 .. _tu-object_declarations-01:
 
-1. Constants without variable inputs shall not be denoted in Global,
+1. [The borrowed name of the expression of an object declaration defining a
+   borrowing operation shall not have a variable input, except for a single
+   occurrence of the root object of the expression;
+   see :ref:`expressions` for the statement of this rule.]
+
+.. centered:: **Verification Rules**
+
+.. _tu-object_declarations-02:
+
+2. Constants without variable inputs shall not be denoted in Global,
    Depends, Initializes or Refined_State aspect specifications.
    [Two elaborations of such a constant declaration will always
    yield equal initialization expression values.]
@@ -416,7 +435,7 @@ Only the following (named or anonymous) access types are in |SPARK|:
 - a (named) pool-specific access type,
 
 - the anonymous type of a stand-alone object (including a generic formal **in**
-  mode object),
+  mode object) which is not Part_Of a protected object,
 
 - the anonymous type of an object renaming declaration, or
 
@@ -465,16 +484,18 @@ because a subcomponent of a constant is itself a constant and a dereference
 of a subcomponent is treated, for purposes of analysis, like a
 subcomponent].
 
-A function is said to be a *traversal function* if the result type
-of the function is an anonymous access-to-object type, the function has
-at least one formal parameter, and the function's first parameter is of
-an access type [redundant: , either named or anonymous].
-The first parameter of the function is called the *traversed* parameter.
-[Redundant: We will see later that if a traversal
-function yields a non-null result, then that result is "reachable" from the
-traversed parameter in the sense that it could be obtained from the traversed
-parameter by some sequence of component selections, array indexing
-operations, and access value dereferences.]
+A function is said to be a *traversal function* if the result type of the
+function is an anonymous access-to-object type, the function has at least one
+formal parameter, and the function's first parameter is of an access type
+[redundant: , either named or anonymous]. The traversal function is said to be
+an *observing traversal function* if the result type of the function is an
+anonymous access-to-constant type, and a *borrowing traversal function* if the
+result type of the function is an anonymous access-to-variable type. The first
+parameter of the function is called the *traversed* parameter. [Redundant: We
+will see later that if a traversal function yields a non-null result, then that
+result is "reachable" from the traversed parameter in the sense that it could
+be obtained from the traversed parameter by some sequence of component
+selections, array indexing operations, and access value dereferences.]
 
 The *root object* of a name that denotes an object is defined as follows:
 
@@ -593,6 +614,20 @@ and identify a corresponding *observer*:
   denotes the actual traversed parameter of the call. Otherwise the name being
   observed denotes the source of the assignment.
 
+- Inside the body of a borrowing traversal function, an assignment operation
+  that is used to initialize an access object, where this target object (the
+  observer) is a stand-alone object of an anonymous access-to-variable type
+  [redundant: which does not include a formal parameter of a procedure or
+  generic formal object of mode **in**] and the source expression of the
+  assignment is either directly or indirectly a name denoting a part of the
+  traversed parameter for the traversal function. The indirect case occurs when
+  the source expression denotes a part of a call to another traversal function
+  whose argument for its own traversed parameter respects the same constraint
+  [redundant: of being either directly or indirectly a name denoting a part of
+  the traversed parameter for the traversal function]. The name being observed
+  denotes the traversed parameter for the traversal function whose body is
+  considered.
+
 - An assignment operation that is used to initialize a constant object
   (including a generic formal object of mode **in**) of an owning composite
   type. The name being observed denotes the source of the assignment. The
@@ -621,7 +656,9 @@ and identify a corresponding *borrower*:
   this target object (the borrower) is a stand-alone variable of an anonymous
   access-to-variable type, or a constant (including a formal parameter of a
   procedure or generic formal object of mode **in**) of a (named or anonymous)
-  access-to-variable type.
+  access-to-variable type, unless this assignment is already an *observing
+  operation* inside the body of a borrowing traversal function, per the rules
+  defining *observe* above.
 
   The source expression of the assignment shall be either a name denoting a
   part of a stand-alone object or of a parameter, or a call on a traversal
@@ -640,6 +677,9 @@ and identify a corresponding *borrower*:
   or Borrowed state. The newly declared name is the borrower.
 
 Such an operation is called a *borrowing operation*.
+
+The *borrowed name* of the source of a borrow operation is the smallest
+name that is borrowed in the borrow operation.
 
 In the region of program text beween the point where a name denoting a
 managed object is borrowed and the end of the scope of the borrower, the
@@ -705,11 +745,11 @@ X.Link is poisoned by the assignment to Y.]
 
 .. centered:: **Legality Rules**
 
-[Redundant: For clarity of presentation, some legality rules are stated
-in the preceding "Static Semantics" section (e.g., the rule that an
-owning type shall not be a tagged type; stating that rule earlier eliminates
-the need to say anything about about the circumstances, if any, under which
-a class-wide type might be an owning type).]
+[Redundant: For clarity of presentation, some legality rules are stated in the
+preceding "Static Semantics" section (e.g., the rule that an owning type shall
+not be a tagged type; stating that rule earlier eliminates the need to say
+anything about the circumstances, if any, under which a class-wide type might
+be an owning type).]
 
 ..  _tu-access_types-01:
 
@@ -736,7 +776,7 @@ a class-wide type might be an owning type).]
 3. If the target of an assignment operation is an object of an anonymous
    access-to-object type (including copy-in for a parameter), then the source
    shall be a name denoting a part of a stand-alone object, a part of a
-   parameter, or a call to a traversal function.
+   parameter, or a part of a call to a traversal function.
 
    [Redundant: One consequence of this rule is that every allocator is of a
    named access type.]
@@ -777,9 +817,17 @@ a class-wide type might be an owning type).]
    anonymous access-to-object type:
 
    - If the type of the target is an anonymous access-to-variable type (an
-     owning access type), the source shall be an owning access object denoted
-     by a name that is in the Unrestricted state, and whose root object is the
-     target object itself;
+     owning access type), and the target was declared as a local variable in
+     the body of a borrowing traversal function, whose initialization
+     expression was either directly or indirectly a name denoting a part of the
+     traversed parameter for the traversal function, then the source shall be
+     an owning access object [redundant: denoted by a name that is not in the
+     Moved state, and] whose root object is the target object itself;
+
+   - If the type of the target is an anonymous access-to-variable type (an
+     owning access type), and the previous case does not apply, the source
+     shall be an owning access object denoted by a name that is in the
+     Unrestricted state, and whose root object is the target object itself;
 
    - If the type of the target is an anonymous access-to-constant type (an
      observing access type), the source shall be an owning access object

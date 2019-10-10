@@ -7,6 +7,8 @@ semantics.adb:15:33: info: loop invariant preservation proved (CVC4: 1 VC)
 semantics.adb:15:40: medium: overflow check might fail (e.g. when Formal = 1073741825)
 semantics.adb:16:10: info: loop variant proved (CVC4: 1 VC)
 semantics.adb:16:53: medium: overflow check might fail (e.g. when Formal = Integer'Last)
+semantics.adb:25:17: info: add a contract to analyze it separately from calling contexts
+semantics.adb:25:17: info: local subprogram "Nested_Non_Ghost" only analyzed in the context of calls
 semantics.adb:35:14: warning: unused assignment, in call inlined at semantics.adb:41
 semantics.adb:35:21: medium: overflow check might fail, in call inlined at semantics.adb:41
 semantics.adb:35:34: medium: overflow check might fail, in call inlined at semantics.adb:41

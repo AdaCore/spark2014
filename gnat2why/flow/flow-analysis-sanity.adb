@@ -149,6 +149,12 @@ package body Flow.Analysis.Sanity is
       --  * a Dynamic_Predicate aspect specification
       --  * a Type_Invariant aspect specification
 
+      procedure Check_Constrained_Array_Definition (N : Node_Id)
+      with Pre => Nkind (N) in N_Full_Type_Declaration
+                             | N_Object_Declaration;
+      --  Check if the constrained array definition in N has variable inputs,
+      --  as per SPARK RM 4.4(2);
+
       procedure Detect_Variable_Inputs
         (N        : Node_Id;
          Err_Desc : String;
@@ -177,11 +183,10 @@ package body Flow.Analysis.Sanity is
 
       function Variables (N : Node_Id) return Flow_Id_Sets.Set
       is
-        (Get_Variables (N,
-                        Scope                   => FA.B_Scope,
-                        Fold_Functions          => False,
-                        Use_Computed_Globals    => True,
-                        Expand_Internal_Objects => True));
+        (Get_All_Variables (N,
+                            Scope                   => FA.B_Scope,
+                            Use_Computed_Globals    => True,
+                            Expand_Internal_Objects => True));
       --  Wrapper around Get_Variables
 
       -------------------
@@ -373,6 +378,47 @@ package body Flow.Analysis.Sanity is
          end case;
       end Check_Subtype_Constraints;
 
+      ----------------------------------------
+      -- Check_Constrained_Array_Definition --
+      ----------------------------------------
+
+      procedure Check_Constrained_Array_Definition (N : Node_Id) is
+         Typ_Def : constant Node_Id :=
+           (if Nkind (N) = N_Full_Type_Declaration
+            then Type_Definition (N)
+            else Object_Definition (N));
+      begin
+         if Nkind (Typ_Def) = N_Constrained_Array_Definition then
+            declare
+               Sub_Constraint : Node_Id :=
+                 First (Discrete_Subtype_Definitions (Typ_Def));
+
+            begin
+               loop
+                  case Nkind (Sub_Constraint) is
+                     when N_Range =>
+                        Check_Subtype_Constraints (Sub_Constraint);
+
+                     when N_Subtype_Indication =>
+                        Check_Subtype_Constraints
+                          (Constraint (Sub_Constraint));
+
+                     when N_Identifier | N_Expanded_Name =>
+                        pragma Assert
+                          (Is_Type (Entity (Sub_Constraint)));
+
+                     when others =>
+                        raise Program_Error;
+                  end case;
+
+                  Next (Sub_Constraint);
+
+                  exit when No (Sub_Constraint);
+               end loop;
+            end;
+         end if;
+      end Check_Constrained_Array_Definition;
+
       ----------------------------
       -- Check_Type_Declaration --
       ----------------------------
@@ -429,6 +475,7 @@ package body Flow.Analysis.Sanity is
                           "cannot call boundary subprogram & " &
                           "for type & in its own invariant",
                         Severity => High_Check_Kind,
+                        Tag      => Call_In_Type_Invariant,
                         N        => Full_View (Typ),
                         F1       => Direct_Mapping_Id (F),
                         F2       => Direct_Mapping_Id (Typ),
@@ -494,41 +541,9 @@ package body Flow.Analysis.Sanity is
          --  subtype constraints do not depend on variable inputs.
 
          if Nkind (N) = N_Full_Type_Declaration then
-            declare
-               Typ_Def : constant Node_Id := Type_Definition (N);
-
-            begin
-               if Nkind (Typ_Def) = N_Constrained_Array_Definition then
-                  declare
-                     Sub_Constraint : Node_Id :=
-                       First (Discrete_Subtype_Definitions (Typ_Def));
-
-                  begin
-                     loop
-                        case Nkind (Sub_Constraint) is
-                           when N_Range =>
-                              Check_Subtype_Constraints (Sub_Constraint);
-
-                           when N_Subtype_Indication =>
-                              Check_Subtype_Constraints
-                                (Constraint (Sub_Constraint));
-
-                           when N_Identifier | N_Expanded_Name =>
-                              pragma Assert
-                                (Is_Type (Entity (Sub_Constraint)));
-
-                           when others =>
-                              raise Program_Error;
-                        end case;
-
-                        Next (Sub_Constraint);
-
-                        exit when No (Sub_Constraint);
-                     end loop;
-                  end;
-               end if;
-            end;
+            Check_Constrained_Array_Definition (N);
          end if;
+
       end Check_Type_Declaration;
 
       ---------------------------
@@ -702,20 +717,110 @@ package body Flow.Analysis.Sanity is
 
             --  Check type declarations affected by SPARK RM 4.4(2)
 
-            if Nkind (N) in N_Full_Type_Declaration
-                          | N_Subtype_Declaration
-                          | N_Incomplete_Type_Declaration
-                          | N_Private_Type_Declaration
-                          | N_Private_Extension_Declaration
-            then
-               Check_Type_Declaration (N);
+            case Nkind (N) is
+               when N_Full_Type_Declaration
+                  | N_Subtype_Declaration
+                  | N_Incomplete_Type_Declaration
+                  | N_Private_Type_Declaration
+                  | N_Private_Extension_Declaration
+               =>
+                  Check_Type_Declaration (N);
 
-            --  Components and discriminants are not expected here
+               when N_Object_Declaration =>
+                  Traverse_Object_Declaration : declare
 
-            else
-               pragma Assert (Nkind (N) not in N_Component_Declaration
-                                             | N_Discriminant_Specification);
-            end if;
+                     Indexes : Node_Lists.List;
+                     --  List of indexes to check for variable input
+
+                     procedure Collect_Indexes (Expr : Node_Id);
+                     --  Add to Indexes all the indexes of indexed_component
+                     --  and slice in the path expression Expr.
+
+                     ---------------------
+                     -- Collect_Indexes --
+                     ---------------------
+
+                     procedure Collect_Indexes (Expr : Node_Id) is
+                     begin
+                        case Nkind (Expr) is
+                           when N_Expanded_Name
+                              | N_Identifier
+                           =>
+                              null;
+
+                           when N_Explicit_Dereference
+                              | N_Selected_Component
+                           =>
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Indexed_Component =>
+                              declare
+                                 Ind_Expr : Node_Id :=
+                                   First (Expressions (Expr));
+                              begin
+                                 while Present (Ind_Expr) loop
+                                    Indexes.Append (Ind_Expr);
+                                    Next (Ind_Expr);
+                                 end loop;
+                              end;
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Slice =>
+                              Indexes.Append (Discrete_Range (Expr));
+                              Collect_Indexes (Prefix (Expr));
+
+                           when N_Qualified_Expression
+                              | N_Type_Conversion
+                              | N_Unchecked_Type_Conversion
+                           =>
+                              Collect_Indexes (Expression (Expr));
+
+                           when others =>
+                              raise Program_Error;
+                        end case;
+                     end Collect_Indexes;
+
+                     --  Local variables
+
+                     Target : constant Node_Id := Defining_Entity (N);
+                     Typ    : constant Entity_Id := Etype (Target);
+                     Root   : Node_Id;
+
+                  --  Start of processing for Traverse_Object_Declaration
+
+                  begin
+                     --  Check SPARK RM 4.4(2) rule about:
+                     --  * the root name of the expression of an object
+                     --    declaration defining a borrowing operation, except
+                     --    for a single occurrence of the root object of the
+                     --    expression.
+
+                     if Is_Anonymous_Access_Type (Typ)
+                       and then not Is_Access_Constant (Typ)
+                       and then not Is_Constant_Borrower (Target)
+                     then
+                        Root := Get_Observed_Or_Borrowed_Expr (Expression (N));
+                        Collect_Indexes (Root);
+
+                        for Ind_Expr of Indexes loop
+                           Detect_Variable_Inputs
+                             (N        => Ind_Expr,
+                              Err_Desc => "borrowed expression",
+                              Err_Node => Ind_Expr);
+                        end loop;
+                     end if;
+                  end Traverse_Object_Declaration;
+
+               --  Components and discriminants are not expected here
+
+               when N_Component_Declaration
+                  | N_Discriminant_Specification
+               =>
+                  pragma Assert (False);
+
+               when others =>
+                  null;
+            end case;
 
             Traverse_Declaration_Or_Statement (N);
 
@@ -820,20 +925,21 @@ package body Flow.Analysis.Sanity is
 
                      when N_Full_Type_Declaration =>
                         declare
-                           Typ : constant Entity_Id := Defining_Identifier (N);
-
                            Typ_Def : constant Node_Id := Type_Definition (N);
 
                            Optional_Component_List : Node_Id;
 
                         begin
-                           --  Skip discriminants of a completion of a private
-                           --  type, as they have already been checked when the
-                           --  type was declared.
+                           --  We repeat effort here for private and incomplete
+                           --  types, because we traverse discriminants of both
+                           --  the partial declaration and its completion.
+                           --  In the event that both have descriminants, the
+                           --  user will see multiple flow error messages about
+                           --  the same variable input, but this one line of
+                           --  code is easier to maintain rather than
+                           --  code that filters for each corner case.
 
-                           if not Is_Private_Type (Etype (Typ)) then
-                              Traverse_Discriminants (N);
-                           end if;
+                           Traverse_Discriminants (N);
 
                            --  Traverse record components
                            case Nkind (Typ_Def) is
@@ -937,6 +1043,12 @@ package body Flow.Analysis.Sanity is
                   Check_Name_Indexes_And_Slices (Name (N));
                end if;
 
+            --  Check that the constrained array definition of an object
+            --  declaration does not contain variable inputs.
+
+            when N_Object_Declaration =>
+               Check_Constrained_Array_Definition (N);
+
             when others =>
                null;
          end case;
@@ -1008,13 +1120,13 @@ package body Flow.Analysis.Sanity is
                Traverse_Declarations_And_HSS (Subp_Body);
 
                --  If this is a user defined equality on a record type, then it
-               --  shall have a Global aspect of null.
+               --  shall have a Global aspect of null, and shall terminate.
 
                if Is_User_Defined_Equality (FA.Spec_Entity) then
                   declare
                      Typ : constant Entity_Id :=
-                       Get_Full_Type_Without_Checking
-                         (First_Formal (FA.Spec_Entity));
+                       Unchecked_Full_Type
+                         (Etype (First_Formal (FA.Spec_Entity)));
                      Globals : Global_Flow_Ids;
                   begin
                      if Is_Record_Type (Typ) then
@@ -1033,6 +1145,17 @@ package body Flow.Analysis.Sanity is
                                  SRM_Ref  => "6.6(1)",
                                  N        => FA.Spec_Entity,
                                  Severity => Error_Kind);
+                        end if;
+
+                        if Is_Potentially_Nonreturning (FA.Spec_Entity) then
+                           Error_Msg_Flow
+                                (FA       => FA,
+                                 Msg      => "user-defined equality might " &
+                                   "not terminate",
+                                 SRM_Ref  => "6.6(2)",
+                                 N        => FA.Spec_Entity,
+                                 Severity => Medium_Check_Kind,
+                                 Tag      => Subprogram_Termination);
                         end if;
                      end if;
                   end;
@@ -1140,6 +1263,7 @@ package body Flow.Analysis.Sanity is
                      SRM_Ref  => "7.7.1(6)",
                      N        => Error_Location (FA.PDG, FA.Atr, V),
                      Severity => High_Check_Kind,
+                     Tag      => Illegal_Update,
                      F1       => Entire_Variable (Var),
                      F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                      Vertex   => V);
@@ -1177,6 +1301,7 @@ package body Flow.Analysis.Sanity is
                            SRM_Ref  => "7.7.1(6)",
                            N        => Error_Location (FA.PDG, FA.Atr, V),
                            Severity => High_Check_Kind,
+                           Tag      => Illegal_Update,
                            F1       => Var,
                            F2       => Direct_Mapping_Id (FA.Analyzed_Entity),
                            Vertex   => V);
@@ -1362,6 +1487,7 @@ package body Flow.Analysis.Sanity is
                                            then Var
                                            else Entire_Variable (Var)),
                               Severity => High_Check_Kind,
+                              Tag      => Global_Missing,
                               F2       => Subprogram,
                               Vertex   => V);
 
@@ -1393,6 +1519,7 @@ package body Flow.Analysis.Sanity is
                                                     Next_Aspect_To_Fix &
                                                     " of &",
                                     Severity     => High_Check_Kind,
+                                    Tag          => Global_Missing,
                                     N            => First_Var_Use,
                                     F1           => Missing,
                                     F2           => Subprogram,

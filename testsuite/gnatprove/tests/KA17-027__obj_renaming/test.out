@@ -2,7 +2,13 @@ main.adb:1:11: warning: subprogram "Main" has no effect
 main.adb:12:14: info: postcondition proved (CVC4: 1 VC)
 main.adb:15:14: info: postcondition proved (CVC4: 1 VC)
 main.adb:18:14: info: postcondition proved (CVC4: 2 VC)
+main.adb:53:14: info: add a contract to analyze it separately from calling contexts
+main.adb:53:14: info: local subprogram "Set_Obj_1" only analyzed in the context of calls
+main.adb:58:14: info: add a contract to analyze it separately from calling contexts
+main.adb:58:14: info: local subprogram "Set_Obj_2" only analyzed in the context of calls
 main.adb:60:32: info: overflow check proved (CVC4: 1 VC), in call inlined at main.adb:79
+main.adb:63:14: info: add a contract to analyze it separately from calling contexts
+main.adb:63:14: info: local subprogram "Set_Obj_4" only analyzed in the context of calls
 main.adb:71:19: info: assertion proved (CVC4: 1 VC)
 main.adb:72:19: info: assertion proved (CVC4: 1 VC)
 main.adb:73:19: info: assertion proved (CVC4: 1 VC)

@@ -16,6 +16,7 @@ gprname
 gprslave
 spark_memcached_wrapper
 spark_report
+spark_semaphore_wrapper
 target.atp
 why3config
 why3cpulimit

@@ -48,6 +48,8 @@ string_search.adb:54:86: info: overflow check proved (CVC4: 2 VC)
 string_search.adb:54:105: info: index check proved (CVC4: 4 VC)
 string_search.adb:60:07: info: initialization of "Bad_Shift" proved
 string_search.adb:61:07: info: initialization of "I" proved
+string_search.adb:63:17: info: add a contract to analyze it separately from calling contexts
+string_search.adb:63:17: info: local subprogram "Prove_QS" only analyzed in the context of calls
 string_search.adb:64:60: info: index check proved (CVC4: 4 VC), in call inlined at string_search.adb:85
 string_search.adb:64:60: info: overflow check proved (CVC4: 2 VC), in call inlined at string_search.adb:85
 string_search.adb:64:68: info: range check proved (CVC4: 2 VC), in call inlined at string_search.adb:85

@@ -2,7 +2,7 @@ test_constr.adb:15:42: info: postcondition proved (CVC4: 1 VC)
 test_constr.adb:22:04: warning: analyzing unreferenced procedure "Test1"
 test_constr.adb:22:14: warning: subprogram "Test1" has no effect
 test_constr.adb:24:22: medium: assertion might fail, cannot prove (Create).C.all.C'Constrained
-test_constr.adb:24:30: info: pointer dereference check proved (CVC4: 2 VC)
+test_constr.adb:24:30: info: pointer dereference check proved (CVC4: 1 VC)
 test_constr.adb:27:04: warning: analyzing unreferenced procedure "Test2"
 test_constr.adb:27:14: warning: subprogram "Test2" has no effect
 test_constr.adb:29:22: medium: assertion might fail, cannot prove not H'(Create).C'constrained
@@ -11,20 +11,21 @@ test_constr.adb:34:22: medium: assertion might fail, cannot prove not R'(Create)
 test_constr.adb:37:04: warning: analyzing unreferenced procedure "Test4"
 test_constr.adb:37:14: warning: subprogram "Test4" has no effect
 test_constr.adb:39:22: medium: assertion might fail, cannot prove not R'(Create.C.C)'constrained
+test_constr.adb:39:37: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:5:22: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:12:04: warning: analyzing unreferenced procedure "Test_1"
 test_constrained.adb:12:14: warning: subprogram "Test_1" has no effect
-test_constrained.adb:15:22: medium: assertion might fail, cannot prove not Y.all'constrained (e.g. when Y.all = (B => True, X => 0) and Y.all'Constrained = True)
-test_constrained.adb:15:28: info: pointer dereference check proved (CVC4: 2 VC)
+test_constrained.adb:15:22: medium: assertion might fail, cannot prove not Y.all'constrained
+test_constrained.adb:15:28: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:18:04: warning: analyzing unreferenced procedure "Test_2"
 test_constrained.adb:18:14: warning: subprogram "Test_2" has no effect
 test_constrained.adb:21:09: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:21:09: info: range check proved (CVC4: 1 VC)
-test_constrained.adb:21:16: medium: discriminant check might fail
+test_constrained.adb:21:16: medium: discriminant check might fail (e.g. when Y.all = (B => True, X => 0))
 test_constrained.adb:24:04: warning: analyzing unreferenced procedure "Test_3"
 test_constrained.adb:24:14: warning: subprogram "Test_3" has no effect
-test_constrained.adb:27:22: medium: assertion might fail, cannot prove not Y.all'constrained (e.g. when Y.all = (B => False, X => 0) and Y.all'Constrained = True)
-test_constrained.adb:27:28: info: pointer dereference check proved (CVC4: 2 VC)
+test_constrained.adb:27:22: medium: assertion might fail, cannot prove not Y.all'constrained
+test_constrained.adb:27:28: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:30:04: warning: analyzing unreferenced procedure "Test_4"
 test_constrained.adb:30:14: warning: subprogram "Test_4" has no effect
 test_constrained.adb:33:09: info: pointer dereference check proved (CVC4: 1 VC)
@@ -37,11 +38,11 @@ test_constrained.adb:39:09: info: range check proved (CVC4: 1 VC)
 test_constrained.adb:39:16: medium: discriminant check might fail
 test_constrained.adb:42:04: warning: analyzing unreferenced procedure "Test_6"
 test_constrained.adb:42:14: warning: subprogram "Test_6" has no effect
-test_constrained.adb:45:22: info: pointer dereference check proved (CVC4: 2 VC)
-test_constrained.adb:45:22: medium: assertion might fail, cannot prove X.all (1)'Constrained (e.g. when X.all = (1 => (B => True, X => 0), others => (B => False, X => 0)))
+test_constrained.adb:45:22: info: pointer dereference check proved (CVC4: 1 VC)
+test_constrained.adb:45:22: medium: assertion might fail, cannot prove X.all (1)'Constrained
 test_constrained.adb:51:06: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
-test_constrained.adb:52:19: info: assertion proved (CVC4: 1 VC)
-test_constrained.adb:52:23: info: pointer dereference check proved (CVC4: 2 VC)
+test_constrained.adb:52:19: info: assertion proved (Trivial: 1 VC)
+test_constrained.adb:52:23: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:53:04: info: pointer dereference check proved (CVC4: 1 VC)
 test_constrained.adb:53:10: info: discriminant check proved (CVC4: 1 VC; Trivial: 1 VC)
 test_tag.adb:13:04: warning: analyzing unreferenced procedure "Test_Uninit_1"

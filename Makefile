@@ -55,7 +55,6 @@ DOC=ug lrm
 PROD=-XBuild=Production
 CP=cp -pr
 MV=mv -f
-GNATMAKE=gnatmake
 VERSION=0.0w
 
 # main target for developers
@@ -63,6 +62,7 @@ all: gnat2why gnatprove why3
 
 # main target for nightly builds
 all-nightly: gnat2why-nightly gnatprove-nightly install install-examples
+coverage-nightly: coverage gnatprove-nightly install install-coverage install-examples
 
 # Setup and installation of why3
 # ==============================
@@ -92,7 +92,7 @@ install:
 	mkdir -p $(INSTALLDIR)/bin $(CONFIGDIR) $(THEORIESDIR) \
 	  $(RUNTIMESDIR) $(INCLUDEDIR) $(LIBDIR)
 	@echo "Generate default target.atp in $(INSTALLDIR)/bin:"
-	$(GNATMAKE) -q -c -u -gnats spark2014vsn.ads \
+	gprbuild -q -c -u -gnats spark2014vsn.ads \
 	  -gnatet=$(INSTALLDIR)/bin/target.atp
 	$(CP) share/spark/help.txt $(GNATPROVEDIR)
 	$(CP) share/spark/config/* $(CONFIGDIR)
@@ -130,7 +130,14 @@ gnat2why:
 	$(MAKE) -C gnat2why
 
 coverage:
-	$(MAKE) -C gnat2why coverage
+	$(MAKE) -C gnat2why AUTOMATED=1 coverage
+
+install-coverage:
+	$(CP) gnat2why/project.isi $(SHAREDIR)
+
+coverage-report:
+	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
+	gnatcov coverage --level=stmt --annotate=dhtml --sid gnat2why/project.isi --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run

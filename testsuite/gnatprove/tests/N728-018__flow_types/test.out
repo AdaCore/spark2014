@@ -1,3 +1,5 @@
+repro.adb:144:13: info: add a contract to analyze it separately from calling contexts
+repro.adb:144:13: info: local subprogram "GetKeystoreReturn" only analyzed in the context of calls
 repro.adb:153:04: warning: analyzing unreferenced procedure "CreateObject"
 repro.adb:153:27: warning: unused initial value of "Template"
 repro.adb:154:27: info: initialization of "ReturnValue" proved

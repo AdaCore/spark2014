@@ -48,7 +48,7 @@ mod_lemmas.adb:59:17: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:60:20: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:63:65: info: initialization of "Res1" proved
 mod_lemmas.adb:63:71: info: initialization of "Res2" proved
-mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when Res1 = 0 and Res2 = 0)
+mod_lemmas.adb:64:32: medium: postcondition might fail, cannot prove Res2 = Res1 (e.g. when M = 2 and Res1 = 0 and Res2 = 0)
 mod_lemmas.adb:64:61: info: overflow check proved (CVC4: 1 VC)
 mod_lemmas.adb:67:18: info: division check proved (CVC4: 1 VC)
 mod_lemmas.adb:67:25: info: overflow check proved (CVC4: 1 VC)

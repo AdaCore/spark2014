@@ -67,9 +67,13 @@ stable_marriage.adb:241:53: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:249:30: info: range check proved (CVC4: 2 VC)
 stable_marriage.adb:251:52: info: index check proved (CVC4: 2 VC)
 stable_marriage.adb:254:39: info: range check proved (CodePeer)
+stable_marriage.adb:256:17: info: add a contract to analyze it separately from calling contexts
+stable_marriage.adb:256:17: info: local subprogram "Select_And_Remove_An_Unmatched_G1" only analyzed in the context of calls
 stable_marriage.adb:256:52: info: initialization of "Selected" proved
 stable_marriage.adb:264:55: info: index check proved (CVC4: 2 VC), in call inlined at stable_marriage.adb:299
 stable_marriage.adb:265:71: info: range check proved (CVC4: 1 VC), in call inlined at stable_marriage.adb:299
+stable_marriage.adb:268:17: info: add a contract to analyze it separately from calling contexts
+stable_marriage.adb:268:17: info: local subprogram "Add_An_Unmatched" only analyzed in the context of calls
 stable_marriage.adb:270:71: info: range check proved (CVC4: 1 VC), in call inlined at stable_marriage.adb:321
 stable_marriage.adb:270:71: info: range check proved (CVC4: 1 VC), in call inlined at stable_marriage.adb:326
 stable_marriage.adb:270:71: info: range check proved (CVC4: 1 VC), in call inlined at stable_marriage.adb:385

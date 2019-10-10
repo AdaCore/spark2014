@@ -24,9 +24,7 @@
 with Flow_Classwide; use Flow_Classwide;
 with Flow_Utility;   use Flow_Utility;
 with Sem_Aux;        use Sem_Aux;
-with Sem_Util;       use Sem_Util;
 with Sinfo;          use Sinfo;
-with SPARK_Util;     use SPARK_Util;
 
 package body Flow.Interprocedural is
 
@@ -78,21 +76,12 @@ package body Flow.Interprocedural is
             elsif A.Is_Global_Parameter
               or else A.Is_Implicit_Parameter
             then
-               --  Globals and Implicit_Parameters can be direct mappings,
-               --  record fields or magic strings, but in any case the
-               --  parameter and the formal will always match in kind.
+               --  Global and implicit parameters can be direct mappings,
+               --  magic strings or synthetic null exports, but in any case
+               --  the parameter and the formal will always match in kind.
                case A.Parameter_Formal.Kind is
                   when Direct_Mapping =>
                      if Parameter.Kind = Direct_Mapping
-                       and then A.Parameter_Formal.Variant = Parameter.Variant
-                       and then Get_Direct_Mapping_Id (Parameter) =
-                                  Get_Direct_Mapping_Id (A.Parameter_Formal)
-                     then
-                        return V;
-                     end if;
-
-                  when Record_Field =>
-                     if Parameter.Kind = Record_Field
                        and then A.Parameter_Formal.Variant = Parameter.Variant
                        and then Get_Direct_Mapping_Id (Parameter) =
                                   Get_Direct_Mapping_Id (A.Parameter_Formal)
@@ -153,8 +142,11 @@ package body Flow.Interprocedural is
 
       Called_Thing : constant Entity_Id := Get_Called_Entity (N);
 
-      procedure Add_TD_Edge (A, B : Flow_Id);
-      --  Add a parameter dependency edge from the input A to the output B
+      procedure Add_TD_Edge (A, B : Flow_Id)
+      with Pre => A.Variant = Normal_Use and then B.Variant = Normal_Use;
+      --  Add a parameter dependency edge from the input A to the output B.
+      --  This is only meant to be called with Normal_Use parameters, exactly
+      --  as they come from Get_Depends.
 
       -----------------
       -- Add_TD_Edge --
@@ -201,8 +193,7 @@ package body Flow.Interprocedural is
                          Classwide            =>
                            Flow_Classwide.Is_Dispatching_Call (N),
                          Depends              => Deps,
-                         Use_Computed_Globals => not FA.Generating_Globals,
-                         Callsite             => N);
+                         Use_Computed_Globals => not FA.Generating_Globals);
 
             for C in Deps.Iterate loop
                declare
@@ -296,23 +287,12 @@ package body Flow.Interprocedural is
 
             if Ekind (Scope (Called_Thing)) = E_Protected_Type then
                declare
-                  Implicit : constant Entity_Id :=
-                    (if Is_External_Call (N)
-                     then Get_Enclosing_Object (Prefix (Name (N)))
-                     else Scope (Called_Thing));
-                  --  If this is an external call then the implicit parameter
-                  --  is the the protected object. If this is an internal call
-                  --  we don't have a protected object but only the protected
-                  --  type itself and therefore this will be the implicit
-                  --  parameter.
-
-                  pragma Assert (Ekind (Implicit) = (if Is_External_Call (N)
-                                                     then E_Variable
-                                                     else E_Protected_Type));
+                  Implicit : constant Flow_Id :=
+                    Direct_Mapping_Id (Scope (Called_Thing));
 
                begin
-                  The_In  := Direct_Mapping_Id (Implicit, In_View);
-                  The_Out := Direct_Mapping_Id (Implicit, Out_View);
+                  The_In  := Change_Variant (Implicit, In_View);
+                  The_Out := Change_Variant (Implicit, Out_View);
 
                   --  The protected object may already appear as a (generated)
                   --  Global, e.g. when a protected subprogram calls an
@@ -330,12 +310,25 @@ package body Flow.Interprocedural is
             end if;
 
             if Globals.Outputs.Is_Empty then
-               --  All inputs flow into the null export vertex
-               for Input of Globals.Inputs loop
-                  Add_TD_Edge (Input, Null_Export_Flow_Id);
-               end loop;
+               if not Globals.Inputs.Is_Empty then
+                  --  Every input flows into the null export vertex
+                  declare
+                     Output_V : constant Flow_Graphs.Vertex_Id :=
+                       Find_Parameter_Vertex
+                         (FA, V,
+                          Change_Variant (Null_Export_Flow_Id, Out_View));
+
+                  begin
+                     for Input of Globals.Inputs loop
+                        FA.TDG.Add_Edge
+                          (Find_Parameter_Vertex (FA, V, Input),
+                           Output_V,
+                           EC_TDG);
+                     end loop;
+                  end;
+               end if;
             else
-               --  Each output depends on all inputs
+               --  Every input flows into all outputs
                for Output of Globals.Outputs loop
                   declare
                      Output_V : constant Flow_Graphs.Vertex_Id :=
@@ -348,8 +341,8 @@ package body Flow.Interprocedural is
                        Change_Variant (Output, In_View);
 
                   begin
-                     if Is_Implicit_Input (The_In)
-                       and then not Globals.Inputs.Contains (The_In)
+                     if not Globals.Inputs.Contains (The_In)
+                       and then Is_Implicit_Input (The_In)
                      then
                         Globals.Inputs.Insert (The_In);
                      end if;

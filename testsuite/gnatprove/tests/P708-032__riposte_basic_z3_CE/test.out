@@ -50,9 +50,11 @@ counterexample expected for check at basic.adb:65
   trace at basic.adb:62 --> X = 1
   trace at basic.adb:65 --> X = 7 and X'Old = 1
   trace at basic.adb:67 --> X_Old = 1
+  trace at basic.adb:70 --> X_Old = 1
   trace at basic.adb:71 --> X = 7
 counterexample expected for check at basic.adb:88
   trace at basic.adb:87 --> A = -1 and B = -2
   trace at basic.adb:88 --> A = -1 and B = -2 and Int_Min_B'Result = -1
-  trace at basic.adb:93 --> R = -1
+  trace at basic.adb:92 --> A = -1
+  trace at basic.adb:93 --> A = -1 and R = -1
   trace at basic.adb:97 --> Int_Min_B'Result = -1 and R = -1

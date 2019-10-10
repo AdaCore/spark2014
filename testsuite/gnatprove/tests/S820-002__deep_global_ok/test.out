@@ -1,0 +1,5 @@
+deep_globals.adb:5:04: info: initialization of "Z" proved
+deep_globals.adb:9:14: info: pointer dereference check proved (CVC4: 1 VC)
+deep_globals.adb:14:09: info: pointer dereference check proved (CVC4: 1 VC)
+deep_globals.adb:18:04: info: precondition proved (CVC4: 1 VC)
+deep_globals.adb:19:04: info: precondition proved (CVC4: 1 VC)

@@ -1,2 +1,4 @@
 p.adb:1:14: info: initialization of "X" proved
+p.adb:2:14: info: add a contract to analyze it separately from calling contexts
+p.adb:2:14: info: local subprogram "Loc" only analyzed in the context of calls
 p.adb:8:19: info: assertion proved (CVC4: 1 VC)

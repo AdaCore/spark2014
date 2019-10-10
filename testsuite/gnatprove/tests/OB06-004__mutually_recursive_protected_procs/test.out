@@ -1,10 +1,8 @@
 p1.adb:10:24: info: range check proved (CVC4: 2 VC)
 p1.adb:11:17: medium: ceiling priority protocol might not be respected
-p1.adb:12:09: info: data dependencies proved
 p1.adb:18:12: high: "PO" constituent of "State" must be listed in the Global aspect of "Dummy" (SPARK RM 6.1.4(14))
 p1.adb:18:12: high: external call to "Dummy" from "p2.proxy" in protected operation "Dummy"
 p12.adb:7:20: info: ceiling priority protocol is respected (CVC4: 1 VC)
-p12.adb:8:12: info: data dependencies proved
 p12.adb:14:15: high: "PO1" constituent of "State1" must be listed in the Global aspect of "Dummy1" (SPARK RM 6.1.4(14))
 p12.adb:14:15: high: external call to "Dummy1" from "p12.p2.po2T.dummy2" in protected operation "Dummy1"
 p12.adb:30:20: info: ceiling priority protocol is respected (CVC4: 1 VC)

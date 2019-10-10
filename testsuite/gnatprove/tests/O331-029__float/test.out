@@ -1,3 +1,7 @@
+sensfusion6_pack.adb:20:14: info: add a contract to analyze it separately from calling contexts
+sensfusion6_pack.adb:20:14: info: local subprogram "Madgwick_Update_Q" only analyzed in the context of calls
+sensfusion6_pack.adb:21:14: info: add a contract to analyze it separately from calling contexts
+sensfusion6_pack.adb:21:14: info: local subprogram "Mahony_Update_Q" only analyzed in the context of calls
 sensfusion6_pack.adb:44:07: info: initialization of "Recip_Norm" proved
 sensfusion6_pack.adb:44:07: info: initialization of "Recip_Norm" proved, in call inlined at sensfusion6_pack.adb:265
 sensfusion6_pack.adb:45:07: info: initialization of "S0" proved

@@ -10,6 +10,8 @@ call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" has no effect
 call_proc_no_body.ads:6:14: warning: subprogram "Nonreturning" might not terminate
 container.adb:19:67: info: overflow check proved (CVC4: 1 VC)
 container.adb:23:14: info: index check proved (CVC4: 2 VC)
+container.adb:26:14: info: add a contract to analyze it separately from calling contexts
+container.adb:26:14: info: local subprogram "Test3" only analyzed in the context of calls
 container.adb:26:14: warning: subprogram "Test3" might not terminate
 container.adb:30:11: info: precondition proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:30:11: info: precondition proved (Trivial: 1 VC), in call inlined at container.adb:45
@@ -17,6 +19,7 @@ container.adb:33:20: medium: range check might fail, in call inlined at containe
 container.adb:34:13: info: loop variant proved (CVC4: 1 VC), in call inlined at container.adb:45
 container.adb:54:17: info: range check proved (CVC4: 1 VC)
 container.adb:59:17: warning: unreachable code (CVC4: 1 VC)
+container.adb:60:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:60:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:60:39: info: overflow check proved (CVC4: 2 VC)
@@ -25,24 +28,31 @@ container.adb:61:07: info: loop variant proved (CVC4: 1 VC)
 container.adb:63:14: info: range check proved (CVC4: 1 VC)
 container.adb:64:14: info: range check proved (CVC4: 1 VC)
 container.adb:68:04: warning: unreachable code (CVC4: 1 VC)
+container.adb:69:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:69:14: info: range check proved (CVC4: 1 VC)
 container.adb:74:04: warning: unreachable code (CVC4: 1 VC)
+container.adb:75:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:75:14: info: range check proved (CVC4: 2 VC)
 container.adb:76:07: info: loop variant proved (CVC4: 1 VC)
 container.adb:81:08: info: precondition proved (CVC4: 1 VC)
 container.adb:81:08: info: precondition proved (Trivial: 1 VC)
 container.adb:81:26: warning: unreachable code (CVC4: 1 VC)
+container.adb:82:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:86:08: info: precondition proved (CVC4: 1 VC)
 container.adb:86:08: info: precondition proved (Trivial: 1 VC)
+container.adb:88:07: warning: unreachable code (CVC4: 1 VC)
+container.adb:89:10: warning: unreachable code (CVC4: 1 VC)
 container.adb:89:17: info: range check proved (CVC4: 2 VC)
 container.adb:90:10: info: loop variant proved (CVC4: 1 VC)
 container.adb:93:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (CVC4: 1 VC)
 container.adb:97:08: info: precondition proved (Trivial: 1 VC)
+container.adb:98:07: warning: unreachable code (CVC4: 1 VC)
 container.adb:99:14: info: range check proved (CVC4: 2 VC)
 container.adb:100:30: info: loop invariant initialization proved (CVC4: 1 VC)
 container.adb:100:30: info: loop invariant preservation proved (CVC4: 1 VC)
 container.adb:101:07: info: loop variant proved (CVC4: 1 VC)
+container.adb:104:10: warning: unreachable code (CVC4: 1 VC)
 container.adb:104:17: info: range check proved (CVC4: 2 VC)
 container.adb:105:10: info: loop variant proved (CVC4: 1 VC)
 container.adb:106:10: info: loop variant proved (CVC4: 1 VC)
@@ -156,7 +166,8 @@ formal_cont.ads:23:13: info: subprogram "My_Equal_02" will terminate
 formal_cont.ads:32:14: info: subprogram "Test_02" will terminate
 formal_cont.ads:32:14: warning: subprogram "Test_02" has no effect
 functions.adb:11:07: warning: unreachable code (CVC4: 1 VC)
-functions.adb:14:14: high: all paths in "G" raise exceptions or do not terminate normally
+functions.adb:14:14: info: add a contract to analyze it separately from calling contexts
+functions.adb:14:14: info: local subprogram "G" only analyzed in the context of calls
 functions.adb:14:14: warning: subprogram "G" has no effect
 functions.adb:14:14: warning: subprogram "G" might not terminate
 functions.adb:16:07: medium: call to nonreturning subprogram might be executed, in call inlined at functions.adb:29
@@ -165,7 +176,6 @@ functions.ads:3:13: warning: subprogram "Non_Ter_Func" might not terminate
 functions.ads:4:19: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 functions.ads:6:13: warning: subprogram "Expr_Func" might not terminate
 functions.ads:6:42: info: function contract not available for proof ("Non_Ter_Func" might not return)
-functions.ads:9:17: high: all paths in "Nested_Proc" raise exceptions or do not terminate normally
 functions.ads:9:17: warning: subprogram "Nested_Proc" has no effect
 functions.ads:9:17: warning: subprogram "Nested_Proc" might not terminate
 imported.adb:5:07: warning: assuming "P_01" has no effect on global items
@@ -224,6 +234,8 @@ p.adb:6:14: warning: subprogram "Proc2" has no effect
 p.adb:6:14: warning: subprogram "Proc2" might not terminate
 p.adb:7:14: warning: subprogram "Proc3" has no effect
 p.adb:7:14: warning: subprogram "Proc3" might not terminate
+p.adb:9:14: info: add a contract to analyze it separately from calling contexts
+p.adb:9:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:9:14: warning: subprogram "Proc" has no effect
 p.adb:9:14: warning: subprogram "Proc" might not terminate
 p.adb:26:04: warning: analyzing unreferenced procedure "Proc4"
@@ -233,6 +245,8 @@ p.adb:32:14: warning: subprogram "Proc5" has no effect
 p.adb:32:14: warning: subprogram "Proc5" might not terminate
 p.adb:39:14: warning: subprogram "Proc7" has no effect
 p.adb:39:14: warning: subprogram "Proc7" might not terminate
+p.adb:41:14: info: add a contract to analyze it separately from calling contexts
+p.adb:41:14: info: local subprogram "Proc6" only analyzed in the context of calls
 p.adb:41:14: warning: subprogram "Proc6" has no effect
 p.adb:41:14: warning: subprogram "Proc6" might not terminate
 p.adb:55:04: info: initialization of "B" proved

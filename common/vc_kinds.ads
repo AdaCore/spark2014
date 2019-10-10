@@ -135,10 +135,19 @@ package VC_Kinds is
 
    type Flow_Tag_Kind is
      (Empty_Tag,
-      --  Used when a tag is not specified
+      --  Used when a tag is not specified, only for errors/warnings not checks
 
       Aliasing,
       --  Used for aliasing checks
+
+      Call_In_Type_Invariant,
+      --  Call to boundary program of a type from its type invariant
+
+      Call_To_Current_Task,
+      --  Call to Current_Task from invalid context
+
+      Concurrent_Access,
+      --  Global data is accessed concurrently by tasks
 
       Dead_Code,
       --  Statement is never reached
@@ -146,17 +155,23 @@ package VC_Kinds is
       Default_Initialization_Mismatch,
       --  A type marked as Fully_Default_Initialized is not fully initialized
 
-      Depends_Null,
-      --  There is a missing dependency of the format "null => something"
-
       Depends_Missing,
       --  There is a variable missing from the RHS of a dependency
 
       Depends_Missing_Clause,
       --  There is an entire clause missing from the Depends contract
 
+      Depends_Null,
+      --  There is a missing dependency of the format "null => something"
+
       Depends_Wrong,
       --  User provided an incorrect dependency
+
+      Export_Depends_On_Proof_In,
+      --  A Proof_In variable has been used in the computation of an export
+
+      Ghost_Wrong,
+      --  A ghost procedure has a non-ghost global output
 
       Global_Missing,
       --  There is a variable missing from the Globals
@@ -164,14 +179,12 @@ package VC_Kinds is
       Global_Wrong,
       --  User provided a wrong global
 
-      Export_Depends_On_Proof_In,
-      --  A Proof_In variable has been used in the computation of an export
-
       Hidden_Unexposed_State,
       --  Some hidden state has not been exposed through a state abstraction
 
       Illegal_Update,
-      --  Writing to a variable which is not a global Output
+      --  Writing to a variable which is not a global Output of the subprogram,
+      --  or not a variable of the package during its elaboration.
 
       Impossible_To_Initialize_State,
       --  A state abstraction cannot possibly be initialized
@@ -188,6 +201,9 @@ package VC_Kinds is
       Missing_Return,
       --  Function has a path without a return statement
 
+      Non_Volatile_Function_With_Volatile_Effects,
+      --  Non Volatile_Function refers to globals with volatile effects
+
       Not_Constant_After_Elaboration,
       --  Variable that has been marked as Constant_After_Elaboration
       --  can potentially be updated.
@@ -200,6 +216,13 @@ package VC_Kinds is
       --  State visible in a package spec is modified in the package
       --  elaboration.
 
+      Potentially_Blocking_In_Protected,
+      --  Protected operation calls potentially blocking feature
+
+      Reference_To_Non_CAE_Variable,
+      --  The precondition of a protected operation refers to a global
+      --  variable that does not have Constant_After_Elaboration set.
+
       Refined_State_Wrong,
       --  User provided an incorrect Refined_State contract
 
@@ -210,6 +233,9 @@ package VC_Kinds is
       --  Found a stable element inside a loop (this has not been
       --  implemented yet).
 
+      Subprogram_Termination,
+      --  A subprogram with annotation Terminating may not terminate
+
       Uninitialized,
       --  Use of an uninitialized variable
 
@@ -219,15 +245,9 @@ package VC_Kinds is
       Unused_Initial_Value,
       --  Initial value has not been used
 
-      Non_Volatile_Function_With_Volatile_Effects,
-      --  Non Volatile_Function refers to globals with volatile effects
-
-      Volatile_Function_Without_Volatile_Effects,
+      Volatile_Function_Without_Volatile_Effects
       --  Function has been marked as volatile but has no volatile effects
 
-      Reference_To_Non_CAE_Variable
-      --  The precondition of a protected operation refers to a global variable
-      --  that does not have Constant_After_Elaboration set.
      );
    pragma Ordered (Flow_Tag_Kind);
 

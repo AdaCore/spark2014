@@ -1,3 +1,5 @@
+ownership_transfer.adb:5:04: info: initialization of "X" proved
+ownership_transfer.adb:6:04: info: initialization of "Y" proved
 ownership_transfer.adb:13:06: insufficient permission on dereference from "X"
 ownership_transfer.adb:13:06: object was moved at line 11
 ownership_transfer.adb:13:15: insufficient permission on dereference from "X"

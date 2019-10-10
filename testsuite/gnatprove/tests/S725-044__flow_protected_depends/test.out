@@ -1,0 +1,3 @@
+p.adb:16:38: info: initialization of "Y" proved
+p.adb:17:11: info: data dependencies proved
+p.adb:17:36: info: flow dependencies proved

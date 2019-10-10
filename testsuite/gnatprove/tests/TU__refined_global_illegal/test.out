@@ -15,5 +15,3 @@ refined_global_illegal_2.adb:20:16: medium: overflow check might fail (e.g. when
 refined_global_illegal_2.adb:20:18: high: "Y" constituent of "State" must be listed in the Refined_Global aspect of "P2" (SPARK RM 6.1.4(14))
 refined_global_illegal_2.adb:21:16: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: subprogram at refined_global_illegal_2.ads:12 should mention X in a precondition]
 refined_global_illegal_2.ads:4:08: info: flow dependencies proved
-refined_global_illegal_2.ads:9:11: info: data dependencies proved
-refined_global_illegal_2.ads:15:11: info: data dependencies proved

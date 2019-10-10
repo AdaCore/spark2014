@@ -18,6 +18,8 @@ test.ads:10:03: info: function contract not available for proof ("<=" might not 
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("<=" might not return)
+test.ads:10:03: info: function contract not available for proof ("<=" might not return)
+test.ads:10:03: info: function contract not available for proof ("<=" might not return)
 test.ads:10:03: info: function contract not available for proof ("=" might not return)
 test.ads:10:03: info: function contract not available for proof ("=" might not return)
 test.ads:10:03: info: function contract not available for proof ("=" might not return)
@@ -122,6 +124,10 @@ test.ads:10:03: info: function contract not available for proof ("Has_Element" m
 test.ads:10:03: info: function contract not available for proof ("Has_Element" might not return)
 test.ads:10:03: info: function contract not available for proof ("Has_Element" might not return)
 test.ads:10:03: info: function contract not available for proof ("Has_Element" might not return)
+test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
+test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
+test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
+test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
 test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
 test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
 test.ads:10:03: info: function contract not available for proof ("Has_Key" might not return)
@@ -226,6 +232,8 @@ test.ads:10:03: info: function contract not available for proof ("Keys_Included_
 test.ads:10:03: info: function contract not available for proof ("Keys_Included_Except" might not return)
 test.ads:10:03: info: function contract not available for proof ("Keys_Included_Except" might not return)
 test.ads:10:03: info: function contract not available for proof ("Keys_Included_Except" might not return)
+test.ads:10:03: info: function contract not available for proof ("Keys_Included_Except" might not return)
+test.ads:10:03: info: function contract not available for proof ("Keys_Included_Except" might not return)
 test.ads:10:03: info: function contract not available for proof ("Last" might not return)
 test.ads:10:03: info: function contract not available for proof ("Last" might not return)
 test.ads:10:03: info: function contract not available for proof ("Last" might not return)
@@ -384,6 +392,8 @@ test.ads:10:03: info: implicit function contract not available for proof ("Get" 
 test.ads:10:03: info: implicit function contract not available for proof ("Get" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Get" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Get" might not return)
+test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
+test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
 test.ads:10:03: info: implicit function contract not available for proof ("Length" might not return)
@@ -458,6 +468,11 @@ test.ads:10:03: info: in instantiation at a-cfhama.ads:143
 test.ads:10:03: info: in instantiation at a-cfhama.ads:144
 test.ads:10:03: info: in instantiation at a-cfhama.ads:144
 test.ads:10:03: info: in instantiation at a-cfhama.ads:145
+test.ads:10:03: info: in instantiation at a-cfhama.ads:147
+test.ads:10:03: info: in instantiation at a-cfhama.ads:147
+test.ads:10:03: info: in instantiation at a-cfhama.ads:147
+test.ads:10:03: info: in instantiation at a-cfhama.ads:147
+test.ads:10:03: info: in instantiation at a-cfhama.ads:147
 test.ads:10:03: info: in instantiation at a-cfhama.ads:147
 test.ads:10:03: info: in instantiation at a-cfhama.ads:147
 test.ads:10:03: info: in instantiation at a-cfhama.ads:147
@@ -779,6 +794,11 @@ test.ads:10:03: info: in instantiation at a-cfhama.ads:94
 test.ads:10:03: info: in instantiation at a-cfhama.ads:94
 test.ads:10:03: info: in instantiation at a-cfhama.ads:94
 test.ads:10:03: info: in instantiation at a-cfhama.ads:94
+test.ads:10:03: info: in instantiation at a-cfhama.ads:94
+test.ads:10:03: info: in instantiation at a-cfhama.ads:94
+test.ads:10:03: info: in instantiation at a-cfhama.ads:94
+test.ads:10:03: info: in instantiation at a-cfhama.ads:94
+test.ads:10:03: info: in instantiation at a-cfhama.ads:94
 test.ads:10:03: info: in instantiation at a-cofuma.ads:115
 test.ads:10:03: info: in instantiation at a-cofuma.ads:115
 test.ads:10:03: info: in instantiation at a-cofuma.ads:115
@@ -821,18 +841,28 @@ test.ads:10:03: info: in instantiation at a-cofuma.ads:243
 test.ads:10:03: info: in instantiation at a-cofuma.ads:243
 test.ads:10:03: info: in instantiation at a-cofuma.ads:244
 test.ads:10:03: info: in instantiation at a-cofuma.ads:244
+test.ads:10:03: info: in instantiation at a-cofuma.ads:253
+test.ads:10:03: info: in instantiation at a-cofuma.ads:253
 test.ads:10:03: info: in instantiation at a-cofuma.ads:255
 test.ads:10:03: info: in instantiation at a-cofuma.ads:255
+test.ads:10:03: info: in instantiation at a-cofuma.ads:256
+test.ads:10:03: info: in instantiation at a-cofuma.ads:256
 test.ads:10:03: info: in instantiation at a-cofuma.ads:257
 test.ads:10:03: info: in instantiation at a-cofuma.ads:257
 test.ads:10:03: info: in instantiation at a-cofuma.ads:258
 test.ads:10:03: info: in instantiation at a-cofuma.ads:258
-test.ads:10:03: info: in instantiation at a-cofuma.ads:259
-test.ads:10:03: info: in instantiation at a-cofuma.ads:259
-test.ads:10:03: info: in instantiation at a-cofuma.ads:260
-test.ads:10:03: info: in instantiation at a-cofuma.ads:260
-test.ads:10:03: info: in instantiation at a-cofuma.ads:280
-test.ads:10:03: info: in instantiation at a-cofuma.ads:280
+test.ads:10:03: info: in instantiation at a-cofuma.ads:269
+test.ads:10:03: info: in instantiation at a-cofuma.ads:269
+test.ads:10:03: info: in instantiation at a-cofuma.ads:271
+test.ads:10:03: info: in instantiation at a-cofuma.ads:271
+test.ads:10:03: info: in instantiation at a-cofuma.ads:272
+test.ads:10:03: info: in instantiation at a-cofuma.ads:272
+test.ads:10:03: info: in instantiation at a-cofuma.ads:273
+test.ads:10:03: info: in instantiation at a-cofuma.ads:273
+test.ads:10:03: info: in instantiation at a-cofuma.ads:274
+test.ads:10:03: info: in instantiation at a-cofuma.ads:274
+test.ads:10:03: info: in instantiation at a-cofuma.ads:294
+test.ads:10:03: info: in instantiation at a-cofuma.ads:294
 test.ads:10:03: info: in instantiation at a-cofuma.ads:52
 test.ads:10:03: info: in instantiation at a-cofuma.ads:52
 test.ads:10:03: info: in instantiation at a-cofuma.ads:52

@@ -1,6 +1,5 @@
 nested_pkg.adb:10:11: info: flow dependencies proved
 nested_pkg.adb:13:38: info: data dependencies proved
-nested_pkg.adb:29:14: info: data dependencies proved
 nested_pkg.adb:29:25: medium: "Z.State" constituent of "Nested_Pkg.Foobar" must be a Proof_In as it is only used in assertions (SPARK RM 6.1.4(18))
 nested_pkg.adb:44:14: info: data dependencies proved
 nested_pkg.adb:47:25: info: assertion proved (CVC4: 1 VC)

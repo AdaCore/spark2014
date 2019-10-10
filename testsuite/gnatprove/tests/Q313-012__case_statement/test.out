@@ -1,1 +1,5 @@
+case_stmt.adb:5:13: info: add a contract to analyze it separately from calling contexts
+case_stmt.adb:5:13: info: local subprogram "One_Color" only analyzed in the context of calls
+case_stmt.adb:10:14: info: add a contract to analyze it separately from calling contexts
+case_stmt.adb:10:14: info: local subprogram "Print_Float" only analyzed in the context of calls
 case_stmt.adb:16:04: info: initialization of "Res" proved

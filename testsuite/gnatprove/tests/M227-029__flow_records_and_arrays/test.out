@@ -15,7 +15,11 @@ message_tests.adb:48:32: high: "C.W" is not initialized in "Not_All_Used_Out"
 message_tests.adb:56:04: warning: analyzing unreferenced procedure "Undefined_Used_1"
 message_tests.adb:56:32: info: initialization of "C" proved
 message_tests.adb:66:18: high: "F.B" is not initialized
+parameter_tests.adb:15:14: info: add a contract to analyze it separately from calling contexts
+parameter_tests.adb:15:14: info: local subprogram "Clear_Float" only analyzed in the context of calls
 parameter_tests.adb:15:27: info: initialization of "F" proved
+parameter_tests.adb:21:14: info: add a contract to analyze it separately from calling contexts
+parameter_tests.adb:21:14: info: local subprogram "Clear_Coordinate" only analyzed in the context of calls
 parameter_tests.adb:21:32: info: initialization of "C" proved
 parameter_tests.adb:28:04: warning: analyzing unreferenced procedure "Clear_Position"
 parameter_tests.adb:36:11: info: data dependencies proved

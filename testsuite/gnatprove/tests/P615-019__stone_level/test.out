@@ -1,6 +1,12 @@
-violations.adb:18:13: cannot use global variable "Data3" of deep type
-violations.adb:18:13: without prior declaration in a Global aspect
-gnatprove: error during generation of Global contracts
+violations.adb:12:04: object of anonymous access not declared immediately within a subprogram, entry or block is not allowed in SPARK (SPARK RM 3.10(4))
+violations.adb:12:04: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:18:07: "Data3" is not allowed in SPARK (due to uninitialized object of anonymous access type)
+violations.adb:18:07: violation of pragma SPARK_Mode at test.adc:1
+violations.adb:48:07: handler is not allowed in SPARK
+violations.adb:48:07: violation of pragma SPARK_Mode at test.adc:1
+violations.ads:3:13: function with "in out" parameter is not allowed in SPARK
+violations.ads:3:13: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during fast partial checking of SPARK legality rules
 all_violations.adb:24:04: warning: analyzing unreferenced procedure "Call_Increment_And_Log"
 all_violations.adb:24:14: warning: "Last" is not modified, could be INPUT
 all_violations.adb:27:09: warning: unused assignment

@@ -478,7 +478,7 @@ is
       function FileSizeString (Value : AuditTypes.FileSizeT)
                                return FileSizeStringT
       is
-         Data : String := AuditTypes.FileSizeT_Image(Value/2**10) & " kBytes";
+         Data : String := AuditTypes.FileSizeT'Image(Value/2**10) & " kBytes";
          Result : FileSizeStringT := (others => ' ');
       begin
          pragma Assume (Data'Length <= 16);

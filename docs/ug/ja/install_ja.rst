@@ -5,7 +5,7 @@
 
 一般に， |SPARK| をコンパイルするためには，最新のバージョンの GNAT ツールチェーン（Ada 2012 構文をサポートしているもの）をインストールする必要があります．ターゲットとする各プラットフォーム毎にツールチェーンをインストールする必要があります．例えば，あるツールチェーンは，自分の計算機用のネイティブコンパイルのためであり，別のものは，組み込みプラットフォームのためのクロスコンパイル用となります．
 
-|SPARK| プログラムを解析するために，最初に，GPS（および任意で GNAT）をインストールし，次に，同じ場所に， |GNATprove| をインストールすることをお勧めします．GPS を用いないで，Eclipse　用の GNATbench プラグインをインストールすることもできます．このインストールには，Eclipse の一般的なインストール方法を利用します．GPS あるいは GNATbench の同一バージョンは，ネイティブ環境とクロスコンパイル環境の両方に利用できます． |SPARK| 解析も同様です．
+|SPARK| プログラムを解析するために，最初に，GNAT Studio（および任意で GNAT）をインストールし，次に，同じ場所に， |GNATprove| をインストールすることをお勧めします．GNAT Studio を用いないで，Eclipse　用の GNATbench プラグインをインストールすることもできます．このインストールには，Eclipse の一般的なインストール方法を利用します．GNAT Studio あるいは GNATbench の同一バージョンは，ネイティブ環境とクロスコンパイル環境の両方に利用できます． |SPARK| 解析も同様です．
 
 |GNATprove| を別の場所にインストールする場合は， ``GPR_PROJECT_PATH`` 環境変数を変更する必要があります（GNATをインストールしたならば）．ウィンドウズの場合は，環境変数パネル中で ``GPR_PROJECT_PATH`` を追加し，次のパスを設定します： ``<GNAT install dir>/share/gpr``  および，　``<GNAT install dir>/share/gpr`` ．これによって， |SPARK| は，GNAT とともにインストールしたライブラリプロジェクトを見つけることができるようになります．また， ``<SPARK install dir>/lib/gnat`` を追加します．これによって，GNATは，SPARK とともにインストールされた補題ライブラリプロジェクト を見つけることができるようになります．Linux/Mac で Bourne シェルを使用している場合は，以下を設定して下さい．
 ::
@@ -16,7 +16,7 @@ Linux/Mac で Cシェルの場合は以下です::
 
   setenv GPR_PROJECT_PATH <GNAT install dir>/lib/gnat:<GNAT install dir>/share/gpr:<SPARK install dir>/lib/gnat:$GPR_PROJECT_PATH
 
-GPS と |GNATprove| の詳細なインストール手順については，以下を参照下さい．
+GNAT Studio と |GNATprove| の詳細なインストール手順については，以下を参照下さい．
 
 システム要求
 -------------------
@@ -28,11 +28,11 @@ GPS と |GNATprove| の詳細なインストール手順については，以下
 Windowsへのインストール
 --------------------------
 
-まだであれば，最初に GPS インストーラを実行します．例えば，`gps-<version>-i686-pc-mingw32.exe`  をダブルクリックし，指示に従います．
+まだであれば，最初に GNAT Studio インストーラを実行します．例えば，`gnatstudio-<version>-i686-pc-mingw32.exe`  をダブルクリックし，指示に従います．
 
 .. note::
 
-  もし，GNAT Pro ではなく，GNAT GPL を使用する場合，GNAT GPL インストーラをお使い下さい．そうすれば，GPS がインストールされます．
+  もし，GNAT Pro ではなく，GNAT GPL を使用する場合，GNAT GPL インストーラをお使い下さい．そうすれば，GNAT Studio がインストールされます．
 
 同様に， |GNATprove| をインストーラを実行して下さい．例えば，spark-<version>-x86-windows-bin.exe をダブルクリックします．
 
@@ -41,17 +41,17 @@ Windowsへのインストール
 Linux/Mac にインストールする
 ----------------------------
 
-まだであれば，GPS の tar 圧縮ファイルを展開し，インストールします．例えば，::
+まだであれば，GNAT Studio の tar 圧縮ファイルを展開し，インストールします．例えば，::
 
-  $ gzip -dc gps-<version>-<platform>-bin.tar.gz | tar xf -
-  $ cd gps-<version>-<platform>-bin
+  $ gzip -dc gnatstudio-<version>-<platform>-bin.tar.gz | tar xf -
+  $ cd gnatstudio-<version>-<platform>-bin
   $ ./doinstall
 
 次に，表示される指示に従います．
 
 .. note::
 
-  もし，もし，GNAT Pro ではなく，GNAT GPL を使用する場合，GNAT GPL インストーラをお使い下さい．そうすれば，GPS がインストールされます．
+  もし，もし，GNAT Pro ではなく，GNAT GPL を使用する場合，GNAT GPL インストーラをお使い下さい．そうすれば，GNAT Studio がインストールされます．
 
 次に，SPARK tar 圧縮ファイルに対して，同様のことをして下さい．例えば．::
 

@@ -55,7 +55,7 @@ package Assumption_Types is
 
    function Mk_Base_Sloc (File : String; Line : Positive) return Base_Sloc;
    function Mk_Subp (Name : String; Sloc : My_Sloc) return Subp_Type;
-   --  Build a a subp object from its defining components
+   --  Build a subp object from its defining components
 
    function Mk_Unit (Name : String) return Unit_Type;
    --  Build a unit from its name

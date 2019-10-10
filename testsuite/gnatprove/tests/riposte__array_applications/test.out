@@ -1,37 +1,37 @@
 array_applications.adb:14:09: info: data dependencies proved
 array_applications.adb:15:09: info: flow dependencies proved
 array_applications.adb:16:20: medium: postcondition might fail, cannot prove A(30) /= 832040
-array_applications.adb:23:27: medium: overflow check might fail
+array_applications.adb:23:27: info: overflow check proved (CVC4: 2 VC)
 array_applications.adb:26:13: info: loop invariant initialization proved (CVC4: 3 VC)
-array_applications.adb:26:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
+array_applications.adb:26:13: info: loop invariant preservation proved (CVC4: 3 VC)
 array_applications.adb:26:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:27:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:27:27: info: index check proved (CVC4: 4 VC)
-array_applications.adb:27:32: medium: overflow check might fail
+array_applications.adb:27:32: info: overflow check proved (CVC4: 2 VC)
 array_applications.adb:27:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:34:09: info: data dependencies proved
 array_applications.adb:35:09: info: flow dependencies proved
 array_applications.adb:36:20: info: postcondition proved (CVC4: 1 VC)
-array_applications.adb:43:27: medium: overflow check might fail
+array_applications.adb:43:27: info: overflow check proved (CVC4: 2 VC)
 array_applications.adb:46:13: info: loop invariant initialization proved (CVC4: 3 VC)
-array_applications.adb:46:13: info: loop invariant preservation proved (CVC4: 2 VC; Z3: 1 VC)
+array_applications.adb:46:13: info: loop invariant preservation proved (CVC4: 3 VC)
 array_applications.adb:46:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:47:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:47:27: info: index check proved (CVC4: 4 VC)
-array_applications.adb:47:32: medium: overflow check might fail
+array_applications.adb:47:32: info: overflow check proved (CVC4: 2 VC)
 array_applications.adb:47:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:60:09: info: data dependencies proved
 array_applications.adb:61:09: info: flow dependencies proved
 array_applications.adb:62:20: medium: postcondition might fail, cannot prove A(30) /= 832040
 array_applications.adb:69:27: medium: overflow check might fail
 array_applications.adb:71:13: info: loop invariant initialization proved (CVC4: 5 VC)
+array_applications.adb:71:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:73:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:74:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:74:27: info: index check proved (CVC4: 4 VC)
 array_applications.adb:74:32: medium: overflow check might fail
 array_applications.adb:74:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:75:22: info: range check proved (CVC4: 4 VC)
-array_applications.adb:76:16: medium: loop invariant might fail after first iteration, cannot prove A(J) >= 0
 array_applications.adb:76:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:76:32: info: index check proved (CVC4: 4 VC)
 array_applications.adb:76:38: medium: overflow check might fail
@@ -40,13 +40,13 @@ array_applications.adb:82:09: info: flow dependencies proved
 array_applications.adb:83:20: medium: postcondition might fail, cannot prove A(30) = 832040
 array_applications.adb:90:27: medium: overflow check might fail
 array_applications.adb:92:13: info: loop invariant initialization proved (CVC4: 5 VC)
+array_applications.adb:92:13: info: loop invariant preservation proved (CVC4: 5 VC)
 array_applications.adb:94:22: info: range check proved (CVC4: 4 VC)
 array_applications.adb:95:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:95:27: info: index check proved (CVC4: 4 VC)
 array_applications.adb:95:32: medium: overflow check might fail
 array_applications.adb:95:38: info: index check proved (CVC4: 4 VC)
 array_applications.adb:96:22: info: range check proved (CVC4: 4 VC)
-array_applications.adb:97:16: medium: loop invariant might fail after first iteration, cannot prove A(J) >= 0
 array_applications.adb:97:18: info: index check proved (CVC4: 4 VC)
 array_applications.adb:97:32: info: index check proved (CVC4: 4 VC)
 array_applications.adb:97:38: medium: overflow check might fail

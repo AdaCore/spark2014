@@ -1215,16 +1215,14 @@ package body Why.Atree.Sprint is
             else
                Print_Header ("predicate");
 
-               if Def /= Why_Empty then
-                  PL (O, " =");
+               PL (O, " =");
 
-                  --  Predicate can actually be substituted somewhere without
-                  --  its location. So, locations should also be printed here.
+               --  Predicate can actually be substituted somewhere without its
+               --  location. So, locations should also be printed here.
 
-                  P (O, Get_Location (Node));
+               P (O, Get_Location (Node));
+               Print_Node (+Def);
 
-                  Print_Node (+Def);
-               end if;
                Relative_Indent (O, -1);
                NL (O);
 

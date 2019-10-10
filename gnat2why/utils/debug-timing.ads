@@ -27,8 +27,8 @@
 with GNATCOLL.JSON; use GNATCOLL.JSON;
 
 private with Ada.Calendar;
-private with Ada.Containers.Doubly_Linked_Lists;
-private with Ada.Strings.Unbounded;
+private with Ada.Containers.Indefinite_Hashed_Maps;
+with Ada.Strings.Hash;
 
 package Debug.Timing is
 
@@ -41,13 +41,13 @@ package Debug.Timing is
                                      Msg   : String);
    --  Note how much time has elapsed since the last call of this procedure
    --  (or the call to Timing_Start if it is called for the first time).
-   --  Make sure S is unique if you want to call Timing_History.
+   --  Make sure Msg is unique if you want to call Timing_History.
 
    function Timing_History (Timer : Time_Token) return JSON_Value;
    --  Return the history so far as a mapping {string -> float} with
    --  elapsed phases (the string) and how long they took (the float).
 
-   procedure External_Timing (Timer : in out Time_Token;
+   procedure Register_Timing (Timer : in out Time_Token;
                               Msg   : String;
                               Time  : Duration)
    with Pre => Time >= 0.0;
@@ -65,20 +65,16 @@ private
    --  estimate timing, so the less-precise and potentially non-monotonic clock
    --  from Ada.Calendar is acceptable.
 
-   use Ada.Strings.Unbounded;
-
-   type Phase is record
-      Name   : Unbounded_String;
-      Length : Duration;
-   end record;
-   --  Note: Length might be negative when clock skew happens
-
-   package Histories is new Ada.Containers.Doubly_Linked_Lists
-     (Element_Type => Phase);
+   package Timings is new Ada.Containers.Indefinite_Hashed_Maps
+     (Key_Type        => String,
+      Element_Type    => Duration,
+      Hash            => Ada.Strings.Hash,
+      Equivalent_Keys => "=",
+      "="             => "=");
 
    type Time_Token is record
       Start   : Ada.Calendar.Time;
-      History : Histories.List;
+      History : Timings.Map;
    end record;
 
 end Debug.Timing;

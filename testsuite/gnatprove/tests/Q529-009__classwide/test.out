@@ -9,6 +9,8 @@ p_u_parent.ads:13:25: "memory accessed through objects of access type" is an In_
 p_u_parent.ads:13:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Set_X0" at p_i_parent.ads:11 (SPARK RM 6.1.6)
 p_u_parent.ads:16:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Input of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
 p_u_parent.ads:16:25: "memory accessed through objects of access type" is an In_Out of overriding subprogram, but it is not an Output of overridden subprogram "Compute" at p_i_parent.ads:14 (SPARK RM 6.1.6)
+run.adb:12:14: info: add a contract to analyze it separately from calling contexts
+run.adb:12:14: info: local subprogram "Compute_List" only analyzed in the context of calls
 run.adb:33:23: info: unrolling loop
 run.adb:34:10: info: analyzing call to "Compute_List" in context
 run.adb:34:10: info: in inlined body at line 17

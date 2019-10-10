@@ -22,6 +22,7 @@ task_and_po_arrays.ads:12:04: high: task "task_and_po_arrays.ts" is queueing
 task_and_so_arrays.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
 task_and_so_arrays.ads:10:04: high: multiple tasks might suspend on suspension object "task_and_so_arrays.sos" (SPARK RM 9(11))
 task_and_so_arrays.ads:10:04: high: with task "task_and_so_arrays.ts"
+task_in_empty_arrays.ads:16:16: subtype constraint cannot depend on variable input "X" (SPARK RM 4.4(2))
 task_type_array_single_so.adb:11:04: high: multiple tasks might suspend on suspension object "task_type_array_single_so.so" (SPARK RM 9(11))
 task_type_array_single_so.adb:11:04: high: with task "task_type_array_single_so.task_array"
 task_type_array_single_so.ads:7:14: medium: the task might terminate, which is not allowed in SPARK
@@ -42,3 +43,4 @@ two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t1"
 two_tasks_single_so.ads:7:09: high: with task "two_tasks_single_so.t2"
 two_tasks_single_so.ads:7:09: medium: the task might terminate, which is not allowed in SPARK
 two_tasks_single_so.ads:9:09: medium: the task might terminate, which is not allowed in SPARK
+gnatprove: error during flow analysis and proof

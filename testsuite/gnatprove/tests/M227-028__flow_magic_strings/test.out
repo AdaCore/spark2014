@@ -13,10 +13,8 @@ test.adb:39:11: info: flow dependencies proved
 test.adb:46:04: warning: analyzing unreferenced procedure "Test_04"
 test.adb:54:11: info: flow dependencies proved
 test.adb:57:17: high: "other.x" must be listed in the Depends aspect of "Test_05" (SPARK RM 6.1.4(14))
-test.adb:62:11: info: data dependencies proved
 test.adb:65:12: high: "other.x" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(14))
 test.adb:65:12: high: "other.y" must be listed in the Global aspect of "Test_06" (SPARK RM 6.1.4(14))
-test.adb:70:11: info: data dependencies proved
 test.adb:73:17: high: "other.x" must be listed in the Global aspect of "Test_07" (SPARK RM 6.1.4(14))
 test.adb:73:24: medium: overflow check might fail
 test.adb:73:38: medium: overflow check might fail

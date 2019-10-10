@@ -126,9 +126,6 @@ package SPARK_Util.Types is
    function Has_Record_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Record_Kind);
 
-   function Has_Pointer_Type (T : Entity_Id) return Boolean is
-     (Retysp_Kind (T) in Access_Kind);
-
    function Has_Private_Type (T : Entity_Id) return Boolean is
      (Retysp_Kind (T) in Private_Kind);
 
@@ -151,6 +148,12 @@ package SPARK_Util.Types is
    function Has_Double_Precision_Floating_Point_Type (T : Entity_Id)
                                                       return Boolean is
      (Is_Double_Precision_Floating_Point_Type (Retysp (T)));
+
+   function Has_Static_Predicate (T : Entity_Id) return Boolean is
+     (Einfo.Has_Static_Predicate (Retysp (T)));
+
+   function Static_Discrete_Predicate (T : Entity_Id) return List_Id is
+     (Einfo.Static_Discrete_Predicate (Retysp (T)));
 
    function Has_Static_Scalar_Subtype (T : Entity_Id) return Boolean;
    --  Returns whether type T has a scalar subtype with statically known
@@ -187,13 +190,13 @@ package SPARK_Util.Types is
    --     which has been marked if any. This is necessary as inherited DIC
    --     procedures may not have a body, or may not be marked.
 
-   function Get_Full_Type_Without_Checking (N : Node_Id) return Entity_Id
-   with Pre => Present (N);
-   --  Get the type of the given entity. This function looks through
-   --  private types and should be used with extreme care.
-   --  ??? This function should probably be removed. Its comment says it
-   --  applies to entities, while it may be called from flow on entities or
-   --  nodes of record type.
+   function Unchecked_Full_Type (E : Entity_Id) return Entity_Id
+   with Pre  => Is_Type (E),
+        Post => Is_Type (Unchecked_Full_Type'Result)
+                  and then
+                not Is_Private_Type (Unchecked_Full_Type'Result);
+   --  Get the type of the given entity. This function looks through private
+   --  types and should be used with extreme care.
 
    function Get_Iterable_Type_Primitive
      (Typ : Entity_Id;
@@ -247,6 +250,15 @@ package SPARK_Util.Types is
    --     checking the DIC, either because it has its own DIC, or because it
    --     is a tagged type which inherits a DIC which requires rechecking.
 
+   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
+     Pre => Present (Get_Initial_DIC_Procedure (E));
+   --  @param E type entity with a DIC (inherited or not)
+   --  @return True if the DIC expression depends on the current type instance.
+   --        If it depends on the type instance, it is considered as a
+   --        postcondtion of the default initialization of the private type
+   --        and is checked at declaration. Otherwise, it is considered as a
+   --        precondition of the default initialization, and is checked at use.
+
    function Is_Nouveau_Type (T : Entity_Id) return Boolean is
      (Etype (T) = T)
    with Pre => Is_Type (T);
@@ -284,6 +296,10 @@ package SPARK_Util.Types is
    --  @param E type
    --  @return True if initialization of objects of type E should be checked by
    --     proof.
+
+   function Is_Deep (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+   --  Returns True if the type passed as argument is deep
 
    --------------------------------
    -- Queries related to records --

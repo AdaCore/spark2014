@@ -84,7 +84,7 @@ module Static_Discrete_Base
     requires { in_range n }
     ensures { result = n /\ in_range n}
 
-  predicate dynamic_property [@inline] (f l x : rep_type) = in_range x
+  predicate dynamic_property (f l x : rep_type) = in_range x
 end
 
 module Static_Discrete
@@ -121,7 +121,7 @@ module Static_Modular_Base
     requires { in_range_int n }
     ensures { result = n /\ in_range_int n }
 
-  predicate dynamic_property_int [@inline] (f l x : int) = in_range_int x
+  predicate dynamic_property_int (f l x : int) = in_range_int x
 end
 
 module Rep_Proj_ltBVGen
@@ -175,7 +175,7 @@ module Static_Modular_lt64
   use _gnatprove_standard.BV64 as BV64
   type rep_type = BV64.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV64.t'int x
+  function rep_to_int (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -188,7 +188,7 @@ module Rep_Proj_ltBV64
   use _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -202,7 +202,7 @@ module Static_Modular_64
   use _gnatprove_standard.BV64 as BV64
   type rep_type = BV64.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV64.t'int x
+  function rep_to_int (x : rep_type) : int = BV64.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -213,7 +213,7 @@ module Rep_Proj_BV64
   use _gnatprove_standard.BV64
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -226,7 +226,7 @@ module Static_Modular_lt32
   use _gnatprove_standard.BV32 as BV32
   type rep_type = BV32.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV32.t'int x
+  function rep_to_int (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -239,7 +239,7 @@ module Rep_Proj_ltBV32
   use  _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -253,7 +253,7 @@ module Static_Modular_32
   use _gnatprove_standard.BV32 as BV32
   type rep_type = BV32.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV32.t'int x
+  function rep_to_int (x : rep_type) : int = BV32.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -264,7 +264,7 @@ module Rep_Proj_BV32
   use _gnatprove_standard.BV32
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -277,7 +277,7 @@ module Static_Modular_lt16
   use _gnatprove_standard.BV16 as BV16
   type rep_type = BV16.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV16.t'int x
+  function rep_to_int (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -290,7 +290,7 @@ module Rep_Proj_ltBV16
   use _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -304,7 +304,7 @@ module Static_Modular_16
   use _gnatprove_standard.BV16 as BV16
   type rep_type = BV16.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV16.t'int x
+  function rep_to_int (x : rep_type) : int = BV16.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -315,7 +315,7 @@ module Rep_Proj_BV16
   use _gnatprove_standard.BV16
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -328,7 +328,7 @@ module Static_Modular_lt8
   use _gnatprove_standard.BV8 as BV8
   type rep_type = BV8.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV8.t'int x
+  function rep_to_int (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -341,7 +341,7 @@ module Rep_Proj_ltBV8
   use _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_ltBVGen with
     type rep_type = rep_type,
@@ -355,7 +355,7 @@ module Static_Modular_8
   use _gnatprove_standard.BV8 as BV8
   type rep_type = BV8.t
 
-  function rep_to_int [@inline] (x : rep_type) : int = BV8.t'int x
+  function rep_to_int (x : rep_type) : int = BV8.t'int x
 
   clone export Static_Modular_Base with
     type rep_type = rep_type,
@@ -366,7 +366,7 @@ module Rep_Proj_BV8
   use _gnatprove_standard.BV8
   type rep_type = t
 
-  function rep_to_int [@inline] (x : rep_type) : int = t'int x
+  function rep_to_int (x : rep_type) : int = t'int x
 
   clone export Rep_Proj_BVGen with
     type rep_type = rep_type,
@@ -385,8 +385,8 @@ module Dynamic_Discrete
 
   meta "model_projection" function base_to_rep
 
-  function to_rep [@inline] (x : t) : rep_type = base_to_rep x
-  function of_rep [@inline] (x : rep_type) : t = base_of_rep x
+  function to_rep (x : t) : rep_type = base_to_rep x
+  function of_rep (x : rep_type) : t = base_of_rep x
 
   val to_rep (x : t) : rep_type
   ensures { result = base_to_rep x }
@@ -770,7 +770,7 @@ module Static_Fixed_Point
     requires { in_range n }
     ensures { result = n }
 
-  predicate dynamic_property [@inline] (f l x : __fixed) = in_range x
+  predicate dynamic_property (f l x : __fixed) = in_range x
 end
 
 module Rep_Proj_Fixed
@@ -802,8 +802,8 @@ module Dynamic_Fixed_Point
 
   meta "model_projection" function base_to_rep
 
-  function to_fixed [@inline] (x : t) : __fixed = base_to_rep x
-  function of_fixed [@inline] (x : __fixed) : t = base_of_rep x
+  function to_fixed (x : t) : __fixed = base_to_rep x
+  function of_fixed (x : __fixed) : t = base_of_rep x
 
   clone export Fixed_Point_Base
       with type t = t
@@ -878,7 +878,7 @@ module Static_Floating_Point
     requires { in_range n }
     ensures { result = n /\ is_finite n }
 
-  predicate dynamic_property [@inline] (f l x : rep_type) = in_range x
+  predicate dynamic_property (f l x : rep_type) = in_range x
 end
 
 module Static_Float32
@@ -936,8 +936,8 @@ module Dynamic_Floating_Point
   val base_of_rep (x : rep_type) : t
     ensures  { base_to_rep (result) = x }
 
-  function to_rep [@inline] (x : t) : rep_type = base_to_rep x
-  function of_rep [@inline] (x : rep_type) : t = base_of_rep x
+  function to_rep (x : t) : rep_type = base_to_rep x
+  function of_rep (x : rep_type) : t = base_of_rep x
 
   predicate dynamic_property (first last n : rep_type)
 
@@ -1200,13 +1200,13 @@ module Array_Logical_Op_Generic_Axioms
 
    val xorb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
    ensures { result = xorb a af al b bf bl }
-   
+
    val andb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
    ensures { result = andb a af al b bf bl }
-   
+
    val orb (a : map) (af : Index.t) (al : Index.t) (b : map) (bf : Index.t) (bl : Index.t) : map
    ensures { result = orb a af al b bf bl }
-   
+
    val notb (a : map) (af : Index.t) (al : Index.t) : map
    ensures { result = notb a af al }
 end
@@ -1214,7 +1214,7 @@ end
 module Standard_Array_Logical_Op_Axioms
   use bool.Bool
 
-  function bool_id [@inline] (b : bool) : bool = b
+  function bool_id (b : bool) : bool = b
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = bool,
@@ -1230,8 +1230,8 @@ module Subtype_Array_Logical_Op_Axioms
    function to_int component_type : int
    function of_int int : component_type
 
-  function to_bool [@inline] (x : component_type) : bool = Boolean.of_int (to_int (x))
-  function of_bool [@inline] (x : bool) : component_type = of_int (Boolean.to_int (x))
+  function to_bool (x : component_type) : bool = Boolean.of_int (to_int (x))
+  function of_bool (x : bool) : component_type = of_int (Boolean.to_int (x))
 
   clone export Array_Logical_Op_Generic_Axioms with
      type component_type = component_type,
@@ -1250,7 +1250,7 @@ module Unconstr_Array
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int [@inline] index_rep_type : int
+  function rep_to_int index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1282,11 +1282,11 @@ module Unconstr_Array
   function first [@model_trace:'First] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
-  
+
   function last [@model_trace:'Last] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
-  
+
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
@@ -1338,7 +1338,7 @@ module Unconstr_Array_2
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int [@inline] index_rep_type : int
+  function rep_to_int index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1350,7 +1350,7 @@ module Unconstr_Array_2
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 [@inline] index_rep_type_2 : int
+  function rep_to_int_2 index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1396,11 +1396,11 @@ module Unconstr_Array_2
   function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
-  
+
   function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
-  
+
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
@@ -1410,11 +1410,11 @@ module Unconstr_Array_2
   function first_2 [@model_trace:'First(2)]  (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
-  
+
   function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
-  
+
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
@@ -1469,7 +1469,7 @@ module Unconstr_Array_3
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int [@inline] index_rep_type : int
+  function rep_to_int index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1481,7 +1481,7 @@ module Unconstr_Array_3
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 [@inline] index_rep_type_2 : int
+  function rep_to_int_2 index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1493,7 +1493,7 @@ module Unconstr_Array_3
   type index_rep_type_3
 
   function to_rep_3 index_base_type_3 : index_rep_type_3
-  function rep_to_int_3 [@inline] index_rep_type_3 : int
+  function rep_to_int_3 index_rep_type_3 : int
 
   meta "model_projection" function to_rep_3
 
@@ -1550,11 +1550,11 @@ module Unconstr_Array_3
   function first [@model_trace:'First(1)]  (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
-  
+
   function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
-  
+
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
@@ -1564,11 +1564,11 @@ module Unconstr_Array_3
   function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
-  
+
   function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
-  
+
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
@@ -1578,11 +1578,11 @@ module Unconstr_Array_3
   function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
   val first_3 (a : __t) : index_rep_type_3
   ensures { result = first_3 a }
-  
+
   function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
   val last_3 (a : __t) : index_rep_type_3
   ensures { result = last_3 a }
-  
+
   function length_3 (a : __t) : int =
     if index_rep_le_3 (first_3 a) (last_3 a) then
       rep_to_int_3 (last_3 a) - rep_to_int_3 (first_3 a) + 1 else 0
@@ -1597,7 +1597,7 @@ module Unconstr_Array_3
     I3.dynamic_property range_first3 range_last3 f3 l3
 
   val constant value__size : int
-  
+
   val constant object__size : int
 
   val constant component__size : int
@@ -1642,7 +1642,7 @@ module Unconstr_Array_4
   type index_rep_type
 
   function to_rep index_base_type : index_rep_type
-  function rep_to_int [@inline] index_rep_type : int
+  function rep_to_int index_rep_type : int
 
   meta "model_projection" function to_rep
 
@@ -1654,7 +1654,7 @@ module Unconstr_Array_4
   type index_rep_type_2
 
   function to_rep_2 index_base_type_2 : index_rep_type_2
-  function rep_to_int_2 [@inline] index_rep_type_2 : int
+  function rep_to_int_2 index_rep_type_2 : int
 
   meta "model_projection" function to_rep_2
 
@@ -1666,7 +1666,7 @@ module Unconstr_Array_4
   type index_rep_type_3
 
   function to_rep_3 index_base_type_3 : index_rep_type_3
-  function rep_to_int_3 [@inline] index_rep_type_3 : int
+  function rep_to_int_3 index_rep_type_3 : int
 
   meta "model_projection" function to_rep_3
 
@@ -1678,7 +1678,7 @@ module Unconstr_Array_4
   type index_rep_type_4
 
   function to_rep_4 index_base_type_4 : index_rep_type_4
-  function rep_to_int_4 [@inline] index_rep_type_4 : int
+  function rep_to_int_4 index_rep_type_4 : int
 
   meta "model_projection" function to_rep_4
 
@@ -1748,11 +1748,11 @@ module Unconstr_Array_4
   function first [@model_trace:'First(1)] (a : __t) : index_rep_type = to_rep (I1.first a.rt)
   val first (a : __t) : index_rep_type
   ensures { result = first a }
-  
+
   function last [@model_trace:'Last(1)] (a : __t) : index_rep_type = to_rep (I1.last a.rt)
   val last (a : __t) : index_rep_type
   ensures { result = last a }
-  
+
   function length (a : __t) : int =
     if index_rep_le (first a) (last a) then
       rep_to_int (last a) - rep_to_int (first a) + 1 else 0
@@ -1762,11 +1762,11 @@ module Unconstr_Array_4
   function first_2 [@model_trace:'First(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.first a.rt_2)
   val first_2 (a : __t) : index_rep_type_2
   ensures { result = first_2 a }
-  
+
   function last_2 [@model_trace:'Last(2)] (a : __t) : index_rep_type_2 = to_rep_2 (I2.last a.rt_2)
   val last_2 (a : __t) : index_rep_type_2
   ensures { result = last_2 a }
-  
+
   function length_2 (a : __t) : int =
     if index_rep_le_2 (first_2 a) (last_2 a) then
       rep_to_int_2 (last_2 a) - rep_to_int_2 (first_2 a) + 1 else 0
@@ -1776,11 +1776,11 @@ module Unconstr_Array_4
   function first_3 [@model_trace:'First(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.first a.rt_3)
   val first_3 (a : __t) : index_rep_type_3
   ensures { result = first_3 a }
-  
+
   function last_3 [@model_trace:'Last(3)] (a : __t) : index_rep_type_3 = to_rep_3 (I3.last a.rt_3)
   val last_3 (a : __t) : index_rep_type_3
   ensures { result = last_3 a }
-  
+
   function length_3 (a : __t) : int =
     if index_rep_le_3 (first_3 a) (last_3 a) then
       rep_to_int_3 (last_3 a) - rep_to_int_3 (first_3 a) + 1 else 0
@@ -1790,11 +1790,11 @@ module Unconstr_Array_4
   function first_4 [@model_trace:'First(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.first a.rt_4)
   val first_4 (a : __t) : index_rep_type_4
   ensures { result = first_4 a }
-  
+
   function last_4 [@model_trace:'Last(4)] (a : __t) : index_rep_type_4 = to_rep_4 (I4.last a.rt_4)
   val last_4 (a : __t) : index_rep_type_4
   ensures { result = last_4 a }
-  
+
   function length_4 (a : __t) : int =
     if index_rep_le_4 (first_4 a) (last_4 a) then
       rep_to_int_4 (last_4 a) - rep_to_int_4 (first_4 a) + 1 else 0

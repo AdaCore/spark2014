@@ -32,9 +32,16 @@ package SPARK_Util.Subprograms is
    -- General Queries related to subprograms --
    --------------------------------------------
 
+   type Analysis_Status is
+     (Not_In_Analyzed_Files,
+      Not_The_Analyzed_Subprogram,
+      Contextually_Analyzed,
+      Analyzed);
+   --  Reasons for analyzing or not a subprogram/package
+
    function Analysis_Requested
      (E            : Entity_Id;
-      With_Inlined : Boolean) return Boolean
+      With_Inlined : Boolean) return Analysis_Status
    with Pre => Ekind (E) in Entry_Kind
                           | E_Function
                           | E_Package
@@ -43,10 +50,10 @@ package SPARK_Util.Subprograms is
    --  @param E entity for which requesting an analysis is meaningful, e.g.
    --     using the GPS contextual menu.
    --  @param With_Inlined True if inlined subprograms should be analyzed
-   --  @return True iff subprogram, task or package E must be analyzed,
+   --  @return Analyzed iff subprogram, task or package E must be analyzed,
    --     because it belongs to one of the analyzed units, and either the
    --     complete unit is analyzed, or E is the specific entity whose analysis
-   --     was requested.
+   --     was requested. Otherwise return the reason why it is not analyzed.
    --
    --  With_Inlined is set to False in proof to avoid analyzing when possible
    --  subprograms that are inlined, and to True in flow analysis to always
@@ -86,11 +93,17 @@ package SPARK_Util.Subprograms is
    --
    --     Local (X);
 
+   function Analysis_Requested
+     (E            : Entity_Id;
+      With_Inlined : Boolean) return Boolean
+   is (Analysis_Requested (E, With_Inlined) = Analyzed);
+   --  Variant of Analysis_Requested that ignores the reason for no analysis
+
    function Containing_Protected_Type (E : Entity_Id) return Entity_Id
    with Pre => (case Ekind (E) is
                    when E_Component    |
                         E_Discriminant =>
-                      Ekind (Scope (E)) in Protected_Kind,
+                      Is_Protected_Type (Scope (E)),
 
                    when E_Function  |
                         E_Procedure |
@@ -100,7 +113,7 @@ package SPARK_Util.Subprograms is
 
                    when others =>
                       False),
-   Post => Ekind (Containing_Protected_Type'Result) in Protected_Kind;
+   Post => Is_Protected_Type (Containing_Protected_Type'Result);
    --  @param E a subprogram or entry or field which is part of a protected
    --            type
    --  @return the enclosing protected type
@@ -322,6 +335,9 @@ package SPARK_Util.Subprograms is
    --  @param callable entities
    --  @return True iff Calls include Ada.Task_Identification.Current_Task
 
+   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean;
+   --  Return true if E is a borrowing traversal function
+
    function Is_Error_Signaling_Procedure (E : Entity_Id) return Boolean is
      (No_Return (E)
       and then
@@ -360,6 +376,10 @@ package SPARK_Util.Subprograms is
    --     of modulus smaller or equal to 2 ** 64, with no functional contract
    --     (precondition, postcondition or contract cases).
 
+   function Is_Traversal_Function (E : Entity_Id) return Boolean;
+   --  @param E any entity
+   --  @return True iff E is a traversal function
+
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);
    --  @param E any subprogram
@@ -379,6 +399,19 @@ package SPARK_Util.Subprograms is
    --  Note: this check is equivalent to rules enforced by GNAT and is more
    --  restrictive than Ada RM (which allows pretty much every subprogram to
    --  be main). See Ada 95 Quality and Style Guide, 7.1.4 for details.
+
+   generic
+      with procedure Process (E : Entity_Id; Kind : Formal_Kind);
+   procedure Process_Referenced_Entities (E : Entity_Id)
+   with Pre => Ekind (E) in E_Function       |
+                            E_Package        |
+                            E_Procedure      |
+                            E_Entry          |
+                            E_Task_Type      |
+                            E_Protected_Type;
+   --  Retrieve the set of entities referenced from an entity's spec and body.
+   --  It uses flow analysis and ignores entities which are opaque for proof
+   --  (abstract states with invisible constituents and entities not in SPARK).
 
    function Subprogram_Is_Ignored_For_Proof (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function  |

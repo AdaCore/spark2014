@@ -1,0 +1,2 @@
+main.adb:4:11: info: ceiling priority protocol is respected (CVC4: 1 VC)
+main.adb:6:10: high: "J" must be listed in the Global aspect of "Main" (SPARK RM 6.1.4(14))

@@ -5,7 +5,7 @@
 ****************
 
 This chapter describes a simple use of the |SPARK| toolset on a program written
-completely in |SPARK|, within the GPS integrated development environment. All
+completely in |SPARK|, within the GNAT Studio integrated development environment. All
 the tools may also be run from the command-line, see :ref:`Command Line
 Invocation`.
 
@@ -38,7 +38,7 @@ that the code should be compiled at maximum warning level (switch
 ``-gnatwa``). GNAT projects are used by most tools in the |GNAT Pro| toolsuite;
 for in-depth documentation of this technology, consult the |GNAT Pro|
 User's Guide. Documentation and examples for the |SPARK| language and tools are
-also available via the :menuselection:`Help --> SPARK` menu in GPS.
+also available via the :menuselection:`Help --> SPARK` menu in GNAT Studio.
 
 The obvious specification of ``Linear_Search`` is given
 in file ``linear_search.ads``, where
@@ -112,7 +112,7 @@ initialized, thus violating the initialization policy of |SPARK|:
 
 .. image:: /static/search_flow_error.png
 
-Inside the GPS editor, we can click on the icon, either on the left of the
+Inside the GNAT Studio editor, we can click on the icon, either on the left of the
 message, or on line 23 in file ``linear_search.adb``, to show the path on which
 ``Res.At_Index`` is not initialized:
 
@@ -236,7 +236,7 @@ compiling and running the test program:
 .. note::
 
    We use above the command-line interface to compile and run the test program
-   ``test_search.adb``. You can do the same inside GPS by selecting the menu
+   ``test_search.adb``. You can do the same inside GNAT Studio by selecting the menu
    :menuselection:`Project --> Properties` and inside the panel
    :guilabel:`Main` of folder :guilabel:`Sources`, add ``test_search.adb`` as a
    main file. Then, click :guilabel:`OK`. To generate the ``test_search``
@@ -271,7 +271,7 @@ run-time checks, an error is reported when running the test program:
 .. note::
 
    We use above the command-line interface to add compilation switch ``-gnata``
-   and force recompilation with switch ``-f``. You can do the same inside GPS
+   and force recompilation with switch ``-f``. You can do the same inside GNAT Studio
    by selecting the menu :menuselection:`Project --> Properties` and inside the
    panel :guilabel:`Ada` of the subfolder :guilabel:`Switches` of folder
    :guilabel:`Build`, select the checkbox :guilabel:`Enable assertions`. Then,
@@ -296,7 +296,7 @@ with the switch ``-gnateE``:
 It shows here that the guards of the first and second contract cases hold at
 the same time. This failure in annotations can be debugged with ``gdb`` like a
 failure in the code (provided the program was compiled with appropriate
-switches, like ``-g -O0``). The stack trace inside GPS shows that the error
+switches, like ``-g -O0``). The stack trace inside GNAT Studio shows that the error
 occurs on the first call to ``Search`` in the test program:
 
 .. image:: /static/search_gdb.png
@@ -380,7 +380,7 @@ Prove File` menu.
    selected (the default). You can switch to the advanced user profile in menu
    :menuselection:`Edit --> Preferences --> SPARK`, by changing the value of
    :guilabel:`User profile` from ``Basic`` to ``Advanced``. See :ref:`Running
-   GNATprove from GPS` for details.
+   GNATprove from GNAT Studio` for details.
 
 We use the default settings and click on :menuselection:`Execute`. It completes
 in a few seconds, with a message stating that some checks could not be proved:
@@ -501,7 +501,7 @@ and click on :menuselection:`Execute`:
 
 This runs |GNATprove| only on the checks that originate from line 35, in a
 special mode which considers separately individual execution paths if
-needed. The check is still not proved, but GPS now displays an icon, either on
+needed. The check is still not proved, but GNAT Studio now displays an icon, either on
 the left of the message, or on line 35 in file ``linear_search.ads``, to show the path
 on which the contract case is not proved:
 

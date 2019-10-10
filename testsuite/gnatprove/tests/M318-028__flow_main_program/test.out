@@ -1,3 +1,5 @@
+main.adb:3:13: info: add a contract to analyze it separately from calling contexts
+main.adb:3:13: info: local subprogram "Return_5" only analyzed in the context of calls
 main.adb:11:27: info: unrolling loop
 main.adb:12:20: info: overflow check proved (CVC4: 5 VC)
 main2.adb:3:10: medium: "Some_Package.State" might not be initialized after elaboration of main program "Main2"

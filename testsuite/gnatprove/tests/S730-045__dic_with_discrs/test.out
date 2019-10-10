@@ -1,0 +1,23 @@
+test_2.ads:3:09: info: predicate check proved on default value (CVC4: 1 VC)
+test_dic.adb:7:12: medium: default initial condition might fail
+test_dic.adb:12:12: medium: default initial condition might fail
+test_dic.adb:13:42: info: predicate check proved (CVC4: 1 VC)
+test_dic.adb:17:12: medium: default initial condition might fail
+test_dic.adb:43:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+test_dic.adb:43:04: info: initialization of "X1" proved
+test_dic.adb:43:13: info: range check proved (CVC4: 1 VC)
+test_dic.adb:44:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+test_dic.adb:44:04: info: initialization of "X2" proved
+test_dic.adb:44:13: info: range check proved (CVC4: 1 VC)
+test_dic.adb:45:04: info: initialization of "X3" proved
+test_dic.adb:45:13: info: range check proved (CVC4: 1 VC)
+test_dic.adb:46:04: info: initialization of "X4" proved
+test_dic.adb:46:13: info: range check proved (CVC4: 1 VC)
+test_dic.adb:47:04: info: initialization of "X5" proved
+test_dic.adb:47:13: info: range check proved (CVC4: 1 VC)
+use_test.adb:3:04: info: default initial condition proved (CVC4: 1 VC; Trivial: 1 VC)
+use_test.adb:3:04: info: initialization of "X" proved
+use_test.adb:4:04: info: initialization of "Y" proved
+use_test.adb:4:04: medium: default initial condition might fail (e.g. when Y = (First => 1, Last => 1, Index => ?) and Y'Constrained = False)
+use_test.adb:4:22: info: range check proved (CVC4: 1 VC)
+use_test.adb:4:25: info: range check proved (CVC4: 1 VC)

@@ -28,6 +28,8 @@ with Ada.Strings.Unbounded;              use Ada.Strings.Unbounded;
 with Ada.Strings;                        use Ada.Strings;
 with Common_Iterators;                   use Common_Iterators;
 with Debug;
+with Flow_Dependency_Maps;               use Flow_Dependency_Maps;
+with Flow_Generated_Globals.Phase_2;     use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                    use Flow_Refinement;
 with Flow_Types;                         use Flow_Types;
 with Flow_Utility;                       use Flow_Utility;
@@ -48,29 +50,40 @@ package body SPARK_Util.Subprograms is
 
    function Analysis_Requested
      (E            : Entity_Id;
-      With_Inlined : Boolean) return Boolean is
+      With_Inlined : Boolean) return Analysis_Status is
    begin
-      return
-        --  Either the analysis is requested for the complete unit, or if it is
-        --  requested for a specific subprogram/task, check whether it is E.
+      --  Either the analysis is requested for the complete unit, or if it is
+      --  requested for a specific subprogram/task, check whether it is E.
 
-        Is_In_Analyzed_Files (E) and then
-        (
-         --  Always analyze the subprogram if analysis was specifically
-         --  requested for it.
-         Is_Requested_Subprogram_Or_Task (E)
+      if not Is_In_Analyzed_Files (E) then
+         return Not_In_Analyzed_Files;
 
-         --  Anlways analyze if With_Inlined is True. Also, always analyze
-         --  unreferenced subprograms, as they are likely to correspond to
-         --  an intermediate stage of development. Otherwise, only analyze
-         --  subprograms that are not inlined.
+      --  Always analyze the subprogram if analysis was specifically requested
+      --  for it, and not other subprograms in that case.
 
-         or else (Gnat2Why_Args.Limit_Subp = Null_Unbounded_String
-                    and then
-                    (With_Inlined
-                       or else not Referenced (E)
-                       or else not Is_Local_Subprogram_Always_Inlined (E))));
+      elsif Is_Requested_Subprogram_Or_Task (E) then
+         return Analyzed;
 
+      elsif Gnat2Why_Args.Limit_Subp /= Null_Unbounded_String then
+         return Not_The_Analyzed_Subprogram;
+
+      --  Always analyze if With_Inlined is True. Also, always analyze
+      --  unreferenced subprograms, as they are likely to correspond to
+      --  an intermediate stage of development. Otherwise, only analyze
+      --  subprograms that are not inlined.
+
+      elsif With_Inlined then
+         return Analyzed;
+
+      elsif not Referenced (E) then
+         return Analyzed;
+
+      elsif Is_Local_Subprogram_Always_Inlined (E) then
+         return Contextually_Analyzed;
+
+      else
+         return Analyzed;
+      end if;
    end Analysis_Requested;
 
    -------------------------------
@@ -81,7 +94,7 @@ package body SPARK_Util.Subprograms is
       Scop : Node_Id := Scope (E);
    begin
       while Present (Scop) loop
-         if Ekind (Scop) in Protected_Kind then
+         if Is_Protected_Type (Scop) then
             return Scop;
          end if;
          Scop := Scope (Scop);
@@ -992,6 +1005,13 @@ package body SPARK_Util.Subprograms is
         and then List_Containing (Decl) = Declarations (Par);
    end In_Body_Declarations;
 
+   -------------------------------------
+   -- Is_Borrowing_Traversal_Function --
+   -------------------------------------
+
+   function Is_Borrowing_Traversal_Function (E : Entity_Id) return Boolean is
+      (Is_Traversal_Function (E) and then not Is_Access_Constant (Etype (E)));
+
    ----------------------------------------
    -- Is_Invisible_Dispatching_Operation --
    ----------------------------------------
@@ -1138,6 +1158,28 @@ package body SPARK_Util.Subprograms is
       end;
    end Is_Simple_Shift_Or_Rotate;
 
+   ---------------------------
+   -- Is_Traversal_Function --
+   ---------------------------
+
+   function Is_Traversal_Function (E : Entity_Id) return Boolean is
+   begin
+      return Ekind (E) = E_Function
+
+        --  A function is said to be a traversal function if the result type of
+        --  the function is an anonymous access-to-object type,
+
+        and then Is_Anonymous_Access_Type (Etype (E))
+
+        --  the function has at least one formal parameter,
+
+        and then Present (First_Formal (E))
+
+        --  and the function's first parameter is of an access type.
+
+        and then Is_Access_Type (Retysp (Etype (First_Formal (E))));
+   end Is_Traversal_Function;
+
    ------------------------------------
    -- Is_Volatile_For_Internal_Calls --
    ------------------------------------
@@ -1188,6 +1230,117 @@ package body SPARK_Util.Subprograms is
                     raise Program_Error
              );
    end Might_Be_Main;
+
+   ---------------------------------
+   -- Process_Referenced_Entities --
+   ---------------------------------
+
+   procedure Process_Referenced_Entities (E : Entity_Id) is
+
+      procedure Process_All
+        (S    : Flow_Types.Flow_Id_Sets.Set;
+         Kind : Formal_Kind);
+      --  Process entities represented in S (as Flow_Ids)
+
+      -----------------
+      -- Process_All --
+      -----------------
+
+      procedure Process_All
+        (S    : Flow_Types.Flow_Id_Sets.Set;
+         Kind : Formal_Kind)
+      is
+      begin
+         for F of S loop
+            case F.Kind is
+               when Direct_Mapping =>
+                  Process (Get_Direct_Mapping_Id (F), Kind);
+
+               when Magic_String =>
+                  pragma Assert (Is_Opaque_For_Proof (F));
+
+               when others =>
+                  raise Program_Error;
+            end case;
+         end loop;
+      end Process_All;
+
+   begin
+      --  Process global variables read or written in E
+
+      case Ekind (E) is
+         when E_Entry
+            | E_Function
+            | E_Procedure
+            | E_Task_Type
+         =>
+            declare
+               Out_Ids    : Flow_Types.Flow_Id_Sets.Set;
+               In_Ids     : Flow_Types.Flow_Id_Sets.Set;
+               In_Out_Ids : Flow_Types.Flow_Id_Sets.Set;
+
+            begin
+               --  Also get references to global constants with variable inputs
+               --  even if they are constants in Why.
+
+               Flow_Utility.Get_Proof_Globals (Subprogram      => E,
+                                               Reads           => In_Ids,
+                                               Writes          => Out_Ids,
+                                               Erase_Constants => False);
+
+               In_Out_Ids := Flow_Types.Flow_Id_Sets.Intersection
+                 (Out_Ids, In_Ids);
+               In_Ids.Difference (In_Out_Ids);
+               Out_Ids.Difference (In_Out_Ids);
+
+               Process_All (In_Ids, E_In_Parameter);
+               Process_All (In_Out_Ids, E_In_Out_Parameter);
+               Process_All (Out_Ids, E_Out_Parameter);
+            end;
+
+         when E_Package =>
+            if not Is_Wrapper_Package (E) then
+
+               --  For packages, we use the Initializes aspect to get the
+               --  variables referenced during elaboration.
+               --  We don't do it for wrapper packages as Initializes are not
+               --  generated for them.
+
+               declare
+                  Scop : constant Flow_Scope :=
+                    Get_Flow_Scope (Package_Spec (E));
+                  --  The scope of where the package is declared, not of the
+                  --  package itself (because from the package itself we would
+                  --  still see the constants that capture expressions of the
+                  --  generic IN parameters).
+
+                  Init_Map : constant Dependency_Maps.Map :=
+                    Parse_Initializes (E, Scop);
+
+               begin
+                  for RHS of Init_Map loop
+                     for Input of RHS loop
+
+                        --  Expand Abstract_State if any
+
+                        declare
+                           Reads : constant Flow_Id_Sets.Set :=
+                             Expand_Abstract_State (Input);
+                        begin
+
+                           --  Process the entity associated with the Flow_Ids
+
+                           Process_All (Reads, E_In_Parameter);
+                        end;
+                     end loop;
+                  end loop;
+               end;
+            end if;
+
+         when others =>
+            raise Program_Error;
+      end case;
+   end Process_Referenced_Entities;
 
    ------------------------
    -- Subp_Body_Location --

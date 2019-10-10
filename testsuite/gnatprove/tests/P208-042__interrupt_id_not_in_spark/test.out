@@ -1,6 +1,6 @@
 interrupt_handler_with_current_task.ads:5:04: warning: pragma "Unreserve_All_Interrupts" ignored (not yet supported)
 interrupt_handler_with_current_task.ads:12:30: "Handle" is not allowed in SPARK
 interrupt_handler_with_current_task.ads:12:30: violation of aspect SPARK_Mode at line 3
-interrupt_handler_with_current_task.ads:12:38: "Bad_Interrupt_ID_Ptr" is not allowed in SPARK (due to attribute "Access")
+interrupt_handler_with_current_task.ads:12:38: "Bad_Interrupt_ID_Ptr" is not allowed in SPARK (due to borrow or observe of an expression which is not part of stand-alone object or parameter)
 interrupt_handler_with_current_task.ads:12:38: violation of aspect SPARK_Mode at line 3
 gnatprove: error during flow analysis and proof

@@ -154,39 +154,6 @@ package Why.Gen.Records is
    --  Generate a record aggregate of ada type Ty from the association in
    --  Discr_Assocs and Field_Assocs.
 
-   function New_Is_Constrained_Access
-     (Ada_Node : Node_Id := Empty;
-      Domain   : EW_Domain;
-      Name     : W_Expr_Id;
-      Ty       : Entity_Id)
-      return W_Expr_Id;
-   --  Generate a Why3 expression that corresponds to an access to the
-   --  additional field introduced in records for the 'Constrained attribute.
-
-   function New_Record_Attributes_Update
-     (Ada_Node  : Node_Id := Empty;
-      Domain    : EW_Domain;
-      Name      : W_Expr_Id;
-      From_Expr : W_Expr_Id := Why_Empty;
-      Is_Cst    : Boolean := False;
-      Ty        : Entity_Id)
-      return W_Expr_Id;
-   --  Generate a Why3 expression that corresponds to an update to the
-   --  additional fields introduced in records for the 'Constrained and 'Tag
-   --  attributes.
-   --  @param Ada_Node ada node associated to the object
-   --  @param Domain domain of the expression
-   --  @param Name name of the record object to update
-   --  @param From_Expr expression from which the attributes should be taken
-   --  if present. Otherwise, attributes are initialized to the default value
-   --  of their type, that is, 'Constrained is false for unconstrained types
-   --  with default discriminants and 'Tag is the type's tag for specific
-   --  tagged types.
-   --  @param Is_Cst True if Name is a constant (its 'Constrained attribute
-   --   should be True).
-   --  @result Name updated with values of From_Expr attributes if present and
-   --  default ones otherwise.
-
    function New_Discriminants_Access
      (Ada_Node : Node_Id := Empty;
       Domain   : EW_Domain;
@@ -233,6 +200,24 @@ package Why.Gen.Records is
       return W_Expr_Id;
    --  Generate a Why3 expression that corresponds to an access to the
    --  additional field introduced for records' tag.
+
+   function New_Tag_Update
+     (Ada_Node  : Node_Id := Empty;
+      Domain    : EW_Domain;
+      Name      : W_Expr_Id;
+      From_Expr : W_Expr_Id := Why_Empty;
+      Ty        : Entity_Id)
+      return W_Expr_Id;
+   --  Generate a Why3 expression that corresponds to an update to the
+   --  additional field introduced in records for the 'Tag attribute.
+   --  @param Ada_Node ada node associated to the object
+   --  @param Domain domain of the expression
+   --  @param Name name of the record object to update
+   --  @param From_Expr expression from which the attribute should be taken
+   --  if present. Otherwise, tag attribute is initialized to the default value
+   --  of Ty, that is, 'Tag is the Ty's tag for specific tagged types.
+   --  @result Name updated with values of From_Expr attribute if present and
+   --     default one otherwise.
 
    function Insert_Subtype_Discriminant_Check
      (Ada_Node : Node_Id;

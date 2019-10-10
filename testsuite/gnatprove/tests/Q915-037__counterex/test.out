@@ -4,4 +4,5 @@ counterex.adb:13:17: medium: overflow check might fail (e.g. when V = 2147483638
 counterexample expected for check at counterex.adb:3
   trace at counterex.adb:1 --> V = 1
   trace at counterex.adb:3 --> V = 300
+  trace at counterex.adb:8 --> V = 1
   trace at counterex.adb:9 --> V = 300

@@ -11,9 +11,9 @@ assign_all_arr_incr_unk.adb:5:22: medium: overflow check might fail [CWE 190] (e
 assign_arr.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr.ads:3 should mention Y in a precondition]
 assign_arr.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
-assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 120] (e.g. when X'First = 2)
+assign_arr_unk.adb:4:10: medium: array index check might fail [CWE 120] (e.g. when X'First = 2 and Y = -1)
 assign_arr_unk.adb:4:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
-assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 120] (e.g. when X'Last = 1)
+assign_arr_unk.adb:5:10: medium: array index check might fail [CWE 120] (e.g. when X'Last = 1 and Y = 1)
 assign_arr_unk.adb:5:18: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at assign_arr_unk.ads:3 should mention Y in a precondition]
 assign_arr_unk.ads:3:22: medium: "X" might not be initialized in "Assign" [CWE 457]
 assign_pos.adb:1:23: info: initialization of "X" proved
@@ -72,18 +72,20 @@ case_assign.adb:10:19: medium: overflow check might fail [CWE 190] (e.g. when Y 
 case_assign.ads:3:21: info: initialization of "X" proved
 concat.adb:2:34: medium: "Z" might not be initialized in "Concat" [CWE 457]
 concat.adb:5:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:6:10: medium: array index check might fail [CWE 120] (e.g. when K = 0 and Z'First = 1) [possible explanation: loop at line 5 should mention K in a loop invariant]
+concat.adb:6:10: medium: array index check might fail [CWE 120] (e.g. when J = 0 and K = 0 and Z'First = 1) [possible explanation: loop at line 5 should mention K in a loop invariant]
 concat.adb:7:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [possible explanation: loop at line 5 should mention K in a loop invariant]
 concat.adb:9:21: info: cannot unroll loop (too many loop iterations)
-concat.adb:10:10: medium: array index check might fail [CWE 120] (e.g. when K = -1 and Z'First = 0) [possible explanation: loop at line 9 should mention K in a loop invariant]
+concat.adb:10:10: medium: array index check might fail [CWE 120] (e.g. when J = 0 and K = -1 and Z'First = 0) [possible explanation: loop at line 9 should mention K in a loop invariant]
 concat.adb:11:14: medium: overflow check might fail [CWE 190] (e.g. when K = Integer'Last) [possible explanation: loop at line 9 should mention K in a loop invariant]
 concat_op.adb:2:37: info: initialization of "Z" proved
-concat_op.adb:4:06: medium: length check might fail (e.g. when Z'First = 1 and Z'Last = 0) [possible explanation: subprogram at line 2 should mention Z'Length or Z'First or Z'Last in a precondition]
+concat_op.adb:4:06: medium: length check might fail (e.g. when X = (others => 1) and Z'First = 1 and Z'Last = 0) [possible explanation: subprogram at line 2 should mention Z'Length or Z'First or Z'Last in a precondition]
 concat_op.adb:4:11: medium: range check might fail [CWE 682] (e.g. when X = (others => 0) and X'First = 2147483647 and X'Last = 2147483647 and Y = (others => 0) and Y'First = 0 and Y'Last = 0) [possible explanation: subprogram at line 2 should mention X and Y in a precondition]
 cond_assign.adb:1:24: info: initialization of "X" proved
 cond_assign.adb:4:14: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'Last) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 cond_assign.adb:6:14: medium: overflow check might fail [CWE 190] (e.g. when Y = Integer'First) [possible explanation: subprogram at line 1 should mention Y in a precondition]
 context.adb:3:04: info: initialization of "X" proved
+context.adb:4:14: info: add a contract to analyze it separately from calling contexts
+context.adb:4:14: info: local subprogram "Local" only analyzed in the context of calls
 context.adb:7:25: info: overflow check proved (CVC4: 10 VC), in call inlined at context.adb:12
 context.adb:12:04: info: in inlined body at line 6
 context.adb:12:04: info: unrolling loop

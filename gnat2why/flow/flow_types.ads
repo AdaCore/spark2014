@@ -416,7 +416,7 @@ package Flow_Types is
    --  function's return value).
 
    function Is_Internal (F : Flow_Id) return Boolean
-   with Pre => Present (F);
+   with Pre => Present (F), Ghost;
    --  Checks if F represents an internal entity
 
    function Change_Variant (F       : Flow_Id;
@@ -542,7 +542,8 @@ package Flow_Types is
                                 Pretty_Print_Folded_Function_Check,
                                 Pretty_Print_Loop_Init,
                                 Pretty_Print_Record_Field,
-                                Pretty_Print_Entry_Barrier);
+                                Pretty_Print_Entry_Barrier,
+                                Pretty_Print_Borrow);
 
    type V_Attributes is record
       Is_Null_Node                 : Boolean;
@@ -737,5 +738,25 @@ package Flow_Types is
    Null_Node_Attributes : constant V_Attributes :=
      Null_Attributes'Update (Is_Null_Node    => True,
                              Is_Program_Node => True);
+
+   type Reference_Kind is (Inputs, Proof_Ins, Null_Deps);
+   --  Modes for queries about variables referenced in a given expression. For
+   --  example, when quering a call to function annotated like this:
+   --
+   --    function F return Integer
+   --    with Global  => (Input => (A, B), Proof_In => C),
+   --         Depends => (F'Result => A,
+   --                     null     => B);
+   --
+   --  when routine Get_Variables is called it will return the following:
+   --
+   --    Inputs    => {A}
+   --    Proof_Ins => {C}
+   --    Null_Deps => {B}
+   --
+   --  Results in modes Inputs and Proof_Ins are come from straightforward
+   --  references to variables; results in mode Null_Deps come from calls to
+   --  subprograms with "null => ..." dependency clauses, 'Update expressions,
+   --  delay statements, etc.
 
 end Flow_Types;

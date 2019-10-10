@@ -192,7 +192,9 @@ package body Flow.Slice is
 
       --  Determine all out vertices
 
-      for V_Final of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V_Final of FA.CFG.Get_Collection
+        (FA.End_Vertex, Flow_Graphs.Out_Neighbours)
+      loop
          declare
             F_Final : Flow_Id renames FA.PDG.Get_Key (V_Final);
 
@@ -213,8 +215,9 @@ package body Flow.Slice is
             --  being written with no data dependency.
 
          begin
-            if F_Final.Variant = Final_Value
-              and then FA.Atr (V_Final).Is_Export
+            pragma Assert (F_Final.Variant = Final_Value);
+
+            if FA.Atr (V_Final).Is_Export
               and then Is_Variable (F_Final)
               and then not Synthetic (F_Final)
               and then not
@@ -231,14 +234,17 @@ package body Flow.Slice is
 
       --  Determine all input vertices
 
-      for V_Initial of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+      for V_Initial of FA.CFG.Get_Collection
+        (FA.Start_Vertex, Flow_Graphs.In_Neighbours)
+      loop
          declare
             F_Initial : Flow_Id renames FA.PDG.Get_Key (V_Initial);
             Atr       : V_Attributes renames FA.Atr (V_Initial);
 
          begin
-            if F_Initial.Variant = Initial_Value
-              and then Atr.Is_Import
+            pragma Assert (F_Initial.Variant = Initial_Value);
+
+            if Atr.Is_Import
               and then Is_Variable (F_Initial)
               and then not Synthetic (F_Initial)
             then
@@ -480,15 +486,16 @@ package body Flow.Slice is
             end if;
 
             for E of A.Subprograms_Called loop
-               --  Check if flow effects have been already "inlined" in CFG;
-               --  see the call to Process_Subprogram_Globals in
-               --  Do_Call_Statement.
-               --  ??? refactor those to using a common routine
 
                pragma Assert (Ekind (E) in Entry_Kind
                                          | E_Function
                                          | E_Procedure
                                          | E_Package);
+
+               --  We don't expect calls to predicate functions in the CFG
+
+               pragma Assert (if Ekind (E) = E_Function
+                              then not Is_Predicate_Function (E));
 
                --  Nested packages with Initializes contract have their reads
                --  and writes are already inlined in the CFG; those without the
@@ -499,6 +506,12 @@ package body Flow.Slice is
                   if No (Get_Pragma (E, Pragma_Initializes)) then
                      Unresolved.Insert (E);
                   end if;
+
+               --  For ordinary subprograms, check if their flow effects
+               --  have been already "inlined" in CFG; see the call
+               --  to Process_Subprogram_Globals in Do_Call_Statement.
+               --  ??? refactor those to using a common routine
+
                else
                   if not Has_User_Supplied_Globals (E)
                     or else Rely_On_Generated_Global (E, FA.B_Scope)

@@ -1,1 +1,3 @@
+p.adb:3:14: info: add a contract to analyze it separately from calling contexts
+p.adb:3:14: info: local subprogram "nnd" only analyzed in the context of calls
 p.adb:3:14: warning: subprogram "nnd" has no effect

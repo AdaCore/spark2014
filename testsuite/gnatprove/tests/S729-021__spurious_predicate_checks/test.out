@@ -1,0 +1,8 @@
+pred_on_out.adb:9:18: info: initialization of "X" proved
+pred_on_out.adb:9:35: info: data dependencies proved
+pred_on_out.adb:12:08: info: predicate check proved (CVC4: 1 VC)
+pred_on_out.adb:15:22: info: data dependencies proved
+pred_on_out.adb:29:18: info: initialization of "X" proved
+pred_on_out.adb:29:35: info: data dependencies proved
+pred_on_out.adb:32:08: info: predicate check proved (CVC4: 1 VC)
+pred_on_out.adb:35:22: info: data dependencies proved

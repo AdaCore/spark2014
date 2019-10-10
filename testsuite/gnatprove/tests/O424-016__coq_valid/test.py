@@ -5,11 +5,12 @@ from test_support import *
 # a correct coq proof. (-> "result status = Valid"). We can then check that the
 # proof remains proven in the last run of prove_all.
 def edit_session():
-    session = "proof/sessions/greatest_common_divisor/why3session.xml"
+    session = "proof/sessions/greatest_common_divisor__g_c_d/why3session.xml"
     content = ""
     with open(session, 'r') as file:
         for current_line in file.readlines():
-            if not current_line.rfind ("edited") == -1:
+            # We detect the end of the Coq filename
+            if current_line.rfind ('.v"') >= 0:
                 current_line = re.sub (r'<result status.*/>', '<result status="valid" time="1.23"/>', current_line)
             content = content + current_line
     with open(session, 'w') as file:

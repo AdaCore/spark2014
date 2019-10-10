@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="8">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<file>
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
+<path name="display__init.mlw"/>
+<theory name="Display__init__subprogram_def">
+ <goal name="def&#39;VC" expl="VC for def">
+ <transf name="split_goal_wp_conj" >
+  <goal name="def&#39;VC.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.1" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.2" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.3" expl="check">
+  <proof prover="0"><result status="unknown" steps="84"/></proof>
+  </goal>
+  <goal name="def&#39;VC.4" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.5" expl="check">
+  <proof prover="0"><result status="unknown" steps="84"/></proof>
+  </goal>
+  <goal name="def&#39;VC.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.7" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

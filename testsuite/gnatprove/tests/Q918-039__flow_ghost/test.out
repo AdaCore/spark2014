@@ -1,3 +1,5 @@
+mem.adb:6:14: info: add a contract to analyze it separately from calling contexts
+mem.adb:6:14: info: local subprogram "Assign" only analyzed in the context of calls
 mem.adb:6:14: medium: ghost procedure "Assign" cannot have non-ghost global output "Prev" (SPARK RM 6.9(20))
 mem.adb:6:41: info: initialization of "To" proved
 mem.adb:9:10: warning: unused assignment, in call inlined at mem.adb:15

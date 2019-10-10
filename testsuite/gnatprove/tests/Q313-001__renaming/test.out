@@ -1,3 +1,5 @@
+aida.adb:4:14: info: add a contract to analyze it separately from calling contexts
+aida.adb:4:14: info: local subprogram "Get" only analyzed in the context of calls
 aida.adb:4:19: warning: unused variable "Source"
 aida.adb:5:19: warning: "Pointer" is not modified, could be IN
 aida.adb:5:19: warning: unused variable "Pointer"

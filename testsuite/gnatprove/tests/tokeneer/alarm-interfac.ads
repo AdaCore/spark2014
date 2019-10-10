@@ -12,7 +12,7 @@
 -- Alarm.Interfac
 --
 -- Description:
---    private child of Alarm, providing the interface the the physical
+--    private child of Alarm, providing the interface the physical
 --    alarm
 --
 ------------------------------------------------------------------

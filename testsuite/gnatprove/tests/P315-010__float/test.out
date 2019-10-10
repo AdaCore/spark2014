@@ -1,6 +1,10 @@
 call_sample.adb:6:04: info: precondition proved (CVC4: 4 VC)
+call_sample2.adb:6:14: info: add a contract to analyze it separately from calling contexts
+call_sample2.adb:6:14: info: local subprogram "Test_Original" only analyzed in the context of calls
 call_sample2.adb:6:14: warning: subprogram "Test_Original" has no effect
 call_sample2.adb:13:07: info: precondition proved (CVC4: 4 VC), in call inlined at call_sample2.adb:28
+call_sample2.adb:16:14: info: add a contract to analyze it separately from calling contexts
+call_sample2.adb:16:14: info: local subprogram "Test_New" only analyzed in the context of calls
 call_sample2.adb:16:14: warning: subprogram "Test_New" has no effect
 call_sample2.adb:23:07: info: precondition proved (CVC4: 4 VC), in call inlined at call_sample2.adb:27
 original_sample.adb:9:07: info: initialization of "D" proved

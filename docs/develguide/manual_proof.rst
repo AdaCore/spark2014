@@ -4,7 +4,7 @@ Manual Proof
 ============
 
 The manual proof is composed of two sides:
-- Python plugin for GPS
+- Python plugin for GNAT Studio
 - ``Gnat_server`` executable built on Why3
 
 The role of the plugin is to display elements of the interface and allow
@@ -18,30 +18,30 @@ request/notifications.
              server will notify. Conversely, there is no way to know when the
              user will click on which task.
 
-.. _Python plugin to GPS:
+.. _Python plugin to GNAT Studio:
 
-Python plugin to GPS
---------------------
+Python plugin to GNAT Studio
+----------------------------
 
 .. warning:: Python plugin is recent work and it is still very hackish.
 
-The GPS plugin (??? TODO find a way to make a link to this) can be found in the
-GPS repository at ``share/plugins/spark2014/itp_lib.py``.
+The GNAT Studio plugin (??? TODO find a way to make a link to this) can be found in the
+GNAT Studio repository at ``share/plugins/spark2014/itp_lib.py``.
 
-.. warning:: You should know how to use the ``Python`` console from GPS. This
-             is *****very***** useful. In GPS, go to
+.. warning:: You should know how to use the ``Python`` console from GNAT Studio. This
+             is *****very***** useful. In GNAT Studio, go to
              ``View -> Python Console``, it will start an interactive console
-             where you can test all GPS primitives described in
-             http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html
+             where you can test all GNAT Studio primitives described in
+             http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html
 
 .. warning:: Documentation on primitives is found both in:
-             http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html
+             http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html
              and
              http://docs.adacore.com/gtkada-docs/gtkada_rm/gtkada_rm/
 
 
 The plugin is called from the ``spark2014.py`` plugin located in
-``share/plugins/spark2014.py`` in GPS repository. It can be used because it was
+``share/plugins/spark2014.py`` in GNAT Studio repository. It can be used because it was
 added as a function ``on_prove_itp`` in the .xml menus launched with SPARK
 located in ``share/plugins/spark2014/gnatprove_menus.xml`` and
 ``share/plugins/spark2014/gnatprove.xml``.
@@ -84,10 +84,10 @@ string  should not appear anywhere else).
 
 .. code-block:: Python
 
-        self.process = GPS.Process(command,
-                                   regexp=">>>>",
-                                   on_match=self.check_notifications,
-                                   directory=dir_gnat_server)
+        self.process = GS.Process(command,
+                                  regexp=">>>>",
+                                  on_match=self.check_notifications,
+                                  directory=dir_gnat_server)
 
 
 It also launches a console which waits on input and trigger a request to the
@@ -95,14 +95,14 @@ server using ``self.interactive_console_input``
 
 .. code-block:: Python
 
-        self.console = GPS.Console(ITP_CONSOLE,
-                                   on_input=self.interactive_console_input)
+        self.console = GS.Console(ITP_CONSOLE,
+                                  on_input=self.interactive_console_input)
 
 The proof task is defined as a regular file:
 
 .. code-block:: Python
 
-        proof_task_file = GPS.File(VC_file, local=True)
+        proof_task_file = GS.File(VC_file, local=True)
 
 Functions are provided to parse the JSON notifications of the server, select
 nodes in the tree, starting/killing the manual proof etc...
@@ -113,7 +113,7 @@ Gnat_server script
 
 The :download:`gnat_server.ml <../../why3/src/gnat/gnat_server.ml>` script is a
 standalone executable used only for communication with a Python plugin in
-GPS. Its input/output are textual JSON data.
+GNAT Studio. Its input/output are textual JSON data.
 
 The code is mainly decomposed in three parts which are mainly adaptations for
 the :download:`itp_server <../../why3/src/session/itp_server.mli>` interface.

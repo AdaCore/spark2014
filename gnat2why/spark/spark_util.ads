@@ -78,6 +78,10 @@ package SPARK_Util is
          | N_Validate_Unchecked_Conversion
          | N_Variable_Reference_Marker;
 
+   subtype N_Entity_Body is Node_Kind
+     with Static_Predicate => N_Entity_Body in
+       Sinfo.N_Proper_Body | Sinfo.N_Entry_Body;
+
    type Execution_Kind_T is
      (Normal_Execution,      --  regular subprogram
       Barrier,               --  conditional execution
@@ -302,6 +306,10 @@ package SPARK_Util is
    --  @param E any entity
    --  @return The unqualified name of E as it appears in the source code
 
+   function Is_Local_Context (Scop : Entity_Id) return Boolean;
+   --  Return if a given scope defines a local context where it is legal to
+   --  declare a variable of anonymous access type.
+
    ----------------------------------------------
    -- Queries related to objects or components --
    ----------------------------------------------
@@ -347,13 +355,28 @@ package SPARK_Util is
    --  @param E entity of a variable
    --  @return True iff a Constant_After_Elaboration applies to E
 
+   function Is_Constant_In_SPARK (E : Entity_Id) return Boolean with
+     Pre => Is_Object (E);
+   --  Return True if E is a constant in SPARK (ie. a constant which is not
+   --  of access-to-variable type).
+
    function Is_Concurrent_Component_Or_Discr (E : Entity_Id) return Boolean;
    --  @param E an entity
    --  @return True iff the entity is a component or discriminant of a
    --            concurrent type
 
+   function Is_Constant_Borrower (E : Entity_Id) return Boolean with
+     Pre => Is_Local_Borrower (E);
+   --  Return True is E is a local borrower which is acting like an observer
+   --  (it is directly or indirectly rooted at the first parameter of a
+   --  borrowing traversal function).
+
    function Is_Global_Entity (E : Entity_Id) return Boolean;
    --  Returns True iff E represent an entity that can be a global
+
+   function Is_Local_Borrower (E : Entity_Id) return Boolean;
+   --  Return True is E is a constant or a variable of an anonymous access to
+   --  variable type.
 
    function Is_Not_Hidden_Discriminant (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Discriminant;
@@ -409,7 +432,8 @@ package SPARK_Util is
    --  @param E an entity that represents a global
    --  @return True if E is safe to be accesses from multiple tasks
 
-   function Root_Record_Component (E : Entity_Id) return Entity_Id;
+   function Root_Record_Component (E : Entity_Id) return Entity_Id
+   with Pre => Ekind (E) in E_Component | E_Discriminant;
    --  Given a component or discriminant of a record (sub-)type, return the
    --  corresponding component or discriminant of the root type, if any. This
    --  is the identity when E is the component of a root type.
@@ -417,15 +441,21 @@ package SPARK_Util is
 
    function Search_Component_By_Name
      (Rec  : Entity_Id;
-      Comp : Entity_Id) return Entity_Id;
+      Comp : Entity_Id) return Entity_Id
+   with Pre => Ekind (Comp) in E_Component | E_Discriminant;
    --  Given a record type entity and a component/discriminant entity, search
    --  in Rec a component/discriminant entity with the same name and the same
    --  original record component. Returns Empty if no such component is found.
    --  In particular returns empty on hidden components.
 
-   function Is_Local_Borrower (E : Entity_Id) return Boolean;
-   --  Return True is E is a constant or a variable of an anonymous access to
-   --  variable type.
+   function Unique_Component (E : Entity_Id) return Entity_Id
+   with Pre  => Ekind (E) in E_Component | E_Discriminant,
+        Post => Ekind (Unique_Component'Result) = Ekind (E);
+   --  Given an entity of a record component or discriminant, possibly from a
+   --  derived type, return the corresponding component or discriminant from
+   --  the base type. The returned entity provides a unique representation of
+   --  components and discriminants between both the base type and all types
+   --  derived from it.
 
    --------------------------------
    -- Queries related to pragmas --
@@ -586,6 +616,21 @@ package SPARK_Util is
    --     declaration or a subtype indication.
    --  @return the N_Range node of such a node
 
+   function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id with
+     Pre => Is_Path_Expression (Expr);
+   --  Return the expression being borrowed/observed when borrowing or
+   --  observing Expr. If Expr contains a call to traversal function, this is
+   --  the first actual of the first such call, otherwise it is Expr.
+
+   function Get_Root_Object
+     (Expr              : Node_Id;
+      Through_Traversal : Boolean := True) return Entity_Id
+   with
+     Pre => Is_Path_Expression (Expr);
+   --  Return the root of the path expression Expr, or Empty for an allocator,
+   --  NULL, or a function call. Through_Traversal is True if it should follow
+   --  through calls to traversal functions.
+
    function Has_Dereferences (N : Node_Id) return Boolean with
      Pre => Nkind (N) in Sinfo.N_Subexpr;
    --  Return True if there is a dereference in the suffix of N which is a path
@@ -638,9 +683,19 @@ package SPARK_Util is
    --  However, the front end rejects these two cases. For the SPARK back end,
    --  this routine gives correct results.
 
+   function Is_Path_Expression (Expr : Node_Id) return Boolean;
+   --  Return whether Expr corresponds to a path
+
    function Is_Predicate_Function_Call (N : Node_Id) return Boolean;
    --  @param N any node
    --  @return True iff N is a call to a frontend-generated predicate function
+
+   function Is_Singleton_Choice (Choices : List_Id) return Boolean;
+   --  Return whether Choices is a singleton choice
+
+   function Is_Traversal_Function_Call (Expr : Node_Id) return Boolean;
+   --  @param N any node
+   --  @return True iff N is a call to a traversal function
 
    function Number_Of_Assocs_In_Expression (N : Node_Id) return Natural;
    --  @param N any node
@@ -731,7 +786,11 @@ package SPARK_Util is
                                                         | E_Package
                                                         | Generic_Unit_Kind;
    --  Wrapper for Lib.Main_Unit_Entity, which deals with library-level
-   --  instances of generic subprograms (where the Main_Unit_Entity is
-   --  has a void Ekind).
+   --  instances of generic subprograms (where the Main_Unit_Entity has a
+   --  void Ekind).
+
+   function Attr_Constrained_Statically_Known (N : Node_Id) return Boolean;
+   --  Approximation of cases where we know that the Constrained attribute of
+   --  N is known statically.
 
 end SPARK_Util;

@@ -10,8 +10,8 @@ is
    package Ring_Buffer is new Generic_Ring_Buffer
      (Element_Type => Integer);
    use Ring_Buffer;
-   
-   
+
+
    X : Ring_Buffer_Type (4);
    Element : Integer;
    Counter : Integer;
@@ -23,7 +23,7 @@ begin
    Put (X, 3);
    Put (X, 4);
    Put (X, 5);
-   
+
    Counter := Size (X); -- defined in Generic_Ring_Buffer
    for I in Natural range 1 .. Counter loop
       Get (X, Element);

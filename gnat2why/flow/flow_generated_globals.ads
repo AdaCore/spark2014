@@ -152,7 +152,7 @@ package Flow_Generated_Globals is
 
       Calls : Call_Names;
    end record;
-   --  Information needed to synthesize the the Global contract
+   --  Information needed to synthesize the Global contract
 
    type Name_Tasking_Info is array (Tasking_Info_Kind) of Name_Sets.Set;
    --  Tasking objects accessed by a given entity

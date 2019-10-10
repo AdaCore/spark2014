@@ -1,4 +1,6 @@
 foo.ads:17:53: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+main.adb:8:14: info: add a contract to analyze it separately from calling contexts
+main.adb:8:14: info: local subprogram "bar" only analyzed in the context of calls
 main.adb:8:19: info: initialization of "d" proved
 main.adb:18:14: medium: precondition might fail, cannot prove bytes'Length = 4
 main.adb:18:29: info: range check proved (CVC4: 4 VC)

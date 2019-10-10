@@ -7,7 +7,7 @@ Admitted.
 """
 
 def edit_proof():
-    proof_file = glob.glob("proof/Coq/greatest_common_divisor/*.v")[0]
+    proof_file = glob.glob("proof/Coq/*.v")[0]
     with open(proof_file, 'r') as file:
         content = file.read()
     content = str.replace(content, "Qed.", proof)

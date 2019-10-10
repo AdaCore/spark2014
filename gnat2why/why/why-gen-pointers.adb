@@ -31,7 +31,6 @@ with GNATCOLL.Symbols;    use GNATCOLL.Symbols;
 with Namet;               use Namet;
 with Sinput;              use Sinput;
 with Snames;              use Snames;
-with SPARK_Atree;         use SPARK_Atree;
 with SPARK_Util;          use SPARK_Util;
 with VC_Kinds;            use VC_Kinds;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -51,17 +50,36 @@ with Why.Types;           use Why.Types;
 
 package body Why.Gen.Pointers is
 
-   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) with
-     Pre => Is_Access_Type (E);
+   procedure Declare_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   with Pre => Is_Access_Type (E);
    --  Similar to Declare_Rep_Record_Type but for pointer types.
 
-   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id) with
-     Pre => Is_Access_Type (E);
+   procedure Complete_Rep_Pointer_Type (P : W_Section_Id; E : Entity_Id)
+   with Pre => Is_Access_Type (E);
    --  Declares everything for a representative access type but the type and
    --  predefined equality.
 
    function Get_Rep_Pointer_Module (E : Entity_Id) return W_Module_Id;
    --  Return the name of a record's representative module.
+
+   procedure Clone_Pledge_Module
+     (File          : W_Section_Id;
+      Brower_Ent    : Entity_Id;
+      Borrowed_Ent  : Entity_Id;
+      Borrowed_Expr : Entity_Id;
+      Borrowed_Ty   : Entity_Id;
+      Loc_Pledge_Id : out W_Identifier_Id);
+   --  Clone the Why3 module for pledges with the provided borrowed and
+   --  borrower types. Also insert the relevant informations in the
+   --  Borrow_Infos map.
+
+   function New_Pledge_Call
+     (E            : Entity_Id;
+      Pledge_Expr  : W_Expr_Id;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id;
+   --  Call get for pledge of E on the pledge object Pledge_Expr and the two
+   --  parameters Borrowed_Arg and Brower_Arg.
 
    package Pointer_Typ_To_Roots is new Ada.Containers.Hashed_Maps
      (Key_Type        => Entity_Id,
@@ -93,6 +111,76 @@ package body Why.Gen.Pointers is
    Borrow_Infos : Borrow_Info_Maps.Map;
    --  Maps borrowers to their borrowed object and their pledge
 
+   -------------------------
+   -- Clone_Pledge_Module --
+   -------------------------
+
+   procedure Clone_Pledge_Module
+     (File          : W_Section_Id;
+      Brower_Ent    : Entity_Id;
+      Borrowed_Ent  : Entity_Id;
+      Borrowed_Expr : Entity_Id;
+      Borrowed_Ty   : Entity_Id;
+      Loc_Pledge_Id : out W_Identifier_Id)
+   is
+      Current_Module  : constant W_Module_Id := E_Module (Brower_Ent);
+      Pledge_Ty_Name  : constant String := "__pledge_ty";
+      Pledge_Name     : constant String := Full_Name (Brower_Ent) & "__pledge";
+      Pledge_Get_Name : constant String := "__pledge_get";
+      Pledge_Type     : constant W_Type_Id :=
+        New_Named_Type (New_Name (Symb   => NID (Pledge_Ty_Name),
+                                  Module => Current_Module));
+
+   begin
+      --  Clone the pledge module. It creates a pledge function relating the
+      --  borrowed entity and the borrower.
+
+      Emit (File,
+            New_Clone_Declaration
+              (Theory_Kind   => EW_Module,
+               Clone_Kind    => EW_Export,
+               As_Name       => No_Symbol,
+               Origin        => Pledge,
+               Substitutions =>
+                 (1 => New_Clone_Substitution
+                      (Kind      => EW_Type_Subst,
+                       Orig_Name => New_Name
+                         (Symb => NID ("borrower")),
+                       Image     => Get_Name
+                         (Type_Of_Node (Etype (Brower_Ent)))),
+                  2 => New_Clone_Substitution
+                      (Kind      => EW_Type_Subst,
+                       Orig_Name => New_Name
+                         (Symb => NID ("borrowed")),
+                       Image     => Get_Name
+                         (Type_Of_Node (Borrowed_Ent))))));
+
+      Loc_Pledge_Id :=
+        New_Identifier (Symb   => NID (Pledge_Name),
+                        Typ    => New_Named_Type (Pledge_Ty_Name),
+                        Domain => EW_Prog);
+
+      declare
+         Pledge_Id     : constant W_Identifier_Id :=
+           New_Identifier (Symb   => NID (Pledge_Name),
+                           Module => Current_Module,
+                           Typ    => Pledge_Type,
+                           Domain => EW_Prog);
+         Pledge_Get_Id : constant W_Identifier_Id :=
+           New_Identifier (Symb   => NID (Pledge_Get_Name),
+                           Module => Current_Module,
+                           Typ    => EW_Bool_Type,
+                           Domain => EW_Prog);
+      begin
+         Borrow_Infos.Insert
+           (Brower_Ent, Borrow_Info'(Borrowed_Entity => Borrowed_Ent,
+                                     Borrowed_Expr   => Borrowed_Expr,
+                                     Borrowed_Ty     => Borrowed_Ty,
+                                     Pledge_Id       => Pledge_Id,
+                                     Pledge_Get      => Pledge_Get_Id));
+      end;
+   end Clone_Pledge_Module;
+
    -------------------------------
    -- Complete_Rep_Pointer_Type --
    -------------------------------
@@ -111,20 +199,20 @@ package body Why.Gen.Pointers is
       --  (cannot access a null pointer).
 
       procedure Declare_Allocation_Function;
-      --  Generate program functions called when allocating deep objects.
+      --  Generate program functions called when allocating deep objects
 
       ---------------------
       -- Local Variables --
       ---------------------
 
-      Root      : constant Entity_Id  := Root_Pointer_Type (E);
-      Is_Root   : constant Boolean    := Root = E;
-      Ty_Name   : constant W_Name_Id  := To_Name (WNE_Rec_Rep);
-      Abstr_Ty  : constant W_Type_Id  := New_Named_Type (Name => Ty_Name);
+      Root     : constant Entity_Id := Root_Pointer_Type (E);
+      Is_Root  : constant Boolean   := Root = E;
+      Ty_Name  : constant W_Name_Id := To_Name (WNE_Rec_Rep);
+      Abstr_Ty : constant W_Type_Id := New_Named_Type (Name => Ty_Name);
 
-      A_Ident   : constant W_Identifier_Id :=
+      A_Ident  : constant W_Identifier_Id :=
         New_Identifier (Name => "a", Typ => Abstr_Ty);
-      A_Binder  : constant Binder_Array :=
+      A_Binder : constant Binder_Array :=
         (1 => (B_Name => A_Ident,
                others => <>));
 
@@ -134,27 +222,27 @@ package body Why.Gen.Pointers is
 
       procedure Declare_Access_Function is
 
-         Null_Access_Name  : constant String := To_String (WNE_Rec_Comp_Prefix)
+         Null_Access_Name : constant String := To_String (WNE_Rec_Comp_Prefix)
          & (Full_Name (E)) & To_String (WNE_Pointer_Value) & "__pred";
 
          --  The null exclusion defined here is related to the designated type
          --  (that gives the subtype_indication).
          --  This is because the __new_uninitialized_allocator_ is defined
-         --  with regard to the the access_type_definition while the
+         --  with regard to the access_type_definition while the
          --  null_exclusion is checked for the subtype_indication.
          --
          --  type Typ is [null_exclusion] access [subtype_indication]
          --  X : Typ := new [subtype_indication]
 
-         Ty         : constant Entity_Id := Etype (E);
-         Condition  : W_Pred_Id          := True_Pred;
-         Top_Field  : constant W_Expr_Id := +New_Pointer_Is_Null_Access
+         Ty        : constant Entity_Id := Etype (E);
+         Condition : W_Pred_Id          := True_Pred;
+         Top_Field : constant W_Expr_Id := +New_Pointer_Is_Null_Access
            (E, +To_Local (E_Symb (Ty, WNE_Null_Pointer)), Local => True);
 
          Axiom_Name : constant String :=
            To_String (WNE_Null_Pointer) & "__" & Def_Axiom;
 
-         True_Term  : constant W_Term_Id := New_Literal (Value => EW_True);
+         True_Term : constant W_Term_Id := New_Literal (Value => EW_True);
 
          Assign_Pointer : constant W_Identifier_Id :=
            To_Local (E_Symb (E, WNE_Assign_Null_Check));
@@ -714,23 +802,46 @@ package body Why.Gen.Pointers is
               +New_Named_Type (Name => To_Why_Type (E, Local => True))));
    end Declare_Ada_Pointer;
 
+   -----------------------------
+   -- Declare_Pledge_Function --
+   -----------------------------
+
+   procedure Declare_Pledge_Function
+     (File    : W_Section_Id;
+      E       : Entity_Id;
+      Binders : Binder_Array)
+   is
+      Borrowed_Entity : constant Entity_Id := First_Formal (E);
+      Loc_Pledge_Id   : W_Identifier_Id;
+
+   begin
+      Clone_Pledge_Module
+        (File          => File,
+         Brower_Ent    => E,
+         Borrowed_Ent  => Borrowed_Entity,
+         Borrowed_Expr => Empty,
+         Borrowed_Ty   => Etype (Borrowed_Entity),
+         Loc_Pledge_Id => Loc_Pledge_Id);
+
+      Emit (File,
+            New_Function_Decl (Domain      => EW_Pterm,
+                               Name        => Loc_Pledge_Id,
+                               Binders     => Binders,
+                               Return_Type => Get_Typ (Loc_Pledge_Id),
+                               Labels      => Symbol_Sets.Empty_Set,
+                               Location    => No_Location));
+   end Declare_Pledge_Function;
+
    ------------------------
    -- Declare_Pledge_Ref --
    ------------------------
 
-   procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id)
-   is
-      Current_Module   : constant W_Module_Id := E_Module (E);
-      Pledge_Ty_Name   : constant String := "__pledge_ty";
-      Pledge_Name      : constant String := Full_Name (E) & "__pledge";
-      Pledge_Get_Name  : constant String := "__pledge_get";
-      Ref_Type         : constant W_Type_Id :=
-        New_Named_Type (New_Name (Symb   => NID (Pledge_Ty_Name),
-                                  Module => Current_Module));
-      Borrowed_Expr    : Node_Id := Expression (Enclosing_Declaration (E));
-      Borrowed_Ty      : Entity_Id := Etype (E);
-      Borrowed_Entity  : Entity_Id;
-      Cur              : Node_Id := Expression (Enclosing_Declaration (E));
+   procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id) is
+      Borrowed_Expr   : Node_Id := Expression (Enclosing_Declaration (E));
+      Borrowed_Ty     : Entity_Id := Etype (E);
+      Borrowed_Entity : Entity_Id;
+      Cur             : Node_Id := Expression (Enclosing_Declaration (E));
+      Loc_Pledge_Id   : W_Identifier_Id;
 
    begin
       --  Find the borrowed initial expression and type.
@@ -773,54 +884,19 @@ package body Why.Gen.Pointers is
       --  arising from the translation of a call to a function which has a
       --  pledge annotation.
 
+      Clone_Pledge_Module
+        (File          => File,
+         Brower_Ent    => E,
+         Borrowed_Ent  => Borrowed_Entity,
+         Borrowed_Expr => Borrowed_Expr,
+         Borrowed_Ty   => Borrowed_Ty,
+         Loc_Pledge_Id => Loc_Pledge_Id);
+
       Emit (File,
-            New_Clone_Declaration
-              (Theory_Kind   => EW_Module,
-               Clone_Kind    => EW_Export,
-               As_Name       => No_Symbol,
-               Origin        => Pledge,
-               Substitutions =>
-                 (1 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("borrower")),
-                       Image     => Get_Name (Type_Of_Node (Etype (E)))),
-                  2 => New_Clone_Substitution
-                      (Kind      => EW_Type_Subst,
-                       Orig_Name => New_Name
-                         (Symb => NID ("borrowed")),
-                       Image     => Get_Name
-                         (Type_Of_Node (Borrowed_Entity))))));
-
-      declare
-         Loc_Pledge_Id  : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Pledge_Name),
-                           Typ    => New_Named_Type (Pledge_Ty_Name),
-                           Domain => EW_Prog);
-         Pledge_Id      : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Pledge_Name),
-                           Module => Current_Module,
-                           Typ    => Ref_Type,
-                           Domain => EW_Prog);
-         Pledge_Get_Id  : constant W_Identifier_Id :=
-           New_Identifier (Symb   => NID (Pledge_Get_Name),
-                           Module => Current_Module,
-                           Typ    => EW_Bool_Type,
-                           Domain => EW_Prog);
-      begin
-         Emit (File,
-               New_Global_Ref_Declaration (Name     => Loc_Pledge_Id,
-                                           Ref_Type => Get_Typ (Loc_Pledge_Id),
-                                           Labels   => Symbol_Sets.Empty_Set,
-                                           Location => No_Location));
-
-         Borrow_Infos.Insert
-           (E, Borrow_Info'(Borrowed_Entity => Borrowed_Entity,
-                            Borrowed_Expr   => Borrowed_Expr,
-                            Borrowed_Ty     => Borrowed_Ty,
-                            Pledge_Id       => Pledge_Id,
-                            Pledge_Get      => Pledge_Get_Id));
-      end;
+            New_Global_Ref_Declaration (Name     => Loc_Pledge_Id,
+                                        Ref_Type => Get_Typ (Loc_Pledge_Id),
+                                        Labels   => Symbol_Sets.Empty_Set,
+                                        Location => No_Location));
    end Declare_Pledge_Ref;
 
    -------------------------------
@@ -1180,35 +1256,89 @@ package body Why.Gen.Pointers is
 
    function New_Pledge_Call
      (E            : Entity_Id;
+      Pledge_Expr  : W_Expr_Id;
       Borrowed_Arg : W_Expr_Id;
       Brower_Arg   : W_Expr_Id) return W_Expr_Id
    is
-      Pledge_Id  : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Id;
-      Pledge_Get : constant W_Identifier_Id :=
+      Pledge_Get   : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Get;
-      Pledge_Deref : constant W_Expr_Id :=
-        New_Deref (Right => Pledge_Id, Typ => Get_Typ (Pledge_Id));
    begin
       return New_Call
         (Domain => EW_Term,
          Name   => Pledge_Get,
-         Args   => (Pledge_Deref, Borrowed_Arg, Brower_Arg),
-         Typ    => Get_Typ (Pledge_Id));
+         Args   => (Pledge_Expr, Borrowed_Arg, Brower_Arg),
+         Typ    => EW_Bool_Type);
    end New_Pledge_Call;
+
+   function New_Pledge_Call
+     (E            : Entity_Id;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id;
+      Ref_Allowed  : Boolean) return W_Expr_Id
+   is
+      Pledge_Id    : constant W_Identifier_Id :=
+        (if Ekind (E) = E_Function then Result_Pledge_Id (E)
+         else Borrow_Infos (E).Pledge_Id);
+      Pledge_Deref : constant W_Expr_Id :=
+        (if Ref_Allowed
+         then New_Deref (Right => Pledge_Id, Typ => Get_Typ (Pledge_Id))
+         else +Pledge_Id);
+   begin
+      return New_Pledge_Call
+        (E            => E,
+         Pledge_Expr  => Pledge_Deref,
+         Borrowed_Arg => Borrowed_Arg,
+         Brower_Arg   => Brower_Arg);
+   end New_Pledge_Call;
+
+   function New_Pledge_Call
+     (E            : Entity_Id;
+      Args         : W_Expr_Array;
+      Borrowed_Arg : W_Expr_Id;
+      Brower_Arg   : W_Expr_Id) return W_Expr_Id
+   is
+      Pledge_Call : constant W_Expr_Id :=
+        New_Pledge_For_Call (E, Args);
+   begin
+      return New_Pledge_Call
+        (E            => E,
+         Pledge_Expr  => Pledge_Call,
+         Borrowed_Arg => Borrowed_Arg,
+         Brower_Arg   => Brower_Arg);
+   end New_Pledge_Call;
+
+   -------------------------
+   -- New_Pledge_For_Call --
+   -------------------------
+
+   function New_Pledge_For_Call
+     (E    : Entity_Id;
+      Args : W_Expr_Array) return W_Expr_Id
+   is
+      Pledge_Id   : constant W_Identifier_Id :=
+        Borrow_Infos (E).Pledge_Id;
+   begin
+      return New_Call
+        (Domain => EW_Term,
+         Name   => Pledge_Id,
+         Args   => Args,
+         Typ    => Get_Typ (Pledge_Id));
+   end New_Pledge_For_Call;
 
    -----------------------
    -- New_Pledge_Update --
    -----------------------
 
    function New_Pledge_Update
-     (E            : Entity_Id;
-      Borrowed_Id  : W_Identifier_Id;
-      Brower_Id    : W_Identifier_Id;
-      Def          : W_Term_Id) return W_Prog_Id
+     (E           : Entity_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Brower_Id   : W_Identifier_Id;
+      Def         : W_Term_Id) return W_Prog_Id
    is
       Pledge_Id  : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Id;
+        (if Ekind (E) = E_Function
+         then Result_Pledge_Id (E)
+         else Borrow_Infos (E).Pledge_Id);
       Pledge_Get : constant W_Identifier_Id :=
         Borrow_Infos (E).Pledge_Get;
       Res        : constant W_Identifier_Id :=
@@ -1276,9 +1406,9 @@ package body Why.Gen.Pointers is
          else E_Symb (E, WNE_Is_Null_Pointer));
 
    begin
-      return New_Record_Access (Name   => +Name,
-                                Field  => Field,
-                                Typ    => EW_Bool_Type);
+      return New_Record_Access (Name  => +Name,
+                                Field => Field,
+                                Typ   => EW_Bool_Type);
    end New_Pointer_Is_Null_Access;
 
    ------------------------------
@@ -1480,6 +1610,19 @@ package body Why.Gen.Pointers is
          return Empty;
       end if;
    end Repr_Pointer_Type;
+
+   ----------------------
+   -- Result_Pledge_Id --
+   ----------------------
+
+   function Result_Pledge_Id (E : Entity_Id) return W_Identifier_Id is
+      Pledge_Ty : constant W_Type_Id :=
+        Get_Typ (Get_Pledge_Id (E));
+   begin
+      return New_Identifier
+        (Name  => "__result_pledge",
+         Typ   => Pledge_Ty);
+   end Result_Pledge_Id;
 
    -----------------------
    -- Root_Pointer_Type --

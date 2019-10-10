@@ -1,2 +1,4 @@
 p.adb:1:11: warning: subprogram "P" has no effect
+p.adb:12:14: info: add a contract to analyze it separately from calling contexts
+p.adb:12:14: info: local subprogram "Assign" only analyzed in the context of calls
 p.adb:12:22: warning: unused initial value of "B"

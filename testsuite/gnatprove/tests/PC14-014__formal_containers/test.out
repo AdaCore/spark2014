@@ -23,31 +23,31 @@ a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at m
 a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
 a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:25
 a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at my_maps.ads:8
-a-cfhase.ads:460:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:460:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:728:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:728:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:737:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:737:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:754:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:754:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:755:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:755:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:801:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:801:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:964:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:964:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:965:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:965:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
-a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
-a-cfhase.ads:1290:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
+a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:812:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:812:39: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:821:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:821:17: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:842:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:842:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:843:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:843:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:891:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:891:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1068:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1068:24: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1069:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1069:26: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1069:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1069:44: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1109:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1109:49: info: overflow check proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1201:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1201:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1222:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:24
+a-cfhase.ads:1222:20: info: precondition proved (Z3: 1 VC), in instantiation at my_sets.ads:8
+a-cfhase.ads:1429:13: info: precondition proved (Trivial: 1 VC), in instantiation at my_sets.ads:33
 a-cfinve.ads:602:57: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:730:23: info: precondition proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
 a-cfinve.ads:733:38: info: range check proved (Z3: 1 VC), in instantiation at my_vectors.ads:5
@@ -467,7 +467,7 @@ my_maps.adb:113:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:115:07: info: precondition proved (Z3: 1 VC)
 my_maps.adb:117:07: info: precondition proved (CVC4: 1 VC)
 my_maps.adb:118:22: info: assertion proved (Z3: 1 VC)
-my_maps.adb:121:22: info: assertion proved (CVC4: 1 VC)
+my_maps.adb:121:22: info: assertion proved (Z3: 1 VC)
 my_maps.adb:123:22: medium: assertion might fail, cannot prove Length (L) = 0
 my_maps.adb:124:07: medium: assertion might fail
 my_maps.adb:129:07: info: precondition proved (Trivial: 1 VC)
@@ -663,7 +663,7 @@ my_ordered_sets.adb:116:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:117:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:118:22: info: assertion proved (Z3: 1 VC)
 my_ordered_sets.adb:119:07: info: precondition proved (Z3: 1 VC)
-my_ordered_sets.adb:120:22: info: assertion proved (Z3: 1 VC)
+my_ordered_sets.adb:120:22: medium: assertion might fail, cannot prove not Contains (L, (F => 4, G => 4))
 my_ordered_sets.adb:121:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:123:07: info: precondition proved (Z3: 1 VC)
 my_ordered_sets.adb:125:07: info: precondition proved (Z3: 1 VC)

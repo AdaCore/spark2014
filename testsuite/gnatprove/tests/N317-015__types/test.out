@@ -1,8 +1,14 @@
 conv.adb:5:04: info: initialization of "Y" proved
+conv.adb:7:14: info: add a contract to analyze it separately from calling contexts
+conv.adb:7:14: info: local subprogram "Incr" only analyzed in the context of calls
 conv.adb:7:37: info: initialization of "Y" proved
 conv.adb:11:14: info: overflow check proved (CVC4: 1 VC), in call inlined at conv.adb:15
 conv.adb:15:10: info: range check proved (CVC4: 1 VC)
 conv.adb:16:19: info: assertion proved (CVC4: 1 VC)
+ident.adb:5:13: info: add a contract to analyze it separately from calling contexts
+ident.adb:5:13: info: local subprogram "Id_Body" only analyzed in the context of calls
+ident.adb:6:14: info: add a contract to analyze it separately from calling contexts
+ident.adb:6:14: info: local subprogram "Incr_Body" only analyzed in the context of calls
 ident.adb:6:42: info: initialization of "Y" proved
 ident.adb:40:07: info: initialization of "Y" proved
 ident.adb:41:07: info: initialization of "Res" proved

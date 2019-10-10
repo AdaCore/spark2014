@@ -34,14 +34,15 @@ enums.adb:203:07: info: initialization of "Tmp" proved
 counterexample expected for check at enums.adb:19
   trace at enums.adb:16 --> A = Elem_0 and B = Elem_1
   trace at enums.adb:19 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:21 --> Tmp = Elem_0
-  trace at enums.adb:23 --> Enum_Equals_Broken_A'Result = True
+  trace at enums.adb:21 --> A = Elem_0 and Tmp = Elem_0
+  trace at enums.adb:23 --> A = Elem_0 and Enum_Equals_Broken_A'Result = True
 counterexample expected for check at enums.adb:27
   trace at enums.adb:26 --> A = Elem_0 and B = Elem_1
   trace at enums.adb:27 --> A = Elem_0 and B = Elem_1
-  trace at enums.adb:30 --> Enum_Equals_Broken_B'Result = True
+  trace at enums.adb:30 --> B = Elem_1 and Enum_Equals_Broken_B'Result = True
 counterexample expected for check at enums.adb:67
   trace at enums.adb:66 --> A = Elem_7
   trace at enums.adb:67 --> A = Elem_7
+  trace at enums.adb:80 --> A = Elem_7
   trace at enums.adb:81 --> R = True
   trace at enums.adb:85 --> Enum_LT_5_Broken_A'Result = True and R = True

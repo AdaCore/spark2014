@@ -25,7 +25,63 @@ package body Flow.Control_Dependence_Graph is
 
    procedure Create (FA : in out Flow_Analysis_Graphs)
    is
+      procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id) with Ghost;
+      --  Apply sanity checking to V and CV, which are a call parameter vertex
+      --  and the call vertex, respectively.
+
+      ------------------
+      -- Sanity_Check --
+      ------------------
+
+      procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id) is
+         use type Flow_Graphs.Vertex_Id;
+      begin
+         --  Sanity check that we will not lose control dependence
+         for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
+         loop
+            if P = V then
+               --  Self dependence is OK and we don't care if it disappears
+               null;
+
+            elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
+               --  The call vertex is ultimately control dependent on the in
+               --  neighbour we are eliminating from our parameter vertex, so
+               --  we don't really lose anything.
+               null;
+
+            else
+               --  Bath, we have a problem
+               raise Program_Error;
+            end if;
+         end loop;
+
+         --  Sanity check that we won't lose outwards control influence
+         for S of FA.CDG.Get_Collection
+           (V, Flow_Graphs.Out_Neighbours)
+         loop
+            if S = V then
+               --  Self dependence is OK and we don't care if it disappears
+               null;
+
+            elsif S = CV
+              or else CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
+            then
+               --  This can happen if we have infinite loops
+               null;
+
+            else
+               --  Panic!
+               raise Program_Error;
+            end if;
+         end loop;
+      end Sanity_Check;
+
+      --  Local variables
+
       Reversed_CFG : Flow_Graphs.Graph;
+
+   --  Start of processing for Create
+
    begin
       --  Reverse CFG and add an edge from end -> start
       Reversed_CFG := FA.CFG.Invert;
@@ -47,7 +103,7 @@ package body Flow.Control_Dependence_Graph is
 
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
-            A  : V_Attributes renames FA.Atr (V);
+            A : V_Attributes renames FA.Atr (V);
          begin
             if A.Is_Parameter
               or else A.Is_Global_Parameter
@@ -57,49 +113,8 @@ package body Flow.Control_Dependence_Graph is
                   CV : constant Flow_Graphs.Vertex_Id :=
                     FA.CDG.Get_Vertex (A.Call_Vertex);
 
-                  use type Flow_Graphs.Vertex_Id;
                begin
-                  --  Sanity check that we will not lose control dependence
-                  for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-                  loop
-                     if P = V then
-                        --  Self dependence is OK and we don't care if it
-                        --  disappears.
-                        null;
-
-                     elsif FA.CDG.Non_Trivial_Path_Exists (P, CV) then
-                        --  The call vertex is ultimately control dependent
-                        --  on the in neighbour we are eliminating from our
-                        --  parameter vertex, so we don't really lose anything.
-                        null;
-
-                     else
-                        --  Bath, we have a problem
-                        raise Program_Error;
-                     end if;
-                  end loop;
-
-                  --  Sanity check that we won't lose outwards control
-                  --  influence.
-                  for S of FA.CDG.Get_Collection
-                                    (V, Flow_Graphs.Out_Neighbours)
-                  loop
-                     if S = V then
-                        --  Self dependence is OK and we don't care if it
-                        --  disappears.
-                        null;
-
-                     elsif S = CV
-                       or else CV = FA.CDG.Get_Vertex (FA.Atr (S).Call_Vertex)
-                     then
-                        --  This can happen if we have infinite loops
-                        null;
-
-                     else
-                        --  Panic!
-                        raise Program_Error;
-                     end if;
-                  end loop;
+                  Sanity_Check (V => V, CV => CV);
 
                   FA.CDG.Clear_Vertex (V);
                   FA.CDG.Add_Edge (CV, V, EC_Default);

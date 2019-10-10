@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="8">
+<prover id="0" name="CVC4" version="1.6-gnatprove" timelimit="1" steplimit="0" memlimit="1000"/>
+<file proved="true">
+<path name=".."/><path name=".."/><path name=".."/><path name="obj"/>
+<path name="gnatprove"/><path
+                         name="ada___spark__test_array_lemmas__test_transitive_order_int.mlw"/>
+<theory name="Ada___spark__test_array_lemmas__test_transitive_order_int__subprogram_def" proved="true">
+ <goal name="def&#39;VC" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="def&#39;VC.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.1" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.2" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="5"/></proof>
+  </goal>
+  <goal name="def&#39;VC.3" expl="assertion" proved="true">
+  <proof prover="0"><result status="valid" steps="40"/></proof>
+  </goal>
+  <goal name="def&#39;VC.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="75"/></proof>
+  </goal>
+  <goal name="def&#39;VC.5" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.6" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.7" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.8" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="def&#39;VC.9" expl="postcondition" proved="true">
+  <proof prover="0"><result status="valid" steps="118"/></proof>
+  </goal>
+  <goal name="def&#39;VC.10" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

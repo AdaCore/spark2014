@@ -2,4 +2,3 @@ blocking_true.ads:1:52: info: postcondition proved (CVC4: 1 VC)
 dic.adb:5:10: high: call to potentially blocking subprogram "Blocking_True" in protected operation "Dummy"
 dic.adb:5:10: warning: initialization of "X" has no effect
 dic.adb:5:19: info: predicate check proved (CVC4: 1 VC)
-dic.ads:14:09: warning: "T" is not used in its predicate

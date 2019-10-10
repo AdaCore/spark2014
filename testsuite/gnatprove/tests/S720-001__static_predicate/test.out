@@ -1,0 +1,11 @@
+lexer.adb:16:16: medium: assertion might fail
+lexer.adb:20:16: medium: assertion might fail
+lexer.ads:4:14: warning: subprogram "Read_Token" has no effect
+predicates.ads:10:19: info: assertion proved (CVC4: 1 VC)
+predicates.ads:11:19: info: assertion proved (CVC4: 1 VC)
+predicates.ads:13:56: info: predicate check proved (CVC4: 1 VC)
+predicates.ads:13:56: info: range check proved (CVC4: 1 VC)
+predicates.ads:13:65: info: predicate check proved (CVC4: 1 VC)
+predicates.ads:13:65: info: range check proved (CVC4: 1 VC)
+predicates.ads:20:19: info: assertion proved (CVC4: 1 VC)
+predicates.ads:21:19: info: assertion proved (CVC4: 1 VC)

@@ -92,6 +92,12 @@ package body Flow is
    procedure Build_Graphs_For_Analysis (FA_Graphs : out Analysis_Maps.Map);
    --  Build flow graphs for the current compilation unit; phase 2
 
+   procedure Check_Classwide_Contracts;
+   --  Check that classwide contracts conform to the legality rules laid out
+   --  in SRM 6.1.6. We do this for requested subprograms from the current unit
+   --  whose spec has SPARK_Mode => On, regardless of the SPARK_Mode on their
+   --  bodies.
+
    -------------------------------------
    -- Debug_Print_Generated_Contracts --
    -------------------------------------
@@ -220,19 +226,6 @@ package body Flow is
 
       Outdent;
    end Debug_Print_Generated_Contracts;
-
-   ----------------------
-   -- Vertex_Pair_Hash --
-   ----------------------
-
-   function Vertex_Pair_Hash
-     (VD : Vertex_Pair)
-      return Ada.Containers.Hash_Type is
-      use Ada.Containers;
-   begin
-      return Flow_Graphs.Vertex_Hash (VD.To) +
-             Flow_Graphs.Vertex_Hash (VD.From);
-   end Vertex_Pair_Hash;
 
    ------------------------
    -- Print_Graph_Vertex --
@@ -561,6 +554,9 @@ package body Flow is
               ("package " &
                Get_Name_String
                  (Chars (Defining_Entity (Get_Direct_Mapping_Id (F)))));
+
+         elsif A.Pretty_Print_Kind = Pretty_Print_Borrow then
+            Write_Str ("borrow");
 
          elsif A.Pretty_Print_Kind /= Pretty_Print_Null then
             raise Program_Error;
@@ -1314,7 +1310,6 @@ package body Flow is
          end case;
 
          if Present (Graph_Start) then
-            --  ???  can graph be build and analyzed one-by-one?
             FA_Graphs.Insert (Key      => Graph_Start,
                               New_Item => Flow_Analyse_Entity
                                             (Graph_Start,
@@ -1331,6 +1326,43 @@ package body Flow is
       end if;
    end Build_Graphs_For_Analysis;
 
+   -------------------------------
+   -- Check_Classwide_Contracts --
+   -------------------------------
+
+   procedure Check_Classwide_Contracts is
+      procedure Check_Contracts (E : Entity_Id);
+      --  Check contracts for a given program unit and its nested units
+
+      ---------------------
+      -- Check_Contracts --
+      ---------------------
+
+      procedure Check_Contracts (E : Entity_Id) is
+         Unused : Boolean;
+
+      begin
+         for Child of Scope_Map (E) loop
+            Check_Contracts (Child);
+         end loop;
+
+         if Is_Subprogram (E)
+           and then SPARK_Util.Subprograms.Analysis_Requested
+             (E, With_Inlined => True)
+           and then Entity_Spec_In_SPARK (E)
+         then
+            Check_Classwide_Contracts (E, Valid => Unused);
+         end if;
+      end Check_Contracts;
+
+   --  Start of processing for Check_Classwide_Contracts
+
+   begin
+      if Present (Root_Entity) then
+         Check_Contracts (Root_Entity);
+      end if;
+   end Check_Classwide_Contracts;
+
    ------------------------
    -- Flow_Analyse_CUnit --
    ------------------------
@@ -1343,18 +1375,7 @@ package body Flow is
       Success : Boolean;
 
    begin
-      --  Check that classwide contracts conform to the legality rules laid
-      --  out in SRM 6.1.6.
-
-      for E of Entities_To_Translate loop
-         if Is_Subprogram (E)
-           and then SPARK_Util.Subprograms.Analysis_Requested
-             (E, With_Inlined => True)
-           and then Entity_Spec_In_SPARK (E)
-         then
-            Check_Classwide_Contracts (E, Success);
-         end if;
-      end loop;
+      Check_Classwide_Contracts;
 
       --  Process entities and construct graphs if necessary
       Build_Graphs_For_Analysis (FA_Graphs => FA_Graphs);
@@ -1414,8 +1435,8 @@ package body Flow is
                      Analysis.Check_Terminating_Annotation (FA);
                      Analysis.Check_Ghost_Procedure_Outputs (FA);
                   end if;
-                  Analysis.Find_Exports_Derived_From_Proof_Ins (FA);
                   Analysis.Find_Input_Only_Used_In_Assertions (FA);
+                  Analysis.Find_Illegal_Reads_Of_Proof_Ins (FA);
                   if FA.Is_Main then
                      Analysis.Analyse_Main (FA);
                   end if;
@@ -1503,6 +1524,7 @@ package body Flow is
                               "an entry body & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;
 
@@ -1518,6 +1540,7 @@ package body Flow is
                               "an interrupt handler & (RM C.7.1(17))",
                   N        => FA.Analyzed_Entity,
                   F1       => Direct_Mapping_Id (FA.Analyzed_Entity),
+                  Tag      => Call_To_Current_Task,
                   Severity => High_Check_Kind);
             end if;
 

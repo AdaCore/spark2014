@@ -1,3 +1,5 @@
+show_no_aliasing_of_names.adb:7:14: info: add a contract to analyze it separately from calling contexts
+show_no_aliasing_of_names.adb:7:14: info: local subprogram "Move_To_Total" only analyzed in the context of calls
 show_no_aliasing_of_names.adb:9:23: info: overflow check proved (CVC4: 1 VC), in call inlined at show_no_aliasing_of_names.adb:16
 show_no_aliasing_of_names.adb:9:23: info: overflow check proved (CVC4: 1 VC), in call inlined at show_no_aliasing_of_names.adb:17
 show_no_aliasing_of_names.adb:17:19: high: formal parameter "Source" and global "Total" are aliased (SPARK RM 6.4.2)

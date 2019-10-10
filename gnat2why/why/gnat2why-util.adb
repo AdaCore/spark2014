@@ -58,16 +58,6 @@ package body Gnat2Why.Util is
      with Post => (Section.Cur_Theory = Why.Types.Why_Empty);
    --  Return an empty Why_Section with the given kind
 
-   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean with
-     Pre => Present (Get_Initial_DIC_Procedure (E));
-   --  @param Ty type entity with a DIC (inherited or not)
-   --  @return True if the DIC expression depends on the current type instance.
-   --        If it depends on the type instance, it is considered as a
-   --        postcondtion of the default initialization of the private type,
-   --        and is checked at declaration. If it does not depend on the type
-   --        instance, it is considered as a precondition of the default
-   --        initialization, and is checked at use.
-
    --------------------
    -- Ada_Ent_To_Why --
    --------------------
@@ -516,23 +506,6 @@ package body Gnat2Why.Util is
          return Why_Node_Lists.Empty_List;
    end Build_Printing_Plan;
 
-   ------------------------------
-   -- Check_DIC_At_Declaration --
-   ------------------------------
-
-   function Check_DIC_At_Declaration (E : Entity_Id) return Boolean is
-      Ty                : constant Entity_Id := Retysp (E);
-      Default_Init_Subp : constant Entity_Id := Get_Initial_DIC_Procedure (E);
-      Default_Init_Expr : constant Node_Id :=
-        Get_Expr_From_Check_Only_Proc (Default_Init_Subp);
-      Init_Param        : constant Entity_Id :=
-        First_Formal (Default_Init_Subp);
-   begin
-      return Present (Default_Init_Expr)
-        and then Flow_Utility.Get_Variables_For_Proof (Default_Init_Expr, Ty)
-         .Contains (Flow_Types.Direct_Mapping_Id (Unique_Entity (Init_Param)));
-   end Check_DIC_At_Declaration;
-
    ------------------
    -- Compute_Spec --
    ------------------
@@ -669,14 +642,8 @@ package body Gnat2Why.Util is
          Count := Count + 1;
       end if;
 
-      --  Directly store the attr__constrained and __tag fields in the record,
-      --  as these fields cannot be modified after object creation.
-
-      if Count_Discriminants (E) > 0
-        and then Has_Defaulted_Discriminants (E)
-      then
-         Count := Count + 1;
-      end if;
+      --  Directly store the __tag field in the record, as this field cannot be
+      --  modified after object creation.
 
       if Is_Tagged_Type (E) then
          Count := Count + 1;
@@ -1049,29 +1016,12 @@ package body Gnat2Why.Util is
       --  access to its designated object
 
       elsif Is_Constant_Object (E) then
-         declare
-            E_Typ : constant Entity_Id := Retysp (Etype (E));
-         begin
-            if Ekind (E) = E_In_Parameter then
-               if Is_Access_Type (E_Typ)
-                 and then not Is_Access_Constant (E_Typ)
-                 and then Ekind (Enclosing_Unit (E)) /= E_Function
-               then
-                  return True;
-               else
-                  return False;
-               end if;
-
-            elsif Is_Access_Type (E_Typ)
-              and then not Is_Access_Constant (E_Typ)
-            then
-               return True;
-
-            else
-               return False;
-            end if;
-         end;
-
+         if Ekind (E) = E_In_Parameter then
+            return not Is_Constant_In_SPARK (E)
+              and then Ekind (Enclosing_Unit (E)) /= E_Function;
+         else
+            return not Is_Constant_In_SPARK (E);
+         end if;
       else
          return True;
       end if;

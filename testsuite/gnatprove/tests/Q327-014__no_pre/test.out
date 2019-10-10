@@ -1,9 +1,11 @@
 dispatch.adb:5:24: info: overflow check proved (CVC4: 1 VC)
 dispatch.adb:10:24: medium: overflow check might fail (e.g. when X = (F => Integer'Last)) [possible explanation: precondition of subprogram at dispatch.ads:10 should mention X]
 dispatch.adb:16:27: info: overflow check proved (CVC4: 1 VC)
+dispatch.adb:18:10: warning: unreachable code (CVC4: 1 VC)
 dispatch.adb:24:24: info: overflow check proved (CVC4: 1 VC)
 dispatch.adb:29:24: info: overflow check proved (CVC4: 1 VC)
 dispatch.adb:35:27: info: overflow check proved (CVC4: 1 VC)
+dispatch.adb:37:10: warning: unreachable code (CVC4: 1 VC)
 dispatch.ads:8:19: info: postcondition proved (CVC4: 1 VC)
 dispatch.ads:8:39: info: overflow check proved (CVC4: 1 VC)
 dispatch.ads:13:19: info: postcondition proved (CVC4: 1 VC)

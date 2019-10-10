@@ -1,2 +1,4 @@
+main.adb:3:14: info: add a contract to analyze it separately from calling contexts
+main.adb:3:14: info: local subprogram "Proc" only analyzed in the context of calls
 main.adb:3:14: warning: subprogram "Proc" has no effect
 main.adb:10:04: info: analyzing call to "Proc" in context

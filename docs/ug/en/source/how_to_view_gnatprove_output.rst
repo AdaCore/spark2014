@@ -2,13 +2,13 @@ How to View |GNATprove| Output
 ==============================
 
 |GNATprove| produces two kinds of outputs: the one which is echoed to standard
-output or displayed in your IDE (GPS or GNATbench), and a textual summary of
+output or displayed in your IDE (GNAT Studio or GNATbench), and a textual summary of
 the analysis results.
 
 The Analysis Report Panel
 -------------------------
 
-GPS can display an interactive view reporting the results of the analysis, with
+GNAT Studio can display an interactive view reporting the results of the analysis, with
 a count of issues per file, subprogram and severity, as well as filters to
 selectively view a subset of the issues only. This interactive view is
 displayed using the menu :menuselection:`SPARK --> Show Report`. This menu
@@ -27,7 +27,7 @@ The Analysis Results Summary File
 ---------------------------------
 
 |GNATprove| generates global project statistics in file ``gnatprove.out``,
-which can be displayed in GPS using the menu :menuselection:`SPARK --> Show
+which can be displayed in GNAT Studio using the menu :menuselection:`SPARK --> Show
 Log`. The file ``gnatprove.out`` is generated in the ``gnatprove`` subdirectory
 of the object directory of the project.
 
@@ -44,19 +44,21 @@ A summary table at the start of file ``gnatprove.out`` provides an overview of
 the verification results for all checks in the project. The table may look like
 this::
 
-      ----------------------------------------------------------------------------------------------------------------
-      SPARK Analysis Results      Total        Flow   Interval                          Provers   Justified   Unproved
-      ----------------------------------------------------------------------------------------------------------------
-      Data Dependencies               .           .          .                                .           .          .
-      Flow Dependencies               .           .          .                                .           .          .
-      Initialization               2100        2079          .                                .           .         21
-      Non-Aliasing                    .           .          .                                .           .          .
-      Run-time Checks               596           .          .    480 (altergo  31%, CVC4  69%)           .        116
-      Assertions                      3           .          .      3 (altergo  33%, CVC4  67%)           .          .
-      Functional Contracts          323           .          .    168 (altergo  24%, CVC4  76%)           .        155
-      LSP Verification                .           .          .                                .           .          .
-      ----------------------------------------------------------------------------------------------------------------
-      Total                        3022  2079 (69%)          .                        651 (22%)           .   292 (9%)
+  -----------------------------------------------------------------------------------------------------------------------------
+  SPARK Analysis results        Total          Flow   Interval   CodePeer                        Provers   Justified   Unproved
+  -----------------------------------------------------------------------------------------------------------------------------
+  Data Dependencies               281           281          .          .                              .           .          .
+  Flow Dependencies               228           228          .          .                              .           .          .
+  Initialization                  693           692          .          .                              .           1          .
+  Non-Aliasing                      .             .          .          .                              .           .          .
+  Run-time Checks                 474             .          .          .     458 (CVC4 95%, Trivial 5%)          16          .
+  Assertions                       45             .          .          .     45 (CVC4 82%, Trivial 18%)           .          .
+  Functional Contracts            304             .          .          .    302 (CVC4 82%, Trivial 18%)           2          .
+  LSP Verification                  .             .          .          .                              .           .          .
+  Termination                       .             .          .          .                              .           .          .
+  Concurrency                       .             .          .          .                              .           .          .
+  -----------------------------------------------------------------------------------------------------------------------------
+  Total                          2025    1201 (59%)          .          .                      805 (40%)     19 (1%)          .
 
 The following table explains the lines of the summary table:
 
@@ -74,6 +76,8 @@ The following table explains the lines of the summary table:
    "Assertions", "Verification of :ref:`Assertion Pragmas`"
    "Functional Contracts", "Verification of functional contracts (includes :ref:`Subprogram Contracts`, :ref:`Package Contracts` and :ref:`Type Contracts`)"
    "LSP Verification", "Verification related to :ref:`Object Oriented Programming and Liskov Substitution Principle`"
+   "Termination", "Verification related to :ref:`Loop Variants` and :ref:`Subprogram Termination`"
+   "Concurrency", "Verification related to :ref:`Concurrency and Ravenscar Profile`"
 
 We now explain the columns of the table.
 
@@ -85,6 +89,9 @@ We now explain the columns of the table.
   checks) proved by a simple static analysis of bounds for floating-point
   expressions based on type bounds of sub-expressions.
 
+* The ``CodePeer`` column describes the number of checks proved by calling
+  CodePeer when :ref:`Using CodePeer Static Analysis`.
+
 * The ``Provers`` column describes the number of checks proved by automatic or
   manual provers. The column also gives information on the provers used, and
   the percentage of checks proved by each prover. Note that sometimes a check
@@ -92,7 +99,9 @@ We now explain the columns of the table.
   an absolute count. Also note that generally the prover which is run first (as
   determined by the ``--prover`` command line switch) proves the most checks,
   because each prover is called only on those checks that were not previously
-  proved. The prover percentages are provided in alphabetical order.
+  proved. The prover percentages are provided in alphabetical order. The special
+  name ``Trivial`` is used to refer to an internal simplication that discards
+  checks that are trivially true.
 
 * The ``Justified`` column contains the number of checks for which the user has
   provided a :ref:`Direct Justification with Pragma Annotate`.
@@ -230,7 +239,7 @@ current version of |GNATprove| is based on CWE version 3.2 released on January
    flow_checks_table
 
 Messages of a specific category or related to a specific CWE can be filtered
-inside GPS by typing the desired substring in the search bar of the
+inside GNAT Studio by typing the desired substring in the search bar of the
 ``Locations`` panel. For example, search for "CWE" to get all messages with a
 corresponding CWE, or "CWE 369" to get all messages related to division by zero
 vulnerability.
@@ -246,10 +255,10 @@ counterexample consists in two parts:
 * a path (or set of paths) through the subprogram
 * an assignment of values to variables that appear on that path
 
-The best way to look at a counterexample is to display it in GPS by clicking on
+The best way to look at a counterexample is to display it in GNAT Studio by clicking on
 the icon to the left of the failed proof message, or to the left of the
 corresponding line in the editor (see :ref:`Running GNATprove from
-GPS`). |GNATprove| then displays the path in one color, and the values of
+GNAT Studio`). |GNATprove| then displays the path in one color, and the values of
 variables on the path by inserting lines in the editor only (not in the file)
 which display these values. For example, consider procedure ``Counterex``:
 
@@ -259,13 +268,13 @@ which display these values. For example, consider procedure ``Counterex``:
 
 The assertion on line 11 may fail when input parameter ``Cond`` is ``True`` and
 input parameters ``I1`` and ``I2`` are too big. The counterexample generated by
-|GNATprove| is displayed as follows in GPS, where each line highlighted in the
+|GNATprove| is displayed as follows in GNAT Studio, where each line highlighted in the
 path is followed by a line showing the value of variables from the previous
 line:
 
 .. image:: /static/counterexample.png
    :width: 800 px
-   :alt: Counterexample in GPS
+   :alt: Counterexample in GNAT Studio
 
 |GNATprove| also completes the message for the failed proof with an explanation
 giving the values of variables from the checked expression for the

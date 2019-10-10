@@ -35,7 +35,7 @@
 
 特に， |GNATprove| は，サブプログラムのボディ部を調べないので，呼び出しについて必要な全ての情報は，サブプログラム契約中で明確であるべきです．コードと表明に焦点を当てた手動レビューによって，効率的に，多くの失われた注釈について判断することができます．表明の記述が多くても， |GNATprove| は，正確に自分が証明できない場所を示すことができます．こうすることで，問題を明らかにする助けとなります．調査しつつ，コードを単純化することは役立ちます．例えば，単純な表明を追加して，証明してみることです．
 
-|GNATprove| が提供するパス情報は，コードレビューで役に立ちます．証明が失敗したパスを，:ref:`ja Running GNATprove from GPS` で記述したように，エディタ内で表示することができます．場合によっては，反例もまたパス上に生成されます．このとき，問題を示す変数の値も分かります（詳しくは， :ref:`ja Understanding Counterexamples` 参照のこと）．多くの場合，不足している表明を見つけ出すには，これで十分です．
+|GNATprove| が提供するパス情報は，コードレビューで役に立ちます．証明が失敗したパスを，:ref:`ja Running GNATprove from GNAT Studio` で記述したように，エディタ内で表示することができます．場合によっては，反例もまたパス上に生成されます．このとき，問題を示す変数の値も分かります（詳しくは， :ref:`ja Understanding Counterexamples` 参照のこと）．多くの場合，不足している表明を見つけ出すには，これで十分です．
 
 プロパティもまた，概念的には証明可能です．しかし， |GNATprove| が用いるモデルでは，今のところモデルを用いた推論を行うことができません [MODEL] ．特に，下記の言語の特徴を利用すると，真になるべき VC（Verification Condition，検証条件） を生成できる場合があります．ただし，証明することはできません．
 
@@ -54,11 +54,11 @@
 証明器の不足要素を調査する
 ---------------------------------
 
-最後のステップは，証明器が証明に十分な時間を与えられたかどうか [TIMEOUT] または，別の証明器が証明を見つけられるかどうか [PROVER] です．この目的のために， |GNATprove| は， ``--level`` スイッチを提供し，コマンドラインから（ :ref:`ja Running GNATprove from the Command Line` 参照）或いは，GPS から（ :ref:`ja Running GNATprove from GPS` ）或いは GNATbench から（ :ref:`ja Running GNATprove from GNATbench` 参照）から利用することができます．デフォルトの 0 レベルは，単純な証明に十分です．一般的に，自動証明がそれ以上得られなくなるまで，証明のレベルを（レベル 4 まで）あげることができます．
+最後のステップは，証明器が証明に十分な時間を与えられたかどうか [TIMEOUT] または，別の証明器が証明を見つけられるかどうか [PROVER] です．この目的のために， |GNATprove| は， ``--level`` スイッチを提供し，コマンドラインから（ :ref:`ja Running GNATprove from the Command Line` 参照）或いは，GNAT Studio から（ :ref:`ja Running GNATprove from GNAT Studio` ）或いは GNATbench から（ :ref:`ja Running GNATprove from GNATbench` 参照）から利用することができます．デフォルトの 0 レベルは，単純な証明に十分です．一般的に，自動証明がそれ以上得られなくなるまで，証明のレベルを（レベル 4 まで）あげることができます．
 
 次の節 :ref:`ja Running GNATprove from the Command Line` で記述するように，スイッチ ``--level`` は，さまざまなより低いレベルのスイッチ ``--steps`` , ``--prover`` , ``--proof`` を直接設定するのと等価です．それゆえ， ``--level`` における既定義の組み合わせを用いるよりも，より強力な（必然的により長い証明時間を必要とする）値を設定することができます．
 
-上記の実験に関して，GPS の :menuselection:`SPARK --> Prove Line` 或いは，:menuselection:`SPARK --> Prove Subprogram` メニューを使うと便利です． :ref:`ja Running GNATprove from GPS` および :ref:`ja Running GNATprove from GNATbench` に記載があります．対象となる行ないしはサブプログラムに対して，より高速に結果を得ることができます．
+上記の実験に関して，GNAT Studio の :menuselection:`SPARK --> Prove Line` 或いは，:menuselection:`SPARK --> Prove Subprogram` メニューを使うと便利です． :ref:`ja Running GNATprove from GNAT Studio` および :ref:`ja Running GNATprove from GNATbench` に記載があります．対象となる行ないしはサブプログラムに対して，より高速に結果を得ることができます．
 
 現在の自動証明器には，浮動小数点算術演算をきわめて正確には扱えないという問題があります．特に，多数の演算がある，或いは非線形演算（乗算・除算・累乗）を含んでいる場合です．この場合は， |CodePeer| integration を用いるのが便利です．スイッチ ``--codepeer=on`` で動作し，浮動小数点演算の境界検査を高速かつ正確に実施することができます．
 

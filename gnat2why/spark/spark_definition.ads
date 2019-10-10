@@ -152,8 +152,9 @@ package SPARK_Definition is
    --  Returns True iff the private part of spec is in SPARK
 
    function Body_Statements_In_SPARK (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) = E_Package;
-   --  Returns True iff the package body statements are in SPARK
+     Pre => Ekind (E) = E_Package and then Entity_Body_In_SPARK (E);
+   --  Returns True iff the package body statements are in SPARK. Only
+   --  applicable to packages, whose body itself is in SPARK.
 
    function Full_View_Not_In_SPARK (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
@@ -224,12 +225,6 @@ package SPARK_Definition is
    function Get_Element (Kind : Entity_Collection;
                          C    : Cursor)
                          return Entity_Id;
-
-   Ownership_Errors : Boolean := False;
-   --  When ownership errors are detected then we must stop before flow
-   --  analysis, just like we stop when legality errors or SPARK violations are
-   --  detected. ??? This flag is needed because ownership checking is not yet
-   --  integrated with marking.
 
 private
 

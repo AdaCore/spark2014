@@ -186,6 +186,7 @@ package Gnat2Why.Util is
      (WF_Pure,
       WF_Variables,
       WF_Context,
+      WF_Axioms,
       WF_Main);
 
    --  Type used to control which marker information is included in the node.
@@ -194,6 +195,11 @@ package Gnat2Why.Util is
      (GM_None,      --  no pretty-printing info
       GM_Node_Only, --  only the node ID is printed
       GM_All);      --  node ID and sloc of node are printed
+
+   type Old_Policy_Kind is (Ignore, As_Old, Use_Map);
+   --  Kind for policy with respect to encoding of 'Old attribute:
+   --  Ignore if Old should be ignored, As_Old to use the 'old' keyword of
+   --  Why3 and Use_Map to use the map for old.
 
    type Transformation_Params is record
       File        : W_Section_Id;
@@ -208,8 +214,8 @@ package Gnat2Why.Util is
       --  a possibly large assertion is not proved.
       Ref_Allowed : Boolean;
       --  Flag that is True if references are allowed
-      Old_Allowed : Boolean;
-      --  Flag that is True if accesses to 'old' values are allowed
+      Old_Policy  : Old_Policy_Kind;
+      --  Policy for encoding of 'Old attribute
    end record;
    --  Set of parameters for the transformation phase
 
@@ -233,14 +239,14 @@ package Gnat2Why.Util is
 
    function Usual_Params
      (Phase : Transformation_Phase;
-      Kind  : W_Section_Id := WF_Main) return Transformation_Params
+      Kind  : W_Section_Id := WF_Axioms) return Transformation_Params
    is
      (Transformation_Params'
         (File        => Kind,
          Phase       => Phase,
          Gen_Marker  => GM_None,
          Ref_Allowed => (if Phase = Generate_Logic then False else True),
-         Old_Allowed => (if Phase = Generate_Logic then False else True)));
+         Old_Policy  => (if Phase = Generate_Logic then As_Old else Use_Map)));
    --  Usual set of transformation parameters for a given phase
 
    ---------------------------------------------
@@ -254,7 +260,7 @@ package Gnat2Why.Util is
      (Usual_Params (Generate_VCs_For_Assert));
 
    function Logic_Params
-     (Kind : W_Section_Id := WF_Main) return Transformation_Params
+     (Kind : W_Section_Id := WF_Axioms) return Transformation_Params
    is (Usual_Params (Generate_Logic, Kind));
 
    --------------
@@ -384,7 +390,6 @@ package Gnat2Why.Util is
    --     - A field __split_discrs for discriminants if E has at least one
    --     - A field __split_fields for regular fields if E has at least one
    --       (use Count_Why_Regular_Fields)
-   --     - A field attr__constrained if E's discriminants have default values
    --     - A field __tag if E is tagged
 
    function Is_Simple_Private_Type (E : Entity_Id) return Boolean with

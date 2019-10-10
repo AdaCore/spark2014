@@ -4,3 +4,47 @@ q.ads:5:09: high: possible data race when accessing variable "p.state"
 q.ads:5:09: high: with task "p.insider"
 q.ads:5:09: high: with task "q.outsider"
 q.ads:5:09: info: nontermination of task proved (CVC4: 1 VC)
+Summary of SPARK analysis
+=========================
+
+-
+SPARK Analysis results Total Flow Interval CodePeer Provers Justified Unproved
+-
+Data Dependencies . . . . . . .
+Flow Dependencies . . . . . . .
+Initialization 1 . . . . . 1
+Non-Aliasing . . . . . . .
+Run-time Checks 2 . . . 2 . .
+Assertions . . . . . . .
+Functional Contracts . . . . . . .
+LSP Verification . . . . . . .
+Termination . . . . . . .
+Concurrency 3 . . . . . 3
+-
+Total 6 . . . 2 (33%) . 4 (67%)
+
+
+max steps used for successful proof: 1
+
+Analyzed 2 units
+in unit p, 2 subprograms and packages out of 3 analyzed
+ P at p.ads:1 flow analyzed (0 errors, 1 checks and 0 warnings) and proved (0 checks)
+absence of run-time errors of P fully established
+ P.Flip at p.ads:3 skipped
+ P.InsiderTK at p.ads:5 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (1 checks)
+effects on parameters and Global variables of P.InsiderTK depends on
+ effects on parameters and Global variables of P.Flip
+absence of run-time errors of P.InsiderTK depends on
+ effects on parameters and Global variables of P.Flip
+ absence of run-time errors of P.Flip
+in unit q, 2 subprograms and packages out of 3 analyzed
+ Q at q.ads:3 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (0 checks)
+absence of run-time errors of Q fully established
+ Q.Outsider at q.ads:5 skipped
+ Q.OutsiderTK at q.ads:5 flow analyzed (0 errors, 0 checks and 0 warnings) and proved (1 checks)
+effects on parameters and Global variables of Q.OutsiderTK depends on
+ effects on parameters and Global variables of P.Flip
+absence of run-time errors of Q.OutsiderTK depends on
+ effects on parameters and Global variables of P.Flip
+ absence of run-time errors of P.Flip
+

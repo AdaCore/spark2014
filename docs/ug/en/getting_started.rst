@@ -14,14 +14,14 @@ illustration.
    version of the |SPARK| toolset. If you're using an official release, some of
    the described features may not apply. Refer to the version of the SPARK 2014
    User's Guide shipping with your release, available through
-   :menuselection:`Help --> SPARK` in GPS and GNATbench IDEs, or under
+   :menuselection:`Help --> SPARK` in GNAT Studio and GNATbench IDEs, or under
    ``share/doc/spark`` in your |SPARK| installation.
 
 As a prerequisite, it is assumed that the |SPARK| tools have already been
 installed. As a minimum you should install:
 
  - |SPARK| Pro, |SPARK| Discovery or |SPARK| Community
- - GPS or the GNATbench plug-in of Eclipse
+ - GNAT Studio or the GNATbench plug-in of Eclipse
 
 |SPARK| Pro is the most complete toolset for |SPARK|. |SPARK| Discovery is a
 reduced toolset that still allows to perform all analyses presented in this
@@ -39,15 +39,15 @@ User's Guide, but is less powerful than |SPARK| Pro. Compared to |SPARK| Pro,
 hobbyists, and students, which retains most of the capabilities of |SPARK|
 Pro. |SPARK| Community does not include the static analyzer |CodePeer|.
 
-Note that GPS is not strictly required for |SPARK| as all the commands can be
+Note that GNAT Studio is not strictly required for |SPARK| as all the commands can be
 invoked from the command line, or from Eclipse using the GNATbench plug-in, but
-the instructions in this section assume that GPS is being used. If you are a
+the instructions in this section assume that GNAT Studio is being used. If you are a
 supported user, you can get more information on how to install the tools in
 "AdaCore Installation Procedures" under the "Download" tab in GNAT Tracker, or
 by contacting AdaCore for further advice.
 
-The key tools that we will use in this example are |GNATprove| and GPS.
-To begin with, launch GPS with a new default project and check that the
+The key tools that we will use in this example are |GNATprove| and GNAT Studio.
+To begin with, launch GNAT Studio with a new default project and check that the
 :menuselection:`SPARK` menu is present in the menu bar.
 
 .. note::
@@ -56,7 +56,7 @@ To begin with, launch GPS with a new default project and check that the
    :menuselection:`SPARK 2014`, to avoid any confusion with the existing
    :menuselection:`SPARK` menu for SPARK 2005 toolset.
 
-Now open a new file in GPS and type the following short program into it.
+Now open a new file in GNAT Studio and type the following short program into it.
 Save this file as ``diff.adb``.
 
 .. literalinclude:: /gnatprove_by_example/examples/diff.adb
@@ -69,7 +69,7 @@ states that the output value of Z depends on the input values of X and Y, but,
 as you may have noticed, there is a bug in the code. Note the use of aspect
 ``SPARK_Mode`` to identify this as |SPARK| code to be analysed with the |SPARK|
 tools.  To analyze this program, select :menuselection:`SPARK --> Examine File`
-from the menu in GPS. |GNATprove| executes in flow analysis mode and reports:
+from the menu in GNAT Studio. |GNATprove| executes in flow analysis mode and reports:
 
 .. literalinclude:: /gnatprove_by_example/results/diff.flow
    :language: none
@@ -84,7 +84,7 @@ should report no warnings or errors.
 
 Having established that the program is free from flow errors, now let's run the
 tools in proof mode to check for run-time errors.  Select :menuselection:`SPARK
---> Prove File` from the menu in GPS, and click on ``Execute`` in the resulting
+--> Prove File` from the menu in GNAT Studio, and click on ``Execute`` in the resulting
 dialog box.  |GNATprove| now attempts to show, using formal verification, that
 the program is free from run-time errors. But it finds a problem and highlights
 the assignment statement in red, reporting:

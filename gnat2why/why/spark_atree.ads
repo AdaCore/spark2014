@@ -142,6 +142,8 @@ package SPARK_Atree is
      Sinfo.N_Private_Type_Declaration;
    N_Procedure_Call_Statement       : Node_Kind renames
      Sinfo.N_Procedure_Call_Statement;
+   N_Protected_Type_Declaration     : Node_Kind renames
+     Sinfo.N_Protected_Type_Declaration;
    N_Pragma                         : Node_Kind renames Sinfo.N_Pragma;
    N_Qualified_Expression           : Node_Kind renames
      Sinfo.N_Qualified_Expression;
@@ -232,6 +234,10 @@ package SPARK_Atree is
 
    function Ancestor_Part (N : Node_Id) return Node_Id with
      Pre => Nkind (N) = N_Extension_Aggregate;
+
+   function Attribute_Constrained_Static_Value (N : Node_Id) return Boolean
+   with
+     Pre => SPARK_Util.Attr_Constrained_Statically_Known (N);
 
    function Attribute_Name (N : Node_Id) return Name_Id with
      Pre => Nkind (N) = N_Attribute_Reference;

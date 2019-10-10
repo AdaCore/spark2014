@@ -1,4 +1,3 @@
-main.adb:3:12: warning: "Pos" is not used in its predicate
 main.adb:6:18: info: range check proved (CVC4: 1 VC)
 main.adb:6:18: medium: predicate check might fail
 main.adb:6:29: info: predicate check proved (CVC4: 1 VC)

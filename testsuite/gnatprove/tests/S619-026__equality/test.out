@@ -1,0 +1,31 @@
+a-cfhama.ads:680:39: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:689:17: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:719:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cfhama.ads:734:20: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:18
+a-cofove.ads:295:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:337:73: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:370:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:405:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:451:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:475:51: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:516:59: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:581:28: info: overflow check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:581:57: info: range check proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:709:23: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofove.ads:745:14: info: precondition proved (CVC4: 1 VC), in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfhama.ads:107, in instantiation at prim_eq_vect.adb:18
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at prim_eq_vect.adb:6
+prim_eq_vect.adb:9:52: info: range check proved (CVC4: 1 VC)
+prim_eq_vect.adb:28:14: info: postcondition proved (CVC4: 1 VC)
+prim_eq_vect.adb:28:26: info: precondition proved (CVC4: 1 VC)
+prim_eq_vect.adb:28:59: info: precondition proved (CVC4: 1 VC)

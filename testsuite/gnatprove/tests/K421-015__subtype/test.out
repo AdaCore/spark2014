@@ -1,3 +1,5 @@
+p.adb:2:14: info: add a contract to analyze it separately from calling contexts
+p.adb:2:14: info: local subprogram "Proc" only analyzed in the context of calls
 p.adb:2:14: warning: subprogram "Proc" has no effect
 p.adb:3:15: info: range check proved (CVC4: 2 VC), in call inlined at p.adb:15
 p.adb:4:15: medium: range check might fail, in call inlined at p.adb:15

@@ -1,4 +1,5 @@
 p.adb:23:06: medium: call to nonreturning subprogram might be executed
 p.adb:28:08: medium: call to nonreturning subprogram might be executed
-p.ads:13:13: high: all paths in "Do_Something1" raise exceptions or do not terminate normally
 p.ads:13:13: warning: subprogram "Do_Something1" has no effect
+p.ads:14:13: high: all paths in "Do_Something2" raise exceptions or do not terminate normally
+p.ads:14:13: warning: "PO" is not modified, could be INPUT

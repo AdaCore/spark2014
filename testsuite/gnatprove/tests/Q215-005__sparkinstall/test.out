@@ -5,6 +5,7 @@ alt-ergo
 codepeer-gcc
 codepeer-gnatls
 codepeer-gprbuild
+codepeer-gprls
 codepeer_be
 cvc4
 gcc
@@ -22,6 +23,7 @@ gprslave
 spark_codepeer_wrapper
 spark_memcached_wrapper
 spark_report
+spark_semaphore_wrapper
 target.atp
 why3config
 why3cpulimit

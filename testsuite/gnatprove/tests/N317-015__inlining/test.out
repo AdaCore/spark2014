@@ -1,3 +1,7 @@
+array_arith.adb:6:16: info: add a contract to analyze it separately from calling contexts
+array_arith.adb:6:16: info: local subprogram "Ident" only analyzed in the context of calls
+array_arith.adb:26:16: info: add a contract to analyze it separately from calling contexts
+array_arith.adb:26:16: info: local subprogram "Ident" only analyzed in the context of calls
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:32
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:33
 array_arith.adb:29:19: info: overflow check proved (CVC4: 1 VC), in call inlined at array_arith.adb:34
@@ -18,8 +22,12 @@ array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:39
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:40
 array_arith.adb:29:19: info: range check proved (CVC4: 1 VC), in call inlined at array_arith.adb:41
+array_arith.adb:47:17: info: add a contract to analyze it separately from calling contexts
+array_arith.adb:47:17: info: local subprogram "Local" only analyzed in the context of calls
 array_arith.adb:63:19: medium: overflow check might fail (e.g. when One = Integer'Last and Y = 1) [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
 array_arith.adb:63:19: medium: range check might fail (e.g. when One = -1 and Y = 0) [possible explanation: subprogram at line 46 should mention Y and One in a precondition]
+array_arith.adb:70:17: info: add a contract to analyze it separately from calling contexts
+array_arith.adb:70:17: info: local subprogram "Put_A_Zero" only analyzed in the context of calls
 array_arith.adb:70:29: info: initialization of "Y" proved
 array_arith.ads:8:20: medium: "X" might not be initialized in "Init"
 array_arith.ads:9:14: info: postcondition proved (CVC4: 1 VC)
@@ -33,6 +41,10 @@ array_arith.ads:15:35: medium: postcondition might fail, cannot prove X(J) = Nat
 array_arith.ads:17:20: medium: "X" might not be initialized in "Zero"
 array_arith.ads:18:14: info: postcondition proved (CVC4: 1 VC)
 array_arith.ads:18:35: medium: "X" might not be initialized
+ident.adb:8:13: info: add a contract to analyze it separately from calling contexts
+ident.adb:8:13: info: local subprogram "Id_Body" only analyzed in the context of calls
+ident.adb:9:14: info: add a contract to analyze it separately from calling contexts
+ident.adb:9:14: info: local subprogram "Incr_Body" only analyzed in the context of calls
 ident.adb:9:42: info: initialization of "Y" proved
 ident.adb:43:07: info: initialization of "Y" proved
 ident.adb:44:07: info: initialization of "Res" proved

@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
+"http://why3.lri.fr/why3session.dtd">
+<why3session shape_version="6">
+<prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="10" steplimit="610000" memlimit="1000"/>
+<file proved="true">
+<path name=".."/>
+<path name=".."/>
+<path name=".."/>
+<path name="gnatprove"/>
+<path name="use_vectors__my_vectors__reverse_find_index.mlw"/>
+<theory name="Use_vectors__my_vectors__reverse_find_index__subprogram_def" proved="true">
+ <goal name="VC def" expl="VC for def" proved="true">
+ <transf name="split_goal_wp_conj" proved="true" >
+  <goal name="VC def.0" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.1" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="15977"/></proof>
+  </goal>
+  <goal name="VC def.3" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.4" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="16621"/></proof>
+  </goal>
+  <goal name="VC def.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="16532"/></proof>
+  </goal>
+  <goal name="VC def.6" expl="precondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.7" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="17577"/></proof>
+  </goal>
+  <goal name="VC def.8" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+  <goal name="VC def.9" expl="postcondition" proved="true">
+  <transf name="trivial_true" proved="true" >
+  </transf>
+  </goal>
+ </transf>
+ </goal>
+</theory>
+</file>
+</why3session>

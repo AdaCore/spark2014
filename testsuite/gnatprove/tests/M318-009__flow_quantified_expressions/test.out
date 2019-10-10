@@ -1,3 +1,5 @@
+test.adb:4:14: info: add a contract to analyze it separately from calling contexts
+test.adb:4:14: info: local subprogram "QE_1" only analyzed in the context of calls
 test.adb:9:22: medium: assertion might fail, in call inlined at test.adb:17 [possible explanation: subprogram at line 15 should mention Table in a precondition]
 test.adb:15:04: warning: analyzing unreferenced procedure "QE_2"
 test.adb:17:07: info: in inlined body at line 6

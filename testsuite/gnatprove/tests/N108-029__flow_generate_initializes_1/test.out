@@ -3,6 +3,8 @@ g.adb:21:19: medium: assertion might fail, cannot prove Inst.Foo = 10
 generate_initializes.ads:9:11: info: data dependencies proved
 other.adb:14:04: high: modification of "G2" in elaboration requires Elaborate_Body on package "Other" (SPARK RM 7.7.1(5))
 outer.adb:16:47: medium: overflow check might fail [possible explanation: subprogram at line 10 should mention Hidden and Visible in a precondition]
+outer.adb:18:17: info: add a contract to analyze it separately from calling contexts
+outer.adb:18:17: info: local subprogram "Init" only analyzed in the context of calls
 outer.adb:21:10: info: initialization of "Tmp" proved
 outer.adb:21:10: info: initialization of "Tmp" proved, in call inlined at outer.adb:29
 outer.ads:2:14: warning: subprogram "P" has no effect

@@ -21,7 +21,7 @@ degre of interaction required depends on the difficuly of the proof:
 
 * interaction at the level of Verification Condition formulas in the syntax of
   Why3 for arbitrary complex properties, as described in
-  :ref:`Manual Proof Using GPS`
+  :ref:`Manual Proof Using GNAT Studio`
 
 .. _Manual Proof Using SPARK Lemma Library:
 
@@ -178,7 +178,7 @@ which the property holds and solvers are not good at guessing. As an example,
 consider the following program:
 
 .. code-block:: ada
-		
+
   pragma Assume (A (A'First) = 0 and then A (A'Last) > 0);
 
   pragma Assert
@@ -367,7 +367,7 @@ can be done when automatic provers fail to prove a check. We will use Coq here.
 
 The Coq input file associated to this postcondition can be produced by either
 selecting :menuselection:`SPARK --> Prove Check` and specifying ``Coq`` as
-alternate prover in GPS or by executing on the command-line:
+alternate prover in GNAT Studio or by executing on the command-line:
 
     ``gnatprove -P <prj_file>.gpr --limit-line=nonlinear.adb:4:11:VC_POSTCONDITION --prover=Coq``
 
@@ -684,10 +684,10 @@ proved::
   nonlinear.adb:8:12: info: division check proved
 
 
-.. _Manual Proof Using GPS:
+.. _Manual Proof Using GNAT Studio:
 
-Manual Proof Using GPS
-^^^^^^^^^^^^^^^^^^^^^^
+Manual Proof Using GNAT Studio
+^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
 
 This section presents a simple example of how to prove interactively a check
 with the manual proof feature. We reuse here the example presented in
@@ -696,7 +696,7 @@ check at::
 
   nonlinear.adb:4:11:VC_POSTCONDITION
 
-Right click on the corresponding location in the ``Locations`` terminal of GPS
+Right click on the corresponding location in the ``Locations`` terminal of GNAT Studio
 and select the menu
 :menuselection:`SPARK --> Start Manual Proof`. The manual proof interface
 immediately starts. Both the ``Proof Tree`` and the ``Verification Condition``
@@ -923,126 +923,3 @@ clicking on
 The proof is complete and |GNATprove| can be called again on the whole project to
 check that the former failing check is now understood as proved by
 |GNATprove|.
-
-
-List of Useful Transformations and Commands
-^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
-
-The transformations all contain a specific documentation through the
-``list-transforms`` command and ``help transform_name`` command. The most
-useful transformations/commands are the following:
-
-* ``apply``: apply an hypothesis to the current goal.
-  For example: ``H : x > 0 -> not x = 0`` can be applied on the goal
-  ``G : not x = 0``. After the application you will be left to prove a new goal
-  ``x > 0``.
-
-* ``assert``: adds a new lemma you can use for proving the current Verification
-  Condition.
-  For example: ``assert x = 0`` will generate two new subgoals. In the first
-  one you have to prove that x is indeed equal to 0. In the second one, you can
-  use this hypothesis.
-
-* ``case``: takes a formula and perform an analysis by case on its boolean
-  value. You will have to prove your Verification Condition once with this
-  formula asserted to true and once asserted to false.
-
-* ``clean``: removes unsuccessful proof attempts below proved goals.
-
-* ``clear_but``: removes all hypotheses except the one provided by the user as
-  argument. Removing unused context helps the provers.
-  For example, ``clear_but H,H2,h`` will remove everything but hypotheses H H2
-  and h.
-
-* ``compute_in_goal``: performs possible computations in goal.
-
-* ``destruct``: destruct the head constructor of a formula ( ``/\`` , ``\/``
-  or ``->``).
-  With ``H: A /\ B``, applying ``destruct H`` make two new hypotheses (``H: A``
-  and ``H1: B``). With ``H: A \/ B``, applying ``destruct H`` duplicates the
-  goal which has to be proved with ``H: A`` and ``H: B`` independently. With
-  ``H: A -> B``, ``destruct H`` creates a new subgoal for ``A`` and simplify to
-  ``H: B`` in the current one.
-
-* ``eliminate_epsilon``: sometimes the goal appears as ``epsilon [...]``. This
-  transforms epsilons into adapted logic.
-
-* ``exists``: allows the user to provide a term that instantiates a goal
-  starting with an existential.
-
-* ``help``: with no arguments, return basic commands that can be used. If a
-  transformation is given as argument, it displays a small description of the
-  transformation.
-
-* ``induction``: performs an induction on the unbounded integer specified.
-
-* ``instantiate``: instantiates a ``forall`` quantification at the head of an
-  hypothesis with a term given by the user (a list of terms can be provided).
-
-* ``intros``: introduces a list of constants/hypotheses. This transformation
-  should not be necessary but it can be used to rename constants/hypotheses.
-
-* ``left``: In a goal, transforms ``A \/ B`` into ``A``.
-
-* ``list-provers``: gives a list of the provers available on your machine. You
-  should have at least ``altergo``.
-
-* ``list-transforms``: list transformations.
-
-* ``pose``: defines a new constant equal to a given term.
-
-* ``print``: prints the definition of a name.
-
-* ``remove``: removes a list of hypotheses.
-
-* ``replace``: replace a term by another and create a subgoal asking the user
-  to show that they are equivalent.
-
-* ``rewrite``: rewrites an equality in a goal or hypothesis. For example, with
-  ``H: x = 0`` and goal ``y = x``, ``rewrite H`` transforms the goal into
-  ``y = 0``.
-
-* ``right``: In a goal, transforms ``A \/ B`` into ``B``.
-
-* ``search``: search all occurrences of a name in the context.
-
-* ``split_*``: a set of transformations that split the goals/hypotheses. For
-  example, ``split_goal_wp`` transforms the goal ``A /\ B`` into two new
-  subgoals ``A`` and ``B``.
-
-* ``subst``: try to find an equality that could be used for a given constant and
-  replace each occurrence of this constant by the other side of the equality. It
-  then removes said constant.
-
-* ``subst_all``: do all possible substitutions.
-
-* ``unfold``: unfolds the definition of a function in an hypothesis or a goal.
-
-Recommendations
-^^^^^^^^^^^^^^^
-
-* As for proofs with an external interactive prover, the user should set the
-  attribute ``Proof_Dir`` so that proofs can be saved under version control.
-
-* The ``Proof_Dir`` is recommended to be under a version control system (git or
-  svn for example). The proofs can be tedious to rewrite so it is better not to
-  lose them.
-
-* There is currently no way to adapt stuff that are proven in the current
-  version to potential future ones. The update will have to be done manually but
-  we hope to automate the process in the future,
-
-* This feature is experimental and we currently recommend to keep the proof as
-  short as possible.
-
-Tips
-^^^^
-
-* If the goal contains epsilons, they can be removed by using
-  ``eliminate_epsilon``.
-
-* Manual provers can be launched during the edition of the proof like
-  other provers. The user can select a goal node and type ``coq`` for example.
-
-* The command line remembers what is typed. Arrow keys can be used to get the
-  lasts queried commands.

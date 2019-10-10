@@ -11,7 +11,7 @@ procedure observingcomposite with SPARK_Mode is
   end record;
 
   function Sum (X, Y : access Integer) return Integer is (X.all + Y.all);
-  
+
   function Sum_Rec (R : in Rec) return Integer is
   begin
 	return Sum (R.X, R.Y);

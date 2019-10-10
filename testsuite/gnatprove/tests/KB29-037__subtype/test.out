@@ -4,6 +4,8 @@ main.adb:7:14: medium: predicate check might fail (e.g. when Global = 1)
 main.adb:13:06: warning: unused assignment
 main.adb:13:12: info: predicate check proved (CVC4: 1 VC)
 main.adb:19:14: warning: unused assignment to "TV"
+p.adb:8:14: info: add a contract to analyze it separately from calling contexts
+p.adb:8:14: info: local subprogram "Bad" only analyzed in the context of calls
 p.adb:10:08: info: predicate check proved (CVC4: 1 VC), in call inlined at p.adb:17
 p.adb:10:40: info: overflow check proved (CVC4: 1 VC), in call inlined at p.adb:17
 p.adb:11:08: medium: predicate check might fail, in call inlined at p.adb:17 (e.g. when Var = (Access_Count => 1, Locked => False))

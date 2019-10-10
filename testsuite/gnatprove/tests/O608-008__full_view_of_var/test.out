@@ -1,5 +1,7 @@
 p.adb:7:19: info: postcondition proved (CVC4: 1 VC)
 p.adb:12:19: info: postcondition proved (CVC4: 2 VC)
+p.adb:16:14: info: add a contract to analyze it separately from calling contexts
+p.adb:16:14: info: local subprogram "Sub" only analyzed in the context of calls
 p.adb:16:14: warning: subprogram "Sub" has no effect
 p.adb:17:07: info: initialization of "Z" proved
 p.adb:17:07: info: initialization of "Z" proved, in call inlined at p.adb:43

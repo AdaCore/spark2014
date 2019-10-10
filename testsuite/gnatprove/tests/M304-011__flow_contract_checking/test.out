@@ -21,6 +21,4 @@ test.ads:27:12: info: flow dependencies proved
 test.ads:30:47: medium: "Par2" might not be initialized in "Check_Contract_6"
 test.ads:32:12: info: data dependencies proved
 test.ads:34:24: medium: missing dependency "X => Par1"
-test.ads:38:12: info: data dependencies proved
-test.ads:42:12: info: data dependencies proved
 test.ads:44:12: info: flow dependencies proved

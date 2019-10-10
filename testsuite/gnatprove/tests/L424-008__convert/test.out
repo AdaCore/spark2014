@@ -1,8 +1,16 @@
+p.adb:4:14: info: add a contract to analyze it separately from calling contexts
+p.adb:4:14: info: local subprogram "First" only analyzed in the context of calls
 p.adb:4:14: warning: subprogram "First" has no effect
 p.adb:9:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:37
+p.adb:12:14: info: add a contract to analyze it separately from calling contexts
+p.adb:12:14: info: local subprogram "Second" only analyzed in the context of calls
 p.adb:12:14: warning: subprogram "Second" has no effect
 p.adb:17:22: medium: assertion might fail, cannot prove My_S2 (2) /= 1, in call inlined at p.adb:38 (e.g. when My_S2 = (others => 1))
+p.adb:20:14: info: add a contract to analyze it separately from calling contexts
+p.adb:20:14: info: local subprogram "Third" only analyzed in the context of calls
 p.adb:20:14: warning: subprogram "Third" has no effect
 p.adb:25:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:39
+p.adb:28:14: info: add a contract to analyze it separately from calling contexts
+p.adb:28:14: info: local subprogram "Fourth" only analyzed in the context of calls
 p.adb:28:14: warning: subprogram "Fourth" has no effect
 p.adb:33:22: info: assertion proved (CVC4: 1 VC), in call inlined at p.adb:40

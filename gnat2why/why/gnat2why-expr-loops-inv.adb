@@ -1486,6 +1486,12 @@ package body Gnat2Why.Expr.Loops.Inv is
                E : constant Entity_Id := Defining_Identifier (N);
 
             begin
+               --  If a local borrower is declared inside the loop, consider
+               --  the borrowed expression to be updated.
+
+               if Is_Local_Borrower (E) then
+                  Update_Status (Expression (N), Loop_Writes, Inv_Seen);
+               end if;
 
                if Is_Mutable_In_Why (E) then
                   One_Level_Update (E, Loop_Writes,

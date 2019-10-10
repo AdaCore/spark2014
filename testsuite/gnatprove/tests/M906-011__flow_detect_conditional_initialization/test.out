@@ -1,3 +1,5 @@
+uninitialized.adb:17:14: info: add a contract to analyze it separately from calling contexts
+uninitialized.adb:17:14: info: local subprogram "Set" only analyzed in the context of calls
 uninitialized.adb:18:19: info: initialization of "Y" proved
 uninitialized.adb:24:04: warning: analyzing unreferenced procedure "Init_Var_Warn"
 uninitialized.adb:29:12: medium: "X" might not be initialized

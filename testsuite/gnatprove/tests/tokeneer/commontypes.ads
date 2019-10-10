@@ -68,19 +68,5 @@ package CommonTypes is
      Predicate => StringF1L2to1000'Length >= 2;
    subtype StringF1L3to1000 is StringF1L1000 with
      Predicate => StringF1L3to1000'Length >= 3;
-   subtype StringF1L1000NE is StringF1L1000 with
-     Predicate => StringF1L1000NE'Length >= 1;
-
-   function Unsigned32T_Image (X : Unsigned32T) return StringF1L1000 is
-      (Unsigned32T'Image (X));
-   pragma Annotate (GNATprove, False_Positive,
-                    "predicate check might fail",
-                    "Image of integers of type Unsigned32T are short strings starting at index 1");
-
-   function Integer_Image (X : Integer) return StringF1L1000 is
-      (Integer'Image (X));
-   pragma Annotate (GNATprove, False_Positive,
-                    "predicate check might fail",
-                    "Image of integers of type Integer are short strings starting at index 1");
 
 end CommonTypes;

@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;
 with Debug.Timing;        use Debug.Timing;
 with Flow_Error_Messages; use Flow_Error_Messages;
 with GNATCOLL.JSON;
@@ -35,15 +36,19 @@ package Gnat2Why.Error_Messages is
    type VC_Id is new Natural;
 
    function Register_VC
-     (N      : Node_Id;
-      Reason : VC_Kind;
-      E      : Entity_Id)
+     (N               : Node_Id;
+      Reason          : VC_Kind;
+      E               : Entity_Id;
+      Present_In_Why3 : Boolean := True)
       return VC_Id
    with Pre => Present (N) and then Present (E);
    --  @param N node at which the VC is located
    --  @param Reason VC kind
    --  @param E entity of the subprogram/package elaboration to which the VC
    --    belongs
+   --  @param Present_In_Why3 if the VC actually appears in the Why3. This
+   --    Boolean explains the difference between the functions
+   --    Num_Registered_VCs and Num_Registered_VCs_In_Why3 below.
    --  @return a fresh ID for this VC
 
    procedure Register_VC_Entity (E : Entity_Id);
@@ -51,8 +56,11 @@ package Gnat2Why.Error_Messages is
    --    proof. This is required to know the list of subprograms which don't
    --    have any VC associated with them. This is useful for assumptions.
 
-   function Has_Registered_VCs return Boolean;
-   --  Returns True iff the function Register_VC has been called
+   function Num_Registered_VCs return Ada.Containers.Count_Type;
+   --  Returns the number of registered VCs
+
+   function Num_Registered_VCs_In_Why3 return Natural;
+   --  VCs that actually appear in the Why3 file(s)
 
    procedure Load_Codepeer_Results;
    --  Load the CodePeer result file and store results. Can be queried with
@@ -71,7 +79,7 @@ package Gnat2Why.Error_Messages is
    --  It is OK to call this function even when Load_CodePeer_Results was not
    --  called before. The function will return "False" in that case.
 
-   procedure Parse_Why3_Results (S : String; Timing : in out Time_Token);
+   procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token);
 
    procedure Emit_Proof_Result
      (Node       : Node_Id;

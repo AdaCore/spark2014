@@ -3,6 +3,8 @@ skein.adb:115:35: info: range check proved (altergo: 1 VC)
 skein.adb:121:35: info: range check proved (altergo: 1 VC)
 skein.adb:128:35: info: range check proved (altergo: 1 VC)
 skein.adb:193:11: info: data dependencies proved
+skein.adb:207:14: info: add a contract to analyze it separately from calling contexts
+skein.adb:207:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
 skein.adb:223:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:857
 skein.adb:224:13: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:857
 skein.adb:224:29: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:857
@@ -10,6 +12,8 @@ skein.adb:226:44: info: division check proved (CVC4: 1 VC), in call inlined at s
 skein.adb:226:44: info: index check proved (CVC4: 2 VC), in call inlined at skein.adb:857
 skein.adb:227:35: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:857
 skein.adb:227:49: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:857
+skein.adb:233:14: info: add a contract to analyze it separately from calling contexts
+skein.adb:233:14: info: local subprogram "Get_64_LSB_First" only analyzed in the context of calls
 skein.adb:233:32: info: initialization of "Dst" proved
 skein.adb:248:52: info: range check proved (CVC4: 8 VC), in call inlined at skein.adb:570
 skein.adb:251:25: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
@@ -20,22 +24,48 @@ skein.adb:255:47: info: index check proved (CVC4: 16 VC), in call inlined at ske
 skein.adb:256:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
 skein.adb:257:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
 skein.adb:258:47: info: index check proved (CVC4: 16 VC), in call inlined at skein.adb:570
+skein.adb:263:14: info: add a contract to analyze it separately from calling contexts
+skein.adb:263:14: info: local subprogram "Skein_Start_New_Type" only analyzed in the context of calls
 skein.adb:286:11: info: data dependencies proved
 skein.adb:296:19: info: postcondition proved (CVC4: 4 VC)
 skein.adb:301:07: info: initialization of "TS" proved
 skein.adb:303:07: info: initialization of "X" proved
 skein.adb:304:07: info: initialization of "W" proved
+skein.adb:306:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:306:17: info: local subprogram "Initialize_Key_Schedule" only analyzed in the context of calls
+skein.adb:324:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:324:17: info: local subprogram "Initialize_TS" only analyzed in the context of calls
 skein.adb:325:10: info: initialization of "W0" proved
 skein.adb:325:10: info: initialization of "W0" proved, in call inlined at skein.adb:568
 skein.adb:326:10: info: initialization of "W1" proved
 skein.adb:326:10: info: initialization of "W1" proved, in call inlined at skein.adb:568
+skein.adb:335:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:335:17: info: local subprogram "Do_First_Key_Injection" only analyzed in the context of calls
 skein.adb:350:14: info: data dependencies proved
+skein.adb:353:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:353:20: info: local subprogram "Inject_Key" only analyzed in the context of calls
 skein.adb:357:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:530
 skein.adb:357:45: info: division check proved (CVC4: 72 VC), in call inlined at skein.adb:539
 skein.adb:360:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:530
 skein.adb:360:58: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:539
 skein.adb:361:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:530
 skein.adb:361:64: info: division check proved (CVC4: 9 VC), in call inlined at skein.adb:539
+skein.adb:368:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:368:20: info: local subprogram "Round_1" only analyzed in the context of calls
+skein.adb:387:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:387:20: info: local subprogram "Round_2" only analyzed in the context of calls
+skein.adb:406:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:406:20: info: local subprogram "Round_3" only analyzed in the context of calls
+skein.adb:425:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:425:20: info: local subprogram "Round_4" only analyzed in the context of calls
+skein.adb:444:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:444:20: info: local subprogram "Round_5" only analyzed in the context of calls
+skein.adb:463:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:463:20: info: local subprogram "Round_6" only analyzed in the context of calls
+skein.adb:482:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:482:20: info: local subprogram "Round_7" only analyzed in the context of calls
+skein.adb:501:20: info: add a contract to analyze it separately from calling contexts
+skein.adb:501:20: info: local subprogram "Round_8" only analyzed in the context of calls
 skein.adb:521:63: info: unrolling loop
 skein.adb:522:13: info: analyzing call to "Round_1" in context
 skein.adb:524:13: info: analyzing call to "Round_2" in context
@@ -51,6 +81,8 @@ skein.adb:537:13: info: analyzing call to "Round_8" in context
 skein.adb:539:13: info: analyzing call to "Inject_Key" in context
 skein.adb:539:13: info: in inlined body at line 356
 skein.adb:539:13: info: unrolling loop
+skein.adb:543:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:543:17: info: local subprogram "Update_Context" only analyzed in the context of calls
 skein.adb:556:11: info: range check proved (CVC4: 2 VC)
 skein.adb:556:66: info: cannot unroll loop (too many loop iterations)
 skein.adb:559:31: info: range check proved (CVC4: 1 VC)
@@ -73,6 +105,8 @@ skein.adb:654:07: info: initialization of "Block_Count" proved
 skein.adb:655:07: info: initialization of "Current_Msg_Offset" proved
 skein.adb:656:07: info: initialization of "Bytes_Hashed" proved
 skein.adb:657:07: info: initialization of "Tmp_B" proved
+skein.adb:659:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:659:17: info: local subprogram "Copy_Msg_To_B" only analyzed in the context of calls
 skein.adb:674:10: info: initialization of "Src" proved
 skein.adb:674:10: info: initialization of "Src" proved, in call inlined at skein.adb:716
 skein.adb:674:10: info: initialization of "Src" proved, in call inlined at skein.adb:756
@@ -113,8 +147,12 @@ skein.adb:773:07: info: initialization of "Byte_Count" proved
 skein.adb:774:07: info: initialization of "X" proved
 skein.adb:775:07: info: initialization of "Tmp_B" proved
 skein.adb:776:07: info: initialization of "Tmp_Byte_Count_Add" proved
+skein.adb:778:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:778:17: info: local subprogram "Zero_Pad" only analyzed in the context of calls
 skein.adb:780:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:806
 skein.adb:784:22: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:806
+skein.adb:788:17: info: add a contract to analyze it separately from calling contexts
+skein.adb:788:17: info: local subprogram "Set_Counter" only analyzed in the context of calls
 skein.adb:790:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:790:43: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
 skein.adb:791:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834

@@ -1,33 +1,39 @@
 [Flow analysis check categories]
 ALIASING - aliasing between subprogram parameters - Aliasing between formal parameters or global objects.
+CALL_IN_TYPE_INVARIANT - invalid call in type invariant - A type invariant calls a boundary subprogram for the type.
+CALL_TO_CURRENT_TASK - invalid context for call to Current_Task - Current_Task is called from an invalid context.
+CONCURRENT_ACCESS - race condition - An unsynchronized global object is accessed concurrently.
 DEAD_CODE - dead code - A statement is never executed.
 DEFAULT_INITIALIZATION_MISMATCH - wrong Default_Initial_Condition aspect - A type is wrongly declared as initialized by default.
-DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause.
 DEPENDS_MISSING - input item missing from the dependency clause - An input is missing from the dependency clause.
 DEPENDS_MISSING_CLAUSE - output item missing from the dependency clause - An output item is missing from the dependency clause.
+DEPENDS_NULL - input item missing from the null dependency clause - An input item is missing from the null dependency clause.
 DEPENDS_WRONG - extra input item in the dependency clause - Extra input item in the dependency clause.
+EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global.
+GHOST_WRONG - non-ghost output of ghost procedure - A ghost procedure has a non-ghost global output.
 GLOBAL_MISSING - incomplete Global or Initializes contract - A Global or Initializes contract fails to mention some objects.
 GLOBAL_WRONG - an extra item in the Global or Initializes contract - A Global or Initializes contract wrongly mentions some objects.
-EXPORT_DEPENDS_ON_PROOF_IN - subprogram output depends on a Proof_In global - Subprogram output depends on a Proof_In global.
 HIDDEN_UNEXPOSED_STATE - constants with variable inputs that is not a state constituent - Constants with variable inputs that are not state constituents.
 ILLEGAL_UPDATE - illegal write of a global input - Illegal write of a global input.
 IMPOSSIBLE_TO_INITIALIZE_STATE - a state abstraction that is impossible to initialize - A state abstraction that is impossible to initialize.
 INEFFECTIVE - a statement with no effect on subprogram's outputs - A statement with no effect on subprogram's outputs.
-INITIALIZES_WRONG - an extra item in the Initializes contract - An object that shall not appear in the Initializes contract
+INITIALIZES_WRONG - an extra item in the Initializes contract - An object that shall not appear in the Initializes contract.
 INOUT_ONLY_READ - an IN OUT parameter or an In_Out global that is not written - An IN OUT parameter or an In_Out global that is not written.
 MISSING_RETURN - all execution paths raise exceptions or do not return - All execution paths raise exceptions or do not return.
+NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
 NOT_CONSTANT_AFTER_ELABORATION - illegal write of an object declared as constant after elaboration - Illegal write of an object declared as constant after elaboration.
 PRAGMA_ELABORATE_ALL_NEEDED - use of an abstract state of a package that was not yet elaborated - Use of an abstract state of a package that was not yet elaborated.
 PRAGMA_ELABORATE_BODY_NEEDED - a missing pragma Elaborate_Body - A missing pragma Elaborate_Body.
+POTENTIALLY_BLOCKING_IN_PROTECTED - protected operation blocks - A protected operation may block.
+REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation.
 REFINED_STATE_WRONG - constant with no variable inputs as an abstract state's constituent - Constant with no variable inputs as an abstract state's constituent.
 SIDE_EFFECTS - function with side effects - A function with side effects.
 STABLE - loop with stable statement - A loop with stable statement.
+SUBPROGRAM_TERMINATION - subprogram marked Terminating may not terminate - A subprogram with Terminating annotation may not terminate.
 UNINITIALIZED - use of an uninitialized variable - Flow analysis has detected the use of an uninitialized variable.
 UNUSED - object is not used - A global or locally declared object is never used.
 UNUSED_INITIAL_VALUE - initial value of an object is not used - The initial value of an object is not used.
-NON_VOLATILE_FUNCTION_WITH_VOLATILE_EFFECTS - volatile function wrongly declared as non-volatile - A volatile function wrongly declared as non-volatile.
 VOLATILE_FUNCTION_WITHOUT_VOLATILE_EFFECTS - non-volatile function wrongly declared as volatile - A non-volatile function wrongly declared as volatile.
-REFERENCE_TO_NON_CAE_VARIABLE - illegal reference to a global object in precondition of a protected operation - An illegal reference to global in precondition of a protected operation
 [Proof check categories]
 VC_DIVISION_CHECK - divide by zero - Check that the second operand of the division, mod or rem operation is different from zero.
 VC_INDEX_CHECK - index check - Check that the given index is within the bounds of the array.
@@ -37,7 +43,7 @@ VC_RANGE_CHECK - range check - Check that the given value is within the bounds o
 VC_PREDICATE_CHECK - predicate check - Check that the given value respects the applicable type predicate.
 VC_PREDICATE_CHECK_ON_DEFAULT_VALUE - predicate check on default value - Check that the default value for the type respects the applicable type predicate.
 VC_NULL_POINTER_DEREFERENCE - null pointer dereference - Check that the given pointer is not null so that it can be dereferenced.
-VC_NULL_EXCLUSION - null exclusion - Check that the the subtype_indication of the allocator does not specify a null_exclusion
+VC_NULL_EXCLUSION - null exclusion - Check that the subtype_indication of the allocator does not specify a null_exclusion
 VC_LENGTH_CHECK - length check - Check that the given array is of the length of the expected array subtype.
 VC_DISCRIMINANT_CHECK - discriminant check - Check that the discriminant of the given discriminated record has the expected value. For variant records, this can happen for a simple access to a record field. But there are other cases where a fixed value of the discriminant is required.
 VC_TAG_CHECK - tag check - Check that the tag of the given tagged object has the expected value.

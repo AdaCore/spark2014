@@ -1,0 +1,5 @@
+expr_as_lvalue.adb:9:04: assignment to a complex expression is not allowed in SPARK
+expr_as_lvalue.adb:9:04: violation of aspect SPARK_Mode at line 1
+expr_as_lvalue.adb:11:10: expression as "in out" parameter is not allowed in SPARK
+expr_as_lvalue.adb:11:10: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

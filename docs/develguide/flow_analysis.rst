@@ -4,7 +4,7 @@ Flow Analysis
 To start hacking on the flow analaysis you should first read about the general
 tool architecture (:ref:`Tool Structure`). Then the main entry point for the
 gnat2why backed is the GNAT_To_Why routine. Note: we hack on gnat2why with
-different editors, but for newcomers it is the easiest to stick with GPS,
+different editors, but for newcomers it is the easiest to stick with GNAT Studio,
 because it seems best with code navigation (e.g. showing where objects are
 written and where subprograms are called).
 
@@ -71,7 +71,18 @@ we map Entity_Name to a corresponding string (e.g. "other__hidden").
 To have unique representation, if an object can be represented by both
 Entity_Name and Entity_Id, we choose Entity_Id, as it makes navigating the AST
 and writing assertions easier. The correspondence in maintained in
-``SPARK_Register``.
+``SPARK_Register``. However, if we need to know any property of an object known
+by an Entity_Name (e.g. its ghost status), we must store it the ALI file in
+phase 1 and read it back in phase 2.
+
+This unique representation is convenient for flow analysis, but for proof it is
+simpler if Entity_Name is used for any object that should not be "translated"
+into Why3. By "translated" we mean "given to the Translate_Entity routine",
+which examines what this object is and how it should be represented in Why3.
+Such objects include those which are not known by an Entity_Id, those whose
+Entity_Id is known but they have not been marked as "in SPARK", and finally,
+abstract states; all these objects are represented as "blobs" without any
+internal structure in Why3.
 
 Flow graphs
 ***********
@@ -388,3 +399,49 @@ where the Reference_Type is ultimately a pointer and is very cheap. This type
 is declared with Implicit_Dereference aspect, which allows GNAT to magically
 use it where an element type would be needed. We could explicitly use this
 type in flow, but that would be quite verbose; renamings seem much better.
+
+Handling of protected objects
+*****************************
+
+There are few nuances in how protected units are represented in flow. They are
+not documented explicitly in the code for historical reasons: the initial
+handling was different (and slightly broken), yet equally undocumented. The
+code is now fixed, but there were no comments to be fixed and we did not add
+any.
+
+The simplest protected type looks like this:
+
+   protected type PT is
+      procedure Proc;
+   begin
+      Comp : Boolean := True;
+   end;
+
+and is completed like this:
+
+   protected body PT is
+      procedure Proc is
+         procedure Inner with Global => (In_Out => PT) is
+         begin
+            Comp := not Comp;
+         end Inner;
+      begin
+         Comp := not Comp;
+         Inner;
+      end Proc;
+   end protected;
+
+Note the lack of Global aspect on `Proc`, where the current instance of the
+*entire* protected object is an _implicit_ formal parameter for this
+subprogram; likewise, note the explicit Global aspect on `Inner`. This in turn
+dictates the only reasonable representation of Comp as a Flow_Id where
+
+  {Kind => Record_Field; Node => PT; Components => [Comp]}
+
+The same representation is also used for Part_Ofs single concurrent objects and
+discriminants (for both task and protected units).
+
+However, when a Part_Of is seen from the outside of a single concurrent unit
+(i.e. when we process its object declaration and possibly access from the
+elaboration of its enclosing package), we shall represent them as standalone
+objects. As of today, this is probably broken (but it is a corner case).

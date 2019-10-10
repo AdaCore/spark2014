@@ -173,7 +173,7 @@ is
       is
          FullString : String := Text & ": "
            & ReturnT_Image(TheCodeName) & " ( "
-           & CommonTypes.Unsigned32T_Image(ReturnValue) & " )";
+           & CommonTypes.Unsigned32T'Image(ReturnValue) & " )";
       begin
 
          -- if the Full string is shorter then use it all otherwise

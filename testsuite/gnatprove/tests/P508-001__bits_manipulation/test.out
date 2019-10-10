@@ -120,10 +120,6 @@ bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC),
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
 bits_manipulation-functions.adb:98:45: info: division check proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
-bits_manipulation-functions.adb:100:14: warning: unreachable code (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
-bits_manipulation-functions.adb:100:14: warning: unreachable code (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
-bits_manipulation-functions.adb:100:14: warning: unreachable code (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44
-bits_manipulation-functions.adb:100:14: warning: unreachable code (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:45
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:42
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:43
 bits_manipulation-functions.adb:104:08: info: precondition proved (CVC4: 1 VC), in instantiation at bits_manipulation_unsigned.ads:20, in instantiation at bits_manipulation_unsigned.ads:44

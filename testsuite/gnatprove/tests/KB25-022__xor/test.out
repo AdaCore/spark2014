@@ -1,1 +1,13 @@
 xor_bool.adb:1:11: warning: subprogram "Xor_Bool" has no effect
+xor_mod.adb:4:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:4:13: info: local subprogram "My_Xor" only analyzed in the context of calls
+xor_mod.adb:9:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:9:13: info: local subprogram "Xor_1" only analyzed in the context of calls
+xor_mod.adb:14:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:14:13: info: local subprogram "And_1" only analyzed in the context of calls
+xor_mod.adb:19:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:19:13: info: local subprogram "And_2" only analyzed in the context of calls
+xor_mod.adb:24:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:24:13: info: local subprogram "Or_1" only analyzed in the context of calls
+xor_mod.adb:29:13: info: add a contract to analyze it separately from calling contexts
+xor_mod.adb:29:13: info: local subprogram "Or_2" only analyzed in the context of calls

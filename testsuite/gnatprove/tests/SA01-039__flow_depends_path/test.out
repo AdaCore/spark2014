@@ -1,0 +1,10 @@
+p.ads:3:05: info: flow dependencies proved
+p.ads:5:20: high: "X" is not initialized in "Proc"
+p.ads:5:20: warning: unused variable "X"
+p.ads:6:23: medium: incorrect dependency "X => P.State"
+p.ads:6:30: medium: missing self-dependency "P.State => P.State"
+Trace files' contents:
+p.adb:5
+
+p.adb:5
+

@@ -1,3 +1,5 @@
+test.adb:114:14: info: add a contract to analyze it separately from calling contexts
+test.adb:114:14: info: local subprogram "os_mbx_inc_mbx_head" only analyzed in the context of calls
 test.adb:138:22: info: range check proved (CVC4: 1 VC)
 test.adb:140:07: info: data dependencies proved
 test.adb:150:07: info: data dependencies proved
@@ -6,6 +8,8 @@ test.adb:152:151: info: range check proved (CVC4: 1 VC)
 test.adb:156:29: info: range check proved (CVC4: 1 VC)
 test.adb:167:51: info: range check proved (CVC4: 1 VC)
 test.adb:169:07: info: data dependencies proved
+test.adb:179:14: info: add a contract to analyze it separately from calling contexts
+test.adb:179:14: info: local subprogram "os_mbx_clear_mbx_entry" only analyzed in the context of calls
 test.adb:194:04: warning: analyzing unreferenced procedure "os_mbx_set_mbx_entry"
 test.adb:221:44: info: precondition proved (CVC4: 1 VC)
 test.adb:224:07: info: data dependencies proved

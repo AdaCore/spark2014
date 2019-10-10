@@ -1,4 +1,4 @@
-legal.adb:50:21: medium: range check might fail (e.g. when Tmp = 4294967295)
+legal.adb:50:21: medium: range check might fail (e.g. when Tmp = Target'Last)
 legal.ads:91:19: info: initialization of "X" proved
 legal.ads:92:11: info: data dependencies proved
 legal.ads:95:11: info: data dependencies proved

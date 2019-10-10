@@ -1048,7 +1048,8 @@ package body Why.Gen.Names is
            Namespace => Get_Namespace (W_Name),
            Domain    => Get_Domain (+Name),
            Module    => Why_Empty,
-           Typ       => Get_Typ (Name));
+           Typ       => Get_Typ (Name),
+           Attrs     => Get_Labels (Name));
    end To_Local;
 
    function To_Local (Name : W_Name_Id) return W_Name_Id is

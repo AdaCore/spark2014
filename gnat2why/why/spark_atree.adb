@@ -68,6 +68,14 @@ package body SPARK_Atree is
    function Ancestor_Part (N : Node_Id) return Node_Id renames
      Sinfo.Ancestor_Part;
 
+   ----------------------------------------
+   -- Attribute_Constrained_Static_Value --
+   ----------------------------------------
+
+   function Attribute_Constrained_Static_Value
+     (N : Node_Id) return Boolean
+   renames Exp_Util.Attribute_Constrained_Static_Value;
+
    --------------------
    -- Attribute_Name --
    --------------------

@@ -16,6 +16,8 @@ a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at 
 a-tiflio.ads:78:08: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
 a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:8
 a-tiflio.ads:79:12: info: precondition proved (CVC4: 2 VC), in instantiation at good_types.adb:9
+aggregates.adb:9:13: info: add a contract to analyze it separately from calling contexts
+aggregates.adb:9:13: info: local subprogram "Sqrt" only analyzed in the context of calls
 aggregates.adb:10:07: info: initialization of "Approx" proved
 aggregates.adb:10:07: info: initialization of "Approx" proved, in call inlined at aggregates.adb:29
 aggregates.adb:11:46: info: float overflow check proved (Interval), in call inlined at aggregates.adb:29
@@ -49,6 +51,8 @@ bad_types.adb:4:04: info: initialization of "Wall_Thickness" proved
 bad_types.adb:5:04: info: initialization of "Total" proved
 bad_types.adb:9:25: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
 bad_types.adb:9:31: medium: float overflow check might fail [possible explanation: postcondition of call at line 8 should mention Item (for argument Wall_Thickness)]
+bingo_basket.adb:8:14: info: add a contract to analyze it separately from calling contexts
+bingo_basket.adb:8:14: info: local subprogram "Swap" only analyzed in the context of calls
 bingo_basket.adb:10:07: info: initialization of "Temp" proved
 bingo_basket.adb:10:07: info: initialization of "Temp" proved, in call inlined at bingo_basket.adb:27
 bingo_basket.adb:18:07: info: initialization of "Random_Index" proved
@@ -244,6 +248,8 @@ control_structures.adb:16:04: info: initialization of "Value" proved
 control_structures.adb:17:04: info: initialization of "Sum" proved
 control_structures.adb:19:04: info: initialization of "Approx" proved
 control_structures.adb:19:12: info: initialization of "X" proved
+control_structures.adb:23:14: info: add a contract to analyze it separately from calling contexts
+control_structures.adb:23:14: info: local subprogram "Calculate_Valve" only analyzed in the context of calls
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
 control_structures.adb:26:24: medium: overflow check might fail, in call inlined at control_structures.adb:184
 control_structures.adb:31:08: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention Second in a precondition]
@@ -372,10 +378,14 @@ datebooks.ads:52:06: info: flow dependencies proved
 datebooks.ads:57:61: info: initialization of "Next_Date" proved
 datebooks.ads:57:93: info: initialization of "Status" proved
 datebooks.ads:59:06: info: flow dependencies proved
+dates.adb:14:13: info: add a contract to analyze it separately from calling contexts
+dates.adb:14:13: info: local subprogram "Is_Leap_Year" only analyzed in the context of calls
 dates.adb:17:15: info: division check proved (CVC4: 1 VC), in call inlined at dates.adb:49
 dates.adb:28:08: info: postcondition proved (CVC4: 12 VC; Trivial: 12 VC)
 dates.adb:47:07: info: initialization of "Length" proved
 dates.adb:49:10: info: analyzing call to "Is_Leap_Year" in context
+dates.adb:59:13: info: add a contract to analyze it separately from calling contexts
+dates.adb:59:13: info: local subprogram "Is_Valid_Date" only analyzed in the context of calls
 dates.adb:72:06: info: flow dependencies proved
 dates.adb:77:47: info: range check proved (CVC4: 1 VC)
 dates.adb:81:54: info: range check proved (CVC4: 1 VC)
@@ -452,6 +462,8 @@ enum_example.adb:41:47: info: unrolling loop
 enum_example.adb:47:37: info: unrolling loop
 enum_example.adb:53:49: info: unrolling loop
 enum_example.adb:54:22: info: overflow check proved (CVC4: 6 VC)
+example.adb:7:14: info: add a contract to analyze it separately from calling contexts
+example.adb:7:14: info: local subprogram "Bounded_Increment" only analyzed in the context of calls
 example.adb:10:07: info: initialization of "Changed" proved
 example.adb:14:27: info: overflow check proved (CVC4: 1 VC), in call inlined at example.adb:27
 example.adb:21:04: info: initialization of "Value" proved
@@ -510,6 +522,8 @@ generic_searchers.ads:15:74: info: index check proved (CVC4: 2 VC), in instantia
 generic_searchers.ads:15:74: info: index check proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
 generic_searchers.ads:16:17: info: postcondition proved (CVC4: 2 VC), in instantiation at prime_search.adb:15
 generic_searchers.ads:16:17: info: postcondition proved (CVC4: 2 VC), in instantiation at search_demo.adb:12
+good_types.adb:11:13: info: add a contract to analyze it separately from calling contexts
+good_types.adb:11:13: info: local subprogram "To_Feet" only analyzed in the context of calls
 good_types.adb:13:26: info: division check proved (CVC4: 1 VC), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: float overflow check proved (Interval), in call inlined at good_types.adb:22
 good_types.adb:13:26: info: range check proved (Interval), in call inlined at good_types.adb:22
@@ -610,6 +624,8 @@ no_overflow.adb:7:14: info: range check proved (CVC4: 1 VC)
 no_overflow.adb:7:19: info: overflow check proved (CVC4: 1 VC)
 no_overflow.adb:7:24: info: division check proved (CVC4: 1 VC)
 no_overflow.ads:5:19: info: initialization of "C" proved
+operator_overload.adb:10:13: info: add a contract to analyze it separately from calling contexts
+operator_overload.adb:10:13: info: local subprogram "<=" only analyzed in the context of calls
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:30
 operator_overload.adb:13:07: info: initialization of "Left_Squared" proved, in call inlined at operator_overload.adb:37
@@ -635,6 +651,8 @@ operator_overload.adb:37:07: info: analyzing call to "<=" in context
 overflow.adb:7:15: medium: overflow check might fail [possible explanation: subprogram at overflow.ads:3 should mention A and B in a precondition]
 overflow.adb:7:20: info: division check proved (CVC4: 1 VC)
 overflow.ads:5:19: info: initialization of "C" proved
+palindrome.adb:4:13: info: add a contract to analyze it separately from calling contexts
+palindrome.adb:4:13: info: local subprogram "Is_Palindrome" only analyzed in the context of calls
 palindrome.adb:5:07: info: initialization of "Left_Index" proved
 palindrome.adb:5:07: info: initialization of "Left_Index" proved, in call inlined at palindrome.adb:32
 palindrome.adb:6:07: info: initialization of "Right_Index" proved
@@ -1143,7 +1161,6 @@ very_longs-divide.adb:93:11: info: flow dependencies proved
 very_longs-divide.adb:96:07: info: initialization of "New_Overflow" proved
 very_longs-divide.adb:97:07: info: initialization of "Overflow_Mask" proved
 very_longs-divide.adb:111:08: "Dividend" is referenced in Pre but missing from the Global
-very_longs-divide.adb:111:08: info: data dependencies proved
 very_longs-divide.adb:112:08: info: flow dependencies proved
 very_longs-divide.adb:113:35: high: "Dividend" must be listed in the Global aspect of "D3" (SPARK RM 6.1.4(14))
 very_longs-divide.adb:147:08: info: data dependencies proved

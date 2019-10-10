@@ -1,0 +1,4 @@
+p.adb:5:13: high: "X" must be listed in the Global aspect of "Dummy" (SPARK RM 6.1.4(14))
+p.adb:5:13: medium: precondition might fail, cannot prove X
+p.ads:3:16: info: flow dependencies proved
+p.ads:6:59: info: data dependencies proved

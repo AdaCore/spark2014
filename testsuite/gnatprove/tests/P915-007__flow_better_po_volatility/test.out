@@ -6,19 +6,19 @@ test_01.ads:5:04: info: flow dependencies proved
 test_01.ads:10:09: info: data dependencies proved
 
 === test_02.adb ===
-test_02.adb:9:09: info: ceiling priority protocol is respected (CVC4: 1 VC)
 test_02.adb:9:09: info: initialization of "Updater" constituent of "State" proved
-test_02.adb:9:09: info: nontermination of task proved (CVC4: 1 VC)
-test_02.adb:11:14: high: "Database" constituent of "State" cannot be a constituent of "Test_02.State" (which lacks volatile property Effective_Writes)
+test_02.adb:11:14: "Database" constituent of "State" cannot be a constituent of "Test_02.State" (which lacks volatile property Effective_Writes)
 test_02.ads:5:04: info: flow dependencies proved
 test_02.ads:10:09: info: data dependencies proved
+gnatprove: error during flow analysis and proof
 
 === test_03.adb ===
 
 === test_04.adb ===
-test_04.adb:10:14: high: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Reads)
-test_04.adb:10:14: high: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Writes)
-test_04.adb:12:14: high: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Reads)
-test_04.adb:12:14: high: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Writes)
-test_04.adb:14:14: high: "PO_ER" constituent of "State_ER" cannot be a constituent of "Test_03.State_ER" (which lacks volatile property Effective_Writes)
-test_04.adb:16:14: high: "PO_EW" constituent of "State_EW" cannot be a constituent of "Test_03.State_EW" (which lacks volatile property Effective_Reads)
+test_04.adb:10:14: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Reads)
+test_04.adb:10:14: "PO_AR" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Writes)
+test_04.adb:12:14: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Reads)
+test_04.adb:12:14: "PO_AW" constituent of "State_AWER" cannot be a constituent of "Test_03.State_AWER" (which lacks volatile property Effective_Writes)
+test_04.adb:14:14: "PO_ER" constituent of "State_ER" cannot be a constituent of "Test_03.State_ER" (which lacks volatile property Effective_Writes)
+test_04.adb:16:14: "PO_EW" constituent of "State_EW" cannot be a constituent of "Test_03.State_EW" (which lacks volatile property Effective_Reads)
+gnatprove: error during flow analysis and proof

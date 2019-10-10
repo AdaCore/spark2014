@@ -52,7 +52,6 @@ with Sem_Aux;                         use Sem_Aux;
 with Sem_Disp;
 with Sem_Eval;                        use Sem_Eval;
 with Sem_Prag;                        use Sem_Prag;
-with Sem_SPARK;
 with Sem_Util;                        use Sem_Util;
 with Snames;                          use Snames;
 with SPARK_Annotate;                  use SPARK_Annotate;
@@ -283,41 +282,30 @@ package body SPARK_Definition is
    procedure Queue_For_Marking (E : Entity_Id);
    --  Register E for marking at a later stage
 
-   function Set_Ownership_Errors_And_Get_Emit_Messages return Boolean;
-   --  Mark that an ownership error was detected. Returns True iff a message
-   --  should be emitted (because we are in phase 2).
-
-   function Safe_Retysp (E : Entity_Id) return Entity_Id;
-   --  Mark E before calling Retysp on it. It is used inside ownership checking
-   --  because it does not follow the same structure as regular marking and
-   --  therefore may encounter unmarked nodes.
-   --  ??? ideally, it would be better to avoid this case so that we don't end
-   --  up translating things we don't use.
-
    function Has_Deep_Subcomponents_With_Predicates
      (E : Entity_Id) return Boolean
      with Pre => Is_Type (E);
    --  Return true if E has subcomponents of a deep type which are subjected
    --  to a subtype predicate.
 
+   procedure Check_Source_Of_Borrow_Or_Observe (Expr : Node_Id) with
+     Post => (if not Violation_Detected
+              then Is_Path_Expression (Expr)
+                and then Present (Get_Root_Object (Expr)));
+   --  Check that a borrow has a valid source (stand-alone object or call to a
+   --  traversal function).
+
    ------------------------------
    -- Body_Statements_In_SPARK --
    ------------------------------
 
    function Body_Statements_In_SPARK (E : Entity_Id) return Boolean is
+      Prag : constant Node_Id :=
+        SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
    begin
-      if Entity_Body_In_SPARK (E) then
-         declare
-            Prag : constant Node_Id :=
-              SPARK_Aux_Pragma (Defining_Entity (Package_Body (E)));
-         begin
-            return
-              (if Present (Prag)
-               then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
-         end;
-      else
-         return False;
-      end if;
+      return
+        (if Present (Prag)
+         then Get_SPARK_Mode_From_Annotation (Prag) /= Off);
    end Body_Statements_In_SPARK;
 
    --------------------------
@@ -913,17 +901,6 @@ package body SPARK_Definition is
       Emit_Messages := False;
    end Inhibit_Messages;
 
-   ------------------------
-   -- Ownership_Checking --
-   ------------------------
-
-   package Ownership_Checking is new Sem_SPARK
-     (Retysp                        => Safe_Retysp,
-      Component_Is_Visible_In_SPARK => Component_Is_Visible_In_SPARK,
-      Emit_Messages                 =>
-        Set_Ownership_Errors_And_Get_Emit_Messages,
-      Is_Pledge_Function            => SPARK_Annotate.Has_Pledge_Annotation);
-
    ----------------------------------
    -- Recursive Marking of the AST --
    ----------------------------------
@@ -1030,6 +1007,35 @@ package body SPARK_Definition is
    --  analysis is not restricted to a single subprogram/line (typically during
    --  interactive use in IDEs), to avoid reporting messages on pieces of code
    --  not belonging to the analyzed subprogram/line.
+
+   ---------------------------------------
+   -- Check_Source_Of_Borrow_Or_Observe --
+   ---------------------------------------
+
+   procedure Check_Source_Of_Borrow_Or_Observe
+     (Expr : Node_Id)
+   is
+      Root : constant Entity_Id :=
+        (if Is_Path_Expression (Expr) then Get_Root_Object (Expr)
+         else Empty);
+
+   begin
+      --  SPARK RM 3.10(3): If the target of an assignment operation is an
+      --  object of an anonymous access-to-object type (including copy-in for
+      --  a parameter), then the source shall be a name denoting a part of a
+      --  stand-alone object, a part of a parameter, or a call to a traversal
+      --  function.
+
+      if No (Root) then
+         Mark_Violation
+           ((if Nkind (Expr) = N_Function_Call
+            then "borrow or observe of a non-traversal function call"
+            else "borrow or observe of an expression which is not part of "
+            & "stand-alone object or parameter"),
+            Expr,
+            SRM_Reference => "SPARK RM 3.10(3))");
+      end if;
+   end Check_Source_Of_Borrow_Or_Observe;
 
    -----------------------------
    -- Discard_Underlying_Type --
@@ -1150,7 +1156,7 @@ package body SPARK_Definition is
          Typ : constant Entity_Id := Retysp (E);
          Res : Boolean;
       begin
-         if Seen.Contains (Typ) or not Ownership_Checking.Is_Deep (Typ) then
+         if Seen.Contains (Typ) or not Is_Deep (Typ) then
             return False;
          elsif Has_Predicates (Typ) then
             return True;
@@ -1570,6 +1576,37 @@ package body SPARK_Definition is
             else
                Mark_List (Expressions (N));
                Mark_List (Component_Associations (N));
+
+               --  Search for associations mapping a single deep value to
+               --  several components.
+
+               declare
+                  Assocs       : constant List_Id :=
+                    Component_Associations (N);
+                  Assoc        : Node_Id := Nlists.First (Assocs);
+                  Choices_List : List_Id;
+
+               begin
+                  while Present (Assoc) loop
+                     Choices_List := Choices (Assoc);
+
+                     --  There can be only one element for a value of deep type
+                     --  in order to avoid aliasing.
+
+                     if not Box_Present (Assoc)
+                       and then Is_Deep (Etype (Expression (Assoc)))
+                       and then not Is_Singleton_Choice (Choices_List)
+                     then
+                        Mark_Violation
+                          ("duplicate value of a type with ownership",
+                           First (Choices_List),
+                           Cont_Msg =>
+                             "singleton choice required to prevent aliasing");
+                     end if;
+
+                     Next (Assoc);
+                  end loop;
+               end;
             end if;
 
          when N_Allocator =>
@@ -1609,8 +1646,68 @@ package body SPARK_Definition is
             end if;
 
          when N_Assignment_Statement =>
-            Mark (Name (N));
-            Mark (Expression (N));
+            declare
+               Var  : constant Node_Id := Name (N);
+               Expr : constant Node_Id := Expression (N);
+            begin
+               Mark (Var);
+               Mark (Expr);
+
+               --  ??? We need a rule that forbids targets of assignment for
+               --  which the path is not known, for example when there is a
+               --  function call involved (which includes calls to traversal
+               --  functions). Otherwise there is no way to update the
+               --  corresponding path permission.
+
+               if not Is_Path_Expression (Var)
+                 or else No (Get_Root_Object
+                             (Var, Through_Traversal => False))
+               then
+                  Mark_Violation ("assignment to a complex expression", Var);
+
+               elsif Is_Constant_In_SPARK (Get_Root_Object (Var)) then
+                  Mark_Violation ("assignment into a constant object", Var);
+
+               --  SPARK RM 3.10(7): If the type of the target is an anonymous
+               --  access-to-variable type (an owning access type), the source
+               --  shall be an owning access object [..] whose root object is
+               --  the target object itself.
+
+               --  ??? We are currently using the same restriction for
+               --  observers as for borrowers. To be seen if the SPARK RM
+               --  current rule really allows more uses.
+               --  Note that for borrowers which are handled as observers
+               --  (those rooted at the first parameter of borrowing traversal
+               --  functions), we should keep the rules of borrowers.
+
+               elsif Is_Anonymous_Access_Type (Etype (Var)) then
+
+                  Check_Source_Of_Borrow_Or_Observe (Expr);
+
+                  if Is_Path_Expression (Expr)
+                    and then Present (Get_Root_Object (Expr))
+                    and then Get_Root_Object
+                    (Get_Observed_Or_Borrowed_Expr (Expr)) /=
+                      Get_Root_Object (Var)
+                  then
+                     Mark_Violation
+                       ((if Is_Access_Constant (Etype (Var))
+                           then "observed" else "borrowed")
+                        & " expression which does not have the left-hand side"
+                        & " as a root",
+                        Expr,
+                        SRM_Reference => "SPARK RM 3.10(7)");
+                  end if;
+
+               --  If we are performing a move operation, check that we are
+               --  moving a path.
+
+               elsif Is_Deep (Etype (Var))
+                 and then not Is_Path_Expression (Expr)
+               then
+                  Mark_Violation ("expression as source of move", Expr);
+               end if;
+            end;
 
          when N_Attribute_Reference =>
             Mark_Attribute_Reference (N);
@@ -1931,6 +2028,7 @@ package body SPARK_Definition is
                Mark (Prefix (N));
                Mark (Discrete_Range (N));
             end if;
+
          when N_Subprogram_Body =>
 
             --  For expression functions that have a unique declaration, the
@@ -2553,16 +2651,12 @@ package body SPARK_Definition is
       Inside_Actions := True;
 
       Mark_List (L);
-      if Emit_Messages
-        and then SPARK_Pragma_Is (Opt.On)
-        and then not Acceptable_Actions (L)
-      then
-
+      if not Acceptable_Actions (L) then
          --  We should never reach here, but in case we do, we issue an
          --  understandable error message pointing to the source of the
          --  too complex actions.
 
-         Error_Msg_N ("too complex actions inserted in expression", N);
+         Mark_Unsupported ("too complex actions inserted in expression", N);
       end if;
 
       Inside_Actions := Save_Inside_Actions;
@@ -2619,10 +2713,6 @@ package body SPARK_Definition is
       --  which of these attributes are supported in proof.
       case Attr_Id is
 
-         --  Support special aspects defined in SPARK
-         when Attribute_Loop_Entry =>
-            null;
-
          --  Support a subset of the attributes defined in Ada RM. These are
          --  the attributes marked "Yes" in SPARK RM 15.2.
          when Attribute_Adjacent
@@ -2662,7 +2752,6 @@ package body SPARK_Definition is
             | Attribute_Model_Mantissa
             | Attribute_Model_Small
             | Attribute_Modulus
-            | Attribute_Old
             | Attribute_Partition_ID
             | Attribute_Pos
             | Attribute_Pred
@@ -2759,6 +2848,33 @@ package body SPARK_Definition is
                Mark_Violation
                  ("attribute """ & Standard_Ada_Case (Get_Name_String (Aname))
                   & """ outside an attribute definition clause", N);
+            end if;
+
+          --  Check SPARK RM 3.10(13) regarding 'Old and 'Loop_Entry on access
+          --  types.
+
+         when Attribute_Loop_Entry
+            | Attribute_Old
+         =>
+            if Is_Deep (Etype (P)) then
+               declare
+                  Astring : constant String :=
+                    Standard_Ada_Case (Get_Name_String (Aname));
+               begin
+                  if Nkind (P) /= N_Function_Call then
+                     Mark_Violation
+                       ("prefix of """ & Astring
+                        & """ attribute which is not a function call",
+                        P, "SPARK RM 3.10(13)");
+
+                  elsif Is_Traversal_Function_Call (P) then
+                     Mark_Violation
+                       ("prefix of """ & Astring
+                        & """ attribute which is a call to a traversal "
+                        & "function",
+                        P, "SPARK RM 3.10(13)");
+                  end if;
+               end;
             end if;
 
          when others =>
@@ -2963,7 +3079,7 @@ package body SPARK_Definition is
       is
          Target : constant Entity_Id := Get_Called_Entity (Call_Node);
       begin
-         if Ekind (Scope (Target)) in Protected_Kind
+         if Is_Protected_Type (Scope (Target))
            and then not Is_External_Call (Call_Node)
          then
 
@@ -3023,6 +3139,38 @@ package body SPARK_Definition is
 
          --  Regular checks
          Mark (Actual);
+
+         --  In a procedure or entry call, copy in of a parameter of an
+         --  anonymous access type is considered to be an observe/a borrow.
+         --  Check that it abides by the corresponding rules.
+         --  This will also recursively check borrows occuring as part of calls
+         --  of traversal functions in these parameters.
+
+         if Is_Anonymous_Access_Type (Etype (Formal))
+           and then Ekind (E) /= E_Function
+         then
+            Check_Source_Of_Borrow_Or_Observe (Actual);
+
+         --  Parts of constant objects should not appear as out or in out
+         --  parameters in procedure calls.
+
+         elsif Ekind (Formal) in E_In_Out_Parameter | E_Out_Parameter then
+            declare
+               Mode : constant String :=
+                 (if Ekind (Formal) = E_In_Out_Parameter
+                  then "`IN OUT`" else "`OUT`");
+            begin
+               if not Is_Path_Expression (Actual)
+                 or else No (Get_Root_Object (Actual))
+               then
+                  Mark_Violation
+                    ("expression as " & Mode & " parameter", Actual);
+               elsif Is_Constant_In_SPARK (Get_Root_Object (Actual)) then
+                  Mark_Violation
+                    ("constant object as " & Mode & " parameter", Actual);
+               end if;
+            end;
+         end if;
       end Mark_Param;
 
       procedure Mark_Actuals is new Iterate_Call_Parameters (Mark_Param);
@@ -3045,6 +3193,11 @@ package body SPARK_Definition is
       else
          E := Get_Called_Entity (N);
       end if;
+
+      --  There should not be calls to default initial condition and invariant
+      --  procedures.
+
+      pragma Assert (not Subprogram_Is_Ignored_For_Proof (E));
 
       --  External calls to non-library-level objects are not yet supported
       if Ekind (Scope (E)) = E_Protected_Type
@@ -3118,15 +3271,9 @@ package body SPARK_Definition is
 
       Mark_Actuals (N);
 
-      --  There should not be calls to default initial condition and invariant
-      --  procedures.
-
-      if Subprogram_Is_Ignored_For_Proof (E) then
-         raise Program_Error;
-
       --  Call is in SPARK only if the subprogram called is in SPARK
 
-      elsif not In_SPARK (E) then
+      if not In_SPARK (E) then
          Mark_Violation (N,
                          From => (if Ekind (E) = E_Function
                                     and then Is_Predicate_Function (E)
@@ -3150,23 +3297,147 @@ package body SPARK_Definition is
         and then ((Is_Imported (E) and then
                      Convention (E) not in Convention_Ada
                                          | Convention_Intrinsic)
-                   or else In_Internal_Unit (E))
+                   or else (In_Internal_Unit (E)
+                              and then
+                            not In_Internal_Unit (N)))
       then
          Error_Msg_NE
            ("?no Global contract available for &", N, E);
          Error_Msg_NE
            ("\\assuming & has no effect on global items", N, E);
-      elsif Has_Pledge_Annotation (E)
-        and then
-          (Nkind (First_Actual (N)) not in N_Expanded_Name | N_Identifier
-           or else not Is_Local_Borrower (Entity (First_Actual (N))))
-      then
-         --  We may want to support other parameters later when traversal
-         --  functions are supported.
+      end if;
 
-         Mark_Unsupported
-           ("first actual of a pledge function which is not a local borrower",
-            N);
+      --  Check special rules for calls to pledge functions. The first
+      --  parameter should be a local borrower of the result of a traversal
+      --  function.
+
+      if Has_Pledge_Annotation (E) then
+         declare
+            function Check_Pledge_Context (Call : Node_Id) return Boolean;
+            --  Check that call occurs at top-level or in a positive position
+            --  inside an assertion.
+
+            --------------------------
+            -- Check_Pledge_Context --
+            --------------------------
+
+            function Check_Pledge_Context (Call : Node_Id) return Boolean is
+               N : Node_Id := Call;
+               P : Node_Id;
+            begin
+               loop
+                  P := Parent (N);
+
+                  case Nkind (P) is
+                     when N_Pragma_Argument_Association =>
+                        declare
+                           Prag_Id : constant Pragma_Id :=
+                             Get_Pragma_Id (Pragma_Name (Parent (P)));
+                        begin
+                           case Prag_Id is
+                              when Pragma_Precondition
+                                 | Pragma_Postcondition
+                                 | Pragma_Pre
+                                 | Pragma_Post
+                                 | Pragma_Check
+                                 =>
+                                 return True;
+                              when Pragma_Contract_Cases =>
+                                 raise Program_Error;
+                              when others =>
+                                 return False;
+                           end case;
+                        end;
+                     when N_Component_Association =>
+
+                        --  We are interested here in allowing contract cases.
+                        --  Guards are not allowed as they may occur negatively
+                        --  in others case (or completeness checking).
+
+                        declare
+                           CC_Aggr  : constant Node_Id := Parent (P);
+                           CC_Assoc : constant Node_Id := Parent (CC_Aggr);
+                           CC_Prag  : constant Node_Id := Parent (CC_Assoc);
+                        begin
+                           return Nkind (CC_Aggr) = N_Aggregate
+                             and then Nkind (CC_Assoc) =
+                               N_Pragma_Argument_Association
+                             and then Nkind (CC_Prag) = N_Pragma
+                             and then Get_Pragma_Id (Pragma_Name (CC_Prag)) =
+                               Pragma_Contract_Cases
+                             and then N = Expression (P);
+                        end;
+                     when N_Op_And | N_Op_Or | N_And_Then | N_Or_Else =>
+                        null;
+                     when N_If_Expression =>
+
+                        --  The condition of an if expression occurs negatively
+                        --  when proving the else case.
+
+                        if N = First (Expressions (P)) then
+                           return False;
+                        end if;
+                     when N_Case_Expression =>
+
+                        --  The condition of a case expression occurs
+                        --  negatively when proving the others case.
+
+                        if N = Expression (P) then
+                           return False;
+                        end if;
+                     when N_Case_Expression_Alternative =>
+                        null;
+                     when others =>
+                        return False;
+                  end case;
+                  N := P;
+               end loop;
+            end Check_Pledge_Context;
+
+            Fst_Act   : constant Node_Id := First_Actual (N);
+            Violation : Boolean := False;
+            Err_Msg   : Unbounded_String :=
+              To_Unbounded_String
+                ("first actual of a pledge function which is not a local"
+                 & " borrower");
+         begin
+            case Nkind (Fst_Act) is
+               when N_Expanded_Name | N_Identifier =>
+                  Violation := not Is_Local_Borrower (Entity (Fst_Act));
+               when N_Attribute_Reference =>
+                  declare
+                     Aname   : constant Name_Id := Attribute_Name (Fst_Act);
+                     Attr_Id : constant Attribute_Id :=
+                       Get_Attribute_Id (Aname);
+                     Var     : constant Node_Id := Prefix (Fst_Act);
+                  begin
+                     if Attr_Id /= Attribute_Result then
+                        Violation := True;
+                     elsif not Is_Traversal_Function (Entity (Var)) then
+                        Violation := True;
+                        Err_Msg := To_Unbounded_String
+                          ("first actual of a pledge function which is not the"
+                           & " result of a traversal function");
+                     elsif Is_Access_Constant (Etype (Entity (Var))) then
+                        Violation := True;
+                        Err_Msg := To_Unbounded_String
+                          ("first actual of a pledge function which is the"
+                           & " result of a traversal function returning an "
+                           & "access to constant type");
+                     end if;
+                  end;
+               when others =>
+                  Violation := True;
+            end case;
+
+            if Violation then
+               Mark_Violation (To_String (Err_Msg), N);
+            elsif not Check_Pledge_Context (N) then
+               Mark_Violation
+                 ("possibly negative occurrence of call to a Pledge function",
+                  N);
+            end if;
+         end;
       end if;
    end Mark_Call;
 
@@ -3179,19 +3450,6 @@ package body SPARK_Definition is
       Context_N : Node_Id;
 
    begin
-      --  Separately mark declarations from Standard as in SPARK or not
-
-      if N = Standard_Package_Node then
-         return;
-      end if;
-
-      --  Avoid rewriting generic units which are only preanalyzed, which may
-      --  cause rewriting to fail, as this is not needed.
-
-      if Is_Generic_Unit (Unique_Defining_Entity (N)) then
-         return;
-      end if;
-
       --  Violations within Context_Items, e.g. unknown configuration pragmas,
       --  should not affect the SPARK status of the entities in the compilation
       --  unit itself, so we reset the Violation_Detected flag to False after
@@ -3210,16 +3468,6 @@ package body SPARK_Definition is
       --  Mark entities in SPARK or not
 
       Mark (N);
-
-      --  Perform the new SPARK checking rules for pointer aliasing. This is
-      --  only activated on SPARK code. The debug flag -gnatdF is used to
-      --  deactivate the new pointer rules.
-      --  ??? Should we do something special for checking of withed units in
-      --  mode Auto?
-
-      if not Debug_Flag_FF then
-         Ownership_Checking.Check_Safe_Pointers (N);
-      end if;
 
       --  Violation_Detected may have been set to True while checking types.
       --  Reset it here.
@@ -3658,6 +3906,32 @@ package body SPARK_Definition is
             return;
          end if;
 
+         --  A declaration of a stand-alone object of an anonymous access
+         --  type shall have an explicit initial value and shall occur
+         --  immediately within a subprogram body, an entry body, or a
+         --  block statement (SPARK RM 3.10(4)).
+
+         if Nkind (N) = N_Object_Declaration
+           and then Is_Anonymous_Access_Type (Etype (E))
+         then
+            declare
+               Scop : constant Entity_Id := Scope (E);
+            begin
+               if not Is_Local_Context (Scop) then
+                  Mark_Violation
+                    ("object of anonymous access not declared "
+                     & "immediately within a subprogram, entry or block",
+                     N, "SPARK RM 3.10(4)");
+               end if;
+            end;
+
+            if No (Expr) then
+               Mark_Violation
+                 ("uninitialized object of anonymous access type",
+                  N, "SPARK RM 3.10(4)");
+            end if;
+         end if;
+
          --  We do not support local borrowers if they have predicates that
          --  can be broken arbitrarily deeply during the traversal.
 
@@ -3666,7 +3940,7 @@ package body SPARK_Definition is
            --  Only issue message on legal declarations. Others are handled in
            --  ownership checking code in the frontend.
 
-           and then Ownership_Checking.Is_Local_Context (Scope (E))
+           and then Is_Local_Context (Scope (E))
            and then Has_Deep_Subcomponents_With_Predicates
              (Directly_Designated_Type (T))
          then
@@ -3684,6 +3958,24 @@ package body SPARK_Definition is
 
          if Present (Expr) then
             Mark (Expr);
+
+            --  If the type of the object is an anonymous access type, then the
+            --  declaration is an observe or a borrow. Check that it follows
+            --  the rules.
+
+            if Nkind (N) = N_Object_Declaration
+              and then Is_Anonymous_Access_Type (Etype (E))
+            then
+               Check_Source_Of_Borrow_Or_Observe (Expr);
+
+            --  If we are performing a move operation, check that we are
+            --  moving a path.
+
+            elsif Is_Deep (Etype (E))
+              and then not Is_Path_Expression (Expr)
+            then
+               Mark_Violation ("expression as source of move", Expr);
+            end if;
          end if;
       end Mark_Object_Entity;
 
@@ -3858,8 +4150,16 @@ package body SPARK_Definition is
                  ("nonvolatile function with effectively volatile result", Id);
             end if;
 
+            --  Only traversal functions can return anonymous access types.
+            --  Check for the first formal to be in SPARK before calling
+            --  Is_Traversal_Function to avoid calling Retysp on an unmarked
+            --  type.
+
             if Is_Anonymous_Access_Type (Etype (Id))
-              and then not Ownership_Checking.Is_Traversal_Function (Id)
+              and then
+                (No (First_Formal (Id))
+                 or else Retysp_In_SPARK (Etype (First_Formal (Id))))
+              and then not Is_Traversal_Function (Id)
             then
                Mark_Violation
                  ("anonymous access type for result for "
@@ -3909,17 +4209,6 @@ package body SPARK_Definition is
 
             if not Retysp_In_SPARK (Etype (Id)) then
                Mark_Violation (Id, From => Etype (Id));
-            end if;
-
-            --  Traversal functions returning access to variable types are not
-            --  supported yet.
-
-            if Ownership_Checking.Is_Traversal_Function (Id)
-              and then not Is_Access_Constant (Etype (Id))
-            then
-               Mark_Unsupported
-                 ("traversal function returning access-to-variable type",
-                  Id);
             end if;
          end Mark_Function_Specification;
 
@@ -4872,8 +5161,7 @@ package body SPARK_Definition is
                --  Mark the equality function for Component_Typ if it is used
                --  for the predefined equality of E.
 
-               if Is_Record_Type
-                 (Get_Full_Type_Without_Checking (Component_Typ))
+               if Is_Record_Type (Unchecked_Full_Type (Component_Typ))
                  and then Present
                    (Get_User_Defined_Eq (Base_Type (Component_Typ)))
                then
@@ -5029,37 +5317,46 @@ package body SPARK_Definition is
 
                         if not In_SPARK (Comp_Type) then
                            Mark_Violation (Comp, From => Comp_Type);
-                        end if;
-
-                        --  Tagged types cannot be owning in SPARK
-
-                        if Is_Tagged_Type (E)
-                          and then Ownership_Checking.Is_Deep (Comp_Type)
-                        then
-                           Mark_Violation
-                             ("owning component of a tagged type", Comp);
-                        end if;
-
-                        --  Mark the equality function for Comp_Type if it is
-                        --  used for the predefined equality of E.
-
-                        if Is_Record_Type
-                          (Get_Full_Type_Without_Checking (Comp_Type))
-                          and then Present
-                            (Get_User_Defined_Eq (Base_Type (Comp_Type)))
-                        then
-                           Mark_Entity
-                             (Ultimate_Alias
-                                (Get_User_Defined_Eq (Base_Type (Comp_Type))));
-                        end if;
-
-                        --  Mark default value of component or discriminant
-                        Mark_Default_Expression (Comp);
-
-                        if Has_Init_By_Proof (Comp_Type) then
-                           Init_By_Proof := Comp;
                         else
-                           Not_Init_By_Proof := Comp;
+
+                           --  Tagged types cannot be owning in SPARK
+
+                           if Is_Tagged_Type (E) and then Is_Deep (Comp_Type)
+                           then
+                              Mark_Violation
+                                ("owning component of a tagged type", Comp);
+                           end if;
+
+                           --  Check that the component is not of an anonymous
+                           --  access type.
+
+                           if Is_Anonymous_Access_Type (Retysp (Comp_Type))
+                           then
+                              Mark_Violation
+                                ("component of anonymous access type", Comp);
+                           end if;
+
+                           --  Mark the equality function for Comp_Type if it
+                           --  is used for the predefined equality of E.
+
+                           if Is_Record_Type (Unchecked_Full_Type (Comp_Type))
+                             and then Present
+                               (Get_User_Defined_Eq (Base_Type (Comp_Type)))
+                           then
+                              Mark_Entity
+                                (Ultimate_Alias
+                                   (Get_User_Defined_Eq
+                                        (Base_Type (Comp_Type))));
+                           end if;
+
+                           --  Mark default value of component or discriminant
+                           Mark_Default_Expression (Comp);
+
+                           if Has_Init_By_Proof (Comp_Type) then
+                              Init_By_Proof := Comp;
+                           else
+                              Not_Init_By_Proof := Comp;
+                           end if;
                         end if;
                      end if;
 
@@ -5262,6 +5559,18 @@ package body SPARK_Definition is
                            --  Mark type and default value of component
 
                            if In_SPARK (Etype (Comp)) then
+
+                              --  Check that the component is not of an
+                              --  anonymous access type.
+
+                              if Is_Anonymous_Access_Type
+                                (Retysp (Etype (Comp)))
+                              then
+                                 Mark_Violation
+                                   ("component of anonymous access type",
+                                    Comp);
+                              end if;
+
                               Mark_Default_Expression (Comp);
 
                               --  Protected types need full default
@@ -5303,6 +5612,19 @@ package body SPARK_Definition is
                              Iter (Part_Of_Constituents (Anonymous_Object (E)))
                            loop
                               Mark_Entity (Part);
+
+                              --  Check that the part_of constituent is not of
+                              --  an anonymous access type.
+
+                              if Is_Object (Part)
+                                and then Retysp_In_SPARK (Etype (Part))
+                                and then Is_Anonymous_Access_Type
+                                  (Retysp (Etype (Part)))
+                              then
+                                 Mark_Violation
+                                   ("anonymous access variable marked Part_Of"
+                                      & " a protected object", Part);
+                              end if;
 
                               --  Initialization by proof of Part_Of variables
                               --  is not supported yet.
@@ -5524,27 +5846,6 @@ package body SPARK_Definition is
          Mark_Address (E);
       end if;
 
-      --  Check for ownership legality violations on entities that are
-      --  analyzed in SPARK_Mode Auto.
-
-      if No (Current_SPARK_Pragma) then
-         declare
-            Decl : constant Node_Id :=
-              (case Ekind (E) is
-                  when E_Variable | E_Constant =>
-                    Parent (E),
-                  when others =>
-                    Empty);
-         begin
-            if Present (Decl)
-              and then not Ownership_Checking.Is_Legal (Decl)
-            then
-               Violation_Detected := True;
-               Last_Violation_Root_Cause_Node := Decl;
-            end if;
-         end;
-      end if;
-
       --  Mark differently each kind of entity
 
       case Ekind (E) is
@@ -5732,7 +6033,19 @@ package body SPARK_Definition is
    ------------------------------------
 
    procedure Mark_Extended_Return_Statement (N : Node_Id) is
+      Subp : constant Entity_Id :=
+        Return_Applies_To (Return_Statement_Entity (N));
+
    begin
+      --  SPARK RM 3.10(5): return statement of traversal function
+
+      if Is_Traversal_Function (Subp) then
+         Mark_Violation
+           ("extended return applying to a traversal function",
+            N,
+            "SPARK RM 3.10(5)");
+      end if;
+
       Mark_Stmt_Or_Decl_List (Return_Object_Declarations (N));
 
       if Present (Handled_Statement_Sequence (N)) then
@@ -6104,6 +6417,24 @@ package body SPARK_Definition is
                end loop;
             end if;
 
+            --  Mark the initial condition if present
+
+            declare
+               Init_Cond : constant Node_Id :=
+                 Get_Pragma (Id, Pragma_Initial_Condition);
+
+            begin
+               if Present (Init_Cond) then
+                  declare
+                     Expr : constant Node_Id :=
+                       Expression (First (Pragma_Argument_Associations
+                                   (Init_Cond)));
+                  begin
+                     Mark (Expr);
+                  end;
+               end if;
+            end;
+
             Mark_Stmt_Or_Decl_List (Vis_Decls);
 
             Current_SPARK_Pragma := SPARK_Aux_Pragma (Id);
@@ -6132,8 +6463,8 @@ package body SPARK_Definition is
                end if;
             end;
 
-            --  Finally, if the the package has SPARK_Mode On | None and there
-            --  are no violations then record it as in SPARK.
+            --  Finally, if the package has SPARK_Mode On | None and there are
+            --  no violations then record it as in SPARK.
 
             Current_SPARK_Pragma := SPARK_Pragma (Id);
 
@@ -6268,6 +6599,8 @@ package body SPARK_Definition is
             | Pragma_Elaborate_All
             | Pragma_Elaborate_Body
             | Pragma_Export
+            | Pragma_Export_Function
+            | Pragma_Export_Procedure
             | Pragma_Extensions_Visible
             | Pragma_Import
             | Pragma_Independent
@@ -6415,9 +6748,7 @@ package body SPARK_Definition is
             | Pragma_Elaboration_Checks
             | Pragma_Eliminate
             | Pragma_Enable_Atomic_Synchronization
-            | Pragma_Export_Function
             | Pragma_Export_Object
-            | Pragma_Export_Procedure
             | Pragma_Export_Value
             | Pragma_Export_Valued_Procedure
             | Pragma_Extend_System
@@ -6643,7 +6974,37 @@ package body SPARK_Definition is
    procedure Mark_Simple_Return_Statement (N : Node_Id) is
    begin
       if Present (Expression (N)) then
-         Mark (Expression (N));
+         declare
+            Subp : constant Entity_Id :=
+              Return_Applies_To (Return_Statement_Entity (N));
+            Expr : constant Node_Id := Expression (N);
+            Return_Typ : constant Entity_Id := Etype (Expr);
+
+         begin
+            Mark (Expr);
+
+            if Is_Anonymous_Access_Type (Return_Typ) then
+
+               --  If we are returning from a traversal function, we have a
+               --  borrow/observe.
+
+               if Is_Traversal_Function (Subp)
+                 and then Nkind (Expr) /= N_Null
+               then
+                  Check_Source_Of_Borrow_Or_Observe (Expr);
+               end if;
+
+            --  If we are returning a deep type, this is a move. Check that we
+            --  have a path.
+
+            elsif Retysp_In_SPARK (Return_Typ)
+              and then Is_Deep (Return_Typ)
+            then
+               if not Is_Path_Expression (Expr) then
+                  Mark_Violation ("expression as source of move", Expr);
+               end if;
+            end if;
+         end;
       end if;
    end Mark_Simple_Return_Statement;
 
@@ -6872,7 +7233,10 @@ package body SPARK_Definition is
 
                --  Issue warning on unreferenced local subprograms, which are
                --  analyzed anyway, unless the subprogram is marked with pragma
-               --  Unreferenced.
+               --  Unreferenced. Local subprograms are identified by calling
+               --  Is_Local_Subprogram_Always_Inlined, but this does not take
+               --  into account local subprograms which are not inlined. It
+               --  would be better to look at the scope of E. ???
 
                if Is_Local_Subprogram_Always_Inlined (E)
                  and then not Referenced (E)
@@ -7237,32 +7601,6 @@ package body SPARK_Definition is
       return Entities_In_SPARK.Contains (Retysp (E));
    end Retysp_In_SPARK;
 
-   -----------------
-   -- Safe_Retysp --
-   -----------------
-
-   function Safe_Retysp (E : Entity_Id) return Entity_Id is
-      --  Ownership checking relies on finding the components of a record type
-      --  from the type returned by Safe_Retysp. Hence return the specific
-      --  tagged type instead of a class-wide type.
-      Typ : constant Entity_Id :=
-        (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
-         else E);
-   begin
-      Mark_Entity (E);
-      return Retysp (Typ);
-   end Safe_Retysp;
-
-   ------------------------------------------------
-   -- Set_Ownership_Errors_And_Get_Emit_Messages --
-   ------------------------------------------------
-
-   function Set_Ownership_Errors_And_Get_Emit_Messages return Boolean is
-   begin
-      Ownership_Errors := True;
-      return Emit_Messages;
-   end Set_Ownership_Errors_And_Get_Emit_Messages;
-
    ---------------------
    -- SPARK_Pragma_Is --
    ---------------------
@@ -7342,7 +7680,13 @@ package body SPARK_Definition is
       --  ??? similar code might be required for Type_Invariants and DIC, but
       --  the current code seems to work.
 
-      if Ekind (E) = E_Function and then Is_Predicate_Function (E) then
+      if Ekind (E) = E_In_Parameter
+        and then Ekind (Scope (E)) = E_Function
+        and then Is_Predicate_Function (Scope (E))
+      then
+         return SPARK_Pragma_Of_Entity (Scope (E));
+
+      elsif Ekind (E) = E_Function and then Is_Predicate_Function (E) then
          declare
             Ty : constant Entity_Id := Etype (First_Formal (E));
          begin

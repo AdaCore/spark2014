@@ -26,7 +26,7 @@ gnatprove
 *********
 
 The gnatprove executable is the main entry point; it is the executable
-that the user calls e.g. on the command line or from GPS. The
+that the user calls e.g. on the command line or from GNAT Studio. The
 subsections explain the various phases of gnatprove.
 
 Parsing the Command Line
@@ -245,7 +245,7 @@ IDE Integration
 ***************
 
 GNATprove can be called both from the command-line and from within one of the
-two IDEs developed at AdaCore: GPS or GNATbench (a plugin of Eclipse).
+two IDEs developed at AdaCore: GNAT Studio or GNATbench (a plugin of Eclipse).
 
 A general principle is that as little logic as possible should be put in the
 IDE support, as:
@@ -262,14 +262,14 @@ simply in displaying that information when requested by the user.
 
 The IDE integration consists mostly in the following files inside ``gps``
 repository, under ``share/plug-ins``:
- - file :file:`spark2014.py` defines the GPS integration
+ - file :file:`spark2014.py` defines the GNAT Studio integration
  - file :file:`spark2014/gnatprove.xml` defines the pop-up panels and Build
-   Targets (shared between GPS and GNATbench)
+   Targets (shared between GNAT Studio and GNATbench)
  - file :file:`spark2014/gnatprove_menus.xml` defines the menus (shared between
-   GPS and GNATbench)
+   GNAT Studio and GNATbench)
  - file :file:`spark2014/itp_lib.py` defines the interactive proof support in
-   GPS
+   GNAT Studio
 
 In addition to the above XML files, the GNATbench integration consists in code
 mapping the menus to actions inside Eclipse. The GNATbench integration is more
-basic than the GPS one.
+basic than the GNAT Studio one.

@@ -23,9 +23,9 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Exceptions;
 with Ada.Strings;
-with Ada.Strings.Fixed;
-with Ada.Containers;
+with Ada.Strings.Fixed;         use Ada.Strings.Fixed;
 with Ada.Containers.Vectors;
 with Ada.Containers.Hashed_Maps;
 with Ada.Containers.Hashed_Sets;
@@ -35,6 +35,7 @@ with Ada.Directories;           use Ada.Directories;
 with Ada.Float_Text_IO;
 with Ada.Strings.Unbounded;     use Ada.Strings.Unbounded;
 with Ada.Text_IO;
+with Call;                      use Call;
 with Common_Containers;         use Common_Containers;
 with Comperr;                   use Comperr;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
@@ -113,6 +114,8 @@ package body Gnat2Why.Error_Messages is
 
    VC_Table : Id_Tables.Vector := Id_Tables.Empty_Vector;
    --  This table maps ids to their VC_Info (entity and Ada node)
+
+   Registered_VCs_In_Why3 : Natural := 0;
 
    VC_Set_Table : Ent_Id_Set_Maps.Map := Ent_Id_Set_Maps.Empty_Map;
    --  This table maps entities to the set of unproved VCs
@@ -426,11 +429,18 @@ package body Gnat2Why.Error_Messages is
    end Emit_Proof_Result;
 
    ------------------------
-   -- Has_Registered_VCs --
+   -- Num_Registered_VCs --
    ------------------------
 
-   function Has_Registered_VCs return Boolean is
-     (not VC_Table.Is_Empty);
+   function Num_Registered_VCs return Ada.Containers.Count_Type is
+     (VC_Table.Length);
+
+   --------------------------------
+   -- Num_Registered_VCs_In_Why3 --
+   --------------------------------
+
+   function Num_Registered_VCs_In_Why3 return Natural is
+      (Registered_VCs_In_Why3);
 
    ---------------------------
    -- Load_Codepeer_Results --
@@ -722,7 +732,7 @@ package body Gnat2Why.Error_Messages is
    -- Parse_Why3_Results --
    ------------------------
 
-   procedure Parse_Why3_Results (S : String; Timing : in out Time_Token) is
+   procedure Parse_Why3_Results (Fn : String; Timing : in out Time_Token) is
 
       --  See the file gnat_report.mli for a description of the format that we
       --  parse here.
@@ -834,7 +844,7 @@ package body Gnat2Why.Error_Messages is
          procedure Timing_Entry (Name : UTF8_String; Value : JSON_Value) is
             Time : constant Float := Get (Value);
          begin
-            External_Timing (Timing, Name, Duration (Time));
+            Register_Timing (Timing, Name, Duration (Time));
          end Timing_Entry;
 
       --  Start of processing for Handle_Timings
@@ -875,27 +885,13 @@ package body Gnat2Why.Error_Messages is
                else Create_Object));
       end Parse_Why3_Prove_Result;
 
-      Fatal_Error_String : constant String := "Fatal error: out of memory";
-
    --  Start of processing for Parse_Why3_Results
 
    begin
-
-      --  In the case of an Out of memory in the ocaml runtime, the message
-      --  above in Fatal_Error_String is printed. We detect this situation
-      --  here.
-
-      if S'Length >= Fatal_Error_String'Length
-        and then S (S'First .. S'First + Fatal_Error_String'Length - 1) =
-                 Fatal_Error_String
-      then
-         Handle_Error (Fatal_Error_String, Internal => False);
-      end if;
-
       Mark_Subprograms_With_No_VC_As_Proved;
 
       declare
-         File    : constant JSON_Value := Read (S, "");
+         File    : constant JSON_Value := Read_File_Into_JSON (Fn);
          Results : constant JSON_Array := Get (Get (File, "results"));
          SD_Id   : Session_Dir_Base_ID := 0;
       begin
@@ -932,9 +928,27 @@ package body Gnat2Why.Error_Messages is
          end if;
       end;
    exception
-      when Invalid_JSON_Stream =>
-         --  Something bad happened, output gnatwhy3 error as is
-         Handle_Error (S, Internal => True);
+      when Error : Invalid_JSON_Stream =>
+         declare
+            Error_Msg : constant String :=
+              Ada.Exceptions.Exception_Message (Error);
+
+            OOM_Prefix : constant String := "Fatal error: out of memory";
+            --  If there is an "Out of memory" (or OOM) exception in the OCaml
+            --  runtime we get this message, possibly followed by extra info.
+
+         begin
+            --  If it is an OOM error, then output the prefix alone
+
+            if Head (Error_Msg, OOM_Prefix'Length) = OOM_Prefix then
+               Handle_Error (OOM_Prefix, Internal => False);
+
+            --  Otherwise, output gnatwhy3 error as is
+
+            else
+               Handle_Error (Error_Msg, Internal => True);
+            end if;
+         end;
    end Parse_Why3_Results;
 
    --------------------
@@ -1056,9 +1070,10 @@ package body Gnat2Why.Error_Messages is
    -----------------
 
    function Register_VC
-     (N      : Node_Id;
-      Reason : VC_Kind;
-      E      : Entity_Id)
+     (N               : Node_Id;
+      Reason          : VC_Kind;
+      E               : Entity_Id;
+      Present_In_Why3 : Boolean := True)
       return VC_Id
    is
       Registered_Id : VC_Id;
@@ -1072,6 +1087,9 @@ package body Gnat2Why.Error_Messages is
          Add_Id_To_Entity (Registered_Id, E);
       end if;
 
+      if Present_In_Why3 then
+         Registered_VCs_In_Why3 := Registered_VCs_In_Why3 + 1;
+      end if;
       return Registered_Id;
    end Register_VC;
 

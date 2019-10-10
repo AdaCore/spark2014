@@ -12,13 +12,13 @@ Integration Testsuite
 *********************
 
 This part contains informations on how to setup and use the integration
-testsuite. This only introduces the GPS/SPARK interaction in this testsuite not
+testsuite. This only introduces the GNAT Studio/SPARK interaction in this testsuite not
 the rest. The integration testsuite tests the behavior of tools combined with
-each others. For example, there are tests checking that GPS works with
+each others. For example, there are tests checking that GNAT Studio works with
 SPARK. These tests are written using an X environnment simulator called Xvcd and
-the plugin documentation of GPS
-(see http://docs.adacore.com/gps-docs/users_guide/_build/html/GPS.html) which
-virtually allows you to simulate any behavior of GPS that you would be able to
+the plugin documentation of GNAT Studio
+(see http://docs.adacore.com/live/wave/gps/html/gps_ug/GPS.html) which
+virtually allows you to simulate any behavior of GNAT Studio that you would be able to
 do in a plugin.
 The integration testsuite is located in
 ``git.adacore.com/integration_testsuite``.
@@ -33,8 +33,8 @@ SPARK wiki which quickly describes how to run test.
 Execute test
 ============
 
-To execute tests using GPS and SPARK, you will need to install Xvcd first. Then
-check that SPARK and GPS are indeed installed and do:
+To execute tests using GNAT Studio and SPARK, you will need to install Xvcd first. Then
+check that SPARK and GNAT Studio are indeed installed and do:
 
 ``./testsuite --with-tools=spark,gps``
 
@@ -46,7 +46,7 @@ Composition of a test
 =====================
 
 This testsuite can be understood as the discussion between a driver and a
-test: this seems to be necessary as GPS is interactive so orders can always be
+test: this seems to be necessary as GNAT Studio is interactive so orders can always be
 given to it (in order to make it sequential, you need this kind of
 interaction).
 The tests are not check for their output: instead you will add assertions into
@@ -63,7 +63,7 @@ and targets of your test. It also serves as a ``test.opt`` file:
 - ``driver:`` the driver that you will use (we will assume we always use gps
   here)
 - ``ressources:`` these are the source ada files that you want to use your test
-  on. Historically, these files seem to be located under ``shared/`` (you can 
+  on. Historically, these files seem to be located under ``shared/`` (you can
   apparently use files located directly in the test too).
 - ``requires`` tools that are required for your test
 - ``targets`` target for your test (for embedded). SPARK is not embedded, use
@@ -80,12 +80,12 @@ Writing a test
 ==============
 
 To write the ``test.py`` file, you can launch any function from the plugin
-``spark2014.py`` or from GPS plugin library.
+``spark2014.py`` or from GNAT Studio plugin library.
 Few things to know:
 
 - First thing you should do is load the project:
   ``yield load_project_file(project_file)``
-- Use ``yield wait_tasks()`` to let GPS finish process your command before
+- Use ``yield wait_tasks()`` to let GNAT Studio finish process your command before
   continuing
 - Put assertions  in your code to do the testing
 - To test your tests you can run ``testsuite`` and then go to

@@ -31,7 +31,8 @@ package body Flow.Control_Flow_Graph.Utility is
 
    procedure Add_Volatile_Effects
      (A      : in out V_Attributes;
-      Global : Flow_Id := Null_Flow_Id);
+      Global : Flow_Id := Null_Flow_Id)
+   with Pre => (if Present (Global) then Global.Variant = Normal_Use);
    --  This helper procedure inspects the variables used by a particular
    --  vertex. Any with a volatile property causing reads or writes to be
    --  effective will be noted in the volatiles_read and volatiles_written
@@ -154,11 +155,11 @@ package body Flow.Control_Flow_Graph.Utility is
          A.Variables_Explicitly_Used := Var_Use;
       end if;
 
-      A.Subprograms_Called        := Sub_Called;
-      A.Is_Assertion              := Is_Assertion;
-      A.Is_Loop_Entry             := Is_Loop_Entry;
-      A.Error_Location            := E_Loc;
-      A.Execution                 := Execution;
+      A.Subprograms_Called := Sub_Called;
+      A.Is_Assertion       := Is_Assertion;
+      A.Is_Loop_Entry      := Is_Loop_Entry;
+      A.Error_Location     := E_Loc;
+      A.Execution          := Execution;
 
       if Is_Fold_Check then
          A.Pretty_Print_Kind := Pretty_Print_Folded_Function_Check;
@@ -217,7 +218,7 @@ package body Flow.Control_Flow_Graph.Utility is
    --------------------------
 
    function Make_Call_Attributes
-     (Callsite   : Node_Id           := Empty;
+     (Callsite   : Node_Id;
       Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
@@ -265,20 +266,19 @@ package body Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    is
-      Subprogram : constant Entity_Id  := Get_Called_Entity (Call_Vertex);
-      Scope      : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
+      Scope      : Flow_Scope renames FA.B_Scope;
 
       Ext_Relevant_To_Formal : constant Boolean :=
         Has_Extensions_Visible (Subprogram) or else
         Is_Class_Wide_Type (Get_Type (Formal, Scope));
 
-      A        : V_Attributes     := Null_Attributes;
-      Unused   : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
+      A : V_Attributes := Null_Attributes;
 
    begin
       A.Is_Parameter                 := True;
@@ -296,7 +296,7 @@ package body Flow.Control_Flow_Graph.Utility is
               Get_Variables
                 (Actual,
                  Scope                => Scope,
-                 Fold_Functions       => True,
+                 Fold_Functions       => Inputs,
                  Use_Computed_Globals => not FA.Generating_Globals,
                  Consider_Extensions  => Ext_Relevant_To_Formal);
          begin
@@ -319,6 +319,7 @@ package body Flow.Control_Flow_Graph.Utility is
             Unused_Vc  : Boolean;
             Unused_Seq : Node_Lists.List;
             Map_Root   : Flow_Id;
+            Unused     : Flow_Id_Sets.Set;
 
          begin
             --  We're interested in the map root, since we might have to do
@@ -368,16 +369,17 @@ package body Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
+      Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
       Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    is
-      G     : constant Flow_Id    := Change_Variant (Global, Normal_Use);
-      A     : V_Attributes        := Null_Attributes;
-      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
-      Tmp   : Flow_Id_Sets.Set;
+      G : constant Flow_Id := Change_Variant (Global, Normal_Use);
+      A : V_Attributes     := Null_Attributes;
+
+      Tmp : Flow_Id_Sets.Set;
    begin
       A.Is_Global_Parameter          := True;
       A.Is_Discr_Or_Bounds_Parameter := Discriminants_Or_Bounds_Only;
@@ -423,7 +425,7 @@ package body Flow.Control_Flow_Graph.Utility is
             raise Program_Error;
       end case;
 
-      Add_Volatile_Effects (A, Global);
+      Add_Volatile_Effects (A, G);
       return A;
    end Make_Global_Attributes;
 
@@ -432,39 +434,139 @@ package body Flow.Control_Flow_Graph.Utility is
    ----------------------------------------
 
    function Make_Implicit_Parameter_Attributes
-     (Call_Vertex : Node_Id;
-      Implicit    : Flow_Id;
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      In_Vertex   : Boolean;
+      Scope       : Flow_Scope;
+      Sub_Called  : Node_Sets.Set := Node_Sets.Empty_Set;
       Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    is
-      I     : constant Flow_Id    := Change_Variant (Implicit, Normal_Use);
-      A     : V_Attributes        := Null_Attributes;
-      Scope : constant Flow_Scope := Get_Flow_Scope (Call_Vertex);
+      A : V_Attributes := Null_Attributes;
 
-      Implicit_Flat : constant Flow_Id_Sets.Set := Flatten_Variable (I, Scope);
-      --  Flat view of the implicit parameter
+      Subprogram : constant Entity_Id := Get_Called_Entity (Call_Vertex);
 
    begin
-      A.Is_Implicit_Parameter := True;
-      A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
-      A.Parameter_Formal      := Implicit;
-      A.Loops                 := Loops;
-      A.Error_Location        := E_Loc;
+      --  External calls appear in the code as:
+      --
+      --    PO.Proc (Actual1, Actual2, ...);
+      --
+      --  but we handle them very much like:
+      --
+      --    Proc (PO, Actual1, Actual2, ...);
+      --
+      --  and set attributes very much like in Make_Parameter_Attributes.
+      --
+      --  Note: we can't simply reuse that routine because it is (rightly)
+      --  flooded with assertions that check for ordinary formal parameters.
 
-      case Implicit.Variant is
-         when In_View =>
-            A.Variables_Used := Implicit_Flat;
-            A.Variables_Explicitly_Used := Implicit_Flat;
+      if Is_External_Call (Call_Vertex) then
+         A.Is_Parameter       := True;
+         A.Subprograms_Called := Sub_Called;
+         A.Call_Vertex        := Direct_Mapping_Id (Call_Vertex);
+         A.Parameter_Actual   :=
+           Direct_Mapping_Id (Prefix (Name (Call_Vertex)));
+         A.Parameter_Formal :=
+           Direct_Mapping_Id (Sinfo.Scope (Subprogram));
+         A.Loops              := Loops;
+         A.Error_Location     := E_Loc;
 
-         when Out_View =>
-            A.Variables_Defined := Implicit_Flat;
+         if In_Vertex then
+            declare
+               Used : constant Flow_Id_Sets.Set :=
+                 Get_Variables
+                   (N                    => Prefix (Name (Call_Vertex)),
+                    Scope                => Scope,
+                    Fold_Functions       => Inputs,
+                    Use_Computed_Globals => not FA.Generating_Globals);
+            begin
+               A.Variables_Used := Used;
+               for F of Used loop
+                  if not Is_Bound (F) and then Has_Bounds (F, Scope) then
+                     A.Variables_Used.Include (F'Update (Facet => The_Bounds));
+                  end if;
+               end loop;
 
-         when others =>
-            raise Program_Error;
-      end case;
+               A.Variables_Explicitly_Used := A.Variables_Used;
+            end;
+         else
+            declare
+               Partial    : Boolean;
+               Unused_Vc  : Boolean;
+               Unused_Seq : Node_Lists.List;
+               Map_Root   : Flow_Id;
+               Unused     : Flow_Id_Sets.Set;
 
-      Add_Volatile_Effects (A, I);
+            begin
+               --  We're interested in the map root, since we might have to do
+               --  something about extensions.
+               Get_Assignment_Target_Properties
+                 (N                  => Prefix (Name (Call_Vertex)),
+                  Partial_Definition => Partial,
+                  View_Conversion    => Unused_Vc,
+                  Map_Root           => Map_Root,
+                  Seq                => Unused_Seq);
+
+               --  We have an unconditional addition to folded_function_checks
+               --  for each actual anyway, so we can ignore the proof variables
+               --  here.
+               Untangle_Assignment_Target
+                 (N                    => Prefix (Name (Call_Vertex)),
+                  Scope                => Scope,
+                  Use_Computed_Globals => not FA.Generating_Globals,
+                  Vars_Defined         => A.Variables_Defined,
+                  Vars_Used            => A.Variables_Explicitly_Used,
+                  Vars_Proof           => Unused,
+                  Partial_Definition   => Partial);
+
+               A.Variables_Used := A.Variables_Explicitly_Used;
+
+               if Partial then
+                  A.Variables_Used.Union (A.Variables_Defined);
+               end if;
+            end;
+         end if;
+
+         Add_Volatile_Effects (A);
+
+      --  In internal calls the implicit parameter behaves more like a global,
+      --  i.e. we don't have an actual expression for it.
+
+      else
+         declare
+            Implicit : constant Flow_Id :=
+              Direct_Mapping_Id (Sinfo.Scope (Subprogram));
+
+            Implicit_Flat : constant Flow_Id_Sets.Set :=
+              Flatten_Variable (Implicit, Scope);
+            --  Flat view of the implicit parameter
+
+         begin
+            A.Is_Implicit_Parameter := True;
+            A.Call_Vertex           := Direct_Mapping_Id (Call_Vertex);
+            A.Parameter_Formal      :=
+              Change_Variant (Implicit,
+                              (if In_Vertex then In_View else Out_View));
+            A.Loops                 := Loops;
+            A.Error_Location        := E_Loc;
+
+            if In_Vertex then
+               A.Variables_Used            := Implicit_Flat;
+               A.Variables_Explicitly_Used := Implicit_Flat;
+            else
+               A.Variables_Defined         := Implicit_Flat;
+            end if;
+
+            --  For internal calls the implicit parameter acts as an ordinary
+            --  record object and cannot be annotated with effective reads or
+            --  writes.
+
+            pragma Assert (not Has_Effective_Reads (Implicit));
+            pragma Assert (not Has_Effective_Writes (Implicit));
+         end;
+      end if;
+
       return A;
    end Make_Implicit_Parameter_Attributes;
 
@@ -652,10 +754,9 @@ package body Flow.Control_Flow_Graph.Utility is
 
       A.Variables_Defined := Flow_Id_Sets.To_Set (F);
       if Present (DI) then
-         A.Variables_Used := Get_Variables
+         A.Variables_Used := Get_All_Variables
            (A.Default_Init_Val,
             Scope                => Scope,
-            Fold_Functions       => False,
             Use_Computed_Globals => not FA.Generating_Globals);
          A.Variables_Explicitly_Used := A.Variables_Used;
       end if;

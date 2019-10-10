@@ -313,7 +313,7 @@ begin
         Linelength := Inline'Length;
         if linelength = 0 then New_Line(1);
         else Put(inline); end if;
-      end;              
+      end;
       exit when linelength > 0;
     end loop;
     New_Line(1);
@@ -580,7 +580,7 @@ procedure Gen(
                     Code(Code_Index).Comment = Comment and
                     Code_Index = Code_Index'Old + 1
                )
-      
+
 is begin
   if code_index > max_table_size then Error(PROG_SIZE); end if;
   code(code_index).instruction := instruction;
@@ -1161,7 +1161,7 @@ begin
     when CASESYM    => Process_Case(code, sym, level, table_index);
 
     when COBEGINSYM => Process_Cobegin(code, sym, level, table_index);
- 
+
     when others     => null;
 
   end case;
@@ -1241,7 +1241,7 @@ begin
       Get_Symbol(sym);
     end loop;
   end loop;
-  
+
   code(symbol_table(start_table_index).adr).data := Code_index;
   symbol_table(start_table_index).adr:= code_index;
   start_code_index := code_index;
@@ -1364,7 +1364,7 @@ end Threads_Avail_Lock;
 threads_avail: Threads_Avail_Lock; -- threads available for concurrency
 
   type Stack_Array is array(Stack_Range) of Integer;
-  
+
 -- "tasks" are the Ada mechanism for concurrent threads
 
   type New_Thread_Requirements is
@@ -1373,9 +1373,9 @@ threads_avail: Threads_Avail_Lock; -- threads available for concurrency
        PARENT_STACK, GRANDPARENT_STACK,
        NEW_TOP, NEW_BASE_REG, NEW_PROG_REG
       );
-  
+
   type New_Thread_Data is array(New_Thread_Requirements) of Integer;
-  
+
 -- this runs the actual stack machine
 protected type Processor is
     -- @summary notifies the processor to start and sets up
@@ -1393,9 +1393,9 @@ protected type Processor is
     procedure Add_Child(Which: Thread_Range);
     function Is_Ready return Boolean;
     procedure Set_Unready;
-    
+
   private
-    
+
     Ready: Boolean := False;
     Stack: Stack_Array := ( others => 0 );
     Monitored: Boolean := False;
@@ -1412,11 +1412,11 @@ protected type Processor is
 
   Processors: array(Thread_Range) of Processor; -- think of these as the "threads"
   -- Processors_Ready: array(Thread_Range) of Suspension_Object;
-  
+
   procedure Run_Stack(Which_Stack: Thread_Range);
 
   task type Core;
-  
+
   task body Core is
     Which: Integer := -1;
     Success: Boolean;
@@ -1470,7 +1470,7 @@ protected type Processor is
       Put("Quit " & S(S'Last - 1) & S(S'Last) & CR & LF);
     end;
   end Core;
-  
+
   Cores: array(Thread_Range) of Core;
 
 -- @summary finds the "base" frame that contains "global" data for a procedure or function
@@ -1534,39 +1534,39 @@ end Dispatch;
 ----
 
   protected body Processor is
-    
+
     function Read_Stack(Location: Stack_Range) return Integer is
         (Stack(Location));
-    
+
     function Program return PCode_Table is (Codes);
-    
+
     function Program_Register return Table_Range is (progreg);
-    
+
     function Top_Of_Stack return Stack_Range is (Top);
-    
+
     function Base_Register return Stack_Range is (Basereg);
-    
+
     function Is_Ready return Boolean is (Ready);
-    
+
     procedure Set_Unready is begin Ready := False; end Set_Unready;
-    
+
     procedure Write_Stack(Location: Stack_Range; Value: Integer) is
     begin
       Stack(Location) := Value;
     end Write_Stack;
-    
+
     procedure Set_Monitor(Success: out Boolean) is
       begin
         Success := not Monitored;
         if Success then Monitored := True; end if;
     end;
-    
+
     procedure Add_Child(Which: Thread_Range) is
     begin
       Child_Threads(Last_Child_Index) := which;
       Last_Child_Index := Last_Child_Index + 1;
     end Add_Child;
-    
+
     procedure Start
         (
          Program: PCode_Table; Which_Stack: Thread_Range; Data: New_Thread_Data
@@ -1583,9 +1583,9 @@ end Dispatch;
       Top := Data(NEW_TOP);
       Progreg := Data(NEW_PROG_REG);
       Basereg := Data(NEW_BASE_REG);
-      
+
       Codes := Program;
-      
+
       -- Set_True(Processors_Ready(Which_Stack));
       Ready := True;
 
@@ -1614,7 +1614,7 @@ end Processor;
 
   -- @summary runs the p-codes on the stack; needs to be set up by Start
   procedure Run_Stack(Which_stack: Thread_Range) is
-      
+
     Spawn_Data: New_Thread_Data;
     Code: PCode_Entry;
     Codes: PCode_Table := Processors(Which_stack).Program;
@@ -1629,7 +1629,7 @@ end Processor;
   begin
 
     Processors(Which_Stack).Set_Unready;
-    
+
     loop
 
       -- get next instruction and increase program register
@@ -1689,7 +1689,7 @@ end Processor;
                              / Processors(Which_Stack).Read_Stack(Top + 1));
 
           when 6 => -- odd
-            
+
             Processors(Which_Stack)
                 .Write_Stack(Top, Processors(Which_Stack).Read_Stack(Top) mod 2);
 

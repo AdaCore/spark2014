@@ -223,7 +223,7 @@ package body Gnat2Why.Types is
                     (Domain   => EW_Pred,
                      Name     => To_Local (E_Symb (E, WNE_Default_Init)),
                      Def      => +Def,
-                     Labels   => Symbol_Sets.To_Set (NID ("inline")),
+                     Labels   => Symbol_Sets.Empty_Set,
                      Location => No_Location,
                      Binders  =>
                        Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
@@ -398,7 +398,7 @@ package body Gnat2Why.Types is
                               Name     => Name,
                               Def      => +Def,
                               Location => No_Location,
-                              Labels   => Symbol_Sets.To_Set (NID ("inline")),
+                              Labels   => Symbol_Sets.Empty_Set,
                               Binders  => Binders));
                   end if;
                end;
@@ -465,7 +465,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Dynamic_Predicate)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.Empty_Set,
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -520,7 +520,7 @@ package body Gnat2Why.Types is
                   Name     => To_Local (E_Symb (E, WNE_Type_Invariant)),
                   Def      => +Def,
                   Location => No_Location,
-                  Labels   => Symbol_Sets.To_Set (NID ("inline")),
+                  Labels   => Symbol_Sets.Empty_Set,
                   Binders  =>
                     Binder_Array'(1 => Binder_Type'(B_Name => Main_Arg,
                                                     others => <>))
@@ -570,7 +570,7 @@ package body Gnat2Why.Types is
 
          if Present (Eq)
            and then Entity_In_SPARK (Eq)
-           and then Is_Record_Type (Get_Full_Type_Without_Checking (E))
+           and then Is_Record_Type (Unchecked_Full_Type (E))
          then
             declare
                Var_A : constant W_Identifier_Id :=
@@ -687,7 +687,7 @@ package body Gnat2Why.Types is
          Phase       => Generate_VCs_For_Body,
          Gen_Marker  => GM_None,
          Ref_Allowed => True,
-         Old_Allowed => True);
+         Old_Policy  => Use_Map);
 
       Current_Subp := E;
 

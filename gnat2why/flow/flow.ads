@@ -72,20 +72,6 @@ package Flow is
    --  Print a human-readable representation for the given vertex.
 
    ----------------------------------------------------------------------
-   --  Vertex Pair
-   ----------------------------------------------------------------------
-
-   type Vertex_Pair is record
-      From : Flow_Graphs.Vertex_Id;
-      To   : Flow_Graphs.Vertex_Id;
-   end record;
-
-   function Vertex_Pair_Hash
-     (VD : Vertex_Pair)
-      return Ada.Containers.Hash_Type;
-   --  Hash a Vertex_Pair (useful for building sets of vertex pairs).
-
-   ----------------------------------------------------------------------
    --  Utility packages
    ----------------------------------------------------------------------
 

@@ -103,7 +103,7 @@ package Flow.Control_Flow_Graph.Utility is
    --  Returns a copy of Leaf, but with blank def/use sets.
 
    function Make_Call_Attributes
-     (Callsite   : Node_Id           := Empty;
+     (Callsite   : Node_Id;
       Sub_Called : Node_Sets.Set     := Node_Sets.Empty_Set;
       Loops      : Node_Sets.Set     := Node_Sets.Empty_Set;
       E_Loc      : Node_Or_Entity_Id := Empty)
@@ -125,9 +125,9 @@ package Flow.Control_Flow_Graph.Utility is
       Formal                       : Entity_Id;
       In_Vertex                    : Boolean;
       Discriminants_Or_Bounds_Only : Boolean;
-      Sub_Called                   : Node_Sets.Set     := Node_Sets.Empty_Set;
-      Loops                        : Node_Sets.Set     := Node_Sets.Empty_Set;
-      E_Loc                        : Node_Or_Entity_Id := Empty)
+      Sub_Called                   : Node_Sets.Set := Node_Sets.Empty_Set;
+      Loops                        : Node_Sets.Set;
+      E_Loc                        : Node_Or_Entity_Id)
       return V_Attributes
    with Pre  => (if In_Vertex
                  then
@@ -153,13 +153,15 @@ package Flow.Control_Flow_Graph.Utility is
    function Make_Global_Attributes
      (Call_Vertex                  : Node_Id;
       Global                       : Flow_Id;
+      Scope                        : Flow_Scope;
       Discriminants_Or_Bounds_Only : Boolean;
       Loops                        : Node_Sets.Set;
       Is_Assertion                 : Boolean := False;
       E_Loc                        : Node_Or_Entity_Id := Empty)
       return V_Attributes
    with Pre  => (if Discriminants_Or_Bounds_Only
-                 then Global.Variant = In_View),
+                 then Global.Variant = In_View
+                 else Global.Variant in In_View | Out_View),
         Post => not Make_Global_Attributes'Result.Is_Null_Node and
                 not Make_Global_Attributes'Result.Is_Program_Node and
                 not Make_Global_Attributes'Result.Is_Parameter and
@@ -168,19 +170,25 @@ package Flow.Control_Flow_Graph.Utility is
    --  used are calculated automatically.
 
    function Make_Implicit_Parameter_Attributes
-     (Call_Vertex : Node_Id;
-      Implicit    : Flow_Id;
+     (FA          : Flow_Analysis_Graphs;
+      Call_Vertex : Node_Id;
+      In_Vertex   : Boolean;
+      Scope       : Flow_Scope;
+      Sub_Called  : Node_Sets.Set := Node_Sets.Empty_Set;
       Loops       : Node_Sets.Set;
-      E_Loc       : Node_Or_Entity_Id := Empty)
+      E_Loc       : Node_Or_Entity_Id)
       return V_Attributes
    with Post =>
      not Make_Implicit_Parameter_Attributes'Result.Is_Null_Node and
      not Make_Implicit_Parameter_Attributes'Result.Is_Program_Node and
-     not Make_Implicit_Parameter_Attributes'Result.Is_Parameter and
-     Make_Implicit_Parameter_Attributes'Result.Is_Implicit_Parameter;
+     (Make_Implicit_Parameter_Attributes'Result.Is_Parameter xor
+      Make_Implicit_Parameter_Attributes'Result.Is_Implicit_Parameter);
    --  Creates the attributes for the implicit formal parameters of
    --  protected operations. Note that variables defined and used are
    --  calculated automatically.
+   --  ??? This routine should be split to one for internal and another for
+   --  external calls to protected operations, because at the point of call
+   --  we know exactly which variant is needed.
 
    function Make_Null_Export_Attributes (F : Flow_Id) return V_Attributes;
    --  Creates the attributes for the synthetic null export.

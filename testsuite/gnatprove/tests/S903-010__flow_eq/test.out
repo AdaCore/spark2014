@@ -1,0 +1,6 @@
+x.adb:3:13: medium: subprogram "Oeq" might not terminate, terminating annotation could be incorrect
+x.adb:3:18: warning: unused variable "Left"
+x.adb:3:24: warning: unused variable "Right"
+x.adb:8:18: warning: statement has no effect
+x.adb:16:19: medium: assertion might fail, cannot prove A = B
+x.adb:16:21: info: precondition proved (Trivial: 1 VC)

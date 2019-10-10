@@ -4,7 +4,7 @@ p.ads:25:11: info: data dependencies proved
 p.ads:25:34: info: initialization of "Full_S" proved
 p.ads:25:42: info: initialization of "Raw_S" proved
 p.ads:26:11: info: flow dependencies proved
-p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R (e.g. when Raw_S = (others => 255)) [possible explanation: call at p.adb:24 should mention Raw_S in a postcondition]
+p.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R (e.g. when Raw_S = (others => Unsigned_8'Last)) [possible explanation: call at p.adb:24 should mention Raw_S in a postcondition]
 p.ads:32:11: info: data dependencies proved
 p.ads:32:41: warning: unused initial value of "Raw_S"
 p.ads:33:11: medium: missing dependency "null => Raw_S"
@@ -16,7 +16,7 @@ p2.ads:25:11: info: data dependencies proved
 p2.ads:25:34: info: initialization of "Full_S" proved
 p2.ads:25:42: info: initialization of "Raw_S" proved
 p2.ads:26:11: info: flow dependencies proved
-p2.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R (e.g. when Raw_S = (others => 255)) [possible explanation: call at p2.adb:31 should mention Raw_S in a postcondition]
+p2.ads:28:22: medium: postcondition might fail, cannot prove Raw_S = Null_Raw_R (e.g. when Raw_S = (others => Unsigned_8'Last)) [possible explanation: call at p2.adb:31 should mention Raw_S in a postcondition]
 p2.ads:32:11: info: data dependencies proved
 p2.ads:33:32: info: initialization of "Raw_S" proved
 p2.ads:34:11: info: flow dependencies proved

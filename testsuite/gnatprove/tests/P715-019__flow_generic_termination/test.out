@@ -1,7 +1,7 @@
 a-cfhase.ads:124:09: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
 a-cfhase.ads:266:09: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:495:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
-a-cfhase.ads:1102:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:534:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
+a-cfhase.ads:1236:06: "S" is referenced in Post but missing from the Global, in instantiation at term.ads:15
 a-cofuse.ads:73:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
 a-cofuse.ads:120:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15
 a-cofuse.ads:159:06: "S" is referenced in Post but missing from the Global, in instantiation at a-cfhase.ads:90, in instantiation at term.ads:15

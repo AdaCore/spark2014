@@ -2,6 +2,8 @@ unconstr.adb:9:20: info: postcondition proved (CVC4: 2 VC)
 unconstr.adb:18:20: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 unconstr.adb:21:07: info: initialization of "B" proved
 unconstr.adb:30:20: info: postcondition proved (CVC4: 2 VC)
+unconstr.adb:40:13: info: add a contract to analyze it separately from calling contexts
+unconstr.adb:40:13: info: local subprogram "Constr_Return" only analyzed in the context of calls
 unconstr.adb:47:04: warning: analyzing unreferenced procedure "Constr_Return_Call"
 unconstr.adb:47:14: warning: subprogram "Constr_Return_Call" has no effect
 unconstr.adb:51:24: info: cannot unroll loop (too many loop iterations)

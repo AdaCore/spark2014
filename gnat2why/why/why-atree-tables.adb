@@ -70,7 +70,7 @@ package body Why.Atree.Tables is
       --  Note: while Ada RM says "If the capacity of Container is already
       --  greater than or equal to [Reserve_Capacity parameter], then
       --  Reserve_Capacity has no effect" the GNAT's implementation of
-      --  Reserve_Capcity frees the underlying memory.
+      --  Reserve_Capcity frees the underlying memory, so let's do that.
 
       Node_Table.Clear;
       Node_Table.Reserve_Capacity (0);

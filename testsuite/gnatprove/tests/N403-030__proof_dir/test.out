@@ -5,7 +5,7 @@ simple_test.ads:5:14: info: postcondition proved (CVC4: 1 VC)
 simple_test.ads:5:31: info: overflow check proved (CVC4: 1 VC)
 simple_test.ads:5:37: info: overflow check proved (CVC4: 1 VC)
 simple_test.ads:5:43: info: overflow check proved (CVC4: 1 VC)
-simple_test
+simple_test__test
 proof
 simple_test.adb
 simple_test.ads

@@ -1,1 +1,1 @@
-eq_null_record.ads:14:35: medium: postcondition might fail, cannot prove X /= Y
+eq_null_record.ads:14:12: info: postcondition proved (CVC4: 2 VC)

@@ -70,7 +70,7 @@ simpler assertion and trying to prove it.
 
 |GNATprove| provides path information that might help the code review. You can
 display inside the editor the path on which the proof failed, as described in
-:ref:`Running GNATprove from GPS`. In some cases, a counterexample is also
+:ref:`Running GNATprove from GNAT Studio`. In some cases, a counterexample is also
 generated on the path, with values of variables which exhibit the problem (see
 :ref:`Understanding Counterexamples`). In many cases, this is sufficient to
 spot a missing assertion.
@@ -123,8 +123,8 @@ Investigating Prover Shortcomings
 The last step is to investigate if the prover would find a proof given enough
 time [TIMEOUT] or if another prover can find a proof [PROVER]. To that end,
 |GNATprove| provides switch ``--level``, usable either from the command-line
-(see :ref:`Running GNATprove from the Command Line`), inside GPS (see
-:ref:`Running GNATprove from GPS`) or inside GNATbench (see :ref:`Running
+(see :ref:`Running GNATprove from the Command Line`), inside GNAT Studio (see
+:ref:`Running GNATprove from GNAT Studio`) or inside GNATbench (see :ref:`Running
 GNATprove from GNATbench`). The level of 0 is only adequate for simple
 proofs. In general, one should increase the level of proof (up to level 4)
 until no more automatic proofs can be obtained.
@@ -138,7 +138,7 @@ set through ``--level``.
 
 Note that for the above experiments, it is quite convenient to use the
 :menuselection:`SPARK --> Prove Line` or :menuselection:`SPARK --> Prove
-Subprogram` menus in GPS, as described in :ref:`Running GNATprove from GPS` and
+Subprogram` menus in GNAT Studio, as described in :ref:`Running GNATprove from GNAT Studio` and
 :ref:`Running GNATprove from GNATbench`, to get faster results for the desired
 line or subprogram.
 

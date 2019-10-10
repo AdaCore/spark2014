@@ -98,17 +98,14 @@ package Flow.Analysis is
    --  Detect global inputs that are only used in assertions (and therefore
    --  should be Proof_In).
 
+   procedure Find_Illegal_Reads_Of_Proof_Ins
+     (FA : in out Flow_Analysis_Graphs);
+   --  Detect Proof_In globals used in non-assertion expressions
+
    procedure Find_Stable_Elements (FA : in out Flow_Analysis_Graphs);
    --  Find stable loop statements.
    --
    --  Complexity is O(N^2)
-
-   procedure Find_Exports_Derived_From_Proof_Ins
-     (FA : in out Flow_Analysis_Graphs);
-   --  Find exports derived from global variables with mode Proof_In.
-   --
-   --  Complexity is O(N^2) - (due to path search on each element of the
-   --  precomputed dependency map)
 
    procedure Find_Hidden_Unexposed_State (FA : in out Flow_Analysis_Graphs);
    --  This procedure looks for hidden state variables and missing Part_Of

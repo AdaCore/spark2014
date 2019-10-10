@@ -18,18 +18,18 @@ a-cfhama.ads:680:39: info: precondition proved (Z3: 1 VC), in instantiation at u
 a-cfhama.ads:689:17: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
 a-cfhama.ads:719:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
 a-cfhama.ads:734:20: info: precondition proved (Z3: 1 VC), in instantiation at use_maps.ads:9
-a-cfhase.ads:460:18: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:728:39: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:737:17: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:754:24: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:755:26: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:801:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:964:24: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:965:26: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:965:44: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1001:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1074:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
-a-cfhase.ads:1089:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:497:18: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:812:39: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:821:17: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:842:24: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:843:26: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:891:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1068:24: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1069:26: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1069:44: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1109:49: info: overflow check proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1201:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
+a-cfhase.ads:1222:20: info: precondition proved (Z3: 1 VC), in instantiation at use_sets.ads:10
 a-cfinve.ads:60:12: info: range check proved (Z3: 2 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:61:29: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
 a-cfinve.ads:62:71: info: overflow check proved (Z3: 1 VC), in instantiation at use_vectors.ads:23
@@ -288,7 +288,7 @@ use_lists.adb:151:10: info: precondition proved (Z3: 1 VC)
 use_lists.adb:157:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:158:07: info: precondition proved (Z3: 2 VC)
 use_lists.adb:159:07: info: precondition proved (Z3: 2 VC)
-use_lists.adb:160:07: info: precondition proved (Z3: 2 VC)
+use_lists.adb:160:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 use_lists.adb:161:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 use_lists.adb:162:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
 use_lists.adb:163:07: info: precondition proved (CVC4: 1 VC; Z3: 1 VC)
@@ -998,7 +998,7 @@ use_ordered_sets.ads:50:14: info: postcondition proved (Z3: 1 VC)
 use_ordered_sets.ads:50:15: info: precondition proved (Trivial: 1 VC)
 use_ordered_sets.ads:50:15: info: precondition proved (Z3: 2 VC)
 use_ordered_sets.ads:55:14: info: postcondition proved (Z3: 2 VC)
-use_ordered_sets.ads:61:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_sets.ads:61:14: medium: postcondition might fail, cannot prove Model (S1)'Old = Model (S2)
 use_ordered_sets.ads:68:14: info: postcondition proved (Z3: 2 VC)
 use_ordered_sets.ads:73:14: info: postcondition proved (Z3: 3 VC)
 use_ordered_sets.ads:83:25: info: division check proved (Z3: 1 VC)
@@ -1145,10 +1145,10 @@ use_sets.ads:51:15: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:51:15: info: precondition proved (Z3: 2 VC)
 use_sets.ads:56:14: info: postcondition proved (Z3: 2 VC)
 use_sets.ads:62:14: info: postcondition proved (Z3: 2 VC)
-use_sets.ads:72:14: info: postcondition proved (Z3: 4 VC)
 use_sets.ads:72:43: info: overflow check proved (Z3: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Trivial: 1 VC)
 use_sets.ads:75:11: info: precondition proved (Z3: 2 VC)
+use_sets.ads:75:29: medium: postcondition might fail, cannot prove Contains (Model (S)'Old, E) or E in 1 .. Count
 use_sets.ads:85:06: info: data dependencies proved
 use_sets.ads:87:25: info: precondition proved (Z3: 2 VC)
 use_sets.ads:88:16: info: postcondition proved (Z3: 1 VC)

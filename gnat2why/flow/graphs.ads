@@ -259,14 +259,16 @@ package Graphs is
       SCC      : Strongly_Connected_Components;
       V_1, V_2 : Vertex_Id) return Boolean
    with Pre => V_1 /= Null_Vertex and then V_2 /= Null_Vertex;
-   --  Same as above but using a precomputed strongly connected components
+   --  Same as above but using a precomputed graph of strongly connected
+   --  components.
 
    function Edge_Exists
      (G        : Graph;
       SCC      : Strongly_Connected_Components;
       V_1, V_2 : Vertex_Key) return Boolean
    with Pre => G.Contains (V_1) and then G.Contains (V_2);
-   --  Same as above but using a precomputed strongly connected components
+   --  Same as above but using a precomputed graph of strongly connected
+   --  components.
 
    function Edge_Colour
      (G        : Graph;
@@ -573,7 +575,7 @@ package Graphs is
    --  Complexity is O(N^2).
 
    function SCC
-     (G : in out Graph)
+     (G : Graph)
       return Strongly_Connected_Components;
    --  Returns the condensation graph of G, i.e. a graph whose vertices are the
    --  strongly connected components of G and whose edges correspond to edges
@@ -752,7 +754,7 @@ private
    --  Strongly connected components
 
    type Component_Id is new Positive;
-   --  Identifier of a stronly connected component
+   --  Identifier of a strongly connected component
 
    function Hash (C : Component_Id) return Ada.Containers.Hash_Type;
 

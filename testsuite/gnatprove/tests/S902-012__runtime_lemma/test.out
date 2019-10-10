@@ -1,0 +1,2 @@
+s-incr.adb:3:14: medium: postcondition might fail, cannot prove X < Integer'last (e.g. when X = Integer'Last)
+s-incr.adb:10:11: info: overflow check proved (CVC4: 1 VC)
