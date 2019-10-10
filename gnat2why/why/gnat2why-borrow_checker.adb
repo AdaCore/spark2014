@@ -2667,11 +2667,19 @@ package body Gnat2Why.Borrow_Checker is
             end;
          end if;
 
+         --  For every borrowed object, check that:
+         --    * the borrowed expression is not a prefix of Expr
+         --    * Expr is not a prefix of the borrowed expression.
+
          while Key.Present loop
             Var := Key.K;
             Borrowed := Get (Current_Borrowers, Var);
 
-            if Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+            if (Is_Prefix_Or_Almost (Pref => Borrowed, Expr => Expr)
+                or else
+                  (if Expr.Is_Ent then Get_Root_Object (Borrowed) = Expr.Ent
+                   else Is_Prefix_Or_Almost
+                     (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Borrowed)))
               and then Var /= B_Pledge
             then
                Error_Msg_Sloc := Sloc (Borrowed);
@@ -2710,11 +2718,20 @@ package body Gnat2Why.Borrow_Checker is
          Observed : Node_Id;
 
       begin
+         --  For every observed object, check that:
+         --    * the observed expression is not a prefix of Expr
+         --    * Expr is not a prefix of the observed expression.
+
          while Key.Present loop
             Var := Key.K;
             Observed := Get (Current_Observers, Var);
 
-            if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr) then
+            if Is_Prefix_Or_Almost (Pref => Observed, Expr => Expr)
+              or else
+                (if Expr.Is_Ent then Get_Root_Object (Observed) = Expr.Ent
+                 else Is_Prefix_Or_Almost
+                   (Get_Observed_Or_Borrowed_Expr (Expr.Expr), +Observed))
+            then
                Error_Msg_Sloc := Sloc (Observed);
                if Expr.Is_Ent then
                   Error_Msg_NE ("& was observed #", Expr.Loc, Expr.Ent);
