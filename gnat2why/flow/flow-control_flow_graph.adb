@@ -1209,23 +1209,6 @@ package body Flow.Control_Flow_Graph is
       FA       : in out Flow_Analysis_Graphs)
    is
    begin
-      if Is_Discriminant (F) then
-         --  The discriminants (for example r.x.d) do not live in the tree,
-         --  but we should make the parent tree anyway, so that we get the
-         --  important root node (in this example r). This is important for
-         --  discriminated null records which have no other way of producing
-         --  this otherwise.
-         declare
-            P : constant Flow_Id :=
-              Change_Variant (Entire_Variable (F),
-                              Corresponding_Grouping (F.Variant));
-
-         begin
-            Create_Record_Tree (P, Leaf_Atr, FA);
-         end;
-         return;
-      end if;
-
       case F.Variant is
          when Normal_Use | In_View | Out_View =>
             raise Program_Error;
