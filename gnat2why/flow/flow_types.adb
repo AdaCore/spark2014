@@ -682,15 +682,6 @@ package body Flow_Types is
 
    function Parent_Record (F : Flow_Id) return Flow_Id is
    begin
-      --  When we are dealing with the constituent of a concurrent object then
-      --  we consider the concurrent object to be the parent record.
-      if Belongs_To_Concurrent_Type (F) then
-         return Flow_Id'(Kind    => Direct_Mapping,
-                         Variant => F.Variant,
-                         Node    => F.Node,
-                         Facet   => F.Facet);
-      end if;
-
       --  If this is normal record component, then remove the last component
       --  (possibly returning the entire object).
 
