@@ -5,12 +5,12 @@ p.adb:2:08: info: data dependencies proved
 p.adb:5:11: info: data dependencies proved
 p.adb:6:35: low: unused global "Low"
 p.adb:6:40: low: unused global "High"
-p.adb:12:12: medium: predicate check might fail
+p.adb:12:12: medium: predicate check might fail, cannot prove T in Low .. High
 p.adb:16:11: info: data dependencies proved
-p.adb:21:16: medium: predicate check might fail
+p.adb:21:16: medium: predicate check might fail, cannot prove T in Low .. High
 wrapper.adb:1:46: info: data dependencies proved
 wrapper.adb:3:25: info: data dependencies proved
 wrapper.adb:3:49: low: unused global "Low"
 wrapper.adb:3:54: low: unused global "High"
 wrapper.adb:5:58: info: data dependencies proved
-wrapper.adb:6:26: medium: predicate check might fail
+wrapper.adb:6:26: medium: predicate check might fail, cannot prove T in Low .. High

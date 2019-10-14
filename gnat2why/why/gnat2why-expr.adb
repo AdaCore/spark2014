@@ -4839,12 +4839,17 @@ package body Gnat2Why.Expr is
             then
                return New_Predicate_Call (Pred_Type, Expr, Params);
             else
-               return
-                 +Dynamic_Predicate_Expression
-                 (Expr      => +Expr,
-                  Pred_Subp => Predicate_Function (Pred_Type),
-                  Domain    => EW_Pred,
-                  Params    => Params);
+               declare
+                  My_Params : Transformation_Params := Params;
+               begin
+                  My_Params.Gen_Marker := GM_Node_Only;
+                  return
+                    +Dynamic_Predicate_Expression
+                    (Expr      => +Expr,
+                     Pred_Subp => Predicate_Function (Pred_Type),
+                     Domain    => EW_Pred,
+                     Params    => My_Params);
+               end;
             end if;
          end;
       else

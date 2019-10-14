@@ -40,22 +40,22 @@ formals.adb:89:07: info: predicate check proved (CVC4: 1 VC)
 formals.adb:90:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:91:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:92:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:92:07: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 91 should mention A (for argument Z) in a postcondition]
+formals.adb:92:07: medium: predicate check might fail, cannot prove Constr_Int /= 0 (e.g. when Z = 0) [possible explanation: call at line 91 should mention A (for argument Z) in a postcondition]
 formals.adb:93:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:94:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:94:19: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 93 should mention A (for argument Z) in a postcondition]
+formals.adb:94:19: medium: predicate check might fail, cannot prove Constr_Int /= 0 (e.g. when Z = 0) [possible explanation: call at line 93 should mention A (for argument Z) in a postcondition]
 formals.adb:95:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:96:16: medium: predicate check might fail [possible explanation: call at line 95 should mention A (for argument W) in a postcondition]
 formals.adb:97:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:98:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:98:21: medium: predicate check might fail (e.g. when Z = 0) [possible explanation: call at line 97 should mention A (for argument Z) in a postcondition]
+formals.adb:98:21: medium: predicate check might fail, cannot prove Constr_Int_2 /= 0 (e.g. when Z = 0) [possible explanation: call at line 97 should mention A (for argument Z) in a postcondition]
 formals.adb:99:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:100:16: medium: predicate check might fail [possible explanation: call at line 99 should mention A (for argument V) in a postcondition]
 formals.adb:101:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:102:04: info: precondition proved (Trivial: 1 VC)
-formals.adb:102:08: medium: predicate check might fail [possible explanation: call at line 101 should mention A (for argument W) in a postcondition]
+formals.adb:102:08: medium: predicate check might fail, cannot prove Constr_Int /= 0 [possible explanation: call at line 101 should mention A (for argument W) in a postcondition]
 formals.adb:103:04: info: precondition proved (Trivial: 1 VC)
 formals.adb:103:07: info: predicate check proved (CVC4: 1 VC)
 formals.adb:104:04: info: precondition proved (Trivial: 1 VC)
@@ -154,7 +154,7 @@ formals_arr_split_pred.adb:40:19: medium: predicate check might fail (e.g. when 
 formals_arr_split_pred.adb:41:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:41:07: info: predicate check proved (CVC4: 3 VC)
 formals_arr_split_pred.adb:42:04: info: precondition proved (Trivial: 1 VC)
-formals_arr_split_pred.adb:42:08: medium: predicate check might fail (e.g. when Y = (others => 0) and Y'Last = 10) [possible explanation: call at line 41 should mention A (for argument Y) in a postcondition]
+formals_arr_split_pred.adb:42:08: medium: predicate check might fail, cannot prove Constr_Arr (3) /= 0 (e.g. when Y = (others => 0) and Y'Last = 10) [possible explanation: call at line 41 should mention A (for argument Y) in a postcondition]
 formals_arr_split_pred.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_arr_split_pred.adb:43:07: info: predicate check proved (CVC4: 3 VC)
 formals_arr_split_pred.adb:44:04: info: precondition proved (Trivial: 1 VC)
@@ -250,10 +250,10 @@ formals_rec_split_pred.adb:77:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:77:08: medium: predicate check might fail (e.g. when Y = (D => ?, F => 1, G => 1, H => 0)) [possible explanation: call at line 76 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:78:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:79:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:79:13: medium: predicate check might fail [possible explanation: call at line 78 should mention A (for argument Y) in a postcondition]
+formals_rec_split_pred.adb:79:13: medium: predicate check might fail, cannot prove Constr_Rec.H /= 0 [possible explanation: call at line 78 should mention A (for argument Y) in a postcondition]
 formals_rec_split_pred.adb:80:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:81:04: info: precondition proved (Trivial: 1 VC)
-formals_rec_split_pred.adb:81:13: medium: predicate check might fail [possible explanation: call at line 80 should mention A (for argument U) in a postcondition]
+formals_rec_split_pred.adb:81:13: medium: predicate check might fail, cannot prove Constr_Rec.H /= 0 [possible explanation: call at line 80 should mention A (for argument U) in a postcondition]
 formals_rec_split_pred.adb:82:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:84:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split_pred.adb:86:04: info: precondition proved (Trivial: 1 VC)

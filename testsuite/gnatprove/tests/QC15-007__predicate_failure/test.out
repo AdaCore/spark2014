@@ -1,4 +1,4 @@
 predicate_failure.adb:3:53: info: division check proved (CVC4: 1 VC)
 predicate_failure.adb:6:53: info: division check proved (CVC4: 1 VC)
-predicate_failure.adb:9:27: medium: predicate check might fail
+predicate_failure.adb:9:27: medium: predicate check might fail, cannot prove Even1 mod 2 = 0
 predicate_failure.adb:10:27: info: predicate check proved (CVC4: 1 VC)

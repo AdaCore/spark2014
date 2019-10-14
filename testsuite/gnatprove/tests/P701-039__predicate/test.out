@@ -1,1 +1,1 @@
-a.ads:5:27: medium: predicate check might fail
+a.ads:5:27: medium: predicate check might fail, cannot prove Pred in 1 .. 5

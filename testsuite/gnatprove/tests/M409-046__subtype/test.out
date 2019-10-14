@@ -1,12 +1,12 @@
-main.adb:6:14: medium: predicate check might fail (e.g. when V = 12)
+main.adb:6:14: medium: predicate check might fail, cannot prove Positive_With_Hole < 10 or Positive_With_Hole > 20 (e.g. when V = 12)
 tests.adb:5:22: info: assertion proved (CVC4: 1 VC)
 tests.adb:6:12: medium: predicate check might fail
 tests.adb:11:22: info: assertion proved (CVC4: 1 VC)
-tests.adb:12:12: medium: predicate check might fail
+tests.adb:12:12: medium: predicate check might fail, cannot prove Positive_But_Not_Ten /= 10
 tests.adb:17:22: info: assertion proved (CVC4: 1 VC)
-tests.adb:18:12: medium: predicate check might fail
+tests.adb:18:12: medium: predicate check might fail, cannot prove Positive_With_Hole < 10 or Positive_With_Hole > 20
 tests.adb:23:22: info: assertion proved (CVC4: 1 VC)
-tests.adb:24:12: medium: predicate check might fail
+tests.adb:24:12: medium: predicate check might fail, cannot prove Positive_Not_One > 1
 tests.adb:27:04: warning: analyzing unreferenced procedure "Mem_Vowels"
 tests.adb:30:15: info: predicate check proved (CVC4: 1 VC)
 tests.adb:34:04: warning: analyzing unreferenced procedure "Mem_Positive_But_Not_Ten"
