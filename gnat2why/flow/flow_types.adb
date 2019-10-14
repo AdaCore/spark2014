@@ -399,10 +399,7 @@ package body Flow_Types is
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
 
             begin
-               return (Ekind (E) in E_Abstract_State
-                                  | E_Protected_Type
-                                  | E_Task_Type
-                                  | Object_Kind
+               return (Ekind (E) in E_Abstract_State | Object_Kind
                        and then Has_Volatile (E))
                  or else
                    (Ekind (E) in E_Task_Type | E_Protected_Type
@@ -432,10 +429,7 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State
-                                  | E_Protected_Type
-                                  | E_Task_Type
-                                  | Object_Kind
+               return (Ekind (E) in E_Abstract_State | Object_Kind
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Async_Readers))
                    or else
@@ -464,10 +458,7 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State
-                                  | E_Protected_Type
-                                  | E_Task_Type
-                                  | Object_Kind
+               return (Ekind (E) in E_Abstract_State | Object_Kind
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Async_Writers))
                    or else
@@ -496,10 +487,7 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State
-                                  | E_Protected_Type
-                                  | E_Task_Type
-                                  | Object_Kind
+               return (Ekind (E) in E_Abstract_State | Object_Kind
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Effective_Reads))
                    or else
@@ -529,10 +517,7 @@ package body Flow_Types is
             declare
                E : constant Entity_Id := Get_Direct_Mapping_Id (F);
             begin
-               return (Ekind (E) in E_Abstract_State
-                                  | E_Protected_Type
-                                  | E_Task_Type
-                                  | Object_Kind
+               return (Ekind (E) in E_Abstract_State | Object_Kind
                  and then Has_Volatile (E)
                  and then Has_Volatile_Property (E, Pragma_Effective_Writes))
                    or else
