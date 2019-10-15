@@ -1168,57 +1168,40 @@ package body Flow_Refinement is
 
       Decl_Id : constant Entity_Id := Defining_Entity
         (Find_Related_Declaration_Or_Body (N));
-      --  Declaration of the entity to which the parsed pragma is attached
+      --  Declaration of the entity to which the pragma N is attached
 
       Spec_Id : constant Entity_Id :=
         (if Is_Single_Task_Object (Decl_Id)
          then Etype (Decl_Id)
          else Decl_Id);
-      --  If this is a single task object, get the corresponding task type
+      --  If this is a single task object, then get the corresponding task type
 
       Globals : constant Raw_Global_Nodes :=
         (case Get_Pragma_Id (N) is
             when Pragma_Depends => Parse_Depends_Contract (Spec_Id, N),
             when Pragma_Global  => Parse_Global_Contract (Spec_Id, N),
             when others         => raise Program_Error);
-      --  The Global Ins, Proof_Ins and Outputs of E
+      --  Globals of Spec_Id, taken either from the Depends or Global contract
 
-      function At_Most_One_Constituent (E : Entity_Id) return Boolean
-      is (Down_Project (E, Scope).Length <= 1)
-      with Pre => State_Refinement_Is_Visible (E, Scope);
-      --  Checks if the refinement of abstract state E has at most one
-      --  constituent.
+      function Has_Ambiguous_Refinement (E : Entity_Id) return Boolean is
+        (Ekind (E) = E_Abstract_State
+         and then State_Refinement_Is_Visible (E, Scope)
+         and then Down_Project (E, Scope).Length > 1);
+      --  Returns True iff refinement of E is ambiguous, i.e. it is an abstract
+      --  state with more than one constituent.
+
+   --  Start of processing for Mentions_State_With_Ambiguous_Refinement
 
    begin
-      --  In the case of either Global Inputs or Proof_Ins, if all of the
-      --  abstract states have just one constituent, we know what the
-      --  Refined_Global needs to be, thus it is unique (not ambiguous). If
-      --  they have zero constituents, then this is a null refinement and thus
-      --  it is also unique (not ambiguous).
+      --  Detect global inputs or proof_ins with ambiguous refinement; global
+      --  outputs always have all of their constituents in the refinement.
 
-      for Input of Globals.Inputs loop
-         if Ekind (Input) = E_Abstract_State
-           and then State_Refinement_Is_Visible (Input, Scope)
-           and then not At_Most_One_Constituent (Input) --  ambiguous
-         then
-            return True; --  thus we can return early. Otherwise keep checking
-         end if;
-      end loop;
-
-      for Proof_In of Globals.Proof_Ins loop
-         if Ekind (Proof_In) = E_Abstract_State
-           and then State_Refinement_Is_Visible (Proof_In, Scope)
-           and then not At_Most_One_Constituent (Proof_In) --  ambiguous
-         then
-            return True; --  thus we can return early. Otherwise keep checking
-         end if;
-      end loop;
-
-      --  In the case of Global Outputs, if we have gotten this far then all
-      --  the abstract states appear as a Global Output, and we know what the
-      --  Refined_Global needs to be - thus it is unique (not ambiguous).
-
-      return False;
+      return
+        (for some Input of Globals.Inputs =>
+           Has_Ambiguous_Refinement (Input))
+          or else
+        (for some Proof_In of Globals.Proof_Ins =>
+           Has_Ambiguous_Refinement (Proof_In));
 
    end Mentions_State_With_Ambiguous_Refinement;
 
