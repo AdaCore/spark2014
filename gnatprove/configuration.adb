@@ -1544,6 +1544,10 @@ package body Configuration is
 
          if CL_Switches.Memlimit = 0 then
             null;
+         elsif CL_Switches.Memlimit < 0 then
+            Abort_Msg ("error: wrong argument for --memlimit, " &
+                         "must be a non-negative integer",
+                       With_Help => False);
          else
             FS.Memlimit := CL_Switches.Memlimit;
          end if;
