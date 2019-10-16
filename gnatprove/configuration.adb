@@ -1524,7 +1524,8 @@ package body Configuration is
 
          --  If option --timeout was not provided, keep timeout corresponding
          --  to level switch/default value. Otherwise, take the user-provided
-         --  timeout.
+         --  timeout. To be able to detect if --timeout was provided,
+         --  CL_Switches.Timeout is string-based.
 
          if CL_Switches.Timeout.all = "" then
             null;
