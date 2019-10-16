@@ -62,6 +62,13 @@ package body Flow.Analysis is
    use type Flow_Graphs.Vertex_Id;
    use type Flow_Id_Sets.Set;
 
+   function Defines_Async_Reader_Var
+     (FA : Flow_Analysis_Graphs;
+      V  : Flow_Graphs.Vertex_Id)
+      return Boolean;
+   --  Returns True if vertex V defines some variable that has property
+   --  Async_Readers set.
+
    function Dependency_Path (FA      : Flow_Analysis_Graphs;
                              Inputs  : Flow_Id_Sets.Set;
                              Outputs : Flow_Id_Sets.Set)
@@ -139,6 +146,18 @@ package body Flow.Analysis is
         (for some V of FA.CFG.Get_Collection (FA.End_Vertex,
                                               Flow_Graphs.Out_Neighbours)
          => FA.Atr (V).Is_Export));
+
+   ------------------------------
+   -- Defines_Async_Reader_Var --
+   ------------------------------
+
+   function Defines_Async_Reader_Var
+     (FA : Flow_Analysis_Graphs;
+      V  : Flow_Graphs.Vertex_Id)
+      return Boolean
+   is
+     (for some Var_Def of FA.Atr (V).Variables_Defined =>
+        Has_Async_Readers (Var_Def));
 
    ---------------------
    -- Dependency_Path --
@@ -1193,7 +1212,9 @@ package body Flow.Analysis is
                                       and then
                                     Is_Dummy_Call
                                       (Get_Direct_Mapping_Id (Key),
-                                       FA.B_Scope)),
+                                       FA.B_Scope))
+                                     or else
+                                   Defines_Async_Reader_Var (FA, V),
                when others      => False);
       end Is_Final_Use;
 
@@ -1785,12 +1806,6 @@ package body Flow.Analysis is
 
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
 
-      function Defines_Async_Reader_Var
-        (V : Flow_Graphs.Vertex_Id)
-         return Boolean;
-      --  Returns True if vertex V defines some variable that has property
-      --  Async_Readers set.
-
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
          return Vertex_Sets.Set;
@@ -1836,17 +1851,6 @@ package body Flow.Analysis is
       --  actual object.
       --  ??? this routine actually skips only checked conversion; to have what
       --  this comment says we can reuse Sem_Util.Unqual_Conv.
-
-      ------------------------------
-      -- Defines_Async_Reader_Var --
-      ------------------------------
-
-      function Defines_Async_Reader_Var
-        (V : Flow_Graphs.Vertex_Id)
-         return Boolean
-      is
-        (for some Var_Def of FA.Atr (V).Variables_Defined =>
-           Has_Async_Readers (Var_Def));
 
       -----------------------
       -- Find_Masking_Code --
@@ -1975,7 +1979,9 @@ package body Flow.Analysis is
                                       and then
                                     Is_Dummy_Call
                                       (Get_Direct_Mapping_Id (Key),
-                                       FA.B_Scope)),
+                                       FA.B_Scope))
+                                     or else
+                                   Defines_Async_Reader_Var (FA, V),
                when others      => False);
       end Is_Final_Use_Any_Export;
 
@@ -2102,7 +2108,7 @@ package body Flow.Analysis is
 
                  --  Suppression for vertices that define a variable that has
                  --  Async_Readers set.
-                 not Defines_Async_Reader_Var (V) and then
+                 not Defines_Async_Reader_Var (FA, V) and then
 
                  --  Suppression for elaboration of nested packages
                  not Is_Package_Elaboration (V) and then

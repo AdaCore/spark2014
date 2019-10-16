@@ -1,9 +1,6 @@
-pack.adb:15:07: warning: statement has no effect
-pack.adb:21:07: warning: statement has no effect
 pack.ads:5:14: info: initialization of "V" constituent of "Var" proved
 pack.ads:6:06: info: data dependencies proved
 pack.ads:8:14: info: initialization of "V" constituent of "Var" proved
 pack.ads:9:06: info: data dependencies proved
 pack.ads:11:14: info: initialization of "V" constituent of "Var" proved
 pack.ads:12:06: info: data dependencies proved
-user.adb:5:04: warning: statement has no effect
