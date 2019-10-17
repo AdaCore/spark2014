@@ -2155,7 +2155,12 @@ package body Flow_Utility is
       --  calling this.
 
       function Merge_Entity (E : Entity_Id) return Flow_Id_Sets.Set
-      with Pre => Nkind (E) in N_Entity;
+      with Pre => Ekind (E) in E_Constant
+                             | E_Loop_Parameter
+                             | E_Variable
+                             | Formal_Kind
+                    or else
+                  Is_Concurrent_Component_Or_Discr (E);
       --  Return a set that can be merged into Variables, as above
 
       function Recurse (N                   : Node_Id;
