@@ -2656,7 +2656,18 @@ package body Gnat2Why.Borrow_Checker is
                     or else
                       not Has_Pledge_Annotation (Get_Called_Entity (Call)))
                loop
-                  Call := Parent (Call);
+                  --  If the entity is under an Old or 'Loop_Entry attribute,
+                  --  it will not be quantified in the pledge expression, so
+                  --  reading it is not allowed.
+
+                  if Nkind (Call) = N_Attribute_Reference
+                    and then Get_Attribute_Id (Attribute_Name (Call)) in
+                      Attribute_Loop_Entry | Attribute_Old
+                  then
+                     Call := Empty;
+                  else
+                     Call := Parent (Call);
+                  end if;
                end loop;
 
                if Present (Call)
