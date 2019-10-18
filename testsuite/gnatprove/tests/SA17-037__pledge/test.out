@@ -1,0 +1,5 @@
+test_list.adb:10:21: warning: unused variable "X"
+test_list.adb:15:13: medium: subprogram "Length" might not terminate, terminating annotation could be incorrect
+test_list.adb:28:23: warning: statement has no effect
+test_list.adb:30:52: object was borrowed at line 24
+gnatprove: error during flow analysis and proof
