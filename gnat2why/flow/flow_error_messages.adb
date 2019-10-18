@@ -2187,6 +2187,12 @@ package body Flow_Error_Messages is
                      end;
                      Append_Quote;
                      Append (R, Flow_Id_To_String (F));
+                  elsif Nkind (Get_Direct_Mapping_Id (F)) =
+                     N_Defining_Operator_Symbol
+                  then
+                     Append (R, "overriding operator ");
+                     Append_Quote;
+                     Append (R, Flow_Id_To_String (F));
                   elsif Is_Constituent (F) then
                      declare
                         Constituent_Id : constant Entity_Id :=

@@ -785,6 +785,11 @@ package body Flow_Types is
       --  single dot and converting strings to mixed case, e.g. "pkg__a_state"
       --  will become "Pkg.A_State".
 
+      function Get_Operator_Symbol (N : Node_Id) return String
+         with Pre => Is_Operator_Symbol_Name (Chars (N));
+      --  Lookup function (based on the contents of the Snames package) to
+      --  convert "operator symbol" to a user-meaningful operator.
+
       ------------------------
       -- Get_Unmangled_Name --
       ------------------------
@@ -881,6 +886,35 @@ package body Flow_Types is
          return Pretty (1 .. Last);
       end Pretty_Print;
 
+      -------------------------
+      -- Get_Operator_Symbol --
+      -------------------------
+      function Get_Operator_Symbol (N : Node_Id) return String is
+         subtype Operator_Name_Id is Name_Id range
+            First_Operator_Name .. Last_Operator_Name;
+      begin
+         return (case Operator_Name_Id'(Chars (N)) is
+                    when Name_Op_Abs      => "abs",
+                    when Name_Op_And      => "and",
+                    when Name_Op_Mod      => "mod",
+                    when Name_Op_Not      => "not",
+                    when Name_Op_Or       => "or",
+                    when Name_Op_Rem      => "rem",
+                    when Name_Op_Xor      => "xor",
+                    when Name_Op_Eq       => "=",
+                    when Name_Op_Ne       => "/=",
+                    when Name_Op_Lt       => "<",
+                    when Name_Op_Le       => "<=",
+                    when Name_Op_Gt       => ">",
+                    when Name_Op_Ge       => ">=",
+                    when Name_Op_Add      => "+",
+                    when Name_Op_Subtract => "-",
+                    when Name_Op_Concat   => "&",
+                    when Name_Op_Multiply => "*",
+                    when Name_Op_Divide   => "/",
+                    when Name_Op_Expon    => "**");
+      end Get_Operator_Symbol;
+
       R : Unbounded_String := Null_Unbounded_String;
 
    --  Start of processing Flow_Id_To_String
@@ -911,7 +945,14 @@ package body Flow_Types is
             Append (R, "null");
 
          when Direct_Mapping =>
-            Append (R, Get_Unmangled_Name (F.Node));
+            if Nkind (Get_Direct_Mapping_Id (F)) in N_Entity
+               and then Ekind (Get_Direct_Mapping_Id (F)) = E_Function
+               and then Is_Operator_Symbol_Name (Chars (F.Node))
+            then
+               Append (R, Get_Operator_Symbol (F.Node));
+            else
+               Append (R, Get_Unmangled_Name (F.Node));
+            end if;
 
          when Record_Field =>
             --  For parts of concurrent units return their name as for
