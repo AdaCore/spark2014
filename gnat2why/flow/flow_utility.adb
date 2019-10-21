@@ -478,10 +478,10 @@ package body Flow_Utility is
 
          else
             declare
-               T : Entity_Id;
+               T : Entity_Id := Get_Type (F, Scope);
                --  Type of F
 
-               Classwide : Boolean;
+               Classwide : constant Boolean := Is_Class_Wide_Type (T);
                --  True iff F has a classwide type
 
                Results : Flow_Id_Sets.Set;
@@ -545,8 +545,6 @@ package body Flow_Utility is
                   Indent;
                end if;
 
-               T         := Get_Type (F, Scope);
-               Classwide := Is_Class_Wide_Type (T);
                while Is_Class_Wide_Type (T) loop
                   T := Get_Type (Etype (T), Scope);
                end loop;
@@ -572,7 +570,7 @@ package body Flow_Utility is
                  and then not Full_View_Not_In_SPARK (T)
                then
                   declare
-                     Root : Node_Id := T;
+                     Root : Entity_Id := T;
 
                   begin
                      while (Is_Derived_Type (Root) or else Is_Itype (Root))
