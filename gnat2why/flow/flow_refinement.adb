@@ -1166,7 +1166,7 @@ package body Flow_Refinement is
       return Boolean
    is
 
-      Decl_Id : constant Entity_Id := Defining_Entity
+      Decl_Id : constant Entity_Id := Unique_Defining_Entity
         (Find_Related_Declaration_Or_Body (N));
       --  Declaration of the entity to which the pragma N is attached
 
