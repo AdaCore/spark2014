@@ -321,28 +321,32 @@ package body Flow_Utility is
         or else Has_Discriminants (E)
       then
          declare
-            function Up (E : Entity_Id) return Entity_Id with Pure_Function;
-            --  Get parent type, but don't consider record subtypes' ancestors
+            function Ancestor (Typ : Entity_Id) return Entity_Id
+            with Pre  => Is_Type (Typ),
+                 Post => (if Present (Ancestor'Result)
+                          then Is_Type (Ancestor'Result));
+            --  Helper function to iterate over a type ancestors. If Typ is a
+            --  subtype, then skip the immediate ancestor. If no more ancestors
+            --  are present, then return Empty.
 
-            --------
-            -- Up --
-            --------
+            --------------
+            -- Ancestor --
+            --------------
 
-            function Up (E : Entity_Id) return Entity_Id is
-               A : constant Entity_Id := Etype (E);
-               B : Entity_Id;
+            function Ancestor (Typ : Entity_Id) return Entity_Id is
+               Parent_Typ : constant Entity_Id := Etype (Typ);
             begin
-               if Ekind (E) = E_Record_Subtype then
-                  B := Up (A);
-                  if A /= B then
-                     return B;
-                  else
-                     return E;
-                  end if;
+               if Ekind (Typ) = E_Record_Subtype then
+                  return Ancestor (Parent_Typ);
                else
-                  return A;
+                  if Parent_Typ = Typ then
+                     return Empty;
+                  else
+                     pragma Assert (Present (Parent_Typ));
+                     return Parent_Typ;
+                  end if;
                end if;
-            end Up;
+            end Ancestor;
 
             --  Local variables
 
@@ -371,8 +375,9 @@ package body Flow_Utility is
                   end;
                   Next_Component_Or_Discriminant (Ptr);
                end loop;
-               exit when Up (T) = T;
-               T := Up (T);
+
+               T := Ancestor (T);
+               exit when No (T);
             end loop;
 
             return L;
