@@ -1,4 +1,7 @@
-blocking_true.ads:1:52: info: postcondition proved (CVC4: 1 VC)
+blocking_true.ads:1:10: function with output global "Task_Identification.Tasking_State" is not allowed in SPARK
 dic.adb:5:10: high: call to potentially blocking subprogram "Blocking_True" in protected operation "Dummy"
 dic.adb:5:10: warning: initialization of "X" has no effect
-dic.adb:5:19: info: predicate check proved (CVC4: 1 VC)
+dic.ads:5:40: side effects of function "Blocking_True" are not modeled in SPARK
+dic.ads:8:17: warning: "ada.task_identification.tasking_state" is not modified, could be INPUT
+dic.ads:14:09: predicate cannot depend on variable input "ada.task_identification.tasking_state" (SPARK RM 4.4(2))
+gnatprove: error during flow analysis and proof
