@@ -453,7 +453,7 @@
   <proof prover="1"><result status="valid" steps="20"/></proof>
   </goal>
   <goal name="def&#39;VC.130" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="196404"/></proof>
+  <proof prover="0"><result status="valid" steps="127611"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.131" expl="precondition" proved="true">

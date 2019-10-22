@@ -20,16 +20,15 @@ traverse_list.adb:39:21: info: pointer dereference check proved (CVC4: 1 VC)
 traverse_list.adb:44:08: info: pointer dereference check proved (Z3: 1 VC)
 traverse_list.adb:47:19: info: assertion proved (CVC4: 1 VC)
 traverse_list.adb:47:20: info: pointer dereference check proved (CVC4: 1 VC)
-traverse_list.adb:48:19: info: assertion proved (Z3: 1 VC)
+traverse_list.adb:48:19: medium: assertion might fail, cannot prove X.Next.Val = 2
 traverse_list.adb:48:20: info: pointer dereference check proved (CVC4: 1 VC)
-traverse_list.adb:48:25: info: pointer dereference check proved (Z3: 1 VC)
-traverse_list.adb:49:19: info: assertion proved (Z3: 1 VC)
+traverse_list.adb:48:25: medium: pointer dereference check might fail
+traverse_list.adb:49:19: medium: assertion might fail, cannot prove X.Next.Next.Val = 42
 traverse_list.adb:49:20: info: pointer dereference check proved (CVC4: 1 VC)
-traverse_list.adb:49:25: info: pointer dereference check proved (Z3: 1 VC)
-traverse_list.adb:49:30: info: pointer dereference check proved (Z3: 1 VC)
-traverse_list.adb:50:19: info: assertion proved (Z3: 1 VC)
+traverse_list.adb:49:25: medium: pointer dereference check might fail
+traverse_list.adb:49:30: medium: pointer dereference check might fail
+traverse_list.adb:50:19: medium: assertion might fail, cannot prove X.Next.Next.Next.Val = 4
 traverse_list.adb:50:20: info: pointer dereference check proved (CVC4: 1 VC)
-traverse_list.adb:50:25: info: pointer dereference check proved (Z3: 1 VC)
-traverse_list.adb:50:30: info: pointer dereference check proved (Z3: 1 VC)
-traverse_list.adb:50:35: info: pointer dereference check proved (Z3: 1 VC)
-
+traverse_list.adb:50:25: medium: pointer dereference check might fail
+traverse_list.adb:50:30: medium: pointer dereference check might fail
+traverse_list.adb:50:35: medium: pointer dereference check might fail

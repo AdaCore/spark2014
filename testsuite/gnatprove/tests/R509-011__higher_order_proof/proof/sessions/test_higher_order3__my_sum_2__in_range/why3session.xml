@@ -95,11 +95,11 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.24" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9378398"/></proof>
+  <proof prover="0"><result status="valid" steps="5181407"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.25" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="223990269"/></proof>
+  <proof prover="0"><result status="valid" steps="3308926"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.26" expl="postcondition" proved="true">

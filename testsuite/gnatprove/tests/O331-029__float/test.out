@@ -255,11 +255,11 @@ sensfusion6_pack.adb:190:21: info: float overflow check proved (Interval), in ca
 sensfusion6_pack.adb:190:26: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:31: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:190:36: info: float overflow check proved (Interval), in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:191:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:191:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:191:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:192:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:192:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:192:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:193:21: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:193:21: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:193:34: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:197:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
@@ -326,13 +326,13 @@ sensfusion6_pack.adb:232:65: medium: float overflow check might fail, in call in
 sensfusion6_pack.adb:233:40: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:49: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:233:58: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:234:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:234:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:234:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:237:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:237:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:237:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:240:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:240:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:240:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
-sensfusion6_pack.adb:243:13: info: range check proved (Z3: 1 VC), in call inlined at sensfusion6_pack.adb:258
+sensfusion6_pack.adb:243:13: medium: range check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:243:30: medium: float overflow check might fail, in call inlined at sensfusion6_pack.adb:258
 sensfusion6_pack.adb:258:25: info: analyzing call to "Mahony_Update_Q" in context
 sensfusion6_pack.adb:279:07: info: initialization of "Grav_X" proved

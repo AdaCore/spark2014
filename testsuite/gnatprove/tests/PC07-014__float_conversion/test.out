@@ -10,10 +10,10 @@ simple_trajectory.adb:23:22: medium: assertion might fail, cannot prove New_Spee
 simple_trajectory.adb:23:45: info: float overflow check proved (CVC4: 1 VC)
 simple_trajectory.adb:24:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:25:22: medium: assertion might fail, cannot prove Old_Speed + 1.0 <= High_Bound(N) + 1.0 (e.g. when N = 0 and Old_Speed = 0.0)
-simple_trajectory.adb:25:32: info: float overflow check proved (Z3: 1 VC)
-simple_trajectory.adb:25:55: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:25:32: medium: float overflow check might fail
+simple_trajectory.adb:25:55: medium: float overflow check might fail
 simple_trajectory.adb:26:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N) + 1.0
-simple_trajectory.adb:26:49: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:26:49: medium: float overflow check might fail
 simple_trajectory.adb:28:22: medium: assertion might fail, cannot prove Float64(N) * 65.0 + 1.0 <= Float64(N+1) * 65.0 (e.g. when N = 0)
 simple_trajectory.adb:28:30: info: range check proved (Interval)
 simple_trajectory.adb:28:33: info: float overflow check proved (Interval)
@@ -26,13 +26,13 @@ simple_trajectory.adb:30:57: info: range check proved (CVC4: 1 VC)
 simple_trajectory.adb:31:22: medium: assertion might fail, cannot prove New_Speed <= High_Bound(N+1) (e.g. when N = 0 and New_Speed = 0.0)
 simple_trajectory.adb:31:47: info: range check proved (CVC4: 1 VC)
 simple_trajectory.adb:35:22: medium: assertion might fail, cannot prove New_Speed >= Old_Speed - 1.0 (e.g. when New_Speed = 0.0 and Old_Speed = 0.0)
-simple_trajectory.adb:35:45: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:35:45: medium: float overflow check might fail
 simple_trajectory.adb:36:22: info: assertion proved (Z3: 1 VC)
 simple_trajectory.adb:37:22: medium: assertion might fail, cannot prove Old_Speed - 1.0 >= Low_Bound(N) - 1.0 (e.g. when N = 0 and Old_Speed = 0.0)
 simple_trajectory.adb:37:32: medium: float overflow check might fail
-simple_trajectory.adb:37:54: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:37:54: medium: float overflow check might fail
 simple_trajectory.adb:38:22: medium: assertion might fail, cannot prove New_Speed >= Low_Bound(N) - 1.0 (e.g. when N = 0 and New_Speed = 0.0)
-simple_trajectory.adb:38:48: info: float overflow check proved (Z3: 1 VC)
+simple_trajectory.adb:38:48: medium: float overflow check might fail
 simple_trajectory.adb:40:22: medium: assertion might fail, cannot prove Float64(N) * (-65.0) - 1.0 >= Float64(N+1) * (-65.0) (e.g. when N = 0)
 simple_trajectory.adb:40:30: info: range check proved (Interval)
 simple_trajectory.adb:40:33: info: float overflow check proved (Interval)
