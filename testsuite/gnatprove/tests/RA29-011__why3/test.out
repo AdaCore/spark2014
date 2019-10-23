@@ -1,6 +1,6 @@
 enable_ide: no
 enable_zarith: yes
-enable_zip: no
+enable_zip: yes
 enable_coq_libs: no
 enable_coq_fp_libs: yes
 enable_pvs_libs: no
