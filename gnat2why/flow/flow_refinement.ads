@@ -171,7 +171,20 @@ package Flow_Refinement is
 
    procedure Up_Project (Vars           :     Global_Flow_Ids;
                          Projected_Vars : out Global_Flow_Ids;
-                         Scope          :     Flow_Scope);
+                         Scope          :     Flow_Scope)
+   with
+     Pre =>
+       (for all Var of Vars.Proof_Ins => Var.Variant = In_View)
+         and then
+       (for all Var of Vars.Inputs    => Var.Variant = In_View)
+         and then
+       (for all Var of Vars.Outputs   => Var.Variant = Out_View),
+     Post =>
+       (for all Var of Projected_Vars.Proof_Ins => Var.Variant = In_View)
+         and then
+       (for all Var of Projected_Vars.Inputs    => Var.Variant = In_View)
+         and then
+       (for all Var of Projected_Vars.Outputs   => Var.Variant = Out_View);
 
    procedure Up_Project (Deps           :     Dependency_Maps.Map;
                          Projected_Deps : out Dependency_Maps.Map;

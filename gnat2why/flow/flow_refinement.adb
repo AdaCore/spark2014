@@ -537,27 +537,158 @@ package body Flow_Refinement is
                          Projected_Vars : out Global_Flow_Ids;
                          Scope          : Flow_Scope)
    is
-      use type Flow_Id_Sets.Set;
+      --  ??? the following code for up-projecting generated Refined_Global
+      --  has much in common with code for up-projecting Refined_Depends;
+      --  they should be refactored.
 
-      Projected, Partial : Flow_Id_Sets.Set;
+      function Visible_View (F : Flow_Id) return Flow_Id
+      with Pre  => Present (F),
+           Post => Present (Visible_View'Result);
+      --  Return the most precise representation of F visible from Scope
+
+      procedure Add_Mapping (Item : Flow_Id)
+      with Pre => Item.Variant = Normal_Use;
+      --  Add mapping from Item to its most precise representation
+
+      Visible_Views  : Flow_Id_Sets.Set;
+      Projection_Map : Flow_Id_Surjection.Map;
+
+      Original : constant Global_Flow_Ids :=
+        (Proof_Ins => Change_Variant (Vars.Proof_Ins, Normal_Use),
+         Inputs    => Change_Variant (Vars.Inputs,    Normal_Use),
+         Outputs   => Change_Variant (Vars.Outputs,   Normal_Use));
+      --  Original contract with Normal_Use instead of In_View/Out_View
+      --  variants to simplify comparing proof_ins, inputs and outputs.
+
+      -----------------
+      -- Add_Mapping --
+      -----------------
+
+      procedure Add_Mapping (Item : Flow_Id) is
+         Repr : constant Flow_Id := Visible_View (Item);
+
+      begin
+         Projection_Map.Insert (Key      => Item,
+                                New_Item => Repr);
+
+         Visible_Views.Include (Repr);
+      end Add_Mapping;
+
+      ------------------
+      -- Visible_View --
+      ------------------
+
+      function Visible_View (F : Flow_Id) return Flow_Id is
+         Projected, Partial : Flow_Id_Sets.Set;
+
+      begin
+         if Is_Constituent (F) then
+            Up_Project (Flow_Id_Sets.To_Set (F), Scope, Projected, Partial);
+            pragma Assert (Partial.Length + Projected.Length = 1);
+
+            return (if Projected.Is_Empty
+                    then Partial (Partial.First)
+                    else Projected (Projected.First));
+         else
+            return F;
+         end if;
+      end Visible_View;
+
+   --  Start of processing of Up_Project
 
    begin
-      Up_Project (Vars.Inputs, Scope, Projected, Partial);
-      Projected_Vars.Inputs := Projected or Partial;
+      --  First, up-project all globals to their most precise representation
+      --  that is visible from Scope.
 
-      Up_Project (Vars.Outputs, Scope, Projected, Partial);
-      for State of Partial loop
-         if not Is_Fully_Contained (State, Vars.Outputs, Scope) then
-            Projected_Vars.Inputs.Include (Change_Variant (State, In_View));
+      for Item of Original.Proof_Ins loop
+         Add_Mapping (Item);
+      end loop;
+
+      for Item of Original.Inputs loop
+         Add_Mapping (Item);
+      end loop;
+
+      for Item of Original.Outputs loop
+         if not Original.Inputs.Contains (Item) then
+            Add_Mapping (Item);
          end if;
       end loop;
-      Projected_Vars.Outputs := Projected or Partial;
 
-      Up_Project (Vars.Proof_Ins, Scope, Projected, Partial);
-      Projected_Vars.Proof_Ins :=
-        (Projected or Partial) -
-        (Projected_Vars.Inputs or
-           Change_Variant (Projected_Vars.Outputs, In_View));
+      --  The most precise representation might violate SPARK RM 7.2.6(7), i.e.
+      --  we might get both a constituent and its encapsulating abstract state.
+      --  We climb the abstract state hierarchy and if we get an abstract
+      --  state that appears in the contract we subsitute the target with
+      --  that abstract state.
+
+      for Mapping in Projection_Map.Iterate loop
+         declare
+            Source : Flow_Id renames Flow_Id_Surjection.Key (Mapping);
+            Target : Flow_Id renames Projection_Map (Mapping);
+
+            pragma Unreferenced (Source);
+            --  This is for debug
+
+            Repr : Flow_Id := Target;
+
+         begin
+            while Is_Constituent (Repr) loop
+               Repr := Encapsulating_State (Repr);
+               if Present (Repr) then
+                  if Visible_Views.Contains (Repr) then
+                     Target := Repr;
+                  end if;
+               else
+                  exit;
+               end if;
+            end loop;
+         end;
+      end loop;
+
+      --  Inputs are straightforward to up-project
+
+      for Item of Original.Inputs loop
+         Projected_Vars.Inputs.Include (Projection_Map (Item));
+      end loop;
+
+      for Item of Original.Outputs loop
+         declare
+            Projected_Item : Flow_Id renames Projection_Map (Item);
+         begin
+            --  If a global output was up-projected to an abstract state and
+            --  this state is not fully written, then it must be added to
+            --  projected inputs.
+            if Item /= Projected_Item
+              and then not Is_Fully_Contained (Projected_Item,
+                                               Original.Outputs,
+                                               Scope)
+            then
+               Projected_Vars.Inputs.Include (Projected_Item);
+            end if;
+
+            Projected_Vars.Outputs.Include (Projected_Item);
+         end;
+      end loop;
+
+      for Item of Original.Proof_Ins loop
+         declare
+            Projected_Item : Flow_Id renames Projection_Map (Item);
+         begin
+            --  Projected proof_ins must not duplicate projected inputs and
+            --  outputs.
+            if not Projected_Vars.Inputs.Contains (Projected_Item)
+              and then not Projected_Vars.Outputs.Contains (Projected_Item)
+            then
+               Projected_Vars.Proof_Ins.Include (Projected_Item);
+            end if;
+         end;
+      end loop;
+
+      --  Finally, convert the results back to In_View/Out_View
+
+      Projected_Vars :=
+        (Proof_Ins => Change_Variant (Projected_Vars.Proof_Ins, In_View),
+         Inputs    => Change_Variant (Projected_Vars.Inputs,    In_View),
+         Outputs   => Change_Variant (Projected_Vars.Outputs,   Out_View));
    end Up_Project;
 
    procedure Up_Project (Deps           : Dependency_Maps.Map;
@@ -579,6 +710,7 @@ package body Flow_Refinement is
       function Visible_View (F : Flow_Id) return Flow_Id
       with Pre  => Present (F),
            Post => Present (Visible_View'Result);
+      --  Return the most precise representation of F visible from Scope
 
       ------------------
       -- Visible_View --
@@ -641,9 +773,9 @@ package body Flow_Refinement is
 
       --  The most precise representation might violate SPARK RM 7.2.6(7), i.e.
       --  we might get both a constituent and its encapsulating abstract state.
-      --  We climb the abstract state hierarchy and if get an abstract state
-      --  that appears in the contract we subsitute the target with that
-      --  abstract state.
+      --  We climb the abstract state hierarchy and if we get an abstract
+      --  state that appears in the contract we subsitute the target with
+      --  that abstract state.
 
       for Mapping in Projection_Map.Iterate loop
          declare

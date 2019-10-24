@@ -1,4 +1,4 @@
 test.ads:3:29: info: flow dependencies proved
 test.ads:10:41: info: data dependencies proved
 test.ads:19:15: info: postcondition proved (CVC4: 1 VC)
-test.ads:19:32: medium: "Test.State" must be a global Proof_In of "Clear"
+test.ads:19:32: info: data dependencies proved
