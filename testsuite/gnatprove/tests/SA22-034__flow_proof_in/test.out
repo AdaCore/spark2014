@@ -1,0 +1,1 @@
+test.ads:21:15: info: postcondition proved (CVC4: 1 VC), in instantiation at instance.ads:7
