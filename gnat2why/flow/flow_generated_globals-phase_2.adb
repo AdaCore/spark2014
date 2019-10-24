@@ -3718,12 +3718,8 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             while GG_Is_Constituent (Repr) loop
                Repr := GG_Encapsulating_State (Repr);
-               if True then --  ??? Present (Repr)
-                  if Visible_Views.Contains (Repr) then
-                     Target := Repr;
-                  end if;
-               else
-                  exit;
+               if Visible_Views.Contains (Repr) then
+                  Target := Repr;
                end if;
             end loop;
          end;

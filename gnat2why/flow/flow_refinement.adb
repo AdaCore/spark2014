@@ -606,12 +606,8 @@ package body Flow_Refinement is
          begin
             while Is_Constituent (Repr) loop
                Repr := Encapsulating_State (Repr);
-               if Present (Repr) then
-                  if Visible_Views.Contains (Repr) then
-                     Target := Repr;
-                  end if;
-               else
-                  exit;
+               if Visible_Views.Contains (Repr) then
+                  Target := Repr;
                end if;
             end loop;
          end;
@@ -758,12 +754,8 @@ package body Flow_Refinement is
          begin
             while Is_Constituent (Repr) loop
                Repr := Encapsulating_State (Repr);
-               if Present (Repr) then
-                  if Visible_Views.Contains (Repr) then
-                     Target := Repr;
-                  end if;
-               else
-                  exit;
+               if Visible_Views.Contains (Repr) then
+                  Target := Repr;
                end if;
             end loop;
          end;
@@ -915,12 +907,8 @@ package body Flow_Refinement is
          begin
             while Is_Constituent (Repr) loop
                Repr := Encapsulating_State (Repr);
-               if Present (Repr) then
-                  if Visible_Views.Contains (Repr) then
-                     Target := Repr;
-                  end if;
-               else
-                  exit;
+               if Visible_Views.Contains (Repr) then
+                  Target := Repr;
                end if;
             end loop;
          end;
