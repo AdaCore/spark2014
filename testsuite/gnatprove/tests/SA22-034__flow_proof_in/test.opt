@@ -1,1 +1,0 @@
-ALL XFAIL crash in flow due when up-projecting a part_of (SA22-034)
