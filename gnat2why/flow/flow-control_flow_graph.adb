@@ -339,16 +339,6 @@ package body Flow.Control_Flow_Graph is
    --  Vertices of this kind that lie within dead code will have to be
    --  unlinked at the end.
 
-   package Loop_Borrowers_Markers is new
-     Ada.Containers.Doubly_Linked_Lists (Ada.Containers.Count_Type);
-   --  To keep track of how many local borrowers exist when entering a loop, so
-   --  that we know how many of them need to be reclaimed by an EXIT statement.
-   --
-   --  Note: it would be much easier to keep track of cursors on the
-   --  stack of borrowers. However, this stack grows/shrinks as borrowers
-   --  appear/disappear and this would be tampering with cursors, should
-   --  cursors exist. Instead, we record the number of elements in the stack.
-
    type Context is record
       Current_Loops          : Node_Sets.Set;
       --  The set of loops currently processed. The innermost loop currently
@@ -370,9 +360,6 @@ package body Flow.Control_Flow_Graph is
 
       Borrowers              : Node_Lists.List;
       --  Stack of object declarations for local borrowers
-
-      Loop_Markers           : Loop_Borrowers_Markers.List;
-      --  Numbers of local borrowers in scope when entering nested loops
    end record;
 
    No_Context : constant Context :=
@@ -381,8 +368,7 @@ package body Flow.Control_Flow_Graph is
               Termination_Proved     => False,
               Entry_References       => Node_Graphs.Empty_Map,
               Folded_Function_Checks => Node_Lists.Empty_List,
-              Borrowers              => Node_Lists.Empty_List,
-              Loop_Markers           => Loop_Borrowers_Markers.Empty_List);
+              Borrowers              => Node_Lists.Empty_List);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -915,18 +901,6 @@ package body Flow.Control_Flow_Graph is
    --  This procedures creates the in and out vertices for a
    --  subprogram's globals. They are not connected to anything,
    --  instead the vertices are appended to Ins and Outs.
-
-   procedure Reclaim_Borrower
-     (Decl : Node_Id;
-      FA   : in out Flow_Analysis_Graphs;
-      Last : in out Flow_Graphs.Vertex_Id)
-   with Pre  => Nkind (Decl) = N_Object_Declaration
-                and then Last /= Flow_Graphs.Null_Vertex,
-        Post => Last /= Flow_Graphs.Null_Vertex;
-   --  Creates a vertex that assigns a local borrower back to the corresponding
-   --  borrowed object and links it up to Last. Then, Last is assigned with
-   --  the created vertex, so this procedure can be called again with another
-   --  borrower.
 
    function RHS_Split_Useful (N     : Node_Id;
                               Scope : Flow_Scope)
@@ -1889,14 +1863,6 @@ package body Flow.Control_Flow_Graph is
       L     : Node_Id := N;
       Funcs : Node_Sets.Set;
       Cond  : constant Node_Id := Condition (N);
-
-      Mark : Loop_Borrowers_Markers.Cursor := Ctx.Loop_Markers.Last;
-      --  Once we know which loop the EXIT statement refers to, it will point
-      --  to the number of local borrowers in scope of that loop.
-
-      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
-      --  Iterator for the borrowers reclaimed when exiting the loop
-
    begin
       --  Go up the tree until we find the loop we are exiting from
       if No (Name (N)) then
@@ -1909,13 +1875,8 @@ package body Flow.Control_Flow_Graph is
          --  We have a named loop, which we need to find
          loop
             L := Parent (L);
-            if Nkind (L) = N_Loop_Statement then
-               if Entity (Identifier (L)) = Entity (Name (N)) then
-                  exit;
-               else
-                  Loop_Borrowers_Markers.Previous (Mark);
-               end if;
-            end if;
+            exit when Nkind (L) = N_Loop_Statement and then
+              Entity (Identifier (L)) = Entity (Name (N));
          end loop;
       end if;
 
@@ -1955,15 +1916,6 @@ package body Flow.Control_Flow_Graph is
          CM.Insert (Union_Id (N),
                     Trivial_Connection (V));
       end if;
-
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for J in Ctx.Loop_Markers (Mark) + 1 .. Ctx.Borrowers.Length loop
-         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
-         Node_Lists.Previous (Top);
-      end loop;
 
       CM (Union_Id (L)).Standard_Exits.Insert (V);
    end Do_Exit_Statement;
@@ -2039,14 +1991,6 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       CM.Delete (Union_Id (Ret_Object_L));
-
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for Decl of reverse Ctx.Borrowers loop
-         Reclaim_Borrower (Decl, FA, Last => V);
-      end loop;
 
       --  We link the implicit return statement to the helper end vertex
       Linkup (FA, V, FA.Helper_End_Vertex);
@@ -3268,11 +3212,9 @@ package body Flow.Control_Flow_Graph is
          Outer_Loop : constant Entity_Id := Ctx.Active_Loop;
       begin
          --  We can't use 'Update here as we may modify Ctx
-         Ctx.Loop_Markers.Append (Ctx.Borrowers.Length);
          Ctx.Active_Loop := Loop_Id;
          Process_Statement_List (Statements (N), FA, CM, Ctx);
          Ctx.Active_Loop := Outer_Loop;
-         Ctx.Loop_Markers.Delete_Last;
       end;
 
       if No (I_Scheme) then
@@ -4825,16 +4767,8 @@ package body Flow.Control_Flow_Graph is
                   Graph_Connections'(Standard_Entry => V,
                                      Standard_Exits => Empty_Set));
 
-      --  When borrowers go out of scope, we pop them from the stack and
-      --  assign back to the borrowed objects. This way we keep track of
-      --  anything that happened while they were borrowed.
-
-      for Decl of reverse Ctx.Borrowers loop
-         Reclaim_Borrower (Decl, FA, Last => V);
-      end loop;
-
-      --  Instead we link the last vertex directly to the helper end vertex
-      Linkup (FA, From => V, To => FA.Helper_End_Vertex);
+      --  Instead we link this vertex directly to the helper end vertex
+      Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Simple_Return_Statement;
 
    ----------------------------
@@ -4873,38 +4807,6 @@ package body Flow.Control_Flow_Graph is
       end if;
 
       Join (FA, CM, L, Block);
-
-      --  When the subprogram or block exits early, e.g. with a RETURN or an
-      --  EXIT statement, then we just forget about the borrowed objects. They
-      --  have been already reclaimed when dealing with the exiting statement.
-
-      if Block.Standard_Exits.Is_Empty then
-         while Ctx.Borrowers.Length > Borrowers_Marker loop
-            Ctx.Borrowers.Delete_Last;
-         end loop;
-      else
-         declare
-            V : Flow_Graphs.Vertex_Id;
-            --  A dummy vertex which combines all the standard exits from
-            --  the Handled_Statement_Sequence and has just one exit, so that
-            --  the subsequence vertices which reclaim borrowers form just a
-            --  straight signle-entry -> single-exit sequence.
-
-         begin
-            Add_Vertex (FA,
-                        Null_Node_Attributes,
-                        V);
-
-            Linkup (FA, Block.Standard_Exits, V);
-
-            while Ctx.Borrowers.Length > Borrowers_Marker loop
-               Reclaim_Borrower (Ctx.Borrowers.Last_Element, FA, Last => V);
-               Ctx.Borrowers.Delete_Last;
-            end loop;
-
-            Block.Standard_Exits := Vertex_Sets.To_Set (V);
-         end;
-      end if;
 
       if Nkind (N) = N_Entry_Body then
          declare
@@ -4953,6 +4855,45 @@ package body Flow.Control_Flow_Graph is
             Block.Standard_Exits.Insert (V);
          end;
       end if;
+
+      --  When borrowers go out of scope, we pop them from the stack and assign
+      --  back to the borrowed objects. This way we keep track of anything that
+      --  happened while they were borrowed.
+
+      while Ctx.Borrowers.Length > Borrowers_Marker loop
+         declare
+            Decl : constant Node_Id := Ctx.Borrowers.Last_Element;
+            Expr : constant Node_Id := Expression (Decl);
+
+            Borrower : constant Flow_Id :=
+              Direct_Mapping_Id (Defining_Identifier (Decl));
+
+            Borrowed : constant Flow_Id :=
+              Path_To_Flow_Id (Get_Observed_Or_Borrowed_Expr (Expr));
+            --  The the borrowed object
+
+            V : Flow_Graphs.Vertex_Id;
+
+         begin
+            --  Add vertex for assigning the borrower back to the borrowed
+            --  object and connect it with the graph.
+
+            Add_Vertex
+              (FA,
+               Make_Basic_Attributes
+                 (Var_Def    => Flow_Id_Sets.To_Set (Borrowed),
+                  Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
+                  Loops      => Ctx.Current_Loops,
+                  Print_Hint => Pretty_Print_Borrow,
+                  E_Loc      => N),
+               V);
+
+            Linkup (FA, Block.Standard_Exits, V);
+            Block.Standard_Exits := Vertex_Sets.To_Set (V);
+
+            Ctx.Borrowers.Delete_Last;
+         end;
+      end loop;
 
       CM.Insert (Union_Id (N), Block);
    end Do_Subprogram_Or_Block;
@@ -5489,43 +5430,6 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (N)).Standard_Entry := L.First_Element;
       end if;
    end Process_Statement;
-
-   ----------------------
-   -- Reclaim_Borrower --
-   ----------------------
-
-   procedure Reclaim_Borrower
-     (Decl : Node_Id;
-      FA   : in out Flow_Analysis_Graphs;
-      Last : in out Flow_Graphs.Vertex_Id)
-   is
-      Borrower : constant Flow_Id :=
-        Direct_Mapping_Id (Defining_Identifier (Decl));
-
-      Borrowed : constant Flow_Id :=
-        Path_To_Flow_Id (Get_Observed_Or_Borrowed_Expr (Expression (Decl)));
-      --  The borrower and borrowed objects, respectively
-
-      V : Flow_Graphs.Vertex_Id;
-
-   begin
-      --  Add vertex for assigning the borrower back to the borrowed object and
-      --  connect it with the graph.
-
-      Add_Vertex
-        (FA,
-         Make_Basic_Attributes
-           (Var_Def    => Flow_Id_Sets.To_Set (Borrowed),
-            Var_Ex_Use => Flow_Id_Sets.To_Set (Borrower),
-            Loops      => Node_Sets.Empty_Set,  --  ??? not sure about this
-            Print_Hint => Pretty_Print_Borrow,
-            E_Loc      => Decl),
-         V);
-      FA.Atr (V).Is_Program_Node := False;
-
-      Linkup (FA, From => Last, To => V);
-      Last := V;
-   end Reclaim_Borrower;
 
    ----------------------
    -- RHS_Split_Useful --

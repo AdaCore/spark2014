@@ -31,6 +31,7 @@ early_exits.adb:42:25: info: division check proved (CVC4: 1 VC)
 early_exits.adb:44:13: info: null exclusion check proved (CVC4: 1 VC)
 early_exits.adb:46:18: info: pointer dereference check proved (CVC4: 1 VC)
 early_exits.adb:47:18: info: pointer dereference check proved (CVC4: 1 VC)
+early_exits.adb:47:22: warning: unused assignment
 early_exits.adb:51:12: info: pointer dereference check proved (CVC4: 1 VC)
 early_exits.adb:51:23: info: pointer dereference check proved (CVC4: 1 VC)
 early_exits.adb:52:15: info: pointer dereference check proved (CVC4: 1 VC)
