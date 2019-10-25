@@ -454,8 +454,8 @@ lsc-bignum.adb:576:53: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:577:19: medium: loop invariant might fail after first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
 lsc-bignum.adb:577:19: medium: loop invariant might fail in first iteration, cannot prove Math_Int.From_Word32 (W) * Math_Int.From_Word32 (2) ** (J - S - 1) = Num_Of_Big_Int (E, E_First, E_Last - E_First + 1) / Math_Int.From_Word32 (2) ** (Math_Int.From_Word64 (I) - (Math_Int.From_Integer (J) - Math_Int.From_Word32 (1))) mod Math_Int.From_Word3...
 lsc-bignum.adb:577:77: medium: overflow check might fail
-lsc-bignum.adb:577:81: medium: overflow check might fail
-lsc-bignum.adb:577:81: medium: range check might fail
+lsc-bignum.adb:577:81: info: overflow check proved (Z3: 2 VC)
+lsc-bignum.adb:577:81: info: range check proved (Z3: 2 VC)
 lsc-bignum.adb:578:54: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:578:64: info: overflow check proved (Z3: 2 VC)
 lsc-bignum.adb:578:64: info: range check proved (Z3: 2 VC)

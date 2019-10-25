@@ -1,56 +1,53 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <!DOCTYPE why3session PUBLIC "-//Why3//proof session v5//EN"
 "http://why3.lri.fr/why3session.dtd">
-<why3session shape_version="6">
+<why3session shape_version="8">
 <prover id="0" name="Z3" version="4.5.1-gnatprove" timelimit="10" steplimit="610000" memlimit="1000"/>
 <file proved="true">
-<path name=".."/>
-<path name=".."/>
-<path name=".."/>
-<path name="gnatprove"/>
+<path name=".."/><path name=".."/><path name=".."/><path name="gnatprove"/>
 <path name="use_vectors__my_vectors__formal_model__m__range_shifted.mlw"/>
 <theory name="Use_vectors__my_vectors__formal_model__m__range_shifted__subprogram_def" proved="true">
- <goal name="VC def" expl="VC for def" proved="true">
+ <goal name="def&#39;VC" expl="VC for def" proved="true">
  <transf name="split_goal_wp_conj" proved="true" >
-  <goal name="VC def.0" expl="precondition" proved="true">
+  <goal name="def&#39;VC.0" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.1" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="7699"/></proof>
+  <goal name="def&#39;VC.1" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="10732"/></proof>
   </goal>
-  <goal name="VC def.2" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="7798"/></proof>
+  <goal name="def&#39;VC.2" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="10908"/></proof>
   </goal>
-  <goal name="VC def.3" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8584"/></proof>
+  <goal name="def&#39;VC.3" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="11901"/></proof>
   </goal>
-  <goal name="VC def.4" expl="precondition" proved="true">
+  <goal name="def&#39;VC.4" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
-  <goal name="VC def.5" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8566"/></proof>
+  <goal name="def&#39;VC.5" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="12486"/></proof>
   </goal>
-  <goal name="VC def.6" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8692"/></proof>
+  <goal name="def&#39;VC.6" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="12642"/></proof>
   </goal>
-  <goal name="VC def.7" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9368"/></proof>
+  <goal name="def&#39;VC.7" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="13249"/></proof>
   </goal>
-  <goal name="VC def.8" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9388"/></proof>
+  <goal name="def&#39;VC.8" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="13551"/></proof>
   </goal>
-  <goal name="VC def.9" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9040"/></proof>
+  <goal name="def&#39;VC.9" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="13292"/></proof>
   </goal>
-  <goal name="VC def.10" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="2351"/></proof>
+  <goal name="def&#39;VC.10" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="1664"/></proof>
   </goal>
-  <goal name="VC def.11" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="9492"/></proof>
+  <goal name="def&#39;VC.11" expl="precondition" proved="true">
+  <proof prover="0"><result status="valid" steps="13842"/></proof>
   </goal>
-  <goal name="VC def.12" expl="postcondition" proved="true">
+  <goal name="def&#39;VC.12" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
