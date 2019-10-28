@@ -11146,49 +11146,69 @@ package body Gnat2Why.Expr is
             declare
                Ty_Ent : constant Entity_Id :=
                  Retysp (Etype (Var));
-               Dim    : constant Positive :=
-                 (if Present (Expressions (Expr)) then
-                     Positive (UI_To_Int (Intval (First (Expressions (Expr)))))
-                  else 1);
-               Typ    : constant W_Type_Id :=
-                 (if Domain = EW_Prog then EW_Int_Type
-                  else Base_Why_Type_No_Bool (Expected_Typ));
-               --  On prog domain, use EW_Int_Type so that potential range or
-               --  overflow checks can be applied.
             begin
 
                case Ekind (Ty_Ent) is
                   when Array_Kind =>
+                     declare
+                        Arr_Ty : constant Entity_Id :=
+                          (if Nkind (Var) in N_Identifier | N_Expanded_Name
+                           and then Is_Type (Entity (Var))
+                           then Entity (Var)
+                           else Etype (Var));
+                        Dim    : constant Positive :=
+                          (if Present (Expressions (Expr)) then
+                              Positive
+                             (UI_To_Int (Intval (First (Expressions (Expr)))))
+                           else 1);
+                        B_Exp  : constant W_Type_Id :=
+                          Base_Why_Type_No_Bool (Expected_Typ);
+                        B_Rng  : constant W_Type_Id :=
+                          Base_Why_Type_No_Bool (Nth_Index_Type (Arr_Ty, Dim));
+                        Typ    : constant W_Type_Id :=
+                          (if not Why_Type_Is_BitVector (B_Exp)
+                           or else not Why_Type_Is_BitVector (B_Rng)
+                           or else (BitVector_Type_Size (B_Rng) = Uint_64
+                             and then Domain = EW_Prog)
+                           then EW_Int_Type else EW_BitVector_64_Type);
+                        --  Typ is only used for the computation of 'Length.
+                        --  On 64 bv, in the program domain, use EW_Int_Type so
+                        --  that potential range or overflow checks can be
+                        --  applied. Do computation on bitvectors only if the
+                        --  array ranges over bitvectors as otherwise the
+                        --  conversion of 'First and 'Last to Typ may be
+                        --  incorrect.
 
-                     --  Array_Type'First/Last/Length
+                     begin
+                        --  Array_Type'First/Last/Length
 
-                     if Nkind (Var) in N_Identifier | N_Expanded_Name
-                       and then Is_Type (Entity (Var))
-                     then
-                        T := Get_Array_Attr (Domain => Domain,
-                                             Ty     => Entity (Var),
-                                             Attr   => Attr_Id,
-                                             Dim    => Dim,
-                                             Typ    => Typ);
+                        if Nkind (Var) in N_Identifier | N_Expanded_Name
+                          and then Is_Type (Entity (Var))
+                        then
+                           T := Get_Array_Attr (Domain => Domain,
+                                                Ty     => Entity (Var),
+                                                Attr   => Attr_Id,
+                                                Dim    => Dim,
+                                                Typ    => Typ);
 
-                     --  Object'First/Last/Length
+                        --  Object'First/Last/Length
 
-                     else
-                        declare
-                           Why_Expr : constant W_Expr_Id :=
-                             Transform_Expr
-                               (Var, Domain, Params, No_Init => True);
-                           --  Var does not need to be initialized
-                        begin
-                           T :=
-                             Get_Array_Attr
-                               (Domain, Why_Expr, Attr_Id, Dim, Typ => Typ);
-                           if Domain = EW_Prog then
-                              T :=
-                                +Sequence (New_Ignore (Prog => +Why_Expr), +T);
-                           end if;
-                        end;
-                     end if;
+                        else
+                           declare
+                              Why_Expr : constant W_Expr_Id :=
+                                Transform_Expr
+                                  (Var, Domain, Params, No_Init => True);
+                              --  Var does not need to be initialized
+                           begin
+                              T := Get_Array_Attr
+                                (Domain, Why_Expr, Attr_Id, Dim, Typ => Typ);
+                              if Domain = EW_Prog then
+                                 T := +Sequence
+                                   (New_Ignore (Prog => +Why_Expr), +T);
+                              end if;
+                           end;
+                        end if;
+                     end;
 
                   when Discrete_Kind | Real_Kind =>
                      T := New_Attribute_Expr
