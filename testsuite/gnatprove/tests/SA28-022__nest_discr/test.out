@@ -1,2 +1,2 @@
-repro.ads:18:47: medium: range check might fail
+repro.ads:18:47: info: range check proved (CVC4: 1 VC)
 repro.ads:22:14: warning: subprogram "Foo" has no effect

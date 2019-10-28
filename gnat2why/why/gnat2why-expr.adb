@@ -12638,6 +12638,13 @@ package body Gnat2Why.Expr is
            (if N > 0 then First_Discriminant (Ent) else Empty);
          Checks : W_Prog_Id := +Void;
          I      : Positive := 1;
+         Rec_Id : constant W_Identifier_Id :=
+           New_Temp_Identifier (Base_Name => "rec",
+                                Typ       => EW_Abstract (Ent));
+         --  Identifier for a record object to be used in predicate checks for
+         --  components.
+         Prop   : W_Pred_Id := True_Pred;
+         --  Assume values of the discriminants of Rec_Id
 
       begin
          --  For:
@@ -12647,8 +12654,13 @@ package body Gnat2Why.Expr is
          --     end record;
          --  Generate:
          --     let d = any T in
-         --       check_scalar_range (Array_Type (1 .. D), Array_Type);
-         --       check_discr_of_subtype (Rec_Type (D), Rec_Type)
+         --     let rec = any My_Rec { result.d = d }
+         --       pred_A rec ->
+         --          check_scalar_range (Array_Type (1 .. D), Array_Type);
+         --       pred_R rec ->
+         --          check_discr_of_subtype (Rec_Type (D), Rec_Type)
+         --  where pred_A and pred_R denote whether components A and R are
+         --  present in rec.
 
          Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -12674,6 +12686,25 @@ package body Gnat2Why.Expr is
                      Initialized => True_Term,
                      Params      => Body_Params),
                   Return_Type => Typ);
+
+               --  Assume that Rec_Id has Vars (I) for discriminant Discr
+
+               Prop := +New_And_Then_Expr
+                 (Left   => +Prop,
+                  Right  => New_Comparison
+                    (Symbol => Why_Eq,
+                     Left   => Insert_Simple_Conversion
+                       (Domain => EW_Pterm,
+                        Expr   => New_Ada_Record_Access
+                          (Ada_Node => Empty,
+                           Name     => +New_Result_Ident (Get_Typ (Rec_Id)),
+                           Field    => Discr,
+                           Ty       => Ent,
+                           Domain   => EW_Term),
+                        To     => Typ),
+                     Right  => +Vars (I),
+                     Domain => EW_Pred),
+                  Domain => EW_Pred);
             end;
             I := I + 1;
             Next_Discriminant (Discr);
@@ -12726,14 +12757,38 @@ package body Gnat2Why.Expr is
                      Check :=  Check_Discr_Of_Subtype (Base, Typ);
                   end if;
 
+                  --  Only perform checks on a component if the component is
+                  --  present in the object.
+
+                  if N > 0 then
+                     Check := New_Conditional
+                       (Condition => New_Ada_Record_Check_For_Field
+                          (Domain => EW_Prog,
+                           Name   => +Rec_Id,
+                           Field  => Comp,
+                           Ty     => Ent),
+                        Then_Part => +Check);
+                  end if;
+
                   Checks := Sequence (Check, Checks);
                end;
             end if;
          end loop;
 
-         --  Introduce bindings for the discriminants
+         if Checks /= +Void and then N /= 0 then
 
-         if Checks /= +Void then
+            --  Introduce a binding for Rec_Id
+
+            Checks := +New_Typed_Binding
+              (Domain   => EW_Prog,
+               Name     => Rec_Id,
+               Def      => +New_Any_Statement
+                 (Post        => Prop,
+                  Return_Type => Get_Typ (Rec_Id)),
+               Context  => +Checks);
+
+            --  Introduce bindings for the discriminants
+
             for I in Vars'Range loop
                Checks := +New_Typed_Binding
                  (Domain   => EW_Prog,
