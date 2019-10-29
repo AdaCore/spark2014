@@ -4505,6 +4505,15 @@ package body Gnat2Why.Expr is
                      Typ         => EW_Bool_Type));
             end;
          end if;
+      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
+         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
+                                                            Name => +Expr));
+
+      --  Do not assume bounds of arrays and discriminants if Only_Var is
+      --  statically True.
+
+      elsif Is_True_Boolean (+Only_Var) then
+         T := True_Pred;
       elsif Is_Array_Type (Ty_Ext)
         and then not Is_Static_Array_Type (Ty_Ext)
       then
@@ -4593,9 +4602,6 @@ package body Gnat2Why.Expr is
                                                 Expr   => +Expr,
                                                 Params => Params),
             Typ       => EW_Bool_Type);
-      elsif Is_Access_Type (Ty_Ext) and then Can_Never_Be_Null (Ty_Ext) then
-         T := New_Not (Right => New_Pointer_Is_Null_Access (E    => Ty_Ext,
-                                                            Name => +Expr));
       else
          T := True_Pred;
       end if;
