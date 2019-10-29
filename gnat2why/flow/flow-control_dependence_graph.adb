@@ -99,7 +99,7 @@ package body Flow.Control_Dependence_Graph is
       --  executed at least once (i.e. general loops and for loops over a
       --  statically non-empty range). We have quite involved sanity checks
       --  which push up the complexity (path finding is linear), but this
-      --  kind of graph fiddeling is much easier to justify that way.
+      --  kind of graph fiddling is much easier to justify that way.
 
       for V of FA.CDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
