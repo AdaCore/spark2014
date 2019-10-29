@@ -1,3 +1,3 @@
 id.adb:1:10: medium: function "Id" does not return on some paths
-id.adb:2:12: medium: postcondition might fail, cannot prove Id'Result = X
+id.adb:2:12: medium: postcondition might fail, cannot prove Id'Result = X (e.g. when X = False)
 id.adb:2:22: medium: function "Id" does not return on some paths
