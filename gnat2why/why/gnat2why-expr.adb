@@ -18458,7 +18458,7 @@ package body Gnat2Why.Expr is
 
          when N_Extended_Return_Statement =>
             declare
-               Raise_Stmt : W_Prog_Id :=
+               Raise_Stmt : constant W_Prog_Id :=
                  New_Raise
                    (Ada_Node => Stmt_Or_Decl,
                     Name     => M_Main.Return_Exc);
@@ -18480,12 +18480,6 @@ package body Gnat2Why.Expr is
                     To     => Ret_Type);
 
             begin
-               --  Havoc objects borrowed in scopes traversed by the return
-               --  statement.
-
-               Raise_Stmt :=
-                 Sequence (Havoc_Borrowed_On_Return, Raise_Stmt);
-
                if Present (Handled_Statement_Sequence (Stmt_Or_Decl)) then
                   Expr :=
                     Sequence
@@ -18494,15 +18488,40 @@ package body Gnat2Why.Expr is
                          (Statements
                             (Handled_Statement_Sequence (Stmt_Or_Decl))));
                end if;
-               Expr :=
-                 Sequence
-                   (Expr,
-                    New_Assignment
-                      (Name     => Result_Name,
-                       Value    => Obj_Deref,
-                       Labels   => Symbol_Sets.Empty_Set,
-                       Typ      => Ret_Type));
-               return Sequence (Expr, Raise_Stmt);
+
+               --  Wrap the sequence of statements inside a try block, in case
+               --  it contains a return statement.
+
+               return
+                 New_Try_Block
+                   (Prog    => Sequence
+                      ((1 => Expr,
+
+                        --  Havoc objects borrowed in scopes traversed by the
+                        --  return statement.
+
+                        2 => Havoc_Borrowed_On_Return,
+
+                        --  Raise statement
+
+                        3 => Raise_Stmt)),
+
+                    Handler =>
+                      (1 => New_Handler
+                         (Name => M_Main.Return_Exc,
+                          Def  => Sequence
+
+                            --  Assign the result name
+
+                            (New_Assignment
+                                 (Name     => Result_Name,
+                                  Value    => Obj_Deref,
+                                  Labels   => Symbol_Sets.Empty_Set,
+                                  Typ      => Ret_Type),
+
+                             --  Reraise the exception
+
+                             Raise_Stmt))));
             end;
 
          when N_Procedure_Call_Statement
