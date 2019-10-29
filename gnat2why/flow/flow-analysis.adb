@@ -2345,7 +2345,10 @@ package body Flow.Analysis is
          Visited              : in out Vertex_Sets.Set;
          OK                   : in out Boolean)
       with Pre  => Var.Variant = Normal_Use
-                   and then Start /= Flow_Graphs.Null_Vertex,
+                   and then Start /= Flow_Graphs.Null_Vertex
+                   and then (if not Is_Array (Var)
+                             then not Possibly_Initialized
+                               and then Visited.Is_Empty),
            Post => Vertex_Sets.Is_Subset (Subset => Visited'Old,
                                           Of_Set => Visited)
                    and then (if not OK'Old then not OK);
