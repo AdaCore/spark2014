@@ -2781,10 +2781,7 @@ package body Flow.Analysis is
                elsif Def_Atr.Variables_Defined.Contains (Var)
                  or else Def_Atr.Volatiles_Read.Contains (Var)
                then
-                  --  We're using a previously written value
-                  if not FA.CFG.Non_Trivial_Path_Exists (V_Use, V_Def) then
-                     return True;
-                  end if;
+                  return True;
                end if;
             end;
          end loop;

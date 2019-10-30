@@ -16,7 +16,7 @@ foo.adb:54:24: info: unrolling loop
 foo.adb:63:04: warning: analyzing unreferenced procedure "Test_06_E"
 foo.adb:63:25: medium: "A" might not be initialized in "Test_06_E"
 foo.adb:66:24: info: unrolling loop
-foo.adb:67:13: high: "A" is not initialized
+foo.adb:67:13: medium: "A" might not be initialized
 foo.adb:75:04: warning: analyzing unreferenced procedure "Test_07_E"
 foo.adb:75:25: medium: "A" might not be initialized in "Test_07_E"
 foo.adb:80:24: info: unrolling loop

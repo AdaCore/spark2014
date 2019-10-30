@@ -3,7 +3,6 @@ lsc-bignum.adb:50:13: info: loop invariant initialization proved (Z3: 1 VC)
 lsc-bignum.adb:50:13: info: loop invariant preservation proved (Z3: 1 VC)
 lsc-bignum.adb:50:21: info: range check proved (Z3: 4 VC)
 lsc-bignum.adb:50:53: info: overflow check proved (Z3: 2 VC)
-lsc-bignum.adb:50:61: high: "A" is not initialized
 lsc-bignum.adb:50:64: info: index check proved (Z3: 4 VC)
 lsc-bignum.adb:52:10: warning: no check message justified by this pragma
 lsc-bignum.adb:57:13: info: index check proved (Z3: 2 VC)
