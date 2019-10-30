@@ -11170,7 +11170,8 @@ package body Gnat2Why.Expr is
                         B_Exp  : constant W_Type_Id :=
                           Base_Why_Type_No_Bool (Expected_Typ);
                         B_Rng  : constant W_Type_Id :=
-                          Base_Why_Type_No_Bool (Nth_Index_Type (Arr_Ty, Dim));
+                          Base_Why_Type_No_Bool
+                            (Nth_Index_Type (Retysp (Arr_Ty), Dim));
                         Typ    : constant W_Type_Id :=
                           (if not Why_Type_Is_BitVector (B_Exp)
                            or else not Why_Type_Is_BitVector (B_Rng)
