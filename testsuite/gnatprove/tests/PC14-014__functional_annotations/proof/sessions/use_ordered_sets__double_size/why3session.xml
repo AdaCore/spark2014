@@ -571,7 +571,7 @@
   </goal>
   <goal name="def&#39;VC.165" expl="precondition" proved="true">
   <proof prover="0"><result status="unknown" steps="614427"/></proof>
-  <proof prover="1" timelimit="10"><result status="valid" steps="4172"/></proof>
+  <proof prover="1" timelimit="10"><result status="valid" steps="4139"/></proof>
   </goal>
   <goal name="def&#39;VC.166" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="7502"/></proof>

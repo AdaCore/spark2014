@@ -736,7 +736,7 @@ use_ordered_maps.ads:20:16: info: postcondition proved (Z3: 3 VC)
 use_ordered_maps.ads:22:28: info: precondition proved (Z3: 1 VC)
 use_ordered_maps.ads:28:12: info: postcondition proved (Z3: 2 VC)
 use_ordered_maps.ads:32:35: info: overflow check proved (Z3: 1 VC)
-use_ordered_maps.ads:36:14: info: postcondition proved (Z3: 3 VC)
+use_ordered_maps.ads:36:14: medium: postcondition might fail
 use_ordered_maps.ads:37:11: info: precondition proved (Trivial: 1 VC)
 use_ordered_maps.ads:37:11: info: precondition proved (Z3: 2 VC)
 use_ordered_maps.ads:38:16: info: precondition proved (Trivial: 1 VC)

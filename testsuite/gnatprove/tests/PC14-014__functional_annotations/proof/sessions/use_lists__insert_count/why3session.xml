@@ -266,7 +266,7 @@
   </goal>
   <goal name="def&#39;VC.72" expl="postcondition">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="unknown" steps="613970"/></proof>
-  <proof prover="1" timelimit="60" memlimit="2000"><result status="unknown" steps="22012"/></proof>
+  <proof prover="1" timelimit="60" memlimit="2000"><result status="unknown" steps="22014"/></proof>
   </goal>
   <goal name="def&#39;VC.73" expl="postcondition">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="unknown" steps="613970"/></proof>
@@ -278,7 +278,7 @@
   </goal>
   <goal name="def&#39;VC.75" expl="postcondition">
   <proof prover="0" timelimit="60" memlimit="2000"><result status="unknown" steps="613956"/></proof>
-  <proof prover="1" timelimit="60" memlimit="2000"><result status="unknown" steps="22012"/></proof>
+  <proof prover="1" timelimit="60" memlimit="2000"><result status="unknown" steps="22015"/></proof>
   </goal>
  </transf>
  </goal>

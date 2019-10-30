@@ -129,13 +129,13 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.33" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="58037"/></proof>
+  <proof prover="0"><result status="valid" steps="58036"/></proof>
   </goal>
   <goal name="def&#39;VC.34" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="61246"/></proof>
+  <proof prover="0"><result status="valid" steps="61245"/></proof>
   </goal>
   <goal name="def&#39;VC.35" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="72406"/></proof>
+  <proof prover="0"><result status="valid" steps="72405"/></proof>
   </goal>
  </transf>
  </goal>

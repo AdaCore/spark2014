@@ -142,7 +142,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.36" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="218770"/></proof>
+  <proof prover="0"><result status="valid" steps="217234"/></proof>
   </goal>
   <goal name="def&#39;VC.37" expl="postcondition" proved="true">
   <proof prover="0"><result status="valid" steps="111641"/></proof>
