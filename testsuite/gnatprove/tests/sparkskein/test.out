@@ -2,6 +2,12 @@ skein.adb:108:35: info: range check proved (altergo: 1 VC)
 skein.adb:115:35: info: range check proved (altergo: 1 VC)
 skein.adb:121:35: info: range check proved (altergo: 1 VC)
 skein.adb:128:35: info: range check proved (altergo: 1 VC)
+skein.adb:180:13: info: types in unchecked conversion have the same size (Trivial)
+skein.adb:181:07: info: type is suitable for unchecked conversion (Trivial)
+skein.adb:181:20: info: type is suitable for unchecked conversion (Trivial)
+skein.adb:183:13: info: types in unchecked conversion have the same size (Trivial)
+skein.adb:184:32: info: type is suitable for unchecked conversion (Trivial)
+skein.adb:184:55: info: type is suitable for unchecked conversion (Trivial)
 skein.adb:193:11: info: data dependencies proved
 skein.adb:207:14: info: add a contract to analyze it separately from calling contexts
 skein.adb:207:14: info: local subprogram "Put_64_LSB_First" only analyzed in the context of calls
@@ -98,6 +104,8 @@ skein.adb:594:13: info: analyzing call to "Update_Context" in context
 skein.adb:615:07: info: initialization of "Cfg" proved
 skein.adb:622:07: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:637:07: info: precondition proved (CVC4: 6 VC)
+skein.adb:639:29: info: predicate check proved (CVC4: 1 VC)
+skein.adb:639:29: info: range check proved (CVC4: 1 VC)
 skein.adb:645:07: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:652:07: info: initialization of "Msg_Byte_Count" proved
 skein.adb:653:07: info: initialization of "N" proved
@@ -123,8 +131,6 @@ skein.adb:683:25: info: range check proved (CVC4: 1 VC), in call inlined at skei
 skein.adb:683:25: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:756
 skein.adb:685:30: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:716
 skein.adb:685:30: info: range check proved (CVC4: 1 VC), in call inlined at skein.adb:756
-skein.adb:690:19: info: predicate check proved (CVC4: 2 VC), in call inlined at skein.adb:716
-skein.adb:690:19: info: predicate check proved (CVC4: 2 VC), in call inlined at skein.adb:756
 skein.adb:690:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:716
 skein.adb:690:36: info: index check proved (CVC4: 4 VC), in call inlined at skein.adb:756
 skein.adb:694:39: info: loop invariant initialization proved (Trivial: 1 VC), in call inlined at skein.adb:716
@@ -136,6 +142,8 @@ skein.adb:698:27: info: range check proved (CVC4: 1 VC), in call inlined at skei
 skein.adb:714:42: info: range check proved (CVC4: 1 VC)
 skein.adb:716:13: info: analyzing call to "Copy_Msg_To_B" in context
 skein.adb:721:13: info: precondition proved (CVC4: 6 VC)
+skein.adb:723:35: info: predicate check proved (CVC4: 1 VC)
+skein.adb:723:35: info: range check proved (CVC4: 1 VC)
 skein.adb:735:49: info: division check proved (CVC4: 1 VC)
 skein.adb:735:49: info: range check proved (CVC4: 1 VC)
 skein.adb:737:13: info: precondition proved (CVC4: 6 VC)
@@ -150,41 +158,35 @@ skein.adb:776:07: info: initialization of "Tmp_Byte_Count_Add" proved
 skein.adb:778:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:778:17: info: local subprogram "Zero_Pad" only analyzed in the context of calls
 skein.adb:780:14: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:806
-skein.adb:784:22: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:806
 skein.adb:788:17: info: add a contract to analyze it separately from calling contexts
 skein.adb:788:17: info: local subprogram "Set_Counter" only analyzed in the context of calls
-skein.adb:790:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:790:43: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:791:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:791:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:792:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:792:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:793:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:793:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:794:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:794:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:795:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:795:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:796:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:796:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
-skein.adb:797:19: info: predicate check proved (CVC4: 1 VC), in call inlined at skein.adb:834
 skein.adb:797:61: info: range check proved (CVC4: 2 VC), in call inlined at skein.adb:834
 skein.adb:802:12: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
 skein.adb:802:15: info: predicate check proved (CVC4: 1 VC)
+skein.adb:802:15: info: range check proved (CVC4: 1 VC)
 skein.adb:806:10: info: analyzing call to "Zero_Pad" in context
 skein.adb:806:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:806:10: info: in inlined body at line 782
 skein.adb:812:07: info: precondition proved (CVC4: 6 VC)
+skein.adb:813:51: info: predicate check proved (CVC4: 1 VC)
+skein.adb:813:51: info: range check proved (CVC4: 1 VC)
 skein.adb:820:52: info: division check proved (CVC4: 1 VC)
 skein.adb:820:52: info: range check proved (CVC4: 1 VC)
-skein.adb:825:43: info: predicate check proved (CVC4: 1 VC)
-skein.adb:825:44: info: predicate check proved (CVC4: 1 VC)
 skein.adb:828:44: info: division check proved (CVC4: 1 VC)
 skein.adb:832:13: info: loop invariant initialization proved (CVC4: 1 VC)
 skein.adb:832:13: info: loop invariant preservation proved (CVC4: 1 VC)
 skein.adb:834:10: info: analyzing call to "Set_Counter" in context
 skein.adb:836:10: info: analyzing call to "Skein_Start_New_Type" in context
 skein.adb:844:10: info: precondition proved (CVC4: 6 VC)
+skein.adb:845:54: info: predicate check proved (CVC4: 1 VC)
+skein.adb:845:54: info: range check proved (CVC4: 1 VC)
 skein.adb:857:10: info: analyzing call to "Put_64_LSB_First" in context
 skein.adb:857:10: info: cannot unroll loop (too many loop iterations)
 skein.adb:857:10: info: in inlined body at line 223
@@ -192,21 +194,19 @@ skein.adb:878:07: info: initialization of "Ctx" proved
 skein.adb:879:07: info: initialization of "Result" proved
 skein.adb:884:07: info: precondition proved (CVC4: 6 VC)
 skein.adb:887:07: info: precondition proved (CVC4: 5 VC)
-skein.adb:888:32: info: predicate check proved (CVC4: 1 VC)
+skein.adb:888:32: info: range check proved (CVC4: 1 VC)
 skein.adb:910:12: info: precondition proved (CVC4: 1 VC)
-skein.ads:173:30: info: initialization of "Ctx" proved
-skein.ads:175:11: info: data dependencies proved
-skein.ads:176:19: info: postcondition proved (CVC4: 4 VC)
-skein.ads:183:11: info: data dependencies proved
-skein.ads:190:19: info: postcondition proved (CVC4: 3 VC)
-skein.ads:195:31: info: initialization of "Hash" proved
-skein.ads:196:11: info: data dependencies proved
-skein.ads:201:46: info: division check proved (CVC4: 1 VC)
-skein.ads:205:11: info: data dependencies proved
-skein.ads:216:11: info: data dependencies proved
-skein.ads:217:11: info: flow dependencies proved
-skein.ads:223:11: info: data dependencies proved
-skein.ads:224:11: info: flow dependencies proved
-skein.ads:226:28: info: range check proved (altergo: 1 VC)
-skein.ads:371:51: info: predicate check proved (CVC4: 1 VC)
-skein.ads:371:52: info: predicate check proved (CVC4: 1 VC)
+skein.ads:176:30: info: initialization of "Ctx" proved
+skein.ads:178:11: info: data dependencies proved
+skein.ads:179:19: info: postcondition proved (CVC4: 4 VC)
+skein.ads:186:11: info: data dependencies proved
+skein.ads:193:19: info: postcondition proved (CVC4: 3 VC)
+skein.ads:198:31: info: initialization of "Hash" proved
+skein.ads:199:11: info: data dependencies proved
+skein.ads:204:46: info: division check proved (CVC4: 1 VC)
+skein.ads:208:11: info: data dependencies proved
+skein.ads:219:11: info: data dependencies proved
+skein.ads:220:11: info: flow dependencies proved
+skein.ads:226:11: info: data dependencies proved
+skein.ads:227:11: info: flow dependencies proved
+skein.ads:229:28: info: range check proved (altergo: 1 VC)

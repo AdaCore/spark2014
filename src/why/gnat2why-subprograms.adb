@@ -4047,6 +4047,38 @@ package body Gnat2Why.Subprograms is
       Close_Theory (File,
                     Kind => VC_Generation_Theory,
                     Defined_Entity => E);
+
+      --  This code emits static VCs (determined by static computations inside
+      --  gnat2why), so we can put this code anywhere.
+
+      if Sem_Util.Is_Unchecked_Conversion_Instance (E) then
+         declare
+            Source, Target : Node_Id;
+            Src_Ty, Tar_Ty : Entity_Id;
+         begin
+            Get_Unchecked_Conversion_Args (E, Source, Target);
+            Src_Ty := Retysp (Entity (Source));
+            Tar_Ty := Retysp (Entity (Target));
+            Emit_Static_Proof_Result
+              (Source,
+               VC_UC_No_Holes,
+               Is_Valid_Bitpattern_No_Holes (Src_Ty),
+               E,
+               PC_Trivial);
+            Emit_Static_Proof_Result
+              (Target,
+               VC_UC_No_Holes,
+               Is_Valid_Bitpattern_No_Holes (Tar_Ty),
+               E,
+               PC_Trivial);
+            Emit_Static_Proof_Result
+              (E,
+               VC_UC_Same_Size,
+               Types_Have_Same_Known_Esize (Src_Ty, Tar_Ty),
+               E,
+               PC_Trivial);
+         end;
+      end if;
    end Generate_VCs_For_Subprogram;
 
    --------------------------------

@@ -174,7 +174,7 @@ is
       New_Line;
    end Show_Msg_64;
 
-   procedure Show_8 (S     : in Byte_Seq;
+   procedure Show_8 (S     : in Byte_Seq_Pred;
                      Count : in U64)
    is
    begin
@@ -200,7 +200,7 @@ is
    end Show_8;
 
    procedure Show_Msg_8 (Msg   : in String;
-                         S     : in Byte_Seq;
+                         S     : in Byte_Seq_Pred;
                          Count : in U64)
    is
    begin
@@ -240,7 +240,7 @@ is
    procedure Show_Final
      (Bits         : in Skein.Bit_Size;
       H            : in Skein.Context_Header;
-      Block        : in Byte_Seq;
+      Block        : in Byte_Seq_Pred;
       Byte_Count   : in U64;
       Block_Offset : in U64)
    is
@@ -378,7 +378,7 @@ is
      (Bits         : in Bit_Size;
       H            : in Context_Header;
       X            : in U64_Seq;
-      Block        : in Byte_Seq;
+      Block        : in Byte_Seq_Pred;
       Block_Offset : in U64;
       W            : in U64_Seq;
       KS           : in U64_Seq;
@@ -473,7 +473,7 @@ is
             if Flags (Input_08) then
                Put_Line ("  Input block (bytes):");
                --  Slice and slide to meet precondition of Show_8
-               Show_8 (Byte_Seq (Block (Block_Offset .. Block'Last)),
+               Show_8 (Byte_Seq_Pred (Block (Block_Offset .. Block'Last)),
                        W'Length * 8);
             end if;
 
@@ -485,7 +485,7 @@ is
    procedure Show_Key
      (Bits      : in Skein.Bit_Size;
       H         : in Skein.Context_Header;
-      Key_Bytes : in Byte_Seq)
+      Key_Bytes : in Byte_Seq_Pred)
    is
    begin
       if Key_Bytes'Length > 0 then

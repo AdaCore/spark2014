@@ -1044,6 +1044,8 @@ procedure SPARK_Report is
             | VC_Disjoint_Contract_Cases
             | VC_Complete_Contract_Cases
             | VC_Inline_Check
+            | VC_UC_No_Holes
+            | VC_UC_Same_Size
          =>
             return Functional_Contracts;
 

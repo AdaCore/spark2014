@@ -1,0 +1,3 @@
+convert.adb:8:15: info: types in unchecked conversion have the same size (Trivial)
+convert.adb:9:44: info: type is suitable for unchecked conversion (Trivial)
+convert.adb:9:57: info: type is suitable for unchecked conversion (Trivial)

@@ -625,6 +625,12 @@ package body Flow_Error_Messages is
          elsif Is_Proved then
             Result := Info_Kind;
 
+         --  The checks related to Unchecked_Conversion are quite precise (if
+         --  the Esize is known), so we can make them of high severity.
+
+         elsif Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+            Result := High_Check_Kind;
+
          --  Range checks on concatenation of strings are likely to be
          --  unprovable because argument types do not bound the size of the
          --  strings being concatenated. Issue a low severity message in such
@@ -1315,6 +1321,12 @@ package body Flow_Error_Messages is
    --  Start of processing for Get_Explanation
 
    begin
+
+      --  ??? it would be nice to have explanations here
+      if Tag in VC_UC_No_Holes | VC_UC_Same_Size then
+         return "";
+      end if;
+
       --  Adjust the enclosing subprogram entity
 
       if Present (Enclosing_Subp) then

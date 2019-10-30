@@ -1,3 +1,6 @@
+test.adb:16:13: high: types used for unchecked conversion do not have the same size
+test.adb:16:62: high: type with constraints on bit representation is unsuitable for unchecked conversion
+test.adb:17:62: high: type with constraints on bit representation is unsuitable for unchecked conversion
 test.adb:30:09: info: data dependencies proved
 test.adb:35:04: warning: analyzing unreferenced procedure "UCC_01"
 test.adb:38:14: high: formal parameters "X" and "Y" are aliased (SPARK RM 6.4.2)

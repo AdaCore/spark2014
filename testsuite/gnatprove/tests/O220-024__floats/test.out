@@ -2,4 +2,7 @@ test_pack.adb:7:32: medium: float overflow check might fail (e.g. when Measured 
 test_pack.ads:10:06: info: flow dependencies proved
 test_pack.ads:12:43: info: float overflow check proved (CVC4: 1 VC)
 test_pack.ads:14:42: info: float overflow check proved (CVC4: 1 VC)
+wibble.adb:6:12: info: types in unchecked conversion have the same size (Trivial)
+wibble.adb:6:61: info: type is suitable for unchecked conversion (Trivial)
+wibble.adb:7:61: high: type with constraints on bit representation is unsuitable for unchecked conversion
 wibble.adb:11:03: medium: precondition might fail, cannot prove Pid.Desired >= Float'First + Measured (e.g. when X = (Desired => -1.9524227E+0, Error => 0.0))

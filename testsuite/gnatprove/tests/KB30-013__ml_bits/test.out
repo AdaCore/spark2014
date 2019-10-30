@@ -1,1 +1,4 @@
 ml_bits.adb:7:07: info: initialization of "Result" proved
+ml_bits.adb:8:16: info: types in unchecked conversion have the same size (Trivial)
+ml_bits.adb:8:73: high: type with constraints on bit representation is unsuitable for unchecked conversion
+ml_bits.adb:8:98: high: type with constraints on bit representation is unsuitable for unchecked conversion

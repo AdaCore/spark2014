@@ -102,6 +102,13 @@ package body VC_Kinds is
             | VC_Refined_Post
             | VC_Contract_Case             => "682",
 
+         --  CWE-843 Access of Resource Using Incompatible Type ('Type
+         --  Confusion')
+
+         when VC_UC_No_Holes
+            | VC_UC_Same_Size
+              => "843",
+
          --  We did not find a relevant CWE for the following yet
 
          when VC_Invariant_Check
@@ -318,6 +325,14 @@ package body VC_Kinds is
          when VC_Inline_Check                     =>
             return "Check that an Annotate pragma with the Inline_For_Proof " &
               "identifier is correct.";
+         when VC_UC_No_Holes                      =>
+            return "Check that a type in an unchecked conversion can safely " &
+              "be used for such conversions. This means that the memory " &
+              "occupied by objects of this type is fully used by the " &
+              "object, and no invalid bitpatterns occur.";
+         when VC_UC_Same_Size                     =>
+            return "Check that the two types in an unchecked conversion " &
+              "instance are of the same size.";
          when VC_Weaker_Pre                       =>
             return "Check that the precondition aspect of the subprogram is " &
               "weaker than its class-wide precondition.";
@@ -848,6 +863,8 @@ package body VC_Kinds is
              when VC_Assert => "assertion",
              when VC_Raise => "raised exception",
              when VC_Inline_Check => "Inline_For_Proof annotation",
+             when VC_UC_No_Holes => "unchecked conversion check",
+             when VC_UC_Same_Size => "unchecked conversion size check",
              when VC_Weaker_Pre =>
                "precondition weaker than class-wide precondition",
              when VC_Trivial_Weaker_Pre =>

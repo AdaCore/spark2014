@@ -101,14 +101,14 @@ is
         with Global  => null,
              Depends => (null => F);
 
-      procedure Show_8 (S     : in Skein.Byte_Seq;
+      procedure Show_8 (S     : in Skein.Byte_Seq_Pred;
                         Count : in Skein.U64)
         with Global  => null,
              Depends => (null => (S, Count)),
              Pre     => Count <= S'Length;
 
       procedure Show_Msg_8 (Msg   : in String;
-                            S     : in Skein.Byte_Seq;
+                            S     : in Skein.Byte_Seq_Pred;
                             Count : in Skein.U64)
         with Global  => null,
              Depends => (null => (Msg, S, Count)),
@@ -131,7 +131,7 @@ is
       procedure Show_Final
         (Bits         : in Skein.Bit_Size;
          H            : in Skein.Context_Header;
-         Block        : in Skein.Byte_Seq;
+         Block        : in Skein.Byte_Seq_Pred;
          Byte_Count   : in Skein.U64;
          Block_Offset : in Skein.U64)
         with Global  => null,
@@ -151,7 +151,7 @@ is
         (Bits         : in Skein.Bit_Size;
          H            : in Skein.Context_Header;
          X            : in Skein.U64_Seq;
-         Block        : in Skein.Byte_Seq;
+         Block        : in Skein.Byte_Seq_Pred;
          Block_Offset : in Skein.U64;
          W            : in Skein.U64_Seq;
          KS           : in Skein.U64_Seq;
@@ -167,7 +167,7 @@ is
       procedure Show_Key
         (Bits      : in Skein.Bit_Size;
          H         : in Skein.Context_Header;
-         Key_Bytes : in Skein.Byte_Seq)
+         Key_Bytes : in Skein.Byte_Seq_Pred)
         with Global  => null,
              Depends => (null => (Bits, H, Key_Bytes)),
              Pre     => Key_Bytes'First = 0;
@@ -204,7 +204,7 @@ is
       end if;
    end To_LittleEndian;
 
-   procedure Put_64_LSB_First (Dst        : in out Byte_Seq;
+   procedure Put_64_LSB_First (Dst        : in out Byte_Seq_Pred;
                                Dst_Offset : in     U64;
                                Src        : in     U64_Seq;
                                Byte_Count : in     U64)
@@ -231,7 +231,7 @@ is
 
    --  This version is fully portable (big- or little-endian), but slow
    procedure Get_64_LSB_First (Dst        :    out U64_Seq;
-                               Src        : in     Byte_Seq;
+                               Src        : in     Byte_Seq_Pred;
                                Src_Offset : in     U64)
 --  UNCOMMENT TO VERIFY Get_64_LSB_First SEPARATELY
 --       with Pre => Src'First = 0 and
@@ -279,7 +279,7 @@ is
 
    procedure Skein_512_Process_Block
      (Ctx             : in out Skein_512_Context;
-      Block           : in     Byte_Seq;
+      Block           : in     Byte_Seq_Pred;
       Starting_Offset : in     U64;
       Block_Count     : in     Positive_Block_512_Count_T;
       Byte_Count_Add  : in     U64)
@@ -647,7 +647,7 @@ is
    end Skein_512_Init;
 
    procedure Skein_512_Update (Ctx : in out Skein_512_Context;
-                               Msg : in     Byte_Seq)
+                               Msg : in     Byte_Seq_Pred)
    is
       Msg_Byte_Count     : U64;
       N                  : Skein_512_Block_Bytes_Index;
@@ -758,7 +758,7 @@ is
    end Skein_512_Update;
 
    procedure Skein_512_Final (Ctx  : in     Skein_512_Context;
-                              Hash :    out Byte_Seq)
+                              Hash :    out Byte_Seq_Pred)
    is
       subtype Output_Byte_Count_T  is U64
         range 1 .. (Hash_Bit_Length'Last + 7) / 8;
@@ -873,7 +873,7 @@ is
 
    end Skein_512_Final;
 
-   function Skein_512_Hash (Data : in Byte_Seq) return Skein_512_State_Bytes
+   function Skein_512_Hash (Data : in Byte_Seq_Pred) return Skein_512_State_Bytes
    is
       Ctx    : Skein_512_Context;
       Result : Skein_512_State_Bytes;
@@ -902,7 +902,7 @@ is
    end Set_Debug_Flags;
 
    procedure Show_Msg_8 (Msg   : in String;
-                         S     : in Byte_Seq;
+                         S     : in Byte_Seq_Pred;
                          Count : in U64)
    is
    begin

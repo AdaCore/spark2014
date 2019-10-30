@@ -821,6 +821,170 @@ package body SPARK_Util.Types is
         and then Is_Constrained (E)
         and then Has_Static_Array_Bounds (E));
 
+   ----------------------------------
+   -- Is_Valid_Bitpattern_No_Holes --
+   ----------------------------------
+
+   function Is_Valid_Bitpattern_No_Holes (Typ : Entity_Id) return Boolean is
+
+      --  The property Is_Valid_Bitpattern_No_Holes is *not* compositional.
+      --  For example, an object of type U7:
+      --
+      --  type U7 is mod 2 ** 7;
+      --  X : U7;
+      --
+      --  is considered to have a hole (the Size of X, or Object_Size of U7, is
+      --  8, but the data only takes up 7 bits), while this type does not:
+
+      --  type My_Rec is record
+      --     X : U7;
+      --     Y : Boolean;
+      --  end record;
+
+      --  In practice it means that for components, we need to use the RM_Size,
+      --  and not the Object_Size of the type to carry out the checks in this
+      --  function.
+
+      function Is_Valid_Bitpattern_No_Holes_Internal
+        (Typ         : Entity_Id;
+         Use_RM_Size : Boolean) return Boolean;
+      --  The internal version of the function. If Use_RM_Size is set to True,
+      --  the RM_Size is used for size computations, otherwise the
+      --  Object_Size/Esize is used.
+
+      -------------------------------------------
+      -- Is_Valid_Bitpattern_No_Holes_Internal --
+      -------------------------------------------
+
+      function Is_Valid_Bitpattern_No_Holes_Internal
+        (Typ         : Entity_Id;
+         Use_RM_Size : Boolean) return Boolean
+      is
+         Typ_Size : Uint;
+      begin
+         --  Some valid IEEE 754 values are not allowed in SPARK, such as NaN
+
+         if Is_Floating_Point_Type (Typ) then
+            return False;
+         end if;
+
+         if (Use_RM_Size and then not Known_RM_Size (Typ))
+           or else
+             (not Use_RM_Size and then not Known_Esize (Typ))
+         then
+            return False;
+         end if;
+
+         --  We always exclude invariants and predicates, as well as types with
+         --  discriminants and tags, private types and concurrent types.
+
+         if Invariant_Check_Needed (Typ)
+           or else Has_Discriminants (Typ)
+           or else Has_Predicates (Typ)
+           or else Is_Tagged_Type (Typ)
+           or else Is_Private_Type (Typ)
+           or else Is_Concurrent_Type (Typ)
+         then
+            return False;
+         end if;
+
+         if Use_RM_Size then
+            Typ_Size := RM_Size (Typ);
+         else
+            Typ_Size := Esize (Typ);
+         end if;
+         --  Constrained scalar types are also excluded
+
+         if Is_Scalar_Type (Typ) then
+            declare
+               R : constant Node_Id := Scalar_Range (Typ);
+            begin
+               pragma Assert (Compile_Time_Known_Value (Low_Bound (R)));
+               pragma Assert (Compile_Time_Known_Value (High_Bound (R)));
+               declare
+                  Low : constant Uint := Expr_Value (Low_Bound (R));
+                  High : constant Uint := Expr_Value (High_Bound (R));
+               begin
+                  return UI_Eq
+                    (UI_Expon (Uint_2, Typ_Size),
+                     UI_Add (UI_Sub (High, Low), 1));
+               end;
+            end;
+         end if;
+
+         if Is_Array_Type (Typ) then
+            if not Is_Static_Array_Type (Typ) then
+               return False;
+            end if;
+
+            declare
+               Comp_Typ : constant Entity_Id :=
+                 Retysp (Component_Type (Typ));
+               Mult_Size : Uint := Uint_1;
+               Index : Entity_Id;
+            begin
+               if not Is_Valid_Bitpattern_No_Holes_Internal (Comp_Typ, True)
+               then
+                  return False;
+               end if;
+
+               pragma Assert (Known_RM_Size (Comp_Typ));
+
+               Mult_Size := UI_Mul (Mult_Size, RM_Size (Comp_Typ));
+               Index := First_Index (Typ);
+               while Present (Index) loop
+                  declare
+                     Rng : constant Node_Id := Get_Range (Index);
+                  begin
+                     Mult_Size :=
+                       UI_Mul (Mult_Size,
+                               UI_Add (
+                                 UI_Sub (Expr_Value (High_Bound (Rng)),
+                                   Expr_Value (Low_Bound (Rng))),
+                                 Uint_1));
+                     Next_Index (Index);
+                  end;
+               end loop;
+               if not UI_Eq (Typ_Size, Mult_Size) then
+                  return False;
+               end if;
+            end;
+
+         end if;
+
+         if Is_Record_Type (Typ) then
+            declare
+               Comp     : Node_Id := First_Component (Typ);
+               Sum_Size : Uint := Uint_0;
+            begin
+               while Present (Comp) loop
+                  declare
+                     Comp_Ty  : constant Entity_Id := Retysp (Etype (Comp));
+                  begin
+                     if Ekind (Comp) = E_Component
+                       and then
+                         not Is_Valid_Bitpattern_No_Holes_Internal (Comp_Ty,
+                                                                    True)
+                     then
+                        return False;
+                     end if;
+                     pragma Assert (Known_RM_Size (Comp_Ty));
+                     Sum_Size := UI_Add (Sum_Size, RM_Size (Comp_Ty));
+                     Next_Component (Comp);
+                  end;
+               end loop;
+               if not UI_Eq (Typ_Size, Sum_Size) then
+                  return False;
+               end if;
+            end;
+         end if;
+         return True;
+      end Is_Valid_Bitpattern_No_Holes_Internal;
+
+   begin
+      return Is_Valid_Bitpattern_No_Holes_Internal (Typ, False);
+   end Is_Valid_Bitpattern_No_Holes;
+
    ---------------------------
    -- May_Need_DIC_Checking --
    ---------------------------
@@ -1058,6 +1222,16 @@ package body SPARK_Util.Types is
          return Empty;
       end if;
    end Task_Body_Entity;
+
+   ---------------------------------
+   -- Types_Have_Same_Known_Esize --
+   ---------------------------------
+
+   function Types_Have_Same_Known_Esize (A, B : Entity_Id) return Boolean is
+   begin
+      return Known_Esize (A) and then Known_Esize (B)
+        and then UI_Eq (Esize (A), Esize (B));
+   end Types_Have_Same_Known_Esize;
 
    -------------------------
    -- Unchecked_Full_Type --

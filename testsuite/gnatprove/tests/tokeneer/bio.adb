@@ -91,12 +91,15 @@ is
    --
    -- Description:
    --    Converts a ReturnT type to its numeric representation.
-   --    Hidden from SPARK to allow unchecked conversion.
+   --    Hidden from SPARK to allow unchecked conversion on enumeration.
    --
    -- Implementation Notes:
    --    None.
    ------------------------------------------------------------------
+   function ValueOf (Code : ReturnT) return CommonTypes.Unsigned32T;
+
    function ValueOf (Code : ReturnT) return CommonTypes.Unsigned32T
+   with SPARK_Mode => Off
    is
       function CodeToVal is
          new Unchecked_Conversion(ReturnT, CommonTypes.Unsigned32T);

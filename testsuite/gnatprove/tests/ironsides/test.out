@@ -1299,6 +1299,9 @@ zone_file_parser.adb:696:07: info: initialization of "BlockNumberOfFirstRecordTy
 zone_file_parser.adb:698:07: info: initialization of "BlockIndex" proved
 zone_file_parser.adb:699:07: info: initialization of "ByteNumber" proved
 zone_file_parser.adb:700:07: info: initialization of "BitNumber" proved
+zone_file_parser.adb:702:16: info: types in unchecked conversion have the same size (Trivial)
+zone_file_parser.adb:703:10: high: type with constraints on bit representation is unsuitable for unchecked conversion
+zone_file_parser.adb:703:32: info: type is suitable for unchecked conversion (Trivial)
 zone_file_parser.adb:713:23: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:723:40: info: precondition proved (CVC4: 1 VC)
 zone_file_parser.adb:726:53: info: range check proved (CVC4: 1 VC)

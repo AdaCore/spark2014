@@ -70,6 +70,8 @@ VC_LOOP_VARIANT - loop variant - Check that the given loop variant decreases/inc
 VC_ASSERT - assertion - Check that the given assertion evaluates to True.
 VC_RAISE - raised exception - Check that the raise statement can never be reached.
 VC_INLINE_CHECK - Inline_For_Proof annotation - Check that an Annotate pragma with the Inline_For_Proof identifier is correct.
+VC_UC_NO_HOLES - unchecked conversion check - Check that a type in an unchecked conversion can safely be used for such conversions. This means that the memory occupied by objects of this type is fully used by the object, and no invalid bitpatterns occur.
+VC_UC_SAME_SIZE - unchecked conversion size check - Check that the two types in an unchecked conversion instance are of the same size.
 VC_WEAKER_PRE - precondition weaker than class-wide precondition - Check that the precondition aspect of the subprogram is weaker than its class-wide precondition.
 VC_TRIVIAL_WEAKER_PRE - precondition not True while class-wide precondition is True - Check that the precondition aspect of the subprogram is True if its class-wide precondition is True.
 VC_STRONGER_POST - postcondition stronger than class-wide postcondition - Check that the postcondition aspect of the subprogram is stronger than its class-wide postcondition.

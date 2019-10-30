@@ -342,7 +342,10 @@ def is_other_proof_tag(tag):
                    "WEAKER_PRE",
                    "STRONGER_POST",
                    "WEAKER_CLASSWIDE_PRE",
-                   "STRONGER_CLASSWIDE_POST")
+                   "STRONGER_CLASSWIDE_POST",
+                   "UNCHECKED_CONVERSION",
+                   "UNCHECKED_CONVERSION_SIZE",
+                   )
 
 
 def is_flow_tag(tag):
@@ -483,6 +486,11 @@ def check_marks(strlist):
             return 'ASSERT'
         elif 'raise statement' in text or 'exception' in text:
             return 'RAISE'
+        elif 'bit representation' in text or 'unchecked conversion' in text:
+            if 'size' in text:
+                return 'UNCHECKED_CONVERSION_SIZE'
+            else:
+                return 'UNCHECKED_CONVERSION'
 
         # no tag recognized
         return None

@@ -256,6 +256,8 @@ package body Gnat2Why.Error_Messages is
                | VC_Warning_Kind
                | VC_Inline_Check
                | VC_Initialization_Check
+               | VC_UC_No_Holes
+               | VC_UC_Same_Size
             =>
                return (OK => False);
          end case;
@@ -701,8 +703,14 @@ package body Gnat2Why.Error_Messages is
             return "assertion might fail";
          when VC_Raise                     =>
             return "exception might be raised";
-         when VC_Inline_Check                     =>
+         when VC_Inline_Check              =>
             return "Inline_For_Proof annotation might be incorrect";
+         when VC_UC_No_Holes               =>
+            return "type with constraints on bit representation is " &
+              "unsuitable for unchecked conversion";
+         when VC_UC_Same_Size              =>
+            return "types used for unchecked conversion do not have the " &
+              "same size";
 
          --  VC_LSP_Kind - Liskov Substitution Principle
 
@@ -1026,8 +1034,12 @@ package body Gnat2Why.Error_Messages is
          when VC_Assert                    => return "assertion proved";
          when VC_Raise                     =>
             return "raise statement proved unreachable";
-         when VC_Inline_Check                     =>
+         when VC_Inline_Check              =>
             return "Inline_For_Proof annotation proved";
+         when VC_UC_No_Holes               =>
+            return "type is suitable for unchecked conversion";
+         when VC_UC_Same_Size              =>
+            return "types in unchecked conversion have the same size";
          when VC_Weaker_Pre                =>
             return "precondition is weaker than class-wide precondition";
          when VC_Trivial_Weaker_Pre        =>

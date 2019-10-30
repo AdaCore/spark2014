@@ -361,31 +361,27 @@ auditlog.ads:277:71: info: overflow check proved (CVC4: 1 VC)
 auditlog.ads:281:09: info: invariant check proved on default value (CVC4: 1 VC)
 audittypes.ads:78:16: info: range check proved (CVC4: 1 VC)
 bio.adb:84:15: info: range check proved (CVC4: 1 VC)
-bio.adb:99:13: info: add a contract to analyze it separately from calling contexts
-bio.adb:99:13: info: local subprogram "ValueOf" only analyzed in the context of calls
-bio.adb:120:13: info: add a contract to analyze it separately from calling contexts
-bio.adb:120:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
-bio.adb:126:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:190
-bio.adb:126:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:190
-bio.adb:129:25: info: analyzing call to "ValueOf" in context
-bio.adb:151:11: info: data dependencies proved
-bio.adb:160:07: info: initialization of "TheCodeName" proved
-bio.adb:172:17: info: postcondition proved (Trivial: 1 VC)
-bio.adb:174:38: info: range check proved (CVC4: 1 VC)
-bio.adb:175:12: info: range check proved (CVC4: 1 VC)
-bio.adb:175:41: info: range check proved (CVC4: 1 VC)
-bio.adb:176:12: info: range check proved (CVC4: 1 VC)
-bio.adb:176:57: info: range check proved (CVC4: 1 VC)
-bio.adb:182:13: info: range check proved (CVC4: 4 VC)
-bio.adb:182:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-bio.adb:182:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-bio.adb:184:23: info: range check proved (CVC4: 4 VC)
-bio.adb:190:22: info: analyzing call to "GetReturnCode" in context
-bio.adb:241:07: info: initialization of "NumericReturn" proved
-bio.adb:263:27: info: analyzing call to "ValueOf" in context
-bio.adb:266:18: info: precondition proved (CVC4: 1 VC)
-bio.adb:271:35: info: predicate check proved (CVC4: 1 VC)
-bio.adb:271:35: info: range check proved (CVC4: 1 VC)
+bio.adb:123:13: info: add a contract to analyze it separately from calling contexts
+bio.adb:123:13: info: local subprogram "GetReturnCode" only analyzed in the context of calls
+bio.adb:129:33: info: loop invariant initialization proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:129:33: info: loop invariant preservation proved (CVC4: 3 VC), in call inlined at bio.adb:193
+bio.adb:154:11: info: data dependencies proved
+bio.adb:163:07: info: initialization of "TheCodeName" proved
+bio.adb:175:17: info: postcondition proved (Trivial: 1 VC)
+bio.adb:177:38: info: range check proved (CVC4: 1 VC)
+bio.adb:178:12: info: range check proved (CVC4: 1 VC)
+bio.adb:178:41: info: range check proved (CVC4: 1 VC)
+bio.adb:179:12: info: range check proved (CVC4: 1 VC)
+bio.adb:179:57: info: range check proved (CVC4: 1 VC)
+bio.adb:185:13: info: range check proved (CVC4: 4 VC)
+bio.adb:185:42: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bio.adb:185:45: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+bio.adb:187:23: info: range check proved (CVC4: 4 VC)
+bio.adb:193:22: info: analyzing call to "GetReturnCode" in context
+bio.adb:244:07: info: initialization of "NumericReturn" proved
+bio.adb:269:18: info: precondition proved (CVC4: 1 VC)
+bio.adb:274:35: info: predicate check proved (CVC4: 1 VC)
+bio.adb:274:35: info: range check proved (CVC4: 1 VC)
 bio.ads:40:20: info: initialization of "FingerPresent" proved
 bio.ads:41:11: info: data dependencies proved
 bio.ads:42:11: info: flow dependencies proved

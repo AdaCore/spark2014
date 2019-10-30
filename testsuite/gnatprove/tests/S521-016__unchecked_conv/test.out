@@ -1,1 +1,7 @@
+unchecked_conv.adb:4:13: info: types in unchecked conversion have the same size (Trivial)
+unchecked_conv.adb:4:66: info: type is suitable for unchecked conversion (Trivial)
+unchecked_conv.adb:5:66: info: type is suitable for unchecked conversion (Trivial)
+unchecked_conv.adb:6:13: info: types in unchecked conversion have the same size (Trivial)
+unchecked_conv.adb:6:68: info: type is suitable for unchecked conversion (Trivial)
+unchecked_conv.adb:7:68: info: type is suitable for unchecked conversion (Trivial)
 unchecked_conv.adb:11:19: medium: assertion might fail, cannot prove To_Unsigned (Y) = X
