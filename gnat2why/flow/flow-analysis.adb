@@ -3668,9 +3668,18 @@ package body Flow.Analysis is
       --  No_Element.
 
       function Strip_Proof_Ins
-        (Deps : Dependency_Maps.Map)
+        (Deps    : Dependency_Maps.Map;
+         Globals : Global_Flow_Ids)
          return Dependency_Maps.Map;
       --  Strips global Proof_Ins from the RHS of Deps
+
+      procedure Prepare_Trimming
+        (Globals :     Global_Flow_Ids;
+         Inputs  : out Flow_Id_Sets.Set;
+         Outputs : out Flow_Id_Sets.Set);
+      --  Prepare sets with inputs and outputs for trimming an explicit Depends
+      --  using Refined_Global.
+      --  ??? this code duplicates the trimming that happens in Get_Depends
 
       -----------
       -- Check --
@@ -3796,16 +3805,73 @@ package body Flow.Analysis is
          end if;
       end Find_Out;
 
+      ----------------------
+      -- Prepare_Trimming --
+      ----------------------
+
+      procedure Prepare_Trimming
+        (Globals :     Global_Flow_Ids;
+         Inputs  : out Flow_Id_Sets.Set;
+         Outputs : out Flow_Id_Sets.Set)
+      is
+      begin
+         --  Change all variants to Normal_Use
+
+         Inputs  := Change_Variant (Globals.Inputs,  Normal_Use);
+         Outputs := Change_Variant (Globals.Outputs, Normal_Use);
+
+         --  Add formal parameters
+
+         for Param of Get_Formals (FA.Spec_Entity) loop
+            declare
+               Formal_Param : constant Flow_Id := Direct_Mapping_Id (Param);
+
+            begin
+               case Ekind (Param) is
+               when E_In_Parameter =>
+                  Inputs.Insert (Formal_Param);
+                  if Is_Access_Type (Underlying_Type (Etype (Param))) then
+                     --  ??? this should be added to Get_Depends
+                     Outputs.Insert (Formal_Param);
+                  end if;
+
+               when E_In_Out_Parameter =>
+                  Inputs.Insert (Formal_Param);
+                  Outputs.Insert (Formal_Param);
+
+               when E_Out_Parameter =>
+                  Outputs.Insert (Formal_Param);
+
+               when E_Protected_Type | E_Task_Type =>
+                  Inputs.Insert (Formal_Param);
+                  if Ekind (FA.Spec_Entity) /= E_Function then
+                     Outputs.Insert (Formal_Param);
+                  end if;
+
+               when others =>
+                  raise Program_Error;
+               end case;
+            end;
+         end loop;
+
+         --  If we analyze a function then we need to add it to the outputs so
+         --  that Function'Result can appear on the LHS of the Depends.
+
+         if Ekind (FA.Spec_Entity) = E_Function then
+            Outputs.Insert (Direct_Mapping_Id (FA.Spec_Entity));
+         end if;
+
+      end Prepare_Trimming;
+
       ---------------------
       -- Strip_Proof_Ins --
       ---------------------
 
       function Strip_Proof_Ins
-        (Deps : Dependency_Maps.Map)
+        (Deps    : Dependency_Maps.Map;
+         Globals : Global_Flow_Ids)
          return Dependency_Maps.Map
       is
-         User_Globals  : Global_Flow_Ids;
-
          --  Global Proof_Ins cannot appear in the RHS of a Depends contract.
          --  We get them here because Compute_Dependency_Relation returns them
          --  and this is used in Find_Exports_Derived_From_Proof_Ins.
@@ -3813,8 +3879,6 @@ package body Flow.Analysis is
          Stripped : Dependency_Maps.Map;
 
       begin
-         Get_Globals (FA.Spec_Entity, FA.B_Scope, False, User_Globals);
-
          for C in Deps.Iterate loop
             declare
                G_Out : Flow_Id          renames Dependency_Maps.Key (C);
@@ -3824,7 +3888,7 @@ package body Flow.Analysis is
 
             begin
                for G_In of G_Ins loop
-                  if User_Globals.Proof_Ins.Contains
+                  if Globals.Proof_Ins.Contains
                       (Change_Variant (G_In, In_View))
                   then
                      null;
@@ -3855,6 +3919,11 @@ package body Flow.Analysis is
       Missing_Deps        : Dependency_Maps.Map;
       Unused_Deps         : Dependency_Maps.Map;
 
+      Globals : Global_Flow_Ids;
+      Inputs  : Flow_Id_Sets.Set;
+      Outputs : Flow_Id_Sets.Set;
+      --  Inputs and outputs that appear on the PDG
+
       Depends_Scope : constant Flow_Scope := (if Present (FA.Refined_Depends_N)
                                               then FA.B_Scope
                                               else FA.S_Scope);
@@ -3871,6 +3940,8 @@ package body Flow.Analysis is
          return;
       end if;
 
+      Get_Globals (FA.Spec_Entity, FA.B_Scope, False, Globals);
+
       --  Read the user-written Depends
 
       User_Deps := (if Present (FA.Refined_Depends_N)
@@ -3879,7 +3950,7 @@ package body Flow.Analysis is
 
       --  Read the generated Refined_Depends
 
-      Actual_Deps := Strip_Proof_Ins (FA.Dependency_Map);
+      Actual_Deps := Strip_Proof_Ins (FA.Dependency_Map, Globals);
 
       --  Up-project the dependencies
 
@@ -3892,6 +3963,10 @@ package body Flow.Analysis is
              User      => Projected_User_Deps,
              Missing   => Missing_Deps,
              Unused    => Unused_Deps);
+
+      --  Prepare inputs and outputs for trimming
+
+      Prepare_Trimming (Globals, Inputs, Outputs);
 
       --  Debug output
 
@@ -4037,8 +4112,11 @@ package body Flow.Analysis is
                      Path : constant Vertex_Sets.Set :=
                        Dependency_Path
                          (FA      => FA,
-                          Inputs  => Down_Project (Missing_In,  FA.B_Scope),
-                          Outputs => Down_Project (Missing_Out, FA.B_Scope));
+                          Inputs  =>
+                            Down_Project (Missing_In,  FA.B_Scope)
+                              and Inputs,
+                          Outputs => Down_Project (Missing_Out, FA.B_Scope)
+                              and Outputs);
 
                   begin
                      if Missing_Out = Direct_Mapping_Id (FA.Spec_Entity)
