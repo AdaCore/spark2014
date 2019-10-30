@@ -617,24 +617,18 @@ parameter ``L`` is related to the returned borrower:
 
 .. code-block:: ada
 
-   function Same (X, Y : access constant List) return Boolean is (X = Y);
-
    function Tail (L : access List) return access List with
      Contract_Cases =>
        (L = null =>
           Tail'Result = null and Pledge (Tail'Result, L = null),
-        others   => Same (Tail'Result, L.Next)
+        others   => Tail'Result = L.Next
           and Pledge (Tail'Result, L.Val = L.Val'Old)
-          and Pledge (Tail'Result, Same (L.Next, Tail'Result)));
+          and Pledge (Tail'Result, L.Next = Tail'Result));
 
 If ``L`` is ``null`` then ``Tail`` returns ``null`` and ``L`` will stay ``null``
 for the duration of the borrow. Otherwise, ``Tail`` returns ``L.Next``, the
 first element of ``L`` will stay as it was at the time of call, and the rest
 of ``L`` stays equal to the object returned by ``Tail``.
-Note that we had to introduce a ``Same`` function to compare the result of
-``Tail`` and the ``Next`` component of ``L``, as Ada equality can only be
-called when the type of the left and right operands are the same, which is not
-the case here.
 
 Thanks to this postcondition, we can verify a program which borrows a part of
 ``L`` using the ``Tail`` function and modifies ``L`` through this borrower:
