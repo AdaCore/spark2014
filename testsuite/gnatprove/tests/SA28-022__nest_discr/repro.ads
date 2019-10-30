@@ -15,7 +15,7 @@ is
    type Fnord_Type (Opt : Foo_Kind := Foo) is record
       case Opt is
          when Foo      => Z     : Character;
-         when Bar_Kind => Blech : Blech_Type (Opt);
+         when Bar_Kind => Blech : Blech_Type (Opt); --@RANGE_CHECK:PASS
       end case;
    end record;
 
