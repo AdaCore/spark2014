@@ -1,0 +1,19 @@
+INLINING ENABLED:
+copy_case.adb:16:22: medium: "Result" might not be initialized
+copy_case.adb:17:22: medium: "Result" might not be initialized
+copy_case.adb:18:25: medium: "Result" might not be initialized
+copy_case.adb:22:11: medium: "Result" might not be initialized
+copy_if.adb:16:10: high: "Result" is not initialized
+copy_if.adb:17:29: medium: "Result" might not be initialized
+copy_if.adb:18:15: medium: "Result" might not be initialized
+copy_if.adb:22:11: medium: "Result" might not be initialized
+
+INLINING DISABLED:
+copy_case.adb:16:30: high: "Result" is not initialized
+copy_case.adb:17:30: high: "Result" is not initialized
+copy_case.adb:18:33: high: "Result" is not initialized
+copy_case.adb:22:11: medium: "Result" might not be initialized
+copy_if.adb:16:18: high: "Result" is not initialized
+copy_if.adb:17:37: high: "Result" is not initialized
+copy_if.adb:18:23: high: "Result" is not initialized
+copy_if.adb:22:11: medium: "Result" might not be initialized
