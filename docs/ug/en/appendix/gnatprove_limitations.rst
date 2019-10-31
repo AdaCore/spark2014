@@ -13,6 +13,9 @@ Tool Limitations
    access-to-subprogram and dynamic binding) and indirect reads/writes to
    global variables (through access variables).
 
+#. Checks related to tasking, subprogram termination, or recursive calls do not
+   take into account dispatching calls.
+
 #. A subset of all Ada conversions between array types is supported:
 
    * element types must be exactly the same
