@@ -2093,9 +2093,8 @@ package body SPARK_Util is
       Orig : constant Node_Id := Original_Node (N);
 
    begin
-      return
-        (Present (Orig)
-           and then Is_Pragma (Orig, Pragma_Assert_And_Cut));
+      return Present (Orig)
+        and then Is_Pragma (Orig, Pragma_Assert_And_Cut);
    end Is_Pragma_Assert_And_Cut;
 
    ---------------------
