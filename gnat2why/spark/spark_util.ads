@@ -474,7 +474,8 @@ package SPARK_Util is
    --  @param N any node
    --  @return True iff N is a pragma Check (Name, ...);
 
-   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean;
+   function Is_Ignored_Pragma_Check (N : Node_Id) return Boolean
+     with Pre => Nkind (N) = N_Pragma;
    --  @param N pragma
    --  @return True iff N is a pragma Check that can be ignored by analysis,
    --     because it is already taken into account elsewhere (precondition and
@@ -505,7 +506,8 @@ package SPARK_Util is
    --  @param N any node
    --  @return same as Spec_File_Name but without the suffix.
 
-   function String_Of_Node (N : Node_Id) return String;
+   function String_Of_Node (N : Node_Id) return String
+   with Pre => Nkind (N) in N_Subexpr;
    --  @param N any expression node
    --  @return the node as pretty printed Ada code, limited to 50 chars
 
@@ -566,7 +568,8 @@ package SPARK_Util is
      );
 
    function Is_Selected_For_Loop_Unrolling
-     (Loop_Stmt : Node_Id) return Boolean;
+     (Loop_Stmt : Node_Id) return Boolean
+   with Pre => Nkind (Loop_Stmt) = N_Loop_Statement;
    --  Return whether [Loop_Stmt] is unrolled or not
 
    procedure Candidate_For_Loop_Unrolling
@@ -632,7 +635,7 @@ package SPARK_Util is
    --  through calls to traversal functions.
 
    function Has_Dereferences (N : Node_Id) return Boolean with
-     Pre => Nkind (N) in Sinfo.N_Subexpr;
+     Pre => Nkind (N) in N_Subexpr;
    --  Return True if there is a dereference in the suffix of N which is a path
 
    function Is_Action (N : Node_Id) return Boolean
@@ -640,7 +643,8 @@ package SPARK_Util is
    --  @param N is an object declaration
    --  @return if the given node N is an action
 
-   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean;
+   function Is_Converted_Actual_Output_Parameter (N : Node_Id) return Boolean
+     with Pre => Nkind (N) in N_Subexpr;
    --  @param N expression
    --  @return True iff N is either directly an out or in out actual parameter,
    --     or under one or multiple type conversions, where the most enclosing
