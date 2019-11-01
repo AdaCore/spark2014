@@ -12771,8 +12771,8 @@ package body Gnat2Why.Expr is
                               N      => Etype (Index),
                               Base   => Etype (Index_Base));
 
-                           Next (Index);
-                           Next (Index_Base);
+                           Next_Index (Index);
+                           Next_Index (Index_Base);
                         end loop;
                      end;
 
@@ -12986,7 +12986,7 @@ package body Gnat2Why.Expr is
                               end if;
                            end if;
 
-                           Next (Index);
+                           Next_Index (Index);
                         end loop;
 
                         --  For each range_constraint of an array subtype, we
@@ -13006,8 +13006,8 @@ package body Gnat2Why.Expr is
                                        Base   => Etype (Index_Base)),
                                     R);
                               end if;
-                              Next (Index);
-                              Next (Index_Base);
+                              Next_Index (Index);
+                              Next_Index (Index_Base);
                            end loop;
                         end if;
                      end;
