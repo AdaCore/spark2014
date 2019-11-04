@@ -1,0 +1,5 @@
+pred_vis.ads:8:09: type with predicates with different SPARK_Mode values is not yet supported
+pred_vis.ads:10:09: type with predicates with different SPARK_Mode values is not yet supported
+pred_vis.ads:12:09: type with predicates with different SPARK_Mode values is not yet supported
+pred_vis.ads:13:04: warning: pragma "Predicate" ignored (not yet supported)
+gnatprove: error during flow analysis and proof

@@ -1,2 +1,0 @@
-q.ads:9:12: predicate on private type outside SPARK_Mode is not yet supported
-gnatprove: error during flow analysis and proof

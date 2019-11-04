@@ -3300,16 +3300,22 @@ package body SPARK_Definition is
          return;
       end if;
 
+      --  We are calling a predicate function whose predicate is not visible
+      --  in SPARK. This is OK, we do not try to mark the call.
+
+      if Ekind (E) = E_Function
+        and then Is_Predicate_Function (E)
+        and then not In_SPARK (E)
+      then
+         return;
+      end if;
+
       Mark_Actuals (N);
 
       --  Call is in SPARK only if the subprogram called is in SPARK
 
       if not In_SPARK (E) then
-         Mark_Violation (N,
-                         From => (if Ekind (E) = E_Function
-                                    and then Is_Predicate_Function (E)
-                                  then Etype (First_Formal (E))
-                                  else E));
+         Mark_Violation (N, From => E);
 
       elsif Nkind (N) in N_Subprogram_Call
         and then Present (Controlling_Argument (N))
@@ -5309,12 +5315,73 @@ package body SPARK_Definition is
 
          elsif Is_Private_Type (E) then
 
-            --  Disallow a private type whose full view is not in SPARK and
-            --  which has predicates.
+            --  If a type has two predicates supplied with different
+            --  SPARK_Mode, we cannot support it in SPARK. Indeed, we
+            --  currently use the predicate function to retrieve the predicate,
+            --  and this function merges all the predicates applying to the
+            --  type so that we cannot tell the difference.
 
-            if Full_View_Not_In_SPARK (E) and then Has_Predicates (E) then
-               Mark_Unsupported
-                 ("predicate on private type outside SPARK_Mode", E);
+            if Present (Full_View (E)) and then Has_Predicates (E) then
+               declare
+                  Scop : constant Entity_Id := Scope (E);
+                  pragma Assert (Ekind (Scop) = E_Package);
+
+                  Prag     : constant Node_Id := SPARK_Pragma (Scop);
+                  Aux_Prag : constant Node_Id := SPARK_Aux_Pragma (Scop);
+                  Rep      : Node_Id := First_Rep_Item (Full_View (E));
+                  Found    : Boolean := False;
+                  Full     : Boolean;
+
+               begin
+                  --  Only look for duplicate predicates if the full view
+                  --  of E and its partial view do not have the same
+                  --  SPARK_Mode.
+
+                  pragma Assert (if No (Aux_Prag) then No (Prag));
+
+                  if Present (Prag)
+                    and then Aux_Prag /= Prag
+                    and then Get_SPARK_Mode_From_Annotation (Prag) /=
+                    Get_SPARK_Mode_From_Annotation (Aux_Prag)
+                  then
+
+                     --  Loop over the Rep_Item list to search for predicates.
+                     --  When one is found, we store whether it is located on
+                     --  the partial or the full view in Full and continue the
+                     --  search. If a predicate is found on the full view and
+                     --  another on the private view, we exit the loop and
+                     --  raise a violation.
+
+                     loop
+                        Find_Predicate_Item (E, Rep);
+                        exit when No (Rep);
+                        declare
+                           N_Full : constant Boolean :=
+                             (if Nkind (Rep) = N_Pragma
+                              then List_Containing (Rep) =
+                                  Private_Declarations
+                                    (Package_Specification (Scop))
+                              else not Aspect_On_Partial_View (Rep));
+                           --  A predicate is specified on the full view if
+                           --  either it is a pragma contained in the
+                           --  private declarations of the package, or it is an
+                           --  aspect which is not on the partial view of the
+                           --  type.
+
+                        begin
+                           if Found and then Full /= N_Full then
+                              Mark_Unsupported
+                                ("type with predicates with different"
+                                 & " SPARK_Mode values", E);
+                              exit;
+                           end if;
+                           Found := True;
+                           Full := N_Full;
+                        end;
+                        Next_Rep_Item (Rep);
+                     end loop;
+                  end if;
+               end;
             end if;
 
          elsif Is_Record_Type (E) then
@@ -7662,28 +7729,6 @@ package body SPARK_Definition is
 
    function SPARK_Pragma_Of_Entity (E : Entity_Id) return Node_Id is
 
-      function Lexical_Scope (E : Entity_Id) return Entity_Id;
-      --  Version of Einfo.Scope that returns the lexical scope instead of the
-      --  semantic scope for an entity. For example, it returns the package
-      --  body entity for an entity declared directly in the body of a
-      --  package, instead of the package entity. It is important for returning
-      --  the appropriate SPARK_Mode pragma, which may be different for a
-      --  declaration and its corresponding body.
-
-      -------------------
-      -- Lexical_Scope --
-      -------------------
-
-      function Lexical_Scope (E : Entity_Id) return Entity_Id is
-      begin
-         return
-           Defining_Entity
-             (Enclosing_Declaration
-                (Parent
-                   (Enclosing_Declaration
-                      (E))));
-      end Lexical_Scope;
-
       subtype SPARK_Pragma_Scope_With_Type_Decl is Entity_Kind
         with Static_Predicate =>
           SPARK_Pragma_Scope_With_Type_Decl in E_Abstract_State
@@ -7702,14 +7747,80 @@ package body SPARK_Definition is
                                              | E_Package
                                              | E_Package_Body;
 
+      function SPARK_Pragma_Of_Decl (Decl : Node_Id) return Node_Id;
+      --  Return the SPARK_Pragma associated with a declaration or a pragma. It
+      --  is the pragma of the first enclosing scope with a SPARK pragma.
+
+      function SPARK_Pragma_Of_Decl (Decl : Node_Id) return Node_Id is
+         Scop : Node_Id := Decl;
+
+      begin
+         --  Search for the first enclosing scope with a SPARK pragma
+
+         while Nkind (Scop) not in
+           N_Declaration | N_Later_Decl_Item | N_Number_Declaration
+           or else Ekind (Defining_Entity (Scop)) not in
+             SPARK_Pragma_Scope_With_Type_Decl
+         loop
+            pragma Assert (Present (Scop));
+            Scop := Parent (Scop);
+         end loop;
+
+         Scop := Defining_Entity (Scop);
+
+         --  If the scope that carries the pragma is a
+         --  package, we need to handle the special cases where the entity
+         --  comes from the private declarations of the spec (first case)
+         --  or the statements of the body (second case).
+
+         case Ekind (Scop) is
+            when E_Package =>
+               if List_Containing (Decl) =
+                 Private_Declarations (Package_Specification (Scop))
+               then
+                  return SPARK_Aux_Pragma (Scop);
+               else
+                  pragma Assert
+                    (List_Containing (Decl) =
+                         Visible_Declarations (Package_Specification (Scop)));
+               end if;
+
+               --  For package bodies, the entity is declared either
+               --  immediately in the package body declarations or in an
+               --  arbitrarily nested DECLARE block of the package body
+               --  statements.
+
+            when E_Package_Body =>
+               if List_Containing (Decl) =
+                 Declarations (Package_Body (Scop))
+               then
+                  return SPARK_Pragma (Scop);
+               else
+                  return SPARK_Aux_Pragma (Scop);
+               end if;
+
+               --  Similar correction could be needed for concurrent types too,
+               --  but types and named numbers can't be nested there.
+
+            when E_Protected_Type
+               | E_Task_Type
+               =>
+               raise Program_Error;
+
+            when others =>
+               null;
+         end case;
+
+         return SPARK_Pragma (Scop);
+      end SPARK_Pragma_Of_Decl;
+
    --  Start of processing for SPARK_Pragma_Of_Entity
 
    begin
 
-      --  Predicate functions have the same SPARK_Mode as their associated type
-
-      --  ??? similar code might be required for Type_Invariants and DIC, but
-      --  the current code seems to work.
+      --  Get correct type for predicate functions.
+      --  Similar code is not needed for Invariants and DIC because we do not
+      --  mark the corresponding procedure, just the expression.
 
       if Ekind (E) = E_In_Parameter
         and then Ekind (Scope (E)) = E_Function
@@ -7718,12 +7829,46 @@ package body SPARK_Definition is
          return SPARK_Pragma_Of_Entity (Scope (E));
 
       elsif Ekind (E) = E_Function and then Is_Predicate_Function (E) then
+
+         --  The predicate function has the SPARK_Mode of the associated type.
+         --  If this type has a full view, search the rep item list to know the
+         --  correct SPARK_Mode.
+
          declare
-            Ty : constant Entity_Id := Etype (First_Formal (E));
+            Ty  : constant Entity_Id := Etype (First_Formal (E));
+            Rep : Node_Id;
          begin
-            return SPARK_Pragma_Of_Entity (if Is_Private_Type (Ty)
-                                           then Full_View (Ty)
-                                           else Ty);
+            if No (Full_View (Ty)) then
+               return SPARK_Pragma_Of_Entity (Ty);
+            else
+               Rep := First_Rep_Item
+                 (if Present (Full_View (Ty)) then Full_View (Ty) else Ty);
+
+               Find_Predicate_Item (Ty, Rep);
+               if No (Rep) then
+
+                  --  The type only has inherited predicates. The predicate
+                  --  function is empty, we can choose any SPARK_Mode.
+
+                  return SPARK_Pragma_Of_Entity (Ty);
+               elsif Nkind (Rep) = N_Pragma then
+
+                  --  Search for the SPARK_Mode applying to the predicate
+
+                  return SPARK_Pragma_Of_Decl (Rep);
+               else
+                  pragma Assert (Nkind (Rep) = N_Aspect_Specification);
+
+                  --  Use the SPARK_Mode of the partial or full view of the
+                  --  type, depending on Aspect_On_Partial_View.
+
+                  if Aspect_On_Partial_View (Rep) then
+                     return SPARK_Pragma_Of_Entity (Ty);
+                  else
+                     return SPARK_Pragma_Of_Entity (Full_View (Ty));
+                  end if;
+               end if;
+            end if;
          end;
       end if;
 
@@ -7786,7 +7931,7 @@ package body SPARK_Definition is
       end if;
 
       if Is_Formal (E)
-        or else Ekind (E) = E_Discriminant
+        or else Ekind (E) in E_Discriminant | E_Component
       then
          return SPARK_Pragma (Scope (E));
       end if;
@@ -7796,65 +7941,8 @@ package body SPARK_Definition is
       --  the lexical scope until we find an entity that can carry a
       --  SPARK_Mode pragma.
 
-      declare
-         pragma Assert (Is_Type (E) or else Is_Named_Number (E));
-
-         Def : Entity_Id := E;
-         --  Entity which defines type E
-
-         Def_Scop : Entity_Id := Lexical_Scope (E);
-         --  Immediate scope of the entity that defines E
-      begin
-         while Ekind (Def_Scop) not in SPARK_Pragma_Scope_With_Type_Decl
-         loop
-            Def := Def_Scop;
-            Def_Scop := Lexical_Scope (Def_Scop);
-         end loop;
-
-         --  One more correction. If the scope that carries the pragma is a
-         --  package, we need to handle the special cases where the entity
-         --  comes from the private declarations of the spec (first case)
-         --  or the statements of the body (second case).
-
-         case Ekind (Def_Scop) is
-         when E_Package =>
-            if List_Containing (Parent (Def)) =
-              Private_Declarations (Package_Specification (Def_Scop))
-            then
-               return SPARK_Aux_Pragma (Def_Scop);
-            else
-               pragma Assert
-                 (List_Containing (Parent (Def)) =
-                    Visible_Declarations (Package_Specification (Def_Scop)));
-            end if;
-
-         --  For package bodies, the entity is declared either immediately in
-         --  the package body declarations or in an arbitrarily nested DECLARE
-         --  block of the package body statements.
-
-         when E_Package_Body =>
-            if List_Containing (Parent (Def)) =
-              Declarations (Package_Body (Def_Scop))
-            then
-               return SPARK_Pragma (Def_Scop);
-            else
-               return SPARK_Aux_Pragma (Def_Scop);
-            end if;
-
-         --  Similar correction could be needed for concurrent types too, but
-         --  types and named numbers can't be nested there.
-
-         when E_Protected_Type
-            | E_Task_Type
-         =>
-            raise Program_Error;
-
-         when others =>
-            null;
-         end case;
-
-         return SPARK_Pragma (Def_Scop);
-      end;
+      pragma Assert (Is_Type (E) or else Is_Named_Number (E));
+      return SPARK_Pragma_Of_Decl (Enclosing_Declaration (E));
 
    end SPARK_Pragma_Of_Entity;
 

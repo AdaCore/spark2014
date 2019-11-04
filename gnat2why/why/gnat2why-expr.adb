@@ -4610,11 +4610,21 @@ package body Gnat2Why.Expr is
       --  default initialization, the predicate is checked at default
       --  initialization so it can be assumed to always hold. Otherwise, the
       --  predicate is only valid for initialized data. In all cases, only
-      --  assume the predicate when the top predicate should be included.
+      --  assume the predicate of the type itself when the top predicate should
+      --  be included. Otherwise, assume the predicate of the first ancestor
+      --  only.
 
       declare
          Typ_Pred              : constant W_Pred_Id :=
            Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
+         Anc_Ty                : constant Entity_Id :=
+           (if Full_View_Not_In_SPARK (Ty_Ext)
+            then Get_First_Ancestor_In_SPARK (Ty_Ext)
+            else Retysp (Etype (Ty_Ext)));
+         Anc_Typ_Pred          : constant W_Pred_Id :=
+           (if Anc_Ty = Ty_Ext then True_Pred
+            else Compute_Dynamic_Predicate
+              (Expr, Anc_Ty, Params, Use_Pred => False));
          Pred_Check_At_Default : constant Boolean :=
            Default_Initialization (Ty_Ext, Get_Flow_Scope (Ty_Ext))
              /= No_Default_Initialization;
@@ -4626,6 +4636,12 @@ package body Gnat2Why.Expr is
                  else New_Conditional (Domain    => EW_Pred,
                                        Condition => +Init_Flag,
                                        Then_Part => +Typ_Pred,
+                                       Typ       => EW_Bool_Type)),
+              Else_Part =>
+                (if Pred_Check_At_Default then +Anc_Typ_Pred
+                 else New_Conditional (Domain    => EW_Pred,
+                                       Condition => +Init_Flag,
+                                       Then_Part => +Anc_Typ_Pred,
                                        Typ       => EW_Bool_Type)),
               Typ       => EW_Bool_Type);
 
@@ -4822,17 +4838,17 @@ package body Gnat2Why.Expr is
       Params   : Transformation_Params := Body_Params;
       Use_Pred : Boolean := True) return W_Pred_Id
    is
-      --  If Ty's fullview is in SPARK, go to its underlying type to check its
-      --  kind.
-
-      Rep_Ty : constant Entity_Id := Retysp (Ty);
+      Rep_Ty : Entity_Id := Retysp (Ty);
+      Res    : W_Pred_Id := True_Pred;
 
    begin
-      if Has_Predicates (Rep_Ty) then
+      --  Go through the ancestors of Ty to collect all applicable predicates
+
+      while Has_Predicates (Rep_Ty) loop
          declare
             Pred_Type : constant Entity_Id :=
               Get_Type_With_Predicate_Function (Rep_Ty);
-            --  Type entity with predicate function attached
+            Pred_Fun  : constant Entity_Id := Predicate_Function (Pred_Type);
 
          begin
             --  If Use_Pred is true, then we already have generated a predicate
@@ -4843,24 +4859,47 @@ package body Gnat2Why.Expr is
             if Use_Pred
               and then Eq_Base (Type_Of_Node (Pred_Type), Get_Type (+Expr))
             then
-               return New_Predicate_Call (Pred_Type, Expr, Params);
-            else
+               return +New_And_Then_Expr
+                 (Left   => +New_Predicate_Call (Pred_Type, Expr, Params),
+                  Right  => +Res,
+                  Domain => EW_Pred);
+            elsif Entity_In_SPARK (Pred_Fun) then
                declare
                   My_Params : Transformation_Params := Params;
                begin
                   My_Params.Gen_Marker := GM_Node_Only;
-                  return
-                    +Dynamic_Predicate_Expression
-                    (Expr      => +Expr,
-                     Pred_Subp => Predicate_Function (Pred_Type),
-                     Domain    => EW_Pred,
-                     Params    => My_Params);
+                  Res := +New_And_Then_Expr
+                    (Left   => +Dynamic_Predicate_Expression
+                       (Expr      => +Expr,
+                        Pred_Subp => Pred_Fun,
+                        Domain    => EW_Pred,
+                        Params    => My_Params),
+                     Right  => +Res,
+                     Domain => EW_Pred);
                end;
             end if;
+
+            --  Go directly to the first type on which the predicate applies
+            --  using the type of the first formal of the predicate function.
+
+            Rep_Ty := Retysp
+              (Etype (First_Formal (Pred_Fun)));
          end;
-      else
-         return True_Pred;
-      end if;
+
+         --  Go to the next type in the derivation tree of Rep_Ty to continue
+         --  the search.
+
+         declare
+            Next_Ty : constant Entity_Id :=
+              (if Full_View_Not_In_SPARK (Rep_Ty)
+               then Get_First_Ancestor_In_SPARK (Rep_Ty)
+               else Retysp (Etype (Rep_Ty)));
+         begin
+            exit when Next_Ty = Rep_Ty;
+            Rep_Ty := Next_Ty;
+         end;
+      end loop;
+      return Res;
    end Compute_Dynamic_Predicate;
 
    -----------------------
@@ -5170,7 +5209,7 @@ package body Gnat2Why.Expr is
       Domain    : EW_Domain;
       Params    : Transformation_Params) return W_Expr_Id
    is
-      Result : W_Expr_Id;
+      Result     : W_Expr_Id;
       Pred_Expr  : constant Node_Id :=
         Get_Expr_From_Return_Only_Func (Pred_Subp);
       Pred_Param : constant Entity_Id := First_Formal (Pred_Subp);
@@ -14570,27 +14609,12 @@ package body Gnat2Why.Expr is
                       (Expr, Domain, Local_Params);
             elsif Is_Predicate_Function (Get_Called_Entity (Expr)) then
 
-               --  Calls to predicate functions should be replaced by their
-               --  expression.
+               --  Calls to predicate functions are ignored. Inherited
+               --  predicates are handled by other means. This is needed to
+               --  be able to handle inherited predicates which are not
+               --  visible in SPARK.
 
-               declare
-                  Func : constant Entity_Id := Get_Called_Entity (Expr);
-                  Arg  : constant Node_Id := First_Actual (Expr);
-               begin
-                  pragma Assert (Present (Arg)
-                                 and then No (Next_Actual (Arg)));
-
-                  T := Dynamic_Predicate_Expression
-                    (Expr      => Transform_Expr
-                       (Expr          => Arg,
-                        Expected_Type => Type_Of_Node (Arg),
-                        Domain        =>
-                          (if Domain = EW_Pred then EW_Term else Domain),
-                        Params        => Local_Params),
-                     Pred_Subp => Func,
-                     Domain    => Domain,
-                     Params    => Local_Params);
-               end;
+               return New_Literal (Value => EW_True, Domain => Domain);
             elsif Has_Pledge_Annotation (Get_Called_Entity (Expr)) then
                declare
                   Fst_Act : constant Node_Id := First_Actual (Expr);
@@ -19348,15 +19372,36 @@ package body Gnat2Why.Expr is
      (Ty        : Entity_Id;
       Variables : in out Flow_Id_Sets.Set)
    is
-      Rep_Type  : constant Entity_Id := Retysp (Ty);
-      Pred_Type : constant Entity_Id :=
-        Get_Type_With_Predicate_Function (Rep_Type);
-      --  Type entity with predicate function attached
-
-      Dynamic_Pred_Expr : constant Node_Id :=
-        Get_Expr_From_Return_Only_Func (Predicate_Function (Pred_Type));
+      Rep_Type : Entity_Id := Retysp (Ty);
    begin
-      Variables.Union (Get_Variables_For_Proof (Dynamic_Pred_Expr, Pred_Type));
+      while Has_Predicates (Rep_Type) loop
+
+         declare
+            Pred_Typ : constant Entity_Id :=
+              Get_Type_With_Predicate_Function (Rep_Type);
+            --  Type entity with predicate function attached
+            Pred_Fun : constant Entity_Id := Predicate_Function (Pred_Typ);
+         begin
+            if Entity_In_SPARK (Pred_Fun) then
+               Variables.Union
+                 (Get_Variables_For_Proof
+                    (Get_Expr_From_Return_Only_Func (Pred_Fun), Pred_Typ));
+            end if;
+
+            Rep_Type := Retysp
+              (Etype (First_Formal (Predicate_Function (Pred_Typ))));
+         end;
+
+         declare
+            Next_Ty : constant Entity_Id :=
+              (if Full_View_Not_In_SPARK (Rep_Type)
+               then Get_First_Ancestor_In_SPARK (Rep_Type)
+               else Retysp (Etype (Rep_Type)));
+         begin
+            exit when Next_Ty = Rep_Type;
+            Rep_Type := Next_Ty;
+         end;
+      end loop;
    end Variables_In_Dynamic_Predicate;
 
    ------------------------------------

@@ -301,6 +301,10 @@ package SPARK_Util.Types is
      Pre => Is_Type (Typ);
    --  Returns True if the type passed as argument is deep
 
+   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id);
+   --  Go over the items linked from Rep_Item to search for a predicate
+   --  pragma or aspect applying to Ty.
+
    --------------------------------
    -- Queries related to records --
    --------------------------------

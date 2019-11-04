@@ -23,6 +23,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Aspects;                    use Aspects;
 with Elists;                     use Elists;
 with Exp_Util;                   use Exp_Util;
 with Sem_Eval;                   use Sem_Eval;
@@ -360,6 +361,45 @@ package body SPARK_Util.Types is
 
       return Count;
    end Count_Non_Inherited_Discriminants;
+
+   -------------------------
+   -- Find_Predicate_Item --
+   -------------------------
+
+   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id) is
+   begin
+      while Present (Rep_Item) loop
+         case Nkind (Rep_Item) is
+            when N_Pragma =>
+
+               --  Ignore pragmas coming from aspect specification. It will be
+               --  analyzed when the corresponding aspect is found.
+
+               if From_Aspect_Specification (Rep_Item) then
+                  null;
+               elsif Get_Pragma_Id (Pragma_Name (Rep_Item)) = Pragma_Predicate
+                 and then Unique_Entity
+                   (Entity
+                      (Expression
+                         (First (Pragma_Argument_Associations (Rep_Item))))) =
+                   Unique_Entity (Ty)
+               then
+                  return;
+               end if;
+            when N_Aspect_Specification =>
+               if Get_Aspect_Id (Rep_Item) in Aspect_Predicate
+                                            | Aspect_Dynamic_Predicate
+                                            | Aspect_Static_Predicate
+                   and then Unique_Entity (Entity (Rep_Item)) =
+                     Unique_Entity (Ty)
+               then
+                  return;
+               end if;
+            when others => null;
+         end case;
+         Next_Rep_Item (Rep_Item);
+      end loop;
+   end Find_Predicate_Item;
 
    -------------------------------
    -- Get_Initial_DIC_Procedure --
