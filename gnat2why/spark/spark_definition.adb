@@ -2483,6 +2483,10 @@ package body SPARK_Definition is
                Mark_Entity (Etype (N));
             end if;
 
+         when N_Delta_Aggregate
+            | N_Delta_Constraint =>
+            Mark_Unsupported ("delta expression", N);
+
          --  Object renamings are rewritten by expansion, but they are kept in
          --  the tree, so just ignore them.
 
@@ -2527,8 +2531,6 @@ package body SPARK_Definition is
             | N_Defining_Operator_Symbol
             | N_Defining_Program_Unit_Name
             | N_Delay_Alternative
-            | N_Delta_Aggregate
-            | N_Delta_Constraint
             | N_Derived_Type_Definition
             | N_Designator
             | N_Digits_Constraint
