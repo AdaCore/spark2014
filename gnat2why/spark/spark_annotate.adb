@@ -42,6 +42,7 @@ with SPARK_Definition;
 with SPARK_Util.Subprograms;       use SPARK_Util.Subprograms;
 with SPARK_Util.Types;             use SPARK_Util.Types;
 with Stringt;                      use Stringt;
+with String_Utils;                 use String_Utils;
 
 package body SPARK_Annotate is
 
@@ -106,9 +107,14 @@ package body SPARK_Annotate is
    --  Stores type entities with a pragma Annotate
    --  (GNATprove, Init_By_Proof, E).
 
+   Might_Not_Return_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores procedure entities with a pragma Annotate
+   --  (GNATprove, Might_Not_Return, E).
+
    Pledge_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
-   --  Stores type entities with a pragma Annotate (GNATprove, Pledge, E).
+   --  Stores function entities with a pragma Annotate (GNATprove, Pledge, E).
 
    procedure Insert_Annotate_Range
      (Prgma           : Node_Id;
@@ -160,30 +166,36 @@ package body SPARK_Annotate is
    --  External_Axiomatization as a second argument). If it is necessary,
    --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
 
-   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, )
-   --  and insert it in the Inline_Annotations map.
-
-   procedure Check_Iterable_Annotation
-     (Arg3_Exp : Node_Id;
-      Arg4_Exp : Node_Id);
-   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, )
-   --  and insert it in the Iterable_Annotations map.
-
-   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) with
-     Pre => Present (Arg3_Exp);
-   --  Check validity of a pragma Annotate (Gnatprove, Terminating, ) and
-   --  insert it in the Terminate_Annotations map.
-
    procedure Check_Init_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, Init_By_Proof, E) and
    --  insert it in the Init_Annotations map.
 
+   procedure Check_Inline_Annotation (Arg3_Exp : Node_Id; Prag : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Inline_For_Proof, E)
+   --  and insert it in the Inline_Annotations map.
+
+   procedure Check_Iterable_Annotation
+     (Arg3_Exp : Node_Id;
+      Arg4_Exp : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Iterate_For_Proof, E)
+   --  and insert it in the Iterable_Annotations map.
+
+   procedure Check_Might_Not_Return_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id);
+   --  Check validity of a pragma Annotate (Gnatprove, Might_Not_Return, E)
+   --  and insert it in the Might_Not_Return_Annotations map.
+
    procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, Pledge, E) and insert it
    --  in the Pledge_Annotations map.
+
+   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) with
+     Pre => Present (Arg3_Exp);
+   --  Check validity of a pragma Annotate (Gnatprove, Terminating, E) and
+   --  insert it in the Terminate_Annotations map.
 
    ---------
    -- "<" --
@@ -550,6 +562,65 @@ package body SPARK_Annotate is
       end if;
    end Check_Iterable_Annotation;
 
+   ---------------------------------------
+   -- Check_Might_Not_Return_Annotation --
+   ---------------------------------------
+
+   procedure Check_Might_Not_Return_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
+      E                : Entity_Id;
+
+   begin
+      --  Correct number of arguments was checked before, hence third and last
+      --  argument is correct in the aspect case, since it is generated.
+
+      if Nkind (Arg3_Exp) not in N_Has_Entity then
+         pragma Assert (not From_Aspect);
+         Error_Msg_N
+           ("third argument of pragma Annotate Might_Not_Return must be "
+            & "an entity",
+            Arg3_Exp);
+         return;
+      else
+         E := Unique_Entity (Entity (Arg3_Exp));
+      end if;
+
+      --  This entity must be a procedure
+
+      if Ekind (E) /= E_Procedure then
+         Error_Msg_N
+           (Aspect_Or_Pragma
+            & " Annotate Might_Not_Return must apply to a procedure",
+            Arg3_Exp);
+         return;
+
+      --  The procedure should not be marked No_Return
+
+      elsif No_Return (E) then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Might_Not_Return must not also be marked with No_Return",
+            Arg3_Exp);
+         return;
+
+      --  The procedure should not be dispatching
+
+      elsif Is_Dispatching_Operation (E) then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Might_Not_Return must not also be dispatching",
+            Arg3_Exp);
+         return;
+      end if;
+
+      Might_Not_Return_Annotations.Include (E);
+   end Check_Might_Not_Return_Annotation;
+
    -----------------------------
    -- Check_Pledge_Annotation --
    -----------------------------
@@ -633,6 +704,8 @@ package body SPARK_Annotate is
       end if;
 
       --  Go through renamings to find the appropriate entity
+      --  ??? this comment only applies to Check_Terminate_Annotation, where
+      --  Get_Renamed_Entity is called. What about others?
 
       Pledge_Annotations.Include (Unique_Entity (E));
    end Check_Pledge_Annotation;
@@ -697,6 +770,13 @@ package body SPARK_Annotate is
          end if;
       end loop;
    end Generate_Useless_Pragma_Annotate_Warnings;
+
+   -------------------------------------
+   -- Has_Might_Not_Return_Annotation --
+   -------------------------------------
+
+   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
+     (Might_Not_Return_Annotations.Contains (E));
 
    ---------------------------
    -- Has_Pledge_Annotation --
@@ -939,141 +1019,210 @@ package body SPARK_Annotate is
                        "validity check",
                        "other out parameters only set when Ok is True");
 
-      Arg1, Arg2, Arg3, Arg4 : Node_Id;
-      Arg2_Exp, Arg3_Exp, Arg4_Exp : Node_Id;
+      --  Local constants
 
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Node);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
       Number_Of_Pragma_Args : constant Nat :=
         List_Length (Pragma_Argument_Associations (Node));
 
-   begin
-      --  We silently ignore these cases
+      --  Local subprograms
 
-      if Number_Of_Pragma_Args = 2  then
-         declare
-            Arg1 : constant Node_Id :=
-              First (Pragma_Argument_Associations (Node));
-            Arg2 : constant Node_Id := Next (Arg1);
-         begin
-            if Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
-              "external_axiomatization"
-            then
-               Ok := False;
-               return;
-            end if;
-         end;
-      elsif Number_Of_Pragma_Args = 3  then
-         Arg1 := First (Pragma_Argument_Associations (Node));
-         Arg2 := Next (Arg1);
-         Arg3 := Next (Arg2);
-         Arg3_Exp := Expression (Arg3);
-         if Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
-           "inline_for_proof"
-         then
-            Check_Inline_Annotation (Arg3_Exp, Node);
-            Ok := False;
-            return;
-         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "terminating"
-         then
-            Check_Terminate_Annotation (Arg3_Exp);
-            Ok := False;
-            return;
-         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) =
-           "init_by_proof"
-         then
-            Check_Init_Annotation (Arg3_Exp);
-            Ok := False;
-            return;
-         elsif Get_Name_String (Chars (Get_Pragma_Arg (Arg2))) = "pledge" then
-            Check_Pledge_Annotation (Arg3_Exp);
-            Ok := False;
-            return;
+      procedure Check_Argument_Number
+        (Name : String;
+         Num  : Pos;
+         Ok   : out Boolean);
+      --  Check that annotation for Name has Num arguments. Set Ok to True in
+      --  that case, to False otherwise.
+
+      function Get_Annotation_Name (Arg : Node_Id) return String;
+      --  Return the name for the Annotate pragma/aspect
+
+      ---------------------------
+      -- Check_Argument_Number --
+      ---------------------------
+
+      procedure Check_Argument_Number
+        (Name : String;
+         Num  : Pos;
+         Ok   : out Boolean)
+      is
+      begin
+         Ok := (Num = Number_Of_Pragma_Args);
+
+         if not Ok then
+            Error_Msg_N
+              ("wrong number of arguments in " & Aspect_Or_Pragma
+               & " Annotate ('G'N'A'Tprove, " & Capitalize_All_First (Name)
+               & (if Num > 2 then ", ...)" else ")")
+               & ", expected" & Num'Image, Node);
          end if;
+      end Check_Argument_Number;
+
+      -------------------------
+      -- Get_Annotation_Name --
+      -------------------------
+
+      function Get_Annotation_Name (Arg : Node_Id) return String is
+      begin
+         if No (Arg) then
+            Error_Msg_N
+              ("missing name in Annotate " & Aspect_Or_Pragma
+               & " for 'G'N'A'Tprove", Arg);
+            return "";
+
+         elsif Nkind (Get_Pragma_Arg (Arg)) = N_Identifier then
+            return Get_Name_String (Chars (Get_Pragma_Arg (Arg)));
+
+         else
+            Error_Msg_N
+              ("expected name in Annotate " & Aspect_Or_Pragma
+               & " for 'G'N'A'Tprove", Arg);
+            return "";
+         end if;
+      end Get_Annotation_Name;
+
+      --  Local variables
+
+      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Node));
+      Arg2 : constant Node_Id := Next (Arg1);
+      Name : constant String := Get_Annotation_Name (Arg2);
+
+      Arg3, Arg4 : Node_Id;
+      Arg3_Exp, Arg4_Exp : Node_Id;
+
+   begin
+      --  Error case for which a message is issued in Get_Annotation_Name
+
+      if Name = "" then
+         Ok := False;
+         return;
       end if;
 
-      --  We set Ok to false so that whenever we detect a problem we can simply
-      --  return. Only when all checks passed, we set Ok to True.
+      --  Retrieve all arguments
+
+      if Number_Of_Pragma_Args >= 3 then
+         Arg3 := Next (Arg2);
+         Arg3_Exp := Expression (Arg3);
+      end if;
+
+      if Number_Of_Pragma_Args >= 4 then
+         Arg4 := Next (Arg3);
+         Arg4_Exp := Expression (Arg4);
+      end if;
+
+      --  Check the name and number of arguments
+
+      if Name = "external_axiomatization" then
+         Check_Argument_Number (Name, 2, Ok);
+
+      elsif Name = "init_by_proof"
+        or else Name = "inline_for_proof"
+        or else Name = "might_not_return"
+        or else Name = "pledge"
+        or else Name = "terminating"
+      then
+         Check_Argument_Number (Name, 3, Ok);
+
+      elsif Name = "iterable_for_proof"
+        or else (not From_Aspect
+                 and then (Name = "false_positive"
+                           or else Name = "intentional"))
+      then
+         Check_Argument_Number (Name, 4, Ok);
+
+      --  Annotations for justifying check messages may be attached to an
+      --  entity through an aspect notation, in which case a fifth generated
+      --  argument denotes the entity to which the aspect applies.
+
+      elsif From_Aspect
+        and then (Name = "false_positive"
+                  or else Name = "intentional")
+      then
+         Check_Argument_Number (Name, 5, Ok);
+
+      else
+         Error_Msg_N
+           ("invalid name """ & Capitalize_All_First (Name) & """ in "
+            & Aspect_Or_Pragma & " Annotate ('G'N'A'Tprove, name)", Arg2);
+         Ok := False;
+      end if;
+
+      if not Ok then
+         return;
+      end if;
+
+      --  Annotations that do not correspond to justifying a check result in
+      --  Ok being set to False after verifying the syntax and semantics of
+      --  the pragma/aspect.
+
+      --  For annotations that justify check messages, we set Ok to False so
+      --  that whenever we detect a problem we can simply return. Only when
+      --  all checks passed, we set Ok to True.
 
       Ok := False;
 
-      --  in the case of an annotate aspect, there is a fifth argument
-      --  for the entity to which the aspect applies. We check for this
-      --  situation explicitly below, to avoid the error message in that
-      --  case.
+      --  Annotations with 2 arguments
 
-      if Number_Of_Pragma_Args not in 4 .. 5 then
-         Error_Msg_N
-           ("a Gnatprove Annotate pragma requires exactly 4 arguments",
-            Node);
-         return;
-      end if;
-      Arg1 := First (Pragma_Argument_Associations (Node));
-      Arg2 := Next (Arg1);
-      Arg3 := Next (Arg2);
-      Arg4 := Next (Arg3);
-      Arg2_Exp := Expression (Arg2);
-      Arg3_Exp := Expression (Arg3);
-      Arg4_Exp := Expression (Arg4);
+      if Name = "external_axiomatization" then
+         null;
 
-      if Number_Of_Pragma_Args = 5 then
-         declare
-            Arg5 : constant Node_Id := Next (Arg4);
-         begin
-            if Chars (Arg5) = No_Name
-              or else Get_Name_String (Chars (Arg5)) /= "entity"
-            then
-               Error_Msg_N
-                 ("a Gnatprove Annotate pragma requires exactly 4 arguments",
-                  Node);
-            end if;
-         end;
-      end if;
+      --  Annotations with 3 arguments
 
-      if Nkind (Arg2_Exp) = N_Identifier then
-         declare
-            Args_Str : constant String := Get_Name_String (Chars (Arg2_Exp));
-         begin
-            if Args_Str = "false_positive" then
-               Kind := False_Positive;
-            elsif Args_Str = "intentional" then
-               Kind := Intentional;
-            elsif Args_Str = "iterable_for_proof" then
-               Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
-               return;
-            else
-               Error_Msg_N
-                 ("the second argument of a Gnatprove Annotate pragma must " &
-                    "be False_Positive or Intentional",
-                  Node);
-               return;
-            end if;
-         end;
+      elsif Name = "init_by_proof" then
+         Check_Init_Annotation (Arg3_Exp);
+
+      elsif Name = "inline_for_proof" then
+         Check_Inline_Annotation (Arg3_Exp, Node);
+
+      elsif Name = "might_not_return" then
+         Check_Might_Not_Return_Annotation (Arg3_Exp, Node);
+
+      elsif Name = "pledge" then
+         Check_Pledge_Annotation (Arg3_Exp);
+
+      elsif Name = "terminating" then
+         Check_Terminate_Annotation (Arg3_Exp);
+
+      --  Annotations with 4 arguments
+
+      elsif Name = "iterable_for_proof" then
+         Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
+
+      --  Annotation for justifying check messages. This is where we set Ok to
+      --  True and fill in values for output parameters Kind, Pattern and
+      --  Reason.
+
       else
-         Error_Msg_N
-           ("the second argument of a Gnatprove Annotate pragma must " &
-              "be False_Positive or Intentional",
-            Node);
-         return;
+         if Name = "false_positive" then
+            Kind := False_Positive;
+         elsif Name = "intentional" then
+            Kind := Intentional;
+         end if;
+
+         if Nkind (Arg3_Exp) = N_String_Literal then
+            Pattern := Strval (Arg3_Exp);
+         else
+            Error_Msg_N
+              ("third argument PATTERN for 'G'N'A'Tprove Annotate "
+               & Aspect_Or_Pragma & " must be a string literal",
+               Node);
+            return;
+         end if;
+
+         if Nkind (Arg4_Exp) = N_String_Literal then
+            Reason := Strval (Arg4_Exp);
+         else
+            Error_Msg_N
+              ("fourth argument REASON for 'G'N'A'Tprove Annotate "
+               & Aspect_Or_Pragma & " must be a string literal",
+               Node);
+            return;
+         end if;
+
+         Ok := True;
       end if;
-      if Nkind (Arg3_Exp) = N_String_Literal then
-         Pattern := Strval (Arg3_Exp);
-      else
-         Error_Msg_N
-           ("the third argument of a Gnatprove Annotate pragma must " &
-              "be a string literal",
-            Node);
-         return;
-      end if;
-      if Nkind (Arg4_Exp) = N_String_Literal then
-         Reason := Strval (Arg4_Exp);
-      else
-         Error_Msg_N
-           ("the fourth argument of a Gnatprove Annotate pragma must " &
-              "be a string literal",
-            Node);
-         return;
-      end if;
-      Ok := True;
-      return;
    end Syntax_Check_Pragma_Annotate_Gnatprove;
 
 end SPARK_Annotate;

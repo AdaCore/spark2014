@@ -45,6 +45,13 @@ simplifications to Ada. The most notable simplifications are:
   exceptions is allowed (see :ref:`Raising Exceptions and Other Error Signaling
   Mechanisms`).
 
+* Unless explicitly specified as (possibly) nonreturning, subprograms should
+  always terminate when called on inputs satisfying the subprogram
+  precondition.  While care is taken in |GNATprove| to reduce possibilities of
+  unsoundness resulting from nonreturning subprograms, it is possible that
+  axioms generated for nonreturning subprograms not specified as such may lead
+  to unsoundness. See :ref:`Nonreturning Procedures`.
+
 * Generic code is not analyzed directly. Doing so would require lengthy
   contracts on generic parameters, and would restrict the kind of code that can
   be analyzed, e.g. by forcing the variables read/written by a generic
@@ -348,9 +355,10 @@ Multiple error signaling mechanisms are treated the same way:
  * ``pragma Assert (X)`` where ``X`` is an expression statically equivalent to
    ``False``
  * calling a procedure with an aspect or pragma ``No_Return`` that has no
-   outputs (unless the call is itself inside such a procedure, in which case
-   the check is only generated on the call to the enclosing error-signaling
-   procedure)
+   outputs (unless the call is itself inside a (possibly) nonreturning
+   procedure, see :ref:`Nonreturning Procedures`, in which case the check
+   is only generated on the call to the enclosing error-signaling procedure
+   if any)
 
 For example, consider the artificial subprogram ``Check_OK`` which raises an
 exception when parameter ``OK`` is ``False``:
@@ -381,6 +389,57 @@ thanks to the precondition of ``Check_OK`` which states that parameter
 |GNATprove| also checks that procedures that are marked with aspect or pragma
 ``No_Return`` do not return: they should either raise an exception or loop
 forever on any input.
+
+.. _Nonreturning Procedures:
+
+Nonreturning Procedures
+-----------------------
+
+|GNATprove| assumes that, unless explicitly specified as (possibly)
+nonreturning, subprograms should always terminate when called on inputs
+satisfying the subprogram precondition. In particular, functions should
+always terminate. Procedures might not terminate, in which case they
+should be annotated with a suitable pragma or aspect:
+
+* ``No_Return`` to specify that the procedure never returns. This is a
+  nonreturning procedure.
+
+* ``Annotate Might_Not_Return`` to specify that the procedure might not
+  return in some cases. This is a possibly nonreturning procedure.
+
+Nonreturning and possibly nonreturning procedures are handled differently.
+It is an error to call a possibly nonreturning procedure from a function
+or from a procedure that is not itself (possibly) nonreturning.
+Calling a nonreturning procedure from a procedure that is not
+itself (possibly) nonreturning leads to a check that the call is unreachable.
+Such a call is in effect interpreted as an error signaling mechanism
+(see :ref:`Raising Exceptions and Other Error Signaling Mechanisms`).
+
+For example, consider the procedure ``Conditional_Exit`` which conditionally
+calls the nonterminating ``Always_Exit`` procedure:
+
+.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.ads
+   :language: ada
+   :linenos:
+
+.. literalinclude:: /gnatprove_by_example/examples/possibly_nonreturning.adb
+   :language: ada
+   :linenos:
+
+|GNATprove| issues an error here on the call to the possibly nonreturning
+procedure ``Conditional_Exit`` in procedure ``Regular``:
+
+.. literalinclude:: /gnatprove_by_example/results/possibly_nonreturning.flow
+   :language: none
+
+It would be legal to call the nonreturning procedure ``Always_Exit`` from
+procedure ``Regular`` though, in which case it will be interpreted as
+an error signaling mechanism, and |GNATprove| will attempt to prove that
+the call is unreachable.
+
+Note that it is also possible to specify explicitly that a subprogram
+terminates, in which case |GNATprove| will verify that it indeed terminates.
+See :ref:`Subprogram Termination`.
 
 .. _Analysis of Generics:
 

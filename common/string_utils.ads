@@ -46,6 +46,13 @@ package String_Utils is
         "="                 => "="
        );
 
+   function Capitalize_All_First (S : String) return String;
+   --  Return a string with all first characters of words capitalized, where
+   --  words are separated by underscores.
+
+   procedure Capitalize_All_First (S : in out String);
+   --  Modify S in place to capitalize all first characters of words
+
    function Capitalize_First (S : String) return String;
    --  Return a string with first character capitalized
 

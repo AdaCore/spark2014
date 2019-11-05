@@ -1,0 +1,20 @@
+bad_spec.ads:6:06: aspect Annotate Might_Not_Return must apply to a procedure
+bad_spec.ads:10:06: procedure with aspect Annotate Might_Not_Return must not also be marked with No_Return
+bad_spec.ads:19:06: procedure with aspect Annotate Might_Not_Return must not also be dispatching
+gnatprove: error during generation of Global contracts
+bad_spec_prag.ads:4:04: wrong number of arguments in pragma Annotate Might_Not_Return, expected 3
+bad_spec_prag.ads:7:50: pragma Annotate Might_Not_Return must apply to a procedure
+bad_spec_prag.ads:13:50: procedure with pragma Annotate Might_Not_Return must not also be marked with No_Return
+bad_spec_prag.ads:18:50: pragma Annotate Might_Not_Return must apply to a procedure
+bad_spec_prag.ads:22:50: procedure with pragma Annotate Might_Not_Return must not also be dispatching
+gnatprove: error during generation of Global contracts
+bad.adb:24:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+bad.adb:30:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
+bad.adb:30:07: consider annotating caller "Proc" with Might_Not_Return
+gnatprove: error during generation of Global contracts
+pack.adb:5:07: medium: exception might be raised
+pack.adb:11:10: medium: call to nonreturning subprogram might be executed
+pack.adb:20:22: info: assertion proved (CVC4: 1 VC)
+pack.ads:7:06: info: data dependencies proved
+pack.ads:8:14: info: postcondition proved (CVC4: 1 VC)
+pack.ads:12:06: info: data dependencies proved

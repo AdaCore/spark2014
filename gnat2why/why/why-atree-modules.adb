@@ -1872,6 +1872,12 @@ package body Why.Atree.Modules is
                         Typ    => EW_Bool_Type);
 
       EW_Private_Type := M_Main.Private_Type;
+
+      M_Main.No_Return :=
+        New_Identifier (Domain => EW_Term,
+                        Module => M,
+                        Symb   => NID ("no__return"),
+                        Typ    => EW_Bool_Type);
    end Init_Main_Module;
 
    -------------------------

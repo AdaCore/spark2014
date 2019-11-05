@@ -29,6 +29,9 @@ module Main
   type real__ref = { mutable real__content [@model_trace:] : real }
   type __private__ref = { mutable __private__content [@model_trace:] : __private }
 
+  (* Boolean value to simulate calls to possibly nonreturning procedures *)
+  val no__return : bool__ref
+
   (* Projections from records holding references over builtin types to builtin types *)
   function int__ref___projection
     (a : int__ref)  : int =

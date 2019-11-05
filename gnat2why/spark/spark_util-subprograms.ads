@@ -25,6 +25,7 @@
 
 with Gnat2Why_Args;
 with Sem_Disp;
+with SPARK_Annotate; use SPARK_Annotate;
 
 package SPARK_Util.Subprograms is
 
@@ -359,6 +360,14 @@ package SPARK_Util.Subprograms is
    --  @param E subprogram
    --  @return True iff E is a local subprogram that is always inlined by the
    --     frontend in GNATprove mode
+
+   function Is_Possibly_Nonreturning_Procedure (E : Entity_Id) return Boolean
+   is
+     (No_Return (E)
+       or else
+      Has_Might_Not_Return_Annotation (E));
+   --  @param E any entity
+   --  @return True iff E has aspect No_Return or annotation Might_Not_Return
 
    function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean
    with Pre => Ekind (E) in E_Function | E_Procedure;

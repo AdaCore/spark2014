@@ -30,6 +30,20 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
+Using Pragma Annotate to Specify Possibly Nonreturning Procedures
+-----------------------------------------------------------------
+
+You can use annotations of the form
+
+.. code-block:: ada
+
+    pragma Annotate (GNATprove, Might_Not_Return, Proc_Entity);
+
+to specify that a procedure might not return. See the section
+:ref:`Nonreturning Procedures` for more details about this use of pragma
+``Annotate``.
+
+
 Using pragma Annotate to force Proof of Termination
 ---------------------------------------------------
 
@@ -429,7 +443,7 @@ the property given as a second parameter to the call must be handled as a pledge
 of the local borrower given as a first parameter. It will not interpret it as
 a property which should hold over the current values of the borrower and the
 borrowed object, but as a sort of invariant, which should be known to always
-hold during the scope of ``Borrower``. 
+hold during the scope of ``Borrower``.
 Access to a borrowed variable inside a pledge is allowed by the |SPARK|
 reference manual, which gives a provision for reading borrowed variables at any
 time and in any context during the borrow. However, |GNATprove| will reject

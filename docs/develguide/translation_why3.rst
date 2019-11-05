@@ -3486,8 +3486,8 @@ postcondition must always be stronger than the classwide one:
 		 True False True True
 	   /\ result > 10 }
 
-Finally, a last case which should be considered are procedures
-annotated with the No_return aspect (see ``Einfo.No_Return``). A function
+A special case which should be considered are procedures
+annotated with the No_Return aspect (see ``Einfo.No_Return``). A function
 with this aspect will never return, so its postcondition will never be
 exercised. To express it, the postcondition of the associated program
 function is set to false. As an example, the following procedure:
@@ -3505,6 +3505,32 @@ is translated as:
       requires { true }
       ensures { false }
       writes {x}
+
+Another special case to consider are procedures annotated with
+``Might_Not_Return``, whose postcondition is verified only in the cases where
+the procedure returns. As an example, the following procedure:
+
+.. code-block:: ada
+
+   procedure P (X : in out Integer) with
+     Annotate => (GNATprove, Might_Not_Return),
+     Post => Whatever (X);
+
+is translated as:
+
+.. code-block:: whyml
+
+     val p (x : int__ref) : unit
+      requires { true }
+      ensures { if Main.no__return = false then whatever (x) }
+      writes {x, Main.no__return}
+
+while a call to ``P`` is translated as:
+
+.. code-block:: whyml
+
+     p x;
+     if Main.no__return then raise Main.Exc__Return;
 
 Expression Functions
 """"""""""""""""""""

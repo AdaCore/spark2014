@@ -3196,6 +3196,35 @@ package body SPARK_Definition is
          E := Get_Called_Entity (N);
       end if;
 
+      --  A possibly nonreturning procedure should only be called from
+      --  another (possibly) nonreturning procedure.
+
+      if Has_Might_Not_Return_Annotation (E) then
+         declare
+            Caller : Entity_Id :=
+              Unique_Defining_Entity (Enclosing_Declaration (N));
+         begin
+            while Ekind (Caller) not in Subprogram_Kind
+                                      | E_Entry
+                                      | E_Package
+                                      | E_Package_Body
+                                      | E_Task_Body
+            loop
+               Caller := Scope (Caller);
+            end loop;
+
+            if not Is_Possibly_Nonreturning_Procedure (Caller) then
+               Error_Msg_N ("call to possibly nonreturning procedure outside "
+                            & "a (possibly) nonreturning procedure", N);
+               if Ekind (Caller) = E_Procedure then
+                  Error_Msg_NE
+                    ("\consider annotating caller & with Might_Not_Return",
+                     N, Caller);
+               end if;
+            end if;
+         end;
+      end if;
+
       --  There should not be calls to default initial condition and invariant
       --  procedures.
 
