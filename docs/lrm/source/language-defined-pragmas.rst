@@ -97,14 +97,14 @@ Initial_Condition  	      Yes
 Initializes	  	      Yes
 Loop_Invariant	 	      Yes
 Loop_Variant	  	      Yes
+No_Caching                    Yes
 Part_Of			      Yes
-Post		  	      Yes
-Pre		  	      Yes
 Refined_Depends    	      Yes
 Refined_Global	 	      Yes
 Refined_Post 	 	      Yes
 Refined_State 	 	      Yes
 SPARK_Mode         	      Yes                    Language defined but implementation dependent
+Unevaluated_Use_Of_Old        Yes
 Volatile_Function             Yes
 ============================= ====================== =================================================
 
@@ -121,8 +121,8 @@ Pragma                        Allowed in SPARK 2014  Comment
 Ada_83			      Yes
 Ada_95			      Yes
 Ada_05			      Yes
-Ada_2005		      Yes
 Ada_12             	      Yes
+Ada_2005		      Yes
 Ada_2012           	      Yes
 Ada_2020           	      Yes
 Annotate		      Yes
@@ -134,12 +134,22 @@ Debug			      Yes		     Ignored (replaced by null statement)
 Default_Scalar_Storage_Order  Yes
 Export_Function               Yes
 Export_Procedure              Yes
+Ignore_Pragma      	      Yes
 Inline_Always      	      Yes
+Invariant                     Yes
 Linker_Section      	      Yes
 Max_Queue_Length              Yes                    Extended Ravenscar
 No_Elaboration_Code_All       Yes
 No_Heap_Finalization          Yes
+No_Tagged_Streams             Yes
 Overflow_Mode                 Yes
+Post		  	      Yes
+Postcondition   	      Yes
+Post_Class	  	      Yes
+Pre		  	      Yes
+Precondition	  	      Yes
+Pre_Class	  	      Yes
+Predicate                     Yes
 Predicate_Failure             Yes
 Provide_Shift_Operators       Yes
 Pure_Function      	      Yes
@@ -147,10 +157,13 @@ Restriction_Warnings  	      Yes
 Secondary_Stack_Size          Yes
 Style_Checks      	      Yes
 Test_Case          	      Yes
+Type_Invariant                Yes
+Type_Invariant_Class          Yes
 Unmodified                    Yes
 Unreferenced                  Yes
 Unused                        Yes
 Validity_Checks               Yes
+Volatile_Full_Access          Yes
 Warnings           	      Yes
 Weak_External          	      Yes
 ============================= ====================== =================================================

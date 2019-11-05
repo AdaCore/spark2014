@@ -16642,11 +16642,6 @@ package body Gnat2Why.Expr is
          =>
             return +Void;
 
-         --  ??? Currently ignored, see NA03-001
-
-         when Pragma_Extensions_Visible =>
-            return +Void;
-
          --  Remaining pragmas fall into two major groups:
          --
          --  Group 1 - ignored
@@ -16658,25 +16653,29 @@ package body Gnat2Why.Expr is
 
          --  Group 1a - RM Table 16.1, Ada language-defined pragmas marked
          --  "Yes".
-         --  Note: pragma Assert is transformed into an
-         --  instance of pragma Check by the front-end.
-         when Pragma_Assertion_Policy
+
+         when  --  Pragma_Assert is transformed into pragma Check handled above
+              Pragma_Assertion_Policy
             | Pragma_Atomic
             | Pragma_Atomic_Components
             | Pragma_Attach_Handler
             | Pragma_Convention
+            | Pragma_CPU
+            | Pragma_Detect_Blocking
             | Pragma_Elaborate
             | Pragma_Elaborate_All
             | Pragma_Elaborate_Body
             | Pragma_Export
-            | Pragma_Export_Function
-            | Pragma_Export_Procedure
             | Pragma_Import
             | Pragma_Independent
             | Pragma_Independent_Components
             | Pragma_Inline
+            --  Pragma_Inspection_Point is handled specially above
+            | Pragma_Interrupt_Handler
+            --  Pragma_Interrupt_Priority is handled specially above
             | Pragma_Linker_Options
             | Pragma_List
+            | Pragma_Locking_Policy
             | Pragma_No_Return
             | Pragma_Normalize_Scalars
             | Pragma_Optimize
@@ -16685,36 +16684,42 @@ package body Gnat2Why.Expr is
             | Pragma_Partition_Elaboration_Policy
             | Pragma_Preelaborable_Initialization
             | Pragma_Preelaborate
+            --  Pragma_Priority is handled specially above
             | Pragma_Profile
             | Pragma_Pure
+            | Pragma_Queuing_Policy
+            | Pragma_Relative_Deadline
             | Pragma_Restrictions
             | Pragma_Reviewable
             | Pragma_Suppress
+            | Pragma_Unchecked_Union
             | Pragma_Unsuppress
             | Pragma_Volatile
             | Pragma_Volatile_Components
-            | Pragma_Volatile_Full_Access
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes", whose effect on proof is taken care of somewhere else.
-         --  Note: pragmas Assert_And_Cut, Assume, and
-         --  Loop_Invariant are transformed into instances of
-         --  pragma Check by the front-end.
+
             | Pragma_Abstract_State
-            | Pragma_Assume_No_Invalid_Values
+            --  Pragma_Assert_And_Cut and Pragma_Assume are transformed into
+            --  pragma Check handled above.
             | Pragma_Async_Readers
             | Pragma_Async_Writers
             | Pragma_Constant_After_Elaboration
             | Pragma_Contract_Cases
-            | Pragma_Depends
             | Pragma_Default_Initial_Condition
+            | Pragma_Depends
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
+            | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global
-            | Pragma_Initializes
             | Pragma_Initial_Condition
+            | Pragma_Initializes
+            --  Pragma_Loop_Invariant is transformed into pragma Check handled
+            --  above.
             | Pragma_Loop_Variant
+            | Pragma_No_Caching
             | Pragma_Part_Of
             | Pragma_Refined_Depends
             | Pragma_Refined_Global
@@ -16726,32 +16731,52 @@ package body Gnat2Why.Expr is
 
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
-         --  Note: pragma Debug is removed by the front-end.
+
             | Pragma_Ada_83
             | Pragma_Ada_95
             | Pragma_Ada_05
-            | Pragma_Ada_2005
             | Pragma_Ada_12
+            | Pragma_Ada_2005
             | Pragma_Ada_2012
             | Pragma_Annotate
+            | Pragma_Assume_No_Invalid_Values
+            --  Pragma_Check is handled specially above
             | Pragma_Check_Policy
+            --  Pragma_Compile_Time_Error, Pragma_Compile_Time_Warning and
+            --  Pragma_Debug are removed by FE and handled thus below.
+            | Pragma_Default_Scalar_Storage_Order
+            | Pragma_Export_Function
+            | Pragma_Export_Procedure
             | Pragma_Ignore_Pragma
             | Pragma_Inline_Always
+            --  Pragma_Invariant is handled specially above
             | Pragma_Linker_Section
             | Pragma_Max_Queue_Length
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
             | Pragma_No_Tagged_Streams
+            --  Pragma_Overflow_Mode is handled specially above
+            | Pragma_Post
+            --  Pragma_Postcondition is handled specially above
+            | Pragma_Post_Class
+            | Pragma_Pre
+            --  Pragma_Precondition is handled specially above
+            | Pragma_Pre_Class
+            | Pragma_Predicate
             | Pragma_Predicate_Failure
+            | Pragma_Provide_Shift_Operators
             | Pragma_Pure_Function
             | Pragma_Restriction_Warnings
             | Pragma_Secondary_Stack_Size
             | Pragma_Style_Checks
             | Pragma_Test_Case
+            --  Pragma_Type_Invariant and Pragma_Type_Invariant_Class are
+            --  handled specially above.
             | Pragma_Unmodified
             | Pragma_Unreferenced
             | Pragma_Unused
             | Pragma_Validity_Checks
+            | Pragma_Volatile_Full_Access
             | Pragma_Warnings
             | Pragma_Weak_External
          =>
@@ -16797,11 +16822,8 @@ package body Gnat2Why.Expr is
             | Pragma_CPP_Constructor
             | Pragma_CPP_Virtual
             | Pragma_CPP_Vtable
-            | Pragma_CPU
             | Pragma_Debug_Policy
-            | Pragma_Default_Scalar_Storage_Order
             | Pragma_Default_Storage_Pool
-            | Pragma_Detect_Blocking
             | Pragma_Disable_Atomic_Synchronization
             | Pragma_Dispatching_Domain
             | Pragma_Elaboration_Checks
@@ -16829,7 +16851,6 @@ package body Gnat2Why.Expr is
             | Pragma_Inline_Generic
             | Pragma_Interface
             | Pragma_Interface_Name
-            | Pragma_Interrupt_Handler
             | Pragma_Interrupt_State
             | Pragma_Keep_Names
             | Pragma_License
@@ -16853,20 +16874,13 @@ package body Gnat2Why.Expr is
             | Pragma_Passive
             | Pragma_Persistent_BSS
             | Pragma_Polling
-            | Pragma_Post
-            | Pragma_Post_Class
-            | Pragma_Pre
-            | Pragma_Predicate
             | Pragma_Prefix_Exception_Messages
-            | Pragma_Pre_Class
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings
             | Pragma_Propagate_Exceptions
-            | Pragma_Provide_Shift_Operators
             | Pragma_Psect_Object
             | Pragma_Rational
             | Pragma_Ravenscar
-            | Pragma_Relative_Deadline
             | Pragma_Remote_Access_Type
             | Pragma_Rename_Pragma
             | Pragma_Restricted_Run_Time
@@ -16893,7 +16907,6 @@ package body Gnat2Why.Expr is
             | Pragma_Thread_Local_Storage
             | Pragma_Time_Slice
             | Pragma_Title
-            | Pragma_Unchecked_Union
             | Pragma_Unimplemented_Unit
             | Pragma_Universal_Aliasing
             | Pragma_Universal_Data
@@ -16906,8 +16919,6 @@ package body Gnat2Why.Expr is
          --  Group 2b - Ada RM pragmas
 
             | Pragma_Discard_Names
-            | Pragma_Locking_Policy
-            | Pragma_Queuing_Policy
             | Pragma_Task_Dispatching_Policy
             | Pragma_All_Calls_Remote
             | Pragma_Asynchronous

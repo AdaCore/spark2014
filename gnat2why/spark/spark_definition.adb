@@ -6687,26 +6687,29 @@ package body SPARK_Definition is
 
          --  Group 1a - RM Table 16.1, Ada language-defined pragmas marked
          --  "Yes".
-         --  Note: pragma Assert is transformed into an instance of pragma
-         --  Check by the front-end.
-         when Pragma_Assertion_Policy
+
+         when  --  Pragma_Assert is transformed into pragma Check handled above
+              Pragma_Assertion_Policy
             | Pragma_Atomic
             | Pragma_Atomic_Components
+            --  Pragma_Attach_Handler is handled specially above
             | Pragma_Convention
+            | Pragma_CPU
+            | Pragma_Detect_Blocking
             | Pragma_Elaborate
             | Pragma_Elaborate_All
             | Pragma_Elaborate_Body
             | Pragma_Export
-            | Pragma_Export_Function
-            | Pragma_Export_Procedure
-            | Pragma_Extensions_Visible
             | Pragma_Import
             | Pragma_Independent
             | Pragma_Independent_Components
             | Pragma_Inline
             | Pragma_Inspection_Point
+            | Pragma_Interrupt_Handler
+            --  Pragma_Interrupt_Priority is handled specially above
             | Pragma_Linker_Options
             | Pragma_List
+            | Pragma_Locking_Policy
             | Pragma_No_Return
             | Pragma_Normalize_Scalars
             | Pragma_Optimize
@@ -6715,8 +6718,11 @@ package body SPARK_Definition is
             | Pragma_Partition_Elaboration_Policy
             | Pragma_Preelaborable_Initialization
             | Pragma_Preelaborate
+            --  Pragma_Priority is handled specially above
             | Pragma_Profile
             | Pragma_Pure
+            | Pragma_Queuing_Policy
+            | Pragma_Relative_Deadline
             | Pragma_Restrictions
             | Pragma_Reviewable
             | Pragma_Suppress
@@ -6724,14 +6730,13 @@ package body SPARK_Definition is
             | Pragma_Unsuppress
             | Pragma_Volatile
             | Pragma_Volatile_Components
-            | Pragma_Volatile_Full_Access
 
          --  Group 1b - RM Table 16.2, SPARK language-defined pragmas marked
          --  "Yes".
-         --  Note: pragmas Assert_And_Cut, Assume, and Loop_Invariant are
-         --  transformed into instances of pragma Check by the front-end.
+
             | Pragma_Abstract_State
-            | Pragma_Assume_No_Invalid_Values
+            --  Pragma_Assert_And_Cut and Pragma_Assume are transformed into
+            --  pragma Check handled above.
             | Pragma_Async_Readers
             | Pragma_Async_Writers
             | Pragma_Constant_After_Elaboration
@@ -6740,30 +6745,26 @@ package body SPARK_Definition is
             | Pragma_Depends
             | Pragma_Effective_Reads
             | Pragma_Effective_Writes
+            | Pragma_Extensions_Visible
             | Pragma_Ghost
             | Pragma_Global
             | Pragma_Initial_Condition
             | Pragma_Initializes
-            | Pragma_Invariant
+            --  Pragma_Loop_Invariant is transformed into pragma Check
+            --  handled above.
+            --  Pragma_Loop_Variant is handled specially above
             | Pragma_No_Caching
             | Pragma_Part_Of
-            | Pragma_Postcondition
-            | Pragma_Precondition
             | Pragma_Refined_Depends
             | Pragma_Refined_Global
             | Pragma_Refined_Post
             | Pragma_Refined_State
             | Pragma_SPARK_Mode
-            | Pragma_Type_Invariant
-            | Pragma_Type_Invariant_Class
             | Pragma_Unevaluated_Use_Of_Old
             | Pragma_Volatile_Function
 
          --  Group 1c - RM Table 16.3, GNAT implementation-defined pragmas
          --  marked "Yes".
-         --  Note: pragma Debug is removed by the front-end.
-         --  Note: the interesting case of pragma Annotate (the one with first
-         --  argument Gnatprove) is handled in Mark_Stmt_Or_Decl_List.
 
             | Pragma_Ada_83
             | Pragma_Ada_95
@@ -6773,13 +6774,30 @@ package body SPARK_Definition is
             | Pragma_Ada_2012
             | Pragma_Ada_2020
             | Pragma_Annotate
+            | Pragma_Assume_No_Invalid_Values
+            --  Pragma_Check is handled specially above
             | Pragma_Check_Policy
+            --  Pragma_Compile_Time_Error, Pragma_Compile_Time_Warning and
+            --  Pragma_Debug are removed by FE and handled thus below.
+            | Pragma_Default_Scalar_Storage_Order
+            | Pragma_Export_Function
+            | Pragma_Export_Procedure
             | Pragma_Ignore_Pragma
             | Pragma_Inline_Always
+            | Pragma_Invariant
             | Pragma_Linker_Section
+            --  Pragma_Max_Queue_Length is handled specially above
             | Pragma_No_Elaboration_Code_All
             | Pragma_No_Heap_Finalization
             | Pragma_No_Tagged_Streams
+            --  Pragma_Overflow_Mode is handled specially above
+            | Pragma_Post
+            | Pragma_Postcondition
+            | Pragma_Post_Class
+            | Pragma_Pre
+            | Pragma_Precondition
+            | Pragma_Pre_Class
+            | Pragma_Predicate
             | Pragma_Predicate_Failure
             | Pragma_Provide_Shift_Operators
             | Pragma_Pure_Function
@@ -6787,10 +6805,13 @@ package body SPARK_Definition is
             | Pragma_Secondary_Stack_Size
             | Pragma_Style_Checks
             | Pragma_Test_Case
+            | Pragma_Type_Invariant
+            | Pragma_Type_Invariant_Class
             | Pragma_Unmodified
             | Pragma_Unreferenced
             | Pragma_Unused
             | Pragma_Validity_Checks
+            | Pragma_Volatile_Full_Access
             | Pragma_Warnings
             | Pragma_Weak_External
          =>
@@ -6798,6 +6819,7 @@ package body SPARK_Definition is
 
          --  Group 1d - pragma that are re-written and/or removed by the
          --  front-end in GNATprove, so they should never be seen here.
+
          when Pragma_Assert
             | Pragma_Assert_And_Cut
             | Pragma_Assume
@@ -6817,6 +6839,7 @@ package body SPARK_Definition is
          --  required.
 
          --  Group 2a - GNAT Defined and obsolete pragmas
+
          when Pragma_Abort_Defer
             | Pragma_Allow_Integer_Address
             | Pragma_Attribute_Definition
@@ -6824,7 +6847,6 @@ package body SPARK_Definition is
             | Pragma_CPP_Constructor
             | Pragma_CPP_Virtual
             | Pragma_CPP_Vtable
-            | Pragma_CPU
             | Pragma_C_Pass_By_Copy
             | Pragma_Check_Float_Overflow
             | Pragma_Check_Name
@@ -6838,9 +6860,7 @@ package body SPARK_Definition is
             | Pragma_Controlled
             | Pragma_Convention_Identifier
             | Pragma_Debug_Policy
-            | Pragma_Default_Scalar_Storage_Order
             | Pragma_Default_Storage_Pool
-            | Pragma_Detect_Blocking
             | Pragma_Disable_Atomic_Synchronization
             | Pragma_Dispatching_Domain
             | Pragma_Elaboration_Checks
@@ -6868,7 +6888,6 @@ package body SPARK_Definition is
             | Pragma_Inline_Generic
             | Pragma_Interface
             | Pragma_Interface_Name
-            | Pragma_Interrupt_Handler
             | Pragma_Interrupt_State
             | Pragma_Keep_Names
             | Pragma_License
@@ -6892,11 +6911,6 @@ package body SPARK_Definition is
             | Pragma_Passive
             | Pragma_Persistent_BSS
             | Pragma_Polling
-            | Pragma_Post
-            | Pragma_Post_Class
-            | Pragma_Pre
-            | Pragma_Pre_Class
-            | Pragma_Predicate
             | Pragma_Prefix_Exception_Messages
             | Pragma_Priority_Specific_Dispatching
             | Pragma_Profile_Warnings
@@ -6904,7 +6918,6 @@ package body SPARK_Definition is
             | Pragma_Psect_Object
             | Pragma_Rational
             | Pragma_Ravenscar
-            | Pragma_Relative_Deadline
             | Pragma_Remote_Access_Type
             | Pragma_Rename_Pragma
             | Pragma_Restricted_Run_Time
@@ -6941,12 +6954,11 @@ package body SPARK_Definition is
             | Pragma_Wide_Character_Encoding
 
          --  Group 2b - Ada RM pragmas
+
             | Pragma_All_Calls_Remote
             | Pragma_Asynchronous
             | Pragma_Discard_Names
             | Pragma_Lock_Free
-            | Pragma_Locking_Policy
-            | Pragma_Queuing_Policy
             | Pragma_Remote_Call_Interface
             | Pragma_Remote_Types
             | Pragma_Shared_Passive

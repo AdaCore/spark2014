@@ -1,0 +1,4 @@
+pragma_predicate.adb:5:12: info: predicate check proved (CVC4: 1 VC)
+pragma_predicate.adb:5:26: info: overflow check proved (CVC4: 1 VC)
+pragma_predicate.adb:12:15: info: predicate check proved (CVC4: 1 VC)
+pragma_predicate.adb:12:29: info: overflow check proved (CVC4: 1 VC)
