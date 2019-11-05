@@ -12,15 +12,12 @@ procedure Traverse_List with SPARK_Mode is
    with Ghost,
      Annotate => (GNATProve, Pledge);
 
-   function Same (X, Y : access constant List) return Boolean is (X = Y);
-
    function Tail (L : access List) return access List with
      Contract_Cases =>
        (L = null =>
           Tail'Result = null and Pledge (Tail'Result, L = null),
-        others   => Same (Tail'Result, L.Next)
-          and Pledge (Tail'Result, L.Val = L.Val'Old)
-          and Pledge (Tail'Result, Same (L.Next, Tail'Result)));
+        others   => Pledge (Tail'Result, L.Val = L.Val'Old)
+          and Pledge (Tail'Result, L.Next = Tail'Result));
 
    function Tail (L : access List) return access List is
    begin
