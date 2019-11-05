@@ -173,6 +173,9 @@ package Why.Gen.Names is
    Specific_Post       : constant String := "specific_post";
    --  suffix for specific postcondition of dispatching procedures
 
+   Pledge_Axiom        : constant String := "pledge_axiom";
+   --  suffix for defining axiom for pledges of traversal expression functions
+
    --  Labels for counterexamples:
    Constrained_Label : constant String := "Constrained";
    First_Label       : constant String := "First";

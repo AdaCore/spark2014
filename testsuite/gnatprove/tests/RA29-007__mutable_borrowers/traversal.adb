@@ -8,7 +8,8 @@ procedure Traversal with SPARK_Mode is
 
    type Two_Acc_Acc is access Two_Acc;
 
-   function Get_Fst (X : access Two_Acc) return access Integer is (X.Fst);
+   function Get_Fst (X : access Two_Acc) return access Integer is (X.Fst) with
+     Pre => X /= null;
 
    function Id (X : Int_Acc) return access Integer is (X);
 
@@ -22,5 +23,5 @@ begin
       Y.all := 4;
    end;
 
-   pragma Assert (X.Fst.all = 1);
+   pragma Assert (X.Fst.all = 1); --@ASSERT:FAIL
 end Traversal;

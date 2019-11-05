@@ -7691,13 +7691,15 @@ package body Gnat2Why.Expr is
       end if;
    end New_Constrained_Attribute_Expr;
 
-   ---------------------------------------
-   -- New_Pledge_Update_From_Assignment --
-   ---------------------------------------
+   ------------------------------------
+   -- New_Pledge_Def_From_Expression --
+   ------------------------------------
 
-   function New_Pledge_Update_From_Assignment
-     (Brower : Entity_Id;
-      Path   : Node_Id) return W_Prog_Id
+   function New_Pledge_Def_From_Expression
+     (Brower      : Entity_Id;
+      Borrowed_Id : out W_Identifier_Id;
+      Brower_Id   : out W_Identifier_Id;
+      Path        : Node_Id) return W_Term_Id
    is
 
       function Create_Pledge_Call_For_Prefix
@@ -7935,12 +7937,6 @@ package body Gnat2Why.Expr is
 
       --  Local variables
 
-      Brower_Id   : constant W_Identifier_Id :=
-        New_Temp_Identifier
-          (Typ       => Type_Of_Node (Etype (Brower)),
-           Base_Name => "brower");
-      --  The identifier for the borrower Brower at the time of pledge
-
       In_Traversal : constant Boolean :=
         Ekind (Brower) = E_Function or else Is_Constant_Borrower (Brower);
       --  We are inside a traversal function if Brower is a function or if it
@@ -7948,15 +7944,21 @@ package body Gnat2Why.Expr is
 
       Current     : Node_Id := Path;
       Def         : W_Expr_Id := +True_Term;
-      Current_Id  : W_Identifier_Id := Brower_Id;
-      Borrowed_Id : W_Identifier_Id;
+      Current_Id  : W_Identifier_Id :=
+        New_Temp_Identifier
+          (Typ       => Type_Of_Node (Etype (Brower)),
+           Base_Name => "brower");
+      --  The identifier for the borrower Brower at the time of pledge
+
       Pledge_Call : W_Expr_Id;
       First_Call  : Boolean := True;
       Borrowed    : Entity_Id := Empty;
 
-   --  Start of processing for New_Pledge_Update_From_Assignment
+   --  Start of processing for New_Pledge_Def_From_Expression
 
    begin
+      Brower_Id := Current_Id;
+
       --  We construct the definition of the pledge linking the borrower and
       --  the borrowed entities at the time of pledge by part. We conjoin
       --  them inside Def. When we introduce additional identifiers for
@@ -8043,7 +8045,26 @@ package body Gnat2Why.Expr is
          end;
       end if;
 
-      return New_Pledge_Update (Brower, Borrowed_Id, Brower_Id, +Def);
+      return +Def;
+   end New_Pledge_Def_From_Expression;
+
+   ---------------------------------------
+   -- New_Pledge_Update_From_Assignment --
+   ---------------------------------------
+
+   function New_Pledge_Update_From_Assignment
+     (Brower : Entity_Id;
+      Path   : Node_Id) return W_Prog_Id
+   is
+      Brower_Id   : W_Identifier_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Def         : constant W_Term_Id := New_Pledge_Def_From_Expression
+        (Brower      => Brower,
+         Borrowed_Id => Borrowed_Id,
+         Brower_Id   => Brower_Id,
+         Path        => Path);
+   begin
+      return New_Pledge_Update (Brower, Borrowed_Id, Brower_Id, Def);
    end New_Pledge_Update_From_Assignment;
 
    ------------------------
