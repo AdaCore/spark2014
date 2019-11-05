@@ -4437,21 +4437,38 @@ package body Gnat2Why.Subprograms is
             --  of the result.
 
             Complete_Post : constant W_Pred_Id :=
-              +New_And_Expr (Conjuncts =>
-                               (1 =>
-                                  (if Is_Borrowing_Traversal_Function (E)
-                                   then New_Typed_Binding
-                                     (Domain  => EW_Pred,
-                                      Name    => Result_Pledge_Id (E),
-                                      Def     => New_Pledge_For_Call
-                                        (E    => E,
-                                         Args => Compute_Args
-                                           (E, Logic_Why_Binders)),
-                                      Context => +Post)
-                                   else +Post),
-                                2 => +Dynamic_Prop_Result,
-                                3 => +Tag_Comp),
-                             Domain    => EW_Pred);
+              +New_And_Expr
+              (Conjuncts =>
+                 (1 =>
+
+                    --  If the function is a borrowing traversal function,
+                    --  bind the identifier for the pledge of the result. Also
+                    --  assume that the pledge holds right after the call.
+
+                    (if Is_Borrowing_Traversal_Function (E)
+                     then New_Typed_Binding
+                       (Domain  => EW_Pred,
+                        Name    => Result_Pledge_Id (E),
+                        Def     => New_Pledge_For_Call
+                          (E    => E,
+                           Args => Compute_Args
+                             (E, Logic_Why_Binders)),
+                        Context => New_And_Then_Expr
+                          (Left   => +Post,
+                           Right  => New_Pledge_Call
+                             (E            => E,
+                              Borrowed_Arg => Transform_Identifier
+                                (Expr   => First_Formal (E),
+                                 Ent    => First_Formal (E),
+                                 Domain => EW_Term,
+                                 Params => Params),
+                              Brower_Arg   => +Result_Name,
+                              Ref_Allowed  => False),
+                           Domain => EW_Pred))
+                     else +Post),
+                  2 => +Dynamic_Prop_Result,
+                  3 => +Tag_Comp),
+               Domain    => EW_Pred);
             Guarded_Post  : constant W_Pred_Id :=
               (if not Use_Guard_For_Function (E) then Complete_Post
                else New_Conditional
@@ -5176,6 +5193,11 @@ package body Gnat2Why.Subprograms is
                  +New_And_Expr
                  (Left   => +Dynamic_Prop_Result,
                   Right  =>
+
+                  --  If the function is a borrowing traversal function,
+                  --  bind the identifier for the pledge of the result. Also
+                  --  assume that the pledge holds right after the call.
+
                     (if Is_Borrowing_Traversal_Function (E)
                      then New_Typed_Binding
                        (Domain  => EW_Pred,
@@ -5183,7 +5205,18 @@ package body Gnat2Why.Subprograms is
                         Def     => New_Pledge_For_Call
                           (E    => E,
                            Args => Logic_Func_Args),
-                        Context => +Post)
+                        Context => New_And_Then_Expr
+                          (Left   => +Post,
+                           Right  => New_Pledge_Call
+                             (E            => E,
+                              Borrowed_Arg => Transform_Identifier
+                                (Expr   => First_Formal (E),
+                                 Ent    => First_Formal (E),
+                                 Domain => EW_Term,
+                                 Params => Params),
+                              Brower_Arg   => +Result_Name,
+                              Ref_Allowed  => False),
+                           Domain => EW_Pred))
                      else +Post),
                   Domain => EW_Pred);
                Tag_Arg    : constant W_Expr_Array :=
