@@ -205,8 +205,8 @@ package SPARK_Annotate is
    --  Found to True and fill in the Info record. Otherwise, set Found to False
    --  and leave Info uninitialized.
 
-   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean with
-     Pre => Ekind (E) = E_Procedure;
+   function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean
+   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
    --  Return True if a pragma Annotate Might_Not_Return applies to the
    --  procedure E.
 

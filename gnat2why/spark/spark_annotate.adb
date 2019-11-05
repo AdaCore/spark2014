@@ -776,7 +776,8 @@ package body SPARK_Annotate is
    -------------------------------------
 
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
-     (Might_Not_Return_Annotations.Contains (E));
+     (Ekind (E) = E_Procedure
+      and then Might_Not_Return_Annotations.Contains (E));
 
    ---------------------------
    -- Has_Pledge_Annotation --
