@@ -1,0 +1,4 @@
+Generated contracts for q
+Generated contracts for p
+p.ads:5:20: info: initialization of "Arg" proved
+p.ads:5:44: info: data dependencies proved
