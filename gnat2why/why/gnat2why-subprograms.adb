@@ -5748,12 +5748,46 @@ package body Gnat2Why.Subprograms is
                   Name        => Logic_Id,
                   Binders     => Flat_Binders,
                   Pre         => Guard,
-                  Def         =>
-                    +Transform_Expr
+                  Def         => +Transform_Expr
                     (Expression (Expr_Fun_N),
                      Expected_Type => Equ_Ty,
                      Domain        => EW_Term,
                      Params        => Params)));
+         end;
+      end if;
+
+      if Is_Borrowing_Traversal_Function (E) then
+         declare
+            Guard       : constant W_Pred_Id :=
+              +New_And_Then_Expr
+              (Left   => +Compute_Guard_Formula
+                 (Logic_Func_Binders, Params),
+               Right  => +Func_Guard,
+               Domain => EW_Pred);
+            Borrowed_Id : W_Identifier_Id;
+            Brower_Id   : W_Identifier_Id;
+            Def         : constant W_Term_Id := New_Pledge_Def_From_Expression
+              (Brower      => E,
+               Borrowed_Id => Borrowed_Id,
+               Brower_Id   => Brower_Id,
+               Path        => Expression (Expr_Fun_N));
+         begin
+            Emit
+              (File,
+               New_Guarded_Axiom
+                 (Ada_Node => E,
+                  Name     => NID (Short_Name (E) & "__" & Pledge_Axiom),
+                  Binders  => Flat_Binders,
+                  Pre      => Guard,
+                  Def      => New_Pledge_Def
+                    (E           => E,
+                     Name        => +New_Pledge_For_Call
+                       (E    => E,
+                        Args => Get_Args_From_Binders
+                          (Flat_Binders, Ref_Allowed => False)),
+                     Borrowed_Id => Borrowed_Id,
+                     Brower_Id   => Brower_Id,
+                     Def         => Def)));
          end;
       end if;
 

@@ -333,6 +333,19 @@ package Gnat2Why.Expr is
    --         array in split form.
    --  @result Why3 program that performs the check and returns [W_Expr]
 
+   function New_Pledge_Def_From_Expression
+     (Brower      : Entity_Id;
+      Borrowed_Id : out W_Identifier_Id;
+      Brower_Id   : out W_Identifier_Id;
+      Path        : Node_Id) return W_Term_Id;
+   --  Construct the new definition of the pledge of a borrower from a path.
+   --  @param Path expression for the definition or update of a borrower
+   --  @param Brower is either the local borrower in the case of a borrow or
+   --         a reborrow, or the subprogram entity when returning from a
+   --         traversal function.
+   --  @param Brower_Id and Borrowed_Id are the names used in the
+   --         definition to refer to the borrower and borrowed objects
+
    function New_Predicate_Check
      (Ada_Node         : Node_Id;
       Ty               : Entity_Id;

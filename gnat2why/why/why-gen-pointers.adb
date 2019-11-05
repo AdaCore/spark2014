@@ -1307,6 +1307,38 @@ package body Why.Gen.Pointers is
          Brower_Arg   => Brower_Arg);
    end New_Pledge_Call;
 
+   --------------------
+   -- New_Pledge_Def --
+   --------------------
+
+   function New_Pledge_Def
+     (E           : Entity_Id;
+      Name        : W_Term_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Brower_Id   : W_Identifier_Id;
+      Def         : W_Term_Id) return W_Pred_Id
+   is
+      Pledge_Get : constant W_Identifier_Id :=
+        Borrow_Infos (E).Pledge_Get;
+      Name_Acc   : constant W_Term_Id :=
+        New_Call (Name => Pledge_Get,
+                  Args => (+Name, +Borrowed_Id, +Brower_Id),
+                  Typ  => EW_Bool_Type);
+   begin
+      return New_Universal_Quantif
+        (Binders  => (1 => Binder_Type'(B_Name => Borrowed_Id,
+                                        others => <>),
+                      2 => Binder_Type'(B_Name => Brower_Id,
+                                        others => <>)),
+         Triggers => New_Triggers
+           (Triggers => (1 => New_Trigger (Terms => (1 => +Name_Acc)))),
+         Pred     => +New_Comparison
+           (Symbol => Why_Eq,
+            Left   => +Name_Acc,
+            Right  => +Def,
+            Domain => EW_Pred));
+   end New_Pledge_Def;
+
    -------------------------
    -- New_Pledge_For_Call --
    -------------------------
@@ -1339,30 +1371,14 @@ package body Why.Gen.Pointers is
         (if Ekind (E) = E_Function
          then Result_Pledge_Id (E)
          else Borrow_Infos (E).Pledge_Id);
-      Pledge_Get : constant W_Identifier_Id :=
-        Borrow_Infos (E).Pledge_Get;
       Res        : constant W_Identifier_Id :=
         New_Result_Ident (Typ => Get_Typ (Pledge_Id));
-      Res_Acc    : constant W_Term_Id :=
-        New_Call (Name => Pledge_Get,
-                  Args => (+Res, +Borrowed_Id, +Brower_Id),
-                  Typ  => EW_Bool_Type);
    begin
       return New_Assignment
         (Name   => Pledge_Id,
          Value  => New_Any_Expr
-           (Post        => New_Universal_Quantif
-                (Binders  => (1 => Binder_Type'(B_Name => Borrowed_Id,
-                                                others => <>),
-                              2 => Binder_Type'(B_Name => Brower_Id,
-                                                others => <>)),
-                 Triggers => New_Triggers
-                   (Triggers => (1 => New_Trigger (Terms => (1 => +Res_Acc)))),
-                 Pred     => +New_Comparison
-                   (Symbol => Why_Eq,
-                    Left   => +Res_Acc,
-                    Right  => +Def,
-                    Domain => EW_Pred)),
+           (Post        => New_Pledge_Def
+                (E, +Res, Borrowed_Id, Brower_Id, Def),
             Return_Type => Get_Typ (Pledge_Id),
             Labels      => Symbol_Sets.Empty_Set),
          Typ    => Get_Typ (Pledge_Id),

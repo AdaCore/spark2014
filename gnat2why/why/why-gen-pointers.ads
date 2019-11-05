@@ -196,6 +196,15 @@ package Why.Gen.Pointers is
    --  Construct a call to the pledge of a call to a traversal function E with
    --  parameters Args.
 
+   function New_Pledge_Def
+     (E           : Entity_Id;
+      Name        : W_Term_Id;
+      Borrowed_Id : W_Identifier_Id;
+      Brower_Id   : W_Identifier_Id;
+      Def         : W_Term_Id) return W_Pred_Id;
+   --  Construct an equality between a pledge object Name and its definition
+   --  Def, Borrowed_Id and Brower_Id being the variables used in Def.
+
    function New_Pledge_Update
      (E           : Entity_Id;
       Borrowed_Id : W_Identifier_Id;
