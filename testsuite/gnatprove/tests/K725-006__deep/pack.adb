@@ -4,7 +4,7 @@ is
    generic
       type T1 is (<>);
    package Genpack is
-      package Apack with Initializes => Ary is
+      package Apack with Initializes => (Ary, Bpack.Bry) is
          type    T is array (Integer range <>) of Boolean;
          Ary   : T(1..4) := (True,False,True,False);
 

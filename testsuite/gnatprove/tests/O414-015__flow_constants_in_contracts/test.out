@@ -10,7 +10,6 @@ const.ads:10:33: info: precondition proved (Trivial: 1 VC)
 const.ads:12:04: low: initialization of constant with variable input "D" through constant with variable input "C" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
 const.ads:12:33: info: precondition proved (Trivial: 1 VC)
 const.ads:13:04: low: initialization of constant with variable input "E" through constant with variable input "C" must be listed in the Initializes contract (SPARK RM 7.1.5(9))
-const.ads:15:04: low: initialization of constant without variable input "G" must be mentioned in the Initializes contract of "Const" (SPARK RM 7.1.5(9))
 const.ads:15:33: info: precondition proved (Trivial: 1 VC)
 const.ads:20:11: info: data dependencies proved
 const2.adb:2:08: all constituents must be declared before body at line 5

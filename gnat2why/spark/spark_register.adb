@@ -302,7 +302,7 @@ package body SPARK_Register is
             when N_Discriminant_Specification
                | N_Object_Declaration
             =>
-               Register_Entity (Defining_Entity (N));
+               Register_Entity (Unique_Defining_Entity (N));
 
             when N_Parameter_Specification =>
                declare

@@ -824,4 +824,11 @@ package SPARK_Util is
      Pre => Ekind (E) = E_Label;
    --  Return the parent of the N_Label node associated to E
 
+   function States_And_Objects (E : Entity_Id) return Node_Sets.Set
+   with Pre  => Ekind (E) = E_Package and not Is_Wrapper_Package (E),
+        Post => (for all Obj of States_And_Objects'Result =>
+                    Ekind (Obj) in E_Abstract_State | E_Constant | E_Variable);
+   --  Return objects that can appear on the LHS of the Initializes contract
+   --  for a package E.
+
 end SPARK_Util;

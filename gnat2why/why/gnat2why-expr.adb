@@ -13602,6 +13602,7 @@ package body Gnat2Why.Expr is
             begin
 
                if not Is_Generic_Unit (E)
+                 and then not Is_Wrapper_Package (E)
                  and then (Nkind (Decl) = N_Package_Body
                            or else No (Package_Body (E)))
                then
@@ -13610,7 +13611,7 @@ package body Gnat2Why.Expr is
                        Parse_Initializes (E, Get_Flow_Scope (E));
 
                   begin
-                     for Var of GG_Get_Local_Variables (E) loop
+                     for Var of States_And_Objects (E) loop
                         if not Is_Abstract_State (Var)
                           and then Entity_In_SPARK (Var)
                           and then Ada_Ent_To_Why.Has_Element

@@ -151,16 +151,6 @@ package Flow_Generated_Globals.Phase_2 is
                No (Get_Pragma (E, Pragma_Initializes));
    --  @param E is the package whose generated Initializes aspect we want
 
-   function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set
-   with Pre  => GG_Has_Been_Generated and then
-                Ekind (E) = E_Package and then
-                Is_In_Analyzed_Files (E),
-        Post => (for all Var of GG_Get_Local_Variables'Result =>
-                    Ekind (Var) in E_Abstract_State | E_Constant | E_Variable
-                    and then not Is_Internal (Var));
-   --  @param E is the package whose local variables we are asking for
-   --  @return objects that may appear on the LHS of an Initializes contract
-
    function GG_Is_Initialized_At_Elaboration (EN : Entity_Name) return Boolean
    with Pre => GG_Has_Been_Generated;
    --  @param EN is the entity name we want to check

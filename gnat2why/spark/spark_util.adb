@@ -25,6 +25,7 @@
 
 with Ada.Characters.Latin_1; use Ada.Characters.Latin_1;
 with Ada.Strings.Unbounded;  use Ada.Strings.Unbounded;
+with Common_Iterators;       use Common_Iterators;
 with Csets;                  use Csets;
 with Errout;                 use Errout;
 with Flow_Utility;           use Flow_Utility;
@@ -2076,7 +2077,7 @@ package body SPARK_Util is
           when E_Variable       => Ekind (Scope (E)) = E_Package,
           when others           => False)
       and then
-        not Is_Internal (E));
+        Comes_From_Source (E));
 
    ----------------------------------
    -- Is_Part_Of_Concurrent_Object --
@@ -3131,5 +3132,134 @@ package body SPARK_Util is
          return Original_Record_Component (E);
       end if;
    end Unique_Component;
+
+   ------------------------
+   -- States_And_Objects --
+   ------------------------
+
+   function States_And_Objects (E : Entity_Id) return Node_Sets.Set is
+      procedure Register_Object (Obj : Entity_Id)
+        with Pre => Ekind (Obj) in E_Abstract_State
+                                 | E_Constant
+                                 | E_Variable;
+      --  Register Obj as either a ghost or an ordinary variable
+
+      procedure Traverse_Declarations (L : List_Id);
+
+      Results : Node_Sets.Set;
+
+      ---------------------
+      -- Register_Object --
+      ---------------------
+
+      procedure Register_Object (Obj : Entity_Id) is
+      begin
+         if Comes_From_Source (Obj) then
+            Results.Insert (Obj);
+         end if;
+      end Register_Object;
+
+      ---------------------------
+      -- Traverse_Declarations --
+      ---------------------------
+
+      procedure Traverse_Declarations (L : List_Id) is
+         N : Node_Id := First (L);
+      begin
+         while Present (N) loop
+            case Nkind (N) is
+               when N_Object_Declaration =>
+                  declare
+                     Obj : constant Entity_Id := Defining_Entity (N);
+
+                  begin
+                     if Ekind (Obj) = E_Variable then
+                        Register_Object (Obj);
+
+                     else pragma Assert (Ekind (Obj) = E_Constant);
+
+                        if not In_Generic_Actual (Obj)
+                          and then Has_Variable_Input (Obj)
+                        then
+                           if Present (Expression (N)) then
+                              --  Completion of a deferred constant
+
+                              if Is_Full_View (Obj) then
+                                 null;
+
+                                 --  Ordinary constant with an initialization
+                                 --  expression.
+
+                              else
+                                 Register_Object (Obj);
+                              end if;
+
+                           else
+                              --  Declaration of a deferred constant
+
+                              if Present (Full_View (Obj)) then
+                                 Register_Object (Full_View (Obj));
+
+                                 --  Imported constant
+
+                              else
+                                 pragma Assert (Is_Imported (Obj));
+                                 Register_Object (Obj);
+                              end if;
+                           end if;
+                        end if;
+                     end if;
+                  end;
+               when N_Package_Declaration =>
+                  declare
+                     Nested : constant Entity_Id := Defining_Entity (N);
+                  begin
+                     if not Is_Wrapper_Package (Nested) then
+                        Results.Union (States_And_Objects (Nested));
+                     end if;
+                  end;
+
+               when others =>
+                  null;
+            end case;
+
+            Next (N);
+         end loop;
+      end Traverse_Declarations;
+
+      --  Local variables
+
+      Pkg_Spec : constant Node_Id := Package_Specification (E);
+
+   --  Start of processing for States_And_Objects
+
+   begin
+      --  Pick objects from visible declarations (always), then abstract
+      --  states (if given explicitly) or objects in private/body parts
+      --  which are lifted to implicit abstract states (if no abstract
+      --  states are given).
+
+      Traverse_Declarations (Visible_Declarations (Pkg_Spec));
+
+      if Present (Get_Pragma (E, Pragma_Abstract_State)) then
+         if Has_Non_Null_Abstract_State (E) then
+            for State of Iter (Abstract_States (E)) loop
+               Register_Object (State);
+            end loop;
+         end if;
+      else
+         Traverse_Declarations (Private_Declarations (Pkg_Spec));
+         declare
+            Pkg_Body : constant Node_Id := Package_Body (E);
+
+         begin
+            if Present (Pkg_Body) then
+               Traverse_Declarations (Declarations (Pkg_Body));
+            end if;
+         end;
+      end if;
+
+      return Results;
+   end States_And_Objects;
 
 end SPARK_Util;

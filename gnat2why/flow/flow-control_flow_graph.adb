@@ -4391,7 +4391,6 @@ package body Flow.Control_Flow_Graph is
 
                         Add_Vertex
                           (FA,
-                           The_Out,
                            Make_Package_Initialization_Attributes
                              (The_State => The_Out,
                               Inputs    => The_Ins,

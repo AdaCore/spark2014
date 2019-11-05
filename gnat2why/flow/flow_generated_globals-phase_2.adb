@@ -596,30 +596,6 @@ package body Flow_Generated_Globals.Phase_2 is
       end if;
    end GG_Get_Initializes;
 
-   ----------------------------
-   -- GG_Get_Local_Variables --
-   ----------------------------
-
-   function GG_Get_Local_Variables (E : Entity_Id) return Node_Sets.Set is
-      Local_Variables : Node_Sets.Set;
-   begin
-      --  ??? proof should not expect us to have local variables of wrapper
-      --  packages, we don't have them.
-      if Is_Wrapper_Package (E) then
-         return Node_Sets.Empty_Set;
-      end if;
-
-      --  Convert Entity_Names to Entity_Ids; this conversion is always safe,
-      --  because when seeing a nested package entity we also see the entities
-      --  of its local variables.
-
-      for Name of Phase_1_Info (To_Entity_Name (E)).Local_Variables loop
-         Local_Variables.Insert (Find_Entity (Name));
-      end loop;
-
-      return Local_Variables;
-   end GG_Get_Local_Variables;
-
    --------------------
    -- GG_Has_Globals --
    --------------------

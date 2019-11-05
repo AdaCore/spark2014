@@ -17,7 +17,8 @@ is
           Initializes    => (Inner_State_2,
                              Inner_State   => (Init.Var,
                                                Foo),
-                             X             => Init.Var)
+                             X             => Init.Var,
+                             Nested_In_Spec.Nested_In_Spec_Var => Init.Var)
    is
       X : Integer := 0;
 

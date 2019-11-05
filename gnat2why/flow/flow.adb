@@ -629,26 +629,7 @@ package body Flow is
             Rv.Shape := Shape_None;
             Write_Str ("initializes ");
 
-            pragma Assert (F.Kind = Direct_Mapping);
-            declare
-               N : constant Node_Id := Get_Direct_Mapping_Id (F);
-            begin
-               --  Look at the postcondition of Find_Node in
-               --  Do_Package_Body_Or_Stub in CFG as to why only these
-               --  four need to be supported.
-               case Nkind (N) is
-                  when N_Component_Association =>
-                     Sprint_Comma_List (Choices (N));
-                     Write_Str (" from ");
-                     Print_Node (Expression (N));
-                  when N_Defining_Identifier |
-                       N_Identifier          |
-                       N_Expanded_Name       =>
-                     Print_Node (N);
-                  when others =>
-                     raise Why.Unexpected_Node;
-               end case;
-            end;
+            pragma Assert (not Present (F));
 
          else
             if A.Is_Assertion then

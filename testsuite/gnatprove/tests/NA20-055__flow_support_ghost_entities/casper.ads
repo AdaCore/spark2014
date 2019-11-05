@@ -1,5 +1,7 @@
 package Casper
-  with Initializes => (G1, G2, Ghost_G1)
+  with Initializes => (G1, G2, Ghost_G1,
+                       Nested_Ghost_Package.Nested_Global,
+                       Nested_Ghost_Package.Nested_State)
 is
    G1, G2 : Integer := 0;
 
