@@ -1,38 +1,33 @@
 alignment_attribute.adb:18:23: info: range check proved (CVC4: 1 VC)
 alignment_attribute.adb:39:15: info: range check proved (CVC4: 1 VC)
-alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "P"
-alignment_attribute.adb:50:22: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:53:04: warning: analyzing unreferenced procedure "Q"
-alignment_attribute.adb:53:14: warning: subprogram "Q" has no effect
-alignment_attribute.adb:56:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
-alignment_attribute.adb:59:22: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:60:22: medium: assertion might fail, cannot prove A2'Alignment < 0
-alignment_attribute.adb:66:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:67:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:47:04: warning: analyzing unreferenced procedure "Q"
+alignment_attribute.adb:47:14: high: all paths in "Q" raise exceptions or do not terminate normally
+alignment_attribute.adb:47:14: warning: subprogram "Q" has no effect
+alignment_attribute.adb:50:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)
+alignment_attribute.adb:53:22: info: assertion proved
+alignment_attribute.adb:54:07: medium: assertion might fail (e.g. when A1'Last = 0 and A2 = (others => (others => 1)))
+alignment_attribute.adb:60:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:61:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:62:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:63:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:64:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:65:19: info: assertion proved
+alignment_attribute.adb:66:19: info: assertion proved
+alignment_attribute.adb:67:19: info: assertion proved
 alignment_attribute.adb:68:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:69:19: info: assertion proved (CVC4: 1 VC)
 alignment_attribute.adb:70:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:71:19: info: assertion proved
-alignment_attribute.adb:72:19: info: assertion proved
-alignment_attribute.adb:73:19: info: assertion proved
-alignment_attribute.adb:74:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:75:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:76:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:80:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:81:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:82:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:83:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:84:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:85:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:86:19: high: "RST2.D2" is not initialized
-alignment_attribute.adb:86:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:87:19: high: "RT3.I" is not initialized
-alignment_attribute.adb:87:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:88:19: high: "RT4.I" is not initialized
-alignment_attribute.adb:88:19: high: "RT4.J" is not initialized
-alignment_attribute.adb:88:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:89:19: info: assertion proved (CVC4: 1 VC)
-alignment_attribute.adb:90:19: info: assertion proved (CVC4: 1 VC)
+alignment_attribute.adb:74:19: info: assertion proved
+alignment_attribute.adb:75:19: info: assertion proved
+alignment_attribute.adb:76:19: info: assertion proved
+alignment_attribute.adb:77:19: info: assertion proved
+alignment_attribute.adb:78:19: info: assertion proved
+alignment_attribute.adb:79:19: info: assertion proved
+alignment_attribute.adb:80:19: info: assertion proved
+alignment_attribute.adb:81:19: info: assertion proved
+alignment_attribute.adb:82:19: info: assertion proved
+alignment_attribute.adb:83:19: info: assertion proved
+alignment_attribute.adb:84:19: info: assertion proved
 component_size_attribute.adb:13:04: warning: analyzing unreferenced procedure "P"
 component_size_attribute.adb:13:14: warning: subprogram "P" has no effect
 component_size_attribute.adb:17:22: info: length check proved (CVC4: 3 VC; Trivial: 1 VC)

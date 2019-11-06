@@ -48,7 +48,7 @@ package body SPARK_Atree.Entities is
    -- Alignment --
    ---------------
 
-   function Alignment (Typ : Entity_Id) return Uint renames Einfo.Alignment;
+   function Alignment (Ent : Entity_Id) return Uint renames Einfo.Alignment;
 
    ---------------
    -- Base_Type --
@@ -491,7 +491,7 @@ package body SPARK_Atree.Entities is
    -- Known_Alignment --
    ---------------------
 
-   function Known_Alignment (Typ : Entity_Id) return Boolean renames
+   function Known_Alignment (Ent : Entity_Id) return Boolean renames
      Einfo.Known_Alignment;
 
    -------------------------------

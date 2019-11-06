@@ -1,0 +1,3 @@
+bad_align.adb:8:48: unknown value of object alignment is not yet supported
+bad_align.adb:16:28: unknown value of object alignment is not yet supported
+gnatprove: error during flow analysis and proof

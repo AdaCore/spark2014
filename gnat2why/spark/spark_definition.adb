@@ -2807,6 +2807,30 @@ package body SPARK_Definition is
             | Attribute_Size
             | Attribute_Value_Size
          =>
+            --  Attribute Alignment is only supported for a type, or an object
+            --  for which its value is specified explicitly. Otherwise, the
+            --  value of the object alignment is not known, as it is defined by
+            --  gigi which might use the value of alignment for its type, or
+            --  promote it in some cases to a larger value.
+
+            if Attr_Id = Attribute_Alignment then
+               declare
+                  Has_Type_Prefix : constant Boolean :=
+                    Nkind (P) in N_Has_Entity
+                      and then Present (Entity (P))
+                      and then Is_Type (Entity (P));
+                  Has_Known_Alignment : constant Boolean :=
+                    Nkind (P) in N_Has_Entity
+                      and then Present (Entity (P))
+                      and then Known_Alignment (Entity (P));
+               begin
+                  if not (Has_Type_Prefix or else Has_Known_Alignment) then
+                     Mark_Unsupported ("unknown value of object alignment", N);
+                     return;
+                  end if;
+               end;
+            end if;
+
             if Emit_Warning_Info_Messages
               and then SPARK_Pragma_Is (Opt.On)
               and then Gnat2Why_Args.Pedantic

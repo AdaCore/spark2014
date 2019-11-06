@@ -11849,21 +11849,29 @@ package body Gnat2Why.Expr is
          when Attribute_Alignment =>
             declare
                Has_Type_Prefix : constant Boolean :=
-                 Present (Entity (Var))
+                 Nkind (Var) in N_Has_Entity
+                   and then Present (Entity (Var))
                    and then Is_Type (Entity (Var));
-               Typ : constant Entity_Id :=
-                 (if Has_Type_Prefix then Entity (Var) else Etype (Var));
             begin
                --  Alignment may be specified explicitly on the type or
                --  object. When specified on the type, the frontend replaces
-               --  T'Alignment by its value. When specified on the object, the
-               --  frontend creates a subtype with a known alignment for the
-               --  object, that can be queried here.
+               --  T'Alignment by its value. When specified on the object,
+               --  we only support cases where the alignment is known.
 
-               if Known_Alignment (Typ) then
-                  T := New_Integer_Constant (Expr, Alignment (Typ));
+               if Has_Type_Prefix then
+                  declare
+                     Typ : constant Entity_Id := Entity (Var);
+                  begin
+                     if Known_Alignment (Typ) then
+                        T := New_Integer_Constant (Expr, Alignment (Typ));
+                     else
+                        T := New_Attribute_Expr (Typ, Domain, Attr_Id);
+                     end if;
+                  end;
                else
-                  T := New_Attribute_Expr (Typ, Domain, Attr_Id);
+                  pragma Assert (Present (Entity (Var))
+                                   and then Known_Alignment (Entity (Var)));
+                  T := New_Integer_Constant (Expr, Alignment (Entity (Var)));
                end if;
 
                --  In the program domain, translate the object itself to

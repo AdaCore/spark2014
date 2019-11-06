@@ -1,12 +1,6 @@
 package body Pedantic
 is
 
-   function Alignment_Of (X : in R) return Natural
-   is
-   begin
-      return X'Alignment;
-   end Alignment_Of;
-
    function Alignment_Of_R return Natural
    is
    begin
