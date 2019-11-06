@@ -4618,9 +4618,7 @@ package body Gnat2Why.Expr is
          Typ_Pred              : constant W_Pred_Id :=
            Compute_Dynamic_Predicate (Expr, Ty_Ext, Params, Use_Pred => False);
          Anc_Ty                : constant Entity_Id :=
-           (if Full_View_Not_In_SPARK (Ty_Ext)
-            then Get_First_Ancestor_In_SPARK (Ty_Ext)
-            else Retysp (Etype (Ty_Ext)));
+           Retysp (Etype (Ty_Ext));
          Anc_Typ_Pred          : constant W_Pred_Id :=
            (if Anc_Ty = Ty_Ext then True_Pred
             else Compute_Dynamic_Predicate
@@ -4890,10 +4888,7 @@ package body Gnat2Why.Expr is
          --  the search.
 
          declare
-            Next_Ty : constant Entity_Id :=
-              (if Full_View_Not_In_SPARK (Rep_Ty)
-               then Get_First_Ancestor_In_SPARK (Rep_Ty)
-               else Retysp (Etype (Rep_Ty)));
+            Next_Ty : constant Entity_Id := Retysp (Etype (Rep_Ty));
          begin
             exit when Next_Ty = Rep_Ty;
             Rep_Ty := Next_Ty;
@@ -5124,11 +5119,7 @@ package body Gnat2Why.Expr is
                   Domain   => EW_Pred);
             end if;
 
-            if Full_View_Not_In_SPARK (Current) then
-               Parent := Get_First_Ancestor_In_SPARK (Current);
-            else
-               Parent := Retysp (Etype (Current));
-            end if;
+            Parent := Retysp (Etype (Current));
             exit when Current = Parent;
             Current := Parent;
          end loop;
@@ -10875,10 +10866,7 @@ package body Gnat2Why.Expr is
             Discr : Node_Id := (if Count_Discriminants (Ty) > 0
                                 then First_Discriminant (Ty)
                                 else Empty);
-            D_Ty  : constant Entity_Id :=
-              (if Full_View_Not_In_SPARK (Ty) then
-                    Get_First_Ancestor_In_SPARK (Ty)
-               else Ty);
+            D_Ty  : constant Entity_Id := Retysp (Ty);
          begin
             while Present (Discr) loop
                declare
@@ -12808,10 +12796,7 @@ package body Gnat2Why.Expr is
                declare
                   Typ   : constant Entity_Id :=
                     Retysp (Etype (Comp));
-                  Base  : constant Entity_Id :=
-                    (if Full_View_Not_In_SPARK (Typ)
-                     then Get_First_Ancestor_In_SPARK (Typ)
-                     else Retysp (Etype (Typ)));
+                  Base  : constant Entity_Id := Retysp (Etype (Typ));
                   Check : W_Prog_Id := +Void;
 
                begin
@@ -19425,10 +19410,7 @@ package body Gnat2Why.Expr is
          end;
 
          declare
-            Next_Ty : constant Entity_Id :=
-              (if Full_View_Not_In_SPARK (Rep_Type)
-               then Get_First_Ancestor_In_SPARK (Rep_Type)
-               else Retysp (Etype (Rep_Type)));
+            Next_Ty : constant Entity_Id := Retysp (Etype (Rep_Type));
          begin
             exit when Next_Ty = Rep_Type;
             Rep_Type := Next_Ty;
@@ -19604,11 +19586,7 @@ package body Gnat2Why.Expr is
                   Variables_In_Type_Invariant (Current, Variables);
                end if;
 
-               if Full_View_Not_In_SPARK (Current) then
-                  Parent := Get_First_Ancestor_In_SPARK (Current);
-               else
-                  Parent := Retysp (Etype (Current));
-               end if;
+               Parent := Retysp (Etype (Current));
                exit when Current = Parent;
                Current := Parent;
             end loop;

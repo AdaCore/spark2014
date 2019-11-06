@@ -200,10 +200,10 @@ package body SPARK_Definition is
    --  function with an implicit postcondition when they are subject to
    --  SPARK_Mode of Auto.
 
-   Full_Views_Not_In_SPARK : Node_Maps.Map;
-   --  Maps type entities in SPARK whose full view was declared in a private
-   --  part with SPARK_Mode => Off or a subtype or derived type of such an
-   --  entity to its first ancester in SPARK.
+   Full_Views_Not_In_SPARK : Node_Sets.Set;
+   --  Registers type entities in SPARK whose full view was declared in a
+   --  private part with SPARK_Mode => Off or a subtype or derived type of such
+   --  an entity.
 
    Delayed_Type_Aspects : Node_Maps.Map;
    --  Stores subprograms from aspects of types whose analysis should be
@@ -1051,13 +1051,6 @@ package body SPARK_Definition is
          end if;
       end if;
    end Discard_Underlying_Type;
-
-   ---------------------------------
-   -- Get_First_Ancestor_In_SPARK --
-   ---------------------------------
-
-   function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id is
-     (Full_Views_Not_In_SPARK.Element (E));
 
    --------------------
    -- Get_SPARK_JSON --
@@ -4981,7 +4974,7 @@ package body SPARK_Definition is
                           or else
                         Is_Private_Entity_Mode_Off (E))
             then
-               Full_Views_Not_In_SPARK.Insert (E, E);
+               Full_Views_Not_In_SPARK.Insert (E);
                Discard_Underlying_Type (E);
 
             --  The same is true for an untagged subtype or a derived type of
@@ -4991,7 +4984,7 @@ package body SPARK_Definition is
               and then not Is_Tagged_Type (E)
               and then Full_View_Not_In_SPARK (Etype (E))
             then
-               Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+               Full_Views_Not_In_SPARK.Insert (E);
                Discard_Underlying_Type (E);
             else
                declare
@@ -5003,14 +4996,10 @@ package body SPARK_Definition is
                   --  SPARK.
 
                begin
-                  if not In_SPARK (Utype) then
-                     Full_Views_Not_In_SPARK.Insert
-                       (E, (if Is_Nouveau_Type (E) then E
-                        else Retysp (Etype (E))));
-                     Discard_Underlying_Type (E);
-                  elsif Full_View_Not_In_SPARK (Utype) then
-                     Full_Views_Not_In_SPARK.Insert
-                       (E, Get_First_Ancestor_In_SPARK (Utype));
+                  if not In_SPARK (Utype)
+                    or else Full_View_Not_In_SPARK (Utype)
+                  then
+                     Full_Views_Not_In_SPARK.Insert (E);
                      Discard_Underlying_Type (E);
                   end if;
                end;
@@ -5521,7 +5510,7 @@ package body SPARK_Definition is
             --  etype. In this case, the whole type has fullview not in SPARK.
 
             if Full_View_Not_In_SPARK (Etype (E)) then
-               Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+               Full_Views_Not_In_SPARK.Insert (E);
             end if;
 
          elsif Is_Access_Type (E) then
@@ -5773,9 +5762,7 @@ package body SPARK_Definition is
                   --  store it in Full_Views_Not_In_SPARK.
 
                   if not Violation_Detected and then not Fullview_In_SPARK then
-                     Full_Views_Not_In_SPARK.Insert
-                       (E, (if Is_Nouveau_Type (E) then E
-                        else Retysp (Etype (E))));
+                     Full_Views_Not_In_SPARK.Insert (E);
                   end if;
                end;
 
@@ -5790,7 +5777,7 @@ package body SPARK_Definition is
                                N_Derived_Type_Definition));
 
                if Full_View_Not_In_SPARK (Etype (E)) then
-                  Full_Views_Not_In_SPARK.Insert (E, Retysp (Etype (E)));
+                  Full_Views_Not_In_SPARK.Insert (E);
                end if;
             end if;
 

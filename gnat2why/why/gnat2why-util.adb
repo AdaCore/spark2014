@@ -287,11 +287,7 @@ package body Gnat2Why.Util is
    begin
       loop
          exit when not Type_Is_Modeled_As_Base (Ty);
-         if Full_View_Not_In_SPARK (Ty) then
-            Ty := Get_First_Ancestor_In_SPARK (Ty);
-         else
-            Ty := Retysp (Etype (Ty));
-         end if;
+         Ty := Retysp (Etype (Ty));
       end loop;
       return Ty;
    end Get_Base_Of_Type;
@@ -1170,11 +1166,7 @@ package body Gnat2Why.Util is
                return True;
             end if;
 
-            if Full_View_Not_In_SPARK (Current) then
-               Parent := Get_First_Ancestor_In_SPARK (Current);
-            else
-               Parent := Retysp (Etype (Current));
-            end if;
+            Parent := Retysp (Etype (Current));
             exit when Current = Parent;
             Current := Parent;
          end loop;

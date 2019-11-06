@@ -379,9 +379,7 @@ package body Gnat2Why.Tables is
                     raise Program_Error)
          else Empty);
 
-      Ancestor_Type : constant Entity_Id :=
-        (if Full_View_Not_In_SPARK (E) then Get_First_Ancestor_In_SPARK (E)
-         else Retysp (Etype (E)));
+      Ancestor_Type : constant Entity_Id := Retysp (Etype (E));
 
    --  Start of processing for Init_Component_Info
 
@@ -668,9 +666,7 @@ package body Gnat2Why.Tables is
       Ancestor : Entity_Id;
    begin
       loop
-         Ancestor := (if Full_View_Not_In_SPARK (Current) then
-                         Get_First_Ancestor_In_SPARK (Current)
-                      else Retysp (Etype (Current)));
+         Ancestor := Retysp (Etype (Current));
          exit when Current = Ancestor;
          Descendants (Ancestor).Insert (E);
          Current := Ancestor;

@@ -33,7 +33,6 @@ with Namet;               use Namet;
 with Nlists;              use Nlists;
 with Sinput;              use Sinput;
 with Snames;              use Snames;
-with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util;          use SPARK_Util;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with Uintp;               use Uintp;
@@ -2883,11 +2882,7 @@ package body Why.Gen.Records is
             --  view may still not be in SPARK, in particular when it is
             --  a (non-private) tagged derivation of a private type.
 
-            if Full_View_Not_In_SPARK (Current) then
-               Ancestor := Get_First_Ancestor_In_SPARK (Current);
-            else
-               Ancestor := Retysp (Etype (Current));
-            end if;
+            Ancestor := Retysp (Etype (Current));
 
             --  At this point we have reached as high as we could in the
             --  hierarchy (or derived types and subtypes) while staying in

@@ -426,11 +426,7 @@ package body SPARK_Util.Types is
       loop
          pragma Assert (Has_Inherited_DIC (Ty));
          Anc := Ty;
-         if Full_View_Not_In_SPARK (Ty) then
-            Ty := Get_First_Ancestor_In_SPARK (Ty);
-         else
-            Ty := Retysp (Etype (Ty));
-         end if;
+         Ty := Retysp (Etype (Ty));
 
          pragma Assert (Present (DIC_Procedure (Ty)));
 
@@ -620,7 +616,7 @@ package body SPARK_Util.Types is
       --  Derived non-tagged types cannot have private fields of their own.
 
       if not Is_Tagged_Type (Ty)
-        and then Get_First_Ancestor_In_SPARK (Ty) /= Ty
+        and then Retysp (Etype (Ty)) /= Ty
       then
          return False;
       end if;
@@ -648,11 +644,7 @@ package body SPARK_Util.Types is
             return True;
          end if;
 
-         if Full_View_Not_In_SPARK (Current) then
-            Parent := Get_First_Ancestor_In_SPARK (Current);
-         else
-            Parent := Retysp (Etype (Current));
-         end if;
+         Parent := Retysp (Etype (Current));
          exit when Current = Parent;
          Current := Parent;
       end loop;
@@ -966,25 +958,15 @@ package body SPARK_Util.Types is
         (if Is_Class_Wide_Type (E) then Get_Specific_Type_From_Classwide (E)
          else E);
    begin
-      --  Climb the type derivation chain with Root_Type, applying
-      --  Underlying_Type or Get_First_Ancestor_In_SPARK to pass private type
-      --  boundaries.
-
-      --  ??? this code requires comments
+      --  Climb the type derivation chain as it is visible from SPARK code
 
       while Ancestor /= Result loop
 
          Result := Ancestor;
-         Ancestor := Root_Type (Result);
-
-         if Full_View_Not_In_SPARK (Ancestor) then
-            Ancestor := Get_First_Ancestor_In_SPARK (Ancestor);
-         else
-            Ancestor := Underlying_Type (Ancestor);
-         end if;
+         Ancestor := Retysp (Etype (Result));
       end loop;
 
-      return Retysp (Result);
+      return Result;
    end Root_Retysp;
 
    -------------------------

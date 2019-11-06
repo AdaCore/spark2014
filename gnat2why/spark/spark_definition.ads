@@ -163,10 +163,6 @@ package SPARK_Definition is
    --  of a package with external axioms. Also returns True if E is a subtype
    --  or derived type of such an entity.
 
-   function Get_First_Ancestor_In_SPARK (E : Entity_Id) return Entity_Id with
-     Pre  => Is_Type (E) and then Full_View_Not_In_SPARK (E);
-   --  Returns the first type in SPARK in the ancestors of E
-
    function Get_SPARK_JSON return JSON_Array;
    --  Should be called after marking is finished. Returns the result of
    --  marking as a JSON record.

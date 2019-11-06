@@ -27,7 +27,6 @@ with Ada.Strings.Fixed;   use Ada.Strings.Fixed;
 with GNATCOLL.Utils;      use GNATCOLL.Utils;
 with Gnat2Why.Util;       use Gnat2Why.Util;
 with SPARK_Atree;         use SPARK_Atree;
-with SPARK_Definition;    use SPARK_Definition;
 with SPARK_Util.Types;    use SPARK_Util.Types;
 with String_Utils;        use String_Utils;
 with Why.Atree.Accessors; use Why.Atree.Accessors;
@@ -339,9 +338,7 @@ package body Why.Gen.Names is
                         pragma Assert (Is_Record_Type_In_Why (To_Node));
                         declare
                            From_Base : constant Node_Id :=
-                             (if Full_View_Not_In_SPARK (From_Node)
-                              then Get_First_Ancestor_In_SPARK (From_Node)
-                              else Root_Retysp (From_Node));
+                             Root_Retysp (From_Node);
                         begin
                            if From_Base = From_Node then
                               return E_Symb (To_Node, WNE_Of_Base);

@@ -2397,9 +2397,7 @@ package body SPARK_Util is
                   declare
                      Old_Type : constant Entity_Id := Cur_Type;
                   begin
-                     Cur_Type := (if Full_View_Not_In_SPARK (Cur_Type)
-                                  then Get_First_Ancestor_In_SPARK (Cur_Type)
-                                  else Retysp (Etype (Cur_Type)));
+                     Cur_Type := Retysp (Etype (Cur_Type));
                      pragma Assert (Cur_Type /= Old_Type);
                      Comp := Search_Component_By_Name (Cur_Type, Comp);
                   end;
