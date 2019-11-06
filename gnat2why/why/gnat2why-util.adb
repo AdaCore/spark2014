@@ -347,7 +347,7 @@ package body Gnat2Why.Util is
       --  behavior is to print private types as if they were public.
 
    begin
-      if not Entity_Comes_From_Source (E) then
+      if not Comes_From_Source (E) then
          Labels := Symbol_Sets.Empty_Set;
 
       --  Generate counterexample labels for a function result. As function
