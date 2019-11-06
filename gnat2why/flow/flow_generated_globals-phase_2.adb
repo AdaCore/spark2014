@@ -59,7 +59,7 @@ package body Flow_Generated_Globals.Phase_2 is
    GG_Generated : Boolean := False;
    --  Set to True by GG_Read once the Global Graph has been generated.
 
-   GG_State_Constituents : Boolean := False;
+   GG_State_Constituents : Boolean := False with Ghost;
    --  Set to True by GG_Read once the mappings between abstract states and
    --  their constituents have been populated.
 
@@ -3486,7 +3486,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function Down_Project
      (G      : Global_Names;
       Caller : Entity_Name)
-               return Global_Names
+      return Global_Names
    is
      (Proof_Ins => Down_Project (G.Proof_Ins, Caller),
       Inputs    => Down_Project (G.Inputs,    Caller),
@@ -3495,7 +3495,7 @@ package body Flow_Generated_Globals.Phase_2 is
    function Down_Project
      (Vars   : Name_Sets.Set;
       Caller : Entity_Name)
-               return Name_Sets.Set
+      return Name_Sets.Set
    is
       Projected : Name_Sets.Set;
    begin
