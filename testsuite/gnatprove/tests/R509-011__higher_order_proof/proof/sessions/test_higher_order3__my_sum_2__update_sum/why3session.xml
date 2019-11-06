@@ -1286,7 +1286,8 @@
   <proof prover="2"><result status="valid" steps="177"/></proof>
   </goal>
   <goal name="def&#39;VC.398" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="176144139"/></proof>
+  <proof prover="0"><result status="valid" steps="10066"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.399" expl="postcondition" proved="true">

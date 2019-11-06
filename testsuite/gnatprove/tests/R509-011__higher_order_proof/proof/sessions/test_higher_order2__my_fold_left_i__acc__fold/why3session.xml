@@ -283,7 +283,7 @@
   </goal>
   <goal name="def&#39;VC.80" expl="precondition" proved="true">
   <proof prover="0"><result status="valid" steps="47198"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="highfailure" steps="55245"/></proof>
   </goal>
   <goal name="def&#39;VC.81" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="27"/></proof>
@@ -447,7 +447,7 @@
   </goal>
   <goal name="def&#39;VC.129" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="89387"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="highfailure" steps="94716"/></proof>
   </goal>
   <goal name="def&#39;VC.130" expl="loop invariant preservation" proved="true">
   <transf name="trivial_true" proved="true" >

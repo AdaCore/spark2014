@@ -1,9 +1,10 @@
 signed.adb:9:07: info: precondition proved (CVC4: 2 VC)
-signed.adb:15:30: info: loop invariant initialization proved (CVC4: 2 VC)
-signed.adb:15:30: info: loop invariant preservation proved (CVC4: 2 VC)
-signed.adb:15:55: info: overflow check proved (CVC4: 4 VC)
-signed.adb:18:19: info: assertion proved (CVC4: 2 VC)
-signed.adb:18:45: info: overflow check proved (CVC4: 2 VC)
+signed.adb:10:22: info: assertion proved (CVC4: 1 VC; altergo: 1 VC)
+signed.adb:13:30: info: loop invariant initialization proved (CVC4: 2 VC)
+signed.adb:13:30: info: loop invariant preservation proved (CVC4: 2 VC)
+signed.adb:13:55: info: overflow check proved (CVC4: 4 VC)
+signed.adb:16:19: info: assertion proved (CVC4: 2 VC)
+signed.adb:16:45: info: overflow check proved (CVC4: 2 VC)
 spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:112:51: info: division check proved (CVC4: 1 VC), in instantiation at spark-long_integer_arithmetic_lemmas.ads:31
 spark-arithmetic_lemmas.ads:123:38: info: division check proved (CVC4: 1 VC), in instantiation at spark-integer_arithmetic_lemmas.ads:31
