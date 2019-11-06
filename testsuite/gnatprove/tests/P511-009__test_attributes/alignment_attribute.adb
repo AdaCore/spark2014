@@ -29,32 +29,26 @@ is
    type Constr_Array is array (My_Integer) of Positive;
    type Unconstr_Array is array (Positive range <>) of Natural;
 
-   B : Boolean := True;
-   Int : constant Integer := 2;
-   S : String := "test";
+   B : Boolean := True with Alignment => 4;
+   Int : constant Integer := 2 with Alignment => 4;
+   S : String := "test" with Alignment => 4;
 
-   M : My_Integer := My_Integer'Last;
+   M : My_Integer := My_Integer'Last with Alignment => 4;
 
-   RT1  : R1;
-   RT2  : R2 (3);
-   RST2 : SR2;
-   RT3  : R3;
-   RT4  : R4;
+   RT1  : R1 with Alignment => 4;
+   RT2  : R2 (3) with Alignment => 4;
+   RST2 : SR2 with Alignment => 4;
+   RT3  : R3 with Alignment => 4;
+   RT4  : R4 with Alignment => 4;
 
-   CA : Constr_Array := (others => 2);
-   UA : Unconstr_Array (1 .. 10) := (others => 1);
-
-   procedure P (CA : in out Constr_Array) is
-   begin
-      CA := CA;
-      pragma Assert (CA'Alignment >= 0);
-   end P;
+   UA : Unconstr_Array (1 .. 10) := (others => 1) with Alignment => 4;
+   CA : Constr_Array := (others => 2) with Alignment => 4;
 
    procedure Q (X : Integer) is
       type Array1 is array (1 .. X) of Integer;
       type Array2 is array (1 .. 1) of Array1;
-      A1 : Array1 := (others => 1);
-      A2 : Array2 := (others => A1);
+      A1 : Array1 := (others => 1) with Alignment => 4;
+      A2 : Array2 := (others => A1) with Alignment => 4;
    begin
       pragma Assert (A2'Alignment >= 0);
       pragma Assert (A2'Alignment < 0); -- @ASSERT:FAIL

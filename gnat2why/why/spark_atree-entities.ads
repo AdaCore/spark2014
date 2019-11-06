@@ -242,9 +242,6 @@ package SPARK_Atree.Entities is
    --  For Types --
    ----------------
 
-   function Alignment (Typ : Entity_Id) return Uint with
-     Pre => Is_Type (Typ) and then Known_Alignment (Typ);
-
    function Base_Type (Typ : Entity_Id) return Entity_Id with
      Pre => Is_Type (Typ);
 
@@ -303,9 +300,6 @@ package SPARK_Atree.Entities is
      Pre => Is_Type (Typ);
 
    function Is_Tagged_Type (Typ : Entity_Id) return Boolean with
-     Pre => Is_Type (Typ);
-
-   function Known_Alignment (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 
    function Known_Object_Size (Typ : Entity_Id) return Boolean with
@@ -649,6 +643,10 @@ package SPARK_Atree.Entities is
    --  For other entities --
    -------------------------
 
+   function Alignment (Ent : Entity_Id) return Uint with
+     Pre => (Is_Type (Ent) or else Is_Object (Ent))
+       and then Known_Alignment (Ent);
+
    function Enclosing_Declaration (E : Entity_Id) return Node_Id with
      Pre  => Is_Object (E) or else Is_Named_Number (E) or else Is_Type (E),
      Post => Nkind (Enclosing_Declaration'Result) in
@@ -664,6 +662,9 @@ package SPARK_Atree.Entities is
                          E_Procedure    |
                          E_Task_Type
          and then Nam in Name_Priority | Name_Interrupt_Priority;
+
+   function Known_Alignment (Ent : Entity_Id) return Boolean with
+     Pre => Is_Type (Ent) or else Is_Object (Ent);
 
    function Known_To_Precede (Withed, Main : Entity_Id) return Boolean with
      Pre => Is_Compilation_Unit (Withed)
