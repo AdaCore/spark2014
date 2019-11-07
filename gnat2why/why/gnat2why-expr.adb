@@ -1369,14 +1369,13 @@ package body Gnat2Why.Expr is
                        Typ  => EW_Bool_Type,
                        Args =>
                          ((if Has_Record_Type (Etype (E))
-                          or else Full_View_Not_In_SPARK
-                            (Etype (E))
-                          then
-                             New_Tag_Update
-                            (Domain => EW_Prog,
-                             Name   => +Tmp_Var,
-                             Ty     => Etype (E))
-                          else +Tmp_Var),
+                             or else Full_View_Not_In_Spark (Etype (E))
+                           then
+                              New_Tag_Update
+                                (Domain => EW_Prog,
+                                 Name   => +Tmp_Var,
+                                 Ty     => Etype (E))
+                           else +Tmp_Var),
                           +L_Id));
                begin
                   if not Has_Dereference (+Expr) then
