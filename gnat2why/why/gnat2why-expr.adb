@@ -1369,7 +1369,7 @@ package body Gnat2Why.Expr is
                        Typ  => EW_Bool_Type,
                        Args =>
                          ((if Has_Record_Type (Etype (E))
-                             or else Full_View_Not_In_Spark (Etype (E))
+                             or else Full_View_Not_In_SPARK (Etype (E))
                            then
                               New_Tag_Update
                                 (Domain => EW_Prog,
