@@ -226,12 +226,12 @@ package body Flow_Visibility is
                Connect
                  (Spec_V,
                   Scope_Graph.Get_Vertex
-                    ((if Is_Nested (Info)
+                    (if Is_Nested (Info)
                      then Info.Container
                      else (Ent  => Info.Parent,
                            Part => (if Info.Is_Private
                                     then Private_Part
-                                    else Visible_Part)))));
+                                    else Visible_Part))));
                --  ??? The code for the target scope is repeated in rules
                --  Rule_Up_Spec and Rule_Down_Spec; this should be refactored.
 
@@ -285,12 +285,12 @@ package body Flow_Visibility is
             Connect
               (Spec_V,
                Scope_Graph.Get_Vertex
-                 ((if Is_Nested (Info)
-                   then Info.Container
-                   else (Ent  => Info.Parent,
-                         Part => (if Info.Is_Private
-                                  then Private_Part
-                                  else Visible_Part)))));
+                 (if Is_Nested (Info)
+                  then Info.Container
+                  else (Ent  => Info.Parent,
+                        Part => (if Info.Is_Private
+                                 then Private_Part
+                                 else Visible_Part))));
          end if;
 
          ----------------------------------------------------------------------
@@ -311,12 +311,12 @@ package body Flow_Visibility is
          --  something instantiated inside it).
 
          Connect
-           (Scope_Graph.Get_Vertex ((if Is_Nested (Info)
-                                     then Info.Container
-                                     else (Ent  => Info.Parent,
-                                           Part => (if Info.Is_Private
-                                                    then Private_Part
-                                                    else Visible_Part)))),
+           (Scope_Graph.Get_Vertex (if Is_Nested (Info)
+                                    then Info.Container
+                                    else (Ent  => Info.Parent,
+                                          Part => (if Info.Is_Private
+                                                   then Private_Part
+                                                   else Visible_Part))),
             Spec_V);
 
          ----------------------------------------------------------------------

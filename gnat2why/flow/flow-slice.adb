@@ -387,24 +387,24 @@ package body Flow.Slice is
          --  generated Initializes.
 
          function Is_Empty (E : Entity_Id) return Boolean is
-         ((case Ekind (E) is
-              when E_Abstract_State =>
-                 Has_Null_Refinement (E),
-              --  ??? The intention is to check the Refined_State of the
-              --  currently analysed package, but see what happens here:
-              --
-              --    package Outer with Abstract_State => Outer_State is
-              --    private
-              --       package Inner with Abstract_State => Inner_State is ...
-              --       --  When analysing Outer we also peek into Inner_State's
-              --       --  refinement, which is wrong.
-              --    end Outer;
+           (case Ekind (E) is
+               when E_Abstract_State =>
+                  Has_Null_Refinement (E),
+               --  ??? The intention is to check the Refined_State of the
+               --  currently analysed package, but see what happens here:
+               --
+               --    package Outer with Abstract_State => Outer_State is
+               --    private
+               --       package Inner with Abstract_State => Inner_State is ...
+               --       --  When analysing Outer we also peek into
+               --       --  Inner_State's refinement, which is wrong.
+               --    end Outer;
 
-              when E_Constant | E_Variable =>
-                 Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
+               when E_Constant | E_Variable =>
+                  Is_Empty_Record_Type (Get_Type (E, FA.B_Scope)),
 
-              when others =>
-                 raise Program_Error));
+               when others =>
+                  raise Program_Error);
 
          ----------------
          -- Is_Written --

@@ -1029,9 +1029,9 @@ package body SPARK_Definition is
       if No (Root) then
          Mark_Violation
            ((if Nkind (Expr) = N_Function_Call
-            then "borrow or observe of a non-traversal function call"
-            else "borrow or observe of an expression which is not part of "
-            & "stand-alone object or parameter"),
+             then "borrow or observe of a non-traversal function call"
+             else "borrow or observe of an expression which is not part of "
+                  & "stand-alone object or parameter"),
             Expr,
             SRM_Reference => "SPARK RM 3.10(3))");
       end if;

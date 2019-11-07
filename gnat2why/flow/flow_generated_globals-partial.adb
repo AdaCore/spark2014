@@ -1067,9 +1067,9 @@ package body Flow_Generated_Globals.Partial is
    begin
       Get_Globals
         (Subprogram          => E,
-         Scope               => Get_Flow_Scope ((if Refined
-                                                 then Get_Body_Entity (E)
-                                                 else E)),
+         Scope               => Get_Flow_Scope (if Refined
+                                                then Get_Body_Entity (E)
+                                                else E),
          Classwide           => False,
          Globals             => Globals,
          Use_Deduced_Globals => False);

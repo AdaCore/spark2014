@@ -201,9 +201,9 @@ package body SPARK_Util.Subprograms is
                      return
                        Get_Pragma
                          (Defining_Entity
-                            ((if Nkind (Context) = N_Subunit
+                            (if Nkind (Context) = N_Subunit
                              then Corresponding_Stub (Context)
-                             else Body_N)),
+                             else Body_N),
                           Prag);
                   end;
                else
@@ -1453,9 +1453,9 @@ package body SPARK_Util.Subprograms is
                --  Global variables accessed by the subprogram are either
                --  objects or concurrent types.
 
-               if Invariant_Check_Needed ((if Is_Type (E)
-                                           then E
-                                           else Etype (E)))
+               if Invariant_Check_Needed (if Is_Type (E)
+                                          then E
+                                          else Etype (E))
                then
                   return True;
                end if;

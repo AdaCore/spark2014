@@ -395,14 +395,14 @@ package body Flow_Classwide is
             --  ancestor might not have it, b) moving anything to it is OK
             --  (i.e. its fine if this one is a superset).
             if Present (My_Output) then
-               Anc_Inputs := Anc_Dep ((if My_To_Anc.Contains (My_Output)
-                                       then My_To_Anc (My_Output)
-                                       else My_Output));
+               Anc_Inputs := Anc_Dep (if My_To_Anc.Contains (My_Output)
+                                      then My_To_Anc (My_Output)
+                                      else My_Output);
                Tmp := My_Inputs;
                for F of Anc_Inputs loop
-                  Tmp.Exclude ((if Anc_To_My.Contains (F)
-                                then Anc_To_My (F)
-                                else F));
+                  Tmp.Exclude (if Anc_To_My.Contains (F)
+                               then Anc_To_My (F)
+                               else F);
                end loop;
             end if;
 

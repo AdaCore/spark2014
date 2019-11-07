@@ -1757,9 +1757,9 @@ package body Flow_Utility is
       S : constant Flow_Scope :=
         (if Present (Scop)
          then Scop
-         else Get_Flow_Scope ((if Entity_Body_In_SPARK (Subprogram)
-                               then Get_Body_Entity (Subprogram)
-                               else Subprogram)));
+         else Get_Flow_Scope (if Entity_Body_In_SPARK (Subprogram)
+                              then Get_Body_Entity (Subprogram)
+                              else Subprogram));
 
       function Only_Mutable
         (Objects : Flow_Id_Sets.Set)
