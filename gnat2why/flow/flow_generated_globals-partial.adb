@@ -1125,27 +1125,24 @@ package body Flow_Generated_Globals.Partial is
      (Analyzed  :        Entity_Id;
       Contracts : in out Entity_Contract_Maps.Map)
    is
-      Has_Children : constant Boolean := not Is_Leaf (Analyzed);
    begin
       Current_Error_Node := Analyzed;
 
-      if Has_Children then
-         for Child of Scope_Map (Analyzed) loop
-            Do_Global (Child, Contracts);
-         end loop;
-      end if;
+      for Child of Scope_Map (Analyzed) loop
+         Do_Global (Child, Contracts);
+      end loop;
 
       if Analyzed = Root_Entity
-        or else Has_Children
+        or else not Is_Leaf (Analyzed)
       then
          declare
             Patches : Global_Patch_Lists.List;
 
          begin
-            Fold (Analyzed     => Analyzed,
-                  Folded       => Analyzed,
-                  Contracts    => Contracts,
-                  Patches      => Patches);
+            Fold (Analyzed  => Analyzed,
+                  Folded    => Analyzed,
+                  Contracts => Contracts,
+                  Patches   => Patches);
             --  ### We do call fold here (even if the root is a leaf)
             --  because we've done the refined globals and we need to
             --  consider what goes into the spec.
