@@ -152,19 +152,24 @@ package body SPARK_Annotate is
    --  until (and excluding) a node which comes from source. The Exclude
    --  argument can be used to skip a specific node.
 
-   procedure Syntax_Check_Pragma_Annotate_Gnatprove
-     (Node    : Node_Id;
-      Ok      : out Boolean;
-      Kind    : out Annotate_Kind;
-      Pattern : out String_Id;
-      Reason  : out String_Id);
-   --  Check validity of the pragma Annotate (Gnatprove, ...), and fill in the
-   --  kind, pattern and reason of the pragma. The boolean Ok is always set,
-   --  the others are only set if Ok is True. Ok is False if some syntax error
+   type Check_Justification (Present : Boolean := False) is record
+      case Present is
+         when False => null;
+         when True =>
+            Kind    : Annotate_Kind;
+            Pattern : String_Id;
+            Reason  : String_Id;
+      end case;
+   end record;
+
+   procedure Check_Pragma_Annotate_GNATprove
+     (Node   : Node_Id;
+      Result : out Check_Justification);
+   --  Check validity of the pragma Annotate (GNATprove, ...). For annotations
+   --  used to justify check messages, fill in the kind, pattern and reason of
+   --  the pragma in Result. Result.Present is False if some syntax error
    --  has been detected, or if the pragma Annotate is not used for
-   --  justification purposes (it has Iterable_For_Proof or
-   --  External_Axiomatization as a second argument). If it is necessary,
-   --  Syntax_Check_Pragma_Annotate_Gnatprove reports this error.
+   --  justification purposes.
 
    procedure Check_Init_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
@@ -938,28 +943,29 @@ package body SPARK_Annotate is
       Preceding     : Node_Id;
       Consider_Next : Boolean)
    is
-      Ok              : Boolean;
-      Pattern, Reason : String_Id;
-      Kind            : Annotate_Kind;
-
+      Result : Check_Justification;
    begin
       if Pragma_Seen.Contains (N) then
          return;
       else
          Pragma_Seen.Insert (N);
       end if;
-      Syntax_Check_Pragma_Annotate_Gnatprove (N, Ok, Kind, Pattern, Reason);
 
-      if not Ok then
-         return;
-      end if;
+      Check_Pragma_Annotate_GNATprove (N, Result);
 
-      if Consider_Next then
-         Insert_With_Next (N, Kind, Pattern, Reason, Preceding);
-      else
-         Insert_Annotate_Range (N, Kind, Pattern, Reason, Preceding,
-                                Whole => False);
-      end if;
+      case Result.Present is
+         when False =>
+            return;
+         when True =>
+            if Consider_Next then
+               Insert_With_Next
+                 (N, Result.Kind, Result.Pattern, Result.Reason, Preceding);
+            else
+               Insert_Annotate_Range
+                 (N, Result.Kind, Result.Pattern, Result.Reason, Preceding,
+                  Whole => False);
+            end if;
+      end case;
    end Mark_Pragma_Annotate;
 
    --------------------------------
@@ -1005,21 +1011,14 @@ package body SPARK_Annotate is
      (Is_Scalar_Type (E)
       and then Init_Annotations.Contains (Unique_Entity (E)));
 
-   --------------------------------------------
-   -- Syntax_Check_Pragma_Annotate_Gnatprove --
-   --------------------------------------------
+   -------------------------------------
+   -- Check_Pragma_Annotate_GNATprove --
+   -------------------------------------
 
-   procedure Syntax_Check_Pragma_Annotate_Gnatprove
-     (Node     : Node_Id;
-      Ok       : out Boolean;
-      Kind     : out Annotate_Kind;
-      Pattern  : out String_Id;
-      Reason   : out String_Id)
+   procedure Check_Pragma_Annotate_GNATprove
+     (Node   : Node_Id;
+      Result : out Check_Justification)
    is
-      pragma Annotate (CodePeer, Intentional,
-                       "validity check",
-                       "other out parameters only set when Ok is True");
-
       --  Local constants
 
       From_Aspect      : constant Boolean := From_Aspect_Specification (Node);
@@ -1091,13 +1090,13 @@ package body SPARK_Annotate is
       Name : constant String := Get_Annotation_Name (Arg2);
 
       Arg3, Arg4 : Node_Id;
-      Arg3_Exp, Arg4_Exp : Node_Id;
+      Arg3_Exp, Arg4_Exp : Node_Id := Empty;
+      Ok : Boolean;
 
    begin
       --  Error case for which a message is issued in Get_Annotation_Name
 
       if Name = "" then
-         Ok := False;
          return;
       end if;
 
@@ -1154,15 +1153,9 @@ package body SPARK_Annotate is
          return;
       end if;
 
-      --  Annotations that do not correspond to justifying a check result in
-      --  Ok being set to False after verifying the syntax and semantics of
-      --  the pragma/aspect.
-
-      --  For annotations that justify check messages, we set Ok to False so
-      --  that whenever we detect a problem we can simply return. Only when
-      --  all checks passed, we set Ok to True.
-
-      Ok := False;
+      --  Annotations that do not correspond to justifying a check message
+      --  result in Result.Present being set to False after verifying the
+      --  syntax and semantics of the pragma/aspect.
 
       --  Annotations with 2 arguments
 
@@ -1191,39 +1184,48 @@ package body SPARK_Annotate is
       elsif Name = "iterable_for_proof" then
          Check_Iterable_Annotation (Arg3_Exp, Arg4_Exp);
 
-      --  Annotation for justifying check messages. This is where we set Ok to
-      --  True and fill in values for output parameters Kind, Pattern and
-      --  Reason.
+      --  Annotation for justifying check messages. This is where we set
+      --  Result.Present to True and fill in values for components Kind,
+      --  Pattern and Reason.
 
       else
-         if Name = "false_positive" then
-            Kind := False_Positive;
-         elsif Name = "intentional" then
-            Kind := Intentional;
-         end if;
+         declare
+            Pattern, Reason : String_Id;
+            Kind            : Annotate_Kind;
 
-         if Nkind (Arg3_Exp) = N_String_Literal then
-            Pattern := Strval (Arg3_Exp);
-         else
-            Error_Msg_N
-              ("third argument PATTERN for 'G'N'A'Tprove Annotate "
-               & Aspect_Or_Pragma & " must be a string literal",
-               Node);
-            return;
-         end if;
+         begin
+            if Name = "false_positive" then
+               Kind := False_Positive;
+            elsif Name = "intentional" then
+               Kind := Intentional;
+            end if;
 
-         if Nkind (Arg4_Exp) = N_String_Literal then
-            Reason := Strval (Arg4_Exp);
-         else
-            Error_Msg_N
-              ("fourth argument REASON for 'G'N'A'Tprove Annotate "
-               & Aspect_Or_Pragma & " must be a string literal",
-               Node);
-            return;
-         end if;
+            if Nkind (Arg3_Exp) = N_String_Literal then
+               Pattern := Strval (Arg3_Exp);
+            else
+               Error_Msg_N
+                 ("third argument PATTERN for 'G'N'A'Tprove Annotate "
+                  & Aspect_Or_Pragma & " must be a string literal",
+                  Node);
+               return;
+            end if;
 
-         Ok := True;
+            if Nkind (Arg4_Exp) = N_String_Literal then
+               Reason := Strval (Arg4_Exp);
+            else
+               Error_Msg_N
+                 ("fourth argument REASON for 'G'N'A'Tprove Annotate "
+                  & Aspect_Or_Pragma & " must be a string literal",
+                  Node);
+               return;
+            end if;
+
+            Result := Check_Justification'(Present => True,
+                                           Kind    => Kind,
+                                           Pattern => Pattern,
+                                           Reason  => Reason);
+         end;
       end if;
-   end Syntax_Check_Pragma_Annotate_Gnatprove;
+   end Check_Pragma_Annotate_GNATprove;
 
 end SPARK_Annotate;
