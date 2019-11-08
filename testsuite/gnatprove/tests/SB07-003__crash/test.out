@@ -1,0 +1,27 @@
+a-cfdlli.ads:469:49: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:610:49: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:700:57: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:766:57: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:852:28: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:852:39: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1028:43: info: overflow check proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1209:06: info: disjoint contract cases proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1348:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1363:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1378:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1393:20: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1415:14: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1421:23: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1470:14: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cfdlli.ads:1477:23: info: precondition proved (CVC4: 1 VC), in instantiation at database.adb:10
+a-cofuve.ads:231:54: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+a-cofuve.ads:236:63: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+a-cofuve.ads:237:59: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+a-cofuve.ads:237:76: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at database.adb:10
+database.adb:14:04: info: initialization of "Database" proved
+database.adb:14:29: info: range check proved (CVC4: 1 VC)
+database.adb:23:11: info: precondition proved (CVC4: 1 VC)
+database.adb:23:11: info: precondition proved (Trivial: 1 VC)
+database.adb:24:23: medium: pointer dereference check might fail (e.g. when Ent = (Key => 1, Email => null))

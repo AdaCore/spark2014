@@ -93,6 +93,13 @@ available resources:
     included in the container. This difference may make interaction between test
     and proof tricky when the equivalence relation is not the equality.
 
+.. note::
+
+   Functional containers do not comply with the ownership policy of SPARK if
+   element or key types are ownership types. Care should be taken to do the
+   required copies when storing these elements/keys inside the container or
+   retrieving them.
+
 .. _Formal Containers Library:
 
 Formal Containers Library
@@ -263,6 +270,14 @@ already traversed (otherwise the loop would have exited):
 
 .. literalinclude:: /gnatprove_by_example/results/my_find.prove
    :language: none
+
+.. note::
+
+   Just like functional containers, the formal containers do not comply with
+   the ownership policy of SPARK if
+   element or key types are ownership types. Care should be taken to do the
+   required copies when storing these elements/keys inside the container or
+   retrieving them.
 
 Quantification over Formal Containers
 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
