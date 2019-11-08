@@ -1,0 +1,2 @@
+tokens_2.ads:15:09: type aspect on type derived from a private type is not yet supported
+gnatprove: error during flow analysis and proof

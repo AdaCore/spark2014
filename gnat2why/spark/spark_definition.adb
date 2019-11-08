@@ -5328,6 +5328,35 @@ package body SPARK_Definition is
 
          elsif Is_Private_Type (E) then
 
+            --  If the type and its Retysp are different entities, aspects
+            --  such has predicates, invariants, and DIC can be lost if they
+            --  only apply to the type. Reject these cases.
+
+            if Present (Full_View (E))
+              and then Entity_In_SPARK (Full_View (E))
+              and then Is_Private_Type (Full_View (E))
+              and then Unique_Entity (Retysp (E)) /= Unique_Entity (E)
+            then
+
+               declare
+                  Rep : Node_Id := First_Rep_Item (Full_View (E));
+
+               begin
+                  --  Find a predicate representation item applying to E itself
+                  --  if there is one.
+
+                  Find_Predicate_Item (E, Rep);
+
+                  if Present (Rep)
+                    or else Has_Own_DIC (E)
+                    or else Has_Own_Invariants (E)
+                  then
+                     Mark_Unsupported
+                       ("type aspect on type derived from a private type", E);
+                  end if;
+               end;
+            end if;
+
             --  If a type has two predicates supplied with different
             --  SPARK_Mode, we cannot support it in SPARK. Indeed, we
             --  currently use the predicate function to retrieve the predicate,

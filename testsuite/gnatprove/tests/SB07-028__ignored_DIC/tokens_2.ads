@@ -12,8 +12,8 @@ package Tokens_2 with SPARK_Mode,
 
    C : Integer := 12;
 
-   type Token_Set is private with Ghost, --@DEFAULT_INITIAL_CONDITION:FAIL
-     Default_Initial_Condition => T_Length (Token_Set) + C = 7; --@OVERFLOW_CHECK:FAIL
+   type Token_Set is private with Ghost, --DEFAULT_INITIAL_CONDITION:FAIL
+     Default_Initial_Condition => T_Length (Token_Set) + C = 7; --OVERFLOW_CHECK:FAIL
    function T_Length (X : Token_Set) return Integer with Ghost;
 
    function Init return Boolean with Ghost;
