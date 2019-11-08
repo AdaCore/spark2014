@@ -37,7 +37,9 @@ with Gnat2Why_Args;                    use Gnat2Why_Args;
 with Graphs;
 with Lib;                              use Lib;
 with Nlists;                           use Nlists;
+with Opt;                              use Opt;
 with Sem_Aux;                          use Sem_Aux;
+with Sem_Prag;                         use Sem_Prag;
 with Sem_Type;                         use Sem_Type;
 with Sem_Util;                         use Sem_Util;
 with Sinfo;                            use Sinfo;
@@ -461,15 +463,18 @@ package body Flow_Generated_Globals.Partial is
          Contr.Direct_Calls := FA.Direct_Calls;
       end if;
 
-      --  Register abstract state components; if any then there should be
-      --  a Refined_State aspect.
-      --  ??? isn't this just checking if there are any abstract states?
+      --  Register abstract state components for packages whose body has
+      --  SPARK_Mode => On or None.
       if Ekind (E) = E_Package
-        and then Entity_Body_In_SPARK (E)
-        and then Present (Get_Pragma (Body_Entity (FA.Spec_Entity),
-                          Pragma_Refined_State))
+        and then Has_Non_Null_Abstract_State (E)
+        and then Present (Body_Entity (E))
+        and then
+          (No (SPARK_Pragma (Body_Entity (E)))
+             or else
+           Get_SPARK_Mode_From_Annotation
+             (SPARK_Pragma (Body_Entity (E))) = Opt.On)
       then
-         GG_Register_State_Refinement (FA.Spec_Entity);
+         GG_Register_State_Refinement (E);
       end if;
 
       --  We register the following:
@@ -2635,16 +2640,6 @@ package body Flow_Generated_Globals.Partial is
             Tasking          => Contr.Tasking);
       end if;
 
-      --  Register abstract state components; if any then there
-      --  should be Refined_State aspect.
-      --  ??? isn't this just checking if there are any
-      --  abstract states?
-      --  if FA.Kind = Kind_Package_Body
-      --    and then Present (Get_Pragma (FA.Spec_Entity,
-      --                      Pragma_Refined_State))
-      --  then
-      --     GG_Register_State_Refinement (FA.Spec_Entity);
-      --  end if;
    end Write_Contracts_To_ALI;
 
 end Flow_Generated_Globals.Partial;

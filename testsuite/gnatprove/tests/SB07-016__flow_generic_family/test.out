@@ -1,2 +1,0 @@
-test-child.ads:15:07: "TC.State" is referenced in expression function but missing from the Global, in instantiation at instance.ads:10
-gnatprove: error during flow analysis and proof

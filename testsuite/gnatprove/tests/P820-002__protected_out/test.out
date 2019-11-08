@@ -143,8 +143,8 @@ polyorb_hi_generated-transport.adb:87:14: info: no contextual analysis of "Produ
 polyorb_hi_generated-transport.adb:87:14: side effects of function "Producer_Consumer_Producer_Send" are not modeled in SPARK
 polyorb_hi_generated-transport.adb:100:03: info: no contextual analysis of "Producer_Consumer_Producer_Send" (multiple returns)
 polyorb_hi_generated-transport.adb:117:44: side effects of function "Send" are not modeled in SPARK
-polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.elaborated_variables" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
-polyorb_hi_generated-transport.adb:150:36: high: "polyorb_hi_generated.activity.producer_consumer_result_consumer_interrogators.uq_s" must be listed in the Global aspect of "Producer_Consumer_Result_Consumer_Deliver" (SPARK RM 6.1.4(14))
+polyorb_hi_generated-transport.adb:137:05: info: initialization of "Thread_Interface_Ufc" proved
+polyorb_hi_generated-transport.adb:138:05: info: initialization of "Time_Stamp_Ufc" proved
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.epoch.elaborated_variables" is not allowed in SPARK
 polyorb_hi_generated-transport.ads:20:12: function with output global "polyorb_hi.output.elaborated_variables" is not allowed in SPARK
 pr_a.adb:22:20: info: range check proved (CVC4: 2 VC)
