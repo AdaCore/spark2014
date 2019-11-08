@@ -1347,7 +1347,7 @@ package body Gnat2Why.Expr is
          begin
             if Ekind (FV) /= E_In_Parameter
               and then Present (Expression (Decl))
-              and then Comes_From_Source (Original_Node (FV))
+              and then Entity_Comes_From_Source (Original_Node (FV))
               and then Number_Of_Assocs_In_Expression
                 (Expression (Decl)) <= Max_Assocs
               and then not Contains_Volatile_Function_Call (Expression (Decl))
