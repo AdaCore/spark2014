@@ -423,6 +423,8 @@ package body SPARK_Util.Types is
       --  An inherited DIC procedure may have no body. Go to the ancestor to
       --  find an adequate body.
 
+      while No (Get_Body (DIC_Procedure (Ty)))
+        or else not May_Need_DIC_Checking (Ty)
       loop
          pragma Assert (Has_Inherited_DIC (Ty));
          Anc := Ty;
@@ -430,9 +432,7 @@ package body SPARK_Util.Types is
 
          pragma Assert (Present (DIC_Procedure (Ty)));
 
-         exit when Anc = Ty
-           or else (Present (Get_Body (DIC_Procedure (Ty)))
-                    and then May_Need_DIC_Checking (Ty));
+         exit when Anc = Ty;
       end loop;
 
       if Present (Get_Body (DIC_Procedure (Ty)))
