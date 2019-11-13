@@ -1,0 +1,2 @@
+test.adb:8:10: info: predicate check proved (altergo: 1 VC)
+test.adb:8:30: info: division check proved (CVC4: 1 VC)
