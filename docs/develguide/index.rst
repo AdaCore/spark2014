@@ -24,6 +24,7 @@ Contents:
    tool_structure
    legality_checking
    flow_analysis
+   gg
    translation_why3
    generation_vcs
    gnatwhy3
