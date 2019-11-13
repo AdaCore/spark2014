@@ -1,6 +1,6 @@
 road_traffic.ads:32:19: info: postcondition proved (CVC4: 1 VC)
-road_traffic.ads:36:19: info: postcondition proved (CVC4: 2 VC)
-road_traffic.ads:42:19: info: postcondition proved (CVC4: 2 VC)
+road_traffic.ads:36:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
+road_traffic.ads:42:19: info: postcondition proved (CVC4: 2 VC; Trivial: 1 VC)
 traffic_lights.adb:46:20: info: predicate check proved (CVC4: 1 VC)
 traffic_lights.ads:47:07: info: predicate check proved on default value (CVC4: 1 VC)
 traffic_lights.ads:50:09: info: ceiling priority protocol is respected (CVC4: 1 VC)

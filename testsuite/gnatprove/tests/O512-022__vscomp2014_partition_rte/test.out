@@ -48,7 +48,7 @@ a-cofuve.ads:238:30: info: range check proved (CVC4: 1 VC), in instantiation at 
 a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cfdlli.ads:69, in instantiation at partition_refinement.ads:15
 a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cforma.ads:112, in instantiation at partition_refinement.ads:20
 a-cofuve.ads:299:52: info: overflow check proved (CVC4: 1 VC), in instantiation at a-cofove.ads:87, in instantiation at partition_refinement.ads:32
-partition_refinement.adb:14:14: info: postcondition proved (CVC4: 1 VC)
+partition_refinement.adb:14:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)
 partition_refinement.adb:25:17: info: precondition proved (CVC4: 2 VC)
 partition_refinement.adb:27:16: info: precondition proved (Trivial: 1 VC)
 partition_refinement.adb:27:37: info: precondition proved (CVC4: 1 VC)

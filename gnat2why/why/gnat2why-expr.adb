@@ -12135,10 +12135,380 @@ package body Gnat2Why.Expr is
       Domain : EW_Domain;
       Params : Transformation_Params) return W_Expr_Id
    is
+      function Is_Equal_Of_Update (Expr : Node_Id) return Boolean with
+        Pre => Has_Array_Type (Etype (Left_Opnd (Expr)));
+      --  Return True if Expr is of the form X op E'Update (I => V) where
+      --  E is either X'Old or X'Loop_Entry and op is either = or /=.
+
+      function Transform_Equal_Of_Update
+        (Expr   : Node_Id;
+         Domain : EW_Domain;
+         Params : Transformation_Params) return W_Expr_Id
+      with Pre => Has_Array_Type (Etype (Left_Opnd (Expr)))
+        and then Is_Equal_Of_Update (Expr);
+      --  From: X = E'Update (I => V)
+      --  construct:
+      --    (for all K in X'Range => X (K) = (if K = I then V else E (K)))
+
+      ------------------------
+      -- Is_Equal_Of_Update --
+      ------------------------
+
+      function Is_Equal_Of_Update (Expr : Node_Id) return Boolean is
+         Var : constant Node_Id :=
+           (if Nkind (Left_Opnd (Expr)) = N_Identifier
+            then Left_Opnd (Expr) else Right_Opnd (Expr));
+         Upd : constant Node_Id :=
+           (if Nkind (Left_Opnd (Expr)) = N_Identifier
+            then Right_Opnd (Expr) else Left_Opnd (Expr));
+      begin
+         return Nkind (Expr) in N_Op_Eq | N_Op_Ne
+
+           --  Var must be a variable
+
+           and then Nkind (Var) = N_Identifier
+
+           --  Equality should not have been redefined for Var
+
+           and then
+             (not Is_Record_Type (Unchecked_Full_Type (Etype (Var)))
+              or else Is_Limited_View (Etype (Var))
+              or else No
+                (Get_User_Defined_Eq (Base_Type (Etype (Var)))))
+
+           --  Upd should be a 'Update attribute
+
+           and then Nkind (Upd) = N_Attribute_Reference
+           and then
+             Get_Attribute_Id (Attribute_Name (Upd)) = Attribute_Update
+
+           --  whose prefix is a 'Old or 'Loop_Entry attribute
+
+           and then Nkind (Prefix (Upd)) = N_Attribute_Reference
+           and then Get_Attribute_Id (Attribute_Name (Prefix (Upd))) in
+                 Attribute_Old | Attribute_Loop_Entry
+
+           --  whose prefix is Var.
+
+           and then Nkind (Prefix (Prefix (Upd))) = N_Identifier
+           and then Entity (Var) = Entity (Prefix (Prefix (Upd)));
+      end Is_Equal_Of_Update;
+
+      -------------------------------
+      -- Transform_Equal_Of_Update --
+      -------------------------------
+
+      function Transform_Equal_Of_Update
+        (Expr   : Node_Id;
+         Domain : EW_Domain;
+         Params : Transformation_Params) return W_Expr_Id is
+      begin
+         --  This translation is done in the predicate domain to be able to
+         --  use quantification. In the Prog domain, we still need some kind
+         --  of translation to generate checks.
+
+         if Domain in EW_Terms then
+            declare
+               Pred : constant W_Expr_Id :=
+                 Transform_Equal_Of_Update (Expr, EW_Pred, Params);
+            begin
+               return Boolean_Expr_Of_Pred (+Pred, Domain);
+            end;
+         end if;
+
+         declare
+            Var           : constant Node_Id :=
+              (if Nkind (Left_Opnd (Expr)) = N_Identifier
+               then Left_Opnd (Expr) else Right_Opnd (Expr));
+            pragma Assert (Nkind (Var) = N_Identifier);
+            Upd           : constant Node_Id :=
+              (if Nkind (Left_Opnd (Expr)) = N_Identifier
+               then Right_Opnd (Expr) else Left_Opnd (Expr));
+            pragma Assert (Nkind (Upd) = N_Attribute_Reference);
+            Arr_Ty        : constant Entity_Id := Etype (Var);
+
+            T             : W_Expr_Id;
+            Subdomain     : constant EW_Domain :=
+              (if Domain = EW_Pred then EW_Term else Domain);
+            Subd_No_Check : constant EW_Domain :=
+              (if Domain = EW_Prog then EW_Pterm else Subdomain);
+            Assocs        : constant List_Id :=
+              Component_Associations (First (Expressions (Upd)));
+            Association   : Node_Id := Nlists.First (Assocs);
+            Dim           : constant Positive :=
+              Positive (Number_Dimensions (Etype (Var)));
+            Indexes       : W_Identifier_Array (1 .. Dim);
+            --  Indexes inside the array
+
+            Vars          : W_Expr_Array (1 .. Dim);
+            --  Expressions used to index arrays at index Indexes
+
+            Guards        : W_Expr_Array
+              (1 .. Natural (List_Length (Assocs))) :=
+              (others => New_Literal
+                 (Domain => Domain,
+                  Value  => EW_False,
+                  Typ    => EW_Bool_Type));
+            --  Expressions for the evaluation of the choices
+
+            Exprs         : W_Expr_Array
+              (1 .. Natural (List_Length (Assocs)));
+            --  Expressions associated to the choices
+
+            Index         : Node_Id := First_Index (Arr_Ty);
+            Num_Assoc     : Positive := 1;
+
+         begin
+            --  Store indexes inside Indexes and Vars
+
+            for I in Indexes'Range loop
+               Indexes (I) := New_Temp_Identifier
+                 (Typ       => Type_Of_Node (Etype (Index)),
+                  Base_Name => "index");
+               Vars (I) := Insert_Simple_Conversion
+                 (Domain => Subd_No_Check,
+                  Expr   => +Indexes (I),
+                  To     => Base_Why_Type_No_Bool
+                    (Get_Typ (Indexes (I))));
+               Next_Index (Index);
+            end loop;
+
+            --  Compute choices and expressions
+
+            while Present (Association) loop
+               declare
+                  Choice : Node_Id := First (Choices (Association));
+                  Rng    : Node_Id;
+                  Guard  : W_Expr_Id;
+               begin
+                  while Present (Choice) loop
+
+                     --  Transform the choice into a guard
+
+                     case Nkind (Choice) is
+                        when N_Range =>
+                           pragma Assert (Dim = 1);
+                           Rng := Get_Range (Choice);
+                           Guard := New_Range_Expr
+                             (Domain => Domain,
+                              Low    => Transform_Expr
+                                (Expr          => Low_Bound (Rng),
+                                 Domain        => Subdomain,
+                                 Params        => Params,
+                                 Expected_Type => Get_Typ
+                                   (W_Identifier_Id'(+Vars (1)))),
+                              High   => Transform_Expr
+                                (Expr          => High_Bound (Rng),
+                                 Domain        => Subdomain,
+                                 Params        => Params,
+                                 Expected_Type => Get_Typ
+                                   (W_Identifier_Id'(+Vars (1)))),
+                              Expr   => Vars (1));
+                        when N_Aggregate =>
+                           declare
+                              Expr : Node_Id :=
+                                Nlists.First (Expressions (Choice));
+
+                           begin
+                              pragma Assert
+                                (List_Length (Expressions (Choice)) =
+                                   Nat (Dim));
+
+                              Guard := New_Literal
+                                (Domain => Domain,
+                                 Value  => EW_True,
+                                 Typ    => EW_Bool_Type);
+
+                              for Tmp_Index of Indexes loop
+                                 pragma Assert (Present (Expr));
+                                 Guard := New_And_Expr
+                                   (Left   => Guard,
+                                    Right  => New_Ada_Equality
+                                      (Typ    => Get_Ada_Node
+                                           (+Get_Typ (Tmp_Index)),
+                                       Left   => +Tmp_Index,
+                                       Right  => Transform_Expr
+                                         (Expr          => Expr,
+                                          Domain        => Subdomain,
+                                          Params        => Params,
+                                          Expected_Type => Get_Typ
+                                            (Tmp_Index)),
+                                       Domain => Domain),
+                                    Domain => Domain);
+                                 Next (Expr);
+                              end loop;
+                           end;
+                        when others =>
+                           pragma Assert (Dim = 1);
+                           Guard := New_Ada_Equality
+                             (Typ    => Get_Ada_Node
+                                (+Get_Typ (Indexes (1))),
+                              Left   => +Indexes (1),
+                              Right  => Transform_Expr
+                                (Expr          => Choice,
+                                 Domain        => Subdomain,
+                                 Params        => Params,
+                                 Expected_Type => Get_Typ
+                                   (W_Identifier_Id'(+Indexes (1)))),
+                              Domain => Domain);
+                     end case;
+
+                     --  Add the choice to Guards
+
+                     Guards (Num_Assoc) := New_Or_Expr
+                       (Left   => Guards (Num_Assoc),
+                        Right  => Guard,
+                        Domain => Domain);
+                     Next (Choice);
+                  end loop;
+
+               end;
+               Exprs (Num_Assoc) := Transform_Expr
+                 (Expr          => Expression (Association),
+                  Domain        => Subdomain,
+                  Params        => Params,
+                  Expected_Type => Type_Of_Node
+                    (Component_Type (Arr_Ty)));
+               Num_Assoc := Num_Assoc + 1;
+               Next (Association);
+            end loop;
+
+            --  In the predicate domain, we generate a universally quantified
+            --  formula comparing the elements of the array one by one.
+
+            if Domain = EW_Pred then
+
+               T := Insert_Simple_Conversion
+                 (Domain => Subdomain,
+                  Expr   => New_Array_Access
+                    (Ada_Node => Empty,
+                     Ar       => Transform_Expr
+                       (Expr          => Prefix (Upd),
+                        Domain        => Subdomain,
+                        Params        => Params,
+                        Expected_Type => Type_Of_Node (Arr_Ty)),
+                     Index    => Vars,
+                     Domain   => Subd_No_Check),
+                  To     => Type_Of_Node (Component_Type (Arr_Ty)));
+
+               --  Construct the conditional by starting from the expression
+               --  Upd (I) and add conditions in the reverse order.
+
+               for J in Exprs'Range loop
+                  T := New_Conditional
+                    (Ada_Node    => Expr,
+                     Domain      => Subdomain,
+                     Condition   => Guards (J),
+                     Then_Part   => Exprs (J),
+                     Else_Part   => T,
+                     Typ         => Type_Of_Node (Component_Type (Arr_Ty)));
+               end loop;
+
+               --  Var (I) is equal to the conditional
+
+               T := New_Ada_Equality
+                 (Typ    => Component_Type (Arr_Ty),
+                  Domain => Domain,
+                  Left   => Insert_Simple_Conversion
+                    (Domain => Subdomain,
+                     Expr   => New_Array_Access
+                       (Ada_Node => Empty,
+                        Ar       => Transform_Expr
+                          (Expr          => Var,
+                           Domain        => Subdomain,
+                           Params        => Params,
+                           Expected_Type => Type_Of_Node (Arr_Ty)),
+                        Index    => Vars,
+                        Domain   => Subd_No_Check),
+                     To     => Type_Of_Node
+                       (Component_Type (Arr_Ty))),
+                  Right  => T);
+
+               --  Universally quantify the formula
+
+               for J in Indexes'Range loop
+                  T := New_Universal_Quantif
+                    (Variables => (1 => Indexes (J)),
+                     Labels    => Symbol_Sets.Empty_Set,
+                     Var_Type  => Get_Typ (Indexes (J)),
+                     Pred      => New_Conditional
+                       (Condition => New_Array_Range_Expr
+                            (Index_Expr => +Indexes (J),
+                             Array_Expr => Transform_Expr
+                               (Expr          => Var,
+                                Domain        => Subdomain,
+                                Params        => Params,
+                                Expected_Type => Type_Of_Node (Arr_Ty)),
+                             Domain     => EW_Pred,
+                             Dim        => J),
+                        Then_Part => +T,
+                        Typ       => EW_Bool_Type));
+               end loop;
+
+               if Nkind (Expr) = N_Op_Ne then
+                  T := New_Not (Domain => EW_Pred, Right => T);
+               end if;
+
+            --  In the EW_Prog domain, we concentrate on generating the checks.
+            --  The expression will be created by lifting the translation in
+            --  the predicate domain.
+
+            else
+               pragma Assert (Domain = EW_Prog);
+               T := +Void;
+
+               --  Instead of a conditional, we generate a sequence to avoid
+               --  shadowing checks coming from the first occurrence of
+               --  duplicated choices.
+
+               for J in Exprs'Range loop
+                  T := +Sequence
+                    ((1 => +T,
+                      2 => New_Ignore (Prog => +Guards (J)),
+                      3 => New_Ignore (Prog => +Exprs (J))));
+               end loop;
+
+               --  Link indexes to any expressions using
+               --  let bindings and hide the expression inside an ignore block.
+               --  Afterward, assume the formula using the translation in the
+               --  EW_Pred domain.
+               --  ignore { let i = any in ... };
+               --  any boolean { forall i. ... }
+
+               for Tmp_Index of Indexes loop
+                  T := New_Typed_Binding
+                    (Name    => Tmp_Index,
+                     Domain  => EW_Prog,
+                     Def     => +New_Simpl_Any_Prog
+                       (Get_Typ (Tmp_Index)),
+                     Context => T);
+               end loop;
+
+               T := +Sequence
+                 (New_Ignore (Ada_Node => Expr,
+                              Prog     => +T),
+                  New_Any_Expr
+                    (Ada_Node    => Expr,
+                     Post        => New_Connection
+                       (Op    => EW_Equivalent,
+                        Left  => +Pred_Of_Boolean_Term
+                          (+New_Result_Ident (EW_Bool_Type)),
+                        Right =>
+                          Transform_Comparison (Expr, EW_Pred, Params)),
+                     Return_Type => EW_Bool_Type,
+                     Labels      => Symbol_Sets.Empty_Set));
+            end if;
+            return T;
+         end;
+      end Transform_Equal_Of_Update;
+
       Left      : constant Node_Id := Left_Opnd (Expr);
       Right     : constant Node_Id := Right_Opnd (Expr);
       Left_Type : constant Entity_Id := Etype (Left);
       T         : W_Expr_Id;
+
+   --  Start of processing for Transform_Comparison
+
    begin
 
       --  Special case for equality between Booleans in predicates
@@ -12169,44 +12539,58 @@ package body Gnat2Why.Expr is
                  Op     => EW_Equivalent);
          end;
       elsif Has_Array_Type (Left_Type) then
-         declare
-            Left_Expr  : W_Expr_Id :=
-              Transform_Expr
-                (Left,
-                 (if Domain = EW_Pred then EW_Term else Domain),
-                 Params);
-            Right_Expr : W_Expr_Id :=
-              Transform_Expr
-                (Right,
-                 (if Domain = EW_Pred then EW_Term else Domain),
-                Params);
 
-         begin
-            --  Check that operands are initialized
+         --  If Expr is of the form Id = Id'Old'Update (...) and equality is
+         --  not redefined on the array type, we can translate it as
+         --  (for all Idx in Id'Range =>
+         --     Id (Idx) = (if Idx ... then ... else Id'Old (Idx)))
 
-            Left_Expr :=
-              Insert_Initialization_Check (Left, Left_Type, Left_Expr, Domain);
-            Right_Expr :=
-              Insert_Initialization_Check
-                (Right, Left_Type, Right_Expr, Domain);
+         if Is_Equal_Of_Update (Expr) then
+            T := Transform_Equal_Of_Update (Expr, Domain, Params);
 
-            if Nkind (Expr) in N_Op_Eq | N_Op_Ne then
-               T := Transform_Array_Equality
-                 (Op        => Nkind (Expr),
-                  Left      => Left_Expr,
-                  Right     => Right_Expr,
-                  Left_Type => Left_Type,
-                  Domain    => Domain,
-                  Ada_Node  => Expr);
-            else
-               T := Transform_Array_Comparison
-                 (Op        => Nkind (Expr),
-                  Left      => Left_Expr,
-                  Right     => Right_Expr,
-                  Domain    => Domain,
-                  Ada_Node  => Expr);
-            end if;
-         end;
+         --  Normal translation
+
+         else
+            declare
+               Left_Expr  : W_Expr_Id :=
+                 Transform_Expr
+                   (Left,
+                    (if Domain = EW_Pred then EW_Term else Domain),
+                    Params);
+               Right_Expr : W_Expr_Id :=
+                 Transform_Expr
+                   (Right,
+                    (if Domain = EW_Pred then EW_Term else Domain),
+                    Params);
+
+            begin
+               --  Check that operands are initialized
+
+               Left_Expr :=
+                 Insert_Initialization_Check
+                   (Left, Left_Type, Left_Expr, Domain);
+               Right_Expr :=
+                 Insert_Initialization_Check
+                   (Right, Left_Type, Right_Expr, Domain);
+
+               if Nkind (Expr) in N_Op_Eq | N_Op_Ne then
+                  T := Transform_Array_Equality
+                    (Op        => Nkind (Expr),
+                     Left      => Left_Expr,
+                     Right     => Right_Expr,
+                     Left_Type => Left_Type,
+                     Domain    => Domain,
+                     Ada_Node  => Expr);
+               else
+                  T := Transform_Array_Comparison
+                    (Op        => Nkind (Expr),
+                     Left      => Left_Expr,
+                     Right     => Right_Expr,
+                     Domain    => Domain,
+                     Ada_Node  => Expr);
+               end if;
+            end;
+         end if;
       else
          declare
             Op         : constant Node_Kind := Nkind (Expr);

@@ -36,5 +36,5 @@ loop_entry_test.adb:16:07: info: initialization of "A_Loop_Entry" proved
 loop_entry_test.adb:21:33: info: loop invariant initialization proved (CVC4: 1 VC)
 loop_entry_test.adb:21:33: info: loop invariant preservation proved (CVC4: 1 VC)
 loop_entry_test.adb:21:67: info: range check proved (CVC4: 2 VC)
-loop_entry_test.ads:8:14: medium: postcondition might fail, cannot prove A = A'Old'update (e.g. when A = (2 => 0, others => 1) and A'Old = (others => 0) and First = 1 and Last = 2) [possible explanation: loop at loop_entry_test.adb:9 should mention A in a loop invariant]
-loop_entry_test.ads:11:14: info: postcondition proved (CVC4: 1 VC)
+loop_entry_test.ads:8:14: medium: postcondition might fail (e.g. when A = (2 => 0, others => 1) and A'Old = (others => 0) and First = 1 and Last = 2) [possible explanation: loop at loop_entry_test.adb:9 should mention A in a loop invariant]
+loop_entry_test.ads:11:14: info: postcondition proved (CVC4: 1 VC; Trivial: 1 VC)

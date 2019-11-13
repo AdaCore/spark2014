@@ -13,6 +13,6 @@ fileio.ads:20:32: medium: "The_File" must be a Proof_In as it is only used in as
 fileio.ads:21:14: medium: postcondition might fail, cannot prove Ch = Character'pos
 fileio.ads:22:46: medium: overflow check might fail
 fileio.ads:28:06: info: data dependencies proved
-fileio.ads:29:14: medium: postcondition might fail, cannot prove The_File = The_File'Old'update
+fileio.ads:29:14: medium: postcondition might fail
 fileio.ads:29:81: medium: range check might fail [possible explanation: subprogram at line 27 should mention ch in a precondition]
 helpers.ads:9:54: info: division check proved (CVC4: 1 VC)
