@@ -34,6 +34,26 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
 
    package body Count is
 
+      ------------------
+      -- Count_Length --
+      ------------------
+
+      procedure Count_Length (A : Array_Type) with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+          On
+#else
+          Off
+#end if;
+      is
+      begin
+         for I in A'Range loop
+            pragma Loop_Invariant
+              ((Count_Left.Acc.Fold (A, 0) (I) = Natural (I - A'First) + 1) =
+               (for all K in A'First .. I =>
+                     Choose (A (K))));
+         end loop;
+      end Count_Length;
+
       ----------------
       -- Count_Zero --
       ----------------
@@ -93,6 +113,61 @@ package body SPARK.Higher_Order.Fold with SPARK_Mode is
    -------------
 
    package body Count_2 is
+
+      ------------------
+      -- Count_Length --
+      ------------------
+
+      procedure Count_Length (A : Array_Type) with SPARK_Mode =>
+#if SPARK_BODY_MODE="On"
+          On
+#else
+          Off
+#end if;
+      is
+      begin
+         if A'Length (2) > 0 then
+            for I in A'Range (1) loop
+               pragma Loop_Invariant
+                 (if I > A'First (1)
+                  then (Fold_Count.Acc.Fold (A, 0) (I - 1, A'Last (2)) =
+                         Natural (I - A'First (1)) * A'Length (2)) =
+                       (for all K in A'First (1) .. I - 1 =>
+                         (for all L in A'Range (2) => Choose (A (K, L)))));
+               for J in A'Range (2) loop
+                  pragma Assert
+                    (if Fold_Count.Acc.Fold (A, 0) (I, J) =
+                         Natural (I - A'First (1)) * A'Length (2)
+                           + Natural (J - A'First (2)) + 1
+                        and J > A'First (2)
+                     then Fold_Count.Acc.Fold (A, 0) (I, J - 1) =
+                         Natural (I - A'First (1)) * A'Length (2)
+                           + Natural (J - A'First (2)));
+                  pragma Loop_Invariant
+                    (if Fold_Count.Acc.Fold (A, 0) (I, J) =
+                         Natural (I - A'First (1)) * A'Length (2)
+                          + Natural (J - A'First (2)) + 1
+                     then
+                       (if I > A'First (1) then
+                            (for all K in A'First (1) .. I - 1 =>
+                               (for all L in A'Range (2) =>
+                                    Choose (A (K, L)))))
+                        and (for all L in A'First (2) .. J =>
+                                Choose (A (I, L))));
+                  pragma Loop_Invariant
+                    (if (if I > A'First (1) then
+                            (for all K in A'First (1) .. I - 1 =>
+                               (for all L in A'Range (2) =>
+                                    Choose (A (K, L)))))
+                        and (for all L in A'First (2) .. J =>
+                                Choose (A (I, L)))
+                     then Fold_Count.Acc.Fold (A, 0) (I, J) =
+                         Natural (I - A'First (1)) * A'Length (2)
+                          + Natural (J - A'First (2)) + 1);
+               end loop;
+            end loop;
+         end if;
+      end Count_Length;
 
       ----------------
       -- Count_Zero --

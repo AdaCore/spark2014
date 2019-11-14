@@ -947,7 +947,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.283" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="339445"/></proof>
+  <proof prover="1"><result status="valid" steps="336475"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.284" expl="loop invariant init" proved="true">
@@ -1879,7 +1879,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.568" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="9621"/></proof>
+  <proof prover="0"><result status="valid" steps="5390"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
@@ -2025,12 +2025,11 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.611" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5858"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="35449596"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.612" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="254402"/></proof>
+  <proof prover="1"><result status="valid" steps="193092"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.613" expl="assertion" proved="true">
@@ -2420,8 +2419,7 @@
   <proof prover="2"><result status="valid" steps="170"/></proof>
   </goal>
   <goal name="def&#39;VC.730" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="304"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="129556521"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.731" expl="postcondition" proved="true">
@@ -2432,11 +2430,11 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.733" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="138969"/></proof>
+  <proof prover="1"><result status="valid" steps="144111"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.734" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="139415"/></proof>
+  <proof prover="1"><result status="valid" steps="139915"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.735" expl="postcondition" proved="true">
