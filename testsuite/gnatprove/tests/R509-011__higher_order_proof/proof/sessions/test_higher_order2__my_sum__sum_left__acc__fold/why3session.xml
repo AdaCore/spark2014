@@ -305,7 +305,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.89" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="437"/></proof>
+  <proof prover="1"><result status="valid" steps="436"/></proof>
   </goal>
   <goal name="def&#39;VC.90" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="164"/></proof>
@@ -447,11 +447,11 @@
   <proof prover="1"><result status="valid" steps="55"/></proof>
   </goal>
   <goal name="def&#39;VC.133" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="59897"/></proof>
+  <proof prover="0"><result status="valid" steps="59537"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.134" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="120180"/></proof>
+  <proof prover="0"><result status="valid" steps="205232"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.135" expl="loop invariant preservation" proved="true">
@@ -620,7 +620,7 @@
   <proof prover="1"><result status="valid" steps="14"/></proof>
   </goal>
   <goal name="def&#39;VC.185" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="716"/></proof>
+  <proof prover="1"><result status="valid" steps="672"/></proof>
   </goal>
   <goal name="def&#39;VC.186" expl="postcondition" proved="true">
   <proof prover="1"><result status="valid" steps="186"/></proof>
@@ -630,7 +630,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.188" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="599"/></proof>
+  <proof prover="1"><result status="valid" steps="234"/></proof>
   </goal>
  </transf>
  </goal>

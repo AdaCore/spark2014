@@ -5685,7 +5685,9 @@ package body Gnat2Why.Subprograms is
                       Labels    => <>)
            & Flat_Binders;
       Func_Guard         : constant W_Pred_Id :=
-        (if not Use_Guard_For_Function (E) then True_Pred
+        (if not Use_Guard_For_Function (E)
+         or else not Is_Recursive (E)
+         then True_Pred
          else +New_Typed_Binding
            (Domain   => EW_Pred,
             Name     => Result_Id,

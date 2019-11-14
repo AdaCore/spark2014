@@ -11,7 +11,7 @@ main.adb:34:38: info: range check proved (CVC4: 4 VC)
 main.adb:35:21: info: range check proved (CVC4: 4 VC)
 main.adb:35:41: warning: unused assignment to "Pos"
 main.adb:36:16: medium: private part of "S" might not be initialized
-main.adb:36:17: medium: precondition might fail, cannot prove not S.Is_Full (e.g. when S = (Max => ?, Top => 0, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
+main.adb:36:17: medium: precondition might fail, cannot prove not S.Is_Full (e.g. when S = (Max => ?, Top => 1, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1) [possible explanation: loop at line 18 should mention S in a loop invariant]
 stacks.adb:11:22: medium: overflow check might fail (e.g. when S = (Max => ?, Top => Natural'Last, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:12:16: medium: array index check might fail (e.g. when E = 0 and S = (Max => ?, Top => 3, Data => (others => 0)) and S.Data'First = 1 and S.Data'Last = 1)
 stacks.adb:21:22: info: range check proved (CVC4: 1 VC)

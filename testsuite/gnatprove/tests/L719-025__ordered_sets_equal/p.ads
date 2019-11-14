@@ -5,7 +5,7 @@ package P is pragma SPARK_Mode (On);
    type Element_Type is new Integer range 1 .. 100;
 
    function My_Lt (I1 : Element_Type; I2 : Element_Type) return Boolean is
-     (I1 < I2);
+     (I1 < I2) with Annotate => (GNATprove, Inline_For_Proof);
 
    package My_Sets is new Ada.Containers.Formal_Ordered_Sets
      (Element_Type, "<" => My_Lt);

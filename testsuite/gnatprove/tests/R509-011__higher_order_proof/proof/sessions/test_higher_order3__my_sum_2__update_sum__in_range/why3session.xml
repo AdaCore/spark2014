@@ -90,7 +90,7 @@
   <proof prover="2"><result status="valid" steps="123"/></proof>
   </goal>
   <goal name="def&#39;VC.22" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="885"/></proof>
+  <proof prover="2"><result status="valid" steps="883"/></proof>
   </goal>
   <goal name="def&#39;VC.23" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="229"/></proof>
@@ -220,7 +220,7 @@
   <proof prover="2"><result status="valid" steps="125"/></proof>
   </goal>
   <goal name="def&#39;VC.63" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1030"/></proof>
+  <proof prover="2"><result status="valid" steps="1028"/></proof>
   </goal>
   <goal name="def&#39;VC.64" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="231"/></proof>

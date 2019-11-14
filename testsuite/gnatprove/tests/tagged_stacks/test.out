@@ -24,7 +24,7 @@ stacks.ads:49:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:56:20: info: postcondition proved (Z3: 1 VC)
 stacks.ads:56:36: info: range check proved (CVC4: 1 VC)
 stacks.ads:59:13: info: postcondition proved (CVC4: 3 VC)
-stacks.ads:63:14: info: postcondition proved (altergo: 1 VC)
+stacks.ads:63:14: info: postcondition proved (CVC4: 1 VC)
 stacks.ads:65:13: info: postcondition proved (CVC4: 2 VC)
 stacks.ads:67:14: info: postcondition proved (CVC4: 1 VC; altergo: 1 VC)
 stacks.ads:67:38: info: initialization of "E" proved

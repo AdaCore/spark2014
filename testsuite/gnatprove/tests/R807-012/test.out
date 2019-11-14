@@ -25,7 +25,7 @@ area_math.adb:253:19: info: predicate check proved (CVC4: 2 VC)
 area_math.adb:253:32: info: index check proved (CVC4: 4 VC)
 area_math.adb:254:19: info: predicate check proved (CVC4: 2 VC)
 area_math.adb:254:30: info: index check proved (CVC4: 4 VC)
-area_math.adb:256:57: medium: assertion might fail, cannot prove B < Result
+area_math.adb:256:28: info: assertion proved (CVC4: 2 VC)
 area_math.adb:259:28: info: assertion proved (CVC4: 2 VC)
 area_math.adb:259:47: info: index check proved (CVC4: 4 VC)
 area_math.adb:259:119: info: index check proved (CVC4: 4 VC)

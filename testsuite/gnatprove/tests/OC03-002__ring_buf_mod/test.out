@@ -2,7 +2,7 @@ harness.adb:3:11: warning: subprogram "Harness" has no effect
 harness.adb:6:04: info: initialization of "R" proved
 harness.adb:7:04: info: initialization of "H" proved
 harness.adb:10:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 1, Length => 0))
-harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R)
+harness.adb:11:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 32767, Length => 0))
 harness.adb:12:04: medium: precondition might fail, cannot prove not Is_Empty (R) (e.g. when R = (Data => (0 => 0, others => 0), First => 18, Length => 0))
 harness.adb:13:19: medium: assertion might fail, cannot prove H = X (e.g. when H = 1 and X = 0) [possible explanation: subprogram at line 3 should mention X in a precondition]
 harness.adb:14:04: medium: precondition might fail, cannot prove not Is_Full (R) (e.g. when R = (Data => (others => 0), First => 21569, Length => 0))

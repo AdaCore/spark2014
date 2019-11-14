@@ -462,7 +462,7 @@
   <proof prover="0"><result status="valid" steps="323"/></proof>
   </goal>
   <goal name="def&#39;VC.142" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="857"/></proof>
+  <proof prover="0"><result status="valid" steps="808"/></proof>
   </goal>
   <goal name="def&#39;VC.143" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

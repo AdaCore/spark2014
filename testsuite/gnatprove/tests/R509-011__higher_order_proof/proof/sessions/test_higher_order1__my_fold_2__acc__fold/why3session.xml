@@ -908,7 +908,7 @@
   </goal>
   <goal name="def&#39;VC.268" expl="loop invariant init" proved="true">
   <proof prover="0"><result status="valid" steps="72543"/></proof>
-  <proof prover="1"><result status="highfailure" steps="111922"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.269" expl="loop invariant init" proved="true">
   <proof prover="1"><result status="valid" steps="203"/></proof>
@@ -1817,7 +1817,7 @@
   </goal>
   <goal name="def&#39;VC.542" expl="loop invariant preservation" proved="true">
   <proof prover="0"><result status="valid" steps="208041"/></proof>
-  <proof prover="1"><result status="highfailure" steps="221962"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.543" expl="loop invariant preservation" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -1941,7 +1941,7 @@
   </goal>
   <goal name="def&#39;VC.579" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="222500"/></proof>
-  <proof prover="1"><result status="highfailure" steps="308339"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.580" expl="assertion" proved="true">
   <proof prover="1"><result status="valid" steps="1152"/></proof>

@@ -37,5 +37,5 @@ tagged_discr.ads:40:20: info: initialization of "V" proved
 tagged_discr.ads:41:14: info: postcondition proved (CVC4: 1 VC)
 tagged_discr.ads:44:14: info: postcondition proved (CVC4: 1 VC)
 tagged_discr.ads:58:20: info: initialization of "V" proved
-tagged_discr.ads:59:14: info: postcondition proved (Z3: 1 VC)
+tagged_discr.ads:59:14: info: postcondition proved (CVC4: 1 VC)
 tagged_discr.ads:62:14: info: postcondition proved (CVC4: 1 VC)

@@ -400,7 +400,7 @@ server_timestamp_maker.adb:53:07: warning: unused variable "Message_Imprint"
 server_timestamp_maker.adb:54:07: info: initialization of "Decode_Status" proved
 server_timestamp_maker.adb:69:27: info: precondition proved (CVC4: 2 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:70:67: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
-server_timestamp_maker.adb:74:28: medium: overflow check might fail, in call inlined at server_timestamp_maker.adb:115 [possible explanation: postcondition of call at line 69 should mention Length (for argument Length)]
+server_timestamp_maker.adb:74:28: medium: overflow check might fail, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:79:30: medium: precondition might fail, cannot prove Start in Message'range, in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: info: range check proved (CVC4: 1 VC), in call inlined at server_timestamp_maker.adb:115
 server_timestamp_maker.adb:80:55: warning: unused assignment to "Version_Stop"

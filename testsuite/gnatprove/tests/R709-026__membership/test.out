@@ -1,7 +1,7 @@
 member_alt.adb:9:14: info: add a contract to analyze it separately from calling contexts
 member_alt.adb:9:14: info: local subprogram "Bad" only analyzed in the context of calls
 member_alt.adb:9:14: warning: subprogram "Bad" has no effect
-member_alt.adb:14:22: info: assertion proved (altergo: 1 VC), in call inlined at member_alt.adb:28
+member_alt.adb:14:22: info: assertion proved (CVC4: 1 VC), in call inlined at member_alt.adb:28
 member_alt.adb:15:22: medium: assertion might fail, in call inlined at member_alt.adb:28 (e.g. when X = (D => ?, F => 0) and Y = (D => ?, F => 1) and Z = (D => ?, F => 2))
 member_alt.adb:18:14: warning: subprogram "Bad2" has no effect
 member_alt.adb:25:22: info: assertion proved (CVC4: 1 VC)

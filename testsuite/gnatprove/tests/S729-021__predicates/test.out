@@ -1,4 +1,4 @@
-foo.adb:7:18: info: predicate check proved (altergo: 1 VC)
+foo.adb:7:18: info: predicate check proved (CVC4: 1 VC)
 foo.ads:7:26: info: initialization of "Context" proved
 foo.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 generic_bar.adb:7:27: info: predicate check proved (CVC4: 1 VC), in instantiation at bar.ads:6

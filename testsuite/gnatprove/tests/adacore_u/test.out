@@ -372,7 +372,7 @@ abstract_ints.adb:37:30: info: overflow check proved (CVC4: 1 VC)
 abstract_ints.adb:55:38: medium: overflow check might fail (e.g. when Arg = (Min => 0, Max => 0, Value => 0, Precision => Natural'Last)) [possible explanation: subprogram at abstract_ints.ads:28 should mention Arg in a precondition]
 abstract_ints.ads:12:20: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:17:14: info: postcondition proved (CVC4: 1 VC)
-abstract_ints.ads:23:25: info: postcondition proved (altergo: 1 VC)
+abstract_ints.ads:23:25: info: postcondition proved (CVC4: 1 VC)
 abstract_ints.ads:40:70: medium: overflow check might fail (e.g. when Arg = (Min => -2147483639, Max => -2147483639, Value => -2147483639)) [possible explanation: subprogram at line 9 should mention Arg in a precondition]
 distributed_file_system.ads:9:20: info: class-wide postcondition is stronger than overridden one (CVC4: 1 VC)
 distributed_file_system.ads:12:20: info: class-wide precondition is weaker than overridden one (CVC4: 1 VC)
