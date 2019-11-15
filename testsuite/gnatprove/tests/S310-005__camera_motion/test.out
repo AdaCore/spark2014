@@ -92,6 +92,7 @@ camera_motion.adb:184:30: info: in inlined body at line 47
 camera_motion.adb:184:58: medium: range check might fail
 camera_motion.adb:184:63: medium: range check might fail
 camera_motion.adb:199:09: info: predicate check proved (CVC4: 1 VC)
+camera_motion.adb:204:07: warning: initialization of "Erode_3x3" has no effect
 camera_motion.adb:205:09: info: predicate check proved (CVC4: 1 VC)
 camera_motion.adb:213:07: info: initialization of "Edge_Ref" proved
 camera_motion.adb:213:07: info: range check proved (CVC4: 2 VC)
