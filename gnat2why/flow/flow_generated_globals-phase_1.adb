@@ -42,6 +42,8 @@ use Flow_Generated_Globals.ALI_Serialization;
 with Flow_Generated_Globals.Phase_1.Write;
 use Flow_Generated_Globals.Phase_1.Write;
 
+with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
+
 package body Flow_Generated_Globals.Phase_1 is
 
    Current_Lib_Unit : Entity_Id;
@@ -383,6 +385,7 @@ package body Flow_Generated_Globals.Phase_1 is
          Serialize (Is_Library_Level);
       end if;
       Serialize (Origin);
+      Serialize (Traversal_Parents (E));
       Serialize (Globals.Proper,  "proper_");  -- ??? replace _ with :
       Serialize (Globals.Refined, "refined_");
       if Ekind (E) = E_Package then

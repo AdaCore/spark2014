@@ -1,12 +1,13 @@
 ------------------------------------------------------------------------------
 --                                                                          --
---                            GNAT2WHY COMPONENTS                           --
+--                           GNAT2WHY COMPONENTS                            --
 --                                                                          --
---     F L O W . G E N E R A T E D _ G L O B A L S . T R A V E R S A L      --
+--       F L O W . G E N E R A T E D _ G L O B A L S . P H A S E _ 2        --
+--                            T R A V E R S A L                             --
 --                                                                          --
 --                                 S p e c                                  --
 --                                                                          --
---                Copyright (C) 2016-2019, Altran UK Limited                --
+--                Copyright (C) 2018-2019, Altran UK Limited                --
 --                                                                          --
 -- gnat2why is  free  software;  you can redistribute  it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
@@ -21,52 +22,59 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with Ada.Containers.Hashed_Maps;
-with Gnat2Why_Args;
-with Stand;                      use Stand;
+--  This package provides the hierarchy of Entity_Names. It mirrors a similar
+--  package that we have for Entity_Ids, so those two should be kept in sync.
 
-package Flow_Generated_Globals.Traversal is
+private package Flow_Generated_Globals.Phase_2.Traversal is
 
-   procedure Build_Tree (CU : Node_Id);
-   --  Traverse compilation unit CU to build a traversal tree
+   procedure Register_Nested_Scopes
+     (Entity  : Entity_Name;
+      Parents : Name_Lists.List)
+   with Pre => not Parents.Contains (Entity);
+   --  In phase 1 we register the hierarchy relationship while traversing the
+   --  AST; here we register it while reading the ALI files.
 
    procedure Dump_Tree;
+   --  Display the hierarchy
 
    type Nested is record
-      Units  : Node_Lists.List;
-      Parent : Entity_Id;
+      Units  : Name_Sets.Set;
+      Parent : Any_Entity_Name;
    end record with
      Iterable => (First       => First_Cursor,
                   Next        => Next_Cursor,
                   Has_Element => Has_Element,
                   Element     => Get_Element);
-   --  ??? add some type predicate
+   --  In phase 1 the Units component is intentionally a list, because while
+   --  traversing the we encounter each program unit only once. Here it is
+   --  a set, because we might encounter each program unit many times while
+   --  processing ALI files of different child compilation units.
 
-   function First_Cursor (Cont : Nested) return Node_Lists.Cursor;
+   function First_Cursor (Cont : Nested) return Name_Sets.Cursor;
    --  For aspect Iterable
 
    function Next_Cursor
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Node_Lists.Cursor;
+      Position : Name_Sets.Cursor)
+      return Name_Sets.Cursor;
    --  For aspect Iterable
 
    function Has_Element
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
+      Position : Name_Sets.Cursor)
       return Boolean;
    --  For aspect Iterable
 
    function Get_Element
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Entity_Id;
+      Position : Name_Sets.Cursor)
+      return Entity_Name;
    --  For aspect Iterable
 
    package Nested_Scopes is new
-     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
+     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Name,
                                  Element_Type    => Nested,
-                                 Hash            => Node_Hash,
+                                 Hash            => Name_Hash,
                                  Equivalent_Keys => "=",
                                  "="             => "=");
 
@@ -79,48 +87,17 @@ package Flow_Generated_Globals.Traversal is
    --
    --  ??? this is publicly visible only to make iteration easier
 
-   subtype Container_Scope is Entity_Kind
-     with Static_Predicate => Container_Scope in Entry_Kind       |
-                                                 E_Function       |
-                                                 E_Package        |
-                                                 E_Procedure      |
-                                                 E_Protected_Type |
-                                                 E_Task_Type;
-   --  ??? subtype from Checked_Entity_Id
-
-   function Root_Entity return Entity_Id
-   with Post => No (Root_Entity'Result)
-                  or else
-                Ekind (Root_Entity'Result) in Container_Scope;
-   --  Returns a cursor for the root scope; for custom iteration
-
-   function Is_Leaf (E : Entity_Id) return Boolean;
+   function Is_Leaf (E : Entity_Name) return Boolean;
    --  Returns True iff E is a leaf of the traversal tree
 
-   function Parent_Scope (E : Entity_Id) return Entity_Id
-   with Pre  => Ekind (E) in Container_Scope,
-        Post => Ekind (Parent_Scope'Result) in Container_Scope;
+   function Parent_Scope (E : Entity_Name) return Entity_Name;
    --  Returns the parent scope of E (in the flow nesting sense)
 
-   procedure Iterate_Main_Unit
-     (Process : not null access procedure (E : Entity_Id));
-   --  Iterate over scopes of the main unit in bottom-up fashion
-   --  ??? deprecated
-
-   generic
-      with procedure Process (E : Entity_Id);
-   procedure Iterate_Constants_In_Main_Unit
-   with Pre => Gnat2Why_Args.Global_Gen_Mode;
-   --  Call Process on constants in the current compilation unit; it is only
-   --  available (and needed) in phase 1.
-
-   function Traversal_Parents (E : Entity_Id) return Node_Lists.List
-   with Pre  => Ekind (E) in Container_Scope,
-        Post => (for all P of Traversal_Parents'Result =>
-                    Ekind (P) in Container_Scope
-                    and then P /= Standard_Standard);
-   --  Returns container scopes of E up to Standard, which is an ultimate scope
-   --  of all program units.
+   function Scope_Within_Or_Same
+     (Inner : Entity_Name;
+      Outer : Entity_Name)
+      return Boolean;
+   --  Same as version for Entity_Ids, but for Entity_Names
 
 private
 
@@ -128,7 +105,7 @@ private
    -- First_Cursor --
    ------------------
 
-   function First_Cursor (Cont : Nested) return Node_Lists.Cursor is
+   function First_Cursor (Cont : Nested) return Name_Sets.Cursor is
      (Cont.Units.First);
 
    -----------------
@@ -137,10 +114,10 @@ private
 
    function Next_Cursor
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Node_Lists.Cursor
+      Position : Name_Sets.Cursor)
+      return Name_Sets.Cursor
    is
-     (Node_Lists.Next (Position));
+     (Name_Sets.Next (Position));
 
    -----------------
    -- Has_Element --
@@ -148,10 +125,10 @@ private
 
    function Has_Element
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
+      Position : Name_Sets.Cursor)
       return Boolean
    is
-     (Node_Lists.Has_Element (Position));
+     (Name_Sets.Has_Element (Position));
 
    -----------------
    -- Get_Element --
@@ -159,9 +136,9 @@ private
 
    function Get_Element
      (Cont     : Nested;
-      Position : Node_Lists.Cursor)
-      return Entity_Id
+      Position : Name_Sets.Cursor)
+      return Entity_Name
    is
-     (Node_Lists.Element (Position));
+     (Name_Sets.Element (Position));
 
-end Flow_Generated_Globals.Traversal;
+end Flow_Generated_Globals.Phase_2.Traversal;

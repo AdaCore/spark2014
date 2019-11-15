@@ -63,7 +63,4 @@ private package Flow_Generated_Globals.Phase_2.Visibility is
       return Boolean
    with Pre => GG_Is_Abstract_State (State);
 
---     procedure Dump_Tree;
---     --  Print the inter
-
 end Flow_Generated_Globals.Phase_2.Visibility;

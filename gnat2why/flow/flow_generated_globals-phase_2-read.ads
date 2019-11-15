@@ -21,6 +21,7 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Ada.Containers;    use Ada.Containers;
 with Ada.Strings.Fixed; use Ada.Strings.Fixed;
 
 private package Flow_Generated_Globals.Phase_2.Read is
@@ -43,6 +44,9 @@ private package Flow_Generated_Globals.Phase_2.Read is
 
    procedure Serialize (Names : in out Name_Sets.Set; Label : String := "")
    with Post => Names'Old.Is_Subset (Names);
+
+   procedure Serialize (Names : in out Name_Lists.List; Label : String := "")
+   with Post => Names.Length >= Names.Length'Old;
 
    procedure Serialize (N : out Int);
 

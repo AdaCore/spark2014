@@ -382,4 +382,10 @@ package Flow_Generated_Globals.Phase_2 is
    with Pre => Ekind (E) in E_Entry | E_Function | E_Procedure;
    --  Return True iff the Global contract of E was recorded in phase 1
 
+private
+
+   Standard_Standard : constant Entity_Name := To_Entity_Name ("__standard");
+   --  For the predefined Standard package, which is an implicit parent of all
+   --  compilation units.
+
 end Flow_Generated_Globals.Phase_2;

@@ -164,6 +164,7 @@ package Flow_Generated_Globals is
       Is_Protected     : Boolean;
       Is_Library_Level : Boolean;
       Origin           : Globals_Origin_T;
+      Parents          : Name_Lists.List;
 
       Globals          : Flow_Names;
 

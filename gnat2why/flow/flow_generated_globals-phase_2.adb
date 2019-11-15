@@ -47,6 +47,9 @@ with Flow_Utility;               use Flow_Utility;
 with Graphs;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 
+with Flow_Generated_Globals.Phase_2.Traversal;
+use Flow_Generated_Globals.Phase_2.Traversal;
+
 with Flow_Generated_Globals.ALI_Serialization;
 use Flow_Generated_Globals.ALI_Serialization;
 
@@ -195,13 +198,8 @@ package body Flow_Generated_Globals.Phase_2 is
       Equivalent_Keys => "=");
 
    type Global_Patch is record
-      Entity  : Entity_Name;
-
-      Proper  : Global_Names;
-      Refined : Global_Names;
-
-      Initializes : Name_Sets.Set;
-      --  Only meaningful for packages
+      Entity   : Entity_Name;
+      Contract : Flow_Names;
    end record;
    --  An updated version of a Global contract to be kept separately until a
    --  full round of resolving is done. This ensures that the algorithm uses
@@ -1171,6 +1169,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   V.Is_Library_Level := False;
                end if;
                Serialize (V.Origin);
+               Serialize (V.Parents);
                Serialize (V.Globals.Proper,  "proper_");
                Serialize (V.Globals.Refined, "refined_");
                if V.Kind = E_Package then
@@ -1366,6 +1365,9 @@ package body Flow_Generated_Globals.Phase_2 is
                         Directly_Called_POs_In_Elaborations.Union
                           (Phase_1_Info (Pos).Tasking (Locks));
                      end if;
+
+                     Register_Nested_Scopes
+                       (Entity, Phase_1_Info (Pos).Parents);
                   end;
 
                when EK_Constant_Calls =>
@@ -1699,6 +1701,8 @@ package body Flow_Generated_Globals.Phase_2 is
             For_Current_CUnit => Index = ALIs.First);
       end loop;
 
+      Flow_Generated_Globals.Phase_2.Traversal.Dump_Tree;
+
       Flow_Generated_Globals.Phase_2.Visibility.Connect_Name_Scopes;
 
       Volatile_Vars.Union (Async_Readers_Vars);
@@ -1719,27 +1723,30 @@ package body Flow_Generated_Globals.Phase_2 is
          use type Ada.Containers.Count_Type;
 
          procedure Debug (Msg : String);
+         pragma Unreferenced (Debug);
+
+         procedure Debug (Label : String; E : Entity_Name);
+         --  Display Label followed by the entity name of E
+
          procedure Dump_Contract (Scop : Entity_Id);
          procedure Dump_Main_Unit_Contracts (Highlight : Entity_Name);
          --  Debug utilities
 
+         procedure Filter_Local
+           (E : Entity_Name; Names : in out Name_Sets.Set)
+         with Post => Names.Is_Subset (Names'Old);
+
          procedure Fold (Folded    :        Entity_Name;
+                         Analyzed  :        Entity_Name;
                          Contracts :        Entity_Contract_Maps.Map;
                          Patches   : in out Global_Patch_Lists.List)
-         with Post => Patches.Length = Patches.Length'Old + 1;
+         with Post => Patches.Length >= Patches.Length'Old;
          --  Resolve globals of Folded and append the update to Patches
 
-         procedure Fold_Subtree (Folded    :        Entity_Id;
-                                 Contracts :        Entity_Contract_Maps.Map;
-                                 Patches   : in out Global_Patch_Lists.List)
-         with Post => Patches.Length >= Patches.Length'Old;
+         procedure Do_Global (Analyzed  :        Entity_Name;
+                              Contracts : in out Entity_Contract_Maps.Map);
          --  Recursively resolve globals of Folded and entities nested in it;
-         --  append the update to Patches (??? except for protected type).
-
-         procedure Analyze_Remote_Calls;
-         --  Resolve globals of entities from other compilation units, i.e.
-         --  subprograms visible by Entity_Id (to have globals for proof) and
-         --  packages (to know what is initialized).
+         --  update Contracts.
 
          procedure Resolve_Constants
            (Contracts      :     Entity_Contract_Maps.Map;
@@ -1764,67 +1771,6 @@ package body Flow_Generated_Globals.Phase_2 is
          Indent : constant String := "  ";
          --  Indentation for debug output
 
-         --------------------------
-         -- Analyze_Remote_Calls --
-         --------------------------
-
-         procedure Analyze_Remote_Calls is
-            Patches : Global_Patch_Lists.List;
-
-         begin
-            for E of Entities_To_Translate loop
-               if Ekind (E) in E_Function
-                             | E_Procedure
-                             | E_Task_Type
-                  and then not Is_In_Analyzed_Files (E)
-               then
-                  declare
-                     EN : constant Entity_Name := To_Entity_Name (E);
-                  begin
-                     if Phase_1_Info.Contains (EN) then
-                        Debug ("Fold translated routine " & Unique_Name (E));
-                        Fold (Folded    => EN,
-                              Contracts => Global_Contracts,
-                              Patches   => Patches);
-                     end if;
-                  end;
-               end if;
-            end loop;
-
-            --  ??? we only need this for packages with globals that are
-            --  mentioned in the contracts which we have just completed.
-
-            for C in Phase_1_Info.Iterate loop
-               declare
-                  EN   : Entity_Name      renames Phase_1_Info_Maps.Key (C);
-                  Info : Partial_Contract renames Phase_1_Info (C);
-               begin
-                  --  ??? remove double call to Find_Entity
-                  if Info.Kind = E_Package
-                    and then not (Present (Find_Entity (EN))
-                                  and then Is_In_Analyzed_Files
-                                              (Find_Entity (EN)))
-                    and then not Info.Local
-                  then
-                     Debug ("Fold remote package " & To_String (EN));
-                     Fold (Folded    => EN,
-                           Contracts => Global_Contracts,
-                           Patches   => Patches);
-                  end if;
-               end;
-            end loop;
-
-            --  ??? copy-pasted
-            for Patch of Patches loop
-               Global_Contracts (Patch.Entity) :=
-                 Flow_Names'(Proper      => Patch.Proper,
-                             Refined     => Patch.Refined,
-                             Initializes => Patch.Initializes,
-                             Calls       => <>);
-            end loop;
-
-         end Analyze_Remote_Calls;
-
          -----------
          -- Debug --
          -----------
@@ -1833,6 +1779,13 @@ package body Flow_Generated_Globals.Phase_2 is
          begin
             if XXX then
                Ada.Text_IO.Put_Line (Msg);
+            end if;
+         end Debug;
+
+         procedure Debug (Label : String; E : Entity_Name) is
+         begin
+            if XXX then
+               Ada.Text_IO.Put_Line (Label & " " & To_String (E));
             end if;
          end Debug;
 
@@ -1989,22 +1942,57 @@ package body Flow_Generated_Globals.Phase_2 is
             end if;
          end Dump_Main_Unit_Contracts;
 
+         ------------------
+         -- Filter_Local --
+         ------------------
+
+         procedure Filter_Local
+           (E : Entity_Name; Names : in out Name_Sets.Set)
+         is
+            Remote : Name_Sets.Set;
+         begin
+            for N of Names loop
+               if Is_Heap_Variable (N)
+                 or else not Scope_Within_Or_Same (N, E)
+               then
+                  Remote.Insert (N);
+               end if;
+            end loop;
+
+            Name_Sets.Move (Target => Names,
+                            Source => Remote);
+         end Filter_Local;
+
          ----------
          -- Fold --
          ----------
 
          procedure Fold (Folded    :        Entity_Name;
+                         Analyzed  :        Entity_Name;
                          Contracts :        Entity_Contract_Maps.Map;
                          Patches   : in out Global_Patch_Lists.List)
          is
-            Original : Flow_Names renames Contracts (Folded);
+            Original : Flow_Names;
+            --  In phase 1 this is a renaming, so we don't create a copy. In
+            --  phase 2 we cannot have a renaming, because we might be folding
+            --  parents that have not been processed in phase 1, e.g. we might
+            --  be analysing a System.Something unit provided by GNAT without
+            --  analysing its parent System unit.
 
             function Callee_Globals
               (Callee : Entity_Name;
                Caller : Entity_Name)
                return Global_Names;
 
-            function Collect (Caller : Entity_Name) return Global_Names;
+            function Collect (Caller : Entity_Name) return Flow_Names
+            with Post => Is_Empty (Collect'Result.Proper);
+
+            function Is_Empty (Globals : Global_Names) return Boolean is
+              (Globals.Proof_Ins.Is_Empty
+                 and then Globals.Inputs.Is_Empty
+                 and then Globals.Outputs.Is_Empty)
+              with Ghost;
+            --  Returns True iff the Globals contract is empty
 
             --------------------
             -- Callee_Globals --
@@ -2019,7 +2007,10 @@ package body Flow_Generated_Globals.Phase_2 is
                  Contracts.Find (Callee);
 
             begin
-               if Entity_Contract_Maps.Has_Element (C) then
+               if Entity_Contract_Maps.Has_Element (C)
+                 and then Scope_Within_Or_Same
+                   (Inner => Callee, Outer => Analyzed)
+               then
                   return Down_Project (Contracts (C).Proper, Caller);
                else
                   --  Debug ("Ignoring call to", E);
@@ -2031,20 +2022,21 @@ package body Flow_Generated_Globals.Phase_2 is
             -- Collect --
             -------------
 
-            function Collect (Caller : Entity_Name) return Global_Names is
+            function Collect (Caller : Entity_Name) return Flow_Names is
                Result_Proof_Ins : Name_Sets.Set := Original.Refined.Proof_Ins;
                Result_Inputs    : Name_Sets.Set := Original.Refined.Inputs;
                Result_Outputs   : Name_Sets.Set := Original.Refined.Outputs;
                --  ??? by keeping these separate we don't have to care about
                --  maintaing the Global_Nodes invariant.
 
-               Callees : constant Call_Names :=
-                 Categorize_Calls (Caller, Contracts);
+               Result : Flow_Names;
 
             begin
+               Result.Calls := Categorize_Calls (Caller, Contracts);
+
                --  Now collect their globals
 
-               for Callee of Callees.Definite_Calls loop
+               for Callee of Result.Calls.Definite_Calls loop
                   declare
                      G : constant Global_Names :=
                        Callee_Globals (Callee => Callee, Caller => Folded);
@@ -2056,7 +2048,7 @@ package body Flow_Generated_Globals.Phase_2 is
                   end;
                end loop;
 
-               for Callee of Callees.Proof_Calls loop
+               for Callee of Result.Calls.Proof_Calls loop
                   declare
                      G : constant Global_Names :=
                        Callee_Globals (Callee => Callee, Caller => Folded);
@@ -2086,7 +2078,7 @@ package body Flow_Generated_Globals.Phase_2 is
                --
                --  which adds an dummy assignment.
 
-               for Callee of Callees.Conditional_Calls loop
+               for Callee of Result.Calls.Conditional_Calls loop
                   declare
                      G : constant Global_Names :=
                        Callee_Globals (Callee => Callee, Caller => Folded);
@@ -2109,20 +2101,32 @@ package body Flow_Generated_Globals.Phase_2 is
                   Result_Inputs.Union (Proof_Ins_Outs);
                end;
 
-               return (Proof_Ins => Result_Proof_Ins,
-                       Inputs    => Result_Inputs,
-                       Outputs   => Result_Outputs);
+               Result.Refined :=
+                 (Proof_Ins => Result_Proof_Ins,
+                  Inputs    => Result_Inputs,
+                  Outputs   => Result_Outputs);
+
+               return Result;
             end Collect;
 
-            --  Local_Variables
+            --  Local variables
+
             Update : Flow_Names;
 
          --  Start of processing for Fold
 
          begin
+            Debug ("Folding", Folded);
+
+            --  See comment above that explains why Original is not a renaming
+            if Contracts.Contains (Folded) then
+               Original := Contracts (Folded);
+            else
+               goto Fold_Children;
+            end if;
+
             --  First we resolve globals coming from the callees...
-            Update := (Refined => Collect (Folded),
-                       others  => <>);
+            Update := Collect (Folded);
 
             --  ... and then up-project them as necessary
 
@@ -2156,36 +2160,52 @@ package body Flow_Generated_Globals.Phase_2 is
                end;
             end if;
 
-            Patches.Append (Global_Patch'(Entity      => Folded,
-                                          Proper      => Update.Proper,
-                                          Refined     => Update.Refined,
-                                          Initializes => Update.Initializes));
+            Filter_Local (Analyzed, Update.Calls.Proof_Calls);
+            Filter_Local (Analyzed, Update.Calls.Definite_Calls);
+            Filter_Local (Analyzed, Update.Calls.Conditional_Calls);
+
+            Patches.Append
+              (Global_Patch'(Entity   => Folded,
+                             Contract => Update));
+
+            <<Fold_Children>>
+
+            for Child of Traversal.Scope_Map (Folded) loop
+               Fold (Child, Analyzed, Contracts, Patches);
+            end loop;
          end Fold;
 
-         ------------------
-         -- Fold_Subtree --
-         ------------------
+         ---------------
+         -- Do_Global --
+         ---------------
 
-         procedure Fold_Subtree (Folded    :        Entity_Id;
-                                 Contracts :        Entity_Contract_Maps.Map;
-                                 Patches   : in out Global_Patch_Lists.List)
+         procedure Do_Global (Analyzed  :        Entity_Name;
+                              Contracts : in out Entity_Contract_Maps.Map)
          is
          begin
-            for Child of Scope_Map (Folded) loop
-               Fold_Subtree (Child, Contracts, Patches);
+            Debug ("Do_Global", Analyzed);
+
+            for Child of Traversal.Scope_Map (Analyzed) loop
+               Do_Global (Child, Contracts);
             end loop;
 
-            if Ekind (Folded) /= E_Protected_Type then
-               --  Make sure that we have a mapping from Entity_Name to
-               --  Entity_Id. This mapping is typically only registered for
-               --  called entities and we need it even if there are no calls.
-               Register_Entity (Folded);
+            if Analyzed = Standard_Standard
+              or else not Is_Leaf (Analyzed)
+            then
+               declare
+                  Patches : Global_Patch_Lists.List;
+               begin
+                  Fold (Folded    => Analyzed,
+                        Analyzed  => Analyzed,
+                        Contracts => Contracts,
+                        Patches   => Patches);
 
-               Fold (Folded    => To_Entity_Name (Folded),
-                     Contracts => Contracts,
-                     Patches   => Patches);
+                  for Patch of Patches loop
+                     Contracts (Patch.Entity) := Patch.Contract;
+                  end loop;
+               end;
             end if;
-         end Fold_Subtree;
+         end Do_Global;
 
          -----------------------
          -- Resolve_Constants --
@@ -2483,29 +2503,45 @@ package body Flow_Generated_Globals.Phase_2 is
            and then Gnat2Why_Args.Flow_Generate_Contracts
          then
             declare
-               Patches : Global_Patch_Lists.List;
-
+               Position : Entity_Contract_Maps.Cursor;
+               Inserted : Boolean;
             begin
-               Fold_Subtree (Folded    => Root_Entity,
-                             Contracts => Global_Contracts,
-                             Patches   => Patches);
-
-               for Patch of Patches loop
-                  Global_Contracts (Patch.Entity) :=
-                    Flow_Names'(Proper      => Patch.Proper,
-                                Refined     => Patch.Refined,
-                                Initializes => Patch.Initializes,
-                                Calls       => <>);
-               end loop;
-
-               --  Only debug output from now on
-               Debug_Traversal (Root_Entity);
-
-               Dump_Main_Unit_Contracts
-                 (Highlight => To_Entity_Name (Root_Entity));
+               Global_Contracts.Insert
+                 (Standard_Standard,
+                  Position => Position,
+                  Inserted => Inserted);
             end;
 
-            Analyze_Remote_Calls;
+            declare
+               Position : Phase_1_Info_Maps.Cursor;
+               Inserted : Boolean;
+            begin
+               Phase_1_Info.Insert
+                 (Standard_Standard,
+                  Position => Position,
+                  Inserted => Inserted);
+
+               Phase_1_Info (Position).Kind := E_Package;
+            end;
+
+            --  Register entities from the current unit, even if they are not
+            --  referenced. This is certainly needed for tasking-related checks
+            --  on the root entity (if it is a "main subprogram"), but also
+            --  seems reasonable for connecting ALI contracts for nested
+            --  subprograms.
+
+            Iterate_Main_Unit (Register_Entity'Access);
+
+            Do_Global (Analyzed  => Standard_Standard,
+                       Contracts => Global_Contracts);
+
+            --  Only debug output from now on
+            Debug_Traversal (Root_Entity);
+
+            Dump_Main_Unit_Contracts
+              (Highlight => To_Entity_Name (Root_Entity));
+
+            --  Analyze_Remote_Calls;
 
             --  Remove edges leading to constants which do not have variable
             --  input.

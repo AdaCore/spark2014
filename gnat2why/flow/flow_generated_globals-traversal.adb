@@ -22,11 +22,11 @@
 ------------------------------------------------------------------------------
 
 with Ada.Text_IO;
+with Flow_Utility; use Flow_Utility;
 with Nlists;       use Nlists;
 with Sem_Util;     use Sem_Util;
 with Sinfo;        use Sinfo;
 with SPARK_Util;   use SPARK_Util;
-with Flow_Utility; use Flow_Utility;
 
 package body Flow_Generated_Globals.Traversal is
 
@@ -514,5 +514,31 @@ package body Flow_Generated_Globals.Traversal is
    begin
       Traverse_Declaration_Or_Statement (CU);
    end Traverse_Compilation_Unit;
+
+   -----------------------
+   -- Traversal_Parents --
+   -----------------------
+
+   function Traversal_Parents (E : Entity_Id) return Node_Lists.List is
+      Parents : Node_Lists.List;
+
+      P : Entity_Id := E;
+
+   begin
+      loop
+         P := Scope (P);
+
+         exit when P = Standard_Standard;
+
+         if Ekind (P) in Container_Scope
+           and then Ekind (P) /= E_Protected_Type
+           and then not Is_Wrapper_Package (P)
+         then
+            Parents.Append (P);
+         end if;
+      end loop;
+
+      return Parents;
+   end Traversal_Parents;
 
 end Flow_Generated_Globals.Traversal;

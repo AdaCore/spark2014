@@ -131,7 +131,6 @@ package body Flow_Generated_Globals.Phase_2.Read is
 
    procedure Serialize (Names : in out Name_Sets.Set; Label : String := "") is
       Size : Natural;
-
    begin
       if Label /= ""
         and then Get_Token /= Label
@@ -146,9 +145,22 @@ package body Flow_Generated_Globals.Phase_2.Read is
       end loop;
    end Serialize;
 
-   ---------------
-   -- Serialize --
-   ---------------
+   procedure Serialize (Names : in out Name_Lists.List; Label : String := "")
+   is
+      Size : Natural;
+   begin
+      if Label /= ""
+        and then Get_Token /= Label
+      then
+         raise Program_Error;
+      end if;
+
+      Size := Natural'Value (Get_Token);
+
+      for J in 1 .. Size loop
+         Names.Append (To_Entity_Name (Get_Token));
+      end loop;
+   end Serialize;
 
    procedure Serialize (N : out Int) is
    begin

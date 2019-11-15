@@ -77,8 +77,6 @@ package body Flow_Generated_Globals.Phase_2.Visibility is
    --  particular, to synthesize the Initializes of a parent package with
    --  Part_Ofs its state located in its private children.
 
-   Standard_Standard : constant Entity_Name := To_Entity_Name ("__standard");
-
    function Present (E : Any_Entity_Name) return Boolean is
      (E /= Null_Entity_Name);
 
