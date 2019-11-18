@@ -90,7 +90,6 @@ package Gnat2Why.Error_Messages is
       SD_Id      : Session_Dir_Base_ID;
       How_Proved : Prover_Category;
       Extra_Msg  : String := "";
-      Tracefile  : String := "";
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";

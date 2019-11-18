@@ -301,7 +301,6 @@ package body Gnat2Why.Error_Messages is
       SD_Id      : Session_Dir_Base_ID;
       How_Proved : Prover_Category;
       Extra_Msg  : String := "";
-      Tracefile  : String := "";
       Cntexmp    : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       Check_Tree : GNATCOLL.JSON.JSON_Value := GNATCOLL.JSON.Create_Object;
       VC_File    : String := "";
@@ -415,7 +414,6 @@ package body Gnat2Why.Error_Messages is
             Proved,
             Kind,
             Place_First => Locate_On_First_Token (Kind),
-            Tracefile   => Tracefile,
             Cntexmp     => Cntexmp,
             Check_Tree  => Check_Tree,
             VC_File     => VC_File,
@@ -744,7 +742,6 @@ package body Gnat2Why.Error_Messages is
          Kind       : VC_Kind;
          Result     : Boolean;
          Extra_Info : Node_Id;
-         Tracefile  : Unbounded_String;
          VC_File    : Unbounded_String;
          Editor_Cmd : Unbounded_String;
          Stats      : Prover_Stat_Maps.Map;
@@ -825,7 +822,6 @@ package body Gnat2Why.Error_Messages is
             E           => VC.Entity,
             SD_Id       => SD_Id,
             How_Proved  => PC_Prover,
-            Tracefile   => To_String (Rec.Tracefile),
             Cntexmp     => Rec.Cntexmp,
             Check_Tree  => Rec.Check_Tree,
             VC_File     => To_String (Rec.VC_File),
@@ -870,9 +866,6 @@ package body Gnat2Why.Error_Messages is
             Kind       => VC_Kind'Value (Get (Get (V, "reason"))),
             Result     => Get (Get (V, "result")),
             Extra_Info => Node_Id (Integer'(Get (Get (V, "extra_info")))),
-            Tracefile  =>
-            (if Has_Field (V, "tracefile") then Get (Get (V, "tracefile"))
-             else Null_Unbounded_String),
             VC_File    =>
             (if Has_Field (V, "vc_file") then Get (Get (V, "vc_file"))
              else Null_Unbounded_String),

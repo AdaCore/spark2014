@@ -587,7 +587,6 @@ package body Flow_Error_Messages is
       Msg         : String;
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
-      Tracefile   : String;
       Cntexmp     : JSON_Value;
       Check_Tree  : JSON_Value;
       VC_File     : String;
@@ -717,7 +716,6 @@ package body Flow_Error_Messages is
          Msg_List    => Proof_Msgs,
          Msg_Id      => Msg_Id,
          E           => E,
-         Tracefile   => Tracefile,
          Cntexmp     => Pretty_Cntexmp,
          Check_Tree  => Check_Tree,
          SD_Id       => SD_Id,

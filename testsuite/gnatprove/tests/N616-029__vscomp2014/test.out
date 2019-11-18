@@ -12,7 +12,7 @@ sum_elem.adb:6:22: info: assertion proved (CVC4: 1 VC)
 sum_elem.adb:6:22: info: precondition proved (CVC4: 2 VC)
 sum_elem.adb:6:45: info: precondition proved (CVC4: 2 VC)
 sum_elem.adb:11:07: medium: precondition might fail, cannot prove Length (Container) < Capacity (Container) [possible explanation: subprogram at sum_elem.ads:29 should mention P in a precondition]
-sum_elem.adb:12:07: medium: precondition might fail, cannot prove Element (P, J).First + Element (P, J).Last in Index
+sum_elem.adb:12:07: medium: precondition might fail, cannot prove Element (P, J).First + Element (P, J).Last in Index (e.g. when J = 1)
 sum_elem.ads:23:14: warning: subprogram "Local" has no effect
 sum_elem.ads:24:40: medium: range check might fail
 sum_elem.ads:25:64: info: precondition proved (CVC4: 2 VC)

@@ -149,7 +149,6 @@ package Flow_Error_Messages is
       Msg         : String;
       Is_Proved   : Boolean;
       Tag         : VC_Kind;
-      Tracefile   : String;
       Cntexmp     : JSON_Value;
       Check_Tree  : JSON_Value;
       VC_File     : String;
