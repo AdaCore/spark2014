@@ -262,14 +262,14 @@
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.74" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="43800"/></proof>
+  <proof prover="0"><result status="valid" steps="43846"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.75" expl="precondition" proved="true">
   <proof prover="1"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.76" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="51231"/></proof>
+  <proof prover="0"><result status="valid" steps="47647"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.77" expl="precondition" proved="true">
@@ -416,11 +416,11 @@
   <proof prover="1"><result status="valid" steps="27"/></proof>
   </goal>
   <goal name="def&#39;VC.120" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="78911"/></proof>
+  <proof prover="0"><result status="valid" steps="78957"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.121" expl="loop invariant preservation" proved="true">
-  <proof prover="0"><result status="valid" steps="79157"/></proof>
+  <proof prover="0"><result status="valid" steps="79203"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.122" expl="loop invariant preservation" proved="true">
