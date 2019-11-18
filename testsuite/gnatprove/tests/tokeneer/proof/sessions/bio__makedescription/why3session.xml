@@ -52,7 +52,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.12" expl="check">
-  <proof prover="0" timelimit="1"><result status="unknown" steps="158"/></proof>
+  <proof prover="0" timelimit="1"><result status="unknown" steps="130"/></proof>
   </goal>
   <goal name="def&#39;VC.13" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

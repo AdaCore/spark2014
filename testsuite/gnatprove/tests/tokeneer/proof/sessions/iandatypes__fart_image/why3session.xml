@@ -21,9 +21,9 @@
   </goal>
   <goal name="def&#39;VC.2" expl="assertion">
   <proof prover="0"><result status="unknown"/></proof>
-  <proof prover="1"><result status="unknown" steps="13893"/></proof>
-  <proof prover="2"><result status="unknown" steps="150"/></proof>
-  <proof prover="3"><result status="unknown" steps="200"/></proof>
+  <proof prover="1"><result status="unknown" steps="17841"/></proof>
+  <proof prover="2"><result status="unknown" steps="141"/></proof>
+  <proof prover="3"><result status="unknown" steps="196"/></proof>
   </goal>
   <goal name="def&#39;VC.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -47,14 +47,14 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.10" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="85"/></proof>
+  <proof prover="0"><result status="valid" steps="76"/></proof>
   </goal>
   <goal name="def&#39;VC.11" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;VC.12" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="85"/></proof>
+  <proof prover="0"><result status="valid" steps="76"/></proof>
   </goal>
   <goal name="def&#39;VC.13" expl="check">
   <proof prover="0" timelimit="1"><result status="unknown" steps="24"/></proof>

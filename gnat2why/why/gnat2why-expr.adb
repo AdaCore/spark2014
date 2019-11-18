@@ -4887,7 +4887,23 @@ package body Gnat2Why.Expr is
          --  the search.
 
          declare
-            Next_Ty : constant Entity_Id := Retysp (Etype (Rep_Ty));
+            Decl    : constant Node_Id := Enclosing_Declaration (Rep_Ty);
+            Sub_Ty  : constant Node_Id :=
+              (if Nkind (Decl) = N_Subtype_Declaration
+               then Subtype_Indication (Decl)
+               else Empty);
+            --  If Rep_Ty is a subtype, we need to use its declaration to find
+            --  the next subtype in the derivation tree. Indeed, Etype on
+            --  subtypes returns the base type.
+
+            Next_Ty : constant Entity_Id :=
+              (if Present (Sub_Ty)
+               then Retysp
+                 (Entity
+                      (if Nkind (Sub_Ty) = N_Subtype_Indication
+                       then Subtype_Mark (Sub_Ty)
+                       else Sub_Ty))
+               else Retysp (Etype (Rep_Ty)));
          begin
             exit when Next_Ty = Rep_Ty;
             Rep_Ty := Next_Ty;

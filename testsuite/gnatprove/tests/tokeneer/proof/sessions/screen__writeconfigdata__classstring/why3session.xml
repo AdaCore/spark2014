@@ -25,10 +25,10 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.4" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="116"/></proof>
   </goal>
   <goal name="def&#39;VC.5" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="5"/></proof>
+  <proof prover="0"><result status="valid" steps="118"/></proof>
   </goal>
   <goal name="def&#39;VC.6" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -44,7 +44,7 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.10" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="0"><result status="valid" steps="118"/></proof>
   </goal>
   <goal name="def&#39;VC.11" expl="assertion" proved="true">
   <transf name="trivial_true" proved="true" >

@@ -79,7 +79,7 @@
   </goal>
   <goal name="def&#39;VC.18" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="3320409"/></proof>
+  <proof prover="1"><result status="unknown" steps="2332386"/></proof>
   <proof prover="2"><result status="unknown" steps="4840"/></proof>
   <proof prover="3"><result status="unknown" steps="4079"/></proof>
   </goal>
@@ -89,7 +89,7 @@
   </goal>
   <goal name="def&#39;VC.20" expl="precondition">
   <proof prover="0"><result status="timeout"/></proof>
-  <proof prover="1"><result status="unknown" steps="8394497"/></proof>
+  <proof prover="1"><result status="unknown" steps="10333077"/></proof>
   <proof prover="2"><result status="unknown" steps="6670"/></proof>
   <proof prover="3"><result status="unknown" steps="5721"/></proof>
   </goal>

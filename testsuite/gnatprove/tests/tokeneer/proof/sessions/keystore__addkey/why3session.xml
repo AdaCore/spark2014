@@ -51,14 +51,14 @@
   <proof prover="0"><result status="valid" steps="5"/></proof>
   </goal>
   <goal name="def&#39;VC.11" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="913"/></proof>
+  <proof prover="0"><result status="valid" steps="904"/></proof>
   </goal>
   <goal name="def&#39;VC.12" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
   </transf>
   </goal>
   <goal name="def&#39;VC.13" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="857"/></proof>
+  <proof prover="0"><result status="valid" steps="848"/></proof>
   </goal>
   <goal name="def&#39;VC.14" expl="precondition" proved="true">
   <transf name="trivial_true" proved="true" >
@@ -81,7 +81,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.19" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1004"/></proof>
+  <proof prover="0"><result status="valid" steps="995"/></proof>
   </goal>
  </transf>
  </goal>
