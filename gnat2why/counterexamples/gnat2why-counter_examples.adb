@@ -1481,21 +1481,39 @@ package body Gnat2Why.Counter_Examples is
                      --  hanlded as special strings.
 
                      elsif Part = All_Label then
-                        pragma Assert (Current_Cnt_Value.K = Access_Value);
-                        Is_Attribute := False;
-                        Ent_Ty := Retysp (Directly_Designated_Type
-                                          (Current_Cnt_Value.Ent_Ty));
-                        --  Don't erase potential attributes here
-                        if Current_Cnt_Value.Ptr_Val = null then
-                           Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
+                        if Current_Cnt_Value.K /= Access_Value then
+
+                           --  ??? newsystem followup ticket: This case should
+                           --  not be necessary but it happens that with
+                           --  attributes of array on subrecords, the order
+                           --  returned by gnatwhy3 for the components is not
+                           --  correct (see S306-035).
+                           goto Next_Model_Element;
+                        else
+                           Is_Attribute := False;
+                           Ent_Ty := Retysp (Directly_Designated_Type
+                                             (Current_Cnt_Value.Ent_Ty));
+                           --  Don't erase potential attributes here
+                           if Current_Cnt_Value.Ptr_Val = null then
+                              Current_Cnt_Value.Ptr_Val := New_Item (Ent_Ty);
+                           end if;
+                           Current_Cnt_Value := Current_Cnt_Value.Ptr_Val;
                         end if;
-                        Current_Cnt_Value := Current_Cnt_Value.Ptr_Val;
                      elsif Part = Is_Null_Label then
-                        pragma Assert (Current_Cnt_Value.K = Access_Value);
-                        if Elt.Value /= null
-                          and then Elt.Value.all.T = Cnt_Boolean
-                        then
-                           Current_Cnt_Value.Is_Null := Elt.Value.all.Bo;
+                        if Current_Cnt_Value.K /= Access_Value then
+
+                           --  ??? newsystem followup ticket: This case should
+                           --  not be necessary but it happens that with
+                           --  attributes of array on subrecords, the order
+                           --  returned by gnatwhy3 for the components is not
+                           --  correct.
+                           goto Next_Model_Element;
+                        else
+                           if Elt.Value /= null
+                             and then Elt.Value.all.T = Cnt_Boolean
+                           then
+                              Current_Cnt_Value.Is_Null := Elt.Value.all.Bo;
+                           end if;
                         end if;
 
                      --  Regular attributes
