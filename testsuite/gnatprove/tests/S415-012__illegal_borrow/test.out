@@ -1,2 +1,2 @@
-incorrect_borrows.adb:24:07: local borrower of a type with predicates on subcomponents of deep type is not yet supported
+incorrect_borrows.adb:24:07: local borrow of an expression with predicates on subcomponents of deep type is not yet supported
 gnatprove: error during flow analysis and proof

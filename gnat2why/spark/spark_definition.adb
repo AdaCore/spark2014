@@ -3986,23 +3986,6 @@ package body SPARK_Definition is
             end if;
          end if;
 
-         --  We do not support local borrowers if they have predicates that
-         --  can be broken arbitrarily deeply during the traversal.
-
-         if Is_Local_Borrower (E)
-
-           --  Only issue message on legal declarations. Others are handled in
-           --  ownership checking code in the frontend.
-
-           and then Is_Local_Context (Scope (E))
-           and then Has_Deep_Subcomponents_With_Predicates
-             (Directly_Designated_Type (T))
-         then
-            Mark_Unsupported
-              ("local borrower of a type with predicates on subcomponents of"
-               & " deep type", E);
-         end if;
-
          if Present (Sub)
            and then not In_SPARK (Sub)
          then
@@ -4021,6 +4004,19 @@ package body SPARK_Definition is
               and then Is_Anonymous_Access_Type (Etype (E))
             then
                Check_Source_Of_Borrow_Or_Observe (Expr);
+
+               --  We do not support local borrowers if they have predicates
+               --  that can be broken during the traversal.
+
+               if not Violation_Detected
+                 and then Is_Local_Borrower (E)
+                 and then Has_Deep_Subcomponents_With_Predicates
+                   (Get_Observed_Or_Borrowed_Ty (Expr, T))
+               then
+                  Mark_Unsupported
+                    ("local borrow of an expression with predicates on"
+                     & " subcomponents of deep type", E);
+               end if;
 
             --  If we are performing a move operation, check that we are
             --  moving a path.

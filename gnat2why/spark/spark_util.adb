@@ -1232,6 +1232,22 @@ package body SPARK_Util is
    -----------------------------------
 
    function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id is
+      B_Expr : Node_Id;
+      B_Ty   : Entity_Id := Empty;
+   begin
+      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
+      return B_Expr;
+   end Get_Observed_Or_Borrowed_Expr;
+
+   -----------------------------------
+   -- Get_Observed_Or_Borrowed_Info --
+   -----------------------------------
+
+   procedure Get_Observed_Or_Borrowed_Info
+     (Expr   : Node_Id;
+      B_Expr : out Node_Id;
+      B_Ty   : in out Entity_Id)
+   is
 
       function Find_Func_Call (Expr : Node_Id) return Node_Id;
       --  Search for function calls in the prefixes of Expr
@@ -1269,9 +1285,9 @@ package body SPARK_Util is
          end case;
       end Find_Func_Call;
 
-      B_Expr : Node_Id := Expr;
-
    begin
+      B_Expr := Expr;
+
       --  Search for the first call to a traversal function in Expr. If there
       --  is one, its first parameter is the borrowed expression. Otherwise,
       --  it is Expr.
@@ -1282,12 +1298,26 @@ package body SPARK_Util is
          begin
             exit when No (Call);
             pragma Assert (Is_Traversal_Function_Call (Call));
+            B_Ty   := Etype (First_Formal (Get_Called_Entity (Call)));
             B_Expr := First_Actual (Call);
          end;
       end loop;
+   end Get_Observed_Or_Borrowed_Info;
 
-      return B_Expr;
-   end Get_Observed_Or_Borrowed_Expr;
+   ---------------------------------
+   -- Get_Observed_Or_Borrowed_Ty --
+   ---------------------------------
+
+   function Get_Observed_Or_Borrowed_Ty
+     (Expr : Node_Id;
+      Ty   : Entity_Id) return Entity_Id
+   is
+      B_Expr : Node_Id;
+      B_Ty   : Entity_Id := Ty;
+   begin
+      Get_Observed_Or_Borrowed_Info (Expr, B_Expr, B_Ty);
+      return B_Ty;
+   end Get_Observed_Or_Borrowed_Ty;
 
    ---------------
    -- Get_Range --
