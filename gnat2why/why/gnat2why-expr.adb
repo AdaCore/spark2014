@@ -5370,6 +5370,13 @@ package body Gnat2Why.Expr is
       Havoc_Expr  : W_Prog_Id;
 
    begin
+      --  If the borrowed object is not mutable (it happens when we are inside
+      --  a traversal function), nothing needs to be done.
+
+      if not Is_Mutable_In_Why (Borrowed) then
+         return +Void;
+      end if;
+
       --  Store in W_Expr the expression tmp_borrowed.Expr. We convert it to
       --  Ty because it may not respect the constraints of the type of
       --  Borrowed.Expr, so we will need to convert it back later with checks
@@ -7751,7 +7758,16 @@ package body Gnat2Why.Expr is
                    (Typ       => Type_Of_Node (Etype (First_Formal (Subp))),
                     Base_Name => "borrowed");
 
-               return New_Pledge_Call (Subp, Args, +Borrowed_Id, Expr);
+               return +New_And_Expr
+                 (Left   => New_Pledge_Call (Subp, Args, +Borrowed_Id, Expr),
+                  Right  => +Boolean_Term_Of_Pred
+                    (Compute_Dynamic_Invariant
+                         (Expr        => +Borrowed_Id,
+                          Ty          => Etype (First_Formal (Subp)),
+                          Params      => Body_Params,
+                          Initialized => True_Term,
+                          Only_Var    => False_Term)),
+                  Domain => EW_Term);
             end;
 
          --  From a path Brower.Path where Path does not contain any traversal

@@ -837,10 +837,9 @@ package body Why.Gen.Pointers is
    ------------------------
 
    procedure Declare_Pledge_Ref (File : W_Section_Id; E : Entity_Id) is
-      Borrowed_Expr   : Node_Id := Expression (Enclosing_Declaration (E));
+      Borrowed_Expr   : Node_Id;
       Borrowed_Ty     : Entity_Id := Etype (E);
       Borrowed_Entity : Entity_Id;
-      Cur             : Node_Id := Expression (Enclosing_Declaration (E));
       Loc_Pledge_Id   : W_Identifier_Id;
 
    begin
@@ -851,31 +850,9 @@ package body Why.Gen.Pointers is
       --  this point (either E or the first formal of a call to a traversal
       --  function).
 
-      loop
-         case Nkind (Cur) is
-            when N_Identifier | N_Expanded_Name =>
-               Borrowed_Entity := Entity (Cur);
-               exit;
-            when N_Selected_Component
-               | N_Indexed_Component
-               | N_Slice
-               | N_Explicit_Dereference
-            =>
-               Cur := Prefix (Cur);
-            when N_Qualified_Expression
-               | N_Type_Conversion
-               | N_Unchecked_Type_Conversion
-            =>
-               Cur := Expression (Cur);
-            when N_Function_Call =>
-               Borrowed_Expr := First_Actual (Cur);
-               Borrowed_Ty := Etype (First_Formal (Get_Called_Entity (Cur)));
-               Cur := Borrowed_Expr;
-               pragma Assert (Present (Borrowed_Expr));
-            when others =>
-               raise Not_Implemented;
-         end case;
-      end loop;
+      Get_Observed_Or_Borrowed_Info
+        (Expression (Enclosing_Declaration (E)), Borrowed_Expr, Borrowed_Ty);
+      Borrowed_Entity := Get_Root_Object (Borrowed_Expr);
 
       --  Clone the pledge module. It creates a pledge function relating the
       --  borrowed entity and the borrower. We could have chosen to rather

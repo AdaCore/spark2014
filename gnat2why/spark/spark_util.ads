@@ -619,8 +619,31 @@ package SPARK_Util is
    function Get_Observed_Or_Borrowed_Expr (Expr : Node_Id) return Node_Id with
      Pre => Is_Path_Expression (Expr);
    --  Return the expression being borrowed/observed when borrowing or
-   --  observing Expr. If Expr contains a call to traversal function, this is
-   --  the first actual of the first such call, otherwise it is Expr.
+   --  observing Expr, as computed by Get_Observed_Or_Borrowed_Info.
+
+   procedure Get_Observed_Or_Borrowed_Info
+     (Expr   : Node_Id;
+      B_Expr : out Node_Id;
+      B_Ty   : in out Entity_Id)
+   with Pre => Is_Path_Expression (Expr);
+   --  Compute both the expression being borrowed/observed when borrowing or
+   --  observing Expr and the type used for this borrow/observe.
+   --  @param Expr a path used for a borrow/observe
+   --  @param B_Expr the expression being borrowed/observed when borrowing or
+   --      observing Expr. If Expr contains a call to traversal function, this
+   --      is the first actual of the first such call, otherwise it is Expr.
+   --  @param B_Ty the type of the first borrower/observer in Expr. If Expr
+   --      contains a call to traversal function, this is the type of the first
+   --      formal of the function, otherwise it is B_Ty.
+   --      Note that B_Ty is not the type of B_Expr but a compatible anonymous
+   --      access type.
+
+   function Get_Observed_Or_Borrowed_Ty
+     (Expr : Node_Id;
+      Ty   : Entity_Id) return Entity_Id
+   with Pre => Is_Path_Expression (Expr);
+   --  Return the type of the first borrower/observer in Expr, as computed by
+   --  Get_Observed_Or_Borrowed_Info.
 
    function Get_Root_Object
      (Expr              : Node_Id;
