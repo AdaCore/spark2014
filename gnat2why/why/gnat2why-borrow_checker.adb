@@ -2000,6 +2000,26 @@ package body Gnat2Why.Borrow_Checker is
                   if Present (For_Of_Spec_Typ) then
                      Read_Expression (For_Of_Spec_Typ);
                   end if;
+
+                  --  Add the quantified variable to the current permission
+                  --  environment.
+
+                  if Is_Deep (Etype (Defining_Identifier (For_Of_Spec))) then
+                     declare
+                        Target : constant Entity_Id :=
+                          Defining_Identifier (For_Of_Spec);
+                        Tree : constant Perm_Tree_Access :=
+                          new Perm_Tree_Wrapper'
+                            (Tree =>
+                               (Kind                => Entire_Object,
+                                Is_Node_Deep        => True,
+                                Explanation         => For_Of_Spec,
+                                Permission          => Read_Only,
+                                Children_Permission => Read_Only));
+                     begin
+                        Set (Current_Perm_Env, Target, Tree);
+                     end;
+                  end if;
                end if;
 
                Read_Expression (Condition (Expr));
