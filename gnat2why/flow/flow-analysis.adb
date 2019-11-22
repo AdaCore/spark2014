@@ -777,13 +777,29 @@ package body Flow.Analysis is
             Vars_Used  : Flow_Id_Sets.Set;
             Vars_Known : Flow_Id_Sets.Set;
 
+            Post_Exprs : constant Node_Lists.List :=
+              Get_Postcondition_Expressions (FA.Spec_Entity, Refined);
+            --  Postcondition expressions
+
          begin
             if Refined then
-               Vars_Known := To_Entire_Variables (FA.All_Vars);
-               --  Copy all variables introduced into the flow graph, i.e.
-               --  globals, formals and implicit 'Result (for functions).
-               --  Note: we also copy local objects, which is unnecessary but
-               --  harmless, because they can't be referenced in Post anyway.
+               case FA.Kind is
+                  when Kind_Subprogram =>
+                     Vars_Known := To_Entire_Variables (FA.All_Vars);
+                     --  Copy all variables introduced into the flow graph,
+                     --  i.e. globals, formals and implicit 'Result (for
+                     --  functions). Note: we also copy local objects, which
+                     --  is unnecessary but harmless, because they can't be
+                     --  referenced in Post anyway.
+
+                  when Kind_Package =>
+                     pragma Assert (Post_Exprs.Is_Empty);
+                     --  Packages have no refined postcondition, so no
+                     --  expressions will be checked.
+
+                  when Kind_Task =>
+                     raise Program_Error;
+               end case;
 
             else
                case FA.Kind is
@@ -834,9 +850,7 @@ package body Flow.Analysis is
                end case;
             end if;
 
-            for Expr of Get_Postcondition_Expressions (FA.Spec_Entity,
-                                                       Refined)
-            loop
+            for Expr of Post_Exprs loop
                Vars_Used :=
                  To_Entire_Variables
                    (Get_All_Variables
