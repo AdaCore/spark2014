@@ -491,6 +491,14 @@ package Flow_Types is
       Inputs    : Flow_Id_Sets.Set;
       Outputs   : Flow_Id_Sets.Set;
    end record;
+   pragma Predicate
+     (Global_Flow_Ids,
+      (for all Proof_In of Proof_Ins =>
+          not Inputs.Contains (Proof_In)
+            and then
+          not Outputs.Contains (Proof_In)));
+   --  ??? This predicate is a pragma, because GNAT crashes if it is given as
+   --  an aspect [SA23-034].
 
    function To_Ordered_Flow_Id_Set (S : Flow_Id_Sets.Set)
                                     return Ordered_Flow_Id_Sets.Set;
