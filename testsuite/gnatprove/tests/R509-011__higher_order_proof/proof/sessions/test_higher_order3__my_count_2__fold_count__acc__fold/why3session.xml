@@ -929,7 +929,8 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.277" expl="loop invariant init" proved="true">
-  <proof prover="1"><result status="valid" steps="87746867"/></proof>
+  <proof prover="0"><result status="valid" steps="130"/></proof>
+  <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.278" expl="loop invariant init" proved="true">
@@ -1983,12 +1984,12 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.597" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="4077"/></proof>
+  <proof prover="0"><result status="valid" steps="3734"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.598" expl="assertion" proved="true">
-  <proof prover="1"><result status="valid" steps="164037"/></proof>
+  <proof prover="1"><result status="valid" steps="174077"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.599" expl="assertion" proved="true">
@@ -2369,8 +2370,7 @@
   <proof prover="2"><result status="valid" steps="227"/></proof>
   </goal>
   <goal name="def&#39;VC.713" expl="postcondition" proved="true">
-  <proof prover="0"><result status="valid" steps="302"/></proof>
-  <proof prover="1"><result status="timeout"/></proof>
+  <proof prover="1"><result status="valid" steps="88052297"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.714" expl="postcondition" proved="true">
@@ -2381,12 +2381,12 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.716" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="131866"/></proof>
+  <proof prover="1"><result status="valid" steps="133610"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.717" expl="postcondition" proved="true">
-  <proof prover="1"><result status="valid" steps="142004"/></proof>
-  <proof prover="2"><result status="highfailure" steps="221480"/></proof>
+  <proof prover="1"><result status="valid" steps="144558"/></proof>
+  <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.718" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
