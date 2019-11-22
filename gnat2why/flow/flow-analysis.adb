@@ -827,8 +827,7 @@ package body Flow.Analysis is
                      end;
 
                   when Kind_Package =>
-                     Vars_Known :=
-                       Down_Project (FA.Visible_Vars, FA.S_Scope);
+                     Vars_Known := FA.Visible_Vars;
 
                   when Kind_Task =>
                      raise Program_Error;
