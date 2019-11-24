@@ -1,1 +1,0 @@
-ALL XFAIL crash due to overlapping globals (SB07-020)

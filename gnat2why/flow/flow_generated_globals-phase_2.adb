@@ -383,6 +383,8 @@ package body Flow_Generated_Globals.Phase_2 is
       Caller : Entity_Name)
       return Global_Names;
    --  Same as above but lifted to sets with proof_ins, inputs and outputs
+   --  ??? When down-projecting a partially visible proof_in abstract state
+   --  we might get overlapping with its input/output constituents; fixit.
 
    procedure Up_Project (Vars      :     Name_Sets.Set;
                          Scope     :     Name_Scope;
@@ -464,34 +466,52 @@ package body Flow_Generated_Globals.Phase_2 is
       C : constant Entity_Contract_Maps.Cursor :=
         Global_Contracts.Find (To_Entity_Name (E));
 
-      procedure Populate_Results (G : Global_Names);
+      procedure To_Flow_Id_Set (G : Global_Names);
+      --  Convert to Flow_Id because down-projecting relies on visibility
+      --  queries. ??? Historically, we only had visibility queries for
+      --  Entity_Ids; now we also have them for Entity_Names, so we should
+      --  rather down-project names and only convert results to Flow_Ids.
 
-      ----------------------
-      -- Populate_Results --
-      ----------------------
+      --------------------
+      -- To_Flow_Id_Set --
+      --------------------
 
-      procedure Populate_Results (G : Global_Names) is
+      procedure To_Flow_Id_Set (G : Global_Names) is
       begin
-         Globals.Proof_Ins := To_Flow_Id_Set (G.Proof_Ins, View => In_View);
-         Globals.Inputs    := To_Flow_Id_Set (G.Inputs,    View => In_View);
-         Globals.Outputs   := To_Flow_Id_Set (G.Outputs,   View => Out_View);
-      end Populate_Results;
+         Globals :=
+           (Proof_Ins => To_Flow_Id_Set (G.Proof_Ins),
+            Inputs    => To_Flow_Id_Set (G.Inputs),
+            Outputs   => To_Flow_Id_Set (G.Outputs));
+      end To_Flow_Id_Set;
+
+      use type Flow_Id_Sets.Set;
 
    --  Start of processing for GG_Get_Globals
 
    begin
       if Entity_Contract_Maps.Has_Element (C) then
-         Populate_Results
+         To_Flow_Id_Set
            (if Ekind (E) /= E_Package
               and then Subprogram_Refinement_Is_Visible (E, S)
             then Global_Contracts (C).Refined
             else Global_Contracts (C).Proper);
 
-         --  Down-project globals to the scope of the caller
+         --  Down-project globals to the scope of the caller. Prevent
+         --  overlapping between Proof_Ins and Inputs/Outputs, which may occur
+         --  when down-projecting a partially visible Proof_In abstract state
+         --  into its constituents that also happen to be Inputs or Outputs.
 
-         Globals.Proof_Ins := Down_Project (Globals.Proof_Ins, S);
          Globals.Inputs    := Down_Project (Globals.Inputs,    S);
          Globals.Outputs   := Down_Project (Globals.Outputs,   S);
+         Globals.Proof_Ins := Down_Project (Globals.Proof_Ins, S)
+           - Globals.Inputs - Globals.Outputs;
+
+         --  Convert to In_View/Out_View variants, as returned by Get_Globals
+
+         Globals :=
+           (Proof_Ins => Change_Variant (Globals.Proof_Ins, In_View),
+            Inputs    => Change_Variant (Globals.Inputs,    In_View),
+            Outputs   => Change_Variant (Globals.Outputs,   Out_View));
 
       else
          Globals.Proof_Ins.Clear;
