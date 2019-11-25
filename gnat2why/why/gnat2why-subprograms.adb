@@ -3434,7 +3434,7 @@ package body Gnat2Why.Subprograms is
          if Entity_Body_In_SPARK (E) then
 
             --  Translate contract of E. A No_Return subprogram, from the
-            --  inside, has postcondition true as non termination verification
+            --  inside, has postcondition true as non-termination verification
             --  is done by the frontend, but the precondition is unchanged.
 
             if No_Return (E) or else No (Post_N) then
@@ -4189,12 +4189,11 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  Do not generate an axiom for the postcondition of:
-      --    * potentially non returning functions as the axiom could be
+      --    * potentially non-returning functions as the axiom could be
       --      unsound,
       --    * volatile functions and protected subprograms.
 
       if Ekind (E) in E_Procedure | Entry_Kind
-        or else No_Return (E)
         or else Has_Pragma_Volatile_Function (E)
         or else (Is_Potentially_Nonreturning (E)
                  and then (not Is_Scalar_Type (Etype (E))
@@ -5741,7 +5740,7 @@ package body Gnat2Why.Subprograms is
       --  not terminate because these axioms could be unsound.
       --  If the function does not terminate but is not recursive, then it
       --  must be because either it is itself not in part with SPARK_Mode On or
-      --  because it calls a non terminating function. These reasons should not
+      --  because it calls a non-terminating function. These reasons should not
       --  make the axiom unsound.
       --  If the function is recursive but has a terminating annotation, then
       --  the axiom should not be incorrect, so that is not a problem that it
@@ -5749,7 +5748,6 @@ package body Gnat2Why.Subprograms is
 
       if not Entity_Body_Compatible_With_SPARK (E)
         or else Present (Retrieve_Inline_Annotation (E))
-        or else No_Return (E)
         or else Has_Pragma_Volatile_Function (E)
         or else (Is_Recursive (E) and then Is_Potentially_Nonreturning (E))
       then

@@ -840,13 +840,12 @@ package body Gnat2Why.Util is
 
    function Has_Post_Axiom (E : Entity_Id) return Boolean is
      (Ekind (E) not in E_Procedure | Entry_Kind
-      and then not No_Return (E)
       and then not Has_Pragma_Volatile_Function (E)
       and then not
         Flow_Generated_Globals.Phase_2.Is_Potentially_Nonreturning (E));
    --  Do not generate an axiom for the postcondition of:
    --    * procedures or entries,
-   --    * potentially non returning functions as the axiom could be unsound,
+   --    * potentially non-returning functions as the axiom could be unsound,
    --    * volatile functions and protected subprograms.
 
    -----------------------
@@ -1329,10 +1328,6 @@ package body Gnat2Why.Util is
    function Use_Guard_For_Function (E : Entity_Id) return Boolean is
    begin
       return Gnat2Why_Args.Proof_Generate_Guards
-
-        --  No axioms are generated for functions with No_Return
-
-        and then not No_Return (E)
 
         --  No axioms are generated for volatile functions
 

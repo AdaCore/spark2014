@@ -15744,7 +15744,6 @@ package body Gnat2Why.Expr is
 
       elsif Debug.Debug_Flag_Underscore_F
         and then Domain in EW_Pred | EW_Term
-        and then not No_Return (Subp)
         and then not Entity_In_Ext_Axioms (Subp)
       then
          declare
