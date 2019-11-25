@@ -7,23 +7,23 @@
 == Goals not proved ==
   +-- file [../add__addtwo.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal def'VC
+      +-- goal def'vc
         +-- transformation split_goal_wp_conj
-          +-- goal def'VC.0
-  
+          +-- goal def'vc.0
+
 == Goals proved by only one prover ==
   +-- file [../add__addtwo.mlw]
     +-- theory Add__addtwo__subprogram_def
-      +-- goal def'VC
+      +-- goal def'vc
         +-- transformation split_goal_wp_conj
-          +-- goal def'VC.1: CVC4 1.6-gnatprove
-          +-- goal def'VC.3: CVC4 1.6-gnatprove
-          +-- goal def'VC.4: CVC4 1.6-gnatprove
-          +-- goal def'VC.6: CVC4 1.6-gnatprove
-  
+          +-- goal def'vc.1: CVC4 1.6-gnatprove
+          +-- goal def'vc.3: CVC4 1.6-gnatprove
+          +-- goal def'vc.4: CVC4 1.6-gnatprove
+          +-- goal def'vc.6: CVC4 1.6-gnatprove
+
 == Statistics per prover: number of proofs, time (minimum/maximum/average) in seconds ==
   CVC4 1.6-gnatprove  :   4   0.00   0.00   0.00
-  
+
 add.adb:5:16: info: overflow check proved (CVC4: 1 VC)
 add.ads:3:47: medium: overflow check might fail (e.g. when X = -1 and Y = Integer'First)
 add.ads:3:62: info: overflow check proved (CVC4: 1 VC)

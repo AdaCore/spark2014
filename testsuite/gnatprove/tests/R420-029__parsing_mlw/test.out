@@ -1,1 +1,1 @@
-{"error" : "could not add file incorrect.mlw to the session: File /"incorrect.mlw/", line 1, characters 7-11:/n                                                 syntax error" , "internal" : true , "results" : [] }
+{"error" : "could not add file incorrect.mlw to the session: File /"incorrect.mlw/", line 1, characters 7-11:/n                                                 syntax error:/n module name expected./nfound /"test/"./nexpecting a capitalized identifier (token UIDENT_NQ)/n" , "internal" : true , "results" : [] }

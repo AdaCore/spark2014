@@ -1418,4 +1418,5 @@ begin
    Why3_Keywords.Insert ("real");
    Why3_Keywords.Insert ("unit");
    Why3_Keywords.Insert ("result");
+   Why3_Keywords.Insert ("string");
 end Gnat2Why.Util;
