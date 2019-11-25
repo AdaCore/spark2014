@@ -1131,8 +1131,6 @@ package body Flow is
 
             FA.Initializes_N := Get_Pragma (E, Pragma_Initializes);
 
-            FA.Visible_Vars  := Flow_Id_Sets.Empty_Set;
-
             FA.Is_Generative := No (FA.Initializes_N);
 
          when others =>
@@ -1356,16 +1354,6 @@ package body Flow is
          end if;
 
          Analysis.Sanity_Check (FA, Success);
-         if Success then
-            case FA.Kind is
-               when Kind_Package | Kind_Subprogram =>
-                  Analysis.Sanity_Check_Postcondition (FA, Success);
-
-               when Kind_Task =>
-                  --  No postconditions for tasks
-                  null;
-            end case;
-         end if;
 
          if Success then
             FA.Dependency_Map := Compute_Dependency_Relation (FA);

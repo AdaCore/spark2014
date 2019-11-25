@@ -1,4 +1,5 @@
 tokens.ads:2:03: info: initial condition proved (CVC4: 1 VC)
-tokens.ads:2:24: high: "X" must be listed in the Initializes aspect of "Tokens" (SPARK RM 7.1.5(11))
+tokens.ads:2:24: high: "X" is not initialized
 tokens.ads:6:38: info: implicit function contract not available for proof ("Length" might not return)
+tokens.ads:22:04: high: "X" is not initialized
 tokens.ads:25:07: info: implicit function contract not available for proof ("Length" might not return)

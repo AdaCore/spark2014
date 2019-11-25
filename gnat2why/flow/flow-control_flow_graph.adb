@@ -6539,9 +6539,7 @@ package body Flow.Control_Flow_Graph is
             begin
                for C in DM.Iterate loop
                   declare
-                     The_Out : Flow_Id renames Dependency_Maps.Key (C);
                      The_Ins : Flow_Id_Sets.Set renames DM (C);
-
                   begin
                      for Input of Down_Project (The_Ins, FA.B_Scope) loop
                         Inputs_Seen.Insert (New_Item => Input,
@@ -6555,14 +6553,6 @@ package body Flow.Control_Flow_Graph is
                               FA   => FA);
                         end if;
                      end loop;
-
-                     --  Ignore the "null => ..." clause
-
-                     if Present (The_Out)
-                       and then not FA.Generating_Globals
-                     then
-                        FA.Visible_Vars.Insert (The_Out);
-                     end if;
                   end;
                end loop;
             end;
@@ -6731,14 +6721,6 @@ package body Flow.Control_Flow_Graph is
                                           FA, Connection_Map, The_Context);
 
                   Nodes.Append (Union_Id (Visible_Decls));
-               end if;
-
-               --  We need a copy of all variables from the spec + initializes.
-               --  Although this is somewhat out-of-place, this is the only
-               --  place we can assemble them easily without re-doing a lot of
-               --  the hard work we've done so far.
-               if not FA.Generating_Globals then
-                  FA.Visible_Vars.Union (To_Entire_Variables (FA.All_Vars));
                end if;
 
                if Private_Spec_In_SPARK (FA.Spec_Entity) then
