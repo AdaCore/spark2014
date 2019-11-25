@@ -29,28 +29,6 @@ with GNAT.Case_Util;
 
 package body String_Utils is
 
-   --------------------------
-   -- Capitalize_All_First --
-   --------------------------
-
-   function Capitalize_All_First (S : String) return String is
-      T : String := S;
-   begin
-      Capitalize_All_First (T);
-      return T;
-   end Capitalize_All_First;
-
-   procedure Capitalize_All_First (S : in out String) is
-      Capitalize : Boolean := True;
-   begin
-      for J in S'Range loop
-         if Capitalize then
-            S (J) := Ada.Characters.Handling.To_Upper (S (J));
-         end if;
-         Capitalize := S (J) = '_';
-      end loop;
-   end Capitalize_All_First;
-
    ----------------------
    -- Capitalize_First --
    ----------------------

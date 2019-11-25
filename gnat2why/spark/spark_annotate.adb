@@ -1054,7 +1054,7 @@ package body SPARK_Annotate is
          if not Ok then
             Error_Msg_N
               ("wrong number of arguments in " & Aspect_Or_Pragma
-               & " Annotate ('G'N'A'Tprove, " & Capitalize_All_First (Name)
+               & " Annotate ('G'N'A'Tprove, " & Standard_Ada_Case (Name)
                & (if Num > 2 then ", ...)" else ")")
                & ", expected" & Num'Image, Node);
          end if;
@@ -1144,7 +1144,7 @@ package body SPARK_Annotate is
 
       else
          Error_Msg_N
-           ("invalid name """ & Capitalize_All_First (Name) & """ in "
+           ("invalid name """ & Standard_Ada_Case (Name) & """ in "
             & Aspect_Or_Pragma & " Annotate ('G'N'A'Tprove, name)", Arg2);
          Ok := False;
       end if;
