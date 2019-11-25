@@ -1,1 +1,2 @@
 !discovery SKIP test is only for discovery edition
+NT OUT x86_64-windows.out

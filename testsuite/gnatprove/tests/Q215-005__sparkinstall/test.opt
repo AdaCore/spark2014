@@ -1,2 +1,3 @@
 packaged REQUIRED
 community OUT test.community.out
+NT OUT test.x86_64-windows.out
