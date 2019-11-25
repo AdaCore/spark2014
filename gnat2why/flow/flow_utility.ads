@@ -270,7 +270,7 @@ package Flow_Utility is
    --  Obtain all variables used in an expression; use Scope to determine if
    --  called subprograms should provide their abstract or refined view.
    --
-   --  ??? Fold_Functions parmeter refers to previous handling of objects
+   --  ??? Fold_Functions parameter refers to previous handling of objects
    --  referenced in assertions and null dependencies; should be renamed.
    --
    --  The following other options all have default parameters as they are only
