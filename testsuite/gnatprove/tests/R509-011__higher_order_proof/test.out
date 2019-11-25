@@ -1360,9 +1360,9 @@ spark-higher_order-fold.adb:385:38: info: range check proved (CVC4: 1 VC), in in
 
 spark-higher_order-fold.adb:385:46: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:602, in instantiation at test_higher_order3.ads:20
 
-spark-higher_order-fold.adb:385:46: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:665, in instantiation at test_higher_order3.ads:28
-
 spark-higher_order-fold.adb:385:46: info: index check proved (CVC4: 2 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at test_higher_order1.ads:22
+
+spark-higher_order-fold.adb:385:46: info: index check proved (Z3: 2 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:665, in instantiation at test_higher_order3.ads:28
 
 spark-higher_order-fold.adb:385:46: info: overflow check proved (CVC4: 1 VC), in instantiation at spark-higher_order-fold.ads:535, in instantiation at spark-higher_order-fold.ads:602, in instantiation at test_higher_order3.ads:20
 
@@ -3120,7 +3120,7 @@ spark-higher_order-fold.ads:360:18: info: postcondition proved (Trivial: 1 VC; Z
 
 spark-higher_order-fold.ads:360:56: info: index check proved (CVC4: 2 VC), in instantiation at test_higher_order2.ads:25
 
-spark-higher_order-fold.ads:361:34: info: overflow check proved (Z3: 1 VC), in instantiation at test_higher_order2.ads:25
+spark-higher_order-fold.ads:361:34: info: overflow check proved (altergo: 1 VC), in instantiation at test_higher_order2.ads:25
 
 spark-higher_order-fold.ads:361:37: info: range check proved (CVC4: 1 VC), in instantiation at test_higher_order2.ads:25
 

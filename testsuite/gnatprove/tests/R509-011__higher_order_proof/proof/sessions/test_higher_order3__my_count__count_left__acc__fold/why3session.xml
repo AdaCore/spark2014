@@ -289,7 +289,7 @@
   <proof prover="1"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;VC.84" expl="precondition" proved="true">
-  <proof prover="1"><result status="valid" steps="187"/></proof>
+  <proof prover="1"><result status="valid" steps="188"/></proof>
   </goal>
   <goal name="def&#39;VC.85" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >

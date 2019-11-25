@@ -1901,10 +1901,12 @@
   <proof prover="2"><result status="valid" steps="21"/></proof>
   </goal>
   <goal name="def&#39;VC.571" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="21"/></proof>
+  <proof prover="1"><result status="valid" steps="102804"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;VC.572" expl="assertion" proved="true">
-  <proof prover="2"><result status="valid" steps="21"/></proof>
+  <proof prover="1"><result status="valid" steps="102848"/></proof>
+  <proof prover="2"><result status="highfailure"/></proof>
   </goal>
   <goal name="def&#39;VC.573" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="5"/></proof>

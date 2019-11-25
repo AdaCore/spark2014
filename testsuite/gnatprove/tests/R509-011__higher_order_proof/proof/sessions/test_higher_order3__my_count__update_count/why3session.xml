@@ -324,7 +324,7 @@
   <proof prover="0"><result status="valid" steps="314"/></proof>
   </goal>
   <goal name="def&#39;VC.95" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="1055"/></proof>
+  <proof prover="0"><result status="valid" steps="1062"/></proof>
   </goal>
   <goal name="def&#39;VC.96" expl="assertion" proved="true">
   <proof prover="0"><result status="valid" steps="5"/></proof>
@@ -416,7 +416,7 @@
   </transf>
   </goal>
   <goal name="def&#39;VC.123" expl="assertion" proved="true">
-  <proof prover="0"><result status="valid" steps="838"/></proof>
+  <proof prover="0"><result status="valid" steps="842"/></proof>
   </goal>
   <goal name="def&#39;VC.124" expl="assertion" proved="true">
   <transf name="trivial_true" proved="true" >

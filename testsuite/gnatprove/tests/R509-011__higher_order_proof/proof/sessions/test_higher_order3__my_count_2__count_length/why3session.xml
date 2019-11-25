@@ -616,7 +616,7 @@
   <proof prover="2"><result status="timeout"/></proof>
   </goal>
   <goal name="def&#39;VC.177" expl="precondition" proved="true">
-  <proof prover="0"><result status="valid" steps="8651"/></proof>
+  <proof prover="0"><result status="valid" steps="8650"/></proof>
   <proof prover="1"><result status="timeout"/></proof>
   <proof prover="2"><result status="timeout"/></proof>
   </goal>

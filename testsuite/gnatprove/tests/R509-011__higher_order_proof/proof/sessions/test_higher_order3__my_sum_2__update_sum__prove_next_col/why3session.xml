@@ -307,7 +307,7 @@
   <proof prover="2"><result status="valid" steps="283"/></proof>
   </goal>
   <goal name="def&#39;VC.91" expl="precondition" proved="true">
-  <proof prover="2"><result status="valid" steps="1052"/></proof>
+  <proof prover="2"><result status="valid" steps="1057"/></proof>
   </goal>
   <goal name="def&#39;VC.92" expl="assertion" proved="true">
   <proof prover="2"><result status="valid" steps="24"/></proof>
