@@ -15648,7 +15648,7 @@ package body Gnat2Why.Expr is
             Args     => Args,
             Typ      => Get_Typ (Why_Name));
       elsif Why_Subp_Has_Precondition (Subp, Selector) then
-         T := +New_VC_Call
+         T := New_VC_Call
            (Ada_Node => Expr,
             Name     => Why_Name,
             Progs    => Args,
