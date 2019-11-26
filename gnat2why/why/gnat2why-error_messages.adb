@@ -658,9 +658,7 @@ package body Gnat2Why.Error_Messages is
                       (Lib.Xref.SPARK_Specific.
                          Enclosing_Subprogram_Or_Library_Package (Node));
                begin
-                  if Ekind (Subp) = E_Procedure
-                    and then Is_Error_Signaling_Procedure (Subp)
-                  then
+                  if Is_Error_Signaling_Procedure (Subp) then
                      return "precondition might fail";
                   else
                      return
@@ -1003,9 +1001,7 @@ package body Gnat2Why.Error_Messages is
                       (Lib.Xref.SPARK_Specific.
                          Enclosing_Subprogram_Or_Library_Package (Node));
                begin
-                  if Ekind (Subp) = E_Procedure
-                    and then Is_Error_Signaling_Procedure (Subp)
-                  then
+                  if Is_Error_Signaling_Procedure (Subp) then
                      return "precondition proved";
                   else
                      return "call to nonreturning procedure never executed";
