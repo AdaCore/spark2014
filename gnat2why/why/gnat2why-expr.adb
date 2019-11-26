@@ -20089,7 +20089,7 @@ package body Gnat2Why.Expr is
         and then May_Issue_Warning_On_Node (N)
         --  and the phase corresponds to generating VCs
         and then Phase in Generate_VCs
-        --  and when the next statement if not an inconditional error, signaled
+        --  and when the next statement if not an unconditional error, signaled
         --  typically as a raise statement or a pragma Assert (False).
         and then not Is_Error_Signaling_Statement (N)
       then
