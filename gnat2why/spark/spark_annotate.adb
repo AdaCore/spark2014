@@ -1198,6 +1198,8 @@ package body SPARK_Annotate is
                Kind := False_Positive;
             elsif Name = "intentional" then
                Kind := Intentional;
+            else
+               raise Program_Error;
             end if;
 
             if Nkind (Arg3_Exp) = N_String_Literal then
