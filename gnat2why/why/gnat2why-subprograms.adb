@@ -4310,8 +4310,8 @@ package body Gnat2Why.Subprograms is
                       & ", created in " & GNAT.Source_Info.Enclosing_Entity);
       end if;
 
-      --  If the function has a postcondition, is not mutually recursive
-      --  and is not annotated with No_Return, then generate an axiom:
+      --  If the function has a postcondition and is not mutually recursive
+      --  then generate an axiom:
       --  axiom def_axiom:
       --     forall args [f (args)]. pre (args) ->
       --           let result = f (args) in post (args)
@@ -5084,7 +5084,7 @@ package body Gnat2Why.Subprograms is
            Get_Dispatching_Call_Contract (Params, E, Pragma_Precondition);
       end if;
 
-      --  For a subprogram marked with No_Return, the postcondition at call
+      --  For a procedure annotated with No_Return, the postcondition at call
       --  site should be "False", so that it is known in the caller that the
       --  call does not return.
 
