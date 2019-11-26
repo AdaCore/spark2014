@@ -542,7 +542,8 @@ package body Gnat2Why.Expr is
 
    function Why_Subp_Has_Precondition
      (E        : Entity_Id;
-      Selector : Selection_Kind := Why.Inter.Standard) return Boolean;
+      Selector : Selection_Kind := Why.Inter.Standard) return Boolean
+   with Pre => (if Selector = No_Return then Is_Error_Signaling_Procedure (E));
    --  Return true whenever the Why declaration that corresponds to the given
    --  subprogram has a precondition.
 
@@ -20206,8 +20207,7 @@ package body Gnat2Why.Expr is
         --  error-signaling procedure (this is what the No_Return variant
         --  means) for which an implicit precondition of False is used.
 
-        or else (Selector = No_Return
-                   and then Is_Error_Signaling_Procedure (E));
+        or else Selector = No_Return;
    end Why_Subp_Has_Precondition;
 
 end Gnat2Why.Expr;
