@@ -47,13 +47,6 @@ package Gnat2Why.Expr.Loops.Exits is
    --  This should be followed by a call to [Wrap_Loop_Body] to pop up
    --  the corresponding context.
 
-   procedure Before_Start_Of_Subprogram;
-   --  Initialization procedure to call before start of subprogram/package
-   --  handling.
-
-   procedure Declare_Exceptions (File : W_Section_Id);
-   --  Declare exceptions needed for this special handling of loop exits
-
    procedure Record_And_Replace
      (Instrs : List_Id;
       Expr   : in out W_Prog_Id)

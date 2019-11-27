@@ -37,8 +37,9 @@ might be in |SPARK|.]
 [Ada has a rule that legality rules are not enforced in an
 instance body (and, in some cases, in the private part of an
 instance of a generic package). No such rule applies to the restrictions
-defining which Ada constructs are in |SPARK|. For example, a goto statement
-in an instance body would cause the instantiation to not be in |SPARK|.]
+defining which Ada constructs are in |SPARK|. For example, a backward goto
+statement in an instance body would cause the instantiation to not be in
+|SPARK|.]
 
 [Consider the problem of correctly specifying the Global and Depends
 aspects of a subprogram declared within an instance body which contains

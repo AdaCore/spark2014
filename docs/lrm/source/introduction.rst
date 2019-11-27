@@ -558,7 +558,7 @@ in the remaining chapters of this document, the most notable restrictions are:
   name of the renamed entity. This replacement is applied recursively when there
   are multiple renames of an entity.
 
-- The goto statement is not permitted.
+- Backward goto statements are not permitted.
 
 - The use of controlled types is not currently permitted.
 

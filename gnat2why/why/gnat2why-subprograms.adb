@@ -38,7 +38,6 @@ with GNAT.Source_Info;
 with GNATCOLL.Symbols;               use GNATCOLL.Symbols;
 with Gnat2Why.Error_Messages;        use Gnat2Why.Error_Messages;
 with Gnat2Why.Expr;                  use Gnat2Why.Expr;
-with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
 with Gnat2Why_Args;
 with Namet;                          use Namet;
@@ -74,6 +73,9 @@ with Why.Inter;                      use Why.Inter;
 with Why.Types;                      use Why.Types;
 
 package body Gnat2Why.Subprograms is
+
+   Subprogram_Exceptions : Why_Node_Sets.Set;
+   --  Set of exception declarations
 
    -----------------------
    -- Local Subprograms --
@@ -239,6 +241,15 @@ package body Gnat2Why.Subprograms is
       Params  : Transformation_Params) return W_Pred_Id;
    --  For every object in the binder array, build a predicate for the dynamic
    --  invariant of the object and join everything together with a conjunction.
+
+   procedure Clear_Exceptions;
+   --  Initialization procedure to call before start of subprogram/package
+   --  handling.
+
+   procedure Declare_Exceptions (File : W_Section_Id);
+   --  Declare exceptions needed for translation of the current unit. Those
+   --  are introduced when translating loop exit statements and goto
+   --  statements.
 
    function Get_Location_For_Aspect
      (E         : Entity_Id;
@@ -610,6 +621,15 @@ package body Gnat2Why.Subprograms is
          return S;
       end;
    end Check_Ceiling_Protocol;
+
+   ----------------------
+   -- Clear_Exceptions --
+   ----------------------
+
+   procedure Clear_Exceptions is
+   begin
+      Subprogram_Exceptions.Clear;
+   end Clear_Exceptions;
 
    ------------------
    -- Compute_Args --
@@ -2097,6 +2117,17 @@ package body Gnat2Why.Subprograms is
       return W_Def;
    end Compute_Inlined_Expr;
 
+   ------------------------
+   -- Declare_Exceptions --
+   ------------------------
+
+   procedure Declare_Exceptions (File : W_Section_Id) is
+   begin
+      for Exc of Subprogram_Exceptions loop
+         Emit (File, New_Exception_Declaration (Name => +Exc));
+      end loop;
+   end Declare_Exceptions;
+
    --------------------------
    -- Generate_VCs_For_LSP --
    --------------------------
@@ -2475,7 +2506,7 @@ package body Gnat2Why.Subprograms is
 
       --  Reset the toplevel exceptions for exit paths
 
-      Loops.Exits.Before_Start_Of_Subprogram;
+      Clear_Exceptions;
 
       if Within_Protected_Type (E) then
          declare
@@ -2674,7 +2705,7 @@ package body Gnat2Why.Subprograms is
 
       --  Declare the toplevel exceptions for exit paths
 
-      Loops.Exits.Declare_Exceptions (File);
+      Declare_Exceptions (File);
 
       Emit (File,
             Why.Gen.Binders.New_Function_Decl
@@ -3704,7 +3735,7 @@ package body Gnat2Why.Subprograms is
 
       --  Reset the toplevel exceptions for exit paths
 
-      Loops.Exits.Before_Start_Of_Subprogram;
+      Clear_Exceptions;
 
       --  First, clear the list of translations for X'Old expressions, and
       --  create a new identifier for F'Result.
@@ -3960,7 +3991,7 @@ package body Gnat2Why.Subprograms is
 
       --  Declare the toplevel exceptions for exit paths
 
-      Loops.Exits.Declare_Exceptions (File);
+      Declare_Exceptions (File);
 
       Emit (File,
             Why.Gen.Binders.New_Function_Decl
@@ -4033,7 +4064,7 @@ package body Gnat2Why.Subprograms is
 
       --  Reset the toplevel exceptions for exit paths
 
-      Loops.Exits.Before_Start_Of_Subprogram;
+      Clear_Exceptions;
 
       Ada_Ent_To_Why.Push_Scope (Symbol_Table);
 
@@ -4089,7 +4120,7 @@ package body Gnat2Why.Subprograms is
 
       --  Declare the toplevel exceptions for exit paths
 
-      Loops.Exits.Declare_Exceptions (File);
+      Declare_Exceptions (File);
 
       declare
          Post : W_Pred_Id;
@@ -5629,6 +5660,15 @@ package body Gnat2Why.Subprograms is
    begin
       return Get_Args_From_Binders (Logic_Binders, Ref_Allowed);
    end Get_Logic_Args;
+
+   ----------------------
+   -- Insert_Exception --
+   ----------------------
+
+   procedure Insert_Exception (Exc : W_Name_Id) is
+   begin
+      Subprogram_Exceptions.Insert (+Exc);
+   end Insert_Exception;
 
    -----------------------------
    -- Procedure_Logic_Binders --

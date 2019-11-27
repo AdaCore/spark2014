@@ -238,6 +238,9 @@ package body SPARK_Definition is
    --  calling Mark_Entity directly would not be appropriate, e.g. for
    --  primitive operations of a tagged type.
 
+   Goto_Labels : Node_Sets.Set;
+   --  Goto labels encountered during marking
+
    function Entity_In_SPARK (E : Entity_Id) return Boolean
      renames Entities_In_SPARK.Contains;
 
@@ -1243,14 +1246,21 @@ package body SPARK_Definition is
       -----------------------
 
       procedure Check_Loop_Invariant_Placement
-        (Stmts  : List_Id;
-         Nested : Boolean := False);
+        (Stmts       : List_Id;
+         Goto_Labels : in out Node_Sets.Set;
+         Nested      : Boolean);
       --  Checks that no non-scalar object declaration appears before the
       --  last loop-invariant or variant in a loop's list of statements. Also
       --  stores scalar objects declared before the last loop-invariant in
       --  Loop_Entity_Set. Nested should be true when checking statements
       --  coming from a nested construct of the loop (if, case, extended
-      --  return statements and nested loops).
+      --  return statements and nested loops). Goto_Labels contains the labels
+      --  encountered while traversing statements occurring after the loop
+      --  invariant in the initial loop.
+
+      procedure Check_Loop_Invariant_Placement (Stmts : List_Id);
+      --  Same as above with Nested set to False and Goto_Labels initialized to
+      --  the empty set.
 
       procedure Check_Unrolled_Loop (Loop_Stmt : Node_Id);
       --  If Loop_Stmt is candidate for loop unrolling, then mark all objects
@@ -1285,9 +1295,16 @@ package body SPARK_Definition is
       -- Check_Loop_Invariant_Placement --
       ------------------------------------
 
+      procedure Check_Loop_Invariant_Placement (Stmts : List_Id) is
+         Goto_Labels : Node_Sets.Set;
+      begin
+         Check_Loop_Invariant_Placement (Stmts, Goto_Labels, False);
+      end Check_Loop_Invariant_Placement;
+
       procedure Check_Loop_Invariant_Placement
-        (Stmts  : List_Id;
-         Nested : Boolean := False) is
+        (Stmts       : List_Id;
+         Goto_Labels : in out Node_Sets.Set;
+         Nested      : Boolean) is
 
          use Node_Lists;
 
@@ -1308,6 +1325,8 @@ package body SPARK_Definition is
                  or else Is_Pragma (N, Pragma_Loop_Variant)
                then
                   Inv_Found := True;
+               elsif Nkind (N) = N_Label then
+                  Goto_Labels.Insert (Entity (Identifier (N)));
                end if;
 
             else
@@ -1343,18 +1362,18 @@ package body SPARK_Definition is
 
                   when N_If_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Then_Statements (N), True);
+                       (Then_Statements (N), Goto_Labels, True);
                      declare
                         Cur : Node_Id := First (Elsif_Parts (N));
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Then_Statements (Cur), True);
+                             (Then_Statements (Cur), Goto_Labels, True);
                            Next (Cur);
                         end loop;
                      end;
                      Check_Loop_Invariant_Placement
-                       (Else_Statements (N), True);
+                       (Else_Statements (N), Goto_Labels, True);
 
                   when N_Case_Statement =>
                      declare
@@ -1363,19 +1382,28 @@ package body SPARK_Definition is
                      begin
                         while Present (Cur) loop
                            Check_Loop_Invariant_Placement
-                             (Statements (Cur), True);
+                             (Statements (Cur), Goto_Labels, True);
                            Next (Cur);
                         end loop;
                      end;
 
                   when N_Extended_Return_Statement =>
                      Check_Loop_Invariant_Placement
-                       (Return_Object_Declarations (N), True);
+                       (Return_Object_Declarations (N), Goto_Labels, True);
                      Check_Loop_Invariant_Placement
-                       (Statements (Handled_Statement_Sequence (N)), True);
+                       (Statements (Handled_Statement_Sequence (N)),
+                        Goto_Labels, True);
 
                   when N_Loop_Statement =>
-                     Check_Loop_Invariant_Placement (Statements (N), True);
+                     Check_Loop_Invariant_Placement
+                       (Statements (N), Goto_Labels, True);
+
+                  when N_Goto_Statement =>
+                     if Goto_Labels.Contains (Entity (Name (N))) then
+                        Mark_Unsupported
+                          ("goto statement to label located inside the loop"
+                           & " crossing the loop invariant", N);
+                     end if;
 
                   when others => null;
                end case;
@@ -1789,7 +1817,12 @@ package body SPARK_Definition is
             Mark_Call (N);
 
          when N_Goto_Statement =>
-            Mark_Violation ("goto statement", N);
+            --  If the goto label was encountered before the goto statement,
+            --  it is a backward goto. Reject it.
+
+            if Goto_Labels.Contains (Entity (Name (N))) then
+               Mark_Violation ("backward goto statement", N);
+            end if;
 
          when N_Handled_Sequence_Of_Statements =>
             Mark_Handled_Statements (N);
@@ -1852,17 +1885,21 @@ package body SPARK_Definition is
 
             Mark_Entity (Defining_Identifier (N));
 
+         when N_Label =>
+            Goto_Labels.Insert (Entity (Identifier (N)));
+
          when N_Loop_Statement =>
+
             --  Detect loops coming from rewritten GOTO statements (see
-            --  Find_Natural_Loops in the parser) and reject them by marking
-            --  the original node.
+            --  Find_Natural_Loops in the parser) and reject them.
+
             declare
                Orig : constant Node_Id := Original_Node (N);
             begin
                if Orig /= N
                  and then Nkind (Orig) = N_Goto_Statement
                then
-                  Mark (Orig);
+                  Mark_Violation ("backward goto statement", Orig);
                end if;
             end;
 
@@ -2444,7 +2481,6 @@ package body SPARK_Definition is
             | N_Implicit_Label_Declaration
             | N_Incomplete_Type_Declaration
             | N_Itype_Reference
-            | N_Label
             | N_Null_Statement
             | N_Operator_Symbol
             | N_Others_Choice

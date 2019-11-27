@@ -681,6 +681,7 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Null_Statement
+                          | N_Goto_Statement
                           | N_Raise_Statement
                           | N_Raise_xxx_Error
                           | N_Exception_Declaration
@@ -5383,6 +5384,9 @@ package body Flow.Control_Flow_Graph is
 
          when N_Simple_Return_Statement =>
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
+
+         when N_Goto_Statement =>
+            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
 
          when others =>
             Print_Node_Subtree (N);

@@ -820,4 +820,8 @@ package SPARK_Util is
    --  Approximation of cases where we know that the Constrained attribute of
    --  N is known statically.
 
+   function Statement_Enclosing_Label (E : Entity_Id) return Node_Id with
+     Pre => Ekind (E) = E_Label;
+   --  Return the parent of the N_Label node associated to E
+
 end SPARK_Util;

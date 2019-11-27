@@ -74,8 +74,8 @@ the complete list).
 * |SPARK| also prevents dependencies on the elaboration order by ensuring that
   no package can write into variables declared in other packages during its
   elaboration. The use of controlled types is also forbidden as they lead to
-  insertions of implicit calls by the compiler. Finally, goto statements are
-  not permitted as they obfuscate the control flow.
+  insertions of implicit calls by the compiler. Finally, backward goto
+  statements are not permitted as they obfuscate the control flow.
 
 Early Detection of Errors
 ^^^^^^^^^^^^^^^^^^^^^^^^^

@@ -96,6 +96,7 @@ package SPARK_Atree is
    N_Extension_Aggregate            : Node_Kind renames
      Sinfo.N_Extension_Aggregate;
    N_Function_Call                  : Node_Kind renames Sinfo.N_Function_Call;
+   N_Goto_Statement                 : Node_Kind renames Sinfo.N_Goto_Statement;
    N_Handled_Sequence_Of_Statements : Node_Kind renames
      Sinfo.N_Handled_Sequence_Of_Statements;
    N_Identifier                     : Node_Kind renames Sinfo.N_Identifier;
@@ -106,6 +107,7 @@ package SPARK_Atree is
      Sinfo.N_Indexed_Component;
    N_Integer_Literal                : Node_Kind renames
      Sinfo.N_Integer_Literal;
+   N_Label                          : Node_Kind renames Sinfo.N_Label;
    N_Loop_Statement                 : Node_Kind renames Sinfo.N_Loop_Statement;
    N_Not_In                         : Node_Kind renames Sinfo.N_Not_In;
    N_Object_Declaration             : Node_Kind renames
@@ -477,7 +479,8 @@ package SPARK_Atree is
                        | N_Designator
                        | N_Enumeration_Representation_Clause
                        | N_Loop_Statement
-                       | N_Record_Representation_Clause;
+                       | N_Record_Representation_Clause
+                       | N_Label;
 
    function Inherited_Discriminant (N : Node_Id) return Boolean with
      Pre => Nkind (N) = N_Component_Association;

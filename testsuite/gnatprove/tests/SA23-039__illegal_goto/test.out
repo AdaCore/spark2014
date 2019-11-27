@@ -1,0 +1,29 @@
+test_bad_goto.adb:24:25: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:24:25: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:26:25: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:31:22: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:33:22: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:33:22: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:37:16: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:37:16: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:43:16: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:43:16: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:45:16: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:50:13: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:50:13: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:52:13: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:54:10: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:54:10: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:58:13: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:60:13: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:60:13: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:66:13: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:68:13: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:68:13: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:73:10: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:75:10: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:75:10: violation of aspect SPARK_Mode at line 1
+test_bad_goto.adb:77:07: goto statement to label located inside the loop crossing the loop invariant is not yet supported
+test_bad_goto.adb:83:07: backward goto statement is not allowed in SPARK
+test_bad_goto.adb:83:07: violation of aspect SPARK_Mode at line 1
+gnatprove: error during flow analysis and proof

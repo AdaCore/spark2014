@@ -29,7 +29,8 @@ simplifications to Ada. The most notable simplifications are:
   verification of programs with aliasing is less precise and requires more
   manual work. See :ref:`Absence of Interferences`.
 
-* The goto statement is not permitted. Gotos can be used to create loops, which
+* The backward goto statement is not permitted. Backward gotos can be used
+  to create loops, which
   require a specific treatment in formal verification, and thus should be
   precisely identified. See :ref:`Loop Invariants` and :ref:`Loop Variants`.
 

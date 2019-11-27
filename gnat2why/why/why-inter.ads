@@ -122,6 +122,9 @@ package Why.Inter is
    --  Given an Ada Entity, return the appropriate Why file to insert the
    --  completion theory for the entity.
 
+   function Goto_Exception_Name (E : Entity_Id) return W_Name_Id
+   with Pre => Ekind (E) = E_Label;
+
    function Loop_Exception_Name
      (E     : Entity_Id;
       Local : Boolean := False)

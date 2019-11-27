@@ -23,17 +23,14 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
-with GNATCOLL.Symbols;   use GNATCOLL.Symbols;
-with String_Utils;       use String_Utils;
-with Why.Atree.Builders; use Why.Atree.Builders;
-with Why.Conversions;    use Why.Conversions;
-with Why.Gen.Decl;       use Why.Gen.Decl;
-with Why.Gen.Names;      use Why.Gen.Names;
+with Gnat2Why.Subprograms; use Gnat2Why.Subprograms;
+with GNATCOLL.Symbols;     use GNATCOLL.Symbols;
+with String_Utils;         use String_Utils;
+with Why.Atree.Builders;   use Why.Atree.Builders;
+with Why.Conversions;      use Why.Conversions;
+with Why.Gen.Names;        use Why.Gen.Names;
 
 package body Gnat2Why.Expr.Loops.Exits is
-
-   Subprogram_Exit_Exceptions : Why_Node_Sets.Set;
-   --  Set of exception declarations
 
    Loop_Exit_Statements : Why_Node_Maps_Lists.List;
    --  List of mapping from exception name to corresponding program, for these
@@ -61,26 +58,6 @@ package body Gnat2Why.Expr.Loops.Exits is
    begin
       Loop_Exit_Statements.Prepend (Why_Node_Maps.Empty_Map);
    end Before_Start_Of_Loop;
-
-   --------------------------------
-   -- Before_Start_Of_Subprogram --
-   --------------------------------
-
-   procedure Before_Start_Of_Subprogram is
-   begin
-      Subprogram_Exit_Exceptions.Clear;
-   end Before_Start_Of_Subprogram;
-
-   ------------------------
-   -- Declare_Exceptions --
-   ------------------------
-
-   procedure Declare_Exceptions (File : W_Section_Id) is
-   begin
-      for Exc of Subprogram_Exit_Exceptions loop
-         Emit (File, New_Exception_Declaration (Name => +Exc));
-      end loop;
-   end Declare_Exceptions;
 
    ------------------------
    -- Record_And_Replace --
@@ -171,7 +148,7 @@ package body Gnat2Why.Expr.Loops.Exits is
             end Add_In_Map;
 
          begin
-            Subprogram_Exit_Exceptions.Insert (+Exc);
+            Insert_Exception (Exc);
 
             --  All blocks of code that end up in an exit statement are
             --  associated to the closest enclosing loop. We could improve on

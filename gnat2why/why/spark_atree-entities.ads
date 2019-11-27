@@ -82,6 +82,7 @@ package SPARK_Atree.Entities is
    E_Incomplete_Subtype          : Entity_Kind renames
      Einfo.E_Incomplete_Subtype;
    E_Incomplete_Type             : Entity_Kind renames Einfo.E_Incomplete_Type;
+   E_Label                       : Entity_Kind renames Einfo.E_Label;
    E_Loop_Parameter              : Entity_Kind renames Einfo.E_Loop_Parameter;
    E_Loop                        : Entity_Kind renames Einfo.E_Loop;
    E_Operator                    : Entity_Kind renames Einfo.E_Operator;

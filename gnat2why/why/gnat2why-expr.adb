@@ -18804,9 +18804,38 @@ package body Gnat2Why.Expr is
       return W_Prog_Id
    is
 
+      function Havoc_Borrowed_On_Goto return W_Prog_Id;
+      --  Havoc the local borrowers declared in blocks traversed by a goto
+      --  statement.
+
       function Havoc_Borrowed_On_Return return W_Prog_Id;
       --  Havoc the local borrowers declared in blocks traversed by a return
       --  statement.
+
+      ----------------------------
+      -- Havoc_Borrowed_On_Goto --
+      ----------------------------
+
+      function Havoc_Borrowed_On_Goto return W_Prog_Id is
+         Enclosing_Stmt : constant Node_Id :=
+           Statement_Enclosing_Label (Entity (Name (Stmt_Or_Decl)));
+
+         function Is_Scop_Or_Block (N : Node_Id) return Boolean is
+           (Nkind (N) = N_Block_Statement or else N = Enclosing_Stmt);
+
+         function Enclosing_Block_Stmt is new
+           First_Parent_With_Property (Is_Scop_Or_Block);
+
+         Scop : Node_Id := Stmt_Or_Decl;
+         Res  : W_Prog_Id := +Void;
+      begin
+         loop
+            Scop := Enclosing_Block_Stmt (Scop);
+            exit when Scop = Enclosing_Stmt;
+            Res := Sequence (Res, +Havoc_Borrowed_From_Block (Scop));
+         end loop;
+         return Res;
+      end Havoc_Borrowed_On_Goto;
 
       ------------------------------
       -- Havoc_Borrowed_On_Return --
@@ -19013,6 +19042,23 @@ package body Gnat2Why.Expr is
                              --  Reraise the exception
 
                              Raise_Stmt))));
+            end;
+
+         when N_Goto_Statement =>
+            declare
+               Raise_Stmt : constant W_Prog_Id :=
+                 New_Raise
+                   (Ada_Node => Stmt_Or_Decl,
+                    Name     => Goto_Exception_Name
+                      (Entity (Name (Stmt_Or_Decl))),
+                    Typ      => EW_Unit_Type);
+
+            begin
+               --  Havoc objects borrowed in scopes traversed by the goto
+               --  statement.
+
+               return Sequence
+                 (Havoc_Borrowed_On_Goto, Raise_Stmt);
             end;
 
          when N_Procedure_Call_Statement
@@ -19337,7 +19383,7 @@ package body Gnat2Why.Expr is
       Seq          : in out W_Statement_Sequence_Id)
    is
       Cut_Assertion_Expr : Node_Id;
-      Cut_Assertion : W_Pred_Id;
+      Cut_Assertion      : W_Pred_Id;
       Prog               : constant W_Prog_Id :=
         +Insert_Cnt_Loc_Label
         (Stmt_Or_Decl,
@@ -19350,7 +19396,35 @@ package body Gnat2Why.Expr is
                        New_Label (Labels => Symbol_Sets.To_Set
                                   (New_Located_Label (Stmt_Or_Decl)),
                                   Def    => +Prog));
-      if Cut_Assertion /= Why_Empty then
+
+      --  If we are translating a label, catch the exception which may have
+      --  been raised by goto statements referencing this label.
+
+      if Nkind (Stmt_Or_Decl) = N_Label then
+         pragma Assert (Cut_Assertion = Why_Empty);
+
+         declare
+            Exc : constant W_Name_Id := Goto_Exception_Name
+              (Entity (Identifier (Stmt_Or_Decl)));
+         begin
+            Insert_Exception (Exc);
+            Seq :=
+              +Sequence
+              (Progs =>
+                 (1 => New_Try_Block
+                      (Ada_Node => Stmt_Or_Decl,
+                       Prog     => +Seq,
+                       Handler  =>
+                         (1 => New_Handler
+                            (Ada_Node => Stmt_Or_Decl,
+                             Name     => Exc,
+                             Def      => +Void)))));
+         end;
+
+      --  If we are translating an Assert_And_Cut pragma, enclose the previous
+      --  statements in an abstract block and only keep the Cut_Assertion.
+
+      elsif Cut_Assertion /= Why_Empty then
          Seq :=
            +Sequence
              (Progs =>

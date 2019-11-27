@@ -1553,6 +1553,7 @@ package body Gnat2Why.Expr.Loops.Inv is
             | N_Subtype_Declaration
             | N_Full_Type_Declaration
             | N_Exit_Statement
+            | N_Goto_Statement
             | N_Pragma
             | N_Raise_xxx_Error
             | N_Raise_Statement

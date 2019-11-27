@@ -13,7 +13,7 @@ Simple and Compound Statements - Sequences of Statements
 
 .. _tu-nt-simple_and_compound_statements-01:
 
-1. A ``simple_statement`` shall not be a ``goto_statement``,
+1. A ``simple_statement`` shall not be
    a ``requeue_statement``, an ``abort_statement``, or a ``code_statement``.
 
 .. _tu-nt-simple_and_compound_statements-02:
@@ -25,6 +25,11 @@ Simple and Compound Statements - Sequences of Statements
 
 3. A statement is only in |SPARK| if all the constructs used in the
    statement are in |SPARK|.
+
+.. _tu-nt-simple_and_compound_statements-04:
+
+4. A ``goto_statement`` shall be located before the target statement in the
+   innermost ``sequence_of_statements`` enclosing the target statement.
 
 .. _etu-simple_and_compound_statements:
 

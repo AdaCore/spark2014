@@ -958,6 +958,17 @@ package body Why.Inter is
    end Get_EW_Term_Type;
 
    -------------------------
+   -- Goto_Exception_Name --
+   -------------------------
+
+   function Goto_Exception_Name (E : Entity_Id) return W_Name_Id is
+      Suffix : constant Symbol :=
+        NID (Capitalize_First (Short_Name (E)) & "__goto");
+   begin
+      return New_Name (Ada_Node => E, Symb => Suffix);
+   end Goto_Exception_Name;
+
+   -------------------------
    -- Is_Array_Conversion --
    -------------------------
 

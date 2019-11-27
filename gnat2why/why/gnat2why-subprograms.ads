@@ -136,4 +136,7 @@ package Gnat2Why.Subprograms is
    --  symbol table to the current subprogram'ms parameters. The result symbol
    --  is always mapped to the current result.
 
+   procedure Insert_Exception (Exc : W_Name_Id);
+   --  Add a new exception that should be declared before the unit
+
 end Gnat2Why.Subprograms;

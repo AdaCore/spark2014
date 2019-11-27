@@ -2051,6 +2051,47 @@ package body SPARK_Util is
       and then
         not Is_Internal (E));
 
+   ----------------------------------
+   -- Is_Part_Of_Concurrent_Object --
+   ----------------------------------
+
+   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+   begin
+      if Ekind (E) in E_Abstract_State | E_Variable then
+         declare
+            Encapsulating : constant Entity_Id := Encapsulating_State (E);
+
+         begin
+            return Present (Encapsulating)
+              and then Is_Single_Concurrent_Object (Encapsulating);
+         end;
+
+      else
+         return False;
+      end if;
+   end Is_Part_Of_Concurrent_Object;
+
+   ---------------------------------
+   -- Is_Part_Of_Protected_Object --
+   ---------------------------------
+
+   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
+   begin
+      if Ekind (E) in E_Abstract_State | E_Variable then
+         declare
+            Encapsulating : constant Entity_Id := Encapsulating_State (E);
+
+         begin
+            return Present (Encapsulating)
+              and then Ekind (Encapsulating) = E_Variable
+              and then Ekind (Etype (Encapsulating)) = E_Protected_Type;
+         end;
+
+      else
+         return False;
+      end if;
+   end Is_Part_Of_Protected_Object;
+
    ------------------------
    -- Is_Path_Expression --
    ------------------------
@@ -3023,46 +3064,17 @@ package body SPARK_Util is
       return Name_Buffer (1 .. Name_Len);
    end String_Value;
 
-   ----------------------------------
-   -- Is_Part_Of_Concurrent_Object --
-   ----------------------------------
+   -------------------------------
+   -- Statement_Enclosing_Label --
+   -------------------------------
 
-   function Is_Part_Of_Concurrent_Object (E : Entity_Id) return Boolean is
+   function Statement_Enclosing_Label (E : Entity_Id) return Node_Id is
+      Label : constant Node_Id := Label_Construct (Parent (E));
+      pragma Assert (Nkind (Label) = N_Label);
+
    begin
-      if Ekind (E) in E_Abstract_State | E_Variable then
-         declare
-            Encapsulating : constant Entity_Id := Encapsulating_State (E);
-
-         begin
-            return Present (Encapsulating)
-              and then Is_Single_Concurrent_Object (Encapsulating);
-         end;
-
-      else
-         return False;
-      end if;
-   end Is_Part_Of_Concurrent_Object;
-
-   ---------------------------------
-   -- Is_Part_Of_Protected_Object --
-   ---------------------------------
-
-   function Is_Part_Of_Protected_Object (E : Entity_Id) return Boolean is
-   begin
-      if Ekind (E) in E_Abstract_State | E_Variable then
-         declare
-            Encapsulating : constant Entity_Id := Encapsulating_State (E);
-
-         begin
-            return Present (Encapsulating)
-              and then Ekind (Encapsulating) = E_Variable
-              and then Ekind (Etype (Encapsulating)) = E_Protected_Type;
-         end;
-
-      else
-         return False;
-      end if;
-   end Is_Part_Of_Protected_Object;
+      return Parent (Label);
+   end Statement_Enclosing_Label;
 
    -----------------------------
    -- Unique_Main_Unit_Entity --
