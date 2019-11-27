@@ -1644,9 +1644,6 @@ package body Flow.Analysis is
                   Ineffective_Global_Imports);
             end if;
          end;
-
-      elsif not Has_Effects (FA) then
-         Warn_On_Subprogram_With_No_Effect (FA);
       end if;
    end Find_Ineffective_Imports_And_Unused_Objects;
 
