@@ -1,0 +1,5 @@
+repro.adb:11:36: low: unused global "Some_Var" constituent of "State"
+repro.ads:4:04: info: flow dependencies proved
+repro.ads:6:19: info: initialization of "Value" proved
+repro.ads:8:07: info: data dependencies proved
+repro.ads:9:07: medium: missing dependency "null => Some_Var constituent of State"
