@@ -3913,8 +3913,8 @@ package body Flow.Analysis is
       Actual_Deps           : Dependency_Maps.Map;
       Projected_Actual_Deps : Dependency_Maps.Map;
 
-      Missing_Deps        : Dependency_Maps.Map;
-      Unused_Deps         : Dependency_Maps.Map;
+      Missing_Deps : Dependency_Maps.Map;
+      Unused_Deps  : Dependency_Maps.Map;
 
       Globals : Global_Flow_Ids;
       Inputs  : Flow_Id_Sets.Set;
@@ -3927,13 +3927,18 @@ package body Flow.Analysis is
       --  This is body scope if we are checking a Refined_Depends contract or
       --  spec scope if we are checking a Depends contract.
 
+      Contract_N : constant Node_Id :=
+        (if Present (FA.Refined_Depends_N)
+         then FA.Refined_Depends_N
+         else FA.Depends_N);
+
    --  Start of processing for Check_Depends_Contract
 
    begin
       --  If the user has not specified a dependency relation we have no work
       --  to do.
 
-      if No (FA.Depends_N) then
+      if No (Contract_N) then
          return;
       end if;
 
@@ -4075,7 +4080,6 @@ package body Flow.Analysis is
             if not Dependency_Maps.Has_Element
               (Find_Out (User_Deps, Missing_Out))
             then
-
                if Missing_Out = Null_Flow_Id then
                   null;
 
@@ -4084,7 +4088,7 @@ package body Flow.Analysis is
                     (FA       => FA,
                      Msg      => "expected to see & on the left-hand-side of" &
                                  " a dependency relation",
-                     N        => FA.Depends_N,
+                     N        => Contract_N,
                      F1       => Missing_Out,
                      Tag      => Depends_Missing_Clause,
                      Severity => Medium_Check_Kind);
@@ -4098,7 +4102,8 @@ package body Flow.Analysis is
                   Error_Msg_Flow
                     (FA       => FA,
                      Msg      => "missing dependency ""null => %""",
-                     N        => FA.Depends_N,
+                     N        => Search_Depends_Contract
+                                   (FA.Spec_Entity, Output => Empty),
                      F1       => Missing_In,
                      Tag      => Depends_Null,
                      Severity => Medium_Check_Kind);
@@ -4116,8 +4121,7 @@ package body Flow.Analysis is
                               and Outputs);
 
                   begin
-                     if Missing_Out = Direct_Mapping_Id (FA.Spec_Entity)
-                     then
+                     if Missing_Out = Direct_Mapping_Id (FA.Spec_Entity) then
                         Error_Msg_Flow
                           (FA       => FA,
                            Path     => Path,

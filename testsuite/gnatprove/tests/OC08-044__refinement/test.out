@@ -96,6 +96,11 @@ ok_semantics.adb:24:58: warning: "Priv.State" constituent of "OK_Semantics.State
 ok_semantics.ads:12:06: info: data dependencies proved
 ok_semantics.ads:15:06: info: data dependencies proved
 ok_semantics.ads:18:06: info: data dependencies proved
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => Z constituent of State3"
+ok_semantics2-priv.adb:6:06: medium: missing dependency "null => ZZ constituent of State"
 ok_semantics2-priv.adb:6:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2-priv.adb:6:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2-priv.adb:6:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -106,11 +111,6 @@ ok_semantics2-priv.ads:5:13: low: unused global "X" constituent of "State1"
 ok_semantics2-priv.ads:5:13: low: unused global "Y" constituent of "State2"
 ok_semantics2-priv.ads:5:13: low: unused global "Z" constituent of "State3"
 ok_semantics2-priv.ads:5:13: low: unused global "ZZ" constituent of "State"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => Z constituent of State3"
-ok_semantics2-priv.ads:6:06: medium: missing dependency "null => ZZ constituent of State"
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State1" is not initialized
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State2" is not initialized
 ok_semantics2-priv.ads:8:14: high: "OK_Semantics2.State3" is not initialized
@@ -134,6 +134,11 @@ ok_semantics2-priv.ads:11:14: warning: "Y" constituent of "State2" is not modifi
 ok_semantics2-priv.ads:11:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-priv.ads:11:14: warning: "ZZ" constituent of "State" is not modified, could be INPUT
 ok_semantics2-priv.ads:12:06: info: flow dependencies proved
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2-pub.adb:7:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2-pub.adb:7:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2-pub.adb:7:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2-pub.adb:7:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -144,11 +149,6 @@ ok_semantics2-pub.ads:4:13: low: unused global "Priv.YY" constituent of "OK_Sema
 ok_semantics2-pub.ads:4:13: low: unused global "X" constituent of "State1"
 ok_semantics2-pub.ads:4:13: low: unused global "Y" constituent of "State2"
 ok_semantics2-pub.ads:4:13: low: unused global "Z" constituent of "State3"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2-pub.ads:5:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State1" is not initialized
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State2" is not initialized
 ok_semantics2-pub.ads:7:14: high: "OK_Semantics2.State3" is not initialized
@@ -172,6 +172,11 @@ ok_semantics2-pub.ads:10:14: warning: "X" constituent of "State1" is not modifie
 ok_semantics2-pub.ads:10:14: warning: "Y" constituent of "State2" is not modified, could be INPUT
 ok_semantics2-pub.ads:10:14: warning: "Z" constituent of "State3" is not modified, could be INPUT
 ok_semantics2-pub.ads:11:06: info: flow dependencies proved
+ok_semantics2.adb:10:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
+ok_semantics2.adb:10:06: medium: missing dependency "null => X constituent of State1"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Y constituent of State2"
+ok_semantics2.adb:10:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2.adb:10:43: medium: incorrect dependency "Check'Result => X constituent of State1"
 ok_semantics2.adb:10:46: medium: incorrect dependency "Check'Result => Y constituent of State2"
 ok_semantics2.adb:10:49: medium: incorrect dependency "Check'Result => Z constituent of State3"
@@ -182,11 +187,6 @@ ok_semantics2.ads:11:13: low: unused global "Priv.YY" constituent of "OK_Semanti
 ok_semantics2.ads:11:13: low: unused global "X" constituent of "State1"
 ok_semantics2.ads:11:13: low: unused global "Y" constituent of "State2"
 ok_semantics2.ads:11:13: low: unused global "Z" constituent of "State3"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Priv.State constituent of OK_Semantics2.State3"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Priv.YY constituent of OK_Semantics2.State2"
-ok_semantics2.ads:12:06: medium: missing dependency "null => X constituent of State1"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Y constituent of State2"
-ok_semantics2.ads:12:06: medium: missing dependency "null => Z constituent of State3"
 ok_semantics2.ads:14:14: high: "Priv.State" constituent of "OK_Semantics2.State3" is not initialized
 ok_semantics2.ads:14:14: high: "Priv.YY" constituent of "OK_Semantics2.State2" is not initialized
 ok_semantics2.ads:14:14: high: "X" constituent of "State1" is not initialized
