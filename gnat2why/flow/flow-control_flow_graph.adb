@@ -336,7 +336,7 @@ package body Flow.Control_Flow_Graph is
    --  Vertices of this kind that lie within dead code will have to be
    --  unlinked at the end.
 
-   package Loop_Borrowers_Markers is new
+   package Borrowers_Markers is new
      Ada.Containers.Doubly_Linked_Lists (Ada.Containers.Count_Type);
    --  To keep track of how many local borrowers exist when entering a loop, so
    --  that we know how many of them need to be reclaimed by an EXIT statement.
@@ -376,8 +376,8 @@ package body Flow.Control_Flow_Graph is
       Borrowers              : Node_Lists.List;
       --  Stack of object declarations for local borrowers
 
-      Loop_Markers           : Loop_Borrowers_Markers.List;
-      --  Numbers of local borrowers in scope when entering nested loops
+      Borrow_Numbers         : Borrowers_Markers.List;
+      --  Numbers of local borrowers in scope at each sequence_of_statements
 
       Goto_Jumps             : Goto_Jump_Maps.Map;
       --  Map for connecting gotos with labels
@@ -390,7 +390,7 @@ package body Flow.Control_Flow_Graph is
               Entry_References       => Node_Graphs.Empty_Map,
               Folded_Function_Checks => Node_Lists.Empty_List,
               Borrowers              => Node_Lists.Empty_List,
-              Loop_Markers           => Loop_Borrowers_Markers.Empty_List,
+              Borrow_Numbers         => Borrowers_Markers.Empty_List,
               Goto_Jumps             => Goto_Jump_Maps.Empty_Map);
 
    ------------------------------------------------------------
@@ -1920,7 +1920,7 @@ package body Flow.Control_Flow_Graph is
       Funcs : Node_Sets.Set;
       Cond  : constant Node_Id := Condition (N);
 
-      Mark : Loop_Borrowers_Markers.Cursor := Ctx.Loop_Markers.Last;
+      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
       --  Once we know which loop the EXIT statement refers to, it will point
       --  to the number of local borrowers in scope of that loop.
 
@@ -1929,25 +1929,23 @@ package body Flow.Control_Flow_Graph is
 
    begin
       --  Go up the tree until we find the loop we are exiting from
-      if No (Name (N)) then
-         --  We just need to find the enclosing loop
-         loop
-            L := Parent (L);
-            exit when Nkind (L) = N_Loop_Statement;
-         end loop;
-      else
-         --  We have a named loop, which we need to find
-         loop
-            L := Parent (L);
-            if Nkind (L) = N_Loop_Statement then
-               if Entity (Identifier (L)) = Entity (Name (N)) then
+      loop
+         L := Parent (L);
+         case Nkind (L) is
+            when N_Loop_Statement =>
+               --  When exiting without name, we exit at the first loop;
+               --  when exiting with name, we look for the matching loop.
+               if No (Name (N))
+                 or else Entity (Identifier (L)) = Entity (Name (N))
+               then
                   exit;
-               else
-                  Loop_Borrowers_Markers.Previous (Mark);
                end if;
-            end if;
-         end loop;
-      end if;
+            when N_Block_Statement =>
+               Borrowers_Markers.Previous (Mark);
+            when others =>
+               null;
+         end case;
+      end loop;
 
       --  Conditional and unconditional exits are different. One
       --  requires an extra vertex, the other does not.
@@ -1990,7 +1988,7 @@ package body Flow.Control_Flow_Graph is
       --  assign back to the borrowed objects. This way we keep track of
       --  anything that happened while they were borrowed.
 
-      for J in Ctx.Loop_Markers (Mark) + 1 .. Ctx.Borrowers.Length loop
+      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
          Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
          Node_Lists.Previous (Top);
       end loop;
@@ -2095,7 +2093,32 @@ package body Flow.Control_Flow_Graph is
       V        : Flow_Graphs.Vertex_Id;
       Position : Goto_Jump_Maps.Cursor;
       Unused   : Boolean;
+
+      Target_Label_Parent : constant Node_Id :=
+        Statement_Enclosing_Label (Entity (Name (N)));
+
+      Par : Node_Id := N;
+      --  Iterator for finding the parent of the target label
+
+      Mark : Borrowers_Markers.Cursor := Ctx.Borrow_Numbers.Last;
+      --  Once we know which sequence_of_statements we will jump to, it will
+      --  point to the number of local borrowers at that point.
+
+      Top : Node_Lists.Cursor := Ctx.Borrowers.Last;
+      --  Iterator for the borrowers reclaimed when jumping with goto
+
    begin
+      --  Go up the tree until we find the parent of the sequence_of_statements
+      --  we are jumping to and move the cursor at each block that we jump out
+      --  from.
+      loop
+         Par := Parent (Par);
+         exit when Par = Target_Label_Parent;
+         if Nkind (Par) = N_Block_Statement then
+            Borrowers_Markers.Previous (Mark);
+         end if;
+      end loop;
+
       Add_Vertex (FA,
                   Direct_Mapping_Id (N),
                   Null_Node_Attributes,
@@ -2104,6 +2127,15 @@ package body Flow.Control_Flow_Graph is
                  Graph_Connections'
                    (Standard_Entry => V,
                     Standard_Exits => Vertex_Sets.Empty_Set));
+
+      --  When borrowers go out of scope, we pop them from the stack and
+      --  assign back to the borrowed objects. This way we keep track of
+      --  anything that happened while they were borrowed.
+
+      for J in Ctx.Borrow_Numbers (Mark) + 1 .. Ctx.Borrowers.Length loop
+         Reclaim_Borrower (Ctx.Borrowers (Top), FA, Last => V);
+         Node_Lists.Previous (Top);
+      end loop;
 
       Ctx.Goto_Jumps.Insert (Key      => Entity (Name (N)),
                              New_Item => Vertex_Sets.Empty_Set,
@@ -2124,7 +2156,9 @@ package body Flow.Control_Flow_Graph is
    is
       Stmts : constant List_Id := Statements (N);
    begin
+      Ctx.Borrow_Numbers.Append (Ctx.Borrowers.Length);
       Process_Statement_List (Stmts, FA, CM, Ctx);
+      Ctx.Borrow_Numbers.Delete_Last;
       Move_Connections (CM,
                         Dst => Union_Id (N),
                         Src => Union_Id (Stmts));
@@ -3359,11 +3393,9 @@ package body Flow.Control_Flow_Graph is
          Outer_Loop : constant Entity_Id := Ctx.Active_Loop;
       begin
          --  We can't use 'Update here as we may modify Ctx
-         Ctx.Loop_Markers.Append (Ctx.Borrowers.Length);
          Ctx.Active_Loop := Loop_Id;
          Process_Statement_List (Statements (N), FA, CM, Ctx);
          Ctx.Active_Loop := Outer_Loop;
-         Ctx.Loop_Markers.Delete_Last;
       end;
 
       if No (I_Scheme) then
