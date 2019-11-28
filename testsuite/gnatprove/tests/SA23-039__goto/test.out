@@ -2,8 +2,6 @@ simple_flow.adb:1:37: info: initialization of "Y" proved
 simple_flow.adb:2:36: info: postcondition proved (CVC4: 1 VC)
 simple_flow.adb:2:43: info: data dependencies proved
 simple_flow.adb:14:28: info: raise statement proved unreachable (CVC4: 1 VC)
-simple_flow.adb:18:13: warning: this statement is never reached
-simple_flow.adb:19:13: warning: this statement is never reached
 simple_flow.adb:20:06: warning: this statement is never reached
 test_goto.adb:16:35: info: cannot unroll loop (too many loop iterations)
 test_goto.adb:17:29: medium: overflow check might fail (e.g. when X = Integer'Last) [possible explanation: loop at line 16 should mention X in a loop invariant]

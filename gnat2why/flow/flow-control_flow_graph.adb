@@ -118,7 +118,6 @@ package body Flow.Control_Flow_Graph is
                                 N_Implicit_Label_Declaration      |
                                 N_Incomplete_Type_Declaration     |
                                 N_Itype_Reference                 |
-                                N_Label                           |
                                 N_Number_Declaration              |
                                 N_Object_Renaming_Declaration     |
                                 N_Package_Renaming_Declaration    |
@@ -347,6 +346,14 @@ package body Flow.Control_Flow_Graph is
    --  appear/disappear and this would be tampering with cursors, should
    --  cursors exist. Instead, we record the number of elements in the stack.
 
+   package Goto_Jump_Maps is new
+     Ada.Containers.Hashed_Maps (Key_Type        => Entity_Id,
+                                 Element_Type    => Vertex_Sets.Set,
+                                 Hash            => Node_Hash,
+                                 Equivalent_Keys => "=");
+   --  Maps from labels entities (e.g. "<<L1>>") to vertices with their
+   --  matching goto statements (e.g. "goto L1").
+
    type Context is record
       Current_Loops          : Node_Sets.Set;
       --  The set of loops currently processed. The innermost loop currently
@@ -371,6 +378,9 @@ package body Flow.Control_Flow_Graph is
 
       Loop_Markers           : Loop_Borrowers_Markers.List;
       --  Numbers of local borrowers in scope when entering nested loops
+
+      Goto_Jumps             : Goto_Jump_Maps.Map;
+      --  Map for connecting gotos with labels
    end record;
 
    No_Context : constant Context :=
@@ -380,7 +390,8 @@ package body Flow.Control_Flow_Graph is
               Entry_References       => Node_Graphs.Empty_Map,
               Folded_Function_Checks => Node_Lists.Empty_List,
               Borrowers              => Node_Lists.Empty_List,
-              Loop_Markers           => Loop_Borrowers_Markers.Empty_List);
+              Loop_Markers           => Loop_Borrowers_Markers.Empty_List,
+              Goto_Jumps             => Goto_Jump_Maps.Empty_Map);
 
    ------------------------------------------------------------
    --  Local declarations
@@ -624,6 +635,19 @@ package body Flow.Control_Flow_Graph is
    --  Handled_Statement_Sequence are gathered in the
    --  "return returned_object" vertex.
 
+   procedure Do_Goto_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) = N_Goto_Statement;
+   --  Deal with forward goto statements. For each goto statement we create
+   --  a vertex. In the connection map it will be its own standard entry (as
+   --  usual), but will have no standard exits (because forward gotos jump to
+   --  labels that we have seen yet). Instead, we record this vertex in the
+   --  context paramter Ctx and we will connect it with the vertex for the
+   --  label in Do_Label.
+
    procedure Do_Handled_Sequence_Of_Statements
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -655,6 +679,14 @@ package body Flow.Control_Flow_Graph is
    --  |                       \  | |
    --  (optional else part)     | | |
 
+   procedure Do_Label
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   with Pre => Nkind (N) = N_Label;
+   --  Deal with goto labels; see Do_Goto_Statement
+
    procedure Do_Loop_Statement
      (N   : Node_Id;
       FA  : in out Flow_Analysis_Graphs;
@@ -681,7 +713,6 @@ package body Flow.Control_Flow_Graph is
       CM  : in out Connection_Maps.Map;
       Ctx : in out Context)
    with Pre => Nkind (N) in N_Null_Statement
-                          | N_Goto_Statement
                           | N_Raise_Statement
                           | N_Raise_xxx_Error
                           | N_Exception_Declaration
@@ -2051,6 +2082,36 @@ package body Flow.Control_Flow_Graph is
       Linkup (FA, V, FA.Helper_End_Vertex);
    end Do_Extended_Return_Statement;
 
+   -----------------------
+   -- Do_Goto_Statement --
+   -----------------------
+
+   procedure Do_Goto_Statement
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V        : Flow_Graphs.Vertex_Id;
+      Position : Goto_Jump_Maps.Cursor;
+      Unused   : Boolean;
+   begin
+      Add_Vertex (FA,
+                  Direct_Mapping_Id (N),
+                  Null_Node_Attributes,
+                  V);
+      CM.Insert (Union_Id (N),
+                 Graph_Connections'
+                   (Standard_Entry => V,
+                    Standard_Exits => Vertex_Sets.Empty_Set));
+
+      Ctx.Goto_Jumps.Insert (Key      => Entity (Name (N)),
+                             New_Item => Vertex_Sets.Empty_Set,
+                             Position => Position,
+                             Inserted => Unused);
+      Ctx.Goto_Jumps (Position).Include (V);
+   end Do_Goto_Statement;
+
    ---------------------------------------
    -- Do_Handled_Sequence_Of_Statements --
    ---------------------------------------
@@ -2208,6 +2269,36 @@ package body Flow.Control_Flow_Graph is
          CM (Union_Id (N)).Standard_Exits.Insert (V);
       end if;
    end Do_If_Statement;
+
+   --------------
+   -- Do_Label --
+   --------------
+
+   procedure Do_Label
+     (N   : Node_Id;
+      FA  : in out Flow_Analysis_Graphs;
+      CM  : in out Connection_Maps.Map;
+      Ctx : in out Context)
+   is
+      V : Flow_Graphs.Vertex_Id;
+      C : Goto_Jump_Maps.Cursor :=
+        Ctx.Goto_Jumps.Find (Entity (Identifier (N)));
+
+      use type Goto_Jump_Maps.Cursor;
+
+   begin
+      Add_Vertex (FA,
+                  Direct_Mapping_Id (N),
+                  Null_Node_Attributes,
+                  V);
+
+      CM.Insert (Union_Id (N), Trivial_Connection (V));
+
+      if C /= Goto_Jump_Maps.No_Element then
+         Linkup (FA, Froms => Ctx.Goto_Jumps (C), To => V);
+         Ctx.Goto_Jumps.Delete (C);
+      end if;
+   end Do_Label;
 
    -----------------------
    -- Do_Loop_Statement --
@@ -2668,6 +2759,7 @@ package body Flow.Control_Flow_Graph is
                when N_Simple_Return_Statement
                   | N_Extended_Return_Statement
                   | N_Exit_Statement
+                  | N_Goto_Statement
                =>
                   return Abandon;
 
@@ -5406,7 +5498,10 @@ package body Flow.Control_Flow_Graph is
             Do_Simple_Return_Statement (N, FA, CM, Ctx);
 
          when N_Goto_Statement =>
-            Do_Null_Or_Raise_Statement (N, FA, CM, Ctx);
+            Do_Goto_Statement (N, FA, CM, Ctx);
+
+         when N_Label =>
+            Do_Label (N, FA, CM, Ctx);
 
          when others =>
             Print_Node_Subtree (N);
