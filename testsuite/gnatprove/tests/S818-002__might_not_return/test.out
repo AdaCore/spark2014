@@ -12,8 +12,8 @@ bad.adb:24:07: call to possibly nonreturning procedure outside a (possibly) nonr
 bad.adb:30:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
 bad.adb:30:07: consider annotating caller "Proc" with Might_Not_Return
 gnatprove: error during generation of Global contracts
-pack.adb:5:07: medium: exception might be raised
-pack.adb:11:10: medium: call to nonreturning subprogram might be executed
+pack.adb:5:07: medium: exception might be raised (e.g. when B = True)
+pack.adb:11:10: medium: precondition might fail, cannot prove B
 pack.adb:20:22: info: assertion proved (CVC4: 1 VC)
 pack.ads:7:06: info: data dependencies proved
 pack.ads:8:14: info: postcondition proved (CVC4: 1 VC)

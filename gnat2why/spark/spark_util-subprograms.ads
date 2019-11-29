@@ -365,8 +365,9 @@ package SPARK_Util.Subprograms is
    is
      (No_Return (E)
        or else
-      Has_Might_Not_Return_Annotation (E));
-   --  @param E any entity
+      Has_Might_Not_Return_Annotation (E))
+   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
+   --  @param E a subprogram
    --  @return True iff E has aspect No_Return or annotation Might_Not_Return
 
    function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean

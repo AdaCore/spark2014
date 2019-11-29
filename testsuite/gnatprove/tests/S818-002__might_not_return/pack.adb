@@ -1,6 +1,6 @@
 package body Pack with SPARK_Mode is
 
-   procedure Jump is
+   procedure Jump (B : Boolean) is
    begin
       raise Program_Error;
    end Jump;
@@ -8,7 +8,7 @@ package body Pack with SPARK_Mode is
    procedure Call_Jump (B : Boolean) is
    begin
       if B then
-         Jump;
+         Jump (False);
       end if;
    end Call_Jump;
 

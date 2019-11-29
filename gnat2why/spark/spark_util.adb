@@ -1786,8 +1786,27 @@ package body SPARK_Util is
                return False;
             end if;
 
-         when N_Procedure_Call_Statement =>
-            return Is_Error_Signaling_Procedure (Get_Called_Entity (N));
+         when N_Procedure_Call_Statement
+            | N_Entry_Call_Statement
+         =>
+            if Is_Error_Signaling_Procedure (Get_Called_Entity (N)) then
+               declare
+                  Caller : constant Entity_Id :=
+                    Unique_Entity
+                      (Lib.Xref.SPARK_Specific.
+                         Enclosing_Subprogram_Or_Library_Package (N));
+               begin
+                  --  A call to an error-signaling procedure is used to signal
+                  --  an error, and should be proved unreachable, unless the
+                  --  caller is a possibly nonreturning procedure.
+
+                  return not (Ekind (Caller) = E_Procedure
+                                and then
+                              Is_Possibly_Nonreturning_Procedure (Caller));
+               end;
+            else
+               return False;
+            end if;
 
          when N_Call_Marker =>
             return Is_Error_Signaling_Statement (Next (N));

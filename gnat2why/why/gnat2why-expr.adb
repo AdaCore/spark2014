@@ -48,8 +48,6 @@ with Gnat2Why.Expr.Loops;            use Gnat2Why.Expr.Loops;
 with Gnat2Why.Expr.Loops.Exits;
 with Gnat2Why.Subprograms;           use Gnat2Why.Subprograms;
 with Gnat2Why.Tables;                use Gnat2Why.Tables;
-with Lib;                            use Lib;
-with Lib.Xref;
 with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
@@ -19076,22 +19074,14 @@ package body Gnat2Why.Expr is
                    (Stmt_Or_Decl, EW_Prog, Nb_Of_Refs, Nb_Of_Lets,
                     Params => Body_Params);
 
-               Enclosing_Subp : constant Entity_Id :=
-                 Unique_Entity
-                   (Lib.Xref.SPARK_Specific.
-                      Enclosing_Subprogram_Or_Library_Package (Stmt_Or_Decl));
-
                Selector       : constant Selection_Kind :=
-                  --  When calling an error-signaling procedure outside another
-                  --  error-signaling procedure, use the No_Return variant of
-                  --  the program function, which has a precondition of False.
-                  --  This ensures that a check is issued for each such call,
-                  --  to detect when they are reachable.
+                  --  When calling an error-signaling procedure from an
+                  --  ordinary program unit, use the No_Return variant of the
+                  --  program function, which has a precondition of False. This
+                  --  ensures that a check is issued for each such call, to
+                  --  detect when they are reachable.
 
-                 (if Is_Error_Signaling_Procedure (Subp)
-                    and then not
-                     Is_Error_Signaling_Procedure (Enclosing_Subp)
-                  then
+                 (if Is_Error_Signaling_Statement (Stmt_Or_Decl) then
                      No_Return
 
                   --  When the call is dispatching, use the Dispatch variant of

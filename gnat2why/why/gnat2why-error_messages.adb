@@ -41,13 +41,10 @@ with Comperr;                   use Comperr;
 with Gnat2Why.Assumptions;      use Gnat2Why.Assumptions;
 with Gnat2Why_Args;             use Gnat2Why_Args;
 with Gnat2Why_Opts;             use Gnat2Why_Opts;
-with Lib.Xref;
 with Osint;                     use Osint;
 with SA_Messages;               use SA_Messages;
 with Sinput;                    use Sinput;
-with SPARK_Atree.Entities;      use SPARK_Atree.Entities;
 with SPARK_Util;                use SPARK_Util;
-with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
 
 package body Gnat2Why.Error_Messages is
 
@@ -648,23 +645,11 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition might fail";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Entry_Call_Statement
-                             | N_Procedure_Call_Statement
-              and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
+            if Nkind (Node) in N_Procedure_Call_Statement
+                             | N_Entry_Call_Statement
+              and then Is_Error_Signaling_Statement (Node)
             then
-               declare
-                  Subp : constant Entity_Id :=
-                    Unique_Entity
-                      (Lib.Xref.SPARK_Specific.
-                         Enclosing_Subprogram_Or_Library_Package (Node));
-               begin
-                  if Is_Error_Signaling_Procedure (Subp) then
-                     return "precondition might fail";
-                  else
-                     return
-                       "call to nonreturning subprogram might be executed";
-                  end if;
-               end;
+               return "call to nonreturning subprogram might be executed";
             else
                return "precondition might fail";
             end if;
@@ -991,22 +976,11 @@ package body Gnat2Why.Error_Messages is
          when VC_Default_Initial_Condition =>
             return "default initial condition proved";
          when VC_Precondition              =>
-            if Nkind (Node) in N_Entry_Call_Statement
-                             | N_Procedure_Call_Statement
-              and then Is_Error_Signaling_Procedure (Get_Called_Entity (Node))
+            if Nkind (Node) in N_Procedure_Call_Statement
+                             | N_Entry_Call_Statement
+              and then Is_Error_Signaling_Statement (Node)
             then
-               declare
-                  Subp : constant Entity_Id :=
-                    Unique_Entity
-                      (Lib.Xref.SPARK_Specific.
-                         Enclosing_Subprogram_Or_Library_Package (Node));
-               begin
-                  if Is_Error_Signaling_Procedure (Subp) then
-                     return "precondition proved";
-                  else
-                     return "call to nonreturning procedure never executed";
-                  end if;
-               end;
+               return "call to nonreturning procedure never executed";
             else
                return "precondition proved";
             end if;

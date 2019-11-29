@@ -1,6 +1,6 @@
 package Pack with SPARK_Mode is
 
-   procedure Jump with No_Return;
+   procedure Jump (B : Boolean) with No_Return, Pre => B;
 
    procedure Call_Jump (B : Boolean) with
      Annotate => (GNATprove, Might_Not_Return),

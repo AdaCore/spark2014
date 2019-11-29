@@ -1,4 +1,3 @@
 test_func.adb:5:04: info: initialization of "b" proved
 test_func.adb:8:10: medium: overflow check might fail [possible explanation: call at line 7 should mention a (for argument b) in a postcondition]
-test_func.adb:10:16: medium: call to nonreturning subprogram might be executed
 utility_test.ads:26:26: info: initialization of "a" proved
