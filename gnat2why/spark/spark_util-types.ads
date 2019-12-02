@@ -200,7 +200,10 @@ package SPARK_Util.Types is
 
    function Get_Iterable_Type_Primitive
      (Typ : Entity_Id;
-      Nam : Name_Id) return Entity_Id;
+      Nam : Name_Id) return Entity_Id
+   with Pre => Is_Type (Typ)
+                 and then
+               Nam in Name_First | Name_Next | Name_Has_Element | Name_Element;
    --  Retrieve one of the primitives First, Next, Has_Element, Element from
    --  the value of the Iterable aspect of a formal type.
    --  Return the ultimate alias.
@@ -301,7 +304,8 @@ package SPARK_Util.Types is
      Pre => Is_Type (Typ);
    --  Returns True if the type passed as argument is deep
 
-   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id);
+   procedure Find_Predicate_Item (Ty : Entity_Id; Rep_Item : in out Node_Id)
+   with Pre => Is_Type (Ty);
    --  Go over the items linked from Rep_Item to search for a predicate
    --  pragma or aspect applying to Ty.
 
@@ -343,7 +347,9 @@ package SPARK_Util.Types is
    --     field to represent invisible fields that are not derived from an
    --     ancestor.
 
-   function Root_Retysp (E : Entity_Id) return Entity_Id;
+   function Root_Retysp (E : Entity_Id) return Entity_Id
+   with Pre  => Is_Type (E),
+        Post => Is_Type (Root_Retysp'Result);
    --  Given a type, return the root type, including traversing private types.
    --  ??? Need to update comment to reflect dependence on Retysp of root by
    --  calling Full_View_Not_In_SPARK.
