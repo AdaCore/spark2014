@@ -88,7 +88,7 @@ package body SPARK_Annotate is
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
    --  (GNATprove, Inline_For_Proof, E) to their expression.
-   Inline_Pramas : Common_Containers.Node_Maps.Map :=
+   Inline_Pragmas : Common_Containers.Node_Maps.Map :=
      Common_Containers.Node_Maps.Empty_Map;
    --  Maps all the function entities E with a pragma Annotate
    --  (GNATprove, Inline_For_Proof, E) to th pragma. This is used to get
@@ -311,7 +311,7 @@ package body SPARK_Annotate is
       end if;
 
       Inline_Annotations.Include (E, Value);
-      Inline_Pramas.Include (E, Prag);
+      Inline_Pragmas.Include (E, Prag);
    end Check_Inline_Annotation;
 
    ------------------------
@@ -749,7 +749,7 @@ package body SPARK_Annotate is
    ------------------------
 
    function Find_Inline_Pragma (E : Entity_Id) return Node_Id is
-     (Inline_Pramas.Element (E));
+     (Inline_Pragmas.Element (E));
 
    -----------------------------------------------
    -- Generate_Useless_Pragma_Annotate_Warnings --

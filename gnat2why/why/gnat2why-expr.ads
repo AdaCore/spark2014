@@ -161,7 +161,7 @@ package Gnat2Why.Expr is
    --         particular, if Ty is a record type with defaulted discriminants,
    --         we only assume the value of its discriminants to be the defaults
    --         if Include_Subtypes is false.
-   --  @prama New_Components Do not check inherited components
+   --  @param New_Components Do not check inherited components
    --  @result Why3 code to check for absence of runtime errors in default
    --         initialization of Expr of type Ty.
 
