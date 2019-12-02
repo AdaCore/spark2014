@@ -1285,6 +1285,8 @@ package body SPARK_Util is
          end case;
       end Find_Func_Call;
 
+   --  Start of processing for Get_Observed_Or_Borrowed_Info
+
    begin
       B_Expr := Expr;
 
@@ -1886,7 +1888,7 @@ package body SPARK_Util is
    ----------------------------------
 
    function Is_In_Statically_Dead_Branch (N : Node_Id) return Boolean is
-      Anc : Node_Id := Parent (N);
+      Anc  : Node_Id := Parent (N);
       Prev : Node_Id := N;
 
       function Comes_From_Dead_Branch (If_Stmt, Stmt : Node_Id) return Boolean
@@ -1982,6 +1984,9 @@ package body SPARK_Util is
          end if;
          return False;
       end Has_True_Condition;
+
+   --  Start of processing for Is_In_Statically_Dead_Branch
+
    begin
       while Nkind (Anc) not in N_Entity_Body and then Present (Anc) loop
          if Nkind (Anc) = N_If_Statement
@@ -2374,8 +2379,7 @@ package body SPARK_Util is
    -- Real_Image --
    ----------------
 
-   function Real_Image (U : Ureal; Max_Length : Integer) return String
-   is
+   function Real_Image (U : Ureal; Max_Length : Integer) return String is
       Result : String (1 .. Max_Length);
       Last   : Natural := 0;
 
@@ -2394,7 +2398,7 @@ package body SPARK_Util is
          Result (1 .. Last) := S (S'First .. Last - S'First + 1);
       end Output_Result;
 
-      --  Start of processing for Real_Image
+   --  Start of processing for Real_Image
 
    begin
       Output.Set_Special_Output (Output_Result'Unrestricted_Access);
