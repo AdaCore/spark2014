@@ -87,10 +87,10 @@ is
      Depends => (My_Command_Queue.State => (My_Command_Queue.State),
 		 Read_Future_Channels => (Read_Future_Channels, My_Command_Queue.State),
 		 Write_Future_Channels => (Write_Future_Channels, My_Command_Queue.State),
-		 Poll_Future_Channels => (Poll_Future_Channels, My_Command_Queue.State),
-		 Worker_Task'Result => Worker_Task,
-		 Worker_Task => null
-		);
+		 Poll_Future_Channels => (Poll_Future_Channels, My_Command_Queue.State)
+
+
+                );
 
    Worker_Tasks : array (1 .. 16) of Worker_Task;
 
