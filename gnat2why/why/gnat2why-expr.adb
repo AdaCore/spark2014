@@ -3797,18 +3797,23 @@ package body Gnat2Why.Expr is
       function Default_Init_For_Comp
         (C_Expr : W_Term_Id;
          C_Ty   : Entity_Id)
-         return W_Pred_Id;
+         return W_Pred_Id
+      with Pre => Is_Type (C_Ty);
       --  @param C_Expr expression for an array component
       --  @param C_Ty array component type
       --  @return predicate for individual array components
-      --    <C_Expr> = <Default_Component_Value>  <if Ty as a default aspect>
+      --    <C_Expr> = <Default_Component_Value>  <if Ty has a default aspect>
       --    default_init (<C_Expr>), C_Ty)        <otherwise>
 
       function Default_Init_For_Field
         (F_Expr : W_Term_Id;
          F_Ty   : Entity_Id;
          E      : Entity_Id)
-            return W_Pred_Id;
+         return W_Pred_Id
+      with Pre => Is_Type (F_Ty)
+                    and then
+                  (Ekind (E) = E_Component
+                   or else Is_Part_Of_Protected_Object (E));
       --  @param F_Expr expression for the component
       --  @param F_Ty component type
       --  @param E node for a record component
@@ -3820,7 +3825,8 @@ package body Gnat2Why.Expr is
         (D_Expr : W_Term_Id;
          D_Ty   : Entity_Id;
          E      : Entity_Id)
-            return W_Pred_Id;
+         return W_Pred_Id
+      with Pre => Is_Type (D_Ty) and then Ekind (E) = E_Discriminant;
       --  @param D_Expr expression for the discrimiant
       --  @param D_Ty discriminant type
       --  @param E node for a discriminant
@@ -4013,10 +4019,10 @@ package body Gnat2Why.Expr is
       end Default_Init_For_Field;
 
       function Default_Init_For_Array is new Build_Predicate_For_Array
-           (Default_Init_For_Comp);
+        (Default_Init_For_Comp);
 
       function Default_Init_For_Record is new Build_Predicate_For_Record
-           (Default_Init_For_Discr, Default_Init_For_Field);
+        (Default_Init_For_Discr, Default_Init_For_Field);
 
       Tmp        : constant W_Expr_Id := New_Temp_For_Expr (Expr);
       Assumption : W_Pred_Id := True_Pred;
