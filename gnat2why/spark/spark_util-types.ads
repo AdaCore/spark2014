@@ -335,7 +335,10 @@ package SPARK_Util.Types is
      (Ty    : Entity_Id;
       Discr : Entity_Id)
       return Node_Id
-   with Pre => Has_Discriminants (Ty) and then Is_Constrained (Ty);
+   with Pre => Has_Discriminants (Ty)
+               and then Is_Constrained (Ty)
+               and then Ekind (Discr) = E_Discriminant,
+        Post => Nkind (Get_Stored_Constraint_For_Discr'Result) in N_Subexpr;
    --  @param Ty a constrained type with discriminants
    --  @param Discr a discriminant of Ty
    --  @return the constraint stored for Discr in Ty

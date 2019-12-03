@@ -525,8 +525,8 @@ package body SPARK_Util.Types is
       Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (Ty));
    begin
       while Current /= Discr loop
-         Current := Next_Discriminant (Current);
-         Elmt := Next_Elmt (Elmt);
+         Next_Discriminant (Current);
+         Next_Elmt (Elmt);
       end loop;
       return Node (Elmt);
    end Get_Stored_Constraint_For_Discr;
