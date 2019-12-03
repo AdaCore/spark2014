@@ -4752,13 +4752,13 @@ package body SPARK_Definition is
 
                --  The default expression of a component declaration shall
                --  not contain a name denoting the current instance of the
-               --  enclosing type; SPARK RM 3.8(2).
+               --  enclosing type; SPARK RM 3.8(1).
 
                if Uses_Current_Type_Instance (Expr) then
                   Mark_Violation ("default expression with current "
                                   & "instance of enclosing type",
                                   E,
-                                  SRM_Reference => "SPARK RM 3.8(2)");
+                                  SRM_Reference => "SPARK RM 3.8(1)");
                else
                   Mark (Expr);
                end if;
