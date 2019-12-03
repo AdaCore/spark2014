@@ -1,0 +1,6 @@
+p.adb:2:09: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
+p.adb:2:09: violation of pragma SPARK_Mode at test.adc:1
+q.adb:1:11: warning: subprogram "Q" has no effect
+r.ads:2:19: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
+r.ads:2:19: violation of pragma SPARK_Mode at test.adc:1
+gnatprove: error during flow analysis and proof
