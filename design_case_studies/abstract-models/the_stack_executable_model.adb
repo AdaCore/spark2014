@@ -66,7 +66,7 @@ is
    -- extra properties the proof should be trivial.  Note that I included both
    -- Tail = Model'Old and Pointer = Pointer + 1 which is strictly not
    -- necessary as one can be derived from the other but it will make the
-   -- the proof of refinment integrity easier.
+   -- the proof of refinement integrity easier.
    is
    begin
       Pointer := Pointer + 1;
@@ -83,7 +83,7 @@ is
        Model   = Tail'Old and
        Pointer = Pointer'Old - 1 and
        S = S'Old
-   -- The proof of refinment integrity should be trivial
+   -- The proof of refinement integrity should be trivial
    is
    begin
       X := S (Pointer);
@@ -100,7 +100,7 @@ is
        Head = X and
        Tail = Tail'Old and
        S = S'Old'Update (Pointer => X)
-   -- The proof of refinment integrity should be trivial
+   -- The proof of refinement integrity should be trivial
    is
    begin
       S (Pointer) := X;
