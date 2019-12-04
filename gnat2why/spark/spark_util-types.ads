@@ -331,17 +331,17 @@ package SPARK_Util.Types is
    --  Specific_Tagged_Types redundant, except the detection that a type is
    --  a full view is currently not available soon enough.
 
-   function Get_Stored_Constraint_For_Discr
+   function Get_Constraint_For_Discr
      (Ty    : Entity_Id;
       Discr : Entity_Id)
       return Node_Id
    with Pre => Has_Discriminants (Ty)
                and then Is_Constrained (Ty)
                and then Ekind (Discr) = E_Discriminant,
-        Post => Nkind (Get_Stored_Constraint_For_Discr'Result) in N_Subexpr;
+        Post => Nkind (Get_Constraint_For_Discr'Result) in N_Subexpr;
    --  @param Ty a constrained type with discriminants
    --  @param Discr a discriminant of Ty
-   --  @return the constraint stored for Discr in Ty
+   --  @return the constraint for Discr in Ty
 
    function Has_Private_Fields (E : Entity_Id) return Boolean with
      Pre => Has_Private_Type (E) or else Has_Record_Type (E);

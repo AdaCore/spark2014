@@ -3909,8 +3909,7 @@ package body Gnat2Why.Expr is
                Right  => Transform_Expr
                  (Domain        => EW_Term,
                   Params        => Params,
-                  Expr          =>
-                    Get_Stored_Constraint_For_Discr (Ty_Ext, E),
+                  Expr          => Get_Constraint_For_Discr (Ty_Ext, E),
                   Expected_Type => Type_Of_Node (D_Ty)),
                Domain => EW_Pred);
 

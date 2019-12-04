@@ -512,11 +512,11 @@ package body SPARK_Util.Types is
       end if;
    end Get_Specific_Type_From_Classwide;
 
-   -------------------------------------
-   -- Get_Stored_Constraint_For_Discr --
-   -------------------------------------
+   ------------------------------
+   -- Get_Constraint_For_Discr --
+   ------------------------------
 
-   function Get_Stored_Constraint_For_Discr
+   function Get_Constraint_For_Discr
      (Ty    : Entity_Id;
       Discr : Entity_Id)
       return Node_Id
@@ -529,7 +529,7 @@ package body SPARK_Util.Types is
          Next_Elmt (Elmt);
       end loop;
       return Node (Elmt);
-   end Get_Stored_Constraint_For_Discr;
+   end Get_Constraint_For_Discr;
 
    --------------------------------------
    -- Get_Type_With_Predicate_Function --
