@@ -4757,7 +4757,7 @@ package body SPARK_Definition is
                if Uses_Current_Type_Instance (Expr) then
                   Mark_Violation ("default expression with current "
                                   & "instance of enclosing type",
-                                  E,
+                                  Expr,
                                   SRM_Reference => "SPARK RM 3.8(1)");
                else
                   Mark (Expr);

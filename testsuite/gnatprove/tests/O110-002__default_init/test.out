@@ -1,5 +1,5 @@
-late_init.adb:6:12: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
-late_init.adb:6:12: violation of pragma SPARK_Mode at test.adc:1
+late_init.adb:7:28: default expression with current instance of enclosing type is not allowed in SPARK (SPARK RM 3.8(1))
+late_init.adb:7:28: violation of pragma SPARK_Mode at test.adc:1
 late_init.adb:9:54: "T" is not allowed in SPARK
 late_init.adb:9:54: violation of pragma SPARK_Mode at test.adc:1
 gnatprove: error during flow analysis and proof
