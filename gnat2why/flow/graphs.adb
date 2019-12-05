@@ -324,7 +324,7 @@ package body Graphs is
       Root    : V_To_Index        := V_To_Index'(others => 0);
       Comp    : V_To_Comp         := V_To_Comp'(others => 0);
       Succ    : V_To_V;
-      Sets    : V_To_VIS          := V_To_VIS'(others => VIS.Empty_Set);
+      Sets    : V_To_VIS;
       Counter : Index             := 0;
 
       Current_Component : Component := 0;
@@ -822,10 +822,9 @@ package body Graphs is
         of Vertex_Index_List;
 
       Parent, Ancestor, Child, Vertex : V_To_V;
-      Label, Semi, Size               : V_To_V   := (others => 0);
+      Label, Semi, Size, Dom          : V_To_V := (others => 0);
 
-      Bucket : V_To_VIL := (others => VIL.Empty_Vector);
-      Dom    : V_To_V   := (others => 0);
+      Bucket : V_To_VIL;
 
       N : Vertex_Id := 0;
 
