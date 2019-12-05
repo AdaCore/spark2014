@@ -2187,10 +2187,7 @@ package body Gnat2Why.Subprograms is
 
       Current_Subp := E;
 
-      --  First, clear the list of translations for X'Old expressions, and
-      --  create a new identifier for F'Result.
-
-      Reset_Map_For_Old;
+      --  First create a new identifier for F'Result
 
       if Ekind (E) = E_Function then
          Result_Is_Mutable := True;
@@ -2199,6 +2196,10 @@ package body Gnat2Why.Subprograms is
              (Name  => Name & "__result",
               Typ   => Type_Of_Node (Etype (E)));
       end if;
+
+      --  Clear the list of translations for X'Old expressions
+
+      Reset_Map_For_Old;
 
       Params :=
         (File        => File,
@@ -2355,43 +2356,35 @@ package body Gnat2Why.Subprograms is
       end if;
 
       --  If E is overriding another subprogram, check that its specified
-      --  classwide postcondition is stronger than the inherited one. Also
-      --  check that the class-wide postcondition cannot raise runtime errors.
-      --  To that end, perform equivalent effects of call in an empty context.
+      --  classwide postcondition is stronger than the inherited one.
       --  Note that we should *not* assume the dispatching precondition for
       --  this check, as this would not be transitive.
 
-      if not Classwide_Post_List.Is_Empty then
-         Classwide_Post_RTE :=
-           +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
-         Classwide_Post_RTE :=
-           New_Ignore (Prog => Classwide_Post_RTE);
-         Classwide_Post_RTE := Sequence
-           ((1 => Call_Effects,
-             2 => Classwide_Post_RTE));
+      if not Classwide_Post_List.Is_Empty
+        and then Is_Overriding_Subprogram (E)
+      then
 
-         if Is_Overriding_Subprogram (E) then
-            Classwide_Post_Assume :=
-              New_Assume_Statement (Pred => Classwide_Post_Spec);
+         Classwide_Post_Assume :=
+           New_Assume_Statement (Pred => Classwide_Post_Spec);
 
-            Inherited_Post_Check := New_Located_Assert
-              (Ada_Node => Get_Location_For_Aspect (E, Pragma_Postcondition,
-                                                    Classwide => True),
-               Pred     => Inherited_Post_Spec,
-               Reason   => VC_Stronger_Classwide_Post,
-               Kind     => EW_Assert);
+         Inherited_Post_Check := New_Located_Assert
+           (Ada_Node => Get_Location_For_Aspect (E, Pragma_Postcondition,
+            Classwide => True),
+            Pred     => Inherited_Post_Spec,
+            Reason   => VC_Stronger_Classwide_Post,
+            Kind     => EW_Assert);
 
-            Stronger_Classwide_Post := Sequence
-              ((1 => New_Comment (Comment =>
-                               NID ("Checking that inherited postcondition is"
-                                  & " implied by class-wide postcondition")),
-                2 => Call_Effects,
-                3 => Classwide_Post_Assume,
-                4 => Inherited_Post_Check));
+         Stronger_Classwide_Post := Sequence
+           ((1 => New_Comment
+             (Comment =>
+                NID ("Checking that inherited postcondition is"
+                  & " implied by class-wide postcondition")),
+             2 => Call_Effects,
+             3 => Classwide_Post_Assume,
+             4 => Inherited_Post_Check));
 
-            Stronger_Classwide_Post :=
-              New_Ignore (Prog => Stronger_Classwide_Post);
-         end if;
+         Stronger_Classwide_Post :=
+           New_Ignore (Prog => Stronger_Classwide_Post);
       end if;
 
       Why_Body := Sequence
@@ -2399,8 +2392,52 @@ package body Gnat2Why.Subprograms is
           2 => Classwide_Weaker_Pre,
           3 => Weaker_Pre,
           4 => Stronger_Post,
-          5 => Classwide_Post_RTE,
-          6 => Stronger_Classwide_Post));
+          5 => Stronger_Classwide_Post));
+
+      --  add declarations for 'Old variables
+
+      Why_Body := Bind_From_Mapping_In_Expr
+        (Params                 => Params,
+         Map                    => Map_For_Old,
+         Expr                   => Why_Body,
+         Do_Runtime_Error_Check => False,
+         Bind_Value_Of_Old      => True);
+
+      --  Check that the class-wide postcondition cannot raise runtime errors.
+      --  To that end, perform equivalent effects of call in an empty context.
+      --  Also check that the evaluation of 'Old variables are free of RTE in
+      --  the empty context. Here again, we should *not* assume the dispatching
+      --  precondition for this check, as this postcondition can be inherited
+      --  in overridings weakening the precondition.
+
+      if not Classwide_Post_List.Is_Empty then
+
+         --  Clear the list of translations for X'Old expressions
+
+         Reset_Map_For_Old;
+
+         Classwide_Post_RTE :=
+           +Compute_Spec (Params, Classwide_Post_List, EW_Prog);
+         Classwide_Post_RTE :=
+           New_Ignore (Prog => Classwide_Post_RTE);
+         Classwide_Post_RTE := Sequence
+           ((1 => New_Comment (Comment =>
+                               NID ("Checking absence of RTE in"
+                                  & " class-wide postcondition")),
+             2 => Call_Effects,
+             3 => Classwide_Post_RTE));
+
+         --  add declarations for 'Old variables with RTE
+
+         Classwide_Post_RTE := Bind_From_Mapping_In_Expr
+           (Params                 => Params,
+            Map                    => Map_For_Old,
+            Expr                   => Classwide_Post_RTE,
+            Do_Runtime_Error_Check => True,
+            Bind_Value_Of_Old      => True);
+      end if;
+
+      Why_Body := Sequence (Why_Body, Classwide_Post_RTE);
 
       --  Assume dynamic property of inputs before the checks
 
@@ -2425,15 +2462,6 @@ package body Gnat2Why.Subprograms is
                Location => No_Location,
                Ref_Type => Type_Of_Node (Etype (E))));
       end if;
-
-      --  add declarations for 'Old variables
-
-      Why_Body := Bind_From_Mapping_In_Expr
-        (Params                 => Params,
-         Map                    => Map_For_Old,
-         Expr                   => Why_Body,
-         Do_Runtime_Error_Check => False,
-         Bind_Value_Of_Old      => True);
 
       Emit (File,
             Why.Gen.Binders.New_Function_Decl
