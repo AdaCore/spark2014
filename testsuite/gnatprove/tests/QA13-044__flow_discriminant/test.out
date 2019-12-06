@@ -1,9 +1,15 @@
-p.adb:55:14: "Input" is referenced in Pre but missing from the Global
-p.adb:56:29: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
+p.adb:5:18: info: range check proved (CVC4: 1 VC)
+p.adb:6:28: info: range check proved (CVC4: 1 VC)
+p.adb:6:38: info: discriminant check proved (CVC4: 1 VC)
+p.adb:13:19: info: range check proved (CVC4: 1 VC)
+p.adb:21:17: info: range check proved (CVC4: 1 VC)
+p.adb:31:28: info: range check proved (CVC4: 1 VC)
+p.adb:40:28: info: range check proved (CVC4: 1 VC)
+p.adb:49:33: info: range check proved (CVC4: 1 VC)
+p.adb:58:10: high: "Input" must be listed in the Global aspect of "Nested" (SPARK RM 6.1.4(14))
 p.ads:6:11: info: flow dependencies proved
 p.ads:9:11: info: flow dependencies proved
 p.ads:12:11: info: flow dependencies proved
 p.ads:15:11: info: flow dependencies proved
 p.ads:18:11: info: flow dependencies proved
 p.ads:20:14: warning: subprogram "Proc" has no effect
-gnatprove: error during flow analysis and proof

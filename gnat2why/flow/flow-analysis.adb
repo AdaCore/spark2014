@@ -2061,9 +2061,10 @@ package body Flow.Analysis is
                            Vertex   => V);
 
                      elsif Nkind (N) = N_Object_Declaration then
-                        if not Constant_Present (N) then
 
-                           --  This warning is ignored for local constants
+                        --  This warning is ignored for local constants
+
+                        if not Constant_Present (N) then
 
                            if FA.Kind = Kind_Package
                              and then
@@ -2074,6 +2075,20 @@ package body Flow.Analysis is
                            then
 
                               --  This is checked by Check_Initializes_Contract
+
+                              null;
+
+                           --  Ignore discriminants initialized at declarations
+                           --  of constrained objects.
+
+                           elsif (for all Def of Atr.Variables_Defined =>
+                                     Is_Discriminant (Def))
+                           then
+                              --  Actually, we handle such discriminants are
+                              --  initialized one-by-one and each in its own
+                              --  vertex.
+                              pragma Assert
+                                (Atr.Variables_Defined.Length = 1);
 
                               null;
 

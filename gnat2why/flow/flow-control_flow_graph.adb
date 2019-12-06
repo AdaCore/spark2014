@@ -23,6 +23,7 @@
 
 with Ada.Containers.Doubly_Linked_Lists;
 
+with Elists;                             use Elists;
 with Lib;                                use Lib;
 with Namet;                              use Namet;
 with Nlists;                             use Nlists;
@@ -3588,6 +3589,16 @@ package body Flow.Control_Flow_Graph is
       --  Add a sink vertex for a Default_Initial_Condition aspect. DIC_Proc is
       --  the DIC procedure evaluated at the vertex.
 
+      function Constraint (T : Entity_Id; D : Entity_Id) return Node_Id
+      with Pre  => Has_Discriminants (T) and then Ekind (D) = E_Discriminant,
+           Post => Nkind (Constraint'Result) in N_Subexpr;
+      --  Returns constraint expression of type T for its discriminant D
+      --
+      --  ??? It duplicates SPARK_Util.Types.Get_Constraint_For_Discr, except
+      --  for a use of Original_Record_Component, which is needed because D is
+      --  taken from a Flow_Id, where it was processed with
+      --  Original_Record_Component.
+
       ----------------
       -- Find_Tasks --
       ----------------
@@ -3836,6 +3847,21 @@ package body Flow.Control_Flow_Graph is
          Ctx.Folded_Function_Checks.Append (Expr);
       end Add_Vertex_For_DIC;
 
+      ----------------
+      -- Constraint --
+      ----------------
+
+      function Constraint (T : Entity_Id; D : Entity_Id) return Node_Id is
+         Current : Entity_Id := First_Discriminant (T);
+         Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (T));
+      begin
+         while Original_Record_Component (Current) /= D loop
+            Next_Discriminant (Current);
+            Next_Elmt (Elmt);
+         end loop;
+         return Node (Elmt);
+      end Constraint;
+
    --  Start of processing for Do_Object_Declaration
 
    begin
@@ -4077,6 +4103,44 @@ package body Flow.Control_Flow_Graph is
                      Loops => Ctx.Current_Loops),
                   V);
                Inits.Append (V);
+            elsif Is_Discriminant (F) then
+               declare
+                  Composite : constant Entity_Id :=
+                    Etype (if F.Component.Length = 1
+                           then Get_Direct_Mapping_Id (F)
+                           else F.Component (F.Component.Last_Index - 1));
+                  --  Composite type discriminated by F
+
+                  Constraint_Expr : constant Node_Id :=
+                    Constraint (T => Composite, D => F.Component.Last_Element);
+                  --  Constraint expression that initializes discriminant F
+
+                  Funcs : Node_Sets.Set;
+
+               begin
+                  Collect_Functions_And_Read_Locked_POs
+                    (Constraint_Expr,
+                     Scop               => FA.B_Scope,
+                     Functions_Called   => Funcs,
+                     Tasking            => FA.Tasking,
+                     Generating_Globals => FA.Generating_Globals);
+
+                  Add_Vertex
+                    (FA,
+                     Make_Basic_Attributes
+                       (Var_Def    => Flow_Id_Sets.To_Set (F),
+                        Var_Ex_Use => Get_Variables
+                          (Constraint_Expr,
+                           Scope                => FA.B_Scope,
+                           Fold_Functions       => Inputs,
+                           Use_Computed_Globals => not FA.Generating_Globals),
+                        Sub_Called => Funcs,
+                        Loops      => Ctx.Current_Loops,
+                        E_Loc      => N,
+                        Print_Hint => Pretty_Print_Record_Field),
+                     V);
+                  Inits.Append (V);
+               end;
             end if;
          end loop;
       end if;

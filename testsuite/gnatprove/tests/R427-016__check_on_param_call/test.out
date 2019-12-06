@@ -179,9 +179,9 @@ formals_rec_split.adb:32:18: low: "A.F" might not be set in "P3"
 formals_rec_split.adb:36:11: medium: discriminant check might fail, in call inlined at formals_rec_split.adb:55 (e.g. when V = (D => ?, F => 1)) [possible explanation: call at line 43 should mention A (for argument V) in a postcondition]
 formals_rec_split.adb:43:04: info: precondition proved (Trivial: 1 VC)
 formals_rec_split.adb:47:10: info: precondition proved (Trivial: 1 VC)
-formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False) [possible explanation: subprogram at line 1 should mention Y in a precondition]
+formals_rec_split.adb:47:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False)
 formals_rec_split.adb:53:10: info: precondition proved (Trivial: 1 VC)
-formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False) [possible explanation: subprogram at line 1 should mention Y in a precondition]
+formals_rec_split.adb:53:13: medium: discriminant check might fail (e.g. when U = (D => ?, F => 1) and X = False)
 formals_rec_split_pred.adb:13:31: info: range check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:14:29: info: discriminant check proved (CVC4: 1 VC)
 formals_rec_split_pred.adb:16:34: info: range check proved (CVC4: 1 VC)

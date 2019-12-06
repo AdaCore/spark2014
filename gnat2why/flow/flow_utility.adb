@@ -2206,44 +2206,6 @@ package body Flow_Utility is
       --  Helper function to call Untangle_Record_Fields with the appropriate
       --  context.
 
-      function Discriminant_Constraints (E : Entity_Id)
-                                         return Flow_Id_Sets.Set
-      with Pre => Ekind (E) in E_Constant
-                             | E_Variable
-                             | E_Component;
-      --  Returns the discriminant constraints for E if it is of a record or
-      --  concurrent type with discriminants, returns the empty set otherwise.
-
-      ------------------------------
-      -- Discriminant_Constraints --
-      ------------------------------
-
-      function Discriminant_Constraints (E : Entity_Id)
-                                         return Flow_Id_Sets.Set
-      is
-         Typ : constant Entity_Id := Etype (E);
-      begin
-         if (Is_Record_Type (Typ)
-             or else Is_Concurrent_Type (Typ))
-           and then Is_Constrained (Typ)
-           and then Has_Discriminants (Typ)
-         then
-            declare
-               Discriminants : Flow_Id_Sets.Set;
-
-            begin
-               --  Loop over the list of discriminant constraints
-               for Discr of Iter (Discriminant_Constraint (Typ)) loop
-                  Discriminants.Union (Recurse (Discr));
-               end loop;
-
-               return Discriminants;
-            end;
-         else
-            return Flow_Id_Sets.Empty_Set;
-         end if;
-      end Discriminant_Constraints;
-
       -------------
       -- Recurse --
       -------------
@@ -2622,7 +2584,7 @@ package body Flow_Utility is
                   --  constraints so we add them as well.
 
                   if Has_Variable_Input (E) then
-                     return Merge_Entity (E) or Discriminant_Constraints (E);
+                     return Merge_Entity (E);
                   else
                      return Flow_Id_Sets.Empty_Set;
                   end if;
@@ -2684,13 +2646,6 @@ package body Flow_Utility is
                      Vars.Include
                        (Direct_Mapping_Id (Unique_Entity (E),
                                            Facet => Extension_Part));
-                  end if;
-
-                  --  For variables of a constrained record or concurrent type
-                  --  we want to detect their discriminant constraints.
-
-                  if Ekind (E) = E_Variable then
-                     Vars.Union (Discriminant_Constraints (E));
                   end if;
 
                   return Vars;
@@ -3388,16 +3343,6 @@ package body Flow_Utility is
 
                   pragma Assert (Is_Object (Root_Entity));
 
-                  Discr_Constraints : constant Flow_Id_Sets.Set :=
-                    (if Ekind (Comp) = E_Component
-                     then Discriminant_Constraints (Comp)
-                     else
-                       (if Ekind (Root_Entity) in E_Constant
-                                                | E_Variable
-                                                | E_Component
-                        then Discriminant_Constraints (Root_Entity)
-                        else Flow_Id_Sets.Empty_Set));
-
                   E : constant Entity_Id := Original_Record_Component (Comp);
 
                   New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
@@ -3421,7 +3366,7 @@ package body Flow_Utility is
                           and then Natural (K.Component.Length) >= Comp_Id
                           and then K.Component (Comp_Id) = E
                         then
-                           New_Map.Insert (K, Discr_Constraints or V);
+                           New_Map.Insert (K, V);
                         end if;
                      end;
                   end loop;
@@ -4761,12 +4706,6 @@ package body Flow_Utility is
       --  If the Input is Empty (because we're looking at a box in an
       --  aggregate), then we don't do anything.
 
-      function Discriminant_Constraints (Typ : Entity_Id)
-                                         return Flow_Id_Sets.Set
-      with Pre => Is_Type (Typ);
-      --  Returns the discriminant constraints for Typ if it is a record or
-      --  concurrent type with discriminants, returns the empty set otherwise.
-
       ----------
       -- Join --
       ----------
@@ -4831,36 +4770,6 @@ package body Flow_Utility is
                end;
          end case;
       end Merge;
-
-      ------------------------------
-      -- Discriminant_Constraints --
-      ------------------------------
-
-      function Discriminant_Constraints (Typ : Entity_Id)
-                                         return Flow_Id_Sets.Set
-      is
-      begin
-         if (Is_Record_Type (Typ)
-             or else Is_Concurrent_Type (Typ))
-           and then Is_Constrained (Typ)
-           and then Has_Discriminants (Typ)
-         then
-            declare
-               Discriminants : Flow_Id_Sets.Set;
-
-            begin
-               --  Loop over the list of discriminant constraints
-
-               for Discr of Iter (Discriminant_Constraint (Typ)) loop
-                  Discriminants.Union (Get_Vars_Wrapper (Discr));
-               end loop;
-
-               return Discriminants;
-            end;
-         else
-            return Flow_Id_Sets.Empty_Set;
-         end if;
-      end Discriminant_Constraints;
 
       --  Local variables
 
@@ -5102,9 +5011,6 @@ package body Flow_Utility is
                The_Tg : constant Flow_Id :=
                  Map_Root'Update (Facet => The_Tag);
 
-               Discr_Constraints : constant Flow_Id_Sets.Set :=
-                 Discriminant_Constraints (T_From);
-
             begin
                if Debug_Trace_Untangle_Record then
                   Write_Str ("from: ");
@@ -5130,7 +5036,7 @@ package body Flow_Utility is
 
                   begin
                      if Valid_To_Fields.Contains (Output) then
-                        M.Include (Output, Inputs or Discr_Constraints);
+                        M.Include (Output, Inputs);
                         Valid_To_Fields.Delete (Output);
                      end if;
                   end;
