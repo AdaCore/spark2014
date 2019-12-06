@@ -1171,8 +1171,7 @@ package body Flow.Control_Flow_Graph is
          begin
             --  We had a null sequence so we need to produce a null node
             Add_Vertex (FA, Null_Node_Attributes, V);
-            Block := (Standard_Entry => V,
-                      Standard_Exits => To_Set (V));
+            Block := Trivial_Connection (V);
          end;
       else
          Block.Standard_Entry := CM (Nodes.First_Element).Standard_Entry;
