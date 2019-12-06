@@ -2253,9 +2253,12 @@ package body Flow.Analysis is
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
       is
+         Atr : V_Attributes renames FA.Atr (V);
       begin
-         Dead_Code.Exclude (V);
-         TV := (if FA.Atr (V).Execution = Barrier
+         if Atr.Is_Program_Node then
+            Dead_Code.Delete (V);
+         end if;
+         TV := (if Atr.Execution = Barrier
                 then Flow_Graphs.Skip_Children
                 else Flow_Graphs.Continue);
       end Flag_Live;
