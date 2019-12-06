@@ -4992,8 +4992,8 @@ package body Flow.Control_Flow_Graph is
             V : Flow_Graphs.Vertex_Id;
             --  A dummy vertex which combines all the standard exits from
             --  the Handled_Statement_Sequence and has just one exit, so that
-            --  the subsequence vertices which reclaim borrowers form just a
-            --  straight signle-entry -> single-exit sequence.
+            --  the subsequent vertices which reclaim borrowers form just a
+            --  straight single-entry -> single-exit sequence.
 
          begin
             Add_Vertex (FA,
