@@ -4086,16 +4086,6 @@ package body Flow.Control_Flow_Graph is
                Inits.Append (V);
             end if;
          end loop;
-
-         if Inits.Is_Empty then
-            --  We did not have anything with a default initial value, so we
-            --  just create a null vertex here.
-            Add_Vertex (FA,
-                        Direct_Mapping_Id (N),
-                        Null_Node_Attributes,
-                        V);
-            Inits.Append (V);
-         end if;
       end if;
 
       --  If this type has a Default_Initial_Condition then we need to
@@ -4112,17 +4102,27 @@ package body Flow.Control_Flow_Graph is
          end;
       end if;
 
-      V := Flow_Graphs.Null_Vertex;
-      for W of Inits loop
-         if V /= Flow_Graphs.Null_Vertex then
-            Linkup (FA, V, W);
-         end if;
-         V := W;
-      end loop;
-      CM.Insert (Union_Id (N),
-                 Graph_Connections'
-                   (Standard_Entry => Inits.First_Element,
-                    Standard_Exits => To_Set (Inits.Last_Element)));
+      --  If nothing has been initialized by this object declaration, then add
+      --  a dummy vertex.
+
+      if Inits.Is_Empty then
+         Add_Dummy_Vertex (N, FA, CM);
+
+      --  Otherwise, link all initialization vertices
+
+      else
+         V := Flow_Graphs.Null_Vertex;
+         for W of Inits loop
+            if V /= Flow_Graphs.Null_Vertex then
+               Linkup (FA, V, W);
+            end if;
+            V := W;
+         end loop;
+         CM.Insert (Union_Id (N),
+                    Graph_Connections'
+                      (Standard_Entry => Inits.First_Element,
+                       Standard_Exits => To_Set (Inits.Last_Element)));
+      end if;
 
       --  If we are analyzing a package spec or body and we just introduced
       --  'Initial and 'Final vertices for an entity that is mentioned in an
