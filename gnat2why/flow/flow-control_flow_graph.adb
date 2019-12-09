@@ -6039,7 +6039,16 @@ package body Flow.Control_Flow_Graph is
             for A of FA.CFG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
                for B of FA.CFG.Get_Collection (V, Flow_Graphs.Out_Neighbours)
                loop
-                  FA.CFG.Add_Edge (A, B, EC_Default);
+                  --  The colour edges depends on the source vertex; for edges
+                  --  incoming to the null vertex this colour can be anything
+                  --  and it must be preserved.
+
+                  FA.CFG.Add_Edge (A, B, FA.CFG.Edge_Colour (A, V));
+
+                  --  The colour of edges outgoing from a null vertex is always
+                  --  "default"; such edges can be safely ignored.
+
+                  pragma Assert (FA.CFG.Edge_Colour (V, B) = EC_Default);
                end loop;
             end loop;
 
