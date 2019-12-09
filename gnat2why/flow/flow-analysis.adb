@@ -2091,7 +2091,7 @@ package body Flow.Analysis is
    --------------------
 
    procedure Find_Dead_Code (FA : in out Flow_Analysis_Graphs) is
-      Dead_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
+      Live_Code : Vertex_Sets.Set := Vertex_Sets.Empty_Set;
 
       procedure Flag_Live (V  : Flow_Graphs.Vertex_Id;
                            TV : out Flow_Graphs.Simple_Traversal_Instruction);
@@ -2107,7 +2107,7 @@ package body Flow.Analysis is
          Atr : V_Attributes renames FA.Atr (V);
       begin
          if Atr.Is_Program_Node then
-            Dead_Code.Delete (V);
+            Live_Code.Insert (V);
          end if;
          TV := (if Atr.Execution = Barrier
                 then Flow_Graphs.Skip_Children
@@ -2117,30 +2117,27 @@ package body Flow.Analysis is
    --  Start of processing for Find_Dead_Code
 
    begin
-      --  Guilty until proven innocent
-      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
-         declare
-            Atr : V_Attributes renames FA.Atr (V);
-         begin
-            if Atr.Is_Program_Node then
-               Dead_Code.Insert (V);
-            end if;
-         end;
-      end loop;
-
       --  Discover live code
       FA.CFG.DFS (Start         => FA.Start_Vertex,
                   Include_Start => True,
                   Visitor       => Flag_Live'Access);
 
       --  Anything remaining is dead
-      for V of Dead_Code loop
-         Error_Msg_Flow (FA       => FA,
-                         Msg      => "this statement is never reached",
-                         Severity => Warning_Kind,
-                         N        => FA.Atr (V).Error_Location,
-                         Tag      => VC_Kinds.Dead_Code,
-                         Vertex   => V);
+      for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
+         declare
+            Atr : V_Attributes renames FA.Atr (V);
+         begin
+            if Atr.Is_Program_Node
+              and then not Live_Code.Contains (V)
+            then
+               Error_Msg_Flow (FA       => FA,
+                               Msg      => "this statement is never reached",
+                               Severity => Warning_Kind,
+                               N        => Atr.Error_Location,
+                               Tag      => VC_Kinds.Dead_Code,
+                               Vertex   => V);
+            end if;
+         end;
       end loop;
    end Find_Dead_Code;
 
