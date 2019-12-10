@@ -1657,6 +1657,16 @@ package body Flow.Analysis is
 
    procedure Find_Ineffective_Statements (FA : in out Flow_Analysis_Graphs) is
 
+      Reachable_Code : Vertex_Sets.Set;
+      --  Reachable program nodes; we only warn about ineffective statements on
+      --  live nodes and warn about all the other nodes as being unreachable.
+
+      procedure Flag_Reachable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction);
+      --  Flag the given node as reachable
+      --  ??? This repeats a traversal in Find_Dead_Code
+
       function Find_Masking_Code
         (Ineffective_Statement : Flow_Graphs.Vertex_Id)
          return Vertex_Sets.Set;
@@ -1669,7 +1679,8 @@ package body Flow.Analysis is
       function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex
 
-      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean;
+      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean
+      with Pre => FA.Atr (V).Is_Program_Node;
       --  Checks if from the given vertex V it is impossible to reach the end
       --  vertex.
 
@@ -1712,6 +1723,25 @@ package body Flow.Analysis is
       --  actual object.
       --  ??? this routine actually skips only checked conversion; to have what
       --  this comment says we can reuse Sem_Util.Unqual_Conv.
+
+      --------------------
+      -- Flag_Reachable --
+      --------------------
+
+      procedure Flag_Reachable
+        (V  : Flow_Graphs.Vertex_Id;
+         TV : out Flow_Graphs.Simple_Traversal_Instruction)
+      is
+         Atr : V_Attributes renames FA.Atr (V);
+      begin
+         if Atr.Is_Program_Node then
+            Reachable_Code.Insert (V);
+         end if;
+
+         TV := (if Atr.Execution = Normal_Execution
+                then Flow_Graphs.Continue
+                else Flow_Graphs.Skip_Children);
+      end Flag_Reachable;
 
       -----------------------
       -- Find_Masking_Code --
@@ -1815,7 +1845,7 @@ package body Flow.Analysis is
                      Include_Start => True,
                      Visitor       => Visitor'Access);
          return Dead_End or else
-           not FA.CFG.Non_Trivial_Path_Exists (FA.Start_Vertex, V);
+           not Reachable_Code.Contains (V);
       end Is_Dead_End;
 
       -----------------------------
@@ -1944,6 +1974,11 @@ package body Flow.Analysis is
          return;
       end if;
 
+      --  Discover live code
+      FA.CFG.DFS (Start         => FA.Start_Vertex,
+                  Include_Start => True,
+                  Visitor       => Flag_Reachable'Access);
+
       for V of FA.PDG.Get_Collection (Flow_Graphs.All_Vertices) loop
          declare
             Key : Flow_Id renames FA.PDG.Get_Key (V);
@@ -1968,7 +2003,10 @@ package body Flow.Analysis is
                  (V, Is_Final_Use_Any_Export'Access) and then
 
                  --  Suppression for dead code
-                 not Is_Dead_End (V) and then
+                 not Is_Dead_End
+                   (if Atr.Is_Program_Node
+                    then V
+                    else FA.PDG.Get_Vertex (Atr.Call_Vertex)) and then
 
                  --  Suppression for package initializations
                  not Atr.Is_Package_Initialization and then
