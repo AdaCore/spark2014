@@ -248,6 +248,7 @@ control_structures.adb:16:04: info: initialization of "Value" proved
 control_structures.adb:17:04: info: initialization of "Sum" proved
 control_structures.adb:19:04: info: initialization of "Approx" proved
 control_structures.adb:19:12: info: initialization of "X" proved
+control_structures.adb:21:04: warning: initialization of "Letter" has no effect
 control_structures.adb:23:14: info: add a contract to analyze it separately from calling contexts
 control_structures.adb:23:14: info: local subprogram "Calculate_Valve" only analyzed in the context of calls
 control_structures.adb:24:31: info: initialization of "New_Setting" proved
@@ -255,29 +256,88 @@ control_structures.adb:26:24: medium: overflow check might fail, in call inlined
 control_structures.adb:31:08: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention Second in a precondition]
 control_structures.adb:31:23: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention First in a precondition]
 control_structures.adb:31:25: medium: overflow check might fail [possible explanation: subprogram at line 29 should mention First in a precondition]
+control_structures.adb:35:06: warning: unused assignment
+control_structures.adb:36:06: warning: unused assignment
+control_structures.adb:37:06: warning: unused assignment
+control_structures.adb:38:06: warning: unused assignment
+control_structures.adb:39:06: warning: unused assignment
+control_structures.adb:40:07: warning: unused assignment
+control_structures.adb:41:06: warning: unused assignment
+control_structures.adb:44:04: warning: statement has no effect
+control_structures.adb:45:09: warning: unused assignment
 control_structures.adb:45:12: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:46:09: warning: unused assignment
+control_structures.adb:49:04: warning: statement has no effect
+control_structures.adb:50:09: warning: unused assignment
+control_structures.adb:53:04: warning: statement has no effect
+control_structures.adb:54:09: warning: unused assignment
+control_structures.adb:55:09: warning: unused assignment
+control_structures.adb:57:09: warning: unused assignment
+control_structures.adb:58:09: warning: unused assignment
+control_structures.adb:62:04: warning: statement has no effect
+control_structures.adb:63:09: warning: unused assignment
+control_structures.adb:64:04: warning: statement has no effect
+control_structures.adb:65:09: warning: unused assignment
+control_structures.adb:67:09: warning: unused assignment
+control_structures.adb:71:04: warning: statement has no effect
+control_structures.adb:72:09: warning: unused assignment
+control_structures.adb:73:04: warning: statement has no effect
+control_structures.adb:74:09: warning: unused assignment
+control_structures.adb:75:04: warning: statement has no effect
+control_structures.adb:76:09: warning: unused assignment
+control_structures.adb:79:12: warning: unused assignment
+control_structures.adb:80:04: warning: statement has no effect
+control_structures.adb:82:12: warning: unused assignment
+control_structures.adb:84:12: warning: unused assignment
+control_structures.adb:86:12: warning: unused assignment
+control_structures.adb:88:12: warning: unused assignment
+control_structures.adb:90:12: warning: unused assignment
+control_structures.adb:91:18: warning: unused assignment
+control_structures.adb:95:04: warning: statement has no effect
+control_structures.adb:96:09: warning: unused assignment
 control_structures.adb:96:14: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:98:09: warning: unused assignment
 control_structures.adb:98:14: info: division check proved (CVC4: 1 VC)
+control_structures.adb:101:06: warning: unused assignment
 control_structures.adb:101:26: info: overflow check proved (CVC4: 1 VC)
 control_structures.adb:101:37: info: division check proved (CVC4: 1 VC)
+control_structures.adb:103:04: warning: statement has no effect
+control_structures.adb:104:09: warning: unused assignment
 control_structures.adb:104:14: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:105:04: warning: statement has no effect
+control_structures.adb:106:09: warning: unused assignment
 control_structures.adb:106:14: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:108:09: warning: unused assignment
 control_structures.adb:108:14: info: division check proved (CVC4: 1 VC)
+control_structures.adb:111:06: warning: unused assignment
 control_structures.adb:111:26: info: overflow check proved (CVC4: 1 VC)
 control_structures.adb:111:49: info: overflow check proved (CVC4: 1 VC)
 control_structures.adb:111:60: info: division check proved (CVC4: 1 VC)
+control_structures.adb:113:04: warning: statement has no effect
+control_structures.adb:114:09: warning: unused assignment
 control_structures.adb:114:12: info: precondition proved (CVC4: 1 VC)
+control_structures.adb:116:09: warning: unused assignment
 control_structures.adb:116:12: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:116:23: info: float overflow check proved (CVC4: 1 VC)
+control_structures.adb:119:06: warning: unused assignment
 control_structures.adb:119:09: info: precondition proved (CVC4: 1 VC)
 control_structures.adb:119:44: info: float overflow check proved (CVC4: 1 VC)
+control_structures.adb:123:04: warning: statement has no effect
 control_structures.adb:123:13: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:127:04: warning: statement has no effect
 control_structures.adb:127:13: info: overflow check proved (CVC4: 1 VC)
+control_structures.adb:131:04: warning: statement has no effect
+control_structures.adb:137:10: warning: unused assignment
+control_structures.adb:150:08: warning: unused assignment
+control_structures.adb:154:11: warning: unused assignment
 control_structures.adb:154:18: medium: overflow check might fail [possible explanation: postcondition of call at line 152 should mention Item (for argument Value)]
+control_structures.adb:158:11: warning: unused assignment
 control_structures.adb:158:16: info: division check proved (CVC4: 1 VC)
 control_structures.adb:158:16: info: float overflow check proved (Interval)
 control_structures.adb:159:17: info: float overflow check proved (CVC4: 2 VC)
 control_structures.adb:159:26: medium: float overflow check might fail
+control_structures.adb:159:44: warning: statement has no effect
+control_structures.adb:160:14: warning: unused assignment
 control_structures.adb:160:21: info: float overflow check proved (Interval)
 control_structures.adb:160:31: info: float overflow check proved (CVC4: 1 VC)
 control_structures.adb:160:35: medium: divide by zero might fail

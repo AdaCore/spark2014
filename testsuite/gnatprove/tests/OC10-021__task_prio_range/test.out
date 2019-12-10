@@ -1,2 +1,4 @@
+task_int_prio.adb:4:07: warning: initialization of "X" has no effect
+task_int_prio.adb:7:12: warning: unused assignment
 task_int_prio.ads:5:14: info: nontermination of task proved (CVC4: 1 VC)
 task_int_prio.ads:7:34: medium: range check might fail (e.g. when X = -1)

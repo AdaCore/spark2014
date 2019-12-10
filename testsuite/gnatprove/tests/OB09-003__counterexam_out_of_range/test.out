@@ -4,6 +4,9 @@ p.adb:9:32: info: range check proved (CVC4: 1 VC)
 p.adb:18:33: info: loop invariant initialization proved (CVC4: 1 VC)
 p.adb:18:33: info: loop invariant preservation proved (CVC4: 1 VC)
 p.adb:20:32: info: range check proved (CVC4: 1 VC)
+p.adb:26:07: warning: initialization of "Counter" has no effect
+p.adb:30:10: warning: statement has no effect
+p.adb:31:21: warning: unused assignment
 p.adb:31:32: info: range check proved (CVC4: 1 VC)
 p.ads:3:14: info: nontermination of task proved (CVC4: 1 VC)
 p.ads:4:14: info: nontermination of task proved (CVC4: 1 VC)

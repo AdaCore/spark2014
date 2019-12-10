@@ -4,6 +4,7 @@ foo.adb:15:22: info: postcondition proved (CVC4: 1 VC)
 foo.adb:41:18: info: range check proved (CVC4: 1 VC)
 foo.adb:43:14: info: ceiling priority protocol is respected (CVC4: 1 VC)
 foo.adb:43:14: info: nontermination of task proved (CVC4: 1 VC)
+foo.adb:47:27: warning: unused assignment to "B"
 foo.adb:50:14: medium: precondition might fail, cannot prove B
 foo.adb:55:14: warning: subprogram "Test_Delay_01" has no effect
 p.ads:7:17: info: ceiling priority protocol is respected (CVC4: 1 VC)

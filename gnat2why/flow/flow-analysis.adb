@@ -1679,11 +1679,6 @@ package body Flow.Analysis is
       function Is_Any_Final_Use (V : Flow_Graphs.Vertex_Id) return Boolean;
       --  Checks if the given vertex V is a final-use vertex
 
-      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean
-      with Pre => FA.Atr (V).Is_Program_Node;
-      --  Checks if from the given vertex V it is impossible to reach the end
-      --  vertex.
-
       function Is_Final_Use_Any_Export (V : Flow_Graphs.Vertex_Id)
                                         return Boolean;
       --  Checks if the given vertex V represents an externally visible
@@ -1809,44 +1804,6 @@ package body Flow.Analysis is
       begin
          return FA.PDG.Get_Key (V).Variant = Final_Value;
       end Is_Any_Final_Use;
-
-      -----------------
-      -- Is_Dead_End --
-      -----------------
-
-      function Is_Dead_End (V : Flow_Graphs.Vertex_Id) return Boolean is
-         Dead_End : Boolean := True;
-
-         procedure Visitor (V  : Flow_Graphs.Vertex_Id;
-                            TV : out Flow_Graphs.Simple_Traversal_Instruction);
-
-         -------------
-         -- Visitor --
-         -------------
-
-         procedure Visitor (V  : Flow_Graphs.Vertex_Id;
-                            TV : out Flow_Graphs.Simple_Traversal_Instruction)
-         is
-         begin
-            if FA.Atr (V).Execution /= Normal_Execution then
-               TV := Flow_Graphs.Skip_Children;
-            elsif V = FA.Helper_End_Vertex then
-               Dead_End := False;
-               TV := Flow_Graphs.Abort_Traversal;
-            else
-               TV := Flow_Graphs.Continue;
-            end if;
-         end Visitor;
-
-      --  Start of processing for Is_Dead_End
-
-      begin
-         FA.CFG.DFS (Start         => V,
-                     Include_Start => True,
-                     Visitor       => Visitor'Access);
-         return Dead_End or else
-           not Reachable_Code.Contains (V);
-      end Is_Dead_End;
 
       -----------------------------
       -- Is_Final_Use_Any_Export --
@@ -2002,8 +1959,10 @@ package body Flow.Analysis is
                  not FA.PDG.Non_Trivial_Path_Exists
                  (V, Is_Final_Use_Any_Export'Access) and then
 
-                 --  Suppression for dead code
-                 not Is_Dead_End
+                 --  We only want to find ineffective statements within code
+                 --  that is reachable; code that is unreachable is clearly
+                 --  ineffective as well, but it gets its own warning.
+                 Reachable_Code.Contains
                    (if Atr.Is_Program_Node
                     then V
                     else FA.PDG.Get_Vertex (Atr.Call_Vertex)) and then

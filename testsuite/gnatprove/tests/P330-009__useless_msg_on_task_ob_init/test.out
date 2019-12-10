@@ -1,6 +1,10 @@
 records_and_array.adb:7:09: info: initialization of "T_Task" constituent of "State" proved
 records_and_array.adb:7:09: info: nontermination of task proved (CVC4: 1 VC)
+records_and_array.adb:10:07: warning: initialization of "P" has no effect
+records_and_array.adb:13:10: warning: statement has no effect
+records_and_array.adb:14:15: warning: unused assignment
 records_and_array.adb:14:20: info: overflow check proved (CVC4: 1 VC)
+records_and_array.adb:16:15: warning: unused assignment
 records_and_array.adb:32:20: info: overflow check proved (CVC4: 1 VC)
 records_and_array.adb:43:20: info: overflow check proved (CVC4: 1 VC)
 records_and_array.ads:10:04: low: initialization of "XXX" must be mentioned in the Initializes contract of "Records_And_Array" (SPARK RM 7.1.5(9))
