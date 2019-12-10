@@ -23,11 +23,11 @@
 
 package body Flow.Control_Dependence_Graph is
 
-   procedure Create (FA : in out Flow_Analysis_Graphs)
-   is
+   procedure Create (FA : in out Flow_Analysis_Graphs) is
+
       procedure Sanity_Check (V, CV : Flow_Graphs.Vertex_Id) with Ghost;
       --  Apply sanity checking to V and CV, which are a call parameter vertex
-      --  and the call vertex, respectively.
+      --  and its corresponding call vertex, respectively.
 
       ------------------
       -- Sanity_Check --
@@ -37,8 +37,7 @@ package body Flow.Control_Dependence_Graph is
          use type Flow_Graphs.Vertex_Id;
       begin
          --  Sanity check that we will not lose control dependence
-         for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours)
-         loop
+         for P of FA.CDG.Get_Collection (V, Flow_Graphs.In_Neighbours) loop
             if P = V then
                --  Self dependence is OK and we don't care if it disappears
                null;
@@ -56,9 +55,7 @@ package body Flow.Control_Dependence_Graph is
          end loop;
 
          --  Sanity check that we won't lose outwards control influence
-         for S of FA.CDG.Get_Collection
-           (V, Flow_Graphs.Out_Neighbours)
-         loop
+         for S of FA.CDG.Get_Collection (V, Flow_Graphs.Out_Neighbours) loop
             if S = V then
                --  Self dependence is OK and we don't care if it disappears
                null;
