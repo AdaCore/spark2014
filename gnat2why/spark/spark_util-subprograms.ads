@@ -366,8 +366,16 @@ package SPARK_Util.Subprograms is
      (No_Return (E)
        or else
       Has_Might_Not_Return_Annotation (E))
-   with Pre => Ekind (E) in Entry_Kind | E_Function | E_Procedure;
-   --  @param E a subprogram
+   with Pre => Ekind (E) in Entry_Kind
+                          | E_Function
+                          | E_Package
+                          | E_Procedure
+                          | E_Task_Type,
+        Post => (if Is_Possibly_Nonreturning_Procedure'Result
+                 then Ekind (E) = E_Procedure);
+   --  @param E either a procedure that might have a No_Return or
+   --           Might_Not_Return contract, or a program unit that might call
+   --           such a procedure
    --  @return True iff E has aspect No_Return or annotation Might_Not_Return
 
    function Is_Predefined_Potentially_Blocking (E : Entity_Id) return Boolean
