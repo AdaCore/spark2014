@@ -311,8 +311,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(let ");
       Print_Node (+Name);
-      --  Trick simplify_intros transformation into believing that this should
-      --  be simplified
       P (O, " ");
       P (O, Identifier_Get_Labels (+Name), As_Labels => True);
       P (O, " = ");
@@ -344,8 +342,6 @@ package body Why.Atree.Sprint is
    begin
       P (O, "let ");
       Print_Node (+Name);
-      --  Trick simplify_intros transformation into believing that this should
-      --  be simplified
       P (O, " ");
       P (O, Identifier_Get_Labels (+Name), As_Labels => True);
       P (O, " = { ");
