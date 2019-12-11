@@ -4788,8 +4788,12 @@ package body Flow.Control_Flow_Graph is
             Prev := Var;
          end loop;
 
+         --  Abnormal execution is when the callee has No_Return,
+         --  but the caller is an ordinary unit (i.e. without
+         --  No_Return/Might_Not_Return).
+
          if No_Return (Called_Thing)
-           and then not No_Return (FA.Spec_Entity)
+           and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
          then
             CM.Insert
               (Union_Id (N),

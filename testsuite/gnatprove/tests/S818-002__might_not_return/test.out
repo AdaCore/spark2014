@@ -21,5 +21,3 @@ pack.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 pack.ads:12:06: info: data dependencies proved
 pack.ads:16:14: medium: postcondition might fail, cannot prove not B (e.g. when B = True)
 pack.ads:23:06: info: data dependencies proved
-pack.ads:23:28: low: unused global "X"
-pack.ads:23:28: warning: "X" is not modified, could be INPUT
