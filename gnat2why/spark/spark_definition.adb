@@ -6715,14 +6715,20 @@ package body SPARK_Definition is
                end loop;
             end;
 
-         --  Emit warning on pragma Overflow_Mode being currently ignored, even
-         --  in code not marked SPARK_Mode On, as otherwise no warning would
-         --  be issued on configuration pragmas at the start of units whose
-         --  top level declaration is marked later SPARK_Mode On. Do not emit
-         --  a warning in code marked SPARK_Mode Off though.
+         --  Pragma Overflow_Mode is taken into account when used as
+         --  configuration pragma in the main unit.
 
          when Pragma_Overflow_Mode =>
-            if Emit_Warning_Info_Messages
+            if Nkind (Parent (N)) = N_Compilation_Unit then
+               Sem_Prag.Set_Overflow_Mode (N);
+
+            --  Emit warning on pragma Overflow_Mode being currently ignored,
+            --  even in code not marked SPARK_Mode On, as otherwise no warning
+            --  would be issued on configuration pragmas at the start of units
+            --  whose top level declaration is marked later SPARK_Mode On. Do
+            --  not emit a warning in code marked SPARK_Mode Off though.
+
+            elsif Emit_Warning_Info_Messages
               and then not SPARK_Pragma_Is (Opt.Off)
             then
                Error_Msg_F ("?pragma Overflow_Mode in code is ignored", N);

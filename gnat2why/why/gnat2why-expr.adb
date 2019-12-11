@@ -52,6 +52,7 @@ with Namet;                          use Namet;
 with Nlists;                         use Nlists;
 with Opt;                            use type Opt.Warning_Mode_Type;
 with Rtsfind;                        use Rtsfind;
+with Sem;
 with Sinput;                         use Sinput;
 with Snames;                         use Snames;
 with SPARK_Annotate;                 use SPARK_Annotate;
@@ -15339,15 +15340,20 @@ package body Gnat2Why.Expr is
          --  used for the bounds is the base type in the first case, and
          --  Long_Long_Integer in the second case (which is its own base type).
 
+         --  Use Sem.Scope_Suppress which takes into account the default from
+         --  switches and configuration pragma files as defined in
+         --  Opt.Suppress_Options, as well as possible configuration pragmas
+         --  in the main unit, as done in SPARK_Definition.Mark_Pragma.
+
          if Is_Signed_Integer_Type (Expr_Type) then
             declare
                Mode : Overflow_Mode_Type;
             begin
                case Params.Phase is
                   when Generate_VCs_For_Body =>
-                     Mode := Opt.Suppress_Options.Overflow_Mode_General;
+                     Mode := Sem.Scope_Suppress.Overflow_Mode_General;
                   when Generate_VCs_For_Assertion =>
-                     Mode := Opt.Suppress_Options.Overflow_Mode_Assertions;
+                     Mode := Sem.Scope_Suppress.Overflow_Mode_Assertions;
                   when others =>
                      raise Program_Error;
                end case;
