@@ -12,10 +12,10 @@ bad.adb:24:07: call to possibly nonreturning procedure outside a (possibly) nonr
 bad.adb:30:07: call to possibly nonreturning procedure outside a (possibly) nonreturning procedure
 bad.adb:30:07: consider annotating caller "Proc" with Might_Not_Return
 gnatprove: error during generation of Global contracts
-weird.adb:18:07: medium: exception might be raised
-weird.ads:3:14: medium: subprogram "P" might not terminate, terminating annotation could be incorrect
-weird.ads:8:14: info: subprogram "Q" will terminate, terminating annotation has been proved
-weird.ads:13:14: medium: subprogram "R" might not terminate, terminating annotation could be incorrect
+weird.ads:5:06: procedure with aspect Annotate Might_Not_Return must not also be marked with Terminating
+weird.ads:10:06: procedure with aspect Annotate Terminating must not also be marked with Might_Not_Return
+weird.ads:14:06: procedure with aspect Annotate Terminating must not also be marked with No_Return
+gnatprove: error during generation of Global contracts
 pack.adb:5:07: medium: exception might be raised (e.g. when B = True)
 pack.adb:11:10: medium: precondition might fail, cannot prove B
 pack.adb:20:22: info: assertion proved (CVC4: 1 VC)

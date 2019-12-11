@@ -197,8 +197,10 @@ package body SPARK_Annotate is
    --  Check validity of a pragma Annotate (Gnatprove, Pledge, E) and insert it
    --  in the Pledge_Annotations map.
 
-   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) with
-     Pre => Present (Arg3_Exp);
+   procedure Check_Terminate_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   with Pre => Present (Arg3_Exp);
    --  Check validity of a pragma Annotate (Gnatprove, Terminating, E) and
    --  insert it in the Terminate_Annotations map.
 
@@ -613,6 +615,15 @@ package body SPARK_Annotate is
             Arg3_Exp);
          return;
 
+      --  The procedure should not be annotated as terminating
+
+      elsif Has_Terminate_Annotation (E) then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Might_Not_Return must not also be marked with Terminating",
+            Arg3_Exp);
+         return;
+
       --  The procedure should not be dispatching
 
       elsif Is_Dispatching_Operation (E) then
@@ -719,7 +730,13 @@ package body SPARK_Annotate is
    -- Check_Terminate_Annotation --
    --------------------------------
 
-   procedure Check_Terminate_Annotation (Arg3_Exp : Node_Id) is
+   procedure Check_Terminate_Annotation
+     (Arg3_Exp : Node_Id;
+      Prag     : Node_Id)
+   is
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
+      Aspect_Or_Pragma : constant String :=
+        (if From_Aspect then "aspect" else "pragma");
       E : constant Entity_Id := Entity (Arg3_Exp);
 
    begin
@@ -727,7 +744,7 @@ package body SPARK_Annotate is
 
       pragma Assert (Present (E));
 
-      --  This entity must be a function
+      --  This entity must be a subprogram or a package
 
       if Ekind (E) not in
         Subprogram_Kind | E_Package | Generic_Subprogram_Kind
@@ -737,6 +754,24 @@ package body SPARK_Annotate is
             & "a package",
             Arg3_Exp);
          return;
+
+      --  It must not be a procedure with No_Return
+
+      elsif No_Return (E) then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Terminating must not also be marked with No_Return",
+            Arg3_Exp);
+
+      --  It must not be a procedure with Might_Not_Return
+
+      elsif Ekind (E) = E_Procedure
+        and then Has_Might_Not_Return_Annotation (E)
+      then
+         Error_Msg_N
+           ("procedure with " & Aspect_Or_Pragma & " Annotate "
+            & "Terminating must not also be marked with Might_Not_Return",
+            Arg3_Exp);
       end if;
 
       --  Go through renamings to find the appropriate entity
@@ -1177,7 +1212,7 @@ package body SPARK_Annotate is
          Check_Pledge_Annotation (Arg3_Exp);
 
       elsif Name = "terminating" then
-         Check_Terminate_Annotation (Arg3_Exp);
+         Check_Terminate_Annotation (Arg3_Exp, Node);
 
       --  Annotations with 4 arguments
 
