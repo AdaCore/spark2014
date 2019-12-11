@@ -872,11 +872,12 @@ package body Flow.Analysis is
       --  ??? would be better to have those symmetric, but even better, we
       --  should reuse more code with Find_Ineffective_Imports_...
 
-      function Is_In_Access_Parameter (E : Entity_Id) return Boolean;
-      --  Returns True iff E is a formal parameter of mode IN with a named
+      function Is_In_Access_Parameter (E : Entity_Id) return Boolean
+      with Pre => Is_Formal (E);
+      --  Returns True iff E is a formal parameter of mode IN with an
       --  access type. Such parameters appear as exports (except if they are
       --  access-to-constant) and they can be written, but they are typically
-      --  used without being written and then we suppress the warning.
+      --  used without being written.
 
       function Is_Or_Belongs_To_Concurrent_Object
         (F : Flow_Id)
@@ -899,8 +900,7 @@ package body Flow.Analysis is
                --  Access constant types never appear as exports
                pragma Assert (not Is_Access_Constant (Typ));
 
-               return Is_Access_Type (Typ)
-                 and then not Is_Anonymous_Access_Type (Typ);
+               return Is_Access_Type (Typ);
             end;
          else
             return False;
@@ -1037,9 +1037,6 @@ package body Flow.Analysis is
                            Is_Or_Belongs_To_Concurrent_Object (F_Final)
                              or else
                            Is_Param_Of_Null_Subp_Of_Generic
-                             (Get_Direct_Mapping_Id (F_Final))
-                             or else
-                           Is_In_Access_Parameter
                              (Get_Direct_Mapping_Id (F_Final)))
                then
                   null;
@@ -1047,7 +1044,11 @@ package body Flow.Analysis is
                then
                   Error_Msg_Flow
                     (FA       => FA,
-                     Msg      => "& is not modified, could be IN",
+                     Msg      => "& is not modified, could be " &
+                                 (if Is_In_Access_Parameter
+                                    (Get_Direct_Mapping_Id (F_Final))
+                                  then "of access constant type"
+                                  else "IN"),
                      N        => Error_Location (FA.PDG, FA.Atr, V),
                      F1       => Entire_Variable (F_Final),
                      Tag      => Inout_Only_Read,

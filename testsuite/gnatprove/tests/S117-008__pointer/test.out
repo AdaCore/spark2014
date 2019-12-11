@@ -240,6 +240,7 @@ formal_vectors.adb:204:31: info: pointer dereference check proved (CVC4: 1 VC), 
 formal_vectors.adb:204:41: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
 formal_vectors.adb:204:44: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:12:09: info: predicate check proved on default value (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.ads:16:41: warning: "E" is not modified, could be of access constant type, in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:18:42: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:19:19: info: precondition proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:19:19: medium: postcondition might fail, cannot prove Element (V, Length (V)) = E, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and V = (Top => 1, Content => (all => (1 => (all => (all => 0)), others => (all => (all => 1))))))
@@ -248,7 +249,9 @@ formal_vectors.ads:22:41: info: overflow check proved (CVC4: 1 VC), in instantia
 formal_vectors.ads:23:43: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:26:19: info: precondition proved (CVC4: 4 VC; Trivial: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:26:19: medium: postcondition might fail, cannot prove Range_Shifted (Model (E)'Old, Model (V), 1, Length (E)'Old, Count_Type (Length (V)'old)), in instantiation at use_formal_vectors.ads:10 (e.g. when E'Old = (Top => 0, Content => null) and V = (Top => 0, Content => null) and V'Old = (Top => 0, Content => null))
+formal_vectors.ads:27:56: warning: "E" is not modified, could be of access constant type, in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:28:71: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.ads:30:56: warning: "E" is not modified, could be of access constant type, in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:44:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:44:39: info: precondition proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:53:14: info: postcondition proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -256,5 +259,7 @@ formal_vectors.ads:66:45: info: pointer dereference check proved (CVC4: 2 VC), i
 formal_vectors.ads:68:48: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.ads:68:53: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10
 use_formal_vectors.adb:4:53: info: pointer dereference check proved (CVC4: 1 VC)
+use_formal_vectors.ads:6:20: warning: "X" is not modified, could be of access constant type
 use_formal_vectors.ads:6:65: info: pointer dereference check proved (CVC4: 1 VC)
+use_formal_vectors.ads:7:19: warning: "X" is not modified, could be of access constant type
 use_formal_vectors.ads:8:19: info: postcondition proved (CVC4: 1 VC)

@@ -33,5 +33,7 @@ spark04.adb:27:51: medium: pointer dereference check might fail (e.g. when AX = 
 spark04.adb:28:17: info: range check proved (CVC4: 1 VC)
 spark04.adb:28:32: info: range check proved (CVC4: 1 VC)
 spark04.adb:28:51: medium: pointer dereference check might fail (e.g. when AY = null) [possible explanation: subprogram at spark04.ads:21 should mention AY in a precondition]
+spark04.ads:11:28: warning: "X" is not modified, could be of access constant type
+spark04.ads:11:35: warning: "Y" is not modified, could be of access constant type
 spark04.ads:22:06: info: data dependencies proved
 spark04.ads:23:28: info: initialization of "P" proved

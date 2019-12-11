@@ -24,8 +24,10 @@ n04.adb:33:07: "MyStruct" is not allowed in SPARK (due to component of anonymous
 n04.adb:33:07: violation of pragma SPARK_Mode at test.adc:3
 n04.adb:37:07: "Y" is not allowed in SPARK (due to uninitialized object of anonymous access type)
 n04.adb:37:07: violation of pragma SPARK_Mode at test.adc:3
+n05.adb:31:27: warning: "X" is not modified, could be of access constant type
 n05.adb:37:22: insufficient permission on dereference from "X"
 n05.adb:37:22: object was declared as not writeable at line 31
+n06.adb:33:27: warning: "X" is not modified, could be of access constant type
 n06.adb:39:22: insufficient permission on dereference from "X"
 n06.adb:39:22: object was declared as not writeable at line 33
 n07.adb:10:16: anonymous access type for result for non-traversal functions is not allowed in SPARK
@@ -40,22 +42,26 @@ n08.adb:21:18: insufficient permission on dereference from "A"
 n08.adb:21:18: object was declared as not writeable at line 16
 n08.adb:23:22: insufficient permission on dereference from "A"
 n08.adb:23:22: object was declared as not writeable at line 16
+n09.adb:11:30: warning: "A" is not modified, could be of access constant type
 n09.adb:16:19: insufficient permission on dereference from "A"
 n09.adb:16:19: object was declared as not writeable at line 11
 n09b.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
 n09b.adb:11:17: object was moved at line 20
+n09b.adb:11:31: warning: "A" is not modified, could be of access constant type
 n09b.adb:11:43: info: initialization of "B" proved
 n09b.adb:13:11: info: data dependencies proved
 n09b.adb:14:11: medium: expected to see "A" on the left-hand-side of a dependency relation
 n09b.adb:14:11: medium: missing self-dependency "A => A"
 n09c.adb:11:17: insufficient permission for "A" when returning from "Copy_Pointer"
 n09c.adb:11:17: object was moved at line 18
+n09c.adb:11:31: warning: "A" is not modified, could be of access constant type
 n09c.adb:11:44: info: initialization of "B" proved
 n09c.adb:12:09: info: data dependencies proved
 n09c.adb:13:09: medium: expected to see "A" on the left-hand-side of a dependency relation
 n09c.adb:13:09: medium: missing self-dependency "A => A"
 n10.adb:12:17: insufficient permission for "A" when returning from "Modify"
 n10.adb:12:17: object was moved at line 19
+n10.adb:12:25: warning: "A" is not modified, could be of access constant type
 n10.adb:14:09: info: data dependencies proved
 n10.adb:19:10: warning: initialization of "B" has no effect
 n10.adb:20:10: warning: initialization of "T1" has no effect
@@ -93,6 +99,7 @@ n15.adb:24:25: "T2" is not allowed in SPARK (due to borrow or observe of an expr
 n15.adb:24:25: violation of pragma SPARK_Mode at test.adc:3
 n16.adb:13:17: insufficient permission for "T0" when returning from "Modify"
 n16.adb:13:17: object was moved at line 19
+n16.adb:13:25: warning: "T0" is not modified, could be of access constant type
 n16.adb:15:09: info: data dependencies proved
 n16.adb:23:10: warning: initialization of "P" has no effect
 n16.adb:23:23: insufficient permission on dereference from "T0"
@@ -123,6 +130,7 @@ pointers.ads:15:31: warning: "Y" is not modified, could be INPUT
 pointers.ads:18:06: info: data dependencies proved
 pointers.ads:24:14: insufficient permission for "Y" when returning from "Bad_Swap2"
 pointers.ads:24:14: object was moved at pointers.adb:34
+pointers.ads:24:28: warning: "Y" is not modified, could be of access constant type
 pointers.ads:30:14: insufficient permission for "YY" when returning from "Bad_Swap2"
 pointers.ads:30:14: object was moved at pointers.adb:46
 pointers.ads:40:14: insufficient permission for "Y" when returning from "Bad_Swap3"
@@ -137,8 +145,10 @@ pointers.ads:47:32: warning: "CY" is not modified, could be INPUT
 pointers.ads:50:06: info: data dependencies proved
 pointers.ads:56:14: insufficient permission for "Y" when returning from "Bad_Swap4"
 pointers.ads:56:14: object was moved at pointers.adb:86
+pointers.ads:56:28: warning: "Y" is not modified, could be of access constant type
 pointers.ads:62:14: insufficient permission for "CYY" when returning from "Bad_Swap4"
 pointers.ads:62:14: object was moved at pointers.adb:98
+pointers.ads:72:28: warning: "Y" is not modified, could be of access constant type
 pointers.ads:74:14: insufficient permission for "X" when returning from "Swap5"
 pointers.ads:74:14: object was moved at pointers.adb:116
 pointers.ads:81:14: insufficient permission for "CCXX" when returning from "Swap5"
@@ -191,6 +201,7 @@ spark03b.ads:17:63: info: initialization of "Z" proved
 spark03b.ads:17:65: info: initialization of "W" proved
 spark03c.ads:7:13: insufficient permission for "An_Item" when returning from "Insert"
 spark03c.ads:7:13: object was moved at spark03c.adb:6
+spark03c.ads:7:21: warning: "An_Item" is not modified, could be of access constant type
 spark03c.ads:8:21: info: initialization of "An_Item" proved
 spark03c.ads:19:24: info: data dependencies proved
 spark03c.ads:19:63: info: initialization of "Z" proved
