@@ -22,4 +22,15 @@ package body Pack with SPARK_Mode is
 
    procedure Call_Jump2 (B : Boolean) renames Call_Jump;
 
+   procedure Effect (B : Boolean) is
+   begin
+      if B then
+         X := not X;
+         Jump (False);  --  this will certainly not return
+      else
+         Y := not Y;
+         Call_Jump (B); --  this might not return
+      end if;
+   end Effect;
+
 end Pack;

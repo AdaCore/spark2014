@@ -16,4 +16,11 @@ package Pack with SPARK_Mode is
      Post => not B;
    --  This is the same as Call_Jump, but without a Global contract
 
+   X, Y : Boolean := True;
+
+   procedure Effect (B : Boolean) with
+     Annotate => (GNATprove, Might_Not_Return),
+     Global => (In_Out => (X, Y));
+   --  This tracks the global effects on paths that (might) not return
+
 end Pack;
