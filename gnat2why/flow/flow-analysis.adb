@@ -345,7 +345,7 @@ package body Flow.Analysis is
    is
    begin
       if not FA.Is_Main
-        and then not No_Return (FA.Spec_Entity)
+        and then not Is_Possibly_Nonreturning_Procedure (FA.Spec_Entity)
         and then not Has_User_Supplied_Globals (FA.Spec_Entity)
         and then not Is_Ghost_Entity (FA.Spec_Entity)
       then
