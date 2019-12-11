@@ -11854,7 +11854,8 @@ package body Gnat2Why.Expr is
          when Attribute_Component_Size =>
             declare
                Has_Type_Prefix : constant Boolean :=
-                 Present (Entity (Var))
+                 Nkind (Var) in N_Has_Entity
+                   and then Present (Entity (Var))
                    and then Is_Type (Entity (Var));
                Typ : constant Entity_Id :=
                  (if Has_Type_Prefix then Entity (Var) else Etype (Var));
