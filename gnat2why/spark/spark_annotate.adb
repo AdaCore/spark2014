@@ -163,8 +163,9 @@ package body SPARK_Annotate is
    end record;
 
    procedure Check_Pragma_Annotate_GNATprove
-     (Node   : Node_Id;
-      Result : out Check_Justification);
+     (Prag   : Node_Id;
+      Result : out Check_Justification)
+   with Pre => Is_Pragma_Annotate_GNATprove (Prag);
    --  Check validity of the pragma Annotate (GNATprove, ...). For annotations
    --  used to justify check messages, fill in the kind, pattern and reason of
    --  the pragma in Result. Result.Present is False if some syntax error
@@ -1051,16 +1052,16 @@ package body SPARK_Annotate is
    -------------------------------------
 
    procedure Check_Pragma_Annotate_GNATprove
-     (Node   : Node_Id;
+     (Prag   : Node_Id;
       Result : out Check_Justification)
    is
       --  Local constants
 
-      From_Aspect      : constant Boolean := From_Aspect_Specification (Node);
+      From_Aspect      : constant Boolean := From_Aspect_Specification (Prag);
       Aspect_Or_Pragma : constant String :=
         (if From_Aspect then "aspect" else "pragma");
       Number_Of_Pragma_Args : constant Nat :=
-        List_Length (Pragma_Argument_Associations (Node));
+        List_Length (Pragma_Argument_Associations (Prag));
 
       --  Local subprograms
 
@@ -1091,7 +1092,7 @@ package body SPARK_Annotate is
               ("wrong number of arguments in " & Aspect_Or_Pragma
                & " Annotate ('G'N'A'Tprove, " & Standard_Ada_Case (Name)
                & (if Num > 2 then ", ...)" else ")")
-               & ", expected" & Num'Image, Node);
+               & ", expected" & Num'Image, Prag);
          end if;
       end Check_Argument_Number;
 
@@ -1120,7 +1121,7 @@ package body SPARK_Annotate is
 
       --  Local variables
 
-      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Node));
+      Arg1 : constant Node_Id := First (Pragma_Argument_Associations (Prag));
       Arg2 : constant Node_Id := Next (Arg1);
       Name : constant String := Get_Annotation_Name (Arg2);
 
@@ -1203,16 +1204,16 @@ package body SPARK_Annotate is
          Check_Init_Annotation (Arg3_Exp);
 
       elsif Name = "inline_for_proof" then
-         Check_Inline_Annotation (Arg3_Exp, Node);
+         Check_Inline_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "might_not_return" then
-         Check_Might_Not_Return_Annotation (Arg3_Exp, Node);
+         Check_Might_Not_Return_Annotation (Arg3_Exp, Prag);
 
       elsif Name = "pledge" then
          Check_Pledge_Annotation (Arg3_Exp);
 
       elsif Name = "terminating" then
-         Check_Terminate_Annotation (Arg3_Exp, Node);
+         Check_Terminate_Annotation (Arg3_Exp, Prag);
 
       --  Annotations with 4 arguments
 
@@ -1243,7 +1244,7 @@ package body SPARK_Annotate is
                Error_Msg_N
                  ("third argument PATTERN for 'G'N'A'Tprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
-                  Node);
+                  Prag);
                return;
             end if;
 
@@ -1253,7 +1254,7 @@ package body SPARK_Annotate is
                Error_Msg_N
                  ("fourth argument REASON for 'G'N'A'Tprove Annotate "
                   & Aspect_Or_Pragma & " must be a string literal",
-                  Node);
+                  Prag);
                return;
             end if;
 
