@@ -11,4 +11,9 @@ package Pack with SPARK_Mode is
      Annotate => (GNATprove, Might_Not_Return),
      Global => null;
 
+   procedure Call_Jump2 (B : Boolean) with
+     Annotate => (GNATprove, Might_Not_Return),
+     Post => not B;
+   --  This is the same as Call_Jump, but without a Global contract
+
 end Pack;

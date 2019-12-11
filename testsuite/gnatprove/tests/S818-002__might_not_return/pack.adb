@@ -20,4 +20,6 @@ package body Pack with SPARK_Mode is
       pragma Assert (B);
    end Proc;
 
+   procedure Call_Jump2 (B : Boolean) renames Call_Jump;
+
 end Pack;

@@ -18,3 +18,5 @@ pack.adb:20:22: info: assertion proved (CVC4: 1 VC)
 pack.ads:7:06: info: data dependencies proved
 pack.ads:8:14: info: postcondition proved (CVC4: 1 VC)
 pack.ads:12:06: info: data dependencies proved
+pack.ads:14:14: warning: subprogram "Call_Jump2" has no effect
+pack.ads:16:14: medium: postcondition might fail, cannot prove not B (e.g. when B = True)
