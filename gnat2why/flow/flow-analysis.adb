@@ -126,7 +126,7 @@ package body Flow.Analysis is
 
    procedure Warn_On_Subprogram_With_No_Effect
      (FA : in out Flow_Analysis_Graphs)
-   with Pre => FA.Kind = Kind_Subprogram
+   with Pre => Ekind (FA.Spec_Entity) = E_Procedure
                and then not Has_Effects (FA);
    --  Issue a warning if the subprogram has no effects. The message is
    --  suppressed if the subprogram is:
@@ -345,7 +345,7 @@ package body Flow.Analysis is
    is
    begin
       if not FA.Is_Main
-        and then not Is_Error_Signaling_Procedure (FA.Spec_Entity)
+        and then not No_Return (FA.Spec_Entity)
         and then not Has_User_Supplied_Globals (FA.Spec_Entity)
         and then not Is_Ghost_Entity (FA.Spec_Entity)
       then
