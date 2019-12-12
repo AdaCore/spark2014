@@ -1472,12 +1472,15 @@ package body SPARK_Util is
    ------------------
 
    function Has_Volatile (E : Checked_Entity_Id) return Boolean is
-     (if Ekind (E) = E_Abstract_State then
-        Is_External_State (E)
-      elsif Is_Object (E) then
-        Is_Effectively_Volatile (E)
-      else
-        Is_Effectively_Volatile_Object (E));
+     (case Ekind (E) is
+         when E_Abstract_State =>
+            Is_External_State (E),
+         when Object_Kind =>
+            Is_Effectively_Volatile (E),
+         when E_Protected_Type | E_Task_Type =>
+            False,
+         when others =>
+            raise Program_Error);
 
    ---------------------------
    -- Has_Volatile_Property --
