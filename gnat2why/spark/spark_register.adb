@@ -127,6 +127,8 @@ package body SPARK_Register is
                              and then Is_Predicate_Function (E)
                            then
                               null;
+                           elsif Ekind (E) = E_Operator then
+                              null;
                            else
                               Register_Entity (E);
                            end if;
@@ -154,6 +156,7 @@ package body SPARK_Register is
                         when Rewriten_Call =>
                            if Nkind (Original_Node (Parent (N))) in
                              N_Subprogram_Call
+                               and then Ekind (E) /= E_Operator
                            then
                               Register_Entity (E);
                            end if;
