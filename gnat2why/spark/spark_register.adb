@@ -287,8 +287,8 @@ package body SPARK_Register is
          --
          --  Here we register objects, loop parameters (but not in quantified
          --  expressions since nothing can be declared within them),
-         --  discriminants, subprograms parameters (but not stub parameters
-         --  since we essentially process stubs as if they would be ordinary
+         --  subprograms parameters (but not stub parameters since we
+         --  essentially process stubs as if they would be ordinary
          --  definitions).
          --
          --  ??? this is quite delicate
@@ -299,9 +299,7 @@ package body SPARK_Register is
                   Register_Entity (Defining_Entity (N));
                end if;
 
-            when N_Discriminant_Specification
-               | N_Object_Declaration
-            =>
+            when N_Object_Declaration =>
                Register_Entity (Unique_Defining_Entity (N));
 
             when N_Parameter_Specification =>
