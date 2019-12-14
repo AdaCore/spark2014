@@ -52,6 +52,7 @@ with SPARK_Annotate;            use SPARK_Annotate;
 with SPARK_Atree;
 with SPARK_Util;                use SPARK_Util;
 with SPARK_Util.Subprograms;    use SPARK_Util.Subprograms;
+with SPARK_Xrefs;               use SPARK_Xrefs;
 with Stringt;                   use Stringt;
 with String_Utils;
 
@@ -2250,7 +2251,7 @@ package body Flow_Error_Messages is
                        Strip_Child_Prefixes (To_String (F.Name));
 
                   begin
-                     if F_Name_String = "__HEAP" then
+                     if F_Name_String = Name_Of_Heap_Variable then
                         Append (R, "memory accessed through objects of " &
                                    "access type");
                      else
