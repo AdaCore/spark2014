@@ -1,5 +1,6 @@
 database.adb:12:04: info: initialization of "Database" proved
 database.adb:13:04: info: initialization of "DB_Model" proved
+database.adb:20:07: warning: "Email" is not modified, could be of access constant type
 database.adb:22:34: insufficient permission for "Email"
 database.adb:22:34: object was declared as not writeable at line 20
 gnatprove: error during flow analysis and proof

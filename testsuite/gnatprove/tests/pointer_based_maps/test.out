@@ -157,7 +157,6 @@ my_map.ads:45:94: info: range check proved (CVC4: 1 VC)
 my_map.ads:49:14: info: postcondition proved (CVC4: 1 VC)
 my_map.ads:49:14: info: precondition proved (CVC4: 1 VC)
 my_map.ads:49:58: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:51:24: warning: "M" is not modified, could be IN
 my_map.ads:53:14: info: postcondition proved (CVC4: 3 VC; Trivial: 1 VC)
 my_map.ads:53:14: info: precondition proved (CVC4: 1 VC)
 my_map.ads:53:52: info: pointer dereference check proved (CVC4: 1 VC)
