@@ -120,7 +120,8 @@ package Flow_Generated_Globals.Traversal is
                     Ekind (P) in Container_Scope
                     and then P /= Standard_Standard);
    --  Returns container scopes of E up to Standard, which is an ultimate scope
-   --  of all program units.
+   --  of all program units. (The Standard itself is not among the results,
+   --  because it would always appear there and it would carry no information).
 
 private
 

@@ -45,10 +45,12 @@ private package Flow_Generated_Globals.Phase_2.Traversal is
                   Next        => Next_Cursor,
                   Has_Element => Has_Element,
                   Element     => Get_Element);
-   --  In phase 1 the Units component is intentionally a list, because while
-   --  traversing the we encounter each program unit only once. Here it is
-   --  a set, because we might encounter each program unit many times while
-   --  processing ALI files of different child compilation units.
+   --  In phase 1 the Units component is intentionally a list, which is more
+   --  efficient (we know there are no duplicate items when we construct it
+   --  while traversing the AST and we never query it with Contains).
+   --  In phase 2 it is a set, because we might encounter each program unit
+   --  many times while processing ALI files of different child compilation
+   --  units.
 
    function First_Cursor (Cont : Nested) return Name_Sets.Cursor;
    --  For aspect Iterable
