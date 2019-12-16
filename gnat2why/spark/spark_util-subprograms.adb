@@ -1180,6 +1180,27 @@ package body SPARK_Util.Subprograms is
         and then Is_Access_Type (Retysp (Etype (First_Formal (E))));
    end Is_Traversal_Function;
 
+   ----------------------------------------
+   -- Is_Unchecked_Deallocation_Instance --
+   ----------------------------------------
+
+   function Is_Unchecked_Deallocation_Instance
+     (E : Entity_Id)
+      return Boolean
+   is
+   begin
+      --  The following condition is based on how Exp_Unc_Deallocation is
+      --  called in the frontend expansion (this expansion is disabled in
+      --  GNATprove mode).
+
+      return
+        Is_Intrinsic (E)
+        and then Present (Parent (E))
+        and then Present (Generic_Parent (Parent (E)))
+        and then Chars (Generic_Parent (Parent (E)))
+                         = Name_Unchecked_Deallocation;
+   end Is_Unchecked_Deallocation_Instance;
+
    ------------------------------------
    -- Is_Volatile_For_Internal_Calls --
    ------------------------------------

@@ -26,6 +26,7 @@
 with Aspects;                use Aspects;
 with Atree;                  use Atree;
 with Einfo;                  use Einfo;
+with Flow.Dynamic_Memory;
 with Sem_Util;               use Sem_Util;
 with Sinfo;                  use Sinfo;
 with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
@@ -131,6 +132,11 @@ package body SPARK_Register is
                               null;
                            else
                               Register_Entity (E);
+
+                              if Is_Unchecked_Conversion_Instance (E) then
+                                 Register_Entity
+                                   (Flow.Dynamic_Memory.Heap_State);
+                              end if;
                            end if;
 
                         --  Register external calls to protected subprograms
@@ -338,6 +344,9 @@ package body SPARK_Register is
                  N_Task_Type_Declaration      =>
                --  ??? is this needed for wrapper packages?
                Register_Entity (Defining_Entity (N));
+
+            when N_Allocator =>
+               Register_Entity (Flow.Dynamic_Memory.Heap_State);
 
             when others =>
                null;

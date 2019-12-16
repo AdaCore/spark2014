@@ -40,6 +40,7 @@ with Debug.Timing;                    use Debug.Timing;
 with Einfo;                           use Einfo;
 with Errout;                          use Errout;
 with Flow;                            use Flow;
+with Flow.Dynamic_Memory;
 with Flow_Error_Messages;             use Flow_Error_Messages;
 with Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
@@ -614,6 +615,11 @@ package body Gnat2Why.Driver is
       Nlists.Unlock;
       Sem.Scope_Stack.Locked := False;
       Lib.Unlock;
+
+      --  Create an implicit state for memory (de)allocation. It needs to be
+      --  before rewriting, where we might refer to this abstract state.
+
+      Flow.Dynamic_Memory.Create_Heap_State;
 
       --  Before any analysis takes place, perform some rewritings of the tree
       --  that facilitates analysis.

@@ -6,7 +6,7 @@ generic
    type Element_Model (<>) is private;
    with function Model (X : Element_Type) return Element_Model is <>;
    with function Copy (X : Element_Type) return Element_Type is <>;
-package Formal_Vectors with SPARK_Mode is
+package Formal_Vectors with SPARK_Mode, Annotate => (GNATprove, Terminating) is
    pragma Unevaluated_Use_Of_Old (Allow);
 
    type Vector is private;

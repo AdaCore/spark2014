@@ -1,4 +1,5 @@
 private_pointer.adb:5:12: info: pointer dereference check proved (CVC4: 1 VC)
+private_pointer.adb:11:21: high: "Heap.Dynamic_Memory" must be listed in the Global aspect of "Main" (SPARK RM 6.1.4(14))
 private_pointer.adb:12:14: info: precondition proved (CVC4: 1 VC)
 private_pointer.adb:13:22: info: assertion proved (CVC4: 1 VC)
 private_pointer.adb:13:29: info: precondition proved (CVC4: 1 VC)
@@ -7,9 +8,7 @@ private_pointer.adb:15:22: info: assertion proved (CVC4: 1 VC)
 private_pointer.adb:15:29: info: precondition proved (CVC4: 1 VC)
 private_pointer.ads:5:25: warning: "X" is not modified, could be of access constant type
 private_pointer.ads:6:21: warning: "X" is not modified, could be of access constant type
-private_pointer.ads:8:16: warning: volatile function "Uninit_Alloc" has no volatile effects
 private_pointer.ads:9:17: info: postcondition proved (CVC4: 1 VC)
-private_pointer.ads:10:16: warning: volatile function "Init_Alloc" has no volatile effects
 private_pointer.ads:11:17: info: postcondition proved (CVC4: 2 VC)
 private_pointer.ads:11:53: info: precondition proved (CVC4: 1 VC)
 private_pointer.ads:14:17: info: postcondition proved (CVC4: 2 VC)
@@ -27,5 +26,3 @@ private_pointer.ads:44:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:45:19: info: assertion proved (CVC4: 1 VC)
 private_pointer.ads:45:33: high: "X_3" is not initialized
 private_pointer.ads:48:19: info: assertion proved (CVC4: 1 VC)
-private_pointer.ads:50:24: info: data dependencies proved
-private_pointer.ads:50:45: warning: unused initial value of "X_4"

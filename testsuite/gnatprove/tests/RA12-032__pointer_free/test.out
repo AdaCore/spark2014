@@ -1,8 +1,5 @@
-lists.adb:18:07: warning: statement has no effect
 lists.adb:18:13: insufficient permission for "Next"
 lists.adb:18:13: object was moved at line 17
 lists.adb:18:13: warning: unused assignment to "Next"
-lists.adb:24:17: warning: unused assignment
-lists.adb:25:07: warning: statement has no effect
 lists.adb:25:13: warning: unused assignment to "List"
 gnatprove: error during flow analysis and proof

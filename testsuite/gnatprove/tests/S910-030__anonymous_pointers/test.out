@@ -6,6 +6,5 @@ anonymous_access.ads:10:21: warning: "L" is not modified, could be of access con
 anonymous_access.ads:12:52: info: pointer dereference check proved (CVC4: 1 VC)
 anonymous_access.ads:12:57: info: overflow check proved (CVC4: 1 VC)
 anonymous_access.ads:12:57: info: range check proved (CVC4: 1 VC)
-anonymous_access.ads:16:13: warning: volatile function "Copy" has no volatile effects
 anonymous_access.ads:16:19: warning: "X" is not modified, could be of access constant type
 anonymous_access.ads:18:14: info: postcondition proved (CVC4: 1 VC)

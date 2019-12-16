@@ -52,7 +52,8 @@ package GHC_Sort with SPARK_Mode is
    function Sort (S : Int_Array) return Int_Array with
      Pre  => S'Length < Integer'Last - 1,
      Post => Sort'Result'Last = S'Last
-     and then (for all L in 2 .. Sort'Result'Last => Sort'Result (L - 1) <= Sort'Result (L));
+     and then (for all L in 2 .. Sort'Result'Last => Sort'Result (L - 1) <= Sort'Result (L)),
+     Volatile_Function;
    --  Sort a sequence using GHC sort. Sort it specified only partially, we are
    --  missing the fact that the result of Sort is a permuation of S.
 

@@ -26,6 +26,7 @@ with Ada.Containers.Doubly_Linked_Lists;
 with Ada.Containers.Hashed_Maps;
 with Ada.Text_IO;                      use Ada.Text_IO;
 with Common_Iterators;                 use Common_Iterators;
+with Flow.Dynamic_Memory;              use Flow.Dynamic_Memory;
 with Flow_Dependency_Maps;             use Flow_Dependency_Maps;
 with Flow_Generated_Globals.Traversal; use Flow_Generated_Globals.Traversal;
 with Flow_Generated_Globals.Phase_1;   use Flow_Generated_Globals.Phase_1;
@@ -1366,13 +1367,16 @@ package body Flow_Generated_Globals.Partial is
       for N of Nodes loop
 
          --  Filter variables declared within E and the E itself (which occurs
-         --  as a global when E is a single concurrent type). Heap is never a
-         --  local variable, so it must be always kept while filtering. Also,
-         --  frontend puts generic actuals of mode IN directly inside the
-         --  instance, but from the language point of view they act as globals
-         --  (e.g. can appear in the RHS of the generated Initializes).
+         --  as a global when E is a single concurrent type). Heaps are never
+         --  local variables, so they must be always kept while filtering (we
+         --  special-case them because they are have no parents and so would
+         --  crash further checks). Also, frontend puts generic actuals of
+         --  mode IN directly inside the instance, but from the language point
+         --  of view they act as globals (e.g. can appear in the RHS of the
+         --  generated Initializes).
 
          if Is_Heap_Variable (N)
+           or else Is_Heap_State (N)
            or else not (Is_In_Analyzed_Files (N)
                         and then Scope_Within_Or_Same (N, E)
                         and then (if In_Generic_Actual (N)

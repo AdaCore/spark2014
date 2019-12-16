@@ -1,7 +1,6 @@
 n01.adb:16:04: info: initialization of "X" proved
 n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
-n03.adb:31:04: warning: statement has no effect
 n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
 n03.adb:31:18: warning: unused assignment to "X"
@@ -76,14 +75,10 @@ n11.adb:21:24: "T1" is not allowed in SPARK (due to borrow or observe of an expr
 n11.adb:21:24: violation of pragma SPARK_Mode at test.adc:3
 n12.adb:13:17: insufficient permission for "A" when returning from "Modify"
 n12.adb:13:17: object was moved at line 19
-n12.adb:13:25: warning: "A" is not modified, could be IN
 n12.adb:14:09: info: flow dependencies proved
-n12.adb:15:09: info: data dependencies proved
-n12.adb:19:10: warning: initialization of "B" has no effect
-n12.adb:20:10: warning: initialization of "T1" has no effect
+n12.adb:20:22: high: "Heap.Dynamic_Memory" must be listed in the Global aspect of "Modify" (SPARK RM 6.1.4(14))
 n12.adb:20:28: insufficient permission for "A"
 n12.adb:20:28: object was moved at line 19
-n12.adb:23:21: warning: unused assignment
 n13.adb:14:09: info: flow dependencies proved
 n13.adb:15:09: info: data dependencies proved
 n13.adb:19:10: warning: initialization of "B" has no effect

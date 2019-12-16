@@ -47,6 +47,7 @@ with Why;
 
 with Flow_Classwide;
 with Flow_Debug;                      use Flow_Debug;
+with Flow.Dynamic_Memory;
 with Flow_Generated_Globals.Phase_2;  use Flow_Generated_Globals.Phase_2;
 with Flow_Refinement;                 use Flow_Refinement;
 
@@ -3730,6 +3731,10 @@ package body Flow_Utility is
                   end loop;
                end;
                return Skip;
+
+            when N_Allocator =>
+               Variables.Include
+                 (Direct_Mapping_Id (Flow.Dynamic_Memory.Heap_State));
 
             when others =>
                null;

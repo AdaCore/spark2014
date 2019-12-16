@@ -13,7 +13,7 @@ procedure Test_Constr with SPARK_Mode is
    function Create return H is
      (C => (D => False));
    function Create return I with Post => Create'Result.C /= null;
-   function Create return I is
+   function Create return I with SPARK_Mode => Off is
       B : H_Acc := new H'(C => (D => False));
    begin
       return (C => B);

@@ -1,7 +1,3 @@
-my_map.adb:10:55: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:10:62: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:12:34: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.adb:14:45: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.adb:25:33: info: loop invariant initialization proved (CVC4: 2 VC)
 my_map.adb:25:33: info: loop invariant preservation proved (CVC4: 2 VC)
 my_map.adb:26:14: info: pointer dereference check proved (CVC4: 1 VC)
@@ -165,19 +161,6 @@ my_map.ads:62:13: medium: subprogram "Has_Element" might not terminate, terminat
 my_map.ads:65:13: info: implicit function contract might not be available on recursive calls
 my_map.ads:65:13: medium: subprogram "Next" might not terminate, terminating annotation could be incorrect
 my_map.ads:69:13: info: subprogram "Element" will terminate, terminating annotation has been proved
-my_map.ads:74:13: info: function contract might not be available on recursive calls
-my_map.ads:74:13: medium: subprogram "Deep_Copy" might not terminate, terminating annotation could be incorrect
-my_map.ads:77:14: info: postcondition proved (CVC4: 5 VC; Trivial: 1 VC)
-my_map.ads:80:12: info: precondition proved (Trivial: 1 VC)
-my_map.ads:80:27: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:80:68: info: range check proved (CVC4: 1 VC)
-my_map.ads:82:12: info: precondition proved (Trivial: 1 VC)
-my_map.ads:82:42: info: pointer dereference check proved (CVC4: 1 VC)
-my_map.ads:82:68: info: range check proved (CVC4: 1 VC)
-my_map.ads:83:21: info: precondition proved (CVC4: 1 VC)
-my_map.ads:83:37: info: range check proved (CVC4: 1 VC)
-my_map.ads:83:42: info: precondition proved (CVC4: 1 VC)
-my_map.ads:83:73: info: range check proved (CVC4: 1 VC)
 my_map.ads:94:41: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:97:11: info: pointer dereference check proved (CVC4: 1 VC)
 my_map.ads:97:26: info: pointer dereference check proved (CVC4: 1 VC)

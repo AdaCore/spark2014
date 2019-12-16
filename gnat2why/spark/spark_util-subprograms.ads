@@ -398,6 +398,10 @@ package SPARK_Util.Subprograms is
    --  @param E any entity
    --  @return True iff E is a traversal function
 
+   function Is_Unchecked_Deallocation_Instance (E : Entity_Id) return Boolean
+   with Pre => Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Task_Type;
+   --  Return True iff E is an instance of Ada.Unchecked_Deallocation
+
    function Is_Volatile_For_Internal_Calls (E : Entity_Id) return Boolean
    with Pre => Is_Subprogram (E);
    --  @param E any subprogram
