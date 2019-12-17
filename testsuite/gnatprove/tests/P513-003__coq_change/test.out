@@ -8,10 +8,10 @@ lemmas.ads:15:14: info: postcondition proved (Coq: 1 VC)
 lemmas.ads:15:06: warning: postcondition does not check the outcome of calling "Lemma_Div_Is_Monotonic"
 lemmas.ads:15:14: medium: postcondition might fail, cannot prove Val1 / Denom < Val2 / Denom, vc file: gnatprove/../proof/sessions/lemmas__lemma_div_is_monotonic/../../Coq/Lemmas__lemma_div_is_monotonic__pragargs__cmp.v
 
- "(val1 ÷ denom ?= val2 ÷ denom) = Lt".
+ "(val1 Ã· denom ?= val2 Ã· denom) = Lt".
 Error:
 In environment
-Unable to unify "(?M1591 ÷ ?M1593 ?= ?M1592 ÷ ?M1593) = Gt -> False" with
+Unable to unify "(?M1591 Ã· ?M1593 ?= ?M1592 Ã· ?M1593) = Gt -> False" with
 h1 : dynamic_invariant val1 true false true true
 h2 : dynamic_invariant val2 true false true true
 h3 : true = true // 1 <= 2147483647 -> 1 <= denom <= 2147483647
