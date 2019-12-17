@@ -52,7 +52,7 @@ assert (no_overflow RNE (t'real val1 / t'real val3)) as no_ov_v1v3.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
     field_simplify (t'real fliteral2 * a * / b * b).
-    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
+    rewrite Real.infix_sl'def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
     unfold a, b.
     repeat rewrite <-mult_IZR.
     apply IZR_le.
@@ -84,7 +84,7 @@ assert (no_overflow RNE (t'real val2 / t'real val3)) as no_ov_v2v3.
     rewrite <-Rmult_assoc.
     apply Rmult_le_reg_r with (r:=b); auto.
     field_simplify (t'real fliteral2 * a * / b * b).
-    rewrite Real.infix_sl_def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
+    rewrite Real.infix_sl'def, Rinv_1, Rmult_1_r, l2_IZR, maxfloat_IZR.
     unfold a, b.
     repeat rewrite <-mult_IZR.
     apply IZR_le.

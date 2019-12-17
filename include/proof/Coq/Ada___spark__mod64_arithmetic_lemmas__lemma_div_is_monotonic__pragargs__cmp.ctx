@@ -635,7 +635,7 @@ Definition dynamic_invariant1 (temp___expr_172:t) (temp___is_init_168:bool)
   in_range temp___expr_172.
 
 (* Why3 goal *)
-Theorem def'VC :
+Theorem def'vc :
   (dynamic_invariant val1 true false true true) ->
   (dynamic_invariant val2 true false true true) ->
   (dynamic_invariant1 denom true false true true) -> (ule val1 val2) ->
