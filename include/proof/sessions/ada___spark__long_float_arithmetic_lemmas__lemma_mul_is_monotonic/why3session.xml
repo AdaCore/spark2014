@@ -19,7 +19,7 @@
   <proof prover="1"><result status="valid" steps="9830"/></proof>
   </goal>
   <goal name="def&#39;VC.2" expl="precondition" proved="true">
-  <proof prover="1" timelimit="5"><result status="valid" steps="12303"/></proof>
+  <proof prover="1"><result status="valid" steps="12303"/></proof>
   </goal>
   <goal name="def&#39;VC.3" expl="postcondition" proved="true">
   <transf name="trivial_true" proved="true" >
