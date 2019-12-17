@@ -862,18 +862,13 @@ package body Flow_Utility is
       Depends_N : constant Node_Id :=
         Get_Contract_Node (Subprogram, Scope, Depends_Contract);
 
-      pragma Assert
-        (Present (Depends_N)
-         and then Get_Pragma_Id (Depends_N) in Pragma_Depends
-                                             | Pragma_Refined_Depends);
-
       Contract_Relation : constant Dependency_Maps.Map :=
         Parse_Depends (Depends_N);
       --  Step 1: Parse the appropriate dependency relation
 
       Trimming_Required : constant Boolean :=
-        (Get_Pragma_Id (Depends_N) = Pragma_Depends
-         and then Mentions_State_With_Ambiguous_Refinement (Depends_N, Scope));
+        Get_Pragma_Id (Depends_N) = Pragma_Depends
+        and then Mentions_State_With_Ambiguous_Refinement (Depends_N, Scope);
       --  True iff the down-projected Depends need to be trimmed using
       --  Refined_Global aspect.
 
