@@ -4495,7 +4495,8 @@ package body Flow.Control_Flow_Graph is
                begin
                   return
                     Present (Arg2)
-                      and then Nkind (Expression (Arg2)) = N_Identifier
+                      and then Nkind (Expression (Arg2))
+                                 in N_Expanded_Name | N_Identifier
                       and then Entity (Expression (Arg2)) = Standard_False;
                end Is_Statically_False;
 

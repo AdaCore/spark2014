@@ -1976,7 +1976,7 @@ package body SPARK_Util is
       function Comes_From_This_Dead_Branch
         (If_Stmt, Stmt : Node_Id)
          return Boolean
-      is (Nkind (Condition (If_Stmt)) = N_Identifier
+      is (Nkind (Condition (If_Stmt)) in N_Expanded_Name | N_Identifier
            and then Entity (Condition (If_Stmt)) = Standard_False
            and then List_Containing (Stmt) = Then_Statements (If_Stmt));
 
@@ -1986,7 +1986,7 @@ package body SPARK_Util is
 
       function Has_True_Condition (If_Stmt : Node_Id) return Boolean is
       begin
-         if Nkind (Condition (If_Stmt)) = N_Identifier
+         if Nkind (Condition (If_Stmt)) in N_Expanded_Name | N_Identifier
            and then Entity (Condition (If_Stmt)) = Standard_True
          then
             return True;
@@ -1996,7 +1996,7 @@ package body SPARK_Util is
                Elt : Node_Id := First (Elsif_Parts (If_Stmt));
             begin
                while Present (Elt) loop
-                  if Nkind (Condition (Elt)) = N_Identifier
+                  if Nkind (Condition (Elt)) in N_Expanded_Name | N_Identifier
                     and then Entity (Condition (Elt)) = Standard_True
                   then
                      return True;

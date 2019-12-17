@@ -3803,7 +3803,7 @@ package body Gnat2Why.Subprograms is
       --  configuration leads to a precondition being False.
 
       for Expr of Get_Precondition_Expressions (E) loop
-         if Nkind (Expr) = N_Identifier
+         if Nkind (Expr) in N_Expanded_Name | N_Identifier
            and then Entity (Expr) = Standard_False
            and then Original_Node (Expr) /= Expr
          then
@@ -3814,7 +3814,7 @@ package body Gnat2Why.Subprograms is
       end loop;
 
       for Expr of Get_Postcondition_Expressions (E, Refined => False) loop
-         if Nkind (Expr) = N_Identifier
+         if Nkind (Expr) in N_Expanded_Name | N_Identifier
            and then Entity (Expr) = Standard_False
          then
             Postcondition_Is_Statically_False := True;
