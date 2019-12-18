@@ -167,13 +167,24 @@ package body Flow_Types is
                         declare
                            Left_Comp  : constant Entity_Id :=
                              Left.Component (J);
+
                            Right_Comp : constant Entity_Id :=
                              Right.Component (J);
 
+                           Left_Unique : constant Entity_Id :=
+                             (if Is_Part_Of_Concurrent_Object (Left_Comp)
+                              then Left_Comp
+                              else Unique_Component (Left_Comp));
+
+                           Right_Unique : constant Entity_Id :=
+                             (if Is_Part_Of_Concurrent_Object (Right_Comp)
+                              then Right_Comp
+                              else Unique_Component (Right_Comp));
+
                         begin
-                           if Left_Comp /= Right_Comp then
-                              return Unique_Name (Left_Comp) <
-                                Unique_Name (Right_Comp);
+                           if Left_Unique /= Right_Unique then
+                              return Unique_Name (Left_Unique) <
+                                Unique_Name (Right_Unique);
                            end if;
                         end;
                      end loop;
