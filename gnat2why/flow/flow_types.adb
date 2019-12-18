@@ -91,11 +91,14 @@ package body Flow_Types is
                declare
                   Left_Len : constant Ada.Containers.Count_Type :=
                     Left.Component.Length;
+                  Right_Len : constant Ada.Containers.Count_Type :=
+                    Right.Component.Length;
+
+                  pragma Assert (Left_Len > 0 and then Right_Len > 0);
 
                begin
                   return
-                    Left_Len > 0
-                    and then Left_Len = Right.Component.Length
+                    Left_Len = Right_Len
                     and then
                     (for all J in Positive range 1 .. Positive (Left_Len) =>
                        Same_Component (Left.Component (J),
@@ -133,7 +136,7 @@ package body Flow_Types is
 
          when Direct_Mapping
             | Record_Field
-            =>
+         =>
             if Left.Node /= Right.Node then
                return Unique_Name (Left.Node) < Unique_Name (Right.Node);
             end if;
