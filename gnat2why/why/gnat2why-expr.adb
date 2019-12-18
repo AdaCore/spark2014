@@ -11493,7 +11493,7 @@ package body Gnat2Why.Expr is
                                 (1 => T,
                                  2 => New_Integer_Constant
                                    (Value => Max_Size_Of_Img_Attr
-                                        (Etype (Var)))),
+                                        (Retysp (Etype (Var))))),
                               Typ      => EW_Abstract (Standard_String));
             end;
 
