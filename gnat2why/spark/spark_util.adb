@@ -39,7 +39,6 @@ with Osint;
 with Output;
 with Pprint;                 use Pprint;
 with SPARK_Definition;       use SPARK_Definition;
-with SPARK_Frame_Conditions; use SPARK_Frame_Conditions;
 with SPARK_Util.Subprograms; use SPARK_Util.Subprograms;
 with SPARK_Util.Types;       use SPARK_Util.Types;
 with Sem_Ch12;               use Sem_Ch12;
@@ -1840,9 +1839,7 @@ package body SPARK_Util is
    ----------------------
 
    function Is_Global_Entity (E : Entity_Id) return Boolean is
-     (Is_Heap_Variable (E)
-        or else
-      Ekind (E) in E_Loop_Parameter
+     (Ekind (E) in E_Loop_Parameter
                  | E_Variable
                  | Formal_Kind
                  | E_Protected_Type

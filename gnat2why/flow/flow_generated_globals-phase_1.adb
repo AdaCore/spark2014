@@ -318,9 +318,7 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Process_Ghost (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
-            if not Is_Heap_Variable (E)
-              and then Is_Ghost_Entity (E)
-            then
+            if Is_Ghost_Entity (E) then
                Ghost_Entities.Include (E);
             end if;
          end loop;
@@ -333,9 +331,7 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Process_Constants (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
-            if not Is_Heap_Variable (E)
-              and then Ekind (E) = E_Constant
-            then
+            if Ekind (E) = E_Constant then
                Constants.Include (E);
             end if;
          end loop;
@@ -348,8 +344,7 @@ package body Flow_Generated_Globals.Phase_1 is
       procedure Process_CAE (Objects : Node_Sets.Set) is
       begin
          for E of Objects loop
-            if not Is_Heap_Variable (E)
-              and then Ekind (E) = E_Variable
+            if Ekind (E) = E_Variable
               and then Is_Constant_After_Elaboration (E)
             then
                CAE_Entities.Include (E);
