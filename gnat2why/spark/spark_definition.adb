@@ -5403,7 +5403,7 @@ package body SPARK_Definition is
                   Aux_Prag : constant Node_Id := SPARK_Aux_Pragma (Scop);
                   Rep      : Node_Id := First_Rep_Item (Full_View (E));
                   Found    : Boolean := False;
-                  Full     : Boolean;
+                  Full     : Boolean := False;
 
                begin
                   --  Only look for duplicate predicates if the full view
