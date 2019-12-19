@@ -5325,6 +5325,16 @@ package body SPARK_Definition is
                end if;
             end;
 
+            --  Inherit the annotation No_Wrap_Around when set on a parent
+            --  type.
+
+            if Ekind (E) = E_Modular_Integer_Type
+              and then Etype (E) /= E
+              and then Has_No_Wrap_Around_Annotation (Etype (E))
+            then
+               Set_Has_No_Wrap_Around_Annotation (E);
+            end if;
+
          elsif Is_Class_Wide_Type (E) then
 
             --  Class wide types with a non SPARK root are not in SPARK.

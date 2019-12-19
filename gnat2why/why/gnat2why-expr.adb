@@ -176,6 +176,29 @@ package body Gnat2Why.Expr is
       Params        : Transformation_Params) return W_Expr_Id;
    --  Build Case expression of Ada Node
 
+   function Check_No_Wrap_Around_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Entity_Id;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
+      Right_Opnd : W_Expr_Id;
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint) return W_Prog_Id
+   with Pre => Present (Ada_Node);
+   --  For modular type Ada_Type with annotation No_Wrap_Around, a check must
+   --  be emitted on unary operation - and binary operations - + *
+   --
+   --  @param Ada_Node the node to which the check should be attached
+   --  @param Ada_Type type of the Ada node, used to retrieve type Size in bits
+   --  @param Op the operation, should be either Minus, Add, Sub or Mul
+   --  @param Left_Opnd the left operand of type [Rep_Type], should be empty if
+   --     Op is N_Op_Minus.
+   --  @param Right_Opnd the right operand of type [Rep_Type]
+   --  @param Rep_Type the representation type in which the operation is done.
+   --     Both operand should already be converted to this type.
+   --  @param Modulus the modulus of the type in which the operation is done
+   --  @return the Why3 check expression
+
    function Check_Type_With_Invariants
      (Params : Transformation_Params;
       N      : Entity_Id) return W_Prog_Id;
@@ -1951,6 +1974,109 @@ package body Gnat2Why.Expr is
          end;
       end if;
    end Case_Expr_Of_Ada_Node;
+
+   --------------------------------------------
+   -- Check_No_Wrap_Around_Modular_Operation --
+   --------------------------------------------
+
+   function Check_No_Wrap_Around_Modular_Operation
+     (Ada_Node   : Node_Id;
+      Ada_Type   : Entity_Id;
+      Op         : N_Op;
+      Left_Opnd  : W_Expr_Id := Why_Empty;
+      Right_Opnd : W_Expr_Id;
+      Rep_Type   : W_Type_Id;
+      Modulus    : Uint) return W_Prog_Id
+   is
+   begin
+      --  Negation of a modular value does not overflow iff the value is zero
+
+      if Op = N_Op_Minus then
+         declare
+            Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right_Opnd);
+            Zero_Expr  : constant W_Expr_Id :=
+              New_Modular_Constant (Value => Uint_0,
+                                    Typ   => Rep_Type);
+            Check : W_Expr_Id;
+         begin
+            Check := +New_Comparison (Symbol => Why_Eq,
+                                      Left   => Right_Expr,
+                                      Right  => Zero_Expr,
+                                      Domain => EW_Pred);
+            Check := +New_Ignore (Prog =>
+                                   New_Located_Assert (Ada_Node,
+                                     +Check,
+                                     VC_Overflow_Check,
+                                     EW_Assert));
+            return +Binding_For_Temp (Domain  => EW_Prog,
+                                      Tmp     => Right_Expr,
+                                      Context => Check);
+         end;
+
+      --  For binary operations, go to a suitably large bitvector for computing
+      --  the result, then check it is strictly lower than the modulus.
+
+      else
+         declare
+            Left_Expr  : constant W_Expr_Id := New_Temp_For_Expr (Left_Opnd);
+            Right_Expr : constant W_Expr_Id := New_Temp_For_Expr (Right_Opnd);
+
+            Next_Bv      : constant W_Type_Id :=
+              (if Modulus <= UI_Expon (2, 8) then
+                 (if Modular_Size (Ada_Type) < 16 then EW_BitVector_16_Type
+                  else Rep_Type)
+               elsif Modulus <= UI_Expon (2, 16) then
+                 (if Modular_Size (Ada_Type) < 32 then EW_BitVector_32_Type
+                  else Rep_Type)
+               elsif Modulus <= UI_Expon (2, 32) then
+                 (if Modular_Size (Ada_Type) < 64 then EW_BitVector_64_Type
+                  else Rep_Type)
+               else
+                  EW_BitVector_128_Type);
+            Modulus_Expr : constant W_Expr_Id :=
+              New_Modular_Constant (Value => Modulus,
+                                    Typ   => Next_Bv);
+            Next_Left    : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Left_Expr,
+                                        To     => Next_Bv);
+            Next_Right   : constant W_Expr_Id :=
+              Insert_Simple_Conversion (Domain => EW_Term,
+                                        Expr   => Right_Expr,
+                                        To     => Next_Bv);
+            Oper         : constant W_Identifier_Id :=
+              (case Op is
+                 when N_Op_Add      => MF_BVs (Next_Bv).Add,
+                 when N_Op_Subtract => MF_BVs (Next_Bv).Sub,
+                 when N_Op_Multiply => MF_BVs (Next_Bv).Mult,
+                 when others        => raise Program_Error);
+            Oper_Expr     : constant W_Expr_Id :=
+              New_Call (Ada_Node => Ada_Node,
+                        Domain   => EW_Term,
+                        Name     => Oper,
+                        Args     => (1 => Next_Left,
+                                     2 => Next_Right),
+                        Typ      => Next_Bv);
+            Check : W_Expr_Id;
+         begin
+            Check := +New_Comparison (Symbol => MF_BVs (Next_Bv).Ult,
+                                      Left   => Oper_Expr,
+                                      Right  => Modulus_Expr,
+                                      Domain => EW_Pred);
+            Check := +New_Ignore (Prog =>
+                                   New_Located_Assert (Ada_Node,
+                                     +Check,
+                                     VC_Overflow_Check,
+                                     EW_Assert));
+            Check := Binding_For_Temp (Domain  => EW_Prog,
+                                       Tmp     => Right_Expr,
+                                       Context => Check);
+            return +Binding_For_Temp (Domain  => EW_Prog,
+                                      Tmp     => Left_Expr,
+                                      Context => Check);
+         end;
+      end if;
+   end Check_No_Wrap_Around_Modular_Operation;
 
    -------------------------
    -- Check_Type_With_DIC --
@@ -7230,7 +7356,10 @@ package body Gnat2Why.Expr is
       Domain      : EW_Domain;
       Ada_Node    : Node_Id := Empty) return W_Expr_Id
    is
-      T : W_Expr_Id;
+      Left_Rep  : W_Expr_Id := Left;
+      Right_Rep : W_Expr_Id := Right;
+      Base      : W_Type_Id := Why_Empty;
+      T         : W_Expr_Id;
 
    begin
       case Op is
@@ -7245,14 +7374,10 @@ package body Gnat2Why.Expr is
 
          when N_Op_Add
             | N_Op_Subtract
-          =>
-
-            --  The arguments of arithmetic functions have to be of base scalar
-            --  types.
+         =>
+            Base := Base_Why_Type (Left_Type, Right_Type);
 
             declare
-               Base : constant W_Type_Id :=
-                 Base_Why_Type (Left_Type, Right_Type);
                Name : constant W_Identifier_Id :=
                  (if Op = N_Op_Add then
                     (if Base = EW_Int_Type then Int_Infix_Add
@@ -7266,19 +7391,18 @@ package body Gnat2Why.Expr is
                           MF_BVs (Base).Sub
                      elsif Why_Type_Is_Fixed (Base) then Fixed_Infix_Subtr
                      else MF_Floats (Base).Subtr));
-
-               Left_Rep : constant W_Expr_Id :=
+            begin
+               Left_Rep :=
                  Insert_Simple_Conversion (Ada_Node => Ada_Node,
                                            Domain   => Domain,
                                            Expr     => Left,
                                            To       => Base);
-               Right_Rep : constant W_Expr_Id :=
+               Right_Rep :=
                  Insert_Simple_Conversion (Ada_Node => Ada_Node,
                                            Domain   => Domain,
                                            Expr     => Right,
                                            To       => Base);
 
-            begin
                if Has_Modular_Integer_Type (Return_Type)
                  and then Non_Binary_Modulus (Return_Type)
                then
@@ -7306,15 +7430,8 @@ package body Gnat2Why.Expr is
             end;
 
          when N_Op_Multiply =>
-
-            --  The arguments of arithmetic functions have to be of base scalar
-            --  types.
-
             declare
-               L_Why          : W_Expr_Id := Left;
-               R_Why          : W_Expr_Id := Right;
                L_Type, R_Type : W_Type_Id;
-               Base           : W_Type_Id;
                Oper           : Why_Name_Enum := WNE_Empty;
 
             begin
@@ -7345,12 +7462,12 @@ package body Gnat2Why.Expr is
                --  arguments so that Left is the fixed-point one.
 
                elsif Has_Fixed_Point_Type (Right_Type) then
-                  L_Type := Base_Why_Type (Right_Type);
-                  R_Type := EW_Int_Type;
-                  L_Why := Right;
-                  R_Why := Left;
-                  Base := Base_Why_Type (Return_Type);
-                  Oper := WNE_Fixed_Point_Mult_Int;
+                  L_Type    := Base_Why_Type (Right_Type);
+                  R_Type    := EW_Int_Type;
+                  Left_Rep  := Right;
+                  Right_Rep := Left;
+                  Base      := Base_Why_Type (Return_Type);
+                  Oper      := WNE_Fixed_Point_Mult_Int;
                   pragma Assert (L_Type = Base);
 
                else
@@ -7360,15 +7477,15 @@ package body Gnat2Why.Expr is
                   pragma Assert (not Has_Fixed_Point_Type (Return_Type));
                end if;
 
-               L_Why := Insert_Simple_Conversion
+               Left_Rep := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
-                  Expr     => L_Why,
+                  Expr     => Left_Rep,
                   To       => L_Type);
-               R_Why := Insert_Simple_Conversion
+               Right_Rep := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
-                  Expr     => R_Why,
+                  Expr     => Right_Rep,
                   To       => R_Type);
 
                --  Construct the operation
@@ -7398,8 +7515,8 @@ package body Gnat2Why.Expr is
                      T := New_Call (Ada_Node => Ada_Node,
                                     Domain   => Domain,
                                     Name     => Name,
-                                    Args     => (1 => L_Why,
-                                                 2 => R_Why),
+                                    Args     => (1 => Left_Rep,
+                                                 2 => Right_Rep),
                                     Typ      => Base);
                   end;
 
@@ -7411,8 +7528,8 @@ package body Gnat2Why.Expr is
                      Ada_Type   => Return_Type,
                      Domain     => Domain,
                      Op         => Op,
-                     Left_Opnd  => L_Why,
-                     Right_Opnd => R_Why,
+                     Left_Opnd  => Left_Rep,
+                     Right_Opnd => Right_Rep,
                      Rep_Type   => Base,
                      Modulus    => Modulus (Return_Type));
 
@@ -7430,7 +7547,7 @@ package body Gnat2Why.Expr is
                          (Ada_Node => Ada_Node,
                           Domain   => Domain,
                           Name     => Name,
-                          Args     => (1 => L_Why, 2 => R_Why),
+                          Args     => (1 => Left_Rep, 2 => Right_Rep),
                           Typ      => Base);
                   end;
                   T := Apply_Modulus (Op, Return_Type, T, Domain);
@@ -7447,11 +7564,9 @@ package body Gnat2Why.Expr is
 
          when N_Op_Divide =>
             declare
-               Base           : W_Type_Id;
                Oper           : Why_Name_Enum := WNE_Empty;
                Name           : W_Identifier_Id;
                L_Type, R_Type : W_Type_Id;
-               L_Why, R_Why   : W_Expr_Id;
 
             begin
                --  Look for the appropriate base scalar type
@@ -7506,12 +7621,12 @@ package body Gnat2Why.Expr is
                      Name := New_Division (Base);
                end case;
 
-               L_Why := Insert_Simple_Conversion
+               Left_Rep := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
                   Expr     => Left,
                   To       => L_Type);
-               R_Why := Insert_Simple_Conversion
+               Right_Rep := Insert_Simple_Conversion
                  (Ada_Node => Ada_Node,
                   Domain   => Domain,
                   Expr     => Right,
@@ -7526,7 +7641,7 @@ package body Gnat2Why.Expr is
                       (Ada_Node => Ada_Node,
                        Domain   => Domain,
                        Name     => To_Program_Space (Name),
-                       Progs    => (1 => L_Why, 2 => R_Why),
+                       Progs    => (1 => Left_Rep, 2 => Right_Rep),
                        Reason   => VC_Division_Check,
                        Typ      => Base);
                else
@@ -7535,7 +7650,7 @@ package body Gnat2Why.Expr is
                       (Ada_Node => Ada_Node,
                        Domain   => Domain,
                        Name     => Name,
-                       Args     => (1 => L_Why, 2 => R_Why),
+                       Args     => (1 => Left_Rep, 2 => Right_Rep),
                        Typ      => Base);
                end if;
 
@@ -7667,6 +7782,26 @@ package body Gnat2Why.Expr is
                T := Binding_For_Temp (Ada_Node, Domain, Expo, T);
             end;
       end case;
+
+      if Domain = EW_Prog
+        and then Op in N_Op_Add | N_Op_Subtract | N_Op_Multiply
+        and then Has_No_Wrap_Around_Annotation (Return_Type)
+      then
+         declare
+            Check : constant W_Prog_Id :=
+              Check_No_Wrap_Around_Modular_Operation
+                (Ada_Node   => Ada_Node,
+                 Ada_Type   => Return_Type,
+                 Op         => Op,
+                 Left_Opnd  => Left_Rep,
+                 Right_Opnd => Right_Rep,
+                 Rep_Type   => Base,
+                 Modulus    => Modulus (Return_Type));
+         begin
+            T := +Sequence (Check, +T);
+         end;
+      end if;
+
       return T;
    end New_Binary_Op_Expr;
 
@@ -14257,6 +14392,23 @@ package body Gnat2Why.Expr is
                        Typ       => Typ);
                   T := Apply_Modulus (N_Op_Minus, Expr_Type, T, Domain);
                end if;
+
+               if Domain = EW_Prog
+                 and then Has_No_Wrap_Around_Annotation (Expr_Type)
+               then
+                  declare
+                     Check : constant W_Prog_Id :=
+                       Check_No_Wrap_Around_Modular_Operation
+                         (Ada_Node   => Expr,
+                          Ada_Type   => Expr_Type,
+                          Op         => N_Op_Minus,
+                          Right_Opnd => Right_Rep,
+                          Rep_Type   => Typ,
+                          Modulus    => Modulus (Expr_Type));
+                  begin
+                     T := +Sequence (Check, +T);
+                  end;
+               end if;
             end;
 
          when N_Op_Plus =>  --  unary plus
@@ -14286,11 +14438,7 @@ package body Gnat2Why.Expr is
 
          when N_Op_Add
             | N_Op_Subtract
-            =>
-
-            --  The arguments of arithmetic functions have to be of base scalar
-            --  types.
-
+         =>
             declare
                Left       : constant Node_Id := Left_Opnd (Expr);
                Right      : constant Node_Id := Right_Opnd (Expr);
@@ -14320,9 +14468,6 @@ package body Gnat2Why.Expr is
          when N_Op_Multiply
             | N_Op_Divide
          =>
-            --  The arguments of arithmetic functions have to be of base scalar
-            --  types.
-
             declare
                Left  : constant Node_Id := Left_Opnd (Expr);
                Right : constant Node_Id := Right_Opnd (Expr);

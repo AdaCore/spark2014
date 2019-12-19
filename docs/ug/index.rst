@@ -67,7 +67,7 @@ SPARK 2014 User's Guide
    C. Project Attributes <en/appendix/project_attributes>
    D. Implementation Defined Pragmas <en/appendix/implementation_defined_pragmas>
    E. External Axiomatizations <en/appendix/external_axiomatizations>
-   F. Uses of Pragma Annotate GNATprove <en/appendix/additional_annotate_pragmas>
+   F. Aspects or Pragmas Specific to GNATprove <en/appendix/additional_annotate_pragmas>
    G. GNATprove Limitations <en/appendix/gnatprove_limitations>
    H. Portability Issues <en/appendix/portability_issues>
    I. Semantics of Floating Point Operations <en/appendix/semantics_of_floating_point_operations>

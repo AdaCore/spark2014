@@ -485,6 +485,8 @@ package body Why.Gen.Names is
             return M_BV_Conv_16_64.To_Small;
          elsif To = EW_BitVector_32_Type then
             return M_BV_Conv_32_64.To_Small;
+         elsif To = EW_BitVector_128_Type then
+            return M_BV_Conv_64_128.To_Big;
          else
             raise Program_Error;
          end if;
@@ -509,7 +511,7 @@ package body Why.Gen.Names is
          else
             return M_BV_Conv_16_32.Range_Check;
          end if;
-      else
+      elsif From = EW_BitVector_64_Type then
          if To = EW_BitVector_8_Type then
             return M_BV_Conv_8_64.Range_Check;
          elsif To = EW_BitVector_16_Type then
@@ -517,6 +519,8 @@ package body Why.Gen.Names is
          else
             return M_BV_Conv_32_64.Range_Check;
          end if;
+      else
+         raise Program_Error;
       end if;
    end Get_Modular_Converter_Range_Check;
 

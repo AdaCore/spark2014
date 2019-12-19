@@ -58,18 +58,19 @@ package Why.Atree.Modules is
 
    --  Basic Why types
 
-   EW_Bool_Type         : W_Type_Id;
-   EW_Int_Type          : W_Type_Id;
-   EW_Private_Type      : W_Type_Id;         --  alias of Main.Private_Type
-   EW_Prop_Type         : W_Type_Id;
-   EW_Real_Type         : W_Type_Id;         --  used for Universal Fixed
-   EW_Float_32_Type     : W_Type_Id;
-   EW_Float_64_Type     : W_Type_Id;
-   EW_BitVector_8_Type  : W_Type_Id;
-   EW_BitVector_16_Type : W_Type_Id;
-   EW_BitVector_32_Type : W_Type_Id;
-   EW_BitVector_64_Type : W_Type_Id;
-   EW_Unit_Type         : W_Type_Id;
+   EW_Bool_Type          : W_Type_Id;
+   EW_Int_Type           : W_Type_Id;
+   EW_Private_Type       : W_Type_Id;         --  alias of Main.Private_Type
+   EW_Prop_Type          : W_Type_Id;
+   EW_Real_Type          : W_Type_Id;         --  used for Universal Fixed
+   EW_Float_32_Type      : W_Type_Id;
+   EW_Float_64_Type      : W_Type_Id;
+   EW_BitVector_8_Type   : W_Type_Id;
+   EW_BitVector_16_Type  : W_Type_Id;
+   EW_BitVector_32_Type  : W_Type_Id;
+   EW_BitVector_64_Type  : W_Type_Id;
+   EW_BitVector_128_Type : W_Type_Id;
+   EW_Unit_Type          : W_Type_Id;
 
    --  Modules of file "ada__model.mlw"
 
@@ -448,14 +449,15 @@ package Why.Atree.Modules is
 
    M_Arrays_Conversion : Name_Id_Name_Id_Conversion_Name_Map.Map;
 
-   M_BV_Conv_32_64 : M_BV_Conv_Type;
-   M_BV_Conv_16_64 : M_BV_Conv_Type;
-   M_BV_Conv_8_64  : M_BV_Conv_Type;
-   M_BV_Conv_16_32 : M_BV_Conv_Type;
-   M_BV_Conv_8_32  : M_BV_Conv_Type;
-   M_BV_Conv_8_16  : M_BV_Conv_Type;
+   M_BV_Conv_64_128 : M_BV_Conv_Type;
+   M_BV_Conv_32_64  : M_BV_Conv_Type;
+   M_BV_Conv_16_64  : M_BV_Conv_Type;
+   M_BV_Conv_8_64   : M_BV_Conv_Type;
+   M_BV_Conv_16_32  : M_BV_Conv_Type;
+   M_BV_Conv_8_32   : M_BV_Conv_Type;
+   M_BV_Conv_8_16   : M_BV_Conv_Type;
 
-   type BV_Kind is (BV8, BV16, BV32, BV64);
+   type BV_Kind is (BV8, BV16, BV32, BV64, BV128);
 
    M_BVs : array (BV_Kind) of M_BV_Type;
 

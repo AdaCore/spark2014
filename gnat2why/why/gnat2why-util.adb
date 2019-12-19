@@ -447,6 +447,7 @@ package body Gnat2Why.Util is
               elsif Typ = EW_BitVector_16_Type then Uint_16
               elsif Typ = EW_BitVector_32_Type then Uint_32
               elsif Typ = EW_BitVector_64_Type then Uint_64
+              elsif Typ = EW_BitVector_128_Type then Uint_128
               else raise Program_Error);
    end BitVector_Type_Size;
 
@@ -1387,7 +1388,8 @@ package body Gnat2Why.Util is
       return Typ in EW_BitVector_8_Type  |
                     EW_BitVector_16_Type |
                     EW_BitVector_32_Type |
-                    EW_BitVector_64_Type;
+                    EW_BitVector_64_Type |
+                    EW_BitVector_128_Type;
    end Why_Type_Is_BitVector;
 
    -----------------------

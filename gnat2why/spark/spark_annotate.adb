@@ -112,6 +112,11 @@ package body SPARK_Annotate is
    --  Stores procedure entities with a pragma Annotate
    --  (GNATprove, Might_Not_Return, E).
 
+   No_Wrap_Around_Annotations : Common_Containers.Node_Sets.Set :=
+     Common_Containers.Node_Sets.Empty_Set;
+   --  Stores type entities with a pragma Annotate
+   --  (GNATprove, No_Wrap_Around, E).
+
    Pledge_Annotations : Common_Containers.Node_Sets.Set :=
      Common_Containers.Node_Sets.Empty_Set;
    --  Stores function entities with a pragma Annotate (GNATprove, Pledge, E).
@@ -192,6 +197,10 @@ package body SPARK_Annotate is
       Prag     : Node_Id);
    --  Check validity of a pragma Annotate (Gnatprove, Might_Not_Return, E)
    --  and insert it in the Might_Not_Return_Annotations map.
+
+   procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id);
+   --  Check validity of a pragma Annotate (GNATprove, No_Wrap_Around, E)
+   --  and insert it in the No_Wrap_Around_Annotations map.
 
    procedure Check_Pledge_Annotation (Arg3_Exp : Node_Id) with
      Pre => Present (Arg3_Exp);
@@ -638,6 +647,47 @@ package body SPARK_Annotate is
       Might_Not_Return_Annotations.Include (E);
    end Check_Might_Not_Return_Annotation;
 
+   -------------------------------------
+   -- Check_No_Wrap_Around_Annotation --
+   -------------------------------------
+
+   procedure Check_No_Wrap_Around_Annotation (Arg3_Exp : Node_Id) is
+      E    : constant Entity_Id := Entity (Arg3_Exp);
+      Decl : constant Node_Id := Parent (E);
+      Base : Entity_Id;
+
+   begin
+      --  Annotation should apply to type declaration (not subtype)
+
+      if Nkind (Decl) /= N_Full_Type_Declaration then
+         Error_Msg_N
+           ("Annotation No_Wrap_Around must apply to a type declaration",
+            Arg3_Exp);
+         return;
+
+      --  This entity must be a modular type
+
+      elsif not Is_Modular_Integer_Type (E) then
+         Error_Msg_N
+           ("Entity parameter of annotation No_Wrap_Around must be a modular "
+            & "type",
+            Arg3_Exp);
+         return;
+      end if;
+
+      --  Annotation may apply to a (derived) type declaration. In case of
+      --  derivation, retrieve the base type.
+
+      if Ekind (E) = E_Modular_Integer_Type then
+         Base := E;
+      else
+         Base := Etype (E);
+      end if;
+      pragma Assert (Ekind (Base) = E_Modular_Integer_Type);
+
+      Set_Has_No_Wrap_Around_Annotation (Base);
+   end Check_No_Wrap_Around_Annotation;
+
    -----------------------------
    -- Check_Pledge_Annotation --
    -----------------------------
@@ -819,6 +869,13 @@ package body SPARK_Annotate is
    function Has_Might_Not_Return_Annotation (E : Entity_Id) return Boolean is
      (Ekind (E) = E_Procedure
       and then Might_Not_Return_Annotations.Contains (E));
+
+   -----------------------------------
+   -- Has_No_Wrap_Around_Annotation --
+   -----------------------------------
+
+   function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean is
+     (No_Wrap_Around_Annotations.Contains (E));
 
    ---------------------------
    -- Has_Pledge_Annotation --
@@ -1156,6 +1213,7 @@ package body SPARK_Annotate is
       elsif Name = "init_by_proof"
         or else Name = "inline_for_proof"
         or else Name = "might_not_return"
+        or else Name = "no_wrap_around"
         or else Name = "pledge"
         or else Name = "terminating"
       then
@@ -1208,6 +1266,9 @@ package body SPARK_Annotate is
 
       elsif Name = "might_not_return" then
          Check_Might_Not_Return_Annotation (Arg3_Exp, Prag);
+
+      elsif Name = "no_wrap_around" then
+         Check_No_Wrap_Around_Annotation (Arg3_Exp);
 
       elsif Name = "pledge" then
          Check_Pledge_Annotation (Arg3_Exp);
@@ -1265,5 +1326,14 @@ package body SPARK_Annotate is
          end;
       end if;
    end Check_Pragma_Annotate_GNATprove;
+
+   ---------------------------------------
+   -- Set_Has_No_Wrap_Around_Annotation --
+   ---------------------------------------
+
+   procedure Set_Has_No_Wrap_Around_Annotation (E : Entity_Id) is
+   begin
+      No_Wrap_Around_Annotations.Include (Unique_Entity (E));
+   end Set_Has_No_Wrap_Around_Annotation;
 
 end SPARK_Annotate;

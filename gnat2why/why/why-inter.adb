@@ -235,6 +235,8 @@ package body Why.Inter is
             State.S.Include (+M_BVs (BV32).Module);
          elsif Typ = EW_BitVector_64_Type then
             State.S.Include (+M_BVs (BV64).Module);
+         elsif Typ = EW_BitVector_128_Type then
+            State.S.Include (+M_BVs (BV128).Module);
          else
             raise Unexpected_Node;
          end if;

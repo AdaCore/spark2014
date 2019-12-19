@@ -215,6 +215,14 @@ package SPARK_Annotate is
                  then Ekind (E) = E_Procedure);
    --  Return True if a pragma Annotate Might_Not_Return applies to entity E
 
+   function Has_No_Wrap_Around_Annotation (E : Entity_Id) return Boolean
+   with Pre => Is_Type (E);
+   --  Return True if a pragma Annotate No_Wrap_Around applies to the type E
+
+   procedure Set_Has_No_Wrap_Around_Annotation (E : Entity_Id);
+   --  Register entity E has having the No_Wrap_Around annotation, either
+   --  directly or inherited through a parent type.
+
    function Has_Terminate_Annotation (E : Entity_Id) return Boolean;
    --  Return True if a pragma Annotate Terminating applies to the subprogram E
 

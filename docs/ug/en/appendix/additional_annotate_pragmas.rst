@@ -1,23 +1,46 @@
-
 .. _Uses_of_Pragma_Annotate_GNATprove:
 
-Uses of Pragma Annotate GNATprove
-=================================
+Aspects or Pragmas Specific to GNATprove
+========================================
 
-This appendix lists all the uses of pragma ``Annotate`` for |GNATprove|.
-Pragma ``Annotate`` can also be used to control other AdaCore tools. The uses
-of this pragma are explained in the User's guide of each tool.
+This appendix lists all the aspects or pragmas specific to |GNATprove|,
+in particular all the uses of aspect or pragma ``Annotate`` for
+|GNATprove|.  Aspect or pragma ``Annotate`` can also be used to control other
+AdaCore tools. The uses of such annotations are explained in the User's guide
+of each tool.
 
-The main usage of pragmas ``Annotate`` for |GNATprove| is for justifying check
-messages using :ref:`Direct Justification with Pragma Annotate`. Specific
-versions of this pragma can also be used to influence the generation of proof
-obligations. Some of these uses can be seen in :ref:`SPARK Libraries` for
-example. These forms of pragma ``Annotate`` should be used with care as they
-can introduce additional assumptions which are not verified by the |GNATprove|
-tool.
+Annotations in |GNATprove| are useful in two cases:
 
-Using Pragma Annotate to Justify Check Messages
------------------------------------------------
+1. for justifying check messages using :ref:`Direct Justification with Pragma
+   Annotate`, typically using a pragma rather than an aspect, as the
+   justification is generally associated to a statement or declaration.
+
+2. for influencing the generation of proof obligations, typically using an
+   aspect rather than a pragma, as the annotation is generally associated to an
+   entity in that case. Some of these uses can be seen in :ref:`SPARK
+   Libraries` for example. Some of these annotations introduce additional
+   assumptions which are not verified by the |GNATprove| tool, and thus should
+   be used with care.
+
+When the annotation is associated to an entity, both the pragma and aspect form
+can be used and are equivalent, for example on a subprogram:
+
+.. code-block:: ada
+
+    function Func (X : T) return T
+      with Annotate => (GNATprove, <annotation name>);
+
+or
+
+.. code-block:: ada
+
+    function Func (X : T) return T;
+    pragma Annotate (GNATprove, <annotation name>, Func);
+
+In the following, we use the aspect form whenever possible.
+
+Using Annotations to Justify Check Messages
+-------------------------------------------
 
 You can use annotations of the form
 
@@ -30,32 +53,59 @@ to justify an unproved check message that cannot be proved by other means. See
 the section :ref:`Direct Justification with Pragma Annotate` for more details
 about this use of pragma ``Annotate``.
 
-Using Pragma Annotate to Specify Possibly Nonreturning Procedures
------------------------------------------------------------------
+Using Annotations to Specify Possibly Nonreturning Procedures
+-------------------------------------------------------------
 
 You can use annotations of the form
 
 .. code-block:: ada
 
-    pragma Annotate (GNATprove, Might_Not_Return, Proc_Entity);
+    procedure Proc
+      with Annotate => (GNATprove, Might_Not_Return);
 
 to specify that a procedure might not return. See the section
-:ref:`Nonreturning Procedures` for more details about this use of pragma
-``Annotate``.
+:ref:`Nonreturning Procedures` for more details about this use of
+annotations.
 
+Using Annotations to Request Proof of Termination
+-------------------------------------------------
 
-Using pragma Annotate to force Proof of Termination
----------------------------------------------------
-
-SPARK doesn't usually prove termination of subprograms. You can instruct it do
-so using annotations of this form:
+By default, |GNATprove| does not prove termination of subprograms. You can
+instruct it to do so using annotations of the form:
 
 .. code-block:: ada
 
-   pragma Annotate (GNATprove, Terminating, Subp_Or_Package_Entity);
+   procedure Proc
+     with Annotate => (GNATprove, Terminating);
 
 See the section :ref:`Subprogram Termination` about details of this use of
-pragma ``Annotate``.
+annotations.
+
+Using Annotations to Request Overflow Checking on Modular Types
+---------------------------------------------------------------
+
+The standard semantics of arithmetic on modular types is that operations wrap
+around, hence |GNATprove| issues no overflow checks on such operations.
+You can instruct it to issue such checks (hence detecting possible wrap-around)
+using annotations of the form:
+
+.. code-block:: ada
+
+   type T is mod 2**32
+     with Annotate => (GNATprove, No_Wrap_Around);
+
+or on a derived type:
+
+.. code-block:: ada
+
+   type T is new U
+     with Annotate => (GNATprove, No_Wrap_Around);
+
+This annotation is inherited by derived types. It must be specified on a type
+declaration (and cannot be specified on a subtype declaration). All three
+binary arithmetic operations + - * are checked for possible overflows. Division
+cannot lead to overflow. Unary negation is checked for possible non-nullity
+of its argument, which leads to overflow.
 
 Customize Quantification over Types with the Iterable Aspect
 ------------------------------------------------------------

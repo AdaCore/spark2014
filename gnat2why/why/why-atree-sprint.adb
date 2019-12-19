@@ -1398,6 +1398,8 @@ package body Why.Atree.Sprint is
          P (O, "BV32.t");
       elsif Typ = EW_BitVector_64_Type then
          P (O, "BV64.t");
+      elsif Typ = EW_BitVector_128_Type then
+         P (O, "BV128.t");
       else
          raise Unexpected_Node;
       end if;
