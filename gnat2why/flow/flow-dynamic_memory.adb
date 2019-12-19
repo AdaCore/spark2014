@@ -21,9 +21,12 @@
 --                                                                          --
 ------------------------------------------------------------------------------
 
+with Elists;      use Elists;
+with Lib;         use Lib;
 with Namet;       use Namet;
 with Nlists;      use Nlists;
 with Nmake;       use Nmake;
+with Sem_Util;    use Sem_Util;
 with Sinfo;       use Sinfo;
 with Snames;      use Snames;
 with Stand;       use Stand;
@@ -39,6 +42,16 @@ package body Flow.Dynamic_Memory is
    --  An entity for the abstract state that represents memory (de)allocation.
    --  It should be considered a constant; however, we cannot create it at
    --  elaboration, because we need to wait until node tables are ready.
+
+   procedure Find_Heap_State (E : Entity_Id);
+   --  Finds an abstract state that represents memory (de)allocation in
+   --  compilation unit whose main entity is E.
+
+   procedure Scan_All_Units;
+   --  Scans all compilation units analyzed by the frontend, i.e. the current
+   --  compilation unit and all units transitively WITH-ed from it (except for
+   --  Standard) and check if they contain the abstract state that represents
+   --  memory (de)allocation.
 
    -----------------------
    -- Create_Heap_State --
@@ -57,7 +70,11 @@ package body Flow.Dynamic_Memory is
       --  Einfo.Has_Option when it queries the state properties.
 
    begin
-      pragma Assert (No (Dynamic_Memory_Id));
+      Scan_All_Units;
+
+      if Present (Dynamic_Memory_Id) then
+         return;
+      end if;
 
       --  Create and decorate entities for the abstract state and its enclosing
       --  packages, so that we can use typical queries and, in particular,
@@ -128,6 +145,41 @@ package body Flow.Dynamic_Memory is
       --  ??? perhaps we should set Is_Internal as well
    end Create_Heap_State;
 
+   ---------------------
+   -- Find_Heap_State --
+   ---------------------
+
+   procedure Find_Heap_State (E : Entity_Id) is
+      State_Id : Entity_Id;
+   begin
+      --  Check as strictly as possible, first the enclosing package...
+
+      if Ekind (E) = E_Package
+        and then Get_Name_String (Chars (E)) = Heap_Pkg_Name
+        and then Ekind (Scope (E)) = E_Package
+        and then Chars (Scope (E)) = Name_SPARK
+        and then Scope (Scope (E)) = Standard_Standard
+        and then Has_Non_Null_Abstract_State (E)
+        and then List_Length (Abstract_States (E)) = 1
+
+      --  ... then the abstract state itself
+
+      then
+         State_Id :=
+           Node (First_Elmt (Abstract_States (E)));
+
+         if Get_Name_String (Chars (State_Id)) = Dynamic_Memory_Name
+           and then Is_External_State (State_Id)
+           and then not Async_Readers_Enabled (State_Id)
+           and then Async_Writers_Enabled (State_Id)
+           and then not Effective_Reads_Enabled (State_Id)
+           and then not Effective_Writes_Enabled (State_Id)
+         then
+            Dynamic_Memory_Id := State_Id;
+         end if;
+      end if;
+   end Find_Heap_State;
+
    ----------------
    -- Heap_State --
    ----------------
@@ -144,5 +196,33 @@ package body Flow.Dynamic_Memory is
 
       return E = Dynamic_Memory_Id;
    end Is_Heap_State;
+
+   --------------------
+   -- Scan_All_Units --
+   --------------------
+
+   procedure Scan_All_Units is
+   begin
+      --  The following is like Gnat2Why.Driver.Process_All_Units, except for:
+      --  1) ignoring Standard
+      --  2) looking at the CUnit_Entity and not the node of a compilation unit
+      --  3) exiting early if we find what we are searching for.
+
+      --  Iterate over all other units known to the frontend
+      for U in Main_Unit .. Last_Unit loop
+
+         --  Ignore non-compilation units (e.g. .adc configuration files)
+         --  and units that were not analysed (e.g. system.ads when it is
+         --  implicitly pulled by Ensure_System_Dependency).
+
+         if Present (Cunit (U))
+           and then Analyzed (Unit (Cunit (U)))
+         then
+            Find_Heap_State (Cunit_Entity (U));
+         end if;
+
+         exit when Present (Dynamic_Memory_Id);
+      end loop;
+   end Scan_All_Units;
 
 end Flow.Dynamic_Memory;

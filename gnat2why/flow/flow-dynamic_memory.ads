@@ -23,9 +23,12 @@
 
 package Flow.Dynamic_Memory is
 
-   procedure Create_Heap_State;
-   --  Creates an entity for the abstract state that represents memory
-   --  (de)allocation.
+   procedure Create_Heap_State
+   with Post => Present (Heap_State);
+   --  Finds the entity of a predefined abstract state that represents memory
+   --  (de)allocation if its enclosing package has been WITH-ed from the
+   --  current complication unit; otherwise, creates an artificial entity for
+   --  this abstract state.
 
    function Heap_State return Entity_Id
    with Post => Ekind (Heap_State'Result) = E_Abstract_State;
