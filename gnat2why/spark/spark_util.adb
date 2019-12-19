@@ -3232,9 +3232,13 @@ package body SPARK_Util is
 
    begin
       --  Pick objects from visible declarations (always), then abstract
-      --  states (if given explicitly) or objects in private/body parts
+      --  states (if given explicitly) or objects in private/body parts,
       --  which are lifted to implicit abstract states (if no abstract
-      --  states are given).
+      --  states are given); however, respect the SPARK_Mode barrier.
+      --
+      --  Note: objects declared behind a SPARK_Mode => Off barrier might
+      --  sitll leak into flow analysis if they come from the frontend-cross
+      --  references, but then users should properly annotate their package.
 
       Traverse_Declarations (Visible_Declarations (Pkg_Spec));
 
@@ -3244,16 +3248,12 @@ package body SPARK_Util is
                Register_Object (State);
             end loop;
          end if;
-      else
+      elsif Private_Spec_In_SPARK (E) then
          Traverse_Declarations (Private_Declarations (Pkg_Spec));
-         declare
-            Pkg_Body : constant Node_Id := Package_Body (E);
 
-         begin
-            if Present (Pkg_Body) then
-               Traverse_Declarations (Declarations (Pkg_Body));
-            end if;
-         end;
+         if Entity_Body_In_SPARK (E) then
+            Traverse_Declarations (Declarations (Package_Body (E)));
+         end if;
       end if;
 
       return Results;

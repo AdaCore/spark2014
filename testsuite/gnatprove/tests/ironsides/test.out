@@ -568,8 +568,7 @@ process_first_line_of_record.ads:53:07: info: initialization of "RRSig_Rec" prov
 process_first_line_of_record.ads:54:07: info: initialization of "RecordSuccessfullyInserted" proved
 process_first_line_of_record.ads:56:09: info: data dependencies proved
 process_first_line_of_record.ads:57:09: info: flow dependencies proved
-protected_spark_io_05.adb:32:04: low: initialization of "File_System_Standard_Input" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
-protected_spark_io_05.adb:35:04: low: initialization of "File_System_Standard_Output" must be mentioned in the Initializes contract of "Protected_SPARK_IO_05" (SPARK RM 7.1.5(9))
+protected_spark_io_05.ads:23:08: info: flow dependencies proved
 protected_spark_io_05.ads:50:23: info: range check proved (CVC4: 2 VC)
 rr_type.adb:30:07: info: initialization of "Index" proved
 rr_type.adb:35:30: info: index check proved (CVC4: 4 VC)
