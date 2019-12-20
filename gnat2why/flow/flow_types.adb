@@ -212,6 +212,11 @@ package body Flow_Types is
 
    function Hash (N : Flow_Id) return Ada.Containers.Hash_Type is
    begin
+      --  Below we use arbitrary, but relatively large prime numbers to avoid
+      --  collisions for Flow_Ids whose Node and Name component are close to
+      --  each other (which is quite usual, as their types are Entity_Id and
+      --  Entity_Name, respectively).
+
       case N.Kind is
          when Null_Value =>
             return Generic_Integer_Hash (-1);
@@ -219,7 +224,8 @@ package body Flow_Types is
             return Generic_Integer_Hash (-2 - Flow_Id_Variant'Pos (N.Variant));
          when Direct_Mapping =>
             return Generic_Integer_Hash
-              (Integer (N.Node) + Variable_Facet_T'Pos (N.Facet));
+              (Integer (N.Node) + 7919 * Variable_Facet_T'Pos (N.Facet)
+                 + 6079 * Flow_Id_Variant'Pos (N.Variant));
          when Record_Field =>
             declare
                use Interfaces;
@@ -246,13 +252,15 @@ package body Flow_Types is
                end Hash_Component;
 
             begin
-               H := H + Flow_Id_Variant'Pos (N.Variant) * 19;
-               H := H + Variable_Facet_T'Pos (N.Facet) * 17;
+               H := H + Flow_Id_Variant'Pos (N.Variant) * 7919;
+               H := H + Variable_Facet_T'Pos (N.Facet) * 6079;
                N.Component.Iterate (Hash_Component'Access);
                return Ada.Containers.Hash_Type (H);
             end;
          when Magic_String =>
-            return Name_Hash (N.Name);
+            return
+              Generic_Integer_Hash
+                (Integer (N.Name) + 6079 * Flow_Id_Variant'Pos (N.Variant));
       end case;
    end Hash;
 
