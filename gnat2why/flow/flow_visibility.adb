@@ -875,7 +875,7 @@ package body Flow_Visibility is
    --------------------------
 
    procedure Register_Flow_Scopes (Unit_Node : Node_Id) is
-      procedure Processx (N : Node_Id)
+      procedure Process_Scope_Declaration (N : Node_Id)
       with Pre => Nkind (N) in N_Entry_Declaration
                              | N_Generic_Declaration
                              | N_Package_Declaration
@@ -890,13 +890,12 @@ package body Flow_Visibility is
                            and then Has_Own_DIC (Defining_Entity (N)))
                   or else (Nkind (N) = N_Full_Type_Declaration
                            and then Has_Own_Invariants (Defining_Entity (N)));
-      --  ??? remove the "x" suffix once debugging is done
 
-      -------------
-      -- Process --
-      -------------
+      -------------------------------
+      -- Process_Scope_Declaration --
+      -------------------------------
 
-      procedure Processx (N : Node_Id) is
+      procedure Process_Scope_Declaration (N : Node_Id) is
          Def_E : constant Entity_Id := Defining_Entity (N);
 
          E : constant Entity_Id :=
@@ -932,9 +931,10 @@ package body Flow_Visibility is
          end if;
 
          Scope_Graph.Add_Vertex ((Ent => E, Part => Body_Part), Body_V);
-      end Processx;
+      end Process_Scope_Declaration;
 
-      procedure Traverse is new Traverse_Compilation_Unit (Processx);
+      procedure Traverse is
+        new Traverse_Compilation_Unit (Process_Scope_Declaration);
 
    --  Start of processing for Build_Graph
 
