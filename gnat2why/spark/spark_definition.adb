@@ -1810,9 +1810,6 @@ package body SPARK_Definition is
                Mark_List (Component_Associations (N));
             end if;
 
-         when N_Free_Statement =>
-            Mark_Violation ("free statement", N);
-
          when N_Function_Call =>
             Mark_Call (N);
 
@@ -2583,6 +2580,7 @@ package body SPARK_Definition is
             | N_Formal_Ordinary_Fixed_Point_Definition
             | N_Formal_Private_Type_Definition
             | N_Formal_Signed_Integer_Type_Definition
+            | N_Free_Statement
             | N_Function_Specification
             | N_Generic_Association
             | N_Index_Or_Discriminant_Constraint
