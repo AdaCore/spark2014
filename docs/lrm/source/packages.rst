@@ -115,15 +115,24 @@ is because it is protected.]
 
 An *effectively volatile object* is a volatile object for which
 the property No_Caching (see below) is False, or an object
-of an effectively volatile type. There is one exception to this rule:
-the current instance of a protected unit whose (protected) type is nonvolatile
-during a protected action is, by definition, not an effectively volatile
-object. [This exception reflects the fact that the current instance
-cannot be referenced in contexts where unsynchronized updates are possible.
-This means, for example, that the Global aspect of a nonvolatile function
-which is declared inside of a protected operation may reference the current
-instance of the protected unit.]
+of an effectively volatile type. There are two exceptions to this rule:
 
+  * the current instance of a protected unit whose (protected) type is
+    nonvolatile during a protected action is, by definition, not an
+    effectively volatile object. [This exception reflects the fact that
+    the current instance cannot be referenced in contexts where
+    unsynchronized updates are possible. This means, for example, that the
+    Global aspect of a nonvolatile function which is declared inside of a
+    protected operation may reference the current instance of the protected
+    unit.]
+
+  * a constant object associated with the evaluation of a function
+    call, an aggregate, or a type conversion is, by definition,
+    not an effectively volatile object. [See Ada RM 4.6 for the rules about
+    when a type conversion introduces a new object; in cases where it is
+    unspecified whether a new object is created, we assume (for purposes
+    of the rules in this section) that no new object is created].
+  
 External state is an effectively volatile object or a state abstraction which
 represents one or more effectively volatile objects (or it could be a null state
 abstraction; see :ref:`abstract-state-aspect`). [The term "external" does
@@ -273,8 +282,8 @@ False is said to be *nonvolatile for internal calls*.
 
 .. _external_state-variables:
 
-External State - Variables
-~~~~~~~~~~~~~~~~~~~~~~~~~~
+External State - Variables and Types
+~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 
 In Ada interfacing to an external device or subsystem normally entails
 using one or more effectively volatile objects to ensure that writes and reads
@@ -282,9 +291,12 @@ to the device are not optimized by the compiler into internal register
 reads and writes.
 
 |SPARK| refines the specification of volatility by introducing four new Boolean
-aspects which may be applied only to effectively volatile objects. The aspects
+aspects which may be applied only to effectively volatile objects or to
+volatile types. The aspects
 may be specified in the aspect specification of an object declaration
-(this excludes effectively volatile objects that are formal parameters).
+(this effectively excludes volatile objects that are formal parameters, but
+allows such aspect specifications for generic formal objects) or
+of a type declaration (including a formal_type_declaration).
 
 The new aspects are:
 
@@ -299,9 +311,10 @@ The new aspects are:
 These four aspects are said to be the *volatility refinement* aspects.
 Ada's notion of volatility corresponds to the case where all four
 aspects are True. Specifying a volatility
-refinement aspect value of False for an object
+refinement aspect value of False for an object or type
 grants permission for the |SPARK| implementation to make additional
-assumptions about how the object in question is accessed;
+assumptions about how the object in question (or, respectively,
+about how an object of the type in question) is accessed;
 it is the responsibility of the user to ensure that these assumptions hold.
 In contrast, specifying a value of True imposes no such obligation on the user.
 
@@ -324,76 +337,110 @@ The verification condition associated with the assertion can be
 successfully discharged but this success depends on the
 Async_Writers aspect specification.
 
+The volatility refinement aspects of types (as opposed to
+those of objects) are type related representation aspects.
+The value of a given volatility refinement aspect of a volatile type
+is determined as follows:
+
+  * if the aspect's value is explicitly specified, then it is the
+    specified value;
+
+  * otherwise, if the type is a derived type whose parent type is volatile then
+    the aspect value is inherited from the parent type;
+
+  * otherwise, if at least one other volatility refinement aspect is
+    explicitly specified for the type then the given aspect of the type
+    is implicitly specified to be False;
+
+  * otherwise, the given aspect of the type is implicitly specified to be True.
+
+[This is similar to the rules for external state abstractions, except that
+there is no notion of inheritance in that case.]
+
+The value of a given volatility refinement aspect of an effectively
+volatile object is determined as follows:
+
+  * if the object is a reachable element of a stand-alone object or
+    of a formal parameter but is not itself such an object, then it is
+    the value of the given aspect of that enclosing or owning object
+    (see section :ref:`subprogram-declarations` for definitions of
+    "reachable element" and "owning object").
+
+  * otherwise, if the object is declared by an object declaration and the
+    given aspect is explicitly specified for the object declaration then
+    it is the specified value;
+
+  * otherwise, if the object is declared by an object declaration and then
+    at least one other volatility refinement aspect is explicitly specified
+    for the object declaration then the given aspect of the object is
+    implicitly specified to be False;
+
+  * otherwise, it is the value of the given aspect of the type of the object.
+
+Given two entities (each either an object or a type) E1 and E2, E1 is said to
+be *compatible with respect to volatility* with E2 if
+
+   * E1 is not effectively volatile; or
+
+   * both E1 and E2 are effectively volatile and each of the four
+     volatility refinement aspects is either False for E1 or
+     True for E2.
+   
 .. centered:: **Legality Rules**
 
 
-1. In the absence of an explicit aspect specification, the value of a
-   volatility refinement aspect of an effectively volatile stand-alone object
-   other than a formal parameter is True. The Effective_Reads aspect of an
-   effectively volatile formal parameter of mode **in** is False; in all other
-   cases, the value of a volatility refinement aspect of an effectively
-   volatile formal parameter is True.
+1. Any specified value for a volatility refinement aspect shall be static.
 
-   The volatility refinement aspect values of a subcomponent of an object
-   are those of the enclosing object.
-
+   [If a volatility refinement aspect of a derived type is inherited from an
+   ancestor type and has the boolean value True, the inherited value shall
+   not be overridden to have the value False for the derived type. This
+   follows from the corresponding Ada RM 13.1.1 rule and is stated here only
+   to clarify the point that there is no exception to that rule for volatility
+   refinement aspects. This is consistent with Ada's treatment of the Volatile
+   aspect.]
 
 2. The value of a volatility refinement aspect shall only be specified
-   for an effectively volatile stand-alone object. [A formal parameter
-   is not a stand-alone object; see Ada RM 3.3.1 .]
+   for an effectively volatile stand-alone object or for an effectively
+   volatile type (which may be a formal type).
+   [A formal parameter is not a stand-alone object; see Ada RM 3.3.1 .]
+   If specified for a stand-alone object, the declared object shall be
+   compatible with respect to volatility with its type.
 
-
-3. The declaration of an effectively volatile stand-alone object
+3. The declaration of an effectively volatile stand-alone object or type
    shall be a library-level declaration. [In particular, it shall not be
    declared within a subprogram.]
-
 
 4. A constant object (other than a formal parameter of mode **in**)
    shall not be effectively volatile.
 
-
 5. An effectively volatile type other than a protected type
    shall not have a discriminated part.
 
+6. A component type of a composite type shall be compatible with
+   respect to volatility with the composite type. Similarly, the
+   [full view of] the designated type of a named nonderived access type
+   shall be compatible with respect to volatility with the access type.
 
-6. A type which is not effectively volatile shall not have an
-   effectively volatile component.
+7. If an object that is not of a by-copy type is passed as a parameter in a
+   call other than a call to an instance of Unchecked_Conversion, then the
+   actual parameter shall be compatible with respect to volatility with the
+   the corresponding formal parameter.
 
+8. In a generic instantiation, the actual parameter corresponding to a
+   formal type or formal object parameter shall be compatible with
+   respect to volatility with the corresponding formal parameter.
 
-7. An effectively volatile object shall not be used as an actual parameter in a
-   generic instantiation.
-
-
-8. A ``global_item`` of a nonvolatile function, or of a function which
+9. A ``global_item`` of a nonvolatile function, or of a function which
    is nonvolatile for internal calls, shall not denote either
    an effectively volatile object or an external state abstraction.
 
+10. A formal parameter (or result) of a nonvolatile function, or of a
+    function which is nonvolatile for internal calls, shall not be of
+    an effectively volatile type. [For a protected function, this rule
+    does not apply to the notional parameter denoting the current instance of
+    the associated protected unit described in section :ref:`global-aspects`.]
 
-9. A formal parameter (or result) of a nonvolatile function, or of a
-   function which is nonvolatile for internal calls, shall not be of
-   an effectively volatile type. [For a protected function, this rule
-   does not apply to the notional parameter denoting the current instance of
-   the associated protected unit described in section :ref:`global-aspects`.]
-
-
-10. If a procedure has an **in** mode parameter of an effectively
-    volatile type, then the Effective_Reads aspect of any corresponding
-    actual parameter shall be False.
-    [This is because the parameter is passed by reference and the corresponding
-    aspect of the formal parameter is False. In the 11 other cases,
-    corresponding to the combination of a parameter mode and a volatility
-    refinement aspect, the volatility refinement aspect of the formal parameter
-    is True and so the aspect of the corresponding actual parameter may be
-    either True or False.]
-
-
-11. An effectively volatile object shall only occur as an actual
-    parameter of a subprogram if the corresponding formal parameter is
-    of a non-scalar effectively volatile type or as an actual
-    parameter in a call to an instance of Unchecked_Conversion.
-
-
-12. Contrary to the general |SPARK| rule that expression evaluation
+11. Contrary to the general |SPARK| rule that expression evaluation
     cannot have side effects, a read of an effectively volatile object with
     the properties Async_Writers or Effective_Reads set to True is
     considered to have an effect when read. To reconcile this
@@ -453,14 +500,13 @@ Async_Writers aspect specification.
 
 .. centered:: **Dynamic Semantics**
 
-13. There are no dynamic semantics associated with these aspects.
+12. There are no dynamic semantics associated with these aspects.
 
 .. centered:: **Verification Rules**
 
-14. An effectively volatile formal parameter of mode **out** shall not be read,
+13. An effectively volatile formal parameter of mode **out** shall not be read,
     even after it has been updated. [This is because the
     Async_Writers aspect of the parameter is True].
-
 
 .. centered:: **Examples**
 
@@ -652,7 +698,7 @@ There are no verification rules associated with the Abstract_State aspect.
 
       procedure Init                      -- Procedure to initialize the internal state of Q.
         with Global => (Output => State), -- State may be used in a global aspect.
-	     Post   => Is_Ready;
+             Post   => Is_Ready;
 
       procedure Op_1 (V : Integer)     -- Another procedure providing some operation on State
         with Global => (In_Out => State),
@@ -931,7 +977,7 @@ be a *Boolean_*\ ``expression``.
        with Abstract_State    => State,    -- Declaration of abstract state name State
             Initializes       => State,    -- State will be initialized during elaboration
             Initial_Condition => Is_Ready  -- Predicate stating the logical state after
-	                                   -- initialization.
+                                           -- initialization.
     is
        function Is_Ready return Boolean
           with Global => State;
@@ -943,9 +989,9 @@ be a *Boolean_*\ ``expression``.
     package X
        with Abstract_State    => A,      -- Declares an abstract state named A
             Initializes       => (A, B), -- A and visible variable B are initialized
-	                                 -- during package initialization.
+                                         -- during package initialization.
             Initial_Condition => A_Is_Ready and B = 0
-	                                 -- The logical conditions that hold
+                                         -- The logical conditions that hold
                                          -- after package elaboration.
     is
        ...

@@ -867,10 +867,18 @@ be an owning type).]
     owning or observing type unless the prefix is a function_call and the
     called function is not a traversal function.
 
+14. If the designated type of a named nonderived access type is incomplete
+    at the point of the access type's declaration then the incomplete
+    type declaration and its completion shall occur in the same
+    declaration list. [This implies that the incomplete type shall not be
+    declared in the limited view of a package, and that if it is declared
+    in the private part of a package then its completion shall also occur
+    in that private part.]
+
 .. centered:: **Verification Rules**
 
 
-14. When an owning access object other than a borrower, an observer,
+15. When an owning access object other than a borrower, an observer,
     or an object in the Moved state is finalized, or when such an object
     is passed as a part of an actual parameter of mode **out**, its value
     shall be null.
