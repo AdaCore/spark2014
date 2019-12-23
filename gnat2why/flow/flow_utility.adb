@@ -869,6 +869,7 @@ package body Flow_Utility is
 
       Trimming_Required : constant Boolean :=
         Get_Pragma_Id (Depends_N) = Pragma_Depends
+        and then Subprogram_Refinement_Is_Visible (Subprogram, Scope)
         and then Mentions_State_With_Ambiguous_Refinement (Depends_N, Scope);
       --  True iff the down-projected Depends need to be trimmed using
       --  Refined_Global aspect.

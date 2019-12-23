@@ -1443,9 +1443,7 @@ package body Flow_Refinement is
       --  Globals of Spec_Id, taken either from the Depends or Global contract
 
       function Has_Ambiguous_Refinement (E : Entity_Id) return Boolean is
-        (Ekind (E) = E_Abstract_State
-         and then State_Refinement_Is_Visible (E, Scope)
-         and then Down_Project (E, Scope).Length > 1);
+        (Down_Project (E, Scope).Length > 1);
       --  Returns True iff refinement of E is ambiguous, i.e. it is an abstract
       --  state with more than one constituent.
 
