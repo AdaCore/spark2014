@@ -2259,9 +2259,9 @@ package body SPARK_Definition is
                   elsif From_Fixed and To_Fixed then
                      declare
                         Target_Small : constant Ureal :=
-                          Small_Value (To_Type);
+                          Small_Value (Retysp (To_Type));
                         Source_Small : constant Ureal :=
-                          Small_Value (From_Type);
+                          Small_Value (Retysp (From_Type));
                         Factor : constant Ureal := Target_Small / Source_Small;
                      begin
                         if Norm_Num (Factor) /= Uint_1

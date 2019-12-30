@@ -14948,7 +14948,7 @@ package body Gnat2Why.Expr is
                then
                   declare
                      From_Small : constant Ureal :=
-                       Small_Value (Etype (Expression (Expr)));
+                       Small_Value (Retysp (Etype (Expression (Expr))));
                      To_Small   : constant Ureal :=
                        Small_Value (Expr_Type);
                   begin
