@@ -42,6 +42,7 @@
 
 INSTALLDIR=$(CURDIR)/install
 SHAREDIR=$(INSTALLDIR)/share
+SIDDIR=$(SHAREDIR)/gnat2why-sids
 INCLUDEDIR=$(INSTALLDIR)/include/spark
 LIBDIR=$(INSTALLDIR)/lib/gnat
 EXAMPLESDIR=$(SHAREDIR)/examples/spark
@@ -135,11 +136,20 @@ coverage:
 	$(MAKE) -C gnat2why AUTOMATED=1 coverage
 
 install-coverage:
-	$(CP) gnat2why/project.isi $(SHAREDIR)
+	rm -rf $(SIDDIR)
+	mkdir $(SIDDIR)
+	find gnat2why/obj -name '*.sid' -exec cp \{\} $(SIDDIR)/ \;
 
 coverage-report:
 	find $(COVERAGE_TRACES_DIR) -name "*.srctrace" > tracefiles
-	gnatcov coverage --level=stmt --annotate=dhtml --sid gnat2why/project.isi --output-dir=dhtml-report @tracefiles
+
+	# Look for SID files both in the installation tree given by the environment
+	# (COVERAGE_SIDS_DIR, for testsuite runs in production) and in our own
+	# object directory (for testsuite runs based on local builds).
+	find $(COVERAGE_SIDS_DIR) -name "*.sid" > sidfiles
+	find gnat2why/obj -name '*.sid' >> sidfiles
+
+	gnatcov coverage --level=stmt --annotate=dhtml --sid @sidfiles --output-dir=dhtml-report @tracefiles
 
 codepeer-run:
 	$(MAKE) --no-print-directory -C gnat2why codepeer-run
