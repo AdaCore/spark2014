@@ -830,8 +830,7 @@ package body Flow_Utility is
          case Interesting_Nodes (Nkind (N)) is
             when N_Selected_Component =>
                Map_Root := Add_Component (Map_Root,
-                                          Original_Record_Component
-                                            (Entity (Selector_Name (N))));
+                                          Entity (Selector_Name (N)));
 
             when N_Type_Conversion =>
                View_Conversion := True;
@@ -5704,10 +5703,7 @@ package body Flow_Utility is
                null;
 
             when N_Selected_Component =>
-               Obj :=
-                 Add_Component
-                   (Obj,
-                    Original_Record_Component (Entity (Selector_Name (N))));
+               Obj := Add_Component (Obj, Entity (Selector_Name (N)));
 
             when others =>
                raise Program_Error;
