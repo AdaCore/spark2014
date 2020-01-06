@@ -6,8 +6,8 @@
 --                                                                          --
 --                                 B o d y                                  --
 --                                                                          --
---                     Copyright (C) 2010-2019, AdaCore                     --
---                Copyright (C) 2014-2019, Altran UK Limited                --
+--                     Copyright (C) 2010-2020, AdaCore                     --
+--                Copyright (C) 2014-2020, Altran UK Limited                --
 --                                                                          --
 -- gnatprove is  free  software;  you can redistribute it and/or  modify it --
 -- under terms of the  GNU General Public License as published  by the Free --
