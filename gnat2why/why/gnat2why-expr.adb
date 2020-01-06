@@ -19157,33 +19157,24 @@ package body Gnat2Why.Expr is
                        EW_Unit_Type);
                end if;
 
-               --  If a procedure might not return, detect the case where it
-               --  does not return and return immediately:
+               --  If a procedure might not return, ignore the case where it
+               --  does not return after the call:
                --
                --    proc;
-               --    if no__return then raise Return_Exc;
-               --
-               --  Note that there is no need to havoc objects borrowed in
-               --  scopes traversed by the return statement here, as this
-               --  corresponds to a path on which the postcondition will not
-               --  be checked.
+               --    assume (no__return = False);
 
                if Has_Might_Not_Return_Annotation (Subp) then
                   Call := +Sequence
                     (+Call,
-                     New_Conditional
-                       (Condition =>
-                          New_Comparison
+                     New_Assume_Statement
+                       (Ada_Node => Stmt_Or_Decl,
+                        Pred     =>
+                          +New_Comparison
                             (Symbol => M_Integer.Bool_Eq,
                              Left   => New_Deref (Right => +M_Main.No_Return,
                                                   Typ   => EW_Bool_Type),
-                             Right  => +True_Term,
-                             Domain => EW_Term),
-                        Then_Part =>
-                          New_Raise
-                            (Ada_Node => Stmt_Or_Decl,
-                             Name     => M_Main.Return_Exc,
-                             Typ      => EW_Unit_Type)));
+                             Right  => +False_Term,
+                             Domain => EW_Term)));
                end if;
 
                --  Insert invariant check if needed
