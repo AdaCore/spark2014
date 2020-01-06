@@ -3530,7 +3530,7 @@ while a call to ``P`` is translated as:
 .. code-block:: whyml
 
      p x;
-     if Main.no__return then raise Main.Exc__Return;
+     assume (Main.no__return = False);
 
 Expression Functions
 """"""""""""""""""""
