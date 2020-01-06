@@ -117,8 +117,6 @@ package body Why.Images is
          begin
             P (O, Sloc_Tag);
          end;
-      else
-         P (O, "");
       end if;
    end P;
 
