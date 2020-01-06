@@ -73,8 +73,8 @@ package body Why.Atree.Sprint is
    -----------------------
 
    procedure Print_Node (N : Why_Node_Id);
-   --  printing function for any node, calls the other functions in this
-   --  package as needed
+   --  Printing function for any node, calls the other functions in this
+   --  package as needed.
 
    type Print_Callback is access procedure (N : Why_Node_Id);
 
@@ -1462,7 +1462,7 @@ package body Why.Atree.Sprint is
             end if;
          end;
 
-         Position := Next (Position);
+         Next (Position);
 
          if Position /= No_Element then
             P (O, Separator);
@@ -2222,11 +2222,11 @@ package body Why.Atree.Sprint is
    begin
       P (O, "(");
       P (O, "forall ");
-      Print_List (List_Id     => +Variables,
-                  Callback    => Print_Node'Access,
-                  Separator   => " ",
-                  Newline     => False,
-                  Loc         => True);
+      Print_List (List_Id   => +Variables,
+                  Callback  => Print_Node'Access,
+                  Separator => " ",
+                  Newline   => False,
+                  Loc       => True);
 
       --  Labels generated for foralls binding several variables are always
       --  faulty because the label is on the forall not on the variables. If we
@@ -2235,7 +2235,7 @@ package body Why.Atree.Sprint is
       --  Even if one of the variables in question is from source we have no
       --  way to know on which variable is the label.
       if Length (Get_List (+Variables)) <= 1
-        and Comes_From_Source (Get_Ada_Node (+Node))
+        and then Comes_From_Source (Get_Ada_Node (+Node))
       then
          P (O, " ");
          P (O, Labels, As_Labels => True);
