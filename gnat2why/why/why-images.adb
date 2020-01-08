@@ -49,13 +49,7 @@ package body Why.Images is
    function Img (Node : Node_Id) return String;
 
    function Img (Name : Symbol) return String is
-   begin
-      if Name = No_Symbol then
-         return "[no name]";
-      else
-         return Get (Name).all;
-      end if;
-   end Img;
+     (Get (Name).all);
 
    function Img (Node : Why_Node_Set) return String is
       Result : constant String := Why_Node_Set'Image (Node);

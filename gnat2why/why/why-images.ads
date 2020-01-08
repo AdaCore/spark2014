@@ -95,7 +95,8 @@ package Why.Images is
    --  Print either "module" or "theory" depending on theory type, if kind is
    --  EW_Theory and Empty_For_Theory is true, print nothing.
 
-   function Img (Name : Symbol) return String;
+   function Img (Name : Symbol) return String
+   with Pre => Name /= No_Symbol;
    --  Return the String represented by the symbol
 
    function Img (Node : Why_Node_Set) return String;
