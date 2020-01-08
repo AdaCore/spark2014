@@ -1,0 +1,2 @@
+glob.ads:11:14: warning: subprogram "Read" has no effect
+main.adb:5:08: medium: "glob.x" might not be initialized after elaboration of main program "Main"
