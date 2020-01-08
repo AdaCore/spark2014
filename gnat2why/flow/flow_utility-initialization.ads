@@ -42,7 +42,8 @@ package Flow_Utility.Initialization is
      (F          : Flow_Id;
       Scope      : Flow_Scope;
       Ignore_DIC : Boolean := False)
-      return Boolean;
+      return Boolean
+   with Pre => F.Kind in Direct_Mapping | Record_Field;
    --  Returns True if F is default initialized.
    --  @param F is the Flow_Id whose initialization we look for
    --  @param Scope is the Flow_Scope from where we are looking

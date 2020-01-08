@@ -27,7 +27,6 @@ with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
 with Sem_Type;                   use Sem_Type;
-with Why;
 
 package body Flow_Utility.Initialization is
 
@@ -508,7 +507,9 @@ package body Flow_Utility.Initialization is
       --  the value attached to component C, for example if C is Z this will
       --  return W.
 
-      function Get_Simple_Default (E : Entity_Id) return Node_Id;
+      function Get_Simple_Default (E : Entity_Id) return Node_Id
+      with Post => (if Present (Get_Simple_Default'Result)
+                    then Nkind (Get_Simple_Default'Result) in N_Subexpr);
       --  Recursively look for simple default values given by Default_Value and
       --  Default_Component_Value.
 
@@ -532,7 +533,7 @@ package body Flow_Utility.Initialization is
                   end if;
 
                when others =>
-                  raise Why.Unexpected_Node;
+                  raise Program_Error;
             end case;
 
             Next (N);
@@ -623,7 +624,7 @@ package body Flow_Utility.Initialization is
             | Synthetic_Null_Export
             | Null_Value
          =>
-            raise Why.Unexpected_Node;
+            raise Program_Error;
       end case;
    end Get_Default_Initialization;
 
@@ -683,7 +684,9 @@ package body Flow_Utility.Initialization is
             end;
 
          when Record_Field =>
-            if In_Generic_Actual (Get_Direct_Mapping_Id (F)) then
+            if In_Generic_Actual (Get_Direct_Mapping_Id (F))
+              or else Is_Imported (Get_Direct_Mapping_Id (F))
+            then
                return True;
             end if;
 
@@ -691,9 +694,7 @@ package body Flow_Utility.Initialization is
                return Present (Discriminant_Default_Value
                                  (F.Component.Last_Element));
 
-            elsif Is_Record_Tag (F)
-              or else Is_Imported (Get_Direct_Mapping_Id (F))
-            then
+            elsif Is_Record_Tag (F) then
                return True;
 
             else
@@ -710,11 +711,11 @@ package body Flow_Utility.Initialization is
                    (Get_Direct_Mapping_Id (F), Scope);
             end if;
 
-         when Magic_String | Synthetic_Null_Export =>
-            return False;
-
-         when Null_Value =>
-            raise Why.Unexpected_Node;
+         when Magic_String
+            | Null_Value
+            | Synthetic_Null_Export
+         =>
+            raise Program_Error;
       end case;
    end Is_Default_Initialized;
 
