@@ -146,8 +146,12 @@ coverage-report:
 	# Look for SID files both in the installation tree given by the environment
 	# (COVERAGE_SIDS_DIR, for testsuite runs in production) and in our own
 	# object directory (for testsuite runs based on local builds).
-	find $(COVERAGE_SIDS_DIR) -name "*.sid" > sidfiles
-	find gnat2why/obj -name '*.sid' >> sidfiles
+	> sidfiles
+	for dir in "$(COVERAGE_SIDS_DIR)" gnat2why/obj; do \
+		if [ -d "$$dir" ]; then \
+			find "$$dir" -name "*.sid" >> sidfiles; \
+		fi; \
+	done
 
 	gnatcov coverage --level=stmt --annotate=dhtml --sid @sidfiles --output-dir=dhtml-report @tracefiles
 
