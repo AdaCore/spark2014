@@ -1,0 +1,19 @@
+project Test is
+
+   for Object_Dir use "obj";
+   for Source_Dirs use
+       ("1_set_all_to_zero",
+	"2_linear_search",
+	"3_pointer_based_maps",
+	"4_route_shift",
+	"5_binary_search_trees",
+	"6_red_black_trees");
+   
+   package Prove is
+     for Proof_Switches ("Ada") use ("--no-axiom-guard", "--level=1");
+     for Proof_Switches ("binary_search.adb") use ("--level=2");
+     for Proof_Switches ("red_black_trees.adb") use ("--level=3");
+   end Prove;
+
+end Test;
+
