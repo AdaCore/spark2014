@@ -32,7 +32,6 @@ with Ada.Strings.Unbounded;       use Ada.Strings.Unbounded;
 with Ce_Interval_Sets;
 with Ce_Pretty_Printing;          use Ce_Pretty_Printing;
 with Common_Containers;           use Common_Containers;
-with Flow_Refinement;             use Flow_Refinement;
 with Flow_Types;                  use Flow_Types;
 with Flow_Utility.Initialization; use Flow_Utility.Initialization;
 with GNAT;                        use GNAT;
@@ -1805,8 +1804,8 @@ package body Gnat2Why.Counter_Examples is
                     No (Expression (Enclosing_Declaration (Element_Decl)))
                     and then
                     Default_Initialization
-                      (Etype (Element_Decl), Get_Flow_Scope (Element_Decl)) =
-                        No_Default_Initialization);
+                      (Etype (Element_Decl)) = No_Default_Initialization);
+
       end if;
 
       return False;

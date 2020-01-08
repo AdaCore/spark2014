@@ -3,19 +3,16 @@ c3900050.ads:55:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:55:33: warning: no Global contract available for "Time_Of"
 c3900050.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900050.ads:57:33: warning: no Global contract available for "Time_Of"
-c3900053.adb:108:38: high: "Alarm" is not initialized
+c3900053.adb:106:10: info: initialization of "Alarm" proved
 c3900053.adb:109:19: medium: precondition might fail, cannot prove false
-c3900053.adb:112:18: high: "Alarm" is not initialized
 c3900053.adb:115:19: medium: precondition might fail, cannot prove false
 c3900053.adb:127:13: medium: precondition might fail, cannot prove false
-c3900053.adb:137:38: high: "Low_Alarm" is not initialized
+c3900053.adb:134:10: info: initialization of "Low_Alarm" proved
 c3900053.adb:138:19: medium: precondition might fail, cannot prove false
-c3900053.adb:141:18: high: "Low_Alarm" is not initialized
 c3900053.adb:144:19: medium: precondition might fail, cannot prove false
 c3900053.adb:156:13: medium: precondition might fail, cannot prove false
-c3900053.adb:166:38: high: "Medium_Alarm" is not initialized
+c3900053.adb:163:10: info: initialization of "Medium_Alarm" proved
 c3900053.adb:167:19: medium: precondition might fail, cannot prove false
-c3900053.adb:170:18: high: "Medium_Alarm" is not initialized
 c3900053.adb:173:19: medium: precondition might fail, cannot prove false
 c3900053.adb:185:13: medium: precondition might fail, cannot prove false
 c3900060.adb:18:76: medium: overflow check might fail [possible explanation: subprogram at c3900060.ads:76 should mention A and Display_Count_For in a precondition]
@@ -23,9 +20,8 @@ c3900060.ads:57:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:57:33: warning: no Global contract available for "Time_Of"
 c3900060.ads:59:33: warning: assuming "Time_Of" has no effect on global items
 c3900060.ads:59:33: warning: no Global contract available for "Time_Of"
-c3900063.adb:113:38: high: private part of "Medium_Alarm" is not initialized
+c3900063.adb:110:10: info: initialization of "Medium_Alarm" proved
 c3900063.adb:114:19: medium: precondition might fail, cannot prove false
-c3900063.adb:117:18: high: private part of "Medium_Alarm" is not initialized
 c3900063.adb:120:19: medium: precondition might fail, cannot prove false
 c3900063.adb:132:13: medium: precondition might fail, cannot prove false
 c392004.adb:9:03: info: initialization of "My_Car" proved

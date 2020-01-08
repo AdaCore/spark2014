@@ -35,8 +35,6 @@ with Debug;                           use Debug;
 with Elists;                          use Elists;
 with Errout;                          use Errout;
 with Exp_Util;                        use Exp_Util;
-with Flow_Refinement;                 use Flow_Refinement;
-with Flow_Types;                      use Flow_Types;
 with Flow_Utility;                    use Flow_Utility;
 with Flow_Utility.Initialization;     use Flow_Utility.Initialization;
 with Gnat2Why_Args;
@@ -1650,8 +1648,7 @@ package body SPARK_Definition is
                if Nkind (Expression (N)) in N_Expanded_Name | N_Identifier
                  and then In_SPARK (Entity (Expression (N)))
                  and then Default_Initialization
-                   (Entity (Expression (N)), Get_Flow_Scope (N))
-                     /= Full_Default_Initialization
+                   (Entity (Expression (N))) /= Full_Default_Initialization
                then
                   Mark_Violation ("uninitialized allocator without"
                                   & " default initialization", N);
@@ -3755,9 +3752,6 @@ package body SPARK_Definition is
                                             | N_Extension_Aggregate);
 
          declare
-            Scop : constant Flow_Scope := Get_Flow_Scope (N);
-            --  Visibility scope for deciding default initialization
-
             Typ : constant Entity_Id := Retysp (Etype (Parent (N)));
             --  Type of the aggregate; ultimately this will be either an array
             --  or a record.
@@ -3779,7 +3773,7 @@ package body SPARK_Definition is
                         --  N_Identifier or N_Others_Choice, but the latter
                         --  is expanded by the frontend.
 
-                        if Default_Initialization (Etype (Choice), Scop) =
+                        if Default_Initialization (Etype (Choice)) =
                           Full_Default_Initialization
                         then
                            Mark (Choice);
@@ -3803,7 +3797,7 @@ package body SPARK_Definition is
                --  initialization of the array, so we only check the latter.
 
                when Array_Kind =>
-                  if Default_Initialization (Typ, Scop) /=
+                  if Default_Initialization (Typ) /=
                        Full_Default_Initialization
                   then
                      Mark_Violation
@@ -3969,7 +3963,7 @@ package body SPARK_Definition is
          if Present (Encap_Id)
            and then Is_Single_Concurrent_Object (Encap_Id)
            and then In_SPARK (Etype (E))
-           and then Default_Initialization (Etype (E), Get_Flow_Scope (E))
+           and then Default_Initialization (Etype (E))
              not in Full_Default_Initialization | No_Possible_Initialization
            and then not Has_Initial_Value (E)
            and then not Is_Imported (E)
@@ -5730,8 +5724,6 @@ package body SPARK_Definition is
 
                         Comp : Entity_Id := First_Component (E);
 
-                        Scop : constant Flow_Scope := Get_Flow_Scope (E);
-
                      begin
                         while Present (Comp) loop
 
@@ -5757,7 +5749,7 @@ package body SPARK_Definition is
 
                               if No (Expression (Parent (Comp)))
                                 and then
-                                  Default_Initialization (Etype (Comp), Scop)
+                                  Default_Initialization (Etype (Comp))
                                   not in Full_Default_Initialization
                                        | No_Possible_Initialization
                               then

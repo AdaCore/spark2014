@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Aspects;                    use Aspects;
-with Flow_Refinement;            use Flow_Refinement;
 with Namet;                      use Namet;
 with Nlists;                     use Nlists;
 with SPARK_Util.External_Axioms; use SPARK_Util.External_Axioms;
@@ -35,7 +34,6 @@ package body Flow_Utility.Initialization is
    ----------------------------
 
    function Default_Initialization (Typ        : Entity_Id;
-                                    Scope      : Flow_Scope;
                                     Ignore_DIC : Boolean := False)
                                     return Default_Initialization_Kind
    is
@@ -70,7 +68,6 @@ package body Flow_Utility.Initialization is
            or else Chars (Comp) = Name_uParent
          then
             Init := Default_Initialization (Base_Type (Etype (Comp)),
-                                            Scope,
                                             Ignore_DIC);
 
             --  A component with mixed initialization renders the whole
@@ -117,7 +114,7 @@ package body Flow_Utility.Initialization is
       if Ignore_DIC
         and then Full_View_Not_In_SPARK (Typ)
       then
-         return Default_Initialization (Typ, Scope);
+         return Default_Initialization (Typ);
       end if;
 
       --  If we are considering implicit initializations and
@@ -182,7 +179,6 @@ package body Flow_Utility.Initialization is
       then
          pragma Assert (Entity_In_SPARK (Base_Type (Typ)));
          Result := Default_Initialization (Base_Type (Typ),
-                                           Scope,
                                            Ignore_DIC);
 
       --  A derived type is only initialized if its base type and any
@@ -197,7 +193,6 @@ package body Flow_Utility.Initialization is
          then
             pragma Assert (Entity_In_SPARK (Etype (Typ)));
             Result := Default_Initialization (Etype (Typ),
-                                              Scope,
                                               Ignore_DIC);
          else
             declare
@@ -210,18 +205,51 @@ package body Flow_Utility.Initialization is
                --  If Typ is an Itype, it may not have an Parent field pointing
                --  to a corresponding declaration. In that case, there is no
                --  record extension part to check for default initialization.
-               --  Similarly, if the corresponding declaration is not a full
-               --  type declaration for a derived type definition, there is no
-               --  extension part to check.
 
-               if Present (Parent_Typ)
-                 and then Nkind (Parent_Typ) = N_Full_Type_Declaration
-               then
-                  Type_Def := Type_Definition (Parent_Typ);
+               --  If the corresponding declaration is a full type declaration
+               --  for a derived type definition or a type declaration with a
+               --  private extension, then there is an extension part to check.
+               --  ??? a type with a private extension should kind of be
+               --  handled by like a private type.
 
-                  if Nkind (Type_Def) = N_Derived_Type_Definition then
-                     Rec_Part := Record_Extension_Part (Type_Def);
-                  end if;
+               if Present (Parent_Typ) then
+                  case Nkind (Parent_Typ) is
+                     when N_Full_Type_Declaration =>
+                        Type_Def := Type_Definition (Parent_Typ);
+
+                        if Nkind (Type_Def) = N_Derived_Type_Definition then
+                           Rec_Part := Record_Extension_Part (Type_Def);
+                        end if;
+
+                     when N_Private_Extension_Declaration =>
+                        if Full_View_Not_In_SPARK (Typ) then
+                           null;
+                        else
+                           Type_Def :=
+                             Type_Definition
+                               (Original_Node (Parent (Full_View (Typ))));
+                           --  The Original_Node above is needed because
+                           --  frontend rewrites:
+                           --
+                           --    type T is new R (...) [with ...];
+                           --
+                           --  into:
+                           --
+                           --    type BT is new R [with ...];
+                           --    subtype T is BT (...);
+                           --
+                           --  see Build_Derived_Record_Type, step 5.
+
+                           if Nkind (Type_Def) = N_Derived_Type_Definition then
+                              Rec_Part := Record_Extension_Part (Type_Def);
+                           end if;
+                        end if;
+
+                     when others =>
+                        null;
+                  end case;
+               else
+                  pragma Assert (Is_Itype (Typ));
                end if;
 
                --  If there is an extension part then we need to look into it
@@ -229,112 +257,97 @@ package body Flow_Utility.Initialization is
 
                if Present (Rec_Part) then
 
-                  --  If the extension part is visible from the current scope
-                  --  the we analyse it.
+                  --  If the extension is null then initialization of this type
+                  --  is equivalent to the initialization for its Etype.
 
-                  if Is_Visible (Rec_Part, Scope) then
-
-                     --  If the extension is null then initialization of this
-                     --  type is equivalent to the initialization for its
-                     --  Etype.
-
-                     if Null_Present (Rec_Part) then
-                        pragma Assert (Entity_In_SPARK (Etype (Typ)));
-                        Result := Default_Initialization (Etype (Typ),
-                                                          Scope,
-                                                          Ignore_DIC);
+                  if Null_Present (Rec_Part) then
+                     pragma Assert (Entity_In_SPARK (Etype (Typ)));
+                     Result := Default_Initialization (Etype (Typ),
+                                                       Ignore_DIC);
 
                      --  If the extension is not null then we need to analyse
                      --  it.
 
-                     else
-                        --  When the derived type has extensions we check both
-                        --  the base type and the extensions.
-                        declare
-                           Base_Initialized : Default_Initialization_Kind;
-                           Ext_Initialized  : Default_Initialization_Kind;
-
-                        begin
-                           pragma Assert (Entity_In_SPARK (Etype (Typ)));
-                           Base_Initialized :=
-                             Default_Initialization (Etype (Typ),
-                                                     Scope,
-                                                     Ignore_DIC);
-
-                           if Is_Tagged_Type (Typ) then
-                              Comp := First_Non_Pragma
-                                (Component_Items (Component_List (Rec_Part)));
-                           else
-                              Comp := First_Non_Pragma
-                                        (Component_Items (Rec_Part));
-                           end if;
-
-                           --  Inspect all components of the extension
-
-                           if Present (Comp) then
-                              while Present (Comp) loop
-                                 if Ekind (Defining_Identifier (Comp)) =
-                                   E_Component
-                                 then
-                                    Process_Component
-                                      (Defining_Identifier (Comp));
-                                 end if;
-
-                                 Next_Non_Pragma (Comp);
-                              end loop;
-
-                              --  Detect a mixed case of initialization
-
-                              if FDI and NDI then
-                                 Ext_Initialized := Mixed_Initialization;
-
-                              elsif FDI then
-                                 Ext_Initialized :=
-                                   Full_Default_Initialization;
-
-                              elsif NDI then
-                                 Ext_Initialized := No_Default_Initialization;
-
-                              --  The type either has no components or they
-                              --  are all internally generated. The extensions
-                              --  are trivially fully default initialized
-
-                              else
-                                 Ext_Initialized :=
-                                   Full_Default_Initialization;
-                              end if;
-
-                              --  The extension is null, there is nothing to
-                              --  initialize.
-
-                           else
-                              if Ignore_DIC then
-                                 --  The extensions are trivially fully default
-                                 --  initialized.
-                                 Ext_Initialized :=
-                                   Full_Default_Initialization;
-                              else
-                                 Ext_Initialized :=
-                                   No_Possible_Initialization;
-                              end if;
-                           end if;
-
-                           if Base_Initialized = Full_Default_Initialization
-                             and then Ext_Initialized =
-                               Full_Default_Initialization
-                           then
-                              Result := Full_Default_Initialization;
-                           else
-                              Result := No_Default_Initialization;
-                           end if;
-                        end;
-                     end if;
-
-                  --  If the extension is not visible then we assume there is
-                  --  no default initialization as we cannot see the extension
-
                   else
-                     Result := No_Default_Initialization;
+                     --  When the derived type has extensions we check both
+                     --  the base type and the extensions.
+                     declare
+                        Base_Initialized : Default_Initialization_Kind;
+                        Ext_Initialized  : Default_Initialization_Kind;
+
+                     begin
+                        pragma Assert (Entity_In_SPARK (Etype (Typ)));
+                        Base_Initialized :=
+                          Default_Initialization (Etype (Typ),
+                                                  Ignore_DIC);
+
+                        if Is_Tagged_Type (Typ) then
+                           Comp := First_Non_Pragma
+                             (Component_Items (Component_List (Rec_Part)));
+                        else
+                           Comp := First_Non_Pragma
+                             (Component_Items (Rec_Part));
+                        end if;
+
+                        --  Inspect all components of the extension
+
+                        if Present (Comp) then
+                           while Present (Comp) loop
+                              if Ekind (Defining_Identifier (Comp)) =
+                                E_Component
+                              then
+                                 Process_Component
+                                   (Defining_Identifier (Comp));
+                              end if;
+
+                              Next_Non_Pragma (Comp);
+                           end loop;
+
+                           --  Detect a mixed case of initialization
+
+                           if FDI and NDI then
+                              Ext_Initialized := Mixed_Initialization;
+
+                           elsif FDI then
+                              Ext_Initialized :=
+                                Full_Default_Initialization;
+
+                           elsif NDI then
+                              Ext_Initialized := No_Default_Initialization;
+
+                           --  The type either has no components or they are
+                           --  all internally generated. The extensions are
+                           --  trivially fully default initialized
+
+                           else
+                              Ext_Initialized :=
+                                Full_Default_Initialization;
+                           end if;
+
+                        --  The extension is null, there is nothing to
+                        --  initialize.
+
+                        else
+                           if Ignore_DIC then
+                              --  The extensions are trivially fully default
+                              --  initialized.
+                              Ext_Initialized :=
+                                Full_Default_Initialization;
+                           else
+                              Ext_Initialized :=
+                                No_Possible_Initialization;
+                           end if;
+                        end if;
+
+                        if Base_Initialized = Full_Default_Initialization
+                          and then Ext_Initialized =
+                          Full_Default_Initialization
+                        then
+                           Result := Full_Default_Initialization;
+                        else
+                           Result := No_Default_Initialization;
+                        end if;
+                     end;
                   end if;
 
                --  If there is no extension then we analyse initialization for
@@ -343,7 +356,6 @@ package body Flow_Utility.Initialization is
                else
                   pragma Assert (Entity_In_SPARK (Etype (Typ)));
                   Result := Default_Initialization (Etype (Typ),
-                                                    Scope,
                                                     Ignore_DIC);
                end if;
             end;
@@ -366,27 +378,23 @@ package body Flow_Utility.Initialization is
             pragma Assert (Is_Type (Full_V) and then Full_V /= Typ);
 
          begin
-            --  Continue analysing the full view of the private type only if it
-            --  is visible from the Scope and its full view is in SPARK.
-
-            if Is_Visible (Full_V, Scope)
-              and then not Full_View_Not_In_SPARK (Typ)
-            then
-               pragma Assert (Entity_In_SPARK (Full_V));
-
-               Result := Default_Initialization (Full_V,
-                                                 Scope,
-                                                 Ignore_DIC);
-
             --  If the full view is not visible from the Scope then we can
             --  consider the type to be fully initialized if it has a DIC.
 
+            if Full_View_Not_In_SPARK (Typ) then
+
+               Result :=
+                 (if Has_Own_DIC (Typ)
+                  then Full_Default_Initialization
+                  else No_Default_Initialization);
+
+            --  Continue analysing the full view of the private type only if it
+            --  is visible from the Scope and its full view is in SPARK.
+
             else
-               if Has_Own_DIC (Typ) then
-                  Result := Full_Default_Initialization;
-               else
-                  Result := No_Default_Initialization;
-               end if;
+               pragma Assert (Entity_In_SPARK (Full_V));
+
+               Result := Default_Initialization (Full_V, Ignore_DIC);
             end if;
          end;
 
@@ -401,14 +409,13 @@ package body Flow_Utility.Initialization is
 
       elsif Is_Array_Type (Typ) then
          if Present (Default_Aspect_Component_Value
-                     (if Is_Partial_View (Base_Type (Typ))
+                       (if Is_Partial_View (Base_Type (Typ))
                         then Full_View (Base_Type (Typ))
                         else Base_Type (Typ)))
          then
             Result := Full_Default_Initialization;
          else
             Result := Default_Initialization (Component_Type (Typ),
-                                              Scope,
                                               Ignore_DIC);
          end if;
 
@@ -634,23 +641,18 @@ package body Flow_Utility.Initialization is
 
    function Is_Default_Initialized
      (F          : Flow_Id;
-      Scope      : Flow_Scope;
       Ignore_DIC : Boolean := False)
       return Boolean
    is
 
-      function Has_Full_Default_Initialization (E     : Entity_Id;
-                                                Scope : Flow_Scope)
-                                                return Boolean;
+      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean;
       --  Returns True iff F has full default initialization
 
       -------------------------------------
       -- Has_Full_Default_Initialization --
       -------------------------------------
 
-      function Has_Full_Default_Initialization (E     : Entity_Id;
-                                                Scope : Flow_Scope)
-                                                return Boolean
+      function Has_Full_Default_Initialization (E : Entity_Id) return Boolean
       is
          Typ : Entity_Id;
       begin
@@ -665,7 +667,7 @@ package body Flow_Utility.Initialization is
                Typ := Etype (E);
          end case;
 
-         return Default_Initialization (Typ, Scope, Ignore_DIC) =
+         return Default_Initialization (Typ, Ignore_DIC) =
                   Full_Default_Initialization;
       end Has_Full_Default_Initialization;
 
@@ -680,7 +682,7 @@ package body Flow_Utility.Initialization is
             begin
                return Is_Imported (E)
                  or else In_Generic_Actual (E)
-                 or else Has_Full_Default_Initialization (E, Scope);
+                 or else Has_Full_Default_Initialization (E);
             end;
 
          when Record_Field =>
@@ -704,11 +706,10 @@ package body Flow_Utility.Initialization is
 
                return
                  (for some Comp of reverse F.Component =>
-                    (Has_Full_Default_Initialization (Comp, Scope)
+                    (Has_Full_Default_Initialization (Comp)
                      or else Present (Expression (Parent (Comp)))))
                    or else
-                 Has_Full_Default_Initialization
-                   (Get_Direct_Mapping_Id (F), Scope);
+                 Has_Full_Default_Initialization (Get_Direct_Mapping_Id (F));
             end if;
 
          when Magic_String

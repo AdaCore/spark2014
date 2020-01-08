@@ -31,8 +31,6 @@ test_08.ads:17:09: medium: invariant check might fail on default value
 test_08.ads:23:09: medium: invariant check might fail on default value
 
 === test_08_util.adb ===
-test_08_util.adb:13:07: warning: unused variable "X"
-test_08_util.adb:20:07: warning: unused variable "X"
 test_08_util.ads:4:17: info: postcondition proved (CVC4: 2 VC)
 test_08_util.ads:7:17: info: postcondition proved (CVC4: 2 VC)
 test_08_util.ads:10:17: info: postcondition proved (CVC4: 2 VC)

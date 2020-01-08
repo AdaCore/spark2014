@@ -1291,8 +1291,7 @@ package body Gnat2Why.Expr is
                        Labels   => Symbol_Sets.Empty_Set,
                        Value    =>
                          (if Default_Initialization
-                              (Constrained_Ty, Get_Flow_Scope (Constrained_Ty))
-                          /= No_Default_Initialization
+                            (Constrained_Ty) /= No_Default_Initialization
                           then True_Prog
                           else False_Prog),
                        Typ      => EW_Bool_Type));
@@ -3847,9 +3846,8 @@ package body Gnat2Why.Expr is
          Ada_Ent_To_Why.Pop_Scope (Symbol_Table);
       end if;
 
-      if Has_Predicates (Ty) and then
-        Default_Initialization (Ty, Get_Flow_Scope (Ty))
-          /= No_Default_Initialization
+      if Has_Predicates (Ty)
+        and then Default_Initialization (Ty) /= No_Default_Initialization
       then
          declare
             Tmp_Exp : constant W_Identifier_Id :=
@@ -4005,8 +4003,7 @@ package body Gnat2Why.Expr is
                   Right  =>
                     (if Has_Default_Aspect (Ty_Ext)
                      or else Default_Initialization
-                       (C_Ty, Get_Flow_Scope (C_Ty)) /=
-                         No_Default_Initialization
+                       (C_Ty) /= No_Default_Initialization
                      then +True_Term
                      else +False_Term),
                   Domain => EW_Pred),
@@ -4133,9 +4130,8 @@ package body Gnat2Why.Expr is
                     (F_Ty, +F_Expr, Params.Ref_Allowed),
                   Right  =>
                     (if Present (Expression (Enclosing_Declaration (E)))
-                     or else Default_Initialization
-                       (F_Ty, Get_Flow_Scope (F_Ty)) /=
-                         No_Default_Initialization
+                       or else Default_Initialization (F_Ty) /=
+                               No_Default_Initialization
                      then +True_Term
                      else +False_Term),
                   Domain => EW_Pred),
@@ -4754,8 +4750,7 @@ package body Gnat2Why.Expr is
             else Compute_Dynamic_Predicate
               (Expr, Anc_Ty, Params, Use_Pred => False));
          Pred_Check_At_Default : constant Boolean :=
-           Default_Initialization (Ty_Ext, Get_Flow_Scope (Ty_Ext))
-             /= No_Default_Initialization;
+           Default_Initialization (Ty_Ext) /= No_Default_Initialization;
          Check_Pred            : constant W_Pred_Id :=
            New_Conditional
              (Condition => +Top_Predicate,
@@ -15305,9 +15300,9 @@ package body Gnat2Why.Expr is
                      Call_Ty   : constant W_Type_Id :=
                        Get_Typ (Func_New_Uninitialized_Name);
                      Constr_Ty : constant Entity_Id := Entity (New_Expr);
-                     pragma Assert (Default_Initialization
-                                    (Constr_Ty, Get_Flow_Scope (Constr_Ty)) =
-                                      Full_Default_Initialization);
+                     pragma Assert
+                       (Default_Initialization (Constr_Ty) =
+                          Full_Default_Initialization);
 
                      Value_Id   : constant W_Identifier_Id :=
                        New_Temp_Identifier

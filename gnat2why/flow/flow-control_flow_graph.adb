@@ -4074,7 +4074,7 @@ package body Flow.Control_Flow_Graph is
 
       else
          for F of Flatten_Variable (E, FA.B_Scope) loop
-            if Is_Default_Initialized (F, FA.B_Scope) then
+            if Is_Default_Initialized (F) then
                Add_Vertex
                  (FA,
                   Make_Default_Initialization_Attributes
@@ -5120,10 +5120,8 @@ package body Flow.Control_Flow_Graph is
          if not FA.Generating_Globals
            and then Comes_From_Source (Typ)
            and then No (Full_View (Typ))
-           and then Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                            Get_Flow_Scope (Typ))
+           and then Is_Default_Initialized (Direct_Mapping_Id (Typ))
            and then not Is_Default_Initialized (Direct_Mapping_Id (Typ),
-                                                Get_Flow_Scope (Typ),
                                                 Ignore_DIC => True)
          then
             Error_Msg_Flow

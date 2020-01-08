@@ -2240,8 +2240,7 @@ package body Flow.Analysis is
 
          Is_Final_Use : constant Boolean := V_Key.Variant = Final_Value;
          Is_Global    : constant Boolean := FA.Atr (V_Initial).Is_Global;
-         Default_Init : constant Boolean := Is_Default_Initialized
-                                               (Var, FA.B_Scope);
+         Default_Init : constant Boolean := Is_Default_Initialized (Var);
          Is_Function  : constant Boolean := Is_Function_Entity (Var);
 
          function Mark_Definition_Free_Path

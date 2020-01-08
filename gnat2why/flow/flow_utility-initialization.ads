@@ -40,13 +40,11 @@ package Flow_Utility.Initialization is
 
    function Is_Default_Initialized
      (F          : Flow_Id;
-      Scope      : Flow_Scope;
       Ignore_DIC : Boolean := False)
       return Boolean
    with Pre => F.Kind in Direct_Mapping | Record_Field;
    --  Returns True if F is default initialized.
    --  @param F is the Flow_Id whose initialization we look for
-   --  @param Scope is the Flow_Scope from where we are looking
    --  @param Ignore_DIC If True then ignore attribute Has_DIC for this type
    --  @return True iff F is fully default initialized
 
@@ -80,7 +78,6 @@ package Flow_Utility.Initialization is
      );
 
    function Default_Initialization (Typ        : Entity_Id;
-                                    Scope      : Flow_Scope;
                                     Ignore_DIC : Boolean := False)
                                     return Default_Initialization_Kind
    with Pre => Is_Type (Typ) and then Entity_In_SPARK (Typ);
@@ -90,7 +87,6 @@ package Flow_Utility.Initialization is
    --  either considered as having full default initialization, or no default
    --  initialization.
    --  @param Typ any type
-   --  @param Scope is the Flow_Scope from where we are looking
    --  @param Ignore_DIC If True then do not consider attribute Has_DIC for
    --     this type.
    --  @return the Default_Initialization_Kind of Typ

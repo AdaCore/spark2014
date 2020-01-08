@@ -1,4 +1,4 @@
-inherited_proc.adb:7:10: high: "X" is not initialized
+inherited_proc.adb:4:04: info: initialization of "X" proved
 types_with_inv.ads:4:27: info: initialization of "X" proved
 types_with_inv.ads:8:14: medium: invariant check might fail
 types_with_inv.ads:8:20: warning: unused initial value of "X"
