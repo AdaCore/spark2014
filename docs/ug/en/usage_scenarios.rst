@@ -596,7 +596,7 @@ Section 18.1 "Writing Portable Fixed-Point Declarations" of the GNAT Reference
 Manual gives some advice on how to reduce implementation defined behavior for
 fixed-point types. Use of IEEE 754 floating-point arithmetic can be enforced in
 GNAT by using the compilation switches "-msse2 -mfpmath=sse", as documented in
-section 8.3.1.6 "Floating Point Operations" of the |GNAT Pro| User's Guide.
+section 6.3.1.6 "Floating Point Operations" of the |GNAT Pro| User's Guide.
 
 Note that a number of restrictions can be used to prevent some features leading
 to implementation defined or unspecified behavior:
