@@ -94,7 +94,7 @@ declare             --  Block introducing new declarations
   -- User-defined integer type ranging from -100 to 100
   subtype My_Nat is My_Int range 0 .. My_Int'Last;
   -- Subtype of My_Int with additional constraints
-  
+
   X : My_Int := 50; --  Static check that 50 is in the bounds of My_Int
   Y : My_Nat;
 begin               --  Part of the block containing statements
@@ -103,7 +103,7 @@ begin               --  Part of the block containing statements
 end;                --  End of scope of the entities declared in the block
 \end{lstlisting}
 Ada 2012 %, inspired by Eiffel,
-introduced contract based programming to Ada. In particular, it is possible to attach pre- and postconditions to subprograms\footnote{In Ada, a distinction is made between functions that return a value, and procedures, which do not. \emph{Subprogram} is the term that designates both.}. %In Ada, these conditions are just boolean expressions which should hold respectively before and after the subprogram execution. 
+introduced contract based programming to Ada. In particular, it is possible to attach pre- and postconditions to subprograms\footnote{In Ada, a distinction is made between functions that return a value, and procedures, which do not. \emph{Subprogram} is the term that designates both.}. %In Ada, these conditions are just boolean expressions which should hold respectively before and after the subprogram execution.
 These conditions can be checked during the execution of the program, just like assertions.
 %The user can decide that these expressions be checked during the execution of the program, just like assertions. In reference to the term \emph{contract-based programming}, we use the term \emph{contracts} to refer to pre- and postconditions in this paper.
 
@@ -113,7 +113,7 @@ These conditions can be checked during the execution of the program, just like a
 SPARK is the name of a tool that provides formal verification for Ada. It uses the user-provided contracts and attempts to prove that the runtime checks cannot fail and that postconditions are established by the corresponding subprograms.
 As formal verification for the whole Ada language would be intractable, SPARK is also the name of the subset of the Ada language that is supported by the SPARK tool%. This subset is defined in a separate document
 \footnote{\url{http://docs.adacore.com/spark2014-docs/html/ug/}}.
-This subset contains almost all features of Ada, though sometimes in a restricted form. %For example, generics are fully supported, tasking is supported but only with static tasks, and global side effects are restricted to procedures and not allowed in functions - this makes it easier to reason about expressions that include function calls, in particular if they appear in contracts. 
+This subset contains almost all features of Ada, though sometimes in a restricted form. %For example, generics are fully supported, tasking is supported but only with static tasks, and global side effects are restricted to procedures and not allowed in functions - this makes it easier to reason about expressions that include function calls, in particular if they appear in contracts.
 %Another restriction, which has already been mentioned in the introduction, is the absence of aliasing.
 In particular, expressions should be free from side effects, and aliasing is forbidden (no two variables should share the same memory location or overlap in memory).
 This restriction greatly simplifies the memory model used in the SPARK tool: any program variables%, including arrays and other structured data,
@@ -156,7 +156,7 @@ There are several kinds of access types. The basic access types, like \texttt{In
 %\subsection{Pointers in SPARK}
 Pointers were excluded from the SPARK subset until recently. Indeed, allowing pointers in a straightforward way would break the absence of aliasing in SPARK. In addition, pointers are associated to a list of classes of bugs. A subset of them is memory leaks, use-after-free and dereferencing a null-pointer.% We use the term memory corruption to indicate any dereference of a pointer that points to “invalid” data - use-after-free is actually a special case of memory corruption.
 
-To support pointers in SPARK, we attempted to design a subset of Ada's access types which would not introduce aliasing and avoid some pointer-specific issues, while retaining as much expressivity as possible. The first restriction we selected is the exclusion of general access types. This means that SPARK can only create pointers designating memory allocated on the heap, and not on the stack. As a result, pointers can only be made invalid by explicit deallocation, and deallocation of a valid pointer is always legal.% This rule also excludes aliasing between pointers and stack values.
+To support pointers in SPARK, we designed a subset of Ada's access types which does not introduce aliasing and avoids some pointer-specific issues, while retaining as much expressivity as possible. The first restriction we selected is the exclusion of general access types. This means that SPARK can only create pointers designating memory allocated on the heap, and not on the stack. As a result, pointers can only be made invalid by explicit deallocation, and deallocation of a valid pointer is always legal. % This rule also excludes aliasing between pointers and stack values.
 To eliminate aliasing between (heap) pointers, ownership rules inspired by Rust have been added on top of Ada's legality rules. These rules enforce a single writer/multiple readers policy. They ensure that, when a value designated by a pointer is modified, all other objects can be considered to be preserved.
 % Note that ownership rules, together with the restriction to pointer designating values in the heap, are enough to avoid memory corruption as defined above. For example, it rules out cases of use-after-free. Indeed, in Ada, when a value designated by a pointer is deallocated using \texttt{Unchecked\_Deallocation}, the variable containing the pointer is reset to null. Since the variable was the only way to access the value designated by the pointer, the deallocated memory can no longer be accessed afterward.
 
@@ -246,8 +246,8 @@ procedure Set_All_To_Zero (X : in out List) is
    Y : List := X;    -- The ownership of X is transferred to Y
 begin
    while Y /= null loop
-  	Y.Data := 0;
-  	Y := Y.Next; --  Ownership of the first cell of Y is lost for good
+      Y.Data := 0;
+      Y := Y.Next;   --  Ownership of the first cell of Y is lost for good
    end loop;         --  The ownership of X cannot be restored
 end Set_All_To_Zero; --  Illegal, cannot exit subprogram while X is moved
 \end{lstlisting}
@@ -255,7 +255,7 @@ To traverse recursive data structures, a move is not what we want. Here we need 
 \section{Borrowing Ownership}
 %\subsection{Local Borrowers}
 
-As Ada is an imperative language, losing the possibility to traverse a linked data structure using a loop was deemed to restrictive. To alleviate this problem, a notion of ownership borrowing was introduced in SPARK. It allows the users to declare a variable, called a borrower, which is initialized with a reference to a part of an existing data structure. To state that this initialization should not be considered a move, an \emph{anonymous access type} is used for the borrower. During the scope of the borrower, the borrowed part of the underlying structure is frozen, meaning that it is illegal to both read and modify it. %, like if it was moved, but also that we cannot make it designate something else. 
+As Ada is an imperative language, losing the possibility to traverse a linked data structure using a loop was deemed too restrictive. To alleviate this problem, a notion of ownership borrowing was introduced in SPARK. It allows the users to declare a variable, called a borrower, which is initialized with a reference to a part of an existing data structure. To state that this initialization should not be considered a move, an \emph{anonymous access type} is used for the borrower. During the scope of the borrower, the borrowed part of the underlying structure is frozen, meaning that it is illegal to both read and modify it. %, like if it was moved, but also that we cannot make it designate something else.
 Once the borrower has gone out of scope, the ownership automatically returns to the borrowed object, so that it is again fully accessible.
 \begin{lstlisting}
 X := ...;                      --  X is initialized to the list {1,2,3,4}
@@ -272,7 +272,7 @@ pragma Assert (X.Data = 2);    --  Afterwards, the ownership returns to X
 A borrower can be used to modify the underlying structure. This makes it effectively an alias of the borrowed object. To allow the tool to statically determine the cases of aliasing, SPARK restricts the initial value of a local borrower to be the name of a part of an existing object. This forbids for example borrowing one of two structures depending on a condition.
 
 %\subsection{Reborrows}
-It is possible to update a borrower to change the part of the object it designates (as opposed to to modify the designated object). This is called a reborrow. In SPARK, the value assigned to the borrower in a reborrow should be rooted at the borrower. This means that reborrows only go deeper into the structure.
+It is possible to update a borrower to change the part of the object it designates (as opposed to modifying the designated object). This is called a reborrow. In SPARK, the value assigned to the borrower in a reborrow should be rooted at the borrower. This means that reborrows only go deeper into the structure.
 \begin{lstlisting}
 declare
   Y : access List_Cell := X;  --  Y is X
@@ -293,12 +293,12 @@ end;
 Borrowing can be used to allow simple iterative traversals of a recursive data structure like the loop of \texttt{Set\_All\_To\_Zero}. More complex traversals, involving stacks for example, cannot be written iteratively in SPARK.
 \begin{lstlisting}
 procedure Set_All_To_Zero (X : in out List) is
-   Y : access List_Cell := X;  
+   Y : access List_Cell := X;
    -- The ownership of X is transferred to Y for the duration of its lifetime
 begin
    while Y /= null loop
-  	Y.Data := 0;
-  	Y := Y.Next; --  Reborrow: Y designates something deeper
+      Y.Data := 0;
+      Y := Y.Next;   --  Reborrow: Y designates something deeper
    end loop;
 end Set_All_To_Zero; --  The ownership of X is restored
 \end{lstlisting}
@@ -309,7 +309,7 @@ X := ...; --  X is initialized to the list {1,2,3,4}
 declare
   Y : access List_Cell := X;            --  Y is X
 begin
-  Y := Y.Next.Next; 
+  Y := Y.Next.Next;
   --  Through reborrows, Y designates an arbitrarily-deep part of X
   Y.Data := 42;                         --  Y is used to indirectly modify X
 end;
@@ -350,7 +350,7 @@ pragma Assert (X.Next.Next.Data = 42);
 % procedure Set_All_To_Zero (X : in out Int_Array) with
 %   Post => (for all K in X'Range => X (K) = 0);
 %   --  All elements of X are 0 after the call
-% 
+%
 % procedure Set_All_To_Zero (X : in out Int_Array) is
 % begin
 %    for J in X'Range loop
@@ -360,11 +360,11 @@ pragma Assert (X.Next.Next.Data = 42);
 %   	X (J) := 0;
 %    end loop;
 % end Set_All_To_Zero;
-% \end{lstlisting} 
+% \end{lstlisting}
 SPARK performs deductive verification, which relies on user-specified invariants to handle loops. When traversing a linked data structure, the loop body contains a reborrow, which means that the borrow relation is modified in the loop. As a general rule, if a variable is modified in a loop, it should be described in the loop invariant, lest nothing is known about its value afterward. Thus, we need a way to describe the borrow relation in the loop invariant.
 
 %\subsection{Introduction to Pledges}
-As part of they work on the Prusti proof tool for Rust, Astrauskas et al. found the need for a similar annotation that they call \emph{pledges}~\cite{astrauskas2019leveraging}. In Rust, a pledge is an assertion associated to a borrower which is guaranteed to hold at the time when the borrow expires, no matter what may happen in between. In SPARK, a property guaranteed to hold at the end of the borrow must be a consequence of the borrow relation, since the borrow relation is the most precise relation which does not depend on the actual value of the borrower. Therefore, the user-visible notion of a pledge is suitable to approximate the internally computed borrow relation. Similar to user-provided preconditions, which must imply the weakest precondition computed by a verifying tool, the user-provided pledge should follow from the borrow relation.
+As part of their work on the Prusti proof tool for Rust, Astrauskas et al. found the need for a similar annotation that they call \emph{pledges}~\cite{astrauskas2019leveraging}. In Rust, a pledge is an assertion associated to a borrower which is guaranteed to hold at the time when the borrow expires, no matter what may happen in between. In SPARK, a property guaranteed to hold at the end of the borrow must be a consequence of the borrow relation, since the borrow relation is the most precise relation which does not depend on the actual value of the borrower. Therefore, the user-visible notion of a pledge is suitable to approximate the internally computed borrow relation. Similar to user-provided preconditions, which must imply the weakest precondition computed by a verifying tool, the user-provided pledge should follow from the borrow relation.
 
 Since the Ada language has no support for pledges, we have resorted in SPARK to introducing special functions (dedicated to each deep type) called pledge functions, which mark expressions which should be considered as pledge expressions by the tool. A pledge function is a ghost function (meaning that it is not allowed to have any effect on the output of the program) which has two parameters. The first one is used to identify the borrower on which the pledge should apply, while the second holds the assertion.
 Note that a call to a pledge function isn't really a call for the SPARK analyzer. It is simply a marker that the expression in argument is a pledge. As assertions in SPARK are executable, we need to give an implementation to the pledge function: the function simply returns its second parameter.
@@ -375,7 +375,7 @@ function Pledge
      return Boolean
 is (P)  --  For execution, the function evaluates the property
 with Ghost,
-  Annotate => (GNATProve, Pledge); --  Identifies a pledge function for SPARK
+  Annotate => (GNATprove, Pledge); --  Identifies a pledge function for SPARK
 \end{lstlisting}
 When a pledge function is called in an assertion, SPARK recognizes it and identifies its parameter as a pledge. It therefore attempts to show that the property is implied by the borrow relation (as opposed to implied by the current value of the borrower).
 \begin{lstlisting}
@@ -395,12 +395,12 @@ begin
 end;
 \end{lstlisting}
 %\subsection{Verification of \texttt{Set\_All\_To\_Zero}}
-Using pledges, we can formally verify the \texttt{Set\_All\_To\_Zero} procedure. Its postcondition states that all elements of the list have been set to 0 using the Nth function. To be able to express the loop invariant in a similar way, we have introduced a ghost variable C to count the number of iterations. Its value is maintained by the first loop invariant. The second and third invariants are pledges, describing how the value of X can be reconstructed from the value of the iterator Y. The second invariant gives the length of the list, while the third describes the value of its elements using the Nth function. Elements which have already been processed are frozen by the borrow. Their value is known to be 0. Other elements can be linked to the corresponding position in the iterator Y. 
+Using pledges, we can formally verify the \texttt{Set\_All\_To\_Zero} procedure. Its postcondition states that all elements of the list have been set to 0 using the Nth function. To be able to express the loop invariant in a similar way, we have introduced a ghost variable C to count the number of iterations. Its value is maintained by the first loop invariant. The second and third invariants are pledges, describing how the value of X can be reconstructed from the value of the iterator Y. The second invariant gives the length of the list, while the third describes the value of its elements using the Nth function. Elements which have already been processed are frozen by the borrow. Their value is known to be 0. Other elements can be linked to the corresponding position in the iterator Y.
 \begin{lstlisting}
 procedure Set_All_To_Zero (X : List) with
   Pre  => Length (X) < My_Nat'Last,
   Post => Length (X) = Length (X)'Old
-  and (for all I in 1 .. Length (X) => Nth (X, I) = 0);
+    and (for all I in 1 .. Length (X) => Nth (X, I) = 0);
   --  All elements of X are 0 after the call
 
 procedure Set_All_To_Zero (X : List) is
@@ -414,7 +414,7 @@ begin
         (Pledge (Y, Length (X) = Length (Y) + C));
       pragma Loop_Invariant
         (Pledge (Y, (for all I in 1 .. Length (X) =>
-             Nth (X, I) = (if I <= C then 0 else Nth (Y, I - C)))));
+           Nth (X, I) = (if I <= C then 0 else Nth (Y, I - C)))));
       --  All elements are 0 up to C, others are elements of Y
       Y.Data := 0;
       Y := Y.Next;
@@ -440,13 +440,13 @@ Note that, in general, it is not necessary to write a pledge to verify a program
 % \end{lstlisting}
 \section{Evaluation}
 We could not try the tool on any pre-existing benchmark since SPARK codebases do not have pointers, and Ada codebases usually violate some SPARK rules. In particular, Ada codebases have no reason to abide by the ownership policy of SPARK. So instead, we mostly had to write new tests to assess the correctness and performance of our implementation.
-The public testsuite of SPARK contains more than 150 tests mentioning access types, be they supported cases or not. 
+The public testsuite of SPARK contains more than 150 tests mentioning access types, be they supported cases or not.
 
 %\subsection{Description of the Examples}
 To assess expressivity and provability on programs dealing with recursive data structures, we have written 6 examples, none of them very big, but ranging over various levels of complexity.
 %
 % In addition to the running example \emph{set all to zero}, we have a second program, \emph{linear search}, featuring linked lists of integers. Another two work on linked lists. \emph{Pointer based maps} defines a map as a list of pairs of a key and an element. \emph{Route shift} is the translation of the running example used by Astrauskas et all in their article~\cite{astrauskas2019leveraging}. It represents a route as a list of points with two coordinates. The last two examples feature binary trees, search trees for \emph{binary search}, and self balancing search trees for \emph{red black trees}.
-% 
+%
 % All of these examples are pretty small, providing between 1 and 3 functionalities. The longest, \emph{red black trees}, fits in a little more than 100 loc, not counting contracts ang ghost code. They are all designed in a similar way. Specification functions are defined recursively, as it is the natural way to reason about recursive data structures. The functionalities themselves are generally encoded using loops. The only exception is insertion inside a red black tree, which uses recursive calls. Indeed, because of the ownership policy of SPARK, it is not possible to store a backward link to the parent node in the tree structure. As a result, we could not use a loop to climb up the tree to rebalance it after the insertion.
 %
 On all of these examples, we have shown that the runtime checks imposed by the Ada language are guaranteed to pass and that no uninitialized value can be read.
@@ -457,7 +457,7 @@ In addition, we have manually supplied functional properties.
 
 Fig.~\ref{table-examples} gives some metrics over these examples.
 % Whereas for \emph{set all to zero}, we have around 20 lines of specifications, counting the contracts and the specification functions, and 8 lines of ghost code to help proof (the three loop-invariants and the declaration and update of the ghost variable), for \emph{red black trees} we are up to around 100 lines of specifications and nearly 400 lines of additional ghost code (contracts of local subprograms, lemmas, invariants…).
-Under the tab Loc are listed the total number of lines of code in the example, the number of lines of specification (including contracts and specification functions), and the number of additional ghost annotations (assertions, loop invariants, ghost variables…). The \#Checks column stores the number of checks generated by the tool (contracts, assertions, and invariants, language defined checks...). In the last three columns, we can see the total running time of SPARK, from scratch using its default strategy and only replaying the proofs through the replay facility, as well as the maximal time needed to prove a single verification condition.
+Under the tab Loc are listed the total number of lines of code in the example, the number of lines of specification (including contracts and specification functions), and the number of additional ghost annotations (assertions, loop invariants, ghost variables…). The \#Checks column stores the number of checks generated by the tool (contracts, assertions, invariants, language defined checks...). In the last three columns, we can see the total running time of SPARK, both from scratch using its default strategy and only replaying the proofs through the replay facility, as well as the maximal time needed to prove a single verification condition.
 
 \begin{figure}
 \vspace{-5mm}
@@ -473,7 +473,7 @@ Under the tab Loc are listed the total number of lines of code in the example, t
 \multirow{2}{*}{\#Checks} &
 \multicolumn{3}{c}{Analysis time (s)}\\
 & & All & Spec & Ghost & &
-Default & Replay & Per VC\\
+Default & Replay & Max VC\\
 \hline
 set all to zero
 & 5
@@ -537,7 +537,7 @@ red black trees
 \end{figure}
 
 %\subsection{Results and Discussions}
-Though these examples are small, we think they demonstrate that it is possible to define recursive data structures in SPARK, and to verify iterative programs using them. When writing the algorithms, we found that the limitations mostly come from the ownership policy of SPARK. Some data structures are not supported, requiring either to switch to full Ada for their implementations, or to change the algorithm to work-around the missing links. % (like we did for insertion in a red black tree).
+Though these examples are small, we think they demonstrate that it is possible to define recursive data structures in SPARK, and to verify iterative programs using them. When writing the algorithms, we found that the limitations mostly come from the ownership policy of SPARK. Some data structures are not supported, requiring either to switch to full Ada for their implementations, or to change the algorithm to work around the missing links. % (like we did for insertion in a red black tree).
 %
 % Regarding the specification of these algorithms, we were often missing a way to speak about previous values of a pointer-based data structure. Indeed, SPARK contracts are generally executable. Therefore, the \texttt{'Old} attribute used to refer to the pre state in a postcondition involves a copy. On pointer based data structures, this copy is forbidden, as it would create an alias. To alleviate this problem, we resorted in our examples to storing values of the data structure in a model (a mathematical sequence or an array for example). In particular, this is the main difference between our translation of \emph{route shift} and the original Rust example. This causes the amount of ghost code for contracts to rise because of the model definition. Another possibility would have been to define a proof-only copy function returning an alias of its parameter. This would allow to simplify the writing of the annotations, at the cost of the executability of the contracts.
 %
@@ -553,7 +553,7 @@ Because in mainstream languages like C or Java the concept of pointer or referen
 The ownership rules introduced in SPARK are largely inspired by the Rust language~\cite{rust}. The differences are mostly motivated by the need to comply with the preexisting Ada semantics of pointers. In addition, SPARK was aiming at coming up with a subset as easy to verify as possible. The resulting model is simpler, in particular, it does not make lifetime of borrowers explicit, and aliases created through borrows are always statically known. %Just like the ownership checking of Rust can be by-passed by using unsafe features of the language, it is possible to use full Ada to work-around SPARK restrictions. It has been done for example in containers libraries.
 
 The Prusti verification tool for Rust~\cite{astrauskas2019leveraging} allows users to verify that a Rust program annotated with pre- and postconditions complies with its specification. From a user perspective, both tools are close. They provide similar guaranties and induce a similar annotation burden. However, they differ in their implementation. Indeed, Prusti works by translating both the user provided annotations and separation constraints enforced by the Rust type system to the intermediate verification language of the Viper tool~\cite{muller2016viper}. %Viper works on a logic close to separation logic called implicit dynamic frames~\cite{smans2009implicit}.
-So even if the input Rust program does not contain annotations related to the memory model, these annotations are present in the generated Viper program, and the verification process (here symbolic execution) takes them into account. Our work differs here, as we use the ownership system to abstract away memory related concerns, so that the verification process does not need to be aware of them. 
+So even if the input Rust program does not contain annotations related to the memory model, these annotations are present in the generated Viper program, and the verification process (here symbolic execution) takes them into account. Our work differs here, as we use the ownership system to abstract away memory related concerns, so that the verification process does not need to be aware of them.
 
 %Rust paper: https://www.research-collection.ethz.ch/bitstream/handle/20.500.11850/311092/paper.pdf?sequence=21&isAllowed=y
 \section{Conclusion}
