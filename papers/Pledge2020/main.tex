@@ -52,7 +52,7 @@
 
 \begin{document}
 %
-\title{Recursive Data-Structures in SPARK}
+\title{Recursive Data Structures in SPARK}
 %
 \author{Claire Dross \and Johannes Kanig}
 %
@@ -74,7 +74,7 @@ SPARK is both a deductive verification tool for the Ada language and the subset 
 %
 \section{Introduction}
 The programming language SPARK has been designed to be amenable to formal verification, and one of the most impactful design choices was the exclusion of aliasing. While this choice vastly simplified the tool design and improved the expected proof performance, it also meant that pointers, as a major source of aliasing, were excluded from the language. While SPARK over the years had seen the addition of many language features, adding pointers just seemed impossible without violating the non-aliasing property. % The workaround was to replace pointers by indices into arrays - we developed some non-trivial examples using this approach, including an implementation of red-black trees~\cite{dross2017auto}.
-Then came Rust and its type system based on ownership~\cite{rust}. %Finally there seemed to be a way to add pointers to the language in a way that would still exclude aliasing. Simplifying and adapting the rules to fit to SPARK were hard work, but in the end it worked out.
+Then came Rust~\cite{rust} democratizing a type system based on ownership~\cite{clarke1998ownership}. %Finally there seemed to be a way to add pointers to the language in a way that would still exclude aliasing. Simplifying and adapting the rules to fit to SPARK were hard work, but in the end it worked out.
 Taking inspiration from it, it was possible to add pointers to the language in a way that still excludes aliasing.
 We will give an overview over the rules in this paper.
 
@@ -194,8 +194,8 @@ Note that the ownership policy is key for this translation to be correct, as it 
 % Y.all := 4;                --  Y has a value which is 4, X is not modified
 % pragma Assert (X.all = 3); --  Rejected by ownership rules
 % \end{lstlisting}
-\section{Recursive Data-Structures}
-%\subsection{Recursive Data-Structures in Ada}
+\section{Recursive Data Structures}
+%\subsection{Recursive Data Structures in Ada}
 In Ada, it is not possible to declare a recursive data structure directly. Recursivity can only be introduced through pointers. The idea is to first declare a type, but without giving its definition. This declaration, called \emph{incomplete declaration}, introduces a place-holder for the type, which can only be used in restricted circumstances. In particular, this place-holder can be used to declare an access type designating pointers to values of this type. %To allocate such an object, we will need to wait until after the incomplete declaration is completed by a type definition.
 Using this mechanism, it is possible to declare a recursive data structure, since the access type can be used in the type definition as it comes afterward.
 \begin{lstlisting}
@@ -217,7 +217,7 @@ end record;
 %   Children : Tree_Array_Acc;
 % end record;
 % \end{lstlisting}
-%\subsection{Recursive Data-Structures in SPARK}
+%\subsection{Recursive Data Structures in SPARK}
 There are no specific restrictions concerning recursive types in SPARK. However, the ownership policy of SPARK implies that it will not be possible to create a structure which has either cycles (e.g. doubly linked lists) or shared substructures (e.g. DAGs) in it.
 % \begin{lstlisting}
 % type DLL_Cell;
@@ -364,7 +364,7 @@ pragma Assert (X.Next.Next.Data = 42);
 SPARK performs deductive verification, which relies on user-specified invariants to handle loops. When traversing a linked data structure, the loop body contains a reborrow, which means that the borrow relation is modified in the loop. As a general rule, if a variable is modified in a loop, it should be described in the loop invariant, lest nothing is known about its value afterward. Thus, we need a way to describe the borrow relation in the loop invariant.
 
 %\subsection{Introduction to Pledges}
-As part of their work on the Prusti proof tool for Rust, Astrauskas et al. found the need for a similar annotation that they call \emph{pledges}~\cite{astrauskas2019leveraging}. In Rust, a pledge is an assertion associated to a borrower which is guaranteed to hold at the time when the borrow expires, no matter what may happen in between. In SPARK, a property guaranteed to hold at the end of the borrow must be a consequence of the borrow relation, since the borrow relation is the most precise relation which does not depend on the actual value of the borrower. Therefore, the user-visible notion of a pledge is suitable to approximate the internally computed borrow relation. Similar to user-provided preconditions, which must imply the weakest precondition computed by a verifying tool, the user-provided pledge should follow from the borrow relation.
+As part of their work on the Prusti proof tool for Rust, Astrauskas et al. found the need for a similar annotation that they call \emph{pledges}~\cite{astrauskas2019leveraging}. In Rust, a pledge is an assertion associated to a borrower which is guaranteed to hold at the time when the borrow expires, no matter what may happen in between. In SPARK, a property guaranteed to hold at the end of the borrow must be a consequence of the borrow relation, since the borrow relation is the most precise relation which does not depend on the actual value of the borrower. Therefore, the user-visible notion of a pledge is suitable to approximate the internally computed borrow relation. Similar to user-provided postconditions, which must be implied the strongest postcondition computed by a verifying tool, the user-provided pledge should follow from the borrow relation.
 
 Since the Ada language has no support for pledges, we have resorted in SPARK to introducing special functions (dedicated to each deep type) called pledge functions, which mark expressions which should be considered as pledge expressions by the tool. A pledge function is a ghost function (meaning that it is not allowed to have any effect on the output of the program) which has two parameters. The first one is used to identify the borrower on which the pledge should apply, while the second holds the assertion.
 Note that a call to a pledge function isn't really a call for the SPARK analyzer. It is simply a marker that the expression in argument is a pledge. As assertions in SPARK are executable, we need to give an implementation to the pledge function: the function simply returns its second parameter.
@@ -571,11 +571,13 @@ As for future work, we would like to extend the subset of Ada pointers supported
 % \bibliography{mybibliography}
 %
 \begin{thebibliography}{8}
+\bibitem{clarke1998ownership}
+Clarke, D.G., Potter, J.M., Noble, J.: Ownership types for flexible alias protection. In: ACM SIGPLAN Notices Vol. 33, No. 10, pp. 48-64 (1998)
 \bibitem{rust}
   The Rust Programming Language: References and Borrowing. https://doc.
 rust-lang.org/1.8.0/book/references-and-borrowing.html (2019)
 \bibitem{bobot2011why3}
-  Bobot, F., Filli{\^a}tre, J.-C., March{\'e}, C., Paskevich, A.:Why3: Shepherd your herd of provers. (2011)
+  Bobot, F., Filli{\^a}tre, J.-C., March{\'e}, C., Paskevich, A.: Why3: Shepherd your herd of provers. (2011)
 \bibitem{kirchner2015frama}
   Kirchner, F., Kosmatov, N., Prevosto, V., Signoles, J., Yakobowski, B.:Frama-C: A software analysis perspective. In: Formal Aspects of Computing, 573-609 (2015).
 \bibitem{blom2017vercors}
