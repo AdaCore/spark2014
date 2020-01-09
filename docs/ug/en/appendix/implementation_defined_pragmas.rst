@@ -31,9 +31,9 @@ SPARK_Mode is not an aspect of an entity but rather of a section of an entity.
 
 For example, if a subprogram declaration has a SPARK_Mode of On while
 its body has a SPARK_Mode of Off, then an error would be generated if
-the subprogram  took a parameter of an access type but not if
-the subprogram declared a local variable of an
-access type (recall that access types are not in |SPARK|).
+the subprogram  took a parameter of a general access type but not if
+the subprogram declared a local variable of a general
+access type (recall that general access types are not in |SPARK|).
 
 A package is defined to have 4 sections: its visible part, its private part,
 its body declarations, and its body statements. A protected or task unit has
@@ -46,7 +46,11 @@ of a later section of that entity shall not be On. [For example, a subprogram
 can have a SPARK declaration and a non-SPARK body, but not vice versa.]
 
 If the SPARK_Mode of a section of an entity is Auto, then the SPARK_Mode
-of a later section of that entity shall not be On or Off.
+of a later section of that entity shall not be On, and it shall not be Off
+unless that entity is a generic entity, or an instance of such a generic.
+[This makes it possible to mark a later section of a generic unit as Off,
+in cases where its initial section is Auto to allow instantiations to
+have any value of SPARK_Mode.]
 
 The SPARK_Mode aspect can be specified either via a pragma or via an
 aspect_specification. In some contexts, only a pragma can be used
@@ -162,10 +166,8 @@ Ada entity or construct is then defined to be the following value
 - else the SPARK_Mode of the enclosing section of the nearest enclosing
   package or subprogram;
 
-- Corner cases: the SPARK_Mode of the visible declarations of the
-  limited view of a package is always Auto; the SPARK_Mode of any
-  section of a generic library unit is On.
-  [Recall that any generic unit is in |SPARK|.]
+- Corner case: the SPARK_Mode of the visible declarations of the
+  limited view of a package is always Auto.
 
 If the above computation yields a result of Auto for any construct
 other than one of the four sections of a package, then a result of On
