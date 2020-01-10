@@ -37,37 +37,38 @@ package body Flow_Utility.Initialization is
                                     Ignore_DIC : Boolean := False)
                                     return Default_Initialization_Kind
    is
-      Init : Default_Initialization_Kind;
-
       FDI : Boolean := False;
       NDI : Boolean := False;
       --  Two flags used to designate whether a record type has at least one
       --  fully default initialized component and/or one not fully default
       --  initialized component.
 
-      procedure Process_Component (Rec_Prot_Comp : Entity_Id);
-      --  Process component Rec_Prot_Comp of a record or protected type
+      procedure Process_Component (Comp : Entity_Id)
+      with Pre  => Ekind (Comp) = E_Component,
+           Post => (if FDI'Old then FDI) and then (if NDI'Old then NDI);
+      --  Process component of a record or of a record extension
 
       -----------------------
       -- Process_Component --
       -----------------------
 
-      procedure Process_Component (Rec_Prot_Comp : Entity_Id) is
-         Comp : constant Entity_Id :=
-           Original_Record_Component (Rec_Prot_Comp);
+      procedure Process_Component (Comp : Entity_Id) is
+         ORC : constant Entity_Id := Original_Record_Component (Comp);
          --  The components of discriminated subtypes are not marked as source
          --  entities because they are technically "inherited" on the spot. To
          --  handle such components, use the original record component defined
          --  in the parent type.
 
+         Init : Default_Initialization_Kind;
+
       begin
          --  Do not process internally generated components except for _parent
          --  which represents the ancestor portion of a derived type.
 
-         if Comes_From_Source (Comp)
-           or else Chars (Comp) = Name_uParent
+         if Comes_From_Source (ORC)
+           or else Chars (ORC) = Name_uParent
          then
-            Init := Default_Initialization (Base_Type (Etype (Comp)),
+            Init := Default_Initialization (Base_Type (Etype (ORC)),
                                             Ignore_DIC);
 
             --  A component with mixed initialization renders the whole
@@ -83,7 +84,7 @@ package body Flow_Utility.Initialization is
             --  given that the component type may lack initialization.
 
             elsif Init = Full_Default_Initialization
-              or else Present (Expression (Parent (Comp)))
+              or else Present (Expression (Parent (ORC)))
             then
                FDI := True;
 
@@ -257,6 +258,8 @@ package body Flow_Utility.Initialization is
 
                if Present (Rec_Part) then
 
+                  pragma Assert (Is_Tagged_Type (Typ));
+
                   --  If the extension is null then initialization of this type
                   --  is equivalent to the initialization for its Etype.
 
@@ -281,25 +284,15 @@ package body Flow_Utility.Initialization is
                           Default_Initialization (Etype (Typ),
                                                   Ignore_DIC);
 
-                        if Is_Tagged_Type (Typ) then
-                           Comp := First_Non_Pragma
-                             (Component_Items (Component_List (Rec_Part)));
-                        else
-                           Comp := First_Non_Pragma
-                             (Component_Items (Rec_Part));
-                        end if;
+                        Comp :=
+                          First_Non_Pragma
+                            (Component_Items (Component_List (Rec_Part)));
 
                         --  Inspect all components of the extension
 
                         if Present (Comp) then
                            while Present (Comp) loop
-                              if Ekind (Defining_Identifier (Comp)) =
-                                E_Component
-                              then
-                                 Process_Component
-                                   (Defining_Identifier (Comp));
-                              end if;
-
+                              Process_Component (Defining_Identifier (Comp));
                               Next_Non_Pragma (Comp);
                            end loop;
 
