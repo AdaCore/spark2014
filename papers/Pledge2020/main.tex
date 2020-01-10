@@ -138,14 +138,14 @@ declare
   pragma Assert (X = null);       --  No initial values provided, X is null
   Y : Integer;
 begin
-  X := new Integer;            --  Allocation of data on the heap
-  X := new Integer'(3);        --  The allocated memory is initialized to 3
+  X := new Integer;            --  Allocation of uninitialized data
+  X := new Integer'(3);        --  Allocation of initialized data
   Y := X.all;                  --  Dereference the access
 end;
 \end{lstlisting}
 When a pointer is dereferenced, a runtime check is introduced to make sure that it is not null.
 Ada does not mandate garbage collection. Memory allocated on the heap can be reclaimed manually by the user using a generic function named \texttt{Unchecked\_Deallocation}, which also sets its argument pointer to null.
-There are several kinds of access types. The basic access types, like \texttt{Int\_Acc} defined above, are called pool specific access types. They can only designate objects allocated on the heap. General access types, introduced by the keyword \texttt{all}, can also be used to designate objects allocated on the stack.
+There are several kinds of access types. The basic access types, like \texttt{Int\_Acc} defined above, are called pool specific access types. They can only designate objects allocated on the heap. General access types, introduced by the keyword \texttt{all}, can also be used to designate objects allocated on the stack or global data.
 %An access to an object can be created through the \texttt{`Access} attribute.
 %\begin{lstlisting}
 %type Gen_Int_Acc is access all Integer;
@@ -154,7 +154,7 @@ There are several kinds of access types. The basic access types, like \texttt{In
 %Note that an access is not an integer type, so it is not possible to do pointer arithmetics on access types in Ada. Users can still do pointer arithmetic if they first convert the pointer to a special Address type which allows arithmetic operations.
 
 %\subsection{Pointers in SPARK}
-Pointers were excluded from the SPARK subset until recently. Indeed, allowing pointers in a straightforward way would break the absence of aliasing in SPARK. In addition, pointers are associated to a list of classes of bugs. A subset of them is memory leaks, use-after-free and dereferencing a null-pointer.% We use the term memory corruption to indicate any dereference of a pointer that points to “invalid” data - use-after-free is actually a special case of memory corruption.
+Pointers were excluded from the SPARK subset until recently. Indeed, allowing pointers in a straightforward way would break the absence of aliasing in SPARK. In addition, pointers are associated to a list of classes of bugs such as memory leaks, use-after-free and dereferencing a null-pointer.% We use the term memory corruption to indicate any dereference of a pointer that points to “invalid” data - use-after-free is actually a special case of memory corruption.
 
 To support pointers in SPARK, we designed a subset of Ada's access types which does not introduce aliasing and avoids some pointer-specific issues, while retaining as much expressivity as possible. The first restriction we selected is the exclusion of general access types. This means that SPARK can only create pointers designating memory allocated on the heap, and not on the stack. As a result, pointers can only be made invalid by explicit deallocation, and deallocation of a valid pointer is always legal. % This rule also excludes aliasing between pointers and stack values.
 To eliminate aliasing between (heap) pointers, ownership rules inspired by Rust have been added on top of Ada's legality rules. These rules enforce a single writer/multiple readers policy. They ensure that, when a value designated by a pointer is modified, all other objects can be considered to be preserved.
@@ -249,7 +249,7 @@ begin
       Y.Data := 0;
       Y := Y.Next;   --  Ownership of the first cell of Y is lost for good
    end loop;         --  The ownership of X cannot be restored
-end Set_All_To_Zero; --  Illegal, cannot exit subprogram while X is moved
+end Set_All_To_Zero;
 \end{lstlisting}
 To traverse recursive data structures, a move is not what we want. Here we need a way to lend the ownership of a memory region for a period of time and automatically restore it at the end. A similar mechanism, called \emph{borrowing}, is available in the Rust language. We have adapted it to SPARK.
 \section{Borrowing Ownership}
@@ -303,7 +303,7 @@ begin
 end Set_All_To_Zero; --  The ownership of X is restored
 \end{lstlisting}
 %\subsection{Proof Support: Borrow Relation}
-Using reborrows, local borrowers allow to indirectly modify a data structure at an arbitrarily-deep, not statically-known position. While in the scope of the borrower, these indirect modifications can be ignored by the analysis, as the ownership policy makes them impossible to observe. However, after the end of the borrow, ownership is transferred back to the borrowed object, and SPARK needs to take into account whatever modifications may have occurred through the borrower.
+Using reborrows, local borrowers allow to indirectly modify a data structure at an arbitrarily-deep position, which may not be statically-known. While in the scope of the borrower, these indirect modifications can be ignored by the analysis, as the ownership policy makes them impossible to observe. However, after the end of the borrow, ownership is transferred back to the borrowed object, and SPARK needs to take into account whatever modifications may have occurred through the borrower.
 \begin{lstlisting}
 X := ...; --  X is initialized to the list {1,2,3,4}
 declare
