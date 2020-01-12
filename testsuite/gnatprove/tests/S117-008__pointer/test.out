@@ -37,7 +37,7 @@ formal_vectors.adb:73:128: info: pointer dereference check proved (CVC4: 1 VC), 
 formal_vectors.adb:84:08: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:84:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:84:24: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:84:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and V = (Top => 0, Content => (all => (others => (all => (all => 0))))))
+formal_vectors.adb:84:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and V = (Top => 0, Content => (all => (others => (all => (all => Integer'Last))))))
 formal_vectors.adb:84:48: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:85:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:85:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -46,17 +46,17 @@ formal_vectors.adb:98:08: info: predicate check proved (CVC4: 1 VC), in instanti
 formal_vectors.adb:101:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:101:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:102:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:102:33: medium: loop invariant might fail in first iteration, cannot prove E.Content'Length >= E_Top, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (others => (all => (all => 2))))) and E_Top = 2)
+formal_vectors.adb:102:33: medium: loop invariant might fail in first iteration, cannot prove E.Content'Length >= E_Top, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (Positive'Last-1 => null, others => (all => (all => Integer'Last-1))))) and E_Top = Natural'Last-1)
 formal_vectors.adb:102:34: info: pointer dereference check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:102:42: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:104:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:104:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:104:41: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:104:51: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:104:51: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (Positive'Last-1 => null, others => (all => (all => Integer'Last-1))))))
 formal_vectors.adb:106:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:106:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:106:48: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:106:58: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (Positive'Last-1 => (all => null), others => (all => (all => 1))))))
+formal_vectors.adb:106:58: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E = (Top => 0, Content => (all => (1 => (all => null), others => (all => (all => 2))))))
 formal_vectors.adb:106:61: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:106:68: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:106:80: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -65,7 +65,7 @@ formal_vectors.adb:107:33: info: loop invariant preservation proved (CVC4: 1 VC)
 formal_vectors.adb:109:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:109:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:110:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:110:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 2, Content => (all => (2 => (all => null), others => (all => (all => 5))))))
+formal_vectors.adb:110:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last))))))
 formal_vectors.adb:110:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:110:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:111:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -107,18 +107,18 @@ formal_vectors.adb:128:42: info: range check proved (CVC4: 2 VC), in instantiati
 formal_vectors.adb:130:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:130:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:130:41: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:130:51: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (others => (all => (all => 3))))))
+formal_vectors.adb:130:51: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (others => (all => (all => Integer'Last))))))
 formal_vectors.adb:132:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:132:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:133:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:133:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 2, Content => (all => (1 => (all => null), others => (all => (all => 4))))))
+formal_vectors.adb:133:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 2, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last))))))
 formal_vectors.adb:133:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:133:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:134:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:134:33: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:136:13: info: loop invariant preservation proved (CVC4: 3 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:136:35: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:136:45: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 3, Content => (all => (1 => (all => (all => 5)), 2 => (all => (all => 5)), others => (all => (all => 0))))))
+formal_vectors.adb:136:45: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 3, Content => (all => (1 => (all => (all => 4)), 2 => (all => (all => 4)), others => (all => (all => 0))))))
 formal_vectors.adb:136:48: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:136:83: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:136:90: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
@@ -127,7 +127,7 @@ formal_vectors.adb:136:104: info: range check proved (CVC4: 2 VC), in instantiat
 formal_vectors.adb:137:18: medium: loop invariant might fail in first iteration, cannot prove X.all = E, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and J = 1 and X.all = (all => 0))
 formal_vectors.adb:137:20: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:139:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:139:13: info: loop invariant preservation proved (Z3: 1 VC), in instantiation at use_formal_vectors.ads:10
+formal_vectors.adb:139:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:139:28: info: overflow check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:139:37: info: overflow check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:140:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -139,7 +139,7 @@ formal_vectors.adb:140:57: info: range check proved (CVC4: 2 VC), in instantiati
 formal_vectors.adb:142:13: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:142:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:23: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:143:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => 3))))))
+formal_vectors.adb:143:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => (all => null), others => (all => (all => Integer'Last))))))
 formal_vectors.adb:143:36: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:43: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:143:55: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -151,12 +151,12 @@ formal_vectors.adb:144:27: medium: array index check might fail, in instantiatio
 formal_vectors.adb:146:08: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:146:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:146:24: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:146:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => (all => null), 2 => (all => null), others => (all => (all => Integer'Last))))))
+formal_vectors.adb:146:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => (all => (all => 0)), 2 => (all => null), others => (all => (all => 3))))))
 formal_vectors.adb:147:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:147:22: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:152:08: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:152:08: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and I = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:152:18: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when E.all = 0 and I = 1 and V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2))))))
 formal_vectors.adb:152:21: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:152:28: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:158:11: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -166,14 +166,14 @@ formal_vectors.adb:166:25: info: range check proved (CVC4: 1 VC), in instantiati
 formal_vectors.adb:168:36: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:168:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:169:36: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:169:36: medium: loop invariant might fail in first iteration, cannot prove V.Content'Length >= Last (V_Mod), in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:169:36: medium: loop invariant might fail in first iteration, cannot prove V.Content'Length >= Last (V_Mod), in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2))))))
 formal_vectors.adb:169:37: info: pointer dereference check proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:169:45: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:171:16: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:171:16: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:171:40: info: overflow check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:172:19: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:172:29: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:172:29: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2))))))
 formal_vectors.adb:174:16: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:174:16: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:175:26: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -194,7 +194,7 @@ formal_vectors.adb:180:16: info: loop invariant preservation proved (CVC4: 1 VC)
 formal_vectors.adb:180:31: info: overflow check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:180:44: info: overflow check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:181:26: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:181:36: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (2 => (all => null), others => (all => (all => 3))))))
+formal_vectors.adb:181:36: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 1, Content => (all => (2 => (all => null), others => (all => (all => Integer'Last))))))
 formal_vectors.adb:181:39: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:181:46: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:181:58: info: range check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
@@ -213,15 +213,15 @@ formal_vectors.adb:184:17: info: pointer dereference check proved (CVC4: 1 VC), 
 formal_vectors.adb:184:17: info: predicate check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: info: index check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:184:33: info: overflow check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (others => (all => (all => 0))))))
+formal_vectors.adb:184:33: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => 0, Content => (all => (1 => null, others => (all => (all => 1))))))
 formal_vectors.adb:189:07: info: null exclusion check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:189:14: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (others => (all => (all => 2))))))
+formal_vectors.adb:189:24: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when I = 1 and V = (Top => 1, Content => (all => (1 => null, others => (all => (all => 2))))))
 formal_vectors.adb:189:27: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:195:22: info: refined post proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:196:43: info: precondition proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:196:75: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:196:85: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => Natural'Last, Content => (all => (Positive'Last => (all => (all => 0)), others => (all => (all => Integer'Last))))))
+formal_vectors.adb:196:85: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => Natural'Last, Content => (all => (Positive'Last => (all => (all => 0)), others => (all => (all => 2))))))
 formal_vectors.adb:196:88: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:198:07: info: initialization of "M" proved, in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:201:33: info: loop invariant initialization proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
@@ -230,7 +230,7 @@ formal_vectors.adb:203:13: info: loop invariant initialization proved (CVC4: 1 V
 formal_vectors.adb:203:13: info: loop invariant preservation proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:203:40: info: precondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:203:61: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:203:71: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => Natural'Last, Content => (all => (others => (all => (all => 0))))))
+formal_vectors.adb:203:71: medium: array index check might fail, in instantiation at use_formal_vectors.ads:10 (e.g. when V = (Top => Natural'Last, Content => (all => (Positive'Last-1 => (all => (all => 0)), others => (all => (all => Integer'Last))))))
 formal_vectors.adb:203:74: info: pointer dereference check proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:204:15: info: precondition proved (CVC4: 2 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:204:31: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

@@ -3,7 +3,7 @@ natural_set.adb:18:16: info: index check proved (CVC4: 2 VC)
 natural_set.ads:11:06: info: postcondition proved (CVC4: 2 VC)
 natural_set.ads:15:22: info: initialization of "S" proved
 natural_set.ads:16:19: info: postcondition proved (CVC4: 3 VC)
-natural_set.ads:25:14: info: postcondition proved (altergo: 1 VC)
+natural_set.ads:25:14: info: postcondition proved (CVC4: 1 VC)
 natural_set.ads:45:16: info: range check proved (CVC4: 2 VC)
 natural_set.ads:45:57: info: index check proved (CVC4: 2 VC)
 natural_set.ads:46:18: info: range check proved (CVC4: 2 VC)

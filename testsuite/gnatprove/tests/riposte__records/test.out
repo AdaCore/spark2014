@@ -58,7 +58,7 @@ records.adb:296:11: info: flow dependencies proved
 records.adb:300:44: medium: postcondition might fail, cannot prove X.The_Pair.B = X'Old.The_Pair.A (e.g. when X = (Exists => True, The_Pair => (A => 4, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 4, B => 4)))
 records.adb:309:19: info: postcondition proved (CVC4: 1 VC)
 records.adb:312:07: info: initialization of "Tmp" proved
-records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0)))
+records.adb:323:19: medium: postcondition might fail, cannot prove Update_B'Result = X'update (e.g. when N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0)))
 records.adb:326:07: info: initialization of "Tmp" proved
 records.adb:329:27: info: range check proved (CVC4: 1 VC)
 records.adb:334:11: info: flow dependencies proved
@@ -147,10 +147,10 @@ counterexample expected for check at records.adb:300
   trace at records.adb:300 --> X = (Exists => True, The_Pair => (A => 4, B => 5)) and X'Old = (Exists => True, The_Pair => (A => 4, B => 4))
   trace at records.adb:303 --> X = (Exists => True, The_Pair => (A => 4, B => 5))
 counterexample expected for check at records.adb:323
-  trace at records.adb:319 --> X = (Exists => True, The_Pair => (A => 0, B => 0))
+  trace at records.adb:319 --> X = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:320 --> N = 0
-  trace at records.adb:323 --> N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0))
-  trace at records.adb:328 --> Tmp = (Exists => True, The_Pair => (A => 0, B => 0)) and X = (Exists => True, The_Pair => (A => 0, B => 0))
+  trace at records.adb:323 --> N = 0 and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0))
+  trace at records.adb:328 --> Tmp = (Exists => True, The_Pair => (A => 1, B => 0)) and X = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:329 --> N = 0 and Tmp = (Exists => True, The_Pair => (A => 1, B => 0))
   trace at records.adb:330 --> Tmp = (Exists => True, The_Pair => (A => 1, B => 0)) and Update_B'Result = (Exists => True, The_Pair => (A => 1, B => 0))
 counterexample expected for check at records.adb:380

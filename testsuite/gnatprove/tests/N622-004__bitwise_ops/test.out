@@ -263,7 +263,7 @@ aco-math-very_longs.adb:506:32: info: length check proved (CVC4: 3 VC; Trivial: 
 aco-math-very_longs.adb:509:12: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:509:29: medium: overflow check might fail (e.g. when Divisor = (Octet_Length => 1, Long_Digits => (others => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1)
 aco-math-very_longs.adb:509:29: medium: range check might fail (e.g. when Divisor = (Octet_Length => 1, Long_Digits => (others => 1)) and Divisor.Long_Digits'First = 1 and Divisor.Long_Digits'Last = 1)
-aco-math-very_longs.adb:510:15: medium: range check might fail (e.g. when N = 25)
+aco-math-very_longs.adb:510:15: medium: range check might fail (e.g. when N = 24)
 aco-math-very_longs.adb:513:25: info: precondition proved (CVC4: 1 VC)
 aco-math-very_longs.adb:513:66: info: index check proved (CVC4: 2 VC)
 aco-math-very_longs.adb:514:07: info: precondition proved (CVC4: 1 VC)

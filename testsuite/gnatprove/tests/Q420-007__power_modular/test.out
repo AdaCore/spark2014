@@ -1,4 +1,4 @@
 non_binary_mod_power.adb:15:12: info: overflow check proved (CVC4: 1 VC)
 non_binary_mod_power.adb:15:18: info: division check proved (CVC4: 1 VC)
 non_binary_mod_power.adb:16:19: info: assertion proved (CVC4: 1 VC)
-non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = T1 (Y) (e.g. when X = 223 and Y = 1)
+non_binary_mod_power.adb:17:19: medium: assertion might fail, cannot prove X = T1 (Y) (e.g. when X = T1'Last-4 and Y = 1)
