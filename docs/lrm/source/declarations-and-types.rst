@@ -426,6 +426,25 @@ This approach has the benefit that the same |SPARK| language rules which
 prevent unsafe concurrent access to non-allocated variables also
 provide the same safeguards for allocated objects.
 
+For purposes of determining global inputs and outputs, both memory allocation
+and deallocation are considered to reference an external state abstraction
+SPARK.Heap.Dynamic_Memory that has property Async_Writers. In particular, each
+occurence of an allocator is considered to reference this state abstraction as
+an input. [In other words, an allocator can be treated like a call to a
+volatile function which takes the allocated object as an actual parameter and
+references the mentioned state abstraction as an Input global.] Similarly,
+instances of the predefined generic Ada.Unchecked_Deallocation procedure behave
+as if the generic procedure would be annotated with the following contract:
+
+.. code-block:: ada
+
+   procedure Ada.Unchecked_Deallocation (X : in out Name) with
+     Depends => (SPARK.Heap.Dynamic_Memory => SPARK.Heap.Dynamic_Memory,
+                 X => null, null => X);
+
+so each call to an instance of this procedure is also considered to reference
+the mentioned state abstraction.
+
 The rules which accomplish all of this are described below.
 
 .. centered:: **Static Semantics**
