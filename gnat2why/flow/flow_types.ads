@@ -317,10 +317,12 @@ package Flow_Types is
      (F    : Flow_Id;
       Comp : Entity_Id)
       return Flow_Id
-   with Pre  => F.Kind in Direct_Mapping | Record_Field and then
-                (Ekind (Comp) in E_Component | E_Discriminant
+   with Pre  => F.Kind in Direct_Mapping | Record_Field
+                  and then
+                (Is_Part_Of_Concurrent_Object (Comp)
                    or else
-                 Is_Part_Of_Concurrent_Object (Comp)) and then
+                 Is_Unique_Component (Comp))
+                  and then
                 F.Facet = Normal_Part,
         Post => Add_Component'Result.Kind = Record_Field;
    --  Returns the same Flow_Id, but accessed with the given component

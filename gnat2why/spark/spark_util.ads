@@ -457,6 +457,11 @@ package SPARK_Util is
    --  components and discriminants between both the base type and all types
    --  derived from it.
 
+   function Is_Unique_Component (E : Entity_Id) return Boolean is
+     (E = Unique_Component (E)) with Ghost;
+   --  A trivial wrapper to be used in assertions when converting from the
+   --  frontend to flow representation of discriminants and components.
+
    --------------------------------
    -- Queries related to pragmas --
    --------------------------------

@@ -3595,9 +3595,8 @@ package body Flow.Control_Flow_Graph is
       --  Returns constraint expression of type T for its discriminant D
       --
       --  ??? It duplicates SPARK_Util.Types.Get_Constraint_For_Discr, except
-      --  for a use of Original_Record_Component, which is needed because D is
-      --  taken from a Flow_Id, where it was processed with
-      --  Original_Record_Component.
+      --  for a use of Unique_Component, which is needed because D is taken
+      --  from a Flow_Id, where it was processed with Unique_Component.
 
       ----------------
       -- Find_Tasks --
@@ -3855,7 +3854,7 @@ package body Flow.Control_Flow_Graph is
          Current : Entity_Id := First_Discriminant (T);
          Elmt    : Elmt_Id := First_Elmt (Discriminant_Constraint (T));
       begin
-         while Original_Record_Component (Current) /= D loop
+         while Unique_Component (Current) /= D loop
             Next_Discriminant (Current);
             Next_Elmt (Elmt);
          end loop;

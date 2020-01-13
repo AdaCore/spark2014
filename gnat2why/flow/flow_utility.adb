@@ -22,7 +22,6 @@
 ------------------------------------------------------------------------------
 
 with Ada.Containers.Hashed_Maps;
-with Ada.Containers.Hashed_Sets;
 
 with Errout;                          use Errout;
 with Lib;                             use Lib;
@@ -92,19 +91,16 @@ package body Flow_Utility is
    --  Local
    ----------------------------------------------------------------------
 
-   package Component_Sets is new Ada.Containers.Hashed_Sets
-     (Element_Type        => Entity_Id,
-      Hash                => Component_Hash,
-      Equivalent_Elements => Same_Component);
-
-   function Components (E : Entity_Id) return Node_Lists.List
-   with Pre => Is_Type (E);
+   function Unique_Components (E : Entity_Id) return Node_Lists.List
+   with Pre  => Is_Type (E),
+        Post => (for all C of Unique_Components'Result =>
+                   Is_Unique_Component (C));
    --  Return components in SPARK of the given entity E, similar to
    --  {First,Next}_Component_Or_Discriminant, with the difference that any
    --  components of private ancestors are included.
    --  @param E a type entity
-   --  @return all component and discriminants of the type that are in SPARK or
-   --    the empty list if none exists.
+   --  @return all unique components and discriminants of type E that are in
+   --    SPARK or the empty list if none exists.
 
    function First_Name_Node (N : Node_Id) return Node_Id
    with Pre  => Nkind (N) in N_Identifier | N_Expanded_Name,
@@ -301,21 +297,11 @@ package body Flow_Utility is
       Traverse (N);
    end Collect_Functions_And_Read_Locked_POs;
 
-   --------------------
-   -- Component_Hash --
-   --------------------
+   -----------------------
+   -- Unique_Components --
+   -----------------------
 
-   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type is
-     (Node_Hash
-        (if Is_Part_Of_Concurrent_Object (E)
-         then E
-         else Unique_Component (E)));
-
-   ----------------
-   -- Components --
-   ----------------
-
-   function Components (E : Entity_Id) return Node_Lists.List is
+   function Unique_Components (E : Entity_Id) return Node_Lists.List is
    begin
       if Is_Record_Type (E)
         or else Is_Concurrent_Type (E)
@@ -353,9 +339,9 @@ package body Flow_Utility is
             --  Local variables
 
             Ptr : Entity_Id;
-            T   : Entity_Id          := E;
-            L   : Node_Lists.List    := Node_Lists.Empty_List;
-            S   : Component_Sets.Set := Component_Sets.Empty_Set;
+            T   : Entity_Id       := E;
+            L   : Node_Lists.List := Node_Lists.Empty_List;
+            S   : Node_Sets.Set;
 
          begin
             loop
@@ -363,15 +349,15 @@ package body Flow_Utility is
                while Present (Ptr) loop
                   declare
                      Inserted : Boolean;
-                     Unused   : Component_Sets.Cursor;
+                     Unused   : Node_Sets.Cursor;
 
                   begin
                      if Component_Is_Visible_In_SPARK (Ptr) then
-                        S.Insert (New_Item => Ptr,
+                        S.Insert (New_Item => Unique_Component (Ptr),
                                   Position => Unused,
                                   Inserted => Inserted);
                         if Inserted then
-                           L.Append (Ptr);
+                           L.Append (Unique_Component (Ptr));
                         end if;
                      end if;
                   end;
@@ -390,7 +376,7 @@ package body Flow_Utility is
       else
          return Node_Lists.Empty_List;
       end if;
-   end Components;
+   end Unique_Components;
 
    ----------------------------
    -- Contains_Discriminants --
@@ -405,6 +391,7 @@ package body Flow_Utility is
    begin
       return (for some X of FS => Is_Discriminant (X));
    end Contains_Discriminants;
+
    ----------------------------
    -- Expand_Abstract_States --
    ----------------------------
@@ -494,7 +481,6 @@ package body Flow_Utility is
                Results : Flow_Id_Sets.Set;
 
                Contains_Non_Visible : Boolean := False;
-               Root_Components      : Node_Sets.Set;
 
                subtype Private_Nonrecord_Kind is Private_Kind with
                  Static_Predicate =>
@@ -504,37 +490,6 @@ package body Flow_Utility is
 
                procedure Debug (Msg : String);
                --  Output debug message
-
-               function Get_Root_Component (C : Entity_Id) return Entity_Id
-               with Pre => Ekind (C) in E_Component | E_Discriminant;
-               --  Returns C's equilavent component of the root type. If this
-               --  is not available then E's Original_Record_Component is
-               --  returned instead.
-               --
-               --  @param C is the component who's equivalent we are looking
-               --    for
-               --  @return the equivalent component of the root type if one
-               --    exists or the Original_Record_Component of C otherwise.
-
-               ------------------------
-               -- Get_Root_Component --
-               ------------------------
-
-               function Get_Root_Component (C : Entity_Id) return Entity_Id is
-                  ORC : constant Entity_Id := Original_Record_Component (C);
-               begin
-                  --  If Same_Component is True for one of the Root_Components
-                  --  then return that instead.
-                  for Comp of Root_Components loop
-                     if Same_Component (ORC, Comp) then
-                        return Comp;
-                     end if;
-                  end loop;
-
-                  --  No Same_Component found. Fall back to C's
-                  --  Original_Record_Component.
-                  return ORC;
-               end Get_Root_Component;
 
                -----------
                -- Debug --
@@ -569,44 +524,13 @@ package body Flow_Utility is
                   return Flow_Id_Sets.To_Set (F);
                end if;
 
-               --  If we are dealing with a derived type then we want to get to
-               --  the root, if this is in SPARK, and then populate the
-               --  Root_Components set. However, we don't want to consider
-               --  Itypes.
-               if Is_Derived_Type (T)
-                 and then not Full_View_Not_In_SPARK (T)
-               then
-                  declare
-                     Root : Entity_Id := T;
-
-                  begin
-                     while (Is_Derived_Type (Root) or else Is_Itype (Root))
-                       and then Etype (Root) /= Root
-                     loop
-                        Root := Etype (Root);
-                     end loop;
-
-                     --  Make sure we have the Full_View
-                     while Is_Private_Type (Root)
-                       and then Present (Full_View (Root))
-                     loop
-                        Root := Full_View (Root);
-                     end loop;
-
-                     for Comp of Components (Root) loop
-                        Root_Components.Insert
-                          (Original_Record_Component (Comp));
-                     end loop;
-                  end;
-               end if;
-
                case Type_Kind'(Ekind (T)) is
                   when Private_Nonrecord_Kind =>
                      Debug ("processing private type");
 
                      if Has_Discriminants (T) then
-                        for C of Components (T) loop
-                           if Is_Visible (Get_Root_Component (C), Scope) then
+                        for C of Unique_Components (T) loop
+                           if Is_Visible (C, Scope) then
                               Results.Insert (Add_Component (F, C));
                            else
                               Contains_Non_Visible := True;
@@ -674,7 +598,7 @@ package body Flow_Utility is
 
                      --  Include classwide types and privates with
                      --  discriminants.
-                     if Components (T).Is_Empty then
+                     if Unique_Components (T).Is_Empty then
                         --  If the record has an empty component list then we
                         --  add the variable itself...
                         --  Note that this happens also when the components are
@@ -683,13 +607,13 @@ package body Flow_Utility is
 
                      else
                         --  ...else we add each visible component
-                        for Ptr of Components (T) loop
-                           if Is_Visible (Get_Root_Component (Ptr), Scope) then
+                        for C of Unique_Components (T) loop
+                           if Is_Visible (C, Scope) then
                               --  Here we union disjoint sets, so possibly we
                               --  could optimize this.
                               Results.Union
                                 (Flatten_Variable
-                                   (Add_Component (F, Ptr), Scope));
+                                   (Add_Component (F, C), Scope));
 
                            else
                               Contains_Non_Visible := True;
@@ -829,8 +753,10 @@ package body Flow_Utility is
       for N of Seq loop
          case Interesting_Nodes (Nkind (N)) is
             when N_Selected_Component =>
-               Map_Root := Add_Component (Map_Root,
-                                          Entity (Selector_Name (N)));
+               Map_Root :=
+                 Add_Component
+                   (Map_Root,
+                    Unique_Component (Entity (Selector_Name (N))));
 
             when N_Type_Conversion =>
                View_Conversion := True;
@@ -3017,7 +2943,7 @@ package body Flow_Utility is
          loop
             if Nkind (Root_Node) = N_Selected_Component then
                Component.Prepend
-                 (Original_Record_Component
+                 (Unique_Component
                     (Entity (Selector_Name (Root_Node))));
             end if;
 
@@ -3245,7 +3171,7 @@ package body Flow_Utility is
                   while Present (Component_Association) loop
                      Choice := First (Choices (Component_Association));
                      while Present (Choice) loop
-                        E := Original_Record_Component (Entity (Choice));
+                        E := Unique_Component (Entity (Choice));
 
                         if Debug_Trace_Untangle_Fields then
                            Write_Str ("Updating component ");
@@ -3342,7 +3268,7 @@ package body Flow_Utility is
 
                   pragma Assert (Is_Object (Root_Entity));
 
-                  E : constant Entity_Id := Original_Record_Component (Comp);
+                  E : constant Entity_Id := Unique_Component (Comp);
 
                   New_Map : Flow_Id_Maps.Map := Flow_Id_Maps.Empty_Map;
 
@@ -4177,15 +4103,6 @@ package body Flow_Utility is
       and then In_Generic_Actual (E)
       and then not Has_Variable_Input (E));
 
-   --------------------
-   -- Same_Component --
-   --------------------
-
-   function Same_Component (C1, C2 : Entity_Id) return Boolean is
-     (C1 = C2
-        or else
-      Unique_Component (C1) = Unique_Component (C2));
-
    ---------------------
    -- First_Name_Node --
    ---------------------
@@ -4690,7 +4607,7 @@ package body Flow_Utility is
       procedure Merge (M         : in out Flow_Id_Maps.Map;
                        Component : Entity_Id;
                        Input     : Node_Id)
-      with Pre => Ekind (Component) in E_Component | E_Discriminant
+      with Pre => Is_Unique_Component (Component)
                     and then
                   (No (Input) or else Nkind (Input) in N_Subexpr);
       --  Merge the assignment map for Input into our current assignment
@@ -4813,7 +4730,7 @@ package body Flow_Utility is
 
                Input  : Node_Id;
                Target : Node_Id;
-               Done   : Component_Sets.Set;
+               Done   : Node_Sets.Set;
 
             begin
                Component_Association := First (Component_Associations (N));
@@ -4825,8 +4742,10 @@ package body Flow_Utility is
                   end if;
                   Target := First (Choices (Component_Association));
                   while Present (Target) loop
-                     Merge (M, Component => Entity (Target), Input => Input);
-                     Done.Insert (Original_Record_Component (Entity (Target)));
+                     Merge (M, Component => Unique_Component (Entity (Target)),
+                            Input => Input);
+                     Done.Insert (Unique_Component (Entity (Target)));
+                     --  ??? repeated calls to Unique_Component
                      Next (Target);
                   end loop;
                   Next (Component_Association);
@@ -4835,22 +4754,16 @@ package body Flow_Utility is
                --  If the aggregate is more constrained than the type would
                --  suggest, we fill in the "missing" fields with null, so
                --  that they appear initialized.
-               for Component of Components (Map_Type) loop
-                  declare
-                     ORC : constant Entity_Id :=
-                       Original_Record_Component (Component);
-                     FS  : Flow_Id_Sets.Set;
-
-                  begin
-                     if not Done.Contains (ORC) then
-                        FS := Flatten_Variable (Add_Component (Map_Root, ORC),
-                                                Scope);
-
-                        for F of FS loop
-                           M.Insert (F, Flow_Id_Sets.Empty_Set);
-                        end loop;
-                     end if;
-                  end;
+               for Component of Unique_Components (Map_Type) loop
+                  if not Done.Contains (Component) then
+                     for F of
+                       Flatten_Variable
+                         (Add_Component (Map_Root, Component),
+                          Scope)
+                     loop
+                        M.Insert (F, Flow_Id_Sets.Empty_Set);
+                     end loop;
+                  end if;
                end loop;
             end;
 
@@ -4864,7 +4777,8 @@ package body Flow_Utility is
                  Recurse_On (Prefix (N),
                              Direct_Mapping_Id (Etype (Prefix (N))));
 
-               Selector : constant Entity_Id := Entity (Selector_Name (N));
+               Selector : constant Entity_Id :=
+                 Unique_Component (Entity (Selector_Name (N)));
 
             begin
                for C in Tmp.Iterate loop
@@ -4873,9 +4787,7 @@ package body Flow_Utility is
                      Inputs : Flow_Id_Sets.Set renames Tmp (C);
 
                   begin
-                     if Same_Component (Output.Component.First_Element,
-                                        Selector)
-                     then
+                     if Output.Component.First_Element = Selector then
                         M.Insert (Join (Map_Root, Output, 1), Inputs);
                      end if;
                   end;
@@ -5287,9 +5199,9 @@ package body Flow_Utility is
 
                      Old_Vars : constant Flow_Id_Sets.Set := Vars_Defined;
 
-                     function In_Type (C : Entity_Id) return Boolean is
-                       (for some Ptr of Components (New_Typ) =>
-                          Same_Component (C, Ptr));
+                     function In_Type (Old_Comp : Entity_Id) return Boolean is
+                       (for some New_Comp of Unique_Components (New_Typ) =>
+                           New_Comp = Old_Comp);
 
                   begin
                      if Is_Tagged_Type (Old_Typ)

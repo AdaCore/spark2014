@@ -58,11 +58,6 @@ package Flow_Utility is
    --  use in phase 1; in phase 2 this should not be set as we add the
    --  global effects directly.
 
-   function Component_Hash (E : Entity_Id) return Ada.Containers.Hash_Type
-   with Pre => Ekind (E) in E_Component | E_Discriminant
-               or else Is_Part_Of_Concurrent_Object (E);
-   --  Compute a suitable hash for the given record component
-
    procedure Remove_Constants
      (Objects : in out Flow_Id_Sets.Set)
    with Post => Flow_Id_Sets.Is_Subset (Subset => Objects,
@@ -83,18 +78,6 @@ package Flow_Utility is
    --     corresponding global_item in an instance of the generic unit may
    --     denote a constant which has no variable inputs. [...] Outside of the
    --     instance, such a global_item is ignored."
-
-   function Same_Component (C1, C2 : Entity_Id) return Boolean
-   with Pre => (Ekind (C1) in E_Component | E_Discriminant
-                or else Is_Part_Of_Concurrent_Object (C1))
-                and then
-               (Ekind (C2) in E_Component | E_Discriminant
-                or else Is_Part_Of_Concurrent_Object (C2));
-   --  Given two record components, checks if one can be considered to be the
-   --  `same' component (for purposes of flow analysis). For example a record
-   --  might contain component x, and its derived record also contains this
-   --  component x (but it is a different entity). This function can be used
-   --  to check for this equivalence.
 
    function Get_Flow_Id
      (Name : Entity_Name;

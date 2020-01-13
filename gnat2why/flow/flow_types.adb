@@ -44,13 +44,15 @@ package body Flow_Types is
    --  instead of "X.Y" we might print "X.Y < 2082; 2255 >". This can help
    --  debug issues where two nodes print to the same but do not compare
    --  equal. (This can happen if you forget to use Unique_Entity or
-   --  Original_Record_Component.)
+   --  Unique_Component.)
 
    -----------------------
    -- Flow_Id operators --
    -----------------------
 
    function "=" (Left, Right : Flow_Id) return Boolean is
+      use type Common_Containers.Entity_Vectors.Vector;
+
    begin
       if Left.Kind /= Right.Kind then
          return False;
@@ -87,26 +89,8 @@ package body Flow_Types is
                return False;
             end if;
 
-            if Left.Kind = Record_Field then
-               declare
-                  Left_Len : constant Ada.Containers.Count_Type :=
-                    Left.Component.Length;
-                  Right_Len : constant Ada.Containers.Count_Type :=
-                    Right.Component.Length;
-
-                  pragma Assert (Left_Len > 0 and then Right_Len > 0);
-
-               begin
-                  return
-                    Left_Len = Right_Len
-                    and then
-                    (for all J in Positive range 1 .. Positive (Left_Len) =>
-                       Same_Component (Left.Component (J),
-                                       Right.Component (J)));
-               end;
-            end if;
-
-            return True;
+            return Left.Kind = Direct_Mapping
+              or else Left.Component = Right.Component;
 
          when Magic_String =>
             return Left.Name = Right.Name;
@@ -171,20 +155,10 @@ package body Flow_Types is
                            Right_Comp : constant Entity_Id :=
                              Right.Component (J);
 
-                           Left_Unique : constant Entity_Id :=
-                             (if Is_Part_Of_Concurrent_Object (Left_Comp)
-                              then Left_Comp
-                              else Unique_Component (Left_Comp));
-
-                           Right_Unique : constant Entity_Id :=
-                             (if Is_Part_Of_Concurrent_Object (Right_Comp)
-                              then Right_Comp
-                              else Unique_Component (Right_Comp));
-
                         begin
-                           if Left_Unique /= Right_Unique then
-                              return Unique_Name (Left_Unique) <
-                                Unique_Name (Right_Unique);
+                           if Left_Comp /= Right_Comp then
+                              return Unique_Name (Left_Comp) <
+                                Unique_Name (Right_Comp);
                            end if;
                         end;
                      end loop;
@@ -248,7 +222,7 @@ package body Flow_Types is
 
                begin
                   H := Rotate_Left (H, 5);
-                  H := H + Unsigned_32 (Component_Hash (Element (C))) + 1;
+                  H := H + Unsigned_32 (Node_Hash (Element (C))) + 1;
                end Hash_Component;
 
             begin
@@ -320,7 +294,7 @@ package body Flow_Types is
          begin
             F.Component.Append
               (if Ekind (Selector) in E_Component | E_Discriminant
-               then Original_Record_Component (Selector)
+               then Unique_Component (Selector)
                else Selector);
          end;
          P := Prefix (P);
@@ -364,10 +338,7 @@ package body Flow_Types is
                        else Entity_Vectors.Empty_Vector));
 
    begin
-      Tmp.Component.Append
-        (if Is_Part_Of_Concurrent_Object (Comp)
-         then Comp
-         else Original_Record_Component (Comp));
+      Tmp.Component.Append (Comp);
 
       return Tmp;
    end Add_Component;
