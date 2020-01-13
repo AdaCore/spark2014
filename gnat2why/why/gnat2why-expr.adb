@@ -19343,6 +19343,29 @@ package body Gnat2Why.Expr is
                              Domain => EW_Term)));
                end if;
 
+               --  Handle specially calls to instances of
+               --  Ada.Unchecked_Deallocation to assume that the argument is
+               --  set to null on return, in the absence of a postcondition
+               --  in the standard.
+
+               if Is_Unchecked_Deallocation_Instance (Subp) then
+                  declare
+                     Actual : constant Node_Id := First_Actual (Stmt_Or_Decl);
+                     Typ    : constant Entity_Id := Retysp (Etype (Actual));
+                     Ptr    : constant W_Expr_Id :=
+                       Transform_Expr (Expr   => Actual,
+                                       Domain => EW_Term,
+                                       Params => Body_Params);
+                  begin
+                     Call := +Sequence (+Call,
+                       New_Assume_Statement
+                         (Ada_Node => Stmt_Or_Decl,
+                          Pred     =>
+                            Pred_Of_Boolean_Term
+                              (+New_Pointer_Is_Null_Access (Typ, Ptr))));
+                  end;
+               end if;
+
                --  Insert invariant check if needed
 
                if Subp_Needs_Invariant_Checks (Subp) then
