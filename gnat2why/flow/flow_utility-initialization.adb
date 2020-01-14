@@ -504,9 +504,14 @@ package body Flow_Utility.Initialization is
         (A : Node_Id;
          C : Entity_Id)
          return Node_Id
-      with Pre => Nkind (A) = N_Aggregate
-                    and then
-                  Ekind (C) in E_Component | E_Discriminant;
+      with
+        Pre =>
+          Nkind (A) = N_Aggregate
+            and then
+          Ekind (C) in E_Component | E_Discriminant,
+        Post =>
+          (if Present (Get_Component_From_Aggregate'Result)
+           then Nkind (Get_Component_From_Aggregate'Result) in N_Subexpr);
       --  If we have a record aggregate A like (X => Y, Z => W), this returns
       --  the value attached to component C, for example if C is Z this will
       --  return W.
