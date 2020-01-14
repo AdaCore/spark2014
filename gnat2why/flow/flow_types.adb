@@ -1112,9 +1112,16 @@ package body Flow_Types is
       FS : Flow_Id_Sets.Set := Flow_Id_Sets.Empty_Set;
    begin
       for E of S loop
-         FS.Insert (if Nkind (E) = N_Selected_Component
-                    then Record_Field_Id (E, View)
-                    else Direct_Mapping_Id (E, View));
+         pragma Assert
+           (Is_Global_Entity (E) or else Ekind (E) = E_Constant
+              or else
+            Is_Subprogram_Or_Entry (E) or else Ekind (E) = E_Package);
+         --  Here we only process globals (including constants without
+         --  variable inputs that wrongly appear in user-written contracts) or
+         --  subprograms for which we decide conditional-vs-definitive calls
+         --  (including nested packages).
+
+         FS.Insert (Direct_Mapping_Id (E, View));
       end loop;
       return FS;
    end To_Flow_Id_Set;
