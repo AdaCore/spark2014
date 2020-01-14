@@ -500,15 +500,20 @@ package body Flow_Utility.Initialization is
    --------------------------------
 
    function Get_Default_Initialization (F : Flow_Id) return Node_Id is
-      function Get_Component_From_Aggregate (A : Node_Id;
-                                             C : Node_Id)
-                                             return Node_Id;
+      function Get_Component_From_Aggregate
+        (A : Node_Id;
+         C : Entity_Id)
+         return Node_Id
+      with Pre => Nkind (A) = N_Aggregate
+                    and then
+                  Ekind (C) in E_Component | E_Discriminant;
       --  If we have a record aggregate A like (X => Y, Z => W), this returns
       --  the value attached to component C, for example if C is Z this will
       --  return W.
 
       function Get_Simple_Default (E : Entity_Id) return Node_Id
-      with Post => (if Present (Get_Simple_Default'Result)
+      with Pre  => Is_Type (E),
+           Post => (if Present (Get_Simple_Default'Result)
                     then Nkind (Get_Simple_Default'Result) in N_Subexpr);
       --  Recursively look for simple default values given by Default_Value and
       --  Default_Component_Value.
@@ -519,22 +524,15 @@ package body Flow_Utility.Initialization is
 
       function Get_Component_From_Aggregate
         (A : Node_Id;
-         C : Node_Id)
+         C : Entity_Id)
          return Node_Id
       is
-         N : Node_Id;
+         N : Node_Id := First (Component_Associations (A));
       begin
-         N := First (Component_Associations (A));
          while Present (N) loop
-            case Nkind (N) is
-               when N_Component_Association =>
-                  if Entity (First (Choices (N))) = C then
-                     return Expression (N);
-                  end if;
-
-               when others =>
-                  raise Program_Error;
-            end case;
+            if Entity (First (Choices (N))) = C then
+               return Expression (N);
+            end if;
 
             Next (N);
          end loop;

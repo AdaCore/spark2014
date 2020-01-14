@@ -34,7 +34,7 @@ package Flow_Utility.Initialization is
                  then Nkind (Get_Default_Initialization'Result) in N_Subexpr);
    --  Get the default initialization expression for the given Flow_Id (this
    --  only really works for record fields and direct mappings; magic strings
-   --  are assumed to not be default initialized).
+   --  can only appear as globals and thus are always acting as initialized).
    --  @param F is the Flow_Id whose initialization we look for
    --  @return the default initialization expression of F
 
