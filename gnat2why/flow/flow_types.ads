@@ -306,9 +306,7 @@ package Flow_Types is
    --  case of a record field, return the entire variable.
 
    function Record_Field_Id
-     (N       : Node_Id;
-      Variant : Flow_Id_Variant  := Normal_Use;
-      Facet   : Variable_Facet_T := Normal_Part)
+     (N : Node_Id)
       return Flow_Id
    with Pre => Present (N) and then Nkind (N) = N_Selected_Component;
    --  Create a Flow_Id for the given record field

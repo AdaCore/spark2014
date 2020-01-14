@@ -276,40 +276,33 @@ package body Flow_Types is
    ---------------------
 
    function Record_Field_Id
-     (N       : Node_Id;
-      Variant : Flow_Id_Variant  := Normal_Use;
-      Facet   : Variable_Facet_T := Normal_Part)
+     (N : Node_Id)
       return Flow_Id
    is
       F : Flow_Id := (Kind      => Record_Field,
-                      Variant   => Variant,
+                      Variant   => Normal_Use,
                       Node      => <>,
-                      Facet     => Facet,
+                      Facet     => Normal_Part,
                       Component => Entity_Vectors.Empty_Vector);
       P : Node_Id := N;
    begin
       loop
-         declare
-            Selector : constant Entity_Id := Entity (Selector_Name (P));
-         begin
-            F.Component.Append
-              (if Ekind (Selector) in E_Component | E_Discriminant
-               then Unique_Component (Selector)
-               else Selector);
-         end;
+         F.Component.Append (Unique_Component (Entity (Selector_Name (P))));
          P := Prefix (P);
 
          exit when Nkind (P) /= N_Selected_Component;
       end loop;
+
       F.Component.Reverse_Elements;
 
       case Nkind (P) is
          when N_Identifier | N_Expanded_Name =>
             --  X .Y.Z
-            F.Node := Unique_Entity (Entity (P));
+            F.Node := Entity (P);
 
          when N_Attribute_Reference =>
             --  X'Old .Y.Z
+            pragma Assert (Is_Attribute_Old (Prefix (P)));
             F.Node := Entity (Prefix (P));
 
          when others =>
