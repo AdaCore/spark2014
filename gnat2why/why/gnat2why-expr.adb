@@ -2182,9 +2182,8 @@ package body Gnat2Why.Expr is
      (Params : Transformation_Params;
       N      : Entity_Id) return W_Prog_Id
    is
-      Ty        : constant Entity_Id := Retysp (N);
-      Base_Ty   : constant Entity_Id :=
-        (if Ekind (Ty) in Subtype_Kind then Base_Type (Ty) else Ty);
+      Ty      : constant Entity_Id := Retysp (N);
+      Base_Ty : constant Entity_Id := Base_Type (Ty);
       --  For first subtypes, we generate a check if the base type has an
       --  invariant.
 

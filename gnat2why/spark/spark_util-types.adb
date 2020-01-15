@@ -593,7 +593,7 @@ package body SPARK_Util.Types is
 
    function Has_Invariants_In_SPARK (E : Entity_Id) return Boolean is
      (Has_Own_Invariants (E)
-      and then Ekind (E) not in Subtype_Kind
+      and then Is_Base_Type (E)
       and then (if Is_Partial_View (E) then Entity_In_SPARK (Full_View (E))));
 
    ------------------------
@@ -607,9 +607,9 @@ package body SPARK_Util.Types is
          return False;
       end if;
 
-      --  Subtypes don't have private fields of their own.
+      --  Only base types have private fields of their own; subtypes do not
 
-      if Ekind (Ty) in Subtype_Kind then
+      if not Is_Base_Type (Ty) then
          return False;
       end if;
 

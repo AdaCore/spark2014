@@ -460,10 +460,10 @@ package body Gnat2Why.Tables is
       --  subtypes, we copy the parent's Components and update the fields
       --  to take the most precise ones from the subtype.
 
-      if Ekind (E) in SPARK_Util.Types.Subtype_Kind then
-         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
-      else
+      if Is_Base_Type (E) then
          Init_Component_Info (E, Comp_Info (Position), Visibility => Regular);
+      else
+         Init_Component_Info_For_Subtypes (E, Comp_Info (Position));
       end if;
 
       if Is_Tagged_Type (Root_Retysp (E)) then

@@ -2895,7 +2895,7 @@ package body Why.Gen.Records is
             --  If Current is not subtype, check whether it has more fields
             --  than Ancestor.
 
-            if Ekind (Current) not in SPARK_Util.Types.Subtype_Kind then
+            if Is_Base_Type (Current) then
                for Field of Get_Component_Set (Current) loop
 
                   --  If Field is not in Ancestor, we are done.

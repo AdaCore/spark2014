@@ -5078,7 +5078,7 @@ package body SPARK_Definition is
             --  Only mark the invariant as part of the type's fullview
 
             elsif not Is_Partial_View (E)
-              and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+              and then Is_Base_Type (E)
             then
 
                --  Invariants cannot be specified on completion of private
@@ -5177,7 +5177,7 @@ package body SPARK_Definition is
 
          if Is_Tagged_Type (E)
            and then not Is_Partial_View (E)
-           and then not (Ekind (E) in SPARK_Util.Types.Subtype_Kind)
+           and then Is_Base_Type (E)
          then
             declare
                Comp : Entity_Id := First_Component_Or_Discriminant (E);

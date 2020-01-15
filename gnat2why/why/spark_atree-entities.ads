@@ -291,6 +291,9 @@ package SPARK_Atree.Entities is
    function Is_Actual_Subtype (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 
+   function Is_Base_Type (Typ : Entity_Id) return Boolean with
+     Pre => Is_Type (Typ);
+
    function Is_Class_Wide_Type (Typ : Entity_Id) return Boolean with
      Pre => Is_Type (Typ);
 

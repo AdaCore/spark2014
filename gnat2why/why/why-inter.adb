@@ -380,7 +380,7 @@ package body Why.Inter is
             Typ := Retysp (Typ);
 
             if (Is_Record_Type (Typ) or else Is_Private_Type (Typ))
-              and then Ekind (Typ) in SPARK_Util.Types.Subtype_Kind
+              and then not Is_Base_Type (Typ)
             then
                Typ := Etype (Typ);
             elsif Is_Access_Type (Typ) then

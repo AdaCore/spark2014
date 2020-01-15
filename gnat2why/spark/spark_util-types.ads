@@ -28,25 +28,6 @@ with Stand;     use Stand;
 
 package SPARK_Util.Types is
 
-   subtype Subtype_Kind is Entity_Kind with
-     Static_Predicate => Subtype_Kind in E_Enumeration_Subtype
-                                       | E_Signed_Integer_Subtype
-                                       | E_Modular_Integer_Subtype
-                                       | E_Ordinary_Fixed_Point_Subtype
-                                       | E_Decimal_Fixed_Point_Subtype
-                                       | E_Floating_Point_Subtype
-                                       | E_Access_Subtype
-                                       | E_Array_Subtype
-                                       | E_String_Literal_Subtype
-                                       | E_Class_Wide_Subtype
-                                       | E_Record_Subtype
-                                       | E_Record_Subtype_With_Private
-                                       | E_Private_Subtype
-                                       | E_Limited_Private_Subtype
-                                       | E_Incomplete_Subtype
-                                       | E_Protected_Subtype
-                                       | E_Task_Subtype;
-
    ---------------------------------------------
    -- Queries related to representative types --
    ---------------------------------------------
