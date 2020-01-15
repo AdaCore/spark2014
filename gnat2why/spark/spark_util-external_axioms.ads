@@ -36,13 +36,6 @@ package SPARK_Util.External_Axioms is
    --  @return True iff E is declared in a package with external axiomatization
    --     with SPARK_Mode => On.
 
-   function Is_Access_To_Ext_Axioms_Discriminant
-     (N : Node_Id) return Boolean
-   with Pre => Nkind (N) = N_Selected_Component;
-   --  @param N selected component node
-   --  @return True iff the selector is a discriminant of a type defined in
-   --     a package with external axiomatization.
-
    function Is_Ext_Axioms_Discriminant (E : Entity_Id) return Boolean
    with Pre => Ekind (E) = E_Discriminant;
    --  @param E discriminant

@@ -51,19 +51,6 @@ package body SPARK_Util.External_Axioms is
       end;
    end Entity_In_Ext_Axioms;
 
-   ------------------------------------------
-   -- Is_Access_To_Ext_Axioms_Discriminant --
-   ------------------------------------------
-
-   function Is_Access_To_Ext_Axioms_Discriminant
-     (N : Node_Id) return Boolean
-   is
-      E : constant Entity_Id := Entity (Selector_Name (N));
-   begin
-      return Ekind (E) = E_Discriminant
-        and then Is_Ext_Axioms_Discriminant (E);
-   end Is_Access_To_Ext_Axioms_Discriminant;
-
    --------------------------------
    -- Is_Ext_Axioms_Discriminant --
    --------------------------------
