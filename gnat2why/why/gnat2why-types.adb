@@ -701,10 +701,9 @@ package body Gnat2Why.Types is
           (Ada_Node         => E,
            Ty               => Retysp (E),
            Params           => Params,
-           Skip_Last_Cond   => True,
+           Assume_Last_DIC  => True,
            Include_Subtypes => True,
-           New_Components   =>
-             Nkind (Decl) = N_Private_Extension_Declaration);
+           Decl_Node        => Decl);
 
       --  If the type has a DIC and this DIC should be checked at
       --  declaration, check that there can be no runtime error in the DIC

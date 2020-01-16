@@ -147,21 +147,23 @@ package Gnat2Why.Expr is
      (Ada_Node         : Node_Id;
       Ty               : Entity_Id;
       Params           : Transformation_Params;
-      Skip_Last_Cond   : Boolean := False;
+      Assume_Last_DIC  : Boolean := False;
       Include_Subtypes : Boolean := False;
-      New_Components   : Boolean := False) return W_Prog_Id
+      Decl_Node        : Node_Id := Empty) return W_Prog_Id
    with Pre => (if not Include_Subtypes
                 then Can_Be_Default_Initialized (Retysp (Ty)));
    --  @param Ada_Node node to which the checks should be attached
    --  @param Ty The type for which we want to check the default expression
    --  @param Params Transformation parameters
-   --  @param Skip_Last_Cond Do not check the top-level
-   --         Default_Initial_Condition of Ty if any.
+   --  @param Assume_Last_DIC Assume the top-level Default_Initial_Condition of
+   --         Ty if it should be check at use. Otherwise, check it.
    --  @param Include_Subtypes True if we also check any subtype of Ty. In
    --         particular, if Ty is a record type with defaulted discriminants,
    --         we only assume the value of its discriminants to be the defaults
    --         if Include_Subtypes is false.
-   --  @param New_Components Do not check inherited components
+   --  @param Decl_Node If we are checking the declaration of a type whose
+   --         default initial value is checked at declaration, Decl_Node is
+   --         the node of Ty's declaration.
    --  @result Why3 code to check for absence of runtime errors in default
    --         initialization of Expr of type Ty.
 
