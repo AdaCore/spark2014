@@ -29,7 +29,6 @@ formal_vectors.adb:54:14: medium: predicate check might fail, in instantiation a
 formal_vectors.adb:63:14: info: postcondition proved (CVC4: 3 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:63:43: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:63:61: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
-formal_vectors.adb:66:13: warning: unused assignment to "To", in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:73:14: info: postcondition proved (CVC4: 4 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:73:65: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10
 formal_vectors.adb:73:83: info: pointer dereference check proved (CVC4: 1 VC), in instantiation at use_formal_vectors.ads:10

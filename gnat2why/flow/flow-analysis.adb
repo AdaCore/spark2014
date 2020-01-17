@@ -1689,6 +1689,16 @@ package body Flow.Analysis is
                                        return Boolean;
       --  Checks if V represents elaboration of a nested package
 
+      function Null_Dependency_Assignment
+        (V   : Flow_Graphs.Vertex_Id;
+         Atr : V_Attributes)
+         return Boolean
+      with Pre => Atr.Is_Parameter;
+      --  Returns True iff vertex V (whose attributes are Atr) represents
+      --  an assignment to an OUT mode parameter via a subprogram call and
+      --  there is an explicit "Depends => (... => null)" contract for this
+      --  parameter.
+
       function Other_Field_Is_Effective (V : Flow_Graphs.Vertex_Id)
                                          return Boolean;
       --  Returns True if V corresponds to an assignment to a record field
@@ -1864,6 +1874,31 @@ package body Flow.Analysis is
            and then Nkind (Get_Direct_Mapping_Id (F)) = N_Package_Declaration;
       end Is_Package_Elaboration;
 
+      --------------------------------
+      -- Null_Dependency_Assignment --
+      --------------------------------
+
+      function Null_Dependency_Assignment
+        (V   : Flow_Graphs.Vertex_Id;
+         Atr : V_Attributes)
+         return Boolean
+      is
+      begin
+         --  Each vertex for an Out_View parameter has an edge coming from the
+         --  vertex that represents the call statement itself.
+         --
+         --  We first check if there are no other incoming edges, which means
+         --  there are no dependencies flowing into this parameter; then we
+         --  check if this subprogram has an explicit Depends contract.
+
+         return FA.PDG.In_Neighbour_Count (V) = 1
+           and then
+             Has_Depends
+               (Get_Called_Entity
+                  (Get_Direct_Mapping_Id
+                     (Atr.Call_Vertex)));
+      end Null_Dependency_Assignment;
+
       --------------------------
       -- Skip_Any_Conversions --
       --------------------------
@@ -1982,33 +2017,38 @@ package body Flow.Analysis is
 
                   begin
                      if Atr.Is_Parameter or Atr.Is_Global_Parameter then
-                        declare
-                           Target : constant Flow_Id :=
-                             (if Atr.Is_Parameter
-                              then Direct_Mapping_Id
-                                (Skip_Any_Conversions
-                                     (Get_Direct_Mapping_Id
-                                          (Atr.Parameter_Actual)))
-                              else Atr.Parameter_Formal);
+                        if not
+                          (Atr.Is_Parameter
+                           and then Null_Dependency_Assignment (V, Atr))
+                        then
+                           declare
+                              Target : constant Flow_Id :=
+                                (if Atr.Is_Parameter
+                                 then Direct_Mapping_Id
+                                   (Skip_Any_Conversions
+                                        (Get_Direct_Mapping_Id
+                                             (Atr.Parameter_Actual)))
+                                 else Atr.Parameter_Formal);
 
-                           Printable_Target : constant Boolean :=
-                             Is_Easily_Printable (Target);
+                              Printable_Target : constant Boolean :=
+                                Is_Easily_Printable (Target);
 
-                        begin
-                           Error_Msg_Flow
-                             (FA       => FA,
-                              Path     => Mask,
-                              Msg      => (if Printable_Target
-                                           then "unused assignment to &"
-                                           else "unused assignment"),
-                              N        => N,
-                              F1       => (if Printable_Target
-                                           then Target
-                                           else Null_Flow_Id),
-                              Tag      => Ineffective,
-                              Severity => Warning_Kind,
-                              Vertex   => V);
-                        end;
+                           begin
+                              Error_Msg_Flow
+                                (FA       => FA,
+                                 Path     => Mask,
+                                 Msg      => (if Printable_Target
+                                              then "unused assignment to &"
+                                              else "unused assignment"),
+                                 N        => N,
+                                 F1       => (if Printable_Target
+                                              then Target
+                                              else Null_Flow_Id),
+                                 Tag      => Ineffective,
+                                 Severity => Warning_Kind,
+                                 Vertex   => V);
+                           end;
+                        end if;
 
                      elsif Nkind (N) = N_Assignment_Statement then
                         Error_Msg_Flow

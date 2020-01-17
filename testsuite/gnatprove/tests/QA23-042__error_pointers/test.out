@@ -3,7 +3,6 @@ n01.adb:27:11: insufficient permission on dereference from "X"
 n01.adb:27:11: object was moved at line 23
 n03.adb:31:18: insufficient permission for "X"
 n03.adb:31:18: object was moved at line 27
-n03.adb:31:18: warning: unused assignment to "X"
 n03.adb:37:07: warning: unused assignment
 n03.adb:38:07: warning: unused assignment
 n03.adb:39:06: warning: unused assignment
