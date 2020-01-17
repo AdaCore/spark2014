@@ -1982,45 +1982,33 @@ package body Flow.Analysis is
 
                   begin
                      if Atr.Is_Parameter or Atr.Is_Global_Parameter then
+                        declare
+                           Target : constant Flow_Id :=
+                             (if Atr.Is_Parameter
+                              then Direct_Mapping_Id
+                                (Skip_Any_Conversions
+                                     (Get_Direct_Mapping_Id
+                                          (Atr.Parameter_Actual)))
+                              else Atr.Parameter_Formal);
 
-                        --  Suppress error messages for discriminants and
-                        --  bounds of parameters.
+                           Printable_Target : constant Boolean :=
+                             Is_Easily_Printable (Target);
 
-                        if Atr.Is_Discr_Or_Bounds_Parameter
-                          or else
-                           Is_Bound (Key)
-                        then
-                           null;
-
-                        else
-                           declare
-                              Target : constant Flow_Id :=
-                                (if Atr.Is_Parameter
-                                 then Direct_Mapping_Id
-                                   (Skip_Any_Conversions
-                                      (Get_Direct_Mapping_Id
-                                         (Atr.Parameter_Actual)))
-                                 else Atr.Parameter_Formal);
-
-                              Printable_Target : constant Boolean :=
-                                Is_Easily_Printable (Target);
-
-                           begin
-                              Error_Msg_Flow
-                                (FA       => FA,
-                                 Path     => Mask,
-                                 Msg      => (if Printable_Target
-                                              then "unused assignment to &"
-                                              else "unused assignment"),
-                                 N        => N,
-                                 F1       => (if Printable_Target
-                                              then Target
-                                              else Null_Flow_Id),
-                                 Tag      => Ineffective,
-                                 Severity => Warning_Kind,
-                                 Vertex   => V);
-                           end;
-                        end if;
+                        begin
+                           Error_Msg_Flow
+                             (FA       => FA,
+                              Path     => Mask,
+                              Msg      => (if Printable_Target
+                                           then "unused assignment to &"
+                                           else "unused assignment"),
+                              N        => N,
+                              F1       => (if Printable_Target
+                                           then Target
+                                           else Null_Flow_Id),
+                              Tag      => Ineffective,
+                              Severity => Warning_Kind,
+                              Vertex   => V);
+                        end;
 
                      elsif Nkind (N) = N_Assignment_Statement then
                         Error_Msg_Flow
