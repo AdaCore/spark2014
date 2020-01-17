@@ -1916,8 +1916,12 @@ package body Flow.Analysis is
 
          begin
             if Atr.Is_Program_Node
-              or Atr.Is_Parameter
-              or Atr.Is_Global_Parameter
+              or else
+                (Atr.Is_Parameter
+                 and then Key.Variant = Out_View)
+              or else
+                (Atr.Is_Global_Parameter
+                 and then Atr.Parameter_Formal.Variant = Out_View)
             then
 
                --  A vertex is ineffective if there is no path in the PDG to
@@ -1979,20 +1983,12 @@ package body Flow.Analysis is
                   begin
                      if Atr.Is_Parameter or Atr.Is_Global_Parameter then
 
-                        --  Suppress error messages for:
-                        --  * IN parameters
-                        --  * IN views of globals
-                        --  * discriminants and bounds of parameters
+                        --  Suppress error messages for discriminants and
+                        --  bounds of parameters.
 
-                        if (Atr.Is_Parameter
-                            and then Key.Variant = In_View)
+                        if Atr.Is_Discr_Or_Bounds_Parameter
                           or else
-                            (Atr.Is_Global_Parameter
-                             and then Atr.Parameter_Formal.Variant = In_View)
-                          or else
-                            Atr.Is_Discr_Or_Bounds_Parameter
-                          or else
-                            Is_Bound (Key)
+                           Is_Bound (Key)
                         then
                            null;
 
