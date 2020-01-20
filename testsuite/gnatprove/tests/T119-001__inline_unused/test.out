@@ -1,0 +1,8 @@
+test_inline.adb:21:14: info: add a contract to analyze it separately from calling contexts
+test_inline.adb:21:14: info: local subprogram "Set_A_And_B" only analyzed in the context of calls
+test_inline.adb:27:14: info: add a contract to analyze it separately from calling contexts
+test_inline.adb:27:14: info: local subprogram "Print_A" only analyzed in the context of calls
+test_inline.adb:32:14: info: add a contract to analyze it separately from calling contexts
+test_inline.adb:32:14: info: local subprogram "Print_B" only analyzed in the context of calls
+test_inline.adb:51:07: warning: unused assignment to "A"
+test_inline.adb:51:07: warning: unused assignment to "B"
